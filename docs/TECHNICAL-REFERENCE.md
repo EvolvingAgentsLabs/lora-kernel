@@ -1,90 +1,28 @@
 # Technical reference
 
 > **Reference for mechanisms that exist; specification for the parts that do
-> not.** Every claim about a system outside this repository is marked **[read]**
-> and cited. Nothing here has been run.
+> not.** Every claim about a system outside this repository is **[read]** and
+> cited. Nothing here has been run.
 
 ---
 
-## 1. Speculative decoding, precisely
+## 1. Speculative decoding
 
-A small **drafter** proposes `k` tokens. The **target** scores all `k+1`
-positions in one forward pass. A rejection-sampling step accepts a prefix of the
-draft and resamples at the first rejection.
+A **drafter** proposes `k` tokens. The **target** scores all `k+1` positions in
+one forward pass. Rejection sampling accepts a prefix and resamples at the first
+rejection, constructed so that **accepted tokens are distributed exactly as the
+target would have emitted them**. Lossless by design. **[read]**
 
-The construction is chosen so that **the accepted tokens are distributed exactly
-as the target would have emitted them**. It is lossless by design, not by
-approximation. **[read]**
+Two consequences define this project:
 
-Two things follow that decide this project's shape:
+1. **The emitted answer is the target's.** During Phase A you are getting
+   frontier output — which is the point: you are paying for frontier quality and
+   collecting the measurement for free.
+2. **α measures agreement with the target.** Against a frontier target that is a
+   distillation score; against a weak base it is not. See
+   [`ARCHITECTURE.md` §2](ARCHITECTURE.md).
 
-- **The drafter cannot change the answer.** It changes *when* the answer arrives.
-  Two different drafters over the same target produce the same output
-  distribution; they differ only in how many forward passes it took.
-- **Acceptance rate `α` is a similarity statistic.** It is the expected fraction
-  of drafted tokens the target keeps — a measure of *agreement between drafter
-  and target*, and therefore of speed. It is not a measure of correctness, and
-  no published treatment claims it is. **[read]**
-
-### 1.1 The consequence for expert routing
-
-If experts are drafters and the target is a shared base model, then:
-
-```
-argmax_e  α(expert_e, base)   =   the expert that has drifted least from base
-```
-
-Fine-tuning a domain adapter moves its distribution *away* from the base — that
-is what fine-tuning is. So under a shared base target, **the tournament is
-biased against specialisation**, monotonically. The more expert an expert
-becomes, the worse it scores on the metric meant to select it.
-
-This is the repository's central finding and it was available before any code.
-
----
-
-## 2. What would have to change for routing-by-acceptance to work
-
-Exactly one of these:
-
-**(a) The target carries the adapter.** Verify branch `e` under
-`base + adapter_e`. Then the emitted tokens really are the expert's, and `α`
-measures self-agreement. Cost: **one verification pass per candidate expert**,
-so the "free routing in a single forward pass" property is gone. This is a real
-architecture; it is just not free.
-
-**(b) `α` turns out to predict quality anyway.** Not by the mechanism above, but
-empirically: an expert whose drafts the base accepts may be one whose framing of
-the problem the base shares. This is a hypothesis with a plausible null and it is
-what [`ARCHITECTURE.md` §4](ARCHITECTURE.md) proposes measuring first.
-
-**(c) A different signal entirely.** Rank by the drafter's own confidence, by a
-learned router, or by a cheap verifier. All of these cost something; none is
-free in the sense the original idea meant.
-
----
-
-## 3. Multi-adapter serving — what exists today
-
-| capability | state | source |
-|---|---|---|
-| Many LoRA adapters over one **target** model, batched | **ships** in vLLM | **[read]** |
-| LoRA adapter as the **draft** model | **open RFC**, filed 2026-08-12 | [vllm#52038](https://github.com/vllm-project/vllm/issues/52038) **[read]** |
-| Earlier attempt at LoRA + spec-decode | adapter applied to target, **disabled on the draft** | [vllm#11966](https://github.com/vllm-project/vllm/pull/11966) **[read]** |
-| Tree-structured draft verification | shipped via EAGLE/Medusa-family drafters | **[read]** |
-
-The RFC's own figures are the reason this is worth tracking: an **r=64** adapter
-is roughly **28× smaller** than the 0.8B drafter it replaces, at drafting quality
-within about **2%** of a fully-trained per-domain drafter. **[read]**
-
-> **The brainstorm that started this repository asserted the mechanism was
-> "totally viable today with vLLM".** It is not; it is three weeks old as a
-> proposal. That correction costs nothing now and would have cost a milestone
-> later.
-
----
-
-## 4. Acceptance rate — definition used here
+### 1.1 Acceptance rate, defined
 
 For drafter `d`, target `t`, prompt distribution `P`, draft length `k`:
 
@@ -92,68 +30,123 @@ For drafter `d`, target `t`, prompt distribution `P`, draft length `k`:
 α(d, t) = E_{x~P} [ accepted_tokens(x) / k ]
 ```
 
-Reported with the draft length it was measured at, because `α` falls as `k`
-grows and a number without its `k` is not comparable. Speedup is a function of
-`α`, `k` and the drafter/target cost ratio — never of `α` alone.
+**Always reported with its `k`.** α falls as `k` grows, so a number without its
+draft length is not comparable. Speedup is a function of `α`, `k` and the
+drafter/target cost ratio — never of `α` alone.
 
-**What must be reported beside it, always:** the verified task score of the same
-configuration. The whole question is whether these two move together.
+**Always reported beside the verified task score** of the same configuration,
+because the withdrawal decision is made on both.
 
----
+### 1.2 The α surface
 
-## 5. The harness adapter
+α is not one number per expert. It is a number per expert **per region** of the
+problem space, and the regions are the unit of withdrawal. A legal-tax adapter
+may cross threshold on deduction questions months before it crosses on
+procedure. Store α with the region label, or Phase B promotes an expert into
+territory nobody measured.
 
-A `harness.lora` trained to own the execution protocol rather than the domain:
-tool-call syntax, action tokens, state transitions, error shapes.
+## 2. Multi-adapter serving in vLLM — state today
 
-**The claim to test is narrower than it sounds.** The comparison is not against
-"large JSON schemas in the system prompt". It is against **this organisation's
-own previous version**: `gemma4nanoloop` binds tools per phase and took peak
-schema from **5,548 to 817 tokens, −85%**, with no training at all. **[read]**
+| capability | state | source |
+|---|---|---|
+| many LoRA adapters over one **target**, batched in one request stream | **ships** | **[read]** |
+| tree-structured draft verification | **ships** (EAGLE/Medusa family) | **[read]** |
+| LoRA adapter as the **draft** model | **open RFC**, 2026-08-12 | [vllm#52038](https://github.com/vllm-project/vllm/issues/52038) **[read]** |
+| earlier attempt | adapter applied to target, **disabled on the draft** | [vllm#11966](https://github.com/vllm-project/vllm/pull/11966) **[read]** |
 
-So the harness adapter must beat a measured, training-free baseline on:
+The RFC's figures are why this is the right bet: an **r=64** adapter is roughly
+**28× smaller** than the 0.8B drafter it replaces, at drafting quality within
+about **2%** of a fully-trained per-domain drafter. **[read]** That is the
+economics of the whole expert pool in one number.
 
-- **tokens of protocol overhead per call** — the −85% is the number to beat
-- **malformed-call rate** — where constrained decoding is the incumbent, not prose
+**Until it lands**, Phase A runs one of two ways, and both are the same
+experiment with a different memory bill:
+
+- adapters applied to drafter models outside vLLM's speculative path; or
+- small per-domain drafters instead of adapters.
+
+## 3. The KV cache — the expensive part
+
+Branches from one drafter share a cacheable representation; tree attention
+exploits that and is solved. **[read]**
+
+Branches from **different adapters** do not. A LoRA modifies the projections that
+produce K and V, so each adapter's branch has its own key/value state beyond the
+shared prompt prefix. Paged attention gives prefix sharing; it does not give
+cross-adapter branch sharing.
+
+This is the open engineering problem of the architecture. It is worth solving
+after E1, not before.
+
+## 4. `harness.lora` — the kernel adapter
+
+Trained on the execution protocol only, never on domain content.
+
+### 4.1 Action tokens
+
+The adapter emits protocol as **tokens**, not as prose a parser must recover:
+
+```
+<invoke_tool name="sql">SELECT …</invoke_tool>
+<observe>…</observe>
+<eval_state>…</eval_state>
+```
+
+Moving a format guarantee from a prompt into weights is the mechanically
+strongest part of the design. **The honest comparison is grammar-constrained
+decoding**, which makes invalid syntax *impossible* rather than unlikely — and
+which this organisation has built: `token-trie` masks logits so a small model
+cannot emit invalid syntax. It was archived for a reason worth repeating: **that
+masking needs the sampler, which an API-backed SDK does not expose.** Owning the
+runtime is what makes either approach available at all. **[read]**
+
+The two are complementary: the adapter makes the *right* call likely, the grammar
+makes the *malformed* call impossible. Shipping both is allowed.
+
+### 4.2 What it must beat
+
+Not "large JSON schemas in the system prompt" — that comparison flatters it. The
+baseline is **our own previous version**: `gemma4nanoloop` bound tools per phase
+and took peak schema overhead from **5,548 to 817 tokens, −85%**, with no
+training at all. **[read]**
+
+Three numbers, together:
+
+- **protocol tokens per call** — the −85% is the bar
+- **malformed-call rate** — against constrained decoding, not against prose
 - **latency**, including adapter switch cost
 
-A harness adapter that wins on tokens and loses on malformed calls has not won.
+Winning on tokens and losing on malformed calls is not winning.
 
-### 5.1 Action tokens
+## 5. Composing two adapters
 
-Emitting `<invoke_tool …>` as learned tokens rather than as prose the parser
-must recover is the mechanically strongest part of the proposal, because it moves
-a *format* guarantee from a prompt into weights. The honest comparison is against
-**grammar-constrained decoding**, which already makes malformed output
-*impossible* rather than unlikely — and which this organisation has built before:
-`token-trie` masks logits so a small model cannot emit invalid syntax. That work
-was archived for a reason worth repeating here: **masking logits needs the
-sampler, which an API-backed SDK does not expose.** Owning the runtime is what
-makes either approach available at all. **[read]**
+The kernel and a domain expert must both be active. Three options, in increasing
+cost:
 
----
+1. **Sequential activation** — the domain adapter reasons, the kernel emits the
+   call. Cheapest, and it matches the phase structure the loop already has.
+2. **Stacked adapters** — both applied; requires the serving stack to compose
+   two deltas on the same base.
+3. **A merged adapter per expert** — trains the protocol into every domain
+   adapter, which is the cost this design exists to remove. Listed to be
+   rejected.
 
-## 6. The KV cache, which is where this gets expensive
+Option 1 is the default until measured otherwise.
 
-Parallel branches from different adapters diverge. Each branch needs its own
-key/value state for its own tokens while sharing the prompt prefix.
+## 6. The fitness function
 
-- Prefix sharing is standard (paged attention).
-- Tree attention over one drafter's branches is solved. **[read]**
-- **Branches from *different adapters* are the open engineering question** — the
-  adapter changes the projections that produce K and V, so the branches do not
-  share a cacheable representation the way one drafter's tree does.
+```
+score = w₁ · verified task success
+      + w₂ · α (against the frontier target)
+      − w₃ · tokens consumed
+```
 
-This is named as the main cost, not waved at. If §4's experiment says `α` carries
-no quality signal, none of this needs solving.
+- **`w₁`** comes from a verifier held out from the training loop. Non-negotiable.
+- **`w₂`** is meaningful only while the target is frontier-grade.
+- **`w₃`** includes adapter switch cost, not only generated tokens.
 
----
+## 7. What is not neural
 
-## 7. What is deliberately not neural
-
-- **Memory**: markdown files under version control. Readable without the model
-  that wrote them, diffable, and citable.
-- **Execution**: the sandbox where tools actually run.
-- **Verification of task success**: a verifier, never the model judging itself.
-  The strength of the verifier (exact / deterministic / statistical / judge) is
-  stated, never assumed.
+- **Memory**: markdown under git, readable and diffable by a person.
+- **Execution**: the sandbox where tools run.
+- **Verification**: a verifier whose strength is stated with every result.

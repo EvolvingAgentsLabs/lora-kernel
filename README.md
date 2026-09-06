@@ -1,145 +1,246 @@
-# speculative-experts
+# lora-kernel
 
-**Can a tournament between small experts choose which one is right — for free, in
-the forward pass that was going to happen anyway?**
+**The entire agentic system is a set of QLoRA adapters over one base model.**
+Nothing else is neural.
 
 *[Léeme en español](README.es.md)*
 
-> **Status: nothing built, nothing run.** This repository exists to answer one
-> question, and it opens with the reason that question is not yet answered:
-> the mechanism the idea rests on measures something else.
+> **Status: specified, nothing built.** Every claim about a system outside this
+> repository is marked **[read]** and cited. There is no **[ran]** yet.
 
 ---
 
-## The idea, as it arrived
+## The thesis
 
-Serve one base model. Load many QLoRA adapters — one per expert. When a prompt
-arrives, let several adapters draft in parallel, verify all branches in a single
-forward pass with tree attention, and **emit the branch with the highest
-acceptance rate.** Routing becomes free: the expert is chosen by the same pass
-that produced the tokens. Every agent collapses to a weight delta.
+Today a multi-agent system is Python orchestrating API calls: a router model, a
+planner model, a pile of JSON schemas in every system prompt, and a parser
+guessing whether the model meant to call a tool.
 
-It is a beautiful architecture. Two of its three legs hold.
+Replace all of it with **weight deltas on one resident base model**.
 
-## The leg that does not hold, stated first
+| what it is today | what it becomes |
+|---|---|
+| the harness — tool schemas, parsers, retry logic | **`harness.lora`** — an adapter that *emits* action tokens natively |
+| an agent | **a domain QLoRA**, a few hundred MB, hot-swappable |
+| the router — an extra model call | **acceptance rate**, falling out of a pass already being paid for |
+| the evolution loop | **a tournament over adapters**, scored and promoted |
+| memory | markdown + git — **deliberately not neural** |
+| the execution environment | a sandbox — **deliberately not neural** |
 
-**Speculative decoding preserves the target model's output distribution.** That
-is not a side effect; it is the entire guarantee — rejection sampling is
-constructed so that accepted tokens are distributed exactly as the target would
-have emitted them. **[read]**
+One GPU. One base model resident. A pool of small deltas swapped per request by
+vLLM's multi-LoRA serving. The agentic system stops being software that calls a
+model and becomes **a model wearing different adapters**.
 
-Three consequences follow, and they are fatal to routing-by-acceptance as
-described:
+## The mechanism that makes routing free — and the reason it works
 
-1. **The expert's knowledge never reaches the output.** Whatever the drafting
-   adapter knows, the tokens that get emitted are the *target's* tokens. A
-   domain adapter used as a drafter makes the answer arrive sooner. It does not
-   make it a different answer.
-2. **Acceptance rate is a latency metric.** It measures how often the drafter
-   guessed what the target was going to say. The literature that formalises
-   drafter selection ([Not-a-Bandit, arXiv:2510.20064](https://arxiv.org/abs/2510.20064))
-   frames it as a no-regret problem over **speed**, never over quality. **[read]**
-3. **So the tournament selects for agreement with the base**, which is the
-   opposite of the thing it was meant to find. The adapter that wins is the one
-   that has drifted *least* from the base model — the least specialised expert
-   in the pool.
+Speculative decoding has one property that is not a footnote: **the emitted
+tokens are distributed exactly as the target model would have emitted them.**
+Rejection sampling guarantees it. **[read]**
 
-There is a second, more ordinary correction. The mechanism is also **not
-available today**: vLLM serves many LoRA adapters over one target, but
-speculative decoding still requires a separate fully-trained draft model per
-domain. LoRA-as-drafter is an open RFC, filed 2026-08-12
-([vllm#52038](https://github.com/vllm-project/vllm/issues/52038)); an earlier
-attempt applied the adapter to the target and **disabled it on the draft**
-([vllm#11966](https://github.com/vllm-project/vllm/pull/11966)). **[read]**
+That property is what makes this architecture work, and it is why **the choice of
+target is the whole design**:
 
-## What survives, and it is the interesting part
+> **The target is a frontier model.** The experts are its drafters.
 
-The objection kills one mechanism, not the thesis. Three routes remain, and they
-are not equally cheap:
+Because the target is frontier-grade, a high acceptance rate means something
+precise and valuable: *this small expert already produces what the frontier would
+have produced, in this region of the problem space.* Acceptance rate stops being
+a speed statistic and becomes **a continuous, per-region distillation score,
+measured for free inside inference that was going to happen anyway.**
 
-| route | what it costs | what it buys |
-|---|---|---|
-| **Accept losslessness.** Many experts on one base, spec-decoded for speed. | nothing — this ships today, minus the RFC | cost and latency, no capability claim |
-| **Break losslessness deliberately.** Put the domain adapter on the *target*, so the emitted tokens are the expert's. | a verification pass per expert — the free routing is gone | real expert output |
-| **Keep acceptance rate, but as a *signal* rather than a verdict.** | one experiment | if it works, free routing |
+```
+                            PROMPT / CURRENT STATE
+                                      │
+        ┌─────────────────────────────┼─────────────────────────────┐
+        ▼                             ▼                             ▼
+ [Draft QLoRA: Legal-Tax]    [Draft QLoRA: Legal-Civil]   [Draft QLoRA: Legal-Penal]
+        │                             │                             │
+  (token branch A)              (token branch B)              (token branch C)
+        └─────────────────────────────┬─────────────────────────────┘
+                                      │
+                                      ▼
+                        [ TARGET — FRONTIER MODEL ]
+                 one forward pass, tree attention over all branches
+                                      │
+                                      ▼
+              THE BRANCH WITH THE HIGHEST ACCEPTANCE RATE WINS
+        the expert that already thinks like the frontier, in this region
+```
 
-The third is the one worth running, and it reduces to a single empirical
-question this repository is built to answer:
+Routing costs nothing extra. The tokens were generated. The verification pass was
+already happening. The winner is a by-product of arithmetic already paid for.
 
-> **Does a drafter's acceptance rate carry any signal about whether its expert
-> would have produced a better answer — or only about how much it agrees with
-> the base?**
+## Frontier withdrawal — the part that makes it an architecture rather than a trick
 
-If it carries signal, the architecture stands and routing really is free. If it
-does not, the router has to be something else, and knowing that costs one
-experiment instead of a runtime.
+The frontier model is **scaffolding**, and the design says when to remove it.
 
-**It is not obvious which way this goes.** A drafter and a target that agree are
-representing the problem the same way, and "this expert already thinks like the
-model that will judge it" is not nothing. But it is a hypothesis with a plausible
-null, which is the only kind worth building an instrument for.
+**Phase A — the frontier is the target.** You pay frontier cost and you get
+frontier output. What you *also* get, at zero marginal cost, is an accumulating
+map: for every region of the problem space, which small expert the frontier keeps
+agreeing with, and how strongly. This is distillation with its own evaluation
+built into the serving path.
 
-## The falsification condition, written before anything is built
+**Phase B — withdraw the frontier.** Experts whose acceptance rate crossed
+threshold in a region are promoted from *drafter* to *generator*. The frontier
+comes out. What replaces it is **only a router**, trained on the acceptance
+surface Phase A produced. The answer is now assembled from the experts.
 
-> On a task distribution with **demonstrated headroom**, rank the experts by
-> acceptance rate and rank them by verified task score. **If the two rankings
-> are uncorrelated, routing-by-acceptance is dead** and this repository says so
-> in its README.
+```
+   PHASE A                                    PHASE B
+   ┌──────────────────────┐                   ┌──────────────────────┐
+   │  experts draft       │                   │  router selects      │
+   │  FRONTIER verifies   │  ──withdraw──▶    │  EXPERT generates    │
+   │  α accumulates       │                   │  no frontier call    │
+   └──────────────────────┘                   └──────────────────────┘
+   frontier cost, frontier quality            local cost, measured quality
+   and a free distillation score              at the α threshold you chose
+```
 
-The headroom check runs first and is the cheapest arm. A base model already at
-the ceiling makes every expert tie, and a tie reads as a success.
+The threshold is the product decision. You choose how much frontier agreement you
+require before an expert is allowed to answer alone, per region, and the number
+is measured rather than argued.
 
-## The other two legs
+## The four adapters, in detail
 
-**The harness as an adapter.** Train one `harness.lora` that owns the execution
-protocol — tool-call syntax, action tokens, state transitions — so the schema
-stops living in the system prompt. This is testable and the baseline is not
-"giant JSON schemas": it is **our own previous version**. `gemma4nanoloop`
-already took peak schema from **5,548 to 817 tokens (−85%)** by binding tools per
-phase, with no training at all. A harness adapter has to beat *that*. **[read]**
+### 1. `harness.lora` — the kernel
 
-**Experts as weight deltas, evolving.** A tournament over adapters, with the
-losers dropped and the winners crossed, is a real design — and it inherits a
-warning from this organisation's own measurements: the same procedure classified
-as *interface compensation* on a 4B model and *persistent gain* on a 12B. Whether
-an expert is real is not a property of the expert. An evolutionary loop scored
-against one target will breed adapters that flatter that target.
+One adapter trained on nothing but the execution protocol: tool-call syntax,
+**action tokens** (`<invoke_tool name="sql">`, `<eval_state>`, `<observe>`),
+error shapes, state transitions.
+
+- **The schema leaves the system prompt.** The protocol lives in weights, so the
+  context window carries work instead of documentation.
+- **The format is emitted, not recovered.** No parser guessing whether the model
+  meant to call a tool.
+- It is always loaded. Domain adapters compose with it: the domain adapter
+  thinks, the kernel acts.
+
+The number to beat is **ours**, not a straw man: `gemma4nanoloop` already took
+peak schema overhead from **5,548 → 817 tokens (−85%)** by binding tools per
+phase, with no training at all. **[read]** And on syntax the incumbent is
+grammar-constrained decoding, which this organisation has also built
+(`token-trie`) — it makes invalid output *impossible* rather than unlikely. A
+harness adapter has to win on tokens **and** on malformed-call rate.
+
+### 2. Domain QLoRAs — user space
+
+Each expert is a few hundred megabytes of delta. They are swapped per request,
+batched together by vLLM, and versioned like code.
+
+### 3. The router
+
+Phase A: acceptance rate. Phase B: a router fitted to the acceptance surface.
+Small, cheap, and the only thing left where the frontier used to be.
+
+### 4. The tournament — how experts improve
+
+Several adapters per sub-domain, competing. Fitness per executed task:
+
+```
+score = w₁ · verified task success
+      + w₂ · α  (acceptance against the frontier target)
+      − w₃ · tokens consumed
+```
+
+The worst is dropped. The winners' best trajectories become a DPO/GRPO dataset
+and train the next delta. This runs **offline**, in the dream pass, over traces
+that `agentvcs` versioned — because a tournament that runs inline changes the
+thing it measures.
+
+**One warning carried from this organisation's own measurements**, because it
+decides the fitness function: the same procedure classified as *interface
+compensation* on a 4B model and as *persistent gain* on a 12B. **Whether an
+expert is real is not a property of the expert.** So `w₁` must come from a
+verifier the loop cannot see, or the loop breeds adapters that flatter their
+scorer. **[read]**
+
+## What is deliberately not a LoRA
+
+Exactly two things, and they are load-bearing:
+
+1. **Memory** — markdown files under git. A weight delta cannot be read, diffed,
+   cited or corrected by a person. Everything this organisation has measured
+   about memory says the durable asset is the part you can read.
+2. **Execution** — the sandbox where tools actually run.
+
+## Engineering state, honestly
+
+| capability | state |
+|---|---|
+| many LoRA adapters over one target, batched | **ships in vLLM** **[read]** |
+| tree-structured draft verification | **ships** (EAGLE/Medusa family) **[read]** |
+| **LoRA adapter as the draft model** | **open RFC**, filed 2026-08-12 — [vllm#52038](https://github.com/vllm-project/vllm/issues/52038) **[read]** |
+
+The RFC exists because this is what people want, and its numbers are the
+encouraging part: an **r=64 adapter is ~28× smaller** than the 0.8B drafter it
+replaces, at drafting quality within about **2%** of a fully-trained per-domain
+drafter. **[read]**
+
+Until it lands, Phase A runs with adapters applied outside vLLM's speculative
+path, or with small per-domain drafters — more memory, same experiment.
+
+**The genuinely hard part is the KV cache.** Branches from *different adapters*
+do not share a cacheable representation the way one drafter's tree does, because
+the adapter changes the projections that produce K and V. Tree attention over one
+drafter is solved; across adapters it is the open engineering problem, and it is
+named here rather than waved at.
+
+## What runs first
+
+**E0 · Headroom.** Score the base alone on the task distribution. If it is at the
+ceiling, every expert ties and a tie reads as a success.
+
+**E1 · The α surface.** Two domain adapters and one frontier target. Measure
+acceptance per region. This is Phase A in miniature and it produces the map
+everything else is built on.
+
+**E2 · Withdrawal.** Promote the adapter that crossed threshold, remove the
+frontier, and measure verified task score against what the frontier scored. The
+gap is the price of withdrawal, and it is the number the whole architecture
+exists to make small.
+
+**E3 · `harness.lora`**, against the −85% baseline above.
+
+## How this is released
+
+Open-core, deliberately.
+
+**Open:** the runtime — multi-LoRA over vLLM, the speculative router, the
+withdrawal machinery; the `harness.lora` specification and the action-token
+protocol; the markdown + git memory connector.
+
+**Not open:** trained vertical adapter packs; the managed dream/evolution
+pipeline; the enterprise control plane.
+
+Deep inference infrastructure that nobody can audit never becomes a standard, and
+a standard with nothing beside it never pays for itself.
 
 ## Lineage
 
-This is the substrate layer under work that already exists, not a restart.
-
 | | |
 |---|---|
-| [`evolving-agents`](https://github.com/EvolvingAgentsLabs/evolving-agents) | The organisation's active repository, where `ai-os` now lives. Flows, memory at four levels, agents as markdown |
-| [`gemma4nanoloop`](https://github.com/EvolvingAgentsLabs/gemma4nanoloop) | The measured case that a small local model runs a closed loop — by subtraction, not by speculation |
-| `agentvcs` | Versions code, skills, goals, models and traces together — the substrate for scoring adapters over time |
+| [`evolving-agents`](https://github.com/EvolvingAgentsLabs/evolving-agents) | The active repository — flows, memory at four levels, agents as markdown. `ai-os` lives inside it |
+| [`gemma4nanoloop`](https://github.com/EvolvingAgentsLabs/gemma4nanoloop) | The measured case that a small local model runs a closed loop |
+| `agentvcs` | Versions code, skills, goals, models and traces together — the substrate the tournament scores over |
 
-> *Evolving Agents was the conceptual laboratory for adaptive agents. This is the
-> question of whether their selection can happen in the forward pass.*
+> Evolving Agents was the conceptual laboratory for adaptive agents. **This is the
+> substrate that makes them weight deltas.**
 
 ## Documents
 
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — the seven layers, why the
+  target must be frontier-grade, and the withdrawal condition.
 - [`docs/TECHNICAL-REFERENCE.md`](docs/TECHNICAL-REFERENCE.md) — the mechanisms,
-  what ships in vLLM today versus what is an RFC, and where the KV cache gets
-  expensive.
-- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — the layers, and why the
-  **router is drawn as a hole** rather than as a component.
-- [`docs/agents-as-weight-deltas.md`](docs/agents-as-weight-deltas.md) — the
-  article: the idea, the objection, and what is left standing.
+  α and the α surface, the KV cache, action tokens, adapter composition, the
+  fitness function.
+- [`docs/the-frontier-is-scaffolding.md`](docs/the-frontier-is-scaffolding.md) —
+  the article.
 
 ## Acknowledgement
 
-The line of enquiry began with a conversation with **[Ismael Faro](https://github.com/ismaelfaro)**,
-who suggested studying speculative decoding and what it could be used for. The
-suggestion was right and the first thing the study found was that the obvious use
-is not the one that works — which is what makes it worth writing down.
-
-## Convention
-
-**[ran]** — observed here. **[read]** — taken from a source, cited.
-
-There is no **[ran]** in this file. That is what the status line means.
+This line of enquiry began with a conversation with
+**[Ismael Faro](https://github.com/ismaelfaro)**, who suggested studying
+speculative decoding and what it could be used for.
 
 ---
 

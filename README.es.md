@@ -1,94 +1,186 @@
-# speculative-experts
+# lora-kernel
 
-**¿Puede un torneo entre expertos chicos elegir cuál tiene razón — gratis, en el
-forward pass que iba a ocurrir de todos modos?**
+**Todo el sistema agéntico es un conjunto de adaptadores QLoRA sobre un modelo
+base.** Nada más es neuronal.
 
 *[Read this in English](README.md)*
 
-> **Estado: nada construido, nada corrido.** Este repositorio existe para
-> contestar una pregunta, y abre con la razón por la que esa pregunta todavía no
-> está contestada: el mecanismo en el que se apoya la idea mide otra cosa.
+> **Estado: especificado, nada construido.** Toda afirmación sobre un sistema
+> externo va marcada **[read]** y citada. Todavía no hay ningún **[ran]**.
 
-## La idea, tal como llegó
+---
 
-Un modelo base servido una vez. Muchos adaptadores QLoRA — uno por experto.
-Cuando llega un prompt, varios adaptadores borradorean en paralelo, todas las
-ramas se verifican en un solo forward pass con tree attention, y **se emite la
-rama con mayor tasa de aceptación**. El enrutamiento sale gratis. Todo agente
-colapsa en un delta de pesos.
+## La tesis
 
-Es una arquitectura hermosa. Dos de sus tres patas se sostienen.
+Hoy un sistema multi-agente es Python orquestando llamadas a APIs: un modelo
+router, un modelo planificador, una pila de esquemas JSON en cada system prompt,
+y un parser adivinando si el modelo quiso llamar una herramienta.
 
-## La pata que no se sostiene, dicha primero
+Reemplazá todo eso por **deltas de pesos sobre un único modelo base residente**.
 
-**La decodificación especulativa preserva la distribución de salida del modelo
-target.** No es un efecto lateral: es la garantía entera — el muestreo por
-rechazo está construido para que los tokens aceptados se distribuyan exactamente
-como los habría emitido el target. **[read]**
+| lo que es hoy | en qué se convierte |
+|---|---|
+| el harness — esquemas, parsers, reintentos | **`harness.lora`** — un adaptador que *emite* action tokens de forma nativa |
+| un agente | **un QLoRA de dominio**, unos cientos de MB, intercambiable en caliente |
+| el router — una llamada extra a un modelo | **la tasa de aceptación**, que cae de un pase que ya estabas pagando |
+| el bucle de evolución | **un torneo de adaptadores**, puntuados y promovidos |
+| la memoria | markdown + git — **deliberadamente no neuronal** |
+| el entorno de ejecución | un sandbox — **deliberadamente no neuronal** |
 
-Tres consecuencias, y son fatales para el enrutamiento por aceptación:
+Una GPU. Un modelo base residente. Un pool de deltas chicos que vLLM intercambia
+por request. El sistema agéntico deja de ser software que llama a un modelo y
+pasa a ser **un modelo poniéndose distintos adaptadores**.
 
-1. **El conocimiento del experto nunca llega a la salida.** Sepa lo que sepa el
-   adaptador que borrada, los tokens emitidos son los del *target*. Un adaptador
-   de dominio usado como drafter hace que la respuesta llegue antes. No hace que
-   sea otra respuesta.
-2. **La tasa de aceptación es una métrica de latencia.** Mide cuántas veces el
-   drafter adivinó lo que el target iba a decir. La literatura que formaliza la
-   selección de drafters ([Not-a-Bandit, arXiv:2510.20064](https://arxiv.org/abs/2510.20064))
-   lo plantea como un problema de *no-regret* sobre **velocidad**, nunca sobre
-   calidad. **[read]**
-3. **Así que el torneo selecciona por parecido con la base**, que es lo contrario
-   de lo que buscaba. Gana el adaptador que **menos** se alejó del modelo base:
-   el menos especializado del grupo.
+## El mecanismo, y por qué funciona
 
-Y una corrección más ordinaria: el mecanismo **tampoco está disponible hoy**.
-vLLM sirve muchos LoRA sobre un target, pero la decodificación especulativa
-todavía pide un draft model entero por dominio. LoRA-como-drafter es un RFC
-abierto el 2026-08-12 ([vllm#52038](https://github.com/vllm-project/vllm/issues/52038));
-un intento anterior aplicaba el adaptador al target y lo **desactivaba en el
-draft** ([vllm#11966](https://github.com/vllm-project/vllm/pull/11966)). **[read]**
+La decodificación especulativa tiene una propiedad que no es una nota al pie:
+**los tokens emitidos se distribuyen exactamente como los habría emitido el
+modelo target.** El muestreo por rechazo lo garantiza. **[read]**
 
-## Lo que sobrevive, que es la parte interesante
+Esa propiedad es lo que hace funcionar a esta arquitectura, y por eso **la
+elección del target es todo el diseño**:
 
-| ruta | qué cuesta | qué compra |
-|---|---|---|
-| **Aceptar que es sin pérdida.** Muchos expertos sobre una base, especulados por velocidad | nada — esto shippea hoy, salvo el RFC | costo y latencia, sin afirmación de capacidad |
-| **Romper la ausencia de pérdida a propósito.** El adaptador de dominio va en el *target* | un pase de verificación por experto — se acabó el enrutamiento gratis | salida experta de verdad |
-| **Conservar la aceptación, pero como *señal* y no como veredicto** | un experimento | si funciona, enrutamiento gratis |
+> **El target es un modelo de frontera.** Los expertos son sus drafters.
 
-> **¿La tasa de aceptación de un drafter lleva alguna señal sobre si su experto
-> habría dado una mejor respuesta — o sólo sobre cuánto coincide con la base?**
+Como el target es de frontera, una tasa de aceptación alta significa algo preciso
+y valioso: *este experto chico ya produce lo que la frontera habría producido, en
+esta región del problema*. La aceptación deja de ser un estadístico de velocidad
+y pasa a ser **una puntuación continua de destilación por región, medida gratis
+dentro de una inferencia que igual ibas a pagar.**
 
-**No es obvio hacia dónde cae.** Un drafter y un target que coinciden están
-representando el problema del mismo modo, y *"este experto ya piensa como el
-modelo que lo va a juzgar"* no es nada despreciable. Pero es una hipótesis con un
-nulo plausible, que es la única clase que merece un instrumento.
+```
+                              PROMPT / ESTADO ACTUAL
+                                        │
+        ┌───────────────────────────────┼───────────────────────────────┐
+        ▼                               ▼                               ▼
+ [Draft QLoRA: Legal-Tax]     [Draft QLoRA: Legal-Civil]     [Draft QLoRA: Legal-Penal]
+        └───────────────────────────────┬───────────────────────────────┘
+                                        ▼
+                        [ TARGET — MODELO DE FRONTERA ]
+                  un solo forward pass · tree attention
+                                        ▼
+                GANA LA RAMA CON MAYOR TASA DE ACEPTACIÓN
+          el experto que ya piensa como la frontera, en esta región
+```
 
-## La condición de falsación, escrita antes de construir nada
+El enrutamiento no cuesta nada extra. Los tokens ya se generaron. El pase de
+verificación ya iba a ocurrir. El ganador es un subproducto.
 
-> Sobre una distribución de tareas con **headroom demostrado**, ordenar los
-> expertos por tasa de aceptación y ordenarlos por puntaje verificado. **Si los
-> dos órdenes no correlacionan, el enrutamiento por aceptación está muerto** y
-> este repositorio lo dice en su README.
+## Retiro de la frontera
 
-El chequeo de headroom va primero y es el arm más barato. Una base ya en el techo
-hace que todos los expertos empaten, y un empate se lee como éxito.
+El modelo de frontera es **andamio**, y el diseño dice cuándo sacarlo.
+
+**Fase A — la frontera es el target.** Pagás costo de frontera y obtenés calidad
+de frontera. Lo que *además* obtenés, a costo marginal cero, es un mapa que se va
+llenando: para cada región del problema, con qué experto chico la frontera
+coincide, y cuánto. Es destilación con su propia evaluación adentro del camino de
+servicio.
+
+**Fase B — retirás la frontera.** Los expertos cuya aceptación cruzó el umbral en
+una región se promueven de *drafter* a *generador*. La frontera sale. Lo que la
+reemplaza es **sólo un router**, ajustado sobre la superficie de aceptación que
+produjo la Fase A.
+
+```
+   FASE A                                    FASE B
+   los expertos borradorean                  el router selecciona
+   la FRONTERA verifica     ──se retira──▶   el EXPERTO genera
+   α se acumula                              sin llamada a frontera
+
+   costo y calidad de frontera               costo local, calidad
+   más una destilación gratis                al umbral que elegiste
+```
+
+El umbral es la decisión de producto: cuánta coincidencia con la frontera exigís
+antes de dejar que un experto conteste solo, por región. Y es reversible.
+
+**El número que decide toda la arquitectura** es la **brecha de retiro**: el
+puntaje verificado después de sacar la frontera, menos el que tenía con ella.
+Hacer chica esa brecha *es* el proyecto.
+
+## Los cuatro adaptadores
+
+**1 · `harness.lora` — el kernel.** Entrenado en nada más que el protocolo de
+ejecución: sintaxis de tools, **action tokens** (`<invoke_tool name="sql">`,
+`<eval_state>`, `<observe>`), formas de error, transiciones de estado. El esquema
+sale del system prompt; el formato se *emite* en vez de recuperarse con un
+parser. Siempre cargado: el adaptador de dominio piensa, el kernel actúa.
+
+El número a batir es **nuestro**: `gemma4nanoloop` ya llevó el schema pico de
+**5.548 → 817 tokens (−85%)** atando tools por fase, sin entrenar nada. **[read]**
+Y en sintaxis el titular es *constrained decoding* (`token-trie`), que vuelve la
+salida inválida **imposible**, no improbable.
+
+**2 · QLoRAs de dominio — user space.** Unos cientos de MB de delta cada uno,
+intercambiados por request, versionados como código.
+
+**3 · El router.** Fase A: aceptación. Fase B: un router ajustado a la superficie.
+
+**4 · El torneo.** Por tarea ejecutada:
+
+```
+score = w₁ · éxito verificado de la tarea
+      + w₂ · α  (aceptación contra el target de frontera)
+      − w₃ · tokens consumidos
+```
+
+**`w₁` tiene que venir de un verificador que el bucle no pueda ver**, o el bucle
+cría adaptadores que adulan a su propio evaluador. La medición más fuerte que
+tenemos: el mismo procedimiento fue *compensación de interfaz* en un 4B y
+*ganancia persistente* en un 12B. **Que un experto sea real no es propiedad del
+experto.** **[read]**
+
+## Lo que deliberadamente NO es un LoRA
+
+1. **La memoria** — markdown bajo git. Un delta de pesos no se puede leer,
+   diffear, citar ni corregir.
+2. **La ejecución** — el sandbox donde las herramientas corren.
+
+## Estado de ingeniería, con honestidad
+
+| capacidad | estado |
+|---|---|
+| muchos LoRA sobre un target, en batch | **shippea en vLLM** **[read]** |
+| verificación de drafts en árbol | **shippea** (familia EAGLE/Medusa) **[read]** |
+| **LoRA como draft model** | **RFC abierto** el 2026-08-12 — [vllm#52038](https://github.com/vllm-project/vllm/issues/52038) **[read]** |
+
+Los números del RFC son la parte alentadora: un adaptador **r=64 es ~28× más
+chico** que el drafter de 0,8B que reemplaza, con calidad de borrador dentro del
+**~2%** de un drafter entrenado por dominio. **[read]** Hasta que aterrice, la
+Fase A corre con adaptadores fuera del camino especulativo de vLLM, o con
+drafters chicos por dominio: más memoria, mismo experimento.
+
+**La parte genuinamente difícil es el KV cache.** Las ramas de *adaptadores
+distintos* no comparten una representación cacheable como sí lo hacen las ramas
+de un mismo drafter, porque el LoRA cambia las proyecciones que producen K y V.
+
+## Qué se corre primero
+
+**E0 · Headroom.** **E1 · La superficie de α** (2 expertos, 1 target de
+frontera). **E2 · El retiro**, y la brecha. **E3 · `harness.lora`** contra el
+−85%.
+
+## Cómo se libera
+
+Open-core. **Abierto:** el runtime multi-LoRA sobre vLLM, el router especulativo,
+la maquinaria de retiro, la especificación de `harness.lora` y el protocolo de
+action tokens, el conector de memoria markdown+git. **No abierto:** los packs de
+adaptadores verticales entrenados, el pipeline gestionado de evolución, el
+control plane empresarial.
 
 ## Documentos
 
-- [`docs/TECHNICAL-REFERENCE.md`](docs/TECHNICAL-REFERENCE.md) — los mecanismos,
-  qué existe hoy en vLLM y qué es un RFC, y dónde se pone caro el KV cache.
-- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — las capas, y por qué el
-  **router se dibuja como un hueco** en vez de como un componente.
-- [`docs/agents-as-weight-deltas.md`](docs/agents-as-weight-deltas.md) — el
-  artículo: la idea, la objeción, y lo que queda en pie.
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — las siete capas y el retiro.
+- [`docs/TECHNICAL-REFERENCE.md`](docs/TECHNICAL-REFERENCE.md) — mecanismos, α,
+  KV cache, action tokens, composición de adaptadores.
+- [`docs/the-frontier-is-scaffolding.md`](docs/the-frontier-is-scaffolding.md) —
+  el artículo.
 
 ## Reconocimiento
 
-Esta línea empezó con una conversación con **[Ismael Faro](https://github.com/ismaelfaro)**,
-que sugirió estudiar la decodificación especulativa y para qué podría servir. La
-sugerencia fue acertada, y lo primero que encontró el estudio es que el uso obvio
-no es el que funciona — que es justamente lo que la vuelve digna de escribirse.
+Esta línea empezó con una conversación con
+**[Ismael Faro](https://github.com/ismaelfaro)**, que sugirió estudiar la
+decodificación especulativa y para qué podría servir.
 
 ---
 

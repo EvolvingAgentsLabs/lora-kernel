@@ -1,122 +1,140 @@
 # Architecture
 
-> **Specification.** Nothing here is built. It is written to be argued with
-> before anything is, which is cheaper.
+> **Specification.** Nothing here is built. Written to be argued with before it
+> is, which is cheaper.
 
 ---
 
-## 1. The shape, if the question in §4 comes back positive
+## 1. The stack
 
 ```
-┌──────────────────────────────────────────────────────────────────────┐
-│  HOST            one GPU, one vLLM runtime, one base model resident  │
-├──────────────────────────────────────────────────────────────────────┤
-│  TARGET          the base model. Verifies. Owns the output           │
-│                  distribution — see TECHNICAL-REFERENCE §1           │
-├──────────────────────────────────────────────────────────────────────┤
-│  KERNEL          harness.lora — tool syntax, action tokens, state    │
-│                  transitions. One adapter, always loaded             │
-├──────────────────────────────────────────────────────────────────────┤
-│  EXPERTS         a pool of domain adapters. Interchangeable, small,  │
-│                  versioned, scored                                   │
-├──────────────────────────────────────────────────────────────────────┤
-│  ROUTER          ← THE OPEN QUESTION. Not assumed to be acceptance   │
-│                  rate; that is the thing being measured              │
-├──────────────────────────────────────────────────────────────────────┤
-│  MEMORY          markdown + git. Not neural, on purpose              │
-├──────────────────────────────────────────────────────────────────────┤
-│  EVOLUTION       offline: trajectories → dataset → new adapter,      │
-│                  scored by a verifier, promoted only if it wins      │
-└──────────────────────────────────────────────────────────────────────┘
+┌───────────────────────────────────────────────────────────────────────┐
+│ 1 · HOST          vLLM. One GPU, one resident base model,             │
+│                   multi-LoRA serving, adapters batched per request    │
+├───────────────────────────────────────────────────────────────────────┤
+│ 2 · TARGET        PHASE A: a frontier model. Verifies, and its        │
+│                   agreement is the measurement.                       │
+│                   PHASE B: withdrawn. Replaced by the router alone.   │
+├───────────────────────────────────────────────────────────────────────┤
+│ 3 · KERNEL        harness.lora — action tokens, tool syntax, state    │
+│                   transitions, error shapes. Always loaded.           │
+├───────────────────────────────────────────────────────────────────────┤
+│ 4 · USER SPACE    the expert pool. Domain QLoRAs, hot-swapped,        │
+│                   versioned, scored, promoted, retired.               │
+├───────────────────────────────────────────────────────────────────────┤
+│ 5 · ROUTER        PHASE A: acceptance rate α, free.                   │
+│                   PHASE B: a small router fitted to the α surface.    │
+├───────────────────────────────────────────────────────────────────────┤
+│ 6 · MEMORY        markdown + git (agentvcs). Not neural, on purpose.  │
+├───────────────────────────────────────────────────────────────────────┤
+│ 7 · DREAM         offline: traces → DPO/GRPO dataset → next delta.    │
+│                   Tournament, promotion, retirement.                  │
+└───────────────────────────────────────────────────────────────────────┘
 ```
 
-Two layers are drawn deliberately thin. **ROUTER** is a hole, not a component —
-naming it "speculative" in the architecture would be assuming the result. And
-**EVOLUTION** is offline because a tournament that runs inline changes the thing
-it measures.
+Layers 3, 4 and 7 produce **only adapters**. Layer 6 produces **only text**.
+Layer 1 is somebody else's runtime. That is the whole system.
 
-## 2. Why the router is a hole
+## 2. Why the target must be frontier-grade
 
-Under a shared base target, ranking experts by acceptance rate ranks them by
-*similarity to the base*, and fine-tuning moves an adapter away from the base by
-construction. The metric is anti-correlated with the property it was meant to
-detect, unless something empirical rescues it.
+Speculative decoding emits the *target's* distribution. So what acceptance rate
+measures is **agreement with whatever you chose to verify with**, and the choice
+therefore decides what the number means:
 
-So the architecture carries three router candidates and commits to none:
+| target | what a high α tells you |
+|---|---|
+| the shared base model | this expert has drifted least from the base — *anti-correlated with specialisation* |
+| **a frontier model** | **this expert already produces what the frontier would, here** |
 
-| candidate | cost per decision | claim |
+The second is a distillation score. It is the design.
+
+This is the single rule that keeps the architecture coherent, and it is why the
+frontier is not an optimisation but a component: **remove it in Phase A and the
+router is measuring the wrong thing.**
+
+## 3. Frontier withdrawal
+
+The frontier is scaffolding with a stated removal condition.
+
+**Phase A.** Experts draft, frontier verifies, α accumulates per expert per
+region of the problem space. Cost is frontier cost; quality is frontier quality;
+the measurement is free.
+
+**Phase B.** For a region where an expert's α crossed threshold, promote it from
+drafter to generator, drop the frontier, and let the router choose. Cost collapses
+to local inference.
+
+**The threshold is a product decision, made on a measured surface.** How much
+frontier agreement do you require before an expert answers alone? Per region.
+Recorded, revisable, and reversible — a region can be sent back to Phase A when
+its verified score drops.
+
+**The number that decides the whole architecture** is the withdrawal gap: the
+verified task score after withdrawal, minus the score the frontier had. Making
+that gap small *is* the project.
+
+## 4. Composition — kernel plus expert
+
+The kernel and the expert are different adapters and must stay so.
+
+- `harness.lora` owns **how to act**: action tokens, tool syntax, state.
+- a domain adapter owns **what is true** in its region.
+
+Merging them would make every domain adapter re-learn the protocol, which is the
+cost this design exists to remove. Serving them together is a multi-adapter
+composition question and is treated in
+[`TECHNICAL-REFERENCE.md` §5](TECHNICAL-REFERENCE.md).
+
+## 5. The tournament
+
+Per executed task:
+
+```
+score = w₁ · verified task success
+      + w₂ · α (against the frontier target)
+      − w₃ · tokens consumed
+```
+
+- **`w₁` must come from a verifier the loop cannot see.** Otherwise the loop
+  breeds adapters that flatter their scorer, and the strongest measurement this
+  organisation has is that the same procedure was *interface compensation* on one
+  model and *persistent gain* on another. **[read]**
+- **`w₂` is only meaningful while the target is frontier-grade.** After
+  withdrawal it measures agreement with a peer and must be re-weighted or dropped.
+- **Offline, always.** A tournament that runs inline changes the thing it
+  measures.
+
+Promotion, retirement and crossing are commits: `agentvcs` versions the adapter
+alongside the traces and the goal that produced it, so a regression is diffable
+and revertible.
+
+## 6. What is not neural, and why that is not aesthetics
+
+**Memory is markdown under git.** A weight delta cannot be read, diffed, cited or
+corrected by a person, and it cannot be pointed at in an audit. Every measurement
+this organisation has on memory says the durable asset is the part a human can
+read.
+
+**Execution is a sandbox.** Tools run as processes.
+
+**Verification is a verifier**, never the model's opinion of itself, and its
+strength — exact, deterministic, statistical, human, judge — is recorded with
+every result.
+
+## 7. Order of work
+
+| | | gates |
 |---|---|---|
-| **acceptance rate** | zero — falls out of a pass already happening | only if §4 finds signal |
-| **adapter-on-target** | one verification pass per candidate | correct by construction, not free |
-| **learned or cheap router** | one small forward pass | ordinary; the fallback |
+| **E0** | headroom on the base alone | everything |
+| **E1** | the α surface: 2 experts, 1 frontier target | E2 |
+| **E2** | withdrawal: promote, remove the frontier, measure the gap | the product |
+| **E3** | `harness.lora` against the −85% schema baseline | the kernel |
+| **E4** | the tournament, with a held-out verifier | evolution |
 
-A design that had picked one of these before measuring would be three of four
-subsystems built on an assumption.
+## 8. Deliberately not built yet
 
-## 3. What the layers owe each other
-
-**The kernel is not an expert.** `harness.lora` owns *how to act*; domain
-adapters own *what is true*. Merging them would make every domain adapter
-re-learn the tool protocol, which is the cost this design exists to remove.
-
-**The target owns the distribution.** Nothing downstream may claim an expert's
-output unless the expert was on the target when the tokens were emitted. This is
-the single invariant that keeps the architecture honest, and it is the one the
-original idea crossed without noticing.
-
-**Verification is not the model's opinion of itself.** An adapter is promoted
-because a verifier accepted its work, and the verifier's strength is recorded
-with the result.
-
-**Memory stays outside the weights.** Not aesthetics: a weight delta cannot be
-read, diffed, cited or corrected by a person, and everything this organisation
-has measured about memory says the durable asset is the part you can read.
-
-## 4. The first experiment, which gates everything else
-
-**E0 · Headroom.** Score the base model, alone, on the task distribution. If it
-is at the ceiling or the floor, stop — every expert will tie, and a tie reads as
-a success. This arm has killed candidate domains here before.
-
-**E1 · The correlation.** With `n` domain adapters over one base:
-
-1. Measure `α(adapter_i, base)` at a fixed draft length `k`.
-2. Measure the **verified task score** of each adapter *used as the target*, so
-   its knowledge actually reaches the output.
-3. Rank both ways and compare.
-
-> **Falsified if the rankings are uncorrelated.** Then routing-by-acceptance is
-> dead, the README says so, and the router becomes the adapter-on-target design
-> at its honest price.
-
-**E2 · The harness adapter** *(only after E1 resolves)*. Against
-`gemma4nanoloop`'s measured −85% schema reduction, not against a straw baseline.
-Three numbers: protocol tokens per call, malformed-call rate, latency including
-adapter swap.
-
-**E3 · The tournament** *(only if E1 is positive)*. And with the warning from
-this organisation's own results attached: the same procedure classified as
-*interface compensation* on a 4B and *persistent gain* on a 12B. An evolutionary
-loop scored against one target breeds adapters that flatter that target, so the
-fitness function must include a held-out verifier the loop cannot see.
-
-## 5. Deliberately not built
-
-- **Tree attention across adapters.** The KV-cache problem is real and expensive.
-  It is only worth solving if E1 says the branches are worth comparing.
-- **Ten verticals, adapter marketplaces, a control plane.** Downstream of a
-  result that does not exist.
-- **A new inference runtime.** vLLM is the substrate. If this needs its own
-  runtime, that is a finding, not a plan.
-
-## 6. What would make this whole design unnecessary
-
-Stated plainly, because a design that cannot say this is a design nobody can
-argue with:
-
-If a single mid-sized model with a good harness matches a pool of experts on the
-task distribution, the pool is machinery for a problem that does not exist. This
-organisation has measured something adjacent and uncomfortable: a **feedback
-message** moved one model **+30 points** with the information held constant, and
-model size was **non-monotonic** across 4B/9B/12B. Capability has not, so far,
-lived where the architecture diagram says it should. **[read]**
+- **Tree attention across adapters.** The KV-cache problem is the expensive part
+  and it is only worth solving once E1 says the branches are worth comparing.
+- **Ten verticals, adapter marketplace, control plane.** Downstream of E2.
+- **A new inference runtime.** vLLM is the substrate. Needing our own would be a
+  finding, not a plan.
