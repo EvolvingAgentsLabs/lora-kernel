@@ -51,18 +51,18 @@ dentro de una inferencia que igual ibas a pagar.**
 ```mermaid
 flowchart TD
     P["PROMPT / ESTADO ACTUAL"]
-    A["Draft QLoRA<br>Legal-Tax"]
-    B["Draft QLoRA<br>Legal-Civil"]
-    C["Draft QLoRA<br>Legal-Penal"]
+    A["Draft QLoRA<br>clinical-admin"]
+    B["Draft QLoRA<br>contract-review"]
+    C["Draft QLoRA<br>incident-triage"]
     T["TARGET — MODELO DE FRONTERA<br>un solo forward pass, tree attention"]
     W["Gana la rama con mayor tasa de aceptación<br>el experto que ya piensa como la frontera, en esta región"]
 
     P --> A
     P --> B
     P --> C
-    A -- "rama de tokens A" --> T
-    B -- "rama de tokens B" --> T
-    C -- "rama de tokens C" --> T
+    A -- "rama: codificar esta derivación" --> T
+    B -- "rama: marcar esta cláusula" --> T
+    C -- "rama: despertar al de guardia" --> T
     T ==> W
 
     classDef expert fill:#EAF1F9,stroke:#3E52A3,color:#15171B
@@ -128,7 +128,11 @@ Hacer chica esa brecha *es* el proyecto.
 ejecución: sintaxis de tools, **action tokens** (`<invoke_tool name="sql">`,
 `<eval_state>`, `<observe>`), formas de error, transiciones de estado. El esquema
 sale del system prompt; el formato se *emite* en vez de recuperarse con un
-parser. Siempre cargado: el adaptador de dominio piensa, el kernel actúa.
+parser. Siempre cargado: el adaptador de dominio piensa, el kernel actúa. **Y se puede
+versionar, puntuar y evolucionar como cualquier otro adaptador**: hoy el harness
+es código, así que no podés correr dos baratos contra el mismo tráfico y quedarte
+con el mejor. Como adaptador entra en el mismo torneo, y la capa de orquestación
+deja de ser la única parte del sistema que no puede mejorar sola.
 
 El número a batir es **nuestro**: `gemma4nanoloop` ya llevó el schema pico de
 **5.548 → 817 tokens (−85%)** atando tools por fase, sin entrenar nada. **[read]**

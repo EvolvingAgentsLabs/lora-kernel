@@ -57,18 +57,18 @@ experto chico puede ya reemplazar a la frontera, y dónde.*
 ```mermaid
 flowchart TD
     P["PROMPT / ESTADO ACTUAL"]
-    A["Draft QLoRA<br>Legal-Tax"]
-    B["Draft QLoRA<br>Legal-Civil"]
-    C["Draft QLoRA<br>Legal-Penal"]
+    A["Draft QLoRA<br>clinical-admin"]
+    B["Draft QLoRA<br>contract-review"]
+    C["Draft QLoRA<br>incident-triage"]
     T["TARGET — MODELO DE FRONTERA<br>un solo forward pass, tree attention"]
     W["Gana la rama con mayor tasa de aceptación<br>el experto que ya piensa como la frontera, en esta región"]
 
     P --> A
     P --> B
     P --> C
-    A -- "rama de tokens A" --> T
-    B -- "rama de tokens B" --> T
-    C -- "rama de tokens C" --> T
+    A -- "rama: codificar esta derivación" --> T
+    B -- "rama: marcar esta cláusula" --> T
+    C -- "rama: despertar al de guardia" --> T
     T ==> W
 
     classDef expert fill:#EAF1F9,stroke:#3E52A3,color:#15171B
@@ -125,27 +125,113 @@ retiro**, el puntaje verificado de tarea después de que la frontera se va, meno
 el que tenía mientras estaba. Todo lo demás es maquinaria al servicio de ese
 número.
 
+## El harness también es un adaptador, y es la parte que no puedo dejar de pensar
+
+Todo lo anterior es sobre *qué experto contesta*. Esto es sobre *cómo hace
+cualquiera de ellos para actuar*, y es la pieza que más vueltas me sigue dando.
+
+Un harness de hoy —LangChain, CrewAI, lo que tengas en el stack— hace dos cosas
+que dan un poco de vergüenza cuando se las dice en voz alta. **Inyecta los
+esquemas de herramientas en el system prompt**, así que cada llamada paga un
+documento JSON que describe funciones que el modelo mayormente no va a usar, y su
+atención queda repartida sobre eso. Y después **valida la salida a posteriori**,
+con un parser que adivina si el modelo quiso llamar una herramienta, o con una
+gramática que restringe el decodificador.
+
+El protocolo vive en el prompt, que es el lugar más caro y menos confiable donde
+se puede poner algo.
+
+**Entonces ponelo en los pesos.** Entrenás un adaptador —`harness.lora`— en nada
+más que el protocolo de ejecución:
+
+- sintaxis de llamada a herramientas, y **action tokens** emitidos nativamente:
+  `<invoke_tool name="sql">`, `<observe>`, `<eval_state>`
+- cómo se ve un error de API y qué hacer con él
+- transiciones de estado: cuándo un paso terminó, cuándo devolver el control,
+  cuándo parar
+
+Nunca aprende un dominio. Aprende *cómo actuar*, una vez, y cada experto compone
+con él. El adaptador de dominio piensa; el kernel actúa.
+
+Lo que eso compra, dicho como afirmación y no como esperanza: el esquema se va
+del context window por completo, el formato deja de ser algo que un parser
+recupera, y una flota de veinte expertos no contiene veinte copias del mismo
+protocolo de herramientas.
+
+### Por qué esto es más que una optimización de tokens
+
+Acá está la parte que me hizo seguir dándole vueltas.
+
+**Un harness en pesos es un harness que se puede versionar, puntuar y evolucionar
+— como todo lo demás del pool.**
+
+Hoy el harness es código. No podés correr dos baratos contra el mismo tráfico y
+quedarte con el mejor; refactorizás, deployás, y esperás. Como adaptador entra en
+el mismo torneo que los expertos, con la misma función de fitness y el mismo
+verificador retenido. `harness-v3` puede perder contra `harness-v4` en tasa de
+llamadas malformadas y quedar retirado esa misma noche.
+
+La capa de orquestación deja de ser la única parte del sistema que no puede
+mejorar sola.
+
+### Y la mitad honesta
+
+La comparación que lo adularía es "mirá qué chico quedó el system prompt". La que
+cuenta es **nuestro propio resultado anterior**: `gemma4nanoloop` ató las
+herramientas por fase —el modelo sólo ve las dos o tres que la fase actual puede
+usar— y llevó el schema pico de 5.548 tokens a 817, una reducción del 85%, **sin
+entrenar nada.** Un adaptador de harness tiene que batir eso.
+
+Y en sintaxis el titular no es la prosa: es el constrained decoding, que no vuelve
+improbable la salida malformada — la vuelve **imposible**. Eso también lo
+construimos, en `token-trie`, y lo archivamos por una razón que importa acá:
+enmascarar logits necesita el sampler, y una API no te da el sampler.
+
+Lo cual apunta a la resolución y no a una pelea: son complementarios. El adaptador
+vuelve probable la llamada *correcta*; la gramática vuelve *imposible* la
+malformada. Shippeá los dos, y medí el adaptador en tokens, en tasa de llamadas
+malformadas y en latencia incluyendo el costo de cargarlo — ganar en la primera y
+perder en la segunda no es ganar.
+
+## Dos competencias distintas, y no son el mismo mecanismo
+
+La palabra "competir" esconde dos cosas diferentes, y separarlas es lo que vuelve
+manejable al pool.
+
+**Entre subdominios, competir es rutear.** `clinical-admin`, `contract-review` e
+`incident-triage` borradorean el mismo request; uno de ellos es sencillamente el
+experto correcto para eso; la tasa de aceptación dice cuál. Esto pasa **por
+request**, en el forward pass, y es la parte gratis.
+
+**Dentro de un mismo subdominio, competir es evolucionar.** Tres adaptadores
+entrenados los tres para revisión de contratos —`contract-v1`, `contract-v2`,
+`contract-v3`— no están contestando preguntas distintas. Son tres intentos del
+mismo trabajo, y la pregunta es cuál intento es mejor. Eso no se decide por
+request; se decide sobre cientos de ellos, offline, con fitness acumulado:
+
+```
+score = w₁ · éxito verificado de la tarea
+      + w₂ · α (aceptación contra el target de frontera)
+      − w₃ · tokens consumidos
+```
+
+El peor se retira. Las mejores trayectorias de los ganadores se vuelven un dataset
+DPO o GRPO, y `contract-v4` se entrena desde ahí — en el pase de sueño, sobre
+trazas que `agentvcs` versionó junto con el objetivo y el modelo que las produjo.
+
+Confundir las dos es cómo se llega a un sistema que re-decide su arquitectura en
+cada request. El ruteo es una decisión sobre *este* prompt; la evolución es una
+decisión sobre *el pool*, y va de noche.
+
 ## Todo el sistema colapsa en adaptadores
 
 Una vez que el enrutamiento es gratis y el maestro es removible, el resto se cae
 solo.
 
-**El harness se vuelve un adaptador.** Hoy un harness es un esquema JSON gigante
-en el system prompt más un parser adivinando si el modelo quiso llamar una
-herramienta. En cambio, entrenás un `harness.lora` en nada más que el protocolo de
-ejecución: sintaxis de tools, transiciones de estado, formas de error, y **action
-tokens** — `<invoke_tool name="sql">`, `<eval_state>`, `<observe>` — emitidos
-nativamente en vez de recuperados con una expresión regular. El esquema se va del
-context window. El adaptador de dominio piensa; el kernel actúa.
-
-**Los agentes se vuelven adaptadores.** Unos cientos de megabytes cada uno,
-intercambiados por request.
-
-**El bucle de evolución se vuelve un torneo de adaptadores.** Varios por
-subdominio, puntuados por éxito verificado de tarea, aceptación contra la
-frontera, y tokens quemados. El peor se descarta; las mejores trayectorias de los
-ganadores se vuelven un dataset DPO/GRPO y entrenan el siguiente delta, offline,
-en el pase de sueño, sobre trazas que `agentvcs` versionó.
+El kernel es un adaptador. Los expertos son adaptadores. El bucle de evolución
+produce adaptadores. Un codificador clínico, un revisor de contratos, un triador
+de incidentes y un editor de manuscritos son cuatro archivos de unos cientos de
+megabytes, compartiendo un solo conjunto de pesos en memoria.
 
 Dos cosas siguen tercamente no neuronales, y es deliberado:
 
@@ -186,14 +272,10 @@ no antes.
 
 ## Dos cosas que traigo de mediciones que no fueron amables
 
-**El adaptador de harness tiene un baseline, y es nuestro.** No "esquemas JSON
-grandes", que es la comparación que lo adularía. `gemma4nanoloop` ya llevó el
-schema pico de 5.548 tokens a 817 — una reducción del 85% — atando tools por fase,
-sin entrenar nada. Y en sintaxis el titular es constrained decoding, que no vuelve
-improbable la salida malformada sino **imposible**; eso también lo construimos, en
-`token-trie`, y lo archivamos por una razón que importa acá: enmascarar logits
-necesita el sampler, y una API no te da el sampler. **Ser dueño del runtime es lo
-que hace que algo de esto exista.**
+**Ser dueño del runtime es lo que hace que algo de esto exista.** Las dos mitades
+del argumento del harness de más arriba —el adaptador y la gramática— necesitan el
+sampler, y una API no te da el sampler. Es la misma pared contra la que chocó
+`token-trie`.
 
 **El torneo puede criar adulación.** El mismo procedimiento, el mismo texto, la
 misma regla, clasificó una vez como *compensación de interfaz* en un modelo de 4B

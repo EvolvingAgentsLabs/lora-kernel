@@ -51,18 +51,18 @@ measured for free inside inference that was going to happen anyway.**
 ```mermaid
 flowchart TD
     P["PROMPT / CURRENT STATE"]
-    A["Draft QLoRA<br>Legal-Tax"]
-    B["Draft QLoRA<br>Legal-Civil"]
-    C["Draft QLoRA<br>Legal-Penal"]
+    A["Draft QLoRA<br>clinical-admin"]
+    B["Draft QLoRA<br>contract-review"]
+    C["Draft QLoRA<br>incident-triage"]
     T["TARGET — FRONTIER MODEL<br>one forward pass, tree attention"]
     W["The branch the frontier accepted most wins<br>the expert that already thinks like the frontier, here"]
 
     P --> A
     P --> B
     P --> C
-    A -- "token branch A" --> T
-    B -- "token branch B" --> T
-    C -- "token branch C" --> T
+    A -- "branch: code this referral" --> T
+    B -- "branch: flag this clause" --> T
+    C -- "branch: page the on-call" --> T
     T ==> W
 
     classDef expert fill:#EAF1F9,stroke:#3E52A3,color:#15171B
@@ -133,6 +133,11 @@ error shapes, state transitions.
   meant to call a tool.
 - It is always loaded. Domain adapters compose with it: the domain adapter
   thinks, the kernel acts.
+- **And it can be versioned, scored and evolved like any other adapter.** Today
+  the harness is code, so you cannot cheaply run two of them against the same
+  traffic and keep the better one. As an adapter it enters the same tournament:
+  the orchestration layer stops being the one part of the system that cannot
+  improve by itself.
 
 The number to beat is **ours**, not a straw man: `gemma4nanoloop` already took
 peak schema overhead from **5,548 → 817 tokens (−85%)** by binding tools per

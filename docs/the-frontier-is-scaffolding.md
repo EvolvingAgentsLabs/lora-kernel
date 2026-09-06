@@ -56,18 +56,18 @@ expert can already stand in for the frontier, and where.*
 ```mermaid
 flowchart TD
     P["PROMPT / CURRENT STATE"]
-    A["Draft QLoRA<br>Legal-Tax"]
-    B["Draft QLoRA<br>Legal-Civil"]
-    C["Draft QLoRA<br>Legal-Penal"]
+    A["Draft QLoRA<br>clinical-admin"]
+    B["Draft QLoRA<br>contract-review"]
+    C["Draft QLoRA<br>incident-triage"]
     T["TARGET — FRONTIER MODEL<br>one forward pass, tree attention"]
     W["The branch the frontier accepted most wins<br>the expert that already thinks like the frontier, here"]
 
     P --> A
     P --> B
     P --> C
-    A -- "token branch A" --> T
-    B -- "token branch B" --> T
-    C -- "token branch C" --> T
+    A -- "branch: code this referral" --> T
+    B -- "branch: flag this clause" --> T
+    C -- "branch: page the on-call" --> T
     T ==> W
 
     classDef expert fill:#EAF1F9,stroke:#3E52A3,color:#15171B
@@ -129,26 +129,112 @@ There is one number this whole architecture exists to make small: the **withdraw
 gap**, the verified task score after the frontier leaves minus the score it had
 while it was there. Everything else is machinery in service of that number.
 
+## The harness is an adapter too, and that is the part I keep coming back to
+
+Everything above is about *which expert answers*. This is about *how any of them
+acts at all*, and it is the piece I find hardest to stop thinking about.
+
+A harness today — LangChain, CrewAI, whatever is in your stack — does two things
+that are both slightly embarrassing when you say them out loud. It **injects the
+tool schemas into the system prompt**, so every single call pays for a JSON
+document describing functions the model will mostly not use, and the model's
+attention is spread across it. And then it **validates the output afterwards**,
+with a parser that is guessing whether the model meant to call a tool, or with a
+grammar that constrains the decoder.
+
+The protocol lives in the prompt, which is the most expensive and least reliable
+place to put anything.
+
+**So put it in the weights.** Train one adapter — `harness.lora` — on nothing but
+the execution protocol:
+
+- tool-call syntax, and **action tokens** emitted natively:
+  `<invoke_tool name="sql">`, `<observe>`, `<eval_state>`
+- what an API error looks like and what to do about it
+- state transitions: when a step is finished, when to hand back, when to stop
+
+It never learns a domain. It learns *how to act*, once, and every expert composes
+with it. The domain adapter thinks; the kernel acts.
+
+What that buys, stated as the claim rather than the hope: the schema leaves the
+context window entirely, the format stops being something a parser recovers, and
+a fleet of twenty experts does not contain twenty copies of the same tool
+protocol.
+
+### Why this is more than a token-count optimisation
+
+Here is the part that made me keep turning it over.
+
+**A harness in weights is a harness you can version, score and evolve — like
+everything else in the pool.**
+
+Today the harness is code. You cannot cheaply run two of them against the same
+traffic and keep the better one; you refactor, you deploy, you hope. As an
+adapter it enters the same tournament as the experts, with the same fitness
+function and the same held-out verifier. `harness-v3` can lose to `harness-v4` on
+malformed-call rate and be retired overnight.
+
+The orchestration layer stops being the one part of the system that cannot
+improve by itself.
+
+### And the honest half
+
+The comparison that would flatter this is "look how much smaller the system
+prompt is". The comparison that counts is **our own previous result**:
+`gemma4nanoloop` bound tools per phase — the model only ever sees the two or
+three tools the current phase can use — and took peak schema overhead from 5,548
+tokens to 817, a reduction of 85%, **with no training at all.** A harness adapter
+has to beat that.
+
+And on syntax the incumbent is not prose, it is grammar-constrained decoding,
+which does not make malformed output unlikely — it makes it **impossible**. We
+built that too, in `token-trie`, and archived it for a reason that matters here:
+masking logits needs the sampler, and an API does not give you the sampler.
+
+Which points at the resolution rather than a contest: they are complementary. The
+adapter makes the *right* call likely; the grammar makes the *malformed* call
+impossible. Ship both, and measure the adapter on tokens, on malformed-call rate,
+and on latency including the cost of swapping it in — winning on the first and
+losing on the second is not winning.
+
+## Two kinds of competition, and they are not the same mechanism
+
+The word "compete" hides two different things, and separating them is what makes
+the pool tractable.
+
+**Across sub-domains, competition is routing.** `clinical-admin`,
+`contract-review` and `incident-triage` draft the same request; one of them is
+simply the right expert for it; the acceptance rate says which. This happens
+**per request**, in the forward pass, and it is the free part.
+
+**Within one sub-domain, competition is evolution.** Three adapters all trained
+for contract review — `contract-v1`, `contract-v2`, `contract-v3` — are not
+answering different questions. They are three attempts at the same job, and the
+question is which attempt is better. That is not decided per request; it is
+decided over hundreds of them, offline, on accumulated fitness:
+
+```
+score = w₁ · verified task success
+      + w₂ · α (acceptance against the frontier target)
+      − w₃ · tokens consumed
+```
+
+The worst is retired. The winners' best trajectories become a DPO or GRPO
+dataset, and `contract-v4` is trained from them — in the dream pass, over traces
+that `agentvcs` versioned alongside the goal and the model that produced them.
+
+Conflating the two is how you get a system that re-decides its architecture on
+every request. Routing is a decision about *this* prompt; evolution is a decision
+about *the pool*, and it belongs in the night.
+
 ## The whole system collapses into adapters
 
 Once the routing is free and the teacher is removable, the rest falls over.
 
-**The harness becomes an adapter.** Today a harness is a giant JSON schema in the
-system prompt plus a parser guessing whether the model meant to call a tool.
-Instead, train one `harness.lora` on nothing but the execution protocol: tool
-syntax, state transitions, error shapes, and **action tokens** — `<invoke_tool
-name="sql">`, `<eval_state>`, `<observe>` — emitted natively rather than
-recovered by regex. The schema leaves the context window. The domain adapter
-thinks; the kernel acts.
-
-**The agents become adapters.** A few hundred megabytes each, swapped per
-request.
-
-**The evolution loop becomes a tournament over adapters.** Several per
-sub-domain, scored on verified task success, acceptance against the frontier, and
-tokens burned. The worst is dropped; the winners' best trajectories become a
-DPO/GRPO dataset and train the next delta, offline, in the dream pass, over
-traces that `agentvcs` versioned.
+The kernel is an adapter. The experts are adapters. The evolution loop produces
+adapters. A clinical coder, a contract reviewer, an incident triager and a
+manuscript editor are four files of a few hundred megabytes each, sharing one set
+of weights in memory.
 
 Two things stay stubbornly non-neural, and that is deliberate:
 
@@ -188,14 +274,9 @@ branches are worth comparing, and not before.
 
 ## Two things I am carrying in from measurements that were not kind
 
-**The harness adapter has a baseline, and it is ours.** Not "large JSON schemas",
-which is the comparison that would flatter it. `gemma4nanoloop` already took peak
-schema overhead from 5,548 tokens to 817 — a reduction of 85% — by binding tools
-per phase, with no training at all. And on syntax the incumbent is
-grammar-constrained decoding, which does not make malformed output unlikely, it
-makes it impossible; we built that too, in `token-trie`, and archived it for a
-reason that matters here: masking logits needs the sampler, and an API does not
-give you the sampler. **Owning the runtime is what makes any of this available.**
+**Owning the runtime is what makes any of this available.** Both halves of the
+harness argument above — the adapter and the grammar — need the sampler, and an
+API does not hand you the sampler. That is the same wall `token-trie` hit.
 
 **The tournament can breed flattery.** The same procedure, the same text, the
 same rule, once classified as *interface compensation* on a 4B model and as
