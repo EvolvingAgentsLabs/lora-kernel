@@ -257,8 +257,8 @@ a standard with nothing beside it never pays for itself.
 - [`docs/TECHNICAL-REFERENCE.md`](docs/TECHNICAL-REFERENCE.md) — the mechanisms,
   α and the α surface, the KV cache, action tokens, adapter composition, the
   fitness function · [es](docs/es/TECHNICAL-REFERENCE.md)
-- [`docs/the-frontier-is-scaffolding.md`](docs/the-frontier-is-scaffolding.md) —
-  the article · [es](docs/es/the-frontier-is-scaffolding.md)
+- [`docs/delete-the-framework.md`](docs/delete-the-framework.md) —
+  the article · [es](docs/es/delete-the-framework.md)
 
 ## Acknowledgement
 

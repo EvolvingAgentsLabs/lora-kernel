@@ -202,7 +202,7 @@ control plane empresarial.
   el target tiene que ser de frontera, y la condición de retiro.
 - [`docs/es/TECHNICAL-REFERENCE.md`](docs/es/TECHNICAL-REFERENCE.md) — mecanismos,
   α y su superficie, KV cache, action tokens, composición de adaptadores.
-- [`docs/es/the-frontier-is-scaffolding.md`](docs/es/the-frontier-is-scaffolding.md) —
+- [`docs/es/delete-the-framework.md`](docs/es/delete-the-framework.md) —
   el artículo.
 
 ## Reconocimiento
