@@ -2,6 +2,8 @@
 
 > **Specification.** Nothing here is built. Written to be argued with before it
 > is, which is cheaper.
+>
+> *[Léeme en español](es/ARCHITECTURE.md)*
 
 ---
 

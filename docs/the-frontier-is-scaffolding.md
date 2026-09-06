@@ -3,6 +3,8 @@
 *How to distil a frontier model into a pool of small experts without ever running
 an evaluation — and then take the frontier out.*
 
+*[Léeme en español](es/the-frontier-is-scaffolding.md)*
+
 ---
 
 Ismael Faro suggested I go and study speculative decoding, and see what it could

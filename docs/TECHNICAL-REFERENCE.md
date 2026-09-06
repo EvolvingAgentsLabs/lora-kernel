@@ -3,6 +3,8 @@
 > **Reference for mechanisms that exist; specification for the parts that do
 > not.** Every claim about a system outside this repository is **[read]** and
 > cited. Nothing here has been run.
+>
+> *[Léeme en español](es/TECHNICAL-REFERENCE.md)*
 
 ---
 

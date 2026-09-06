@@ -1,0 +1,45 @@
+name: documents
+
+# The only check this repository has, because it is the only thing it currently
+# ships. Nothing is built yet; the documents ARE the artifact, and the failure
+# they are prone to is one side of a mirror moving without the other.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  mirrors:
+    name: Every document has a Spanish mirror, and the mirror is not behind
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/check-mirrors.py
+
+  links:
+    name: Every internal link resolves to the file it names
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Resolve every relative markdown link
+        run: |
+          python3 - <<'PY'
+          import pathlib, re, sys
+          root = pathlib.Path(".")
+          bad = 0
+          total = 0
+          for md in root.rglob("*.md"):
+              if ".git" in md.parts:
+                  continue
+              body = re.sub(r"```.*?```", "", md.read_text(), flags=re.S)
+              for target in re.findall(r"\]\(([^)#][^)]*?)\)", body):
+                  if target.startswith(("http://", "https://", "mailto:")):
+                      continue
+                  total += 1
+                  if not (md.parent / target.split("#")[0]).exists():
+                      print(f"MISSING  {md}: {target}")
+                      bad += 1
+          print(f"{total - bad} of {total} internal link(s) resolve")
+          sys.exit(1 if bad else 0)
+          PY

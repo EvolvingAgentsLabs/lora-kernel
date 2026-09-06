@@ -248,12 +248,12 @@ a standard with nothing beside it never pays for itself.
 ## Documents
 
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — the seven layers, why the
-  target must be frontier-grade, and the withdrawal condition.
+  target must be frontier-grade, and the withdrawal condition · [es](docs/es/ARCHITECTURE.md)
 - [`docs/TECHNICAL-REFERENCE.md`](docs/TECHNICAL-REFERENCE.md) — the mechanisms,
   α and the α surface, the KV cache, action tokens, adapter composition, the
-  fitness function.
+  fitness function · [es](docs/es/TECHNICAL-REFERENCE.md)
 - [`docs/the-frontier-is-scaffolding.md`](docs/the-frontier-is-scaffolding.md) —
-  the article.
+  the article · [es](docs/es/the-frontier-is-scaffolding.md)
 
 ## Acknowledgement
 

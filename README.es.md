@@ -194,10 +194,11 @@ control plane empresarial.
 
 ## Documentos
 
-- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — las siete capas y el retiro.
-- [`docs/TECHNICAL-REFERENCE.md`](docs/TECHNICAL-REFERENCE.md) — mecanismos, α,
-  KV cache, action tokens, composición de adaptadores.
-- [`docs/the-frontier-is-scaffolding.md`](docs/the-frontier-is-scaffolding.md) —
+- [`docs/es/ARCHITECTURE.md`](docs/es/ARCHITECTURE.md) — las siete capas, por qué
+  el target tiene que ser de frontera, y la condición de retiro.
+- [`docs/es/TECHNICAL-REFERENCE.md`](docs/es/TECHNICAL-REFERENCE.md) — mecanismos,
+  α y su superficie, KV cache, action tokens, composición de adaptadores.
+- [`docs/es/the-frontier-is-scaffolding.md`](docs/es/the-frontier-is-scaffolding.md) —
   el artículo.
 
 ## Reconocimiento
