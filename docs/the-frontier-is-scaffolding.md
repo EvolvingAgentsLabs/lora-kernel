@@ -51,18 +51,29 @@ You are not running an evaluation. You are not building a benchmark. You are
 serving traffic, and the serving path is quietly filling in a map: *which small
 expert can already stand in for the frontier, and where.*
 
-```
-                            PROMPT / CURRENT STATE
-                                      │
-        ┌─────────────────────────────┼─────────────────────────────┐
-        ▼                             ▼                             ▼
- [Draft QLoRA: Legal-Tax]    [Draft QLoRA: Legal-Civil]   [Draft QLoRA: Legal-Penal]
-        └─────────────────────────────┬─────────────────────────────┘
-                                      ▼
-                        [ TARGET — FRONTIER MODEL ]
-                    one forward pass · tree attention
-                                      ▼
-                  the branch the frontier accepted most wins
+```mermaid
+flowchart TD
+    P["PROMPT / CURRENT STATE"]
+    A["Draft QLoRA<br>Legal-Tax"]
+    B["Draft QLoRA<br>Legal-Civil"]
+    C["Draft QLoRA<br>Legal-Penal"]
+    T["TARGET — FRONTIER MODEL<br>one forward pass, tree attention"]
+    W["The branch the frontier accepted most wins<br>the expert that already thinks like the frontier, here"]
+
+    P --> A
+    P --> B
+    P --> C
+    A -- "token branch A" --> T
+    B -- "token branch B" --> T
+    C -- "token branch C" --> T
+    T ==> W
+
+    classDef expert fill:#EAF1F9,stroke:#3E52A3,color:#15171B
+    classDef target fill:#FDF4E6,stroke:#8A5C10,color:#15171B
+    classDef win fill:#E7F1EA,stroke:#2E7D4F,color:#15171B
+    class A,B,C expert
+    class T target
+    class W win
 ```
 
 Routing, which normally costs a classifier call nobody trusts, costs nothing. The
@@ -83,15 +94,29 @@ you **promote it from drafter to generator and drop the frontier**. What replace
 the frontier is not another large model. It is **only a router**, fitted to the
 acceptance surface Phase A already produced.
 
-```
-   PHASE A                                  PHASE B
-   experts draft                            router selects
-   FRONTIER verifies       ──withdraw──▶    EXPERT generates
-   α accumulates                            no frontier call
+```mermaid
+flowchart LR
+    subgraph PA["PHASE A — the frontier is the target"]
+        direction TB
+        A1["experts draft"] --> A2["FRONTIER verifies"] --> A3["α accumulates, per region"]
+    end
+    subgraph PB["PHASE B — the frontier is gone"]
+        direction TB
+        B1["router selects"] --> B2["EXPERT generates"] --> B3["no frontier call"]
+    end
+    PA == "withdraw, per region, above your threshold" ==> PB
 
-   frontier cost, frontier quality          local cost,
-   and a free distillation score            quality at the α you required
+    classDef a fill:#FDF4E6,stroke:#8A5C10,color:#15171B
+    classDef b fill:#E7F1EA,stroke:#2E7D4F,color:#15171B
+    class A1,A2,A3 a
+    class B1,B2,B3 b
 ```
+
+|  | Phase A | Phase B |
+|---|---|---|
+| **cost** | frontier | local |
+| **quality** | frontier | at the α threshold you required |
+| **what you also get** | a distillation score, free | — |
 
 The threshold is yours to set, per region, on a measured surface: how much
 frontier agreement do you demand before a small expert is allowed to answer

@@ -48,19 +48,29 @@ esta región del problema*. La aceptación deja de ser un estadístico de veloci
 y pasa a ser **una puntuación continua de destilación por región, medida gratis
 dentro de una inferencia que igual ibas a pagar.**
 
-```
-                              PROMPT / ESTADO ACTUAL
-                                        │
-        ┌───────────────────────────────┼───────────────────────────────┐
-        ▼                               ▼                               ▼
- [Draft QLoRA: Legal-Tax]     [Draft QLoRA: Legal-Civil]     [Draft QLoRA: Legal-Penal]
-        └───────────────────────────────┬───────────────────────────────┘
-                                        ▼
-                        [ TARGET — MODELO DE FRONTERA ]
-                  un solo forward pass · tree attention
-                                        ▼
-                GANA LA RAMA CON MAYOR TASA DE ACEPTACIÓN
-          el experto que ya piensa como la frontera, en esta región
+```mermaid
+flowchart TD
+    P["PROMPT / ESTADO ACTUAL"]
+    A["Draft QLoRA<br>Legal-Tax"]
+    B["Draft QLoRA<br>Legal-Civil"]
+    C["Draft QLoRA<br>Legal-Penal"]
+    T["TARGET — MODELO DE FRONTERA<br>un solo forward pass, tree attention"]
+    W["Gana la rama con mayor tasa de aceptación<br>el experto que ya piensa como la frontera, en esta región"]
+
+    P --> A
+    P --> B
+    P --> C
+    A -- "rama de tokens A" --> T
+    B -- "rama de tokens B" --> T
+    C -- "rama de tokens C" --> T
+    T ==> W
+
+    classDef expert fill:#EAF1F9,stroke:#3E52A3,color:#15171B
+    classDef target fill:#FDF4E6,stroke:#8A5C10,color:#15171B
+    classDef win fill:#E7F1EA,stroke:#2E7D4F,color:#15171B
+    class A,B,C expert
+    class T target
+    class W win
 ```
 
 El enrutamiento no cuesta nada extra. Los tokens ya se generaron. El pase de
@@ -81,15 +91,29 @@ una región se promueven de *drafter* a *generador*. La frontera sale. Lo que la
 reemplaza es **sólo un router**, ajustado sobre la superficie de aceptación que
 produjo la Fase A.
 
-```
-   FASE A                                    FASE B
-   los expertos borradorean                  el router selecciona
-   la FRONTERA verifica     ──se retira──▶   el EXPERTO genera
-   α se acumula                              sin llamada a frontera
+```mermaid
+flowchart LR
+    subgraph PA["FASE A — la frontera es el target"]
+        direction TB
+        A1["los expertos borradorean"] --> A2["la FRONTERA verifica"] --> A3["α se acumula, por región"]
+    end
+    subgraph PB["FASE B — la frontera ya no está"]
+        direction TB
+        B1["el router selecciona"] --> B2["el EXPERTO genera"] --> B3["sin llamada a frontera"]
+    end
+    PA == "se retira, por región, sobre tu umbral" ==> PB
 
-   costo y calidad de frontera               costo local, calidad
-   más una destilación gratis                al umbral que elegiste
+    classDef a fill:#FDF4E6,stroke:#8A5C10,color:#15171B
+    classDef b fill:#E7F1EA,stroke:#2E7D4F,color:#15171B
+    class A1,A2,A3 a
+    class B1,B2,B3 b
 ```
+
+|  | Fase A | Fase B |
+|---|---|---|
+| **costo** | frontera | local |
+| **calidad** | frontera | al umbral de α que exigiste |
+| **y además** | una destilación gratis | — |
 
 El umbral es la decisión de producto: cuánta coincidencia con la frontera exigís
 antes de dejar que un experto conteste solo, por región. Y es reversible.

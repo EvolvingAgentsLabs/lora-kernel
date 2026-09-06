@@ -22,7 +22,32 @@ Two consequences define this project:
    distillation score; against a weak base it is not. See
    [`ARCHITECTURE.md` §2](ARCHITECTURE.md).
 
-### 1.1 Acceptance rate, defined
+### 1.1 What α measures depends entirely on what verifies
+
+```mermaid
+flowchart LR
+    E["a domain expert<br>fine-tuned away from the base"]
+    B["verified by<br>THE SHARED BASE"]
+    F["verified by<br>A FRONTIER MODEL"]
+    RB["high α means:<br>this expert drifted least<br><b>anti-correlated with expertise</b>"]
+    RF["high α means:<br>it already produces what the frontier would<br><b>a distillation score</b>"]
+
+    E --> B --> RB
+    E --> F --> RF
+
+    classDef bad fill:#FCF3F1,stroke:#B0523C,color:#15171B
+    classDef good fill:#E7F1EA,stroke:#2E7D4F,color:#15171B
+    classDef neutral fill:#F4F3F0,stroke:#C4C4BF,color:#15171B
+    class RB bad
+    class RF good
+    class E,B,F neutral
+```
+
+The right-hand branch is the architecture. The left-hand one is the reason the
+target is a component rather than an optimisation: swap it and the router is
+measuring the wrong thing, silently, while every number still looks fine.
+
+### 1.2 Acceptance rate, defined
 
 For drafter `d`, target `t`, prompt distribution `P`, draft length `k`:
 
@@ -37,7 +62,7 @@ drafter/target cost ratio — never of `α` alone.
 **Always reported beside the verified task score** of the same configuration,
 because the withdrawal decision is made on both.
 
-### 1.2 The α surface
+### 1.3 The α surface
 
 α is not one number per expert. It is a number per expert **per region** of the
 problem space, and the regions are the unit of withdrawal. A legal-tax adapter

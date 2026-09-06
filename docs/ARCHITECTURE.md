@@ -7,33 +7,34 @@
 
 ## 1. The stack
 
-```
-┌───────────────────────────────────────────────────────────────────────┐
-│ 1 · HOST          vLLM. One GPU, one resident base model,             │
-│                   multi-LoRA serving, adapters batched per request    │
-├───────────────────────────────────────────────────────────────────────┤
-│ 2 · TARGET        PHASE A: a frontier model. Verifies, and its        │
-│                   agreement is the measurement.                       │
-│                   PHASE B: withdrawn. Replaced by the router alone.   │
-├───────────────────────────────────────────────────────────────────────┤
-│ 3 · KERNEL        harness.lora — action tokens, tool syntax, state    │
-│                   transitions, error shapes. Always loaded.           │
-├───────────────────────────────────────────────────────────────────────┤
-│ 4 · USER SPACE    the expert pool. Domain QLoRAs, hot-swapped,        │
-│                   versioned, scored, promoted, retired.               │
-├───────────────────────────────────────────────────────────────────────┤
-│ 5 · ROUTER        PHASE A: acceptance rate α, free.                   │
-│                   PHASE B: a small router fitted to the α surface.    │
-├───────────────────────────────────────────────────────────────────────┤
-│ 6 · MEMORY        markdown + git (agentvcs). Not neural, on purpose.  │
-├───────────────────────────────────────────────────────────────────────┤
-│ 7 · DREAM         offline: traces → DPO/GRPO dataset → next delta.    │
-│                   Tournament, promotion, retirement.                  │
-└───────────────────────────────────────────────────────────────────────┘
+```mermaid
+flowchart TB
+    L1["<b>1 · HOST</b><br>vLLM — one GPU, one resident base model,<br>multi-LoRA serving, adapters batched per request"]
+    L2["<b>2 · TARGET</b><br>PHASE A: a frontier model. Verifies, and its agreement is the measurement<br>PHASE B: withdrawn. Replaced by the router alone"]
+    L3["<b>3 · KERNEL</b><br>harness.lora — action tokens, tool syntax,<br>state transitions, error shapes. Always loaded"]
+    L4["<b>4 · USER SPACE</b><br>the expert pool. Domain QLoRAs, hot-swapped,<br>versioned, scored, promoted, retired"]
+    L5["<b>5 · ROUTER</b><br>PHASE A: acceptance rate α, free<br>PHASE B: a small router fitted to the α surface"]
+    L6["<b>6 · MEMORY</b><br>markdown + git. Not neural, on purpose"]
+    L7["<b>7 · DREAM</b><br>offline: traces → DPO/GRPO dataset → next delta.<br>Tournament, promotion, retirement"]
+
+    L1 --- L2 --- L3 --- L4 --- L5 --- L6 --- L7
+
+    classDef host fill:#F4F3F0,stroke:#C4C4BF,color:#15171B
+    classDef target fill:#FDF4E6,stroke:#8A5C10,color:#15171B
+    classDef lora fill:#EAF1F9,stroke:#3E52A3,color:#15171B
+    classDef open fill:#FCF3F1,stroke:#B0523C,color:#15171B
+    classDef text fill:#E7F1EA,stroke:#2E7D4F,color:#15171B
+    class L1 host
+    class L2 target
+    class L3,L4,L7 lora
+    class L5 open
+    class L6 text
 ```
 
-Layers 3, 4 and 7 produce **only adapters**. Layer 6 produces **only text**.
-Layer 1 is somebody else's runtime. That is the whole system.
+**Layers 3, 4 and 7 produce only adapters. Layer 6 produces only text. Layer 1 is
+somebody else's runtime.** That is the whole system — and layer 5 is drawn as the
+one open box on purpose, because naming the router "speculative" before the α
+surface exists would be assuming the result.
 
 ## 2. Why the target must be frontier-grade
 
