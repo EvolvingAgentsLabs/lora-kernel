@@ -36,13 +36,45 @@ THREE WORKSPACE RULES ARE BUILT INTO THIS FILE
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import sys
 import time
 from pathlib import Path
 
 from alpha import cases as suite
-from alpha.backends import BackendError, build
+from alpha.backends import BackendError, Reply, build
+
+CACHE = Path("results/.answers")
+
+
+def cached(model, case, prefix: str, max_tokens: int, prompt_kind: str):
+    """Greedy answers are deterministic, so the same model on the same prompt is
+    asked once and reused across runs.
+
+    This exists for one reason: after S1 failed its headroom gate, the next step
+    is a DIFFERENT TARGET on the same cases — and re-generating four local
+    candidates for every target is eight minutes of wall clock buying nothing.
+    Only full answers are cached; a prefill continuation is not, because it is
+    conditioned on the target's own text.
+    """
+    if prefix:
+        return draft_at(model, case, prefix, max_tokens)
+    key = f"{model.name}|{prompt_kind}|{suite.prompt_hash(prompt_kind)}|{case.case_id}|{max_tokens}"
+    path = CACHE / (hashlib.sha256(key.encode()).hexdigest()[:24] + ".json")
+    if path.exists():
+        d = json.loads(path.read_text())
+        return Reply(text=d["text"], thinking=d.get("thinking", ""),
+                     prompt_tokens=d.get("tokens_in", 0),
+                     completion_tokens=d.get("tokens_out", 0),
+                     seconds=0.0, truncated=d.get("truncated", False))
+    r = draft_at(model, case, "", max_tokens)
+    CACHE.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps({
+        "key": key, "text": r.text, "thinking": r.thinking,
+        "tokens_in": r.prompt_tokens, "tokens_out": r.completion_tokens,
+        "truncated": r.truncated}, indent=2))
+    return r
 
 
 def lcp(a: str, b: str) -> int:
@@ -100,10 +132,15 @@ def run(args) -> int:
         "target": target.name, "drafters": [d.name for d in drafters],
         "split": args.split, "n": args.n, "window_chars": args.window,
         "positions": args.positions, "temperature": 0.0,
+        "target_max_tokens": args.target_max_tokens, "max_tokens": args.max_tokens,
         "prompt": args.prompt, "prompt_version": suite.PROMPT_VERSION,
         "prompt_hash": suite.prompt_hash(args.prompt),
         "started": time.strftime("%Y-%m-%dT%H:%M:%S"),
         "identity": "alpha_char = lcp(draft, target_continuation) / window, greedy target",
+        # A declared price, not a scraped one: the bill has to be reconstructible
+        # from the run's own record.
+        "usd_per_mtok_in": args.usd_per_mtok_in,
+        "usd_per_mtok_out": args.usd_per_mtok_out,
     }
     (run_dir / "config.json").write_text(json.dumps(config, indent=2))
 
@@ -121,7 +158,7 @@ def run(args) -> int:
 
         t0 = time.time()
         try:
-            t_reply = draft_at(target, case, "", args.max_tokens)
+            t_reply = cached(target, case, "", args.target_max_tokens, args.prompt)
             answer = t_reply.text
         except BackendError as e:
             print(f"[{i:>3}/{len(cs)}] {case.case_id} — TARGET FAILED: {e}",
@@ -135,7 +172,9 @@ def run(args) -> int:
             "target": {"name": target.name, "answer": answer, "verified": target_v,
                        "thought_chars": len(t_reply.thinking),
                        "truncated": t_reply.truncated,
-                       "seconds": round(t_reply.seconds, 2)},
+                       "seconds": round(t_reply.seconds, 2),
+                       "tokens_in": t_reply.prompt_tokens,
+                       "tokens_out": t_reply.completion_tokens},
             "drafters": {},
         }
         if not answer.strip():
@@ -151,7 +190,7 @@ def run(args) -> int:
         pts = offsets(answer, args.positions, args.window)[1:]  # 0 is measured below
         for d in drafters:
             try:
-                own_reply = draft_at(d, case, "", args.max_tokens)
+                own_reply = cached(d, case, "", args.max_tokens, args.prompt)
                 own = own_reply.text
                 # POSITION 0 — the number Phase B runs on. No prefill involved.
                 head = answer[:args.window]
@@ -193,6 +232,8 @@ def run(args) -> int:
                 "own_answer": own,
                 "verified": suite.verify(own, case.truth),
                 "thought_chars": len(own_reply.thinking),
+                "tokens_in": own_reply.prompt_tokens,
+                "tokens_out": own_reply.completion_tokens,
                 "truncated": own_reply.truncated,
                 "alpha_at_0": round(at0, 4),
                 "alpha_at_0_content": None if at0_content is None else round(at0_content, 4),
@@ -236,12 +277,23 @@ def main() -> int:
     ap.add_argument("--positions", type=int, default=1,
                     help="1 = position 0 only, which needs no prefill; >1 adds "
                          "mid-answer positions whose validity `restarted` decides")
+    ap.add_argument("--target-max-tokens", type=int, default=0,
+                    help="the target's own budget; defaults to --max-tokens. A "
+                         "thinking target emits its reasoning first and returned "
+                         "9 of 20 answers truncated at 700 [ran], and giving it a "
+                         "separate budget keeps the drafters' cached answers valid")
     ap.add_argument("--max-tokens", type=int, default=700,
                     help="generous on purpose: the reasoning channel is emitted "
                          "first and eats the budget before the answer starts")
     ap.add_argument("--run-dir", required=True)
     ap.add_argument("--force", action="store_true", help="re-run cases already on disk")
-    return run(ap.parse_args())
+    ap.add_argument("--usd-per-mtok-in", type=float, default=0.0,
+                    help="declared target price, written into the run config")
+    ap.add_argument("--usd-per-mtok-out", type=float, default=0.0)
+    args = ap.parse_args()
+    if not args.target_max_tokens:
+        args.target_max_tokens = args.max_tokens
+    return run(args)
 
 
 if __name__ == "__main__":

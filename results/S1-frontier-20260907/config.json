@@ -1,0 +1,21 @@
+{
+  "target": "openai:google/gemini-3.5-flash-lite",
+  "drafters": [
+    "ollama:gemma4:12b-mlx",
+    "ollama:qwen3.5:9b",
+    "ollama:qwen3.5:4b"
+  ],
+  "split": "held_out_delta",
+  "n": 6,
+  "window_chars": 24,
+  "positions": 1,
+  "temperature": 0.0,
+  "prompt": "canonical",
+  "prompt_version": "1.0.0",
+  "prompt_hash": "2e4126b1e3fc8091",
+  "started": "2026-09-07T20:17:30",
+  "identity": "alpha_char = lcp(draft, target_continuation) / window, greedy target",
+  "usd_per_mtok_in": 0.3,
+  "usd_per_mtok_out": 2.5,
+  "finished": "2026-09-07T20:19:10"
+}

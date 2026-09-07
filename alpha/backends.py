@@ -67,7 +67,12 @@ class Ollama:
         self.supports_think_off: bool | None = None
 
     def _call(self, messages, max_tokens, think_off):
+        # keep_alive=0 unloads the model as soon as it has answered. Three local
+        # models totalling ~18 GB on a 16 GB machine crashed the MLX runner with
+        # "Insufficient Memory" mid-run [ran] 2026-09-07; holding one at a time
+        # trades reload latency for a run that finishes.
         body = {"model": self.model, "messages": messages, "stream": False,
+                "keep_alive": 0,
                 "options": {"temperature": 0.0, "top_k": 1,
                             "num_predict": max_tokens, "seed": 0}}
         if think_off:

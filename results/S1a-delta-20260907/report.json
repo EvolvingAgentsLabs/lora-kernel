@@ -98,9 +98,22 @@
       "ollama:qwen3.5:9b"
     ],
     "agree": null,
+    "concordant_pairs_semantic": [
+      0,
+      0
+    ],
+    "concordant_pairs_character": [
+      0,
+      0
+    ],
     "per_region_agree": {
       "delta": false
     }
+  },
+  "target_cost": {
+    "tokens_in": 0,
+    "tokens_out": 0,
+    "usd": 0.0
   },
   "health": {
     "alpha_dispersion": 0.3944,

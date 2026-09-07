@@ -51,8 +51,8 @@ se responde con modelos que ya existen, antes de entrenar un solo adaptador.
 | paso | objetivo | primera compuerta que abre | costo | estado |
 |---|---|---|---|---|
 | **S0** | que el instrumento mida lo que dice | todo | $0, local | **DONE, y movió el plan** — §3 |
-| **S1** | headroom: ¿puede esta suite mostrar una brecha de retiro? | S2 | ~$5 | **la pregunta de la suite se contestó local ([`S1a`](../../results/S1a-delta-20260907/BRIEF.md)); el arm de frontera espera la key** — §4 |
-| **S2** | ¿el **acuerdo** ordena a los candidatos como los ordena la calidad verificada? | S4 | ~$15 | **proxy local DONE, el arm de frontera espera la key** — §5 |
+| **S1** | headroom: ¿puede esta suite mostrar una brecha de retiro? | S2 | $0,47 gastados | **DONE — FALLÓ la compuerta, tres targets** — §4 |
+| **S2** | ¿el **acuerdo** ordena a los candidatos como los ordena la calidad verificada? | S4 | incluido arriba | **DONE — 14/15 pares, pero contra pares** — §5 |
 | **S3** | atribución: ¿un router léxico o de embeddings hace lo mismo? | la afirmación de ruteo | ~$0 | `NEXT` tras S2 |
 | **S4** | dos QLoRA reales sobre las regiones donde S2 dio señal | S5 | GPU alquilada | `NEXT` tras S3 |
 | **S5** | **la brecha de retiro** | el producto | GPU + frontera | `NEXT` tras S4 |
@@ -180,9 +180,37 @@ de la afirmación central del proyecto, llegando por accidente de indentación,
 sobre una diferencia de un caso que se evaporó en n=20. El reporte ahora se niega
 a interpretar esa línea mientras C9 siga en pie.
 
-**Bloqueo para un humano — ahora uno, no dos.** `OPENROUTER_API_KEY` no está en
-esta máquina ni en disco **[ran]**. La corrida es un comando en cuanto exista, y
-ahora tiene una suite a la que apuntar.
+**S1 corrió, tres veces, y falló su propia compuerta las tres.** Los 20 casos
+delta, prompt canónico, verificador exacto, los cuatro candidatos locales fijos
+**[ran]**:
+
+| target | verificado | costo | headroom sobre `gemma4:12b` (12/20) |
+|---|---|---|---|
+| `gemini-3.5-flash-lite` | 13/20 | $0,0028 | **+1** |
+| `gemini-3.8-flash` | 13/20 | $0,1338 | **+1** |
+| `gemini-3.1-pro-preview` | **8/20** | $0,2885 | **−4** |
+| `gemma4:12b-mlx`, local | 12/20 | $0 | — |
+
+Gasto total $0,47, dentro del techo de $1 que el brief pre-registró. **La
+compuerta decía que el target tiene que despegarse del mejor modelo local por un
+margen en el que quepa una brecha de retiro. Ninguno lo hace, y el más caro es el
+peor.**
+
+**Lo que eso le cuesta a la arquitectura, dicho derecho.** La premisa de la Fase A
+es *pagar precio de frontera, obtener respuestas de frontera, y llevarse la
+medición gratis*. En esta tarea, pagar **48× más** compró el mismo 13/20 y pagar
+**100× más** compró 8/20. No hay brecha de retiro que medir acá porque casi no hay
+de qué retirarse — y ése es el resultado recurrente de este workspace llegando de
+nuevo: en una tarea administrativa acotada, la capacidad está en la interfaz y en
+el verificador, no en el tamaño ni en el precio del modelo.
+
+**Es un hallazgo sobre la suite, no sobre la tesis.** La ventaja de la frontera, si
+existe, no se ve en generación de un solo tiro sobre un chequeo de derivación de
+20 casos. Las tres configuraciones que todavía podrían mostrarla están en la
+decisión de §12.
+
+**Ya no está bloqueado.** La key existe y se usó; lo que falló fue la elección de
+target.
 
 ## 5. S2 — ¿α ordena como ordena la calidad? · BLOCKED
 
@@ -219,10 +247,38 @@ empatan exactamente, y no hay orden que el criterio pueda reproducir. Un caso de
 diferencia nunca fue un orden, y la fila anterior queda tachada en vez de borrada
 porque ésa es justo la falla que este plan existe para hacer visible.
 
-**Lo que S2a establece entonces, y es menos de lo que parecía:** el criterio es
-computable, no es degenerado y no está contradicho. **No** se demostró que siga a
-la calidad, ni acá ni en ningún lado. El S2 real necesita el target de frontera y
-un conjunto de candidatos que no empate.
+**S2 corrió contra los tres targets, y el criterio aguanta** — con una salvedad
+que tiene que viajar con él. El test de orden se puntúa por pares, sobre
+exactamente los pares de candidatos cuyos puntajes verificados difieren, con un
+cuarto candidato (`qwen3.5:2b`) agregado para que la escalera vaya de 2B a 12B y
+deje de empatar **[ran]**:
+
+| target | **acuerdo semántico** | α por caracteres | qué dijo la α por caracteres |
+|---|---|---|---|
+| `gemini-3.5-flash-lite` | **5/5** | 2/5 | puso al **mejor** candidato **último** |
+| `gemini-3.8-flash` | **5/5** | 1/5 | puso al **mejor** candidato **último** |
+| `gemini-3.1-pro-preview` | **4/5** | 4/5 | lo puso primero — este target indenta |
+
+**14 de 15 pares discriminables ordenados bien, contra tres targets
+independientes.** El criterio que el plan adoptó en §11 hace lo que un criterio de
+promoción tiene que hacer.
+
+**Y la misma tabla salda §11 empíricamente.** La α por caracteres sacó 1/5 con un
+target y 4/5 con otro **sobre los mismos candidatos y los mismos casos** — lo
+único que cambió es si el target indenta como el candidato. Una métrica cuya
+concordancia se cuadruplica porque cambiaron las costumbres de formato del target
+está midiendo formato. La opción C era la correcta y la evidencia ahora es
+directa en vez de argumentada.
+
+**La salvedad que tiene que viajar con esto.** S1 falló, así que los tres targets
+son **pares del candidato más fuerte, no modelos de frontera**. Acordar con un par
+no es un puntaje de destilación, y por lo tanto esto valida **la mecánica del
+criterio**, no la afirmación de la arquitectura. La afirmación de destilación
+necesita un target que de verdad sea mejor, y ningún Gemini disponible lo fue.
+
+**Y C11 se ve en los números:** `qwen3.5:9b` no produjo respuesta parseable en 5 de
+20 casos, que el criterio excluye, así que su acuerdo está medido sobre los 15
+casos en los que contestó algo.
 
 **Y volvió concreto a C11.** `qwen3.5:9b` saca el *mejor* acuerdo (0,533) mientras
 no produce respuesta parseable en **5 de 20** casos — que el criterio excluye. Un
@@ -315,6 +371,8 @@ arquitectura es correcta.
 | C8 | No hay `OPENROUTER_API_KEY` en esta máquina **[ran]** | S1 y S2 están bloqueados por un humano |
 | C9 | La coincidencia de prefijo por caracteres está dominada por el formato: respuestas idénticas sacan 0,00 entre formatos, y respuestas distintas sacan 0,44 dentro de un mismo formato **[ran]** | **decidido (§11, opción C):** el criterio de promoción es el acuerdo semántico de respuesta; la α por caracteres se reporta al lado y no ordena nada; si fijar el formato las reconcilia es la condición de victoria de S6 |
 | C10 | Los agentes bajo `.claude/agents/` se cargan para una sesión rooteada en este repositorio, no en el workspace de arriba **[ran]** | están symlinkeados en `../.claude/agents/` para que una sesión rooteada en el workspace también pueda invocarlos |
+| C12 | En esta suite, tres targets Gemini sacaron 13/20, 13/20 y 8/20 contra el 12/20 de un 12B local, a $0,003, $0,13 y $0,29 **[ran]** | no hay ventaja de frontera que destilar acá; la premisa de la Fase A necesita una tarea donde pagar más compre más, y encontrar esa tarea es ahora la pregunta que gobierna |
+| C13 | La concordancia por pares de la α por caracteres se movió **1/5 → 4/5** entre targets, sobre candidatos y casos idénticos, sólo porque el target pro indenta **[ran]** | evidencia directa de C9, y la razón por la que la decisión de §11 quedó saldada en vez de provisoria |
 | C11 | El acuerdo semántico **excluye** los casos donde algún lado no produjo respuesta parseable, y `qwen3.5:9b` no la produjo en 3 de 12 casos delta mientras sacaba el *mejor* acuerdo **[ran]** | el criterio siempre se lee al lado de la cuenta de no-parseables, o un modelo que muchas veces no contesta nada parece el que mejor acuerda — y esa falla es justo la que `harness.lora` existe para reparar, lo que acopla S6 al criterio en vez de dejarlo aguas abajo |
 
 ## 8. Deliberadamente no construido
@@ -360,7 +418,9 @@ ciclo de vida está en [`../../CLAUDE.md`](../../CLAUDE.md) §5.
   una brecha grande es un resultado, no un fracaso que se re-corre hasta ser
   chico.
 
-## 11. La decisión sobre la mesa
+## 11. Las decisiones — una tomada, una abierta
+
+### Tomada el 2026-09-07: qué es α
 
 No es un commit — es una elección, porque cambia lo que α *es*, y ése es el
 término central de la arquitectura.
@@ -394,12 +454,33 @@ caracteres coincida con el acuerdo semántico? Esa pregunta merece un número
 propio, y es el argumento más fuerte a favor del adaptador kernel que este
 proyecto podría producir.
 
-**Decidido el 2026-09-07: la C.** El criterio de promoción para S1–S5 es el
+**Decidido el 2026-09-07: la C**, y desde entonces confirmado directamente por
+C13. El criterio de promoción para S1–S5 es el
 acuerdo semántico de respuesta, la α por caracteres se reporta al lado y no ordena
 nada, y S6 se queda con la pregunta de si fijar el formato reconcilia a las dos.
 Implementado en `alpha/report.py::semantic`, fijado por seis tests, y aplicado
 retroactivamente a todas las corridas que ya estaban en disco — el criterio se
 calcula sobre las respuestas guardadas, así que no hubo que volver a correr nada.
+
+### Abierta: dónde se ve una ventaja de frontera, si es que se ve
+
+S1 dice que esta suite no puede mostrarla. Tres configuraciones podrían, en costo
+ascendente, y la elección es del usuario porque decide qué mide el proyecto:
+
+1. **Poner de vuelta el bucle del runtime.** El 38–41/50 publicado salió de
+   contrato, feedback y validación de acciones; un solo tiro crudo da 33–60 %. Si
+   la ventaja de la frontera está en *usar* un contrato de interacción y no en la
+   precisión de un tiro, ahí es donde aparece — y reutiliza `../verified-runtime`
+   entero.
+2. **Un dominio más difícil.** `causal_workflow` y `quantum` ya existen al lado
+   con sus propios verificadores. Una tarea con un espacio de soluciones real es
+   donde un 12B debería quedarse atrás de un modelo de frontera.
+3. **Otra forma de tarea directamente** — documentos legales o clínicos largos,
+   que es la vertical para la que se escribió la arquitectura y el único lugar
+   donde un 12B local es menos probable que aguante.
+
+Hasta elegir una, S4 y S5 no se pueden comprar: promover un experto y retirar una
+frontera que nunca estuvo adelante no mide nada.
 
 ## 12. Historia
 
@@ -409,6 +490,9 @@ calcula sobre las respuestas guardadas, así que no hubo que volver a correr nad
 | 2026-09-07 | S0 corrido tres veces; §3 completado; agregados C9 y C10; el contador de rediseños llegó a su condición de parada y el instrumento **no** se cambió una cuarta vez | la métrica estaba midiendo el formato, y la regla de contar rediseños existe justamente para el momento en que es incómoda |
 | 2026-09-07 | S6 pasó de "en paralelo" a "en revisión, posiblemente aguas arriba de α" | si el adaptador kernel es lo que fija el formato, entonces es lo que hace que la aceptación por caracteres signifique algo |
 | 2026-09-07 | S1a corrido sobre `held_out_delta`: 8/12 contra 3/12 y 4/12. La pregunta de suite de S1 quedó cerrada por $0; sólo la key la bloquea | el fallback estaba nombrado en el paso antes de correrlo, que es la única razón por la que cambiar el split acá es un plan y no una búsqueda de un número más amable |
+| 2026-09-07 | S1 comprado y fallado tres veces ($0,47 en total); S2 comprado en las mismas compras y aprobado 14 de 15 pares; agregados C12 y C13 | la compuerta estaba escrita antes de la corrida y disparó — el desenlace más barato posible, porque impidió comprar S4 y S5 sobre una configuración donde la frontera nunca estuvo adelante |
+| 2026-09-07 | agregado un cuarto candidato (`qwen3.5:2b`) por sugerencia del usuario | la escalera local empataba en 6/20 y un empate vuelve incomprable el test de orden; ir de 2B a 12B le dio al criterio algo sobre lo que acertar o errar |
+| 2026-09-07 | los targets tienen su propio presupuesto de tokens, y las respuestas locales se cachean | un target que piensa devolvió 9 de 20 respuestas truncadas en 700 tokens, y regenerar cuatro candidatos locales por cada target nuevo eran ocho minutos que no compraban nada |
 | 2026-09-07 | S1a extendido al split completo de 20 casos; la coincidencia de órdenes de n=12 **no sobrevivió** y la fila superada queda tachada, no borrada | los candidatos diferían en un caso verificado con n=12 y empatan exactamente con n=20 — un caso nunca fue un orden, y un plan que tirara la fila anterior en silencio sería el registro de nada |
 | 2026-09-07 | S6a corrido a $0 sobre corridas existentes: el protocolo cuesta ~96 tokens acá y el 12B nunca malforma, así que S6 necesita una distribución de herramientas real antes de que sus números signifiquen algo | chequear el headroom del tratamiento antes de construirlo es la corrida más barata que existe, y ésta no costó ni una inferencia |
 | 2026-09-07 | agregado C11 y hecho visible en el reporte | el modelo con mejor acuerdo era también el que no contestaba nada el 25 % de las veces, y el criterio estaba excluyendo justo esos casos en silencio |

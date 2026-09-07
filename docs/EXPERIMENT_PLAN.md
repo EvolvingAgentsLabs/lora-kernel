@@ -51,8 +51,8 @@ already exist, before a single adapter is trained.
 | step | objective | first gate it opens | cost | state |
 |---|---|---|---|---|
 | **S0** | the instrument measures what it claims | everything | $0, local | **DONE, and it moved the plan** — §3 |
-| **S1** | headroom: can this suite show a withdrawal gap at all | S2 | ~$5 | **suite answered locally ([`S1a`](../results/S1a-delta-20260907/BRIEF.md)); frontier arm blocked on a key** — §4 |
-| **S2** | does **agreement** order candidates the way verified quality does | S4 | ~$15 | **local proxy DONE, frontier arm blocked on a key** — §5 |
+| **S1** | headroom: can this suite show a withdrawal gap at all | S2 | $0.47 spent | **DONE — FAILED the gate, three targets** — §4 |
+| **S2** | does **agreement** order candidates the way verified quality does | S4 | included above | **DONE — 14/15 pairs, but against peers** — §5 |
 | **S3** | attribution: does a lexical/embedding router do the same job | the routing claim | ~$0 | `NEXT` after S2 |
 | **S4** | two real QLoRA adapters on regions where S2 showed signal | S5 | GPU rental | `NEXT` after S3 |
 | **S5** | **the withdrawal gap** | the product | GPU + frontier | `NEXT` after S4 |
@@ -176,9 +176,35 @@ A confirmation of the project's central claim, arriving by accident of
 indentation, on a difference of one case that vanished at n=20. The report now
 refuses to interpret that line while C9 stands.
 
-**Blocker for a human — one now, not two.** `OPENROUTER_API_KEY` is not set on
-this machine and is not on disk **[ran]**. The run is one command once it
-exists, and it now has a suite worth pointing at.
+**S1 ran, three times, and failed its own gate every time.** All 20 delta cases,
+canonical prompt, exact verifier, four local candidates held constant **[ran]**:
+
+| target | verified | cost | headroom over `gemma4:12b` (12/20) |
+|---|---|---|---|
+| `gemini-3.5-flash-lite` | 13/20 | $0.0028 | **+1** |
+| `gemini-3.8-flash` | 13/20 | $0.1338 | **+1** |
+| `gemini-3.1-pro-preview` | **8/20** | $0.2885 | **−4** |
+| `gemma4:12b-mlx`, local | 12/20 | $0 | — |
+
+Total spend $0.47, inside the $1 ceiling the brief pre-registered. **The gate said
+the target must clear the best local model by a margin a withdrawal gap could
+live in. None of them does, and the most expensive one is the worst.**
+
+**What that costs the architecture, stated plainly.** Phase A's premise is *pay
+frontier prices, get frontier answers, and collect the measurement for free*. On
+this task, paying **48× more** bought the same 13/20 and paying **100× more**
+bought 8/20. There is no withdrawal gap to measure here because there is almost
+nothing to withdraw from — and that is this workspace's recurring result arriving
+again: on a bounded administrative task, capability sits in the interface and the
+verifier, not in model size or price.
+
+**It is a finding about the suite, not about the thesis.** The frontier's
+advantage, if it exists, is not visible in single-shot generation on a
+20-case referral check. The three configurations that could still show it are in
+§12's decision.
+
+**No longer blocked.** The key exists and was used; the target choice is what
+failed.
 
 ## 5. S2 — does α order candidates the way quality does · BLOCKED
 
@@ -214,10 +240,37 @@ and there is no ordering for the criterion to reproduce. One case of difference
 was never an ordering, and the earlier row is kept struck rather than deleted
 because that is the failure this plan exists to make visible.
 
-**What S2a therefore establishes, and it is less than it looked like:** the
-criterion is computable, is not degenerate, and is not contradicted. It has **not**
-been shown to track quality, here or anywhere. The real S2 needs the frontier
-target and a candidate set that does not tie.
+**S2 ran against all three targets, and the criterion holds** — with a caveat
+that has to travel with it. The ordering test is scored pairwise over the
+candidate pairs whose verified scores differ, with a fourth candidate
+(`qwen3.5:2b`) added so the ladder spans 2B to 12B and no longer ties **[ran]**:
+
+| target | **semantic agreement** | character α | what character α said |
+|---|---|---|---|
+| `gemini-3.5-flash-lite` | **5/5** | 2/5 | ranked the **best** candidate **last** |
+| `gemini-3.8-flash` | **5/5** | 1/5 | ranked the **best** candidate **last** |
+| `gemini-3.1-pro-preview` | **4/5** | 4/5 | ranked it first — this target pretty-prints |
+
+**14 of 15 discriminable pairs ordered correctly, across three independent
+targets.** The criterion the plan adopted in §11 does what a promotion criterion
+has to do.
+
+**And the same table settles §11 empirically.** Character α scored 1/5 with one
+target and 4/5 with another **on the same candidates and the same cases** — the
+only thing that changed is whether the target happens to indent like the
+candidate. A metric whose concordance quadruples because the target's formatting
+habits changed is measuring formatting. Option C was the right call and the
+evidence is now direct rather than argued.
+
+**The caveat that must travel with it.** S1 failed, so all three targets are
+**peers of the strongest candidate, not frontier models**. Agreement with a peer
+is not a distillation score, and this therefore validates **the mechanics of the
+criterion**, not the architecture's claim. The distillation claim needs a target
+that is actually better, and no available Gemini was.
+
+**And C11 is visible in the numbers:** `qwen3.5:9b` produced no parseable answer
+in 5 of 20 cases, which the criterion excludes, so its agreement is measured on
+the 15 cases where it answered at all.
 
 **And it made C11 concrete.** `qwen3.5:9b` scores the *best* agreement (0.533)
 while producing no parseable answer in **5 of 20** cases — which the criterion
@@ -304,6 +357,8 @@ architecture is right.
 | C8 | No `OPENROUTER_API_KEY` on this machine **[ran]** | S1 and S2 are blocked on a human |
 | C9 | Character-prefix agreement is dominated by layout: identical answers score 0.00 across formats, different answers score 0.44 within one format **[ran]** | **decided (§11, option C):** the promotion criterion is semantic answer agreement; character α is reported beside it and never ranks anything; whether pinning the format reconciles them is S6's win condition |
 | C10 | Agents under `.claude/agents/` load for a session rooted at this repository, not at the workspace above it **[ran]** | they are symlinked into `../.claude/agents/` so a workspace-rooted session can address them too |
+| C12 | On this suite, three Gemini targets scored 13/20, 13/20 and 8/20 against a local 12B's 12/20, at $0.003, $0.13 and $0.29 **[ran]** | there is no frontier advantage to distil here; Phase A's premise needs a task where paying more buys more, and finding that task is now the gating question |
+| C13 | Character α's pairwise concordance moved **1/5 → 4/5** across targets, on identical candidates and cases, purely because the pro target pretty-prints **[ran]** | direct evidence for C9, and the reason §11's decision is now settled rather than provisional |
 | C11 | Semantic agreement **excludes** cases where either side produced no parseable answer, and `qwen3.5:9b` produced none in 3 of 12 delta cases while scoring the *best* agreement **[ran]** | the criterion must always be read beside the unparseable count, or a model that often answers nothing looks like the best agreer — and that failure is precisely what `harness.lora` exists to repair, which couples S6 to the criterion rather than leaving it downstream |
 
 ## 8. Deliberately not built
@@ -347,7 +402,9 @@ Created, edited and retired as the work learns. The lifecycle rule is
 - **A number is published whichever way it comes out.** The withdrawal gap is the
   project; a large gap is a result, not a failure to be re-run until small.
 
-## 11. The decision on the table
+## 11. The decision on the table — one taken, one open
+
+### Taken 2026-09-07: what α is
 
 Not a commit — a choice, because it changes what α *is* and that is the
 architecture's central term.
@@ -378,12 +435,33 @@ format make character-α agree with semantic agreement? That question is worth a
 number on its own, and it is the strongest argument for the kernel adapter this
 project could produce.
 
-**Decided 2026-09-07: C.** The promotion criterion for S1–S5 is semantic answer
+**Decided 2026-09-07: C**, and since confirmed directly by C13. The promotion
+criterion for S1–S5 is semantic answer
 agreement, character α is reported beside it and ranks nothing, and S6 owns the
 question of whether pinning the format reconciles the two. Implemented in
 `alpha/report.py::semantic`, pinned by six tests, and applied retroactively to
 every run already on disk — the criterion is computed from the stored answers, so
 nothing had to be re-run.
+
+### Open: where a frontier advantage is visible at all
+
+S1 says this suite cannot show one. Three configurations could, in ascending
+cost, and the choice is the user's because it decides what the project measures:
+
+1. **Put the runtime loop back in.** The published 38–41/50 came from contract,
+   feedback and action validation; single-shot raw is 33–60 %. If the frontier's
+   advantage is in *using* an interaction contract rather than in one-shot
+   accuracy, this is where it appears — and it reuses `../verified-runtime`
+   wholesale.
+2. **A harder domain.** `causal_workflow` and `quantum` already exist next door
+   with their own verifiers. A task with a real solution space is where a 12B
+   should fall away from a frontier model.
+3. **A different task shape entirely** — long-context legal or clinical
+   documents, which is the vertical the architecture was written for and the one
+   place where a local 12B is least likely to hold.
+
+Until one is chosen, S4 and S5 cannot be bought: promoting an expert and
+withdrawing a frontier that was never ahead measures nothing.
 
 ## 12. History
 
@@ -393,6 +471,9 @@ nothing had to be re-run.
 | 2026-09-07 | S0 run three times; §3 filled in; C9 and C10 added; the redesign counter reached its stopping condition and the instrument was **not** changed a fourth time | the metric was measuring layout, and the rule about counting redesigns exists precisely for the moment it is inconvenient |
 | 2026-09-07 | S6 moved from "parallel" to "under review, possibly upstream of α" | if the kernel adapter is what pins the format, then it is what makes character acceptance mean anything |
 | 2026-09-07 | S1a run on `held_out_delta`: 8/12 against 3/12 and 4/12. S1's suite question closed for $0; only the key still blocks it | the fallback was named in the step before the step ran, which is the only reason changing the split here is a plan and not a search for a friendlier number |
+| 2026-09-07 | S1 bought and failed three times ($0.47 total); S2 bought in the same purchases and passed 14 of 15 pairs; C12 and C13 added | the gate was written before the run and it fired — the cheapest possible outcome, since it stopped S4 and S5 from being bought on a configuration where the frontier was never ahead |
+| 2026-09-07 | a fourth candidate (`qwen3.5:2b`) added at the user's suggestion | the local ladder tied at 6/20 and a tie makes the ordering test unbuyable; spanning 2B to 12B gave the criterion something to be right or wrong about |
+| 2026-09-07 | targets given their own token budget, and local answers cached | a thinking target returned 9 of 20 answers truncated at 700 tokens, and re-generating four local candidates for every new target was eight minutes buying nothing |
 | 2026-09-07 | S1a extended to the full 20-case split; the n=12 ordering agreement **did not survive** and the superseded row is struck, not deleted | the candidates differed by one verified case at n=12 and tie exactly at n=20 — one case was never an ordering, and a plan that quietly dropped the earlier row would be a record of nothing |
 | 2026-09-07 | S6a run for $0 from existing runs: the protocol costs ~96 tokens here and the 12B never malforms, so S6 needs a real tool distribution before either of its numbers means anything | checking the headroom of the treatment before building it is the cheapest run there is, and this one cost no inference at all |
 | 2026-09-07 | C11 added and surfaced in the report | the model with the best agreement was also the one that answered nothing 25 % of the time, and the criterion was quietly excluding exactly those cases |

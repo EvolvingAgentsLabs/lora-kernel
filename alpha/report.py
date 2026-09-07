@@ -134,8 +134,26 @@ def summarise(config: dict, records: list[dict]) -> dict:
 
     by_alpha = sorted(names, key=_rank_key)
     by_verified = sorted(names, key=lambda n: -out["drafters"][n]["verified_pass"])
-    # A tie in verified quality is not a disagreement about ordering. Reporting
-    # it as one manufactures a failed test out of an untestable one.
+    # A tie in verified quality is not a disagreement about ordering — but with
+    # more than two candidates, one tied pair should not void the whole test
+    # either. The ordering test is therefore scored PAIRWISE, over exactly the
+    # pairs whose verified scores differ.
+    def concordance(key) -> tuple[int, int]:
+        ok = tot = 0
+        for i, a in enumerate(names):
+            for b in names[i + 1:]:
+                va, vb = (out["drafters"][a]["verified_pass"],
+                          out["drafters"][b]["verified_pass"])
+                if va == vb:
+                    continue          # not discriminable, not a failure
+                tot += 1
+                ka, kb = key(a), key(b)
+                if (va > vb) == (ka > kb) and ka != kb:
+                    ok += 1
+        return ok, tot
+
+    sem_key = lambda n: out["drafters"][n]["same_answer_as_target_rate"] or 0.0
+    chr_key = lambda n: out["drafters"][n]["alpha_content"] or 0.0
     verified_vals = {out["drafters"][n]["verified_pass"] for n in names}
     comparable = len(verified_vals) == len(names)
     out["ordering"] = {
@@ -147,6 +165,8 @@ def summarise(config: dict, records: list[dict]) -> dict:
         "by_alpha": by_alpha,
         "by_verified": by_verified,
         "agree": (by_alpha == by_verified) if comparable else None,
+        "concordant_pairs_semantic": concordance(sem_key),
+        "concordant_pairs_character": concordance(chr_key),
         "per_region_agree": {
             region: (sorted(names, key=lambda n: -(v["drafters"][n]["agreement"] or 0.0))
                      == sorted(names, key=lambda n: -v["drafters"][n]["verified_pass"]))
@@ -160,6 +180,13 @@ def summarise(config: dict, records: list[dict]) -> dict:
                 else out["drafters"][n]["alpha_at_0"]) for n in names] or [0.0])
     restarts = [out["drafters"][n]["restarted_fraction"] for n in names
                 if out["drafters"][n]["restarted_fraction"] is not None]
+    ti = sum(r["target"].get("tokens_in", 0) for r in records)
+    to = sum(r["target"].get("tokens_out", 0) for r in records)
+    out["target_cost"] = {
+        "tokens_in": ti, "tokens_out": to,
+        "usd": round((ti * config.get("usd_per_mtok_in", 0.0)
+                      + to * config.get("usd_per_mtok_out", 0.0)) / 1e6, 5),
+    }
     out["health"] = {
         "alpha_dispersion": round(max(spread) - min(spread), 4),
         "worst_restarted_fraction": max(restarts) if restarts else None,
@@ -183,7 +210,10 @@ def render(s: dict) -> str:
         f"cases         {n} from {r['split']}   w={r['window_chars']}ch  "
         f"positions={r['positions']}  prompt={r['prompt_hash']}",
         f"target score  {s['target_verified_pass']}/{n} verified "
-        f"({s['target_parse_failures']} unparseable)",
+        f"({s['target_parse_failures']} unparseable)"
+        + (f"   cost ${s['target_cost']['usd']:.5f} "
+           f"({s['target_cost']['tokens_in']} in / {s['target_cost']['tokens_out']} out)"
+           if s["target_cost"]["usd"] else ""),
         "",
         "PROMOTION CRITERION — semantic answer agreement with the target (§11)",
         f"{'drafter':<26}{'same answer':>13}{'answer f1':>11}"
@@ -220,10 +250,13 @@ def render(s: dict) -> str:
         "",
         f"ordering by agreement {' > '.join(x.split(':')[-1] for x in o['by_agreement'])}",
         f"ordering by verified  {' > '.join(x.split(':')[-1] for x in o['by_verified'])}",
-        (f"they agree: {o['agree']}   per region: {o['per_region_agree']}"
-         if o["comparable"] else
-         "not comparable: the candidates tie on verified quality, so there is no "
-         "ordering for the criterion to reproduce"),
+        (f"THE ORDERING TEST, pairwise over discriminable pairs:  "
+         f"semantic {o['concordant_pairs_semantic'][0]}/{o['concordant_pairs_semantic'][1]}"
+         f"   ·   character α {o['concordant_pairs_character'][0]}"
+         f"/{o['concordant_pairs_character'][1]}"
+         if o["concordant_pairs_semantic"][1] else
+         "no discriminable pairs: every candidate ties on verified quality, so "
+         "there is no ordering for the criterion to reproduce"),
         f"(ordering by character α would have said: "
         f"{' > '.join(x.split(':')[-1] for x in o['by_alpha_chars'])} — kept visible "
         f"because S6's win condition is whether pinning the format makes these two agree)",

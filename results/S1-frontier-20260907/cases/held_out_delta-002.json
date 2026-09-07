@@ -1,0 +1,103 @@
+{
+  "case_id": "held_out_delta-002",
+  "region": "delta",
+  "truth": [
+    "cbct",
+    "guardian_consent"
+  ],
+  "target": {
+    "name": "openai:google/gemini-3.5-flash-lite",
+    "answer": "```json\n{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}\n```",
+    "verified": {
+      "passed": false,
+      "parsed": true,
+      "f1": 0.667,
+      "extra": [],
+      "missed": [
+        "guardian_consent"
+      ]
+    },
+    "thought_chars": 0,
+    "truncated": false,
+    "seconds": 1.17,
+    "tokens_in": 257,
+    "tokens_out": 26
+  },
+  "drafters": {
+    "ollama:gemma4:12b-mlx": {
+      "own_answer": "```json\n{\n  \"kind\": \"submit_missing_documents\",\n  \"arguments\": {\n    \"missing\": [\n      \"cbct\"\n    ]\n  }\n}\n```",
+      "verified": {
+        "passed": false,
+        "parsed": true,
+        "f1": 0.667,
+        "extra": [],
+        "missed": [
+          "guardian_consent"
+        ]
+      },
+      "thought_chars": 0,
+      "tokens_in": 275,
+      "tokens_out": 44,
+      "truncated": false,
+      "alpha_at_0": 0.375,
+      "alpha_at_0_content": 0.0,
+      "content_agreement": 0.0,
+      "same_answer": false,
+      "agreement_chars": 9,
+      "agreement_fraction": 0.1071,
+      "alpha_mid_mean": null,
+      "restarted_fraction": null,
+      "positions": []
+    },
+    "ollama:qwen3.5:9b": {
+      "own_answer": "{\n  \"kind\": \"submit_missing_documents\",\n  \"arguments\": {\n    \"missing\": [\n      \"cbct\"\n    ]\n  }\n}",
+      "verified": {
+        "passed": false,
+        "parsed": true,
+        "f1": 0.667,
+        "extra": [],
+        "missed": [
+          "guardian_consent"
+        ]
+      },
+      "thought_chars": 0,
+      "tokens_in": 267,
+      "tokens_out": 38,
+      "truncated": false,
+      "alpha_at_0": 0.0,
+      "alpha_at_0_content": 0.0,
+      "content_agreement": 0.0,
+      "same_answer": false,
+      "agreement_chars": 0,
+      "agreement_fraction": 0.0,
+      "alpha_mid_mean": null,
+      "restarted_fraction": null,
+      "positions": []
+    },
+    "ollama:qwen3.5:4b": {
+      "own_answer": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}",
+      "verified": {
+        "passed": false,
+        "parsed": true,
+        "f1": 0.667,
+        "extra": [],
+        "missed": [
+          "guardian_consent"
+        ]
+      },
+      "thought_chars": 0,
+      "tokens_in": 267,
+      "tokens_out": 20,
+      "truncated": false,
+      "alpha_at_0": 0.0,
+      "alpha_at_0_content": 1.0,
+      "content_agreement": 1.0,
+      "same_answer": true,
+      "agreement_chars": 0,
+      "agreement_fraction": 0.0,
+      "alpha_mid_mean": null,
+      "restarted_fraction": null,
+      "positions": []
+    }
+  }
+}
