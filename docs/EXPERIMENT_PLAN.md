@@ -252,7 +252,22 @@ recovered and the kernel adapter is what recovered it — the strongest argument
 for `harness.lora` this project could produce. If it does not, character α stays
 a within-family statistic and the promotion criterion stays semantic.
 
-Its own headroom check first: protocol-token count and
+**S6a — its headroom, computed at $0 from the runs already on disk** (`python3
+-m alpha.kernel_headroom`) **[ran]**:
+
+| number | value | what it means |
+|---|---|---|
+| protocol overhead in the canonical prompt | **~96 tokens, 43 % of a 223-token prompt** | the bar is `gemma4nanoloop`'s 817 peak on a real tool set. Two actions is not a tool distribution, and an adapter that removes 96 tokens cannot be shown to beat −85 % here |
+| malformed-call rate, `gemma4:12b` | **0/40 across four runs** | nothing to repair |
+| malformed-call rate, `qwen3.5:4b` | 1/40 | nothing to repair |
+| malformed-call rate, `qwen3.5:9b` on `held_out_delta` | **3/12 — 25 %** | the only headroom the kernel adapter has on this suite, and it is on one model on the hardest split |
+
+**So S6 cannot be run on this suite as a token argument, and can only barely be
+run as a syntax argument.** It needs a real tool distribution — many actions,
+several phases — before either of its numbers means anything. That is a finding
+about the suite, and it was bought for nothing.
+
+Its own headroom check, when a real tool distribution exists: protocol-token count and
 malformed-call rate of the base model with action tokens in the prompt. If that
 is already at 817 tokens and zero malformed calls, the adapter has nothing to
 repair on this suite and needs a harder tool distribution. Reported as three
@@ -279,6 +294,7 @@ architecture is right.
 | C8 | No `OPENROUTER_API_KEY` on this machine **[ran]** | S1 and S2 are blocked on a human |
 | C9 | Character-prefix agreement is dominated by layout: identical answers score 0.00 across formats, different answers score 0.44 within one format **[ran]** | **decided (§11, option C):** the promotion criterion is semantic answer agreement; character α is reported beside it and never ranks anything; whether pinning the format reconciles them is S6's win condition |
 | C10 | Agents under `.claude/agents/` load for a session rooted at this repository, not at the workspace above it **[ran]** | they are symlinked into `../.claude/agents/` so a workspace-rooted session can address them too |
+| C11 | Semantic agreement **excludes** cases where either side produced no parseable answer, and `qwen3.5:9b` produced none in 3 of 12 delta cases while scoring the *best* agreement **[ran]** | the criterion must always be read beside the unparseable count, or a model that often answers nothing looks like the best agreer — and that failure is precisely what `harness.lora` exists to repair, which couples S6 to the criterion rather than leaving it downstream |
 
 ## 8. Deliberately not built
 
@@ -367,6 +383,8 @@ nothing had to be re-run.
 | 2026-09-07 | S0 run three times; §3 filled in; C9 and C10 added; the redesign counter reached its stopping condition and the instrument was **not** changed a fourth time | the metric was measuring layout, and the rule about counting redesigns exists precisely for the moment it is inconvenient |
 | 2026-09-07 | S6 moved from "parallel" to "under review, possibly upstream of α" | if the kernel adapter is what pins the format, then it is what makes character acceptance mean anything |
 | 2026-09-07 | S1a run on `held_out_delta`: 8/12 against 3/12 and 4/12. S1's suite question closed for $0; only the key still blocks it | the fallback was named in the step before the step ran, which is the only reason changing the split here is a plan and not a search for a friendlier number |
+| 2026-09-07 | S6a run for $0 from existing runs: the protocol costs ~96 tokens here and the 12B never malforms, so S6 needs a real tool distribution before either of its numbers means anything | checking the headroom of the treatment before building it is the cheapest run there is, and this one cost no inference at all |
+| 2026-09-07 | C11 added and surfaced in the report | the model with the best agreement was also the one that answered nothing 25 % of the time, and the criterion was quietly excluding exactly those cases |
 | 2026-09-07 | §11 decided (option C): the promotion criterion is semantic answer agreement; S2 rewritten around it; S6 gained a second win condition; the four runs on disk were re-scored without re-running anything | character agreement failed on a correct answer and succeeded for reasons unrelated to quality, on the same suite, on the same day |
 | 2026-09-07 | a tie in verified quality is no longer reported as a failed ordering test | S0c's candidates both scored 3/12, and calling that a disagreement manufactures a failed test out of an untestable one |
 | 2026-09-07 | reporting bug fixed — the overall ordering used the payload metric while the per-region ordering used the raw one, so one report claimed agreement and disagreement about the same run. Not a redesign; the counter stays at 3 | a report that contradicts itself in two lines is worse than one that says nothing |

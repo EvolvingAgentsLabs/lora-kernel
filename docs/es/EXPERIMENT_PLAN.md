@@ -261,7 +261,22 @@ adaptador kernel el que lo recuperó — el argumento más fuerte a favor de
 caracteres queda como estadística intra-familia y el criterio de promoción sigue
 siendo semántico.
 
-Primero su propio headroom: cantidad de tokens de
+**S6a — su headroom, calculado a $0 sobre las corridas que ya están en disco**
+(`python3 -m alpha.kernel_headroom`) **[ran]**:
+
+| número | valor | qué significa |
+|---|---|---|
+| overhead de protocolo en el prompt canónico | **~96 tokens, 43 % de un prompt de 223** | la vara es el pico de 817 de `gemma4nanoloop` sobre un set de herramientas real. Dos acciones no son una distribución de herramientas, y un adaptador que saca 96 tokens no puede demostrar que le gana al −85 % acá |
+| tasa de llamadas malformadas, `gemma4:12b` | **0/40 en cuatro corridas** | nada que reparar |
+| tasa de llamadas malformadas, `qwen3.5:4b` | 1/40 | nada que reparar |
+| tasa de llamadas malformadas, `qwen3.5:9b` en `held_out_delta` | **3/12 — 25 %** | el único headroom que tiene el adaptador kernel en esta suite, y es sobre un modelo en el split más difícil |
+
+**Así que S6 no se puede correr sobre esta suite como argumento de tokens, y
+apenas se puede correr como argumento de sintaxis.** Necesita una distribución de
+herramientas real —muchas acciones, varias fases— antes de que cualquiera de sus
+dos números signifique algo. Eso es un hallazgo sobre la suite, y salió gratis.
+
+Su propio headroom, cuando exista una distribución de herramientas real: cantidad de tokens de
 protocolo y tasa de llamadas malformadas del modelo base con action tokens en el
 prompt. Si eso ya está en 817 tokens y cero llamadas malformadas, el adaptador no
 tiene qué reparar en esta suite y necesita una distribución de herramientas más
@@ -289,6 +304,7 @@ arquitectura es correcta.
 | C8 | No hay `OPENROUTER_API_KEY` en esta máquina **[ran]** | S1 y S2 están bloqueados por un humano |
 | C9 | La coincidencia de prefijo por caracteres está dominada por el formato: respuestas idénticas sacan 0,00 entre formatos, y respuestas distintas sacan 0,44 dentro de un mismo formato **[ran]** | **decidido (§11, opción C):** el criterio de promoción es el acuerdo semántico de respuesta; la α por caracteres se reporta al lado y no ordena nada; si fijar el formato las reconcilia es la condición de victoria de S6 |
 | C10 | Los agentes bajo `.claude/agents/` se cargan para una sesión rooteada en este repositorio, no en el workspace de arriba **[ran]** | están symlinkeados en `../.claude/agents/` para que una sesión rooteada en el workspace también pueda invocarlos |
+| C11 | El acuerdo semántico **excluye** los casos donde algún lado no produjo respuesta parseable, y `qwen3.5:9b` no la produjo en 3 de 12 casos delta mientras sacaba el *mejor* acuerdo **[ran]** | el criterio siempre se lee al lado de la cuenta de no-parseables, o un modelo que muchas veces no contesta nada parece el que mejor acuerda — y esa falla es justo la que `harness.lora` existe para reparar, lo que acopla S6 al criterio en vez de dejarlo aguas abajo |
 
 ## 8. Deliberadamente no construido
 
@@ -382,6 +398,8 @@ calcula sobre las respuestas guardadas, así que no hubo que volver a correr nad
 | 2026-09-07 | S0 corrido tres veces; §3 completado; agregados C9 y C10; el contador de rediseños llegó a su condición de parada y el instrumento **no** se cambió una cuarta vez | la métrica estaba midiendo el formato, y la regla de contar rediseños existe justamente para el momento en que es incómoda |
 | 2026-09-07 | S6 pasó de "en paralelo" a "en revisión, posiblemente aguas arriba de α" | si el adaptador kernel es lo que fija el formato, entonces es lo que hace que la aceptación por caracteres signifique algo |
 | 2026-09-07 | S1a corrido sobre `held_out_delta`: 8/12 contra 3/12 y 4/12. La pregunta de suite de S1 quedó cerrada por $0; sólo la key la bloquea | el fallback estaba nombrado en el paso antes de correrlo, que es la única razón por la que cambiar el split acá es un plan y no una búsqueda de un número más amable |
+| 2026-09-07 | S6a corrido a $0 sobre corridas existentes: el protocolo cuesta ~96 tokens acá y el 12B nunca malforma, así que S6 necesita una distribución de herramientas real antes de que sus números signifiquen algo | chequear el headroom del tratamiento antes de construirlo es la corrida más barata que existe, y ésta no costó ni una inferencia |
+| 2026-09-07 | agregado C11 y hecho visible en el reporte | el modelo con mejor acuerdo era también el que no contestaba nada el 25 % de las veces, y el criterio estaba excluyendo justo esos casos en silencio |
 | 2026-09-07 | §11 decidido (opción C): el criterio de promoción es el acuerdo semántico de respuesta; S2 reescrito alrededor de él; S6 ganó una segunda condición de victoria; las cuatro corridas en disco se re-puntuaron sin volver a correr nada | la coincidencia por caracteres falló sobre una respuesta correcta y acertó por razones ajenas a la calidad, en la misma suite y el mismo día |
 | 2026-09-07 | un empate en calidad verificada ya no se reporta como test de orden fallido | los candidatos de S0c sacaron los dos 3/12, y llamar a eso desacuerdo fabrica un test fallido a partir de uno que no era testeable |
 | 2026-09-07 | arreglado un bug del reporte — el orden global usaba la métrica de payload y el orden por región usaba la cruda, así que un mismo reporte afirmaba acuerdo y desacuerdo sobre la misma corrida. No es un rediseño; el contador sigue en 3 | un reporte que se contradice en dos líneas es peor que uno que no dice nada |

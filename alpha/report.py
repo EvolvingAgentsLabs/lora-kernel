@@ -195,6 +195,14 @@ def render(s: dict) -> str:
         lines.append(
             f"{name:<26}{sa:>13}{af:>11}{d['verified_pass']:>8}/{n:<2}"
             f"{d['verified_f1_mean']:>13.2f}{d['unparseable_either_side']:>12}")
+    worst = max((d["unparseable_either_side"] for d in s["drafters"].values()),
+                default=0)
+    if worst:
+        lines += ["", "!! agreement EXCLUDES cases where a side produced no parseable "
+                  "answer, so a model that often answers nothing looks like a good "
+                  "agreer. Read the criterion beside the unparseable column, always — "
+                  "and note that this is exactly the failure harness.lora exists to "
+                  "repair (C11)."]
     lines += ["", "character acceptance — reported, never obeyed (C9):"]
     for name, d in s["drafters"].items():
         ac = "n/a" if d["alpha_content"] is None else f"{d['alpha_content']:.3f}"
