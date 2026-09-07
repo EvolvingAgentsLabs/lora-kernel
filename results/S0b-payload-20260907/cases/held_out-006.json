@@ -1,0 +1,80 @@
+{
+  "case_id": "held_out-006",
+  "region": "alpha",
+  "truth": [
+    "cbct",
+    "guardian_consent",
+    "medication_reconciliation",
+    "referral_note"
+  ],
+  "target": {
+    "name": "ollama:gemma4:12b-mlx",
+    "answer": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"referral_note\"]}}",
+    "verified": {
+      "passed": false,
+      "parsed": true,
+      "f1": 0.4,
+      "extra": [],
+      "missed": [
+        "cbct",
+        "guardian_consent",
+        "medication_reconciliation"
+      ]
+    },
+    "thought_chars": 0,
+    "truncated": false,
+    "seconds": 10.34
+  },
+  "drafters": {
+    "ollama:qwen3.5:4b": {
+      "own_answer": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"referral_note\"]}}",
+      "verified": {
+        "passed": false,
+        "parsed": true,
+        "f1": 0.4,
+        "extra": [],
+        "missed": [
+          "cbct",
+          "guardian_consent",
+          "medication_reconciliation"
+        ]
+      },
+      "thought_chars": 0,
+      "truncated": false,
+      "alpha_at_0": 1.0,
+      "alpha_at_0_content": 1.0,
+      "content_agreement": 1.0,
+      "same_answer": true,
+      "agreement_chars": 81,
+      "agreement_fraction": 1.0,
+      "alpha_mid_mean": null,
+      "restarted_fraction": null,
+      "positions": []
+    },
+    "ollama:qwen3.5:9b": {
+      "own_answer": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"referral_note\"]}}",
+      "verified": {
+        "passed": false,
+        "parsed": true,
+        "f1": 0.4,
+        "extra": [],
+        "missed": [
+          "cbct",
+          "guardian_consent",
+          "medication_reconciliation"
+        ]
+      },
+      "thought_chars": 0,
+      "truncated": false,
+      "alpha_at_0": 1.0,
+      "alpha_at_0_content": 1.0,
+      "content_agreement": 1.0,
+      "same_answer": true,
+      "agreement_chars": 81,
+      "agreement_fraction": 1.0,
+      "alpha_mid_mean": null,
+      "restarted_fraction": null,
+      "positions": []
+    }
+  }
+}

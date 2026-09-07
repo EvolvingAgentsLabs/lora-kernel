@@ -1,0 +1,319 @@
+# The plan
+
+> **Living document.** This is the project's position, not a proposal. Every step
+> carries its objective, its gate and its falsification condition, written before
+> it runs; every finished step carries the number that came out, whichever way it
+> came out.
+>
+> *[Léeme en español](es/EXPERIMENT_PLAN.md)*
+
+---
+
+## 0. How to read this
+
+| mark | meaning |
+|---|---|
+| **[read]** | inferred from source, docs or an issue, and cited |
+| **[ran]** | observed by executing something here, with the run directory named |
+| `NEXT` / `RUNNING` / `DONE` / `BLOCKED` / `DROPPED` | the step's state |
+
+Rules that bind whoever edits this file: update a step's row **in the same
+session** the step finishes; keep superseded text visible with a reason rather
+than deleting it; update the Spanish mirror in the same commit.
+
+## 1. The one question
+
+> **Is acceptance against a frontier target a valid promotion criterion for a
+> small expert — and how much verified quality is lost when the frontier is
+> withdrawn?**
+
+Everything in `README.md` and [`ARCHITECTURE.md`](ARCHITECTURE.md) rests on two
+claims, and only these two are worth spending money on first:
+
+1. **α means distillation.** A high acceptance rate against a frontier target
+   identifies an expert that already produces what the frontier would, *here*.
+2. **The frontier is removable.** Once α crosses a threshold in a region, the
+   expert generates alone and the verified score barely moves. That difference —
+   the **withdrawal gap** — is the product.
+
+**What falsifies the project:** if α does not order candidates the way verified
+task quality orders them, claim 1 is false and acceptance cannot be the promotion
+criterion. The architecture would survive; the free router would not.
+
+## 2. The order, and why this order and not the specification's
+
+[`ARCHITECTURE.md` §7](ARCHITECTURE.md) lists E0–E4 and it is right about the
+destination. This plan differs on **where the cheap falsification sits**: the
+specification validates α *after* adapters exist, which is where the test stops
+being cheap. Here the α-versus-quality question is answered with models that
+already exist, before a single adapter is trained.
+
+| step | objective | first gate it opens | cost | state |
+|---|---|---|---|---|
+| **S0** | the instrument measures what it claims | everything | $0, local | **DONE, and it moved the plan** — §3 |
+| **S1** | headroom: can this suite show a withdrawal gap at all | S2 | ~$5 | **BLOCKED** ×2 — §4 |
+| **S2** | does α order candidates the way verified quality does | S4 | ~$15 | **BLOCKED** — §5 |
+| **S3** | attribution: does a lexical/embedding router do the same job | the routing claim | ~$0 | `NEXT` after S2 |
+| **S4** | two real QLoRA adapters on regions where S2 showed signal | S5 | GPU rental | `NEXT` after S3 |
+| **S5** | **the withdrawal gap** | the product | GPU + frontier | `NEXT` after S4 |
+| **S6** | `harness.lora` against the −85 % schema baseline | the kernel | GPU rental | **under review — S0 says it is upstream of α, §12** |
+| **S7** | the tournament, with a held-out verifier | evolution | GPU rental | after S5 |
+
+Two rules govern the sequence. **Arms are bought one at a time** — the arm that
+can kill the hypothesis runs before the arm that explains it. **Nothing that
+needs a GPU is bought before something that does not has failed to kill the
+idea**: `vllm` cannot serve on this machine at all **[ran]**, so every
+vLLM-dependent step is rented time.
+
+## 3. S0 — the instrument · DONE
+
+**Objective.** Produce an acceptance surface and a verified score from one run,
+against a local stand-in target, and show the two numbers move independently.
+
+**Gate.** Nothing downstream is believable until the instrument has been made to
+fail on purpose.
+
+**What was built.** `alpha/` — case loader over the borrowed `clinical_learning`
+suite with a frozen, hashed prompt; two greedy backends; the measurement; the
+report. `tests/test_alpha.py` holds 13 checks that each pin one way the number
+could come out clean and wrong; all pass **[ran]**.
+
+**What the build found before any result was trusted** (each is now a constraint
+in §7):
+
+- ollama's chat renderer **does not honour an assistant prefill** — a qwen
+  drafter re-opened its turn and restarted the answer **[ran]**. Mid-answer α is
+  therefore optional and gated on a per-call `restarted` flag; the primary number
+  is α at position 0, which needs no prefill and is the one Phase B actually runs
+  on.
+- **every local model here is a thinking model** **[ran]**. The reasoning stream
+  is emitted before the answer and silently eats a budget sized for the answer,
+  returning an empty answer channel. `think=false` works on qwen and returns
+  HTTP 500 on gemma. The instrument records the two channels separately and
+  aborts rather than scoring an empty answer as α = 0.
+
+**Result — three runs, $0, and the instrument found four ways to lie.**
+
+| run | prompt | n | target `gemma4:12b` | `qwen3.5:4b` | `qwen3.5:9b` | what it established |
+|---|---|---|---|---|---|---|
+| [`S0`](../results/S0-instrument-20260907/BRIEF.md) | frozen | 4 | 1/4 | 1/4 | 0/4 | the pipeline runs end to end |
+| [`S0b`](../results/S0b-payload-20260907/BRIEF.md) | frozen | 12 | 3/12 | 3/12 | 2/12 | α over the payload; dispersion 0.076 |
+| [`S0c`](../results/S0c-canonical-20260907/BRIEF.md) | canonical | 12 | 4/12 | 3/12 | 3/12 | our prompt removed as a variable |
+
+**[ran]** All three under `results/`, one JSON per case, reports regenerable with
+`python3 -m alpha.report <run-dir>`.
+
+**Two findings that change the plan, not just the code.**
+
+**1 · This suite does not separate these models single-shot, and the target has
+no headroom over its own drafters.** 4/12, 3/12 and 3/12 are the same number. A
+12B target that cannot beat a 4B drafter cannot stand in for a frontier model,
+and a frontier arm bought on this configuration would be measuring nothing. Note
+what this also says about the published ladder: 38–41/50 came from the *runtime*
+— contract, feedback, action validation — and single-shot raw generation is
+33 %. **The harness is most of that score**, which is the thesis
+`../verified-runtime` exists to test, arriving here as a constraint.
+
+**2 · Character-level agreement measures layout, not agreement.** The skeptic
+pass ran it in both directions **[ran]**:
+
+| input | what the metric said | what is true |
+|---|---|---|
+| same answer, one pretty-printed and fenced, one compact | agreement **0.00** | the verifier passes both |
+| different answers, both pretty-printed | agreement **0.44** | they agree on `\n      "` and nothing else |
+
+In run S0c the 4B produced the exactly correct answer and scored **0.00**, while
+a model that gave the same answer with indentation scored **1.00**. Layout
+dominates content, so α measured this way is not merely noisy — it is
+anti-informative across model families.
+
+**What that implies, and it is the most useful thing S0 produced:** in the
+architecture the answer format is not a variable, because **`harness.lora` pins
+it**. Character acceptance only becomes meaningful once the kernel adapter makes
+the format a constant. So `harness.lora` is not a parallel track — **it is
+upstream of α**, and §2's order is wrong about S6. The proposal on the table,
+which needs a decision rather than a commit, is in §12.
+
+## 4. S1 — headroom · BLOCKED
+
+**Objective.** Establish that a frontier target scores materially above the
+strongest local model on this suite. Without that distance there is nothing for a
+withdrawal gap to be a gap *in*.
+
+**Why this is the likeliest way the project stalls.** `gemma4:12b` already scored
+**38–41/50** on this held-out set and `qwen3.5:4b` reached 38/50 under a repaired
+interface **[read]**. If a frontier model scores 43/50, the whole architecture is
+being asked to preserve a 2-point difference, every arm ties, and a tie reads as
+success.
+
+**Gate.** S2 does not run until this passes.
+
+**Falsification.** Frontier minus best local is inside the paired interval on
+n = 50 → **this suite cannot measure this project**, and the fix is a harder task
+distribution, not a better treatment. Candidate replacements, in order: the
+`clinical_learning` `held_out_delta` split (its rule inverts, so memorised
+protocol fails), then the `causal_workflow` and `quantum` domains already in
+`../verified-runtime`.
+
+**Blockers for a human — two now, not one.**
+
+1. `OPENROUTER_API_KEY` is not set on this machine and is not on disk **[ran]**.
+   The run is one command once it exists.
+2. **S0 already answered part of S1 for free, and the answer was no.** With the
+   canonical prompt and single-shot generation, `gemma4:12b` scores 4/12 and its
+   own drafters score 3/12 — no separation, no headroom. Buying the frontier arm
+   on this configuration would purchase a number that cannot move. Either the
+   configuration changes (the runtime loop back in, or the `held_out_delta`
+   split, or a harder domain) or S1 is not worth its $5.
+
+## 5. S2 — does α order candidates the way quality does · BLOCKED
+
+**Objective.** The project's own falsification condition, bought as cheaply as it
+can be bought: with **no adapters trained at all**.
+
+**Design.** Three models whose verified scores on this suite are already known —
+`qwen3.5:4b`, `qwen3.5:9b`, `gemma4:12b` — stand in as candidate experts. Measure
+their α against the frontier target per region, and ask whether ordering by α
+reproduces ordering by verified score.
+
+**Gate.** S4 — no adapter is trained until acceptance is known to carry the
+signal that promotion would be based on.
+
+**Falsification.** The orderings disagree, or α is flat across candidates that
+differ in verified quality. Either kills acceptance as a promotion criterion; the
+adapter pool survives, the free router does not, and the plan reopens at the
+router.
+
+**Second control, same run, free.** α dispersion. If every candidate accepts
+alike, there is nothing to route on regardless of what α means.
+
+## 6. S3–S7 — the steps that cost money, and what each has to clear first
+
+**S3 · the attribution arm.** A lexical rule and an `embeddinggemma` classifier
+routing the same cases. If either matches acceptance-routing, the expensive
+mechanism bought nothing — the shape of a result this workspace has already had
+once, when a memory hierarchy lost to plain lexical search **[read]**. Bought
+only after S2 shows an effect, never before.
+
+**S4 · two adapters.** QLoRA trained off this machine and graded here — the
+training environment does not decide whether the training worked. Only on regions
+where S2 found signal. **Gate:** the adapter's α must beat the best stand-in's α
+in its own region, or the training added nothing acceptance can see.
+
+**S5 · the withdrawal gap.** Promote where α crossed the threshold, remove the
+frontier, re-measure on the sealed split. The threshold and the non-inferiority
+margin are pre-registered before the run; `evaluation/frontier_gap.py` in
+`../verified-runtime` already carries the warning that a closed-gap fraction is
+not an equivalence claim **[read]**.
+
+**S6 · `harness.lora`.** Its own headroom check first: protocol-token count and
+malformed-call rate of the base model with action tokens in the prompt. If that
+is already at 817 tokens and zero malformed calls, the adapter has nothing to
+repair on this suite and needs a harder tool distribution. Reported as three
+numbers together — tokens, malformed-call rate, latency including adapter swap —
+against `gemma4nanoloop`'s −85 % and against constrained decoding, never against
+prose **[read]**.
+
+**S7 · the tournament.** Offline only, `w₁` from a verifier the loop cannot see.
+
+## 7. Constraints the instrument has to live inside
+
+Facts, not objections. Each one shapes how a step is run, not whether the
+architecture is right.
+
+| # | constraint | consequence |
+|---|---|---|
+| C1 | At T = 0 the accepted prefix **is** the longest common prefix with the target's greedy continuation, and greedy is prefix-consistent **[read]** | the α surface is measurable today — no GPU, no vLLM, no `LoRA-as-drafter` |
+| C2 | Frontier chat APIs do not expose logprobs of a **forced** continuation **[read]** | true rejection sampling against a frontier API is not implementable; C1 is the instrument |
+| C3 | A frontier target does not share the base model's tokenizer **[read]** | α is measured in characters. Sound as a distillation score, **unsound as a speedup claim** |
+| C4 | `vllm` does not serve on this machine (arm64, 16 GB) **[ran]** | every vLLM step is rented GPU and late in the order |
+| C5 | LoRA-as-drafter is an open RFC, [vllm#52038](https://github.com/vllm-project/vllm/issues/52038) **[read]** | Phase A runs with adapters outside the speculative path, or with small per-domain drafters |
+| C6 | ollama ignores an assistant prefill **[ran]** | position 0 is primary; mid-answer α is gated on the `restarted` flag |
+| C7 | Every local model here is a thinking model **[ran]** | α is measured on the **answer channel**; the reasoning channel is recorded and never concatenated |
+| C8 | No `OPENROUTER_API_KEY` on this machine **[ran]** | S1 and S2 are blocked on a human |
+| C9 | Character-prefix agreement is dominated by layout: identical answers score 0.00 across formats, different answers score 0.44 within one format **[ran]** | across model families the promotion criterion has to be semantic, or the format has to be pinned first — which is `harness.lora`'s job, §12 |
+| C10 | Agents under `.claude/agents/` load for a session rooted at this repository, not at the workspace above it **[ran]** | they are symlinked into `../.claude/agents/` so a workspace-rooted session can address them too |
+
+## 8. Deliberately not built
+
+Cross-adapter KV cache, tree attention across adapters, a bespoke runtime,
+vertical packs, the control plane, the marketplace. All downstream of §S5. The
+KV-cache problem is the expensive part of the architecture and it is only worth
+solving once a surface says the branches are worth comparing.
+
+## 9. Agents and skills — the ledger
+
+Created, edited and retired as the work learns. The lifecycle rule is
+[`../CLAUDE.md`](../CLAUDE.md) §5.
+
+| date | change | because |
+|---|---|---|
+| 2026-09-07 | created [`headroom-auditor`](../.claude/agents/headroom-auditor.md) | S1 is the step most likely to end the project, and it is the one a session is most tempted to skip |
+| 2026-09-07 | created [`instrument-skeptic`](../.claude/agents/instrument-skeptic.md) | S0 found two instrument failures before any number existed; that check should not depend on remembering to do it |
+| 2026-09-07 | created [`alpha-runner`](../.claude/agents/alpha-runner.md) | runs must stream, persist per case and be abortable |
+| 2026-09-07 | created [`mirror-keeper`](../.claude/agents/mirror-keeper.md) | the repository's only CI gate is the bilingual documents |
+| 2026-09-07 | created skill [`experiment-brief`](../.claude/skills/experiment-brief/SKILL.md) | the briefing goes before the run, not beside the report |
+| 2026-09-07 | created skill [`alpha-surface`](../.claude/skills/alpha-surface/SKILL.md) | what α licenses and what it does not has to travel with the command |
+| 2026-09-07 | searched both skill marketplaces, installed nothing | every evaluation skill found is built on LLM-as-judge; this project's verifier is exact **[ran]** |
+
+**Declared, not built:** `adapter-trainer` (S4), `kernel-bench` (S6),
+`tournament-referee` (S7), skills `withdrawal-gap` (S5) and `adapter-training`
+(S4). Each waits for the step that justifies it.
+
+## 10. Stopping conditions, decided now
+
+- **Instrument redesigns.** **3 — the condition has fired.** They were: the
+  thinking channel and the missing prefill; measuring the payload instead of the
+  format; and reverting to the canonical prompt. A fourth is now on the table
+  (§12) and it is **not being made** — the rule says the design gets reviewed by
+  someone who has not been building it before the instrument changes again. That
+  review is the decision requested in §12, and it is the reason this session
+  stops here rather than continuing to patch.
+- **Flat arms are abandoned, not completed.** A run visibly flat a third of the
+  way through is killed, and what it cost to abort versus to finish is recorded.
+- **A number is published whichever way it comes out.** The withdrawal gap is the
+  project; a large gap is a result, not a failure to be re-run until small.
+
+## 11. The decision on the table
+
+Not a commit — a choice, because it changes what α *is* and that is the
+architecture's central term.
+
+**The problem.** The promotion criterion has to compare a small local expert with
+a foreign frontier model that shares neither tokenizer (C3) nor formatting
+conventions (C9). Character acceptance across that boundary measures layout.
+
+**Option A — semantic answer agreement.** Promotion is decided on whether the
+expert's *parsed answer* matches the target's. Honest, cheap, available today,
+and it is what Phase B actually needs. What it gives up: the word "acceptance".
+This is no longer speculative decoding's α; it is answer agreement, and the
+"free inside the serving path" story becomes "free inside a pass we were paying
+for anyway", which is still true but is a smaller claim.
+
+**Option B — pin the format first.** Character acceptance becomes meaningful the
+moment the format stops being a variable, and pinning the format is exactly what
+`harness.lora` is for. This makes **S6 upstream of S2** and reorders the plan: no
+α surface until the kernel adapter exists. Faithful to the architecture as
+specified, and considerably more expensive — it puts a training run before the
+project's cheap falsification, which is the thing this plan was reordered to
+avoid.
+
+**Option C — both, in order.** Option A now, as the promotion criterion for S1–S5,
+with character-α reported beside it *within a single model family* where it is
+defined. Then Option B measured as S6's own win condition: does pinning the
+format make character-α agree with semantic agreement? That question is worth a
+number on its own, and it is the strongest argument for the kernel adapter this
+project could produce.
+
+**Recommended: C.** It keeps the cheap falsification cheap, it does not discard
+the architecture's claim, and it turns the instrument's failure into S6's
+hypothesis. It needs a human's assent because it changes the definition of the
+project's central metric.
+
+## 12. History
+
+| date | change to this plan | why |
+|---|---|---|
+| 2026-09-07 | plan created; S0 built and run; the α-versus-quality test moved ahead of adapter training | the specification's E1 validates α only after adapters exist, which is where the test stops being cheap |
+| 2026-09-07 | S0 run three times; §3 filled in; C9 and C10 added; the redesign counter reached its stopping condition and the instrument was **not** changed a fourth time | the metric was measuring layout, and the rule about counting redesigns exists precisely for the moment it is inconvenient |
+| 2026-09-07 | S6 moved from "parallel" to "under review, possibly upstream of α" | if the kernel adapter is what pins the format, then it is what makes character acceptance mean anything |

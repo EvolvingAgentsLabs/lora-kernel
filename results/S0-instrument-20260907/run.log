@@ -1,0 +1,6 @@
+[alpha] target=ollama:gemma4:12b-mlx drafters=2 cases=4 w=24 positions=1 -> results/S0-instrument-20260907
+[  1/4] held_out-000 [alpha] target_v=0 4b:α0=1.00/agr=1.00/v=0 9b:α0=1.00/agr=1.00/v=0 (17.2s)
+[  2/4] held_out-001 [beta] target_v=0 4b:α0=0.00/agr=0.00/v=0 9b:α0=0.00/agr=0.00/v=0 (17.2s)
+[  3/4] held_out-002 [gamma] target_v=0 4b:α0=1.00/agr=1.00/v=0 9b:α0=1.00/agr=1.00/v=0 (17.3s)
+[  4/4] held_out-003 [alpha] target_v=1 4b:α0=1.00/agr=1.00/v=1 9b:α0=1.00/agr=0.88/v=0 (16.9s)
+[alpha] done — results/S0-instrument-20260907/cases

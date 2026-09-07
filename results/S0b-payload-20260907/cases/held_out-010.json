@@ -1,0 +1,73 @@
+{
+  "case_id": "held_out-010",
+  "region": "beta",
+  "truth": [
+    "cbct",
+    "insurance_card",
+    "medical_history"
+  ],
+  "target": {
+    "name": "ollama:gemma4:12b-mlx",
+    "answer": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\", \"insurance_card\"]}}",
+    "verified": {
+      "passed": false,
+      "parsed": true,
+      "f1": 0.8,
+      "extra": [],
+      "missed": [
+        "cbct"
+      ]
+    },
+    "thought_chars": 0,
+    "truncated": false,
+    "seconds": 8.27
+  },
+  "drafters": {
+    "ollama:qwen3.5:4b": {
+      "own_answer": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\", \"insurance_card\"]}}",
+      "verified": {
+        "passed": false,
+        "parsed": true,
+        "f1": 0.8,
+        "extra": [],
+        "missed": [
+          "cbct"
+        ]
+      },
+      "thought_chars": 0,
+      "truncated": false,
+      "alpha_at_0": 1.0,
+      "alpha_at_0_content": 1.0,
+      "content_agreement": 1.0,
+      "same_answer": true,
+      "agreement_chars": 101,
+      "agreement_fraction": 1.0,
+      "alpha_mid_mean": null,
+      "restarted_fraction": null,
+      "positions": []
+    },
+    "ollama:qwen3.5:9b": {
+      "own_answer": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\", \"insurance_card\"]}}",
+      "verified": {
+        "passed": false,
+        "parsed": true,
+        "f1": 0.8,
+        "extra": [],
+        "missed": [
+          "cbct"
+        ]
+      },
+      "thought_chars": 0,
+      "truncated": false,
+      "alpha_at_0": 1.0,
+      "alpha_at_0_content": 1.0,
+      "content_agreement": 1.0,
+      "same_answer": true,
+      "agreement_chars": 101,
+      "agreement_fraction": 1.0,
+      "alpha_mid_mean": null,
+      "restarted_fraction": null,
+      "positions": []
+    }
+  }
+}

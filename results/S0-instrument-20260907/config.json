@@ -1,0 +1,17 @@
+{
+  "target": "ollama:gemma4:12b-mlx",
+  "drafters": [
+    "ollama:qwen3.5:4b",
+    "ollama:qwen3.5:9b"
+  ],
+  "split": "held_out",
+  "n": 4,
+  "window_chars": 24,
+  "positions": 1,
+  "temperature": 0.0,
+  "prompt_version": "1.0.0",
+  "prompt_hash": "5cc2c73086192d43",
+  "started": "2026-09-07T18:54:27",
+  "identity": "alpha_char = lcp(draft, target_continuation) / window, greedy target",
+  "finished": "2026-09-07T18:55:36"
+}

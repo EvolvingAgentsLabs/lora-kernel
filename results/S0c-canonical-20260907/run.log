@@ -1,0 +1,14 @@
+[alpha] target=ollama:gemma4:12b-mlx drafters=2 cases=12 w=24 positions=1 -> results/S0c-canonical-20260907
+[  1/12] held_out-000 [alpha] target_v=1 4b:α0=0.00/αc=0.00/v=0 9b:α0=0.00/αc=1.00/v=0 (20.9s)
+[  2/12] held_out-001 [beta] target_v=0 4b:α0=0.00/αc=0.00/v=0 9b:α0=0.00/αc=0.00/v=0 (19.8s)
+[  3/12] held_out-002 [gamma] target_v=0 4b:α0=0.00/αc=0.00/v=0 9b:α0=0.00/αc=1.00/v=0 (20.6s)
+[  4/12] held_out-003 [alpha] target_v=1 4b:α0=0.00/αc=0.00/v=1 9b:α0=0.00/αc=1.00/v=1 (20.2s)
+[  5/12] held_out-004 [beta] target_v=0 4b:α0=0.00/αc=0.00/v=0 9b:α0=0.00/αc=1.00/v=0 (20.1s)
+[  6/12] held_out-005 [gamma] target_v=0 4b:α0=0.00/αc=0.00/v=0 9b:α0=0.00/αc=1.00/v=0 (19.8s)
+[  7/12] held_out-006 [alpha] target_v=0 4b:α0=0.00/αc=0.00/v=0 9b:α0=0.00/αc=0.00/v=0 (20.0s)
+[  8/12] held_out-007 [beta] target_v=1 4b:α0=0.00/αc=0.00/v=1 9b:α0=0.00/αc=1.00/v=1 (20.6s)
+[  9/12] held_out-008 [gamma] target_v=0 4b:α0=0.00/αc=0.00/v=0 9b:α0=0.00/αc=1.00/v=0 (21.1s)
+[ 10/12] held_out-009 [alpha] target_v=0 4b:α0=0.00/αc=0.00/v=0 9b:α0=0.00/αc=  n/a/v=0 (19.1s)
+[ 11/12] held_out-010 [beta] target_v=0 4b:α0=0.00/αc=0.00/v=0 9b:α0=0.00/αc=1.00/v=0 (21.1s)
+[ 12/12] held_out-011 [gamma] target_v=1 4b:α0=0.00/αc=0.00/v=1 9b:α0=0.00/αc=0.00/v=1 (19.1s)
+[alpha] done — results/S0c-canonical-20260907/cases
