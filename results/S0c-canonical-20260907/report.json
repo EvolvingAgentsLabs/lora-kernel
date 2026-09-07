@@ -22,6 +22,9 @@
   "target_parse_failures": 0,
   "drafters": {
     "ollama:qwen3.5:4b": {
+      "same_answer_as_target_rate": 0.6667,
+      "answer_f1_vs_target": 0.8334,
+      "unparseable_either_side": 0,
       "alpha_at_0": 0.0,
       "alpha_content": 0.0,
       "content_agreement": 0.0,
@@ -38,6 +41,9 @@
       "restarted_fraction": null
     },
     "ollama:qwen3.5:9b": {
+      "same_answer_as_target_rate": 0.7273,
+      "answer_f1_vs_target": 0.8485,
+      "unparseable_either_side": 1,
       "alpha_at_0": 0.0,
       "alpha_content": 0.7273,
       "content_agreement": 0.6871,
@@ -61,10 +67,12 @@
       "drafters": {
         "ollama:qwen3.5:4b": {
           "alpha_at_0": 0.0,
+          "agreement": 0.25,
           "verified_pass": 1
         },
         "ollama:qwen3.5:9b": {
           "alpha_at_0": 0.0,
+          "agreement": 0.3333,
           "verified_pass": 1
         }
       }
@@ -75,10 +83,12 @@
       "drafters": {
         "ollama:qwen3.5:4b": {
           "alpha_at_0": 0.0,
+          "agreement": 1.0,
           "verified_pass": 1
         },
         "ollama:qwen3.5:9b": {
           "alpha_at_0": 0.0,
+          "agreement": 0.75,
           "verified_pass": 1
         }
       }
@@ -89,16 +99,28 @@
       "drafters": {
         "ollama:qwen3.5:4b": {
           "alpha_at_0": 0.0,
+          "agreement": 0.75,
           "verified_pass": 1
         },
         "ollama:qwen3.5:9b": {
           "alpha_at_0": 0.0,
+          "agreement": 1.0,
           "verified_pass": 1
         }
       }
     }
   },
   "ordering": {
+    "criterion": "semantic answer agreement with the target (EXPERIMENT_PLAN.md \u00a711)",
+    "comparable": false,
+    "by_agreement": [
+      "ollama:qwen3.5:9b",
+      "ollama:qwen3.5:4b"
+    ],
+    "by_alpha_chars": [
+      "ollama:qwen3.5:9b",
+      "ollama:qwen3.5:4b"
+    ],
     "by_alpha": [
       "ollama:qwen3.5:9b",
       "ollama:qwen3.5:4b"
@@ -107,11 +129,11 @@
       "ollama:qwen3.5:4b",
       "ollama:qwen3.5:9b"
     ],
-    "agree": false,
+    "agree": null,
     "per_region_agree": {
-      "alpha": true,
+      "alpha": false,
       "beta": true,
-      "gamma": true
+      "gamma": false
     }
   },
   "health": {

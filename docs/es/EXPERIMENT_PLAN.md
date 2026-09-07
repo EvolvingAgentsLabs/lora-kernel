@@ -52,7 +52,7 @@ se responde con modelos que ya existen, antes de entrenar un solo adaptador.
 |---|---|---|---|---|
 | **S0** | que el instrumento mida lo que dice | todo | $0, local | **DONE, y movió el plan** — §3 |
 | **S1** | headroom: ¿puede esta suite mostrar una brecha de retiro? | S2 | ~$5 | **la pregunta de la suite se contestó local ([`S1a`](../../results/S1a-delta-20260907/BRIEF.md)); el arm de frontera espera la key** — §4 |
-| **S2** | ¿α ordena a los candidatos como los ordena la calidad verificada? | S4 | ~$15 | **BLOCKED** — §5 |
+| **S2** | ¿el **acuerdo** ordena a los candidatos como los ordena la calidad verificada? | S4 | ~$15 | **proxy local DONE, el arm de frontera espera la key** — §5 |
 | **S3** | atribución: ¿un router léxico o de embeddings hace lo mismo? | la afirmación de ruteo | ~$0 | `NEXT` tras S2 |
 | **S4** | dos QLoRA reales sobre las regiones donde S2 dio señal | S5 | GPU alquilada | `NEXT` tras S3 |
 | **S5** | **la brecha de retiro** | el producto | GPU + frontera | `NEXT` tras S4 |
@@ -188,16 +188,40 @@ ahora tiene una suite a la que apuntar.
 **Objetivo.** La condición de falsación del propio proyecto, comprada tan barata
 como se puede comprar: **sin entrenar ningún adaptador**.
 
+**El criterio, decidido el 2026-09-07 (§11, opción C).** No la aceptación por
+caracteres — **acuerdo semántico de respuesta**: la respuesta parseada del
+candidato contra la respuesta parseada del target, de modo que el orden de los
+ítems, la indentación y una cerca de código no puedan moverlo. La α por
+caracteres se sigue registrando al lado, y comparar las dos es trabajo de S6.
+
 **Diseño.** Tres modelos cuyos puntajes verificados en esta suite ya se conocen
 —`qwen3.5:4b`, `qwen3.5:9b`, `gemma4:12b`— hacen de expertos candidatos. Medir su
-α contra el target de frontera por región, y preguntar si ordenar por α reproduce
+acuerdo con el target por región, y preguntar si ordenar por acuerdo reproduce
 ordenar por puntaje verificado.
+
+**S2a — el proxy local, calculado a $0 sobre corridas que ya estaban en disco.**
+El criterio se aplicó a las respuestas persistidas de S0c y S1a; no se volvió a
+correr ninguna inferencia **[ran]**:
+
+| corrida | | acuerdo | verificado | órdenes |
+|---|---|---|---|---|
+| S0c `held_out` | `qwen3.5:4b` | 0,667 | 3/12 | **no comparable** — los candidatos |
+| | `qwen3.5:9b` | 0,727 | 3/12 | empatan en calidad, no hay orden que reproducir |
+| **S1a `held_out_delta`** | `qwen3.5:4b` | 0,333 | 3/12 | **acuerdo 9b > 4b** |
+| | `qwen3.5:9b` | 0,556 | 4/12 | **verificado 9b > 4b — coinciden** |
+
+Una comparación informativa, dos candidatos, n = 12, contra un **target local
+suplente**. Eso no es un puntaje de destilación y no es evidencia a favor de la
+tesis: un 12B que él mismo saca 8/12 no es un modelo de frontera, y acordar con él
+es acordar con un par. Lo que sí establece es que el criterio es computable, no es
+degenerado, y no contradijo a la calidad en la única configuración donde la
+calidad separó. El S2 real necesita el target de frontera.
 
 **Compuerta.** S4 — no se entrena ningún adaptador hasta saber que la aceptación
 lleva la señal sobre la que la promoción se basaría.
 
-**Falsación.** Los órdenes no coinciden, o α es plana entre candidatos que
-difieren en calidad verificada. Cualquiera de las dos mata a la aceptación como
+**Falsación.** Los órdenes no coinciden, o el acuerdo es plano entre candidatos
+que difieren en calidad verificada. Cualquiera de las dos mata a la aceptación como
 criterio de promoción; el pool de adaptadores sobrevive, el router gratis no, y
 el plan se reabre en el router.
 
@@ -226,7 +250,18 @@ no-inferioridad se pre-registran antes de la corrida;
 que una fracción de brecha cerrada no es una afirmación de equivalencia
 **[read]**.
 
-**S6 · `harness.lora`.** Primero su propio headroom: cantidad de tokens de
+**S6 · `harness.lora`, y ahora tiene una segunda condición de victoria.** S0
+encontró que la aceptación por caracteres está dominada por el formato, y fijar el
+formato es exactamente lo que hace el adaptador kernel. Así que además de los
+números de tokens y de llamadas malformadas, S6 contesta: **¿fijar el formato hace
+que la α por caracteres coincida con el acuerdo semántico?** Si lo hace, se
+recupera el puntaje de aceptación por región gratis de la arquitectura y fue el
+adaptador kernel el que lo recuperó — el argumento más fuerte a favor de
+`harness.lora` que este proyecto podría producir. Si no lo hace, la α por
+caracteres queda como estadística intra-familia y el criterio de promoción sigue
+siendo semántico.
+
+Primero su propio headroom: cantidad de tokens de
 protocolo y tasa de llamadas malformadas del modelo base con action tokens en el
 prompt. Si eso ya está en 817 tokens y cero llamadas malformadas, el adaptador no
 tiene qué reparar en esta suite y necesita una distribución de herramientas más
@@ -252,7 +287,7 @@ arquitectura es correcta.
 | C6 | ollama ignora un prefill de asistente **[ran]** | la posición 0 es primaria; la α de mitad de respuesta depende de la bandera `restarted` |
 | C7 | Todos los modelos locales acá piensan **[ran]** | α se mide sobre el **canal de respuesta**; el canal de razonamiento se registra y nunca se concatena |
 | C8 | No hay `OPENROUTER_API_KEY` en esta máquina **[ran]** | S1 y S2 están bloqueados por un humano |
-| C9 | La coincidencia de prefijo por caracteres está dominada por el formato: respuestas idénticas sacan 0,00 entre formatos, y respuestas distintas sacan 0,44 dentro de un mismo formato **[ran]** | entre familias de modelos el criterio de promoción tiene que ser semántico, o hay que fijar el formato primero — que es el trabajo de `harness.lora`, §12 |
+| C9 | La coincidencia de prefijo por caracteres está dominada por el formato: respuestas idénticas sacan 0,00 entre formatos, y respuestas distintas sacan 0,44 dentro de un mismo formato **[ran]** | **decidido (§11, opción C):** el criterio de promoción es el acuerdo semántico de respuesta; la α por caracteres se reporta al lado y no ordena nada; si fijar el formato las reconcilia es la condición de victoria de S6 |
 | C10 | Los agentes bajo `.claude/agents/` se cargan para una sesión rooteada en este repositorio, no en el workspace de arriba **[ran]** | están symlinkeados en `../.claude/agents/` para que una sesión rooteada en el workspace también pueda invocarlos |
 
 ## 8. Deliberadamente no construido
@@ -276,6 +311,7 @@ ciclo de vida está en [`../../CLAUDE.md`](../../CLAUDE.md) §5.
 | 2026-09-07 | creado el skill [`experiment-brief`](../../.claude/skills/experiment-brief/SKILL.md) | el briefing va antes de la corrida, no al lado del reporte |
 | 2026-09-07 | creado el skill [`alpha-surface`](../../.claude/skills/alpha-surface/SKILL.md) | qué licencia α y qué no tiene que viajar con el comando |
 | 2026-09-07 | buscados los dos marketplaces de skills, no se instaló ninguno | todo skill de evaluación encontrado se apoya en LLM-como-juez; el verificador de este proyecto es exacto **[ran]** |
+| 2026-09-07 | editado el skill [`alpha-surface`](../../.claude/skills/alpha-surface/SKILL.md) | el criterio de promoción cambió por §11, y un skill que siguiera describiendo el viejo viajaría con cada comando futuro |
 
 **Declarados, no construidos:** `adapter-trainer` (S4), `kernel-bench` (S6),
 `tournament-referee` (S7), y los skills `withdrawal-gap` (S5) y
@@ -283,13 +319,13 @@ ciclo de vida está en [`../../CLAUDE.md`](../../CLAUDE.md) §5.
 
 ## 10. Condiciones de parada, decididas ahora
 
-- **Rediseños del instrumento.** **3 — la condición ya disparó.** Fueron: el canal
-  de razonamiento y el prefill ausente; medir el payload en vez del formato; y la
-  vuelta al prompt canónico. Hay un cuarto sobre la mesa (§12) y **no se está
-  haciendo**: la regla dice que el diseño lo revisa alguien que no lo estuvo
-  construyendo antes de que el instrumento vuelva a cambiar. Esa revisión es la
-  decisión que se pide en §12, y es la razón por la que esta sesión se detiene acá
-  en vez de seguir parchando.
+- **Rediseños del instrumento.** **3, y después un cuarto hecho bajo revisión.**
+  Los tres fueron: el canal de razonamiento y el prefill ausente; medir el payload
+  en vez del formato; y la vuelta al prompt canónico. La condición disparó, la
+  sesión se detuvo, y el cuarto cambio —que el criterio de promoción pase a ser
+  semántico— **lo decidió el humano que la regla exigía**, no quien estaba
+  construyendo el instrumento (§11, 2026-09-07). El contador vuelve a 0 y la regla
+  queda en pie para los próximos tres.
 - **Los arms planos se abandonan, no se completan.** Una corrida visiblemente
   plana a un tercio del camino se mata, y se registra cuánto costó abortar contra
   cuánto costaba terminar.
@@ -331,10 +367,12 @@ caracteres coincida con el acuerdo semántico? Esa pregunta merece un número
 propio, y es el argumento más fuerte a favor del adaptador kernel que este
 proyecto podría producir.
 
-**Recomendada: la C.** Mantiene barata la falsación barata, no descarta la
-afirmación de la arquitectura, y convierte la falla del instrumento en la
-hipótesis de S6. Necesita el visto bueno de un humano porque cambia la definición
-de la métrica central del proyecto.
+**Decidido el 2026-09-07: la C.** El criterio de promoción para S1–S5 es el
+acuerdo semántico de respuesta, la α por caracteres se reporta al lado y no ordena
+nada, y S6 se queda con la pregunta de si fijar el formato reconcilia a las dos.
+Implementado en `alpha/report.py::semantic`, fijado por seis tests, y aplicado
+retroactivamente a todas las corridas que ya estaban en disco — el criterio se
+calcula sobre las respuestas guardadas, así que no hubo que volver a correr nada.
 
 ## 12. Historia
 
@@ -344,4 +382,6 @@ de la métrica central del proyecto.
 | 2026-09-07 | S0 corrido tres veces; §3 completado; agregados C9 y C10; el contador de rediseños llegó a su condición de parada y el instrumento **no** se cambió una cuarta vez | la métrica estaba midiendo el formato, y la regla de contar rediseños existe justamente para el momento en que es incómoda |
 | 2026-09-07 | S6 pasó de "en paralelo" a "en revisión, posiblemente aguas arriba de α" | si el adaptador kernel es lo que fija el formato, entonces es lo que hace que la aceptación por caracteres signifique algo |
 | 2026-09-07 | S1a corrido sobre `held_out_delta`: 8/12 contra 3/12 y 4/12. La pregunta de suite de S1 quedó cerrada por $0; sólo la key la bloquea | el fallback estaba nombrado en el paso antes de correrlo, que es la única razón por la que cambiar el split acá es un plan y no una búsqueda de un número más amable |
+| 2026-09-07 | §11 decidido (opción C): el criterio de promoción es el acuerdo semántico de respuesta; S2 reescrito alrededor de él; S6 ganó una segunda condición de victoria; las cuatro corridas en disco se re-puntuaron sin volver a correr nada | la coincidencia por caracteres falló sobre una respuesta correcta y acertó por razones ajenas a la calidad, en la misma suite y el mismo día |
+| 2026-09-07 | un empate en calidad verificada ya no se reporta como test de orden fallido | los candidatos de S0c sacaron los dos 3/12, y llamar a eso desacuerdo fabrica un test fallido a partir de uno que no era testeable |
 | 2026-09-07 | arreglado un bug del reporte — el orden global usaba la métrica de payload y el orden por región usaba la cruda, así que un mismo reporte afirmaba acuerdo y desacuerdo sobre la misma corrida. No es un rediseño; el contador sigue en 3 | un reporte que se contradice en dos líneas es peor que uno que no dice nada |

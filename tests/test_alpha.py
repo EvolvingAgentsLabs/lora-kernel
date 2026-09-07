@@ -66,6 +66,7 @@ def test_a_restarted_answer_is_flagged():
 
 # -- the failure the FIRST S0 run actually produced ------------------------------
 
+PRETTY = '```json\n{\n  "kind": "x",\n  "arguments": {\n    "missing": [\n      "cbct"\n    ]\n  }\n}\n```'
 FENCED = '```json\n{"kind": "submit_missing_documents", "arguments": {"missing": ["cbct"]}}\n```'
 PLAIN = '{"kind": "submit_missing_documents", "arguments": {"missing": ["cbct"]}}'
 COMPACT = '{"kind":"submit_missing_documents","arguments":{"missing":["cbct"]}}'
@@ -104,6 +105,55 @@ def test_an_empty_payload_is_an_answer_not_an_absence():
     empty = '{"kind": "submit_missing_documents", "arguments": {"missing": []}}'
     assert payload(empty) == ""
     assert payload(empty) is not None
+
+
+# -- the promotion criterion, decided in EXPERIMENT_PLAN.md §11 ------------------
+
+def test_agreement_ignores_item_order():
+    """Two models that named the same two documents agree, whatever order they
+    listed them in. Character agreement cannot see this and never could."""
+    from alpha.report import semantic
+    a = '{"arguments": {"missing": ["cbct", "medical_history"]}}'
+    b = '{"arguments": {"missing": ["medical_history", "cbct"]}}'
+    assert semantic(a, b) == (True, 1.0)
+
+
+def test_agreement_ignores_layout():
+    """The failure that forced this criterion: a correct compact answer scored
+    0.00 against an indented target while an indented copy scored 1.00."""
+    from alpha.report import semantic
+    assert semantic(COMPACT, PRETTY)[0] is True
+
+
+def test_agreement_is_not_verification():
+    """Two models can agree perfectly and both be wrong. Agreement is measured
+    against the TARGET, never against the truth — collapsing the two would make
+    the criterion score itself."""
+    from alpha.report import semantic
+    wrong_a = '{"arguments": {"missing": ["insurance_card"]}}'
+    wrong_b = '{"arguments": {"missing": ["insurance_card"]}}'
+    assert semantic(wrong_a, wrong_b) == (True, 1.0)
+    assert not verify(wrong_a, frozenset({"cbct"}))["passed"]
+
+
+def test_partial_agreement_is_graded_not_binary():
+    from alpha.report import semantic
+    a = '{"arguments": {"missing": ["cbct"]}}'
+    b = '{"arguments": {"missing": ["cbct", "medical_history"]}}'
+    same, f1 = semantic(a, b)
+    assert same is False and 0.6 < f1 < 0.7
+
+
+def test_an_unparseable_side_is_excluded_not_scored():
+    from alpha.report import semantic
+    assert semantic("I cannot help", PLAIN) is None
+    assert semantic(PLAIN, "I cannot help") is None
+
+
+def test_both_empty_is_agreement():
+    from alpha.report import semantic
+    e = '{"arguments": {"missing": []}}'
+    assert semantic(e, e) == (True, 1.0)
 
 
 # -- the verifier ----------------------------------------------------------------

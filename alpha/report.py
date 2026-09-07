@@ -14,12 +14,45 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
+from alpha.cases import parse_answer
+
+
+def semantic(drafter_answer: str, target_answer: str) -> tuple[bool, float] | None:
+    """Does the candidate say what the target said — as an answer, not as text.
+
+    THIS IS THE PROMOTION CRITERION, decided 2026-09-07 (EXPERIMENT_PLAN.md §11)
+    after character agreement was measured scoring a correct compact answer 0.00
+    and an indented copy of the same answer 1.00. Both answers are parsed and
+    compared as sets, so item order, whitespace, indentation and a markdown fence
+    are all incapable of moving the number.
+
+    None when either side did not produce the declared shape: a model that
+    answered nothing parseable has no answer to agree with, and scoring that as
+    either 0 or 1 invents a fact.
+    """
+    a, b = parse_answer(drafter_answer), parse_answer(target_answer)
+    if a is None or b is None:
+        return None
+    if not a and not b:
+        return True, 1.0
+    tp = len(a & b)
+    precision = tp / len(a) if a else 0.0
+    recall = tp / len(b) if b else 0.0
+    f1 = 0.0 if precision + recall == 0 else 2 * precision * recall / (precision + recall)
+    return a == b, round(f1, 3)
+
 
 def load(run_dir: Path) -> tuple[dict, list[dict]]:
     config = json.loads((run_dir / "config.json").read_text())
     records = [json.loads(p.read_text())
                for p in sorted((run_dir / "cases").glob("*.json"))]
     return config, records
+
+
+def _region_agreement(rs: list[dict], name: str) -> float | None:
+    vals = [t[0] for t in (semantic(r["drafters"][name]["own_answer"], r["target"]["answer"])
+                           for r in rs) if t is not None]
+    return round(sum(vals) / len(vals), 4) if vals else None
 
 
 def summarise(config: dict, records: list[dict]) -> dict:
@@ -40,9 +73,20 @@ def summarise(config: dict, records: list[dict]) -> dict:
         mid = [x["alpha_mid_mean"] for x in rows if x.get("alpha_mid_mean") is not None]
         restarts = [x["restarted_fraction"] for x in rows
                     if x.get("restarted_fraction") is not None]
+        sem = [semantic(x["own_answer"], r["target"]["answer"])
+               for x, r in zip(rows, records)]
+        sem_ok = [t for t in sem if t is not None]
         ac = [x["alpha_at_0_content"] for x in rows if x.get("alpha_at_0_content") is not None]
         ca = [x["content_agreement"] for x in rows if x.get("content_agreement") is not None]
         out["drafters"][n] = {
+            # -- the promotion criterion (§11) --
+            "same_answer_as_target_rate": (
+                round(sum(t[0] for t in sem_ok) / len(sem_ok), 4) if sem_ok else None),
+            "answer_f1_vs_target": (
+                round(statistics.fmean(t[1] for t in sem_ok), 4) if sem_ok else None),
+            "unparseable_either_side": len(sem) - len(sem_ok),
+            # -- character acceptance, kept beside it and only comparable
+            #    within one model family (C9) --
             "alpha_at_0": round(statistics.fmean(a0), 4),
             "alpha_content": round(statistics.fmean(ac), 4) if ac else None,
             "content_agreement": round(statistics.fmean(ca), 4) if ca else None,
@@ -72,6 +116,7 @@ def summarise(config: dict, records: list[dict]) -> dict:
                 n: {
                     "alpha_at_0": round(
                         statistics.fmean(r["drafters"][n]["alpha_at_0"] for r in rs), 4),
+                    "agreement": _region_agreement(rs, n),
                     "verified_pass": sum(r["drafters"][n]["verified"]["passed"] for r in rs),
                 } for n in names
             },
@@ -82,22 +127,29 @@ def summarise(config: dict, records: list[dict]) -> dict:
     # candidates a correlation coefficient would be theatre — the orderings
     # themselves are the finding.
     def _rank_key(n):
+        # The promotion criterion ranks. Character acceptance does not rank
+        # anything while C9 stands — it is reported, not obeyed.
         d = out["drafters"][n]
-        # Order by the payload metric when it exists; the raw one is format.
-        return -(d["alpha_content"] if d["alpha_content"] is not None else d["alpha_at_0"])
+        return -(d["same_answer_as_target_rate"] or 0.0)
 
     by_alpha = sorted(names, key=_rank_key)
     by_verified = sorted(names, key=lambda n: -out["drafters"][n]["verified_pass"])
+    # A tie in verified quality is not a disagreement about ordering. Reporting
+    # it as one manufactures a failed test out of an untestable one.
+    verified_vals = {out["drafters"][n]["verified_pass"] for n in names}
+    comparable = len(verified_vals) == len(names)
     out["ordering"] = {
+        "criterion": "semantic answer agreement with the target (EXPERIMENT_PLAN.md §11)",
+        "comparable": comparable,
+        "by_agreement": by_alpha,
+        "by_alpha_chars": sorted(
+            names, key=lambda n: -(out["drafters"][n]["alpha_content"] or 0.0)),
         "by_alpha": by_alpha,
         "by_verified": by_verified,
-        "agree": by_alpha == by_verified,
+        "agree": (by_alpha == by_verified) if comparable else None,
         "per_region_agree": {
-            region: (sorted(names, key=lambda n: -v["drafters"][n]["alpha_at_0"])
+            region: (sorted(names, key=lambda n: -(v["drafters"][n]["agreement"] or 0.0))
                      == sorted(names, key=lambda n: -v["drafters"][n]["verified_pass"]))
-            # NOTE: per-region rows carry only the raw α, so this line and the
-            # overall one can disagree about the same run. Neither is
-            # interpretable while C9 stands — see the caveat printed below.
             for region, v in out["by_region"].items()
         },
     }
@@ -133,31 +185,40 @@ def render(s: dict) -> str:
         f"target score  {s['target_verified_pass']}/{n} verified "
         f"({s['target_parse_failures']} unparseable)",
         "",
-        f"{'drafter':<26}{'α@0':>7}{'α payload':>11}{'payload agr':>13}"
-        f"{'identical':>11}{'verified':>10}{'f1':>7}",
+        "PROMOTION CRITERION — semantic answer agreement with the target (§11)",
+        f"{'drafter':<26}{'same answer':>13}{'answer f1':>11}"
+        f"{'verified':>11}{'f1 vs truth':>13}{'unparseable':>12}",
     ]
     for name, d in s["drafters"].items():
-        ac = "    n/a" if d["alpha_content"] is None else f"{d['alpha_content']:>7.3f}"
-        ca = "      n/a" if d["content_agreement"] is None else f"{d['content_agreement']:>9.3f}"
+        sa = "n/a" if d["same_answer_as_target_rate"] is None else f"{d['same_answer_as_target_rate']:.3f}"
+        af = "n/a" if d["answer_f1_vs_target"] is None else f"{d['answer_f1_vs_target']:.3f}"
         lines.append(
-            f"{name:<26}{d['alpha_at_0']:>7.3f}{ac:>11}{ca:>13}"
-            f"{d['same_answer_as_target']:>8}/{n:<2}"
-            f"{d['verified_pass']:>7}/{n:<2}{d['verified_f1_mean']:>7.2f}")
-    lines += ["", "by region (α mean / verified pass):"]
+            f"{name:<26}{sa:>13}{af:>11}{d['verified_pass']:>8}/{n:<2}"
+            f"{d['verified_f1_mean']:>13.2f}{d['unparseable_either_side']:>12}")
+    lines += ["", "character acceptance — reported, never obeyed (C9):"]
+    for name, d in s["drafters"].items():
+        ac = "n/a" if d["alpha_content"] is None else f"{d['alpha_content']:.3f}"
+        lines.append(f"  {name:<26}α@0={d['alpha_at_0']:.3f}  payload={ac}"
+                     f"  layout-identical answers={d['same_answer_as_target']}/{n}")
+    lines += ["", "by region (answer agreement / verified pass):"]
     for region, v in s["by_region"].items():
         cells = "  ".join(
-            f"{k.split(':')[-1]}={x['alpha_at_0']:.2f}/{x['verified_pass']}"
+            f"{k.split(':')[-1]}={'n/a' if x['agreement'] is None else format(x['agreement'], '.2f')}"
+            f"/{x['verified_pass']}"
             for k, x in v["drafters"].items())
         lines.append(f"  {region:<10} n={v['n']:<3} target={v['target_verified_pass']}  {cells}")
     o, h = s["ordering"], s["health"]
     lines += [
         "",
-        f"ordering by α        {' > '.join(x.split(':')[-1] for x in o['by_alpha'])}",
-        f"ordering by verified {' > '.join(x.split(':')[-1] for x in o['by_verified'])}",
-        f"they agree: {o['agree']}   per region: {o['per_region_agree']}",
-        "NOT INTERPRETABLE while C9 stands: character agreement measures layout, "
-        "so an ordering by α can match the ordering by quality for reasons that "
-        "have nothing to do with quality. See EXPERIMENT_PLAN.md §11.",
+        f"ordering by agreement {' > '.join(x.split(':')[-1] for x in o['by_agreement'])}",
+        f"ordering by verified  {' > '.join(x.split(':')[-1] for x in o['by_verified'])}",
+        (f"they agree: {o['agree']}   per region: {o['per_region_agree']}"
+         if o["comparable"] else
+         "not comparable: the candidates tie on verified quality, so there is no "
+         "ordering for the criterion to reproduce"),
+        f"(ordering by character α would have said: "
+        f"{' > '.join(x.split(':')[-1] for x in o['by_alpha_chars'])} — kept visible "
+        f"because S6's win condition is whether pinning the format makes these two agree)",
         "",
         f"health: α dispersion {h['alpha_dispersion']:.3f} "
         f"(no dispersion = nothing to route on)",

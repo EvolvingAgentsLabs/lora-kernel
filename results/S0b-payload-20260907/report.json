@@ -21,6 +21,9 @@
   "target_parse_failures": 0,
   "drafters": {
     "ollama:qwen3.5:4b": {
+      "same_answer_as_target_rate": 0.9091,
+      "answer_f1_vs_target": 0.9697,
+      "unparseable_either_side": 1,
       "alpha_at_0": 0.9167,
       "alpha_content": 0.9136,
       "content_agreement": 0.9136,
@@ -37,6 +40,9 @@
       "restarted_fraction": null
     },
     "ollama:qwen3.5:9b": {
+      "same_answer_as_target_rate": 0.8333,
+      "answer_f1_vs_target": 0.8889,
+      "unparseable_either_side": 0,
       "alpha_at_0": 0.9167,
       "alpha_content": 0.8375,
       "content_agreement": 0.8375,
@@ -60,10 +66,12 @@
       "drafters": {
         "ollama:qwen3.5:4b": {
           "alpha_at_0": 1.0,
+          "agreement": 1.0,
           "verified_pass": 1
         },
         "ollama:qwen3.5:9b": {
           "alpha_at_0": 1.0,
+          "agreement": 0.75,
           "verified_pass": 0
         }
       }
@@ -74,10 +82,12 @@
       "drafters": {
         "ollama:qwen3.5:4b": {
           "alpha_at_0": 0.75,
+          "agreement": 1.0,
           "verified_pass": 1
         },
         "ollama:qwen3.5:9b": {
           "alpha_at_0": 0.75,
+          "agreement": 1.0,
           "verified_pass": 1
         }
       }
@@ -88,16 +98,28 @@
       "drafters": {
         "ollama:qwen3.5:4b": {
           "alpha_at_0": 1.0,
+          "agreement": 0.75,
           "verified_pass": 1
         },
         "ollama:qwen3.5:9b": {
           "alpha_at_0": 1.0,
+          "agreement": 0.75,
           "verified_pass": 1
         }
       }
     }
   },
   "ordering": {
+    "criterion": "semantic answer agreement with the target (EXPERIMENT_PLAN.md \u00a711)",
+    "comparable": true,
+    "by_agreement": [
+      "ollama:qwen3.5:4b",
+      "ollama:qwen3.5:9b"
+    ],
+    "by_alpha_chars": [
+      "ollama:qwen3.5:4b",
+      "ollama:qwen3.5:9b"
+    ],
     "by_alpha": [
       "ollama:qwen3.5:4b",
       "ollama:qwen3.5:9b"

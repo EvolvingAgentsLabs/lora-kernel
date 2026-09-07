@@ -28,7 +28,9 @@ score it had while it was there.
 | M8 | On `clinical_learning` held-out, **single-shot**, `gemma4:12b` scores 4/12 and its own 4B and 9B drafters score 3/12 — no separation and no headroom. The published 38–41/50 belongs to the **runtime**, not to raw generation. | [ran] |
 | M9 | **`held_out_delta` separates the models where `held_out` does not**: `gemma4:12b` 8/12 against 3/12 and 4/12 for its own drafters. Headroom exists — on the split whose planted rule inverts, not on the plain held-out set. | [ran] |
 | M10 | In that same run, ordering by α matched ordering by verified score **for the wrong reason** — the 9B indents like the target and the 4B does not. A confirmation of the central claim arriving by accident of formatting. | [ran] |
-| M11 | Every local model here emits a reasoning channel before the answer; ollama returns the two separately, `think=false` works on qwen and 500s on gemma; and ollama's chat renderer ignores an assistant prefill, so mid-answer draft positions are unavailable locally. | [ran] |
+| M11 | **The promotion criterion is semantic answer agreement, not character acceptance** — decided 2026-09-07 under the plan's own stopping rule, after M7. Character α is reported beside it and ranks nothing; whether `harness.lora` reconciles them is S6's win condition. | decided |
+| M12 | Applying that criterion to runs already on disk cost nothing: the case files store both answers, so a metric change re-scores four runs without re-running inference. Persisting the raw answers, not just the metric, is what made that possible. | [ran] |
+| M13 | Every local model here emits a reasoning channel before the answer; ollama returns the two separately, `think=false` works on qwen and 500s on gemma; and ollama's chat renderer ignores an assistant prefill, so mid-answer draft positions are unavailable locally. | [ran] |
 
 ## What this workspace already measured, and must not be re-learned
 

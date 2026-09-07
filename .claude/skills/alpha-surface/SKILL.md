@@ -17,6 +17,21 @@ whole surface, for any number of candidate drafters.
 That identity is the reason this measurement needs no GPU, no vLLM and no
 `LoRA-as-drafter` support.
 
+## The promotion criterion is SEMANTIC, decided 2026-09-07
+
+Character acceptance was measured scoring a **correct** compact answer 0.00
+against an indented target, and an indented copy of the same answer 1.00 **[ran]**.
+It measures layout across model families.
+
+So promotion is decided on **semantic answer agreement** — both answers parsed
+and compared as answers (`alpha/report.py::semantic`) — and character α is
+reported beside it and **ranks nothing**. Whether pinning the format with
+`harness.lora` reconciles the two is S6's own win condition, not an assumption
+this metric is allowed to make.
+
+Report `same answer` and `answer f1` as the criterion, α@0 and payload α as
+context, and never let a reader take the second pair for the first.
+
 ## Two things to state every time, because they bound the claim
 
 - **Cross-tokenizer.** A frontier target does not share the base model's
