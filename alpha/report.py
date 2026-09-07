@@ -93,8 +93,11 @@ def summarise(config: dict, records: list[dict]) -> dict:
         "by_verified": by_verified,
         "agree": by_alpha == by_verified,
         "per_region_agree": {
-            region: (sorted(names, key=lambda n: -v["drafters"][n]["alpha_at_0"])  # noqa: E501
+            region: (sorted(names, key=lambda n: -v["drafters"][n]["alpha_at_0"])
                      == sorted(names, key=lambda n: -v["drafters"][n]["verified_pass"]))
+            # NOTE: per-region rows carry only the raw α, so this line and the
+            # overall one can disagree about the same run. Neither is
+            # interpretable while C9 stands — see the caveat printed below.
             for region, v in out["by_region"].items()
         },
     }
@@ -152,6 +155,9 @@ def render(s: dict) -> str:
         f"ordering by α        {' > '.join(x.split(':')[-1] for x in o['by_alpha'])}",
         f"ordering by verified {' > '.join(x.split(':')[-1] for x in o['by_verified'])}",
         f"they agree: {o['agree']}   per region: {o['per_region_agree']}",
+        "NOT INTERPRETABLE while C9 stands: character agreement measures layout, "
+        "so an ordering by α can match the ordering by quality for reasons that "
+        "have nothing to do with quality. See EXPERIMENT_PLAN.md §11.",
         "",
         f"health: α dispersion {h['alpha_dispersion']:.3f} "
         f"(no dispersion = nothing to route on)",

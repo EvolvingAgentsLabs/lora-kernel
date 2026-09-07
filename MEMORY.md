@@ -26,7 +26,9 @@ score it had while it was there.
 | M6 | Frontier chat APIs do not expose logprobs of a forced continuation, so true rejection sampling against a frontier API is not implementable — which is why M4 is the instrument. | [read] |
 | M7 | **Character-prefix agreement measures layout, not agreement.** Identical answers score 0.00 across formats (fenced/pretty vs compact); different answers score 0.44 within one format. In `results/S0c-canonical-20260907` the 4B gave the correct answer and scored 0.00 while an indented copy of the same answer scored 1.00. | [ran] |
 | M8 | On `clinical_learning` held-out, **single-shot**, `gemma4:12b` scores 4/12 and its own 4B and 9B drafters score 3/12 — no separation and no headroom. The published 38–41/50 belongs to the **runtime**, not to raw generation. | [ran] |
-| M9 | Every local model here emits a reasoning channel before the answer; ollama returns the two separately, `think=false` works on qwen and 500s on gemma; and ollama's chat renderer ignores an assistant prefill, so mid-answer draft positions are unavailable locally. | [ran] |
+| M9 | **`held_out_delta` separates the models where `held_out` does not**: `gemma4:12b` 8/12 against 3/12 and 4/12 for its own drafters. Headroom exists — on the split whose planted rule inverts, not on the plain held-out set. | [ran] |
+| M10 | In that same run, ordering by α matched ordering by verified score **for the wrong reason** — the 9B indents like the target and the 4B does not. A confirmation of the central claim arriving by accident of formatting. | [ran] |
+| M11 | Every local model here emits a reasoning channel before the answer; ollama returns the two separately, `think=false` works on qwen and 500s on gemma; and ollama's chat renderer ignores an assistant prefill, so mid-answer draft positions are unavailable locally. | [ran] |
 
 ## What this workspace already measured, and must not be re-learned
 

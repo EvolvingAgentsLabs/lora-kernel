@@ -51,7 +51,7 @@ already exist, before a single adapter is trained.
 | step | objective | first gate it opens | cost | state |
 |---|---|---|---|---|
 | **S0** | the instrument measures what it claims | everything | $0, local | **DONE, and it moved the plan** — §3 |
-| **S1** | headroom: can this suite show a withdrawal gap at all | S2 | ~$5 | **BLOCKED** ×2 — §4 |
+| **S1** | headroom: can this suite show a withdrawal gap at all | S2 | ~$5 | **suite answered locally ([`S1a`](../results/S1a-delta-20260907/BRIEF.md)); frontier arm blocked on a key** — §4 |
 | **S2** | does α order candidates the way verified quality does | S4 | ~$15 | **BLOCKED** — §5 |
 | **S3** | attribution: does a lexical/embedding router do the same job | the routing claim | ~$0 | `NEXT` after S2 |
 | **S4** | two real QLoRA adapters on regions where S2 showed signal | S5 | GPU rental | `NEXT` after S3 |
@@ -155,16 +155,30 @@ distribution, not a better treatment. Candidate replacements, in order: the
 protocol fails), then the `causal_workflow` and `quantum` domains already in
 `../verified-runtime`.
 
-**Blockers for a human — two now, not one.**
+**S1a — the fallback this step named in advance, run before spending anything.**
+[`results/S1a-delta-20260907/`](../results/S1a-delta-20260907/BRIEF.md), $0,
+12 cases of `held_out_delta`, everything else identical to S0c **[ran]**:
 
-1. `OPENROUTER_API_KEY` is not set on this machine and is not on disk **[ran]**.
-   The run is one command once it exists.
-2. **S0 already answered part of S1 for free, and the answer was no.** With the
-   canonical prompt and single-shot generation, `gemma4:12b` scores 4/12 and its
-   own drafters score 3/12 — no separation, no headroom. Buying the frontier arm
-   on this configuration would purchase a number that cannot move. Either the
-   configuration changes (the runtime loop back in, or the `held_out_delta`
-   split, or a harder domain) or S1 is not worth its $5.
+| | `gemma4:12b` (target) | `qwen3.5:4b` | `qwen3.5:9b` |
+|---|---|---|---|
+| `held_out` (S0c) | 4/12 | 3/12 | 3/12 |
+| **`held_out_delta` (S1a)** | **8/12** | **3/12** | **4/12** |
+
+**There is headroom, on the split whose planted rule inverts.** The 12B pulls
++4 clear of its best drafter where it was tied before, and the drafters separate
+from each other. This is what the frontier arm needs to exist: a configuration
+where being better is possible. The suite question is answered — **S1 is worth
+its $5 on `held_out_delta`, not on `held_out`.**
+
+**And it produced the trap C9 predicted, in the form that would have been
+believed.** Ordering by α matched ordering by verified score (9B > 4B) — for the
+wrong reason: the 9B pretty-prints like the target and the 4B does not. A
+confirmation of the project's central claim, arriving by accident of
+indentation. The report now refuses to interpret that line while C9 stands.
+
+**Blocker for a human — one now, not two.** `OPENROUTER_API_KEY` is not set on
+this machine and is not on disk **[ran]**. The run is one command once it
+exists, and it now has a suite worth pointing at.
 
 ## 5. S2 — does α order candidates the way quality does · BLOCKED
 
@@ -317,3 +331,5 @@ project's central metric.
 | 2026-09-07 | plan created; S0 built and run; the α-versus-quality test moved ahead of adapter training | the specification's E1 validates α only after adapters exist, which is where the test stops being cheap |
 | 2026-09-07 | S0 run three times; §3 filled in; C9 and C10 added; the redesign counter reached its stopping condition and the instrument was **not** changed a fourth time | the metric was measuring layout, and the rule about counting redesigns exists precisely for the moment it is inconvenient |
 | 2026-09-07 | S6 moved from "parallel" to "under review, possibly upstream of α" | if the kernel adapter is what pins the format, then it is what makes character acceptance mean anything |
+| 2026-09-07 | S1a run on `held_out_delta`: 8/12 against 3/12 and 4/12. S1's suite question closed for $0; only the key still blocks it | the fallback was named in the step before the step ran, which is the only reason changing the split here is a plan and not a search for a friendlier number |
+| 2026-09-07 | reporting bug fixed — the overall ordering used the payload metric while the per-region ordering used the raw one, so one report claimed agreement and disagreement about the same run. Not a redesign; the counter stays at 3 | a report that contradicts itself in two lines is worse than one that says nothing |

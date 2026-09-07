@@ -1,0 +1,94 @@
+{
+  "run": {
+    "target": "ollama:gemma4:12b-mlx",
+    "drafters": [
+      "ollama:qwen3.5:4b",
+      "ollama:qwen3.5:9b"
+    ],
+    "split": "held_out_delta",
+    "n": 12,
+    "window_chars": 24,
+    "positions": 1,
+    "temperature": 0.0,
+    "prompt": "canonical",
+    "prompt_version": "1.0.0",
+    "prompt_hash": "2e4126b1e3fc8091",
+    "started": "2026-09-07T19:13:02",
+    "identity": "alpha_char = lcp(draft, target_continuation) / window, greedy target",
+    "finished": "2026-09-07T19:16:52",
+    "cases_on_disk": 12
+  },
+  "target_verified_pass": 8,
+  "target_parse_failures": 0,
+  "drafters": {
+    "ollama:qwen3.5:4b": {
+      "alpha_at_0": 0.0,
+      "alpha_content": 0.0,
+      "content_agreement": 0.0,
+      "format_absent": 0,
+      "same_answer_as_target": 0,
+      "alpha_at_0_sd": 0.0,
+      "agreement_fraction": 0.0,
+      "alpha_mid": null,
+      "verified_pass": 3,
+      "verified_f1_mean": 0.472,
+      "parse_failures": 0,
+      "empty_answers": 0,
+      "thought_chars_mean": 0.0,
+      "restarted_fraction": null
+    },
+    "ollama:qwen3.5:9b": {
+      "alpha_at_0": 0.0,
+      "alpha_content": 0.3241,
+      "content_agreement": 0.2818,
+      "format_absent": 3,
+      "same_answer_as_target": 2,
+      "alpha_at_0_sd": 0.0,
+      "agreement_fraction": 0.0,
+      "alpha_mid": null,
+      "verified_pass": 4,
+      "verified_f1_mean": 0.556,
+      "parse_failures": 3,
+      "empty_answers": 0,
+      "thought_chars_mean": 0.0,
+      "restarted_fraction": null
+    }
+  },
+  "by_region": {
+    "delta": {
+      "n": 12,
+      "target_verified_pass": 8,
+      "drafters": {
+        "ollama:qwen3.5:4b": {
+          "alpha_at_0": 0.0,
+          "verified_pass": 3
+        },
+        "ollama:qwen3.5:9b": {
+          "alpha_at_0": 0.0,
+          "verified_pass": 4
+        }
+      }
+    }
+  },
+  "ordering": {
+    "by_alpha": [
+      "ollama:qwen3.5:9b",
+      "ollama:qwen3.5:4b"
+    ],
+    "by_verified": [
+      "ollama:qwen3.5:9b",
+      "ollama:qwen3.5:4b"
+    ],
+    "agree": true,
+    "per_region_agree": {
+      "delta": false
+    }
+  },
+  "health": {
+    "alpha_dispersion": 0.3241,
+    "worst_restarted_fraction": null,
+    "target_thought_chars_mean": 0.0,
+    "target_answer_chars_mean": 111.9,
+    "headroom_target_minus_best_drafter": 4
+  }
+}

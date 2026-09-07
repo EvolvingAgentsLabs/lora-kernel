@@ -51,7 +51,7 @@ se responde con modelos que ya existen, antes de entrenar un solo adaptador.
 | paso | objetivo | primera compuerta que abre | costo | estado |
 |---|---|---|---|---|
 | **S0** | que el instrumento mida lo que dice | todo | $0, local | **DONE, y movió el plan** — §3 |
-| **S1** | headroom: ¿puede esta suite mostrar una brecha de retiro? | S2 | ~$5 | **BLOCKED** ×2 — §4 |
+| **S1** | headroom: ¿puede esta suite mostrar una brecha de retiro? | S2 | ~$5 | **la pregunta de la suite se contestó local ([`S1a`](../../results/S1a-delta-20260907/BRIEF.md)); el arm de frontera espera la key** — §4 |
 | **S2** | ¿α ordena a los candidatos como los ordena la calidad verificada? | S4 | ~$15 | **BLOCKED** — §5 |
 | **S3** | atribución: ¿un router léxico o de embeddings hace lo mismo? | la afirmación de ruteo | ~$0 | `NEXT` tras S2 |
 | **S4** | dos QLoRA reales sobre las regiones donde S2 dio señal | S5 | GPU alquilada | `NEXT` tras S3 |
@@ -158,16 +158,30 @@ candidatos, en orden: el split `held_out_delta` de `clinical_learning` (su regla
 se invierte, así que el protocolo memorizado falla), después los dominios
 `causal_workflow` y `quantum` que ya están en `../verified-runtime`.
 
-**Bloqueos para un humano — ahora dos, no uno.**
+**S1a — el fallback que este paso nombró de antemano, corrido antes de gastar
+nada.** [`results/S1a-delta-20260907/`](../../results/S1a-delta-20260907/BRIEF.md),
+$0, 12 casos de `held_out_delta`, todo lo demás idéntico a S0c **[ran]**:
 
-1. `OPENROUTER_API_KEY` no está en esta máquina ni en disco **[ran]**. La corrida
-   es un comando en cuanto exista.
-2. **S0 ya contestó parte de S1 gratis, y la respuesta fue que no.** Con el
-   prompt canónico y generación de un solo tiro, `gemma4:12b` saca 4/12 y sus
-   propios drafters sacan 3/12: sin separación y sin headroom. Comprar el arm de
-   frontera sobre esta configuración sería comprar un número que no puede
-   moverse. O cambia la configuración (el bucle del runtime de vuelta, o el split
-   `held_out_delta`, o un dominio más duro) o S1 no vale sus $5.
+| | `gemma4:12b` (target) | `qwen3.5:4b` | `qwen3.5:9b` |
+|---|---|---|---|
+| `held_out` (S0c) | 4/12 | 3/12 | 3/12 |
+| **`held_out_delta` (S1a)** | **8/12** | **3/12** | **4/12** |
+
+**Hay headroom, en el split cuya regla plantada se invierte.** El 12B se despega
++4 de su mejor drafter donde antes empataba, y los drafters se separan entre sí.
+Esto es lo que el arm de frontera necesita para existir: una configuración donde
+ser mejor sea posible. La pregunta de la suite quedó contestada — **S1 vale sus
+$5 sobre `held_out_delta`, no sobre `held_out`.**
+
+**Y produjo la trampa que C9 predijo, en la forma en que se le habría creído.**
+Ordenar por α coincidió con ordenar por puntaje verificado (9B > 4B) — por la
+razón equivocada: el 9B indenta como el target y el 4B no. Una confirmación de la
+afirmación central del proyecto, llegando por accidente de indentación. El
+reporte ahora se niega a interpretar esa línea mientras C9 siga en pie.
+
+**Bloqueo para un humano — ahora uno, no dos.** `OPENROUTER_API_KEY` no está en
+esta máquina ni en disco **[ran]**. La corrida es un comando en cuanto exista, y
+ahora tiene una suite a la que apuntar.
 
 ## 5. S2 — ¿α ordena como ordena la calidad? · BLOCKED
 
@@ -329,3 +343,5 @@ de la métrica central del proyecto.
 | 2026-09-07 | plan creado; S0 construido y corrido; el test de α contra calidad se movió antes del entrenamiento de adaptadores | el E1 de la especificación valida α sólo después de que existan los adaptadores, que es donde el test deja de ser barato |
 | 2026-09-07 | S0 corrido tres veces; §3 completado; agregados C9 y C10; el contador de rediseños llegó a su condición de parada y el instrumento **no** se cambió una cuarta vez | la métrica estaba midiendo el formato, y la regla de contar rediseños existe justamente para el momento en que es incómoda |
 | 2026-09-07 | S6 pasó de "en paralelo" a "en revisión, posiblemente aguas arriba de α" | si el adaptador kernel es lo que fija el formato, entonces es lo que hace que la aceptación por caracteres signifique algo |
+| 2026-09-07 | S1a corrido sobre `held_out_delta`: 8/12 contra 3/12 y 4/12. La pregunta de suite de S1 quedó cerrada por $0; sólo la key la bloquea | el fallback estaba nombrado en el paso antes de correrlo, que es la única razón por la que cambiar el split acá es un plan y no una búsqueda de un número más amable |
+| 2026-09-07 | arreglado un bug del reporte — el orden global usaba la métrica de payload y el orden por región usaba la cruda, así que un mismo reporte afirmaba acuerdo y desacuerdo sobre la misma corrida. No es un rediseño; el contador sigue en 3 | un reporte que se contradice en dos líneas es peor que uno que no dice nada |
