@@ -6,24 +6,24 @@
       "ollama:qwen3.5:9b"
     ],
     "split": "held_out_delta",
-    "n": 12,
+    "n": 20,
     "window_chars": 24,
     "positions": 1,
     "temperature": 0.0,
     "prompt": "canonical",
     "prompt_version": "1.0.0",
     "prompt_hash": "2e4126b1e3fc8091",
-    "started": "2026-09-07T19:13:02",
+    "started": "2026-09-07T19:44:53",
     "identity": "alpha_char = lcp(draft, target_continuation) / window, greedy target",
-    "finished": "2026-09-07T19:16:52",
-    "cases_on_disk": 12
+    "finished": "2026-09-07T19:47:29",
+    "cases_on_disk": 20
   },
-  "target_verified_pass": 8,
+  "target_verified_pass": 12,
   "target_parse_failures": 0,
   "drafters": {
     "ollama:qwen3.5:4b": {
-      "same_answer_as_target_rate": 0.3333,
-      "answer_f1_vs_target": 0.4445,
+      "same_answer_as_target_rate": 0.35,
+      "answer_f1_vs_target": 0.5084,
       "unparseable_either_side": 0,
       "alpha_at_0": 0.0,
       "alpha_content": 0.0,
@@ -33,28 +33,28 @@
       "alpha_at_0_sd": 0.0,
       "agreement_fraction": 0.0,
       "alpha_mid": null,
-      "verified_pass": 3,
-      "verified_f1_mean": 0.472,
+      "verified_pass": 6,
+      "verified_f1_mean": 0.545,
       "parse_failures": 0,
       "empty_answers": 0,
       "thought_chars_mean": 0.0,
       "restarted_fraction": null
     },
     "ollama:qwen3.5:9b": {
-      "same_answer_as_target_rate": 0.5556,
-      "answer_f1_vs_target": 0.7038,
-      "unparseable_either_side": 3,
+      "same_answer_as_target_rate": 0.5333,
+      "answer_f1_vs_target": 0.7645,
+      "unparseable_either_side": 5,
       "alpha_at_0": 0.0,
-      "alpha_content": 0.3241,
-      "content_agreement": 0.2818,
-      "format_absent": 3,
-      "same_answer_as_target": 2,
+      "alpha_content": 0.3944,
+      "content_agreement": 0.3205,
+      "format_absent": 5,
+      "same_answer_as_target": 3,
       "alpha_at_0_sd": 0.0,
       "agreement_fraction": 0.0,
       "alpha_mid": null,
-      "verified_pass": 4,
-      "verified_f1_mean": 0.556,
-      "parse_failures": 3,
+      "verified_pass": 6,
+      "verified_f1_mean": 0.558,
+      "parse_failures": 5,
       "empty_answers": 0,
       "thought_chars_mean": 0.0,
       "restarted_fraction": null
@@ -62,25 +62,25 @@
   },
   "by_region": {
     "delta": {
-      "n": 12,
-      "target_verified_pass": 8,
+      "n": 20,
+      "target_verified_pass": 12,
       "drafters": {
         "ollama:qwen3.5:4b": {
           "alpha_at_0": 0.0,
-          "agreement": 0.3333,
-          "verified_pass": 3
+          "agreement": 0.35,
+          "verified_pass": 6
         },
         "ollama:qwen3.5:9b": {
           "alpha_at_0": 0.0,
-          "agreement": 0.5556,
-          "verified_pass": 4
+          "agreement": 0.5333,
+          "verified_pass": 6
         }
       }
     }
   },
   "ordering": {
     "criterion": "semantic answer agreement with the target (EXPERIMENT_PLAN.md \u00a711)",
-    "comparable": true,
+    "comparable": false,
     "by_agreement": [
       "ollama:qwen3.5:9b",
       "ollama:qwen3.5:4b"
@@ -94,19 +94,19 @@
       "ollama:qwen3.5:4b"
     ],
     "by_verified": [
-      "ollama:qwen3.5:9b",
-      "ollama:qwen3.5:4b"
+      "ollama:qwen3.5:4b",
+      "ollama:qwen3.5:9b"
     ],
-    "agree": true,
+    "agree": null,
     "per_region_agree": {
-      "delta": true
+      "delta": false
     }
   },
   "health": {
-    "alpha_dispersion": 0.3241,
+    "alpha_dispersion": 0.3944,
     "worst_restarted_fraction": null,
     "target_thought_chars_mean": 0.0,
-    "target_answer_chars_mean": 111.9,
-    "headroom_target_minus_best_drafter": 4
+    "target_answer_chars_mean": 115.1,
+    "headroom_target_minus_best_drafter": 6
   }
 }

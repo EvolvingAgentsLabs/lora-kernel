@@ -165,19 +165,20 @@ $0, 12 casos de `held_out_delta`, todo lo demás idéntico a S0c **[ran]**:
 | | `gemma4:12b` (target) | `qwen3.5:4b` | `qwen3.5:9b` |
 |---|---|---|---|
 | `held_out` (S0c) | 4/12 | 3/12 | 3/12 |
-| **`held_out_delta` (S1a)** | **8/12** | **3/12** | **4/12** |
+| **`held_out_delta` (S1a, n=20)** | **12/20** | **6/20** | **6/20** |
 
 **Hay headroom, en el split cuya regla plantada se invierte.** El 12B se despega
-+4 de su mejor drafter donde antes empataba, y los drafters se separan entre sí.
+**+6 de 20** de su mejor drafter donde antes empataba.
 Esto es lo que el arm de frontera necesita para existir: una configuración donde
 ser mejor sea posible. La pregunta de la suite quedó contestada — **S1 vale sus
 $5 sobre `held_out_delta`, no sobre `held_out`.**
 
 **Y produjo la trampa que C9 predijo, en la forma en que se le habría creído.**
-Ordenar por α coincidió con ordenar por puntaje verificado (9B > 4B) — por la
-razón equivocada: el 9B indenta como el target y el 4B no. Una confirmación de la
-afirmación central del proyecto, llegando por accidente de indentación. El
-reporte ahora se niega a interpretar esa línea mientras C9 siga en pie.
+Con n=12, ordenar por α coincidió con ordenar por puntaje verificado (9B > 4B) —
+por la razón equivocada: el 9B indenta como el target y el 4B no. Una confirmación
+de la afirmación central del proyecto, llegando por accidente de indentación,
+sobre una diferencia de un caso que se evaporó en n=20. El reporte ahora se niega
+a interpretar esa línea mientras C9 siga en pie.
 
 **Bloqueo para un humano — ahora uno, no dos.** `OPENROUTER_API_KEY` no está en
 esta máquina ni en disco **[ran]**. La corrida es un comando en cuanto exista, y
@@ -199,23 +200,33 @@ caracteres se sigue registrando al lado, y comparar las dos es trabajo de S6.
 acuerdo con el target por región, y preguntar si ordenar por acuerdo reproduce
 ordenar por puntaje verificado.
 
-**S2a — el proxy local, calculado a $0 sobre corridas que ya estaban en disco.**
-El criterio se aplicó a las respuestas persistidas de S0c y S1a; no se volvió a
-correr ninguna inferencia **[ran]**:
+**S2a — el proxy local, y la corrección que produjo.** El criterio se aplicó a las
+respuestas persistidas por S0c y S1a, y después se completó el split delta a sus
+20 casos **[ran]**:
 
-| corrida | | acuerdo | verificado | órdenes |
+| corrida | | acuerdo | verificado | test de orden |
 |---|---|---|---|---|
-| S0c `held_out` | `qwen3.5:4b` | 0,667 | 3/12 | **no comparable** — los candidatos |
-| | `qwen3.5:9b` | 0,727 | 3/12 | empatan en calidad, no hay orden que reproducir |
-| **S1a `held_out_delta`** | `qwen3.5:4b` | 0,333 | 3/12 | **acuerdo 9b > 4b** |
-| | `qwen3.5:9b` | 0,556 | 4/12 | **verificado 9b > 4b — coinciden** |
+| S0c `held_out`, n=12 | `qwen3.5:4b` | 0,667 | 3/12 | **no comparable** — los candidatos |
+| | `qwen3.5:9b` | 0,727 | 3/12 | empatan en calidad |
+| ~~S1a `held_out_delta`, n=12~~ | ~~`qwen3.5:4b`~~ | ~~0,333~~ | ~~3/12~~ | ~~acuerdo y calidad coinciden~~ |
+| ~~superado — ver abajo~~ | ~~`qwen3.5:9b`~~ | ~~0,556~~ | ~~4/12~~ | ~~9b > 4b en los dos~~ |
+| **S1a `held_out_delta`, n=20** | `qwen3.5:4b` | 0,350 | **6/20** | **no comparable** — los |
+| | `qwen3.5:9b` | 0,533 | **6/20** | candidatos empatan en calidad |
 
-Una comparación informativa, dos candidatos, n = 12, contra un **target local
-suplente**. Eso no es un puntaje de destilación y no es evidencia a favor de la
-tesis: un 12B que él mismo saca 8/12 no es un modelo de frontera, y acordar con él
-es acordar con un par. Lo que sí establece es que el criterio es computable, no es
-degenerado, y no contradijo a la calidad en la única configuración donde la
-calidad separó. El S2 real necesita el target de frontera.
+**El resultado de n=12 no sobrevivió a su propio split.** Con 12 casos los
+candidatos diferían en un caso verificado y los órdenes "coincidían"; con 20
+empatan exactamente, y no hay orden que el criterio pueda reproducir. Un caso de
+diferencia nunca fue un orden, y la fila anterior queda tachada en vez de borrada
+porque ésa es justo la falla que este plan existe para hacer visible.
+
+**Lo que S2a establece entonces, y es menos de lo que parecía:** el criterio es
+computable, no es degenerado y no está contradicho. **No** se demostró que siga a
+la calidad, ni acá ni en ningún lado. El S2 real necesita el target de frontera y
+un conjunto de candidatos que no empate.
+
+**Y volvió concreto a C11.** `qwen3.5:9b` saca el *mejor* acuerdo (0,533) mientras
+no produce respuesta parseable en **5 de 20** casos — que el criterio excluye. Un
+modelo que muchas veces no contesta nada parece uno que acuerda bien.
 
 **Compuerta.** S4 — no se entrena ningún adaptador hasta saber que la aceptación
 lleva la señal sobre la que la promoción se basaría.
@@ -398,6 +409,7 @@ calcula sobre las respuestas guardadas, así que no hubo que volver a correr nad
 | 2026-09-07 | S0 corrido tres veces; §3 completado; agregados C9 y C10; el contador de rediseños llegó a su condición de parada y el instrumento **no** se cambió una cuarta vez | la métrica estaba midiendo el formato, y la regla de contar rediseños existe justamente para el momento en que es incómoda |
 | 2026-09-07 | S6 pasó de "en paralelo" a "en revisión, posiblemente aguas arriba de α" | si el adaptador kernel es lo que fija el formato, entonces es lo que hace que la aceptación por caracteres signifique algo |
 | 2026-09-07 | S1a corrido sobre `held_out_delta`: 8/12 contra 3/12 y 4/12. La pregunta de suite de S1 quedó cerrada por $0; sólo la key la bloquea | el fallback estaba nombrado en el paso antes de correrlo, que es la única razón por la que cambiar el split acá es un plan y no una búsqueda de un número más amable |
+| 2026-09-07 | S1a extendido al split completo de 20 casos; la coincidencia de órdenes de n=12 **no sobrevivió** y la fila superada queda tachada, no borrada | los candidatos diferían en un caso verificado con n=12 y empatan exactamente con n=20 — un caso nunca fue un orden, y un plan que tirara la fila anterior en silencio sería el registro de nada |
 | 2026-09-07 | S6a corrido a $0 sobre corridas existentes: el protocolo cuesta ~96 tokens acá y el 12B nunca malforma, así que S6 necesita una distribución de herramientas real antes de que sus números signifiquen algo | chequear el headroom del tratamiento antes de construirlo es la corrida más barata que existe, y ésta no costó ni una inferencia |
 | 2026-09-07 | agregado C11 y hecho visible en el reporte | el modelo con mejor acuerdo era también el que no contestaba nada el 25 % de las veces, y el criterio estaba excluyendo justo esos casos en silencio |
 | 2026-09-07 | §11 decidido (opción C): el criterio de promoción es el acuerdo semántico de respuesta; S2 reescrito alrededor de él; S6 ganó una segunda condición de victoria; las cuatro corridas en disco se re-puntuaron sin volver a correr nada | la coincidencia por caracteres falló sobre una respuesta correcta y acertó por razones ajenas a la calidad, en la misma suite y el mismo día |

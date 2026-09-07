@@ -162,19 +162,19 @@ protocol fails), then the `causal_workflow` and `quantum` domains already in
 | | `gemma4:12b` (target) | `qwen3.5:4b` | `qwen3.5:9b` |
 |---|---|---|---|
 | `held_out` (S0c) | 4/12 | 3/12 | 3/12 |
-| **`held_out_delta` (S1a)** | **8/12** | **3/12** | **4/12** |
+| **`held_out_delta` (S1a, n=20)** | **12/20** | **6/20** | **6/20** |
 
 **There is headroom, on the split whose planted rule inverts.** The 12B pulls
-+4 clear of its best drafter where it was tied before, and the drafters separate
-from each other. This is what the frontier arm needs to exist: a configuration
+**+6 of 20** clear of its best drafter where it was tied before. This is what the frontier arm needs to exist: a configuration
 where being better is possible. The suite question is answered — **S1 is worth
 its $5 on `held_out_delta`, not on `held_out`.**
 
 **And it produced the trap C9 predicted, in the form that would have been
-believed.** Ordering by α matched ordering by verified score (9B > 4B) — for the
-wrong reason: the 9B pretty-prints like the target and the 4B does not. A
-confirmation of the project's central claim, arriving by accident of
-indentation. The report now refuses to interpret that line while C9 stands.
+believed.** At n=12, ordering by α matched ordering by verified score (9B > 4B)
+— for the wrong reason: the 9B pretty-prints like the target and the 4B does not.
+A confirmation of the project's central claim, arriving by accident of
+indentation, on a difference of one case that vanished at n=20. The report now
+refuses to interpret that line while C9 stands.
 
 **Blocker for a human — one now, not two.** `OPENROUTER_API_KEY` is not set on
 this machine and is not on disk **[ran]**. The run is one command once it
@@ -195,23 +195,33 @@ Character α is still recorded beside it, and comparing the two is S6's job.
 their agreement with the target per region, and ask whether ordering by agreement
 reproduces ordering by verified score.
 
-**S2a — the local proxy, computed at $0 from runs already on disk.** The criterion
-was applied to the persisted answers of S0c and S1a; no inference was re-run
-**[ran]**:
+**S2a — the local proxy, and the correction it produced.** The criterion was
+applied to the answers persisted by S0c and S1a, then the delta split was
+completed to its full 20 cases **[ran]**:
 
-| run | | agreement | verified | orderings |
+| run | | agreement | verified | ordering test |
 |---|---|---|---|---|
-| S0c `held_out` | `qwen3.5:4b` | 0.667 | 3/12 | **not comparable** — the candidates |
-| | `qwen3.5:9b` | 0.727 | 3/12 | tie on quality, so there is no order to reproduce |
-| **S1a `held_out_delta`** | `qwen3.5:4b` | 0.333 | 3/12 | **agreement 9b > 4b** |
-| | `qwen3.5:9b` | 0.556 | 4/12 | **verified 9b > 4b — they agree** |
+| S0c `held_out`, n=12 | `qwen3.5:4b` | 0.667 | 3/12 | **not comparable** — the candidates |
+| | `qwen3.5:9b` | 0.727 | 3/12 | tie on quality |
+| ~~S1a `held_out_delta`, n=12~~ | ~~`qwen3.5:4b`~~ | ~~0.333~~ | ~~3/12~~ | ~~agreement and quality agree~~ |
+| ~~superseded — see below~~ | ~~`qwen3.5:9b`~~ | ~~0.556~~ | ~~4/12~~ | ~~9b > 4b on both~~ |
+| **S1a `held_out_delta`, n=20** | `qwen3.5:4b` | 0.350 | **6/20** | **not comparable** — the |
+| | `qwen3.5:9b` | 0.533 | **6/20** | candidates tie on quality |
 
-One informative comparison, two candidates, n = 12, against a **local stand-in
-target**. That is not a distillation score and is not evidence for the thesis: a
-12B that itself scores 8/12 is not a frontier model, and agreement with it means
-agreement with a peer. What it does establish is that the criterion is
-computable, is not degenerate, and did not contradict quality on the only
-configuration where quality separated. The real S2 needs the frontier target.
+**The n=12 result did not survive its own split.** At 12 cases the candidates
+differed by one verified case and the orderings "agreed"; at 20 they tie exactly,
+and there is no ordering for the criterion to reproduce. One case of difference
+was never an ordering, and the earlier row is kept struck rather than deleted
+because that is the failure this plan exists to make visible.
+
+**What S2a therefore establishes, and it is less than it looked like:** the
+criterion is computable, is not degenerate, and is not contradicted. It has **not**
+been shown to track quality, here or anywhere. The real S2 needs the frontier
+target and a candidate set that does not tie.
+
+**And it made C11 concrete.** `qwen3.5:9b` scores the *best* agreement (0.533)
+while producing no parseable answer in **5 of 20** cases — which the criterion
+excludes. A model that often answers nothing looks like a good agreer.
 
 **Gate.** S4 — no adapter is trained until acceptance is known to carry the
 signal that promotion would be based on.
@@ -383,6 +393,7 @@ nothing had to be re-run.
 | 2026-09-07 | S0 run three times; §3 filled in; C9 and C10 added; the redesign counter reached its stopping condition and the instrument was **not** changed a fourth time | the metric was measuring layout, and the rule about counting redesigns exists precisely for the moment it is inconvenient |
 | 2026-09-07 | S6 moved from "parallel" to "under review, possibly upstream of α" | if the kernel adapter is what pins the format, then it is what makes character acceptance mean anything |
 | 2026-09-07 | S1a run on `held_out_delta`: 8/12 against 3/12 and 4/12. S1's suite question closed for $0; only the key still blocks it | the fallback was named in the step before the step ran, which is the only reason changing the split here is a plan and not a search for a friendlier number |
+| 2026-09-07 | S1a extended to the full 20-case split; the n=12 ordering agreement **did not survive** and the superseded row is struck, not deleted | the candidates differed by one verified case at n=12 and tie exactly at n=20 — one case was never an ordering, and a plan that quietly dropped the earlier row would be a record of nothing |
 | 2026-09-07 | S6a run for $0 from existing runs: the protocol costs ~96 tokens here and the 12B never malforms, so S6 needs a real tool distribution before either of its numbers means anything | checking the headroom of the treatment before building it is the cheapest run there is, and this one cost no inference at all |
 | 2026-09-07 | C11 added and surfaced in the report | the model with the best agreement was also the one that answered nothing 25 % of the time, and the criterion was quietly excluding exactly those cases |
 | 2026-09-07 | §11 decided (option C): the promotion criterion is semantic answer agreement; S2 rewritten around it; S6 gained a second win condition; the four runs on disk were re-scored without re-running anything | character agreement failed on a correct answer and succeeded for reasons unrelated to quality, on the same suite, on the same day |

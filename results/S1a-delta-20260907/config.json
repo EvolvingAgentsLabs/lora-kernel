@@ -5,14 +5,14 @@
     "ollama:qwen3.5:9b"
   ],
   "split": "held_out_delta",
-  "n": 12,
+  "n": 20,
   "window_chars": 24,
   "positions": 1,
   "temperature": 0.0,
   "prompt": "canonical",
   "prompt_version": "1.0.0",
   "prompt_hash": "2e4126b1e3fc8091",
-  "started": "2026-09-07T19:13:02",
+  "started": "2026-09-07T19:44:53",
   "identity": "alpha_char = lcp(draft, target_continuation) / window, greedy target",
-  "finished": "2026-09-07T19:16:52"
+  "finished": "2026-09-07T19:47:29"
 }
