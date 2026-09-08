@@ -116,7 +116,11 @@ def train_adapter(base: str, rows: list[dict], out_dir: str, args):
                        gradient_accumulation_steps=args.accum,
                        learning_rate=args.lr, max_length=args.max_seq,
                        logging_steps=10, seed=args.seed, report_to=[],
-                       save_strategy="no", bf16=True),
+                       save_strategy="no", bf16=True,
+                       # Packing would refill every sequence to max_length and
+                       # put the token budget straight back.
+                       packing=False,
+                       gradient_checkpointing=True),
     ).train()
     peft_model.save_pretrained(out_dir)
     return peft_model, tok
@@ -241,11 +245,15 @@ def main() -> int:
     ap.add_argument("--r", type=int, default=16)
     ap.add_argument("--alpha", type=int, default=32)
     ap.add_argument("--lr", type=float, default=2e-4)
-    # Effective batch 16 either way; 2x8 leaves headroom on a 15 GB T4, where
-    # 4x4 sits close enough to the edge to matter with a 1024-token sequence.
-    ap.add_argument("--batch", type=int, default=2)
-    ap.add_argument("--accum", type=int, default=8)
-    ap.add_argument("--max-seq", type=int, default=1024)
+    # THE LOGITS ARE THE BILL. Gemma's vocabulary is ~262k, so one step costs
+    # batch x sequence x 262144 x 4 bytes before anything else — 4x4 at 1024
+    # asked a 15 GB T4 for 10.5 GiB in a single allocation and it refused [ran]
+    # 2026-09-07. Effective batch stays 16; the per-step token budget drops 8x.
+    ap.add_argument("--batch", type=int, default=1)
+    ap.add_argument("--accum", type=int, default=16)
+    ap.add_argument("--max-seq", type=int, default=512,
+                    help="the canonical prompt is ~250 tokens and the answer ~25, "
+                         "so 512 truncates nothing and halves the logits again")
     ap.add_argument("--max-new-tokens", type=int, default=64)
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--fp16-base", dest="four_bit", action="store_false",
