@@ -20,7 +20,27 @@ false-promotion number, and a gain published without it is not a result.
 EVERY ARM IS GRADED BY THE SAME CODE (`training/evaluate.py`) and generated
 greedily, because every number this project has produced is at temperature 0.
 
-    python3 -m training.s4_train --base google/gemma-4-E4B-it
+    python3 -m training.s4_train --preflight        # two minutes, infrastructure only
+    python3 -m training.s4_train                    # the four arms
+
+WHY THE BASE IS A QWEN AND NOT A GEMMA. The project is multi-LoRA serving in
+vLLM, so **a base vLLM cannot serve with adapters is disqualified however well it
+trains**. Three independent facts, and the first one is ours:
+
+  * `gemma-4-E4B-it` uses `Gemma4ClippableLinear`, which does not subclass
+    `nn.Linear`, and peft refuses to wrap it. **[ran]** 2026-09-07.
+  * vLLM's Gemma 4 LoRA support landed for the text-only `Gemma4ForCausalLM`
+    (issue #39246, PR #39291). Every Gemma 4 variant this project would use is a
+    `...ForConditionalGeneration` class, which was the second, unfinished phase.
+    **[read]**
+  * `gemma-4-26B-A4B-it` is a 128-expert MoE, where LoRA over fused expert
+    tensors is the known-hard case in training and in serving alike, and it needs
+    an A100 nobody has yet. **[read]**
+
+And one fact about the qwens that changes the config rather than disqualifying
+them: Unsloth advises against 4-bit QLoRA on Qwen3.5 — the quantisation error is
+larger than usual — and recommends bf16 LoRA, which a 2B fits into on a free T4.
+**[read]**
 """
 
 from __future__ import annotations
@@ -245,9 +265,70 @@ def verdict(s: dict) -> str:
     return "\n".join(lines)
 
 
+def preflight(args) -> int:
+    """Can this base be trained at all, on this card — answered in two minutes.
+
+    Four attempts at S4 died in infrastructure rather than in the experiment: a
+    parser crash, a memory leak, an fp32 upcast, and finally a base whose custom
+    linear class peft cannot wrap. Each cost an hour of GPU and none of them
+    needed the full run to be discovered. This loads the base, reports what
+    actually got quantised, attaches the adapter, and takes ONE optimiser step.
+
+    It answers the infrastructure question and nothing else. It is not an arm and
+    its numbers are not results.
+    """
+    import torch
+    from datasets import Dataset
+    from peft import LoraConfig, get_peft_model
+    from trl import SFTConfig, SFTTrainer
+
+    model, tok = load_base(args.base, args.four_bit)
+    print(f"[preflight] footprint {model.get_memory_footprint() / 2**30:.2f} GiB", flush=True)
+    kinds: dict[str, int] = {}
+    for name, mod in model.named_modules():
+        if name.split(".")[-1] in set(args.targets.split(",")) | {"q_proj", "k_proj"}:
+            kinds[type(mod).__name__] = kinds.get(type(mod).__name__, 0) + 1
+    print(f"[preflight] projection classes: {kinds}", flush=True)
+
+    model.gradient_checkpointing_enable()
+    model.enable_input_require_grads()
+    model.config.use_cache = False
+    try:
+        peft_model = get_peft_model(model, LoraConfig(
+            r=args.r, lora_alpha=args.alpha, lora_dropout=0.05, bias="none",
+            task_type="CAUSAL_LM",
+            target_modules=args.targets.split(",")))
+    except ValueError as e:
+        print(f"[preflight] FAIL — peft cannot wrap this architecture: "
+              f"{str(e)[:160]}", flush=True)
+        return 2
+    peft_model.print_trainable_parameters()
+
+    rows = load_jsonl("training/data/train.jsonl")[:4]
+    texts = [{"text": tok.apply_chat_template(r["messages"], tokenize=False)}
+             for r in rows]
+    try:
+        SFTTrainer(model=peft_model, train_dataset=Dataset.from_list(texts),
+                   args=SFTConfig(output_dir="/tmp/preflight", max_steps=1,
+                                  per_device_train_batch_size=args.batch,
+                                  gradient_accumulation_steps=1,
+                                  learning_rate=args.lr, max_length=args.max_seq,
+                                  logging_steps=1, report_to=[], save_strategy="no",
+                                  bf16=True, packing=False,
+                                  gradient_checkpointing=True)).train()
+    except torch.OutOfMemoryError as e:
+        print(f"[preflight] FAIL — one step does not fit: {str(e)[:160]}", flush=True)
+        return 3
+    peak = torch.cuda.max_memory_allocated() / 2**30
+    print(f"[preflight] PASS — one optimiser step done, peak {peak:.2f} GiB of "
+          f"{torch.cuda.get_device_properties(0).total_memory / 2**30:.2f} GiB",
+          flush=True)
+    return 0
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--base", default="google/gemma-4-E4B-it")
+    ap.add_argument("--base", default="Qwen/Qwen3.5-2B")
     ap.add_argument("--n-val", type=int, default=120)
     ap.add_argument("--n-delta", type=int, default=60)
     ap.add_argument("--n-region", type=int, default=40)
@@ -266,9 +347,20 @@ def main() -> int:
                          "so 512 truncates nothing and halves the logits again")
     ap.add_argument("--max-new-tokens", type=int, default=64)
     ap.add_argument("--seed", type=int, default=0)
-    ap.add_argument("--fp16-base", dest="four_bit", action="store_false",
-                    help="skip 4-bit quantisation (needs a bigger GPU)")
+    # NOT q_proj/k_proj on a qwen3: QK-norm makes the adapted tensors
+    # shape-incompatible and the kernel errors out. [read]
+    ap.add_argument("--targets", default="v_proj,o_proj,gate_proj,up_proj,down_proj")
+    ap.add_argument("--preflight", action="store_true",
+                    help="answer the infrastructure question in two minutes "
+                         "instead of discovering it an hour into an arm")
+    # bf16 by default, against the usual QLoRA habit: Unsloth reports larger than
+    # normal quantisation error on Qwen3.5 either way, and a 2B in bf16 fits a
+    # free T4 with room for the adapter. `--four-bit` is there for the 4B and up.
+    ap.add_argument("--four-bit", dest="four_bit", action="store_true",
+                    help="quantise the base to 4-bit NF4 (needed above ~4B on a T4)")
     args = ap.parse_args()
+    if args.preflight:
+        return preflight(args)
     print(verdict(run_all(args)), flush=True)
     return 0
 
