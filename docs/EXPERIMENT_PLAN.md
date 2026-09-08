@@ -54,7 +54,7 @@ already exist, before a single adapter is trained.
 | **S1** | headroom: can this suite show a withdrawal gap at all | S2 | $0.47 spent | **DONE — FAILED the gate, three targets** — §4 |
 | **S2** | does **agreement** order candidates the way verified quality does | S4 | included above | **DONE — 14/15 pairs, but against peers** — §5 |
 | **S3** | attribution: does a lexical/embedding router do the same job | the routing claim | ~$0 | deferred behind S4 — there is no pool to route yet |
-| **S4** | **the adapters** — does specialisation happen, and is it per region | S5 | free Colab T4 | **base arms measured; adapter arms blocked on GPU tenure** — §6, §11 |
+| **S4** | **the adapters** — does specialisation happen, and is it per region | S5 | free Colab T4 | **Q1 ANSWERED: +63.3 points, probe negative.** Q2 next — §6 |
 | **S5** | **the withdrawal gap** | the product | GPU + frontier | `NEXT` after S4 |
 | **S6** | `harness.lora` against the −85 % schema baseline | the kernel | GPU rental | **under review — S0 says it is upstream of α, §12** |
 | **S7** | the tournament, with a held-out verifier | evolution | GPU rental | after S5 |
@@ -320,25 +320,36 @@ waits behind S3.
    is one expert wearing three names and there is nothing for acceptance to route
    between — which would end the architecture's central claim, cheaply.
 
-**Where the run stands — base arms measured, adapter arms blocked** (2026-09-08,
-[`results/S4-qwen35-2b-20260908/`](../results/S4-qwen35-2b-20260908/BRIEF.md)):
+**QUESTION 1 IS ANSWERED: SPECIALISATION HAPPENS.** `Qwen/Qwen3.5-2B`, 2026-09-08,
+[`results/S4-qwen35-2b-20260908/`](../results/S4-qwen35-2b-20260908/BRIEF.md),
+all four numbers **[ran]** on cases neither arm was trained on:
 
-| arm | `Qwen/Qwen3.5-2B` | |
-|---|---|---|
-| base on `val` | **6/60 = 0.100** | measured **[ran]** |
-| base on `val_delta` | **6/30 = 0.200** | measured **[ran]** |
-| adapter on `val` | — | **not measured**: the T4 has no bf16 (C15) |
-| region experts | — | **not reached**: three sessions reclaimed (C16) |
+| | base | **adapter** | |
+|---|---|---|---|
+| `val` (60) | 6/60 · **0.100** | **44/60 · 0.733** | **+63.3 points** |
+| `val_delta` (30) | 6/30 · 0.200 | **12/30 · 0.400** | **+20.0 points** |
 
-The base has ample headroom — 10 % leaves everything to gain, which is the
-condition S1 could never produce. **The adapter has still never been graded**,
-and the reason has been infrastructure every time: a parser crash, a memory leak,
-an fp32 upcast, an unwrappable layer class, an old `torchao`, a card without
-bf16, and three reclaimed sessions.
+Zero unparseable answers in either adapter arm. Per clinic the gain is even —
+alpha 15/20, beta 15/20, gamma 14/20 — so it is not one protocol carrying the
+result. The adapter is **10.9 M trainable parameters, 0.58 % of the model**,
+trained for two epochs on 600 generated cases on a free T4.
 
-**The abort rule fired.** The brief said: if a third session is reclaimed before
-the adapter arm completes, report that the free tier cannot hold this run rather
-than buying a fourth. Three were. §11 carries the choice.
+**And the false-promotion probe came back negative, which is the stronger half.**
+`delta` is the clinic that appears in no training split and whose unpublished rule
+**inverts**. An adapter that had memorised the rule would gain on `val` and
+collapse there. This one **improved by 20 points** on it. What was learned reads
+the case rather than reciting the protocol.
+
+**How much of this project's history was infrastructure, and how it was
+separated from the result.** The adapter arm returned 0 three times before this,
+and every one was the machine: a card with no real bf16 (C15), a resume that
+would have banked that zero (C15), and gradient checkpointing left on during
+generation, which does not merely slow the KV cache but corrupts the output.
+Each zero read exactly like *"specialisation did not happen"* — one of this
+step's two falsification conditions. The true number is +63.
+
+**Question 2 — do experts differ by region — is next**, and it is the one that
+decides whether there is a pool to route between at all.
 
 **The probe that has to be reported beside any gain.** `delta` inverts one of the
 unpublished rules and appears in no training split. An adapter that memorised the
@@ -402,6 +413,7 @@ architecture is right.
 | C8 | No `OPENROUTER_API_KEY` on this machine **[ran]** | S1 and S2 are blocked on a human |
 | C9 | Character-prefix agreement is dominated by layout: identical answers score 0.00 across formats, different answers score 0.44 within one format **[ran]** | **decided (§11, option C):** the promotion criterion is semantic answer agreement; character α is reported beside it and never ranks anything; whether pinning the format reconciles them is S6's win condition |
 | C10 | Agents under `.claude/agents/` load for a session rooted at this repository, not at the workspace above it **[ran]** | they are symlinked into `../.claude/agents/` so a workspace-rooted session can address them too |
+| C17 | **Gradient checkpointing left on during generation corrupts the output**, it does not merely disable the KV cache: the same adapter scored 0/60 with it on and 44/60 with it off **[ran]** | training flags are turned off before evaluating, and a zero from a model whose training loss was 0.10 is treated as an instrument fault until proven otherwise |
 | C15 | A **T4 has no bf16**. The base generated fine in bf16 and every LoRA generation then died with "GET was unable to find an engine to execute this computation" — reported as 0/60 **[ran]** | precision is chosen by `is_bf16_supported()`, not by habit. Read as a result it would have said "specialisation did not happen", which is one of S4's two falsification conditions |
 | C16 | Free Colab **reclaimed three sessions** inside roughly 40 minutes of GPU work each **[ran]** | per-arm persistence has to survive the *session*, not just the process: results are pulled to this machine after every arm, and a resume must upload them back. Otherwise the tier has to change |
 | C14 | Training data is **generated** with the benchmark's own generator at a different seed, and a leak check refuses to write if a training prompt equals a sealed one **[ran]** | an adapter can be trained on hundreds of cases while the sealed 50 + 20 stay unseen; without the check the evaluation would be a memory test and every number after it void |
@@ -540,6 +552,7 @@ withdrawing a frontier that was never ahead measures nothing.
 | 2026-09-07 | S0 run three times; §3 filled in; C9 and C10 added; the redesign counter reached its stopping condition and the instrument was **not** changed a fourth time | the metric was measuring layout, and the rule about counting redesigns exists precisely for the moment it is inconvenient |
 | 2026-09-07 | S6 moved from "parallel" to "under review, possibly upstream of α" | if the kernel adapter is what pins the format, then it is what makes character acceptance mean anything |
 | 2026-09-07 | S1a run on `held_out_delta`: 8/12 against 3/12 and 4/12. S1's suite question closed for $0; only the key still blocks it | the fallback was named in the step before the step ran, which is the only reason changing the split here is a plan and not a search for a friendlier number |
+| 2026-09-08 | **S4 question 1 answered: the adapter scores 44/60 against the base's 6/60, +63.3 points, and gains 20 points on the inverted-rule split it never saw.** C17 added | the first real result this project has produced, and the third zero before it was gradient checkpointing rather than the model |
 | 2026-09-08 | S4 run on `Qwen/Qwen3.5-2B`: base arms banked at 6/60 and 6/30; adapter arms blocked. C15 and C16 added; the abort rule fired at the third reclaimed session | the 0/60 the T4 produced would have read as "specialisation did not happen" — a falsification condition met by the GPU rather than by the model |
 | 2026-09-07 | S1 bought and failed three times ($0.47 total); S2 bought in the same purchases and passed 14 of 15 pairs; C12 and C13 added | the gate was written before the run and it fired — the cheapest possible outcome, since it stopped S4 and S5 from being bought on a configuration where the frontier was never ahead |
 | 2026-09-07 | a fourth candidate (`qwen3.5:2b`) added at the user's suggestion | the local ladder tied at 6/20 and a tie makes the ordering test unbuyable; spanning 2B to 12B gave the criterion something to be right or wrong about |

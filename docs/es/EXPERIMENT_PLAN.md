@@ -54,7 +54,7 @@ se responde con modelos que ya existen, antes de entrenar un solo adaptador.
 | **S1** | headroom: ¿puede esta suite mostrar una brecha de retiro? | S2 | $0,47 gastados | **DONE — FALLÓ la compuerta, tres targets** — §4 |
 | **S2** | ¿el **acuerdo** ordena a los candidatos como los ordena la calidad verificada? | S4 | incluido arriba | **DONE — 14/15 pares, pero contra pares** — §5 |
 | **S3** | atribución: ¿un router léxico o de embeddings hace lo mismo? | la afirmación de ruteo | ~$0 | pospuesto detrás de S4 — todavía no hay pool que rutear |
-| **S4** | **los adaptadores** — ¿hay especialización, y es por región? | S5 | Colab T4 gratis | **arms base medidos; los del adaptador bloqueados por la tenencia de GPU** — §6, §11 |
+| **S4** | **los adaptadores** — ¿hay especialización, y es por región? | S5 | Colab T4 gratis | **P1 CONTESTADA: +63,3 puntos, sonda negativa.** P2 sigue — §6 |
 | **S5** | **la brecha de retiro** | el producto | GPU + frontera | `NEXT` tras S4 |
 | **S6** | `harness.lora` contra el baseline de −85 % de esquema | el kernel | GPU alquilada | **en revisión — S0 dice que está aguas arriba de α, §12** |
 | **S7** | el torneo, con un verificador no visto | la evolución | GPU alquilada | tras S5 |
@@ -329,25 +329,37 @@ un 26B no entra en esta máquina:
    pool es un experto con tres nombres y no hay nada que la aceptación pueda
    rutear — lo que terminaría con la afirmación central de la arquitectura, barato.
 
-**Dónde está la corrida — arms base medidos, arms del adaptador bloqueados**
-(2026-09-08, [`results/S4-qwen35-2b-20260908/`](../../results/S4-qwen35-2b-20260908/BRIEF.md)):
+**LA PREGUNTA 1 ESTÁ CONTESTADA: LA ESPECIALIZACIÓN OCURRE.** `Qwen/Qwen3.5-2B`,
+2026-09-08, [`results/S4-qwen35-2b-20260908/`](../../results/S4-qwen35-2b-20260908/BRIEF.md),
+los cuatro números **[ran]** sobre casos que ningún arm vio en entrenamiento:
 
-| arm | `Qwen/Qwen3.5-2B` | |
-|---|---|---|
-| base en `val` | **6/60 = 0,100** | medido **[ran]** |
-| base en `val_delta` | **6/30 = 0,200** | medido **[ran]** |
-| adaptador en `val` | — | **no medido**: la T4 no tiene bf16 (C15) |
-| expertos por región | — | **no alcanzado**: tres sesiones reclamadas (C16) |
+| | base | **adaptador** | |
+|---|---|---|---|
+| `val` (60) | 6/60 · **0,100** | **44/60 · 0,733** | **+63,3 puntos** |
+| `val_delta` (30) | 6/30 · 0,200 | **12/30 · 0,400** | **+20,0 puntos** |
 
-El base tiene headroom de sobra —10 % deja todo por ganar, que es la condición
-que S1 nunca pudo producir. **Al adaptador todavía no se lo calificó nunca**, y
-la razón fue infraestructura todas las veces: un crash del parser, una fuga de
-memoria, un upcast a fp32, una clase de capa no envolvible, un `torchao` viejo,
-una placa sin bf16, y tres sesiones reclamadas.
+Cero respuestas inparseables en los dos arms del adaptador. Por clínica la
+ganancia es pareja —alpha 15/20, beta 15/20, gamma 14/20— así que no hay un solo
+protocolo cargando el resultado. El adaptador son **10,9 M de parámetros
+entrenables, 0,58 % del modelo**, entrenados dos épocas sobre 600 casos generados
+en una T4 gratis.
 
-**La regla de aborto disparó.** El brief decía: si una tercera sesión se cae antes
-de terminar el arm del adaptador, reportar que el tier gratuito no aguanta esta
-corrida en vez de comprar una cuarta. Se cayeron tres. La elección está en §11.
+**Y la sonda de falsa promoción dio negativa, que es la mitad más fuerte.**
+`delta` es la clínica que no aparece en ningún split de entrenamiento y cuya regla
+no publicada **se invierte**. Un adaptador que hubiera memorizado la regla ganaría
+en `val` y se derrumbaría ahí. Éste **mejoró 20 puntos**. Lo que aprendió lee el
+caso en vez de recitar el protocolo.
+
+**Cuánto de la historia de este proyecto fue infraestructura, y cómo se separó del
+resultado.** El arm del adaptador devolvió 0 tres veces antes de esto, y las tres
+fue la máquina: una placa sin bf16 real (C15), un reanudado que habría guardado
+ese cero (C15), y gradient checkpointing activo durante la generación, que no sólo
+apaga la caché KV sino que corrompe la salida. Cada cero se leía exactamente como
+*"no hubo especialización"* — una de las dos condiciones de falsación de este
+paso. El número verdadero es +63.
+
+**La pregunta 2 —si los expertos difieren por región— es la que sigue**, y es la
+que decide si hay un pool que rutear.
 
 **La sonda que hay que reportar al lado de cualquier ganancia.** `delta` invierte
 una de las reglas no publicadas y no aparece en ningún split de entrenamiento. Un
@@ -416,6 +428,7 @@ arquitectura es correcta.
 | C8 | No hay `OPENROUTER_API_KEY` en esta máquina **[ran]** | S1 y S2 están bloqueados por un humano |
 | C9 | La coincidencia de prefijo por caracteres está dominada por el formato: respuestas idénticas sacan 0,00 entre formatos, y respuestas distintas sacan 0,44 dentro de un mismo formato **[ran]** | **decidido (§11, opción C):** el criterio de promoción es el acuerdo semántico de respuesta; la α por caracteres se reporta al lado y no ordena nada; si fijar el formato las reconcilia es la condición de victoria de S6 |
 | C10 | Los agentes bajo `.claude/agents/` se cargan para una sesión rooteada en este repositorio, no en el workspace de arriba **[ran]** | están symlinkeados en `../.claude/agents/` para que una sesión rooteada en el workspace también pueda invocarlos |
+| C17 | **Gradient checkpointing activo durante la generación corrompe la salida**, no sólo apaga la caché KV: el mismo adaptador sacó 0/60 con él prendido y 44/60 apagado **[ran]** | los flags de entrenamiento se apagan antes de evaluar, y un cero de un modelo cuya loss de entrenamiento fue 0,10 se trata como falla de instrumento hasta probar lo contrario |
 | C15 | Una **T4 no tiene bf16**. El base generó bien en bf16 y después toda generación con LoRA murió con "GET was unable to find an engine to execute this computation" — reportado como 0/60 **[ran]** | la precisión la elige `is_bf16_supported()`, no la costumbre. Leído como resultado habría dicho "no hubo especialización", que es una de las dos condiciones de falsación de S4 |
 | C16 | Colab gratuito **reclamó tres sesiones** en unos 40 minutos de GPU cada una **[ran]** | la persistencia por arm tiene que sobrevivir a la *sesión*, no sólo al proceso: los resultados se bajan a esta máquina después de cada arm, y un reanudado tiene que volver a subirlos. Si no, hay que cambiar de tier |
 | C14 | Los datos de entrenamiento se **generan** con el generador del propio benchmark a otra semilla, y un chequeo de fuga se niega a escribir si un prompt de entrenamiento es igual a uno sellado **[ran]** | se puede entrenar un adaptador con cientos de casos mientras los 50 + 20 sellados siguen sin verse; sin el chequeo la evaluación sería un test de memoria y todo número posterior quedaría anulado |
@@ -559,6 +572,7 @@ frontera que nunca estuvo adelante no mide nada.
 | 2026-09-07 | S0 corrido tres veces; §3 completado; agregados C9 y C10; el contador de rediseños llegó a su condición de parada y el instrumento **no** se cambió una cuarta vez | la métrica estaba midiendo el formato, y la regla de contar rediseños existe justamente para el momento en que es incómoda |
 | 2026-09-07 | S6 pasó de "en paralelo" a "en revisión, posiblemente aguas arriba de α" | si el adaptador kernel es lo que fija el formato, entonces es lo que hace que la aceptación por caracteres signifique algo |
 | 2026-09-07 | S1a corrido sobre `held_out_delta`: 8/12 contra 3/12 y 4/12. La pregunta de suite de S1 quedó cerrada por $0; sólo la key la bloquea | el fallback estaba nombrado en el paso antes de correrlo, que es la única razón por la que cambiar el split acá es un plan y no una búsqueda de un número más amable |
+| 2026-09-08 | **S4 pregunta 1 contestada: el adaptador saca 44/60 contra 6/60 del base, +63,3 puntos, y gana 20 puntos en el split de regla invertida que nunca vio.** Agregado C17 | el primer resultado real que produjo este proyecto, y el tercer cero previo era gradient checkpointing, no el modelo |
 | 2026-09-08 | S4 corrido sobre `Qwen/Qwen3.5-2B`: arms base guardados en 6/60 y 6/30; los del adaptador bloqueados. Agregados C15 y C16; la regla de aborto disparó en la tercera sesión reclamada | el 0/60 que produjo la T4 se habría leído como "no hubo especialización" — una condición de falsación cumplida por la GPU y no por el modelo |
 | 2026-09-07 | S1 comprado y fallado tres veces ($0,47 en total); S2 comprado en las mismas compras y aprobado 14 de 15 pares; agregados C12 y C13 | la compuerta estaba escrita antes de la corrida y disparó — el desenlace más barato posible, porque impidió comprar S4 y S5 sobre una configuración donde la frontera nunca estuvo adelante |
 | 2026-09-07 | agregado un cuarto candidato (`qwen3.5:2b`) por sugerencia del usuario | la escalera local empataba en 6/20 y un empate vuelve incomprable el test de orden; ir de 2B a 12B le dio al criterio algo sobre lo que acertar o errar |
