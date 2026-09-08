@@ -58,9 +58,27 @@ def score(texts, rows) -> dict:
             "accuracy": round(passed / len(rows), 4), "unparseable": unparseable}
 
 
+def adapter_changes_output(llm, sp, prompts, req) -> tuple[bool, str, str]:
+    """The gate C18 exists for: does the adapter change ANYTHING?
+
+    vLLM 0.28.0 accepted every LoRARequest for `Qwen/Qwen3.5-2B`, emitted no
+    warning, and served the base model byte for byte **[ran]** 2026-09-08. Three
+    adapters at 90 prompts/s looked exactly like a working substrate. So no arm
+    is measured until one prompt is shown to differ.
+    """
+    a = llm.generate(prompts[:1], sp)[0].outputs[0].text
+    b = llm.generate(prompts[:1], sp, lora_request=req)[0].outputs[0].text
+    return a != b, a, b
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--base", default="Qwen/Qwen3.5-2B")
+    ap.add_argument("--arch-override", default="",
+                    help="force the architecture vLLM loads, e.g. "
+                         "Qwen3_5ForCausalLM. `Qwen/Qwen3.5-2B` ships as "
+                         "Qwen3_5ForConditionalGeneration, and only the CausalLM "
+                         "class declares SupportsLoRA [read]")
     ap.add_argument("--pool", default="./pool")
     ap.add_argument("--n", type=int, default=60)
     ap.add_argument("--max-lora-rank", type=int, default=16)
@@ -79,11 +97,27 @@ def main() -> int:
     # Greedy, like every other number in this repository.
     sp = SamplingParams(temperature=0.0, top_p=1.0, max_tokens=64)
 
+    kw = {}
+    if args.arch_override:
+        kw["hf_overrides"] = {"architectures": [args.arch_override]}
+        print(f"[arch] forcing {args.arch_override}", flush=True)
     llm = LLM(model=args.base, enable_lora=True, max_loras=len(pool),
               max_lora_rank=args.max_lora_rank, dtype="bfloat16",
-              gpu_memory_utilization=0.85, max_model_len=2048)
+              gpu_memory_utilization=0.85, max_model_len=2048, **kw)
     requests = {name: LoRARequest(name, i + 1, path)
                 for i, (name, path) in enumerate(pool.items())}
+
+    first = next(iter(requests.values()))
+    changed, base_text, lora_text = adapter_changes_output(llm, sp, prompts, first)
+    print(f"[gate] adapter changes output: {changed}", flush=True)
+    if not changed:
+        print("[gate] ABORT — the served text is byte-identical with and without "
+              "the adapter, so every arm below would measure the base model.\n"
+              f"  base: {base_text[:110]!r}\n  lora: {lora_text[:110]!r}", flush=True)
+        Path("p3_results.json").write_text(json.dumps(
+            {"base": args.base, "arch_override": args.arch_override,
+             "gate": "FAILED — adapter does not change output", "arms": {}}, indent=2))
+        return 4
 
     results = {"base": args.base, "pool": list(pool), "n": len(rows), "arms": {}}
 
