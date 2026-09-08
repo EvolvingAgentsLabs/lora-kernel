@@ -55,6 +55,20 @@ step rather than hand it to a person:
     colab download -s s4 lora-kernel/s4_results.json ./s4_results.json
     colab stop -s s4
 
+### One arm per session, because the free tier does not keep one
+
+Colab reclaimed three sessions inside roughly forty minutes of GPU work each
+**[ran]** 2026-09-08. [`chain_colab.sh`](chain_colab.sh) runs the experiment as a
+chain instead: each session provisions, **restores the partial results from this
+machine**, completes exactly one arm, hands the results back, and stops.
+
+    training/chain_colab.sh        # one arm
+    training/chain_colab.sh 3      # three arms, three sessions
+
+The state of the experiment lives here between sessions, not on the runtime. It
+is idempotent — an arm already in the results file is skipped — so running it
+more times than there are arms left costs one session start and nothing else.
+
 **Two install pins are load-bearing on macOS** — both were failures, not
 precautions **[ran]** 2026-09-07:
 
