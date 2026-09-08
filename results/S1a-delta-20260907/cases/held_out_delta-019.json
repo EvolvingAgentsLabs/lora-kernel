@@ -1,0 +1,77 @@
+{
+  "case_id": "held_out_delta-019",
+  "region": "delta",
+  "truth": [
+    "cbct",
+    "guardian_consent",
+    "medical_history",
+    "referral_note"
+  ],
+  "target": {
+    "name": "ollama:gemma4:12b-mlx",
+    "answer": "```json\n{\n  \"kind\": \"submit_missing_documents\",\n  \"arguments\": {\n    \"missing\": [\n      \"referral_note\",\n      \"medical_history\",\n      \"cbct\"\n    ]\n  }\n}\n```",
+    "verified": {
+      "passed": false,
+      "parsed": true,
+      "f1": 0.857,
+      "extra": [],
+      "missed": [
+        "guardian_consent"
+      ]
+    },
+    "thought_chars": 0,
+    "truncated": false,
+    "seconds": 8.4
+  },
+  "drafters": {
+    "ollama:qwen3.5:4b": {
+      "own_answer": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}",
+      "verified": {
+        "passed": false,
+        "parsed": true,
+        "f1": 0.4,
+        "extra": [],
+        "missed": [
+          "cbct",
+          "guardian_consent",
+          "referral_note"
+        ]
+      },
+      "thought_chars": 0,
+      "truncated": false,
+      "alpha_at_0": 0.0,
+      "alpha_at_0_content": 0.0,
+      "content_agreement": 0.0,
+      "same_answer": false,
+      "agreement_chars": 0,
+      "agreement_fraction": 0.0,
+      "alpha_mid_mean": null,
+      "restarted_fraction": null,
+      "positions": []
+    },
+    "ollama:qwen3.5:9b": {
+      "own_answer": "{\n  \"kind\": \"submit_missing_documents\",\n  \"arguments\": {\n    \"missing\": [\n      \"referral_note\",\n      \"medical_history\"\n    ]\n  }\n}",
+      "verified": {
+        "passed": false,
+        "parsed": true,
+        "f1": 0.667,
+        "extra": [],
+        "missed": [
+          "cbct",
+          "guardian_consent"
+        ]
+      },
+      "thought_chars": 0,
+      "truncated": false,
+      "alpha_at_0": 0.0,
+      "alpha_at_0_content": 1.0,
+      "content_agreement": 0.7121,
+      "same_answer": false,
+      "agreement_chars": 0,
+      "agreement_fraction": 0.0,
+      "alpha_mid_mean": null,
+      "restarted_fraction": null,
+      "positions": []
+    }
+  }
+}

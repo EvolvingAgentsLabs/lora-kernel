@@ -1,0 +1,47 @@
+[alpha] target=openai:google/gemini-3.5-flash-lite drafters=4 cases=7 w=24 positions=1 -> results/S1-frontier-4cand-20260907
+[  1/7] held_out_delta-000 [delta] target_v=1 12b-mlx:α0=0.00/αc=0.00/v=1 9b:α0=1.00/αc=1.00/v=1 4b:α0=1.00/αc=1.00/v=1 2b:α0=1.00/αc=1.00/v=1 (23.3s)
+[  2/7] held_out_delta-001 [delta] target_v=0 12b-mlx:α0=0.38/αc=0.00/v=0 9b:α0=0.00/αc=  n/a/v=0 4b:α0=0.00/αc=0.00/v=0 2b:α0=0.00/αc=0.00/v=0 (22.6s)
+[  3/7] held_out_delta-002 [delta] target_v=0 12b-mlx:α0=0.38/αc=0.00/v=0 9b:α0=0.00/αc=0.00/v=0 4b:α0=0.00/αc=1.00/v=0 2b:α0=0.00/αc=0.17/v=0 (24.2s)
+[  4/7] held_out_delta-003 [delta] target_v=1 12b-mlx:α0=0.38/αc=0.00/v=1 9b:α0=0.00/αc=0.00/v=0 4b:α0=0.00/αc=1.00/v=1 2b:α0=0.00/αc=0.17/v=0 (23.1s)
+[  5/7] held_out_delta-004 [delta] target_v=1 12b-mlx:α0=0.38/αc=0.00/v=1 9b:α0=0.00/αc=1.00/v=1 4b:α0=0.00/αc=0.00/v=0 2b:α0=0.00/αc=1.00/v=1 (23.0s)
+[  6/7] held_out_delta-005 [delta] target_v=1 12b-mlx:α0=0.00/αc=1.00/v=1 9b:α0=0.04/αc=1.00/v=1 4b:α0=1.00/αc=0.00/v=0 2b:α0=1.00/αc=0.00/v=0 (22.6s)
+[  7/7] held_out_delta-006 [delta] target_v=0 12b-mlx:α0=0.00/αc=0.00/v=0 9b:α0=1.00/αc=1.00/v=0 4b:α0=1.00/αc=1.00/v=0 2b:α0=1.00/αc=1.00/v=0 (22.9s)
+[alpha] done — results/S1-frontier-4cand-20260907/cases
+[alpha] target=openai:google/gemini-3.5-flash-lite drafters=4 cases=14 w=24 positions=1 -> results/S1-frontier-4cand-20260907
+[  1/14] held_out_delta-000 — already on disk, kept
+[  2/14] held_out_delta-001 — already on disk, kept
+[  3/14] held_out_delta-002 — already on disk, kept
+[  4/14] held_out_delta-003 — already on disk, kept
+[  5/14] held_out_delta-004 — already on disk, kept
+[  6/14] held_out_delta-005 — already on disk, kept
+[  7/14] held_out_delta-006 — already on disk, kept
+[  8/14] held_out_delta-007 [delta] target_v=1 12b-mlx:α0=0.38/αc=0.00/v=1 9b:α0=0.00/αc=  n/a/v=0 4b:α0=0.00/αc=0.00/v=0 2b:α0=0.00/αc=0.00/v=0 (22.8s)
+[  9/14] held_out_delta-008 [delta] target_v=1 12b-mlx:α0=0.38/αc=0.00/v=0 9b:α0=0.00/αc=1.00/v=1 4b:α0=0.00/αc=1.00/v=1 2b:α0=0.00/αc=0.00/v=0 (22.9s)
+[ 10/14] held_out_delta-009 [delta] target_v=1 12b-mlx:α0=0.38/αc=0.00/v=1 9b:α0=0.00/αc=0.65/v=0 4b:α0=0.00/αc=0.65/v=0 2b:α0=0.00/αc=0.65/v=0 (23.6s)
+[ 11/14] held_out_delta-010 [delta] target_v=1 12b-mlx:α0=0.38/αc=0.00/v=1 9b:α0=0.00/αc=0.00/v=0 4b:α0=0.00/αc=0.65/v=0 2b:α0=0.00/αc=0.65/v=0 (24.9s)
+[ 12/14] held_out_delta-011 [delta] target_v=1 12b-mlx:α0=0.38/αc=0.00/v=1 9b:α0=0.00/αc=  n/a/v=0 4b:α0=0.00/αc=0.00/v=0 2b:α0=0.00/αc=0.00/v=0 (22.8s)
+[ 13/14] held_out_delta-012 [delta] target_v=1 12b-mlx:α0=0.38/αc=0.00/v=1 9b:α0=0.00/αc=1.00/v=1 4b:α0=0.00/αc=1.00/v=1 2b:α0=0.00/αc=0.17/v=0 (23.6s)
+[ 14/14] held_out_delta-013 [delta] target_v=1 12b-mlx:α0=0.38/αc=0.00/v=1 9b:α0=0.00/αc=  n/a/v=0 4b:α0=0.00/αc=0.00/v=0 2b:α0=0.00/αc=0.00/v=0 (22.9s)
+[alpha] done — results/S1-frontier-4cand-20260907/cases
+[alpha] target=openai:google/gemini-3.5-flash-lite drafters=4 cases=20 w=24 positions=1 -> results/S1-frontier-4cand-20260907
+[  1/20] held_out_delta-000 — already on disk, kept
+[  2/20] held_out_delta-001 — already on disk, kept
+[  3/20] held_out_delta-002 — already on disk, kept
+[  4/20] held_out_delta-003 — already on disk, kept
+[  5/20] held_out_delta-004 — already on disk, kept
+[  6/20] held_out_delta-005 — already on disk, kept
+[  7/20] held_out_delta-006 — already on disk, kept
+[  8/20] held_out_delta-007 — already on disk, kept
+[  9/20] held_out_delta-008 — already on disk, kept
+[ 10/20] held_out_delta-009 — already on disk, kept
+[ 11/20] held_out_delta-010 — already on disk, kept
+[ 12/20] held_out_delta-011 — already on disk, kept
+[ 13/20] held_out_delta-012 — already on disk, kept
+[ 14/20] held_out_delta-013 — already on disk, kept
+[ 15/20] held_out_delta-014 [delta] target_v=1 12b-mlx:α0=0.38/αc=0.00/v=1 9b:α0=0.00/αc=0.00/v=0 4b:α0=0.00/αc=0.71/v=0 2b:α0=0.00/αc=0.71/v=0 (24.4s)
+[ 16/20] held_out_delta-015 [delta] target_v=0 12b-mlx:α0=0.00/αc=0.00/v=0 9b:α0=1.00/αc=1.00/v=0 4b:α0=1.00/αc=1.00/v=0 2b:α0=1.00/αc=1.00/v=0 (23.7s)
+[ 17/20] held_out_delta-016 [delta] target_v=1 12b-mlx:α0=0.38/αc=0.00/v=1 9b:α0=0.00/αc=0.00/v=1 4b:α0=0.00/αc=1.00/v=1 2b:α0=0.00/αc=1.00/v=1 (24.1s)
+[ 18/20] held_out_delta-017 [delta] target_v=0 12b-mlx:α0=0.00/αc=1.00/v=0 9b:α0=1.00/αc=  n/a/v=0 4b:α0=1.00/αc=0.00/v=1 2b:α0=1.00/αc=0.00/v=1 (21.9s)
+[ 19/20] held_out_delta-018 [delta] target_v=0 12b-mlx:α0=0.38/αc=0.00/v=0 9b:α0=0.00/αc=0.17/v=0 4b:α0=0.00/αc=0.17/v=0 2b:α0=0.00/αc=0.17/v=0 (23.8s)
+[ 20/20] held_out_delta-019 [delta] target_v=0 12b-mlx:α0=0.00/αc=0.00/v=0 9b:α0=0.04/αc=0.00/v=0 4b:α0=1.00/αc=0.04/v=0 2b:α0=1.00/αc=0.62/v=0 (25.1s)
+[alpha] done — results/S1-frontier-4cand-20260907/cases

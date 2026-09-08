@@ -1,0 +1,178 @@
+{
+  "run": {
+    "target": "openai:google/gemini-3.1-pro-preview",
+    "drafters": [
+      "ollama:gemma4:12b-mlx",
+      "ollama:qwen3.5:9b",
+      "ollama:qwen3.5:4b",
+      "ollama:qwen3.5:2b"
+    ],
+    "split": "held_out_delta",
+    "n": 20,
+    "window_chars": 24,
+    "positions": 1,
+    "temperature": 0.0,
+    "target_max_tokens": 4000,
+    "max_tokens": 700,
+    "prompt": "canonical",
+    "prompt_version": "1.0.0",
+    "prompt_hash": "2e4126b1e3fc8091",
+    "started": "2026-09-07T20:37:35",
+    "identity": "alpha_char = lcp(draft, target_continuation) / window, greedy target",
+    "usd_per_mtok_in": 2.0,
+    "usd_per_mtok_out": 12.0,
+    "finished": "2026-09-07T20:41:17",
+    "cases_on_disk": 20
+  },
+  "target_verified_pass": 8,
+  "target_parse_failures": 2,
+  "drafters": {
+    "ollama:gemma4:12b-mlx": {
+      "same_answer_as_target_rate": 0.5,
+      "answer_f1_vs_target": 0.7329,
+      "unparseable_either_side": 2,
+      "alpha_at_0": 0.8,
+      "alpha_content": 0.5417,
+      "content_agreement": 0.4805,
+      "format_absent": 2,
+      "same_answer_as_target": 5,
+      "alpha_at_0_sd": 0.2806,
+      "agreement_fraction": 0.5826,
+      "verified_pass": 12,
+      "verified_f1_mean": 0.816,
+      "parse_failures": 0,
+      "empty_answers": 0,
+      "thought_chars_mean": 0.0
+    },
+    "ollama:qwen3.5:9b": {
+      "same_answer_as_target_rate": 0.4667,
+      "answer_f1_vs_target": 0.6445,
+      "unparseable_either_side": 5,
+      "alpha_at_0": 0.0,
+      "alpha_content": 0.4435,
+      "content_agreement": 0.4105,
+      "format_absent": 5,
+      "same_answer_as_target": 5,
+      "alpha_at_0_sd": 0.0,
+      "agreement_fraction": 0.0,
+      "verified_pass": 6,
+      "verified_f1_mean": 0.558,
+      "parse_failures": 5,
+      "empty_answers": 0,
+      "thought_chars_mean": 0.0
+    },
+    "ollama:qwen3.5:4b": {
+      "same_answer_as_target_rate": 0.4444,
+      "answer_f1_vs_target": 0.5778,
+      "unparseable_either_side": 2,
+      "alpha_at_0": 0.0,
+      "alpha_content": 0.1566,
+      "content_agreement": 0.1566,
+      "format_absent": 2,
+      "same_answer_as_target": 2,
+      "alpha_at_0_sd": 0.0,
+      "agreement_fraction": 0.0,
+      "verified_pass": 6,
+      "verified_f1_mean": 0.545,
+      "parse_failures": 0,
+      "empty_answers": 0,
+      "thought_chars_mean": 0.0
+    },
+    "ollama:qwen3.5:2b": {
+      "same_answer_as_target_rate": 0.4444,
+      "answer_f1_vs_target": 0.5778,
+      "unparseable_either_side": 2,
+      "alpha_at_0": 0.0,
+      "alpha_content": 0.2214,
+      "content_agreement": 0.2214,
+      "format_absent": 2,
+      "same_answer_as_target": 3,
+      "alpha_at_0_sd": 0.0,
+      "agreement_fraction": 0.0,
+      "verified_pass": 4,
+      "verified_f1_mean": 0.412,
+      "parse_failures": 0,
+      "empty_answers": 0,
+      "thought_chars_mean": 0.0
+    }
+  },
+  "by_region": {
+    "delta": {
+      "n": 20,
+      "target_verified_pass": 8,
+      "drafters": {
+        "ollama:gemma4:12b-mlx": {
+          "alpha_at_0": 0.8,
+          "agreement": 0.5,
+          "verified_pass": 12
+        },
+        "ollama:qwen3.5:9b": {
+          "alpha_at_0": 0.0,
+          "agreement": 0.4667,
+          "verified_pass": 6
+        },
+        "ollama:qwen3.5:4b": {
+          "alpha_at_0": 0.0,
+          "agreement": 0.4444,
+          "verified_pass": 6
+        },
+        "ollama:qwen3.5:2b": {
+          "alpha_at_0": 0.0,
+          "agreement": 0.4444,
+          "verified_pass": 4
+        }
+      }
+    }
+  },
+  "ordering": {
+    "criterion": "semantic answer agreement with the target (EXPERIMENT_PLAN.md \u00a711)",
+    "comparable": false,
+    "by_agreement": [
+      "ollama:gemma4:12b-mlx",
+      "ollama:qwen3.5:9b",
+      "ollama:qwen3.5:4b",
+      "ollama:qwen3.5:2b"
+    ],
+    "by_alpha_chars": [
+      "ollama:gemma4:12b-mlx",
+      "ollama:qwen3.5:9b",
+      "ollama:qwen3.5:2b",
+      "ollama:qwen3.5:4b"
+    ],
+    "by_alpha": [
+      "ollama:gemma4:12b-mlx",
+      "ollama:qwen3.5:9b",
+      "ollama:qwen3.5:4b",
+      "ollama:qwen3.5:2b"
+    ],
+    "by_verified": [
+      "ollama:gemma4:12b-mlx",
+      "ollama:qwen3.5:9b",
+      "ollama:qwen3.5:4b",
+      "ollama:qwen3.5:2b"
+    ],
+    "agree": null,
+    "concordant_pairs_semantic": [
+      4,
+      5
+    ],
+    "concordant_pairs_character": [
+      4,
+      5
+    ],
+    "per_region_agree": {
+      "delta": true
+    }
+  },
+  "target_cost": {
+    "tokens_in": 4982,
+    "tokens_out": 23208,
+    "usd": 0.28846
+  },
+  "health": {
+    "alpha_dispersion": 0.3851,
+    "target_thought_chars_mean": 1133.8,
+    "target_answer_chars_mean": 122.5,
+    "headroom_target_minus_best_drafter": -4
+  }
+}

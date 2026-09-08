@@ -1,0 +1,123 @@
+{
+  "case_id": "held_out_delta-003",
+  "region": "delta",
+  "truth": [
+    "cbct"
+  ],
+  "target": {
+    "name": "openai:google/gemini-3.8-flash",
+    "answer": "```json\n{\n  \"kind\": \"submit_missing_documents\",\n  \"arguments\": {\n    \"missing\": [\n      \"cbct\"\n    ]\n  }\n}\n```",
+    "verified": {
+      "passed": true,
+      "parsed": true,
+      "f1": 1.0,
+      "extra": [],
+      "missed": []
+    },
+    "thought_chars": 318,
+    "truncated": false,
+    "seconds": 4.75,
+    "tokens_in": 257,
+    "tokens_out": 452
+  },
+  "drafters": {
+    "ollama:gemma4:12b-mlx": {
+      "own_answer": "```json\n{\n  \"kind\": \"submit_missing_documents\",\n  \"arguments\": {\n    \"missing\": [\n      \"cbct\"\n    ]\n  }\n}\n```",
+      "verified": {
+        "passed": true,
+        "parsed": true,
+        "f1": 1.0,
+        "extra": [],
+        "missed": []
+      },
+      "thought_chars": 0,
+      "tokens_in": 275,
+      "tokens_out": 44,
+      "truncated": false,
+      "alpha_at_0": 1.0,
+      "alpha_at_0_content": 1.0,
+      "content_agreement": 1.0,
+      "same_answer": true,
+      "agreement_chars": 110,
+      "agreement_fraction": 1.0,
+      "alpha_mid_mean": null,
+      "restarted_fraction": null,
+      "positions": []
+    },
+    "ollama:qwen3.5:9b": {
+      "own_answer": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": []}}",
+      "verified": {
+        "passed": false,
+        "parsed": true,
+        "f1": 0.0,
+        "extra": [],
+        "missed": [
+          "cbct"
+        ]
+      },
+      "thought_chars": 0,
+      "tokens_in": 267,
+      "tokens_out": 17,
+      "truncated": false,
+      "alpha_at_0": 0.0,
+      "alpha_at_0_content": 0.0,
+      "content_agreement": 0.0,
+      "same_answer": false,
+      "agreement_chars": 0,
+      "agreement_fraction": 0.0,
+      "alpha_mid_mean": null,
+      "restarted_fraction": null,
+      "positions": []
+    },
+    "ollama:qwen3.5:4b": {
+      "own_answer": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}",
+      "verified": {
+        "passed": true,
+        "parsed": true,
+        "f1": 1.0,
+        "extra": [],
+        "missed": []
+      },
+      "thought_chars": 0,
+      "tokens_in": 267,
+      "tokens_out": 20,
+      "truncated": false,
+      "alpha_at_0": 0.0,
+      "alpha_at_0_content": 0.0,
+      "content_agreement": 0.0,
+      "same_answer": false,
+      "agreement_chars": 0,
+      "agreement_fraction": 0.0,
+      "alpha_mid_mean": null,
+      "restarted_fraction": null,
+      "positions": []
+    },
+    "ollama:qwen3.5:2b": {
+      "own_answer": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}",
+      "verified": {
+        "passed": false,
+        "parsed": true,
+        "f1": 0.0,
+        "extra": [
+          "medical_history"
+        ],
+        "missed": [
+          "cbct"
+        ]
+      },
+      "thought_chars": 0,
+      "tokens_in": 267,
+      "tokens_out": 20,
+      "truncated": false,
+      "alpha_at_0": 0.0,
+      "alpha_at_0_content": 0.0,
+      "content_agreement": 0.0,
+      "same_answer": false,
+      "agreement_chars": 0,
+      "agreement_fraction": 0.0,
+      "alpha_mid_mean": null,
+      "restarted_fraction": null,
+      "positions": []
+    }
+  }
+}

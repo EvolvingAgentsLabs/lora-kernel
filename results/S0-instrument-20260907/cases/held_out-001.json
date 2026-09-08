@@ -1,0 +1,69 @@
+{
+  "case_id": "held_out-001",
+  "region": "beta",
+  "truth": [
+    "cbct",
+    "medication_reconciliation"
+  ],
+  "target": {
+    "name": "ollama:gemma4:12b-mlx",
+    "answer": "```json\n{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": []}}\n```",
+    "verified": {
+      "passed": false,
+      "parsed": true,
+      "f1": 0.0,
+      "extra": [],
+      "missed": [
+        "cbct",
+        "medication_reconciliation"
+      ]
+    },
+    "thought_chars": 0,
+    "truncated": false,
+    "seconds": 7.1
+  },
+  "drafters": {
+    "ollama:qwen3.5:4b": {
+      "own_answer": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": []}}",
+      "verified": {
+        "passed": false,
+        "parsed": true,
+        "f1": 0.0,
+        "extra": [],
+        "missed": [
+          "cbct",
+          "medication_reconciliation"
+        ]
+      },
+      "thought_chars": 0,
+      "truncated": false,
+      "alpha_at_0": 0.0,
+      "agreement_chars": 0,
+      "agreement_fraction": 0.0,
+      "alpha_mid_mean": null,
+      "restarted_fraction": null,
+      "positions": []
+    },
+    "ollama:qwen3.5:9b": {
+      "own_answer": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": []}}",
+      "verified": {
+        "passed": false,
+        "parsed": true,
+        "f1": 0.0,
+        "extra": [],
+        "missed": [
+          "cbct",
+          "medication_reconciliation"
+        ]
+      },
+      "thought_chars": 0,
+      "truncated": false,
+      "alpha_at_0": 0.0,
+      "agreement_chars": 0,
+      "agreement_fraction": 0.0,
+      "alpha_mid_mean": null,
+      "restarted_fraction": null,
+      "positions": []
+    }
+  }
+}
