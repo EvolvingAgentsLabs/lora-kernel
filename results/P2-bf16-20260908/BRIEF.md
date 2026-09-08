@@ -29,3 +29,26 @@ change is the card, and with it the precision the code selects by capability.
 **Cost.** L4, one session, roughly half an hour. The A100 is not touched.
 
 **Redesign count.** 0. Nothing about the instrument changes.
+
+
+---
+
+## Result — S4 is not a precision artefact
+
+| | fp16 (T4) | **bf16 (L4)** |
+|---|---|---|
+| base `val` | 6/60 · 0.100 | **6/60 · 0.100** |
+| base `val_delta` | 6/30 · 0.200 | **6/30 · 0.200** |
+| adapter `val` | 44/60 · 0.733 | **42/60 · 0.700** |
+| adapter `val_delta` | 12/30 · 0.400 | **11/30 · 0.367** |
+
+The base arms are **identical**; the adapter arms differ by one and two cases.
+The gain moves from +63.3 to **+60.0** and the false-promotion probe from +20.0
+to **+16.7**. Both survive, so the strongest claim this project has does not rest
+on the precision path that produced three false zeros. **[ran]**
+
+**The region arms were not replicated**, and the reason is this repository's, not
+Colab's: the chain script polled 40 times at 45 seconds and then stopped a
+perfectly healthy session in the middle of the alpha expert. Fixed — the poll
+budget now scales with the arms a session is asked to run. The doubt those arms
+carried is largely retired anyway by the main arms replicating.

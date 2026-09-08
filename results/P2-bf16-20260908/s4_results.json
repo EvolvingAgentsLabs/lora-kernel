@@ -1,0 +1,2681 @@
+{
+  "base": "Qwen/Qwen3.5-2B",
+  "started": "2026-09-08T15:27:25",
+  "lora": {
+    "r": 16,
+    "alpha": 32,
+    "epochs": 2.0,
+    "lr": 0.0002,
+    "train_n": 600
+  },
+  "n": {
+    "val": 60,
+    "delta": 30
+  },
+  "base_val": {
+    "name": "base",
+    "n": 60,
+    "passed": 6,
+    "accuracy": 0.1,
+    "unparseable": 0,
+    "by_clinic": {
+      "alpha": {
+        "n": 20,
+        "passed": 2,
+        "accuracy": 0.1
+      },
+      "beta": {
+        "n": 20,
+        "passed": 2,
+        "accuracy": 0.1
+      },
+      "gamma": {
+        "n": 20,
+        "passed": 2,
+        "accuracy": 0.1
+      }
+    },
+    "records": [
+      {
+        "case_id": "val-000",
+        "clinic": "alpha",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"referral_note\"]}}\n"
+      },
+      {
+        "case_id": "val-001",
+        "clinic": "beta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "referral_note"
+        ],
+        "want": [
+          "medication_reconciliation",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"referral_note\"]}}\n"
+      },
+      {
+        "case_id": "val-002",
+        "clinic": "gamma",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [
+          "cbct",
+          "medication_reconciliation"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}\n"
+      },
+      {
+        "case_id": "val-003",
+        "clinic": "alpha",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [
+          "cbct"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}\n"
+      },
+      {
+        "case_id": "val-004",
+        "clinic": "beta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "cbct",
+          "insurance_card",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}\n"
+      },
+      {
+        "case_id": "val-005",
+        "clinic": "gamma",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "treatment_estimate"
+        ],
+        "want": [
+          "cbct",
+          "referral_note",
+          "treatment_estimate"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"treatment_estimate\"]}}\n"
+      },
+      {
+        "case_id": "val-006",
+        "clinic": "alpha",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"referral_note\"]}}\n"
+      },
+      {
+        "case_id": "val-007",
+        "clinic": "beta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "insurance_card",
+          "medical_history",
+          "medication_reconciliation",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}\n"
+      },
+      {
+        "case_id": "val-008",
+        "clinic": "gamma",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [
+          "cbct",
+          "guardian_consent"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}\n"
+      },
+      {
+        "case_id": "val-009",
+        "clinic": "alpha",
+        "passed": false,
+        "parsed": true,
+        "got": null,
+        "want": [
+          "cbct",
+          "guardian_consent"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": []}}\n"
+      },
+      {
+        "case_id": "val-010",
+        "clinic": "beta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "insurance_card",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"referral_note\"]}}\n"
+      },
+      {
+        "case_id": "val-011",
+        "clinic": "gamma",
+        "passed": false,
+        "parsed": true,
+        "got": null,
+        "want": [
+          "guardian_consent",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": []}}\n"
+      },
+      {
+        "case_id": "val-012",
+        "clinic": "alpha",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}\n"
+      },
+      {
+        "case_id": "val-013",
+        "clinic": "beta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "insurance_card",
+          "medical_history"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}\n"
+      },
+      {
+        "case_id": "val-014",
+        "clinic": "gamma",
+        "passed": false,
+        "parsed": true,
+        "got": null,
+        "want": [
+          "cbct"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": []}}\n"
+      },
+      {
+        "case_id": "val-015",
+        "clinic": "alpha",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "cbct"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}\n"
+      },
+      {
+        "case_id": "val-016",
+        "clinic": "beta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "insurance_card",
+          "medical_history",
+          "medication_reconciliation",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}\n"
+      },
+      {
+        "case_id": "val-017",
+        "clinic": "gamma",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "referral_note"
+        ],
+        "want": [
+          "referral_note",
+          "treatment_estimate"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"referral_note\"]}}\n"
+      },
+      {
+        "case_id": "val-018",
+        "clinic": "alpha",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "referral_note"
+        ],
+        "want": [
+          "medication_reconciliation",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"referral_note\"]}}\n"
+      },
+      {
+        "case_id": "val-019",
+        "clinic": "beta",
+        "passed": false,
+        "parsed": true,
+        "got": null,
+        "want": [
+          "cbct"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": []}}\n"
+      },
+      {
+        "case_id": "val-020",
+        "clinic": "gamma",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [
+          "cbct",
+          "medication_reconciliation",
+          "treatment_estimate"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}\n"
+      },
+      {
+        "case_id": "val-021",
+        "clinic": "alpha",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "cbct",
+          "medical_history",
+          "medication_reconciliation"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}\n"
+      },
+      {
+        "case_id": "val-022",
+        "clinic": "beta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "cbct",
+          "medical_history",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}\n"
+      },
+      {
+        "case_id": "val-023",
+        "clinic": "gamma",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [
+          "cbct",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}\n"
+      },
+      {
+        "case_id": "val-024",
+        "clinic": "alpha",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"referral_note\"]}}\n"
+      },
+      {
+        "case_id": "val-025",
+        "clinic": "beta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "medical_history",
+          "medication_reconciliation"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}\n"
+      },
+      {
+        "case_id": "val-026",
+        "clinic": "gamma",
+        "passed": false,
+        "parsed": true,
+        "got": null,
+        "want": [
+          "guardian_consent"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": []}}\n"
+      },
+      {
+        "case_id": "val-027",
+        "clinic": "alpha",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "medication_reconciliation",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"referral_note\"]}}\n"
+      },
+      {
+        "case_id": "val-028",
+        "clinic": "beta",
+        "passed": false,
+        "parsed": true,
+        "got": null,
+        "want": [
+          "guardian_consent"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": []}}\n"
+      },
+      {
+        "case_id": "val-029",
+        "clinic": "gamma",
+        "passed": true,
+        "parsed": true,
+        "got": null,
+        "want": [],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": []}}\n"
+      },
+      {
+        "case_id": "val-030",
+        "clinic": "alpha",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "cbct",
+          "guardian_consent",
+          "medical_history"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}\n"
+      },
+      {
+        "case_id": "val-031",
+        "clinic": "beta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "medical_history"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}\n"
+      },
+      {
+        "case_id": "val-032",
+        "clinic": "gamma",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"referral_note\"]}}\n"
+      },
+      {
+        "case_id": "val-033",
+        "clinic": "alpha",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "cbct",
+          "medical_history"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}\n"
+      },
+      {
+        "case_id": "val-034",
+        "clinic": "beta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "referral_note"
+        ],
+        "want": [
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"referral_note\"]}}\n"
+      },
+      {
+        "case_id": "val-035",
+        "clinic": "gamma",
+        "passed": false,
+        "parsed": true,
+        "got": null,
+        "want": [
+          "cbct",
+          "guardian_consent",
+          "medication_reconciliation"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": []}}\n"
+      },
+      {
+        "case_id": "val-036",
+        "clinic": "alpha",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "cbct",
+          "medical_history"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}\n"
+      },
+      {
+        "case_id": "val-037",
+        "clinic": "beta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "insurance_card",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}\n"
+      },
+      {
+        "case_id": "val-038",
+        "clinic": "gamma",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [
+          "cbct",
+          "medication_reconciliation",
+          "treatment_estimate"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}\n"
+      },
+      {
+        "case_id": "val-039",
+        "clinic": "alpha",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [
+          "cbct",
+          "medication_reconciliation"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}\n"
+      },
+      {
+        "case_id": "val-040",
+        "clinic": "beta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "cbct",
+          "insurance_card",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}\n"
+      },
+      {
+        "case_id": "val-041",
+        "clinic": "gamma",
+        "passed": false,
+        "parsed": true,
+        "got": null,
+        "want": [
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": []}}\n"
+      },
+      {
+        "case_id": "val-042",
+        "clinic": "alpha",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}\n"
+      },
+      {
+        "case_id": "val-043",
+        "clinic": "beta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "guardian_consent"
+        ],
+        "want": [],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"guardian_consent\"]}}\n"
+      },
+      {
+        "case_id": "val-044",
+        "clinic": "gamma",
+        "passed": false,
+        "parsed": true,
+        "got": null,
+        "want": [
+          "cbct"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": []}}\n"
+      },
+      {
+        "case_id": "val-045",
+        "clinic": "alpha",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "cbct",
+          "medical_history"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}\n"
+      },
+      {
+        "case_id": "val-046",
+        "clinic": "beta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "medication_reconciliation"
+        ],
+        "want": [],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medication_reconciliation\"]}}\n"
+      },
+      {
+        "case_id": "val-047",
+        "clinic": "gamma",
+        "passed": false,
+        "parsed": true,
+        "got": null,
+        "want": [
+          "cbct"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": []}}\n"
+      },
+      {
+        "case_id": "val-048",
+        "clinic": "alpha",
+        "passed": false,
+        "parsed": true,
+        "got": null,
+        "want": [
+          "cbct",
+          "guardian_consent",
+          "medication_reconciliation"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": []}}\n"
+      },
+      {
+        "case_id": "val-049",
+        "clinic": "beta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "referral_note"
+        ],
+        "want": [
+          "medical_history",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"referral_note\"]}}\n"
+      },
+      {
+        "case_id": "val-050",
+        "clinic": "gamma",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [
+          "cbct"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}\n"
+      },
+      {
+        "case_id": "val-051",
+        "clinic": "alpha",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "referral_note"
+        ],
+        "want": [
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"referral_note\"]}}\n"
+      },
+      {
+        "case_id": "val-052",
+        "clinic": "beta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "cbct",
+          "insurance_card",
+          "medication_reconciliation"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}\n"
+      },
+      {
+        "case_id": "val-053",
+        "clinic": "gamma",
+        "passed": false,
+        "parsed": true,
+        "got": null,
+        "want": [
+          "cbct",
+          "medication_reconciliation"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": []}}\n"
+      },
+      {
+        "case_id": "val-054",
+        "clinic": "alpha",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "cbct",
+          "medication_reconciliation"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}\n"
+      },
+      {
+        "case_id": "val-055",
+        "clinic": "beta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "guardian_consent",
+          "medical_history",
+          "medication_reconciliation"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}\n"
+      },
+      {
+        "case_id": "val-056",
+        "clinic": "gamma",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "guardian_consent",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"referral_note\"]}}\n"
+      },
+      {
+        "case_id": "val-057",
+        "clinic": "alpha",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "medication_reconciliation"
+        ],
+        "want": [
+          "cbct",
+          "guardian_consent",
+          "medical_history",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medication_reconciliation\"]}}\n"
+      },
+      {
+        "case_id": "val-058",
+        "clinic": "beta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "medication_reconciliation",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"referral_note\"]}}\n"
+      },
+      {
+        "case_id": "val-059",
+        "clinic": "gamma",
+        "passed": false,
+        "parsed": true,
+        "got": null,
+        "want": [
+          "cbct",
+          "guardian_consent",
+          "treatment_estimate"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": []}}\n"
+      }
+    ]
+  },
+  "base_delta": {
+    "name": "base \u00b7 delta",
+    "n": 30,
+    "passed": 6,
+    "accuracy": 0.2,
+    "unparseable": 0,
+    "by_clinic": {
+      "delta": {
+        "n": 30,
+        "passed": 6,
+        "accuracy": 0.2
+      }
+    },
+    "records": [
+      {
+        "case_id": "val_delta-000",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [
+          "cbct",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}\n"
+      },
+      {
+        "case_id": "val_delta-001",
+        "clinic": "delta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [
+          "cbct"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}\n"
+      },
+      {
+        "case_id": "val_delta-002",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [
+          "cbct",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}\n"
+      },
+      {
+        "case_id": "val_delta-003",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "cbct",
+          "guardian_consent"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}\n"
+      },
+      {
+        "case_id": "val_delta-004",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "cbct",
+          "medical_history"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}\n"
+      },
+      {
+        "case_id": "val_delta-005",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [
+          "cbct",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}\n"
+      },
+      {
+        "case_id": "val_delta-006",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [
+          "cbct",
+          "guardian_consent",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}\n"
+      },
+      {
+        "case_id": "val_delta-007",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "cbct",
+          "medical_history"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}\n"
+      },
+      {
+        "case_id": "val_delta-008",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "cbct",
+          "medical_history",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}\n"
+      },
+      {
+        "case_id": "val_delta-009",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "guardian_consent",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"referral_note\"]}}\n"
+      },
+      {
+        "case_id": "val_delta-010",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"referral_note\"]}}\n"
+      },
+      {
+        "case_id": "val_delta-011",
+        "clinic": "delta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "medical_history"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}\n"
+      },
+      {
+        "case_id": "val_delta-012",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [
+          "cbct",
+          "guardian_consent"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}\n"
+      },
+      {
+        "case_id": "val_delta-013",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": null,
+        "want": [
+          "cbct"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": []}}\n"
+      },
+      {
+        "case_id": "val_delta-014",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "cbct",
+          "guardian_consent",
+          "medical_history",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}\n"
+      },
+      {
+        "case_id": "val_delta-015",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "cbct",
+          "medical_history"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}\n"
+      },
+      {
+        "case_id": "val_delta-016",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"referral_note\"]}}\n"
+      },
+      {
+        "case_id": "val_delta-017",
+        "clinic": "delta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [
+          "cbct"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}\n"
+      },
+      {
+        "case_id": "val_delta-018",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"referral_note\"]}}\n"
+      },
+      {
+        "case_id": "val_delta-019",
+        "clinic": "delta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "referral_note"
+        ],
+        "want": [
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"referral_note\"]}}\n"
+      },
+      {
+        "case_id": "val_delta-020",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": null,
+        "want": [
+          "cbct",
+          "guardian_consent"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": []}}\n"
+      },
+      {
+        "case_id": "val_delta-021",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "guardian_consent",
+          "medical_history"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}\n"
+      },
+      {
+        "case_id": "val_delta-022",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"referral_note\"]}}\n"
+      },
+      {
+        "case_id": "val_delta-023",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [
+          "cbct",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}\n"
+      },
+      {
+        "case_id": "val_delta-024",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "cbct",
+          "medical_history"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}\n"
+      },
+      {
+        "case_id": "val_delta-025",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": null,
+        "want": [
+          "cbct",
+          "guardian_consent"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": []}}\n"
+      },
+      {
+        "case_id": "val_delta-026",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": null,
+        "want": [
+          "cbct"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": []}}\n"
+      },
+      {
+        "case_id": "val_delta-027",
+        "clinic": "delta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [
+          "cbct"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}\n"
+      },
+      {
+        "case_id": "val_delta-028",
+        "clinic": "delta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [
+          "cbct"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}\n"
+      },
+      {
+        "case_id": "val_delta-029",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": null,
+        "want": [
+          "cbct",
+          "guardian_consent"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": []}}\n"
+      }
+    ]
+  },
+  "adapter_val": {
+    "name": "adapter",
+    "n": 60,
+    "passed": 42,
+    "accuracy": 0.7,
+    "unparseable": 0,
+    "by_clinic": {
+      "alpha": {
+        "n": 20,
+        "passed": 14,
+        "accuracy": 0.7
+      },
+      "beta": {
+        "n": 20,
+        "passed": 14,
+        "accuracy": 0.7
+      },
+      "gamma": {
+        "n": 20,
+        "passed": 14,
+        "accuracy": 0.7
+      }
+    },
+    "records": [
+      {
+        "case_id": "val-000",
+        "clinic": "alpha",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val-001",
+        "clinic": "beta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "medication_reconciliation",
+          "referral_note"
+        ],
+        "want": [
+          "medication_reconciliation",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medication_reconciliation\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val-002",
+        "clinic": "gamma",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medication_reconciliation"
+        ],
+        "want": [
+          "cbct",
+          "medication_reconciliation"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medication_reconciliation\"]}}"
+      },
+      {
+        "case_id": "val-003",
+        "clinic": "alpha",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [
+          "cbct"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}"
+      },
+      {
+        "case_id": "val-004",
+        "clinic": "beta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "guardian_consent",
+          "insurance_card",
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "insurance_card",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"guardian_consent\", \"insurance_card\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val-005",
+        "clinic": "gamma",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "referral_note",
+          "treatment_estimate"
+        ],
+        "want": [
+          "cbct",
+          "referral_note",
+          "treatment_estimate"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"referral_note\", \"treatment_estimate\"]}}"
+      },
+      {
+        "case_id": "val-006",
+        "clinic": "alpha",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val-007",
+        "clinic": "beta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "insurance_card",
+          "medical_history",
+          "medication_reconciliation",
+          "referral_note"
+        ],
+        "want": [
+          "insurance_card",
+          "medical_history",
+          "medication_reconciliation",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"insurance_card\", \"medication_reconciliation\", \"referral_note\", \"medical_history\"]}}"
+      },
+      {
+        "case_id": "val-008",
+        "clinic": "gamma",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "guardian_consent"
+        ],
+        "want": [
+          "cbct",
+          "guardian_consent"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"guardian_consent\"]}}"
+      },
+      {
+        "case_id": "val-009",
+        "clinic": "alpha",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [
+          "cbct",
+          "guardian_consent"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}"
+      },
+      {
+        "case_id": "val-010",
+        "clinic": "beta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "insurance_card",
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "insurance_card",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"insurance_card\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val-011",
+        "clinic": "gamma",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "guardian_consent",
+          "referral_note"
+        ],
+        "want": [
+          "guardian_consent",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"guardian_consent\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val-012",
+        "clinic": "alpha",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}"
+      },
+      {
+        "case_id": "val-013",
+        "clinic": "beta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "insurance_card",
+          "medical_history"
+        ],
+        "want": [
+          "insurance_card",
+          "medical_history"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"insurance_card\", \"medical_history\"]}}"
+      },
+      {
+        "case_id": "val-014",
+        "clinic": "gamma",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [
+          "cbct"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}"
+      },
+      {
+        "case_id": "val-015",
+        "clinic": "alpha",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [
+          "cbct"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}"
+      },
+      {
+        "case_id": "val-016",
+        "clinic": "beta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "insurance_card",
+          "medical_history",
+          "medication_reconciliation",
+          "referral_note"
+        ],
+        "want": [
+          "insurance_card",
+          "medical_history",
+          "medication_reconciliation",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"insurance_card\", \"medical_history\", \"medication_reconciliation\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val-017",
+        "clinic": "gamma",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "referral_note",
+          "treatment_estimate"
+        ],
+        "want": [
+          "referral_note",
+          "treatment_estimate"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"referral_note\", \"treatment_estimate\"]}}"
+      },
+      {
+        "case_id": "val-018",
+        "clinic": "alpha",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medication_reconciliation",
+          "referral_note"
+        ],
+        "want": [
+          "medication_reconciliation",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medication_reconciliation\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val-019",
+        "clinic": "beta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [
+          "cbct"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}"
+      },
+      {
+        "case_id": "val-020",
+        "clinic": "gamma",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medication_reconciliation",
+          "treatment_estimate"
+        ],
+        "want": [
+          "cbct",
+          "medication_reconciliation",
+          "treatment_estimate"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medication_reconciliation\", \"treatment_estimate\"]}}"
+      },
+      {
+        "case_id": "val-021",
+        "clinic": "alpha",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medical_history",
+          "medication_reconciliation"
+        ],
+        "want": [
+          "cbct",
+          "medical_history",
+          "medication_reconciliation"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medical_history\", \"medication_reconciliation\"]}}"
+      },
+      {
+        "case_id": "val-022",
+        "clinic": "beta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medical_history",
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "medical_history",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medical_history\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val-023",
+        "clinic": "gamma",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val-024",
+        "clinic": "alpha",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val-025",
+        "clinic": "beta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "medical_history",
+          "medication_reconciliation"
+        ],
+        "want": [
+          "medical_history",
+          "medication_reconciliation"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\", \"medication_reconciliation\"]}}"
+      },
+      {
+        "case_id": "val-026",
+        "clinic": "gamma",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "guardian_consent"
+        ],
+        "want": [
+          "guardian_consent"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"guardian_consent\"]}}"
+      },
+      {
+        "case_id": "val-027",
+        "clinic": "alpha",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medication_reconciliation",
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "medication_reconciliation",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medication_reconciliation\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val-028",
+        "clinic": "beta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "guardian_consent"
+        ],
+        "want": [
+          "guardian_consent"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"guardian_consent\"]}}"
+      },
+      {
+        "case_id": "val-029",
+        "clinic": "gamma",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}"
+      },
+      {
+        "case_id": "val-030",
+        "clinic": "alpha",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medical_history"
+        ],
+        "want": [
+          "cbct",
+          "guardian_consent",
+          "medical_history"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medical_history\"]}}"
+      },
+      {
+        "case_id": "val-031",
+        "clinic": "beta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "medical_history"
+        ],
+        "want": [
+          "medical_history"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\"]}}"
+      },
+      {
+        "case_id": "val-032",
+        "clinic": "gamma",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val-033",
+        "clinic": "alpha",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medical_history"
+        ],
+        "want": [
+          "cbct",
+          "medical_history"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medical_history\"]}}"
+      },
+      {
+        "case_id": "val-034",
+        "clinic": "beta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "referral_note"
+        ],
+        "want": [
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"referral_note\"]}}"
+      },
+      {
+        "case_id": "val-035",
+        "clinic": "gamma",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "guardian_consent",
+          "medication_reconciliation"
+        ],
+        "want": [
+          "cbct",
+          "guardian_consent",
+          "medication_reconciliation"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"guardian_consent\", \"medication_reconciliation\"]}}"
+      },
+      {
+        "case_id": "val-036",
+        "clinic": "alpha",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medical_history"
+        ],
+        "want": [
+          "cbct",
+          "medical_history"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medical_history\"]}}"
+      },
+      {
+        "case_id": "val-037",
+        "clinic": "beta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "insurance_card",
+          "referral_note"
+        ],
+        "want": [
+          "insurance_card",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"insurance_card\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val-038",
+        "clinic": "gamma",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medication_reconciliation",
+          "treatment_estimate"
+        ],
+        "want": [
+          "cbct",
+          "medication_reconciliation",
+          "treatment_estimate"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medication_reconciliation\", \"treatment_estimate\"]}}"
+      },
+      {
+        "case_id": "val-039",
+        "clinic": "alpha",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medication_reconciliation"
+        ],
+        "want": [
+          "cbct",
+          "medication_reconciliation"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medication_reconciliation\"]}}"
+      },
+      {
+        "case_id": "val-040",
+        "clinic": "beta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "insurance_card",
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "insurance_card",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"insurance_card\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val-041",
+        "clinic": "gamma",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "referral_note"
+        ],
+        "want": [
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val-042",
+        "clinic": "alpha",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}"
+      },
+      {
+        "case_id": "val-043",
+        "clinic": "beta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "guardian_consent"
+        ],
+        "want": [],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"guardian_consent\"]}}"
+      },
+      {
+        "case_id": "val-044",
+        "clinic": "gamma",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [
+          "cbct"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}"
+      },
+      {
+        "case_id": "val-045",
+        "clinic": "alpha",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medical_history"
+        ],
+        "want": [
+          "cbct",
+          "medical_history"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medical_history\"]}}"
+      },
+      {
+        "case_id": "val-046",
+        "clinic": "beta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "guardian_consent"
+        ],
+        "want": [],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"guardian_consent\"]}}"
+      },
+      {
+        "case_id": "val-047",
+        "clinic": "gamma",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [
+          "cbct"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}"
+      },
+      {
+        "case_id": "val-048",
+        "clinic": "alpha",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "guardian_consent",
+          "medication_reconciliation"
+        ],
+        "want": [
+          "cbct",
+          "guardian_consent",
+          "medication_reconciliation"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"guardian_consent\", \"medication_reconciliation\"]}}"
+      },
+      {
+        "case_id": "val-049",
+        "clinic": "beta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "medical_history",
+          "referral_note"
+        ],
+        "want": [
+          "medical_history",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"medical_history\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val-050",
+        "clinic": "gamma",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "guardian_consent"
+        ],
+        "want": [
+          "cbct"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"guardian_consent\"]}}"
+      },
+      {
+        "case_id": "val-051",
+        "clinic": "alpha",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "referral_note"
+        ],
+        "want": [
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val-052",
+        "clinic": "beta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "insurance_card",
+          "medication_reconciliation"
+        ],
+        "want": [
+          "cbct",
+          "insurance_card",
+          "medication_reconciliation"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"insurance_card\", \"medication_reconciliation\"]}}"
+      },
+      {
+        "case_id": "val-053",
+        "clinic": "gamma",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medication_reconciliation"
+        ],
+        "want": [
+          "cbct",
+          "medication_reconciliation"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medication_reconciliation\"]}}"
+      },
+      {
+        "case_id": "val-054",
+        "clinic": "alpha",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medication_reconciliation"
+        ],
+        "want": [
+          "cbct",
+          "medication_reconciliation"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medication_reconciliation\"]}}"
+      },
+      {
+        "case_id": "val-055",
+        "clinic": "beta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "guardian_consent",
+          "medical_history",
+          "medication_reconciliation"
+        ],
+        "want": [
+          "guardian_consent",
+          "medical_history",
+          "medication_reconciliation"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"guardian_consent\", \"medical_history\", \"medication_reconciliation\"]}}"
+      },
+      {
+        "case_id": "val-056",
+        "clinic": "gamma",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "guardian_consent",
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "guardian_consent",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"guardian_consent\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val-057",
+        "clinic": "alpha",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "guardian_consent",
+          "medical_history",
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "guardian_consent",
+          "medical_history",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"guardian_consent\", \"medical_history\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val-058",
+        "clinic": "beta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medication_reconciliation",
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "medication_reconciliation",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medication_reconciliation\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val-059",
+        "clinic": "gamma",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "treatment_estimate"
+        ],
+        "want": [
+          "cbct",
+          "guardian_consent",
+          "treatment_estimate"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"treatment_estimate\"]}}"
+      }
+    ]
+  },
+  "adapter_delta": {
+    "name": "adapter \u00b7 delta",
+    "n": 30,
+    "passed": 11,
+    "accuracy": 0.3667,
+    "unparseable": 0,
+    "by_clinic": {
+      "delta": {
+        "n": 30,
+        "passed": 11,
+        "accuracy": 0.3667
+      }
+    },
+    "records": [
+      {
+        "case_id": "val_delta-000",
+        "clinic": "delta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val_delta-001",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medication_reconciliation"
+        ],
+        "want": [
+          "cbct"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medication_reconciliation\"]}}"
+      },
+      {
+        "case_id": "val_delta-002",
+        "clinic": "delta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val_delta-003",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "guardian_consent",
+          "medication_reconciliation"
+        ],
+        "want": [
+          "cbct",
+          "guardian_consent"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"guardian_consent\", \"medication_reconciliation\"]}}"
+      },
+      {
+        "case_id": "val_delta-004",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medical_history",
+          "medication_reconciliation"
+        ],
+        "want": [
+          "cbct",
+          "medical_history"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medical_history\", \"medication_reconciliation\"]}}"
+      },
+      {
+        "case_id": "val_delta-005",
+        "clinic": "delta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val_delta-006",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medication_reconciliation",
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "guardian_consent",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medication_reconciliation\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val_delta-007",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medical_history",
+          "medication_reconciliation"
+        ],
+        "want": [
+          "cbct",
+          "medical_history"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medical_history\", \"medication_reconciliation\"]}}"
+      },
+      {
+        "case_id": "val_delta-008",
+        "clinic": "delta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medical_history",
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "medical_history",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medical_history\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val_delta-009",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medication_reconciliation",
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "guardian_consent",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medication_reconciliation\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val_delta-010",
+        "clinic": "delta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val_delta-011",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medical_history",
+          "medication_reconciliation"
+        ],
+        "want": [
+          "medical_history"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medical_history\", \"medication_reconciliation\"]}}"
+      },
+      {
+        "case_id": "val_delta-012",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "guardian_consent",
+          "medication_reconciliation"
+        ],
+        "want": [
+          "cbct",
+          "guardian_consent"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"guardian_consent\", \"medication_reconciliation\"]}}"
+      },
+      {
+        "case_id": "val_delta-013",
+        "clinic": "delta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [
+          "cbct"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}"
+      },
+      {
+        "case_id": "val_delta-014",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "guardian_consent",
+          "medical_history",
+          "medication_reconciliation",
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "guardian_consent",
+          "medical_history",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"guardian_consent\", \"medical_history\", \"medication_reconciliation\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val_delta-015",
+        "clinic": "delta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medical_history"
+        ],
+        "want": [
+          "cbct",
+          "medical_history"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medical_history\"]}}"
+      },
+      {
+        "case_id": "val_delta-016",
+        "clinic": "delta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val_delta-017",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medication_reconciliation"
+        ],
+        "want": [
+          "cbct"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medication_reconciliation\"]}}"
+      },
+      {
+        "case_id": "val_delta-018",
+        "clinic": "delta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val_delta-019",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "referral_note"
+        ],
+        "want": [
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val_delta-020",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "guardian_consent",
+          "medication_reconciliation"
+        ],
+        "want": [
+          "cbct",
+          "guardian_consent"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"guardian_consent\", \"medication_reconciliation\"]}}"
+      },
+      {
+        "case_id": "val_delta-021",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medical_history"
+        ],
+        "want": [
+          "guardian_consent",
+          "medical_history"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medical_history\"]}}"
+      },
+      {
+        "case_id": "val_delta-022",
+        "clinic": "delta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val_delta-023",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medication_reconciliation",
+          "referral_note"
+        ],
+        "want": [
+          "cbct",
+          "referral_note"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medication_reconciliation\", \"referral_note\"]}}"
+      },
+      {
+        "case_id": "val_delta-024",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medical_history",
+          "medication_reconciliation"
+        ],
+        "want": [
+          "cbct",
+          "medical_history"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medical_history\", \"medication_reconciliation\"]}}"
+      },
+      {
+        "case_id": "val_delta-025",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "guardian_consent",
+          "medication_reconciliation"
+        ],
+        "want": [
+          "cbct",
+          "guardian_consent"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"guardian_consent\", \"medication_reconciliation\"]}}"
+      },
+      {
+        "case_id": "val_delta-026",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medication_reconciliation"
+        ],
+        "want": [
+          "cbct"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medication_reconciliation\"]}}"
+      },
+      {
+        "case_id": "val_delta-027",
+        "clinic": "delta",
+        "passed": true,
+        "parsed": true,
+        "got": [
+          "cbct"
+        ],
+        "want": [
+          "cbct"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\"]}}"
+      },
+      {
+        "case_id": "val_delta-028",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "medication_reconciliation"
+        ],
+        "want": [
+          "cbct"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"medication_reconciliation\"]}}"
+      },
+      {
+        "case_id": "val_delta-029",
+        "clinic": "delta",
+        "passed": false,
+        "parsed": true,
+        "got": [
+          "cbct",
+          "guardian_consent",
+          "medication_reconciliation"
+        ],
+        "want": [
+          "cbct",
+          "guardian_consent"
+        ],
+        "raw": "{\"kind\": \"submit_missing_documents\", \"arguments\": {\"missing\": [\"cbct\", \"guardian_consent\", \"medication_reconciliation\"]}}"
+      }
+    ]
+  }
+}

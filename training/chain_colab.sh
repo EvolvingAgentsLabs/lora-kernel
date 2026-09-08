@@ -63,7 +63,13 @@ print(subprocess.run("grep -E '\\[arm\\]|\\[precision\\]|passed [0-9]+|trainable
 PY
   # Pull after every poll, not only at the end: a session taken away between the
   # last save and the end of the loop used to lose everything the arm had done.
-  for _ in $(seq 1 40); do
+  #
+  # POLLS x 45s IS A DEADLINE THIS SCRIPT ENFORCES ON THE RUN. At 40 it stopped a
+  # healthy L4 session in the middle of the region arms and looked exactly like a
+  # reclaim [ran] 2026-09-08. It scales with MAXARMS, and with 0 — every arm in
+  # one session — it has to cover the whole run.
+  POLLS=$(( MAXARMS == 0 ? 200 : 40 * MAXARMS ))
+  for _ in $(seq 1 $POLLS); do
     out=$(colab exec -s "$S" -f /tmp/_peek.py 2>/dev/null | grep -vE "^\[colab\]|^$|Warning:" || true)
     [ -n "$out" ] && echo "    $out" | tail -2
     colab download -s "$S" "$REMOTE" "$LOCAL" >/dev/null 2>&1 || true
