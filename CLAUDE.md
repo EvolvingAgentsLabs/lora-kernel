@@ -112,9 +112,19 @@ expected to **change as the project learns**:
 - New surface area is the expensive kind of progress: a new agent has to be
   justified by a step that already exists in the plan.
 
-## 6. Git
+## 6. Git — land every significant step, do not accumulate
 
-- **Never push to `main`.** Branch, commit, open a PR — including for documents.
+The user's instruction, 2026-09-08: **on each significant advance, commit, push,
+open a PR and merge it to `main`.**
+
+- **Never push to `main` directly.** The PR is the record; merging it is how the
+  step lands. A branch that carries three steps is three steps nobody can revert
+  independently.
+- A step is significant when it changes what the project knows or can do: a
+  result, a fix that changed a conclusion, a new capability, a decision recorded
+  in the plan. Not every commit — every advance.
+- The plan and its Spanish mirror are updated in the same PR as the work they
+  describe, or the record and the code disagree the moment it merges.
 - Commits say what changed and why, in the voice of the repository: declarative,
   specific, no ceremony.
 
