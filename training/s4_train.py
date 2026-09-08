@@ -165,8 +165,8 @@ def train_adapter(base: str, rows: list[dict], out_dir: str, args):
     peft_model = get_peft_model(model, LoraConfig(
         r=args.r, lora_alpha=args.alpha, lora_dropout=0.05, bias="none",
         task_type="CAUSAL_LM",
-        target_modules=["q_proj", "k_proj", "v_proj", "o_proj",
-                        "gate_proj", "up_proj", "down_proj"]))
+        target_modules=args.targets.split(",")))
+    print(f"[targets] {args.targets}", flush=True)
     peft_model.print_trainable_parameters()
     SFTTrainer(
         model=peft_model, train_dataset=Dataset.from_list(texts),
@@ -445,9 +445,16 @@ def main() -> int:
                          "so 512 truncates nothing and halves the logits again")
     ap.add_argument("--max-new-tokens", type=int, default=64)
     ap.add_argument("--seed", type=int, default=0)
-    # NOT q_proj/k_proj on a qwen3: QK-norm makes the adapted tensors
-    # shape-incompatible and the kernel errors out. [read]
-    ap.add_argument("--targets", default="v_proj,o_proj,gate_proj,up_proj,down_proj")
+    # The default is the FULL set, and that is a correction rather than a choice.
+    # The flag existed from 2026-09-07 but `train_adapter` ignored it and
+    # hardcoded all seven modules, so every adapter this project has trained
+    # includes q_proj and k_proj — while the plan and PR #2 claimed they were
+    # excluded for qwen3's QK-norm [read]. The claim was wrong about what ran,
+    # and the concern did not bite in training: the same seven-module adapter
+    # scored +60 points [ran]. Whether it bites in vLLM's kernels is P3's problem
+    # and is now something to watch for rather than something already avoided.
+    ap.add_argument("--targets",
+                    default="q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj")
     ap.add_argument("--max-arms", type=int, default=0,
                     help="stop after this many arms complete in this process; 0 "
                          "runs them all. 1 is how a chained run survives a tier "

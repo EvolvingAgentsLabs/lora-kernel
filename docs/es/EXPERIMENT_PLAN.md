@@ -363,7 +363,10 @@ Cero respuestas inparseables en los dos arms del adaptador. Por clínica la
 ganancia es pareja —alpha 15/20, beta 15/20, gamma 14/20— así que no hay un solo
 protocolo cargando el resultado. El adaptador son **10,9 M de parámetros
 entrenables, 0,58 % del modelo**, entrenados dos épocas sobre 600 casos generados
-en una T4 gratis.
+en una T4 gratis, adaptando **las siete** proyecciones de atención y MLP —
+incluidas `q_proj` y `k_proj`, que una nota anterior afirmaba excluidas por el
+QK-norm de qwen3. No lo estaban: el flag que las excluía sólo lo leía el
+preflight, y la preocupación no mordió en el entrenamiento. **[ran]**
 
 **Y la sonda de falsa promoción dio negativa, que es la mitad más fuerte.**
 `delta` es la clínica que no aparece en ningún split de entrenamiento y cuya regla

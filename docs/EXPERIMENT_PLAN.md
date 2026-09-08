@@ -354,7 +354,11 @@ all four numbers **[ran]** on cases neither arm was trained on:
 Zero unparseable answers in either adapter arm. Per clinic the gain is even —
 alpha 15/20, beta 15/20, gamma 14/20 — so it is not one protocol carrying the
 result. The adapter is **10.9 M trainable parameters, 0.58 % of the model**,
-trained for two epochs on 600 generated cases on a free T4.
+trained for two epochs on 600 generated cases on a free T4, adapting **all
+seven** attention and MLP projections — including `q_proj` and `k_proj`, which
+an earlier note claimed were excluded for qwen3's QK-norm. They were not: the
+flag that excluded them was read only by the preflight, and the concern did not
+bite in training. **[ran]**
 
 **And the false-promotion probe came back negative, which is the stronger half.**
 `delta` is the clinic that appears in no training split and whose unpublished rule
