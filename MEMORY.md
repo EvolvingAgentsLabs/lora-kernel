@@ -33,7 +33,9 @@ score it had while it was there.
 | M13 | **No Gemini target clears the local 12B on this suite**: `gemini-3.5-flash-lite` 13/20 ($0.003), `gemini-3.8-flash` 13/20 ($0.13), `gemini-3.1-pro-preview` **8/20** ($0.29), against `gemma4:12b` 12/20 free. Paying 100× more scored worse. S1's gate failed three times. | [ran] |
 | M14 | **The promotion criterion works: 14 of 15 discriminable pairs ordered correctly across three independent targets** — but the targets are peers of the best candidate, so this validates the criterion's mechanics, not the distillation claim. | [ran] |
 | M15 | **Character α's concordance moved 1/5 → 4/5 across targets on identical candidates and cases**, because the pro target pretty-prints and the flash ones do not. Direct evidence that it measures layout. | [ran] |
-| M16 | Every local model here emits a reasoning channel before the answer; ollama returns the two separately, `think=false` works on qwen and 500s on gemma; and ollama's chat renderer ignores an assistant prefill, so mid-answer draft positions are unavailable locally. | [ran] |
+| M16 | **The adapter has never been graded.** Six infrastructure failures and three reclaimed free-Colab sessions: parser crash, memory leak, fp32 upcast, unwrappable layer class, old `torchao`, and a T4 without bf16. The base arms on `Qwen/Qwen3.5-2B` are banked at **6/60** (`val`) and **6/30** (`val_delta`). | [ran] |
+| M17 | **A T4 has no bf16.** The base generates fine in it; every LoRA generation then dies with "no engine to execute this computation" and the arm reports 0 — which reads exactly like S4's falsification condition. Precision is chosen by `is_bf16_supported()`. | [ran] |
+| M18 | Every local model here emits a reasoning channel before the answer; ollama returns the two separately, `think=false` works on qwen and 500s on gemma; and ollama's chat renderer ignores an assistant prefill, so mid-answer draft positions are unavailable locally. | [ran] |
 
 ## What this workspace already measured, and must not be re-learned
 

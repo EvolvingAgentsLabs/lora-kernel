@@ -65,19 +65,40 @@ def _seed(n: int) -> None:
     torch.manual_seed(n)
 
 
+def precision():
+    """The card decides, not the habit.
+
+    A T4 is Turing (SM75) and has **no bf16**. Loading and generating in bf16
+    appears to work — the baseline arm ran clean — and then the extra matmuls a
+    LoRA adds hit a kernel with no bf16 engine and every generation dies with
+    "GET was unable to find an engine to execute this computation". The arm
+    reported 0/60 and it was not a result; it was the GPU. **[ran]** 2026-09-08.
+
+    Returns (dtype, bf16_flag, fp16_flag) for the trainer.
+    """
+    import torch
+    if torch.cuda.is_available() and torch.cuda.is_bf16_supported():
+        return torch.bfloat16, True, False
+    return torch.float16, False, True
+
+
 def load_base(base: str, four_bit: bool = True):
     import torch
     from transformers import AutoModelForCausalLM, AutoTokenizer, BitsAndBytesConfig
+    dtype, _, _ = precision()
     bnb = BitsAndBytesConfig(
         load_in_4bit=True, bnb_4bit_quant_type="nf4",
-        bnb_4bit_compute_dtype=torch.bfloat16, bnb_4bit_use_double_quant=True,
+        bnb_4bit_compute_dtype=dtype, bnb_4bit_use_double_quant=True,
     ) if four_bit else None
     tok = AutoTokenizer.from_pretrained(base)
     if tok.pad_token is None:
         tok.pad_token = tok.eos_token
     model = AutoModelForCausalLM.from_pretrained(
-        base, quantization_config=bnb, dtype=torch.bfloat16, device_map="auto")
+        base, quantization_config=bnb, dtype=dtype, device_map="auto")
     model.config.use_cache = True
+    print(f"[precision] {dtype} on "
+          f"{torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'cpu'}",
+          flush=True)
     return model, tok
 
 
@@ -146,7 +167,7 @@ def train_adapter(base: str, rows: list[dict], out_dir: str, args):
                        gradient_accumulation_steps=args.accum,
                        learning_rate=args.lr, max_length=args.max_seq,
                        logging_steps=10, seed=args.seed, report_to=[],
-                       save_strategy="no", bf16=True,
+                       save_strategy="no", bf16=precision()[1], fp16=precision()[2],
                        # Packing would refill every sequence to max_length and
                        # put the token budget straight back.
                        packing=False,
@@ -314,7 +335,7 @@ def preflight(args) -> int:
                                   gradient_accumulation_steps=1,
                                   learning_rate=args.lr, max_length=args.max_seq,
                                   logging_steps=1, report_to=[], save_strategy="no",
-                                  bf16=True, packing=False,
+                                  bf16=precision()[1], fp16=precision()[2], packing=False,
                                   gradient_checkpointing=True)).train()
     except torch.OutOfMemoryError as e:
         print(f"[preflight] FAIL — one step does not fit: {str(e)[:160]}", flush=True)
