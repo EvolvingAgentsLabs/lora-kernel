@@ -85,3 +85,27 @@ possible target for a multi-step reasoning task.
 distil the frontier's answers into an adapter, withdraw the frontier, and measure
 what falls. The held-out families `drag_force` and `orifice_discharge` are the
 generalisation probe, untouched.
+
+
+## The teacher is the flash, and that is measured rather than assumed
+
+At the user's instruction the gate was re-run with a cheaper target, and the
+cheaper one is not worse — it is identical **[ran]**:
+
+| teacher | | accuracy | reasoning chars | seconds | price in/out per Mtok |
+|---|---|---|---|---|---|
+| `gemini-3.1-pro-preview` | 40/40 | 1.000 | 42,795 | 664 | $2.00 / $12.00 |
+| **`gemini-3.8-flash`** | **40/40** | **1.000** | 27,846 | 356 | **$0.75 / $3.75** |
+
+Same score on every family, **3.2× cheaper on output** — and output is what
+dominates when the teacher reasons, which here it does to the tune of tens of
+thousands of characters per run.
+
+This matters more than a line in a budget. The teacher does not answer forty
+problems; it answers **the whole distillation corpus**, so its price multiplies
+by every case the adapter will ever learn from. Choosing it on evidence rather
+than on habit is the difference between a corpus that costs cents and one that
+costs tens of dollars.
+
+`gemini-3.1-pro-preview` stays in the record as the first arm that proved the
+gap exists. It is not the teacher.
