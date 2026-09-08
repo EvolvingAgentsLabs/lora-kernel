@@ -578,7 +578,7 @@ central metric becomes available for the first time.
 |---|---|---|---|---|
 | **P1** | **Price the router.** Re-run the 40 routing cases with the `clinic:` line **masked**, so the lexical rule has nothing to read | L4 | agreement still picks the right expert while the keyword baseline collapses to chance | ~15 min |
 | **P2** | **Replicate S4 in bf16.** Same arms, real bf16, no fp16 path | L4 | the +63.3 survives; if it does not, every S4 number was a precision artefact | ~30 min |
-| **P3** | **vLLM multi-LoRA, the substrate** | A100 | **FAILED, silently — see below** | spent |
+| **P3** | **vLLM multi-LoRA, the substrate** | A100 | **RESOLVED on a dense base** — silent failure on Qwen3.5 | spent |
 | **P4** | **A same-family strong target.** Serve a large Qwen3.5 beside the 2B adapters | A100 | **token-level** acceptance measurable at last, shared tokenizer, no text-agreement surrogate | ~1 h |
 | **P5** | **S1 again, locally.** Does the strong same-family target clear the adapters by a margin a withdrawal gap can live in | A100 | if it does not, the suite is still wrong and §11's other options apply | ~30 min |
 | **P6** | **S5 — the withdrawal gap.** Promote where acceptance crosses threshold, remove the target, re-measure | A100 | **the product** | ~1 h |
@@ -592,6 +592,30 @@ claimed about *serving* until they exist. P5 is the gate that decides whether P6
 the product, is buyable at all; it is bought before P6 and not alongside it.
 
 **The A100 is the expensive resource, so P1, P2, P7 and P8 stay on the L4.**
+
+#### P3 resolved — the substrate exists, on a base vLLM can serve
+
+`Qwen/Qwen2.5-3B-Instruct` — `Qwen2ForCausalLM`, dense, no vision tower — on an
+A100 with vLLM 0.28.0 **[ran]**:
+
+    [gate] adapter changes output: True
+    [pure batch]  20/60 = 0.333   77.66 prompts/s
+
+The gate passed, and the served accuracy matches what `transformers` measured for
+the same recipe (18/60). **Two implementations agreeing is what P3 was built to
+check**, and it is the first time this architecture's layer 1 has existed.
+
+By elimination the earlier silence is explained: `Qwen3.5-2B` is hybrid and
+multimodal, and the vLLM class declaring `SupportsLoRA` is neither.
+
+**The mixed-batch arm is voided, and the fault is this repository's.** It called
+`generate()` once per prompt while cycling adapters — sixty sequential
+round-trips — and reported 3.85 prompts/s against 77.66, which reads as a 20×
+penalty for holding a pool. It measured the loop. Pricing the pool honestly needs
+per-request adapters *inside one scheduling pass*: the async engine, or the
+OpenAI-compatible server with one model name per adapter. Until then that arm
+reports nothing.
+
 
 #### P3 — the pool is not servable, and it fails without saying so
 

@@ -256,9 +256,14 @@ def run_all(args) -> dict:
             # resume that trusted it would skip the arm and carry a measured zero
             # forward — which reads as "specialisation did not happen", one of
             # this step's two falsification conditions. [ran] 2026-09-08
+            # VOID ONLY WHAT THE MACHINE BROKE. An arm where every answer was
+            # unusable because generation RAISED is infrastructure; an arm where
+            # the model answered `declare_unsolved` every time is a measurement
+            # of a model that declines. Voiding the second made the base arm
+            # re-run on every resume, forever [ran] 2026-09-08.
             voided = [k for k, v in prev.items()
                       if isinstance(v, dict) and v.get("n")
-                      and v.get("unparseable") == v.get("n")]
+                      and v.get("generation_failures", v.get("unparseable", 0)) == v.get("n")]
             for k in voided:
                 del prev[k]
             if voided:

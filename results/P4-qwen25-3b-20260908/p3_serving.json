@@ -1,0 +1,31 @@
+{
+  "base": "Qwen/Qwen2.5-3B-Instruct",
+  "pool": [
+    "all-clinics"
+  ],
+  "n": 60,
+  "arms": {
+    "base (no adapter)": {
+      "passed": 0,
+      "n": 60,
+      "accuracy": 0.0,
+      "unparseable": 59,
+      "seconds": 0.79,
+      "prompts_per_second": 75.85
+    },
+    "pure batch \u00b7 all-clinics": {
+      "passed": 20,
+      "n": 60,
+      "accuracy": 0.3333,
+      "unparseable": 0,
+      "seconds": 0.77,
+      "prompts_per_second": 77.66
+    },
+    "mixed batch \u00b7 round-robin": {
+      "n": 60,
+      "seconds": 15.58,
+      "prompts_per_second": 3.85,
+      "note": "one adapter per request, cycled \u2014 accuracy is meaningless here because two of the three adapters are wrong for any given case; this arm measures the COST of holding a pool, not its quality"
+    }
+  }
+}

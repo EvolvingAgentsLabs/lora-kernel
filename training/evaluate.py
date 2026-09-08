@@ -59,15 +59,17 @@ def truth_of(row: dict) -> set[str]:
 def evaluate(generate_fn, rows: list[dict], name: str = "") -> dict:
     """`generate_fn(system, user) -> str`. Greedy decoding is the caller's job."""
     per_clinic: dict[str, list[bool]] = defaultdict(list)
-    passed = unparseable = 0
+    passed = unparseable = failures = 0
     records = []
     for i, row in enumerate(rows, 1):
         system = row["messages"][0]["content"]
         user = row["messages"][1]["content"]
+        failed = False
         try:
             out = generate_fn(system, user)
             got = parse_answer(out)
         except Exception as e:
+            failed = True
             # One strange case must not kill an hour of GPU. A failure here is
             # recorded as an unusable answer, which is what it is, and the arm
             # continues.
@@ -76,9 +78,15 @@ def evaluate(generate_fn, rows: list[dict], name: str = "") -> dict:
         ok = got is not None and got == want
         passed += ok
         unparseable += got is None
+        failures += failed
         per_clinic[row["clinic"]].append(ok)
         records.append({"case_id": row["case_id"], "clinic": row["clinic"],
                         "passed": bool(ok), "parsed": got is not None,
+                        # A generation that RAISED is infrastructure. A model that
+                        # answered `declare_unsolved` chose the schema's other
+                        # action and is a measurement. Collapsing the two made the
+                        # resume void a legitimate arm and re-run it forever.
+                        "failed": failed,
                         "got": sorted(got) if got else None, "want": sorted(want),
                         "raw": out[:400]})
         if i % 20 == 0:
@@ -86,7 +94,7 @@ def evaluate(generate_fn, rows: list[dict], name: str = "") -> dict:
     return {
         "name": name, "n": len(rows), "passed": passed,
         "accuracy": round(passed / len(rows), 4) if rows else 0.0,
-        "unparseable": unparseable,
+        "unparseable": unparseable, "generation_failures": failures,
         "by_clinic": {c: {"n": len(v), "passed": sum(v),
                           "accuracy": round(sum(v) / len(v), 4)}
                       for c, v in sorted(per_clinic.items())},

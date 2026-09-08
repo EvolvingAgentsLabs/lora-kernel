@@ -2,3 +2,4 @@ __pycache__/
 *.pyc
 results/.answers/
 training/data/root/
+results/**/adapters-*.zip

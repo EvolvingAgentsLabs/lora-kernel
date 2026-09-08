@@ -78,5 +78,20 @@ Python 3.13 loads a `cryptography` wheel whose Rust binding cannot find
 `_BIO_ADDR_free`, and `jupyter-kernel-client` 1.x renamed `KernelClient`, which
 the CLI still imports. Without both pins every command fails at import.
 
+### The dependency order that works on a Colab runtime
+
+Discovered one failure at a time **[ran]** 2026-09-08, and worth following exactly:
+
+    pip install -q vllm            # pins its own torch AND torchvision
+    pip uninstall -y torchaudio    # ONLY this one — vllm needs torchvision
+    pip install -q --no-deps trl 'torchao>=0.16.0'
+
+vLLM upgrades torch to a CUDA build the image's `torchaudio` disagrees with, and
+the mismatch raises at *import* — during training, not during serving. Removing
+`torchvision` too breaks torch's own metadata. `trl` and `torchao` go in with
+`--no-deps` so they cannot pull a second torch. And wait for the install to
+finish before launching anything: a run started underneath it fails with the
+version error and looks like a code bug.
+
 `--gpu` accepts `T4, L4, G4, H100, A100`; the larger ones need a Colab Pro
 entitlement (`colab pay`).

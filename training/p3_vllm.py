@@ -58,9 +58,27 @@ def score(texts, rows) -> dict:
             "accuracy": round(passed / len(rows), 4), "unparseable": unparseable}
 
 
+def adapter_changes_output(llm, sp, prompts, req) -> tuple[bool, str, str]:
+    """The gate C18 exists for: does the adapter change ANYTHING?
+
+    vLLM 0.28.0 accepted every LoRARequest for `Qwen/Qwen3.5-2B`, emitted no
+    warning, and served the base model byte for byte **[ran]** 2026-09-08. Three
+    adapters at 90 prompts/s looked exactly like a working substrate. So no arm
+    is measured until one prompt is shown to differ.
+    """
+    a = llm.generate(prompts[:1], sp)[0].outputs[0].text
+    b = llm.generate(prompts[:1], sp, lora_request=req)[0].outputs[0].text
+    return a != b, a, b
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--base", default="Qwen/Qwen3.5-2B")
+    ap.add_argument("--arch-override", default="",
+                    help="force the architecture vLLM loads, e.g. "
+                         "Qwen3_5ForCausalLM. `Qwen/Qwen3.5-2B` ships as "
+                         "Qwen3_5ForConditionalGeneration, and only the CausalLM "
+                         "class declares SupportsLoRA [read]")
     ap.add_argument("--pool", default="./pool")
     ap.add_argument("--n", type=int, default=60)
     ap.add_argument("--max-lora-rank", type=int, default=16)
@@ -79,11 +97,27 @@ def main() -> int:
     # Greedy, like every other number in this repository.
     sp = SamplingParams(temperature=0.0, top_p=1.0, max_tokens=64)
 
+    kw = {}
+    if args.arch_override:
+        kw["hf_overrides"] = {"architectures": [args.arch_override]}
+        print(f"[arch] forcing {args.arch_override}", flush=True)
     llm = LLM(model=args.base, enable_lora=True, max_loras=len(pool),
               max_lora_rank=args.max_lora_rank, dtype="bfloat16",
-              gpu_memory_utilization=0.85, max_model_len=2048)
+              gpu_memory_utilization=0.85, max_model_len=2048, **kw)
     requests = {name: LoRARequest(name, i + 1, path)
                 for i, (name, path) in enumerate(pool.items())}
+
+    first = next(iter(requests.values()))
+    changed, base_text, lora_text = adapter_changes_output(llm, sp, prompts, first)
+    print(f"[gate] adapter changes output: {changed}", flush=True)
+    if not changed:
+        print("[gate] ABORT — the served text is byte-identical with and without "
+              "the adapter, so every arm below would measure the base model.\n"
+              f"  base: {base_text[:110]!r}\n  lora: {lora_text[:110]!r}", flush=True)
+        Path("p3_results.json").write_text(json.dumps(
+            {"base": args.base, "arch_override": args.arch_override,
+             "gate": "FAILED — adapter does not change output", "arms": {}}, indent=2))
+        return 4
 
     results = {"base": args.base, "pool": list(pool), "n": len(rows), "arms": {}}
 
@@ -105,24 +139,25 @@ def main() -> int:
     for name, req in requests.items():
         timed(f"pure batch · {name}", req)
 
-    # THE MIXED BATCH. Each request carries its own adapter, interleaved, so the
-    # server has to hold three deltas over one base at once. If this costs what a
-    # pure batch costs, the pool is free to serve; if not, the difference IS the
-    # price of the architecture.
-    t0 = time.time()
-    names = list(requests)
-    outs = [llm.generate([p], sp, lora_request=requests[names[i % len(names)]])[0]
-            for i, p in enumerate(prompts)]
-    dt = time.time() - t0
-    results["arms"]["mixed batch · round-robin"] = {
-        "n": len(prompts), "seconds": round(dt, 2),
-        "prompts_per_second": round(len(prompts) / dt, 2),
-        "note": "one adapter per request, cycled — accuracy is meaningless here "
-                "because two of the three adapters are wrong for any given case; "
-                "this arm measures the COST of holding a pool, not its quality",
+    # THE MIXED BATCH IS NOT IMPLEMENTED, AND THE PREVIOUS ATTEMPT WAS WORSE
+    # THAN NOTHING. It called `llm.generate([p], ...)` once per prompt, cycling
+    # adapters — sixty sequential round-trips, which measured 3.85 prompts/s
+    # against a pure batch's 77.66 and looked like a 20x penalty for holding a
+    # pool [ran] 2026-09-08. It was measuring the loop, not the batching.
+    #
+    # Measuring it honestly needs per-request adapters INSIDE one scheduling
+    # pass: the async engine, or the OpenAI-compatible server with each adapter
+    # registered as its own model name and concurrent clients. Until one of those
+    # is built, this arm reports nothing, because a number that measures the
+    # wrong thing is worse than a gap in the table.
+    results["arms"]["mixed batch"] = {
+        "status": "not measured",
+        "why": ("requires per-request adapters within one scheduling pass — the "
+                "async engine or the OpenAI server with one model name per "
+                "adapter. The serial loop that stood here measured round-trips "
+                "and was voided."),
     }
     OUT.write_text(json.dumps(results, indent=2))
-    print(f"[mixed] {dt:.2f}s  {len(prompts) / dt:.2f}/s", flush=True)
     print(json.dumps(results["arms"], indent=2), flush=True)
     return 0
 
