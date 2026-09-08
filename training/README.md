@@ -41,3 +41,28 @@ beside every gain. A gain without it is not a result.
 `google/gemma-4-E4B-it` on a free T4, `google/gemma-4-26B-A4B-it` on an A100.
 `google/gemma-4-12B-it` is the baseline this workspace has already measured at
 12/20 on the sealed delta split, so it is the honest thing to beat.
+
+## Running it headlessly, from a terminal
+
+The [Colab CLI](https://github.com/googlecolab/google-colab-cli) runs the same
+code on a Colab GPU without a browser, which is what lets an agent execute this
+step rather than hand it to a person:
+
+    colab new --gpu T4 -s s4
+    colab install -s s4 trl bitsandbytes
+    colab exec -s s4        # bootstrap: clone this branch on the runtime
+    colab exec -s s4 -f training/s4_train.py
+    colab download -s s4 lora-kernel/s4_results.json ./s4_results.json
+    colab stop -s s4
+
+**Two install pins are load-bearing on macOS** — both were failures, not
+precautions **[ran]** 2026-09-07:
+
+    uv tool install --force --python 3.12 --with "jupyter-kernel-client<1" google-colab-cli
+
+Python 3.13 loads a `cryptography` wheel whose Rust binding cannot find
+`_BIO_ADDR_free`, and `jupyter-kernel-client` 1.x renamed `KernelClient`, which
+the CLI still imports. Without both pins every command fails at import.
+
+`--gpu` accepts `T4, L4, G4, H100, A100`; the larger ones need a Colab Pro
+entitlement (`colab pay`).
