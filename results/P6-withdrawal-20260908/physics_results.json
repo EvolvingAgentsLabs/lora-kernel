@@ -1,0 +1,1007 @@
+{
+  "base": "Qwen/Qwen2.5-3B-Instruct",
+  "corpus_n": 598,
+  "started": "2026-09-08T20:52:10",
+  "rtol": 0.02,
+  "arms": {
+    "base": {
+      "label": "base",
+      "n": 40,
+      "passed": 0,
+      "accuracy": 0.0,
+      "unparsed": 0,
+      "records": [
+        {
+          "case_id": "phys-0000",
+          "family": "hydrostatic_force",
+          "want": 131926.5701455625,
+          "got": 104920.2,
+          "passed": false,
+          "raw": "{\"answer\": 104920.2} [{\"topEdgeDepth\": 2.26}, {\"fluidDensity\": 1025}, {\"gateWidth\": 4.87}, {\"gateHeight\": 0.98}, {\"pressureAtTop\": 1025*9.81*2.26}, {\"pressureAtBottom\": 1025*9.81*(2.26+0.98)}, {\"totalPressureForce\": (pressureAtTop + pressureAtBottom)*gateWidth*gateHeight/2}, {\"resultantHydrostaticForce\": 104920.2}]"
+        },
+        {
+          "case_id": "phys-0001",
+          "family": "manning_channel",
+          "want": 13.777463571438588,
+          "got": 4.99,
+          "passed": false,
+          "raw": "{\n  \"answer\": 4.99\n}"
+        },
+        {
+          "case_id": "phys-0002",
+          "family": "pipe_head_loss",
+          "want": 1.8489593018064931,
+          "got": 1.75,
+          "passed": false,
+          "raw": "{\n  \"answer\": 1.75\n}\n\n1. Calculate Reynolds number (Re): Re = (density * velocity * diameter) / viscosity = (1000 * 0.0445 / 0.0008) / sqrt(998.0 * 0.0008) \u2248 6250\n2. Since Re > 2300, use Swamee-Jain correlation for friction factor: f = 0.079 / sqrt(Re) = 0.079 / sqrt(6250) \u2248 0.0014\n3. Calculate head loss using Darcy-Weisbach equation: hL = f * (length / diameter) * (velocity^2 / (2 * gravity)) = 0"
+        },
+        {
+          "case_id": "phys-0003",
+          "family": "pump_power",
+          "want": 68.53156824521123,
+          "got": 1744.5,
+          "passed": false,
+          "raw": "{\n\"answer\": 1744.5\n}"
+        },
+        {
+          "case_id": "phys-0004",
+          "family": "terminal_velocity",
+          "want": 0.00268488817296,
+          "got": 4.6e-06,
+          "passed": false,
+          "raw": "{\"answer\": 0.0000046} [{\"density_sphere\": 1250.8}, {\"density_fluid\": 998.0}, {\"viscosity\": 0.0015}, {\"diameter_sphere\": 0.000171}, {\"radius_sphere\": 0.0000855}, {\"rho_diff\": 52.8}, {\"visc_diff\": 0.0015}, {\"drag_coefficient\": 0.47}, {\"terminal_velocity\": (6 * 9.81 * 1250.8 * 0.000171**3) / (16 * 0.0015 * 52.8)}}"
+        },
+        {
+          "case_id": "phys-0005",
+          "family": "venturi_flow",
+          "want": 0.11396258683641461,
+          "got": 0.42,
+          "passed": false,
+          "raw": "{\"answer\": 0.42} [{\"throatArea\": 0.0003969}, {\"inletArea\": 0.00020016}, {\"areaRatio\": 1.977}, {\"velocityThroat\": 240.0}, {\"velocityInlet\": 312.0}, {\"flowRate\": 0.42}]"
+        },
+        {
+          "case_id": "phys-0006",
+          "family": "hydrostatic_force",
+          "want": 83545.277122944,
+          "got": 15624.7,
+          "passed": false,
+          "raw": "{\"answer\": 15624.7} [{\"topEdgeDepth\": 0.71}, {\"fluidDensity\": 998.0}, {\"gateWidth\": 4.94}, {\"gateHeight\": 1.28}, {\"pressureAtTop\": 998.0*9.81*0.71}, {\"pressureAtBottom\": 998.0*9.81*(0.71+1.28)}, {\"totalPressureForce\": (pressureAtTop + pressureAtBottom)*gateWidth*gateHeight}, {\"resultantHydrostaticForce\": 15624.7}]"
+        },
+        {
+          "case_id": "phys-0007",
+          "family": "manning_channel",
+          "want": 29.651189503613413,
+          "got": 4.74,
+          "passed": false,
+          "raw": "{\n  \"answer\": 4.74\n}"
+        },
+        {
+          "case_id": "phys-0008",
+          "family": "pipe_head_loss",
+          "want": 10.158958087290983,
+          "got": 1.57,
+          "passed": false,
+          "raw": "{\n  \"answer\": 1.57\n}"
+        },
+        {
+          "case_id": "phys-0009",
+          "family": "pump_power",
+          "want": 1123.583802071903,
+          "got": 12482.0,
+          "passed": false,
+          "raw": "{\n\"answer\": 12482\n}"
+        },
+        {
+          "case_id": "phys-0010",
+          "family": "terminal_velocity",
+          "want": 0.0020415860668487936,
+          "got": 0.0,
+          "passed": false,
+          "raw": "{\"answer\": 0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "case_id": "phys-0011",
+          "family": "venturi_flow",
+          "want": 0.16595378329096444,
+          "got": 0.452,
+          "passed": false,
+          "raw": "{\"answer\": 0.452}\n1. Calculate cross-sectional areas: A_inlet = \u03c0 * (0.269/2)^2 = 6.204e-02 m^2, A_throat = \u03c0 * (0.1716/2)^2 = 2.221e-02 m^2.\n2. Use continuity equation to find velocity ratio: v_inlet / v_throat = sqrt(A_throat / A_inlet) = 0.414.\n3. Apply Bernoulli's principle: P_inlet - P_throat = \u03c1 * g * h, where h = (v_inlet^2 - v_throat^2) / (2 * g) = (v_inlet^2) / (2 * g).\n4. Substitute know"
+        },
+        {
+          "case_id": "phys-0012",
+          "family": "hydrostatic_force",
+          "want": 30018.42239088,
+          "got": 28644.8,
+          "passed": false,
+          "raw": "{\"answer\": 28644.8} [{\"topEdgeDepth\": 0.79}, {\"fluidDensity\": 1025}, {\"gateWidth\": 4.04}, {\"gateHeight\": 0.66}, {\"pressureAtTop\": 714.2}, {\"pressureAtBottom\": 1458.4}, {\"forceDueToPressureAtTop\": 29237.68}, {\"forceDueToPressureAtBottom\": 49904.32}, {\"totalForce\": 79142}}"
+        },
+        {
+          "case_id": "phys-0013",
+          "family": "manning_channel",
+          "want": 21.60825783106168,
+          "got": 4.56,
+          "passed": false,
+          "raw": "{\n  \"answer\": 4.56\n}"
+        },
+        {
+          "case_id": "phys-0014",
+          "family": "pipe_head_loss",
+          "want": 0.8547197590568688,
+          "got": 1.75,
+          "passed": false,
+          "raw": "{\n  \"answer\": 1.75\n}"
+        },
+        {
+          "case_id": "phys-0015",
+          "family": "pump_power",
+          "want": 226.15205012015764,
+          "got": 1975.45,
+          "passed": false,
+          "raw": "{\n\"answer\": 1975.45\n}"
+        },
+        {
+          "case_id": "phys-0016",
+          "family": "terminal_velocity",
+          "want": 9.315637572266666e-05,
+          "got": 0.00027,
+          "passed": false,
+          "raw": "{\n    \"answer\": 0.00027\n}"
+        },
+        {
+          "case_id": "phys-0017",
+          "family": "venturi_flow",
+          "want": 0.05622143676401737,
+          "got": 0.0285,
+          "passed": false,
+          "raw": "{\"answer\": 0.0285}\n1. Calculate cross-sectional areas: A_inlet = \u03c0 * (0.216/2)^2 = 0.0407 m^2, A_throat = \u03c0 * (0.0827/2)^2 = 0.0054 m^2.\n2. Use continuity equation to find velocity ratio: v_inlet / v_throat = A_throat / A_inlet = 0.0054 / 0.0407 = 0.133.\n3. Apply Bernoulli's principle: P_inlet - P_throat = \u03c1 * g * (v_inlet^2 - v_throat^2) = \u03c1 * g * v_throat^2 * (1 - (v_throat/v_inlet)^2).\n4. Subst"
+        },
+        {
+          "case_id": "phys-0018",
+          "family": "hydrostatic_force",
+          "want": 159023.2512106875,
+          "got": 864300.0,
+          "passed": false,
+          "raw": "{\"answer\": 864300} [{\"topEdgeDepth\": 1.0}, {\"fluidDensity\": 1025.0}, {\"gateWidth\": 4.27}, {\"gateHeight\": 1.9}, {\"pressureAtTop\": 1025.0*9.81}, {\"pressureAtBottom\": 1025.0*9.81*(1.0+1.9)}, {\"totalPressureForce\": (pressureAtTop + pressureAtBottom)*gateWidth*gateHeight}, {\"resultantHydrostaticForce\": 864300}]"
+        },
+        {
+          "case_id": "phys-0019",
+          "family": "manning_channel",
+          "want": 2.443150246582592,
+          "got": 2.78,
+          "passed": false,
+          "raw": "{\n  \"answer\": 2.78\n}"
+        },
+        {
+          "case_id": "phys-0020",
+          "family": "pipe_head_loss",
+          "want": 26.004971215311276,
+          "got": 1.75,
+          "passed": false,
+          "raw": "{\n  \"answer\": 1.75\n}"
+        },
+        {
+          "case_id": "phys-0021",
+          "family": "pump_power",
+          "want": 842.8629661168894,
+          "got": 12345.67,
+          "passed": false,
+          "raw": "{\n\"answer\": 12345.67\n}"
+        },
+        {
+          "case_id": "phys-0022",
+          "family": "terminal_velocity",
+          "want": 0.0006057613551088749,
+          "got": 7.89e-07,
+          "passed": false,
+          "raw": "{\"answer\": 0.000000789} [{\"density_sphere\": 2361.3}, {\"density_fluid\": 1025.0}, {\"viscosity\": 0.005}, {\"diameter_sphere\": 6.45e-05}, {\"radius_sphere\": 3.225e-05}, {\"rho_diff\": 1336.3}, {\"froude_number\": 0.000000051}, {\"stokes_number\": 0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "case_id": "phys-0023",
+          "family": "venturi_flow",
+          "want": 0.04227747396924894,
+          "got": 0.0275,
+          "passed": false,
+          "raw": "{\"answer\": 0.0275}\n1. Calculate cross-sectional areas: A_inlet = \u03c0 * (0.155/2)^2 = 0.0158 m^2, A_throat = \u03c0 * (0.1034/2)^2 = 0.0083 m^2.\n2. Use continuity equation to find velocity ratio: v_inlet / v_throat = A_throat / A_inlet = 0.0083 / 0.0158 = 0.525.\n3. Apply Bernoulli's principle: P_inlet - P_throat = \u03c1 * g * h, where h = (v_inlet^2 - v_throat^2) / (2 * g). Since h can be neglected for small "
+        },
+        {
+          "case_id": "phys-0024",
+          "family": "hydrostatic_force",
+          "want": 62740.59467306399,
+          "got": 165960.0,
+          "passed": false,
+          "raw": "{\"answer\": 165960}\n1. h = 0.42 + 3.03 = 3.45 m\n2. y = 3.45 - 0.42 = 3.03 m\n3. F = \u03c1g\u222by'dA = \u03c1gwh\u222by' = 880*9.81*1.24*3.03*(3.03+0.42/2) = 165960 N"
+        },
+        {
+          "case_id": "phys-0025",
+          "family": "manning_channel",
+          "want": 4.692297274108275,
+          "got": 2.67,
+          "passed": false,
+          "raw": "{\n  \"answer\": 2.67\n}"
+        },
+        {
+          "case_id": "phys-0026",
+          "family": "pipe_head_loss",
+          "want": 33.5168545847374,
+          "got": 7.95,
+          "passed": false,
+          "raw": "{\n  \"answer\": 7.95\n}"
+        },
+        {
+          "case_id": "phys-0027",
+          "family": "pump_power",
+          "want": 453.4776414437574,
+          "got": 1945.2,
+          "passed": false,
+          "raw": "{\"answer\": 1945.2} [{\"density\": 880.0}, {\"flowRate\": 0.035}, {\"diameter\": 0.217}, {\"length\": 271.6}, {\"roughness\": 0.00026}, {\"pipeArea\": 0.000459}, {\"velocity\": 7.62}, {\"ReynoldsNumber\": 1000}, {\"DarcyWeisbachF\": 0.04}, {\"headLoss\": 0.0019452}, {\"shaftPower\": 1945.2}]"
+        },
+        {
+          "case_id": "phys-0028",
+          "family": "terminal_velocity",
+          "want": 0.004647560258685521,
+          "got": 4.9e-06,
+          "passed": false,
+          "raw": "{\"answer\": 0.0000049} [{\"density_sphere\": 1705.7}, {\"density_fluid\": 998.0}, {\"viscosity\": 0.001002}, {\"diameter_sphere\": 0.0001099}, {\"radius_sphere\": 0.00005495}, {\"mass_sphere\": 1705.7 * (4/3) * pi * pow(0.00005495, 3) / 1000}, {\"drag_coefficient\": 16/(9*sqrt(pi)*pow(radius_sphere, 5))}, {\"terminal_velocity\": mass_sphere * gravity / (18 * viscosity * drag_coefficient)}, {\"gravity\": 9.81}, {\"val"
+        },
+        {
+          "case_id": "phys-0029",
+          "family": "venturi_flow",
+          "want": 0.18120376847033356,
+          "got": 0.046,
+          "passed": false,
+          "raw": "{\"answer\": 0.046} [{\"throatArea\": 0.00229}, {\"inletArea\": 0.00542}, {\"velocityThroat\": 24.0}, {\"velocityInlet\": 12.0}, {\"flowRate\": 0.046}]"
+        },
+        {
+          "case_id": "phys-0030",
+          "family": "hydrostatic_force",
+          "want": 199232.455083459,
+          "got": 24767.7,
+          "passed": false,
+          "raw": "{\"answer\": 24767.7} [{\"topEdgeDepth\": 1.94}, {\"fluidDensity\": 998.0}, {\"gateWidth\": 1.55}, {\"gateHeight\": 3.54}, {\"pressureAtTop\": 998.0*9.81*1.94}, {\"pressureAtBottom\": 998.0*9.81*(1.94+3.54)}, {\"totalPressureForce\": (pressureAtTop + pressureAtBottom)*gateWidth*gateHeight/2}, {\"resultantHydrostaticForce\": 24767.7}]"
+        },
+        {
+          "case_id": "phys-0031",
+          "family": "manning_channel",
+          "want": 11.486734469855108,
+          "got": 1.85,
+          "passed": false,
+          "raw": "{\n  \"answer\": 1.85\n}"
+        },
+        {
+          "case_id": "phys-0032",
+          "family": "pipe_head_loss",
+          "want": 3.522745291620681,
+          "got": 1.23,
+          "passed": false,
+          "raw": "{\n  \"answer\": 1.23\n}\n\n1. Calculate Reynolds number (Re): Re = (density * velocity * diameter) / viscosity = (1000 * 0.05408 / 0.0008) / sqrt(880) \u2248 10000\n2. Since Re < 2300, use Darcy-Weisbach equation: hf = f * (L/D) * (v^2 / 2g)\n3. Calculate friction factor (f): f = 64/Re = 64/10000 = 0.0064\n4. Calculate head loss (hf): hf = 0.0064 * (202.1 / 0.18) * ((0.05408)^2 / (2*9.81)) \u2248 1.23"
+        },
+        {
+          "case_id": "phys-0033",
+          "family": "pump_power",
+          "want": 2336.6162435527244,
+          "got": 12345.6,
+          "passed": false,
+          "raw": "{\"answer\": 12345.6} [{\"density\": 998.0}, {\"viscosity\": 0.001002}, {\"flow_rate\": 0.04725}, {\"diameter\": 0.198}, {\"length\": 353.3}, {\"roughness\": 4.5e-05}, {\"pipe_area\": 0.000342}, {\"velocity\": 13.6}, {\"reynolds_number\": 13600}, {\"f\": 0.04}, {\"head_loss\": 12.3456}, {\"shaft_power\": 12345.6}]"
+        },
+        {
+          "case_id": "phys-0034",
+          "family": "terminal_velocity",
+          "want": 0.002012008334279098,
+          "got": 4.95e-05,
+          "passed": false,
+          "raw": "{\"answer\": 0.0000495} [{\"density_sphere\": 1762.8}, {\"density_fluid\": 1025.0}, {\"viscosity\": 0.005}, {\"diameter_sphere\": 0.0001582}, {\"radius_sphere\": 0.0000791}, {\"rho_diff\": 737.8}, {\"froude_number\": 0.0001582 / (2 * 0.005 * 0.0000791**2)}, {\"stokes_number\": rho_diff / 200}, {\"terminal_velocity\": 0.0000495}]"
+        },
+        {
+          "case_id": "phys-0035",
+          "family": "venturi_flow",
+          "want": 0.27341367172547226,
+          "got": 0.065,
+          "passed": false,
+          "raw": "{\"answer\": 0.065} [{\"throatArea\"] = 0.00070374, [\"inletArea\"] = 0.00246004, [\"deltaP\"] = 41051.4, [\"rho\"] = 998.0, [\"vThroat\"] = 29.92, [\"vInlet\"] = 35.84, [\"deltaV\"] = -5.92, [\"vFinal\"] = 29.92, [\"Q\"] = 0.065}]"
+        },
+        {
+          "case_id": "phys-0036",
+          "family": "hydrostatic_force",
+          "want": 169125.63640265758,
+          "got": 15426.7,
+          "passed": false,
+          "raw": "{\"answer\": 15426.7} [{\"topEdgeDepth\": 1.26}, {\"fluidDensity\": 998.0}, {\"gateWidth\": 4.21}, {\"gateHeight\": 1.87}, {\"pressureAtTop\": 998.0*9.81*1.26}, {\"pressureAtBottom\": 998.0*9.81*(1.26+1.87)}, {\"totalPressureForce\": (pressureAtTop + pressureAtBottom)*gateWidth*gateHeight}, {\"resultantHydrostaticForce\": 15426.7}]"
+        },
+        {
+          "case_id": "phys-0037",
+          "family": "manning_channel",
+          "want": 0.2610771365701055,
+          "got": 2.58,
+          "passed": false,
+          "raw": "{\n  \"answer\": 2.58\n}"
+        },
+        {
+          "case_id": "phys-0038",
+          "family": "pipe_head_loss",
+          "want": 6.351642516477467,
+          "got": 1.79,
+          "passed": false,
+          "raw": "{\n  \"answer\": 1.79\n}"
+        },
+        {
+          "case_id": "phys-0039",
+          "family": "pump_power",
+          "want": 11402.668570706295,
+          "got": 1784.75,
+          "passed": false,
+          "raw": "{\n\"answer\": 1784.75\n}"
+        }
+      ]
+    },
+    "base \u00b7 held-out families": {
+      "label": "base \u00b7 held",
+      "n": 20,
+      "passed": 0,
+      "accuracy": 0.0,
+      "unparsed": 0,
+      "records": [
+        {
+          "case_id": "phys-0000",
+          "family": "drag_force",
+          "want": 69.37096723729863,
+          "got": 0.059,
+          "passed": false,
+          "raw": "{\n\"answer\": 0.059\n}"
+        },
+        {
+          "case_id": "phys-0001",
+          "family": "orifice_discharge",
+          "want": 0.00624469696193911,
+          "got": 0.0219,
+          "passed": false,
+          "raw": "{\"answer\": 0.0219} [{\"diameter\": 0.0455}, {\"radius\": 0.02275}, {\"area\": 0.000519025}, {\"pressure\": 1000 * 1.78}, {\"pressure_in_Pa\": 17800}, {\"velocity_head\": 17800 / (1.225 * 0.000519025)}, {\"velocity_head_m\": 31248.4}, {\"velocity\": sqrt(31248.4)}, {\"velocity_m\": 176.6}, {\"discharge_coefficient\": 0.65}, {\"discharge_rate\": 0.65 * 176.6}, {\"discharge_rate_m3s\": 114.69}]"
+        },
+        {
+          "case_id": "phys-0002",
+          "family": "drag_force",
+          "want": 3.8097138157800097,
+          "got": 0.244,
+          "passed": false,
+          "raw": "{\n\"answer\": 0.244\n}"
+        },
+        {
+          "case_id": "phys-0003",
+          "family": "orifice_discharge",
+          "want": 0.050193059789601084,
+          "got": 0.271,
+          "passed": false,
+          "raw": "{\"answer\": 0.271} [{\"diameter\": 0.0918}, {\"radius\": 0.0459}, {\"h\": 6.94}, {\"h2\": 5.022}, {\"A\": \"pi * radius^2\"}, {\"A_val\": \"3.14159 * 0.0459^2\"}, {\"A_unit\": \"m^2\"}, {\"q\": \"A * sqrt(2*g*h2) * Co\"}, {\"q_val\": \"3.14159 * 0.0459^2 * sqrt(2*9.81*5.022) * 0.65\"}, {\"q_unit\": \"m^3/s\"}, {\"Co\": 0.65}]"
+        },
+        {
+          "case_id": "phys-0004",
+          "family": "drag_force",
+          "want": 6.814010842668104,
+          "got": 0.198,
+          "passed": false,
+          "raw": "{\n    \"answer\": 0.198\n}"
+        },
+        {
+          "case_id": "phys-0005",
+          "family": "orifice_discharge",
+          "want": 0.010495817619728398,
+          "got": 0.0159,
+          "passed": false,
+          "raw": "{\"answer\": 0.0159} [{\"diameter\": 0.0426}, {\"height\": 7.68}, {\"area\": 0.000553}, {\"velocity\": 16.24}, {\"discharge_coefficient\": 0.6}, {\"flow_rate\": 0.00915}, {\"corrected_flow_rate\": 0.0159}]"
+        },
+        {
+          "case_id": "phys-0006",
+          "family": "drag_force",
+          "want": 1721.9370424565575,
+          "got": 0.294,
+          "passed": false,
+          "raw": "{\n\"answer\": 0.294\n}"
+        },
+        {
+          "case_id": "phys-0007",
+          "family": "orifice_discharge",
+          "want": 0.0016521468365280991,
+          "got": 0.00245,
+          "passed": false,
+          "raw": "{\"answer\": 0.00245} [{\"diameter\": 0.018}, {\"radius\": 0.009}, {\"h\": 5.97}, {\"h2\": 5.97**2/2}, {\"v2\": sqrt(9.81*h2)}, {\"v_inf\": 3.13}, {\"A_orifice\": pi*(0.009/2)**2}, {\"q\": 0.6*A_orifice*v_inf}, {\"answer\": 0.00245}]"
+        },
+        {
+          "case_id": "phys-0008",
+          "family": "drag_force",
+          "want": 116.40577765459255,
+          "got": 0.214,
+          "passed": false,
+          "raw": "{\n\"answer\": 0.214\n}"
+        },
+        {
+          "case_id": "phys-0009",
+          "family": "orifice_discharge",
+          "want": 0.0008045543600819858,
+          "got": 0.00287,
+          "passed": false,
+          "raw": "{\"answer\": 0.00287} [{\"diameter\": 0.0131}, {\"radius\": 0.00655}, {\"area\": 0.0000429}, {\"pressure\": 9806.65}, {\"head\": 4.3}, {\"velocity_head\": 9806.65 / 4.3}, {\"velocity_head_squared\": (9806.65 / 4.3) ** 2}, {\"velocity_head_cubed\": (9806.65 / 4.3) ** 3}, {\"velocity_head_fourth\": (9806.65 / 4.3) ** 4}, {\"velocity_head_fifth\": (9806.65 / 4.3) ** 5}, {\"velocity_head_sixth\": (9806.65 / 4.3) ** 6}, {\"vel"
+        },
+        {
+          "case_id": "phys-0010",
+          "family": "drag_force",
+          "want": 0.0013391210108500435,
+          "got": 0.0245,
+          "passed": false,
+          "raw": "{\n\"answer\": 0.0245\n}"
+        },
+        {
+          "case_id": "phys-0011",
+          "family": "orifice_discharge",
+          "want": 0.03001544099268923,
+          "got": 0.0258,
+          "passed": false,
+          "raw": "{\"answer\": 0.0258} [{\"diameter\": 0.0719}, {\"height\": 7.74}, {\"area\": 0.00208}, {\"velocity\": 14.44}, {\"discharge\": 0.0258}]"
+        },
+        {
+          "case_id": "phys-0012",
+          "family": "drag_force",
+          "want": 2.178488518073121,
+          "got": 0.274,
+          "passed": false,
+          "raw": "{\n    \"answer\": 0.274\n}"
+        },
+        {
+          "case_id": "phys-0013",
+          "family": "orifice_discharge",
+          "want": 0.013806079380231186,
+          "got": 0.0219,
+          "passed": false,
+          "raw": "{\"answer\": 0.0219} [{\"diameter\": 0.0467}, {\"radius\": 0.02335}, {\"area\": 5.484e-05}, {\"pressure\": 64.4}, {\"velocity\": 11.24}, {\"discharge_coefficient\": 0.65}, {\"flow_rate\": 0.0334}, {\"corrected_flow_rate\": 0.0219}]"
+        },
+        {
+          "case_id": "phys-0014",
+          "family": "drag_force",
+          "want": 1.6627726350742307,
+          "got": 0.094,
+          "passed": false,
+          "raw": "{\n    \"answer\": 0.094\n}"
+        },
+        {
+          "case_id": "phys-0015",
+          "family": "orifice_discharge",
+          "want": 0.0017909547017701196,
+          "got": 0.00492,
+          "passed": false,
+          "raw": "{\"answer\": 0.00492} [{\"diameter\": 0.018}, {\"radius\": 0.009}, {\"h\": 6.57}, {\"h2\": 0.009**2 / 2}, {\"v2\": math.sqrt(9.81 * h2)}, {\"v\": 0.0474}, {\"q\": 0.009**2 / 4 * v * 0.62}]"
+        },
+        {
+          "case_id": "phys-0016",
+          "family": "drag_force",
+          "want": 1.7778919155788966,
+          "got": 0.294,
+          "passed": false,
+          "raw": "{\n    \"answer\": 0.294\n}"
+        },
+        {
+          "case_id": "phys-0017",
+          "family": "orifice_discharge",
+          "want": 0.0011643678443764563,
+          "got": 0.00287,
+          "passed": false,
+          "raw": "{\"answer\": 0.00287} [{\"diameter\": 0.0145}, {\"radius\": 0.00725}, {\"area\": 0.0000528}, {\"pressure\": 9806.65}, {\"head\": 6.0}, {\"velocity_head\": 9806.65 / 0.0000528}, {\"velocity_head\": 18500000}, {\"velocity\": sqrt(18500000)}, {\"velocity\": 430.1}, {\"discharge_coefficient\": 0.65}, {\"flow_rate\": 0.0000528 * 430.1 * 0.65}]"
+        },
+        {
+          "case_id": "phys-0018",
+          "family": "drag_force",
+          "want": 0.5366522890451662,
+          "got": 0.044,
+          "passed": false,
+          "raw": "{\n\"answer\": 0.044\n}"
+        },
+        {
+          "case_id": "phys-0019",
+          "family": "orifice_discharge",
+          "want": 0.014015506988492061,
+          "got": 0.0247,
+          "passed": false,
+          "raw": "{\"answer\": 0.0247} [{\"diameter\": 0.0591}, {\"radius\": 0.02955}, {\"h\": 3.15}, {\"h2\": 2.835}, {\"A\": 0.00631}, {\"q\": 0.00631 * 0.65}, {\"answer\": 0.00040565}]"
+        }
+      ]
+    },
+    "adapter": {
+      "label": "adapter",
+      "n": 40,
+      "passed": 1,
+      "accuracy": 0.025,
+      "unparsed": 0,
+      "records": [
+        {
+          "case_id": "phys-0000",
+          "family": "hydrostatic_force",
+          "want": 131926.5701455625,
+          "got": 124400.0,
+          "passed": false,
+          "raw": "{\"answer\": 124400}"
+        },
+        {
+          "case_id": "phys-0001",
+          "family": "manning_channel",
+          "want": 13.777463571438588,
+          "got": 4.541,
+          "passed": false,
+          "raw": "{\"answer\": 4.541}"
+        },
+        {
+          "case_id": "phys-0002",
+          "family": "pipe_head_loss",
+          "want": 1.8489593018064931,
+          "got": 3.5,
+          "passed": false,
+          "raw": "1. Cross-sectional area: $A = \\frac{\\pi}{4} D^2 = \\frac{\\pi}{4} (0.22)^2 \\approx 0.037006\\text{ m}^2$\n2. Flow velocity: $v = \\frac{Q}{A} = \\frac{0.0445}{0.037006} \\approx 1.1941\\text{ m/s}$\n3. Reynolds number: $\\mathrm{Re} = \\frac{\\rho v D}{\\mu} = \\frac{998.0 \\times 1.1941 \\times 0.22}{0.0008} \\approx 300000$\n4. Friction factor via Swamee-Jain: $f = \\frac{0.25}{\\left[\\log_{10}\\left(\\frac{\\epsilon}"
+        },
+        {
+          "case_id": "phys-0003",
+          "family": "pump_power",
+          "want": 68.53156824521123,
+          "got": 17.04,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 17.04}\n```"
+        },
+        {
+          "case_id": "phys-0004",
+          "family": "terminal_velocity",
+          "want": 0.00268488817296,
+          "got": 0.0004601,
+          "passed": false,
+          "raw": "{\"answer\": 0.0004601}"
+        },
+        {
+          "case_id": "phys-0005",
+          "family": "venturi_flow",
+          "want": 0.11396258683641461,
+          "got": 0.094,
+          "passed": false,
+          "raw": "1. Inlet area $A_1 = \\frac{\\pi}{4} (0.168)^2 \\approx 0.023093\\text{ m}^2$\n2. Throat area $A_2 = \\frac{\\pi}{4} (0.1085)^2 \\approx 0.009007\\text{ m}^2$\n3. Diameter ratio factor $\\sqrt{1 - (d_2/d_1)^4} = \\sqrt{1 - (0.1085/0.168)^4} \\approx 0.99000$\n4. Throat velocity $v_2 = \\sqrt{\\frac{2 \\Delta P}{\\rho [1 - (d_2/d_1)^4]}} = \\sqrt{\\frac{2 \\times 55217.0}{880.0 \\times 0.99000}} \\approx 10.4706\\text{ m/"
+        },
+        {
+          "case_id": "phys-0006",
+          "family": "hydrostatic_force",
+          "want": 83545.277122944,
+          "got": 15624.5,
+          "passed": false,
+          "raw": "{\"answer\": 15624.5}"
+        },
+        {
+          "case_id": "phys-0007",
+          "family": "manning_channel",
+          "want": 29.651189503613413,
+          "got": 4.74,
+          "passed": false,
+          "raw": "{\"answer\": 4.74}"
+        },
+        {
+          "case_id": "phys-0008",
+          "family": "pipe_head_loss",
+          "want": 10.158958087290983,
+          "got": 15.7,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 15.7}\n```"
+        },
+        {
+          "case_id": "phys-0009",
+          "family": "pump_power",
+          "want": 1123.583802071903,
+          "got": 102.06,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 102.06}\n```"
+        },
+        {
+          "case_id": "phys-0010",
+          "family": "terminal_velocity",
+          "want": 0.0020415860668487936,
+          "got": 0.000651,
+          "passed": false,
+          "raw": "{\"answer\": 0.000651}"
+        },
+        {
+          "case_id": "phys-0011",
+          "family": "venturi_flow",
+          "want": 0.16595378329096444,
+          "got": 0.04911,
+          "passed": false,
+          "raw": "{\"answer\": 0.04911}"
+        },
+        {
+          "case_id": "phys-0012",
+          "family": "hydrostatic_force",
+          "want": 30018.42239088,
+          "got": 108444.0,
+          "passed": false,
+          "raw": "{\"answer\": 108444}"
+        },
+        {
+          "case_id": "phys-0013",
+          "family": "manning_channel",
+          "want": 21.60825783106168,
+          "got": 4.514,
+          "passed": false,
+          "raw": "{\"answer\": 4.514}"
+        },
+        {
+          "case_id": "phys-0014",
+          "family": "pipe_head_loss",
+          "want": 0.8547197590568688,
+          "got": 1.74,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 1.74}\n```"
+        },
+        {
+          "case_id": "phys-0015",
+          "family": "pump_power",
+          "want": 226.15205012015764,
+          "got": 101.4,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 101.4}\n```"
+        },
+        {
+          "case_id": "phys-0016",
+          "family": "terminal_velocity",
+          "want": 9.315637572266666e-05,
+          "got": 0.0002744,
+          "passed": false,
+          "raw": "{\"answer\": 0.0002744}"
+        },
+        {
+          "case_id": "phys-0017",
+          "family": "venturi_flow",
+          "want": 0.05622143676401737,
+          "got": 0.055836,
+          "passed": true,
+          "raw": "1. Calculate the inlet cross-sectional area: $A_1 = \\frac{\\pi}{4} (0.216\\text{ m})^2 \\approx 0.036207\\text{ m}^2$\n2. Calculate the throat cross-sectional area: $A_2 = \\frac{\\pi}{4} (0.0827\\text{ m})^2 \\approx 0.005466\\text{ m}^2$\n3. Compute the ratio term $\\sqrt{1 - (A_2/A_1)^2}$: $\\sqrt{1 - (0.0827/0.216)^4} \\approx 0.999999$\n4. Compute the velocity at the throat using Bernoulli's equation: $v_2 "
+        },
+        {
+          "case_id": "phys-0018",
+          "family": "hydrostatic_force",
+          "want": 159023.2512106875,
+          "got": 86464.5,
+          "passed": false,
+          "raw": "{\"answer\": 86464.5}"
+        },
+        {
+          "case_id": "phys-0019",
+          "family": "manning_channel",
+          "want": 2.443150246582592,
+          "got": 2.781,
+          "passed": false,
+          "raw": "{\"answer\": 2.781}"
+        },
+        {
+          "case_id": "phys-0020",
+          "family": "pipe_head_loss",
+          "want": 26.004971215311276,
+          "got": 1.74,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 1.74}\n```"
+        },
+        {
+          "case_id": "phys-0021",
+          "family": "pump_power",
+          "want": 842.8629661168894,
+          "got": 112.04,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 112.04}\n```"
+        },
+        {
+          "case_id": "phys-0022",
+          "family": "terminal_velocity",
+          "want": 0.0006057613551088749,
+          "got": 0.000789,
+          "passed": false,
+          "raw": "{\"answer\": 0.000789}"
+        },
+        {
+          "case_id": "phys-0023",
+          "family": "venturi_flow",
+          "want": 0.04227747396924894,
+          "got": 0.008,
+          "passed": false,
+          "raw": "1. Calculate the cross-sectional area of the inlet:\n   $A_1 = \\frac{\\pi}{4} (0.155)^2 \\approx 0.018704\\text{ m}^2$\n\n2. Calculate the cross-sectional area of the throat:\n   $A_2 = \\frac{\\pi}{4} (0.1034)^2 \\approx 0.008404\\text{ m}^2$\n\n3. Compute the ratio of the throat area to the inlet area squared:\n   $\\beta^2 = \\left(\\frac{A_2}{A_1}\\right)^2 = \\left(\\frac{0.1034}{0.155}\\right)^4 \\approx 0.36000$"
+        },
+        {
+          "case_id": "phys-0024",
+          "family": "hydrostatic_force",
+          "want": 62740.59467306399,
+          "got": 15679.5,
+          "passed": false,
+          "raw": "{\"answer\": 15679.5}"
+        },
+        {
+          "case_id": "phys-0025",
+          "family": "manning_channel",
+          "want": 4.692297274108275,
+          "got": 2.679,
+          "passed": false,
+          "raw": "{\"answer\": 2.679}"
+        },
+        {
+          "case_id": "phys-0026",
+          "family": "pipe_head_loss",
+          "want": 33.5168545847374,
+          "got": 1.79,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 1.79}\n```"
+        },
+        {
+          "case_id": "phys-0027",
+          "family": "pump_power",
+          "want": 453.4776414437574,
+          "got": 194.7,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 194.7}\n```"
+        },
+        {
+          "case_id": "phys-0028",
+          "family": "terminal_velocity",
+          "want": 0.004647560258685521,
+          "got": 0.000461,
+          "passed": false,
+          "raw": "{\"answer\": 0.000461}"
+        },
+        {
+          "case_id": "phys-0029",
+          "family": "venturi_flow",
+          "want": 0.18120376847033356,
+          "got": 0.04961,
+          "passed": false,
+          "raw": "{\"answer\": 0.04961}"
+        },
+        {
+          "case_id": "phys-0030",
+          "family": "hydrostatic_force",
+          "want": 199232.455083459,
+          "got": 26742.0,
+          "passed": false,
+          "raw": "{\"answer\": 26742}"
+        },
+        {
+          "case_id": "phys-0031",
+          "family": "manning_channel",
+          "want": 11.486734469855108,
+          "got": 5.84,
+          "passed": false,
+          "raw": "{\"answer\": 5.84}"
+        },
+        {
+          "case_id": "phys-0032",
+          "family": "pipe_head_loss",
+          "want": 3.522745291620681,
+          "got": 1.79,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 1.79}\n```"
+        },
+        {
+          "case_id": "phys-0033",
+          "family": "pump_power",
+          "want": 2336.6162435527244,
+          "got": 102.06,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 102.06}\n```"
+        },
+        {
+          "case_id": "phys-0034",
+          "family": "terminal_velocity",
+          "want": 0.002012008334279098,
+          "got": 0.0004916,
+          "passed": false,
+          "raw": "{\"answer\": 0.0004916}"
+        },
+        {
+          "case_id": "phys-0035",
+          "family": "venturi_flow",
+          "want": 0.27341367172547226,
+          "got": 0.0834,
+          "passed": false,
+          "raw": "1. Calculate the inlet cross-sectional area: $A_1 = \\frac{\\pi}{4} (0.298\\text{ m})^2 \\approx 0.066066\\text{ m}^2$\n2. Calculate the throat cross-sectional area: $A_2 = \\frac{\\pi}{4} (0.1877\\text{ m})^2 \\approx 0.027401\\text{ m}^2$\n3. Compute the ratio of diameters squared: $\\left(\\frac{d_2}{d_1}\\right)^4 = \\left(\\frac{0.1877}{0.298}\\right)^4 \\approx 0.200000$\n4. Calculate the specific kinetic energ"
+        },
+        {
+          "case_id": "phys-0036",
+          "family": "hydrostatic_force",
+          "want": 169125.63640265758,
+          "got": 54042.0,
+          "passed": false,
+          "raw": "{\"answer\": 54042}"
+        },
+        {
+          "case_id": "phys-0037",
+          "family": "manning_channel",
+          "want": 0.2610771365701055,
+          "got": 2.581,
+          "passed": false,
+          "raw": "{\"answer\": 2.581}"
+        },
+        {
+          "case_id": "phys-0038",
+          "family": "pipe_head_loss",
+          "want": 6.351642516477467,
+          "got": 1.79,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 1.79}\n```"
+        },
+        {
+          "case_id": "phys-0039",
+          "family": "pump_power",
+          "want": 11402.668570706295,
+          "got": 172.4,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 172.4}\n```"
+        }
+      ]
+    },
+    "adapter \u00b7 held-out families": {
+      "label": "adapter \u00b7 held",
+      "n": 20,
+      "passed": 0,
+      "accuracy": 0.0,
+      "unparsed": 0,
+      "records": [
+        {
+          "case_id": "phys-0000",
+          "family": "drag_force",
+          "want": 69.37096723729863,
+          "got": 1.81,
+          "passed": false,
+          "raw": "{\"answer\": 1.81}"
+        },
+        {
+          "case_id": "phys-0001",
+          "family": "orifice_discharge",
+          "want": 0.00624469696193911,
+          "got": 0.02911,
+          "passed": false,
+          "raw": "{\"answer\": 0.02911}"
+        },
+        {
+          "case_id": "phys-0002",
+          "family": "drag_force",
+          "want": 3.8097138157800097,
+          "got": 0.241,
+          "passed": false,
+          "raw": "{\"answer\": 0.241}"
+        },
+        {
+          "case_id": "phys-0003",
+          "family": "orifice_discharge",
+          "want": 0.050193059789601084,
+          "got": 0.2711,
+          "passed": false,
+          "raw": "{\"answer\": 0.2711}"
+        },
+        {
+          "case_id": "phys-0004",
+          "family": "drag_force",
+          "want": 6.814010842668104,
+          "got": 1.901,
+          "passed": false,
+          "raw": "{\"answer\": 1.901}"
+        },
+        {
+          "case_id": "phys-0005",
+          "family": "orifice_discharge",
+          "want": 0.010495817619728398,
+          "got": 0.0078,
+          "passed": false,
+          "raw": "1. Calculate the area of the orifice: $A = \\frac{\\pi}{4} D^2 = \\frac{\\pi}{4} (0.0426)^2 \\approx 0.001459\\text{ m}^2$\n2. Compute the pressure at the orifice using Bernoulli's equation: $P_2 = \\rho g h + \\frac{1}{2} \\rho v_2^2$, where $v_2 = \\sqrt{2g(h - h_c)}$ and $h_c = 7.68\\text{ m}$:\n   - $v_2 = \\sqrt{2 \\times 9.81 \\times (7.68 - 0.0426)} \\approx 8.996\\text{ m/s}$\n   - $P_2 = 1025 \\times 9.81 \\t"
+        },
+        {
+          "case_id": "phys-0006",
+          "family": "drag_force",
+          "want": 1721.9370424565575,
+          "got": 1.91,
+          "passed": false,
+          "raw": "{\"answer\": 1.91}"
+        },
+        {
+          "case_id": "phys-0007",
+          "family": "orifice_discharge",
+          "want": 0.0016521468365280991,
+          "got": 0.02411,
+          "passed": false,
+          "raw": "{\"answer\": 0.02411}"
+        },
+        {
+          "case_id": "phys-0008",
+          "family": "drag_force",
+          "want": 116.40577765459255,
+          "got": 1.004,
+          "passed": false,
+          "raw": "{\"answer\": 1.004}"
+        },
+        {
+          "case_id": "phys-0009",
+          "family": "orifice_discharge",
+          "want": 0.0008045543600819858,
+          "got": 0.02789,
+          "passed": false,
+          "raw": "{\"answer\": 0.02789}"
+        },
+        {
+          "case_id": "phys-0010",
+          "family": "drag_force",
+          "want": 0.0013391210108500435,
+          "got": 0.0244,
+          "passed": false,
+          "raw": "{\"answer\": 0.0244}"
+        },
+        {
+          "case_id": "phys-0011",
+          "family": "orifice_discharge",
+          "want": 0.03001544099268923,
+          "got": 0.2581,
+          "passed": false,
+          "raw": "{\"answer\": 0.2581}"
+        },
+        {
+          "case_id": "phys-0012",
+          "family": "drag_force",
+          "want": 2.178488518073121,
+          "got": 0.244,
+          "passed": false,
+          "raw": "{\"answer\": 0.244}"
+        },
+        {
+          "case_id": "phys-0013",
+          "family": "orifice_discharge",
+          "want": 0.013806079380231186,
+          "got": 0.001001,
+          "passed": false,
+          "raw": "1. Calculate the area of the orifice: $A = \\frac{\\pi}{4} D^2 = \\frac{\\pi}{4} (0.0467)^2 \\approx 0.001690\\text{ m}^2$\n2. Compute the pressure at the orifice using Bernoulli's equation: $P_2 = \\rho g h + \\frac{1}{2} \\rho v_2^2$, where $v_2 = \\sqrt{2g(h - h_0)}$ and $h_0 = 7.84\\text{ m}$:\n   - $v_2 = \\sqrt{2 \\times 9.81 \\times (7.84 - 0.0467)} \\approx 9.000\\text{ m/s}$\n   - $P_2 = 1025 \\times 9.81 \\t"
+        },
+        {
+          "case_id": "phys-0014",
+          "family": "drag_force",
+          "want": 1.6627726350742307,
+          "got": 0.912,
+          "passed": false,
+          "raw": "{\"answer\": 0.912}"
+        },
+        {
+          "case_id": "phys-0015",
+          "family": "orifice_discharge",
+          "want": 0.0017909547017701196,
+          "got": 0.02491,
+          "passed": false,
+          "raw": "{\"answer\": 0.02491}"
+        },
+        {
+          "case_id": "phys-0016",
+          "family": "drag_force",
+          "want": 1.7778919155788966,
+          "got": 0.912,
+          "passed": false,
+          "raw": "{\"answer\": 0.912}"
+        },
+        {
+          "case_id": "phys-0017",
+          "family": "orifice_discharge",
+          "want": 0.0011643678443764563,
+          "got": 0.02789,
+          "passed": false,
+          "raw": "{\"answer\": 0.02789}"
+        },
+        {
+          "case_id": "phys-0018",
+          "family": "drag_force",
+          "want": 0.5366522890451662,
+          "got": 0.131,
+          "passed": false,
+          "raw": "{\"answer\": 0.131}"
+        },
+        {
+          "case_id": "phys-0019",
+          "family": "orifice_discharge",
+          "want": 0.014015506988492061,
+          "got": 0.02478,
+          "passed": false,
+          "raw": "{\"answer\": 0.02478}"
+        }
+      ]
+    }
+  },
+  "gain": 0.025,
+  "gain_held_out": 0.0,
+  "finished": "2026-09-08T21:14:21"
+}

@@ -103,12 +103,20 @@ def terminal_velocity(rng):
     # formula that assumes creeping flow — and then penalised a model for
     # noticing. A statement that says "assume Stokes" about a case where Stokes
     # cannot hold is a trap, not a problem. [ran] 2026-09-08
-    d = round(rng.uniform(2e-5, 2.5e-4), 7)
-    rho_s = round(rng.uniform(1100, 2600), 1)
-    rho_f = rng.choice([998.0, 1025.0])
-    mu = rng.choice([1.002e-3, 1.5e-3, 5.0e-3])
-    v = (rho_s - rho_f) * G * d ** 2 / (18 * mu)
-    re = _reynolds(rho_f, v, d, mu)
+    # Rejection sampling rather than a narrower guess. Tightening the range by
+    # eye still produced Re = 1.34 on another seed, which the test caught: the
+    # constraint belongs in the sampler, not in the reviewer's judgement.
+    for _ in range(200):
+        d = round(rng.uniform(2e-5, 2.5e-4), 7)
+        rho_s = round(rng.uniform(1100, 2600), 1)
+        rho_f = rng.choice([998.0, 1025.0])
+        mu = rng.choice([1.002e-3, 1.5e-3, 5.0e-3])
+        v = (rho_s - rho_f) * G * d ** 2 / (18 * mu)
+        re = _reynolds(rho_f, v, d, mu)
+        if re < 0.8:          # margin below 1, so rounding cannot cross it
+            break
+    else:
+        raise RuntimeError("could not sample a case inside the Stokes regime")
     return (
         f"A solid sphere of diameter {d} m and density {rho_s} kg/m^3 settles in a "
         f"quiescent fluid of density {rho_f} kg/m^3 and dynamic viscosity {mu} Pa.s. "
@@ -223,8 +231,22 @@ INSTRUCTION = (
     'else: {"answer": <number>}, where <number> is the numeric value in %s.'
 )
 
+# THE INSTRUCTION THE DISTILLATION USES, and why it is different.
+# The teacher spends about seven hundred characters of reasoning per problem and
+# the small model spends none [ran]. Training on the final number alone would ask
+# a 3B to guess the result of a five-step chain; the chain is the thing worth
+# distilling. So both the corpus and the arms that will be compared against it
+# use this instruction, and the baseline is re-measured under it rather than
+# borrowed from the JSON-only run.
+INSTRUCTION_WORKING = (
+    "Solve the problem. Work in SI units. Show your working as a short numbered "
+    "chain of steps, each with its intermediate value. Then, on the final line, "
+    'give the answer as one JSON object: {"answer": <number>}, where <number> is '
+    "the numeric value in %s."
+)
 
-def generate(n: int, seed: int, families: dict) -> list[dict]:
+
+def generate(n: int, seed: int, families: dict, style: str = "json") -> list[dict]:
     rng = random.Random(seed)
     names = sorted(families)
     out = []
@@ -233,7 +255,8 @@ def generate(n: int, seed: int, families: dict) -> list[dict]:
         stmt, ans, unit, workings = families[name](rng)
         out.append({
             "case_id": f"phys-{i:04d}", "family": name,
-            "prompt": f"{stmt}\n\n{INSTRUCTION % unit}",
+            "prompt": f"{stmt}\n\n"
+                      f"{(INSTRUCTION_WORKING if style == 'working' else INSTRUCTION) % unit}",
             "answer": ans, "unit": unit, "workings": workings,
         })
     return out
@@ -244,10 +267,11 @@ def main() -> int:
     ap.add_argument("--n", type=int, default=40)
     ap.add_argument("--seed", type=int, default=20260908)
     ap.add_argument("--split", default="eval", choices=["train", "eval", "held_out"])
+    ap.add_argument("--style", default="json", choices=["json", "working"])
     ap.add_argument("--out", default="")
     args = ap.parse_args()
     fams = HELD_OUT_FAMILIES if args.split == "held_out" else TRAIN_FAMILIES
-    rows = generate(args.n, args.seed + hash(args.split) % 1000, fams)
+    rows = generate(args.n, args.seed + hash(args.split) % 1000, fams, args.style)
     text = "\n".join(json.dumps(r) for r in rows) + "\n"
     if args.out:
         open(args.out, "w").write(text)

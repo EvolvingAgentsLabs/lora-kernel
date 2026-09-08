@@ -99,16 +99,18 @@ def main() -> int:
     # The tolerance has to absorb rounding or it measures decimal places.
     ap.add_argument("--rtol", type=float, default=0.02)
     ap.add_argument("--max-tokens", type=int, default=2000)
+    ap.add_argument("--style", default="json", choices=["json", "working"])
     ap.add_argument("--held-out", action="store_true",
                     help="use the families kept out of training instead")
     ap.add_argument("--run-dir", default="results/P5-physics-headroom-20260908")
     args = ap.parse_args()
 
     fams = HELD_OUT_FAMILIES if args.held_out else TRAIN_FAMILIES
-    rows = generate(args.n, args.seed, fams)
+    rows = generate(args.n, args.seed, fams, args.style)
     out = Path(args.run_dir)
     out.mkdir(parents=True, exist_ok=True)
-    summary = {"rtol": args.rtol, "n": len(rows), "families": sorted(fams),
+    summary = {"rtol": args.rtol, "n": len(rows), "style": args.style,
+               "families": sorted(fams),
                "seed": args.seed, "arms": {}}
 
     for tag in (args.small, args.large):
