@@ -556,6 +556,38 @@ question of whether pinning the format reconciles the two. Implemented in
 every run already on disk — the criterion is computed from the stored answers, so
 nothing had to be re-run.
 
+### The road back to the original plan, in dependency order (2026-09-08)
+
+Colab Pro is confirmed on this account **[ran]**: **L4** (23 GB, capability 8.9)
+and **A100-SXM4** (40 GB, capability 8.0), both with real bf16. Three blockers
+dissolve at once — session tenure, the fp16 workaround that produced every false
+zero, and the impossibility of running vLLM.
+
+**And one that was never obvious: the target does not have to be an API.** A 40 GB
+card can host a large Qwen3.5 as the strong reference, and a target from the
+**same family as the adapters shares their tokenizer** — which is exactly what C2
+and C3 said made true token-level acceptance unmeasurable. The architecture's
+central metric becomes available for the first time.
+
+| # | step | card | gate it must clear | cost |
+|---|---|---|---|---|
+| **P1** | **Price the router.** Re-run the 40 routing cases with the `clinic:` line **masked**, so the lexical rule has nothing to read | L4 | agreement still picks the right expert while the keyword baseline collapses to chance | ~15 min |
+| **P2** | **Replicate S4 in bf16.** Same arms, real bf16, no fp16 path | L4 | the +63.3 survives; if it does not, every S4 number was a precision artefact | ~30 min |
+| **P3** | **vLLM multi-LoRA, the substrate.** One resident base, our three adapters served concurrently, adapter chosen per request | A100 | three adapters served from one base, and the swap cost measured rather than assumed | ~1 h |
+| **P4** | **A same-family strong target.** Serve a large Qwen3.5 beside the 2B adapters | A100 | **token-level** acceptance measurable at last, shared tokenizer, no text-agreement surrogate | ~1 h |
+| **P5** | **S1 again, locally.** Does the strong same-family target clear the adapters by a margin a withdrawal gap can live in | A100 | if it does not, the suite is still wrong and §11's other options apply | ~30 min |
+| **P6** | **S5 — the withdrawal gap.** Promote where acceptance crosses threshold, remove the target, re-measure | A100 | **the product** | ~1 h |
+| **P7** | **S6 — `harness.lora`** against a real tool distribution, which this suite does not have | L4 | tokens, malformed-call rate and swap latency together | new fixtures first |
+| **P8** | **S7 — the tournament**, `w₁` from a verifier the loop cannot see | L4 | evolution | after P6 |
+
+**Why this order.** P1 and P2 are cheap and they settle whether what we already
+have is real; running them on a Pro card costs minutes and removes two standing
+doubts. P3 and P4 buy the substrate and the metric — nothing above them can be
+claimed about *serving* until they exist. P5 is the gate that decides whether P6,
+the product, is buyable at all; it is bought before P6 and not alongside it.
+
+**The A100 is the expensive resource, so P1, P2, P7 and P8 stay on the L4.**
+
 ### Open: how to get an adapter graded at all
 
 Six infrastructure failures and three reclaimed sessions, and the adapter has

@@ -576,6 +576,38 @@ Implementado en `alpha/report.py::semantic`, fijado por seis tests, y aplicado
 retroactivamente a todas las corridas que ya estaban en disco — el criterio se
 calcula sobre las respuestas guardadas, así que no hubo que volver a correr nada.
 
+### El camino de vuelta al plan original, en orden de dependencias (2026-09-08)
+
+Colab Pro está confirmado en esta cuenta **[ran]**: **L4** (23 GB, capability 8,9)
+y **A100-SXM4** (40 GB, capability 8,0), las dos con bf16 real. Tres bloqueos se
+disuelven juntos — la tenencia de las sesiones, el parche de fp16 que produjo cada
+cero falso, y la imposibilidad de correr vLLM.
+
+**Y uno que nunca fue obvio: el target no tiene por qué ser una API.** Una placa de
+40 GB puede hospedar un Qwen3.5 grande como referencia fuerte, y un target **de la
+misma familia que los adaptadores comparte su tokenizador** — que es exactamente
+lo que C2 y C3 decían que volvía inmedible la aceptación real a nivel de token. La
+métrica central de la arquitectura queda disponible por primera vez.
+
+| # | paso | placa | compuerta que tiene que pasar | costo |
+|---|---|---|---|---|
+| **P1** | **Ponerle precio al router.** Re-correr los 40 casos de ruteo con la línea `clinic:` **enmascarada**, para que la regla léxica no tenga qué leer | L4 | el acuerdo sigue eligiendo bien mientras el baseline por palabra clave cae a azar | ~15 min |
+| **P2** | **Replicar S4 en bf16.** Los mismos arms, bf16 real, sin camino fp16 | L4 | el +63,3 sobrevive; si no, todos los números de S4 eran artefacto de precisión | ~30 min |
+| **P3** | **vLLM multi-LoRA, el sustrato.** Una base residente, nuestros tres adaptadores servidos a la vez, adaptador elegido por request | A100 | tres adaptadores servidos desde una base, y el costo de swap medido en vez de supuesto | ~1 h |
+| **P4** | **Un target fuerte de la misma familia.** Servir un Qwen3.5 grande al lado de los adaptadores de 2B | A100 | aceptación **a nivel de token** medible por fin, tokenizador compartido, sin sustituto textual | ~1 h |
+| **P5** | **S1 otra vez, local.** ¿El target fuerte de la misma familia le saca a los adaptadores un margen donde quepa una brecha de retiro? | A100 | si no, la suite sigue equivocada y aplican las otras opciones de §11 | ~30 min |
+| **P6** | **S5 — la brecha de retiro.** Promover donde la aceptación cruza el umbral, sacar el target, volver a medir | A100 | **el producto** | ~1 h |
+| **P7** | **S6 — `harness.lora`** contra una distribución de herramientas real, que esta suite no tiene | L4 | tokens, tasa de malformadas y latencia de swap juntos | primero los fixtures |
+| **P8** | **S7 — el torneo**, con `w₁` desde un verificador que el bucle no ve | L4 | la evolución | después de P6 |
+
+**Por qué este orden.** P1 y P2 son baratos y deciden si lo que ya tenemos es
+real; correrlos en una placa Pro cuesta minutos y saca dos dudas de encima. P3 y
+P4 compran el sustrato y la métrica — nada por encima de ellos se puede afirmar
+sobre *servir* hasta que existan. P5 es la compuerta que decide si P6, el
+producto, es comprable; se compra antes que P6 y no junto con él.
+
+**La A100 es el recurso caro, así que P1, P2, P7 y P8 se quedan en la L4.**
+
 ### Abierta: cómo lograr que a un adaptador se lo califique
 
 Seis fallas de infraestructura y tres sesiones reclamadas, y al adaptador nunca
