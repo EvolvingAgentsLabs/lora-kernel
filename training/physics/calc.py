@@ -80,7 +80,16 @@ def evaluate(expr: str) -> float:
         tree = ast.parse(expr, mode="eval")
     except SyntaxError as e:
         raise CalcError(f"unparseable: {e.msg}") from e
-    v = _walk(tree)
+    # A TOOL MUST FAIL INWARDS. log10 of a negative raises ValueError, division
+    # by zero raises its own, and a large power raises OverflowError — and any of
+    # them escaping killed the evaluation arm mid-run [ran] 2026-09-08. The model
+    # is allowed to ask for nonsense; the harness is not allowed to die of it.
+    try:
+        v = _walk(tree)
+    except CalcError:
+        raise
+    except (ValueError, ZeroDivisionError, OverflowError, TypeError) as e:
+        raise CalcError(f"{type(e).__name__}: {e}") from e
     if not isinstance(v, (int, float)) or not math.isfinite(v):
         raise CalcError(f"result {v!r} is not a finite number")
     return float(v)
