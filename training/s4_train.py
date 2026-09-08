@@ -89,7 +89,7 @@ def train_adapter(base: str, rows: list[dict], out_dir: str, args):
     result a region expert. Reloading costs a minute and removes the question.
     """
     from datasets import Dataset
-    from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
+    from peft import LoraConfig, get_peft_model
     from trl import SFTConfig, SFTTrainer
 
     model, tok = load_base(base, args.four_bit)
@@ -102,7 +102,17 @@ def train_adapter(base: str, rows: list[dict], out_dir: str, args):
             m = r["messages"]
             texts.append({"text": f"{m[0]['content']}\n\n{m[1]['content']}\n\n"
                                   f"{m[2]['content']}"})
-    model = prepare_model_for_kbit_training(model) if args.four_bit else model
+    # NOT `prepare_model_for_kbit_training`. That helper casts every parameter
+    # the quantiser skipped up to fp32, and on this model that is most of it: it
+    # asked for a 10.50 GiB single allocation on a 14.56 GiB card, twice, at two
+    # different batch sizes — which is what gave it away, since the size never
+    # moved [ran] 2026-09-07. Its two useful effects are reproduced directly.
+    print(f"[mem] model footprint {model.get_memory_footprint() / 2**30:.2f} GiB", flush=True)
+    quantised = sum(1 for m in model.modules() if "4bit" in type(m).__name__.lower())
+    print(f"[mem] 4-bit modules: {quantised}", flush=True)
+    model.gradient_checkpointing_enable()
+    model.enable_input_require_grads()
+    model.config.use_cache = False
     peft_model = get_peft_model(model, LoraConfig(
         r=args.r, lora_alpha=args.alpha, lora_dropout=0.05, bias="none",
         task_type="CAUSAL_LM",
