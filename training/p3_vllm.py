@@ -139,24 +139,25 @@ def main() -> int:
     for name, req in requests.items():
         timed(f"pure batch · {name}", req)
 
-    # THE MIXED BATCH. Each request carries its own adapter, interleaved, so the
-    # server has to hold three deltas over one base at once. If this costs what a
-    # pure batch costs, the pool is free to serve; if not, the difference IS the
-    # price of the architecture.
-    t0 = time.time()
-    names = list(requests)
-    outs = [llm.generate([p], sp, lora_request=requests[names[i % len(names)]])[0]
-            for i, p in enumerate(prompts)]
-    dt = time.time() - t0
-    results["arms"]["mixed batch · round-robin"] = {
-        "n": len(prompts), "seconds": round(dt, 2),
-        "prompts_per_second": round(len(prompts) / dt, 2),
-        "note": "one adapter per request, cycled — accuracy is meaningless here "
-                "because two of the three adapters are wrong for any given case; "
-                "this arm measures the COST of holding a pool, not its quality",
+    # THE MIXED BATCH IS NOT IMPLEMENTED, AND THE PREVIOUS ATTEMPT WAS WORSE
+    # THAN NOTHING. It called `llm.generate([p], ...)` once per prompt, cycling
+    # adapters — sixty sequential round-trips, which measured 3.85 prompts/s
+    # against a pure batch's 77.66 and looked like a 20x penalty for holding a
+    # pool [ran] 2026-09-08. It was measuring the loop, not the batching.
+    #
+    # Measuring it honestly needs per-request adapters INSIDE one scheduling
+    # pass: the async engine, or the OpenAI-compatible server with each adapter
+    # registered as its own model name and concurrent clients. Until one of those
+    # is built, this arm reports nothing, because a number that measures the
+    # wrong thing is worse than a gap in the table.
+    results["arms"]["mixed batch"] = {
+        "status": "not measured",
+        "why": ("requires per-request adapters within one scheduling pass — the "
+                "async engine or the OpenAI server with one model name per "
+                "adapter. The serial loop that stood here measured round-trips "
+                "and was voided."),
     }
     OUT.write_text(json.dumps(results, indent=2))
-    print(f"[mixed] {dt:.2f}s  {len(prompts) / dt:.2f}/s", flush=True)
     print(json.dumps(results["arms"], indent=2), flush=True)
     return 0
 
