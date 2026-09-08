@@ -1,0 +1,416 @@
+{
+  "n_cases": 40,
+  "unusable": 0,
+  "decisive_cases": 10,
+  "ties_among_decisive": 0,
+  "routed_correct_on_decisive": 9,
+  "accuracy": {
+    "oracle (best expert per case)": 0.75,
+    "routed by agreement": 0.725,
+    "always the region's own expert": 0.725,
+    "always the other expert": 0.525
+  },
+  "reference": "all-clinics adapter \u2014 NOT a frontier target (S1)",
+  "rows": [
+    {
+      "case_id": "val-000",
+      "clinic": "alpha",
+      "right_expert": "alpha",
+      "other_expert": "beta",
+      "own_correct": true,
+      "other_correct": true,
+      "own_agreement": 1.0,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-003",
+      "clinic": "alpha",
+      "right_expert": "alpha",
+      "other_expert": "beta",
+      "own_correct": true,
+      "other_correct": true,
+      "own_agreement": 1.0,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-006",
+      "clinic": "alpha",
+      "right_expert": "alpha",
+      "other_expert": "beta",
+      "own_correct": true,
+      "other_correct": true,
+      "own_agreement": 1.0,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-009",
+      "clinic": "alpha",
+      "right_expert": "alpha",
+      "other_expert": "beta",
+      "own_correct": true,
+      "other_correct": false,
+      "own_agreement": 1.0,
+      "other_agreement": 0.6666666666666666
+    },
+    {
+      "case_id": "val-012",
+      "clinic": "alpha",
+      "right_expert": "alpha",
+      "other_expert": "beta",
+      "own_correct": false,
+      "other_correct": false,
+      "own_agreement": 0.6666666666666666,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-015",
+      "clinic": "alpha",
+      "right_expert": "alpha",
+      "other_expert": "beta",
+      "own_correct": true,
+      "other_correct": true,
+      "own_agreement": 1.0,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-018",
+      "clinic": "alpha",
+      "right_expert": "alpha",
+      "other_expert": "beta",
+      "own_correct": false,
+      "other_correct": false,
+      "own_agreement": 1.0,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-021",
+      "clinic": "alpha",
+      "right_expert": "alpha",
+      "other_expert": "beta",
+      "own_correct": true,
+      "other_correct": true,
+      "own_agreement": 1.0,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-024",
+      "clinic": "alpha",
+      "right_expert": "alpha",
+      "other_expert": "beta",
+      "own_correct": true,
+      "other_correct": true,
+      "own_agreement": 1.0,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-027",
+      "clinic": "alpha",
+      "right_expert": "alpha",
+      "other_expert": "beta",
+      "own_correct": true,
+      "other_correct": true,
+      "own_agreement": 1.0,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-030",
+      "clinic": "alpha",
+      "right_expert": "alpha",
+      "other_expert": "beta",
+      "own_correct": false,
+      "other_correct": false,
+      "own_agreement": 1.0,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-033",
+      "clinic": "alpha",
+      "right_expert": "alpha",
+      "other_expert": "beta",
+      "own_correct": true,
+      "other_correct": true,
+      "own_agreement": 1.0,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-036",
+      "clinic": "alpha",
+      "right_expert": "alpha",
+      "other_expert": "beta",
+      "own_correct": true,
+      "other_correct": true,
+      "own_agreement": 1.0,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-039",
+      "clinic": "alpha",
+      "right_expert": "alpha",
+      "other_expert": "beta",
+      "own_correct": true,
+      "other_correct": true,
+      "own_agreement": 1.0,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-042",
+      "clinic": "alpha",
+      "right_expert": "alpha",
+      "other_expert": "beta",
+      "own_correct": false,
+      "other_correct": false,
+      "own_agreement": 1.0,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-045",
+      "clinic": "alpha",
+      "right_expert": "alpha",
+      "other_expert": "beta",
+      "own_correct": true,
+      "other_correct": true,
+      "own_agreement": 1.0,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-048",
+      "clinic": "alpha",
+      "right_expert": "alpha",
+      "other_expert": "beta",
+      "own_correct": true,
+      "other_correct": true,
+      "own_agreement": 1.0,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-051",
+      "clinic": "alpha",
+      "right_expert": "alpha",
+      "other_expert": "beta",
+      "own_correct": false,
+      "other_correct": false,
+      "own_agreement": 1.0,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-054",
+      "clinic": "alpha",
+      "right_expert": "alpha",
+      "other_expert": "beta",
+      "own_correct": true,
+      "other_correct": true,
+      "own_agreement": 1.0,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-057",
+      "clinic": "alpha",
+      "right_expert": "alpha",
+      "other_expert": "beta",
+      "own_correct": false,
+      "other_correct": false,
+      "own_agreement": 0.8571428571428571,
+      "other_agreement": 0.8571428571428571
+    },
+    {
+      "case_id": "val-001",
+      "clinic": "beta",
+      "right_expert": "beta",
+      "other_expert": "alpha",
+      "own_correct": true,
+      "other_correct": true,
+      "own_agreement": 1.0,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-004",
+      "clinic": "beta",
+      "right_expert": "beta",
+      "other_expert": "alpha",
+      "own_correct": true,
+      "other_correct": false,
+      "own_agreement": 1.0,
+      "other_agreement": 0.4
+    },
+    {
+      "case_id": "val-007",
+      "clinic": "beta",
+      "right_expert": "beta",
+      "other_expert": "alpha",
+      "own_correct": false,
+      "other_correct": false,
+      "own_agreement": 1.0,
+      "other_agreement": 0.7499999999999999
+    },
+    {
+      "case_id": "val-010",
+      "clinic": "beta",
+      "right_expert": "beta",
+      "other_expert": "alpha",
+      "own_correct": true,
+      "other_correct": false,
+      "own_agreement": 1.0,
+      "other_agreement": 0.4
+    },
+    {
+      "case_id": "val-013",
+      "clinic": "beta",
+      "right_expert": "beta",
+      "other_expert": "alpha",
+      "own_correct": true,
+      "other_correct": true,
+      "own_agreement": 1.0,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-016",
+      "clinic": "beta",
+      "right_expert": "beta",
+      "other_expert": "alpha",
+      "own_correct": true,
+      "other_correct": false,
+      "own_agreement": 1.0,
+      "other_agreement": 0.8571428571428571
+    },
+    {
+      "case_id": "val-019",
+      "clinic": "beta",
+      "right_expert": "beta",
+      "other_expert": "alpha",
+      "own_correct": true,
+      "other_correct": true,
+      "own_agreement": 1.0,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-022",
+      "clinic": "beta",
+      "right_expert": "beta",
+      "other_expert": "alpha",
+      "own_correct": true,
+      "other_correct": false,
+      "own_agreement": 1.0,
+      "other_agreement": 0.8
+    },
+    {
+      "case_id": "val-025",
+      "clinic": "beta",
+      "right_expert": "beta",
+      "other_expert": "alpha",
+      "own_correct": true,
+      "other_correct": true,
+      "own_agreement": 1.0,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-028",
+      "clinic": "beta",
+      "right_expert": "beta",
+      "other_expert": "alpha",
+      "own_correct": false,
+      "other_correct": true,
+      "own_agreement": 0.0,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-031",
+      "clinic": "beta",
+      "right_expert": "beta",
+      "other_expert": "alpha",
+      "own_correct": true,
+      "other_correct": true,
+      "own_agreement": 1.0,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-034",
+      "clinic": "beta",
+      "right_expert": "beta",
+      "other_expert": "alpha",
+      "own_correct": true,
+      "other_correct": true,
+      "own_agreement": 1.0,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-037",
+      "clinic": "beta",
+      "right_expert": "beta",
+      "other_expert": "alpha",
+      "own_correct": false,
+      "other_correct": false,
+      "own_agreement": 1.0,
+      "other_agreement": 0.4
+    },
+    {
+      "case_id": "val-040",
+      "clinic": "beta",
+      "right_expert": "beta",
+      "other_expert": "alpha",
+      "own_correct": true,
+      "other_correct": false,
+      "own_agreement": 1.0,
+      "other_agreement": 0.4
+    },
+    {
+      "case_id": "val-043",
+      "clinic": "beta",
+      "right_expert": "beta",
+      "other_expert": "alpha",
+      "own_correct": false,
+      "other_correct": false,
+      "own_agreement": 1.0,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-046",
+      "clinic": "beta",
+      "right_expert": "beta",
+      "other_expert": "alpha",
+      "own_correct": true,
+      "other_correct": false,
+      "own_agreement": 0.0,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-049",
+      "clinic": "beta",
+      "right_expert": "beta",
+      "other_expert": "alpha",
+      "own_correct": true,
+      "other_correct": true,
+      "own_agreement": 1.0,
+      "other_agreement": 1.0
+    },
+    {
+      "case_id": "val-052",
+      "clinic": "beta",
+      "right_expert": "beta",
+      "other_expert": "alpha",
+      "own_correct": true,
+      "other_correct": false,
+      "own_agreement": 1.0,
+      "other_agreement": 0.5
+    },
+    {
+      "case_id": "val-055",
+      "clinic": "beta",
+      "right_expert": "beta",
+      "other_expert": "alpha",
+      "own_correct": false,
+      "other_correct": false,
+      "own_agreement": 0.8571428571428571,
+      "other_agreement": 0.8
+    },
+    {
+      "case_id": "val-058",
+      "clinic": "beta",
+      "right_expert": "beta",
+      "other_expert": "alpha",
+      "own_correct": true,
+      "other_correct": false,
+      "own_agreement": 1.0,
+      "other_agreement": 0.8
+    }
+  ]
+}

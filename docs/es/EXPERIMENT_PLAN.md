@@ -53,7 +53,7 @@ se responde con modelos que ya existen, antes de entrenar un solo adaptador.
 | **S0** | que el instrumento mida lo que dice | todo | $0, local | **DONE, y movió el plan** — §3 |
 | **S1** | headroom: ¿puede esta suite mostrar una brecha de retiro? | S2 | $0,47 gastados | **DONE — FALLÓ la compuerta, tres targets** — §4 |
 | **S2** | ¿el **acuerdo** ordena a los candidatos como los ordena la calidad verificada? | S4 | incluido arriba | **DONE — 14/15 pares, pero contra pares** — §5 |
-| **S3** | atribución: ¿un router léxico o de embeddings hace lo mismo? | la afirmación de ruteo | ~$0 | pospuesto detrás de S4 — todavía no hay pool que rutear |
+| **S3** | atribución: ¿un router léxico o de embeddings hace lo mismo? | la afirmación de ruteo | $0, offline | **DONE — mecanismo 9/10, pero empata con la regla léxica** — §6 |
 | **S4** | **los adaptadores** — ¿hay especialización, y es por región? | S5 | Colab T4 gratis | **DONE. P1 +63,3 puntos, sonda negativa. P2 sí, +20 puntos, asimétrica** — §6 |
 | **S5** | **la brecha de retiro** | el producto | GPU + frontera | `NEXT` tras S4 |
 | **S6** | `harness.lora` contra el baseline de −85 % de esquema | el kernel | GPU alquilada | **en revisión — S0 dice que está aguas arriba de α, §12** |
@@ -297,12 +297,33 @@ candidatos aceptan igual, no hay nada que rutear, signifique α lo que signifiqu
 
 ## 6. S3–S7 — los pasos que cuestan plata, y qué tiene que superar cada uno
 
-**S3 · el arm de atribución.** Una regla léxica y un clasificador con
-`embeddinggemma` ruteando los mismos casos. Si cualquiera de los dos iguala al
-ruteo por aceptación, el mecanismo caro no compró nada — la forma de un resultado
-que este workspace ya tuvo una vez, cuando una jerarquía de memoria perdió contra
-búsqueda léxica pelada **[read]**. Se compra sólo después de que S2 muestre
-efecto, nunca antes.
+**S3 · el arm de atribución — contestado por $0, y dice las dos cosas a la vez.**
+Los arms de región de S4 registraron tres respuestas por caso (cada experto y el
+adaptador general como referencia), así que el ruteo es un cálculo sobre corridas
+que ya están en disco y no un experimento que comprar.
+`python3 -m training.route_offline`, 40 casos **[ran]**:
+
+| política | exactitud |
+|---|---|
+| oráculo — el mejor experto, caso por caso | 0,750 |
+| **ruteado por acuerdo** | **0,725** |
+| **siempre el experto de la propia región** | **0,725** |
+| siempre el otro experto | 0,525 |
+
+**El mecanismo funciona.** En los 10 casos donde los dos expertos difieren de
+verdad, el acuerdo eligió al correcto **9 veces**, y el ruteo recuperó 0,725 de
+los 0,750 disponibles.
+
+**Y acá no compró nada.** Una regla que lee `clinic:` del prompt y elige el
+experto de esa clínica saca exactamente los mismos 0,725, gratis. Es el resultado
+que este workspace ya tuvo, cuando una jerarquía de memoria perdió contra búsqueda
+léxica **[read]** — y aparece porque **esta suite escribe la región en el
+prompt**. El ruteo existe para el caso donde la región *no* está declarada, y este
+benchmark no puede plantear ese caso.
+
+Así que el arm de atribución no mata al ruteo por aceptación: dice que la suite no
+puede ponerle precio. Una suite que oculte la etiqueta de región sí puede, y ésa
+es la versión más barata de la próxima pregunta.
 
 **S4 · los adaptadores — adelantados al frente, y el kit ya está.** La falla de S1
 traba el camino de la frontera, y este proyecto son adaptadores: una sesión que no
@@ -600,6 +621,7 @@ frontera que nunca estuvo adelante no mide nada.
 | 2026-09-07 | S0 corrido tres veces; §3 completado; agregados C9 y C10; el contador de rediseños llegó a su condición de parada y el instrumento **no** se cambió una cuarta vez | la métrica estaba midiendo el formato, y la regla de contar rediseños existe justamente para el momento en que es incómoda |
 | 2026-09-07 | S6 pasó de "en paralelo" a "en revisión, posiblemente aguas arriba de α" | si el adaptador kernel es lo que fija el formato, entonces es lo que hace que la aceptación por caracteres signifique algo |
 | 2026-09-07 | S1a corrido sobre `held_out_delta`: 8/12 contra 3/12 y 4/12. La pregunta de suite de S1 quedó cerrada por $0; sólo la key la bloquea | el fallback estaba nombrado en el paso antes de correrlo, que es la única razón por la que cambiar el split acá es un plan y no una búsqueda de un número más amable |
+| 2026-09-08 | S3 contestado offline con los registros de S4: el acuerdo elige al experto correcto en 9 de 10 casos decisivos y recupera 0,725 de un oráculo de 0,750 — y empata exacto con leer `clinic:` del prompt | el mecanismo es real y esta suite no puede ponerle precio, porque etiqueta la región que el router debería inferir |
 | 2026-09-08 | **S4 completo. Pregunta 2 contestada: propia región 0,725 contra ajena 0,525, diagonal ganando en las dos direcciones — pero en los casos de `alpha` los dos expertos difieren en un caso de veinte, así que la señal es asimétrica.** El primer arm de región fue anulado por presupuesto de entrenamiento desigual | hay un pool que rutear, y ahora se sabe que el problema de ruteo es desparejo entre regiones en vez de suponerlo uniforme |
 | 2026-09-08 | **S4 pregunta 1 contestada: el adaptador saca 44/60 contra 6/60 del base, +63,3 puntos, y gana 20 puntos en el split de regla invertida que nunca vio.** Agregado C17 | el primer resultado real que produjo este proyecto, y el tercer cero previo era gradient checkpointing, no el modelo |
 | 2026-09-08 | S4 corrido sobre `Qwen/Qwen3.5-2B`: arms base guardados en 6/60 y 6/30; los del adaptador bloqueados. Agregados C15 y C16; la regla de aborto disparó en la tercera sesión reclamada | el 0/60 que produjo la T4 se habría leído como "no hubo especialización" — una condición de falsación cumplida por la GPU y no por el modelo |

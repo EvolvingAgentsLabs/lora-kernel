@@ -53,7 +53,7 @@ already exist, before a single adapter is trained.
 | **S0** | the instrument measures what it claims | everything | $0, local | **DONE, and it moved the plan** — §3 |
 | **S1** | headroom: can this suite show a withdrawal gap at all | S2 | $0.47 spent | **DONE — FAILED the gate, three targets** — §4 |
 | **S2** | does **agreement** order candidates the way verified quality does | S4 | included above | **DONE — 14/15 pairs, but against peers** — §5 |
-| **S3** | attribution: does a lexical/embedding router do the same job | the routing claim | ~$0 | deferred behind S4 — there is no pool to route yet |
+| **S3** | attribution: does a lexical/embedding router do the same job | the routing claim | $0, offline | **DONE — mechanism 9/10, but ties the keyword rule** — §6 |
 | **S4** | **the adapters** — does specialisation happen, and is it per region | S5 | free Colab T4 | **DONE. Q1 +63.3 points, probe negative. Q2 yes, +20 points, asymmetric** — §6 |
 | **S5** | **the withdrawal gap** | the product | GPU + frontier | `NEXT` after S4 |
 | **S6** | `harness.lora` against the −85 % schema baseline | the kernel | GPU rental | **under review — S0 says it is upstream of α, §12** |
@@ -289,11 +289,33 @@ alike, there is nothing to route on regardless of what α means.
 
 ## 6. S3–S7 — the steps that cost money, and what each has to clear first
 
-**S3 · the attribution arm.** A lexical rule and an `embeddinggemma` classifier
-routing the same cases. If either matches acceptance-routing, the expensive
-mechanism bought nothing — the shape of a result this workspace has already had
-once, when a memory hierarchy lost to plain lexical search **[read]**. Bought
-only after S2 shows an effect, never before.
+**S3 · the attribution arm — answered for $0, and it says both things at once.**
+S4's region arms recorded three answers per case (each expert, and the
+all-clinics adapter as reference), so routing is a computation over runs already
+on disk rather than an experiment to buy. `python3 -m training.route_offline`,
+40 cases **[ran]**:
+
+| policy | accuracy |
+|---|---|
+| oracle — the better expert, per case | 0.750 |
+| **routed by agreement** | **0.725** |
+| **always the case's own-region expert** | **0.725** |
+| always the other expert | 0.525 |
+
+**The mechanism works.** On the 10 cases where the two experts actually disagree,
+agreement picked the correct one **9 times**, and routing recovered 0.725 of the
+0.750 available.
+
+**And it bought nothing here.** A rule that reads `clinic:` out of the prompt and
+picks that clinic's expert scores exactly the same 0.725, for free. That is the
+result this workspace has had before, when a memory hierarchy lost to plain
+lexical search **[read]** — and it arrives because **this suite labels the
+region in the prompt**. Routing exists for the case where the region is *not*
+stated, and this benchmark cannot pose that case.
+
+So the attribution arm does not kill acceptance-routing; it says the suite cannot
+price it. A suite that withholds the region label can, and that is the cheapest
+version of the next question.
 
 **S4 · the adapters — brought to the front, and the kit is built.** S1's failure
 stalls the frontier path, and this project is adapters: a session that produces no
@@ -579,6 +601,7 @@ withdrawing a frontier that was never ahead measures nothing.
 | 2026-09-07 | S0 run three times; §3 filled in; C9 and C10 added; the redesign counter reached its stopping condition and the instrument was **not** changed a fourth time | the metric was measuring layout, and the rule about counting redesigns exists precisely for the moment it is inconvenient |
 | 2026-09-07 | S6 moved from "parallel" to "under review, possibly upstream of α" | if the kernel adapter is what pins the format, then it is what makes character acceptance mean anything |
 | 2026-09-07 | S1a run on `held_out_delta`: 8/12 against 3/12 and 4/12. S1's suite question closed for $0; only the key still blocks it | the fallback was named in the step before the step ran, which is the only reason changing the split here is a plan and not a search for a friendlier number |
+| 2026-09-08 | S3 answered offline from S4's records: agreement picks the correct expert on 9 of 10 decisive cases and recovers 0.725 of a 0.750 oracle — and ties exactly with reading `clinic:` out of the prompt | the mechanism is real and this suite cannot price it, because it labels the region the router is supposed to infer |
 | 2026-09-08 | **S4 complete. Question 2 answered: own region 0.725 against other 0.525, diagonal winning both ways — but on `alpha`'s cases the two experts differ by one case of twenty, so the signal is asymmetric.** The first region arm was voided for an unmatched training budget | there is a pool to route between, and the routing problem is now known to be uneven across regions rather than assumed uniform |
 | 2026-09-08 | **S4 question 1 answered: the adapter scores 44/60 against the base's 6/60, +63.3 points, and gains 20 points on the inverted-rule split it never saw.** C17 added | the first real result this project has produced, and the third zero before it was gradient checkpointing rather than the model |
 | 2026-09-08 | S4 run on `Qwen/Qwen3.5-2B`: base arms banked at 6/60 and 6/30; adapter arms blocked. C15 and C16 added; the abort rule fired at the third reclaimed session | the 0/60 the T4 produced would have read as "specialisation did not happen" — a falsification condition met by the GPU rather than by the model |
