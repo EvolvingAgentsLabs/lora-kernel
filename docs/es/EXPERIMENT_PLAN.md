@@ -54,7 +54,7 @@ se responde con modelos que ya existen, antes de entrenar un solo adaptador.
 | **S1** | headroom: ¿puede esta suite mostrar una brecha de retiro? | S2 | $0,47 gastados | **DONE — FALLÓ la compuerta, tres targets** — §4 |
 | **S2** | ¿el **acuerdo** ordena a los candidatos como los ordena la calidad verificada? | S4 | incluido arriba | **DONE — 14/15 pares, pero contra pares** — §5 |
 | **S3** | atribución: ¿un router léxico o de embeddings hace lo mismo? | la afirmación de ruteo | ~$0 | pospuesto detrás de S4 — todavía no hay pool que rutear |
-| **S4** | **los adaptadores** — ¿hay especialización, y es por región? | S5 | Colab T4 gratis | **P1 CONTESTADA: +63,3 puntos, sonda negativa.** P2 sigue — §6 |
+| **S4** | **los adaptadores** — ¿hay especialización, y es por región? | S5 | Colab T4 gratis | **DONE. P1 +63,3 puntos, sonda negativa. P2 sí, +20 puntos, asimétrica** — §6 |
 | **S5** | **la brecha de retiro** | el producto | GPU + frontera | `NEXT` tras S4 |
 | **S6** | `harness.lora` contra el baseline de −85 % de esquema | el kernel | GPU alquilada | **en revisión — S0 dice que está aguas arriba de α, §12** |
 | **S7** | el torneo, con un verificador no visto | la evolución | GPU alquilada | tras S5 |
@@ -358,8 +358,36 @@ apaga la caché KV sino que corrompe la salida. Cada cero se leía exactamente c
 *"no hubo especialización"* — una de las dos condiciones de falsación de este
 paso. El número verdadero es +63.
 
-**La pregunta 2 —si los expertos difieren por región— es la que sigue**, y es la
-que decide si hay un pool que rutear.
+**LA PREGUNTA 2 TAMBIÉN ESTÁ CONTESTADA, Y LA RESPUESTA ES ASIMÉTRICA.** Dos
+expertos, uno entrenado sólo con la clínica `alpha` y otro sólo con `beta`, cada
+uno con el **presupuesto de entrenamiento igualado** al del adaptador general y no
+la cantidad de épocas, evaluados cruzados **[ran]**:
+
+| | en `alpha` | en `beta` |
+|---|---|---|
+| **experto α** | **0,700** (14/20) | 0,400 (8/20) |
+| **experto β** | 0,650 (13/20) | **0,750** (15/20) |
+
+**La diagonal gana en las dos direcciones** —propia región 0,725 contra ajena
+0,525, **+20 puntos**— así que hay algo para que un router elija y el pool no es
+un experto con tres nombres.
+
+**Pero una sola columna puede sostener esa afirmación.** En los casos de `beta`
+los dos expertos difieren en siete casos (15 contra 8); en los de `alpha` difieren
+en **uno** (14 contra 13), que con n = 20 no es una diferencia. El experto β
+generaliza a la clínica de α casi tan bien como α; el experto α no devuelve el
+favor.
+
+Así que lo honesto es: **la especialización por región es real y no es
+simétrica.** Un router construido sobre esta superficie tendría señal fuerte en
+una región y ninguna en la otra — que es un hallazgo sobre lo que el ruteo tiene
+que manejar, no una falla de los adaptadores.
+
+**El primer intento de este arm fue anulado y re-corrido**, porque 200 casos a la
+misma cantidad de épocas son un tercio de las actualizaciones: el primer experto α
+llegó a `train_loss` 1,079 contra 0,103 del adaptador general y sacó 3/20 en su
+propia región. Comparar un experto sub-entrenado con uno entrenado mide el
+presupuesto y lo llama especialización.
 
 **La sonda que hay que reportar al lado de cualquier ganancia.** `delta` invierte
 una de las reglas no publicadas y no aparece en ningún split de entrenamiento. Un
@@ -572,6 +600,7 @@ frontera que nunca estuvo adelante no mide nada.
 | 2026-09-07 | S0 corrido tres veces; §3 completado; agregados C9 y C10; el contador de rediseños llegó a su condición de parada y el instrumento **no** se cambió una cuarta vez | la métrica estaba midiendo el formato, y la regla de contar rediseños existe justamente para el momento en que es incómoda |
 | 2026-09-07 | S6 pasó de "en paralelo" a "en revisión, posiblemente aguas arriba de α" | si el adaptador kernel es lo que fija el formato, entonces es lo que hace que la aceptación por caracteres signifique algo |
 | 2026-09-07 | S1a corrido sobre `held_out_delta`: 8/12 contra 3/12 y 4/12. La pregunta de suite de S1 quedó cerrada por $0; sólo la key la bloquea | el fallback estaba nombrado en el paso antes de correrlo, que es la única razón por la que cambiar el split acá es un plan y no una búsqueda de un número más amable |
+| 2026-09-08 | **S4 completo. Pregunta 2 contestada: propia región 0,725 contra ajena 0,525, diagonal ganando en las dos direcciones — pero en los casos de `alpha` los dos expertos difieren en un caso de veinte, así que la señal es asimétrica.** El primer arm de región fue anulado por presupuesto de entrenamiento desigual | hay un pool que rutear, y ahora se sabe que el problema de ruteo es desparejo entre regiones en vez de suponerlo uniforme |
 | 2026-09-08 | **S4 pregunta 1 contestada: el adaptador saca 44/60 contra 6/60 del base, +63,3 puntos, y gana 20 puntos en el split de regla invertida que nunca vio.** Agregado C17 | el primer resultado real que produjo este proyecto, y el tercer cero previo era gradient checkpointing, no el modelo |
 | 2026-09-08 | S4 corrido sobre `Qwen/Qwen3.5-2B`: arms base guardados en 6/60 y 6/30; los del adaptador bloqueados. Agregados C15 y C16; la regla de aborto disparó en la tercera sesión reclamada | el 0/60 que produjo la T4 se habría leído como "no hubo especialización" — una condición de falsación cumplida por la GPU y no por el modelo |
 | 2026-09-07 | S1 comprado y fallado tres veces ($0,47 en total); S2 comprado en las mismas compras y aprobado 14 de 15 pares; agregados C12 y C13 | la compuerta estaba escrita antes de la corrida y disparó — el desenlace más barato posible, porque impidió comprar S4 y S5 sobre una configuración donde la frontera nunca estuvo adelante |
