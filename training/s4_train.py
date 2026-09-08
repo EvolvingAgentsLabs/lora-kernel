@@ -77,7 +77,15 @@ def precision():
     Returns (dtype, bf16_flag, fp16_flag) for the trainer.
     """
     import torch
-    if torch.cuda.is_available() and torch.cuda.is_bf16_supported():
+    if not torch.cuda.is_available():
+        return torch.float32, False, False
+    # NOT `is_bf16_supported()`. On a T4 it returns True, because by default it
+    # counts EMULATION — and emulated bf16 is exactly what has no kernel when a
+    # LoRA adds its matmuls. The first fix for C15 was written with that call and
+    # changed nothing; the run still reported `torch.bfloat16 on Tesla T4`
+    # [ran] 2026-09-08. Compute capability 8.0 (Ampere) is where bf16 is real.
+    major, _ = torch.cuda.get_device_capability()
+    if major >= 8:
         return torch.bfloat16, True, False
     return torch.float16, False, True
 
@@ -237,6 +245,19 @@ def run_all(args) -> dict:
         prev = json.loads(RESULTS.read_text())
         if (prev.get("base") == summary["base"] and prev.get("n") == summary["n"]
                 and prev.get("lora") == summary["lora"]):
+            # AN ARM WHERE EVERY ANSWER WAS UNUSABLE IS NOT A COMPLETED ARM.
+            # A T4 without bf16 produced 0/60 with all sixty unparseable, and a
+            # resume that trusted it would skip the arm and carry a measured zero
+            # forward — which reads as "specialisation did not happen", one of
+            # this step's two falsification conditions. [ran] 2026-09-08
+            voided = [k for k, v in prev.items()
+                      if isinstance(v, dict) and v.get("n")
+                      and v.get("unparseable") == v.get("n")]
+            for k in voided:
+                del prev[k]
+            if voided:
+                print(f"[resume] voiding arms with no usable answer at all: "
+                      f"{voided}", flush=True)
             summary = {**prev, **{k: v for k, v in summary.items()
                                   if k not in prev}}
             print(f"[resume] keeping arms already on disk: "
