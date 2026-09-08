@@ -122,10 +122,17 @@ def train_adapter(base: str, rows: list[dict], out_dir: str, args):
     return peft_model, tok
 
 
-def free(*objs) -> None:
+def free() -> None:
+    """Release the GPU. The caller must drop its own references FIRST.
+
+    An earlier version took the objects as arguments and deleted them — which
+    deletes the *callee's* names and nothing else, so every model stayed
+    resident, the second `from_pretrained` found no room, and bitsandbytes
+    refused to dispatch a quantised model onto the CPU. It cost the arm it
+    crashed in [ran] 2026-09-07. Python has no way to free a caller's binding,
+    so the caller sets its names to None and this only collects.
+    """
     import torch
-    for o in objs:
-        del o
     gc.collect()
     torch.cuda.empty_cache()
 
@@ -145,29 +152,48 @@ def run_all(args) -> dict:
                "lora": {"r": args.r, "alpha": args.alpha, "epochs": args.epochs,
                         "lr": args.lr, "train_n": len(train)},
                "n": {"val": len(val), "delta": len(delta)}}
+    # RESUME. Arms already on disk under the same configuration are kept: a run
+    # killed in its third arm should not re-buy the first two. The config has to
+    # match, or the arms are not comparable and reusing them would silently mix
+    # two experiments.
+    if RESULTS.exists():
+        prev = json.loads(RESULTS.read_text())
+        if (prev.get("base") == summary["base"] and prev.get("n") == summary["n"]
+                and prev.get("lora") == summary["lora"]):
+            summary = {**prev, **{k: v for k, v in summary.items()
+                                  if k not in prev}}
+            print(f"[resume] keeping arms already on disk: "
+                  f"{[k for k in prev if k.endswith(('_val', '_delta')) or k == 'regions']}",
+                  flush=True)
     save(summary)
 
     # -- the baseline, recorded before the treatment exists ---------------------
-    model, tok = load_base(args.base, args.four_bit)
-    gen = make_generate(model, tok, args.max_new_tokens)
-    summary["base_val"] = evaluate(gen, val, "base")
-    summary["base_delta"] = evaluate(gen, delta, "base · delta")
-    save(summary)
-    free(gen, model, tok)
+    if "base_val" not in summary or "base_delta" not in summary:
+        model, tok = load_base(args.base, args.four_bit)
+        gen = make_generate(model, tok, args.max_new_tokens)
+        summary["base_val"] = evaluate(gen, val, "base")
+        summary["base_delta"] = evaluate(gen, delta, "base · delta")
+        save(summary)
+        gen = model = tok = None
+        free()
 
     # -- question 1: does specialisation happen at all? -------------------------
-    expert, tok = train_adapter(args.base, train, "adapters/all-clinics", args)
-    gen = make_generate(expert, tok, args.max_new_tokens)
-    summary["adapter_val"] = evaluate(gen, val, "adapter")
-    summary["adapter_delta"] = evaluate(gen, delta, "adapter · delta")
-    save(summary)
-    free(gen, expert, tok)
+    if "adapter_val" not in summary:
+        expert, tok = train_adapter(args.base, train, "adapters/all-clinics", args)
+        gen = make_generate(expert, tok, args.max_new_tokens)
+        summary["adapter_val"] = evaluate(gen, val, "adapter")
+        summary["adapter_delta"] = evaluate(gen, delta, "adapter · delta")
+        save(summary)
+        gen = expert = tok = None
+        free()
 
     # -- question 2: do experts differ by region? ------------------------------
-    regions = {}
+    regions = summary.get("regions") or {}
     val_a = [r for r in val if r["clinic"] == "alpha"][:args.n_region]
     val_b = [r for r in val if r["clinic"] == "beta"][:args.n_region]
     for clinic, own, other in (("alpha", val_a, val_b), ("beta", val_b, val_a)):
+        if f"{clinic}_on_own" in regions:
+            continue
         rows = [r for r in train if r["clinic"] == clinic]
         exp, tk = train_adapter(args.base, rows, f"adapters/{clinic}", args)
         g = make_generate(exp, tk, args.max_new_tokens)
@@ -175,7 +201,8 @@ def run_all(args) -> dict:
         regions[f"{clinic}_on_other"] = evaluate(g, other, f"{clinic} on other")
         summary["regions"] = regions
         save(summary)
-        free(g, exp, tk)
+        g = exp = tk = None
+        free()
 
     summary["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")
     save(summary)
@@ -214,8 +241,10 @@ def main() -> int:
     ap.add_argument("--r", type=int, default=16)
     ap.add_argument("--alpha", type=int, default=32)
     ap.add_argument("--lr", type=float, default=2e-4)
-    ap.add_argument("--batch", type=int, default=4)
-    ap.add_argument("--accum", type=int, default=4)
+    # Effective batch 16 either way; 2x8 leaves headroom on a 15 GB T4, where
+    # 4x4 sits close enough to the edge to matter with a 1024-token sequence.
+    ap.add_argument("--batch", type=int, default=2)
+    ap.add_argument("--accum", type=int, default=8)
     ap.add_argument("--max-seq", type=int, default=1024)
     ap.add_argument("--max-new-tokens", type=int, default=64)
     ap.add_argument("--seed", type=int, default=0)
