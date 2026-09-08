@@ -58,9 +58,12 @@ print(subprocess.run("grep -E '\\[arm\\]|\\[precision\\]|passed [0-9]+|trainable
                      "Traceback|Error|OutOfMemory|Killed' /content/lora-kernel/s4.log | tail -2",
                      shell=True, capture_output=True, text=True).stdout)
 PY
+  # Pull after every poll, not only at the end: a session taken away between the
+  # last save and the end of the loop used to lose everything the arm had done.
   for _ in $(seq 1 40); do
     out=$(colab exec -s "$S" -f /tmp/_peek.py 2>/dev/null | grep -vE "^\[colab\]|^$|Warning:" || true)
     [ -n "$out" ] && echo "    $out" | tail -2
+    colab download -s "$S" "$REMOTE" "$LOCAL" >/dev/null 2>&1 || true
     echo "$out" | grep -qE "session done|Traceback|OutOfMemory|Killed" && break
     sleep 45
   done
