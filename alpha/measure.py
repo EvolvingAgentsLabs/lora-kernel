@@ -15,10 +15,6 @@ WHAT THE PRIMARY NUMBER IS, AND WHY IT NEEDS NO PREFILL
     candidate's own answer follows the target's before it first diverges. That
     needs one target generation and one candidate generation per case and works
     on every provider.
-    Mid-answer positions — the acceptance a serving loop would see — need a
-    prefill the provider may silently ignore, which is why `restarted` is
-    measured per call and the report refuses those numbers when it fires.
-
 WHAT IS MEASURED IN CHARACTERS AND WHY
     A frontier target does not share the base model's vocabulary, so token-level
     acceptance against it is undefined. The instrument therefore measures the
@@ -48,18 +44,14 @@ from alpha.backends import BackendError, Reply, build
 CACHE = Path("results/.answers")
 
 
-def cached(model, case, prefix: str, max_tokens: int, prompt_kind: str):
+def cached(model, case, max_tokens: int, prompt_kind: str):
     """Greedy answers are deterministic, so the same model on the same prompt is
     asked once and reused across runs.
 
     This exists for one reason: after S1 failed its headroom gate, the next step
     is a DIFFERENT TARGET on the same cases — and re-generating four local
     candidates for every target is eight minutes of wall clock buying nothing.
-    Only full answers are cached; a prefill continuation is not, because it is
-    conditioned on the target's own text.
     """
-    if prefix:
-        return draft_at(model, case, prefix, max_tokens)
     key = f"{model.name}|{prompt_kind}|{suite.prompt_hash(prompt_kind)}|{case.case_id}|{max_tokens}"
     path = CACHE / (hashlib.sha256(key.encode()).hexdigest()[:24] + ".json")
     if path.exists():
@@ -68,7 +60,7 @@ def cached(model, case, prefix: str, max_tokens: int, prompt_kind: str):
                      prompt_tokens=d.get("tokens_in", 0),
                      completion_tokens=d.get("tokens_out", 0),
                      seconds=0.0, truncated=d.get("truncated", False))
-    r = draft_at(model, case, "", max_tokens)
+    r = answer(model, case, max_tokens)
     CACHE.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps({
         "key": key, "text": r.text, "thinking": r.thinking,
@@ -86,39 +78,20 @@ def lcp(a: str, b: str) -> int:
     return n
 
 
-def offsets(text: str, positions: int, window: int) -> list[int]:
-    """Draft points inside the target's own answer, evenly spaced.
 
-    Position 0 is always included: it is the only one a router could use before
-    any token exists, and it is therefore the one Phase B would actually run on.
+def answer(model, case, max_tokens: int):
+    """One greedy answer to one case.
+
+    Mid-answer draft positions used to live here and were removed: ollama's chat
+    renderer ignores an assistant prefill, so they never produced a usable number
+    on this machine, and the promotion criterion reads answers rather than
+    characters. The finding survives in EXPERIMENT_PLAN.md §3 and C6; the dead
+    code does not.
     """
-    usable = max(len(text) - window, 0)
-    if positions <= 1 or usable == 0:
-        return [0]
-    step = usable / (positions - 1)
-    return sorted({int(round(i * step)) for i in range(positions)})
+    return model.chat([{"role": "system", "content": suite.SYSTEM},
+                       {"role": "user", "content": case.prompt}],
+                      max_tokens=max_tokens)
 
-
-def draft_at(model, case, prefix: str, max_tokens: int):
-    """Answer the case, optionally continuing from `prefix`.
-
-    A trailing assistant message is a prefill: the model is meant to continue
-    that message rather than start a new one. Ollama's chat renderer does NOT
-    honour it — a qwen drafter re-opened its own turn and restarted the answer
-    [ran] 2026-09-07 — so nothing here assumes it worked. `restarted` measures
-    it per call and the report discards mid-answer numbers when it fires.
-    """
-    messages = [{"role": "system", "content": suite.SYSTEM},
-                {"role": "user", "content": case.prompt}]
-    if prefix:
-        messages.append({"role": "assistant", "content": prefix})
-    return model.chat(messages, max_tokens=max_tokens)
-
-
-def restarted(continuation: str, full_answer: str) -> bool:
-    """The prefill failed and the model began the answer again."""
-    head = full_answer[:8].strip()
-    return bool(head) and continuation.lstrip().startswith(head)
 
 
 def run(args) -> int:
@@ -131,7 +104,7 @@ def run(args) -> int:
     config = {
         "target": target.name, "drafters": [d.name for d in drafters],
         "split": args.split, "n": args.n, "window_chars": args.window,
-        "positions": args.positions, "temperature": 0.0,
+ "temperature": 0.0,
         "target_max_tokens": args.target_max_tokens, "max_tokens": args.max_tokens,
         "prompt": args.prompt, "prompt_version": suite.PROMPT_VERSION,
         "prompt_hash": suite.prompt_hash(args.prompt),
@@ -146,7 +119,7 @@ def run(args) -> int:
 
     cs = suite.load(args.split, args.n, prompt=args.prompt)
     print(f"[alpha] target={target.name} drafters={len(drafters)} "
-          f"cases={len(cs)} w={args.window} positions={args.positions} "
+          f"cases={len(cs)} w={args.window} "
           f"-> {run_dir}", file=sys.stderr, flush=True)
 
     for i, case in enumerate(cs, 1):
@@ -158,7 +131,7 @@ def run(args) -> int:
 
         t0 = time.time()
         try:
-            t_reply = cached(target, case, "", args.target_max_tokens, args.prompt)
+            t_reply = cached(target, case, args.target_max_tokens, args.prompt)
             answer = t_reply.text
         except BackendError as e:
             print(f"[{i:>3}/{len(cs)}] {case.case_id} — TARGET FAILED: {e}",
@@ -187,10 +160,9 @@ def run(args) -> int:
                   file=sys.stderr, flush=True)
             return 3
 
-        pts = offsets(answer, args.positions, args.window)[1:]  # 0 is measured below
         for d in drafters:
             try:
-                own_reply = cached(d, case, "", args.max_tokens, args.prompt)
+                own_reply = cached(d, case, args.max_tokens, args.prompt)
                 own = own_reply.text
                 # POSITION 0 — the number Phase B runs on. No prefill involved.
                 head = answer[:args.window]
@@ -213,21 +185,10 @@ def run(args) -> int:
                     else:
                         at0_content = lcp(d_pay, c_head) / len(c_head)
                         content_agreement = lcp(d_pay, t_pay) / len(t_pay)
-                per_pos = []
-                for o in pts:
-                    cont = draft_at(d, case, answer[:o], max(8, args.window // 2)).text
-                    want = answer[o:o + args.window]
-                    acc = lcp(cont, want)
-                    per_pos.append({
-                        "offset": o, "accepted": acc,
-                        "alpha": round(acc / len(want), 4) if want else 0.0,
-                        "restarted": restarted(cont, answer),
-                    })
             except BackendError as e:
                 print(f"[{i:>3}/{len(cs)}] {case.case_id} — {d.name} FAILED: {e}",
                       file=sys.stderr, flush=True)
                 return 2
-            mid = [p["alpha"] for p in per_pos]
             record["drafters"][d.name] = {
                 "own_answer": own,
                 "verified": suite.verify(own, case.truth),
@@ -242,10 +203,6 @@ def run(args) -> int:
                                and suite.payload(own) == suite.payload(answer),
                 "agreement_chars": full_lcp,
                 "agreement_fraction": round(full_lcp / len(answer), 4) if answer else 0.0,
-                "alpha_mid_mean": round(sum(mid) / len(mid), 4) if mid else None,
-                "restarted_fraction": round(
-                    sum(p["restarted"] for p in per_pos) / len(per_pos), 3) if per_pos else None,
-                "positions": per_pos,
             }
 
         out_path.write_text(json.dumps(record, indent=2))
@@ -274,9 +231,6 @@ def main() -> int:
                          "workspace's published ladder; frozen = ours")
     ap.add_argument("--n", type=int, default=10)
     ap.add_argument("--window", type=int, default=24, help="draft window, characters")
-    ap.add_argument("--positions", type=int, default=1,
-                    help="1 = position 0 only, which needs no prefill; >1 adds "
-                         "mid-answer positions whose validity `restarted` decides")
     ap.add_argument("--target-max-tokens", type=int, default=0,
                     help="the target's own budget; defaults to --max-tokens. A "
                          "thinking target emits its reasoning first and returned "

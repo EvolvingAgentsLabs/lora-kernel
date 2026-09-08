@@ -13,7 +13,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from alpha.cases import content_offset, parse_answer, payload, verify  # noqa: E402
-from alpha.measure import lcp, offsets, restarted  # noqa: E402
+from alpha.measure import lcp  # noqa: E402
 
 
 # -- the acceptance arithmetic --------------------------------------------------
@@ -38,30 +38,8 @@ def test_empty_draft_is_zero_not_a_crash():
     assert lcp("", "abcd") == 0
 
 
-def test_position_zero_is_always_measured():
-    """Offset 0 is the only position a router could use before any token exists,
-    so it is the one Phase B actually runs on. It must never be dropped."""
-    assert offsets("x" * 200, positions=6, window=24)[0] == 0
 
 
-def test_offsets_stay_inside_the_answer():
-    text, w = "x" * 100, 24
-    assert all(o + w <= len(text) for o in offsets(text, 6, w))
-
-
-def test_short_answer_degrades_to_one_position():
-    assert offsets("short", positions=6, window=24) == [0]
-
-
-# -- the failure the prefill can hide -------------------------------------------
-
-def test_a_restarted_answer_is_flagged():
-    """If the provider ignores the assistant prefill, the model begins the answer
-    again — and its draft would then be scored against the wrong position. That
-    inflates or destroys α for a reason that has nothing to do with the model."""
-    full = '{"kind": "submit_missing_documents", "arguments": {"missing": []}}'
-    assert restarted('{"kind": "submit', full)
-    assert not restarted('", "arguments": {', full)
 
 
 # -- the failure the FIRST S0 run actually produced ------------------------------

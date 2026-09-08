@@ -53,8 +53,8 @@ already exist, before a single adapter is trained.
 | **S0** | the instrument measures what it claims | everything | $0, local | **DONE, and it moved the plan** — §3 |
 | **S1** | headroom: can this suite show a withdrawal gap at all | S2 | $0.47 spent | **DONE — FAILED the gate, three targets** — §4 |
 | **S2** | does **agreement** order candidates the way verified quality does | S4 | included above | **DONE — 14/15 pairs, but against peers** — §5 |
-| **S3** | attribution: does a lexical/embedding router do the same job | the routing claim | ~$0 | `NEXT` after S2 |
-| **S4** | two real QLoRA adapters on regions where S2 showed signal | S5 | GPU rental | `NEXT` after S3 |
+| **S3** | attribution: does a lexical/embedding router do the same job | the routing claim | ~$0 | deferred behind S4 — there is no pool to route yet |
+| **S4** | **the adapters** — does specialisation happen, and is it per region | S5 | free Colab T4 | **ACTIVE — kit built, `training/`** |
 | **S5** | **the withdrawal gap** | the product | GPU + frontier | `NEXT` after S4 |
 | **S6** | `harness.lora` against the −85 % schema baseline | the kernel | GPU rental | **under review — S0 says it is upstream of α, §12** |
 | **S7** | the tournament, with a held-out verifier | evolution | GPU rental | after S5 |
@@ -295,10 +295,35 @@ mechanism bought nothing — the shape of a result this workspace has already ha
 once, when a memory hierarchy lost to plain lexical search **[read]**. Bought
 only after S2 shows an effect, never before.
 
-**S4 · two adapters.** QLoRA trained off this machine and graded here — the
-training environment does not decide whether the training worked. Only on regions
-where S2 found signal. **Gate:** the adapter's α must beat the best stand-in's α
-in its own region, or the training added nothing acceptance can see.
+**S4 · the adapters — brought to the front, and the kit is built.** S1's failure
+stalls the frontier path, and this project is adapters: a session that produces no
+adapter has not advanced it ([`../CLAUDE.md`](../CLAUDE.md) §0). So S4 no longer
+waits behind S3.
+
+**What ships in this repository** (`training/`), ready to run on Colab because a
+26B does not fit on this machine:
+
+| | |
+|---|---|
+| `build_dataset.py` | generates **600 train / 120 val / 60 delta** cases with the sealed benchmark's own generator at a **different seed**, and refuses to write if any training prompt matches a sealed one **[ran]** |
+| `evaluate.py` | the exact verifier, one copy, grading every arm — a base model and an adapter graded by different code are not comparable |
+| `lora_kernel_colab.ipynb` | baseline → QLoRA → adapter, then two region experts cross-evaluated |
+
+**Models**: `google/gemma-4-E4B-it` (free T4) and `google/gemma-4-26B-A4B-it`
+(A100), with `gemma-4-12B-it` as the local baseline already measured at 12/20.
+
+**The two questions, and what falsifies each.**
+1. **Does specialisation happen at all?** The adapter must beat the base on `val`,
+   which neither was trained on. If it does not, no routing scheme rescues it.
+2. **Do experts differ by region?** An adapter trained on clinic α and one trained
+   on clinic β must each be better on their own region. If they are not, the pool
+   is one expert wearing three names and there is nothing for acceptance to route
+   between — which would end the architecture's central claim, cheaply.
+
+**The probe that has to be reported beside any gain.** `delta` inverts one of the
+unpublished rules and appears in no training split. An adapter that memorised the
+rule scores well on `val` and collapses on `val_delta`. That gap is the **false
+promotion** number, and a gain published without it is not a result.
 
 **S5 · the withdrawal gap.** Promote where α crossed the threshold, remove the
 frontier, re-measure on the sealed split. The threshold and the non-inferiority
@@ -357,6 +382,7 @@ architecture is right.
 | C8 | No `OPENROUTER_API_KEY` on this machine **[ran]** | S1 and S2 are blocked on a human |
 | C9 | Character-prefix agreement is dominated by layout: identical answers score 0.00 across formats, different answers score 0.44 within one format **[ran]** | **decided (§11, option C):** the promotion criterion is semantic answer agreement; character α is reported beside it and never ranks anything; whether pinning the format reconciles them is S6's win condition |
 | C10 | Agents under `.claude/agents/` load for a session rooted at this repository, not at the workspace above it **[ran]** | they are symlinked into `../.claude/agents/` so a workspace-rooted session can address them too |
+| C14 | Training data is **generated** with the benchmark's own generator at a different seed, and a leak check refuses to write if a training prompt equals a sealed one **[ran]** | an adapter can be trained on hundreds of cases while the sealed 50 + 20 stay unseen; without the check the evaluation would be a memory test and every number after it void |
 | C12 | On this suite, three Gemini targets scored 13/20, 13/20 and 8/20 against a local 12B's 12/20, at $0.003, $0.13 and $0.29 **[ran]** | there is no frontier advantage to distil here; Phase A's premise needs a task where paying more buys more, and finding that task is now the gating question |
 | C13 | Character α's pairwise concordance moved **1/5 → 4/5** across targets, on identical candidates and cases, purely because the pro target pretty-prints **[ran]** | direct evidence for C9, and the reason §11's decision is now settled rather than provisional |
 | C11 | Semantic agreement **excludes** cases where either side produced no parseable answer, and `qwen3.5:9b` produced none in 3 of 12 delta cases while scoring the *best* agreement **[ran]** | the criterion must always be read beside the unparseable count, or a model that often answers nothing looks like the best agreer — and that failure is precisely what `harness.lora` exists to repair, which couples S6 to the criterion rather than leaving it downstream |
@@ -382,6 +408,9 @@ Created, edited and retired as the work learns. The lifecycle rule is
 | 2026-09-07 | created skill [`experiment-brief`](../.claude/skills/experiment-brief/SKILL.md) | the briefing goes before the run, not beside the report |
 | 2026-09-07 | created skill [`alpha-surface`](../.claude/skills/alpha-surface/SKILL.md) | what α licenses and what it does not has to travel with the command |
 | 2026-09-07 | searched both skill marketplaces, installed nothing | every evaluation skill found is built on LLM-as-judge; this project's verifier is exact **[ran]** |
+| 2026-09-07 | added [`../CLAUDE.md`](../CLAUDE.md) §0 — the anti-drift rule — at the user's instruction | two sessions of measurement produced four instrument findings and **no adapter**; the rule names the drift so the next session does not repeat it |
+| 2026-09-07 | built `training/` — dataset builder, shared verifier, Colab notebook | the project is adapters and the machine cannot train one; the deliverable for anything needing a GPU is a notebook committed here |
+| 2026-09-07 | removed the mid-answer prefill path, the second prompt template, the duplicated verifier and the superseded 6-case run | ollama ignores a prefill so those positions never produced a number; two prompts is one variable too many; a copied verifier is a second thing to keep in step |
 | 2026-09-07 | edited skill [`alpha-surface`](../.claude/skills/alpha-surface/SKILL.md) | the promotion criterion changed under §11, and a skill that still described the old one would travel with every future command |
 
 **Declared, not built:** `adapter-trainer` (S4), `kernel-bench` (S6),

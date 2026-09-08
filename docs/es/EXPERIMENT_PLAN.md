@@ -53,8 +53,8 @@ se responde con modelos que ya existen, antes de entrenar un solo adaptador.
 | **S0** | que el instrumento mida lo que dice | todo | $0, local | **DONE, y movió el plan** — §3 |
 | **S1** | headroom: ¿puede esta suite mostrar una brecha de retiro? | S2 | $0,47 gastados | **DONE — FALLÓ la compuerta, tres targets** — §4 |
 | **S2** | ¿el **acuerdo** ordena a los candidatos como los ordena la calidad verificada? | S4 | incluido arriba | **DONE — 14/15 pares, pero contra pares** — §5 |
-| **S3** | atribución: ¿un router léxico o de embeddings hace lo mismo? | la afirmación de ruteo | ~$0 | `NEXT` tras S2 |
-| **S4** | dos QLoRA reales sobre las regiones donde S2 dio señal | S5 | GPU alquilada | `NEXT` tras S3 |
+| **S3** | atribución: ¿un router léxico o de embeddings hace lo mismo? | la afirmación de ruteo | ~$0 | pospuesto detrás de S4 — todavía no hay pool que rutear |
+| **S4** | **los adaptadores** — ¿hay especialización, y es por región? | S5 | Colab T4 gratis | **ACTIVO — kit construido, `training/`** |
 | **S5** | **la brecha de retiro** | el producto | GPU + frontera | `NEXT` tras S4 |
 | **S6** | `harness.lora` contra el baseline de −85 % de esquema | el kernel | GPU alquilada | **en revisión — S0 dice que está aguas arriba de α, §12** |
 | **S7** | el torneo, con un verificador no visto | la evolución | GPU alquilada | tras S5 |
@@ -304,11 +304,36 @@ que este workspace ya tuvo una vez, cuando una jerarquía de memoria perdió con
 búsqueda léxica pelada **[read]**. Se compra sólo después de que S2 muestre
 efecto, nunca antes.
 
-**S4 · dos adaptadores.** QLoRA entrenado fuera de esta máquina y calificado acá
-— el entorno de entrenamiento no decide si el entrenamiento funcionó. Sólo sobre
-las regiones donde S2 encontró señal. **Compuerta:** la α del adaptador tiene que
-superar la del mejor suplente en su propia región, o el entrenamiento no agregó
-nada que la aceptación pueda ver.
+**S4 · los adaptadores — adelantados al frente, y el kit ya está.** La falla de S1
+traba el camino de la frontera, y este proyecto son adaptadores: una sesión que no
+produce un adaptador no lo hizo avanzar ([`../../CLAUDE.md`](../../CLAUDE.md) §0).
+Así que S4 deja de esperar detrás de S3.
+
+**Lo que va en este repositorio** (`training/`), listo para correr en Colab porque
+un 26B no entra en esta máquina:
+
+| | |
+|---|---|
+| `build_dataset.py` | genera **600 train / 120 val / 60 delta** con el generador del propio benchmark sellado a **otra semilla**, y se niega a escribir si algún prompt de entrenamiento coincide con uno sellado **[ran]** |
+| `evaluate.py` | el verificador exacto, una sola copia, calificando todos los arms — un modelo base y un adaptador calificados por código distinto no son comparables |
+| `lora_kernel_colab.ipynb` | baseline → QLoRA → adaptador, y después dos expertos por región evaluados cruzados |
+
+**Modelos**: `google/gemma-4-E4B-it` (T4 gratis) y `google/gemma-4-26B-A4B-it`
+(A100), con `gemma-4-12B-it` como baseline local ya medido en 12/20.
+
+**Las dos preguntas, y qué falsifica a cada una.**
+1. **¿Ocurre la especialización?** El adaptador tiene que ganarle al base en `val`,
+   que ninguno de los dos vio. Si no, ningún esquema de ruteo lo rescata.
+2. **¿Los expertos difieren por región?** Un adaptador entrenado en la clínica α y
+   otro en la β tienen que ser cada uno mejor en su propia región. Si no lo son, el
+   pool es un experto con tres nombres y no hay nada que la aceptación pueda
+   rutear — lo que terminaría con la afirmación central de la arquitectura, barato.
+
+**La sonda que hay que reportar al lado de cualquier ganancia.** `delta` invierte
+una de las reglas no publicadas y no aparece en ningún split de entrenamiento. Un
+adaptador que memorizó la regla puntúa bien en `val` y se derrumba en `val_delta`.
+Esa diferencia es el número de **falsa promoción**, y una ganancia publicada sin
+él no es un resultado.
 
 **S5 · la brecha de retiro.** Promover donde α cruzó el umbral, sacar la
 frontera, volver a medir en el split sellado. El umbral y el margen de
@@ -371,6 +396,7 @@ arquitectura es correcta.
 | C8 | No hay `OPENROUTER_API_KEY` en esta máquina **[ran]** | S1 y S2 están bloqueados por un humano |
 | C9 | La coincidencia de prefijo por caracteres está dominada por el formato: respuestas idénticas sacan 0,00 entre formatos, y respuestas distintas sacan 0,44 dentro de un mismo formato **[ran]** | **decidido (§11, opción C):** el criterio de promoción es el acuerdo semántico de respuesta; la α por caracteres se reporta al lado y no ordena nada; si fijar el formato las reconcilia es la condición de victoria de S6 |
 | C10 | Los agentes bajo `.claude/agents/` se cargan para una sesión rooteada en este repositorio, no en el workspace de arriba **[ran]** | están symlinkeados en `../.claude/agents/` para que una sesión rooteada en el workspace también pueda invocarlos |
+| C14 | Los datos de entrenamiento se **generan** con el generador del propio benchmark a otra semilla, y un chequeo de fuga se niega a escribir si un prompt de entrenamiento es igual a uno sellado **[ran]** | se puede entrenar un adaptador con cientos de casos mientras los 50 + 20 sellados siguen sin verse; sin el chequeo la evaluación sería un test de memoria y todo número posterior quedaría anulado |
 | C12 | En esta suite, tres targets Gemini sacaron 13/20, 13/20 y 8/20 contra el 12/20 de un 12B local, a $0,003, $0,13 y $0,29 **[ran]** | no hay ventaja de frontera que destilar acá; la premisa de la Fase A necesita una tarea donde pagar más compre más, y encontrar esa tarea es ahora la pregunta que gobierna |
 | C13 | La concordancia por pares de la α por caracteres se movió **1/5 → 4/5** entre targets, sobre candidatos y casos idénticos, sólo porque el target pro indenta **[ran]** | evidencia directa de C9, y la razón por la que la decisión de §11 quedó saldada en vez de provisoria |
 | C11 | El acuerdo semántico **excluye** los casos donde algún lado no produjo respuesta parseable, y `qwen3.5:9b` no la produjo en 3 de 12 casos delta mientras sacaba el *mejor* acuerdo **[ran]** | el criterio siempre se lee al lado de la cuenta de no-parseables, o un modelo que muchas veces no contesta nada parece el que mejor acuerda — y esa falla es justo la que `harness.lora` existe para reparar, lo que acopla S6 al criterio en vez de dejarlo aguas abajo |
@@ -396,6 +422,9 @@ ciclo de vida está en [`../../CLAUDE.md`](../../CLAUDE.md) §5.
 | 2026-09-07 | creado el skill [`experiment-brief`](../../.claude/skills/experiment-brief/SKILL.md) | el briefing va antes de la corrida, no al lado del reporte |
 | 2026-09-07 | creado el skill [`alpha-surface`](../../.claude/skills/alpha-surface/SKILL.md) | qué licencia α y qué no tiene que viajar con el comando |
 | 2026-09-07 | buscados los dos marketplaces de skills, no se instaló ninguno | todo skill de evaluación encontrado se apoya en LLM-como-juez; el verificador de este proyecto es exacto **[ran]** |
+| 2026-09-07 | agregado [`../../CLAUDE.md`](../../CLAUDE.md) §0 — la regla anti-deriva — por indicación del usuario | dos sesiones de medición produjeron cuatro hallazgos de instrumento y **ningún adaptador**; la regla nombra la deriva para que la próxima sesión no la repita |
+| 2026-09-07 | construido `training/` — constructor de dataset, verificador compartido, notebook de Colab | el proyecto son adaptadores y la máquina no puede entrenar uno; lo que se entrega para cualquier cosa que necesite GPU es un notebook commiteado acá |
+| 2026-09-07 | removidos el camino de prefill de mitad de respuesta, el segundo template de prompt, el verificador duplicado y la corrida superada de 6 casos | ollama ignora el prefill así que esas posiciones nunca dieron un número; dos prompts es una variable de más; un verificador copiado es una segunda cosa que mantener sincronizada |
 | 2026-09-07 | editado el skill [`alpha-surface`](../../.claude/skills/alpha-surface/SKILL.md) | el criterio de promoción cambió por §11, y un skill que siguiera describiendo el viejo viajaría con cada comando futuro |
 
 **Declarados, no construidos:** `adapter-trainer` (S4), `kernel-bench` (S6),

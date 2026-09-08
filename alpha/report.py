@@ -70,9 +70,6 @@ def summarise(config: dict, records: list[dict]) -> dict:
     for n in names:
         rows = [r["drafters"][n] for r in records]
         a0 = [x["alpha_at_0"] for x in rows]
-        mid = [x["alpha_mid_mean"] for x in rows if x.get("alpha_mid_mean") is not None]
-        restarts = [x["restarted_fraction"] for x in rows
-                    if x.get("restarted_fraction") is not None]
         sem = [semantic(x["own_answer"], r["target"]["answer"])
                for x, r in zip(rows, records)]
         sem_ok = [t for t in sem if t is not None]
@@ -95,14 +92,12 @@ def summarise(config: dict, records: list[dict]) -> dict:
             "alpha_at_0_sd": round(statistics.pstdev(a0), 4) if len(a0) > 1 else 0.0,
             "agreement_fraction": round(
                 statistics.fmean(x["agreement_fraction"] for x in rows), 4),
-            "alpha_mid": round(statistics.fmean(mid), 4) if mid else None,
             "verified_pass": sum(x["verified"]["passed"] for x in rows),
             "verified_f1_mean": round(statistics.fmean(x["verified"]["f1"] for x in rows), 3),
             "parse_failures": sum(not x["verified"]["parsed"] for x in rows),
             "empty_answers": sum(not x["own_answer"].strip() for x in rows),
             "thought_chars_mean": round(
                 statistics.fmean(x.get("thought_chars", 0) for x in rows), 1),
-            "restarted_fraction": round(statistics.fmean(restarts), 3) if restarts else None,
         }
 
     regions = defaultdict(list)
@@ -178,8 +173,6 @@ def summarise(config: dict, records: list[dict]) -> dict:
     spread = ([(out["drafters"][n]["alpha_content"]
                 if out["drafters"][n]["alpha_content"] is not None
                 else out["drafters"][n]["alpha_at_0"]) for n in names] or [0.0])
-    restarts = [out["drafters"][n]["restarted_fraction"] for n in names
-                if out["drafters"][n]["restarted_fraction"] is not None]
     ti = sum(r["target"].get("tokens_in", 0) for r in records)
     to = sum(r["target"].get("tokens_out", 0) for r in records)
     out["target_cost"] = {
@@ -189,7 +182,6 @@ def summarise(config: dict, records: list[dict]) -> dict:
     }
     out["health"] = {
         "alpha_dispersion": round(max(spread) - min(spread), 4),
-        "worst_restarted_fraction": max(restarts) if restarts else None,
         "target_thought_chars_mean": round(
             statistics.fmean(r["target"].get("thought_chars", 0) for r in records), 1),
         "target_answer_chars_mean": round(
@@ -268,10 +260,6 @@ def render(s: dict) -> str:
         f"(≈0 = this suite cannot show a withdrawal gap)",
         f"        target emits {h['target_thought_chars_mean']:.0f} chars of thinking "
         f"before {h['target_answer_chars_mean']:.0f} chars of answer",
-        ("        mid-answer α not measured (positions=1)"
-         if h["worst_restarted_fraction"] is None else
-         f"        worst prefill restart rate {h['worst_restarted_fraction']:.2f} "
-         f"— above 0 the mid-answer α is the instrument, not the model"),
     ]
     return "\n".join(lines)
 

@@ -10,6 +10,40 @@ verticals — is downstream of that and must not be built before it.
 The workspace rules in `../AGENTS.md` apply here in full. What follows is what
 this repository adds.
 
+## 0. Do not drift off the project — read this before choosing what to run
+
+**This project builds LoRA adapters.** The thesis is that the entire agentic
+system is a pool of QLoRAs over one base model. Everything else — the acceptance
+surface, the target, the tournament — exists to decide *which adapter* and *when*.
+A session that produces no adapter, and no measurement of an adapter, has not
+advanced the project however good its numbers are.
+
+The drift is real and it already happened once, on 2026-09-07: two sessions of
+measurement produced four instrument findings, a failed frontier gate and a
+validated promotion criterion — **and not one adapter**. The user's words:
+*"¿por qué estás utilizando verified runtime, estamos construyendo el kernel
+lora, con LoRAs? ¿o me estás saboteando el proyecto?"* The criticism landed.
+
+So, the rules that keep a session on the project:
+
+- **`../verified-runtime` is a yardstick, not the subject.** Borrowing its cases
+  and its exact verifier is correct and cheap. Letting *its* question — how much
+  capability lives in the harness — replace *this* project's question is the
+  drift. When a result is about the suite rather than about adapters, say so and
+  move on rather than buying another arm of it.
+- **Anything needing a GPU is a Colab notebook or script, committed here.** This
+  machine is a 16 GB arm64 Mac: it cannot serve vLLM and cannot hold a 26B. Do
+  not propose local training of a large model, and do not let the machine's
+  limits shrink the experiment — move the experiment to Colab instead.
+- **The models this project uses are the ones the user named**:
+  `google/gemma-4-26B-A4B-it` and `google/gemma-4-E4B-it` for the adapters
+  (`gemma-4-12B-it` is the local baseline already measured), and small qwen3.5
+  models as candidates. Not a menu to re-litigate each session.
+- **Do not spend a session shopping for a target.** The frontier is scaffolding
+  and it is designed to be removed; if it fails its gate, record it and go back
+  to the adapters.
+- **When in doubt, the next step is the one that puts a weight delta on disk.**
+
 ## 1. The plan is the state
 
 [`docs/EXPERIMENT_PLAN.md`](docs/EXPERIMENT_PLAN.md) is a **living document**, not

@@ -28,14 +28,19 @@ DEFAULT_ROOT = Path(
     os.environ.get("VERIFIED_RUNTIME", Path(__file__).resolve().parents[2] / "verified-runtime")
 )
 
-PROMPT_VERSION = "1.0.0"
+PROMPT_VERSION = "2.0.0"   # 1.0.0 was our own template; see `canonical_prompt`
 
 SYSTEM = (
     "You complete administrative referral checks for a dental clinic network. "
     "You never diagnose and you never recommend treatment."
 )
 
-TEMPLATE = """OBJECTIVE
+# Kept only as the system turn. The task prompt itself is the canonical one:
+# our own template scored `gemma4:12b` at 3/12 where the canonical scores 4/12
+# and the published ladder scores 38-41/50, because ours omitted the rule that a
+# document attached but no longer valid still counts as missing [ran]. Two prompt
+# paths is one variable too many, so there is now one.
+_RETIRED_TEMPLATE = """OBJECTIVE
 {instruction}
 
 CURRENT OBSERVATION
@@ -53,15 +58,10 @@ Reply with one JSON object and nothing else:
 {{"kind": "submit_missing_documents", "arguments": {{"missing": ["..."]}}}}"""
 
 
-def prompt_hash(prompt: str = "frozen") -> str:
-    if prompt == "canonical":
-        # Hash what the other repository will actually render, so a change there
-        # shows up here as a changed run rather than as an unexplained number.
-        body = canonical_prompt("held_out-000")
-    else:
-        body = json.dumps({"v": PROMPT_VERSION, "system": SYSTEM, "template": TEMPLATE},
-                          sort_keys=True)
-    return hashlib.sha256(body.encode()).hexdigest()[:16]
+def prompt_hash(prompt: str = "canonical") -> str:
+    """Hash what the other repository will actually render, so a change there
+    shows up here as a changed run rather than as an unexplained number."""
+    return hashlib.sha256(canonical_prompt("held_out-000").encode()).hexdigest()[:16]
 
 
 @dataclass(frozen=True)
@@ -76,7 +76,8 @@ def _bench_root(root: Path) -> Path:
     return root / "benchmarks" / "clinical_learning"
 
 
-def canonical_prompt(case_id: str, root: Path = DEFAULT_ROOT) -> str:
+def canonical_prompt(case_id: str, root: Path = DEFAULT_ROOT,
+                     data_root: Path | None = None) -> str:
     """The prompt `../verified-runtime` actually used to produce its ladder.
 
     The frozen template above scored `gemma4:12b` at 3/12 where that repository
@@ -96,6 +97,9 @@ def canonical_prompt(case_id: str, root: Path = DEFAULT_ROOT) -> str:
     def _in(d):
         # That repository resolves its benchmark root relative to the working
         # directory, so borrowing its prompt means standing where it stands.
+        # `data_root` separates the two: its CODE renders the prompt, our
+        # generated cases supply the data, which is what lets a training corpus
+        # be rendered by exactly the compiler that renders the sealed one.
         prev = os.getcwd()
         os.chdir(d)
         try:
@@ -103,7 +107,7 @@ def canonical_prompt(case_id: str, root: Path = DEFAULT_ROOT) -> str:
         finally:
             os.chdir(prev)
 
-    with _in(root):
+    with _in(data_root or root):
         from domains.clinical_learning import ClinicalLearningDomain
         from domains.clinical_learning import objective as make_objective
 
@@ -113,7 +117,7 @@ def canonical_prompt(case_id: str, root: Path = DEFAULT_ROOT) -> str:
 
 
 def load(split: str = "held_out", n: int | None = None,
-         root: Path = DEFAULT_ROOT, prompt: str = "frozen") -> list[Case]:
+         root: Path = DEFAULT_ROOT, prompt: str = "canonical") -> list[Case]:
     d = _bench_root(root) / split
     if not d.is_dir():
         raise FileNotFoundError(
@@ -121,8 +125,10 @@ def load(split: str = "held_out", n: int | None = None,
             "clinical_learning benchmark; this repository deliberately does not "
             "copy a sealed held-out set."
         )
-    if prompt not in ("frozen", "canonical"):
-        raise ValueError("prompt must be 'frozen' or 'canonical'")
+    if prompt != "canonical":
+        raise ValueError(
+            "the frozen template was retired — one prompt, or the prompt is a "
+            "variable in every comparison. See `canonical_prompt`.")
     cases: list[Case] = []
     for case_dir in sorted(p for p in d.iterdir() if p.is_dir()):
         v = case_dir / "visible"
@@ -134,15 +140,7 @@ def load(split: str = "held_out", n: int | None = None,
         cases.append(Case(
             case_id=task["case_id"],
             region=task["clinic"],
-            prompt=canonical_prompt(task["case_id"], root) if prompt == "canonical"
-            else TEMPLATE.format(
-                instruction=task["instruction"],
-                clinic=ref["clinic"],
-                published=", ".join(ref["published_required_documents"]),
-                attachments=", ".join(ref["attachments"]) or "(none)",
-                patient=json.dumps(patient),
-                imaging=json.dumps(imaging),
-            ),
+            prompt=canonical_prompt(task["case_id"], DEFAULT_ROOT, root),
             truth=frozenset(truth["missing_documents"]),
         ))
     return cases[:n] if n else cases
