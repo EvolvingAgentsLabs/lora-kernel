@@ -182,6 +182,12 @@ def train_adapter(base: str, rows: list[dict], out_dir: str, args):
                        gradient_checkpointing=True),
     ).train()
     peft_model.save_pretrained(out_dir)
+    # Training turns gradient checkpointing on, which turns the KV cache off —
+    # and the evaluation that follows is ninety generations long. Leaving it that
+    # way makes the arm several times slower for no benefit, on a tier that
+    # reclaims sessions [ran] 2026-09-08.
+    peft_model.gradient_checkpointing_disable()
+    peft_model.config.use_cache = True
     return peft_model, tok
 
 
