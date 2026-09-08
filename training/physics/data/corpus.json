@@ -1,0 +1,26 @@
+{
+  "teacher": "openai:google/gemini-3.8-flash",
+  "generated": 600,
+  "kept": 598,
+  "dropped_wrong": 2,
+  "backend_failures": 0,
+  "keep_rate": 0.9967,
+  "rtol": 0.02,
+  "seed": 770208,
+  "style": "working",
+  "by_family": {
+    "hydrostatic_force": "100/100",
+    "manning_channel": "99/100",
+    "pipe_head_loss": "100/100",
+    "pump_power": "100/100",
+    "terminal_velocity": "99/100",
+    "venturi_flow": "100/100"
+  },
+  "tokens": {
+    "in": 109789,
+    "out": 908424
+  },
+  "usd_at_flash_pricing": 3.4889,
+  "seconds": 824.8,
+  "workers": 8
+}
