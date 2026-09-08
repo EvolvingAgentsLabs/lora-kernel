@@ -198,8 +198,30 @@ def save(summary: dict) -> None:
     RESULTS.write_text(json.dumps(summary, indent=2))
 
 
+class ArmBudget:
+    """How many arms this process may complete before it stops.
+
+    Free Colab reclaimed three sessions inside roughly forty minutes of GPU work
+    each **[ran]**, so the run is chained instead: one arm per session, with the
+    partial results uploaded at the start and pulled back at the end. The budget
+    is what makes a session end on purpose rather than by being taken away.
+    """
+
+    def __init__(self, limit: int):
+        self.limit, self.done = limit, 0
+
+    def spent(self) -> bool:
+        return bool(self.limit) and self.done >= self.limit
+
+    def note(self, arm: str) -> None:
+        self.done += 1
+        print(f"[arm] {arm} complete ({self.done} of {self.limit or 'all'} "
+              f"this session)", flush=True)
+
+
 def run_all(args) -> dict:
     _seed(args.seed)
+    budget = ArmBudget(args.max_arms)
     train = load_jsonl("training/data/train.jsonl")
     val = load_jsonl("training/data/val.jsonl")[:args.n_val]
     delta = load_jsonl("training/data/val_delta.jsonl")[:args.n_delta]
@@ -223,22 +245,24 @@ def run_all(args) -> dict:
     save(summary)
 
     # -- the baseline, recorded before the treatment exists ---------------------
-    if "base_val" not in summary or "base_delta" not in summary:
+    if ("base_val" not in summary or "base_delta" not in summary) and not budget.spent():
         model, tok = load_base(args.base, args.four_bit)
         gen = make_generate(model, tok, args.max_new_tokens)
         summary["base_val"] = evaluate(gen, val, "base")
         summary["base_delta"] = evaluate(gen, delta, "base · delta")
         save(summary)
+        budget.note("base")
         gen = model = tok = None
         free()
 
     # -- question 1: does specialisation happen at all? -------------------------
-    if "adapter_val" not in summary:
+    if "adapter_val" not in summary and not budget.spent():
         expert, tok = train_adapter(args.base, train, "adapters/all-clinics", args)
         gen = make_generate(expert, tok, args.max_new_tokens)
         summary["adapter_val"] = evaluate(gen, val, "adapter")
         summary["adapter_delta"] = evaluate(gen, delta, "adapter · delta")
         save(summary)
+        budget.note("adapter")
         gen = expert = tok = None
         free()
 
@@ -247,7 +271,7 @@ def run_all(args) -> dict:
     val_a = [r for r in val if r["clinic"] == "alpha"][:args.n_region]
     val_b = [r for r in val if r["clinic"] == "beta"][:args.n_region]
     for clinic, own, other in (("alpha", val_a, val_b), ("beta", val_b, val_a)):
-        if f"{clinic}_on_own" in regions:
+        if f"{clinic}_on_own" in regions or budget.spent():
             continue
         rows = [r for r in train if r["clinic"] == clinic]
         exp, tk = train_adapter(args.base, rows, f"adapters/{clinic}", args)
@@ -256,11 +280,16 @@ def run_all(args) -> dict:
         regions[f"{clinic}_on_other"] = evaluate(g, other, f"{clinic} on other")
         summary["regions"] = regions
         save(summary)
+        budget.note(f"region:{clinic}")
         g = exp = tk = None
         free()
 
-    summary["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")
+    complete = ("adapter_val" in summary
+                and len(summary.get("regions") or {}) >= 4)
+    summary["finished" if complete else "paused"] = time.strftime("%Y-%m-%dT%H:%M:%S")
     save(summary)
+    print(f"[arm] session done — {'ALL ARMS COMPLETE' if complete else 'more arms remain'}",
+          flush=True)
     return summary
 
 
@@ -371,6 +400,10 @@ def main() -> int:
     # NOT q_proj/k_proj on a qwen3: QK-norm makes the adapted tensors
     # shape-incompatible and the kernel errors out. [read]
     ap.add_argument("--targets", default="v_proj,o_proj,gate_proj,up_proj,down_proj")
+    ap.add_argument("--max-arms", type=int, default=0,
+                    help="stop after this many arms complete in this process; 0 "
+                         "runs them all. 1 is how a chained run survives a tier "
+                         "that reclaims sessions")
     ap.add_argument("--preflight", action="store_true",
                     help="answer the infrastructure question in two minutes "
                          "instead of discovering it an hour into an arm")
@@ -382,7 +415,9 @@ def main() -> int:
     args = ap.parse_args()
     if args.preflight:
         return preflight(args)
-    print(verdict(run_all(args)), flush=True)
+    summary = run_all(args)
+    if "adapter_val" in summary:
+        print(verdict(summary), flush=True)
     return 0
 
 
