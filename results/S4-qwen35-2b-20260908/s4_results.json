@@ -1271,7 +1271,8 @@
   "voided_arms": {
     "removed": {
       "adapter_val": "0/60, all unparseable",
-      "adapter_delta": "0/30, all unparseable"
+      "adapter_delta": "0/30, all unparseable",
+      "regions.alpha": "own 3/20, other 4/20 \u2014 undertrained: train_loss 1.079 against the all-clinics adapter's 0.103, because 200 cases at the same epoch count is a third of the updates. Both numbers sit at the floor, where no difference can show."
     },
     "why": "Every record carried 'RuntimeError: GET was unable to find an engine to execute this computation'. A T4 has no real bf16, so these are the GPU's failure and not the adapter's score. Left in the file they would have been skipped by the resume and carried forward as a measured 0.",
     "voided": "2026-09-08"
@@ -2686,5 +2687,6 @@
       }
     ]
   },
-  "paused": "2026-09-08T13:47:27"
+  "paused": "2026-09-08T14:10:34",
+  "regions": {}
 }
