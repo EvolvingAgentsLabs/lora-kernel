@@ -44,3 +44,23 @@ fourth.
 
 **Redesign count.** 0 for the experiment. The changes are to durability and
 scale, not to what is measured.
+
+
+---
+
+## Amendment — the first adapter arm was the GPU, not the model
+
+`adapter_val` came back **0/60, all sixty unparseable**, with every record
+carrying `RuntimeError: GET was unable to find an engine to execute this
+computation` **[ran]**. That is not a result. A T4 is Turing (SM75) and has no
+bf16: the baseline generated fine, and the extra matmuls a LoRA adds hit a kernel
+with no bf16 engine.
+
+Two things this cost, and one it saved. It cost the adapter arm and the region
+arms after it. It saved the conclusion, because the per-case exception handling
+added after an earlier crash recorded the reason sixty times instead of dying
+once — the failure was legible without a rerun.
+
+The fix is that the card decides the precision: `torch.cuda.is_bf16_supported()`
+picks bf16 or fp16 for the dtype, the 4-bit compute dtype and the trainer flags
+alike. The base arms (`6/60` and `6/30`) stand: they never used an adapter.
