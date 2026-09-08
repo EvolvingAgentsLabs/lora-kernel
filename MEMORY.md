@@ -71,6 +71,18 @@ score it had while it was there.
   held-out (n=50) with an **exact** verifier, an OpenAI-compatible backend at
   `temperature=0.0`, and `evaluation/frontier_gap.py`.
 
+## Colab Pro is available on this account [ran] 2026-09-08
+
+**L4** (23 GB, cap 8.9) and **A100-SXM4** (40 GB, cap 8.0), both with real bf16.
+This removes session-reclaim, removes the fp16 workaround that produced every
+false zero, and makes vLLM possible for the first time.
+
+**And the target does not have to be an API.** A 40 GB card can host a large
+Qwen3.5 as the strong reference, and a same-family target **shares the adapters'
+tokenizer** — which is exactly what C2/C3 said made true token-level acceptance
+unmeasurable. Keep the A100 for the steps that need it (vLLM, the strong target,
+the withdrawal gap); everything else runs on the L4.
+
 ## Working agreements carried in
 
 - Never push to `main`; everything lands through a PR, documents included.
