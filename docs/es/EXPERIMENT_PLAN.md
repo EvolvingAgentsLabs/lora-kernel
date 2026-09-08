@@ -480,6 +480,7 @@ arquitectura es correcta.
 | C8 | No hay `OPENROUTER_API_KEY` en esta máquina **[ran]** | S1 y S2 están bloqueados por un humano |
 | C9 | La coincidencia de prefijo por caracteres está dominada por el formato: respuestas idénticas sacan 0,00 entre formatos, y respuestas distintas sacan 0,44 dentro de un mismo formato **[ran]** | **decidido (§11, opción C):** el criterio de promoción es el acuerdo semántico de respuesta; la α por caracteres se reporta al lado y no ordena nada; si fijar el formato las reconcilia es la condición de victoria de S6 |
 | C10 | Los agentes bajo `.claude/agents/` se cargan para una sesión rooteada en este repositorio, no en el workspace de arriba **[ran]** | están symlinkeados en `../.claude/agents/` para que una sesión rooteada en el workspace también pueda invocarlos |
+| C18 | **vLLM 0.28.0 acepta un `LoRARequest` y sirve el modelo base en silencio.** Sin error, sin advertencia, salida byte a byte idéntica, con un adaptador peft válido cuya config coincide con el modelo servido **[ran]** | el sustrato de la arquitectura está sin probar, y cualquier número futuro de servido hay que contrastarlo contra una salida demostrablemente distinta antes de creerlo |
 | C17 | **Gradient checkpointing activo durante la generación corrompe la salida**, no sólo apaga la caché KV: el mismo adaptador sacó 0/60 con él prendido y 44/60 apagado **[ran]** | los flags de entrenamiento se apagan antes de evaluar, y un cero de un modelo cuya loss de entrenamiento fue 0,10 se trata como falla de instrumento hasta probar lo contrario |
 | C15 | Una **T4 no tiene bf16**. El base generó bien en bf16 y después toda generación con LoRA murió con "GET was unable to find an engine to execute this computation" — reportado como 0/60 **[ran]** | la precisión la elige `is_bf16_supported()`, no la costumbre. Leído como resultado habría dicho "no hubo especialización", que es una de las dos condiciones de falsación de S4 |
 | C16 | Colab gratuito **reclamó tres sesiones** en unos 40 minutos de GPU cada una **[ran]** | la persistencia por arm tiene que sobrevivir a la *sesión*, no sólo al proceso: los resultados se bajan a esta máquina después de cada arm, y un reanudado tiene que volver a subirlos. Si no, hay que cambiar de tier |
@@ -596,7 +597,7 @@ métrica central de la arquitectura queda disponible por primera vez.
 |---|---|---|---|---|
 | **P1** | **Ponerle precio al router.** Re-correr los 40 casos de ruteo con la línea `clinic:` **enmascarada**, para que la regla léxica no tenga qué leer | L4 | el acuerdo sigue eligiendo bien mientras el baseline por palabra clave cae a azar | ~15 min |
 | **P2** | **Replicar S4 en bf16.** Los mismos arms, bf16 real, sin camino fp16 | L4 | el +63,3 sobrevive; si no, todos los números de S4 eran artefacto de precisión | ~30 min |
-| **P3** | **vLLM multi-LoRA, el sustrato.** Una base residente, nuestros tres adaptadores servidos a la vez, adaptador elegido por request | A100 | tres adaptadores servidos desde una base, y el costo de swap medido en vez de supuesto | ~1 h |
+| **P3** | **vLLM multi-LoRA, el sustrato** | A100 | **FALLÓ, en silencio — ver abajo** | gastado |
 | **P4** | **Un target fuerte de la misma familia.** Servir un Qwen3.5 grande al lado de los adaptadores de 2B | A100 | aceptación **a nivel de token** medible por fin, tokenizador compartido, sin sustituto textual | ~1 h |
 | **P5** | **S1 otra vez, local.** ¿El target fuerte de la misma familia le saca a los adaptadores un margen donde quepa una brecha de retiro? | A100 | si no, la suite sigue equivocada y aplican las otras opciones de §11 | ~30 min |
 | **P6** | **S5 — la brecha de retiro.** Promover donde la aceptación cruza el umbral, sacar el target, volver a medir | A100 | **el producto** | ~1 h |
@@ -610,6 +611,41 @@ sobre *servir* hasta que existan. P5 es la compuerta que decide si P6, el
 producto, es comprable; se compra antes que P6 y no junto con él.
 
 **La A100 es el recurso caro, así que P1, P2, P7 y P8 se quedan en la L4.**
+
+#### P3 — el pool no es servible, y falla sin avisar
+
+[`results/P3-vllm-20260908/`](../../results/P3-vllm-20260908/BRIEF.md), A100,
+vLLM 0.28.0, `Qwen/Qwen3.5-2B` **[ran]**:
+
+| arm | exactitud | throughput |
+|---|---|---|
+| base, sin adaptador | 0,100 | — |
+| `all-clinics` | **0,100** | 90,2/s |
+| `alpha` | **0,100** | 93,3/s |
+| `beta` | **0,100** | 92,7/s |
+
+Cada adaptador saca **exactamente el 6/60 del base**, y una comparación directa de
+dos prompts devolvió `RESULT IDENTICAL` las dos veces: el texto servido es byte a
+byte el del modelo base. vLLM aceptó cada `LoRARequest` **sin error ni
+advertencia** y no aplicó nada.
+
+Descartado: los archivos del adaptador son válidos (`adapter_config.json` + 43 MB
+de `adapter_model.safetensors`), `base_model_name_or_path` coincide,
+`max_lora_rank` coincide con `r`, y no hay V0 al que caer — `VLLM_USE_V1` es
+variable desconocida en 0.28.0. Abierto: el soporte de LoRA en V1 está documentado
+como experimental **[read]**; `q_proj`/`k_proj` bajo el QK-norm de qwen3 es
+justamente el mapeo que un stack de servido tiene que reconstruir; o una regresión
+de esta versión.
+
+**El arm que lo agarró fue el que parecía redundante** — "que salgan los mismos
+números". Midiendo sólo throughput, esto habría reportado tres adaptadores
+servidos a 90 prompts/s y dado el sustrato por probado.
+
+**P4, P5 y P6 sirven adaptadores, así que ninguno se puede comprar hasta que un
+adaptador cambie demostrablemente la salida de vLLM.** El próximo movimiento es
+una decisión, no una corrida: fijar otra versión de vLLM, o reentrenar el pool sin
+`q_proj`/`k_proj` y volver a probar. Las dos son baratas; elegir entre ellas no le
+toca a esta sesión.
 
 ### Abierta: cómo lograr que a un adaptador se lo califique
 

@@ -1,0 +1,64 @@
+{
+  "base": "Qwen/Qwen3.5-2B",
+  "pool": [
+    "all-clinics",
+    "alpha",
+    "beta"
+  ],
+  "n": 60,
+  "arms": {
+    "base (no adapter)": {
+      "passed": 6,
+      "n": 60,
+      "accuracy": 0.1,
+      "unparseable": 0,
+      "seconds": 0.96,
+      "prompts_per_second": 62.76
+    },
+    "pure batch \u00b7 all-clinics": {
+      "passed": 6,
+      "n": 60,
+      "accuracy": 0.1,
+      "unparseable": 0,
+      "seconds": 0.67,
+      "prompts_per_second": 90.16
+    },
+    "pure batch \u00b7 alpha": {
+      "passed": 6,
+      "n": 60,
+      "accuracy": 0.1,
+      "unparseable": 0,
+      "seconds": 0.64,
+      "prompts_per_second": 93.25
+    },
+    "pure batch \u00b7 beta": {
+      "passed": 6,
+      "n": 60,
+      "accuracy": 0.1,
+      "unparseable": 0,
+      "seconds": 0.65,
+      "prompts_per_second": 92.67
+    },
+    "mixed batch \u00b7 round-robin": {
+      "n": 60,
+      "seconds": 9.63,
+      "prompts_per_second": 6.23,
+      "note": "one adapter per request, cycled \u2014 accuracy is meaningless here because two of the three adapters are wrong for any given case; this arm measures the COST of holding a pool, not its quality"
+    }
+  },
+  "verdict": {
+    "servable": false,
+    "why": "vLLM 0.28.0 accepted every LoRARequest without error or warning and produced BYTE-IDENTICAL output to the base model. All three adapters scored exactly the base's 6/60. Confirmed by a direct two-prompt comparison: RESULT IDENTICAL on both.",
+    "ruled_out": [
+      "adapter files are valid: adapter_config.json + 43 MB adapter_model.safetensors",
+      "base_model_name_or_path matches the served model",
+      "max_lora_rank=16 matches r=16",
+      "VLLM_USE_V1=0 is not a fallback: the variable is unknown in 0.28, V0 is gone"
+    ],
+    "open_hypotheses": [
+      "LoRA support gaps in the V1 engine (documented as experimental)",
+      "q_proj/k_proj adapted under Qwen3 QK-norm \u2014 the module mapping vLLM builds",
+      "a version-specific regression in 0.28.0"
+    ]
+  }
+}

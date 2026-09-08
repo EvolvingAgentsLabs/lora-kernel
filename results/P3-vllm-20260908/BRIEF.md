@@ -38,3 +38,39 @@ rather than retraining inside this step — the retrain is a separate decision w
 its own brief.
 
 **Redesign count.** 0.
+
+
+---
+
+## Result — the pool is not servable, and it fails silently
+
+| arm | accuracy | throughput |
+|---|---|---|
+| base, no adapter | 0.100 | — |
+| pure batch · `all-clinics` | **0.100** | 90.2 prompts/s |
+| pure batch · `alpha` | **0.100** | 93.3 prompts/s |
+| pure batch · `beta` | **0.100** | 92.7 prompts/s |
+| mixed batch, round-robin | not scored | 6.2 prompts/s |
+
+Every adapter scores **exactly the base's 6/60**, and a direct two-prompt
+comparison returned **`RESULT IDENTICAL`** on both: the served text is byte-for-byte
+the base model's. vLLM accepted every `LoRARequest` **without an error or a
+warning** and applied nothing. **[ran]**
+
+**What is ruled out.** The adapter files are valid — `adapter_config.json` and a
+43 MB `adapter_model.safetensors`; `base_model_name_or_path` matches the served
+model; `max_lora_rank` matches `r`. And there is no engine to fall back to:
+`VLLM_USE_V1` is an *unknown variable* in 0.28.0, V0 is gone.
+
+**What is open.** LoRA on the V1 engine is documented as experimental **[read]**;
+the adapters adapt `q_proj`/`k_proj` under Qwen3's QK-norm, which is exactly the
+mapping a serving stack has to rebuild; or this is a regression in 0.28.0.
+
+**Why this matters more than a failed step.** The arm that caught it is the one
+whose only job was to check that the same numbers come out — the arm that looks
+redundant right up until it is not. Had P3 only measured throughput, it would
+have reported three adapters served at 90 prompts/s and called the substrate
+proven.
+
+**What it costs the plan.** P4, P5 and P6 all serve adapters. None of them can be
+bought until an adapter demonstrably changes vLLM's output.
