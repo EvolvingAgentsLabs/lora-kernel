@@ -246,6 +246,27 @@ INSTRUCTION_WORKING = (
 )
 
 
+# THE INSTRUCTION THAT HANDS THE ARITHMETIC TO A TOOL.
+# The distilled student reproduced the teacher's chain exactly and still failed,
+# because it computed pi/4 * 0.22^2 as 0.037006 rather than 0.038013 [ran]. So it
+# stops computing: every arithmetic step becomes a call the harness answers. This
+# is `harness.lora`'s premise at its smallest — one tool, needed on every line.
+INSTRUCTION_CALC = (
+    "Solve the problem. Work in SI units. Show your working as a short numbered "
+    "chain of steps. You must NOT do arithmetic yourself: write every "
+    "calculation inside <calc> </calc> tags — for example "
+    "<calc>pi/4*0.22**2</calc> — and the computed value will be supplied to you. "
+    "Use only numbers, + - * / ** ( ), pi, and sqrt/log/log10/exp inside the "
+    'tags. Then, on the final line, give the answer as one JSON object: '
+    '{"answer": <number>}, where <number> is the numeric value in %s.'
+)
+
+
+def _instruction(style: str) -> str:
+    return {"working": INSTRUCTION_WORKING,
+            "calc": INSTRUCTION_CALC}.get(style, INSTRUCTION)
+
+
 def generate(n: int, seed: int, families: dict, style: str = "json") -> list[dict]:
     rng = random.Random(seed)
     names = sorted(families)
@@ -255,8 +276,7 @@ def generate(n: int, seed: int, families: dict, style: str = "json") -> list[dic
         stmt, ans, unit, workings = families[name](rng)
         out.append({
             "case_id": f"phys-{i:04d}", "family": name,
-            "prompt": f"{stmt}\n\n"
-                      f"{(INSTRUCTION_WORKING if style == 'working' else INSTRUCTION) % unit}",
+            "prompt": f"{stmt}\n\n{_instruction(style) % unit}",
             "answer": ans, "unit": unit, "workings": workings,
         })
     return out
@@ -267,7 +287,7 @@ def main() -> int:
     ap.add_argument("--n", type=int, default=40)
     ap.add_argument("--seed", type=int, default=20260908)
     ap.add_argument("--split", default="eval", choices=["train", "eval", "held_out"])
-    ap.add_argument("--style", default="json", choices=["json", "working"])
+    ap.add_argument("--style", default="json", choices=["json", "working", "calc"])
     ap.add_argument("--out", default="")
     args = ap.parse_args()
     fams = HELD_OUT_FAMILIES if args.split == "held_out" else TRAIN_FAMILIES
