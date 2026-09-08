@@ -597,7 +597,7 @@ métrica central de la arquitectura queda disponible por primera vez.
 |---|---|---|---|---|
 | **P1** | **Ponerle precio al router.** Re-correr los 40 casos de ruteo con la línea `clinic:` **enmascarada**, para que la regla léxica no tenga qué leer | L4 | el acuerdo sigue eligiendo bien mientras el baseline por palabra clave cae a azar | ~15 min |
 | **P2** | **Replicar S4 en bf16.** Los mismos arms, bf16 real, sin camino fp16 | L4 | el +63,3 sobrevive; si no, todos los números de S4 eran artefacto de precisión | ~30 min |
-| **P3** | **vLLM multi-LoRA, el sustrato** | A100 | **FALLÓ, en silencio — ver abajo** | gastado |
+| **P3** | **vLLM multi-LoRA, el sustrato** | A100 | **RESUELTO sobre una base densa** — falla silenciosa sobre Qwen3.5 | gastado |
 | **P4** | **Un target fuerte de la misma familia.** Servir un Qwen3.5 grande al lado de los adaptadores de 2B | A100 | aceptación **a nivel de token** medible por fin, tokenizador compartido, sin sustituto textual | ~1 h |
 | **P5** | **S1 otra vez, local.** ¿El target fuerte de la misma familia le saca a los adaptadores un margen donde quepa una brecha de retiro? | A100 | si no, la suite sigue equivocada y aplican las otras opciones de §11 | ~30 min |
 | **P6** | **S5 — la brecha de retiro.** Promover donde la aceptación cruza el umbral, sacar el target, volver a medir | A100 | **el producto** | ~1 h |
@@ -611,6 +611,31 @@ sobre *servir* hasta que existan. P5 es la compuerta que decide si P6, el
 producto, es comprable; se compra antes que P6 y no junto con él.
 
 **La A100 es el recurso caro, así que P1, P2, P7 y P8 se quedan en la L4.**
+
+#### P3 resuelto — el sustrato existe, sobre una base que vLLM puede servir
+
+`Qwen/Qwen2.5-3B-Instruct` — `Qwen2ForCausalLM`, densa, sin torre de visión — en
+una A100 con vLLM 0.28.0 **[ran]**:
+
+    [gate] adapter changes output: True
+    [pure batch]  20/60 = 0,333   77,66 prompts/s
+
+La compuerta pasó, y la exactitud servida coincide con la que midió
+`transformers` con la misma receta (18/60). **Que dos implementaciones coincidan
+es para lo que se construyó P3**, y es la primera vez que la capa 1 de esta
+arquitectura existe.
+
+Por eliminación queda explicado el silencio anterior: `Qwen3.5-2B` es híbrido y
+multimodal, y la clase de vLLM que declara `SupportsLoRA` no es ninguna de las dos.
+
+**El arm de batch mezclado queda anulado, y la culpa es de este repositorio.**
+Llamaba a `generate()` una vez por prompt ciclando adaptadores —sesenta
+round-trips secuenciales— y reportó 3,85 prompts/s contra 77,66, que se lee como
+un castigo de 20× por sostener un pool. Medía el bucle. Ponerle precio al pool de
+verdad necesita adaptadores por request *dentro de una misma pasada de
+scheduling*: el motor async, o el servidor compatible con OpenAI con un nombre de
+modelo por adaptador. Hasta entonces ese arm no reporta nada.
+
 
 #### P3 — el pool no es servible, y falla sin avisar
 
