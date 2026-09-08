@@ -7,8 +7,9 @@
 # results, completes ONE arm, hands the results back, and stops. The state of
 # the experiment lives on this machine between sessions, not on the runtime.
 #
-#   training/chain_colab.sh                    # one arm
+#   training/chain_colab.sh                    # one arm on a free T4
 #   training/chain_colab.sh 3                  # three arms, three sessions
+#   GPU=L4 MAXARMS=0 training/chain_colab.sh   # every arm in one Pro session
 #
 # It is idempotent: an arm already in the results file is skipped, so running it
 # more times than there are arms left costs one session start and nothing else.
@@ -16,6 +17,8 @@
 set -euo pipefail
 
 ARMS="${1:-1}"
+GPU="${GPU:-T4}"          # T4 free; L4/A100 need Pro
+MAXARMS="${MAXARMS:-1}"   # arms per session; 0 runs them all in one session
 BASE="${BASE:-Qwen/Qwen3.5-2B}"
 RUN_DIR="${RUN_DIR:-results/S4-qwen35-2b-20260908}"
 LOCAL="$RUN_DIR/s4_results.json"
@@ -25,8 +28,8 @@ ARGS="${ARGS:---batch 2 --accum 8 --epochs 2 --n-val 60 --n-delta 30 --n-region 
 
 for i in $(seq 1 "$ARMS"); do
   S="s4chain$(date +%H%M%S)"
-  echo "=== arm $i of $ARMS · session $S · base $BASE"
-  colab new --gpu T4 -s "$S" >/dev/null
+  echo "=== arm $i of $ARMS · session $S · $GPU · base $BASE"
+  colab new --gpu "$GPU" -s "$S" >/dev/null
   trap 'colab stop -s "$S" >/dev/null 2>&1 || true' EXIT
   colab install -s "$S" trl bitsandbytes "torchao>=0.16.0" >/dev/null
 
@@ -48,7 +51,7 @@ PY
   cat > /tmp/_run.py <<PY
 import subprocess
 subprocess.Popen("cd /content/lora-kernel && nohup python -u -m training.s4_train "
-                 "--base $BASE --max-arms 1 $ARGS > s4.log 2>&1 &", shell=True)
+                 "--base $BASE --max-arms $MAXARMS $ARGS > s4.log 2>&1 &", shell=True)
 PY
   colab exec -s "$S" -f /tmp/_run.py >/dev/null
 
@@ -60,7 +63,13 @@ print(subprocess.run("grep -E '\\[arm\\]|\\[precision\\]|passed [0-9]+|trainable
 PY
   # Pull after every poll, not only at the end: a session taken away between the
   # last save and the end of the loop used to lose everything the arm had done.
-  for _ in $(seq 1 40); do
+  #
+  # POLLS x 45s IS A DEADLINE THIS SCRIPT ENFORCES ON THE RUN. At 40 it stopped a
+  # healthy L4 session in the middle of the region arms and looked exactly like a
+  # reclaim [ran] 2026-09-08. It scales with MAXARMS, and with 0 — every arm in
+  # one session — it has to cover the whole run.
+  POLLS=$(( MAXARMS == 0 ? 200 : 40 * MAXARMS ))
+  for _ in $(seq 1 $POLLS); do
     out=$(colab exec -s "$S" -f /tmp/_peek.py 2>/dev/null | grep -vE "^\[colab\]|^$|Warning:" || true)
     [ -n "$out" ] && echo "    $out" | tail -2
     colab download -s "$S" "$REMOTE" "$LOCAL" >/dev/null 2>&1 || true
