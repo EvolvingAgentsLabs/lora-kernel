@@ -11,6 +11,7 @@ every creation, edit and retirement is
 | [`instrument-skeptic`](instrument-skeptic.md) | four instruments produced clean, wrong numbers in one day | S0 |
 | [`alpha-runner`](alpha-runner.md) | α runs have to stream, persist per case, and be abortable | S0 |
 | [`mirror-keeper`](mirror-keeper.md) | a stale Spanish mirror is worse than an absent one | every document commit |
+| [`colab-runner`](colab-runner.md) | this machine cannot train an adapter, and that limit must not shrink the experiment | S4 |
 
 These load for a session rooted at this repository. A session rooted at the
 workspace above sees them through symlinks in `../../../.claude/agents/` **[ran]**
@@ -23,4 +24,6 @@ the top. Deleting one loses why it existed.
 ## Declared, not built
 
 Justified by a step that does not exist yet, and therefore not written:
-`adapter-trainer` (S4), `kernel-bench` (S6), `tournament-referee` (S7).
+`kernel-bench` (S6), `tournament-referee` (S7). `adapter-trainer` was never
+written: the Colab CLI made it `colab-runner` instead, which runs the training
+rather than describing it.

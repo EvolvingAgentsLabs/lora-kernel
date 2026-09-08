@@ -410,6 +410,7 @@ Created, edited and retired as the work learns. The lifecycle rule is
 | 2026-09-07 | searched both skill marketplaces, installed nothing | every evaluation skill found is built on LLM-as-judge; this project's verifier is exact **[ran]** |
 | 2026-09-07 | added [`../CLAUDE.md`](../CLAUDE.md) §0 — the anti-drift rule — at the user's instruction | two sessions of measurement produced four instrument findings and **no adapter**; the rule names the drift so the next session does not repeat it |
 | 2026-09-07 | built `training/` — dataset builder, shared verifier, Colab notebook | the project is adapters and the machine cannot train one; the deliverable for anything needing a GPU is a notebook committed here |
+| 2026-09-07 | created [`colab-runner`](../.claude/agents/colab-runner.md); `adapter-trainer` never written | the Colab CLI turns the adapter step into something this session executes rather than hands over, so the agent that was declared for S4 became the one that drives the runtime |
 | 2026-09-07 | removed the mid-answer prefill path, the second prompt template, the duplicated verifier and the superseded 6-case run | ollama ignores a prefill so those positions never produced a number; two prompts is one variable too many; a copied verifier is a second thing to keep in step |
 | 2026-09-07 | edited skill [`alpha-surface`](../.claude/skills/alpha-surface/SKILL.md) | the promotion criterion changed under §11, and a skill that still described the old one would travel with every future command |
 
