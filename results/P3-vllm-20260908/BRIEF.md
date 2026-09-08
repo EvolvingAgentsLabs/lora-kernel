@@ -74,3 +74,24 @@ proven.
 
 **What it costs the plan.** P4, P5 and P6 all serve adapters. None of them can be
 bought until an adapter demonstrably changes vLLM's output.
+
+
+---
+
+## Path 1 — forcing the text-only class — is dead, and it says why
+
+`hf_overrides={"architectures": ["Qwen3_5ForCausalLM"]}` fails at weight load:
+
+    ValueError: There is no module or parameter named 'visual' in Qwen3_5Model
+
+The checkpoint is **multimodal**, so the text-only class cannot load it. And the
+parameter dump names the other half of the problem: `layers.*.linear_attn.*` on
+most layers, `layers.23.self_attn.qkv_proj` on the few full-attention ones.
+`Qwen/Qwen3.5-2B` is **hybrid and multimodal**, and the class that declares
+`SupportsLoRA` is neither. **[ran]**
+
+So the base has to change. `Qwen/Qwen2.5-3B-Instruct` is `Qwen2ForCausalLM` —
+which declares `SupportsLoRA` in vLLM — with **36 full-attention layers and no
+vision tower**, and it is the size the 2B was. Retraining the pool there is not
+lost work: it re-establishes S4 on a second base, which tests the specialisation
+claim again rather than repeating it.
