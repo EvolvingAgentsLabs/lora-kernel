@@ -164,6 +164,12 @@ def test_empty_truth_is_passed_only_by_an_empty_answer():
     assert not verify('{"arguments": {"missing": ["cbct"]}}', frozenset())["passed"]
 
 
+def test_arguments_as_a_list_is_a_parse_failure_not_a_crash():
+    """The right idea in the wrong shape. It crashed a paid GPU run mid-arm."""
+    assert parse_answer('{"kind": "x", "arguments": ["cbct"]}') is None
+    assert parse_answer('{"arguments": "cbct"}') is None
+
+
 def test_a_missing_key_is_a_parse_failure_not_a_silent_pass():
     assert parse_answer('{"kind": "declare_unsolved"}') is None
 

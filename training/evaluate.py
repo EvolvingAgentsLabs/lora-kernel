@@ -64,8 +64,15 @@ def evaluate(generate_fn, rows: list[dict], name: str = "") -> dict:
     for i, row in enumerate(rows, 1):
         system = row["messages"][0]["content"]
         user = row["messages"][1]["content"]
-        out = generate_fn(system, user)
-        got, want = parse_answer(out), truth_of(row)
+        try:
+            out = generate_fn(system, user)
+            got = parse_answer(out)
+        except Exception as e:
+            # One strange case must not kill an hour of GPU. A failure here is
+            # recorded as an unusable answer, which is what it is, and the arm
+            # continues.
+            out, got = f"<generation failed: {type(e).__name__}: {e}>", None
+        want = truth_of(row)
         ok = got is not None and got == want
         passed += ok
         unparseable += got is None

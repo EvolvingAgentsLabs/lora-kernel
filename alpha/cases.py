@@ -165,6 +165,12 @@ def parse_answer(text: str) -> set[str] | None:
     except json.JSONDecodeError:
         return None
     args = obj.get("arguments", obj)
+    if not isinstance(args, dict):
+        # `{"arguments": ["cbct"]}` — the right idea in the wrong shape. It is
+        # not the declared shape, so it is a parse failure and it is counted as
+        # one. Guessing what it meant would invent an answer the system could
+        # not have acted on, and it crashed a paid GPU run [ran] 2026-09-07.
+        return None
     missing = args.get("missing")
     if not isinstance(missing, list):
         return None
