@@ -54,7 +54,7 @@ already exist, before a single adapter is trained.
 | **S1** | headroom: can this suite show a withdrawal gap at all | S2 | $0.47 spent | **DONE — FAILED the gate, three targets** — §4 |
 | **S2** | does **agreement** order candidates the way verified quality does | S4 | included above | **DONE — 14/15 pairs, but against peers** — §5 |
 | **S3** | attribution: does a lexical/embedding router do the same job | the routing claim | ~$0 | deferred behind S4 — there is no pool to route yet |
-| **S4** | **the adapters** — does specialisation happen, and is it per region | S5 | free Colab T4 | **Q1 ANSWERED: +63.3 points, probe negative.** Q2 next — §6 |
+| **S4** | **the adapters** — does specialisation happen, and is it per region | S5 | free Colab T4 | **DONE. Q1 +63.3 points, probe negative. Q2 yes, +20 points, asymmetric** — §6 |
 | **S5** | **the withdrawal gap** | the product | GPU + frontier | `NEXT` after S4 |
 | **S6** | `harness.lora` against the −85 % schema baseline | the kernel | GPU rental | **under review — S0 says it is upstream of α, §12** |
 | **S7** | the tournament, with a held-out verifier | evolution | GPU rental | after S5 |
@@ -348,8 +348,35 @@ generation, which does not merely slow the KV cache but corrupts the output.
 Each zero read exactly like *"specialisation did not happen"* — one of this
 step's two falsification conditions. The true number is +63.
 
-**Question 2 — do experts differ by region — is next**, and it is the one that
-decides whether there is a pool to route between at all.
+**QUESTION 2 IS ANSWERED TOO, AND THE ANSWER IS ASYMMETRIC.** Two experts, one
+trained on clinic `alpha` only and one on `beta` only, each with the **training
+budget matched to the all-clinics adapter** rather than the epoch count, then
+cross-evaluated **[ran]**:
+
+| | on `alpha` | on `beta` |
+|---|---|---|
+| **expert α** | **0.700** (14/20) | 0.400 (8/20) |
+| **expert β** | 0.650 (13/20) | **0.750** (15/20) |
+
+**The diagonal wins in both directions** — own region 0.725 against other region
+0.525, **+20 points** — so there is something for a router to choose between and
+the pool is not one expert wearing three names.
+
+**But only one column can carry that claim.** On `beta`'s cases the two experts
+differ by seven cases (15 against 8); on `alpha`'s they differ by **one** (14
+against 13), which at n = 20 is not a difference at all. Expert β generalises to
+α's clinic almost as well as α does; expert α does not return the favour.
+
+So the honest statement is: **specialisation by region is real, and it is not
+symmetric.** A router built on this surface would have a strong signal in one
+region and none in the other — which is a finding about what routing has to
+handle, not a flaw in the adapters.
+
+**The first attempt at this arm was voided and re-run**, because 200 cases at the
+same epoch count is a third of the updates: the first α expert reached
+`train_loss` 1.079 against the all-clinics adapter's 0.103 and scored 3/20 on its
+own region. Comparing an undertrained expert with a trained one measures the
+budget and calls it specialisation.
 
 **The probe that has to be reported beside any gain.** `delta` inverts one of the
 unpublished rules and appears in no training split. An adapter that memorised the
@@ -552,6 +579,7 @@ withdrawing a frontier that was never ahead measures nothing.
 | 2026-09-07 | S0 run three times; §3 filled in; C9 and C10 added; the redesign counter reached its stopping condition and the instrument was **not** changed a fourth time | the metric was measuring layout, and the rule about counting redesigns exists precisely for the moment it is inconvenient |
 | 2026-09-07 | S6 moved from "parallel" to "under review, possibly upstream of α" | if the kernel adapter is what pins the format, then it is what makes character acceptance mean anything |
 | 2026-09-07 | S1a run on `held_out_delta`: 8/12 against 3/12 and 4/12. S1's suite question closed for $0; only the key still blocks it | the fallback was named in the step before the step ran, which is the only reason changing the split here is a plan and not a search for a friendlier number |
+| 2026-09-08 | **S4 complete. Question 2 answered: own region 0.725 against other 0.525, diagonal winning both ways — but on `alpha`'s cases the two experts differ by one case of twenty, so the signal is asymmetric.** The first region arm was voided for an unmatched training budget | there is a pool to route between, and the routing problem is now known to be uneven across regions rather than assumed uniform |
 | 2026-09-08 | **S4 question 1 answered: the adapter scores 44/60 against the base's 6/60, +63.3 points, and gains 20 points on the inverted-rule split it never saw.** C17 added | the first real result this project has produced, and the third zero before it was gradient checkpointing rather than the model |
 | 2026-09-08 | S4 run on `Qwen/Qwen3.5-2B`: base arms banked at 6/60 and 6/30; adapter arms blocked. C15 and C16 added; the abort rule fired at the third reclaimed session | the 0/60 the T4 produced would have read as "specialisation did not happen" — a falsification condition met by the GPU rather than by the model |
 | 2026-09-07 | S1 bought and failed three times ($0.47 total); S2 bought in the same purchases and passed 14 of 15 pairs; C12 and C13 added | the gate was written before the run and it fired — the cheapest possible outcome, since it stopped S4 and S5 from being bought on a configuration where the frontier was never ahead |
