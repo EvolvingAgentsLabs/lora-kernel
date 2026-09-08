@@ -306,7 +306,17 @@ def run_all(args) -> dict:
         if f"{clinic}_on_own" in regions or budget.spent():
             continue
         rows = [r for r in train if r["clinic"] == clinic]
-        exp, tk = train_adapter(args.base, rows, f"adapters/{clinic}", args)
+        # MATCH THE TRAINING BUDGET, NOT THE EPOCH COUNT. A region has a third of
+        # the corpus, so the same epoch count gives a third of the updates: the
+        # first alpha expert reached train_loss 1.079 where the all-clinics
+        # adapter reached 0.103, and scored 3/20 on its own region [ran]
+        # 2026-09-08. Comparing an undertrained expert with a trained one
+        # measures the budget, not the specialisation.
+        region_args = argparse.Namespace(**vars(args))
+        region_args.epochs = args.epochs * (len(train) / max(len(rows), 1))
+        print(f"[budget] {clinic}: {len(rows)} cases x {region_args.epochs:.1f} "
+              f"epochs to match {len(train)} x {args.epochs}", flush=True)
+        exp, tk = train_adapter(args.base, rows, f"adapters/{clinic}", region_args)
         g = make_generate(exp, tk, args.max_new_tokens)
         regions[f"{clinic}_on_own"] = evaluate(g, own, f"{clinic} on own")
         summary["regions"] = regions
@@ -338,12 +348,16 @@ def verdict(s: dict) -> str:
         lines.append("FALSE PROMOTION SHAPE: it learned the rule, not the "
                      "reading. Both numbers go in the report.")
     r = s.get("regions") or {}
-    if r:
-        own = (r["alpha_on_own"]["accuracy"] + r["beta_on_own"]["accuracy"]) / 2
-        other = (r["alpha_on_other"]["accuracy"] + r["beta_on_other"]["accuracy"]) / 2
-        lines += ["", f"region experts: own {own:.3f} vs other {other:.3f} "
-                      f"({own - other:+.3f})"]
-        if own <= other:
+    pairs = [(r[f"{c}_on_own"], r[f"{c}_on_other"]) for c in ("alpha", "beta")
+             if f"{c}_on_own" in r and f"{c}_on_other" in r]
+    if pairs:
+        own = sum(a["accuracy"] for a, _ in pairs) / len(pairs)
+        other = sum(b["accuracy"] for _, b in pairs) / len(pairs)
+        lines += ["", f"region experts ({len(pairs)} of 2 measured): own {own:.3f} "
+                      f"vs other {other:.3f} ({own - other:+.3f})"]
+        if len(pairs) < 2:
+            lines.append("PARTIAL — one expert only. Not an answer to question 2.")
+        elif own <= other:
             lines.append("NO SPECIALISATION BY REGION. The pool has nothing to "
                          "route between — say so and stop.")
     return "\n".join(lines)
