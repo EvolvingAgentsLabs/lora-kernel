@@ -466,6 +466,7 @@ architecture is right.
 | C8 | No `OPENROUTER_API_KEY` on this machine **[ran]** | S1 and S2 are blocked on a human |
 | C9 | Character-prefix agreement is dominated by layout: identical answers score 0.00 across formats, different answers score 0.44 within one format **[ran]** | **decided (§11, option C):** the promotion criterion is semantic answer agreement; character α is reported beside it and never ranks anything; whether pinning the format reconciles them is S6's win condition |
 | C10 | Agents under `.claude/agents/` load for a session rooted at this repository, not at the workspace above it **[ran]** | they are symlinked into `../.claude/agents/` so a workspace-rooted session can address them too |
+| C18 | **vLLM 0.28.0 accepts a `LoRARequest` and silently serves the base model.** No error, no warning, byte-identical output, on a valid peft adapter whose config matches the served model **[ran]** | the architecture's substrate is unproven, and any future serving number has to be checked against a known-different adapter output before it is believed |
 | C17 | **Gradient checkpointing left on during generation corrupts the output**, it does not merely disable the KV cache: the same adapter scored 0/60 with it on and 44/60 with it off **[ran]** | training flags are turned off before evaluating, and a zero from a model whose training loss was 0.10 is treated as an instrument fault until proven otherwise |
 | C15 | A **T4 has no bf16**. The base generated fine in bf16 and every LoRA generation then died with "GET was unable to find an engine to execute this computation" — reported as 0/60 **[ran]** | precision is chosen by `is_bf16_supported()`, not by habit. Read as a result it would have said "specialisation did not happen", which is one of S4's two falsification conditions |
 | C16 | Free Colab **reclaimed three sessions** inside roughly 40 minutes of GPU work each **[ran]** | per-arm persistence has to survive the *session*, not just the process: results are pulled to this machine after every arm, and a resume must upload them back. Otherwise the tier has to change |
@@ -577,7 +578,7 @@ central metric becomes available for the first time.
 |---|---|---|---|---|
 | **P1** | **Price the router.** Re-run the 40 routing cases with the `clinic:` line **masked**, so the lexical rule has nothing to read | L4 | agreement still picks the right expert while the keyword baseline collapses to chance | ~15 min |
 | **P2** | **Replicate S4 in bf16.** Same arms, real bf16, no fp16 path | L4 | the +63.3 survives; if it does not, every S4 number was a precision artefact | ~30 min |
-| **P3** | **vLLM multi-LoRA, the substrate.** One resident base, our three adapters served concurrently, adapter chosen per request | A100 | three adapters served from one base, and the swap cost measured rather than assumed | ~1 h |
+| **P3** | **vLLM multi-LoRA, the substrate** | A100 | **FAILED, silently — see below** | spent |
 | **P4** | **A same-family strong target.** Serve a large Qwen3.5 beside the 2B adapters | A100 | **token-level** acceptance measurable at last, shared tokenizer, no text-agreement surrogate | ~1 h |
 | **P5** | **S1 again, locally.** Does the strong same-family target clear the adapters by a margin a withdrawal gap can live in | A100 | if it does not, the suite is still wrong and §11's other options apply | ~30 min |
 | **P6** | **S5 — the withdrawal gap.** Promote where acceptance crosses threshold, remove the target, re-measure | A100 | **the product** | ~1 h |
@@ -591,6 +592,39 @@ claimed about *serving* until they exist. P5 is the gate that decides whether P6
 the product, is buyable at all; it is bought before P6 and not alongside it.
 
 **The A100 is the expensive resource, so P1, P2, P7 and P8 stay on the L4.**
+
+#### P3 — the pool is not servable, and it fails without saying so
+
+[`results/P3-vllm-20260908/`](../results/P3-vllm-20260908/BRIEF.md), A100,
+vLLM 0.28.0, `Qwen/Qwen3.5-2B` **[ran]**:
+
+| arm | accuracy | throughput |
+|---|---|---|
+| base, no adapter | 0.100 | — |
+| `all-clinics` | **0.100** | 90.2/s |
+| `alpha` | **0.100** | 93.3/s |
+| `beta` | **0.100** | 92.7/s |
+
+Every adapter scores **exactly the base's 6/60**, and a direct two-prompt check
+returned `RESULT IDENTICAL` both times: the served text is byte-for-byte the base
+model's. vLLM accepted every `LoRARequest` **with no error and no warning** and
+applied nothing.
+
+Ruled out: the adapter files are valid (`adapter_config.json` + 43 MB
+`adapter_model.safetensors`), `base_model_name_or_path` matches, `max_lora_rank`
+matches `r`, and there is no V0 to fall back to — `VLLM_USE_V1` is an unknown
+variable in 0.28.0. Open: V1 LoRA support is documented as experimental
+**[read]**; `q_proj`/`k_proj` under Qwen3's QK-norm is exactly the mapping a
+serving stack must rebuild; or a regression in this version.
+
+**The arm that caught it was the one that looked redundant** — "the same numbers
+must come out". Measuring only throughput would have reported three adapters
+served at 90 prompts/s and called the substrate proven.
+
+**P4, P5 and P6 all serve adapters, so none of them can be bought until an
+adapter demonstrably changes vLLM's output.** The next move is a decision, not a
+run: pin a different vLLM version, or retrain the pool without `q_proj`/`k_proj`
+and re-test. Both are cheap; choosing between them is not this session's call.
 
 ### Open: how to get an adapter graded at all
 

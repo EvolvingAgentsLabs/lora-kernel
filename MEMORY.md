@@ -71,6 +71,18 @@ score it had while it was there.
   held-out (n=50) with an **exact** verifier, an OpenAI-compatible backend at
   `temperature=0.0`, and `evaluation/frontier_gap.py`.
 
+## The substrate is unproven [ran] 2026-09-08
+
+**vLLM 0.28.0 accepts a `LoRARequest` and silently serves the base model.** No
+error, no warning, byte-identical output; all three adapters scored exactly the
+base's 6/60. Adapter files valid, `base_model_name_or_path` matching,
+`max_lora_rank` matching `r`, and no V0 to fall back to — `VLLM_USE_V1` is an
+unknown variable in 0.28. Open causes: V1 LoRA is documented experimental; the
+adapters adapt `q_proj`/`k_proj` under Qwen3 QK-norm; or a 0.28 regression.
+
+**Never accept a serving number without checking that an adapter changes the
+output.** The arm that caught this was the redundant-looking one.
+
 ## Colab Pro is available on this account [ran] 2026-09-08
 
 **L4** (23 GB, cap 8.9) and **A100-SXM4** (40 GB, cap 8.0), both with real bf16.
