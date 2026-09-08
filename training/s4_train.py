@@ -276,6 +276,7 @@ def run_all(args) -> dict:
         model, tok = load_base(args.base, args.four_bit)
         gen = make_generate(model, tok, args.max_new_tokens)
         summary["base_val"] = evaluate(gen, val, "base")
+        save(summary)
         summary["base_delta"] = evaluate(gen, delta, "base · delta")
         save(summary)
         budget.note("base")
@@ -286,7 +287,11 @@ def run_all(args) -> dict:
     if "adapter_val" not in summary and not budget.spent():
         expert, tok = train_adapter(args.base, train, "adapters/all-clinics", args)
         gen = make_generate(expert, tok, args.max_new_tokens)
+        # Saved between the halves, not after both. A session reclaimed during
+        # the delta half used to lose the val half with it — which is exactly
+        # what happened, twenty minutes of training included. [ran] 2026-09-08
         summary["adapter_val"] = evaluate(gen, val, "adapter")
+        save(summary)
         summary["adapter_delta"] = evaluate(gen, delta, "adapter · delta")
         save(summary)
         budget.note("adapter")
@@ -304,6 +309,8 @@ def run_all(args) -> dict:
         exp, tk = train_adapter(args.base, rows, f"adapters/{clinic}", args)
         g = make_generate(exp, tk, args.max_new_tokens)
         regions[f"{clinic}_on_own"] = evaluate(g, own, f"{clinic} on own")
+        summary["regions"] = regions
+        save(summary)
         regions[f"{clinic}_on_other"] = evaluate(g, other, f"{clinic} on other")
         summary["regions"] = regions
         save(summary)
