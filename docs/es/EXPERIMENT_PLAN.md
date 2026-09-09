@@ -680,10 +680,58 @@ las cadenas conservan los nombres de los pasos y su orden, y pierden el
 cañería puesto en lugar del diámetro, una etiqueta abierta dentro de otra. El
 kernel solo no malforma una sola llamada en 30 casos.
 
-**La lectura que sobrevive.** Dos LoRAs entrenadas por separado sobre las mismas
+~~**La lectura que sobrevive.** Dos LoRAs entrenadas por separado sobre las mismas
 proyecciones no se suman en la unión de sus conductas; interfieren, y la
 interferencia cae justo sobre aquello en lo que cada adaptador era más
-específico. Ponderarlas es una perilla sobre la interferencia, no un arreglo.
+específico.~~ **Retirada el mismo día, 2026-09-09** — ver el confound abajo. Los
+números de arriba se sostienen; esta explicación de ellos no.
+
+#### El confound que anula la afirmación causal de P8 (2026-09-09) [ran]
+
+Leyendo los dos corpus lado a lado, después de que corrieran los brazos:
+
+| | corpus kernel | corpus dominio |
+|---|---|---|
+| ejemplos con `<calc>` | **600 / 600** | **0 / 598** |
+| ejemplos con LaTeX (`\text`, `\frac`, `$`) | **0 / 600** | **433 / 598** |
+| su system prompt | "no podés hacer aritmética vos: todo número calculado viene de una llamada `<calc>`" | "no muestres el trabajo en el mensaje final: contestá un solo objeto JSON" |
+
+Hay tres cosas mal ahí, y cada una alcanza sola.
+
+1. **Los dos corpus enseñaron notaciones distintas, no sólo contenidos
+   distintos.** La corrupción que yo atribuí a interferencia de subespacios —
+   `\sqrt{...}` adentro de una etiqueta `<calc>`, `\times`, marcado suelto — es
+   *la superposición de dos formas de superficie que los adaptadores literalmente
+   vieron en entrenamiento*. La calculadora no parsea LaTeX, así que una cadena
+   que las mezcla falla en la etiqueta y no en la física.
+2. **El system prompt del corpus de dominio contradice a sus propios targets.**
+   Dice "no muestres el trabajo" sobre 598 mensajes de asistente que muestran el
+   trabajo. Es un resto del prompt de headroom de P6.
+3. **Todos los brazos se evaluaron con el system prompt del DOMINIO**, incluido el
+   brazo del kernel y los dos de composición — un prompt que instruye lo contrario
+   de aquello para lo que el kernel fue entrenado.
+
+Así que P8 no puede distinguir *"la composición en espacio de pesos falla"* de
+*"a los dos adaptadores se les enseñó a escribir en idiomas distintos y se los
+juzgó con un prompt que no coincidía con ninguno"*. Lo segundo es más simple y
+encaja con todas las observaciones.
+
+**Lo que sí se sostiene, porque no depende del confound.** El kernel llamó a la
+herramienta en **30 de 30** casos y no malformó **ni una** — bajo un system prompt
+que le decía que no mostrara el trabajo, en un dominio que su corpus nunca
+contuvo. Eso es un resultado más fuerte para la transferencia del protocolo que
+el que decía el texto original, no más débil.
+
+**Lo que ahora se sabe que quedó sin medir.** El adaptador de dominio emitió sólo
+`{"answer": ...}` en los 30 casos — ninguna cadena bajo el prompt de evaluación —
+así que nunca se midió si sabe la física. Sus respuestas directas quedan a un
+factor ~2. No se le puede mostrar ganancia a una composición cuya mitad nunca
+demostró aportar nada.
+
+**Y la sintaxis no es el fallo dominante**, cosa que el diagnóstico gratis dejó
+resuelta antes de escribir todo esto: de los 30 fallos del brazo apilado, **19
+tenían todas las llamadas limpias** y aun así erraron la física. Reparar etiquetas,
+o restringirlas con una gramática, ataca a lo sumo un tercio de la brecha.
 
 **Qué le cuesta esto a la arquitectura.** La separación de §4 queda en pie como
 hecho sobre el *aprendizaje* — el kernel existe y transfiere a un dominio que su

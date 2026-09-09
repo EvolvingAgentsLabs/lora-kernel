@@ -93,3 +93,24 @@ pre-registered and one was run; a third mode chosen after two failures would be 
 search, not a measurement.
 
 **Redesign count: 0.**
+
+---
+
+**Correction, same day (2026-09-09), before any further arm was bought.**
+
+Reading the corpora side by side after the run: the kernel corpus is 600/600
+`<calc>` and 0 LaTeX; the domain corpus is 0/598 `<calc>` and 433/598 LaTeX; the
+domain corpus's system prompt ("show no working") contradicts its own 598
+working-showing targets; and **every arm was evaluated under that domain prompt**,
+including the kernel's.
+
+So the corruption I attributed to subspace interference is the superposition of
+two surface forms the adapters were literally trained on, and P8 cannot separate
+"composition fails" from "the halves were taught different languages and judged
+under a prompt matching neither". The interference reading is **withdrawn**; the
+arm numbers stand. The kernel's 30/30 well-formed calls stand and are stronger
+than first reported, since they were produced under a hostile system prompt.
+
+Composition is now **unmeasured**, not falsified. Redesign count still 0 — nothing
+about the instrument was changed to reach a friendlier number; a confound was
+found and published.

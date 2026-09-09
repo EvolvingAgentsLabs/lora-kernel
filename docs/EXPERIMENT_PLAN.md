@@ -656,10 +656,56 @@ step names and the right order and lose the *content* — a Swamee-Jain line tha
 is not Swamee-Jain, a pipe's length substituted for its diameter, a tag opened
 inside a tag. The kernel alone never malforms a call, on any of 30 cases.
 
-**The reading that survives.** Two LoRAs trained independently on the same
+~~**The reading that survives.** Two LoRAs trained independently on the same
 projections do not sum into the union of their behaviours; they interfere, and
-the interference lands on exactly the thing each adapter was most specific about.
-Weighting them is a knob on the interference, not a fix for it.
+the interference lands on exactly the thing each adapter was most specific
+about.~~ **Withdrawn the same day, 2026-09-09** — see the confound below. The
+numbers above stand; this explanation of them does not.
+
+#### The confound that voids P8's causal claim (2026-09-09) [ran]
+
+Reading the two corpora side by side, after the arms had run:
+
+| | kernel corpus | domain corpus |
+|---|---|---|
+| examples with `<calc>` | **600 / 600** | **0 / 598** |
+| examples with LaTeX (`\text`, `\frac`, `$`) | **0 / 600** | **433 / 598** |
+| its system prompt | "you may not perform arithmetic yourself: every computed number must come from a `<calc>` call" | "show no working in the final message: reply with one JSON object only" |
+
+Three things are wrong with that, and each one is enough on its own.
+
+1. **The two corpora taught different notations, not just different content.** The
+   corruption I attributed to subspace interference — `\sqrt{...}` inside a
+   `<calc>` tag, `\times`, stray markup — is the *superposition of two surface
+   forms the adapters were literally trained on*. The calculator cannot parse
+   LaTeX, so a chain that mixes them fails at the tag rather than at the physics.
+2. **The domain corpus's system prompt contradicts its own targets.** It says
+   "show no working" over 598 assistant messages that all show working. It is a
+   leftover from P6's headroom prompt.
+3. **Every arm was evaluated under the *domain's* system prompt**, including the
+   kernel arm and both composition arms — a prompt that instructs the opposite of
+   what the kernel was trained to do.
+
+So P8 cannot distinguish *"weight-space composition fails"* from *"the two
+adapters were taught to write in different languages and judged under a prompt
+that matched neither"*. The second is simpler and fits every observation.
+
+**What still stands, because it does not depend on the confound.** The kernel
+called the tool on **30 of 30** cases and malformed **not one** — under a system
+prompt that told it not to show working, in a domain its corpus never contained.
+That is a stronger result for protocol transfer than the original write-up
+claimed, not a weaker one.
+
+**What is now known to be unmeasured.** The domain adapter emitted only
+`{"answer": ...}` on all 30 cases — no chain at all under the eval prompt — so
+whether it knows the physics was never measured. Its direct answers sit around
+2x off. A composition cannot be shown to gain anything from a half whose
+contribution has never been established.
+
+**And syntax is not the dominant failure**, which the free diagnostic settled
+before any of this was written: of the stacked arm's 30 failures, **19 had every
+call clean** and still got the physics wrong. Repairing tags, or constraining
+them with a grammar, addresses at most a third of the gap.
 
 **What this costs the architecture.** §4's separation stands as a fact about
 *learning* — the kernel exists, and it transfers to a domain its corpus never
