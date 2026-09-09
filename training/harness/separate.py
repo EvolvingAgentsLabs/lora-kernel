@@ -137,10 +137,25 @@ def main() -> int:
     kernel_rows = [json.loads(l) for l in open(args.kernel_corpus) if l.strip()]
     domain_rows = [json.loads(l) for l in open(args.domain_corpus) if l.strip()]
 
+    # THE GUARD IS THE POINT OF P9, so it checks the whole contract and not just
+    # the system prompt. It has already fired once on a kernel corpus that was
+    # regenerated into /tmp and committed stale [ran] 2026-09-09 — which is the
+    # cheapest possible way to find that out.
+    import re as _re
+
     def contract(rows):
-        return [m["content"] for m in rows[0]["messages"] if m["role"] == "system"][0]
-    assert contract(kernel_rows) == contract(domain_rows) == SYSTEM, \
-        "the two corpora disagree about the contract — that is the P8 confound"
+        sysm = [m["content"] for m in rows[0]["messages"] if m["role"] == "system"][0]
+        tails = {_re.sub(r"the numeric value in .*$", "in UNIT.",
+                         [m["content"] for m in r["messages"]
+                          if m["role"] == "user"][0].split("\n\n")[-1])
+                 for r in rows}
+        return sysm, tails
+    k_sys, k_tail = contract(kernel_rows)
+    d_sys, d_tail = contract(domain_rows)
+    assert k_sys == d_sys == SYSTEM, \
+        "the two corpora disagree about the system prompt — that is the P8 confound"
+    assert k_tail == d_tail and len(k_tail) == 1, \
+        f"the two corpora use different instructions: {k_tail ^ d_tail}"
     tagged = sum("<calc>" in m["content"] for r in domain_rows
                  for m in r["messages"] if m["role"] == "assistant")
     assert tagged == 0, f"{tagged} domain examples carry the protocol"
