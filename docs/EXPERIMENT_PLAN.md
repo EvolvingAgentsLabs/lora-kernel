@@ -600,7 +600,7 @@ close without a tool — and `P8` is `harness.lora`, which this table calls P7.
 The tournament, this table's P8, has not been bought.
 
 
-#### P9 — composition under a contract the two halves share · RUNNING
+#### P9 — composition under a contract the two halves share · DONE
 
 [`results/P9-shared-contract-20260909/`](../results/P9-shared-contract-20260909/BRIEF.md).
 Written before the run, so it is a plan and not a description.
@@ -638,6 +638,49 @@ composition cannot be shown to gain from a half that contributes nothing.
 `kernel + domain` still fails to beat both halves alone, **weight-space
 composition is dead** and §4 must be served another way — sequential activation
 (§5 option 1) or disjoint target modules, neither of which is bought here.
+
+**All four arms reported [ran].**
+
+| arm | raw | repaired | calls/case |
+|---|---|---|---|
+| domain | 1/30 | **30/30** | 0.0 |
+| kernel | 0/30 | n/a | **7.7** |
+| **kernel + domain** | **4/30** | 22/30 | 0.6 |
+| base (control) | **4/30** | undefined | 0.0 |
+
+**1. P8's conclusion was the confound, and composition does compose.** With the
+contract shared, `kernel + domain` beats both halves — 4/30 against the domain's
+1/30 and the kernel's 0/30 — and inherits most of the physics, 22/30 repaired
+against the domain's 30/30. Nothing here looks like the 0/30 P8 reported.
+
+**2. The mechanism works whenever it fires, and it rarely fires.** Split the
+composition's 30 cases by whether it delegated at all:
+
+| | cases | passed |
+|---|---|---|
+| the composition delegated | 5 | **3 — 0.60** |
+| the composition did not | 25 | 1 — 0.04 |
+
+A fifteen-fold difference. The composition is not broken; **it delegates on 5 of
+30 cases where the kernel alone delegates on all 30 at 7.7 calls each.** The
+domain delta wins the competition for the format at almost every step, and the
+kernel's protocol only survives where it does not.
+
+**3. The finding that costs the most: the base is not at zero.** Under a prompt
+that asks for a numbered chain, `Qwen2.5-3B-Instruct` with **no adapter** scores
+**4/30** — a tie with the best composition, and above every adapter alone. Every
+baseline in P5–P8 was measured under a system prompt that told the model to
+**show no working**, while every treatment was trained to show working. The
+headroom those steps reported is smaller than reported, by an amount this run
+does not measure. **The +0.975 frontier gap and the 0/40 attribution arms inherit
+this doubt and must be re-measured under the shared contract before being cited
+again.**
+
+**4. `repaired` is undefined for the base, not zero.** It writes a numbered
+heading and puts the arithmetic on continuation lines: 83 numbered lines across
+30 cases, of which the extractor can read **0**. The metric is valid where the
+chain layout matches the corpus and nowhere else, and comparing repaired scores
+across layouts would be measuring the layout — the same mistake character-α made.
 
 **Deliberately not bought:** constrained decoding and tag repair (19 of P8's 30
 stacked failures had every call clean, so syntax was never the dominant failure),

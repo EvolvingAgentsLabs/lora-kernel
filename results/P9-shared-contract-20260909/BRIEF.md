@@ -58,3 +58,32 @@ fails to beat both halves alone, **weight-space composition is genuinely dead** 
 
 **Redesign count: 0.** P8's instrument is not being adjusted toward a friendlier
 number — a confound was found, published, and the confounded variable removed.
+
+---
+
+## Outcome (2026-09-09)
+
+| arm | raw | repaired | calls/case |
+|---|---|---|---|
+| domain | 1/30 | **30/30** | 0.0 |
+| kernel | 0/30 | n/a | **7.7** |
+| **kernel + domain** | **4/30** | 22/30 | 0.6 |
+| base (control) | **4/30** | undefined | 0.0 |
+
+**Composition composes.** With the contract shared it beats both halves and
+inherits 22/30 of the physics. P8's 0/30 was the confound, as suspected.
+
+**And it delegates on 5 of 30 cases.** Split that way: **3 of 5 pass when it
+calls the tool, 1 of 25 when it does not.** The mechanism is intact; the domain
+delta simply wins the competition for the output format at almost every step.
+
+**The base is not at zero.** 4/30 with no adapter, a tie with the composition.
+Every baseline in P5–P8 ran under a prompt that told the model to show no working
+while every treatment was trained to show working. The frontier gap and the 0/40
+attribution arms inherit that doubt.
+
+**The gate did its job in both directions**: it opened on a domain half that was
+verified to contribute (repaired 30/30), and the composition arm it authorised
+returned the first positive composition number this project has produced.
+
+**Redesign count: 0.**
