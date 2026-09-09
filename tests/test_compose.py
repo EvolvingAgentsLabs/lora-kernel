@@ -67,6 +67,32 @@ def test_a_reclaimed_arm_resumes_where_it_stopped():
     assert [r["case_id"] for r in out["records"]] == [r["case_id"] for r in rows]
 
 
+
+
+def _separate_rows(n=4):
+    from training.physics.generate import TRAIN_FAMILIES, generate
+    return generate(n, 4242, TRAIN_FAMILIES, style="working")
+
+
+@check
+def test_separate_scores_the_repaired_chain_beside_the_raw_one():
+    """A chain with the right formulas and one botched multiplication must fail
+    raw and pass repaired — that difference is the whole reason P9 exists."""
+    from training.harness.separate import score as sep_score
+    rows = _separate_rows(2)
+    r0 = rows[0]
+
+    def step(system, user, prefix, stop):
+        if prefix:
+            return ""
+        # The formula is exactly right; the product is written 10x too small.
+        return (f"1. answer: {r0['answer']:.6g} * 1 = {r0['answer'] / 10:.6g}\n"
+                f'{{"answer": {r0["answer"] / 10:.6g}}}')
+
+    out = sep_score(step, [r0], 0.02, "fake")
+    assert out["passed"] == 0, "a wrong final number must not pass raw"
+    assert out["repaired_passed"] == 1, "the repaired chain should reach the answer"
+
 if __name__ == "__main__":
     for fn in CHECKS:
         fn()
