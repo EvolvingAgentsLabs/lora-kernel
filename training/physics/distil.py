@@ -29,6 +29,7 @@ from pathlib import Path
 
 from alpha.backends import BackendError, build
 from training.physics.generate import TRAIN_FAMILIES, generate
+from training.physics.calc import fill
 from training.physics.headroom import SYSTEM, correct, parse_answer
 
 OUT = Path("training/physics/data")
@@ -46,10 +47,11 @@ def main() -> int:
     # across threads. Results are collected in the generated order, so the corpus
     # is identical to the serial one for the same seed.
     ap.add_argument("--workers", type=int, default=8)
+    ap.add_argument("--style", default="working", choices=["working", "calc"])
     ap.add_argument("--out", default=str(OUT))
     args = ap.parse_args()
 
-    rows = generate(args.n, args.seed, TRAIN_FAMILIES, style="working")
+    rows = generate(args.n, args.seed, TRAIN_FAMILIES, style=args.style)
     model = build(args.teacher)
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
@@ -79,7 +81,15 @@ def main() -> int:
                 continue
             tok_in += r.prompt_tokens
             tok_out += r.completion_tokens
-            ok = correct(parse_answer(r.text), row["answer"], args.rtol)
+            text = r.text
+            calls = failed_calls = 0
+            if args.style == "calc":
+                # The teacher's own calls are evaluated and the values written
+                # back in, so the corpus shows the student both the call and
+                # what came back — and a teacher that wrote an unevaluable
+                # expression is caught here rather than teaching one.
+                text, calls, failed_calls = fill(text)
+            ok = correct(parse_answer(text), row["answer"], args.rtol)
             per_family[row["family"]].append(ok)
             if not ok:
                 dropped += 1
@@ -87,10 +97,11 @@ def main() -> int:
             kept.append({
                 "case_id": row["case_id"], "family": row["family"],
                 "answer": row["answer"], "unit": row["unit"],
+            "calc_calls": calls, "calc_failures": failed_calls,
                 "messages": [
                     {"role": "system", "content": SYSTEM},
                     {"role": "user", "content": row["prompt"]},
-                    {"role": "assistant", "content": r.text.strip()},
+                    {"role": "assistant", "content": text.strip()},
                 ],
             })
             # Persisted as it lands: a run killed at case 400 keeps 400 of them.

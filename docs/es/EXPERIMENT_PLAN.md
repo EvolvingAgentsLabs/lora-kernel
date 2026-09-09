@@ -612,6 +612,32 @@ producto, es comprable; se compra antes que P6 y no junto con él.
 
 **La A100 es el recurso caro, así que P1, P2, P7 y P8 se quedan en la L4.**
 
+#### P7 — la brecha de retiro se cierra, y hacen falta las dos mitades
+
+[`results/P7-calculator-20260908/`](../../results/P7-calculator-20260908/BRIEF.md),
+`Qwen/Qwen2.5-3B-Instruct`, 600 cadenas escritas por el oráculo, con el harness
+respondiendo cada llamada `<calc>` **[ran]**:
+
+| arm | | exactitud | llamadas |
+|---|---|---|---|
+| maestro `gemini-3.8-flash` | 40/40 | **1,000** | — |
+| base | 0/40 | 0,000 | 0 |
+| base + calculadora | 0/40 | **0,000** | **53** |
+| adaptador solo | 4/40 | 0,100 | 0 |
+| **adaptador + calculadora** | **40/40** | **1,000** | 156 |
+
+**La brecha de retiro es 0,000** en la región para la que se destiló el experto.
+Y ninguna mitad lo logra sola: el base hizo 53 llamadas a la herramienta y no
+acertó ninguna; el procedimiento sin herramienta acertó 4 de 40.
+`ARCHITECTURE.md` separa el kernel que actúa del experto que piensa — acá esa
+separación es la diferencia entre 4/40 y 40/40, con cada mitad aislada por turno.
+
+**El límite es el de la propia arquitectura.** Las familias reservadas iban 0 de
+10 cuando la sesión terminó: el experto no generaliza fuera de su región, que es
+exactamente por qué el plan promueve y retira **por región**. Ese arm no terminó,
+y el 0/10 se reporta como observado y no como resultado persistido.
+
+
 #### P3 resuelto — el sustrato existe, sobre una base que vLLM puede servir
 
 `Qwen/Qwen2.5-3B-Instruct` — `Qwen2ForCausalLM`, densa, sin torre de visión — en

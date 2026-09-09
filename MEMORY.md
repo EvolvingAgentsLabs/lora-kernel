@@ -71,6 +71,24 @@ score it had while it was there.
   held-out (n=50) with an **exact** verifier, an OpenAI-compatible backend at
   `temperature=0.0`, and `evaluation/frontier_gap.py`.
 
+## The withdrawal gap closed [ran] 2026-09-08
+
+On multi-step fluid mechanics, `Qwen/Qwen2.5-3B-Instruct` distilled from 600
+oracle-written chains and given a calculator scores **40/40 — the teacher's own
+score**. The withdrawal gap on that region is **0.000**.
+
+**Neither half works alone**, and that is the finding: base + calculator made 53
+tool calls and scored **0/40**; the adapter without the tool scored **4/40**. The
+architecture's split between a kernel that acts and an expert that thinks is the
+difference between 4/40 and 40/40, measured with each half held out.
+
+**The expert is bounded to its region**: held-out families were at 0/10 when the
+session ended — which is why the plan promotes and withdraws per region.
+
+**The clinical suite could never have shown this.** Its difficulty is unpublished
+rules, so no frontier can be ahead. The physics domain has a computed oracle, a
++0.975 headroom, and a corpus the oracle itself filters.
+
 ## The substrate is unproven [ran] 2026-09-08
 
 **vLLM 0.28.0 accepts a `LoRARequest` and silently serves the base model.** No

@@ -103,6 +103,46 @@ def test_prompt_asks_for_one_json_object():
     assert '{"answer": <number>}' in row["prompt"] and row["unit"] in row["prompt"]
 
 
+
+
+# -- the harness loop, which a reading of the code caught and a test should have --
+
+def test_the_loop_answers_the_LAST_call_not_an_earlier_one():
+    """Searching a trailing window returned the FIRST call inside it, so from
+    step two onwards the loop re-evaluated an already-answered expression and
+    appended its value again. Every chain after its first line was corrupt."""
+    from training.physics.calc import generate_with_tool
+
+    script = ["1. area: <calc>2*3</calc>",
+              "\n2. volume: <calc>6*4</calc>",
+              '\n{"answer": 24}']
+    calls = {"i": 0}
+
+    def fake(system, user, prefix, stop):
+        i = calls["i"]
+        calls["i"] += 1
+        return script[i] if i < len(script) else ""
+
+    out, used = generate_with_tool(fake, "s", "u", max_calls=5)
+    assert used == 2, f"expected two tool calls, got {used}"
+    assert "<calc>2*3</calc>= 6" in out, out
+    assert "<calc>6*4</calc>= 24" in out, out
+    # The first expression must be answered exactly once.
+    assert out.count("= 6\n") == 1, out
+
+
+def test_the_loop_discards_what_the_model_writes_after_the_tag():
+    """A model trained on `</calc>= value` will keep writing the value. It is
+    the harness's answer that must land in the chain, not the model's guess."""
+    from training.physics.calc import generate_with_tool
+
+    def fake(system, user, prefix, stop):
+        return "1. area: <calc>2*3</calc>= 99999\n" if not prefix else ""
+
+    out, _ = generate_with_tool(fake, "s", "u", max_calls=2)
+    assert "= 6" in out and "99999" not in out, out
+
+
 if __name__ == "__main__":
     fns = [v for k, v in sorted(globals().items()) if k.startswith("test_")]
     for fn in fns:

@@ -29,6 +29,7 @@ import json
 import time
 from pathlib import Path
 
+from training.physics.calc import generate_with_tool
 from training.physics.generate import HELD_OUT_FAMILIES, TRAIN_FAMILIES, generate
 from training.physics.headroom import SYSTEM, correct, parse_answer
 
@@ -40,10 +41,39 @@ def load_corpus(path: str) -> list[dict]:
         return [json.loads(line) for line in f if line.strip()]
 
 
-def score(gen_fn, rows: list[dict], rtol: float, label: str) -> dict:
-    passed, unparsed, recs = 0, 0, []
+def make_gen_step(model, tok, max_new_tokens: int):
+    """Generate until a stop string, from a given prefix. This is the harness.
+
+    The model emits `<calc>...</calc>`, generation stops there, a process answers
+    it, and the model continues from the answer — the shape `ARCHITECTURE.md`
+    gives the kernel adapter, with one tool instead of many.
+    """
+    import torch
+
+    def step(system: str, user: str, prefix: str, stop: str) -> str:
+        msgs = [{"role": "system", "content": system},
+                {"role": "user", "content": user}]
+        text = tok.apply_chat_template(msgs, tokenize=False,
+                                       add_generation_prompt=True) + prefix
+        ids = tok(text, return_tensors="pt").to(model.device)
+        with torch.no_grad():
+            out = model.generate(**ids, max_new_tokens=max_new_tokens,
+                                 do_sample=False, pad_token_id=tok.pad_token_id,
+                                 stop_strings=[stop], tokenizer=tok)
+        return tok.decode(out[0][ids["input_ids"].shape[1]:],
+                          skip_special_tokens=True)
+    return step
+
+
+def score(gen_fn, rows: list[dict], rtol: float, label: str,
+          tool_step=None) -> dict:
+    passed, unparsed, recs, tool_calls = 0, 0, [], 0
     for i, row in enumerate(rows, 1):
-        text = gen_fn(SYSTEM, row["prompt"])
+        if tool_step is not None:
+            text, used = generate_with_tool(tool_step, SYSTEM, row["prompt"])
+            tool_calls += used
+        else:
+            text = gen_fn(SYSTEM, row["prompt"])
         got = parse_answer(text)
         ok = correct(got, row["answer"], rtol)
         passed += ok
@@ -55,7 +85,7 @@ def score(gen_fn, rows: list[dict], rtol: float, label: str) -> dict:
             print(f"  [{label}] {i}/{len(rows)} passed {passed}", flush=True)
     return {"label": label, "n": len(rows), "passed": passed,
             "accuracy": round(passed / len(rows), 4), "unparsed": unparsed,
-            "records": recs}
+            "tool_calls": tool_calls, "records": recs}
 
 
 def main() -> int:
@@ -78,6 +108,10 @@ def main() -> int:
     ap.add_argument("--targets",
                     default="q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj")
     ap.add_argument("--four-bit", dest="four_bit", action="store_true")
+    ap.add_argument("--style", default="calc", choices=["working", "calc"])
+    ap.add_argument("--tool", dest="tool", action="store_true", default=True,
+                    help="answer <calc> calls during evaluation (the harness)")
+    ap.add_argument("--no-tool", dest="tool", action="store_false")
     args = ap.parse_args()
 
     # Imported here so the module can be read without a GPU stack present.
@@ -85,8 +119,9 @@ def main() -> int:
 
     # The eval seed differs from the corpus seed, so no evaluated case was
     # generated for training. Same families, different draws.
-    ev = generate(args.n_eval, args.eval_seed, TRAIN_FAMILIES, style="working")
-    held = generate(args.n_held, args.eval_seed + 7, HELD_OUT_FAMILIES, style="working")
+    ev = generate(args.n_eval, args.eval_seed, TRAIN_FAMILIES, style=args.style)
+    held = generate(args.n_held, args.eval_seed + 7, HELD_OUT_FAMILIES,
+                    style=args.style)
     corpus = load_corpus(args.corpus)
     print(f"[corpus] {len(corpus)} verified examples | eval {len(ev)} | "
           f"held-out families {len(held)}", flush=True)
@@ -94,30 +129,76 @@ def main() -> int:
     summary = {"base": args.base, "corpus_n": len(corpus),
                "started": time.strftime("%Y-%m-%dT%H:%M:%S"),
                "rtol": args.rtol, "arms": {}}
+    # RESUME. Three sessions were reclaimed part-way through this experiment, the
+    # last one after the base arms had already been measured [ran] 2026-09-08.
+    # An arm already on disk under the same base and corpus is kept, so a
+    # restarted session owes only what is missing.
+    if RESULTS.exists():
+        prev = json.loads(RESULTS.read_text())
+        if prev.get("base") == args.base and prev.get("corpus_n") == len(corpus):
+            summary["arms"] = prev.get("arms", {})
+            print(f"[resume] keeping {list(summary['arms'])}", flush=True)
 
     def save():
         RESULTS.write_text(json.dumps(summary, indent=2))
 
+    def need(name: str) -> bool:
+        return name not in summary["arms"]
+
+    use_tool = args.tool and args.style == "calc"
     model, tok = load_base(args.base, args.four_bit)
     gen = make_generate(model, tok, args.max_new_tokens)
-    summary["arms"]["base"] = score(gen, ev, args.rtol, "base")
+    step = make_gen_step(model, tok, args.max_new_tokens) if use_tool else None
+    # THE ATTRIBUTION ARM, and it is bought first on purpose. If the base with a
+    # calculator already scores what the adapter scores, the adapter bought
+    # nothing and the tool is the whole story.
+    if need("base"):
+        summary["arms"]["base"] = score(gen, ev, args.rtol, "base")
     save()
-    summary["arms"]["base · held-out families"] = score(
+    if use_tool:
+        if need("base + calculator"):
+            summary["arms"]["base + calculator"] = score(
+            None, ev, args.rtol, "base+tool", tool_step=step)
+        save()
+    if need("base · held-out families"):
+        summary["arms"]["base · held-out families"] = score(
         gen, held, args.rtol, "base · held")
     save()
-    gen = model = tok = None
+    gen = step = model = tok = None
     free()
 
-    expert, tok = train_adapter(args.base, corpus, "adapters/physics", args)
-    gen = make_generate(expert, tok, args.max_new_tokens)
-    summary["arms"]["adapter"] = score(gen, ev, args.rtol, "adapter")
+    adapter_arms = ["adapter", "adapter + calculator",
+                    "adapter + calculator · held-out families",
+                    "adapter · held-out families"]
+    if all(not need(a) for a in adapter_arms):
+        print("[resume] every adapter arm is already on disk; nothing to train",
+              flush=True)
+        expert, tok = None, None
+    else:
+        expert, tok = train_adapter(args.base, corpus, "adapters/physics", args)
+    gen = make_generate(expert, tok, args.max_new_tokens) if expert else None
+    step = (make_gen_step(expert, tok, args.max_new_tokens)
+            if use_tool and expert else None)
+    if need("adapter"):
+        summary["arms"]["adapter"] = score(gen, ev, args.rtol, "adapter")
     save()
-    summary["arms"]["adapter · held-out families"] = score(
+    if use_tool:
+        if need("adapter + calculator"):
+            summary["arms"]["adapter + calculator"] = score(
+            None, ev, args.rtol, "adapter+tool", tool_step=step)
+        save()
+        if need("adapter + calculator · held-out families"):
+            summary["arms"]["adapter + calculator · held-out families"] = score(
+            None, held, args.rtol, "adapter+tool · held", tool_step=step)
+        save()
+    if need("adapter · held-out families"):
+        summary["arms"]["adapter · held-out families"] = score(
         gen, held, args.rtol, "adapter · held")
     save()
 
     b = summary["arms"]["base"]["accuracy"]
-    a = summary["arms"]["adapter"]["accuracy"]
+    a = summary["arms"].get("adapter + calculator",
+                            summary["arms"]["adapter"])["accuracy"]
     bh = summary["arms"]["base · held-out families"]["accuracy"]
     ah = summary["arms"]["adapter · held-out families"]["accuracy"]
     summary["gain"] = round(a - b, 4)
