@@ -129,9 +129,21 @@ def main() -> int:
     summary = {"base": args.base, "corpus_n": len(corpus),
                "started": time.strftime("%Y-%m-%dT%H:%M:%S"),
                "rtol": args.rtol, "arms": {}}
+    # RESUME. Three sessions were reclaimed part-way through this experiment, the
+    # last one after the base arms had already been measured [ran] 2026-09-08.
+    # An arm already on disk under the same base and corpus is kept, so a
+    # restarted session owes only what is missing.
+    if RESULTS.exists():
+        prev = json.loads(RESULTS.read_text())
+        if prev.get("base") == args.base and prev.get("corpus_n") == len(corpus):
+            summary["arms"] = prev.get("arms", {})
+            print(f"[resume] keeping {list(summary['arms'])}", flush=True)
 
     def save():
         RESULTS.write_text(json.dumps(summary, indent=2))
+
+    def need(name: str) -> bool:
+        return name not in summary["arms"]
 
     use_tool = args.tool and args.style == "calc"
     model, tok = load_base(args.base, args.four_bit)
@@ -140,31 +152,47 @@ def main() -> int:
     # THE ATTRIBUTION ARM, and it is bought first on purpose. If the base with a
     # calculator already scores what the adapter scores, the adapter bought
     # nothing and the tool is the whole story.
-    summary["arms"]["base"] = score(gen, ev, args.rtol, "base")
+    if need("base"):
+        summary["arms"]["base"] = score(gen, ev, args.rtol, "base")
     save()
     if use_tool:
-        summary["arms"]["base + calculator"] = score(
+        if need("base + calculator"):
+            summary["arms"]["base + calculator"] = score(
             None, ev, args.rtol, "base+tool", tool_step=step)
         save()
-    summary["arms"]["base · held-out families"] = score(
+    if need("base · held-out families"):
+        summary["arms"]["base · held-out families"] = score(
         gen, held, args.rtol, "base · held")
     save()
     gen = step = model = tok = None
     free()
 
-    expert, tok = train_adapter(args.base, corpus, "adapters/physics", args)
-    gen = make_generate(expert, tok, args.max_new_tokens)
-    step = make_gen_step(expert, tok, args.max_new_tokens) if use_tool else None
-    summary["arms"]["adapter"] = score(gen, ev, args.rtol, "adapter")
+    adapter_arms = ["adapter", "adapter + calculator",
+                    "adapter + calculator · held-out families",
+                    "adapter · held-out families"]
+    if all(not need(a) for a in adapter_arms):
+        print("[resume] every adapter arm is already on disk; nothing to train",
+              flush=True)
+        expert, tok = None, None
+    else:
+        expert, tok = train_adapter(args.base, corpus, "adapters/physics", args)
+    gen = make_generate(expert, tok, args.max_new_tokens) if expert else None
+    step = (make_gen_step(expert, tok, args.max_new_tokens)
+            if use_tool and expert else None)
+    if need("adapter"):
+        summary["arms"]["adapter"] = score(gen, ev, args.rtol, "adapter")
     save()
     if use_tool:
-        summary["arms"]["adapter + calculator"] = score(
+        if need("adapter + calculator"):
+            summary["arms"]["adapter + calculator"] = score(
             None, ev, args.rtol, "adapter+tool", tool_step=step)
         save()
-        summary["arms"]["adapter + calculator · held-out families"] = score(
+        if need("adapter + calculator · held-out families"):
+            summary["arms"]["adapter + calculator · held-out families"] = score(
             None, held, args.rtol, "adapter+tool · held", tool_step=step)
         save()
-    summary["arms"]["adapter · held-out families"] = score(
+    if need("adapter · held-out families"):
+        summary["arms"]["adapter · held-out families"] = score(
         gen, held, args.rtol, "adapter · held")
     save()
 
