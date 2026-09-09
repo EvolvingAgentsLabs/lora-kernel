@@ -47,3 +47,20 @@ each with the harness loop. No frontier calls: the teacher's contribution is
 already in the corpora.
 
 **Redesign count.** 0.
+
+---
+
+**Pre-registered follow-up, written before the composition arm reported
+(2026-09-09).** Three arms were in hand — base 0/30 with 44 calls, kernel 1/30
+with **169**, domain 0/30 with **0** — and the composition was still running. If
+plain stacking fails, one alternative is bought and only one: `add_weighted_adapter`
+at 0.5/0.5. The reason is mechanical rather than hopeful — `LoraModel` sums the
+active deltas, so two adapters at α=32 apply twice the perturbation the base was
+tuned under, and a weighted combination is the standard correction, not a second
+chance at the hypothesis. If the weighted stack also fails, §4's separation is
+falsified as implemented and the merged adapter is the configuration that works.
+
+**The persistence fix is not a redesign.** `score()` now banks each case instead
+of each arm, after a reclaimed session took 20 completed cases with it. It changes
+what survives a crash, not what is measured, and the eval set, seed and gate are
+untouched. **Redesign count: 0.**

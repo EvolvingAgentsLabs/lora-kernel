@@ -171,11 +171,32 @@ def main() -> int:
         summary["arms"][label] = score(step, ev, args.rtol, label, prev, bank)
         save()
 
+    def blend(weight):
+        """Option 2 again, with the sum scaled back to one adapter's worth.
+
+        `LoraModel` adds the active deltas, so two adapters at alpha 32 perturb
+        the base twice as hard as either was tuned to. A linear combination at
+        0.5/0.5 is the mechanical correction for that, and it was pre-registered
+        as the ONE alternative before the stacked arm reported — not chosen after
+        seeing it fail.
+        """
+        name = "blend"
+        if name not in peft_model.peft_config:
+            peft_model.base_model.add_weighted_adapter(
+                adapters=["kernel", "domain"], weights=[weight, weight],
+                adapter_name=name, combination_type="linear")
+        return name
+
     run(None, "base + tool")
     run("kernel", "kernel + tool")
     run("domain", "domain + tool")
     # THE CLAIM: both deltas over one base, at once.
     run(["kernel", "domain"], "kernel + domain + tool")
+    stacked = summary["arms"].get("kernel + domain + tool", {})
+    halves = max(summary["arms"].get("kernel + tool", {}).get("accuracy", 0),
+                 summary["arms"].get("domain + tool", {}).get("accuracy", 0))
+    if stacked.get("complete") and stacked.get("accuracy", 0) <= halves:
+        run(blend(0.5), "kernel + domain blended 0.5 + tool")
 
     a = summary["arms"]
     print(f"\n{'arm':<28}{'passed':>10}{'accuracy':>11}{'tool calls':>12}")
