@@ -593,6 +593,88 @@ the product, is buyable at all; it is bought before P6 and not alongside it.
 
 **The A100 is the expensive resource, so P1, P2, P7 and P8 stay on the L4.**
 
+**The run directories drifted from this table after P4, and the names on disk
+win.** `P5` is the headroom check on the new suite, `P6` the withdrawal gap,
+`P7` the calculator step that closed it — inserted because the gap did not
+close without a tool — and `P8` is `harness.lora`, which this table calls P7.
+The tournament, this table's P8, has not been bought.
+
+
+#### P8 — the protocol is separable, and it does not stack
+
+[`results/P8-harness-lora-20260909/`](../results/P8-harness-lora-20260909/BRIEF.md),
+`Qwen/Qwen2.5-3B-Instruct`, two adapters over one resident base, 30 held-in cases
+each, the harness answering every `<calc>` call **[ran]**:
+
+| arm | accuracy | tool calls | calls/case |
+|---|---|---|---|
+| base + tool | 0/30 | 44 | 1.5 |
+| **kernel + tool** (never saw physics) | 1/30 | **169** | **5.6** |
+| **domain + tool** (never saw a tag) | 0/30 | **0** | 0.0 |
+| **kernel + domain + tool** (stacked) | **0/30** | 154 | 5.1 |
+
+**The first half of §4 holds, and it is the surprising half.** A kernel trained
+only on shop receipts, means, compound growth and cone volumes — *no pipe, no
+fluid, no Reynolds* — walks into fluid mechanics and calls the tool 5.6 times per
+case, on every one of 30 cases. The domain expert, which knows the physics, calls
+it **zero** times in 30. The protocol is a thing that can be learned on its own,
+in weights of its own, and it transfers to a domain its corpus never contained.
+
+**The second half does not.** Stacked, the two adapters score 0/30 — below the
+kernel alone. And the failure is not that one adapter wins: **both are visibly
+present in the output**. The composition names the right physics *and* calls the
+tool, and the calls come out corrupted:
+
+    1. cross-sectional area: <calc>1.96 * 1.27</calc>= 2.4892
+    2. wetted perimeter: <calc>1.96 + 2 * 1.27</calc>= 4.5
+    3. hydraulic radius: <calc><b>2.4892</b> / 4.5</b>= 0.553133</calc>= ERROR: unparseable
+    4. flow velocity: <calc>0.015 * 0.553133 * \sqrt{1 + 4*0.01518^2}</calc>= ERROR
+
+LaTeX leaking through, stray markup inside the tags, terms dropped from formulas.
+This is what two deltas at α=32 do to a base tuned for one: `LoraModel` **sums**
+the active deltas, so the composition perturbs the weights twice as hard as
+either adapter was trained under, and fidelity is the first thing to go.
+
+**The falsification fired as written**: the composition did not beat both halves,
+so the protocol does not compose *by stacking*. One alternative was bought, and
+it was named in the brief before this number existed — `add_weighted_adapter` at
+0.5/0.5, the mechanical correction for a doubled perturbation.
+
+**The blend fails too, and it refutes the reason I gave for the first failure.**
+
+| arm | accuracy | tool calls | cases with a call the evaluator rejected |
+|---|---|---|---|
+| kernel + tool | 1/30 | 169 | **0 / 30** |
+| kernel + domain, stacked | 0/30 | 154 | 11 / 30 |
+| **kernel + domain, blended 0.5/0.5** | **0/30** | 129 | **12 / 30** |
+
+Halving each delta did not restore call fidelity — it got marginally worse. So
+the corruption is **not** a magnitude effect, and "two adapters at α=32 perturb
+twice as hard" was the wrong explanation, offered before the data that tests it.
+What the blend does show is the corruption's shape: the chains keep the right
+step names and the right order and lose the *content* — a Swamee-Jain line that
+is not Swamee-Jain, a pipe's length substituted for its diameter, a tag opened
+inside a tag. The kernel alone never malforms a call, on any of 30 cases.
+
+**The reading that survives.** Two LoRAs trained independently on the same
+projections do not sum into the union of their behaviours; they interfere, and
+the interference lands on exactly the thing each adapter was most specific about.
+Weighting them is a knob on the interference, not a fix for it.
+
+**What this costs the architecture.** §4's separation stands as a fact about
+*learning* — the kernel exists, and it transfers to a domain its corpus never
+contained — and falls as a fact about *serving*: the configuration that works is
+P7's merged adapter, 40/40, and a change to the tool surface therefore costs a
+retrain of every expert in the pool. That is the price §4 exists to avoid, and it
+is not avoided.
+
+**Not bought, deliberately.** Option 1 of `TECHNICAL-REFERENCE.md` §5 —
+sequential activation, the two adapters never live at once — is untested and
+cheap, since both adapters exist. It is not run here: the brief pre-registered
+**one** alternative, and buying a third composition mode after two failures is
+how a measurement turns into a search. It gets a step of its own, with its gate
+written first, or it does not get bought.
+
 #### P7 — the withdrawal gap closes, and it takes both halves
 
 [`results/P7-calculator-20260908/`](../results/P7-calculator-20260908/BRIEF.md),
@@ -717,6 +799,7 @@ withdrawing a frontier that was never ahead measures nothing.
 
 | date | change to this plan | why |
 |---|---|---|
+| 2026-09-09 | **P8 run: the protocol is separable but does not stack.** A kernel that never saw physics calls the tool 5.6x/case in fluid mechanics; the physics expert calls it 0 times; stacked they score 0/30 with both behaviours visibly present and the calls corrupted. The blend at 0.5/0.5 was pre-registered before the number existed | §4 separates what the kernel owns from what the expert owns, and only the merged case had ever been measured — the half that holds and the half that does not are different halves than the architecture assumed |
 | 2026-09-07 | plan created; S0 built and run; the α-versus-quality test moved ahead of adapter training | the specification's E1 validates α only after adapters exist, which is where the test stops being cheap |
 | 2026-09-07 | S0 run three times; §3 filled in; C9 and C10 added; the redesign counter reached its stopping condition and the instrument was **not** changed a fourth time | the metric was measuring layout, and the rule about counting redesigns exists precisely for the moment it is inconvenient |
 | 2026-09-07 | S6 moved from "parallel" to "under review, possibly upstream of α" | if the kernel adapter is what pins the format, then it is what makes character acceptance mean anything |

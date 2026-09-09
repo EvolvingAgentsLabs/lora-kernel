@@ -612,6 +612,93 @@ producto, es comprable; se compra antes que P6 y no junto con él.
 
 **La A100 es el recurso caro, así que P1, P2, P7 y P8 se quedan en la L4.**
 
+**Los directorios de corrida se despegaron de esta tabla después de P4, y ganan
+los nombres en disco.** `P5` es el chequeo de headroom sobre la suite nueva,
+`P6` la brecha de retiro, `P7` el paso de la calculadora que la cerró —
+insertado porque la brecha no cerraba sin herramienta — y `P8` es
+`harness.lora`, al que esta tabla llama P7. El torneo, el P8 de esta tabla,
+no se compró.
+
+
+#### P8 — el protocolo es separable, y no se apila
+
+[`results/P8-harness-lora-20260909/`](../../results/P8-harness-lora-20260909/BRIEF.md),
+`Qwen/Qwen2.5-3B-Instruct`, dos adaptadores sobre una misma base residente, 30
+casos vistos cada uno, con el harness respondiendo cada llamada `<calc>` **[ran]**:
+
+| brazo | exactitud | llamadas | llamadas/caso |
+|---|---|---|---|
+| base + herramienta | 0/30 | 44 | 1,5 |
+| **kernel + herramienta** (nunca vio física) | 1/30 | **169** | **5,6** |
+| **dominio + herramienta** (nunca vio una etiqueta) | 0/30 | **0** | 0,0 |
+| **kernel + dominio + herramienta** (apilados) | **0/30** | 154 | 5,1 |
+
+**La primera mitad de §4 se sostiene, y es la mitad sorprendente.** Un kernel
+entrenado sólo con tickets de compra, promedios, crecimiento compuesto y
+volúmenes de cono — *sin cañería, sin fluido, sin Reynolds* — entra a mecánica de
+fluidos y llama a la herramienta 5,6 veces por caso, en los 30 casos. El experto
+de dominio, que sabe la física, la llama **cero** veces en 30. El protocolo es
+algo que se puede aprender solo, en pesos propios, y transfiere a un dominio que
+su corpus nunca contuvo.
+
+**La segunda mitad no.** Apilados, los dos adaptadores sacan 0/30 — por debajo
+del kernel solo. Y el fallo no es que gane uno: **los dos están visiblemente
+presentes en la salida**. La composición nombra la física correcta *y* llama a la
+herramienta, y las llamadas salen corrompidas:
+
+    1. área transversal: <calc>1.96 * 1.27</calc>= 2.4892
+    2. perímetro mojado: <calc>1.96 + 2 * 1.27</calc>= 4.5
+    3. radio hidráulico: <calc><b>2.4892</b> / 4.5</b>= 0.553133</calc>= ERROR
+    4. velocidad: <calc>0.015 * 0.553133 * \sqrt{1 + 4*0.01518^2}</calc>= ERROR
+
+LaTeX que se filtra, marcado suelto dentro de las etiquetas, términos que
+desaparecen de las fórmulas. Esto es lo que le hacen dos deltas a α=32 a una base
+ajustada para uno: `LoraModel` **suma** los deltas activos, así que la composición
+perturba los pesos el doble de fuerte que aquello con lo que se entrenó cada
+adaptador, y la fidelidad es lo primero que se cae.
+
+**La falsación se disparó como estaba escrita**: la composición no le ganó a las
+dos mitades, así que el protocolo no compone *por apilado*. Se compró una sola
+alternativa, nombrada en el brief antes de que este número existiera —
+`add_weighted_adapter` a 0,5/0,5, la corrección mecánica de una perturbación
+duplicada.
+
+**La mezcla también falla, y refuta la razón que yo di para el primer fallo.**
+
+| brazo | exactitud | llamadas | casos con una llamada rechazada por el evaluador |
+|---|---|---|---|
+| kernel + herramienta | 1/30 | 169 | **0 / 30** |
+| kernel + dominio, apilados | 0/30 | 154 | 11 / 30 |
+| **kernel + dominio, mezclados 0,5/0,5** | **0/30** | 129 | **12 / 30** |
+
+Partir a la mitad cada delta no devolvió la fidelidad de las llamadas — empeoró
+apenas. Así que la corrupción **no** es un efecto de magnitud, y "dos adaptadores
+a α=32 perturban el doble" era la explicación equivocada, ofrecida antes del dato
+que la pone a prueba. Lo que sí muestra la mezcla es la forma de la corrupción:
+las cadenas conservan los nombres de los pasos y su orden, y pierden el
+*contenido* — una línea de Swamee-Jain que no es Swamee-Jain, el largo de la
+cañería puesto en lugar del diámetro, una etiqueta abierta dentro de otra. El
+kernel solo no malforma una sola llamada en 30 casos.
+
+**La lectura que sobrevive.** Dos LoRAs entrenadas por separado sobre las mismas
+proyecciones no se suman en la unión de sus conductas; interfieren, y la
+interferencia cae justo sobre aquello en lo que cada adaptador era más
+específico. Ponderarlas es una perilla sobre la interferencia, no un arreglo.
+
+**Qué le cuesta esto a la arquitectura.** La separación de §4 queda en pie como
+hecho sobre el *aprendizaje* — el kernel existe y transfiere a un dominio que su
+corpus nunca contuvo — y se cae como hecho sobre el *servicio*: la configuración
+que funciona es el adaptador fusionado de P7, 40/40, y un cambio en la superficie
+de herramientas cuesta entonces reentrenar cada experto del pool. Ése es
+exactamente el precio que §4 existe para evitar, y no queda evitado.
+
+**No comprado, a propósito.** La opción 1 de `TECHNICAL-REFERENCE.md` §5 —
+activación secuencial, los dos adaptadores nunca vivos a la vez — sigue sin
+medirse y es barata, porque los dos adaptadores ya existen. No se corre acá: el
+brief pre-registró **una** alternativa, y comprar un tercer modo de composición
+después de dos fallos es como una medición se convierte en una búsqueda. Se lleva
+un paso propio, con su compuerta escrita antes, o no se compra.
+
 #### P7 — la brecha de retiro se cierra, y hacen falta las dos mitades
 
 [`results/P7-calculator-20260908/`](../../results/P7-calculator-20260908/BRIEF.md),
@@ -739,6 +826,7 @@ frontera que nunca estuvo adelante no mide nada.
 
 | fecha | cambio a este plan | por qué |
 |---|---|---|
+| 2026-09-09 | **P8 corrido: el protocolo es separable pero no se apila.** Un kernel que nunca vio física llama a la herramienta 5,6 veces por caso en mecánica de fluidos; el experto de física la llama 0 veces; apilados sacan 0/30, con las dos conductas visiblemente presentes y las llamadas corrompidas. La mezcla a 0,5/0,5 quedó pre-registrada antes de que el número existiera | §4 separa lo que posee el kernel de lo que posee el experto, y sólo se había medido el caso fusionado — la mitad que se sostiene y la que no son mitades distintas de las que la arquitectura suponía |
 | 2026-09-07 | plan creado; S0 construido y corrido; el test de α contra calidad se movió antes del entrenamiento de adaptadores | el E1 de la especificación valida α sólo después de que existan los adaptadores, que es donde el test deja de ser barato |
 | 2026-09-07 | S0 corrido tres veces; §3 completado; agregados C9 y C10; el contador de rediseños llegó a su condición de parada y el instrumento **no** se cambió una cuarta vez | la métrica estaba midiendo el formato, y la regla de contar rediseños existe justamente para el momento en que es incómoda |
 | 2026-09-07 | S6 pasó de "en paralelo" a "en revisión, posiblemente aguas arriba de α" | si el adaptador kernel es lo que fija el formato, entonces es lo que hace que la aceptación por caracteres signifique algo |
