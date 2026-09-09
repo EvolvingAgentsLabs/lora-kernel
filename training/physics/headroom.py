@@ -79,9 +79,16 @@ def run_model(tag: str, rows: list[dict], rtol: float, max_tokens: int) -> dict:
         passed += ok
         unparsed += got is None
         per_family[row["family"]].append(ok)
+        # THE HEAD OF A RESPONSE CANNOT TELL YOU IF ITS TAIL WAS CUT OFF. Storing
+        # only `text[:300]` made a complete answer and one truncated at max_tokens
+        # look identical, and `parse_answer` falls back to the last bare number —
+        # so a truncated chain scores an intermediate value and reads as bad
+        # physics. The tail and the length are what distinguish them.
+        text = r.text if r else ""
         records.append({"case_id": row["case_id"], "family": row["family"],
                         "want": row["answer"], "got": got, "passed": bool(ok),
-                        "raw": (r.text[:300] if r else "")})
+                        "chars": len(text), "has_json": '"answer"' in text,
+                        "raw": text[:300], "tail": text[-200:]})
         if i % 10 == 0:
             print(f"  [{tag}] {i}/{len(rows)} passed {passed}", flush=True)
     return {
@@ -89,6 +96,9 @@ def run_model(tag: str, rows: list[dict], rtol: float, max_tokens: int) -> dict:
         "accuracy": round(passed / len(rows), 4), "unparsed": unparsed,
         "seconds": round(time.time() - t0, 1),
         "thinking_chars": thought,
+        # A run where the answers stopped arriving in the agreed format is a run
+        # about token budgets, and it must say so on its own face.
+        "without_json": sum(1 for r in records if not r["has_json"]),
         "by_family": {k: f"{sum(v)}/{len(v)}" for k, v in sorted(per_family.items())},
         "records": records,
     }
@@ -134,15 +144,22 @@ def main() -> int:
         summary["arms"][tag] = run_model(tag, rows, args.rtol, args.max_tokens)
         (out / "headroom.json").write_text(json.dumps(summary, indent=2))
 
-    s, l = summary["arms"][args.small], summary["arms"][args.large]
-    gap = l["accuracy"] - s["accuracy"]
-    summary["gap"] = round(gap, 4)
+    # ONE ARM IS A LEGITIMATE RUN. Re-measuring a single baseline under a second
+    # contract is the cheapest arm in the project, and crashing on the report
+    # after writing the results is a good way to lose it.
+    gap = None
+    if args.small and args.large:
+        s, l = summary["arms"][args.small], summary["arms"][args.large]
+        gap = round(l["accuracy"] - s["accuracy"], 4)
+        summary["gap"] = gap
     (out / "headroom.json").write_text(json.dumps(summary, indent=2))
     print(f"\n{'model':<44}{'passed':>10}{'accuracy':>11}{'unparsed':>10}")
     for tag in [t for t in (args.small, args.large) if t]:
         a = summary["arms"][tag]
         print(f"{tag:<44}{str(a['passed'])+'/'+str(a['n']):>10}"
               f"{a['accuracy']:>11.3f}{a['unparsed']:>10}")
+    if gap is None:
+        return 0
     print(f"\ngap (large - small): {gap:+.3f}")
     print("THE GATE: a withdrawal gap needs somewhere to fall from. On the "
           "clinical suite this gap was +0.05 and the project stalled there.")
