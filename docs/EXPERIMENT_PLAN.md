@@ -593,6 +593,32 @@ the product, is buyable at all; it is bought before P6 and not alongside it.
 
 **The A100 is the expensive resource, so P1, P2, P7 and P8 stay on the L4.**
 
+#### P7 — the withdrawal gap closes, and it takes both halves
+
+[`results/P7-calculator-20260908/`](../results/P7-calculator-20260908/BRIEF.md),
+`Qwen/Qwen2.5-3B-Instruct`, 600 oracle-written chains, the harness answering
+every `<calc>` call **[ran]**:
+
+| arm | | accuracy | tool calls |
+|---|---|---|---|
+| teacher `gemini-3.8-flash` | 40/40 | **1.000** | — |
+| base | 0/40 | 0.000 | 0 |
+| base + calculator | 0/40 | **0.000** | **53** |
+| adapter alone | 4/40 | 0.100 | 0 |
+| **adapter + calculator** | **40/40** | **1.000** | 156 |
+
+**The withdrawal gap is 0.000** on the region the expert was distilled for. And
+neither half does it alone: the base made 53 tool calls and got nothing right;
+the procedure without the tool got 4 of 40. `ARCHITECTURE.md` separates the
+kernel that acts from the expert that thinks — here that separation is the
+difference between 4/40 and 40/40, with each half held out in turn.
+
+**The bound is the architecture's own.** The held-out families were at 0 of 10
+when the session ended: the expert does not generalise outside its region, which
+is exactly why the plan promotes and withdraws **per region**. That arm did not
+finish, and 0/10 is reported as observed rather than as a persisted result.
+
+
 #### P3 resolved — the substrate exists, on a base vLLM can serve
 
 `Qwen/Qwen2.5-3B-Instruct` — `Qwen2ForCausalLM`, dense, no vision tower — on an
