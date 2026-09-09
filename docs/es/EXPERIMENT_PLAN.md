@@ -620,6 +620,50 @@ insertado porque la brecha no cerraba sin herramienta — y `P8` es
 no se compró.
 
 
+#### P9 — composición bajo un contrato que las dos mitades comparten · CORRIENDO
+
+[`results/P9-shared-contract-20260909/`](../../results/P9-shared-contract-20260909/BRIEF.md).
+Escrito antes de correr, así que es un plan y no una descripción.
+
+Los brazos de P8 no se pueden re-leer, sólo re-correr: los dos corpus enseñaron
+notaciones distintas y todos los brazos usaron el system prompt del dominio.
+`training/protocol.py` ahora tiene **un** system prompt y **una** instrucción de
+usuario, importados por los dos corpus y por la evaluación, y la instrucción **no
+menciona `<calc>`** — si el prompt pidiera etiquetas, el prompt sería el protocolo
+y el adaptador kernel sería decoración. El corpus de dominio son las cadenas del
+propio oráculo con las etiquetas sacadas y la aritmética hecha en el lugar. Los dos
+adaptadores difieren ahora en exactamente una cosa: si la aritmética se delega. P6
+y P7 siguen reproducibles — 600/600 mensajes legacy sin cambio **[ran]**.
+
+**La medición que a P8 le faltaba.** `training/physics/repair.py` re-evalúa cada
+paso de una cadena de forma exacta y arrastra el valor corregido hacia adelante,
+así *fórmula equivocada* y *fórmula bien, aritmética mal* dejan de compartir
+puntaje. Recupera la respuesta del oráculo en **200/200** cadenas que se saben
+correctas **[ran]**. Sin eso, el aporte de la mitad de dominio es inmedible — y en
+P8 nunca se midió.
+
+| # | brazo | qué contesta |
+|---|---|---|
+| 1 | **dominio** | ¿El experto sabe la física? Puntuado crudo **y** reparado |
+| 2 | kernel | El protocolo, bajo un prompt que no lo pide |
+| 3 | **kernel + dominio** | La afirmación |
+| 4 | base | Atribución, se compra último porque no puede matar nada |
+
+**La condición de parada, impuesta en el corredor y no en el criterio de alguien.**
+Si la exactitud reparada del brazo de dominio queda por debajo de **0,25**, los
+brazos 2–4 no se compran: no se le puede mostrar ganancia a una composición cuya
+mitad no aporta nada.
+
+**Falsación.** Con el contrato compartido y la mitad de dominio verificada, si
+`kernel + dominio` sigue sin superar a las dos mitades solas, **la composición en
+espacio de pesos está muerta** y §4 hay que servirlo de otra forma — activación
+secuencial (§5 opción 1) o módulos disjuntos, y ninguna de las dos se compra acá.
+
+**Deliberadamente no comprado:** decoding restringido y reparación de etiquetas (19
+de los 30 fallos apilados de P8 tenían todas las llamadas limpias, así que la
+sintaxis nunca fue el fallo dominante) y más perillas de ponderación (una mezcla se
+pre-registró y se corrió; una segunda sería una búsqueda).
+
 #### P8 — el protocolo es separable, y no se apila
 
 [`results/P8-harness-lora-20260909/`](../../results/P8-harness-lora-20260909/BRIEF.md),
