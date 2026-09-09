@@ -125,7 +125,15 @@ def main() -> int:
             peft_model.disable_adapter_layers()
         else:
             peft_model.enable_adapter_layers()
-            peft_model.set_adapter(active)
+            if isinstance(active, list):
+                # STACKING GOES THROUGH THE LoraModel, NOT THE PeftModel.
+                # PeftModel.set_adapter takes a single name and raises
+                # "unhashable type: 'list'" on a list [ran] 2026-09-09; the
+                # tuner underneath is the object that can hold several deltas
+                # active at once, which is what option 2 of §5 requires.
+                peft_model.base_model.set_adapter(active)
+            else:
+                peft_model.set_adapter(active)
         print(f"[arm] {label} — active adapters: {active}", flush=True)
         step = make_gen_step(peft_model, tok, args.max_new_tokens)
         summary["arms"][label] = score(step, ev, args.rtol, label)
