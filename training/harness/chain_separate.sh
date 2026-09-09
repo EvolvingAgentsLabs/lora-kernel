@@ -6,8 +6,9 @@ BASE="${BASE:-Qwen/Qwen2.5-3B-Instruct}"
 RUN_DIR="${RUN_DIR:-results/P9-shared-contract-20260909}"
 BRANCH="${BRANCH:-shared-contract}"
 ARGS="${ARGS:---n-eval 30 --epochs 3}"
-LOCAL="$RUN_DIR/separate_results.json"
-REMOTE=/content/lora-kernel/separate_results.json
+RESULTS_NAME="${RESULTS_NAME:-separate_results.json}"
+LOCAL="$RUN_DIR/$RESULTS_NAME"
+REMOTE=/content/lora-kernel/$RESULTS_NAME
 
 for i in $(seq 1 "$SESSIONS"); do
   S="sep$(date +%H%M%S)"

@@ -32,6 +32,12 @@ from pathlib import Path
 from alpha.backends import BackendError, build
 from training.physics.generate import HELD_OUT_FAMILIES, TRAIN_FAMILIES, generate
 
+# THIS PROMPT TELLS THE MODEL NOT TO SHOW ITS WORKING, AND EVERY BASELINE IN
+# P5-P8 WAS MEASURED UNDER IT while every treatment was trained to show working.
+# An unmodified 3B scores 4/30 on the same suite under the neutral contract and
+# 0/40 under this one [ran] `results/P9-shared-contract-20260909/`. It is kept so
+# those runs stay reproducible, and `--contract shared` is how a comparison that
+# means something is bought.
 SYSTEM = ("You are a careful engineer. Work in SI units and show no working in "
           "the final message: reply with one JSON object only.")
 
@@ -100,20 +106,30 @@ def main() -> int:
     ap.add_argument("--rtol", type=float, default=0.02)
     ap.add_argument("--max-tokens", type=int, default=2000)
     ap.add_argument("--style", default="json", choices=["json", "working"])
+    ap.add_argument("--contract", default="legacy", choices=["legacy", "shared"],
+                    help="shared uses training/protocol.py — the contract the "
+                         "adapters were trained under, so the number is comparable")
     ap.add_argument("--held-out", action="store_true",
                     help="use the families kept out of training instead")
     ap.add_argument("--run-dir", default="results/P5-physics-headroom-20260908")
     args = ap.parse_args()
 
     fams = HELD_OUT_FAMILIES if args.held_out else TRAIN_FAMILIES
-    rows = generate(args.n, args.seed, fams, args.style)
+    style = args.style
+    if args.contract == "shared":
+        global SYSTEM
+        from training.protocol import SYSTEM as SHARED
+        SYSTEM = SHARED
+        style = "working"
+    rows = generate(args.n, args.seed, fams, style)
     out = Path(args.run_dir)
     out.mkdir(parents=True, exist_ok=True)
-    summary = {"rtol": args.rtol, "n": len(rows), "style": args.style,
+    summary = {"rtol": args.rtol, "n": len(rows), "style": style,
+               "contract": args.contract,
                "families": sorted(fams),
                "seed": args.seed, "arms": {}}
 
-    for tag in (args.small, args.large):
+    for tag in [t for t in (args.small, args.large) if t]:
         print(f"[headroom] {tag}", flush=True)
         summary["arms"][tag] = run_model(tag, rows, args.rtol, args.max_tokens)
         (out / "headroom.json").write_text(json.dumps(summary, indent=2))
@@ -123,7 +139,7 @@ def main() -> int:
     summary["gap"] = round(gap, 4)
     (out / "headroom.json").write_text(json.dumps(summary, indent=2))
     print(f"\n{'model':<44}{'passed':>10}{'accuracy':>11}{'unparsed':>10}")
-    for tag in (args.small, args.large):
+    for tag in [t for t in (args.small, args.large) if t]:
         a = summary["arms"][tag]
         print(f"{tag:<44}{str(a['passed'])+'/'+str(a['n']):>10}"
               f"{a['accuracy']:>11.3f}{a['unparsed']:>10}")
