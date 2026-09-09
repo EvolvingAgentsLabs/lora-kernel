@@ -620,6 +620,37 @@ insertado porque la brecha no cerraba sin herramienta — y `P8` es
 no se compró.
 
 
+#### P10 — la brecha honesta de frontera es +0,533, y la mitad de +0,975 era el prompt
+
+[`results/P10-baseline-recheck-20260909/`](../../results/P10-baseline-recheck-20260909/BRIEF.md),
+mismos 30 casos, semilla de evaluación de P9, presupuesto de 6000 tokens **[ran]**:
+
+| brazo | exactitud |
+|---|---|
+| `qwen3.5:4b` con el prompt **legacy** ("no muestres el trabajo") | **0/30 — 0,000** |
+| `qwen3.5:4b` con el contrato **compartido** | **14/30 — 0,467** |
+| `gemini-3.8-flash` con el contrato compartido | **30/30 — 1,000** |
+| **la brecha honesta** | **+0,533** |
+
+**El prompt valía 0,467 de los 0,975 que reportó P5.** A todas las líneas de base
+de P5–P8 se les dijo que no mostraran el trabajo mientras que todos los
+tratamientos se entrenaron para mostrarlo, así que la brecha publicada era en parte
+la diferencia entre un modelo al que se le permite pensar y otro al que se le
+prohíbe. La cifra corregida reemplaza a +0,975 donde sea que se la cite.
+
+**Y un presupuesto de tokens valía el resto de la duda.** Con 2000 tokens la misma
+frontera sacaba 17/30 y el mismo modelo local 12/30: los dos se truncaban a mitad
+de cadena, y `parse_answer` cae al último número suelto, así que una derivación
+cortada puntúa un intermedio y se lee como física mala. El registro ahora guarda el
+largo, la cola y si el JSON acordado aparece; con 6000 tokens **ninguno de los dos
+brazos tiene una sola respuesta sin él**.
+
+**El headroom sobrevive, a la mitad.** +0,533 sigue siendo una brecha desde la cual
+un retiro puede caer — la suite clínica, donde este proyecto se trabó, ofrecía
++0,05. Y afila a P7 en vez de debilitarlo: el adaptador con calculadora saca 1,000
+donde una línea de base justa saca 0,467, así que el tratamiento cierra un +0,533
+real y no un +0,975 fabricado.
+
 #### P9 — composición bajo un contrato que las dos mitades comparten · HECHO
 
 [`results/P9-shared-contract-20260909/`](../../results/P9-shared-contract-20260909/BRIEF.md).

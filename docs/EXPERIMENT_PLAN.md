@@ -600,6 +600,36 @@ close without a tool — and `P8` is `harness.lora`, which this table calls P7.
 The tournament, this table's P8, has not been bought.
 
 
+#### P10 — the honest frontier gap is +0.533, and half of +0.975 was the prompt
+
+[`results/P10-baseline-recheck-20260909/`](../results/P10-baseline-recheck-20260909/BRIEF.md),
+same 30 cases, P9's eval seed, 6000-token budget, **[ran]**:
+
+| arm | accuracy |
+|---|---|
+| `qwen3.5:4b` under the **legacy** prompt ("show no working") | **0/30 — 0.000** |
+| `qwen3.5:4b` under the **shared** contract | **14/30 — 0.467** |
+| `gemini-3.8-flash` under the shared contract | **30/30 — 1.000** |
+| **the honest gap** | **+0.533** |
+
+**The prompt was worth 0.467 of the 0.975 P5 reported.** Every baseline in P5–P8
+was told not to show its working while every treatment was trained to show it, so
+the published gap was in part the difference between a model allowed to think and
+a model forbidden to. The corrected figure replaces +0.975 wherever it is cited.
+
+**And a token budget was worth the rest of the doubt.** At 2000 tokens the same
+frontier scored 17/30 and the same local model 12/30: both were truncated
+mid-chain, and `parse_answer` falls back to the last bare number, so a cut-off
+derivation scores an intermediate value and reads as bad physics. The record now
+carries the length, the tail and whether the agreed JSON appears at all; at 6000
+tokens **neither arm has a single response without it**.
+
+**The headroom survives, halved.** +0.533 is still a gap a withdrawal can fall
+from — the clinical suite, where this project stalled, offered +0.05. And it
+sharpens P7 rather than weakening it: the adapter with a calculator scores 1.000
+where a fair baseline scores 0.467, so the treatment closes a real +0.533 and not
+a manufactured +0.975.
+
 #### P9 — composition under a contract the two halves share · DONE
 
 [`results/P9-shared-contract-20260909/`](../results/P9-shared-contract-20260909/BRIEF.md).

@@ -197,7 +197,7 @@ nombrado. Nada de esta sección se infiere de un paper ni de un README.
 
 | afirmación | medición | dónde |
 |---|---|---|
-| **Existe una brecha de frontera** — la premisa que la arquitectura necesita — **pero su tamaño quedó en duda** | `gemini-3.8-flash` **40/40** contra un 4B local **1/40** en mecánica de fluidos con oráculo calculado: **+0,975**. La línea de base se midió con un prompt que le decía al modelo que **no mostrara el trabajo**; bajo un prompt neutral un 3B sin modificar saca 4/30 en la misma suite, así que la brecha es menor a +0,975 en una cantidad sin medir **[ran]**. En una suite clínica el mismo test falló tres veces — ninguna frontera estuvo nunca adelante | `results/P5-physics-headroom-20260908/` |
+| **Existe una brecha de frontera**, y es **+0,533**, no +0,975 | `gemini-3.8-flash` **30/30** contra `qwen3.5:4b` **14/30**, mismos 30 casos, un contrato compartido, 6000 tokens. El mismo modelo local saca **0/30** con el prompt que P5–P8 usó para todas sus líneas de base — así que **0,467 del 0,975 original era el prompt diciéndole a la base que no pensara** **[ran]**. En una suite clínica el mismo test falló tres veces — ninguna frontera estuvo nunca adelante | `results/P5-physics-headroom-20260908/` |
 | La destilación transfiere el **procedimiento pero no la aritmética** | el experto reproduce la cadena del maestro paso por paso y calcula pi/4·0,22² como 0,037006 en vez de 0,038013 | `results/P6-withdrawal-20260908/` |
 | **La brecha de retiro se cierra** | adaptador + calculadora **40/40** = el maestro. Brecha de retiro **0,000** | `results/P7-calculator-20260908/` |
 | …y hacen falta **las dos mitades** | base + calculadora **0/40** con 53 llamadas; adaptador solo **4/40** | ídem |

@@ -224,7 +224,7 @@ Nothing in this section is inferred from a paper or a README.
 
 | claim | measurement | where |
 |---|---|---|
-| **A frontier gap exists** — the premise the whole architecture needs — **but its size is now in doubt** | `gemini-3.8-flash` **40/40** against a local 4B **1/40** on fluid mechanics with a computed oracle: **+0.975**. The baseline was measured under a prompt telling the model to **show no working**; under a neutral prompt an unmodified 3B scores 4/30 on the same suite, so the gap is smaller than +0.975 by an unmeasured amount **[ran]**. On a clinical suite the same test failed three times — no frontier was ever ahead | `results/P5-physics-headroom-20260908/` |
+| **A frontier gap exists**, and it is **+0.533**, not +0.975 | `gemini-3.8-flash` **30/30** against `qwen3.5:4b` **14/30**, same 30 cases, one shared contract, 6000 tokens. The same local model scores **0/30** under the prompt P5–P8 used for every baseline — so **0.467 of the original 0.975 was the prompt telling the baseline not to think** **[ran]**. On a clinical suite the same test failed three times — no frontier was ever ahead | `results/P5-physics-headroom-20260908/` |
 | Distillation transfers the **procedure but not the arithmetic** | the expert reproduces the teacher's chain step for step and computes pi/4·0.22² as 0.037006 instead of 0.038013 | `results/P6-withdrawal-20260908/` |
 | **The withdrawal gap closes** | adapter + calculator **40/40** = the teacher. Withdrawal gap **0.000** | `results/P7-calculator-20260908/` |
 | …and it takes **both halves** | base + calculator **0/40** with 53 calls; adapter alone **4/40** | same |
