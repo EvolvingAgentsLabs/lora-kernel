@@ -134,6 +134,9 @@ def main() -> int:
     ap.add_argument("--variant", default="plain", choices=["plain", "disjoint"],
                     help="disjoint puts the kernel on attention and the domain on "
                          "the MLP, so the two deltas share no matrix")
+    ap.add_argument("--tag", default="",
+                    help="names this variant's adapters and results file, so two "
+                         "variants can share a runtime without colliding")
     ap.add_argument("--weights", default="",
                     help='e.g. "1.0,0.5" adds an arm with the kernel weighted '
                          "above the domain — a targeted push on delegation, "
@@ -144,7 +147,8 @@ def main() -> int:
         kernel_targets, domain_targets = ATTENTION, MLP
     else:
         kernel_targets = domain_targets = args.targets
-    suffix = "" if args.variant == "plain" else f"-{args.variant}"
+    suffix = args.tag or ("" if args.variant == "plain" else f"-{args.variant}")
+    suffix = f"-{suffix.lstrip('-')}" if suffix else ""
     results = Path(f"separate_results{suffix}.json") if suffix else RESULTS
 
     from peft import PeftModel
@@ -178,6 +182,10 @@ def main() -> int:
         f"the two corpora use different instructions: {k_tail ^ d_tail}"
     tagged = sum("<calc>" in m["content"] for r in domain_rows
                  for m in r["messages"] if m["role"] == "assistant")
+    values = sum("=" in m["content"] for r in domain_rows
+                 for m in r["messages"] if m["role"] == "assistant")
+    print(f"[domain corpus] {len(domain_rows)} chains, {tagged} with the protocol, "
+          f"{values} that produce a value", flush=True)
     assert tagged == 0, f"{tagged} domain examples carry the protocol"
     print(f"[corpora] kernel {len(kernel_rows)} · domain {len(domain_rows)} "
           f"(0 tagged) · eval {len(ev)} · one shared contract", flush=True)

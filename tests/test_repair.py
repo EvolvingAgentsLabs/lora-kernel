@@ -66,6 +66,27 @@ def test_a_delegated_chain_reads_like_any_other():
     assert (ok, bad) == (2, 0), (ok, bad)
     assert abs(got - 24.892) < 1e-6, got
 
+
+
+@check
+def test_a_formula_only_chain_is_scored_by_its_last_formula():
+    # The formula-only corpus never writes a value: the kernel's tool supplies it.
+    text = ("1. Depth of the centroid: 2.58 + 1.32/2\n"
+            "2. Area of the gate: 0.7 * 1.32\n"
+            "3. Resultant force: 880.0 * 9.80665 * (2.58 + 1.32/2) * (0.7 * 1.32)\n")
+    got, ok, bad = repair(text)
+    assert (ok, bad) == (3, 0), (ok, bad)
+    assert abs(got - 25835.7) < 1.0, got
+
+
+@check
+def test_a_prose_heading_is_not_mistaken_for_a_formula():
+    # The unmodified base writes exactly this and it must score nothing, not noise.
+    text = ("1. Calculate the depth of the centroid of the gate:\n"
+            "   - Depth = 2.26 m + (0.98 m / 2) = 2.75 m\n")
+    got, ok, _ = repair(text)
+    assert got is None and ok == 0, (got, ok)
+
 if __name__ == "__main__":
     for fn in CHECKS:
         fn()
