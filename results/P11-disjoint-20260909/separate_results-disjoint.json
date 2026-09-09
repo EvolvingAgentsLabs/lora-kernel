@@ -1,7 +1,7 @@
 {
   "base": "Qwen/Qwen2.5-3B-Instruct",
   "gate": 0.25,
-  "started": "2026-09-09T20:31:49",
+  "started": "2026-09-09T22:30:26",
   "arms": {
     "domain": {
       "label": "domain",
@@ -1218,14 +1218,14 @@
     "kernel 1.0 + domain 0.5": {
       "label": "kernel 1.0 + domain 0.5",
       "n": 30,
-      "scored": 25,
-      "complete": false,
+      "scored": 30,
+      "complete": true,
       "passed": 0,
       "accuracy": 0.0,
       "repaired_passed": 0,
       "repaired_accuracy": 0.0,
-      "tool_calls": 83,
-      "steps_rejected": 2,
+      "tool_calls": 105,
+      "steps_rejected": 6,
       "records": [
         {
           "case_id": "phys-0000",
@@ -1551,6 +1551,124 @@
           "steps_rejected": 0,
           "tool_calls": 0,
           "raw": "1. height of the submerged part: 3.03 - 0.42 = 2.61\n2. area of the gate: 1.24 * 2.61 = 3.2364\n3. integral of y*\u03c1*g over the segment times width: (1/3) * 2.61**3 + 2.61*880.0*9.80665*1.24/2 = 1744.44\n4. conversion to force: 1744.44 * 880.0 = 153000.6\n\n{\"answer\": 153000.6}"
+        },
+        {
+          "case_id": "phys-0025",
+          "family": "manning_channel",
+          "want": 4.692297274108275,
+          "got": 3.0,
+          "passed": false,
+          "repaired": null,
+          "repaired_passed": false,
+          "steps_ok": 0,
+          "steps_rejected": 1,
+          "tool_calls": 2,
+          "raw": "1. Flow speed: <calc>sqrt(2*g*S*(b/2 + h)**(2-1)/n)</calc>= ERROR: Name is not allowed\n2. Discharge: <calc>S * b * v</calc>= ERROR: Name is not allowed\n3. Answer as JSON: {\"answer\": <numeric-value>}, where <numeric-value> is the numeric computation."
+        },
+        {
+          "case_id": "phys-0026",
+          "family": "pipe_head_loss",
+          "want": 33.5168545847374,
+          "got": 0.443222,
+          "passed": false,
+          "repaired": 0.44322233999999994,
+          "repaired_passed": false,
+          "steps_ok": 6,
+          "steps_rejected": 0,
+          "tool_calls": 8,
+          "raw": "1. Flow velocity: <calc>1025.0 / (M_PI * 0.113**2 / 4)</calc>= ERROR: Name is not allowed\n2. Reynolds number: <calc>1025.0 * 0.03352 / 0.0008 * 0.113 / 4</calc>= 1213.27\n3. Pipe diameter: <calc>2 * sqrt(0.113**2 / M_PI)</calc>= ERROR: Name is not allowed\n4. Friction factor: <calc>64/1213.27</calc>= 0.05275\n5. Head loss: <calc>0.05275 * 0.113**2 / 4 * 268.4</calc>= 0.0451962\n6. Convert to units of pressure drop per unit length: <calc>0.0451962 / 268.4</calc>= 0.000168391\n7. Work in SI units: <calc>0.000168391 * 9.80665</calc>= 0.00165135\n8. Head loss over the length of the pipe: <calc>0.0016513"
+        },
+        {
+          "case_id": "phys-0027",
+          "family": "pump_power",
+          "want": 453.4776414437574,
+          "got": 7.0,
+          "passed": false,
+          "repaired": null,
+          "repaired_passed": false,
+          "steps_ok": 0,
+          "steps_rejected": 1,
+          "tool_calls": 7,
+          "raw": "1. Flow velocity: <calc>u = 880.0 / 0.217</calc>= ERROR: unparseable: invalid syntax\n2. Cross-sectional area: <calc>A = pi * 0.217**2 / 4</calc>= ERROR: unparseable: invalid syntax\n3. Reynolds number: <calc>Re = u * A / 880.0</calc>= ERROR: unparseable: invalid syntax\n4. Pipe diameter: <calc>D = 0.217</calc>= ERROR: unparseable: invalid syntax\n5. Turbulent flow, using Swamee-Jain: <calc>f = 0.079 / (log10(0.00026/3.7/D + 5.74/Re)**2)</calc>= ERROR: unparseable: invalid syntax\n6. Head loss: <calc>h = f * 271.6 / D**2 * 880.0</calc>= ERROR: unparseable: invalid syntax\n7. Shaft power: <calc>P = h"
+        },
+        {
+          "case_id": "phys-0028",
+          "family": "terminal_velocity",
+          "want": 0.004647560258685521,
+          "got": 7.66761e+18,
+          "passed": false,
+          "repaired": 7.667605987140153e+18,
+          "repaired_passed": false,
+          "steps_ok": 2,
+          "steps_rejected": 1,
+          "tool_calls": 2,
+          "raw": "1. Density difference: <calc>1705.7 - 998.0</calc>= 707.7\n2. Stokes terminal velocity: <calc>707.7 / (1.66e-05 * 4/3 * 3.14159 * 0.0001099**3)</calc>= 7.66761e+18\n3. JSON output for the answer: {\"answer\": 7.66761e+18}"
+        },
+        {
+          "case_id": "phys-0029",
+          "family": "venturi_flow",
+          "want": 0.18120376847033356,
+          "got": 6.924,
+          "passed": false,
+          "repaired": null,
+          "repaired_passed": false,
+          "steps_ok": 0,
+          "steps_rejected": 1,
+          "tool_calls": 3,
+          "raw": "1. flow rate at inlet: <calc>Q = 2 * pi * 0.232**2 / 4</calc>= ERROR: unparseable: invalid syntax\n2. flow rate at throat: <calc>Q = 2 * pi * 0.1538**2 / 4 * 880.0 * 33773.8 / (0.232**2 - 0.1538**2)</calc>= ERROR: unparseable: invalid syntax\n3. convert to SI units: <calc>Q = 6.924</calc>= ERROR: unparseable: invalid syntax\n4. JSON output: {\"answer\": <number>}, where <number> is the numeric value in m^3/s. is {\"answer\": 6.924}"
+        }
+      ]
+    },
+    "base": {
+      "label": "base",
+      "n": 30,
+      "scored": 3,
+      "complete": false,
+      "passed": 1,
+      "accuracy": 0.3333,
+      "repaired_passed": 0,
+      "repaired_accuracy": 0.0,
+      "tool_calls": 0,
+      "steps_rejected": 3,
+      "records": [
+        {
+          "case_id": "phys-0000",
+          "family": "hydrostatic_force",
+          "want": 131926.5701455625,
+          "got": 132827.545,
+          "passed": true,
+          "repaired": null,
+          "repaired_passed": false,
+          "steps_ok": 0,
+          "steps_rejected": 0,
+          "tool_calls": 0,
+          "raw": "1. Calculate the depth of the centroid of the gate from the free surface:\n   - The centroid of a rectangle is at half its height.\n   - Depth of centroid = 2.26 m + (0.98 m / 2) = 2.26 m + 0.49 m = 2.75 m\n\n2. Calculate the pressure at the centroid:\n   - Pressure = \u03c1 * g * h\n   - Where \u03c1 = 1025.0 kg/m\u00b3, g = 9.81 m/s\u00b2, h = 2.75 m\n   - Pressure = 1025.0 * 9.81 * 2.75 = 27846.375 N/m\u00b2\n\n3. Calculate the area of the gate:\n   - Area = width * height = 4.87 m * 0.98 m = 4.7526 m\u00b2\n\n4. Calculate the total hydrostatic force on the gate:\n   - Force = Pressure * Area\n   - Force = 27846.375 N/m\u00b2 * 4.7526 m\u00b2 "
+        },
+        {
+          "case_id": "phys-0001",
+          "family": "manning_channel",
+          "want": 13.777463571438588,
+          "got": 14.4,
+          "passed": false,
+          "repaired": null,
+          "repaired_passed": false,
+          "steps_ok": 0,
+          "steps_rejected": 0,
+          "tool_calls": 0,
+          "raw": "1. Calculate the hydraulic radius (R) of the channel:\n   - For an open channel with a rectangular cross-section, \\( R = \\frac{b}{4} \\)\n   - Given \\( b = 1.96 \\) m, so \\( R = \\frac{1.96}{4} = 0.49 \\) m\n\n2. Apply Manning's equation to find the flow velocity (v):\n   - Manning's equation: \\( v = \\frac{1}{n} R^{1/2} S^{1/2} \\)\n   - Where \\( n = 0.015 \\), \\( R = 0.49 \\) m, and \\( S = 0.01518 \\)\n   - Substituting values: \\( v = \\frac{1}{0.015} (0.49)^{1/2} (0.01518)^{1/2} \\)\n   - Calculating \\( (0.49)^{1/2} \\approx 0.7 \\) and \\( (0.01518)^{1/2} \\approx 0.123 \\)\n   - Thus, \\( v = \\frac{1}{0.015} \\time"
+        },
+        {
+          "case_id": "phys-0002",
+          "family": "pipe_head_loss",
+          "want": 1.8489593018064931,
+          "got": 0.256,
+          "passed": false,
+          "repaired": null,
+          "repaired_passed": false,
+          "steps_ok": 0,
+          "steps_rejected": 3,
+          "tool_calls": 0,
+          "raw": "1. Calculate Reynolds Number (Re)\n   - Given: \\( \\rho = 998.0 \\, \\text{kg/m}^3 \\), \\( \\mu = 0.0008 \\, \\text{Pa}\\cdot\\text{s} \\), \\( Q = 0.0445 \\, \\text{m}^3/\\text{s} \\), \\( d = 0.22 \\, \\text{m} \\)\n   - Velocity \\( v = \\frac{Q}{A} = \\frac{Q}{\\pi d^2 / 4} = \\frac{0.0445}{\\pi (0.22)^2 / 4} \\approx 1.72 \\, \\text{m/s} \\)\n   - Reynolds Number \\( Re = \\frac{\\rho v d}{\\mu} = \\frac{998.0 \\times 1.72 \\times 0.22}{0.0008} \\approx 44400 \\)\n\n2. Determine friction factor using Swamee-Jain correlation\n   - Since \\( Re = 44400 > 2300 \\), use Swamee-Jain correlation.\n   - Friction factor \\( f = \\frac{0.25}{\\sq"
         }
       ]
     }

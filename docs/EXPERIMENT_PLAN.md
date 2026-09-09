@@ -600,6 +600,37 @@ close without a tool — and `P8` is `harness.lora`, which this table calls P7.
 The tournament, this table's P8, has not been bought.
 
 
+#### P11 — both weight-space fixes for delegation fail, and one closes a family
+
+[`results/P11-disjoint-20260909/`](../results/P11-disjoint-20260909/BRIEF.md) **[ran]**:
+
+| arm | raw | repaired | calls/case |
+|---|---|---|---|
+| domain (MLP only) | 1/30 | **30/30** | 0.0 |
+| kernel (attention only) | 0/30 | 0/30 | **6.0** |
+| **F3 · kernel + domain, disjoint matrices** | 0/30 | 5/30 | **0.2** |
+| **F2 · kernel 1.0 + domain 0.5** | 0/30 | 0/30 | **3.5** |
+| *(P9 · shared matrices)* | *4/30* | *22/30* | *0.6* |
+
+**F3 closes the linear-algebra family.** Giving each adapter its own projections —
+no matrix in common, nothing to sum — made delegation **worse** (0.2 against 0.6)
+and cost most of the physics. Two adapters with no shared parameter still fight, so
+the competition was never a collision in weight space: both deltas shape the same
+output distribution, and where they live is irrelevant to that.
+
+**F2 proves delegation is controllable and shows the price.** Weighting the kernel
+up moved calls per case 0.2 → 3.5, seventeen-fold — and the expert disappeared with
+it, repaired 0/30 against its own 30/30. Under a weighting the two halves do not
+combine; one wins outright.
+
+**Each half remains healthy alone**: the kernel calls 6.0 times per case trained on
+attention only, the domain's physics is exact on the MLP only. The failure is
+behavioural competition at the token, which is exactly why a magnitude knob trades
+one half for the other. What remains is of a different kind: change what the expert
+is taught to produce (P12), or make the losing behaviour **impossible** at decode
+time — a logit mask on digits outside `<calc>` is the only intervention a competing
+delta cannot out-vote, and it is not bought yet.
+
 #### P10 — the honest frontier gap is +0.533, and half of +0.975 was the prompt
 
 [`results/P10-baseline-recheck-20260909/`](../results/P10-baseline-recheck-20260909/BRIEF.md),

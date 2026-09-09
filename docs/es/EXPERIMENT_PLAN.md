@@ -620,6 +620,39 @@ insertado porque la brecha no cerraba sin herramienta — y `P8` es
 no se compró.
 
 
+#### P11 — los dos arreglos en espacio de pesos fallan, y uno cierra una familia entera
+
+[`results/P11-disjoint-20260909/`](../../results/P11-disjoint-20260909/BRIEF.md) **[ran]**:
+
+| brazo | crudo | reparado | llam/caso |
+|---|---|---|---|
+| dominio (sólo MLP) | 1/30 | **30/30** | 0,0 |
+| kernel (sólo atención) | 0/30 | 0/30 | **6,0** |
+| **F3 · kernel + dominio, matrices disjuntas** | 0/30 | 5/30 | **0,2** |
+| **F2 · kernel 1,0 + dominio 0,5** | 0/30 | 0/30 | **3,5** |
+| *(P9 · matrices compartidas)* | *4/30* | *22/30* | *0,6* |
+
+**F3 cierra la familia del álgebra lineal.** Darle a cada adaptador sus propias
+proyecciones — ninguna matriz en común, nada que sumar — **empeoró** la delegación
+(0,2 contra 0,6) y costó casi toda la física. Dos adaptadores sin un solo parámetro
+compartido siguen peleando, así que la competencia nunca fue una colisión en
+espacio de pesos: los dos deltas moldean la misma distribución de salida, y dónde
+viven es irrelevante para eso.
+
+**F2 demuestra que la delegación es controlable, y muestra el precio.** Ponderar el
+kernel hacia arriba movió las llamadas por caso de 0,2 a 3,5, diecisiete veces — y
+el experto desapareció con eso, reparado 0/30 contra su propio 30/30. Bajo una
+ponderación las dos mitades no se combinan; una gana del todo.
+
+**Cada mitad sigue sana por separado**: el kernel llama 6,0 veces por caso
+entrenado sólo en atención, la física del dominio es exacta sólo en el MLP. El
+fallo es competencia de conductas en el token, que es exactamente por qué una
+perilla de magnitud cambia una mitad por la otra. Lo que queda es de otra especie:
+cambiar lo que se le enseña a producir al experto (P12), o volver **imposible** la
+conducta perdedora en decodificación — una máscara de logits sobre dígitos fuera de
+`<calc>` es la única intervención que un delta rival no puede out-votar, y todavía
+no se compró.
+
 #### P10 — la brecha honesta de frontera es +0,533, y la mitad de +0,975 era el prompt
 
 [`results/P10-baseline-recheck-20260909/`](../../results/P10-baseline-recheck-20260909/BRIEF.md),
