@@ -43,15 +43,28 @@ print(subprocess.run("rm -rf /content/lora-kernel && cd /content && git clone -q
 PY
   colab exec -s "$S" -f /tmp/_cboot.py | tail -2
 
-  [ -f "$LOCAL" ] && colab upload -s "$S" "$LOCAL" "$REMOTE" >/dev/null && \
-    echo "    restored $(python3 -c "import json;d=json.load(open('$LOCAL'));print([(k, v.get('scored', v['n'])) for k,v in d['arms'].items()])")"
+  if [ -f "$LOCAL" ]; then
+    colab upload -s "$S" "$LOCAL" "$REMOTE" >/dev/null \
+      && echo "    restored $(python3 -c "import json;d=json.load(open('$LOCAL'));print([(k, v.get('scored', v['n'])) for k,v in d['arms'].items()])")" \
+      || echo "    WARNING: results did not upload — this session starts from nothing"
+  fi
+
+  # NOTHING IN THE RESTORE MAY KILL THE RUN. The adapter upload is 240 MB and it
+  # failed; under `set -e` the failing `&&` chain ended the script and the trap
+  # stopped a healthy L4 that had already restored all four arms [ran] 2026-09-09.
+  # A restore that does not work costs a retrain, which is the thing this transport
+  # was added to save — and that is never worth the session it just killed.
   if [ -f "$LOCAL_AD" ]; then
-    colab upload -s "$S" "$LOCAL_AD" "$REMOTE_AD" >/dev/null
-    colab exec -s "$S" -f /dev/stdin <<'PY' >/dev/null
+    if colab upload -s "$S" "$LOCAL_AD" "$REMOTE_AD"; then
+      colab exec -s "$S" -f /dev/stdin <<'PY' 2>/dev/null || true
 import subprocess
-subprocess.run("cd /content/lora-kernel && unzip -qo adapters.zip", shell=True)
+print(subprocess.run("cd /content/lora-kernel && unzip -qo adapters.zip && ls adapters",
+                     shell=True, capture_output=True, text=True).stdout)
 PY
-    echo "    restored adapters — no retrain this session"
+      echo "    restored adapters — no retrain this session"
+    else
+      echo "    adapters did not upload; this session retrains them (~40 min)"
+    fi
   fi
 
   cat > /tmp/_crun.py <<PY
