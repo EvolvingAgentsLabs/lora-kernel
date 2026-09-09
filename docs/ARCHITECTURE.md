@@ -88,6 +88,30 @@ cost this design exists to remove. Serving them together is a multi-adapter
 composition question and is treated in
 [`TECHNICAL-REFERENCE.md` §5](TECHNICAL-REFERENCE.md).
 
+
+### What is measured, and what is not [ran]
+
+The first half of this section is now a result rather than a claim. A kernel
+adapter trained on 600 examples containing **no physics whatsoever** — shop
+receipts, means, compound growth, cone volumes — walked into fluid mechanics and
+called the tool on **30 of 30** cases, malforming **not one call**, under a prompt
+that never mentions the tool. The protocol is learnable in weights of its own and
+it transfers to a domain its corpus never contained.
+[`results/P8-harness-lora-20260909/`](../results/P8-harness-lora-20260909/BRIEF.md)
+
+The domain half is a result too: with its arithmetic repaired step by step, a
+physics expert's chains reach the oracle's answer on **30 of 30** cases while its
+raw score is **1 of 30**, with zero tool calls. Its formulas are exact; only its
+arithmetic fails. The expert needs delegation and nothing else.
+[`results/P9-shared-contract-20260909/`](../results/P9-shared-contract-20260909/BRIEF.md)
+
+**The second half — serving them together — is still unmeasured.** P8's
+composition arms were confounded (the two corpora taught different notations and
+every arm ran under one of their prompts), and P9 is the run that removes the
+confound. Until it reports, the configuration with evidence behind it is the
+*merged* adapter — 40/40 with a calculator — which is the price this section says
+the design exists to avoid. Say "unmeasured", not "works".
+
 ## 5. The tournament
 
 Per executed task:

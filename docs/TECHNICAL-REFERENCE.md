@@ -158,6 +158,8 @@ cost:
    adapter, which is the cost this design exists to remove. Listed to be
    rejected.
 
+**Measured status, 2026-09-09 [ran].** Option 3 is the only one that has worked: a merged adapter scores **40/40** with the calculator, its withdrawal gap 0.000. Option 2 was run twice — stacked and blended at 0.5/0.5 — and scored **0/30** both times, but those arms are **confounded**, not falsifying: the two corpora taught different notations and every arm ran under one of their system prompts. P9 re-runs option 2 under a shared contract. **Option 1, the stated default of this section, has never been measured.**
+
 Option 1 is the default until measured otherwise.
 
 ## 6. The fitness function

@@ -162,6 +162,8 @@ en costo creciente:
    adaptador de dominio, que es el costo que este diseño existe para eliminar.
    Listado para ser rechazado.
 
+**Estado medido, 2026-09-09 [ran].** La opción 3 es la única que funcionó: un adaptador fusionado saca **40/40** con la calculadora, con brecha de retiro 0,000. La opción 2 se corrió dos veces — apilada y mezclada a 0,5/0,5 — y sacó **0/30** las dos, pero esos brazos están **confundidos**, no falsados: los dos corpus enseñaron notaciones distintas y todos los brazos corrieron con el system prompt de uno de ellos. P9 re-corre la opción 2 bajo un contrato compartido. **La opción 1, la default declarada de esta sección, nunca se midió.**
+
 La opción 1 es la default hasta que se mida otra cosa.
 
 ## 6. La función de fitness

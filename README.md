@@ -209,21 +209,45 @@ the adapter changes the projections that produce K and V. Tree attention over on
 drafter is solved; across adapters it is the open engineering problem, and it is
 named here rather than waved at.
 
-## What runs first
+## What runs first — superseded, kept for the record
 
-**E0 · Headroom.** Score the base alone on the task distribution. If it is at the
-ceiling, every expert ties and a tie reads as a success.
+This section named four steps E0–E3 before any of them had run. All four
+were bought and three of them reported; **What has actually run**, below,
+carries the numbers. The plan they became lives in
+[`docs/EXPERIMENT_PLAN.md`](docs/EXPERIMENT_PLAN.md), which is the state of
+the work and is updated the same session a step reports.
 
-**E1 · The α surface.** Two domain adapters and one frontier target. Measure
-acceptance per region. This is Phase A in miniature and it produces the map
-everything else is built on.
+## What has actually run
 
-**E2 · Withdrawal.** Promote the adapter that crossed threshold, remove the
-frontier, and measure verified task score against what the frontier scored. The
-gap is the price of withdrawal, and it is the number the whole architecture
-exists to make small.
+Everything below is **[ran]** in this repository, with the run directory named.
+Nothing in this section is inferred from a paper or a README.
 
-**E3 · `harness.lora`**, against the −85% baseline above.
+| claim | measurement | where |
+|---|---|---|
+| **A frontier gap exists** — the premise the whole architecture needs | `gemini-3.8-flash` **40/40** against a local 4B **1/40** on fluid mechanics with a computed oracle: **+0.975**. On a clinical suite the same test failed three times — no frontier was ever ahead | `results/P5-physics-headroom-20260908/` |
+| Distillation transfers the **procedure but not the arithmetic** | the expert reproduces the teacher's chain step for step and computes pi/4·0.22² as 0.037006 instead of 0.038013 | `results/P6-withdrawal-20260908/` |
+| **The withdrawal gap closes** | adapter + calculator **40/40** = the teacher. Withdrawal gap **0.000** | `results/P7-calculator-20260908/` |
+| …and it takes **both halves** | base + calculator **0/40** with 53 calls; adapter alone **4/40** | same |
+| **The protocol is learnable on its own** | a kernel adapter with **no physics in its corpus** calls the tool on **30/30** fluid-mechanics cases, **0 malformed**, under a prompt that never mentions a tool | `results/P8-…`, `results/P9-…` |
+| **The expert's physics is exact; only its arithmetic fails** | repaired chain accuracy **30/30** against a raw **1/30**, with **0** tool calls | `results/P9-shared-contract-20260909/` |
+| **A pool is servable** | vLLM 0.28.0 multi-LoRA on `Qwen2.5-3B-Instruct`: the adapter changes the output, and served accuracy matches `transformers` for the same recipe | `results/P3-vllm-20260908/` |
+| Acceptance by characters measures **format, not agreement** | identical answers score 0.00 across formats; different answers score 0.44 within one. The promotion criterion is **semantic answer agreement** | `results/S0*/` |
+
+## What has not run, and is not claimed
+
+- **Composing the kernel with an expert at serving time.** The one thing the
+  architecture rests on. P8's arms were confounded and P9 is the run that removes
+  the confound; until it reports, the only configuration with evidence is the
+  *merged* adapter — which is the cost the design exists to avoid.
+- **Sequential activation** ([`TECHNICAL-REFERENCE.md` §5](docs/TECHNICAL-REFERENCE.md)
+  option 1), which that document names as its own default. Never measured.
+- **Generalisation outside a region.** The expert scored 0 of 10 on held-out
+  families in an arm that never finished. Promotion and withdrawal are therefore
+  specified per region, not globally.
+- **The price of holding a pool.** The mixed-batch arm measured this repository's
+  own loop rather than vLLM's scheduler and is void.
+- **Cross-adapter KV cache**, the tournament, the router, frontier withdrawal at
+  any scale beyond one region.
 
 ## How this is released
 

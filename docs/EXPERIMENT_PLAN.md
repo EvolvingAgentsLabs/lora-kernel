@@ -628,6 +628,8 @@ the domain half's contribution is unmeasurable — and in P8 it was never measur
 | 3 | **kernel + domain** | The claim |
 | 4 | base | Attribution, bought last because it cannot kill anything |
 
+**Arm 1 reported [ran].** The domain adapter's **repaired** accuracy is **30/30** against a raw **1/30**, with **0** tool calls. Its formulas are exact on every case; only its arithmetic fails. The gate (0.25) opens by a distance, the domain half is verified to contribute, and the composition arm is bought.
+
 **The stopping condition, enforced in the runner and not in judgement.** If the
 domain arm's repaired accuracy is below **0.25**, arms 2–4 are not bought: a
 composition cannot be shown to gain from a half that contributes nothing.

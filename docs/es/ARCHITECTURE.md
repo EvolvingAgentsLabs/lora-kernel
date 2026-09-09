@@ -89,6 +89,32 @@ es justo el costo que este diseño existe para eliminar. Servirlos juntos es una
 cuestión de composición multi-adaptador y se trata en
 [`TECHNICAL-REFERENCE.md` §5](TECHNICAL-REFERENCE.md).
 
+
+### Qué está medido y qué no [ran]
+
+La primera mitad de esta sección ya es un resultado y no una afirmación. Un
+adaptador kernel entrenado con 600 ejemplos **sin nada de física** — tickets de
+compra, promedios, crecimiento compuesto, volúmenes de cono — entró a mecánica de
+fluidos y llamó a la herramienta en **30 de 30** casos, sin malformar **ni una
+llamada**, bajo un prompt que nunca menciona la herramienta. El protocolo se puede
+aprender en pesos propios y transfiere a un dominio que su corpus nunca contuvo.
+[`results/P8-harness-lora-20260909/`](../../results/P8-harness-lora-20260909/BRIEF.md)
+
+La mitad de dominio también es un resultado: con su aritmética reparada paso a
+paso, las cadenas de un experto de física llegan a la respuesta del oráculo en
+**30 de 30** casos mientras su puntaje crudo es **1 de 30**, con cero llamadas.
+Sus fórmulas son exactas; sólo falla la aritmética. Al experto le falta la
+delegación y nada más.
+[`results/P9-shared-contract-20260909/`](../../results/P9-shared-contract-20260909/BRIEF.md)
+
+**La segunda mitad — servirlos juntos — sigue sin medirse.** Los brazos de
+composición de P8 estaban confundidos (los dos corpus enseñaron notaciones
+distintas y todos los brazos corrieron con el prompt de uno de ellos), y P9 es la
+corrida que saca el confound. Hasta que reporte, la configuración con evidencia
+detrás es el adaptador **fusionado** — 40/40 con calculadora — que es justo el
+precio que esta sección dice que el diseño existe para evitar. Decir "sin medir",
+no "funciona".
+
 ## 5. El torneo
 
 Por tarea ejecutada:

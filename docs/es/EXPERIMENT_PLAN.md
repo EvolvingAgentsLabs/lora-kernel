@@ -649,6 +649,8 @@ P8 nunca se midió.
 | 3 | **kernel + dominio** | La afirmación |
 | 4 | base | Atribución, se compra último porque no puede matar nada |
 
+**El brazo 1 reportó [ran].** La exactitud **reparada** del adaptador de dominio es **30/30** contra un crudo **1/30**, con **0** llamadas. Sus fórmulas son exactas en todos los casos; sólo falla la aritmética. La compuerta (0,25) se abre por lejos, la mitad de dominio queda verificada como aportante, y el brazo de composición se compra.
+
 **La condición de parada, impuesta en el corredor y no en el criterio de alguien.**
 Si la exactitud reparada del brazo de dominio queda por debajo de **0,25**, los
 brazos 2–4 no se compran: no se le puede mostrar ganancia a una composición cuya
