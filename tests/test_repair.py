@@ -54,6 +54,18 @@ def test_a_step_the_evaluator_rejects_is_counted_not_swallowed():
     assert abs(got - 4.9784) < 1e-3, got
 
 
+
+
+@check
+def test_a_delegated_chain_reads_like_any_other():
+    # The harness already computed these exactly, so the repair must agree with
+    # the chain rather than report zero evaluable steps.
+    text = ("1. Flow area: <calc>1.96 * 1.27</calc>= 2.4892\n"
+            "2. Discharge: <calc>2.4892 * 10</calc>= 24.892\n")
+    got, ok, bad = repair(text)
+    assert (ok, bad) == (2, 0), (ok, bad)
+    assert abs(got - 24.892) < 1e-6, got
+
 if __name__ == "__main__":
     for fn in CHECKS:
         fn()

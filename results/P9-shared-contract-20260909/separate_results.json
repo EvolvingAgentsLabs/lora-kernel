@@ -410,14 +410,14 @@
     "kernel": {
       "label": "kernel",
       "n": 30,
-      "scored": 8,
+      "scored": 12,
       "complete": false,
       "passed": 0,
       "accuracy": 0.0,
       "repaired_passed": 0,
       "repaired_accuracy": 0.0,
-      "tool_calls": 57,
-      "steps_rejected": 33,
+      "tool_calls": 90,
+      "steps_rejected": 51,
       "records": [
         {
           "case_id": "phys-0000",
@@ -522,6 +522,58 @@
           "steps_rejected": 2,
           "tool_calls": 5,
           "raw": "1. slope: <calc>0.01965</calc>= 0.01965\n2. hydraulic radius: <calc>R = (3.95 / 2) / 0.89 = 2.14722</calc>= ERROR: unparseable: invalid syntax\n3. flow rate: <calc>Q = 1.241 * 0.01965 * 2.14722**2 / 0.012 = 6.42182</calc>= ERROR: unparseable: invalid syntax\n4. corrected flow rate: <calc>Q = 1.241 * 0.01965 * 0.89**2 / 0.012 = 1.68128</calc>= ERROR: unparseable: invalid syntax\n5. answer: <calc>1.68128</calc>= 1.68128\n{\"answer\": 1.68128}"
+        },
+        {
+          "case_id": "phys-0008",
+          "family": "pipe_head_loss",
+          "want": 10.158958087290983,
+          "got": 1.21,
+          "passed": false,
+          "repaired": null,
+          "repaired_passed": false,
+          "steps_ok": 0,
+          "steps_rejected": 0,
+          "tool_calls": 8,
+          "raw": "1. calculate the Reynolds number: <calc>Re = (density * velocity * diameter) / viscosity</calc>= ERROR: unparseable: invalid syntax\n2. correct the calculation: <calc>Re = (880.0 * 0.08083 / 1.001002) / 0.001002</calc>= ERROR: unparseable: invalid syntax\n3. take the absolute value: <calc>abs(Re)</calc>= ERROR: Name is not allowed\n4. use the Swamee-Jain correlation: <calc>f = 64 / abs(Re)</calc>= ERROR: unparseable: invalid syntax\n5. take the absolute value: <calc>abs(f)</calc>= ERROR: Name is not allowed\n6. calculate the head loss using the Darcy-Weissbach equation: <calc>hL = f * (length / dia"
+        },
+        {
+          "case_id": "phys-0009",
+          "family": "pump_power",
+          "want": 1123.583802071903,
+          "got": 26333.2,
+          "passed": false,
+          "repaired": null,
+          "repaired_passed": false,
+          "steps_ok": 0,
+          "steps_rejected": 1,
+          "tool_calls": 8,
+          "raw": "1. flow rate: <calc>0.12482</calc>= 0.12482\n2. cross-sectional area: <calc>A = pi * (d/2)^2 = pi * (0.247/2)**2 = 0.0405048</calc>= ERROR: unparseable: invalid syntax\n2. flow velocity: <calc>v = Q/A = 0.12482/0.0405048 = 3.08282</calc>= ERROR: unparseable: invalid syntax\n3. Reynolds number: <calc>Re = v * d / nu = 3.08282 * 0.247 / 0.001002 = 778.273</calc>= ERROR: unparseable: invalid syntax\n4. friction factor using Darcy-Weisbach: <calc>f = 64/Re for Re < 2300 = 64/778.273 = 0.08212</calc>= ERROR: unparseable: invalid syntax\n5. head loss: <calc>h_f = f * L / d * (v**2 / 2) = 0.08212 * 32.2 /"
+        },
+        {
+          "case_id": "phys-0010",
+          "family": "terminal_velocity",
+          "want": 0.0020415860668487936,
+          "got": 2.09255,
+          "passed": false,
+          "repaired": null,
+          "repaired_passed": false,
+          "steps_ok": 0,
+          "steps_rejected": 10,
+          "tool_calls": 10,
+          "raw": "1. radius: <calc>0.0001117 / 2</calc>= 5.585e-05\n2. volume: <calc>4/3 * pi * (5.585e-05)**3</calc>= 7.29723e-13\n3. mass: <calc>7.29723e-13 * 2499.7</calc>= 1.82409e-09\n4. radius squared: <calc>(5.585e-05)**2</calc>= 3.11922e-09\n5. buoyant force: <calc>1.82409e-09 * 998.0 / (1 + 998.0/2499.7)</calc>= 1.30101e-06\n6. drag force: <calc>2 * 0.005 * pi * 5.585e-05**2 * 16.08</calc>= 1.57573e-09\n7. net force: <calc>1.82409e-09 - 1.57573e-09</calc>= 2.4836e-10\n8. acceleration: <calc>2.4836e-10 / 1.82409e-09</calc>= 0.136156\n9. time to reach terminal velocity: <calc>sqrt(2 * 0.136156 / 16.08)</calc>= 0"
+        },
+        {
+          "case_id": "phys-0011",
+          "family": "venturi_flow",
+          "want": 0.16595378329096444,
+          "got": 2987.61,
+          "passed": false,
+          "repaired": null,
+          "repaired_passed": false,
+          "steps_ok": 0,
+          "steps_rejected": 7,
+          "tool_calls": 7,
+          "raw": "1. area at the inlet: <calc>pi * (0.269/2)**2</calc>= 0.0568322\n2. area at the throat: <calc>pi * (0.1716/2)**2</calc>= 0.0231273\n3. flow ratio: <calc>0.0568322 / 0.0231273</calc>= 2.45736\n4. square root of the flow ratio: <calc>sqrt(2.45736)</calc>= 1.5676\n5. dynamic pressure at the throat: <calc>(1 - 1/2.45736) * 1025 * 1.5676**2</calc>= 1493.8\n6. velocity at the throat: <calc>2 * 1493.8 / 0.0231273</calc>= 129181\n7. volumetric flow rate: <calc>129181 * 0.0231273</calc>= 2987.61\n{\"answer\": 2987.61}"
         }
       ]
     }

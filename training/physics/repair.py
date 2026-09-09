@@ -54,6 +54,14 @@ def _split(body: str) -> tuple[str, str] | None:
     return (expr, m.group(1)) if expr else None
 
 
+# A CHAIN THAT DELEGATED ALREADY HAS EXACT ARITHMETIC. `1. area: <calc>e</calc>= v`
+# carries the same expression and the harness's own value, so the tags are removed
+# and the line reads like any other — after which `repaired` equals the raw score
+# for a tool-using arm instead of reading 0 by construction, which is what it did
+# on P9's kernel arm and would have looked like a finding.
+TAGS = re.compile(r"</?calc>")
+
+
 def repair(text: str) -> tuple[float | None, int, int]:
     """(answer the formulas imply, steps repaired, steps the evaluator rejected).
 
@@ -63,7 +71,7 @@ def repair(text: str) -> tuple[float | None, int, int]:
     fixed: list[tuple[str, str]] = []      # (claimed as written, corrected)
     last: float | None = None
     ok = bad = 0
-    for m in STEP.finditer(text):
+    for m in STEP.finditer(TAGS.sub("", text)):
         parsed = _split(m.group("body"))
         if parsed is None:
             continue
