@@ -21,6 +21,11 @@ BASE="${BASE:-Qwen/Qwen2.5-3B-Instruct}"
 RUN_DIR="${RUN_DIR:-results/P8-harness-lora-20260909}"
 BRANCH="${BRANCH:-harness-lora}"
 ARGS="${ARGS:---n-eval 30 --epochs 3}"
+# OFF BY DEFAULT because it does not work: 240 MB through the CLI's kernel
+# channel timed out twice [ran] 2026-09-09. Retraining the two adapters costs
+# ~40 min of the session; a timing-out upload costs minutes and then retrains
+# anyway. Set SEND_ADAPTERS=1 if a future CLI can carry it.
+SEND_ADAPTERS="${SEND_ADAPTERS:-0}"
 
 LOCAL="$RUN_DIR/compose_results.json"
 LOCAL_AD="$RUN_DIR/adapters.zip"
@@ -41,7 +46,28 @@ print(subprocess.run("rm -rf /content/lora-kernel && cd /content && git clone -q
                      "cd lora-kernel && git log --oneline -1", shell=True,
                      capture_output=True, text=True).stdout)
 PY
-  colab exec -s "$S" -f /tmp/_cboot.py | tail -2
+  cat > /tmp/_ccheck.py <<'PY'
+import subprocess
+print(subprocess.run("cd /content/lora-kernel && git log --oneline -1", shell=True,
+                     capture_output=True, text=True).stdout.strip() or "NO CLONE")
+PY
+  # A TIMED-OUT `colab exec` IS NOT A FAILED COMMAND. The CLI raises
+  # TimeoutError waiting for output while the cell keeps running, and under
+  # pipefail that ended the whole chain over a git clone that had very likely
+  # already succeeded [ran] 2026-09-09. So the clone is retried and then
+  # CHECKED, and only a runtime with no checkout is a reason to give up.
+  HEAD=""
+  for try in 1 2 3; do
+    colab exec -s "$S" -f /tmp/_cboot.py >/dev/null 2>&1 || true
+    HEAD=$(colab exec -s "$S" -f /tmp/_ccheck.py 2>/dev/null \
+           | grep -vE "^\[colab\]|^$" | head -1 || true)
+    case "$HEAD" in ""|*"NO CLONE"*) echo "    clone attempt $try did not take" ;;
+                    *) break ;; esac
+  done
+  case "$HEAD" in ""|*"NO CLONE"*)
+      echo "    giving up: no checkout on the runtime"; colab stop -s "$S" >/dev/null 2>&1; exit 1 ;;
+  esac
+  echo "    $HEAD"
 
   if [ -f "$LOCAL" ]; then
     colab upload -s "$S" "$LOCAL" "$REMOTE" >/dev/null \
@@ -54,7 +80,7 @@ PY
   # stopped a healthy L4 that had already restored all four arms [ran] 2026-09-09.
   # A restore that does not work costs a retrain, which is the thing this transport
   # was added to save — and that is never worth the session it just killed.
-  if [ -f "$LOCAL_AD" ]; then
+  if [ -f "$LOCAL_AD" ] && [ "$SEND_ADAPTERS" = 1 ]; then
     if colab upload -s "$S" "$LOCAL_AD" "$REMOTE_AD"; then
       colab exec -s "$S" -f /dev/stdin <<'PY' 2>/dev/null || true
 import subprocess
@@ -72,7 +98,7 @@ import subprocess
 subprocess.Popen("cd /content/lora-kernel && nohup python -u -m training.harness.compose "
                  "--base $BASE $ARGS > compose.log 2>&1 &", shell=True)
 PY
-  colab exec -s "$S" -f /tmp/_crun.py >/dev/null
+  colab exec -s "$S" -f /tmp/_crun.py >/dev/null 2>&1 || true
 
   cat > /tmp/_cpeek.py <<'PY'
 import subprocess
