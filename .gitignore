@@ -3,3 +3,4 @@ __pycache__/
 results/.answers/
 training/data/root/
 results/**/adapters-*.zip
+results/**/adapters.zip

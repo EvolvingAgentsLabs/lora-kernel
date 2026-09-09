@@ -41,9 +41,32 @@ from training.physics.headroom import SYSTEM, correct, parse_answer
 RESULTS = Path("compose_results.json")
 
 
-def score(step, rows, rtol, label):
-    passed, calls, recs = 0, 0, []
+def score(step, rows, rtol, label, prev=None, save=None):
+    """One arm, checkpointed after every case.
+
+    AN ARM IS NOT AN ATOM. The composition arm reached 20 of 30 and a reclaimed
+    session took all of it, because the results file was only written when an
+    arm finished [ran] 2026-09-09 — the chain script's own lesson, one level
+    down. Every case is banked as it lands, and a resumed arm starts at the
+    first case it does not already hold.
+    """
+    recs = list((prev or {}).get("records") or [])
+    done = {r["case_id"] for r in recs}
+    passed = sum(r["passed"] for r in recs)
+    calls = sum(r["tool_calls"] for r in recs)
+    if recs:
+        print(f"  [{label}] resuming with {len(recs)} cases already scored",
+              flush=True)
+
+    def snapshot(complete):
+        return {"label": label, "n": len(rows), "scored": len(recs),
+                "passed": passed, "complete": complete,
+                "accuracy": round(passed / max(len(recs), 1), 4),
+                "tool_calls": calls, "records": recs}
+
     for i, row in enumerate(rows, 1):
+        if row["case_id"] in done:
+            continue
         text, used = generate_with_tool(step, SYSTEM, row["prompt"])
         calls += used
         got = parse_answer(text)
@@ -52,12 +75,12 @@ def score(step, rows, rtol, label):
         recs.append({"case_id": row["case_id"], "family": row["family"],
                      "want": row["answer"], "got": got, "passed": bool(ok),
                      "tool_calls": used, "raw": text[:400]})
+        if save:
+            save(snapshot(False))
         if i % 10 == 0:
             print(f"  [{label}] {i}/{len(rows)} passed {passed} calls {calls}",
                   flush=True)
-    return {"label": label, "n": len(rows), "passed": passed,
-            "accuracy": round(passed / len(rows), 4), "tool_calls": calls,
-            "records": recs}
+    return snapshot(True)
 
 
 def main() -> int:
@@ -99,7 +122,10 @@ def main() -> int:
         prev = json.loads(RESULTS.read_text())
         if prev.get("base") == args.base:
             summary["arms"] = prev.get("arms", {})
-            print(f"[resume] keeping {list(summary['arms'])}", flush=True)
+            for k, v in summary["arms"].items():
+                state = "" if v.get("complete", True) else \
+                    f" (partial, {v.get('scored', 0)} cases)"
+                print(f"[resume] {k}{state}", flush=True)
 
     def save():
         RESULTS.write_text(json.dumps(summary, indent=2))
@@ -119,7 +145,8 @@ def main() -> int:
     peft_model.load_adapter("adapters/domain", adapter_name="domain")
 
     def run(active, label):
-        if label in summary["arms"]:
+        prev = summary["arms"].get(label)
+        if prev and prev.get("complete", True):
             return
         if active is None:
             peft_model.disable_adapter_layers()
@@ -136,7 +163,12 @@ def main() -> int:
                 peft_model.set_adapter(active)
         print(f"[arm] {label} — active adapters: {active}", flush=True)
         step = make_gen_step(peft_model, tok, args.max_new_tokens)
-        summary["arms"][label] = score(step, ev, args.rtol, label)
+
+        def bank(partial):
+            summary["arms"][label] = partial
+            save()
+
+        summary["arms"][label] = score(step, ev, args.rtol, label, prev, bank)
         save()
 
     run(None, "base + tool")
