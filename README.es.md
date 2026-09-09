@@ -182,11 +182,46 @@ drafters chicos por dominio: más memoria, mismo experimento.
 distintos* no comparten una representación cacheable como sí lo hacen las ramas
 de un mismo drafter, porque el LoRA cambia las proyecciones que producen K y V.
 
-## Qué se corre primero
+## Qué se corre primero — superado, se deja como registro
 
-**E0 · Headroom.** **E1 · La superficie de α** (2 expertos, 1 target de
-frontera). **E2 · El retiro**, y la brecha. **E3 · `harness.lora`** contra el
-−85%.
+Esta sección nombraba cuatro pasos E0–E3 antes de que corriera ninguno. Los
+cuatro se compraron y tres reportaron; **Lo que realmente corrió**, más abajo,
+trae los números. El plan en que se convirtieron vive en
+[`docs/EXPERIMENT_PLAN.md`](docs/EXPERIMENT_PLAN.md), que es el estado del
+trabajo y se actualiza en la misma sesión en que un paso reporta.
+
+## Lo que realmente corrió
+
+Todo lo de abajo es **[ran]** en este repositorio, con el directorio de corrida
+nombrado. Nada de esta sección se infiere de un paper ni de un README.
+
+| afirmación | medición | dónde |
+|---|---|---|
+| **Existe una brecha de frontera** — la premisa que la arquitectura necesita — **pero su tamaño quedó en duda** | `gemini-3.8-flash` **40/40** contra un 4B local **1/40** en mecánica de fluidos con oráculo calculado: **+0,975**. La línea de base se midió con un prompt que le decía al modelo que **no mostrara el trabajo**; bajo un prompt neutral un 3B sin modificar saca 4/30 en la misma suite, así que la brecha es menor a +0,975 en una cantidad sin medir **[ran]**. En una suite clínica el mismo test falló tres veces — ninguna frontera estuvo nunca adelante | `results/P5-physics-headroom-20260908/` |
+| La destilación transfiere el **procedimiento pero no la aritmética** | el experto reproduce la cadena del maestro paso por paso y calcula pi/4·0,22² como 0,037006 en vez de 0,038013 | `results/P6-withdrawal-20260908/` |
+| **La brecha de retiro se cierra** | adaptador + calculadora **40/40** = el maestro. Brecha de retiro **0,000** | `results/P7-calculator-20260908/` |
+| …y hacen falta **las dos mitades** | base + calculadora **0/40** con 53 llamadas; adaptador solo **4/40** | ídem |
+| **El protocolo se puede aprender solo** | un adaptador kernel **sin física en su corpus** llama a la herramienta en **30/30** casos de fluidos, **0 malformadas**, bajo un prompt que nunca menciona una herramienta | `results/P8-…`, `results/P9-…` |
+| **La física del experto es exacta; sólo falla su aritmética** | exactitud de la cadena reparada **30/30** contra un crudo **1/30**, con **0** llamadas | `results/P9-shared-contract-20260909/` |
+| **Un pool se puede servir** | vLLM 0.28.0 multi-LoRA sobre `Qwen2.5-3B-Instruct`: el adaptador cambia la salida, y la exactitud servida coincide con `transformers` para la misma receta | `results/P3-vllm-20260908/` |
+| La aceptación por caracteres mide **formato, no acuerdo** | respuestas idénticas sacan 0,00 entre formatos; respuestas distintas sacan 0,44 dentro de uno. El criterio de promoción es **acuerdo semántico de respuesta** | `results/S0*/` |
+
+## Lo que no corrió, y no se afirma
+
+- **Hacer que la composición delegue.** P9 lo midió: apilados, el kernel y el
+  experto le ganan a las dos mitades (4/30 contra 1/30 y 0/30), y cuando la
+  composición llama a la herramienta acierta **3 de 5** contra **1 de 25** cuando
+  no llama. Sólo llama en 5 de 30 casos — el delta de dominio gana la competencia
+  por el formato. El mecanismo funciona; hacerlo disparar es el problema abierto.
+- **Activación secuencial** ([`TECHNICAL-REFERENCE.md` §5](docs/TECHNICAL-REFERENCE.md)
+  opción 1), que ese documento declara como su propia default. Nunca se midió.
+- **Generalización fuera de una región.** El experto sacó 0 de 10 en familias
+  held-out, en un brazo que nunca terminó. Por eso promoción y retiro se
+  especifican por región y no globalmente.
+- **El precio de sostener un pool.** El brazo de lote mixto midió el bucle de este
+  repositorio y no el planificador de vLLM: está anulado.
+- **KV cache entre adaptadores**, el torneo, el router, y el retiro de la frontera
+  a cualquier escala mayor que una región.
 
 ## Cómo se libera
 

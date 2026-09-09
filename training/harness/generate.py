@@ -35,19 +35,11 @@ import json
 import pathlib
 import random
 
+from training.protocol import SYSTEM, user_prompt
+
 from training.physics.calc import evaluate
 
-SYSTEM = ("You are a careful assistant. You may not perform arithmetic yourself: "
-          "every computed number must come from a <calc>expression</calc> call, "
-          "and the value is supplied back to you.")
 
-INSTRUCTION = (
-    "Answer using a short numbered chain. Every arithmetic step must be a "
-    "<calc>expression</calc> call — the value is returned to you and you carry "
-    "it into the next step. Inside the tags use only numbers, + - * / ** ( ), "
-    'pi, and sqrt/log/log10/exp. Finish with one JSON object on its own line: '
-    '{"answer": <number>}, copied exactly from your final <calc> result.'
-)
 
 
 def _chain(steps: list[tuple[str, str]]) -> tuple[str, float]:
@@ -124,6 +116,15 @@ def root_and_log(rng):
 TASKS = [receipt, average_then_scale, compound_growth, two_stage_rate,
          geometric_solid, root_and_log]
 
+# EVERY TASK CARRIES A UNIT, so the kernel corpus and the domain corpus fill the
+# SAME instruction template rather than two variants of it. The domain half's
+# prompts end "...the numeric value in N." and the kernel's would otherwise end
+# "...the numeric value." — a small difference, and small prompt differences are
+# exactly what made P8's arms unreadable.
+UNITS = {"receipt": "currency units", "average_then_scale": "units",
+         "compound_growth": "units", "two_stage_rate": "units per hour",
+         "geometric_solid": "cubic units", "root_and_log": "dimensionless units"}
+
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
@@ -140,7 +141,7 @@ def main() -> int:
         rows.append({"case_id": f"harn-{i:04d}", "task": TASKS[i % len(TASKS)].__name__,
                      "calc_calls": chain.count("<calc>"),
                      "messages": [{"role": "system", "content": SYSTEM},
-                                  {"role": "user", "content": f"{stmt}\n\n{INSTRUCTION}"},
+                                  {"role": "user", "content": user_prompt(stmt, UNITS[TASKS[i % len(TASKS)].__name__])},
                                   {"role": "assistant", "content": chain}]})
     p = pathlib.Path(args.out)
     p.parent.mkdir(parents=True, exist_ok=True)

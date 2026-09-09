@@ -600,6 +600,93 @@ close without a tool — and `P8` is `harness.lora`, which this table calls P7.
 The tournament, this table's P8, has not been bought.
 
 
+#### P9 — composition under a contract the two halves share · DONE
+
+[`results/P9-shared-contract-20260909/`](../results/P9-shared-contract-20260909/BRIEF.md).
+Written before the run, so it is a plan and not a description.
+
+P8's arms cannot be re-read, only re-run: the two corpora taught different
+notations and every arm used the domain's system prompt. `training/protocol.py`
+now holds **one** system prompt and **one** user instruction, imported by both
+corpora and by the evaluation, and the instruction **says nothing about `<calc>`**
+— if the prompt asked for tags, the prompt would be the protocol and the kernel
+adapter would be decoration. The domain corpus is the oracle's own chains with the
+tags removed and the arithmetic left in place. The two adapters now differ in
+exactly one thing: whether the arithmetic is delegated. P6 and P7 stay
+reproducible — 600/600 legacy messages unchanged **[ran]**.
+
+**The measurement P8 was missing.** `training/physics/repair.py` re-evaluates each
+step of a chain exactly and carries the corrected value forward, so *wrong formula*
+and *right formula, wrong arithmetic* stop sharing a score. It recovers the
+oracle's answer on **200/200** chains known to be correct **[ran]**. Without it,
+the domain half's contribution is unmeasurable — and in P8 it was never measured.
+
+| # | arm | what it answers |
+|---|---|---|
+| 1 | **domain** | Does the expert know the physics at all? Scored raw **and** repaired |
+| 2 | kernel | The protocol, under a prompt that does not ask for it |
+| 3 | **kernel + domain** | The claim |
+| 4 | base | Attribution, bought last because it cannot kill anything |
+
+**Arm 1 reported [ran].** The domain adapter's **repaired** accuracy is **30/30** against a raw **1/30**, with **0** tool calls. Its formulas are exact on every case; only its arithmetic fails. The gate (0.25) opens by a distance, the domain half is verified to contribute, and the composition arm is bought.
+
+**The stopping condition, enforced in the runner and not in judgement.** If the
+domain arm's repaired accuracy is below **0.25**, arms 2–4 are not bought: a
+composition cannot be shown to gain from a half that contributes nothing.
+
+**Falsification.** With the contract shared and the domain half verified, if
+`kernel + domain` still fails to beat both halves alone, **weight-space
+composition is dead** and §4 must be served another way — sequential activation
+(§5 option 1) or disjoint target modules, neither of which is bought here.
+
+**All four arms reported [ran].**
+
+| arm | raw | repaired | calls/case |
+|---|---|---|---|
+| domain | 1/30 | **30/30** | 0.0 |
+| kernel | 0/30 | n/a | **7.7** |
+| **kernel + domain** | **4/30** | 22/30 | 0.6 |
+| base (control) | **4/30** | undefined | 0.0 |
+
+**1. P8's conclusion was the confound, and composition does compose.** With the
+contract shared, `kernel + domain` beats both halves — 4/30 against the domain's
+1/30 and the kernel's 0/30 — and inherits most of the physics, 22/30 repaired
+against the domain's 30/30. Nothing here looks like the 0/30 P8 reported.
+
+**2. The mechanism works whenever it fires, and it rarely fires.** Split the
+composition's 30 cases by whether it delegated at all:
+
+| | cases | passed |
+|---|---|---|
+| the composition delegated | 5 | **3 — 0.60** |
+| the composition did not | 25 | 1 — 0.04 |
+
+A fifteen-fold difference. The composition is not broken; **it delegates on 5 of
+30 cases where the kernel alone delegates on all 30 at 7.7 calls each.** The
+domain delta wins the competition for the format at almost every step, and the
+kernel's protocol only survives where it does not.
+
+**3. The finding that costs the most: the base is not at zero.** Under a prompt
+that asks for a numbered chain, `Qwen2.5-3B-Instruct` with **no adapter** scores
+**4/30** — a tie with the best composition, and above every adapter alone. Every
+baseline in P5–P8 was measured under a system prompt that told the model to
+**show no working**, while every treatment was trained to show working. The
+headroom those steps reported is smaller than reported, by an amount this run
+does not measure. **The +0.975 frontier gap and the 0/40 attribution arms inherit
+this doubt and must be re-measured under the shared contract before being cited
+again.**
+
+**4. `repaired` is undefined for the base, not zero.** It writes a numbered
+heading and puts the arithmetic on continuation lines: 83 numbered lines across
+30 cases, of which the extractor can read **0**. The metric is valid where the
+chain layout matches the corpus and nowhere else, and comparing repaired scores
+across layouts would be measuring the layout — the same mistake character-α made.
+
+**Deliberately not bought:** constrained decoding and tag repair (19 of P8's 30
+stacked failures had every call clean, so syntax was never the dominant failure),
+and further weighting knobs (one blend was pre-registered and run; a second would
+be a search).
+
 #### P8 — the protocol is separable, and it does not stack
 
 [`results/P8-harness-lora-20260909/`](../results/P8-harness-lora-20260909/BRIEF.md),

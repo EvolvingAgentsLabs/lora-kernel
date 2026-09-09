@@ -620,6 +620,96 @@ insertado porque la brecha no cerraba sin herramienta — y `P8` es
 no se compró.
 
 
+#### P9 — composición bajo un contrato que las dos mitades comparten · HECHO
+
+[`results/P9-shared-contract-20260909/`](../../results/P9-shared-contract-20260909/BRIEF.md).
+Escrito antes de correr, así que es un plan y no una descripción.
+
+Los brazos de P8 no se pueden re-leer, sólo re-correr: los dos corpus enseñaron
+notaciones distintas y todos los brazos usaron el system prompt del dominio.
+`training/protocol.py` ahora tiene **un** system prompt y **una** instrucción de
+usuario, importados por los dos corpus y por la evaluación, y la instrucción **no
+menciona `<calc>`** — si el prompt pidiera etiquetas, el prompt sería el protocolo
+y el adaptador kernel sería decoración. El corpus de dominio son las cadenas del
+propio oráculo con las etiquetas sacadas y la aritmética hecha en el lugar. Los dos
+adaptadores difieren ahora en exactamente una cosa: si la aritmética se delega. P6
+y P7 siguen reproducibles — 600/600 mensajes legacy sin cambio **[ran]**.
+
+**La medición que a P8 le faltaba.** `training/physics/repair.py` re-evalúa cada
+paso de una cadena de forma exacta y arrastra el valor corregido hacia adelante,
+así *fórmula equivocada* y *fórmula bien, aritmética mal* dejan de compartir
+puntaje. Recupera la respuesta del oráculo en **200/200** cadenas que se saben
+correctas **[ran]**. Sin eso, el aporte de la mitad de dominio es inmedible — y en
+P8 nunca se midió.
+
+| # | brazo | qué contesta |
+|---|---|---|
+| 1 | **dominio** | ¿El experto sabe la física? Puntuado crudo **y** reparado |
+| 2 | kernel | El protocolo, bajo un prompt que no lo pide |
+| 3 | **kernel + dominio** | La afirmación |
+| 4 | base | Atribución, se compra último porque no puede matar nada |
+
+**El brazo 1 reportó [ran].** La exactitud **reparada** del adaptador de dominio es **30/30** contra un crudo **1/30**, con **0** llamadas. Sus fórmulas son exactas en todos los casos; sólo falla la aritmética. La compuerta (0,25) se abre por lejos, la mitad de dominio queda verificada como aportante, y el brazo de composición se compra.
+
+**La condición de parada, impuesta en el corredor y no en el criterio de alguien.**
+Si la exactitud reparada del brazo de dominio queda por debajo de **0,25**, los
+brazos 2–4 no se compran: no se le puede mostrar ganancia a una composición cuya
+mitad no aporta nada.
+
+**Falsación.** Con el contrato compartido y la mitad de dominio verificada, si
+`kernel + dominio` sigue sin superar a las dos mitades solas, **la composición en
+espacio de pesos está muerta** y §4 hay que servirlo de otra forma — activación
+secuencial (§5 opción 1) o módulos disjuntos, y ninguna de las dos se compra acá.
+
+**Los cuatro brazos reportaron [ran].**
+
+| brazo | crudo | reparado | llam/caso |
+|---|---|---|---|
+| dominio | 1/30 | **30/30** | 0,0 |
+| kernel | 0/30 | n/d | **7,7** |
+| **kernel + dominio** | **4/30** | 22/30 | 0,6 |
+| base (control) | **4/30** | indefinido | 0,0 |
+
+**1. La conclusión de P8 era el confound, y la composición sí compone.** Con el
+contrato compartido, `kernel + dominio` le gana a las dos mitades — 4/30 contra
+1/30 del dominio y 0/30 del kernel — y hereda casi toda la física, 22/30 reparado
+contra 30/30 del dominio. Nada de esto se parece al 0/30 que reportó P8.
+
+**2. El mecanismo funciona cada vez que se dispara, y se dispara poco.** Partiendo
+los 30 casos de la composición según si delegó o no:
+
+| | casos | aciertos |
+|---|---|---|
+| la composición delegó | 5 | **3 — 0,60** |
+| no delegó | 25 | 1 — 0,04 |
+
+Una diferencia de quince veces. La composición no está rota: **delega en 5 de 30
+casos, donde el kernel solo delega en los 30 con 7,7 llamadas cada uno.** El delta
+de dominio gana la competencia por el formato en casi cada paso, y el protocolo del
+kernel sólo sobrevive donde no la gana.
+
+**3. El hallazgo más caro: la base no está en cero.** Bajo un prompt que pide una
+cadena numerada, `Qwen2.5-3B-Instruct` **sin adaptador** saca **4/30** — empata con
+la mejor composición y le gana a cada adaptador solo. Todas las líneas de base de
+P5–P8 se midieron con un system prompt que le decía al modelo que **no mostrara el
+trabajo**, mientras que todos los tratamientos se entrenaron para mostrarlo. El
+headroom que esos pasos reportaron es menor de lo reportado, en una cantidad que
+esta corrida no mide. **La brecha de +0,975 y los brazos de atribución en 0/40
+heredan esta duda y hay que re-medirlos bajo el contrato compartido antes de
+volver a citarlos.**
+
+**4. `reparado` es indefinido para la base, no cero.** Escribe un encabezado
+numerado y pone la aritmética en las líneas siguientes: 83 líneas numeradas en 30
+casos, de las cuales el extractor lee **0**. La métrica vale donde el layout de la
+cadena coincide con el corpus y en ningún otro lado; comparar puntajes reparados
+entre layouts distintos sería medir el layout — el mismo error que cometió la α
+por caracteres.
+
+**Deliberadamente no comprado:** decoding restringido y reparación de etiquetas (19
+de los 30 fallos apilados de P8 tenían todas las llamadas limpias, así que la
+sintaxis nunca fue el fallo dominante) y más perillas de ponderación (una mezcla se
+pre-registró y se corrió; una segunda sería una búsqueda).
+
 #### P8 — el protocolo es separable, y no se apila
 
 [`results/P8-harness-lora-20260909/`](../../results/P8-harness-lora-20260909/BRIEF.md),

@@ -36,6 +36,8 @@ import json
 import math
 import random
 
+from training import protocol as _protocol
+
 G = 9.80665
 
 
@@ -238,12 +240,11 @@ INSTRUCTION = (
 # distilling. So both the corpus and the arms that will be compared against it
 # use this instruction, and the baseline is re-measured under it rather than
 # borrowed from the JSON-only run.
-INSTRUCTION_WORKING = (
-    "Solve the problem. Work in SI units. Show your working as a short numbered "
-    "chain of steps, each with its intermediate value. Then, on the final line, "
-    'give the answer as one JSON object: {"answer": <number>}, where <number> is '
-    "the numeric value in %s."
-)
+# It now lives in `training/protocol.py`, which both corpora import, so the two
+# adapters can no longer be trained under instructions that disagree — the
+# confound that made P8's composition arms uninterpretable. The text is unchanged,
+# so P6 and P7 remain reproducible.
+INSTRUCTION_WORKING = _protocol.INSTRUCTION
 
 
 # THE INSTRUCTION THAT HANDS THE ARITHMETIC TO A TOOL.

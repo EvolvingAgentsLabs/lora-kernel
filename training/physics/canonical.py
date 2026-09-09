@@ -25,6 +25,7 @@ import argparse
 import json
 import math
 import random
+import re
 
 from training.physics.calc import evaluate
 from training.physics.generate import G, TRAIN_FAMILIES, _instruction, generate
@@ -118,10 +119,23 @@ def main() -> int:
     ap.add_argument("--seed", type=int, default=770208)
     ap.add_argument("--rtol", type=float, default=0.02)
     ap.add_argument("--out", default="training/physics/data_canon/train.jsonl")
+    # TWO RENDERINGS OF THE SAME ORACLE CHAIN, so a domain corpus and a kernel
+    # corpus can differ in exactly one thing: whether the arithmetic is delegated.
+    #   calc   — `<calc>expr</calc>= v`, the protocol. This is P7's corpus.
+    #   inline — `expr = v`, the same formulas with the arithmetic done in place.
+    # And two prompt contracts: `legacy` reproduces P6/P7 byte for byte; `shared`
+    # is the neutral contract of `training/protocol.py`, which says nothing about
+    # tools so that the protocol can only come from the weights.
+    ap.add_argument("--style", default="calc", choices=["calc", "inline"])
+    ap.add_argument("--contract", default="legacy", choices=["legacy", "shared"])
     args = ap.parse_args()
 
-    from training.physics.headroom import SYSTEM
-    rows = generate(args.n, args.seed, TRAIN_FAMILIES, style="calc")
+    if args.contract == "shared":
+        from training.protocol import SYSTEM
+        rows = generate(args.n, args.seed, TRAIN_FAMILIES, style="working")
+    else:
+        from training.physics.headroom import SYSTEM
+        rows = generate(args.n, args.seed, TRAIN_FAMILIES, style="calc")
     kept, bad = [], 0
     for row in rows:
         try:
@@ -131,6 +145,10 @@ def main() -> int:
         if chain is None:
             bad += 1
             continue
+        if args.style == "inline":
+            # `<calc>expr</calc>= v` -> `expr = v`. The formulas and the values are
+            # the oracle's either way; only the delegation is removed.
+            chain = re.sub(r"<calc>(.*?)</calc>=", r"\1 =", chain, flags=re.S)
         got = float(chain.rsplit('"answer": ', 1)[1].rstrip("}\n"))
         # The chain must reach the oracle's own answer, or it is not a solution.
         if abs(got - row["answer"]) > args.rtol * abs(row["answer"]):
@@ -139,6 +157,7 @@ def main() -> int:
         kept.append({"case_id": row["case_id"], "family": row["family"],
                      "answer": row["answer"], "unit": row["unit"],
                      "calc_calls": chain.count("<calc>"),
+                     "style": args.style, "contract": args.contract,
                      "messages": [{"role": "system", "content": SYSTEM},
                                   {"role": "user", "content": row["prompt"]},
                                   {"role": "assistant", "content": chain}]})
