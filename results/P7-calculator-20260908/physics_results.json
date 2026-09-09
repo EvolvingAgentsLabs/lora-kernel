@@ -1,0 +1,1168 @@
+{
+  "base": "Qwen/Qwen2.5-3B-Instruct",
+  "corpus_n": 600,
+  "started": "2026-09-08T23:12:43",
+  "rtol": 0.02,
+  "arms": {
+    "base": {
+      "label": "base",
+      "n": 40,
+      "passed": 0,
+      "accuracy": 0.0,
+      "unparsed": 0,
+      "tool_calls": 0,
+      "records": [
+        {
+          "case_id": "phys-0000",
+          "family": "hydrostatic_force",
+          "want": 131926.5701455625,
+          "got": 104940.0,
+          "passed": false,
+          "raw": "{\"answer\": 104940}"
+        },
+        {
+          "case_id": "phys-0001",
+          "family": "manning_channel",
+          "want": 13.777463571438588,
+          "got": 1.27,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"sqrt(1.96*(1.27+0.01518)/6/n(sqrt(exp(log(0.015)/3.046))))**2*1.96*1.27\"}}"
+        },
+        {
+          "case_id": "phys-0002",
+          "family": "pipe_head_loss",
+          "want": 1.8489593018064931,
+          "got": 0.0445,
+          "passed": false,
+          "raw": "{\"answer\": <calc>exp(2*log10(0.0008)/log10(998.0/0.0445))</calc>}"
+        },
+        {
+          "case_id": "phys-0003",
+          "family": "pump_power",
+          "want": 68.53156824521123,
+          "got": 1740.4,
+          "passed": false,
+          "raw": "{\"answer\": 1740.4}>{\"calc\"pi/4*0.081**2}</calc>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\"calc\"}>{\""
+        },
+        {
+          "case_id": "phys-0004",
+          "family": "terminal_velocity",
+          "want": 0.00268488817296,
+          "got": 0.0,
+          "passed": false,
+          "raw": "{\"answer\": <calc>0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "case_id": "phys-0005",
+          "family": "venturi_flow",
+          "want": 0.11396258683641461,
+          "got": 9.81,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"sqrt(2/(1+exp(-log(sqrt(log10(55217/880)))))*0.22**2*0.168*0.1085*(0.168**2-0.1085**2)/9.81)\"}}"
+        },
+        {
+          "case_id": "phys-0006",
+          "family": "hydrostatic_force",
+          "want": 83545.277122944,
+          "got": 15644.3,
+          "passed": false,
+          "raw": "{\"answer\": 15644.3}"
+        },
+        {
+          "case_id": "phys-0007",
+          "family": "manning_channel",
+          "want": 29.651189503613413,
+          "got": 0.01965,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"sqrt(1.75/(0.012*log10(exp(3.95*(log10(sqrt(1.75/(0.012*exp(log10(0.01965)))))))))))\"}}}"
+        },
+        {
+          "case_id": "phys-0008",
+          "family": "pipe_head_loss",
+          "want": 10.158958087290983,
+          "got": -1.0,
+          "passed": false,
+          "raw": "{\"answer\": <calc>exp(log(0.001002)/0.001002*log(880.0/(0.22**2*pi/4)))-1</calc>}"
+        },
+        {
+          "case_id": "phys-0009",
+          "family": "pump_power",
+          "want": 1123.583802071903,
+          "got": 12345.6,
+          "passed": false,
+          "raw": "{\"answer\": 12345.6}"
+        },
+        {
+          "case_id": "phys-0010",
+          "family": "terminal_velocity",
+          "want": 0.0020415860668487936,
+          "got": 0.0,
+          "passed": false,
+          "raw": "{\"answer\": <calc>0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "case_id": "phys-0011",
+          "family": "venturi_flow",
+          "want": 0.16595378329096444,
+          "got": 2.0,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"exp(log(22018.8/(1025.0*(sqrt(2)/2)*(sqrt(2)/2*(0.269**2)-sqrt(2)/2*(0.1716**2)))))/2\"}}}"
+        },
+        {
+          "case_id": "phys-0012",
+          "family": "hydrostatic_force",
+          "want": 30018.42239088,
+          "got": 28444.5,
+          "passed": false,
+          "raw": "{\"answer\": 28444.5}"
+        },
+        {
+          "case_id": "phys-0013",
+          "family": "manning_channel",
+          "want": 21.60825783106168,
+          "got": 2.0,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"sqrt(6*log10(exp(1)*sqrt((exp(log10(3.67))**2*(exp(log10(0.01978))**3)/exp(log10(0.012))))/(exp(log10(0.76))**2)))\"}}}"
+        },
+        {
+          "case_id": "phys-0014",
+          "family": "pipe_head_loss",
+          "want": 0.8547197590568688,
+          "got": 10.0,
+          "passed": false,
+          "raw": "{\"answer\": <calc>exp(log(1025.0)*log(0.04321/(0.22**2*pi/4*0.0015*64/log(1025.0))))/log(10)</calc>}"
+        },
+        {
+          "case_id": "phys-0015",
+          "family": "pump_power",
+          "want": 226.15205012015764,
+          "got": 12000.0,
+          "passed": false,
+          "raw": "{\"answer\": 12000}"
+        },
+        {
+          "case_id": "phys-0016",
+          "family": "terminal_velocity",
+          "want": 9.315637572266666e-05,
+          "got": 0.0,
+          "passed": false,
+          "raw": "{\"answer\": <calc>0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "case_id": "phys-0017",
+          "family": "venturi_flow",
+          "want": 0.05622143676401737,
+          "got": 2.0,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"exp(log(2)/2)*sqrt(2*998.0*53489.5/(0.5*(exp(calc'log(0.216**2)'/2) - exp(calc'log(0.0827**2)'/2))))\"}}}"
+        },
+        {
+          "case_id": "phys-0018",
+          "family": "hydrostatic_force",
+          "want": 159023.2512106875,
+          "got": 86424.5,
+          "passed": false,
+          "raw": "{\"answer\": 86424.5}"
+        },
+        {
+          "case_id": "phys-0019",
+          "family": "manning_channel",
+          "want": 2.443150246582592,
+          "got": 6.0,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"sqrt(6*log10(exp(1)*sqrt(log10(1.14)/0.01596)/exp(calc)^(1/6)))\"}}"
+        },
+        {
+          "case_id": "phys-0020",
+          "family": "pipe_head_loss",
+          "want": 26.004971215311276,
+          "got": 2.0,
+          "passed": false,
+          "raw": "{\"answer\": <calc>exp(log(1025.0)*log(0.0008)/(2*log(0.08/0.0045)**2))</calc>}"
+        },
+        {
+          "case_id": "phys-0021",
+          "family": "pump_power",
+          "want": 842.8629661168894,
+          "got": 12000.0,
+          "passed": false,
+          "raw": "{\"answer\": 12000}"
+        },
+        {
+          "case_id": "phys-0022",
+          "family": "terminal_velocity",
+          "want": 0.0006057613551088749,
+          "got": 7.89e-07,
+          "passed": false,
+          "raw": "{\"answer\": 0.000000789}"
+        },
+        {
+          "case_id": "phys-0023",
+          "family": "venturi_flow",
+          "want": 0.04227747396924894,
+          "got": 0.22,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"exp(log(8944.6/(880*(sqrt(2)/2)*(log(sqrt(2)*0.155/0.1034)**2))))/0.22\"}}}"
+        },
+        {
+          "case_id": "phys-0024",
+          "family": "hydrostatic_force",
+          "want": 62740.59467306399,
+          "got": 16597.2,
+          "passed": false,
+          "raw": "{\"answer\": 16597.2}"
+        },
+        {
+          "case_id": "phys-0025",
+          "family": "manning_channel",
+          "want": 4.692297274108275,
+          "got": 9.67,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"sqrt(6*log10(exp(1)*sqrt(log10(18400)/pi)))/exp(log10(0.03)/9.67)}}}"
+        },
+        {
+          "case_id": "phys-0026",
+          "family": "pipe_head_loss",
+          "want": 33.5168545847374,
+          "got": 0.0008,
+          "passed": false,
+          "raw": "{\"answer\": <calc>exp(log(0.0008)/log(10)/(-1025/0.0008))</calc>}"
+        },
+        {
+          "case_id": "phys-0027",
+          "family": "pump_power",
+          "want": 453.4776414437574,
+          "got": 19200.0,
+          "passed": false,
+          "raw": "{\"answer\": 19200}"
+        },
+        {
+          "case_id": "phys-0028",
+          "family": "terminal_velocity",
+          "want": 0.004647560258685521,
+          "got": 6.12e-07,
+          "passed": false,
+          "raw": "{\"answer\": 0.000000612}"
+        },
+        {
+          "case_id": "phys-0029",
+          "family": "venturi_flow",
+          "want": 0.18120376847033356,
+          "got": 2.0,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"exp(log(2)/2)*sqrt(2*9.81*(33773.8/(0.5*(0.232**2+0.1538**2))))\"}}"
+        },
+        {
+          "case_id": "phys-0030",
+          "family": "hydrostatic_force",
+          "want": 199232.455083459,
+          "got": 14764.5,
+          "passed": false,
+          "raw": "{\"answer\": 14764.5}"
+        },
+        {
+          "case_id": "phys-0031",
+          "family": "manning_channel",
+          "want": 11.486734469855108,
+          "got": 1.39,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"sqrt(1.76*(1.39+sqrt(log10(exp(10*log10(sqrt(log10(0.00724*exp(log10(1.76*1.39))))))))))\"}}}"
+        },
+        {
+          "case_id": "phys-0032",
+          "family": "pipe_head_loss",
+          "want": 3.522745291620681,
+          "got": 0.0008,
+          "passed": false,
+          "raw": "{\"answer\": <calc>exp(log(0.0008)/log(880.0/0.0008)-log(1.5e-06)/(0.22*sqrt(880.0/0.0008)))</calc>}"
+        },
+        {
+          "case_id": "phys-0033",
+          "family": "pump_power",
+          "want": 2336.6162435527244,
+          "got": 12345.6,
+          "passed": false,
+          "raw": "{\"answer\": 12345.6}"
+        },
+        {
+          "case_id": "phys-0034",
+          "family": "terminal_velocity",
+          "want": 0.002012008334279098,
+          "got": 0.0,
+          "passed": false,
+          "raw": "{\"answer\": <calc>0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "case_id": "phys-0035",
+          "family": "venturi_flow",
+          "want": 0.27341367172547226,
+          "got": 2.0,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"exp(log(2)/2)*sqrt(2*998.0*41051.4/(0.5*(1+sqrt(1+(4*0.1877/0.298)**2))))\"}}"
+        },
+        {
+          "case_id": "phys-0036",
+          "family": "hydrostatic_force",
+          "want": 169125.63640265758,
+          "got": 15444.5,
+          "passed": false,
+          "raw": "{\"answer\": 15444.5}"
+        },
+        {
+          "case_id": "phys-0037",
+          "family": "manning_channel",
+          "want": 0.2610771365701055,
+          "got": 0.03,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"sqrt(6*log10(exp(1)*0.00069*(0.64+1.17)**(2/3)/0.03))\"}}"
+        },
+        {
+          "case_id": "phys-0038",
+          "family": "pipe_head_loss",
+          "want": 6.351642516477467,
+          "got": 2.0,
+          "passed": false,
+          "raw": "{\"answer\": <calc>exp(2*log10(1025.0)*log10(0.0561/(0.001002*(sqrt(log10(pi/4*0.182**2))))))</calc>}"
+        },
+        {
+          "case_id": "phys-0039",
+          "family": "pump_power",
+          "want": 11402.668570706295,
+          "got": 17400.0,
+          "passed": false,
+          "raw": "{\"answer\": 17400}"
+        }
+      ]
+    },
+    "base + calculator": {
+      "label": "base+tool",
+      "n": 40,
+      "passed": 0,
+      "accuracy": 0.0,
+      "unparsed": 0,
+      "tool_calls": 30,
+      "records": [
+        {
+          "case_id": "phys-0000",
+          "family": "hydrostatic_force",
+          "want": 131926.5701455625,
+          "got": 104940.0,
+          "passed": false,
+          "raw": "{\"answer\": 104940}"
+        },
+        {
+          "case_id": "phys-0001",
+          "family": "manning_channel",
+          "want": 13.777463571438588,
+          "got": 1.27,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"sqrt(1.96*(1.27+0.01518)/6/n(sqrt(exp(log(0.015)/3.046))))**2*1.96*1.27\"}}"
+        },
+        {
+          "case_id": "phys-0002",
+          "family": "pipe_head_loss",
+          "want": 1.8489593018064931,
+          "got": 0.0075,
+          "passed": false,
+          "raw": "{\"answer\": <calc>exp(2*log10(0.0008)/log10(998.0/0.0445))</calc>}= 0.240842\n{\"answer\": <calc>sqrt(log10(0.240842)*log10(0.240842)+log10(0.22)**2)</calc>}= 0.240842\n{\"answer\": <calc>sqrt(0.22**2+0.0445/0.0008)</calc>= 0.240842\n{\"answer\": <calc>log10(0.240842)-log10(0.240842)+log10(0.22)**2</calc>== 0.240842\n{\"answer\": <calc>sqrt(0.22**2+0.0445/0.0008)</calc>== 0.240842\n{\"answer\": <calc>sqrt(0.22**2"
+        },
+        {
+          "case_id": "phys-0003",
+          "family": "pump_power",
+          "want": 68.53156824521123,
+          "got": 1740.4,
+          "passed": false,
+          "raw": "{\"answer\": 1740.4}>{\"calc\"pi/4*0.081**2}</calc>{\""
+        },
+        {
+          "case_id": "phys-0004",
+          "family": "terminal_velocity",
+          "want": 0.00268488817296,
+          "got": 0.0,
+          "passed": false,
+          "raw": "{\"answer\": <calc>0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "case_id": "phys-0005",
+          "family": "venturi_flow",
+          "want": 0.11396258683641461,
+          "got": 9.81,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"sqrt(2/(1+exp(-log(sqrt(log10(55217/880)))))*0.22**2*0.168*0.1085*(0.168**2-0.1085**2)/9.81)\"}}"
+        },
+        {
+          "case_id": "phys-0006",
+          "family": "hydrostatic_force",
+          "want": 83545.277122944,
+          "got": 15644.3,
+          "passed": false,
+          "raw": "{\"answer\": 15644.3}"
+        },
+        {
+          "case_id": "phys-0007",
+          "family": "manning_channel",
+          "want": 29.651189503613413,
+          "got": 0.01965,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"sqrt(1.75/(0.012*log10(exp(3.95*(log10(sqrt(1.75/(0.012*exp(log10(0.01965)))))))))))\"}}}"
+        },
+        {
+          "case_id": "phys-0008",
+          "family": "pipe_head_loss",
+          "want": 10.158958087290983,
+          "got": -1.0,
+          "passed": false,
+          "raw": "{\"answer\": <calc>exp(log(0.001002)/0.001002*log(880.0/(0.22**2*pi/4)))-1</calc>}= -1\n{\"answer\": -1}"
+        },
+        {
+          "case_id": "phys-0009",
+          "family": "pump_power",
+          "want": 1123.583802071903,
+          "got": 12345.6,
+          "passed": false,
+          "raw": "{\"answer\": 12345.6}"
+        },
+        {
+          "case_id": "phys-0010",
+          "family": "terminal_velocity",
+          "want": 0.0020415860668487936,
+          "got": 0.0,
+          "passed": false,
+          "raw": "{\"answer\": <calc>0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "case_id": "phys-0011",
+          "family": "venturi_flow",
+          "want": 0.16595378329096444,
+          "got": 2.0,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"exp(log(22018.8/(1025.0*(sqrt(2)/2)*(sqrt(2)/2*(0.269**2)-sqrt(2)/2*(0.1716**2)))))/2\"}}}"
+        },
+        {
+          "case_id": "phys-0012",
+          "family": "hydrostatic_force",
+          "want": 30018.42239088,
+          "got": 28444.5,
+          "passed": false,
+          "raw": "{\"answer\": 28444.5}"
+        },
+        {
+          "case_id": "phys-0013",
+          "family": "manning_channel",
+          "want": 21.60825783106168,
+          "got": 2.0,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"sqrt(6*log10(exp(1)*sqrt((exp(log10(3.67))**2*(exp(log10(0.01978))**3)/exp(log10(0.012))))/(exp(log10(0.76))**2)))\"}}}"
+        },
+        {
+          "case_id": "phys-0014",
+          "family": "pipe_head_loss",
+          "want": 0.8547197590568688,
+          "got": 8096970000000.0,
+          "passed": false,
+          "raw": "{\"answer\": <calc>exp(log(1025.0)*log(0.04321/(0.22**2*pi/4*0.0015*64/log(1025.0))))/log(10)</calc>}= 8.09697e+12\n{\"answer\": <calc>sqrt((0.0015**2)/(4*log(1025.0)**2*log(1025.0)**2*(0.0015**2+(0.0015**2/4)*(0.22**2*pi/4*0.0015*64/log(1025.0))**2)))</calc>}= 8.09697e+12\n{\"answer\": <calc>sqrt(1.5e-06**2/(4*log(1025.0)**2*log(1025.0)**2*(1.5e-06**2+(1.5e-06**2/4)*(0.22**2*pi/4*0.0015*64/log(1025.0))**"
+        },
+        {
+          "case_id": "phys-0015",
+          "family": "pump_power",
+          "want": 226.15205012015764,
+          "got": 12000.0,
+          "passed": false,
+          "raw": "{\"answer\": 12000}"
+        },
+        {
+          "case_id": "phys-0016",
+          "family": "terminal_velocity",
+          "want": 9.315637572266666e-05,
+          "got": 0.0,
+          "passed": false,
+          "raw": "{\"answer\": <calc>0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "case_id": "phys-0017",
+          "family": "venturi_flow",
+          "want": 0.05622143676401737,
+          "got": 2.0,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"exp(log(2)/2)*sqrt(2*998.0*53489.5/(0.5*(exp(calc'log(0.216**2)'/2) - exp(calc'log(0.0827**2)'/2))))\"}}}"
+        },
+        {
+          "case_id": "phys-0018",
+          "family": "hydrostatic_force",
+          "want": 159023.2512106875,
+          "got": 86424.5,
+          "passed": false,
+          "raw": "{\"answer\": 86424.5}"
+        },
+        {
+          "case_id": "phys-0019",
+          "family": "manning_channel",
+          "want": 2.443150246582592,
+          "got": 6.0,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"sqrt(6*log10(exp(1)*sqrt(log10(1.14)/0.01596)/exp(calc)^(1/6)))\"}}"
+        },
+        {
+          "case_id": "phys-0020",
+          "family": "pipe_head_loss",
+          "want": 26.004971215311276,
+          "got": 0.0505776,
+          "passed": false,
+          "raw": "{\"answer\": <calc>exp(log(1025.0)*log(0.0008)/(2*log(0.08/0.0045)**2))</calc>}= 0.0505776\n{\"answer\": <calc>sqrt(2*9.81*(1025.0+0.0505776)/0.0008)</calc>}= 0.0505776\n{\"answer\": <calc>sqrt(2*9.81*0.01643/(0.0008*(0.08/2)**2))</calc>= 0.0505776\n{\"answer\": <calc>sqrt(2*9.81*0.0505776/0.0008)</calc>}= 0.0505776\n{\"answer\": <json>{\"answer\": 0.0505776}}</json>}"
+        },
+        {
+          "case_id": "phys-0021",
+          "family": "pump_power",
+          "want": 842.8629661168894,
+          "got": 12000.0,
+          "passed": false,
+          "raw": "{\"answer\": 12000}"
+        },
+        {
+          "case_id": "phys-0022",
+          "family": "terminal_velocity",
+          "want": 0.0006057613551088749,
+          "got": 7.89e-07,
+          "passed": false,
+          "raw": "{\"answer\": 0.000000789}"
+        },
+        {
+          "case_id": "phys-0023",
+          "family": "venturi_flow",
+          "want": 0.04227747396924894,
+          "got": 0.22,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"exp(log(8944.6/(880*(sqrt(2)/2)*(log(sqrt(2)*0.155/0.1034)**2))))/0.22\"}}}"
+        },
+        {
+          "case_id": "phys-0024",
+          "family": "hydrostatic_force",
+          "want": 62740.59467306399,
+          "got": 16597.2,
+          "passed": false,
+          "raw": "{\"answer\": 16597.2}"
+        },
+        {
+          "case_id": "phys-0025",
+          "family": "manning_channel",
+          "want": 4.692297274108275,
+          "got": 9.67,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"sqrt(6*log10(exp(1)*sqrt(log10(18400)/pi)))/exp(log10(0.03)/9.67)}}}"
+        },
+        {
+          "case_id": "phys-0026",
+          "family": "pipe_head_loss",
+          "want": 33.5168545847374,
+          "got": 1.0,
+          "passed": false,
+          "raw": "{\"answer\": <calc>exp(log(0.0008)/log(10)/(-1025/0.0008))</calc>}= 1\n{\"answer\": <calc>sqrt(2*9.81*log10(exp(log(0.0008)/log(10)/(-1025/0.0008)))</calc>}= 1\n{\"answer\": <calc>sqrt(2*9.81*log10(exp(log(0.0008)/log(10)/(-1025/0.0008))))*(0.113/4)**(5/8)*exp(-0.00026/(3*0.113))</calc>}= 1\n{\"answer\": <calc>(1+0.00026/0.113)**(5/4)</calc>}= 1\n{\"answer\": <calc>((1+0.00026/0.113)**(5/4)+1)*(0.113/4)**(5/8)*"
+        },
+        {
+          "case_id": "phys-0027",
+          "family": "pump_power",
+          "want": 453.4776414437574,
+          "got": 19200.0,
+          "passed": false,
+          "raw": "{\"answer\": 19200}"
+        },
+        {
+          "case_id": "phys-0028",
+          "family": "terminal_velocity",
+          "want": 0.004647560258685521,
+          "got": 6.12e-07,
+          "passed": false,
+          "raw": "{\"answer\": 0.000000612}"
+        },
+        {
+          "case_id": "phys-0029",
+          "family": "venturi_flow",
+          "want": 0.18120376847033356,
+          "got": 2.0,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"exp(log(2)/2)*sqrt(2*9.81*(33773.8/(0.5*(0.232**2+0.1538**2))))\"}}"
+        },
+        {
+          "case_id": "phys-0030",
+          "family": "hydrostatic_force",
+          "want": 199232.455083459,
+          "got": 14764.5,
+          "passed": false,
+          "raw": "{\"answer\": 14764.5}"
+        },
+        {
+          "case_id": "phys-0031",
+          "family": "manning_channel",
+          "want": 11.486734469855108,
+          "got": 1.39,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"sqrt(1.76*(1.39+sqrt(log10(exp(10*log10(sqrt(log10(0.00724*exp(log10(1.76*1.39))))))))))\"}}}"
+        },
+        {
+          "case_id": "phys-0032",
+          "family": "pipe_head_loss",
+          "want": 3.522745291620681,
+          "got": 0.634767,
+          "passed": false,
+          "raw": "{\"answer\": <calc>exp(log(0.0008)/log(880.0/0.0008)-log(1.5e-06)/(0.22*sqrt(880.0/0.0008)))</calc>}= 0.634767\n{\"answer\": <calc>log10(0.634767)</calc>}= 0.634767\n{\"answer\": <calc>0.05408*(0.22**2/4)*0.634767</calc>}= 0.634767\n{\"answer\": <json>{\"answer\": 0.634767}}</json>}"
+        },
+        {
+          "case_id": "phys-0033",
+          "family": "pump_power",
+          "want": 2336.6162435527244,
+          "got": 12345.6,
+          "passed": false,
+          "raw": "{\"answer\": 12345.6}"
+        },
+        {
+          "case_id": "phys-0034",
+          "family": "terminal_velocity",
+          "want": 0.002012008334279098,
+          "got": 0.0,
+          "passed": false,
+          "raw": "{\"answer\": <calc>0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
+        },
+        {
+          "case_id": "phys-0035",
+          "family": "venturi_flow",
+          "want": 0.27341367172547226,
+          "got": 2.0,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"exp(log(2)/2)*sqrt(2*998.0*41051.4/(0.5*(1+sqrt(1+(4*0.1877/0.298)**2))))\"}}"
+        },
+        {
+          "case_id": "phys-0036",
+          "family": "hydrostatic_force",
+          "want": 169125.63640265758,
+          "got": 15444.5,
+          "passed": false,
+          "raw": "{\"answer\": 15444.5}"
+        },
+        {
+          "case_id": "phys-0037",
+          "family": "manning_channel",
+          "want": 0.2610771365701055,
+          "got": 0.03,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"sqrt(6*log10(exp(1)*0.00069*(0.64+1.17)**(2/3)/0.03))\"}}"
+        },
+        {
+          "case_id": "phys-0038",
+          "family": "pipe_head_loss",
+          "want": 6.351642516477467,
+          "got": 2.0,
+          "passed": false,
+          "raw": "{\"answer\": <calc>exp(2*log10(1025.0)*log10(0.0561/(0.001002*(sqrt(log10(pi/4*0.182**2))))))</calc>}= ERROR: ValueError: math domain error\n{\"answer\": <jsonobject>None</jsonobject>}"
+        },
+        {
+          "case_id": "phys-0039",
+          "family": "pump_power",
+          "want": 11402.668570706295,
+          "got": 17400.0,
+          "passed": false,
+          "raw": "{\"answer\": 17400}"
+        }
+      ]
+    },
+    "base \u00b7 held-out families": {
+      "label": "base \u00b7 held",
+      "n": 20,
+      "passed": 0,
+      "accuracy": 0.0,
+      "unparsed": 0,
+      "tool_calls": 0,
+      "records": [
+        {
+          "case_id": "phys-0000",
+          "family": "drag_force",
+          "want": 69.37096723729863,
+          "got": 0.24,
+          "passed": false,
+          "raw": "{\"answer\": 0.24}"
+        },
+        {
+          "case_id": "phys-0001",
+          "family": "orifice_discharge",
+          "want": 0.00624469696193911,
+          "got": 2.0,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"0.65*(sqrt(2*log10(exp(2*exp(log10(sqrt(2*(-log10(0.0455/2)+log10(1.78))))))))/(0.0455*exp(log10(2*pi*0.0455/2))))**2\"}}}"
+        },
+        {
+          "case_id": "phys-0002",
+          "family": "drag_force",
+          "want": 3.8097138157800097,
+          "got": 1.21,
+          "passed": false,
+          "raw": "{\"answer\": 1.21}{\"calc\"}{\"sqrt\"}{\"calc\"}pi/4*0.25**2{\"calc\"}0.5625*pi{\"calc\"}0.5625*pi*exp(-0.125*log(1.225)/0.0000181){\"calc\"}16.97*0.5625*pi*exp(-0.125*log(1.225)/0.0000181){\"calc\"}16.97*0.5625*pi*exp(-0.125*log(1.225)/0.0000181)*24/(log(16.97*0.5625*pi*exp(-0.125*log(1.225)/0.0000181)/0.25/1.225)){\"calc\"}16.97*0.5625*pi*exp(-0.125*log(1.225)/0.0000181)*24/(log(16.97*0.5625*pi*exp(-0.125*log(1.2"
+        },
+        {
+          "case_id": "phys-0003",
+          "family": "orifice_discharge",
+          "want": 0.050193059789601084,
+          "got": 2.0,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"0.65*(sqrt(2*log10(exp(2*exp(log10(sqrt(((exp(2*log10(2.71828) + 1)/2) * 0.0918**2) / 9.81)))))))/((0.0918/2)**2))\"}}}"
+        },
+        {
+          "case_id": "phys-0004",
+          "family": "drag_force",
+          "want": 6.814010842668104,
+          "got": 0.912,
+          "passed": false,
+          "raw": "{\"answer\": 0.912}"
+        },
+        {
+          "case_id": "phys-0005",
+          "family": "orifice_discharge",
+          "want": 0.010495817619728398,
+          "got": 7.68,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"0.5*(exp(log(0.6)/(-2)))*sqrt(9.81*log10(exp(2*log10(sqrt(((2*0.0426)/(9.81*7.68)))))))\"}}"
+        },
+        {
+          "case_id": "phys-0006",
+          "family": "drag_force",
+          "want": 1721.9370424565575,
+          "got": 1.99,
+          "passed": false,
+          "raw": "{\"answer\": 1.99}{\"calc\"}sqrt1000{\"calc\"}0.15*exp(0.687)*log10(sqrt(calc))/log10(1000)+0.15*log10(sqrt(calc)){\"calc\"}24/calc{\"calc\"}24/calc+0.15*exp(0.687)*log10(sqrt(calc))/log10(1000)+0.15*log10(sqrt(calc)){\"calc\"}24/(calc+0.15*exp(0.687)*log10(sqrt(calc))/log10(1000)+0.15*log10(sqrt(calc)))*0.44{\"calc\"}0.5*998.0*0.158**2*exp(calc)*24/(calc+0.15*exp(0.687)*log10(sqrt(calc))/log10(1000)+0.15*log10"
+        },
+        {
+          "case_id": "phys-0007",
+          "family": "orifice_discharge",
+          "want": 0.0016521468365280991,
+          "got": 2.0,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"0.6*(sqrt(2*log10(exp(2*exp(log10(sqrt(((exp(2*log10(5.97+0.018))+0.018)/0.018)**2)))))))/((0.018/2)**2))\"}}}"
+        },
+        {
+          "case_id": "phys-0008",
+          "family": "drag_force",
+          "want": 116.40577765459255,
+          "got": 0.741,
+          "passed": false,
+          "raw": "{\"answer\": 0.741}{\"calc\"}{\"sqrt\"}{\"calc\"}pi/4*0.22**2{\"value\"}0.48439{\"calc\"}0.48439*0.179{\"value\"}0.8744991{\"calc\"}998.0*0.8744991{\"value\"}970.04994178{\"calc\"}0.8744991/970.04994178{\"value\"}0.0009024646{\"calc\"}24/0.0009024646{\"value\"}26568.0{\"calc\"}26568.0*(1+0.15*26568.0**0.687){/calc}{/calc}{\"calc\"}26568.0*(1+0.15*26568.0**0.687)-24/0.0009024646{\"value\"}26568.0{\"calc\"}26568.0*0.44{\"value\"}11754"
+        },
+        {
+          "case_id": "phys-0009",
+          "family": "orifice_discharge",
+          "want": 0.0008045543600819858,
+          "got": 2.0,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"0.65*(sqrt(2*log10(exp(9.81*(4.3-0.0131/2))))/(0.0131*exp(0.2167))**2)*pi/4*0.0131**2\"}}"
+        },
+        {
+          "case_id": "phys-0010",
+          "family": "drag_force",
+          "want": 0.0013391210108500435,
+          "got": 0.024,
+          "passed": false,
+          "raw": "{\"answer\": 0.024}"
+        },
+        {
+          "case_id": "phys-0011",
+          "family": "orifice_discharge",
+          "want": 0.03001544099268923,
+          "got": 2.0,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"0.5*(exp(log(0.6)/(-0.5)))*sqrt(2*log10(exp(2*log10(sqrt(((2*0.0719)/(9.81*7.74)))))))**2*0.22**2\"}}"
+        },
+        {
+          "case_id": "phys-0012",
+          "family": "drag_force",
+          "want": 2.178488518073121,
+          "got": 0.281,
+          "passed": false,
+          "raw": "{\"answer\": 0.281}"
+        },
+        {
+          "case_id": "phys-0013",
+          "family": "orifice_discharge",
+          "want": 0.013806079380231186,
+          "got": 4.0,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"0.65*(sqrt(2*log10(exp(2*exp(log10(sqrt(2*(-7.84+0.0467/2)**2)))))))/((0.0467/2)**2) * pi/4\"}}"
+        },
+        {
+          "case_id": "phys-0014",
+          "family": "drag_force",
+          "want": 1.6627726350742307,
+          "got": 0.49,
+          "passed": false,
+          "raw": "{\"answer\": 0.49}{\"calc\"}{\"exp\"}{\"calc\"}0.22{\"calc\"}2{\"calc\"}sqrt{\"calc\"}exp(-1){\"calc\"}0.22{\"calc\"}2{\"calc\"}log{\"calc\"}0.22{\"calc\"}log10{\"calc\"}0.22{\"calc\"}0.22{\"calc\"}2{\"calc\"}exp(0.22**2){\"calc\"}1.225{\"calc\"}12.74{\"calc\"}0.22{\"calc\"}24/{\"calc\"}{\"sqrt\"}{\"calc\"}1.225{\"calc\"}12.74{\"calc\"}{\"exp\"}{\"calc\"}0.22{\"calc\"}2{\"calc\"}log{\"calc\"}0.22{\"calc\"}log10{\"calc\"}0.22{\"calc\"}0.22{\"calc\"}2{\"calc\"}exp(0.2"
+        },
+        {
+          "case_id": "phys-0015",
+          "family": "orifice_discharge",
+          "want": 0.0017909547017701196,
+          "got": 0.001,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"0.62*(sqrt(2*log10(exp(2*exp(log10(sqrt(((exp(2*log10(6.57+0.018/2)))-1)))))))/9.81*(0.018/2)**2)\"} * 0.001}}"
+        },
+        {
+          "case_id": "phys-0016",
+          "family": "drag_force",
+          "want": 1.7778919155788966,
+          "got": 0.29,
+          "passed": false,
+          "raw": "{\"answer\": 0.29}{\"calc\"}{\"calc\"}rho = 1.225; v = 16.85; d = 0.172;{\"calc\"}rho*rho = 1.225**2;{\"calc\"}Cd = (24/log10(1.225*16.85/(3.141592653589793*(0.172/2)**2)))*(1 + 0.15*log10(1.225*16.85/(3.141592653589793*(0.172/2)**2))**0.687);{\"calc\"}Cd = 0.44;{\"calc\"}F_drag = 0.5*rho*rho*d*v*v*Cd;{\"calc\"}F_drag = 0.5*1.225**2*0.172**2*16.85**2*0.44;{\"calc\"}F_drag = 0.29"
+        },
+        {
+          "case_id": "phys-0017",
+          "family": "orifice_discharge",
+          "want": 0.0011643678443764563,
+          "got": 2.0,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"0.5*(exp(log(0.65)/2) + sqrt(0.22**2 + 9.81*6)) * pi/4*0.0145**2\"}}"
+        },
+        {
+          "case_id": "phys-0018",
+          "family": "drag_force",
+          "want": 0.5366522890451662,
+          "got": 0.144,
+          "passed": false,
+          "raw": "{\"answer\": 0.144}"
+        },
+        {
+          "case_id": "phys-0019",
+          "family": "orifice_discharge",
+          "want": 0.014015506988492061,
+          "got": 0.5,
+          "passed": false,
+          "raw": "{\"answer\": {\"calc\": \"0.65*(sqrt(2*log10(exp(2*exp(log10(sqrt(2*(-log10(0.0591/3.15+0.5)+1)))))))*0.0591**2/(4*exp(-log10(0.0591/3.15+0.5))))\"}}}"
+        }
+      ]
+    },
+    "adapter": {
+      "label": "adapter",
+      "n": 40,
+      "passed": 1,
+      "accuracy": 0.025,
+      "unparsed": 0,
+      "tool_calls": 0,
+      "records": [
+        {
+          "case_id": "phys-0000",
+          "family": "hydrostatic_force",
+          "want": 131926.5701455625,
+          "got": 124011.0,
+          "passed": false,
+          "raw": "1. Depth of the centroid below the surface: <calc>2.26 + 0.98/2</calc>= 2.72\n2. Area of the gate: <calc>4.87 * 0.98</calc>= 4.7666\n3. Resultant force F = rho g h_c A: <calc>1025.0 * 9.80665 * 2.72 * 4.7666</calc>= 124011\n\n{\"answer\": 124011}"
+        },
+        {
+          "case_id": "phys-0001",
+          "family": "manning_channel",
+          "want": 13.777463571438588,
+          "got": 24.0104,
+          "passed": false,
+          "raw": "1. Flow area: <calc>1.96 * 1.27</calc>= 2.4952\n2. Wetted perimeter: <calc>1.96 + 2*1.27</calc>= 4.5\n3. Hydraulic radius R = A/P: <calc>2.4952 / 4.5</calc>= 0.554489\n4. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.015) * 2.4952 * 0.554489**(2/3) * sqrt(0.01518)</calc>= 24.0104\n\n{\"answer\": 24.0104}"
+        },
+        {
+          "case_id": "phys-0002",
+          "family": "pipe_head_loss",
+          "want": 1.8489593018064931,
+          "got": 1.8095,
+          "passed": false,
+          "raw": "1. Cross-sectional area: <calc>pi/4 * 0.22**2</calc>= 0.0380137\n2. Velocity v = Q/A: <calc>0.0445 / 0.0380137</calc>= 1.17547\n3. Reynolds number: <calc>998.0 * 1.17547 * 0.22 / 0.0008</calc>= 308417\n4. Turbulent (Re > 2300), Swamee-Jain: <calc>0.25 / (log10(4.5e-05/(3.7*0.22) + 5.74/308417**0.9))**2</calc>= 0.0152476\n5. Head loss h = f (L/D) v^2 / (2g): <calc>0.0152476 * (358.8/0.22) * 1.17547**2 "
+        },
+        {
+          "case_id": "phys-0003",
+          "family": "pump_power",
+          "want": 68.53156824521123,
+          "got": 110.002,
+          "passed": false,
+          "raw": "1. Cross-sectional area: <calc>pi/4 * 0.081**2</calc>= 0.00510787\n2. Velocity v = Q/A: <calc>0.00602 / 0.00510787</calc>= 1.18113\n3. Reynolds number: <calc>998.0 * 1.18113 * 0.081 / 0.001002</calc>= 9999.99\n4. Turbulent (Re > 2300), Swamee-Jain: <calc>0.25 / (log10(4.5e-05/(3.7*0.081) + 5.74/9999.99**0.9))**2</calc>= 0.0200002\n5. Head loss h = f (L/D) v^2 / (2g): <calc>0.0200002 * (41.0/0.081) * 1"
+        },
+        {
+          "case_id": "phys-0004",
+          "family": "terminal_velocity",
+          "want": 0.00268488817296,
+          "got": 0.0014225,
+          "passed": false,
+          "raw": "1. Density difference: <calc>1250.8 - 998.0</calc>= 252.8\n2. Stokes terminal velocity v = (rho_s - rho_f) g d^2 / (18 mu): <calc>252.8 * 9.80665 * 0.000171**2 / (18*0.0015)</calc>= 0.0014225\n\n{\"answer\": 0.0014225}"
+        },
+        {
+          "case_id": "phys-0005",
+          "family": "venturi_flow",
+          "want": 0.11396258683641461,
+          "got": 0.089291,
+          "passed": false,
+          "raw": "1. Inlet area: <calc>pi/4 * 0.168**2</calc>= 0.0221694\n2. Throat area: <calc>pi/4 * 0.1085**2</calc>= 0.00900144\n3. Flow rate Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00900144 * sqrt(2*55217.0 / (880.0 * (1 - (0.00900144/0.0221694)**2)))</calc>= 0.089291\n\n{\"answer\": 0.089291}"
+        },
+        {
+          "case_id": "phys-0006",
+          "family": "hydrostatic_force",
+          "want": 83545.277122944,
+          "got": 94019.0,
+          "passed": false,
+          "raw": "1. Depth of the centroid below the surface: <calc>0.71 + 1.28/2</calc>= 1.56\n2. Area of the gate: <calc>4.94 * 1.28</calc>= 6.3632\n3. Resultant force F = rho g h_c A: <calc>998.0 * 9.80665 * 1.56 * 6.3632</calc>= 94019\n\n{\"answer\": 94019}"
+        },
+        {
+          "case_id": "phys-0007",
+          "family": "manning_channel",
+          "want": 29.651189503613413,
+          "got": 14.4404,
+          "passed": false,
+          "raw": "1. Flow area: <calc>3.95 * 0.89</calc>= 3.5255\n2. Wetted perimeter: <calc>3.95 + 2*0.89</calc>= 5.73\n3. Hydraulic radius R = A/P: <calc>3.5255 / 5.73</calc>= 0.614017\n4. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.012) * 3.5255 * 0.614017**(2/3) * sqrt(0.01965)</calc>= 14.4404\n\n{\"answer\": 14.4404}"
+        },
+        {
+          "case_id": "phys-0008",
+          "family": "pipe_head_loss",
+          "want": 10.158958087290983,
+          "got": 7.4055,
+          "passed": false,
+          "raw": "1. Cross-sectional area: <calc>pi/4 * 0.209**2</calc>= 0.0345741\n2. Velocity v = Q/A: <calc>0.08083 / 0.0345741</calc>= 2.34143\n3. Reynolds number: <calc>880.0 * 2.34143 * 0.209 / 0.001002</calc>= 434412\n4. Turbulent (Re > 2300), Swamee-Jain: <calc>0.25 / (log10(0.00026/(3.7*0.209) + 5.74/434412**0.9))**2</calc>= 0.0202414\n5. Head loss h = f (L/D) v^2 / (2g): <calc>0.0202414 * (349.9/0.209) * 2.34"
+        },
+        {
+          "case_id": "phys-0009",
+          "family": "pump_power",
+          "want": 1123.583802071903,
+          "got": 1999.99,
+          "passed": false,
+          "raw": "1. Cross-sectional area: <calc>pi/4 * 0.247**2</calc>= 0.0482002\n2. Velocity v = Q/A: <calc>0.12482 / 0.0482002</calc>= 2.58576\n3. Reynolds number: <calc>998.0 * 2.58576 * 0.247 / 0.001002</calc>= 654412\n4. Turbulent (Re > 2300), Swamee-Jain: <calc>0.25 / (log10(1.5e-06/(3.7*0.247) + 5.74/654412**0.9))**2</calc>= 0.0151086\n5. Head loss h = f (L/D) v^2 / (2g): <calc>0.0151086 * (32.2/0.247) * 2.585"
+        },
+        {
+          "case_id": "phys-0010",
+          "family": "terminal_velocity",
+          "want": 0.0020415860668487936,
+          "got": 0.005,
+          "passed": false,
+          "raw": "1. Density difference: <calc>2499.7 - 998.0</calc>= 1501.7\n2. Stokes terminal velocity v = (rho_s - rho_f) g d^2 / (18 mu): <calc>1501.7 * 9.80665 * 0.0001117**2 / (18*0.005)</calc>= 0.0049999\n\n{\"answer\": 0.005}"
+        },
+        {
+          "case_id": "phys-0011",
+          "family": "venturi_flow",
+          "want": 0.16595378329096444,
+          "got": 0.11008,
+          "passed": false,
+          "raw": "1. Inlet area: <calc>pi/4 * 0.269**2</calc>= 0.0546084\n2. Throat area: <calc>pi/4 * 0.1716**2</calc>= 0.0238473\n3. Flow rate Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.0238473 * sqrt(2*22018.8 / (1025.0 * (1 - (0.0238473/0.0546084)**2)))</calc>= 0.11008\n\n{\"answer\": 0.11008}"
+        },
+        {
+          "case_id": "phys-0012",
+          "family": "hydrostatic_force",
+          "want": 30018.42239088,
+          "got": 31416.6,
+          "passed": false,
+          "raw": "1. Depth of the centroid below the surface: <calc>0.79 + 0.66/2</calc>= 1.18\n2. Area of the gate: <calc>4.04 * 0.66</calc>= 2.6784\n3. Resultant force F = rho g h_c A: <calc>1025.0 * 9.80665 * 1.18 * 2.6784</calc>= 31416.6\n\n{\"answer\": 31416.6}"
+        },
+        {
+          "case_id": "phys-0013",
+          "family": "manning_channel",
+          "want": 21.60825783106168,
+          "got": 12.0104,
+          "passed": false,
+          "raw": "1. Flow area: <calc>3.67 * 0.76</calc>= 2.8052\n2. Wetted perimeter: <calc>3.67 + 2*0.76</calc>= 5.19\n3. Hydraulic radius R = A/P: <calc>2.8052 / 5.19</calc>= 0.539117\n4. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.012) * 2.8052 * 0.539117**(2/3) * sqrt(0.01978)</calc>= 12.0104\n\n{\"answer\": 12.0104}"
+        },
+        {
+          "case_id": "phys-0014",
+          "family": "pipe_head_loss",
+          "want": 0.8547197590568688,
+          "got": 0.60049,
+          "passed": false,
+          "raw": "1. Cross-sectional area: <calc>pi/4 * 0.259**2</calc>= 0.0527034\n2. Velocity v = Q/A: <calc>0.04321 / 0.0527034</calc>= 0.819337\n3. Reynolds number: <calc>1025.0 * 0.819337 * 0.259 / 0.0015</calc>= 134444\n4. Turbulent (Re > 2300), Swamee-Jain: <calc>0.25 / (log10(1.5e-06/(3.7*0.259) + 5.74/134444**0.9))**2</calc>= 0.0151083\n5. Head loss h = f (L/D) v^2 / (2g): <calc>0.0151083 * (389.0/0.259) * 0.8"
+        },
+        {
+          "case_id": "phys-0015",
+          "family": "pump_power",
+          "want": 226.15205012015764,
+          "got": 328.45,
+          "passed": false,
+          "raw": "1. Cross-sectional area: <calc>pi/4 * 0.214**2</calc>= 0.0360065\n2. Velocity v = Q/A: <calc>0.04932 / 0.0360065</calc>= 1.36996\n3. Reynolds number: <calc>998.0 * 1.36996 * 0.214 / 0.001002</calc>= 294428\n4. Turbulent (Re > 2300), Swamee-Jain: <calc>0.25 / (log10(1.5e-06/(3.7*0.214) + 5.74/294428**0.9))**2</calc>= 0.0151082\n5. Head loss h = f (L/D) v^2 / (2g): <calc>0.0151082 * (57.6/0.214) * 1.369"
+        },
+        {
+          "case_id": "phys-0016",
+          "family": "terminal_velocity",
+          "want": 9.315637572266666e-05,
+          "got": 0.00027003,
+          "passed": false,
+          "raw": "1. Density difference: <calc>1439.6 - 998.0</calc>= 441.6\n2. Stokes terminal velocity v = (rho_s - rho_f) g d^2 / (18 mu): <calc>441.6 * 9.80665 * 4.4e-05**2 / (18*0.005)</calc>= 0.00027003\n\n{\"answer\": 0.00027003}"
+        },
+        {
+          "case_id": "phys-0017",
+          "family": "venturi_flow",
+          "want": 0.05622143676401737,
+          "got": 0.089209,
+          "passed": false,
+          "raw": "1. Inlet area: <calc>pi/4 * 0.216**2</calc>= 0.036204\n2. Throat area: <calc>pi/4 * 0.0827**2</calc>= 0.00540144\n3. Flow rate Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00540144 * sqrt(2*53489.5 / (998.0 * (1 - (0.00540144/0.036204)**2)))</calc>= 0.089209\n\n{\"answer\": 0.089209}"
+        },
+        {
+          "case_id": "phys-0018",
+          "family": "hydrostatic_force",
+          "want": 159023.2512106875,
+          "got": 162411.0,
+          "passed": false,
+          "raw": "1. Depth of the centroid below the surface: <calc>1.0 + 1.9/2</calc>= 1.95\n2. Area of the gate: <calc>4.27 * 1.9</calc>= 8.113\n3. Resultant force F = rho g h_c A: <calc>1025.0 * 9.80665 * 1.95 * 8.113</calc>= 162411\n\n{\"answer\": 162411}"
+        },
+        {
+          "case_id": "phys-0019",
+          "family": "manning_channel",
+          "want": 2.443150246582592,
+          "got": 2.4404,
+          "passed": true,
+          "raw": "1. Flow area: <calc>1.14 * 1.0</calc>= 1.14\n2. Wetted perimeter: <calc>1.14 + 2*1.0</calc>= 3.14\n3. Hydraulic radius R = A/P: <calc>1.14 / 3.14</calc>= 0.362781\n4. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.03) * 1.14 * 0.362781**(2/3) * sqrt(0.01596)</calc>= 2.4404\n\n{\"answer\": 2.4404}"
+        },
+        {
+          "case_id": "phys-0020",
+          "family": "pipe_head_loss",
+          "want": 26.004971215311276,
+          "got": 18.059,
+          "passed": false,
+          "raw": "1. Cross-sectional area: <calc>pi/4 * 0.08**2</calc>= 0.00502659\n2. Velocity v = Q/A: <calc>0.01643 / 0.00502659</calc>= 3.27133\n3. Reynolds number: <calc>1025.0 * 3.27133 * 0.08 / 0.0008</calc>= 369000\n4. Turbulent (Re > 2300), Swamee-Jain: <calc>0.25 / (log10(4.5e-05/(3.7*0.08) + 5.74/369000**0.9))**2</calc>= 0.0152413\n5. Head loss h = f (L/D) v^2 / (2g): <calc>0.0152413 * (205.9/0.08) * 3.27133"
+        },
+        {
+          "case_id": "phys-0021",
+          "family": "pump_power",
+          "want": 842.8629661168894,
+          "got": 1004.6,
+          "passed": false,
+          "raw": "1. Cross-sectional area: <calc>pi/4 * 0.194**2</calc>= 0.0290075\n2. Velocity v = Q/A: <calc>0.04881 / 0.0290075</calc>= 1.6827\n3. Reynolds number: <calc>998.0 * 1.6827 * 0.194 / 0.0015</calc>= 214044\n4. Turbulent (Re > 2300), Swamee-Jain: <calc>0.25 / (log10(1.5e-06/(3.7*0.194) + 5.74/214044**0.9))**2</calc>= 0.0151047\n5. Head loss h = f (L/D) v^2 / (2g): <calc>0.0151047 * (115.0/0.194) * 1.6827**"
+        },
+        {
+          "case_id": "phys-0022",
+          "family": "terminal_velocity",
+          "want": 0.0006057613551088749,
+          "got": 0.00047225,
+          "passed": false,
+          "raw": "1. Density difference: <calc>2361.3 - 1025.0</calc>= 1336.3\n2. Stokes terminal velocity v = (rho_s - rho_f) g d^2 / (18 mu): <calc>1336.3 * 9.80665 * 6.45e-05**2 / (18*0.005)</calc>= 0.00047225\n\n{\"answer\": 0.00047225}"
+        },
+        {
+          "case_id": "phys-0023",
+          "family": "venturi_flow",
+          "want": 0.04227747396924894,
+          "got": 0.030102,
+          "passed": false,
+          "raw": "1. Inlet area: <calc>pi/4 * 0.155**2</calc>= 0.0187473\n2. Throat area: <calc>pi/4 * 0.1034**2</calc>= 0.00840144\n3. Flow rate Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00840144 * sqrt(2*8944.6 / (880.0 * (1 - (0.00840144/0.0187473)**2)))</calc>= 0.030102\n\n{\"answer\": 0.030102}"
+        },
+        {
+          "case_id": "phys-0024",
+          "family": "hydrostatic_force",
+          "want": 62740.59467306399,
+          "got": 64716.4,
+          "passed": false,
+          "raw": "1. Depth of the centroid below the surface: <calc>0.42 + 3.03/2</calc>= 1.965\n2. Area of the gate: <calc>1.24 * 3.03</calc>= 3.7632\n3. Resultant force F = rho g h_c A: <calc>880.0 * 9.80665 * 1.965 * 3.7632</calc>= 64716.4\n\n{\"answer\": 64716.4}"
+        },
+        {
+          "case_id": "phys-0025",
+          "family": "manning_channel",
+          "want": 4.692297274108275,
+          "got": 5.4402,
+          "passed": false,
+          "raw": "1. Flow area: <calc>1.84 * 1.15</calc>= 2.116\n2. Wetted perimeter: <calc>1.84 + 2*1.15</calc>= 4.14\n3. Hydraulic radius R = A/P: <calc>2.116 / 4.14</calc>= 0.509711\n4. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.03) * 2.116 * 0.509711**(2/3) * sqrt(0.01083)</calc>= 5.4402\n\n{\"answer\": 5.4402}"
+        },
+        {
+          "case_id": "phys-0026",
+          "family": "pipe_head_loss",
+          "want": 33.5168545847374,
+          "got": 12.829,
+          "passed": false,
+          "raw": "1. Cross-sectional area: <calc>pi/4 * 0.113**2</calc>= 0.0100977\n2. Velocity v = Q/A: <calc>0.03352 / 0.0100977</calc>= 3.31973\n3. Reynolds number: <calc>1025.0 * 3.31973 * 0.113 / 0.0008</calc>= 462421\n4. Turbulent (Re > 2300), Swamee-Jain: <calc>0.25 / (log10(0.00026/(3.7*0.113) + 5.74/462421**0.9))**2</calc>= 0.0202453\n5. Head loss h = f (L/D) v^2 / (2g): <calc>0.0202453 * (268.4/0.113) * 3.319"
+        },
+        {
+          "case_id": "phys-0027",
+          "family": "pump_power",
+          "want": 453.4776414437574,
+          "got": 680.45,
+          "passed": false,
+          "raw": "1. Cross-sectional area: <calc>pi/4 * 0.217**2</calc>= 0.0369024\n2. Velocity v = Q/A: <calc>0.035 / 0.0369024</calc>= 0.951313\n3. Reynolds number: <calc>880.0 * 0.951313 * 0.217 / 0.0008</calc>= 212447\n4. Turbulent (Re > 2300), Swamee-Jain: <calc>0.25 / (log10(0.00026/(3.7*0.217) + 5.74/212447**0.9))**2</calc>= 0.0201414\n5. Head loss h = f (L/D) v^2 / (2g): <calc>0.0201414 * (271.6/0.217) * 0.9513"
+        },
+        {
+          "case_id": "phys-0028",
+          "family": "terminal_velocity",
+          "want": 0.004647560258685521,
+          "got": 0.0043291,
+          "passed": false,
+          "raw": "1. Density difference: <calc>1705.7 - 998.0</calc>= 707.7\n2. Stokes terminal velocity v = (rho_s - rho_f) g d^2 / (18 mu): <calc>707.7 * 9.80665 * 0.0001099**2 / (18*0.001002)</calc>= 0.0043291\n\n{\"answer\": 0.0043291}"
+        },
+        {
+          "case_id": "phys-0029",
+          "family": "venturi_flow",
+          "want": 0.18120376847033356,
+          "got": 0.082055,
+          "passed": false,
+          "raw": "1. Inlet area: <calc>pi/4 * 0.232**2</calc>= 0.0416902\n2. Throat area: <calc>pi/4 * 0.1538**2</calc>= 0.0182043\n3. Flow rate Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.0182043 * sqrt(2*33773.8 / (880.0 * (1 - (0.0182043/0.0416902)**2)))</calc>= 0.082055\n\n{\"answer\": 0.082055}"
+        },
+        {
+          "case_id": "phys-0030",
+          "family": "hydrostatic_force",
+          "want": 199232.455083459,
+          "got": 204711.0,
+          "passed": false,
+          "raw": "1. Depth of the centroid below the surface: <calc>1.94 + 3.54/2</calc>= 3.76\n2. Area of the gate: <calc>1.55 * 3.54</calc>= 5.477\n3. Resultant force F = rho g h_c A: <calc>998.0 * 9.80665 * 3.76 * 5.477</calc>= 204711\n\n{\"answer\": 204711}"
+        },
+        {
+          "case_id": "phys-0031",
+          "family": "manning_channel",
+          "want": 11.486734469855108,
+          "got": 11.0104,
+          "passed": false,
+          "raw": "1. Flow area: <calc>1.76 * 1.39</calc>= 2.4544\n2. Wetted perimeter: <calc>1.76 + 2*1.39</calc>= 4.54\n3. Hydraulic radius R = A/P: <calc>2.4544 / 4.54</calc>= 0.538317\n4. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.012) * 2.4544 * 0.538317**(2/3) * sqrt(0.00724)</calc>= 11.0104\n\n{\"answer\": 11.0104}"
+        },
+        {
+          "case_id": "phys-0032",
+          "family": "pipe_head_loss",
+          "want": 3.522745291620681,
+          "got": 5.5059,
+          "passed": false,
+          "raw": "1. Cross-sectional area: <calc>pi/4 * 0.18**2</calc>= 0.0254471\n2. Velocity v = Q/A: <calc>0.05408 / 0.0254471</calc>= 2.12946\n3. Reynolds number: <calc>880.0 * 2.12946 * 0.18 / 0.0008</calc>= 442317\n4. Turbulent (Re > 2300), Swamee-Jain: <calc>0.25 / (log10(1.5e-06/(3.7*0.18) + 5.74/442317**0.9))**2</calc>= 0.0151087\n5. Head loss h = f (L/D) v^2 / (2g): <calc>0.0151087 * (202.1/0.18) * 2.12946**2"
+        },
+        {
+          "case_id": "phys-0033",
+          "family": "pump_power",
+          "want": 2336.6162435527244,
+          "got": 2408.1,
+          "passed": false,
+          "raw": "1. Cross-sectional area: <calc>pi/4 * 0.198**2</calc>= 0.0304941\n2. Velocity v = Q/A: <calc>0.04725 / 0.0304941</calc>= 1.55133\n3. Reynolds number: <calc>998.0 * 1.55133 * 0.198 / 0.001002</calc>= 294414\n4. Turbulent (Re > 2300), Swamee-Jain: <calc>0.25 / (log10(4.5e-05/(3.7*0.198) + 5.74/294414**0.9))**2</calc>= 0.0151083\n5. Head loss h = f (L/D) v^2 / (2g): <calc>0.0151083 * (353.3/0.198) * 1.55"
+        },
+        {
+          "case_id": "phys-0034",
+          "family": "terminal_velocity",
+          "want": 0.002012008334279098,
+          "got": 0.0010228,
+          "passed": false,
+          "raw": "1. Density difference: <calc>1762.8 - 1025.0</calc>= 737.8\n2. Stokes terminal velocity v = (rho_s - rho_f) g d^2 / (18 mu): <calc>737.8 * 9.80665 * 0.0001582**2 / (18*0.005)</calc>= 0.0010228\n\n{\"answer\": 0.0010228}"
+        },
+        {
+          "case_id": "phys-0035",
+          "family": "venturi_flow",
+          "want": 0.27341367172547226,
+          "got": 0.112904,
+          "passed": false,
+          "raw": "1. Inlet area: <calc>pi/4 * 0.298**2</calc>= 0.0690067\n2. Throat area: <calc>pi/4 * 0.1877**2</calc>= 0.0274047\n3. Flow rate Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.0274047 * sqrt(2*41051.4 / (998.0 * (1 - (0.0274047/0.0690067)**2)))</calc>= 0.112904\n\n{\"answer\": 0.112904}"
+        },
+        {
+          "case_id": "phys-0036",
+          "family": "hydrostatic_force",
+          "want": 169125.63640265758,
+          "got": 194810.0,
+          "passed": false,
+          "raw": "1. Depth of the centroid below the surface: <calc>1.26 + 1.87/2</calc>= 2.585\n2. Area of the gate: <calc>4.21 * 1.87</calc>= 7.9987\n3. Resultant force F = rho g h_c A: <calc>998.0 * 9.80665 * 2.585 * 7.9987</calc>= 194810\n\n{\"answer\": 194810}"
+        },
+        {
+          "case_id": "phys-0037",
+          "family": "manning_channel",
+          "want": 0.2610771365701055,
+          "got": 0.91029,
+          "passed": false,
+          "raw": "1. Flow area: <calc>0.64 * 1.17</calc>= 0.7584\n2. Wetted perimeter: <calc>0.64 + 2*1.17</calc>= 3.01\n3. Hydraulic radius R = A/P: <calc>0.7584 / 3.01</calc>= 0.252133\n4. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.03) * 0.7584 * 0.252133**(2/3) * sqrt(0.00069)</calc>= 0.91029\n\n{\"answer\": 0.91029}"
+        },
+        {
+          "case_id": "phys-0038",
+          "family": "pipe_head_loss",
+          "want": 6.351642516477467,
+          "got": 5.4454,
+          "passed": false,
+          "raw": "1. Cross-sectional area: <calc>pi/4 * 0.182**2</calc>= 0.0267942\n2. Velocity v = Q/A: <calc>0.0561 / 0.0267942</calc>= 2.09144\n3. Reynolds number: <calc>1025.0 * 2.09144 * 0.182 / 0.001002</calc>= 384428\n4. Turbulent (Re > 2300), Swamee-Jain: <calc>0.25 / (log10(4.5e-05/(3.7*0.182) + 5.74/384428**0.9))**2</calc>= 0.0152243\n5. Head loss h = f (L/D) v^2 / (2g): <calc>0.0152243 * (300.5/0.182) * 2.09"
+        },
+        {
+          "case_id": "phys-0039",
+          "family": "pump_power",
+          "want": 11402.668570706295,
+          "got": 1888.3,
+          "passed": false,
+          "raw": "1. Cross-sectional area: <calc>pi/4 * 0.069**2</calc>= 0.0037101\n2. Velocity v = Q/A: <calc>0.0109 / 0.0037101</calc>= 2.93117\n3. Reynolds number: <calc>1025.0 * 2.93117 * 0.069 / 0.0008</calc>= 242444\n4. Turbulent (Re > 2300), Swamee-Jain: <calc>0.25 / (log10(0.00026/(3.7*0.069) + 5.74/242444**0.9))**2</calc>= 0.0201516\n5. Head loss h = f (L/D) v^2 / (2g): <calc>0.0201516 * (348.6/0.069) * 2.9311"
+        }
+      ]
+    }
+  }
+}

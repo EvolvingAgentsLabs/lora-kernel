@@ -127,12 +127,26 @@ def generate_with_tool(gen_step, system: str, user: str, max_calls: int = 12,
     out, used = "", 0
     for _ in range(max_calls + 1):
         chunk = gen_step(system, user, out, CLOSE)
+        # Trust the stop string only as far as it goes: whatever the generator
+        # produced past the first `</calc>` is the model guessing the answer it
+        # was told not to compute, and keeping it would put a second value in
+        # the chain.
+        if CLOSE in chunk:
+            chunk = chunk[:chunk.index(CLOSE) + len(CLOSE)]
         out += chunk
         if CLOSE not in chunk:
             break
-        m = CALL.search(out[-600:]) or CALL.search(out)
-        if not m:
+        # THE LAST CALL, NOT THE FIRST IN A WINDOW. Searching the final 600
+        # characters returned the first match inside it, which from step two
+        # onwards is an EARLIER call that was already answered — so the loop
+        # re-evaluated an old expression and appended its value again, corrupting
+        # every chain after its first line [ran] 2026-09-08.
+        matches = list(CALL.finditer(out))
+        if not matches:
             break
+        m = matches[-1]
+        if out[m.end():].lstrip().startswith("="):
+            break                      # already answered: nothing left to do
         used += 1
         try:
             out += f"= {evaluate(m.group(1)):.6g}\n"
