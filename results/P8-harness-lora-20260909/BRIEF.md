@@ -64,3 +64,32 @@ falsified as implemented and the merged adapter is the configuration that works.
 of each arm, after a reclaimed session took 20 completed cases with it. It changes
 what survives a crash, not what is measured, and the eval set, seed and gate are
 untouched. **Redesign count: 0.**
+
+---
+
+**Outcome (2026-09-09).** Both composition modes fail, and the second one refutes
+the explanation offered for the first.
+
+| arm | accuracy | tool calls | cases with a rejected call |
+|---|---|---|---|
+| base + tool | 0/30 | 44 | — |
+| kernel + tool | 1/30 | 169 | 0 / 30 |
+| domain + tool | 0/30 | 0 | — |
+| kernel + domain, stacked | 0/30 | 154 | 11 / 30 |
+| kernel + domain, blended 0.5/0.5 | 0/30 | 129 | 12 / 30 |
+
+Halving each delta did not restore call fidelity, so the doubled-perturbation
+reason written above is **wrong**, and it is left standing rather than edited —
+it was the prediction the blend arm tested, and it lost. What survives is that
+two LoRAs trained independently on the same projections interfere rather than
+compose, and the interference destroys exactly what each was most specific about.
+
+The protocol **is** separable as a thing to learn: a kernel with no physics in its
+corpus calls the tool on 30 of 30 fluid-mechanics cases while the physics expert
+calls it 0 times. It is not separable as a thing to serve.
+
+Sequential activation (§5 option 1) was **not** bought. One alternative was
+pre-registered and one was run; a third mode chosen after two failures would be a
+search, not a measurement.
+
+**Redesign count: 0.**

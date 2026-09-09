@@ -659,17 +659,45 @@ adaptador, y la fidelidad es lo primero que se cae.
 
 **La falsación se disparó como estaba escrita**: la composición no le ganó a las
 dos mitades, así que el protocolo no compone *por apilado*. Se compró una sola
-alternativa, y estaba nombrada en el brief antes de que este número existiera —
-`add_weighted_adapter` a 0,5/0,5, que es la corrección mecánica de una
-perturbación duplicada y no un segundo intento con la hipótesis.
+alternativa, nombrada en el brief antes de que este número existiera —
+`add_weighted_adapter` a 0,5/0,5, la corrección mecánica de una perturbación
+duplicada.
 
-**Qué cuesta si la mezcla también falla.** La separación de §4 queda en pie como
-hecho sobre el *aprendizaje* — el kernel existe y transfiere — y se cae como hecho
-sobre el *servicio*: la configuración que funciona es el adaptador fusionado de
-P7, y un cambio en la superficie de herramientas cuesta entonces reentrenar cada
-experto del pool. La opción 1 de `TECHNICAL-REFERENCE.md` §5, activación
-secuencial, sigue sin medirse y es lo más barato que queda, porque los dos
-adaptadores ya existen.
+**La mezcla también falla, y refuta la razón que yo di para el primer fallo.**
+
+| brazo | exactitud | llamadas | casos con una llamada rechazada por el evaluador |
+|---|---|---|---|
+| kernel + herramienta | 1/30 | 169 | **0 / 30** |
+| kernel + dominio, apilados | 0/30 | 154 | 11 / 30 |
+| **kernel + dominio, mezclados 0,5/0,5** | **0/30** | 129 | **12 / 30** |
+
+Partir a la mitad cada delta no devolvió la fidelidad de las llamadas — empeoró
+apenas. Así que la corrupción **no** es un efecto de magnitud, y "dos adaptadores
+a α=32 perturban el doble" era la explicación equivocada, ofrecida antes del dato
+que la pone a prueba. Lo que sí muestra la mezcla es la forma de la corrupción:
+las cadenas conservan los nombres de los pasos y su orden, y pierden el
+*contenido* — una línea de Swamee-Jain que no es Swamee-Jain, el largo de la
+cañería puesto en lugar del diámetro, una etiqueta abierta dentro de otra. El
+kernel solo no malforma una sola llamada en 30 casos.
+
+**La lectura que sobrevive.** Dos LoRAs entrenadas por separado sobre las mismas
+proyecciones no se suman en la unión de sus conductas; interfieren, y la
+interferencia cae justo sobre aquello en lo que cada adaptador era más
+específico. Ponderarlas es una perilla sobre la interferencia, no un arreglo.
+
+**Qué le cuesta esto a la arquitectura.** La separación de §4 queda en pie como
+hecho sobre el *aprendizaje* — el kernel existe y transfiere a un dominio que su
+corpus nunca contuvo — y se cae como hecho sobre el *servicio*: la configuración
+que funciona es el adaptador fusionado de P7, 40/40, y un cambio en la superficie
+de herramientas cuesta entonces reentrenar cada experto del pool. Ése es
+exactamente el precio que §4 existe para evitar, y no queda evitado.
+
+**No comprado, a propósito.** La opción 1 de `TECHNICAL-REFERENCE.md` §5 —
+activación secuencial, los dos adaptadores nunca vivos a la vez — sigue sin
+medirse y es barata, porque los dos adaptadores ya existen. No se corre acá: el
+brief pre-registró **una** alternativa, y comprar un tercer modo de composición
+después de dos fallos es como una medición se convierte en una búsqueda. Se lleva
+un paso propio, con su compuerta escrita antes, o no se compra.
 
 #### P7 — la brecha de retiro se cierra, y hacen falta las dos mitades
 

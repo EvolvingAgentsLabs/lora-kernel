@@ -1,6 +1,6 @@
 {
   "base": "Qwen/Qwen2.5-3B-Instruct",
-  "started": "2026-09-09T10:08:16",
+  "started": "2026-09-09T12:04:37",
   "kernel_n": 600,
   "domain_n": 598,
   "arms": {
@@ -1121,7 +1121,288 @@
           "raw": "1. inlet cross-sectional area: <calc>pi/4 * 0.232^2</calc>= 0.0422733\n2. throat cross-sectional area: <calc>pi/4 * 0.1538^2</calc>= 0.0185782\n3. velocity at the throat: <calc>sqrt(2 * 33773.8 / (0.0422733 - 0.0185782))</calc>= 1688.4\n4. volumetric flow rate: <calc>0.0185782 * 1688.4</calc>= 31.3674\n{\"answer\": 31.3674},<sep>worked in SI units</sep>"
         }
       ]
+    },
+    "kernel + domain blended 0.5 + tool": {
+      "label": "kernel + domain blended 0.5 + tool",
+      "n": 30,
+      "scored": 30,
+      "passed": 0,
+      "complete": true,
+      "accuracy": 0.0,
+      "tool_calls": 129,
+      "records": [
+        {
+          "case_id": "phys-0000",
+          "family": "hydrostatic_force",
+          "want": 131926.5701455625,
+          "got": 11949.4,
+          "passed": false,
+          "tool_calls": 0,
+          "raw": "{\"answer\": 11949.4}"
+        },
+        {
+          "case_id": "phys-0001",
+          "family": "manning_channel",
+          "want": 13.777463571438588,
+          "got": 0.636166,
+          "passed": false,
+          "tool_calls": 4,
+          "raw": "1. flow area: <calc>1.96 * 1.27</calc>= 2.4892\n2. wetted perimeter: <calc>1.96 + 2*sqrt(1.27**2 - 0.5**2)</calc>= 4.29487\n3. hydraulic radius: <calc><calc>2.4892</calc>= ERROR: unparseable: invalid syntax\n4. discharge: <calc>0.015 * 4.29487 * (1 + 5.2541**2/4)**(2/3) * 2.4892</calc>= 0.636166\n{\"answer\": 0.636166}"
+        },
+        {
+          "case_id": "phys-0002",
+          "family": "pipe_head_loss",
+          "want": 1.8489593018064931,
+          "got": 1.98984,
+          "passed": false,
+          "tool_calls": 5,
+          "raw": "1. cross-sectional area: <calc>pi/4*0.22**2</calc>= 0.0380133\n2. flow velocity: <calc>0.0445/0.0380133</calc>= 1.17064\n3. Reynolds number: <calc>998.0*1.17064*358.8/(0.0008)</calc>= 5.23982e+08\n4. Darcy friction factor using Swamee-Jain: <calc>0.07938 + 5.555e-05*log10(0.00045/0.0002016)</calc>= 0.0793994\n5. head loss: <calc>0.0793994 * 358.8 * 1.17064**2 / (2*9.81)</calc>= 1.98984\n{\"answer\": 1.98"
+        },
+        {
+          "case_id": "phys-0003",
+          "family": "pump_power",
+          "want": 68.53156824521123,
+          "got": 66669.5,
+          "passed": false,
+          "tool_calls": 6,
+          "raw": "1. cross-sectional area: <calc>pi/4*(0.081/2)**2</calc>= 0.00128825\n2. flow velocity: <calc>0.00602/0.00128825</calc>= 4.67301\n3. Reynolds number: <calc>998.0*4.67301*0.081/(0.001002)</calc>= 377003\n4. Darcy friction factor using Swamee-Jain: <calc>0.07938 + 5.555e-05*377003**0.9 - 1.111e-09*377003**1.1</calc>= 5.87742\n5. head loss: <calc>5.87742*9.80665*41.0/(2*0.00128825*4.67301**2)</calc>= 4200"
+        },
+        {
+          "case_id": "phys-0004",
+          "family": "terminal_velocity",
+          "want": 0.00268488817296,
+          "got": 0.640699,
+          "passed": false,
+          "tool_calls": 4,
+          "raw": "1. Compute the radius: <calc>0.000171 / 2</calc>= 8.55e-05\n2. Compute the numerator of the Stokes settling velocity formula: <calc>6 * 1250.8 * 8.55e-05**2</calc>= 5.4862e-05\n3. Compute the denominator: <calc>1.0015 * 8.55e-05</calc>= 8.56283e-05\n4. Compute the terminal settling velocity: <calc>5.4862e-05 / 8.56283e-05</calc>= 0.640699\n{\"answer\": 0.640699}"
+        },
+        {
+          "case_id": "phys-0005",
+          "family": "venturi_flow",
+          "want": 0.11396258683641461,
+          "got": 0.248324,
+          "passed": false,
+          "tool_calls": 6,
+          "raw": "1. inlet area: <calc>pi/4*0.168**2</calc>= 0.0221671\n2. throat area: <calc>pi/4*0.1085**2</calc>= 0.0092459\n3. area ratio squared: <calc>(0.0092459/0.0221671)**2</calc>= 0.173973\n4. velocity at throat: <calc>sqrt(2 * calc(55217.0) / (0.173973 * 880.0))</calc>= ERROR: Call is not allowed\n5. corrected velocity: <calc>sqrt(2 * 55217.0 / (0.173973 * 880.0))</calc>= 26.8577\n6. volumetric flow rate: <ca"
+        },
+        {
+          "case_id": "phys-0006",
+          "family": "hydrostatic_force",
+          "want": 83545.277122944,
+          "got": 15624.6,
+          "passed": false,
+          "tool_calls": 0,
+          "raw": "{\"answer\": 15624.6}"
+        },
+        {
+          "case_id": "phys-0007",
+          "family": "manning_channel",
+          "want": 29.651189503613413,
+          "got": 0.21156,
+          "passed": false,
+          "tool_calls": 4,
+          "raw": "1. flow area: <calc>3.95 * 0.89</calc>= 3.5155\n2. wetted perimeter: <calc>3.95 + 2*sqrt(3.5155)</calc>= 7.69993\n3. hydraulic radius: <calc><calc>3.5155</calc>= ERROR: unparseable: invalid syntax\n4. discharge: <calc>0.012 * 7.69993 * (3.5155)**(2/3) * (1 + 0.01965)**(-1/2)</calc>= 0.21156\n{\"answer\": 0.21156}"
+        },
+        {
+          "case_id": "phys-0008",
+          "family": "pipe_head_loss",
+          "want": 10.158958087290983,
+          "got": 1.84701,
+          "passed": false,
+          "tool_calls": 5,
+          "raw": "1. cross-sectional area: <calc>pi/4*0.209^2</calc>= 0.034307\n2. flow velocity: <calc>0.08083/0.034307</calc>= 2.35608\n3. Reynolds number: <calc>880.0*2.35608/0.001002</calc>= 2.06921e+06\n4. Darcy friction factor using Swamee-Jain: <calc>0.25*log10(0.00026/3.7 + 5.74/2.35608/0.209)</calc>= 0.266645\n5. head loss: <calc>0.266645*9.80665*(0.034307/0.209)**(2/3)*2.35608</calc>= 1.84701\n{\"answer\": 1.847"
+        },
+        {
+          "case_id": "phys-0009",
+          "family": "pump_power",
+          "want": 1123.583802071903,
+          "got": 421.874,
+          "passed": false,
+          "tool_calls": 6,
+          "raw": "1. cross-sectional area: <calc>pi/4*0.247^2</calc>= 0.0479164\n2. flow velocity: <calc>0.12482 / 0.0479164</calc>= 2.60495\n3. Reynolds number: <calc>998.0*2.60495*32.2 / 0.001002</calc>= 8.35445e+07\n4. Darcy friction factor using Swamee-Jain: <calc>0.07938 + 5.555e-05*sqrt(1e-06/0.0479164)</calc>= 0.0793803\n5. head loss: <calc>0.0793803 * 9.80665 * 32.2 / (2 * 0.0479164)</calc>= 261.562\n6. shaft po"
+        },
+        {
+          "case_id": "phys-0010",
+          "family": "terminal_velocity",
+          "want": 0.0020415860668487936,
+          "got": 1.18546,
+          "passed": false,
+          "tool_calls": 4,
+          "raw": "1. Compute the radius: <calc>0.0001117 / 2</calc>= 5.585e-05\n2. Compute the numerator of the Stokes settling velocity formula: <calc>6 * 2499.7 * 5.585e-05</calc>= 0.837649\n3. Compute the denominator: <calc>141.32 * 0.005</calc>= 0.7066\n4. Compute the terminal settling velocity: <calc>0.837649 / 0.7066</calc>= 1.18546\n{\"answer\": 1.18546}"
+        },
+        {
+          "case_id": "phys-0011",
+          "family": "venturi_flow",
+          "want": 0.16595378329096444,
+          "got": 0.1224,
+          "passed": false,
+          "tool_calls": 6,
+          "raw": "1. inlet area: <calc>pi/4*0.269**2</calc>= 0.0568322\n2. throat area: <calc>pi/4*0.1716**2</calc>= 0.0231273\n3. area ratio: <calc>0.0231273/0.0568322</calc>= 0.40694\n4. velocity at the throat: <calc>sqrt(2*calc(22018.8)/((1-0.40694)*0.0231273))</calc>= ERROR: Call is not allowed\n5. corrected velocity: <calc>sqrt(2*calc(22018.8)/(0.0231273*(1-0.40694**2)))</calc>= ERROR: Call is not allowed\n6. volum"
+        },
+        {
+          "case_id": "phys-0012",
+          "family": "hydrostatic_force",
+          "want": 30018.42239088,
+          "got": 11824.4,
+          "passed": false,
+          "tool_calls": 0,
+          "raw": "{\"answer\": 11824.4}"
+        },
+        {
+          "case_id": "phys-0013",
+          "family": "manning_channel",
+          "want": 21.60825783106168,
+          "got": 0.122597,
+          "passed": false,
+          "tool_calls": 4,
+          "raw": "1. flow area: <calc>3.67 * 0.76</calc>= 2.7892\n2. wetted perimeter: <calc>3.67 + 2*sqrt(2.7892)</calc>= 7.01018\n3. hydraulic radius: <calc><calc>2.7892</calc>= ERROR: unparseable: invalid syntax\n4. discharge: <calc>0.012 * (7.01018)**(2/3) * 2.7892</calc>= 0.122597\n{\"answer\": 0.122597}"
+        },
+        {
+          "case_id": "phys-0014",
+          "family": "pipe_head_loss",
+          "want": 0.8547197590568688,
+          "got": 5.90647,
+          "passed": false,
+          "tool_calls": 5,
+          "raw": "1. cross-sectional area: <calc>pi/4*0.259^2</calc>= 0.0526853\n2. flow velocity: <calc>0.04321/0.0526853</calc>= 0.820153\n3. Reynolds number: <calc>1025.0*0.820153*389.0/(0.0015)</calc>= 2.1801e+08\n4. Darcy friction factor using Swamee-Jain: <calc>0.25 + 5.0e-10*log10(0.003178/0.0015)</calc>= 0.25\n5. head loss: <calc>0.25*0.0526853*(0.820153)**2/0.0015</calc>= 5.90647\n{\"answer\": 5.90647}"
+        },
+        {
+          "case_id": "phys-0015",
+          "family": "pump_power",
+          "want": 226.15205012015764,
+          "got": 3622.65,
+          "passed": false,
+          "tool_calls": 6,
+          "raw": "1. cross-sectional area: <calc>pi/4*0.214**2</calc>= 0.0359681\n2. flow velocity: <calc>0.04932/0.0359681</calc>= 1.37122\n3. Reynolds number: <calc>998.0*1.37122*57.6/(0.001002)</calc>= 7.8667e+07\n4. Darcy friction factor using Swamee-Jain: <calc>0.0793 + 5.55e-05*sqrt(7866700)</calc>= 0.234964\n5. head loss: <calc>0.234964*9.80665*57.6*(1/0.214**2)</calc>= 2898.12\n6. shaft power required: <calc>289"
+        },
+        {
+          "case_id": "phys-0016",
+          "family": "terminal_velocity",
+          "want": 9.315637572266666e-05,
+          "got": 1.97374e-05,
+          "passed": false,
+          "tool_calls": 4,
+          "raw": "1. radius: <calc>4.4e-05 / 2</calc>= 2.2e-05\n2. numerator: <calc>9.81 * 2.2e-05**2</calc>= 4.74804e-09\n3. denominator: <calc>1439.6 + 998.0 - 0.005 * 2.2e-05 * 2.2e-05</calc>= 2437.6\n4. terminal velocity: <calc>sqrt(4.74804e-09 / (2437.6 * 0.005))</calc>= 1.97374e-05\n{\"answer\": 1.97374e-05}"
+        },
+        {
+          "case_id": "phys-0017",
+          "family": "venturi_flow",
+          "want": 0.05622143676401737,
+          "got": 1.7761,
+          "passed": false,
+          "tool_calls": 6,
+          "raw": "1. inlet area: <calc>pi/4*0.216**2</calc>= 0.0366435\n2. throat area: <calc>pi/4*0.0827**2</calc>= 0.00537157\n3. area ratio: <calc>0.00537157/0.0366435</calc>= 0.14659\n4. velocity at the throat: <calc>sqrt(2 * calc(53489.5) / (1 - 0.14659**2))</calc>= ERROR: Call is not allowed\n5. corrected velocity: <calc>sqrt(2 * 53489.5 / (1 - 0.14659**2))</calc>= 330.648\n6. volumetric flow rate: <calc>330.648 *"
+        },
+        {
+          "case_id": "phys-0018",
+          "family": "hydrostatic_force",
+          "want": 159023.2512106875,
+          "got": 1259.12,
+          "passed": false,
+          "tool_calls": 4,
+          "raw": "1. area of the gate: <calc>4.27 * 1.9</calc>= 8.113\n2. depth of the centroid: <calc>1.0 + 1.9/2</calc>= 1.95\n3. hydrostatic pressure at the centroid: <calc>8.113 * 9.81 * 1.95</calc>= 155.198\n4. resultant hydrostatic force: <calc>8.113 * 155.198</calc>= 1259.12\n{\"answer\": 1259.12}"
+        },
+        {
+          "case_id": "phys-0019",
+          "family": "manning_channel",
+          "want": 2.443150246582592,
+          "got": 15.5091,
+          "passed": false,
+          "tool_calls": 3,
+          "raw": "1. flow velocity: <calc>sqrt(2*g*calc(0.01596*log10(1.14/(1.14-1.0))) * (1.0/0.03)^(2/3))</calc>= ERROR: Name is not allowed\n2. corrected: <calc>sqrt(2*9.81*log10(1.14/(1.14-1.0)) * (1.0/0.03)^(2/3))</calc>= 13.6045\n3. discharge: <calc>13.6045 * 1.14</calc>= 15.5091\n{\"answer\": 15.5091}"
+        },
+        {
+          "case_id": "phys-0020",
+          "family": "pipe_head_loss",
+          "want": 26.004971215311276,
+          "got": 1.72,
+          "passed": false,
+          "tool_calls": 6,
+          "raw": "1. cross-sectional area: <calc>pi/4*0.08^2</calc>= 0.00502655\n2. flow velocity: <calc>0.01643 / 0.00502655</calc>= 3.26864\n3. Reynolds number: <calc>1025.0*3.26864*205.9 / 0.0008</calc>= 8.62298e+08\n4. Darcy friction factor using Swamee-Jain: <calc>0.25*log10(0.00045 / (3.26864 * 10^{-5}))</calc>= ERROR: Set is not allowed\n5. head loss: <calc>64*205.9 * (log10(0.00045 / (3.26864 * 10^{-5})) / log1"
+        },
+        {
+          "case_id": "phys-0021",
+          "family": "pump_power",
+          "want": 842.8629661168894,
+          "got": 417.635,
+          "passed": false,
+          "tool_calls": 6,
+          "raw": "1. cross-sectional area: <calc>pi/4*(0.194/2)**2</calc>= 0.00738981\n2. flow velocity: <calc>0.04881 / 0.00738981</calc>= 6.60504\n3. Reynolds number: <calc>6.60504 * 0.194 / 1.5e-06 * 998.0</calc>= 8.52543e+08\n4. Darcy friction factor using Swamee-Jain: <calc>0.25 * (1 + 5.01 / log10(0.000002018 * 8525430 - 3.7))</calc>= 1.35794\n5. head loss: <calc>1.35794 * 9.80665 * 115.0 * 0.00738981 / 0.194**2<"
+        },
+        {
+          "case_id": "phys-0022",
+          "family": "terminal_velocity",
+          "want": 0.0006057613551088749,
+          "got": 7.05142e-08,
+          "passed": false,
+          "tool_calls": 4,
+          "raw": "1. Compute the radius: <calc>6.45e-05 / 2</calc>= 3.225e-05\n2. Compute the numerator of the Stokes settling velocity formula: <calc>3 * 2361.3 * 9.81 * 3.225e-05**2</calc>= 7.22771e-05\n3. Compute the denominator: <calc>1025.0 - 2361.3 * 9.81 * 3.225e-05**2 / (2 * 0.005)</calc>= 1025\n4. Compute the terminal settling velocity: <calc>7.22771e-05 / 1025</calc>= 7.05142e-08\n{\"answer\": 7.05142e-08}"
+        },
+        {
+          "case_id": "phys-0023",
+          "family": "venturi_flow",
+          "want": 0.04227747396924894,
+          "got": 1.39197,
+          "passed": false,
+          "tool_calls": 6,
+          "raw": "1. inlet area: <calc>pi/4*0.155**2</calc>= 0.0188692\n2. throat area: <calc>pi/4*0.1034**2</calc>= 0.00839713\n3. area ratio squared: <calc>(0.00839713/0.0188692)**2</calc>= 0.198041\n4. velocity at the throat: <calc>sqrt(2 * calc(8944.6)/(0.839713 - 0.188692))</calc>= ERROR: Call is not allowed\n5. corrected velocity: <calc>sqrt(2 * 8944.6 / (0.839713 - 0.188692) * 0.198041)</calc>= 73.7693\n6. volume"
+        },
+        {
+          "case_id": "phys-0024",
+          "family": "hydrostatic_force",
+          "want": 62740.59467306399,
+          "got": 15769.6,
+          "passed": false,
+          "tool_calls": 0,
+          "raw": "{\"answer\": 15769.6}"
+        },
+        {
+          "case_id": "phys-0025",
+          "family": "manning_channel",
+          "want": 4.692297274108275,
+          "got": 0.41201,
+          "passed": false,
+          "tool_calls": 4,
+          "raw": "1. flow area: <calc>1.84 * 1.15</calc>= 2.116\n2. wetted perimeter: <calc>1.84 + 2*sqrt(1.15**2 - 0.5**2)</calc>= 3.91123\n3. hydraulic radius: <calc><calc>2.116</calc>= ERROR: unparseable: invalid syntax\n4. discharge: <calc>0.03 * 3.91123 * (1 + 5**0.25) * 1.15**2.45 * exp(-0.0007371 * 1.15)</calc>= 0.41201\n{\"answer\": 0.41201}"
+        },
+        {
+          "case_id": "phys-0026",
+          "family": "pipe_head_loss",
+          "want": 33.5168545847374,
+          "got": 3114.49,
+          "passed": false,
+          "tool_calls": 5,
+          "raw": "1. cross-sectional area: <calc>pi/4*0.113^2</calc>= 0.0100287\n2. flow velocity: <calc>0.03352/0.0100287</calc>= 3.34241\n3. Reynolds number: <calc>1025.0*3.34241*268.4/(0.0008)</calc>= 1.14941e+09\n4. Darcy friction factor using Swamee-Jain: <calc>0.25*log10(0.00026/3.34241*(0.113/2)**0.5)</calc>= -1.18327\n5. head loss: <calc>-1.18327*9.80665*268.4*0.0100287/0.0100287</calc>= -3114.49\n{\"answer\": 311"
+        },
+        {
+          "case_id": "phys-0027",
+          "family": "pump_power",
+          "want": 453.4776414437574,
+          "got": 1.0003,
+          "passed": false,
+          "tool_calls": 6,
+          "raw": "1. cross-sectional area: <calc>pi/4*0.217^2</calc>= 0.0369836\n2. flow velocity: <calc>0.035 / 0.0369836</calc>= 0.946365\n3. Reynolds number: <calc>880.0*0.946365*271.6 / 0.0008</calc>= 2.82736e+08\n4. Darcy friction factor using Swamee-Jain: <calc>6.5583e-05 + 0.20183/(1.0601 + sqrt(Re))</calc>= ERROR: Name is not allowed\n5. head loss: <calc>0.0369836 * 0.0008 * 2.82736e+08 * 6.5583e-05 / (2*880.0)"
+        },
+        {
+          "case_id": "phys-0028",
+          "family": "terminal_velocity",
+          "want": 0.004647560258685521,
+          "got": 0.560676,
+          "passed": false,
+          "tool_calls": 4,
+          "raw": "1. Compute the radius: <calc>0.0001099 / 2</calc>= 5.495e-05\n2. Compute the numerator of the Stokes settling velocity formula: <calc>6 * 1705.7 * 5.495e-05</calc>= 0.562369\n3. Compute the denominator: <calc>1001.02 * 0.001002</calc>= 1.00302\n4. Compute the terminal settling velocity: <calc>0.562369 / 1.00302</calc>= 0.560676\n{\"answer\": 0.560676}"
+        },
+        {
+          "case_id": "phys-0029",
+          "family": "venturi_flow",
+          "want": 0.18120376847033356,
+          "got": 5.37538,
+          "passed": false,
+          "tool_calls": 6,
+          "raw": "1. inlet area: <calc>pi/4*0.232**2</calc>= 0.0422733\n2. throat area: <calc>pi/4*0.1538**2</calc>= 0.0185782\n3. area ratio squared: <calc>(0.0185782/0.0422733)**2</calc>= 0.193141\n4. velocity at the throat: <calc>sqrt(2 * calc(33773.8)/(1 - 0.193141))</calc>= ERROR: Call is not allowed\n5. corrected velocity: <calc>sqrt(2 * 33773.8 / (1 - 0.193141))</calc>= 289.338\n6. volumetric flow rate: <calc>0.0"
+        }
+      ]
     }
   },
-  "finished": "2026-09-09T10:49:09"
+  "finished": "2026-09-09T12:42:05"
 }

@@ -638,15 +638,42 @@ either adapter was trained under, and fidelity is the first thing to go.
 **The falsification fired as written**: the composition did not beat both halves,
 so the protocol does not compose *by stacking*. One alternative was bought, and
 it was named in the brief before this number existed — `add_weighted_adapter` at
-0.5/0.5, which is the mechanical correction for a doubled perturbation rather
-than a second attempt at the hypothesis.
+0.5/0.5, the mechanical correction for a doubled perturbation.
 
-**What it costs if the blend also fails.** §4's separation stands as a fact about
-*learning* — the kernel exists and transfers — and falls as a fact about
-*serving*: the configuration that works is P7's merged adapter, and a change to
-the tool surface then costs a retrain of every expert in the pool. Option 1 of
-`TECHNICAL-REFERENCE.md` §5, sequential activation, remains unmeasured and is the
-cheapest thing left, since the two adapters already exist.
+**The blend fails too, and it refutes the reason I gave for the first failure.**
+
+| arm | accuracy | tool calls | cases with a call the evaluator rejected |
+|---|---|---|---|
+| kernel + tool | 1/30 | 169 | **0 / 30** |
+| kernel + domain, stacked | 0/30 | 154 | 11 / 30 |
+| **kernel + domain, blended 0.5/0.5** | **0/30** | 129 | **12 / 30** |
+
+Halving each delta did not restore call fidelity — it got marginally worse. So
+the corruption is **not** a magnitude effect, and "two adapters at α=32 perturb
+twice as hard" was the wrong explanation, offered before the data that tests it.
+What the blend does show is the corruption's shape: the chains keep the right
+step names and the right order and lose the *content* — a Swamee-Jain line that
+is not Swamee-Jain, a pipe's length substituted for its diameter, a tag opened
+inside a tag. The kernel alone never malforms a call, on any of 30 cases.
+
+**The reading that survives.** Two LoRAs trained independently on the same
+projections do not sum into the union of their behaviours; they interfere, and
+the interference lands on exactly the thing each adapter was most specific about.
+Weighting them is a knob on the interference, not a fix for it.
+
+**What this costs the architecture.** §4's separation stands as a fact about
+*learning* — the kernel exists, and it transfers to a domain its corpus never
+contained — and falls as a fact about *serving*: the configuration that works is
+P7's merged adapter, 40/40, and a change to the tool surface therefore costs a
+retrain of every expert in the pool. That is the price §4 exists to avoid, and it
+is not avoided.
+
+**Not bought, deliberately.** Option 1 of `TECHNICAL-REFERENCE.md` §5 —
+sequential activation, the two adapters never live at once — is untested and
+cheap, since both adapters exist. It is not run here: the brief pre-registered
+**one** alternative, and buying a third composition mode after two failures is
+how a measurement turns into a search. It gets a step of its own, with its gate
+written first, or it does not get bought.
 
 #### P7 — the withdrawal gap closes, and it takes both halves
 
