@@ -48,7 +48,8 @@ import time
 from pathlib import Path
 
 from training.physics.calc import CLOSE, CalcError, evaluate
-from training.physics.generate import TRAIN_FAMILIES, generate
+from training.physics.generate import (HELD_OUT_FAMILIES, TRAIN_FAMILIES,
+                                        generate)
 from training.physics.headroom import correct, parse_answer
 from training.physics.repair import repair
 from training.protocol import SYSTEM
@@ -212,21 +213,30 @@ def main() -> int:
     ap.add_argument("--targets",
                     default="q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj")
     ap.add_argument("--four-bit", dest="four_bit", action="store_true")
+    # C — DOES THE EXPERT KNOW THE EDGE OF ITS OWN REGION? It was trained on six
+    # families; these are two it never saw. The one earlier measurement said 0 of
+    # 10 and came from a run that was cut short and never saved, so the claim the
+    # whole per-region promotion rests on has never actually been banked.
+    ap.add_argument("--held-out", action="store_true",
+                    help="evaluate on the families kept out of training")
     args = ap.parse_args()
 
     from peft import PeftModel
     from training.s4_train import free, load_base, train_adapter
 
-    ev = generate(args.n_eval, args.eval_seed, TRAIN_FAMILIES, style="working")
+    fams = HELD_OUT_FAMILIES if args.held_out else TRAIN_FAMILIES
+    ev = generate(args.n_eval, args.eval_seed, fams, style="working")
     kernel_rows = [json.loads(l) for l in open(args.kernel_corpus) if l.strip()]
     domain_rows = [json.loads(l) for l in open(args.domain_corpus) if l.strip()]
     print(f"[corpora] kernel {len(kernel_rows)} · domain {len(domain_rows)} · "
           f"eval {len(ev)}", flush=True)
 
-    summary = {"base": args.base, "started": time.strftime("%Y-%m-%dT%H:%M:%S"),
-               "arms": {}}
-    if RESULTS.exists():
-        prev = json.loads(RESULTS.read_text())
+    results = Path("sequential_results_heldout.json") if args.held_out else RESULTS
+    summary = {"base": args.base, "held_out": args.held_out,
+               "families": sorted(fams),
+               "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "arms": {}}
+    if results.exists():
+        prev = json.loads(results.read_text())
         if prev.get("base") == args.base:
             summary["arms"] = prev.get("arms", {})
             for k, v in summary["arms"].items():
@@ -234,7 +244,7 @@ def main() -> int:
                                          else f" (partial, {v['scored']})"), flush=True)
 
     def save():
-        RESULTS.write_text(json.dumps(summary, indent=2))
+        results.write_text(json.dumps(summary, indent=2))
 
     for name, rows in (("kernel", kernel_rows), ("domain", domain_rows)):
         if not Path(f"adapters/{name}").exists():
