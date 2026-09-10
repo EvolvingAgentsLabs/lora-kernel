@@ -228,7 +228,7 @@ the work and is updated the same session a step reports.
 | **S4** | the expert specialises per region | ✅ **+63.3** |
 | **S5** | close the withdrawal gap | ✅ **0.000** in region |
 | **S6** | `harness.lora` — kernel apart from the expert | 🟡 half solved |
-| **S7** | the tournament that evolves the experts | ❌ |
+| **S7** | the tournament that evolves the experts | ❌ — but its blocker is gone: **a judge exists**, and judging is easier than solving |
 
 **What works.** The protocol is learnable on its own and travels to a domain it
 never saw. The expert's physics is exact inside its region, 30/30. **The two
@@ -242,9 +242,9 @@ pool is servable with vLLM multi-LoRA.
 |:--:|---|---|
 | 1 | **The kernel has not shown it is worth its weights** — it lost to a regular expression | a three-tool suite where the call is not a copy. The bar is **92.9%** |
 | 2 | **The expert cannot feel its region's edge** — 30/30 inside, 1/20 outside, inventing physics in the same voice | a signal was found: the tool layer's rejection rate runs **0.15 → 0.63**. Needs confirming on two unused families with the threshold fixed |
-| 3 | **There is no judge without an oracle** — every trustworthy number here comes from problems generated in closed form | use our oracle to grade the graders: hide it, let candidate judges score, compare against the truth |
+| 3 | ~~There is no judge without an oracle.~~ **Measured: a judge exists.** The frontier grades at **0.89** balanced and a peer at **0.82** — while that same peer *solves* the material at 0.467 | what is left is the case where nothing available can solve the work, which this run cannot speak to |
 | 4 | **The router ties a keyword lookup** | needs per-family experts and material where surface and substance come apart |
-| 5 | **The tournament** | blocked behind the judge |
+| 5 | **The tournament** | unblocked — the grade can come from a peer, which is what a withdrawn frontier leaves behind |
 
 ## What has actually run
 

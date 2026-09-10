@@ -600,6 +600,42 @@ close without a tool — and `P8` is `harness.lora`, which this table calls P7.
 The tournament, this table's P8, has not been bought.
 
 
+#### P17 — a judge exists, and judging is easier than solving
+
+[`results/P17-judges-20260910/`](../results/P17-judges-20260910/BRIEF.md). 100
+chains from P13 and P14 whose correctness is known — 33 right, 67 wrong — scored by
+candidates that never see the answer. The bar is **0.67**, the majority class
+**[ran]**:
+
+| judge | accuracy | finds the right work | finds the wrong |
+|---|---|---|---|
+| always "incorrect" — the bar | 0.67 | 0.00 | 1.00 |
+| procedural (no model) | 0.66 | 0.94 | 0.52 |
+| `qwen3.5:4b` — a peer | **0.82** | 0.97 | 0.75 |
+| `gemini-3.8-flash` — the frontier | **0.89** | 0.89 | 0.89 |
+
+**The peer's numbers are the ones that matter.** `qwen3.5:4b` *solves* this
+material at **0.467** and *judges* it at **0.82**. **Judging is easier than
+solving**, widely, for the same model on the same problems — which is what makes a
+tournament buildable after the frontier is withdrawn. The grade does not have to
+come from something that could have done the work.
+
+**The procedural judge fails in a shape worth keeping.** It ties the trivial bar on
+accuracy with the opposite error profile: 94% of the correct work found, 52% of the
+wrong. It sees arithmetic and is blind to a wrong relation — and a wrong relation
+is exactly what an expert outside its region produces.
+
+**What this cannot escape.** The frontier judges well here partly because it can
+solve the problem: it scores 1.000 on this material. Where nothing available can
+solve the work, judging is untested. And 7 of its 100 replies were not verdicts,
+recorded as abstentions rather than folded into "incorrect", which would have handed
+it the majority class.
+
+**The fault caught on the way**: the first run gave a one-word verdict 8 tokens. A
+reasoning model spends that thinking and returns an empty answer, so the frontier
+abstained on 100 of 100 and read as "cannot judge". Both judges were re-run at 400;
+the arm it invalidated was thrown away rather than reported.
+
 #### P16 — a guard on the region's edge, read from the tool layer rather than the model
 
 [`results/P16-tripwire-20260910/`](../results/P16-tripwire-20260910/BRIEF.md).

@@ -620,6 +620,44 @@ insertado porque la brecha no cerraba sin herramienta — y `P8` es
 no se compró.
 
 
+#### P17 — existe un juez, y juzgar es más fácil que resolver
+
+[`results/P17-judges-20260910/`](../../results/P17-judges-20260910/BRIEF.md). 100
+cadenas de P13 y P14 con corrección conocida — 33 bien, 67 mal — puntuadas por
+candidatos que nunca ven la respuesta. La vara es **0,67**, la clase mayoritaria
+**[ran]**:
+
+| juez | exactitud | halla lo correcto | halla lo incorrecto |
+|---|---|---|---|
+| siempre "incorrecto" — la vara | 0,67 | 0,00 | 1,00 |
+| procedural (sin modelo) | 0,66 | 0,94 | 0,52 |
+| `qwen3.5:4b` — un par | **0,82** | 0,97 | 0,75 |
+| `gemini-3.8-flash` — la frontera | **0,89** | 0,89 | 0,89 |
+
+**Los números del par son los que importan.** `qwen3.5:4b` *resuelve* este material
+a **0,467** y lo *juzga* a **0,82**. **Juzgar es más fácil que resolver**, por
+mucho, para el mismo modelo sobre los mismos problemas — que es lo que vuelve
+construible un torneo después de retirar la frontera. La nota no tiene que venir de
+algo que hubiera podido hacer el trabajo.
+
+**El juez procedural falla con una forma que vale conservar.** Empata la vara
+trivial en exactitud con el perfil de error opuesto: encuentra el 94% del trabajo
+correcto y el 52% del incorrecto. Ve aritmética y es ciego a una relación
+equivocada — y una relación equivocada es exactamente lo que produce un experto
+fuera de su región.
+
+**De lo que esto no se escapa.** La frontera juzga bien acá en parte porque puede
+resolver el problema: saca 1,000 en este material. Donde nada disponible pueda
+resolver el trabajo, juzgar queda sin probar. Y 7 de sus 100 respuestas no fueron
+veredictos, registradas como abstenciones en vez de plegarse a "incorrecto", que le
+habría regalado la clase mayoritaria.
+
+**La falla cazada en el camino**: la primera corrida le dio 8 tokens a un veredicto
+de una palabra. Un modelo de razonamiento los gasta pensando y devuelve una
+respuesta vacía, así que la frontera se abstuvo en 100 de 100 y se leía como "no
+puede juzgar". Los dos jueces se re-corrieron con 400; el brazo invalidado se tiró
+en vez de reportarse.
+
 #### P16 — un guardia en el borde de la región, leído de la capa de herramientas y no del modelo
 
 [`results/P16-tripwire-20260910/`](../../results/P16-tripwire-20260910/BRIEF.md).

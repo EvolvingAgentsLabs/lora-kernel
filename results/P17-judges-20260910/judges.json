@@ -18,6 +18,24 @@
       "recall_correct": 0.9394,
       "recall_incorrect": 0.5224,
       "said_correct": 63
+    },
+    {
+      "judge": "ollama:qwen3.5:4b",
+      "scored": 100,
+      "abstained": 0,
+      "accuracy": 0.82,
+      "recall_correct": 0.9697,
+      "recall_incorrect": 0.7463,
+      "said_correct": 49
+    },
+    {
+      "judge": "openai:google/gemini-3.8-flash",
+      "scored": 93,
+      "abstained": 7,
+      "accuracy": 0.8925,
+      "recall_correct": 0.8929,
+      "recall_incorrect": 0.8923,
+      "said_correct": 32
     }
   ]
 }
