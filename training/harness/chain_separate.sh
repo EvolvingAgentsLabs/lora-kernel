@@ -16,7 +16,15 @@ for i in $(seq 1 "$SESSIONS"); do
   echo "=== session $i of $SESSIONS · $S · $GPU · base $BASE"
   colab new --gpu "$GPU" -s "$S" >/dev/null
   trap 'colab stop -s "$S" >/dev/null 2>&1 || true' EXIT
-  colab install -s "$S" trl bitsandbytes "torchao>=0.16.0" >/dev/null
+  # THE PROVISIONING STEP IS NOT ALLOWED TO END THE RUN EITHER. A dropped
+  # websocket during `install` raised RuntimeError("Connection was lost."),
+  # `set -e` ended the chain, and the queue behind it moved on to the next
+  # experiment — so the run that was meant to be first silently became last
+  # [ran] 2026-09-10. Same shape as the clone: retry, then verify.
+  for try in 1 2 3; do
+    colab install -s "$S" trl bitsandbytes "torchao>=0.16.0" >/dev/null 2>&1 && break
+    echo "    install attempt $try did not take"
+  done
 
   cat > /tmp/_sboot.py <<PY
 import subprocess
