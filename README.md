@@ -262,8 +262,9 @@ Nothing in this section is inferred from a paper or a README.
   there is one tool and the call is a copy of an expression already written. It has
   to earn its place where the call is *not* a copy: several tools, arguments to
   format, a choice of which to use. That experiment does not exist yet.
-- **Sequential activation** ([`TECHNICAL-REFERENCE.md` §5](docs/TECHNICAL-REFERENCE.md)
-  option 1), which that document names as its own default. Never measured.
+- ~~Sequential activation, which §5 names as its own default and was never
+  measured.~~ **Measured in P13 and it works**: delegation goes from 0.6 to 4.7
+  calls per case. No longer outstanding.
 - **A guard on the region's edge.** Measured now, and it is worse than assumed:
   the expert's formulas fall from **30/30 inside its region to 1/20 outside**, in
   the same domain and the same question style, and **nothing in its output marks

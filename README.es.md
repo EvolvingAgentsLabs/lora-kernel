@@ -237,11 +237,14 @@ nombrado. Nada de esta sección se infiere de un paper ni de un README.
   escrita. Tiene que ganarse el lugar donde la llamada **no** sea una copia: varias
   herramientas, argumentos que formatear, una elección de cuál usar. Ese
   experimento todavía no existe.
-- **Activación secuencial** ([`TECHNICAL-REFERENCE.md` §5](docs/TECHNICAL-REFERENCE.md)
-  opción 1), que ese documento declara como su propia default. Nunca se midió.
-- **Generalización fuera de una región.** El experto sacó 0 de 10 en familias
-  held-out, en un brazo que nunca terminó. Por eso promoción y retiro se
-  especifican por región y no globalmente.
+- ~~Activación secuencial, que §5 declara como su propia default y nunca se
+  midió.~~ **Medida en P13 y funciona**: la delegación pasa de 0,6 a 4,7 llamadas
+  por caso. Ya no es un pendiente.
+- **Un guardia en el borde de la región.** Ya medido, y es peor de lo que se
+  suponía: las fórmulas del experto caen de **30/30 dentro de su región a 1/20
+  afuera**, en el mismo dominio y el mismo estilo de consigna, y **nada en su
+  salida marca la diferencia** — misma estructura, misma seguridad, física
+  inventada. La promoción por región necesita un guardia que no existe.
 - **El precio de sostener un pool.** El brazo de lote mixto midió el bucle de este
   repositorio y no el planificador de vLLM: está anulado.
 - **KV cache entre adaptadores**, el torneo, el router, y el retiro de la frontera
