@@ -253,14 +253,49 @@ def generate(n: int, seed: int, families: dict | None = None) -> list[dict]:
     return out
 
 
+def domain_chain(chain) -> str:
+    """The same solution with the PROTOCOL removed and the physics kept.
+
+    A tool step becomes `3. Density of the fluid: 998.2` — the label and the value
+    that came back, with no call. A calc step keeps its expression, because the
+    expression is the physics and the physics is the expert's. What the expert
+    never sees is a tag.
+
+    THE TABLE VALUES ARE VISIBLE HERE AND THAT IS A KNOWN COST. An expert trained
+    on this can memorise that water at 20 C is 998.2 and skip the lookup at serving
+    time. It is not hidden: P15's third arm removes the tool layer entirely and
+    measures exactly how far memory alone gets, so the leak is priced rather than
+    assumed away.
+    """
+    from training.physics.tools import answer
+    lines, last = [], 0.0
+    for i, (label, tool, body) in enumerate(chain, 1):
+        last = answer(tool, body)
+        if tool == "calc":
+            lines.append(f"{i}. {label}: {body} = {last:.6g}")
+        else:
+            lines.append(f"{i}. {label}: {last:.6g}")
+    return "\n".join(lines) + f'\n\n{{"answer": {last:.6g}}}'
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--n", type=int, default=40)
     ap.add_argument("--seed", type=int, default=20260910)
     ap.add_argument("--split", default="eval", choices=["train", "eval"])
     ap.add_argument("--out", default="")
+    ap.add_argument("--corpus", default="", choices=["", "domain"],
+                    help="domain writes a training corpus with the protocol removed")
     args = ap.parse_args()
     rows = generate(args.n, args.seed + (0 if args.split == "eval" else 7717))
+    if args.corpus == "domain":
+        from training.protocol import SYSTEM
+        rows = [{"case_id": r["case_id"], "family": r["family"],
+                 "answer": r["answer"], "unit": r["unit"],
+                 "messages": [{"role": "system", "content": SYSTEM},
+                              {"role": "user", "content": r["prompt"]},
+                              {"role": "assistant", "content": domain_chain(r["chain"])}]}
+                for r in rows]
     text = "\n".join(json.dumps(r) for r in rows) + "\n"
     if args.out:
         open(args.out, "w").write(text)
