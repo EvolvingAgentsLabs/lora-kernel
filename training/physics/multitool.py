@@ -16,6 +16,12 @@ and one family, `manning_channel`, needs no fluid property at all — so a model
 that has learned to always look something up is punished by the same suite that
 rewards looking up elsewhere.
 
+THE STEP LABELS DO NOT NAME THE TOOL. An earlier draft wrote "Flow rate in SI
+units", which hands the choice of `convert` to anything that can read. The labels
+say what quantity is wanted — "Flow rate", "Density of the fluid", "Inlet area" —
+and which tool that requires is left to be worked out. Otherwise the experiment
+measures argument formatting only, and calls that the choice of tool.
+
 THREE PHRASINGS PER FAMILY, ON PURPOSE. The competitor this material exists to
 test against is a hand-written rule, and a rule beats a single template every
 time. Two of this project's measurements have already died on material that
@@ -91,8 +97,8 @@ def pipe_head_loss(rng):
                 f"({t} C) travels {L} m through a {d_raw} {du} bore whose roughness "
                 f"is {eps} m.")
     chain = [
-        ("Flow rate in SI units", "convert", f"value={q_raw}; from={qu}; to=m^3/s"),
-        ("Pipe diameter in SI units", "convert", f"value={d_raw}; from={du}; to=m"),
+        ("Flow rate", "convert", f"value={q_raw}; from={qu}; to=m^3/s"),
+        ("Pipe diameter", "convert", f"value={d_raw}; from={du}; to=m"),
         ("Density of the fluid", "lookup", f"fluid={name}; property=density; T={t}"),
         ("Dynamic viscosity", "lookup", f"fluid={name}; property=viscosity; T={t}"),
         ("Cross-sectional area", "calc", f"pi/4 * {d:.6g}**2"),
@@ -130,8 +136,8 @@ def hydrostatic_force(rng):
                 f"and {w_raw} {lu} wide, its top {top} m beneath the free surface of "
                 f"{name} at {t} C.")
     chain = [
-        ("Gate width in SI units", "convert", f"value={w_raw}; from={lu}; to=m"),
-        ("Gate height in SI units", "convert", f"value={h_raw}; from={lu}; to=m"),
+        ("Gate width", "convert", f"value={w_raw}; from={lu}; to=m"),
+        ("Gate height", "convert", f"value={h_raw}; from={lu}; to=m"),
         ("Density of the fluid", "lookup", f"fluid={name}; property=density; T={t}"),
         ("Depth of the centroid", "calc", f"{top} + {hh:.6g}/2"),
         ("Area of the gate", "calc", f"{w:.6g} * {hh:.6g}"),
@@ -166,9 +172,9 @@ def venturi_flow(rng):
                 f"{d2_raw} {lu} throat) metering {name} at {t} C when the pressure "
                 f"falls by {dp_raw} {pu}.")
     chain = [
-        ("Inlet diameter in SI units", "convert", f"value={d1_raw}; from={lu}; to=m"),
-        ("Throat diameter in SI units", "convert", f"value={d2_raw}; from={lu}; to=m"),
-        ("Pressure drop in SI units", "convert", f"value={dp_raw}; from={pu}; to=Pa"),
+        ("Inlet diameter", "convert", f"value={d1_raw}; from={lu}; to=m"),
+        ("Throat diameter", "convert", f"value={d2_raw}; from={lu}; to=m"),
+        ("Pressure drop", "convert", f"value={dp_raw}; from={pu}; to=Pa"),
         ("Density of the fluid", "lookup", f"fluid={name}; property=density; T={t}"),
         ("Inlet area", "calc", f"pi/4 * {d1:.6g}**2"),
         ("Throat area", "calc", f"pi/4 * {d2:.6g}**2"),
@@ -204,8 +210,8 @@ def manning_channel(rng):
                 f"{b_raw} {lu} wide rectangular channel carrying a depth of "
                 f"{y_raw} {lu} down a gradient of {s}.")
     chain = [
-        ("Channel width in SI units", "convert", f"value={b_raw}; from={lu}; to=m"),
-        ("Flow depth in SI units", "convert", f"value={y_raw}; from={lu}; to=m"),
+        ("Channel width", "convert", f"value={b_raw}; from={lu}; to=m"),
+        ("Flow depth", "convert", f"value={y_raw}; from={lu}; to=m"),
         ("Flow area", "calc", f"{b:.6g} * {y:.6g}"),
         ("Wetted perimeter", "calc", f"{b:.6g} + 2*{y:.6g}"),
         ("Hydraulic radius R = A/P", "calc", f"{a:.6g} / {per:.6g}"),
