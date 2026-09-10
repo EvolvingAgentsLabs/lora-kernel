@@ -66,9 +66,25 @@ print(subprocess.run("grep -E '\\[arm\\]|\\[train\\]|\\[gate\\]|\\[corpora\\]|pa
                      "/content/lora-kernel/run.log | tail -2",
                      shell=True, capture_output=True, text=True).stdout)
 PY
+  # TOLERATING A FAILURE IS NOT DETECTING ONE. Three times a session became
+  # unaddressable — its name pruned from the CLI's local registry while the VM
+  # kept running — and because every call here is written `|| true`, the loop
+  # polled a channel that no longer existed for up to 105 minutes while the log
+  # repeated its last line [ran] 2026-09-10. Silence is now counted, and a session
+  # that has stopped answering ends the attempt instead of consuming its window.
+  QUIET=0
   for _ in $(seq 1 140); do
     out=$(colab exec -s "$S" -f /tmp/_speek.py 2>/dev/null | grep -vE "^\[colab\]|^$|Warning:" || true)
-    [ -n "$out" ] && echo "    $out" | tail -2
+    if [ -n "$out" ]; then
+      echo "    $out" | tail -2
+      QUIET=0
+    else
+      QUIET=$((QUIET + 1))
+      if [ "$QUIET" -ge 6 ] && ! colab sessions 2>/dev/null | grep -q "\[$S\]"; then
+        echo "    session $S stopped answering and is no longer listed — giving up on it"
+        break
+      fi
+    fi
     colab download -s "$S" "$REMOTE" "$LOCAL" >/dev/null 2>&1 || true
     echo "$out" | grep -qE "composition |Sequential:|The kernel adapter reproduced|STOPPED|Traceback|OutOfMemory|Killed" && break
     sleep 45

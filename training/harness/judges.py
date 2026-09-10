@@ -72,7 +72,15 @@ def judge_procedural(row) -> bool:
     return bad == 0 and abs(claimed - value) <= 0.02 * max(abs(value), 1e-9)
 
 
-def judge_model(tag: str, rows, max_tokens: int = 8) -> list[bool]:
+def judge_model(tag: str, rows, max_tokens: int = 400) -> list[bool]:
+    """400, not 8.
+
+    A one-word verdict looks like it needs eight tokens. It does not: a reasoning
+    model spends the budget in its thinking channel and returns an EMPTY answer
+    channel, so the frontier judge abstained on 100 of 100 cases and read as
+    "cannot judge" [ran] 2026-09-10. It answers correctly with room. Both judges
+    get the same budget, or the comparison is between token allowances.
+    """
     from alpha.backends import BackendError, build
     model = build(tag)
     out = []
