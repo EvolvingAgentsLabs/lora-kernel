@@ -163,11 +163,28 @@ Let’s be precise about what works today and what remains an open frontier:
 
 ---
 
-## What We Run First
+## What We Ran, and What It Said
 
-1. **Headroom validation:** Measuring acceptance surfaces across multiple base model tiers.
-2. **A 2-Adapter + 1-Frontier Pilot:** Generating the first live competence map.
-3. **The Withdrawal Test:** Measuring the quality delta when the frontier scaffold is unplugged.
+The three steps this article named have been bought, and two of them came back
+differently from the way it expects **[ran]** — see
+[`OPEN-PROBLEMS.md`](OPEN-PROBLEMS.md) and the run directories it cites.
+
+1. **Headroom validation.** A real gap exists, but it is **+0.533 rather than the
+   +0.975 first published**: half of that figure was a prompt instructing the
+   baseline not to show its working while every treatment was trained to show it.
+2. **The competence map.** Agreement picks the right expert 9 times in 10 — and so
+   does reading a keyword out of the request. Twice, on two different suites. What
+   the map is worth is not yet known.
+3. **The withdrawal test.** The gap closes: an expert with a tool matches the
+   frontier exactly, **inside its region**. Outside it the same expert scores 1 in
+   20 while sounding identical, so withdrawal needs a guard this article does not
+   describe.
+
+**And the article's central mechanism split in two.** The protocol *is* learnable
+apart from the expert and travels to a domain it never saw. But applying both
+patches at once makes them fight for every word; they compose only by **taking
+turns**, which moves composition out of the weights and into the runtime — a cost
+the design did not anticipate.
 
 ---
 

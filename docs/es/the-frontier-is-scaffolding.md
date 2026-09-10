@@ -163,11 +163,29 @@ Seamos precisos sobre qué funciona hoy y qué sigue siendo frontera abierta:
 
 ---
 
-## Qué corremos primero
+## Qué corrimos, y qué dijo
 
-1. **Validación de headroom:** medir superficies de aceptación a través de varios niveles de modelo base.
-2. **Un piloto de 2 adaptadores + 1 frontera:** generar el primer mapa de competencia en vivo.
-3. **La prueba de retiro:** medir el delta de calidad cuando se desenchufa el andamio de frontera.
+Los tres pasos que nombra este artículo se compraron, y dos volvieron distintos de
+como los espera **[ran]** — ver [`OPEN-PROBLEMS.md`](OPEN-PROBLEMS.md) y los
+directorios de corrida que cita.
+
+1. **Validación de headroom.** La brecha existe, pero es **+0,533 y no el +0,975
+   publicado primero**: la mitad de esa cifra era un prompt que le decía a la línea
+   de base que no mostrara el trabajo mientras todos los tratamientos se entrenaban
+   para mostrarlo.
+2. **El mapa de competencia.** El acuerdo elige al experto correcto 9 de cada 10
+   veces — y leer una palabra clave del pedido también. Dos veces, en dos suites
+   distintas. Cuánto vale el mapa todavía no se sabe.
+3. **La prueba de retiro.** La brecha cierra: un experto con herramienta iguala
+   exactamente a la frontera, **dentro de su región**. Afuera, el mismo experto saca
+   1 de 20 sonando idéntico, así que el retiro necesita un guardia que este artículo
+   no describe.
+
+**Y el mecanismo central del artículo se partió en dos.** El protocolo **sí** se
+aprende aparte del experto y viaja a un dominio que nunca vio. Pero aplicar los dos
+parches a la vez los hace pelear por cada palabra; componen sólo **turnándose**, lo
+que muda la composición de los pesos al runtime — un costo que el diseño no
+anticipaba.
 
 ---
 

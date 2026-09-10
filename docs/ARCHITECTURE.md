@@ -105,12 +105,26 @@ raw score is **1 of 30**, with zero tool calls. Its formulas are exact; only its
 arithmetic fails. The expert needs delegation and nothing else.
 [`results/P9-shared-contract-20260909/`](../results/P9-shared-contract-20260909/BRIEF.md)
 
-**The second half — serving them together — is still unmeasured.** P8's
-composition arms were confounded (the two corpora taught different notations and
-every arm ran under one of their prompts), and P9 is the run that removes the
-confound. Until it reports, the configuration with evidence behind it is the
-*merged* adapter — 40/40 with a calculator — which is the price this section says
-the design exists to avoid. Say "unmeasured", not "works".
+**Serving them together is now measured, and it works only one way.** Applying
+both at once makes them compete for the same word: stacked they delegate on 5 of
+30 cases, disjoint matrices make it worse, and weighting one up deletes the other
+**[ran]** `results/P9-…`, `results/P11-…`. **Taking turns removes the competition
+entirely** — delegation goes from 0.6 to 4.7 calls per case
+**[ran]** `results/P13-sequential-20260910/`. So §5's option 1 is the composition
+mode, and the price is two forward passes per step and a runtime that owns the
+turn boundary.
+
+**What remains unproven is the kernel's own value.** In a suite with one tool a
+thin harness beat the kernel adapter 23/30 to 9/30, because the call was a copy of
+an expression the expert had already written. Whether a learned protocol earns its
+weights where the call is *not* a copy is being measured, against a hand-written
+competitor that scores 92.9%.
+
+**And the expert's region has a hard edge it cannot feel** [ran]
+`results/P14-held-out-20260910/`: formulas exact 30/30 inside, 1/20 one family
+outside, with nothing in the output marking the difference. Per-region promotion
+needs a guard, and the first candidate reads the *tool layer's* rejection rate
+rather than the model's confidence.
 
 ## 5. The tournament
 

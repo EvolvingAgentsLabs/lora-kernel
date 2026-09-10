@@ -62,6 +62,13 @@ takes both halves: the small model with a calculator and no training gets none
 right despite asking fifty-three times, and the trained model without a
 calculator gets four out of forty. Neither half is worth anything alone.
 
+**And two patches do compose, provided they take turns.** Applied at once they
+fight for every word; alternated — the specialist names the next quantity and
+stops, the procedure patch writes the request, the tool answers, the specialist
+resumes — asking goes from 0.6 times per problem to **4.7**. The competition was
+never a property of the patches. It was a property of making them produce the same
+word.
+
 **There is real room to improve.** An expensive model scores perfectly on this
 material and the small one scores under half, so there is a genuine gap for a
 specialist to close. (We nearly fooled ourselves here, and the story is in
@@ -288,6 +295,20 @@ tells you where the specialist has been tested, not where it stops working. Thos
 two are not the same, and the difference between them is exactly the region where
 a confident wrong answer will appear.
 
+**There is one candidate, found by looking at the process instead of the model.**
+Six signals were listed in advance and all six checked over transcripts already on
+disk. Only one separates: **how often the tool refuses what the chain asks for**.
+Inside the region that happens on 15% of requests; outside, on 63% — because the
+specialist names quantities it does not understand and the tool layer cannot turn
+those names into a valid request. **The tool fails where the prose does not**, and
+a guard reading that never has to ask the model how it feels.
+
+It is not a detector yet, and it must not be quoted as one: the signals were chosen
+with the answers already visible, the threshold is fitted on the same fifty
+problems that score it, and the two unfamiliar kinds used are the only unfamiliar
+kinds this material has. Confirming it needs two more, with the threshold fixed
+beforehand.
+
 ### How we would know it was solved
 
 A specialist that declines, or defers upward, on material outside its category at
@@ -403,9 +424,10 @@ stay visible:
   a real gap between the expensive model and the small one. The earlier test was
   run against near-equals, where there was nothing to rank. The instrument exists
   and the material exists.
-- **Measuring the boundary problem properly.** The 0-of-10 result on unfamiliar
-  problems came from a run that was cut short and never saved. Re-running it is an
-  afternoon.
+- ~~Measuring the boundary problem properly.~~ **Done, and it is worse than the
+  cut-short run suggested**: formulas exact 30 times out of 30 inside the region and
+  once out of twenty outside it. What is left is not a measurement but a guard, and
+  the first candidate is in Problem 3.
 - **Pricing what it costs to hold many patches at once.** Our first attempt
   measured our own test harness rather than the serving system, and is void. Doing
   it properly is known work with a known tool.

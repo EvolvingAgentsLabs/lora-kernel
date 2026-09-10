@@ -158,9 +158,18 @@ cost:
    adapter, which is the cost this design exists to remove. Listed to be
    rejected.
 
-**Measured status, 2026-09-09 [ran].** Option 3 is the only one that has worked: a merged adapter scores **40/40** with the calculator, its withdrawal gap 0.000. Option 2 was run twice — stacked and blended at 0.5/0.5 — and scored **0/30** both times, but those arms are **confounded**, not falsifying: the two corpora taught different notations and every arm ran under one of their system prompts. P9 re-runs option 2 under a shared contract. **Option 1, the stated default of this section, has never been measured.**
+**Measured status, 2026-09-09 [ran].** Option 3 is the only one that has worked: a merged adapter scores **40/40** with the calculator, its withdrawal gap 0.000. Option 2 was run twice — stacked and blended at 0.5/0.5 — and scored **0/30** both times, but those arms are **confounded**, not falsifying: the two corpora taught different notations and every arm ran under one of their system prompts. P9 re-runs option 2 under a shared contract. **Option 1, the stated default of this section, was measured on 2026-09-10 and it is the one that works.**
 
-Option 1 is the default until measured otherwise.
+**Option 1 was measured on 2026-09-10 and it works** [ran]
+`results/P13-sequential-20260910/`. Taking turns moves delegation from **0.6 to
+4.7 calls per case** and more than doubles accuracy: the competition option 2
+suffers from is a property of asking two adapters for the same word, not of the
+adapters. It is the default because it is the only mode that works, not because
+it is cheapest.
+
+**What option 1 costs**: two forward passes per step instead of one, and a
+runtime that owns the turn boundary. Composition moves out of the weights and
+into the loop — a real concession, and the price of the only mode that composes.
 
 ## 6. The fitness function
 
