@@ -620,6 +620,194 @@ insertado porque la brecha no cerraba sin herramienta — y `P8` es
 no se compró.
 
 
+#### P16 — un guardia en el borde de la región, leído de la capa de herramientas y no del modelo
+
+[`results/P16-tripwire-20260910/`](../../results/P16-tripwire-20260910/BRIEF.md).
+P14 descartó el guardia obvio: nada en la prosa del experto marca el borde. Se
+pre-registraron seis señales y se reportan las seis, sobre transcripciones que P13
+y P14 ya tenían bancadas — aritmética sobre archivos, sin GPU **[ran]**:
+
+| señal | brazo secuencial | brazo de control | veredicto |
+|---|---|---|---|
+| llamadas por caso | 0,66 | 0,60 | ninguno |
+| **llamadas rechazadas por caso** | **0,86** | **0,76** | **los dos** |
+| **tasa de rechazo** | **0,86** | **0,76** | **los dos** |
+| pasos numerados | 0,68 | 0,68 | ninguno |
+| cadenas sin un paso evaluable | 0,60 | 0,60 | ninguno |
+| largo de la transcripción | 0,72 | 0,62 | ninguno |
+
+**La tasa de rechazo corre a 0,15 en región y 0,63 afuera** donde el kernel escribe
+las llamadas. Fuera de su región el experto nombra magnitudes que no entiende, y la
+capa de herramientas no puede convertir esos nombres en llamadas válidas — **la capa
+de herramientas falla donde la prosa no**, así que el guardia lee un proceso en vez
+de la opinión del modelo sobre sí mismo.
+
+Es más débil donde el harness escribe las llamadas (0,76), lo que encaja con el
+mecanismo: un harness que sólo evalúa la expresión que le pasan tiene menos que
+rechazar que un kernel que debe construir una llamada a partir de una etiqueta. **El
+guardia es una propiedad de tener una capa de herramientas que puede fallar** — lo
+que vuelve a `harness.lora` una pieza portante por una razón que nada anterior
+sugería.
+
+**No es un detector y el brief lo dice.** Las señales se eligieron con las
+respuestas a la vista, el umbral se ajusta sobre los mismos 50 puntos que lo
+puntúan, y las dos familias usadas son las únicas held-out que tiene la suite.
+Volverlo detector pide dos familias que ninguna corrida usó, un umbral fijado desde
+ésta y no reajustado, y que la separación sobreviva.
+
+#### P14 — la región del experto tiene un borde duro, y el experto no lo siente
+
+[`results/P14-held-out-20260910/`](../../results/P14-held-out-20260910/BRIEF.md),
+`drag_force` y `orifice_discharge` — dos familias que el experto nunca vio, mismo
+dominio, mismo estilo de consigna **[ran]**:
+
+| brazo | en región | fuera |
+|---|---|---|
+| control · experto solo, aritmética reparada | 23/30 crudo, **30/30 reparado** | 1/20 crudo, **1/20 reparado** |
+| secuencial · el dominio planifica, el kernel ejecuta | 9/30, 13/30 | 0/20, 0/20 |
+
+**La exactitud reparada cae de 1,000 a 0,050.** Esa medida son las fórmulas y no la
+aritmética, así que no es el experto fallando en calcular — es el experto sin saber
+la relación y escribiendo una igual.
+
+**Y nada en la salida marca la diferencia.** Misma estructura numerada, misma
+seguridad, física inventada: una "fracción de volumen" de `4/3 * pi/6`, un criterio
+de Stokes que no es el criterio de Stokes, una fuerza de arrastre que no es la
+fuerza de arrastre. El especialista que saca 30/30 en su propio material produjo
+eso, con la misma voz.
+
+**Qué le cuesta al diseño.** La promoción por región es lo que permite retirar la
+frontera, y esto dice que **"probado en esta región" no informa nada sobre el pedido
+de apenas afuera**. La evidencia disponible cuando se toma la decisión de promoción
+es el mapa de acuerdo, que registra dónde el experto *fue puesto a prueba* — no
+dónde deja de funcionar. La diferencia entre esos dos conjuntos es exactamente
+donde aparece una respuesta segura y equivocada sin nadie mirando. La regla necesita
+un guardia, y esta corrida dice que el guardia es necesario sin aportarlo.
+
+#### P13 — turnarse restaura la delegación, y el kernel pierde contra un harness delgado
+
+[`results/P13-sequential-20260910/`](../../results/P13-sequential-20260910/BRIEF.md),
+mismos 30 casos, mismo contrato compartido, **[ran]**:
+
+| brazo | crudo | reparado | llam/caso |
+|---|---|---|---|
+| **secuencial · el dominio planifica, el kernel ejecuta** | **9/30** | 13/30 | **4,7** |
+| **control · el dominio solo, el harness repara** | **23/30** | **30/30** | 4,9 |
+| *(P9 apilado)* | *4/30* | *22/30* | *0,6* |
+| *(P9 dominio solo, sin herramienta)* | *1/30* | *30/30* | *0,0* |
+
+**La activación secuencial funciona, y contesta la pregunta que tres pasos no
+pudieron alcanzar.** La delegación pasa de 0,6 llamadas por caso a **4,7 — ocho
+veces** — y la exactitud más que se duplica. La competencia que suprimía al kernel
+en 25 de 30 pasos desaparece en cuanto los dos parches dejan de tener que producir
+la misma palabra. La opción 1 de §5, la default declarada de esa referencia, quedó
+medida por fin y se sostiene.
+
+**Y el kernel pierde su trabajo contra veinte líneas de `re`.** El control — el
+experto escribiendo su cadena con un harness delgado ejecutando la aritmética
+exacta y **sin cargar los pesos del kernel** — saca 23/30 crudo y **30/30
+reparado**. Pedirle al kernel que escriba la expresión de una etiqueta de física
+que no entiende es pedirle el trabajo del experto al parche equivocado.
+
+**El sesgo del brazo secuencial se midió, no se supuso.** El kernel escribe
+`<calc>A = 1.96 * 1.27 = 2.4932</calc>` — la asignación y su propia respuesta
+adentro de la etiqueta — y el evaluador rechaza el **16% de sus 130 llamadas, en 11
+de 30 casos, ninguno aprobado**. Aceptando todas las formas recuperables el techo
+queda cerca de 20/30, igual por debajo del control. Real, y no cambia el veredicto,
+así que el brazo no se re-corre.
+
+**Qué le cuesta esto a la arquitectura, dicho llanamente.** La modularidad que
+quería §4 se alcanza — un experto sin protocolo en sus pesos, sin adaptador
+fusionado — pero se alcanza **sin el mecanismo de §4**. En esta suite un protocolo
+aprendido no tiene nada que aportar que no aporte una expresión regular, porque hay
+una sola herramienta y la llamada es una copia de una expresión ya escrita.
+`harness.lora` tiene que ganarse el lugar donde la llamada **no** sea una copia:
+varias herramientas, argumentos que formatear, una elección de cuál usar. Ese
+experimento todavía no existe.
+
+#### La geometría de los dos parches [ran]
+
+252 módulos compartidos, rango 16, cada uno comparado contra el azar de sus propias
+dimensiones:
+
+| | medido |
+|---|---|
+| qué LEEN (espacios de filas de `A`) | **0,99× el azar** |
+| dónde ESCRIBEN (espacios de columnas de `B`) | **3,87× el azar** (mediana 3,42, máx 10,05) |
+| alineación de los deltas (coseno de Frobenius) | **+0,035** |
+
+Leen de forma independiente, escriben en direcciones que se solapan, y sus deltas
+no están alineados. Eso es **contención sobre un canal de salida compartido**, no
+una colisión de subespacios — que es por qué los módulos disjuntos de P11 no
+ayudaron (las direcciones de escritura son del residual stream, no de la matriz
+desde la que se escriben), y predice que la regularización de ortogonalidad o la
+proyección al espacio nulo reproducirían el intercambio ponderado de P11 en vez de
+escaparle: sacá al experto del canal compartido y el experto se va con él.
+
+#### P11 — los dos arreglos en espacio de pesos fallan, y uno cierra una familia entera
+
+[`results/P11-disjoint-20260909/`](../../results/P11-disjoint-20260909/BRIEF.md) **[ran]**:
+
+| brazo | crudo | reparado | llam/caso |
+|---|---|---|---|
+| dominio (sólo MLP) | 1/30 | **30/30** | 0,0 |
+| kernel (sólo atención) | 0/30 | 0/30 | **6,0** |
+| **F3 · kernel + dominio, matrices disjuntas** | 0/30 | 5/30 | **0,2** |
+| **F2 · kernel 1,0 + dominio 0,5** | 0/30 | 0/30 | **3,5** |
+| *(P9 · matrices compartidas)* | *4/30* | *22/30* | *0,6* |
+
+**F3 cierra la familia del álgebra lineal.** Darle a cada adaptador sus propias
+proyecciones — ninguna matriz en común, nada que sumar — **empeoró** la delegación
+(0,2 contra 0,6) y costó casi toda la física. Dos adaptadores sin un solo parámetro
+compartido siguen peleando, así que la competencia nunca fue una colisión en
+espacio de pesos: los dos deltas moldean la misma distribución de salida, y dónde
+viven es irrelevante para eso.
+
+**F2 demuestra que la delegación es controlable, y muestra el precio.** Ponderar el
+kernel hacia arriba movió las llamadas por caso de 0,2 a 3,5, diecisiete veces — y
+el experto desapareció con eso, reparado 0/30 contra su propio 30/30. Bajo una
+ponderación las dos mitades no se combinan; una gana del todo.
+
+**Cada mitad sigue sana por separado**: el kernel llama 6,0 veces por caso
+entrenado sólo en atención, la física del dominio es exacta sólo en el MLP. El
+fallo es competencia de conductas en el token, que es exactamente por qué una
+perilla de magnitud cambia una mitad por la otra. Lo que queda es de otra especie:
+cambiar lo que se le enseña a producir al experto (P12), o volver **imposible** la
+conducta perdedora en decodificación — una máscara de logits sobre dígitos fuera de
+`<calc>` es la única intervención que un delta rival no puede out-votar, y todavía
+no se compró.
+
+#### P10 — la brecha honesta de frontera es +0,533, y la mitad de +0,975 era el prompt
+
+[`results/P10-baseline-recheck-20260909/`](../../results/P10-baseline-recheck-20260909/BRIEF.md),
+mismos 30 casos, semilla de evaluación de P9, presupuesto de 6000 tokens **[ran]**:
+
+| brazo | exactitud |
+|---|---|
+| `qwen3.5:4b` con el prompt **legacy** ("no muestres el trabajo") | **0/30 — 0,000** |
+| `qwen3.5:4b` con el contrato **compartido** | **14/30 — 0,467** |
+| `gemini-3.8-flash` con el contrato compartido | **30/30 — 1,000** |
+| **la brecha honesta** | **+0,533** |
+
+**El prompt valía 0,467 de los 0,975 que reportó P5.** A todas las líneas de base
+de P5–P8 se les dijo que no mostraran el trabajo mientras que todos los
+tratamientos se entrenaron para mostrarlo, así que la brecha publicada era en parte
+la diferencia entre un modelo al que se le permite pensar y otro al que se le
+prohíbe. La cifra corregida reemplaza a +0,975 donde sea que se la cite.
+
+**Y un presupuesto de tokens valía el resto de la duda.** Con 2000 tokens la misma
+frontera sacaba 17/30 y el mismo modelo local 12/30: los dos se truncaban a mitad
+de cadena, y `parse_answer` cae al último número suelto, así que una derivación
+cortada puntúa un intermedio y se lee como física mala. El registro ahora guarda el
+largo, la cola y si el JSON acordado aparece; con 6000 tokens **ninguno de los dos
+brazos tiene una sola respuesta sin él**.
+
+**El headroom sobrevive, a la mitad.** +0,533 sigue siendo una brecha desde la cual
+un retiro puede caer — la suite clínica, donde este proyecto se trabó, ofrecía
++0,05. Y afila a P7 en vez de debilitarlo: el adaptador con calculadora saca 1,000
+donde una línea de base justa saca 0,467, así que el tratamiento cierra un +0,533
+real y no un +0,975 fabricado.
+
 #### P9 — composición bajo un contrato que las dos mitades comparten · HECHO
 
 [`results/P9-shared-contract-20260909/`](../../results/P9-shared-contract-20260909/BRIEF.md).

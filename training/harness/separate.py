@@ -53,7 +53,13 @@ from training.physics.headroom import correct, parse_answer
 from training.physics.repair import repair
 from training.protocol import SYSTEM
 
-RESULTS = Path("separate_results.json")
+# ATTENTION vs MLP: THE COMPETITION REMOVED BY CONSTRUCTION. P9 measured the
+# composition delegating on 5 of 30 cases while the kernel alone delegates on all
+# 30 — the two deltas sum on the same projections and the domain's "write the
+# number here" wins the format at almost every step [ran]. If each adapter owns a
+# disjoint set of matrices there is nothing to sum, and it costs one flag.
+ATTENTION = "q_proj,k_proj,v_proj,o_proj"
+MLP = "gate_proj,up_proj,down_proj"
 
 
 def score(step, rows, rtol, label, prev=None, save=None):
@@ -125,7 +131,25 @@ def main() -> int:
     ap.add_argument("--targets",
                     default="q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj")
     ap.add_argument("--four-bit", dest="four_bit", action="store_true")
+    ap.add_argument("--variant", default="plain", choices=["plain", "disjoint"],
+                    help="disjoint puts the kernel on attention and the domain on "
+                         "the MLP, so the two deltas share no matrix")
+    ap.add_argument("--tag", default="",
+                    help="names this variant's adapters and results file, so two "
+                         "variants can share a runtime without colliding")
+    ap.add_argument("--weights", default="",
+                    help='e.g. "1.0,0.5" adds an arm with the kernel weighted '
+                         "above the domain — a targeted push on delegation, "
+                         "measured by calls per case and not by accuracy alone")
     args = ap.parse_args()
+
+    if args.variant == "disjoint":
+        kernel_targets, domain_targets = ATTENTION, MLP
+    else:
+        kernel_targets = domain_targets = args.targets
+    suffix = args.tag or ("" if args.variant == "plain" else f"-{args.variant}")
+    suffix = f"-{suffix.lstrip('-')}" if suffix else ""
+    results = Path(f"separate_results{suffix}.json") if suffix else RESULTS
 
     from peft import PeftModel
     from training.physics.train_expert import make_gen_step
@@ -158,14 +182,18 @@ def main() -> int:
         f"the two corpora use different instructions: {k_tail ^ d_tail}"
     tagged = sum("<calc>" in m["content"] for r in domain_rows
                  for m in r["messages"] if m["role"] == "assistant")
+    values = sum("=" in m["content"] for r in domain_rows
+                 for m in r["messages"] if m["role"] == "assistant")
+    print(f"[domain corpus] {len(domain_rows)} chains, {tagged} with the protocol, "
+          f"{values} that produce a value", flush=True)
     assert tagged == 0, f"{tagged} domain examples carry the protocol"
     print(f"[corpora] kernel {len(kernel_rows)} · domain {len(domain_rows)} "
           f"(0 tagged) · eval {len(ev)} · one shared contract", flush=True)
 
     summary = {"base": args.base, "gate": args.gate,
                "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "arms": {}}
-    if RESULTS.exists():
-        prev = json.loads(RESULTS.read_text())
+    if results.exists():
+        prev = json.loads(results.read_text())
         if prev.get("base") == args.base:
             summary["arms"] = prev.get("arms", {})
             for k, v in summary["arms"].items():
@@ -173,18 +201,22 @@ def main() -> int:
                                          else f" (partial, {v['scored']})"), flush=True)
 
     def save():
-        RESULTS.write_text(json.dumps(summary, indent=2))
+        results.write_text(json.dumps(summary, indent=2))
 
-    for name, rows in (("kernel", kernel_rows), ("domain", domain_rows)):
-        if not Path(f"adapters/{name}").exists():
-            print(f"[train] {name}", flush=True)
-            train_adapter(args.base, rows, f"adapters/{name}", args)
+    paths = {}
+    for name, rows, targets in (("kernel", kernel_rows, kernel_targets),
+                                ("domain", domain_rows, domain_targets)):
+        paths[name] = f"adapters/{name}{suffix}"
+        if not Path(paths[name]).exists():
+            print(f"[train] {name} on {targets}", flush=True)
+            args.targets = targets      # each adapter gets its own projections
+            train_adapter(args.base, rows, paths[name], args)
             free()
 
     model, tok = load_base(args.base, args.four_bit)
-    peft_model = PeftModel.from_pretrained(model, "adapters/kernel",
+    peft_model = PeftModel.from_pretrained(model, paths["kernel"],
                                            adapter_name="kernel")
-    peft_model.load_adapter("adapters/domain", adapter_name="domain")
+    peft_model.load_adapter(paths["domain"], adapter_name="domain")
 
     def run(active, label):
         prev = summary["arms"].get(label)
@@ -221,19 +253,32 @@ def main() -> int:
 
     run("kernel", "kernel")
     run(["kernel", "domain"], "kernel + domain")
+    if args.weights:
+        wk, wd = (float(x) for x in args.weights.split(","))
+        if "blend" not in peft_model.peft_config:
+            peft_model.base_model.add_weighted_adapter(
+                adapters=["kernel", "domain"], weights=[wk, wd],
+                adapter_name="blend", combination_type="linear")
+        run("blend", f"kernel {wk} + domain {wd}")
     run(None, "base")
 
     a = summary["arms"]
-    print(f"\n{'arm':<20}{'passed':>9}{'repaired':>10}{'calls':>8}{'rejected':>10}")
+    print(f"\n{'arm':<24}{'passed':>9}{'repaired':>10}{'calls':>8}{'per case':>10}")
     for k, v in a.items():
-        print(f"{k:<20}{str(v['passed'])+'/'+str(v['n']):>9}"
+        print(f"{k:<24}{str(v['passed'])+'/'+str(v['n']):>9}"
               f"{str(v['repaired_passed'])+'/'+str(v['n']):>10}"
-              f"{v['tool_calls']:>8}{v['steps_rejected']:>10}")
+              f"{v['tool_calls']:>8}{v['tool_calls'] / max(v['scored'], 1):>10.1f}")
     both = a.get("kernel + domain", {}).get("accuracy", 0)
     print(f"\ncomposition {both:.3f} against kernel {a.get('kernel',{}).get('accuracy',0):.3f} "
           f"and domain {a.get('domain',{}).get('accuracy',0):.3f}")
-    print("With the contract shared and the domain half verified, a composition "
-          "that does not beat both halves kills weight-space composition.")
+    comp = a.get("kernel + domain", {})
+    kern = a.get("kernel", {})
+    print(f"\nDELEGATION, which is what this variant exists to move: composition "
+          f"{comp.get('tool_calls', 0) / max(comp.get('scored', 1), 1):.1f} calls/case "
+          f"against the kernel alone at "
+          f"{kern.get('tool_calls', 0) / max(kern.get('scored', 1), 1):.1f}. "
+          f"P9 plain measured 0.6 against 7.7, and passed 3 of 5 cases where it "
+          f"delegated against 1 of 25 where it did not.")
     summary["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")
     save()
     return 0

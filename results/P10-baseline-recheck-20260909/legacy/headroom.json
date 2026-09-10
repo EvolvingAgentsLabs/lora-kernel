@@ -1,0 +1,276 @@
+{
+  "rtol": 0.02,
+  "n": 30,
+  "style": "json",
+  "contract": "legacy",
+  "families": [
+    "hydrostatic_force",
+    "manning_channel",
+    "pipe_head_loss",
+    "pump_power",
+    "terminal_velocity",
+    "venturi_flow"
+  ],
+  "seed": 515151,
+  "arms": {
+    "ollama:qwen3.5:4b": {
+      "model": "ollama:qwen3.5:4b",
+      "n": 30,
+      "passed": 0,
+      "accuracy": 0.0,
+      "unparsed": 0,
+      "seconds": 694.6,
+      "thinking_chars": 0,
+      "by_family": {
+        "hydrostatic_force": "0/5",
+        "manning_channel": "0/5",
+        "pipe_head_loss": "0/5",
+        "pump_power": "0/5",
+        "terminal_velocity": "0/5",
+        "venturi_flow": "0/5"
+      },
+      "records": [
+        {
+          "case_id": "phys-0000",
+          "family": "hydrostatic_force",
+          "want": 131926.5701455625,
+          "got": 10452.6,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 10452.6}\n```"
+        },
+        {
+          "case_id": "phys-0001",
+          "family": "manning_channel",
+          "want": 13.777463571438588,
+          "got": 1.42,
+          "passed": false,
+          "raw": "{\"answer\": 1.42}"
+        },
+        {
+          "case_id": "phys-0002",
+          "family": "pipe_head_loss",
+          "want": 1.8489593018064931,
+          "got": 12.45,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 12.45}\n```"
+        },
+        {
+          "case_id": "phys-0003",
+          "family": "pump_power",
+          "want": 68.53156824521123,
+          "got": 104.5,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 104.5}\n```"
+        },
+        {
+          "case_id": "phys-0004",
+          "family": "terminal_velocity",
+          "want": 0.00268488817296,
+          "got": 0.0143,
+          "passed": false,
+          "raw": "{\"answer\": 0.0143}"
+        },
+        {
+          "case_id": "phys-0005",
+          "family": "venturi_flow",
+          "want": 0.11396258683641461,
+          "got": 0.142,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 0.142}\n```"
+        },
+        {
+          "case_id": "phys-0006",
+          "family": "hydrostatic_force",
+          "want": 83545.277122944,
+          "got": 10546.8,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 10546.8}\n```"
+        },
+        {
+          "case_id": "phys-0007",
+          "family": "manning_channel",
+          "want": 29.651189503613413,
+          "got": 1.84,
+          "passed": false,
+          "raw": "{\"answer\": 1.84}"
+        },
+        {
+          "case_id": "phys-0008",
+          "family": "pipe_head_loss",
+          "want": 10.158958087290983,
+          "got": 12.45,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 12.45}\n```"
+        },
+        {
+          "case_id": "phys-0009",
+          "family": "pump_power",
+          "want": 1123.583802071903,
+          "got": 1045.3,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 1045.3}\n```"
+        },
+        {
+          "case_id": "phys-0010",
+          "family": "terminal_velocity",
+          "want": 0.0020415860668487936,
+          "got": 0.00145,
+          "passed": false,
+          "raw": "{\"answer\": 0.00145}"
+        },
+        {
+          "case_id": "phys-0011",
+          "family": "venturi_flow",
+          "want": 0.16595378329096444,
+          "got": 0.142,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 0.142}\n```"
+        },
+        {
+          "case_id": "phys-0012",
+          "family": "hydrostatic_force",
+          "want": 30018.42239088,
+          "got": 4752.6,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 4752.6}\n```"
+        },
+        {
+          "case_id": "phys-0013",
+          "family": "manning_channel",
+          "want": 21.60825783106168,
+          "got": 1.84,
+          "passed": false,
+          "raw": "{\"answer\": 1.84}"
+        },
+        {
+          "case_id": "phys-0014",
+          "family": "pipe_head_loss",
+          "want": 0.8547197590568688,
+          "got": 12.45,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 12.45}\n```"
+        },
+        {
+          "case_id": "phys-0015",
+          "family": "pump_power",
+          "want": 226.15205012015764,
+          "got": 104.5,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 104.5}\n```"
+        },
+        {
+          "case_id": "phys-0016",
+          "family": "terminal_velocity",
+          "want": 9.315637572266666e-05,
+          "got": 0.0014,
+          "passed": false,
+          "raw": "{\"answer\": 0.0014}"
+        },
+        {
+          "case_id": "phys-0017",
+          "family": "venturi_flow",
+          "want": 0.05622143676401737,
+          "got": 0.145,
+          "passed": false,
+          "raw": "{\"answer\": 0.145}"
+        },
+        {
+          "case_id": "phys-0018",
+          "family": "hydrostatic_force",
+          "want": 159023.2512106875,
+          "got": 20586.3,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 20586.3}\n```"
+        },
+        {
+          "case_id": "phys-0019",
+          "family": "manning_channel",
+          "want": 2.443150246582592,
+          "got": 1.0,
+          "passed": false,
+          "raw": "{\"answer\": 1.0}"
+        },
+        {
+          "case_id": "phys-0020",
+          "family": "pipe_head_loss",
+          "want": 26.004971215311276,
+          "got": 1.24,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 1.24}\n```"
+        },
+        {
+          "case_id": "phys-0021",
+          "family": "pump_power",
+          "want": 842.8629661168894,
+          "got": 1045.3,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 1045.3}\n```"
+        },
+        {
+          "case_id": "phys-0022",
+          "family": "terminal_velocity",
+          "want": 0.0006057613551088749,
+          "got": 0.00145,
+          "passed": false,
+          "raw": "{\"answer\": 0.00145}"
+        },
+        {
+          "case_id": "phys-0023",
+          "family": "venturi_flow",
+          "want": 0.04227747396924894,
+          "got": 0.149,
+          "passed": false,
+          "raw": "{\"answer\": 0.149}"
+        },
+        {
+          "case_id": "phys-0024",
+          "family": "hydrostatic_force",
+          "want": 62740.59467306399,
+          "got": 10546.8,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 10546.8}\n```"
+        },
+        {
+          "case_id": "phys-0025",
+          "family": "manning_channel",
+          "want": 4.692297274108275,
+          "got": 1.42,
+          "passed": false,
+          "raw": "{\"answer\": 1.42}"
+        },
+        {
+          "case_id": "phys-0026",
+          "family": "pipe_head_loss",
+          "want": 33.5168545847374,
+          "got": 12.45,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 12.45}\n```"
+        },
+        {
+          "case_id": "phys-0027",
+          "family": "pump_power",
+          "want": 453.4776414437574,
+          "got": 1045.2,
+          "passed": false,
+          "raw": "```json\n{\"answer\": 1045.2}\n```"
+        },
+        {
+          "case_id": "phys-0028",
+          "family": "terminal_velocity",
+          "want": 0.004647560258685521,
+          "got": 0.0143,
+          "passed": false,
+          "raw": "{\"answer\": 0.0143}"
+        },
+        {
+          "case_id": "phys-0029",
+          "family": "venturi_flow",
+          "want": 0.18120376847033356,
+          "got": 0.149,
+          "passed": false,
+          "raw": "{\"answer\": 0.149}"
+        }
+      ]
+    }
+  }
+}

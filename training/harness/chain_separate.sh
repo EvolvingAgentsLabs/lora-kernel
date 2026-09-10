@@ -6,15 +6,25 @@ BASE="${BASE:-Qwen/Qwen2.5-3B-Instruct}"
 RUN_DIR="${RUN_DIR:-results/P9-shared-contract-20260909}"
 BRANCH="${BRANCH:-shared-contract}"
 ARGS="${ARGS:---n-eval 30 --epochs 3}"
-LOCAL="$RUN_DIR/separate_results.json"
-REMOTE=/content/lora-kernel/separate_results.json
+MODULE="${MODULE:-training.harness.separate}"
+RESULTS_NAME="${RESULTS_NAME:-separate_results.json}"
+LOCAL="$RUN_DIR/$RESULTS_NAME"
+REMOTE=/content/lora-kernel/$RESULTS_NAME
 
 for i in $(seq 1 "$SESSIONS"); do
   S="sep$(date +%H%M%S)"
   echo "=== session $i of $SESSIONS · $S · $GPU · base $BASE"
   colab new --gpu "$GPU" -s "$S" >/dev/null
   trap 'colab stop -s "$S" >/dev/null 2>&1 || true' EXIT
-  colab install -s "$S" trl bitsandbytes "torchao>=0.16.0" >/dev/null
+  # THE PROVISIONING STEP IS NOT ALLOWED TO END THE RUN EITHER. A dropped
+  # websocket during `install` raised RuntimeError("Connection was lost."),
+  # `set -e` ended the chain, and the queue behind it moved on to the next
+  # experiment — so the run that was meant to be first silently became last
+  # [ran] 2026-09-10. Same shape as the clone: retry, then verify.
+  for try in 1 2 3; do
+    colab install -s "$S" trl bitsandbytes "torchao>=0.16.0" >/dev/null 2>&1 && break
+    echo "    install attempt $try did not take"
+  done
 
   cat > /tmp/_sboot.py <<PY
 import subprocess
@@ -44,8 +54,8 @@ PY
 
   cat > /tmp/_srun.py <<PY
 import subprocess
-subprocess.Popen("cd /content/lora-kernel && nohup python -u -m training.harness.separate "
-                 "--base $BASE $ARGS > separate.log 2>&1 &", shell=True)
+subprocess.Popen("cd /content/lora-kernel && nohup python -u -m $MODULE "
+                 "--base $BASE $ARGS > run.log 2>&1 &", shell=True)
 PY
   colab exec -s "$S" -f /tmp/_srun.py >/dev/null 2>&1 || true
 
@@ -53,14 +63,14 @@ PY
 import subprocess
 print(subprocess.run("grep -E '\\[arm\\]|\\[train\\]|\\[gate\\]|\\[corpora\\]|passed [0-9]+|"
                      "composition |Traceback|Error|OutOfMemory|Killed' "
-                     "/content/lora-kernel/separate.log | tail -2",
+                     "/content/lora-kernel/run.log | tail -2",
                      shell=True, capture_output=True, text=True).stdout)
 PY
   for _ in $(seq 1 140); do
     out=$(colab exec -s "$S" -f /tmp/_speek.py 2>/dev/null | grep -vE "^\[colab\]|^$|Warning:" || true)
     [ -n "$out" ] && echo "    $out" | tail -2
     colab download -s "$S" "$REMOTE" "$LOCAL" >/dev/null 2>&1 || true
-    echo "$out" | grep -qE "composition |STOPPED|Traceback|OutOfMemory|Killed" && break
+    echo "$out" | grep -qE "composition |Sequential:|The kernel adapter reproduced|STOPPED|Traceback|OutOfMemory|Killed" && break
     sleep 45
   done
   colab download -s "$S" "$REMOTE" "$LOCAL" >/dev/null 2>&1 || echo "    WARNING: nothing came back"
@@ -73,8 +83,11 @@ if p.exists():
     d = json.loads(p.read_text())
     for k, v in d["arms"].items():
         mark = "" if v.get("complete", True) else "  (partial)"
-        print(f"    {k:<18}{v['passed']}/{v.get('scored', v['n'])} "
-              f"repaired={v['repaired_passed']} calls={v['tool_calls']}{mark}")
+        extra = (f"repaired={v['repaired_passed']} calls={v['tool_calls']}"
+                 if 'repaired_passed' in v else
+                 f"tools={v.get('tool_values_matched')}/{v.get('tool_values_wanted')} "
+                 f"queries={v.get('queries')}")
+        print(f"    {k:<40}{v['passed']}/{v.get('scored', v['n'])} {extra}{mark}")
     if d.get("stopped_at_gate"): print("    STOPPED AT THE GATE")
     elif "finished" in d: print("    ALL ARMS COMPLETE")
 PY

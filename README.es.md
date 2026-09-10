@@ -190,6 +190,35 @@ trae los números. El plan en que se convirtieron vive en
 [`docs/EXPERIMENT_PLAN.md`](docs/EXPERIMENT_PLAN.md), que es el estado del
 trabajo y se actualiza en la misma sesión en que un paso reporta.
 
+## Dónde está el plan
+
+| | objetivo | estado |
+|:--:|---|---|
+| **S0** | que el instrumento mida lo que dice | ✅ |
+| **S1** | que haya brecha contra la frontera | ✅ **+0,533** |
+| **S2** | que el acuerdo ordene expertos | 🟡 sólo contra pares |
+| **S3** | que el router valga más que una tabla | 🟡 empata |
+| **S4** | que el experto se especialice por región | ✅ **+63,3** |
+| **S5** | cerrar la brecha de retiro | ✅ **0,000** en región |
+| **S6** | `harness.lora` — kernel separado del experto | 🟡 mitad resuelta |
+| **S7** | el torneo que evoluciona los expertos | ❌ |
+
+**Lo que funciona.** El protocolo se aprende solo y viaja a un dominio que nunca
+vio. La física del experto es exacta dentro de su región, 30/30. **Los dos parches
+componen si se turnan** — la delegación pasa de 0,6 a 4,7 llamadas por caso. La
+brecha de retiro cierra: 1,000 contra una base justa de 0,467. Y el pool se sirve
+con vLLM multi-LoRA.
+
+**Lo que no, y qué se está haciendo.**
+
+| | qué falla | plan |
+|:--:|---|---|
+| 1 | **El kernel no demostró valer sus pesos** — perdió contra una expresión regular | una suite de tres herramientas donde la llamada no es copia. La vara es **92,9%** |
+| 2 | **El experto no siente el borde de su región** — 30/30 adentro, 1/20 afuera, inventando física con la misma voz | se encontró una señal: la tasa de rechazo de la capa de herramientas va **0,15 → 0,63**. Falta confirmarla en dos familias sin usar, con el umbral fijo |
+| 3 | **No hay juez sin oráculo** — todo número confiable de acá viene de problemas generados en forma cerrada | usar nuestro oráculo para corregir a los correctores: esconderlo, que los jueces candidatos puntúen, comparar contra la verdad |
+| 4 | **El router empata con una tabla de búsqueda** | necesita expertos por familia y material donde superficie y sustancia se separen |
+| 5 | **El torneo** | bloqueado detrás del juez |
+
 ## Lo que realmente corrió
 
 Todo lo de abajo es **[ran]** en este repositorio, con el directorio de corrida
@@ -197,27 +226,34 @@ nombrado. Nada de esta sección se infiere de un paper ni de un README.
 
 | afirmación | medición | dónde |
 |---|---|---|
-| **Existe una brecha de frontera** — la premisa que la arquitectura necesita — **pero su tamaño quedó en duda** | `gemini-3.8-flash` **40/40** contra un 4B local **1/40** en mecánica de fluidos con oráculo calculado: **+0,975**. La línea de base se midió con un prompt que le decía al modelo que **no mostrara el trabajo**; bajo un prompt neutral un 3B sin modificar saca 4/30 en la misma suite, así que la brecha es menor a +0,975 en una cantidad sin medir **[ran]**. En una suite clínica el mismo test falló tres veces — ninguna frontera estuvo nunca adelante | `results/P5-physics-headroom-20260908/` |
+| **Existe una brecha de frontera**, y es **+0,533**, no +0,975 | `gemini-3.8-flash` **30/30** contra `qwen3.5:4b` **14/30**, mismos 30 casos, un contrato compartido, 6000 tokens. El mismo modelo local saca **0/30** con el prompt que P5–P8 usó para todas sus líneas de base — así que **0,467 del 0,975 original era el prompt diciéndole a la base que no pensara** **[ran]**. En una suite clínica el mismo test falló tres veces — ninguna frontera estuvo nunca adelante | `results/P5-physics-headroom-20260908/` |
 | La destilación transfiere el **procedimiento pero no la aritmética** | el experto reproduce la cadena del maestro paso por paso y calcula pi/4·0,22² como 0,037006 en vez de 0,038013 | `results/P6-withdrawal-20260908/` |
 | **La brecha de retiro se cierra** | adaptador + calculadora **40/40** = el maestro. Brecha de retiro **0,000** | `results/P7-calculator-20260908/` |
 | …y hacen falta **las dos mitades** | base + calculadora **0/40** con 53 llamadas; adaptador solo **4/40** | ídem |
 | **El protocolo se puede aprender solo** | un adaptador kernel **sin física en su corpus** llama a la herramienta en **30/30** casos de fluidos, **0 malformadas**, bajo un prompt que nunca menciona una herramienta | `results/P8-…`, `results/P9-…` |
 | **La física del experto es exacta; sólo falla su aritmética** | exactitud de la cadena reparada **30/30** contra un crudo **1/30**, con **0** llamadas | `results/P9-shared-contract-20260909/` |
+| **Dos parches componen si se turnan** | la activación secuencial mueve la delegación de **0,6** llamadas por caso a **4,7**, y la exactitud de 4/30 a 9/30. Apilarlos los hace pelear; alternarlos no | `results/P13-sequential-20260910/` |
+| **El mejor resultado modular no necesita pesos de kernel** | el experto escribiendo su cadena con un harness delgado ejecutando la aritmética exacta: **23/30 crudo, 30/30 reparado** — sin adaptador fusionado, sin protocolo en los pesos del experto | ídem |
 | **Un pool se puede servir** | vLLM 0.28.0 multi-LoRA sobre `Qwen2.5-3B-Instruct`: el adaptador cambia la salida, y la exactitud servida coincide con `transformers` para la misma receta | `results/P3-vllm-20260908/` |
 | La aceptación por caracteres mide **formato, no acuerdo** | respuestas idénticas sacan 0,00 entre formatos; respuestas distintas sacan 0,44 dentro de uno. El criterio de promoción es **acuerdo semántico de respuesta** | `results/S0*/` |
 
 ## Lo que no corrió, y no se afirma
 
-- **Hacer que la composición delegue.** P9 lo midió: apilados, el kernel y el
-  experto le ganan a las dos mitades (4/30 contra 1/30 y 0/30), y cuando la
-  composición llama a la herramienta acierta **3 de 5** contra **1 de 25** cuando
-  no llama. Sólo llama en 5 de 30 casos — el delta de dominio gana la competencia
-  por el formato. El mecanismo funciona; hacerlo disparar es el problema abierto.
-- **Activación secuencial** ([`TECHNICAL-REFERENCE.md` §5](docs/TECHNICAL-REFERENCE.md)
-  opción 1), que ese documento declara como su propia default. Nunca se midió.
-- **Generalización fuera de una región.** El experto sacó 0 de 10 en familias
-  held-out, en un brazo que nunca terminó. Por eso promoción y retiro se
-  especifican por región y no globalmente.
+- **Mostrar que un protocolo aprendido vale sus pesos.** La composición está
+  resuelta: turnarse restaura la delegación. Pero en esta suite el adaptador kernel
+  **pierde contra veinte líneas de `re`** — 9/30 contra 23/30 de un harness delgado
+  — porque hay una sola herramienta y la llamada es copia de una expresión ya
+  escrita. Tiene que ganarse el lugar donde la llamada **no** sea una copia: varias
+  herramientas, argumentos que formatear, una elección de cuál usar. Ese
+  experimento todavía no existe.
+- ~~Activación secuencial, que §5 declara como su propia default y nunca se
+  midió.~~ **Medida en P13 y funciona**: la delegación pasa de 0,6 a 4,7 llamadas
+  por caso. Ya no es un pendiente.
+- **Un guardia en el borde de la región.** Ya medido, y es peor de lo que se
+  suponía: las fórmulas del experto caen de **30/30 dentro de su región a 1/20
+  afuera**, en el mismo dominio y el mismo estilo de consigna, y **nada en su
+  salida marca la diferencia** — misma estructura, misma seguridad, física
+  inventada. La promoción por región necesita un guardia que no existe.
 - **El precio de sostener un pool.** El brazo de lote mixto midió el bucle de este
   repositorio y no el planificador de vLLM: está anulado.
 - **KV cache entre adaptadores**, el torneo, el router, y el retiro de la frontera
@@ -237,6 +273,9 @@ control plane empresarial.
   el target tiene que ser de frontera, y la condición de retiro.
 - [`docs/es/TECHNICAL-REFERENCE.md`](docs/es/TECHNICAL-REFERENCE.md) — mecanismos,
   α y su superficie, KV cache, action tokens, composición de adaptadores.
+- [`docs/es/OPEN-PROBLEMS.md`](docs/es/OPEN-PROBLEMS.md) — **las cinco cosas que
+  no sabemos hacer**, escritas sin jerga: qué es cada problema, qué probamos, qué
+  descartó cada intento, y cómo se vería resolverlo.
 - [`docs/es/the-frontier-is-scaffolding.md`](docs/es/the-frontier-is-scaffolding.md) —
   el artículo.
 

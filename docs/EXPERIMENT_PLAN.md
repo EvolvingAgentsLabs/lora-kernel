@@ -600,6 +600,187 @@ close without a tool — and `P8` is `harness.lora`, which this table calls P7.
 The tournament, this table's P8, has not been bought.
 
 
+#### P16 — a guard on the region's edge, read from the tool layer rather than the model
+
+[`results/P16-tripwire-20260910/`](../results/P16-tripwire-20260910/BRIEF.md).
+P14 ruled out the obvious guard: nothing in the expert's prose marks the boundary.
+Six signals were pre-registered and all six reported, over transcripts P13 and P14
+had already banked — arithmetic over files, no GPU **[ran]**:
+
+| signal | sequential arm | control arm | verdict |
+|---|---|---|---|
+| calls per case | 0.66 | 0.60 | neither |
+| **rejected calls per case** | **0.86** | **0.76** | **both** |
+| **rejection rate** | **0.86** | **0.76** | **both** |
+| numbered steps | 0.68 | 0.68 | neither |
+| chains with no evaluable step | 0.60 | 0.60 | neither |
+| transcript length | 0.72 | 0.62 | neither |
+
+**The rejection rate runs 0.15 in region and 0.63 outside** where the kernel writes
+the calls. Outside its region the expert names quantities it does not understand,
+and the tool layer cannot turn those names into valid calls — **the tool layer
+fails where the prose does not**, so the guard reads a process instead of the
+model's opinion of itself.
+
+It is weaker where the harness writes the calls (0.76), which fits the mechanism:
+a harness that only evaluates the expression it is handed has less to refuse than a
+kernel that must build a call from a label. **The guard is a property of having a
+tool layer that can fail** — which makes `harness.lora` load-bearing for a reason
+nothing before this suggested.
+
+**It is not a detector and the brief says so.** The signals were chosen with the
+answers visible, the threshold is fitted on the same 50 points that score it, and
+the two families used are the only held-out families the suite has. Making it one
+needs two families neither run used, a threshold fixed from this run rather than
+refitted, and the separation surviving.
+
+#### P14 — the expert's region has a hard edge, and the expert cannot feel it
+
+[`results/P14-held-out-20260910/`](../results/P14-held-out-20260910/BRIEF.md),
+`drag_force` and `orifice_discharge` — two families the expert never saw, same
+domain, same question style **[ran]**:
+
+| arm | in region | held out |
+|---|---|---|
+| control · expert alone, arithmetic repaired | 23/30 raw, **30/30 repaired** | 1/20 raw, **1/20 repaired** |
+| sequential · domain plans, kernel executes | 9/30, 13/30 | 0/20, 0/20 |
+
+**Repaired accuracy falls from 1.000 to 0.050.** That measure is the formulas
+rather than the arithmetic, so this is not the expert failing to compute — it is
+the expert not knowing the relation and writing one anyway.
+
+**And nothing in the output marks the difference.** Same numbered structure, same
+confident phrasing, invented physics: a "volume fraction" of `4/3 * pi/6`, a Stokes
+criterion that is not the Stokes criterion, a drag force that is not the drag
+force. The specialist that scores 30/30 on its own material produced that, in the
+same voice.
+
+**What it costs the design.** Per-region promotion is what lets the frontier be
+withdrawn, and this says **"proven on this region" carries no information about the
+request just outside it**. The evidence available when the promotion decision is
+made is the agreement map, which records where the expert *has been tested* — not
+where it stops working. The difference between those two sets is precisely where a
+confident wrong answer appears with nothing watching. The rule needs a guard, and
+this run says the guard is necessary without supplying one.
+
+#### P13 — taking turns restores delegation, and the kernel loses to a thin harness
+
+[`results/P13-sequential-20260910/`](../results/P13-sequential-20260910/BRIEF.md),
+same 30 cases, same shared contract, **[ran]**:
+
+| arm | raw | repaired | calls/case |
+|---|---|---|---|
+| **sequential · domain plans, kernel executes** | **9/30** | 13/30 | **4.7** |
+| **control · domain alone, harness repairs** | **23/30** | **30/30** | 4.9 |
+| *(P9 stacked)* | *4/30* | *22/30* | *0.6* |
+| *(P9 domain alone, no tool)* | *1/30* | *30/30* | *0.0* |
+
+**Sequential activation works, and it answers the question three steps could not
+reach.** Delegation goes from 0.6 calls per case to **4.7 — eight times** — and
+accuracy more than doubles. The competition that suppressed the kernel on 25 of 30
+steps is gone the moment the two patches are never asked for the same word. §5's
+option 1, this reference's own declared default, is measured at last and it holds.
+
+**And the kernel loses its job to twenty lines of `re`.** The control — the expert
+writing its chain with a thin harness executing the arithmetic exactly and **no
+kernel weights loaded** — scores 23/30 raw and **30/30 repaired**. Asking the
+kernel to write the expression for a physics label it does not understand is
+asking the expert's job of the wrong patch.
+
+**The bias in the sequential arm was measured, not assumed.** The kernel writes
+`<calc>A = 1.96 * 1.27 = 2.4932</calc>` — an assignment and its own answer inside
+the tag — and the evaluator rejects **16% of its 130 calls, touching 11 of 30
+cases, none of which passed**. Accepting every recoverable form puts the ceiling
+near 20/30, still below the control. Real, and it does not change the verdict, so
+the arm is not re-run.
+
+**What this costs the architecture, stated plainly.** The modularity §4 wanted is
+reached — an expert with no protocol in its weights, no merged adapter — but it is
+reached **without §4's mechanism**. On this suite a learned protocol has nothing
+to contribute that a regular expression cannot, because there is one tool and the
+call is a copy of an expression already written. `harness.lora` has to earn its
+place where the call is *not* a copy: several tools, arguments to format, a choice
+of which to use. That experiment does not exist yet.
+
+#### The geometry of the two patches [ran]
+
+252 shared modules, rank 16, each compared against chance for its own dimensions:
+
+| | measured |
+|---|---|
+| what they READ (row spaces of `A`) | **0.99x chance** |
+| where they WRITE (column spaces of `B`) | **3.87x chance** (median 3.42, max 10.05) |
+| delta alignment (Frobenius cosine) | **+0.035** |
+
+They read independently, write into overlapping directions, and their deltas are
+not aligned. That is **contention over a shared output channel**, not a collision
+of subspaces — which is why P11's disjoint modules did not help (write directions
+belong to the residual stream, not to the matrix they are written from), and it
+predicts that orthogonality regularisation or null-space projection would
+reproduce P11's weighted trade rather than escape it: take the expert out of the
+shared channel and the expert goes with it.
+
+#### P11 — both weight-space fixes for delegation fail, and one closes a family
+
+[`results/P11-disjoint-20260909/`](../results/P11-disjoint-20260909/BRIEF.md) **[ran]**:
+
+| arm | raw | repaired | calls/case |
+|---|---|---|---|
+| domain (MLP only) | 1/30 | **30/30** | 0.0 |
+| kernel (attention only) | 0/30 | 0/30 | **6.0** |
+| **F3 · kernel + domain, disjoint matrices** | 0/30 | 5/30 | **0.2** |
+| **F2 · kernel 1.0 + domain 0.5** | 0/30 | 0/30 | **3.5** |
+| *(P9 · shared matrices)* | *4/30* | *22/30* | *0.6* |
+
+**F3 closes the linear-algebra family.** Giving each adapter its own projections —
+no matrix in common, nothing to sum — made delegation **worse** (0.2 against 0.6)
+and cost most of the physics. Two adapters with no shared parameter still fight, so
+the competition was never a collision in weight space: both deltas shape the same
+output distribution, and where they live is irrelevant to that.
+
+**F2 proves delegation is controllable and shows the price.** Weighting the kernel
+up moved calls per case 0.2 → 3.5, seventeen-fold — and the expert disappeared with
+it, repaired 0/30 against its own 30/30. Under a weighting the two halves do not
+combine; one wins outright.
+
+**Each half remains healthy alone**: the kernel calls 6.0 times per case trained on
+attention only, the domain's physics is exact on the MLP only. The failure is
+behavioural competition at the token, which is exactly why a magnitude knob trades
+one half for the other. What remains is of a different kind: change what the expert
+is taught to produce (P12), or make the losing behaviour **impossible** at decode
+time — a logit mask on digits outside `<calc>` is the only intervention a competing
+delta cannot out-vote, and it is not bought yet.
+
+#### P10 — the honest frontier gap is +0.533, and half of +0.975 was the prompt
+
+[`results/P10-baseline-recheck-20260909/`](../results/P10-baseline-recheck-20260909/BRIEF.md),
+same 30 cases, P9's eval seed, 6000-token budget, **[ran]**:
+
+| arm | accuracy |
+|---|---|
+| `qwen3.5:4b` under the **legacy** prompt ("show no working") | **0/30 — 0.000** |
+| `qwen3.5:4b` under the **shared** contract | **14/30 — 0.467** |
+| `gemini-3.8-flash` under the shared contract | **30/30 — 1.000** |
+| **the honest gap** | **+0.533** |
+
+**The prompt was worth 0.467 of the 0.975 P5 reported.** Every baseline in P5–P8
+was told not to show its working while every treatment was trained to show it, so
+the published gap was in part the difference between a model allowed to think and
+a model forbidden to. The corrected figure replaces +0.975 wherever it is cited.
+
+**And a token budget was worth the rest of the doubt.** At 2000 tokens the same
+frontier scored 17/30 and the same local model 12/30: both were truncated
+mid-chain, and `parse_answer` falls back to the last bare number, so a cut-off
+derivation scores an intermediate value and reads as bad physics. The record now
+carries the length, the tail and whether the agreed JSON appears at all; at 6000
+tokens **neither arm has a single response without it**.
+
+**The headroom survives, halved.** +0.533 is still a gap a withdrawal can fall
+from — the clinical suite, where this project stalled, offered +0.05. And it
+sharpens P7 rather than weakening it: the adapter with a calculator scores 1.000
+where a fair baseline scores 0.467, so the treatment closes a real +0.533 and not
+a manufactured +0.975.
+
 #### P9 — composition under a contract the two halves share · DONE
 
 [`results/P9-shared-contract-20260909/`](../results/P9-shared-contract-20260909/BRIEF.md).

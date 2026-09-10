@@ -1,0 +1,104 @@
+{
+  "arms": [
+    "sequential \u00b7 domain plans, kernel executes",
+    "control \u00b7 domain alone, harness repairs"
+  ],
+  "signals": {
+    "calls": {
+      "sequential \u00b7 domain plans, kernel executes": [
+        4.733333333333333,
+        5.3,
+        4,
+        0.66,
+        ">"
+      ],
+      "control \u00b7 domain alone, harness repairs": [
+        4.933333333333334,
+        4.85,
+        8,
+        0.6,
+        ">"
+      ]
+    },
+    "rejected": {
+      "sequential \u00b7 domain plans, kernel executes": [
+        0.9666666666666667,
+        3.6,
+        2,
+        0.86,
+        ">"
+      ],
+      "control \u00b7 domain alone, harness repairs": [
+        1.1,
+        1.2,
+        0,
+        0.76,
+        ">"
+      ]
+    },
+    "rejection_rate": {
+      "sequential \u00b7 domain plans, kernel executes": [
+        0.15428571428571428,
+        0.6305952380952381,
+        0.5,
+        0.86,
+        ">"
+      ],
+      "control \u00b7 domain alone, harness repairs": [
+        0.15,
+        0.22869047619047617,
+        0.0,
+        0.76,
+        ">"
+      ]
+    },
+    "steps": {
+      "sequential \u00b7 domain plans, kernel executes": [
+        4.666666666666667,
+        5.35,
+        4,
+        0.68,
+        ">"
+      ],
+      "control \u00b7 domain alone, harness repairs": [
+        5.166666666666667,
+        5.0,
+        4,
+        0.68,
+        "<"
+      ]
+    },
+    "no_chain": {
+      "sequential \u00b7 domain plans, kernel executes": [
+        0.1,
+        0.0,
+        1.0,
+        0.6,
+        ">"
+      ],
+      "control \u00b7 domain alone, harness repairs": [
+        0.0,
+        0.0,
+        0.0,
+        0.6,
+        ">"
+      ]
+    },
+    "chars": {
+      "sequential \u00b7 domain plans, kernel executes": [
+        410.3666666666667,
+        512.3,
+        441,
+        0.72,
+        ">"
+      ],
+      "control \u00b7 domain alone, harness repairs": [
+        360.6666666666667,
+        336.05,
+        237,
+        0.62,
+        "<"
+      ]
+    }
+  }
+}

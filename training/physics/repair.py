@@ -32,7 +32,7 @@ STEP = re.compile(r"^\s*\d+[.)]\s*(?P<body>.+)$", re.M)
 NUM = r"[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?"
 
 
-def _split(body: str) -> tuple[str, str] | None:
+def _split(body: str) -> tuple[str, str | None] | None:
     """(expression, the value the model claimed, AS WRITTEN), or None.
 
     The literal matters. Reformatting the claim to `%.6g` turned a model's "2.0"
@@ -40,7 +40,14 @@ def _split(body: str) -> tuple[str, str] | None:
     — a repair that manufactured a syntax error out of a correct chain.
     """
     if "=" not in body:
-        return None
+        # A STEP THAT CLAIMS NO VALUE IS STILL A FORMULA. The formula-only corpus
+        # writes `3. Resultant force: 880.0 * 9.80665 * (2.58 + 1.32/2)` and stops,
+        # because producing the number is the kernel's job. Scoring that as "no
+        # chain" would make the expert unmeasurable on exactly the corpus written
+        # to fix its behaviour.
+        expr = body.rpartition(":")[2] if ":" in body else body
+        expr = expr.strip().strip("*_`$ ")
+        return (expr, None) if expr else None
     lhs, _, rhs = body.rpartition("=")
     m = re.match(rf"\s*({NUM})\s*[.,]?\s*$", rhs)
     if not m:
@@ -80,7 +87,8 @@ def repair(text: str) -> tuple[float | None, int, int]:
         # or the repair only fixes the last multiplication in the chain. The
         # boundaries stop "2" from matching inside "2.0" or "12".
         for was, now in fixed:
-            expr = re.sub(rf"(?<![\d.]){re.escape(was)}(?![\d.])", now, expr)
+            if was is not None:
+                expr = re.sub(rf"(?<![\d.]){re.escape(was)}(?![\d.])", now, expr)
         try:
             value = evaluate(expr)
         except CalcError:
@@ -88,5 +96,6 @@ def repair(text: str) -> tuple[float | None, int, int]:
             continue
         ok += 1
         last = value
-        fixed.append((claimed, f"{value:.6g}"))
+        if claimed is not None:
+            fixed.append((claimed, f"{value:.6g}"))
     return (last if ok else None), ok, bad

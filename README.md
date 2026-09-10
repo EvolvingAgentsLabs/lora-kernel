@@ -217,6 +217,35 @@ carries the numbers. The plan they became lives in
 [`docs/EXPERIMENT_PLAN.md`](docs/EXPERIMENT_PLAN.md), which is the state of
 the work and is updated the same session a step reports.
 
+## Where the plan stands
+
+| | objective | state |
+|:--:|---|---|
+| **S0** | the instrument measures what it claims | ✅ |
+| **S1** | a real gap against the frontier | ✅ **+0.533** |
+| **S2** | agreement ranks experts | 🟡 only against peers |
+| **S3** | the router beats a lookup table | 🟡 ties |
+| **S4** | the expert specialises per region | ✅ **+63.3** |
+| **S5** | close the withdrawal gap | ✅ **0.000** in region |
+| **S6** | `harness.lora` — kernel apart from the expert | 🟡 half solved |
+| **S7** | the tournament that evolves the experts | ❌ |
+
+**What works.** The protocol is learnable on its own and travels to a domain it
+never saw. The expert's physics is exact inside its region, 30/30. **The two
+patches compose when they take turns** — delegation goes from 0.6 to 4.7 calls per
+case. The withdrawal gap closes: 1.000 against a fair baseline of 0.467. And the
+pool is servable with vLLM multi-LoRA.
+
+**What does not, and what is being done about it.**
+
+| | what fails | plan |
+|:--:|---|---|
+| 1 | **The kernel has not shown it is worth its weights** — it lost to a regular expression | a three-tool suite where the call is not a copy. The bar is **92.9%** |
+| 2 | **The expert cannot feel its region's edge** — 30/30 inside, 1/20 outside, inventing physics in the same voice | a signal was found: the tool layer's rejection rate runs **0.15 → 0.63**. Needs confirming on two unused families with the threshold fixed |
+| 3 | **There is no judge without an oracle** — every trustworthy number here comes from problems generated in closed form | use our oracle to grade the graders: hide it, let candidate judges score, compare against the truth |
+| 4 | **The router ties a keyword lookup** | needs per-family experts and material where surface and substance come apart |
+| 5 | **The tournament** | blocked behind the judge |
+
 ## What has actually run
 
 Everything below is **[ran]** in this repository, with the run directory named.
@@ -224,27 +253,33 @@ Nothing in this section is inferred from a paper or a README.
 
 | claim | measurement | where |
 |---|---|---|
-| **A frontier gap exists** — the premise the whole architecture needs — **but its size is now in doubt** | `gemini-3.8-flash` **40/40** against a local 4B **1/40** on fluid mechanics with a computed oracle: **+0.975**. The baseline was measured under a prompt telling the model to **show no working**; under a neutral prompt an unmodified 3B scores 4/30 on the same suite, so the gap is smaller than +0.975 by an unmeasured amount **[ran]**. On a clinical suite the same test failed three times — no frontier was ever ahead | `results/P5-physics-headroom-20260908/` |
+| **A frontier gap exists**, and it is **+0.533**, not +0.975 | `gemini-3.8-flash` **30/30** against `qwen3.5:4b` **14/30**, same 30 cases, one shared contract, 6000 tokens. The same local model scores **0/30** under the prompt P5–P8 used for every baseline — so **0.467 of the original 0.975 was the prompt telling the baseline not to think** **[ran]**. On a clinical suite the same test failed three times — no frontier was ever ahead | `results/P5-physics-headroom-20260908/` |
 | Distillation transfers the **procedure but not the arithmetic** | the expert reproduces the teacher's chain step for step and computes pi/4·0.22² as 0.037006 instead of 0.038013 | `results/P6-withdrawal-20260908/` |
 | **The withdrawal gap closes** | adapter + calculator **40/40** = the teacher. Withdrawal gap **0.000** | `results/P7-calculator-20260908/` |
 | …and it takes **both halves** | base + calculator **0/40** with 53 calls; adapter alone **4/40** | same |
 | **The protocol is learnable on its own** | a kernel adapter with **no physics in its corpus** calls the tool on **30/30** fluid-mechanics cases, **0 malformed**, under a prompt that never mentions a tool | `results/P8-…`, `results/P9-…` |
 | **The expert's physics is exact; only its arithmetic fails** | repaired chain accuracy **30/30** against a raw **1/30**, with **0** tool calls | `results/P9-shared-contract-20260909/` |
+| **Two patches compose if they take turns** | sequential activation moves delegation from **0.6** calls per case to **4.7**, and accuracy from 4/30 to 9/30. Stacking them makes them fight; alternating them does not | `results/P13-sequential-20260910/` |
+| **The best modular result needs no kernel weights** | the expert writing its own chain with a thin harness executing the arithmetic exactly: **23/30 raw, 30/30 repaired** — no merged adapter, no protocol in the expert's weights | same |
 | **A pool is servable** | vLLM 0.28.0 multi-LoRA on `Qwen2.5-3B-Instruct`: the adapter changes the output, and served accuracy matches `transformers` for the same recipe | `results/P3-vllm-20260908/` |
 | Acceptance by characters measures **format, not agreement** | identical answers score 0.00 across formats; different answers score 0.44 within one. The promotion criterion is **semantic answer agreement** | `results/S0*/` |
 
 ## What has not run, and is not claimed
 
-- **Making the composition delegate.** P9 measured it: stacked, the kernel and
-  the expert beat both halves (4/30 against 1/30 and 0/30), and when the
-  composition calls the tool it passes **3 of 5** against **1 of 25** when it does
-  not. It only calls on 5 of 30 cases — the domain delta wins the competition for
-  the format. The mechanism works; making it fire is the open problem.
-- **Sequential activation** ([`TECHNICAL-REFERENCE.md` §5](docs/TECHNICAL-REFERENCE.md)
-  option 1), which that document names as its own default. Never measured.
-- **Generalisation outside a region.** The expert scored 0 of 10 on held-out
-  families in an arm that never finished. Promotion and withdrawal are therefore
-  specified per region, not globally.
+- **Showing that a learned protocol is worth its weights.** Composition is
+  solved: taking turns restores delegation. But on this suite the kernel adapter
+  **loses to twenty lines of `re`** — 9/30 against a thin harness's 23/30 — because
+  there is one tool and the call is a copy of an expression already written. It has
+  to earn its place where the call is *not* a copy: several tools, arguments to
+  format, a choice of which to use. That experiment does not exist yet.
+- ~~Sequential activation, which §5 names as its own default and was never
+  measured.~~ **Measured in P13 and it works**: delegation goes from 0.6 to 4.7
+  calls per case. No longer outstanding.
+- **A guard on the region's edge.** Measured now, and it is worse than assumed:
+  the expert's formulas fall from **30/30 inside its region to 1/20 outside**, in
+  the same domain and the same question style, and **nothing in its output marks
+  the difference** — same structure, same confidence, invented physics. Per-region
+  promotion needs a guard that does not exist.
 - **The price of holding a pool.** The mixed-batch arm measured this repository's
   own loop rather than vLLM's scheduler and is void.
 - **Cross-adapter KV cache**, the tournament, the router, frontier withdrawal at
@@ -282,6 +317,10 @@ a standard with nothing beside it never pays for itself.
 - [`docs/TECHNICAL-REFERENCE.md`](docs/TECHNICAL-REFERENCE.md) — the mechanisms,
   α and the α surface, the KV cache, action tokens, adapter composition, the
   fitness function · [es](docs/es/TECHNICAL-REFERENCE.md)
+- [`docs/OPEN-PROBLEMS.md`](docs/OPEN-PROBLEMS.md) — **the five things we do
+  not know how to do**, written without jargon: what each problem is, what we
+  tried, what each attempt ruled out, and what solving it would look like ·
+  [es](docs/es/OPEN-PROBLEMS.md)
 - [`docs/the-frontier-is-scaffolding.md`](docs/the-frontier-is-scaffolding.md) —
   the article · [es](docs/es/the-frontier-is-scaffolding.md)
 

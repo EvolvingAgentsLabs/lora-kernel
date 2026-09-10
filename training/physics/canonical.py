@@ -27,7 +27,7 @@ import math
 import random
 import re
 
-from training.physics.calc import evaluate
+from training.physics.calc import CALL, evaluate
 from training.physics.generate import G, TRAIN_FAMILIES, _instruction, generate
 
 
@@ -113,6 +113,52 @@ def chain_for(row: dict) -> str | None:
     return "\n".join(lines) + f'\n\n{{"answer": {final:.6g}}}'
 
 
+def expand(chain: str) -> str | None:
+    """Rewrite a chain so every step stands on its own numbers.
+
+    WHY. P9 found the composition delegating on 5 of 30 cases: at every step the
+    domain delta says "write the number here" and the kernel delta says "write a
+    call", and the domain wins **[ran]**. It wins because it was taught to produce
+    values — which `ARCHITECTURE.md` §4 never asked of it. §4 gives the expert
+    *what is true*, the formula; the arithmetic belongs to the kernel and its tool.
+
+    So each step's expression is rewritten with earlier steps substituted in as
+    parenthesised sub-expressions instead of their results:
+
+        3. Resultant force: 880.0 * 9.80665 * (2.58 + 1.32/2) * (0.7 * 1.32)
+
+    Nothing is computed, nothing is carried forward, and there is no value for a
+    domain adapter to learn to emit. Derived from the canonical chain rather than
+    rewritten per family, and every expansion is checked against the value the
+    original step produced.
+    """
+    out, seen = [], []                    # seen: (printed value, expanded expr)
+    for line in chain.splitlines():
+        m = CALL.search(line)
+        if not m:
+            continue
+        expr = m.group(1)
+        value = float(line.split("</calc>= ")[1])
+        for was, sub in seen:
+            expr = re.sub(rf"(?<![\d.]){re.escape(was)}(?![\d.])", f"({sub})", expr)
+        try:
+            # 1e-3, NOT 1e-6. The legacy chain rounds each intermediate to six
+            # significant figures and the expanded expression does not, so the
+            # expansion is the MORE exact of the two and disagrees in the last
+            # places. At 1e-6 that rejected 259 of 600 chains and took the
+            # longest families with it — 11 pipe_head_loss survived out of 100,
+            # which is a biased corpus, not a strict one [ran]. A bad textual
+            # substitution changes a value by orders of magnitude, so 1e-3 still
+            # catches every failure this check exists for.
+            if abs(evaluate(expr) - value) > 1e-3 * max(abs(value), 1.0):
+                return None
+        except Exception:
+            return None
+        seen.append((f"{value:.6g}", expr))
+        out.append(line[:m.start()].rstrip() + " " + expr)
+    return "\n".join(out) if out else None
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--n", type=int, default=600)
@@ -126,7 +172,9 @@ def main() -> int:
     # And two prompt contracts: `legacy` reproduces P6/P7 byte for byte; `shared`
     # is the neutral contract of `training/protocol.py`, which says nothing about
     # tools so that the protocol can only come from the weights.
-    ap.add_argument("--style", default="calc", choices=["calc", "inline"])
+    #   formula — each step a self-contained expression, no value, no final JSON.
+    #             The expert says what to compute; the kernel computes it.
+    ap.add_argument("--style", default="calc", choices=["calc", "inline", "formula"])
     ap.add_argument("--contract", default="legacy", choices=["legacy", "shared"])
     args = ap.parse_args()
 
@@ -144,6 +192,19 @@ def main() -> int:
             chain = None
         if chain is None:
             bad += 1
+            continue
+        if args.style == "formula":
+            chain = expand(chain)
+            if chain is None:
+                bad += 1
+                continue
+            kept.append({"case_id": row["case_id"], "family": row["family"],
+                         "answer": row["answer"], "unit": row["unit"],
+                         "calc_calls": 0, "style": args.style,
+                         "contract": args.contract,
+                         "messages": [{"role": "system", "content": SYSTEM},
+                                      {"role": "user", "content": row["prompt"]},
+                                      {"role": "assistant", "content": chain}]})
             continue
         if args.style == "inline":
             # `<calc>expr</calc>= v` -> `expr = v`. The formulas and the values are

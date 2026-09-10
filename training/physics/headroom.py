@@ -32,6 +32,12 @@ from pathlib import Path
 from alpha.backends import BackendError, build
 from training.physics.generate import HELD_OUT_FAMILIES, TRAIN_FAMILIES, generate
 
+# THIS PROMPT TELLS THE MODEL NOT TO SHOW ITS WORKING, AND EVERY BASELINE IN
+# P5-P8 WAS MEASURED UNDER IT while every treatment was trained to show working.
+# An unmodified 3B scores 4/30 on the same suite under the neutral contract and
+# 0/40 under this one [ran] `results/P9-shared-contract-20260909/`. It is kept so
+# those runs stay reproducible, and `--contract shared` is how a comparison that
+# means something is bought.
 SYSTEM = ("You are a careful engineer. Work in SI units and show no working in "
           "the final message: reply with one JSON object only.")
 
@@ -73,9 +79,16 @@ def run_model(tag: str, rows: list[dict], rtol: float, max_tokens: int) -> dict:
         passed += ok
         unparsed += got is None
         per_family[row["family"]].append(ok)
+        # THE HEAD OF A RESPONSE CANNOT TELL YOU IF ITS TAIL WAS CUT OFF. Storing
+        # only `text[:300]` made a complete answer and one truncated at max_tokens
+        # look identical, and `parse_answer` falls back to the last bare number —
+        # so a truncated chain scores an intermediate value and reads as bad
+        # physics. The tail and the length are what distinguish them.
+        text = r.text if r else ""
         records.append({"case_id": row["case_id"], "family": row["family"],
                         "want": row["answer"], "got": got, "passed": bool(ok),
-                        "raw": (r.text[:300] if r else "")})
+                        "chars": len(text), "has_json": '"answer"' in text,
+                        "raw": text[:300], "tail": text[-200:]})
         if i % 10 == 0:
             print(f"  [{tag}] {i}/{len(rows)} passed {passed}", flush=True)
     return {
@@ -83,6 +96,9 @@ def run_model(tag: str, rows: list[dict], rtol: float, max_tokens: int) -> dict:
         "accuracy": round(passed / len(rows), 4), "unparsed": unparsed,
         "seconds": round(time.time() - t0, 1),
         "thinking_chars": thought,
+        # A run where the answers stopped arriving in the agreed format is a run
+        # about token budgets, and it must say so on its own face.
+        "without_json": sum(1 for r in records if not r["has_json"]),
         "by_family": {k: f"{sum(v)}/{len(v)}" for k, v in sorted(per_family.items())},
         "records": records,
     }
@@ -100,33 +116,50 @@ def main() -> int:
     ap.add_argument("--rtol", type=float, default=0.02)
     ap.add_argument("--max-tokens", type=int, default=2000)
     ap.add_argument("--style", default="json", choices=["json", "working"])
+    ap.add_argument("--contract", default="legacy", choices=["legacy", "shared"],
+                    help="shared uses training/protocol.py — the contract the "
+                         "adapters were trained under, so the number is comparable")
     ap.add_argument("--held-out", action="store_true",
                     help="use the families kept out of training instead")
     ap.add_argument("--run-dir", default="results/P5-physics-headroom-20260908")
     args = ap.parse_args()
 
     fams = HELD_OUT_FAMILIES if args.held_out else TRAIN_FAMILIES
-    rows = generate(args.n, args.seed, fams, args.style)
+    style = args.style
+    if args.contract == "shared":
+        global SYSTEM
+        from training.protocol import SYSTEM as SHARED
+        SYSTEM = SHARED
+        style = "working"
+    rows = generate(args.n, args.seed, fams, style)
     out = Path(args.run_dir)
     out.mkdir(parents=True, exist_ok=True)
-    summary = {"rtol": args.rtol, "n": len(rows), "style": args.style,
+    summary = {"rtol": args.rtol, "n": len(rows), "style": style,
+               "contract": args.contract,
                "families": sorted(fams),
                "seed": args.seed, "arms": {}}
 
-    for tag in (args.small, args.large):
+    for tag in [t for t in (args.small, args.large) if t]:
         print(f"[headroom] {tag}", flush=True)
         summary["arms"][tag] = run_model(tag, rows, args.rtol, args.max_tokens)
         (out / "headroom.json").write_text(json.dumps(summary, indent=2))
 
-    s, l = summary["arms"][args.small], summary["arms"][args.large]
-    gap = l["accuracy"] - s["accuracy"]
-    summary["gap"] = round(gap, 4)
+    # ONE ARM IS A LEGITIMATE RUN. Re-measuring a single baseline under a second
+    # contract is the cheapest arm in the project, and crashing on the report
+    # after writing the results is a good way to lose it.
+    gap = None
+    if args.small and args.large:
+        s, l = summary["arms"][args.small], summary["arms"][args.large]
+        gap = round(l["accuracy"] - s["accuracy"], 4)
+        summary["gap"] = gap
     (out / "headroom.json").write_text(json.dumps(summary, indent=2))
     print(f"\n{'model':<44}{'passed':>10}{'accuracy':>11}{'unparsed':>10}")
-    for tag in (args.small, args.large):
+    for tag in [t for t in (args.small, args.large) if t]:
         a = summary["arms"][tag]
         print(f"{tag:<44}{str(a['passed'])+'/'+str(a['n']):>10}"
               f"{a['accuracy']:>11.3f}{a['unparsed']:>10}")
+    if gap is None:
+        return 0
     print(f"\ngap (large - small): {gap:+.3f}")
     print("THE GATE: a withdrawal gap needs somewhere to fall from. On the "
           "clinical suite this gap was +0.05 and the project stalled there.")
