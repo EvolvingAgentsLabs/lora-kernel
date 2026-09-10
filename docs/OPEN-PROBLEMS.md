@@ -71,7 +71,7 @@ So: the two halves exist, each is healthy on its own, and putting them in one
 patch works. The problem is putting them in **two** patches, which is the entire
 point of the design.
 
-## Problem 1 — two specialists that will not take turns
+## Problem 1 — two specialists that would not take turns (solved; what replaced it)
 
 ### What we see
 
@@ -136,49 +136,58 @@ way and you have a procedure with no knowledge; turn it the other and you have
 knowledge with no procedure. There does not appear to be a setting in between
 that gives you both, and we have no reason from the data to expect one.
 
+
+**Attempt three: stop asking them to speak at the same time.** Everything above
+assumes both patches are applied at once and must somehow share the sentence.
+They do not have to. The specialist can write the *name* of the next quantity and
+stop; the procedure patch can then be switched on, write the calculator request,
+and switch off; the harness answers it; the specialist resumes. At no point are
+both active, so there is nothing to argue about.
+
+**This worked.** Asking went from 0.6 times per problem to **4.7** — eight times —
+and accuracy more than doubled. The competition is not a property of the two
+patches; it is a property of making them produce the same word. Take that away and
+both behaviours survive.
+
+**And it exposed a different problem, which is now the open one.** In the split we
+measured, the specialist named the quantity and the *procedure patch* had to write
+the formula — and the procedure patch knows no physics. A control that removed it
+entirely, letting the specialist write its own chain and having a few lines of
+ordinary code execute the arithmetic exactly, scored **23 of 30** against the
+turn-taking arrangement's **9 of 30**.
+
 ### What we do not know
 
-We do not know how to make two independently trained patches **both** express
-their behaviour when they are applied together.
+The original question is answered: two independently trained patches **do** both
+express their behaviour, provided they take turns instead of sharing a sentence.
 
-We know it is not about which parts of the model they modify. We know it is not a
-matter of finding the right relative strength. What is left is that each patch was
-trained to produce a *complete* output on its own — a whole answer, start to
-finish — and neither was ever trained to leave a gap for the other to fill. Two
-complete answers cannot both be written. One has to give way, and whichever gives
-way is simply absent.
+What replaces it is harder to be comfortable about. **We do not know that a
+learned procedure patch is worth its weights at all.** On this material a few
+lines of ordinary code beat it — and not narrowly. That is not surprising once
+stated: there is exactly one tool here, and asking for it means copying an
+expression the specialist has already written. Copying is what ordinary code is
+for.
 
-Two directions remain, and they are different in kind rather than in degree.
+The procedure patch would have to earn its place somewhere the request is *not* a
+copy — several tools to choose between, arguments that need shaping, a decision
+about which one fits. We believe that is where the difference lives. We have not
+built that material, so we cannot claim it.
 
-The first is to **change what the specialist is taught to produce**, so that there
-is nothing left to argue about. Today the physics specialist is taught to write
-the formula *and* the number it evaluates to. But the design never asked it for
-the number — the number is the procedure patch's job, via the calculator. If the
-specialist is taught to stop at the formula and never write a value, then at the
-moment where the two currently disagree, only one of them has an opinion. This is
-built and queued; we do not have its result yet.
-
-The second is to **make the losing behaviour impossible instead of merely
-unlikely**. Everything above is a competition between two influences, and a
-competition can always be lost. But a model's output can also be constrained
-directly: at each step, certain words can simply be forbidden. If writing a digit
-anywhere except inside a calculator request is not an available option, then no
-amount of influence from the physics patch can produce one. This converts "the
-physics patch usually wins the argument" into "there is no argument". It is the
-only intervention we have identified that a competing patch cannot out-vote. It
-is not built yet.
+There is also a measured bias in the turn-taking number that we should not hide:
+the procedure patch tends to write `A = 2 * 3 = 6` inside the request, and the
+calculator refuses it — 16% of its requests, touching 11 of the 30 problems, none
+of which passed. Accepting every recoverable form would raise its score to around
+20 of 30, still below the control. The bias is real; it does not change which
+arrangement wins.
 
 ### How we would know it was solved
 
-The number to watch is **how often the combination asks the calculator**, not how
-many answers are right. Accuracy in these runs moves by three or four problems
-and can move that much for reasons unrelated to the mechanism. Asking is what the
-combination is failing to do.
-
-Solved looks like: the combination asks at a rate close to the procedure patch
-alone — call it five or more times per problem instead of 0.6 — **while** the
-specialist's formulas stay right at close to thirty out of thirty. Both at once.
-Either one alone we have already achieved, and separately they are worth nothing.
+The composition question is closed by the numbers above. What is left needs a
+different measurement: material with several tools, where choosing and formatting
+the request is genuinely work. Solved would look like the learned procedure patch
+beating a hand-written rule on that material — with the hand-written rule actually
+built and given a fair try, because a comparison against a rule nobody wrote is
+not a comparison.
 
 ## Problem 2 — choosing the right specialist, and whether choosing well is worth anything
 

@@ -600,6 +600,63 @@ close without a tool — and `P8` is `harness.lora`, which this table calls P7.
 The tournament, this table's P8, has not been bought.
 
 
+#### P13 — taking turns restores delegation, and the kernel loses to a thin harness
+
+[`results/P13-sequential-20260910/`](../results/P13-sequential-20260910/BRIEF.md),
+same 30 cases, same shared contract, **[ran]**:
+
+| arm | raw | repaired | calls/case |
+|---|---|---|---|
+| **sequential · domain plans, kernel executes** | **9/30** | 13/30 | **4.7** |
+| **control · domain alone, harness repairs** | **23/30** | **30/30** | 4.9 |
+| *(P9 stacked)* | *4/30* | *22/30* | *0.6* |
+| *(P9 domain alone, no tool)* | *1/30* | *30/30* | *0.0* |
+
+**Sequential activation works, and it answers the question three steps could not
+reach.** Delegation goes from 0.6 calls per case to **4.7 — eight times** — and
+accuracy more than doubles. The competition that suppressed the kernel on 25 of 30
+steps is gone the moment the two patches are never asked for the same word. §5's
+option 1, this reference's own declared default, is measured at last and it holds.
+
+**And the kernel loses its job to twenty lines of `re`.** The control — the expert
+writing its chain with a thin harness executing the arithmetic exactly and **no
+kernel weights loaded** — scores 23/30 raw and **30/30 repaired**. Asking the
+kernel to write the expression for a physics label it does not understand is
+asking the expert's job of the wrong patch.
+
+**The bias in the sequential arm was measured, not assumed.** The kernel writes
+`<calc>A = 1.96 * 1.27 = 2.4932</calc>` — an assignment and its own answer inside
+the tag — and the evaluator rejects **16% of its 130 calls, touching 11 of 30
+cases, none of which passed**. Accepting every recoverable form puts the ceiling
+near 20/30, still below the control. Real, and it does not change the verdict, so
+the arm is not re-run.
+
+**What this costs the architecture, stated plainly.** The modularity §4 wanted is
+reached — an expert with no protocol in its weights, no merged adapter — but it is
+reached **without §4's mechanism**. On this suite a learned protocol has nothing
+to contribute that a regular expression cannot, because there is one tool and the
+call is a copy of an expression already written. `harness.lora` has to earn its
+place where the call is *not* a copy: several tools, arguments to format, a choice
+of which to use. That experiment does not exist yet.
+
+#### The geometry of the two patches [ran]
+
+252 shared modules, rank 16, each compared against chance for its own dimensions:
+
+| | measured |
+|---|---|
+| what they READ (row spaces of `A`) | **0.99x chance** |
+| where they WRITE (column spaces of `B`) | **3.87x chance** (median 3.42, max 10.05) |
+| delta alignment (Frobenius cosine) | **+0.035** |
+
+They read independently, write into overlapping directions, and their deltas are
+not aligned. That is **contention over a shared output channel**, not a collision
+of subspaces — which is why P11's disjoint modules did not help (write directions
+belong to the residual stream, not to the matrix they are written from), and it
+predicts that orthogonality regularisation or null-space projection would
+reproduce P11's weighted trade rather than escape it: take the expert out of the
+shared channel and the expert goes with it.
+
 #### P11 — both weight-space fixes for delegation fail, and one closes a family
 
 [`results/P11-disjoint-20260909/`](../results/P11-disjoint-20260909/BRIEF.md) **[ran]**:

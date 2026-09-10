@@ -200,7 +200,7 @@ trabajo y se actualiza en la misma sesión en que un paso reporta.
 | **S3** | atribución: ¿un router léxico hace lo mismo? | 🟡 mecanismo 9/10, pero **empata con leer una palabra clave del prompt** |
 | **S4** | especialización, y por región | ✅ **funciona** — +63,3 puntos, asimétrica entre regiones |
 | **S5** | la brecha de retiro | ✅ **0,000** — adaptador fusionado + calculadora 1,000 contra una base justa de 0,467 |
-| **S6** | `harness.lora` | 🟡 **la mitad funciona; la otra es el único bloqueo real** |
+| **S6** | `harness.lora` | 🟡 **composición resuelta, kernel sin probar** — turnarse restaura la delegación (0,6 → 4,7 llam/caso), pero un harness delgado le gana al adaptador kernel en el punto de delegación, 23/30 contra 9/30 |
 | **S7** | el torneo, con verificador oculto | ❌ nunca comprado |
 
 Cuatro de siete pasos están cerrados con números limpios. La mitad difícil de S6
@@ -223,16 +223,20 @@ nombrado. Nada de esta sección se infiere de un paper ni de un README.
 | …y hacen falta **las dos mitades** | base + calculadora **0/40** con 53 llamadas; adaptador solo **4/40** | ídem |
 | **El protocolo se puede aprender solo** | un adaptador kernel **sin física en su corpus** llama a la herramienta en **30/30** casos de fluidos, **0 malformadas**, bajo un prompt que nunca menciona una herramienta | `results/P8-…`, `results/P9-…` |
 | **La física del experto es exacta; sólo falla su aritmética** | exactitud de la cadena reparada **30/30** contra un crudo **1/30**, con **0** llamadas | `results/P9-shared-contract-20260909/` |
+| **Dos parches componen si se turnan** | la activación secuencial mueve la delegación de **0,6** llamadas por caso a **4,7**, y la exactitud de 4/30 a 9/30. Apilarlos los hace pelear; alternarlos no | `results/P13-sequential-20260910/` |
+| **El mejor resultado modular no necesita pesos de kernel** | el experto escribiendo su cadena con un harness delgado ejecutando la aritmética exacta: **23/30 crudo, 30/30 reparado** — sin adaptador fusionado, sin protocolo en los pesos del experto | ídem |
 | **Un pool se puede servir** | vLLM 0.28.0 multi-LoRA sobre `Qwen2.5-3B-Instruct`: el adaptador cambia la salida, y la exactitud servida coincide con `transformers` para la misma receta | `results/P3-vllm-20260908/` |
 | La aceptación por caracteres mide **formato, no acuerdo** | respuestas idénticas sacan 0,00 entre formatos; respuestas distintas sacan 0,44 dentro de uno. El criterio de promoción es **acuerdo semántico de respuesta** | `results/S0*/` |
 
 ## Lo que no corrió, y no se afirma
 
-- **Hacer que la composición delegue.** P9 lo midió: apilados, el kernel y el
-  experto le ganan a las dos mitades (4/30 contra 1/30 y 0/30), y cuando la
-  composición llama a la herramienta acierta **3 de 5** contra **1 de 25** cuando
-  no llama. Sólo llama en 5 de 30 casos — el delta de dominio gana la competencia
-  por el formato. El mecanismo funciona; hacerlo disparar es el problema abierto.
+- **Mostrar que un protocolo aprendido vale sus pesos.** La composición está
+  resuelta: turnarse restaura la delegación. Pero en esta suite el adaptador kernel
+  **pierde contra veinte líneas de `re`** — 9/30 contra 23/30 de un harness delgado
+  — porque hay una sola herramienta y la llamada es copia de una expresión ya
+  escrita. Tiene que ganarse el lugar donde la llamada **no** sea una copia: varias
+  herramientas, argumentos que formatear, una elección de cuál usar. Ese
+  experimento todavía no existe.
 - **Activación secuencial** ([`TECHNICAL-REFERENCE.md` §5](docs/TECHNICAL-REFERENCE.md)
   opción 1), que ese documento declara como su propia default. Nunca se midió.
 - **Generalización fuera de una región.** El experto sacó 0 de 10 en familias

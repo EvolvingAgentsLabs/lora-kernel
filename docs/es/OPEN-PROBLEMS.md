@@ -72,7 +72,7 @@ O sea: las dos mitades existen, cada una está sana por su cuenta, y ponerlas en
 parche funciona. El problema es ponerlas en **dos** parches, que es todo el punto
 del diseño.
 
-## Problema 1 — dos especialistas que no se turnan
+## Problema 1 — dos especialistas que no se turnaban (resuelto; y lo que lo reemplazó)
 
 ### Lo que vemos
 
@@ -137,50 +137,58 @@ para un lado y tenés procedimiento sin conocimiento; girala para el otro y ten�
 conocimiento sin procedimiento. No parece haber un punto intermedio que dé las dos
 cosas, y los datos no nos dan ninguna razón para esperarlo.
 
+
+**Intento tres: dejar de pedirles que hablen al mismo tiempo.** Todo lo anterior
+supone que los dos parches están aplicados a la vez y tienen que compartir la
+oración de algún modo. No hace falta. El especialista puede escribir el *nombre*
+de la magnitud siguiente y frenar; ahí se enciende el parche de procedimiento, que
+escribe el pedido a la calculadora y se apaga; el harness lo responde; el
+especialista retoma. En ningún momento están los dos activos, así que no hay nada
+que discutir.
+
+**Esto funcionó.** Los pedidos pasaron de 0,6 por problema a **4,7** — ocho veces
+— y la exactitud más que se duplicó. La competencia no es una propiedad de los dos
+parches; es una propiedad de hacerlos producir la misma palabra. Sacá eso y las dos
+conductas sobreviven.
+
+**Y dejó a la vista otro problema, que es el que queda abierto.** En la división
+que medimos, el especialista nombraba la magnitud y el *parche de procedimiento*
+tenía que escribir la fórmula — y el parche de procedimiento no sabe física. Un
+control que lo sacó por completo, dejando que el especialista escribiera su propia
+cadena y que unas pocas líneas de código común ejecutaran la aritmética exacta,
+sacó **23 de 30** contra los **9 de 30** del arreglo por turnos.
+
 ### Lo que no sabemos
 
-No sabemos cómo hacer que dos parches entrenados por separado expresen **los dos**
-su conducta cuando se aplican juntos.
+La pregunta original está contestada: dos parches entrenados por separado **sí**
+expresan los dos su conducta, siempre que se turnen en vez de compartir una
+oración.
 
-Sabemos que no depende de qué partes del modelo modifican. Sabemos que no es
-cuestión de encontrar la fuerza relativa justa. Lo que queda es que cada parche
-fue entrenado para producir una salida *completa* por su cuenta — una respuesta
-entera, de principio a fin — y ninguno fue entrenado nunca para dejar un hueco que
-el otro llene. Dos respuestas completas no se pueden escribir a la vez. Una tiene
-que ceder, y la que cede simplemente no está.
+Lo que la reemplaza es más incómodo. **No sabemos que un parche de procedimiento
+aprendido valga sus pesos.** Sobre este material unas pocas líneas de código común
+le ganan — y no por poco. No es sorprendente una vez dicho: acá hay exactamente una
+herramienta, y pedirla significa copiar una expresión que el especialista ya
+escribió. Copiar es para lo que sirve el código común.
 
-Quedan dos direcciones, y son distintas en especie, no en grado.
+El parche de procedimiento tendría que ganarse el lugar donde el pedido **no** sea
+una copia — varias herramientas entre las cuales elegir, argumentos que dar forma,
+una decisión sobre cuál corresponde. Creemos que ahí vive la diferencia. No
+construimos ese material, así que no podemos afirmarlo.
 
-La primera es **cambiar lo que se le enseña a producir al especialista**, para que
-no quede nada sobre lo que discutir. Hoy al especialista de física se le enseña a
-escribir la fórmula *y* el número al que evalúa. Pero el diseño nunca le pidió el
-número — el número es trabajo del parche de procedimiento, vía calculadora. Si se
-le enseña a frenar en la fórmula y no escribir jamás un valor, entonces en el
-momento donde hoy discrepan, sólo uno de los dos tiene opinión. Está construido y
-en cola; todavía no tenemos su resultado.
-
-La segunda es **volver imposible la conducta perdedora en vez de meramente
-improbable**. Todo lo de arriba es una competencia entre dos influencias, y una
-competencia siempre se puede perder. Pero la salida de un modelo también se puede
-restringir directamente: en cada paso, ciertas palabras pueden quedar prohibidas.
-Si escribir un dígito en cualquier lugar que no sea dentro de un pedido a la
-calculadora no es una opción disponible, entonces ninguna cantidad de influencia
-del parche de física puede producir uno. Esto convierte "el parche de física
-suele ganar la discusión" en "no hay discusión". Es la única intervención que
-identificamos que un parche rival no puede out-votar. Todavía no está construida.
+Hay además un sesgo medido en el número por turnos que no conviene esconder: el
+parche de procedimiento tiende a escribir `A = 2 * 3 = 6` adentro del pedido, y la
+calculadora lo rechaza — el 16% de sus pedidos, tocando 11 de los 30 problemas,
+ninguno aprobado. Aceptar todas las formas recuperables lo subiría a unos 20 de 30,
+igual por debajo del control. El sesgo es real; no cambia cuál arreglo gana.
 
 ### Cómo sabríamos que quedó resuelto
 
-El número a mirar es **cuán seguido la combinación pide la calculadora**, no
-cuántas respuestas salen bien. La exactitud en estas corridas se mueve por tres o
-cuatro problemas y puede moverse eso por razones ajenas al mecanismo. Pedir es lo
-que la combinación no está haciendo.
-
-Resuelto se ve así: la combinación pide a una tasa cercana a la del parche de
-procedimiento solo — digamos cinco o más veces por problema en vez de 0,6 —
-**mientras** las fórmulas del especialista siguen correctas cerca de treinta de
-treinta. Las dos cosas a la vez. Cada una por separado ya la logramos, y por
-separado no valen nada.
+La pregunta de la composición la cierran los números de arriba. Lo que queda
+necesita otra medición: material con varias herramientas, donde elegir y dar forma
+al pedido sea trabajo de verdad. Resuelto se vería como el parche de procedimiento
+aprendido ganándole a una regla escrita a mano sobre ese material — con la regla
+escrita a mano efectivamente construida y con una oportunidad justa, porque una
+comparación contra una regla que nadie escribió no es una comparación.
 
 ## Problema 2 — elegir el especialista correcto, y si elegir bien vale algo
 

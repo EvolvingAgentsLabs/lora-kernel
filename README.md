@@ -227,7 +227,7 @@ the work and is updated the same session a step reports.
 | **S3** | attribution: does a lexical router do the same job | 🟡 mechanism 9/10, but it **ties reading a keyword out of the prompt** |
 | **S4** | specialisation, and per region | ✅ **works** — +63.3 points, asymmetric across regions |
 | **S5** | the withdrawal gap | ✅ **0.000** — merged adapter + calculator 1.000 against a fair baseline of 0.467 |
-| **S6** | `harness.lora` | 🟡 **half works; the other half is the only real blocker** |
+| **S6** | `harness.lora` | 🟡 **composition solved, the kernel unproven** — taking turns restores delegation (0.6 → 4.7 calls/case), but a thin harness beats the kernel adapter at the delegation point, 23/30 against 9/30 |
 | **S7** | the tournament, with a held-out verifier | ❌ never bought |
 
 Four of seven steps are closed with clean numbers. The hard half of S6 works too:
@@ -249,16 +249,19 @@ Nothing in this section is inferred from a paper or a README.
 | …and it takes **both halves** | base + calculator **0/40** with 53 calls; adapter alone **4/40** | same |
 | **The protocol is learnable on its own** | a kernel adapter with **no physics in its corpus** calls the tool on **30/30** fluid-mechanics cases, **0 malformed**, under a prompt that never mentions a tool | `results/P8-…`, `results/P9-…` |
 | **The expert's physics is exact; only its arithmetic fails** | repaired chain accuracy **30/30** against a raw **1/30**, with **0** tool calls | `results/P9-shared-contract-20260909/` |
+| **Two patches compose if they take turns** | sequential activation moves delegation from **0.6** calls per case to **4.7**, and accuracy from 4/30 to 9/30. Stacking them makes them fight; alternating them does not | `results/P13-sequential-20260910/` |
+| **The best modular result needs no kernel weights** | the expert writing its own chain with a thin harness executing the arithmetic exactly: **23/30 raw, 30/30 repaired** — no merged adapter, no protocol in the expert's weights | same |
 | **A pool is servable** | vLLM 0.28.0 multi-LoRA on `Qwen2.5-3B-Instruct`: the adapter changes the output, and served accuracy matches `transformers` for the same recipe | `results/P3-vllm-20260908/` |
 | Acceptance by characters measures **format, not agreement** | identical answers score 0.00 across formats; different answers score 0.44 within one. The promotion criterion is **semantic answer agreement** | `results/S0*/` |
 
 ## What has not run, and is not claimed
 
-- **Making the composition delegate.** P9 measured it: stacked, the kernel and
-  the expert beat both halves (4/30 against 1/30 and 0/30), and when the
-  composition calls the tool it passes **3 of 5** against **1 of 25** when it does
-  not. It only calls on 5 of 30 cases — the domain delta wins the competition for
-  the format. The mechanism works; making it fire is the open problem.
+- **Showing that a learned protocol is worth its weights.** Composition is
+  solved: taking turns restores delegation. But on this suite the kernel adapter
+  **loses to twenty lines of `re`** — 9/30 against a thin harness's 23/30 — because
+  there is one tool and the call is a copy of an expression already written. It has
+  to earn its place where the call is *not* a copy: several tools, arguments to
+  format, a choice of which to use. That experiment does not exist yet.
 - **Sequential activation** ([`TECHNICAL-REFERENCE.md` §5](docs/TECHNICAL-REFERENCE.md)
   option 1), which that document names as its own default. Never measured.
 - **Generalisation outside a region.** The expert scored 0 of 10 on held-out

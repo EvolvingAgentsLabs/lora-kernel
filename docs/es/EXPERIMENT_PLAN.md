@@ -620,6 +620,66 @@ insertado porque la brecha no cerraba sin herramienta — y `P8` es
 no se compró.
 
 
+#### P13 — turnarse restaura la delegación, y el kernel pierde contra un harness delgado
+
+[`results/P13-sequential-20260910/`](../../results/P13-sequential-20260910/BRIEF.md),
+mismos 30 casos, mismo contrato compartido, **[ran]**:
+
+| brazo | crudo | reparado | llam/caso |
+|---|---|---|---|
+| **secuencial · el dominio planifica, el kernel ejecuta** | **9/30** | 13/30 | **4,7** |
+| **control · el dominio solo, el harness repara** | **23/30** | **30/30** | 4,9 |
+| *(P9 apilado)* | *4/30* | *22/30* | *0,6* |
+| *(P9 dominio solo, sin herramienta)* | *1/30* | *30/30* | *0,0* |
+
+**La activación secuencial funciona, y contesta la pregunta que tres pasos no
+pudieron alcanzar.** La delegación pasa de 0,6 llamadas por caso a **4,7 — ocho
+veces** — y la exactitud más que se duplica. La competencia que suprimía al kernel
+en 25 de 30 pasos desaparece en cuanto los dos parches dejan de tener que producir
+la misma palabra. La opción 1 de §5, la default declarada de esa referencia, quedó
+medida por fin y se sostiene.
+
+**Y el kernel pierde su trabajo contra veinte líneas de `re`.** El control — el
+experto escribiendo su cadena con un harness delgado ejecutando la aritmética
+exacta y **sin cargar los pesos del kernel** — saca 23/30 crudo y **30/30
+reparado**. Pedirle al kernel que escriba la expresión de una etiqueta de física
+que no entiende es pedirle el trabajo del experto al parche equivocado.
+
+**El sesgo del brazo secuencial se midió, no se supuso.** El kernel escribe
+`<calc>A = 1.96 * 1.27 = 2.4932</calc>` — la asignación y su propia respuesta
+adentro de la etiqueta — y el evaluador rechaza el **16% de sus 130 llamadas, en 11
+de 30 casos, ninguno aprobado**. Aceptando todas las formas recuperables el techo
+queda cerca de 20/30, igual por debajo del control. Real, y no cambia el veredicto,
+así que el brazo no se re-corre.
+
+**Qué le cuesta esto a la arquitectura, dicho llanamente.** La modularidad que
+quería §4 se alcanza — un experto sin protocolo en sus pesos, sin adaptador
+fusionado — pero se alcanza **sin el mecanismo de §4**. En esta suite un protocolo
+aprendido no tiene nada que aportar que no aporte una expresión regular, porque hay
+una sola herramienta y la llamada es una copia de una expresión ya escrita.
+`harness.lora` tiene que ganarse el lugar donde la llamada **no** sea una copia:
+varias herramientas, argumentos que formatear, una elección de cuál usar. Ese
+experimento todavía no existe.
+
+#### La geometría de los dos parches [ran]
+
+252 módulos compartidos, rango 16, cada uno comparado contra el azar de sus propias
+dimensiones:
+
+| | medido |
+|---|---|
+| qué LEEN (espacios de filas de `A`) | **0,99× el azar** |
+| dónde ESCRIBEN (espacios de columnas de `B`) | **3,87× el azar** (mediana 3,42, máx 10,05) |
+| alineación de los deltas (coseno de Frobenius) | **+0,035** |
+
+Leen de forma independiente, escriben en direcciones que se solapan, y sus deltas
+no están alineados. Eso es **contención sobre un canal de salida compartido**, no
+una colisión de subespacios — que es por qué los módulos disjuntos de P11 no
+ayudaron (las direcciones de escritura son del residual stream, no de la matriz
+desde la que se escriben), y predice que la regularización de ortogonalidad o la
+proyección al espacio nulo reproducirían el intercambio ponderado de P11 en vez de
+escaparle: sacá al experto del canal compartido y el experto se va con él.
+
 #### P11 — los dos arreglos en espacio de pesos fallan, y uno cierra una familia entera
 
 [`results/P11-disjoint-20260909/`](../../results/P11-disjoint-20260909/BRIEF.md) **[ran]**:
