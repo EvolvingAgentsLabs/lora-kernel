@@ -192,23 +192,32 @@ trabajo y se actualiza en la misma sesión en que un paso reporta.
 
 ## Dónde está el plan
 
-| paso | qué pedía | estado |
+| | objetivo | estado |
 |:--:|---|---|
-| **S0** | que el instrumento mida lo que dice | ✅ **funciona** — y cambió el plan dos veces |
-| **S1** | headroom del que pueda caer una brecha de retiro | ✅ **resuelto: +0,533, medido limpio** (el +0,975 publicado estaba inflado por el prompt de la línea de base) |
-| **S2** | ¿el acuerdo ordena candidatos como la calidad verificada? | 🟡 14 de 15 pares, pero contra **pares**, no contra una frontera |
-| **S3** | atribución: ¿un router léxico hace lo mismo? | 🟡 mecanismo 9/10, pero **empata con leer una palabra clave del prompt** |
-| **S4** | especialización, y por región | ✅ **funciona** — +63,3 puntos, asimétrica entre regiones |
-| **S5** | la brecha de retiro | ✅ **0,000 en región** — 1,000 contra una base justa de 0,467 — ⚠️ pero la región tiene un borde duro que el experto no siente: las fórmulas caen de 30/30 a 1/20 una familia afuera |
-| **S6** | `harness.lora` | 🟡 **composición resuelta, kernel sin probar** — turnarse restaura la delegación (0,6 → 4,7 llam/caso), pero un harness delgado le gana al adaptador kernel en el punto de delegación, 23/30 contra 9/30 |
-| **S7** | el torneo, con verificador oculto | ❌ nunca comprado |
+| **S0** | que el instrumento mida lo que dice | ✅ |
+| **S1** | que haya brecha contra la frontera | ✅ **+0,533** |
+| **S2** | que el acuerdo ordene expertos | 🟡 sólo contra pares |
+| **S3** | que el router valga más que una tabla | 🟡 empata |
+| **S4** | que el experto se especialice por región | ✅ **+63,3** |
+| **S5** | cerrar la brecha de retiro | ✅ **0,000** en región |
+| **S6** | `harness.lora` — kernel separado del experto | 🟡 mitad resuelta |
+| **S7** | el torneo que evoluciona los expertos | ❌ |
 
-Cuatro de siete pasos están cerrados con números limpios. La mitad difícil de S6
-también funciona: el protocolo se aprende en pesos propios y transfiere a un
-dominio que su corpus nunca contuvo. **Lo único que bloquea todo lo que viene
-después es la composición** — un kernel y un experto servidos juntos delegan en 5
-de 30 casos, y [`docs/es/OPEN-PROBLEMS.md`](docs/es/OPEN-PROBLEMS.md) explica por
-qué, en lenguaje llano.
+**Lo que funciona.** El protocolo se aprende solo y viaja a un dominio que nunca
+vio. La física del experto es exacta dentro de su región, 30/30. **Los dos parches
+componen si se turnan** — la delegación pasa de 0,6 a 4,7 llamadas por caso. La
+brecha de retiro cierra: 1,000 contra una base justa de 0,467. Y el pool se sirve
+con vLLM multi-LoRA.
+
+**Lo que no, y qué se está haciendo.**
+
+| | qué falla | plan |
+|:--:|---|---|
+| 1 | **El kernel no demostró valer sus pesos** — perdió contra una expresión regular | una suite de tres herramientas donde la llamada no es copia. La vara es **92,9%** |
+| 2 | **El experto no siente el borde de su región** — 30/30 adentro, 1/20 afuera, inventando física con la misma voz | se encontró una señal: la tasa de rechazo de la capa de herramientas va **0,15 → 0,63**. Falta confirmarla en dos familias sin usar, con el umbral fijo |
+| 3 | **No hay juez sin oráculo** — todo número confiable de acá viene de problemas generados en forma cerrada | usar nuestro oráculo para corregir a los correctores: esconderlo, que los jueces candidatos puntúen, comparar contra la verdad |
+| 4 | **El router empata con una tabla de búsqueda** | necesita expertos por familia y material donde superficie y sustancia se separen |
+| 5 | **El torneo** | bloqueado detrás del juez |
 
 ## Lo que realmente corrió
 

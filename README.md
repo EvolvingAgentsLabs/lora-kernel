@@ -219,22 +219,32 @@ the work and is updated the same session a step reports.
 
 ## Where the plan stands
 
-| step | what it asked for | state |
+| | objective | state |
 |:--:|---|---|
-| **S0** | that the instrument measures what it claims | ✅ **works** — and it changed the plan twice |
-| **S1** | headroom for a withdrawal gap to fall from | ✅ **settled: +0.533, measured clean** (the published +0.975 was inflated by the baseline's prompt) |
-| **S2** | does agreement order candidates the way verified quality does | 🟡 14 of 15 pairs, but against **peers**, not a frontier |
-| **S3** | attribution: does a lexical router do the same job | 🟡 mechanism 9/10, but it **ties reading a keyword out of the prompt** |
-| **S4** | specialisation, and per region | ✅ **works** — +63.3 points, asymmetric across regions |
-| **S5** | the withdrawal gap | ✅ **0.000 in region** — 1.000 against a fair baseline of 0.467 — ⚠️ but the region has a hard edge the expert cannot feel: formulas fall from 30/30 to 1/20 one family outside it |
-| **S6** | `harness.lora` | 🟡 **composition solved, the kernel unproven** — taking turns restores delegation (0.6 → 4.7 calls/case), but a thin harness beats the kernel adapter at the delegation point, 23/30 against 9/30 |
-| **S7** | the tournament, with a held-out verifier | ❌ never bought |
+| **S0** | the instrument measures what it claims | ✅ |
+| **S1** | a real gap against the frontier | ✅ **+0.533** |
+| **S2** | agreement ranks experts | 🟡 only against peers |
+| **S3** | the router beats a lookup table | 🟡 ties |
+| **S4** | the expert specialises per region | ✅ **+63.3** |
+| **S5** | close the withdrawal gap | ✅ **0.000** in region |
+| **S6** | `harness.lora` — kernel apart from the expert | 🟡 half solved |
+| **S7** | the tournament that evolves the experts | ❌ |
 
-Four of seven steps are closed with clean numbers. The hard half of S6 works too:
-the protocol is learnable in weights of its own and transfers to a domain its
-corpus never contained. **The one thing blocking everything downstream is
-composition** — a kernel and an expert served together delegate on 5 of 30 cases,
-and [`docs/OPEN-PROBLEMS.md`](docs/OPEN-PROBLEMS.md) explains why in plain language.
+**What works.** The protocol is learnable on its own and travels to a domain it
+never saw. The expert's physics is exact inside its region, 30/30. **The two
+patches compose when they take turns** — delegation goes from 0.6 to 4.7 calls per
+case. The withdrawal gap closes: 1.000 against a fair baseline of 0.467. And the
+pool is servable with vLLM multi-LoRA.
+
+**What does not, and what is being done about it.**
+
+| | what fails | plan |
+|:--:|---|---|
+| 1 | **The kernel has not shown it is worth its weights** — it lost to a regular expression | a three-tool suite where the call is not a copy. The bar is **92.9%** |
+| 2 | **The expert cannot feel its region's edge** — 30/30 inside, 1/20 outside, inventing physics in the same voice | a signal was found: the tool layer's rejection rate runs **0.15 → 0.63**. Needs confirming on two unused families with the threshold fixed |
+| 3 | **There is no judge without an oracle** — every trustworthy number here comes from problems generated in closed form | use our oracle to grade the graders: hide it, let candidate judges score, compare against the truth |
+| 4 | **The router ties a keyword lookup** | needs per-family experts and material where surface and substance come apart |
+| 5 | **The tournament** | blocked behind the judge |
 
 ## What has actually run
 
