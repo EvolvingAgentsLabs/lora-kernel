@@ -620,6 +620,41 @@ insertado porque la brecha no cerraba sin herramienta — y `P8` es
 no se compró.
 
 
+#### P16 — un guardia en el borde de la región, leído de la capa de herramientas y no del modelo
+
+[`results/P16-tripwire-20260910/`](../../results/P16-tripwire-20260910/BRIEF.md).
+P14 descartó el guardia obvio: nada en la prosa del experto marca el borde. Se
+pre-registraron seis señales y se reportan las seis, sobre transcripciones que P13
+y P14 ya tenían bancadas — aritmética sobre archivos, sin GPU **[ran]**:
+
+| señal | brazo secuencial | brazo de control | veredicto |
+|---|---|---|---|
+| llamadas por caso | 0,66 | 0,60 | ninguno |
+| **llamadas rechazadas por caso** | **0,86** | **0,76** | **los dos** |
+| **tasa de rechazo** | **0,86** | **0,76** | **los dos** |
+| pasos numerados | 0,68 | 0,68 | ninguno |
+| cadenas sin un paso evaluable | 0,60 | 0,60 | ninguno |
+| largo de la transcripción | 0,72 | 0,62 | ninguno |
+
+**La tasa de rechazo corre a 0,15 en región y 0,63 afuera** donde el kernel escribe
+las llamadas. Fuera de su región el experto nombra magnitudes que no entiende, y la
+capa de herramientas no puede convertir esos nombres en llamadas válidas — **la capa
+de herramientas falla donde la prosa no**, así que el guardia lee un proceso en vez
+de la opinión del modelo sobre sí mismo.
+
+Es más débil donde el harness escribe las llamadas (0,76), lo que encaja con el
+mecanismo: un harness que sólo evalúa la expresión que le pasan tiene menos que
+rechazar que un kernel que debe construir una llamada a partir de una etiqueta. **El
+guardia es una propiedad de tener una capa de herramientas que puede fallar** — lo
+que vuelve a `harness.lora` una pieza portante por una razón que nada anterior
+sugería.
+
+**No es un detector y el brief lo dice.** Las señales se eligieron con las
+respuestas a la vista, el umbral se ajusta sobre los mismos 50 puntos que lo
+puntúan, y las dos familias usadas son las únicas held-out que tiene la suite.
+Volverlo detector pide dos familias que ninguna corrida usó, un umbral fijado desde
+ésta y no reajustado, y que la separación sobreviva.
+
 #### P14 — la región del experto tiene un borde duro, y el experto no lo siente
 
 [`results/P14-held-out-20260910/`](../../results/P14-held-out-20260910/BRIEF.md),

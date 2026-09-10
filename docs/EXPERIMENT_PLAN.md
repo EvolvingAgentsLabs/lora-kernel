@@ -600,6 +600,40 @@ close without a tool — and `P8` is `harness.lora`, which this table calls P7.
 The tournament, this table's P8, has not been bought.
 
 
+#### P16 — a guard on the region's edge, read from the tool layer rather than the model
+
+[`results/P16-tripwire-20260910/`](../results/P16-tripwire-20260910/BRIEF.md).
+P14 ruled out the obvious guard: nothing in the expert's prose marks the boundary.
+Six signals were pre-registered and all six reported, over transcripts P13 and P14
+had already banked — arithmetic over files, no GPU **[ran]**:
+
+| signal | sequential arm | control arm | verdict |
+|---|---|---|---|
+| calls per case | 0.66 | 0.60 | neither |
+| **rejected calls per case** | **0.86** | **0.76** | **both** |
+| **rejection rate** | **0.86** | **0.76** | **both** |
+| numbered steps | 0.68 | 0.68 | neither |
+| chains with no evaluable step | 0.60 | 0.60 | neither |
+| transcript length | 0.72 | 0.62 | neither |
+
+**The rejection rate runs 0.15 in region and 0.63 outside** where the kernel writes
+the calls. Outside its region the expert names quantities it does not understand,
+and the tool layer cannot turn those names into valid calls — **the tool layer
+fails where the prose does not**, so the guard reads a process instead of the
+model's opinion of itself.
+
+It is weaker where the harness writes the calls (0.76), which fits the mechanism:
+a harness that only evaluates the expression it is handed has less to refuse than a
+kernel that must build a call from a label. **The guard is a property of having a
+tool layer that can fail** — which makes `harness.lora` load-bearing for a reason
+nothing before this suggested.
+
+**It is not a detector and the brief says so.** The signals were chosen with the
+answers visible, the threshold is fitted on the same 50 points that score it, and
+the two families used are the only held-out families the suite has. Making it one
+needs two families neither run used, a threshold fixed from this run rather than
+refitted, and the separation surviving.
+
 #### P14 — the expert's region has a hard edge, and the expert cannot feel it
 
 [`results/P14-held-out-20260910/`](../results/P14-held-out-20260910/BRIEF.md),

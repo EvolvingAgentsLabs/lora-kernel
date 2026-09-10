@@ -46,3 +46,48 @@ before it can guard anything.
 
 **Sample sizes are small and stated up front**: 30 cases in region and 20 out, per
 arm. A threshold fitted on 50 points is not a detector.
+
+---
+
+## Outcome (2026-09-10) [ran]
+
+All six signals, both arms, in region (30 cases) against held out (20):
+
+| signal | sequential arm | control arm | verdict |
+|---|---|---|---|
+| calls per case | 0.66 | 0.60 | neither |
+| **rejected calls per case** | **0.86** | **0.76** | **both** |
+| **rejection rate** | **0.86** | **0.76** | **both** |
+| numbered steps | 0.68 | 0.68 | neither |
+| chains with no evaluable step | 0.60 | 0.60 | neither |
+| transcript length | 0.72 | 0.62 | neither |
+
+**Two signals separate on both arms, and they are the same signal.** The rate at
+which the evaluator rejects what the chain asks for runs at **0.15 in region and
+0.63 outside** where the kernel writes the calls — a four-fold shift that a single
+threshold classifies at 86%.
+
+**The mechanism is legible, which is what makes it worth pursuing.** Outside its
+region the expert names quantities it does not understand, and the tool layer
+cannot turn those names into valid calls. **The tool layer fails where the prose
+does not**, so the guard reads a process rather than the model's opinion of itself
+— exactly what P14 ruled out.
+
+**It is much weaker where the harness writes the calls** (0.76, means 1.10 against
+1.20). That is consistent with the mechanism rather than against it: a harness that
+only evaluates whatever expression it is handed has less to refuse than a kernel
+that must construct a call from a label. **The guard, if it exists, is a property
+of having a tool layer that can fail.**
+
+## What this is not
+
+**It is not a detector.** The signals were chosen with the answers visible, the
+threshold is fitted on the same 50 points that score it, and both families used
+here are the only held-out families the suite has. Every one of those is a reason
+the number would not survive contact with new material.
+
+**What would make it one:** two families neither P13 nor P14 used, a threshold
+fixed from this run and not refitted, and the same 86% holding. That run does not
+exist and this one cannot stand in for it.
+
+**Redesign count: 0.** Six signals pre-registered, six reported.
