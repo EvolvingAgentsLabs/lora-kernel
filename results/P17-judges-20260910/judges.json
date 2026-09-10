@@ -1,0 +1,23 @@
+{
+  "bar": 0.67,
+  "judges": [
+    {
+      "judge": "always INCORRECT",
+      "scored": 100,
+      "abstained": 0,
+      "accuracy": 0.67,
+      "recall_correct": 0.0,
+      "recall_incorrect": 1.0,
+      "said_correct": 0
+    },
+    {
+      "judge": "procedural (no model)",
+      "scored": 100,
+      "abstained": 0,
+      "accuracy": 0.66,
+      "recall_correct": 0.9394,
+      "recall_incorrect": 0.5224,
+      "said_correct": 63
+    }
+  ]
+}

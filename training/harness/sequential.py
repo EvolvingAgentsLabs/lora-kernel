@@ -48,8 +48,8 @@ import time
 from pathlib import Path
 
 from training.physics.calc import CLOSE, CalcError, evaluate
-from training.physics.generate import (HELD_OUT_FAMILIES, TRAIN_FAMILIES,
-                                        generate)
+from training.physics.generate import (CONFIRM_FAMILIES, HELD_OUT_FAMILIES,
+                                        TRAIN_FAMILIES, generate)
 from training.physics.headroom import correct, parse_answer
 from training.physics.repair import repair
 from training.protocol import SYSTEM
@@ -219,20 +219,27 @@ def main() -> int:
     # whole per-region promotion rests on has never actually been banked.
     ap.add_argument("--held-out", action="store_true",
                     help="evaluate on the families kept out of training")
+    # `confirm` is for the tripwire and nothing else: two families no run that
+    # fitted a threshold has ever seen, so P16's cut can be applied rather than
+    # re-derived.
+    ap.add_argument("--confirm", action="store_true",
+                    help="evaluate on families no earlier run has used")
     args = ap.parse_args()
 
     from peft import PeftModel
     from training.s4_train import free, load_base, train_adapter
 
-    fams = HELD_OUT_FAMILIES if args.held_out else TRAIN_FAMILIES
+    fams = (CONFIRM_FAMILIES if args.confirm else
+            HELD_OUT_FAMILIES if args.held_out else TRAIN_FAMILIES)
     ev = generate(args.n_eval, args.eval_seed, fams, style="working")
     kernel_rows = [json.loads(l) for l in open(args.kernel_corpus) if l.strip()]
     domain_rows = [json.loads(l) for l in open(args.domain_corpus) if l.strip()]
     print(f"[corpora] kernel {len(kernel_rows)} · domain {len(domain_rows)} · "
           f"eval {len(ev)}", flush=True)
 
-    results = Path("sequential_results_heldout.json") if args.held_out else RESULTS
-    summary = {"base": args.base, "held_out": args.held_out,
+    results = Path("sequential_results_confirm.json") if args.confirm else (
+        Path("sequential_results_heldout.json") if args.held_out else RESULTS)
+    summary = {"base": args.base, "held_out": args.held_out, "confirm": args.confirm,
                "families": sorted(fams),
                "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "arms": {}}
     if results.exists():

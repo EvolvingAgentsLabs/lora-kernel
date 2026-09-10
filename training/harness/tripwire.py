@@ -18,7 +18,15 @@ from training.physics.repair import STEP, TAGS, repair
 
 IN = Path("results/P13-sequential-20260910/sequential_results.json")
 OUT = Path("results/P14-held-out-20260910/sequential_results_heldout.json")
+CONFIRM = Path("results/P18-confirm-20260910/sequential_results_confirm.json")
 SIGNALS = ("calls", "rejected", "rejection_rate", "steps", "no_chain", "chars")
+
+# THE CUT FROM P16, WRITTEN DOWN SO IT CANNOT BE REFITTED. Rejection rate above
+# this means "outside the region". It was chosen on P13 and P14's fifty problems
+# and it is applied to P18's families unchanged — refitting it there would make the
+# confirmation the same measurement again, with a new coat of paint.
+P16_CUT = 0.50
+P16_SIGNAL = "rejection_rate"
 
 
 def features(rec: dict) -> dict:
@@ -78,6 +86,23 @@ def main() -> int:
     print("\nA signal that separates on one arm is a coincidence with a number "
           "attached. Anything that separates on both is a hypothesis for families "
           "neither run used, and 50 points is not a detector.")
+    if CONFIRM.exists():
+        conf = json.loads(CONFIRM.read_text())
+        print("\n=== confirmation on families no earlier run used, "
+              f"cut fixed at {P16_SIGNAL} > {P16_CUT}")
+        for arm in conf["arms"]:
+            if arm not in din["arms"]:
+                continue
+            ins = [features(r)[P16_SIGNAL] for r in din["arms"][arm]["records"]]
+            new = [features(r)[P16_SIGNAL] for r in conf["arms"][arm]["records"]]
+            hit = sum(v <= P16_CUT for v in ins) + sum(v > P16_CUT for v in new)
+            acc = hit / (len(ins) + len(new))
+            print(f"{arm:<46}in {sum(ins)/len(ins):.2f}  new {sum(new)/len(new):.2f}"
+                  f"  accuracy {acc:.2f}  (n={len(ins)}+{len(new)})")
+        print("P16 measured 0.86 with the cut fitted on the same data. Anything "
+              "near that here, with the cut fixed, is a detector; well below it "
+              "means P16 found a property of two families rather than of a region.")
+
     Path("results/P16-tripwire-20260910/tripwire.json").write_text(
         json.dumps({"arms": arms, "signals": {s: {k: list(v) for k, v in table[s].items()}
                                               for s in SIGNALS}}, indent=2))

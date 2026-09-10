@@ -213,6 +213,36 @@ def orifice_discharge(rng):
     )
 
 
+def weir_flow(rng):
+    """Sharp-crested rectangular weir. Q = (2/3) Cd b sqrt(2g) H^(3/2)."""
+    b = round(rng.uniform(0.4, 4.0), 2)
+    h = round(rng.uniform(0.05, 0.6), 3)
+    cd = rng.choice([0.60, 0.62, 0.64])
+    q = (2 / 3) * cd * b * math.sqrt(2 * G) * h ** 1.5
+    return (
+        f"Water flows over a sharp-crested rectangular weir {b} m wide. The head "
+        f"measured above the crest is {h} m and the discharge coefficient is {cd}. "
+        f"Compute the volumetric flow rate over the weir.",
+        q, "m^3/s", {"head": h},
+    )
+
+
+def jet_reaction(rng):
+    """Reaction on a nozzle from a free jet. F = rho Q v, with v = Q/A."""
+    d = round(rng.uniform(0.015, 0.09), 4)
+    q = round(rng.uniform(0.002, 0.05), 4)
+    rho = rng.choice([998.0, 1025.0, 880.0])
+    a = math.pi * d ** 2 / 4
+    v = q / a
+    f = rho * q * v
+    return (
+        f"A nozzle of exit diameter {d} m discharges a free jet of fluid of density "
+        f"{rho} kg/m^3 at {q} m^3/s into the atmosphere. Compute the magnitude of the "
+        f"reaction force on the nozzle.",
+        f, "N", {"area": a, "velocity": v},
+    )
+
+
 TRAIN_FAMILIES = {
     "pipe_head_loss": pipe_head_loss,
     "pump_power": pump_power,
@@ -226,6 +256,16 @@ TRAIN_FAMILIES = {
 HELD_OUT_FAMILIES = {
     "drag_force": drag_force,
     "orifice_discharge": orifice_discharge,
+}
+# NEVER USED BY ANY RUN THAT FITTED A THRESHOLD. P16 found that the tool layer's
+# rejection rate separates in-region from out-of-region work, on the only two
+# held-out families this suite had — with the signals chosen and the cut fitted on
+# the same fifty problems that scored them. Confirming that needs families no
+# earlier run has touched, and these are them: the threshold comes from P16 and is
+# not refitted here.
+CONFIRM_FAMILIES = {
+    "weir_flow": weir_flow,
+    "jet_reaction": jet_reaction,
 }
 
 INSTRUCTION = (
