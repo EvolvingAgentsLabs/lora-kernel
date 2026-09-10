@@ -600,6 +600,35 @@ close without a tool — and `P8` is `harness.lora`, which this table calls P7.
 The tournament, this table's P8, has not been bought.
 
 
+#### P14 — the expert's region has a hard edge, and the expert cannot feel it
+
+[`results/P14-held-out-20260910/`](../results/P14-held-out-20260910/BRIEF.md),
+`drag_force` and `orifice_discharge` — two families the expert never saw, same
+domain, same question style **[ran]**:
+
+| arm | in region | held out |
+|---|---|---|
+| control · expert alone, arithmetic repaired | 23/30 raw, **30/30 repaired** | 1/20 raw, **1/20 repaired** |
+| sequential · domain plans, kernel executes | 9/30, 13/30 | 0/20, 0/20 |
+
+**Repaired accuracy falls from 1.000 to 0.050.** That measure is the formulas
+rather than the arithmetic, so this is not the expert failing to compute — it is
+the expert not knowing the relation and writing one anyway.
+
+**And nothing in the output marks the difference.** Same numbered structure, same
+confident phrasing, invented physics: a "volume fraction" of `4/3 * pi/6`, a Stokes
+criterion that is not the Stokes criterion, a drag force that is not the drag
+force. The specialist that scores 30/30 on its own material produced that, in the
+same voice.
+
+**What it costs the design.** Per-region promotion is what lets the frontier be
+withdrawn, and this says **"proven on this region" carries no information about the
+request just outside it**. The evidence available when the promotion decision is
+made is the agreement map, which records where the expert *has been tested* — not
+where it stops working. The difference between those two sets is precisely where a
+confident wrong answer appears with nothing watching. The rule needs a guard, and
+this run says the guard is necessary without supplying one.
+
 #### P13 — taking turns restores delegation, and the kernel loses to a thin harness
 
 [`results/P13-sequential-20260910/`](../results/P13-sequential-20260910/BRIEF.md),

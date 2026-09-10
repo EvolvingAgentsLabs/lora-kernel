@@ -199,7 +199,7 @@ trabajo y se actualiza en la misma sesión en que un paso reporta.
 | **S2** | ¿el acuerdo ordena candidatos como la calidad verificada? | 🟡 14 de 15 pares, pero contra **pares**, no contra una frontera |
 | **S3** | atribución: ¿un router léxico hace lo mismo? | 🟡 mecanismo 9/10, pero **empata con leer una palabra clave del prompt** |
 | **S4** | especialización, y por región | ✅ **funciona** — +63,3 puntos, asimétrica entre regiones |
-| **S5** | la brecha de retiro | ✅ **0,000** — adaptador fusionado + calculadora 1,000 contra una base justa de 0,467 |
+| **S5** | la brecha de retiro | ✅ **0,000 en región** — 1,000 contra una base justa de 0,467 — ⚠️ pero la región tiene un borde duro que el experto no siente: las fórmulas caen de 30/30 a 1/20 una familia afuera |
 | **S6** | `harness.lora` | 🟡 **composición resuelta, kernel sin probar** — turnarse restaura la delegación (0,6 → 4,7 llam/caso), pero un harness delgado le gana al adaptador kernel en el punto de delegación, 23/30 contra 9/30 |
 | **S7** | el torneo, con verificador oculto | ❌ nunca comprado |
 

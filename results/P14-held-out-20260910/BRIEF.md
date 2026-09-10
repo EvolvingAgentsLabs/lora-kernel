@@ -37,3 +37,46 @@ edge; it only measures where the edge is. Making a specialist decline is a
 different experiment and is not bought here.
 
 **Redesign count: 0.**
+
+---
+
+## Outcome (2026-09-10) [ran]
+
+| arm | in region | on `drag_force` + `orifice_discharge` |
+|---|---|---|
+| control · expert alone, arithmetic repaired | 23/30 raw, **30/30 repaired** | 1/20 raw, **1/20 repaired** |
+| sequential · domain plans, kernel executes | 9/30 raw, 13/30 repaired | 0/20, 0/20 |
+
+**The boundary is hard, and the falsification did not fire.** Repaired accuracy —
+the measure of the formulas rather than the arithmetic — falls from **1.000 inside
+the region to 0.050 outside it**, on problems in the same domain, in the same
+question style, differing only in which relation they need. The family split marks
+a real edge.
+
+**And the expert does not notice it.** The output keeps the numbered structure,
+the confident phrasing and the plausible vocabulary, and invents the physics:
+
+    2. Volume fraction: 4/3 * pi/6 = 0.698132
+    4. Stokes regime? v*d/(rho*mu) = 3.88*0.304/(998.0*0.001002) = 1.12832 < 1
+    6. Drag force F = rho v^2 C_d / (2 S) = 998.0*3.88**2/(2*0.698132)
+
+There is no hesitation to key on and no phrase that marks the difference. A
+specialist that scored 30/30 on its own material produced this, in the same voice.
+
+## What this costs the design
+
+Per-region promotion is the mechanism that lets the frontier be withdrawn: an
+expert takes over a region once it has proven itself there. This measures that
+**"proven on this region" carries no information about the request just outside
+it**, and that nothing in the expert's own output distinguishes the two cases.
+
+The evidence available when the promotion decision is made is the agreement map —
+which records where the expert **has been tested**, not where it stops working.
+Those are different sets, and the difference is exactly the region where a
+confident wrong answer appears with nothing watching.
+
+**So the promotion rule needs a guard it does not have**, and this run does not
+supply one. It says the guard is necessary and measures how far the drop is; making
+a specialist decline is a different experiment.
+
+**Redesign count: 0.**

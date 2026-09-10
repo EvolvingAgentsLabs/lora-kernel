@@ -248,8 +248,18 @@ half proves nothing.
 
 The physics specialist was trained on six kinds of problem. Hand it a seventh —
 still fluid mechanics, still the same style of question, just a kind it never
-saw — and it produces a confident, well-formatted, wrong answer. In the one
-measurement we have, it got none of ten right.
+saw — and it produces a confident, well-formatted, wrong answer.
+
+This is now measured properly rather than glimpsed. Scoring its *formulas* rather
+than its arithmetic, the specialist is right **thirty times out of thirty** on the
+material it was trained for and **once out of twenty** on two kinds it was not.
+The drop is not gradual, and the problems either side of it look alike.
+
+What the failure looks like matters more than the number. It keeps the numbered
+structure, the confident phrasing and the plausible vocabulary, and makes the
+physics up: a "volume fraction" that is not one, a regime test that is not the
+regime test, a force law that is not the force law. The same specialist that
+scores perfectly on its own material wrote that, in the same voice.
 
 It does not hesitate. It does not say the problem is unfamiliar. It answers the
 way it answers everything.

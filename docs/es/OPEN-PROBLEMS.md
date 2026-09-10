@@ -252,7 +252,18 @@ no prueba nada.
 El especialista de física se entrenó con seis tipos de problema. Dele un séptimo
 — sigue siendo mecánica de fluidos, sigue siendo el mismo estilo de consigna, sólo
 que un tipo que nunca vio — y produce una respuesta segura, bien formateada y
-equivocada. En la única medición que tenemos, no acertó ninguna de diez.
+equivocada.
+
+Esto ahora está medido en serio y no entrevisto. Puntuando sus *fórmulas* en vez de
+su aritmética, el especialista acierta **treinta de treinta** en el material para el
+que fue entrenado y **una de veinte** en dos tipos para los que no. La caída no es
+gradual, y los problemas de un lado y del otro se parecen.
+
+Cómo se ve el fallo importa más que el número. Conserva la estructura numerada, la
+seguridad y el vocabulario plausible, e inventa la física: una "fracción de volumen"
+que no lo es, un test de régimen que no es el test de régimen, una ley de fuerza que
+no es la ley de fuerza. El mismo especialista que puntúa perfecto en su propio
+material escribió eso, con la misma voz.
 
 No duda. No dice que el problema le resulta desconocido. Responde como responde
 todo.

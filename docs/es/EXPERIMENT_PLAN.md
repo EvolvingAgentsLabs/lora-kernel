@@ -620,6 +620,35 @@ insertado porque la brecha no cerraba sin herramienta — y `P8` es
 no se compró.
 
 
+#### P14 — la región del experto tiene un borde duro, y el experto no lo siente
+
+[`results/P14-held-out-20260910/`](../../results/P14-held-out-20260910/BRIEF.md),
+`drag_force` y `orifice_discharge` — dos familias que el experto nunca vio, mismo
+dominio, mismo estilo de consigna **[ran]**:
+
+| brazo | en región | fuera |
+|---|---|---|
+| control · experto solo, aritmética reparada | 23/30 crudo, **30/30 reparado** | 1/20 crudo, **1/20 reparado** |
+| secuencial · el dominio planifica, el kernel ejecuta | 9/30, 13/30 | 0/20, 0/20 |
+
+**La exactitud reparada cae de 1,000 a 0,050.** Esa medida son las fórmulas y no la
+aritmética, así que no es el experto fallando en calcular — es el experto sin saber
+la relación y escribiendo una igual.
+
+**Y nada en la salida marca la diferencia.** Misma estructura numerada, misma
+seguridad, física inventada: una "fracción de volumen" de `4/3 * pi/6`, un criterio
+de Stokes que no es el criterio de Stokes, una fuerza de arrastre que no es la
+fuerza de arrastre. El especialista que saca 30/30 en su propio material produjo
+eso, con la misma voz.
+
+**Qué le cuesta al diseño.** La promoción por región es lo que permite retirar la
+frontera, y esto dice que **"probado en esta región" no informa nada sobre el pedido
+de apenas afuera**. La evidencia disponible cuando se toma la decisión de promoción
+es el mapa de acuerdo, que registra dónde el experto *fue puesto a prueba* — no
+dónde deja de funcionar. La diferencia entre esos dos conjuntos es exactamente
+donde aparece una respuesta segura y equivocada sin nadie mirando. La regla necesita
+un guardia, y esta corrida dice que el guardia es necesario sin aportarlo.
+
 #### P13 — turnarse restaura la delegación, y el kernel pierde contra un harness delgado
 
 [`results/P13-sequential-20260910/`](../../results/P13-sequential-20260910/BRIEF.md),

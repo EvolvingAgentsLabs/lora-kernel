@@ -226,7 +226,7 @@ the work and is updated the same session a step reports.
 | **S2** | does agreement order candidates the way verified quality does | 🟡 14 of 15 pairs, but against **peers**, not a frontier |
 | **S3** | attribution: does a lexical router do the same job | 🟡 mechanism 9/10, but it **ties reading a keyword out of the prompt** |
 | **S4** | specialisation, and per region | ✅ **works** — +63.3 points, asymmetric across regions |
-| **S5** | the withdrawal gap | ✅ **0.000** — merged adapter + calculator 1.000 against a fair baseline of 0.467 |
+| **S5** | the withdrawal gap | ✅ **0.000 in region** — 1.000 against a fair baseline of 0.467 — ⚠️ but the region has a hard edge the expert cannot feel: formulas fall from 30/30 to 1/20 one family outside it |
 | **S6** | `harness.lora` | 🟡 **composition solved, the kernel unproven** — taking turns restores delegation (0.6 → 4.7 calls/case), but a thin harness beats the kernel adapter at the delegation point, 23/30 against 9/30 |
 | **S7** | the tournament, with a held-out verifier | ❌ never bought |
 
@@ -264,9 +264,11 @@ Nothing in this section is inferred from a paper or a README.
   format, a choice of which to use. That experiment does not exist yet.
 - **Sequential activation** ([`TECHNICAL-REFERENCE.md` §5](docs/TECHNICAL-REFERENCE.md)
   option 1), which that document names as its own default. Never measured.
-- **Generalisation outside a region.** The expert scored 0 of 10 on held-out
-  families in an arm that never finished. Promotion and withdrawal are therefore
-  specified per region, not globally.
+- **A guard on the region's edge.** Measured now, and it is worse than assumed:
+  the expert's formulas fall from **30/30 inside its region to 1/20 outside**, in
+  the same domain and the same question style, and **nothing in its output marks
+  the difference** — same structure, same confidence, invented physics. Per-region
+  promotion needs a guard that does not exist.
 - **The price of holding a pool.** The mixed-batch arm measured this repository's
   own loop rather than vLLM's scheduler and is void.
 - **Cross-adapter KV cache**, the tournament, the router, frontier withdrawal at
