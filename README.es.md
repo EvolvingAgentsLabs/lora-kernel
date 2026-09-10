@@ -190,6 +190,26 @@ trae los números. El plan en que se convirtieron vive en
 [`docs/EXPERIMENT_PLAN.md`](docs/EXPERIMENT_PLAN.md), que es el estado del
 trabajo y se actualiza en la misma sesión en que un paso reporta.
 
+## Dónde está el plan
+
+| paso | qué pedía | estado |
+|:--:|---|---|
+| **S0** | que el instrumento mida lo que dice | ✅ **funciona** — y cambió el plan dos veces |
+| **S1** | headroom del que pueda caer una brecha de retiro | ✅ **resuelto: +0,533, medido limpio** (el +0,975 publicado estaba inflado por el prompt de la línea de base) |
+| **S2** | ¿el acuerdo ordena candidatos como la calidad verificada? | 🟡 14 de 15 pares, pero contra **pares**, no contra una frontera |
+| **S3** | atribución: ¿un router léxico hace lo mismo? | 🟡 mecanismo 9/10, pero **empata con leer una palabra clave del prompt** |
+| **S4** | especialización, y por región | ✅ **funciona** — +63,3 puntos, asimétrica entre regiones |
+| **S5** | la brecha de retiro | ✅ **0,000** — adaptador fusionado + calculadora 1,000 contra una base justa de 0,467 |
+| **S6** | `harness.lora` | 🟡 **la mitad funciona; la otra es el único bloqueo real** |
+| **S7** | el torneo, con verificador oculto | ❌ nunca comprado |
+
+Cuatro de siete pasos están cerrados con números limpios. La mitad difícil de S6
+también funciona: el protocolo se aprende en pesos propios y transfiere a un
+dominio que su corpus nunca contuvo. **Lo único que bloquea todo lo que viene
+después es la composición** — un kernel y un experto servidos juntos delegan en 5
+de 30 casos, y [`docs/es/OPEN-PROBLEMS.md`](docs/es/OPEN-PROBLEMS.md) explica por
+qué, en lenguaje llano.
+
 ## Lo que realmente corrió
 
 Todo lo de abajo es **[ran]** en este repositorio, con el directorio de corrida
@@ -237,6 +257,9 @@ control plane empresarial.
   el target tiene que ser de frontera, y la condición de retiro.
 - [`docs/es/TECHNICAL-REFERENCE.md`](docs/es/TECHNICAL-REFERENCE.md) — mecanismos,
   α y su superficie, KV cache, action tokens, composición de adaptadores.
+- [`docs/es/OPEN-PROBLEMS.md`](docs/es/OPEN-PROBLEMS.md) — **las cinco cosas que
+  no sabemos hacer**, escritas sin jerga: qué es cada problema, qué probamos, qué
+  descartó cada intento, y cómo se vería resolverlo.
 - [`docs/es/the-frontier-is-scaffolding.md`](docs/es/the-frontier-is-scaffolding.md) —
   el artículo.
 

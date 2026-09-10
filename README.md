@@ -217,6 +217,25 @@ carries the numbers. The plan they became lives in
 [`docs/EXPERIMENT_PLAN.md`](docs/EXPERIMENT_PLAN.md), which is the state of
 the work and is updated the same session a step reports.
 
+## Where the plan stands
+
+| step | what it asked for | state |
+|:--:|---|---|
+| **S0** | that the instrument measures what it claims | ✅ **works** — and it changed the plan twice |
+| **S1** | headroom for a withdrawal gap to fall from | ✅ **settled: +0.533, measured clean** (the published +0.975 was inflated by the baseline's prompt) |
+| **S2** | does agreement order candidates the way verified quality does | 🟡 14 of 15 pairs, but against **peers**, not a frontier |
+| **S3** | attribution: does a lexical router do the same job | 🟡 mechanism 9/10, but it **ties reading a keyword out of the prompt** |
+| **S4** | specialisation, and per region | ✅ **works** — +63.3 points, asymmetric across regions |
+| **S5** | the withdrawal gap | ✅ **0.000** — merged adapter + calculator 1.000 against a fair baseline of 0.467 |
+| **S6** | `harness.lora` | 🟡 **half works; the other half is the only real blocker** |
+| **S7** | the tournament, with a held-out verifier | ❌ never bought |
+
+Four of seven steps are closed with clean numbers. The hard half of S6 works too:
+the protocol is learnable in weights of its own and transfers to a domain its
+corpus never contained. **The one thing blocking everything downstream is
+composition** — a kernel and an expert served together delegate on 5 of 30 cases,
+and [`docs/OPEN-PROBLEMS.md`](docs/OPEN-PROBLEMS.md) explains why in plain language.
+
 ## What has actually run
 
 Everything below is **[ran]** in this repository, with the run directory named.
@@ -282,6 +301,10 @@ a standard with nothing beside it never pays for itself.
 - [`docs/TECHNICAL-REFERENCE.md`](docs/TECHNICAL-REFERENCE.md) — the mechanisms,
   α and the α surface, the KV cache, action tokens, adapter composition, the
   fitness function · [es](docs/es/TECHNICAL-REFERENCE.md)
+- [`docs/OPEN-PROBLEMS.md`](docs/OPEN-PROBLEMS.md) — **the five things we do
+  not know how to do**, written without jargon: what each problem is, what we
+  tried, what each attempt ruled out, and what solving it would look like ·
+  [es](docs/es/OPEN-PROBLEMS.md)
 - [`docs/the-frontier-is-scaffolding.md`](docs/the-frontier-is-scaffolding.md) —
   the article · [es](docs/es/the-frontier-is-scaffolding.md)
 
