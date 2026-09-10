@@ -62,27 +62,3 @@ for attempt in 1 2 3; do
   sleep 60
 done
 exit 0
-
-for attempt in 1 2 3 4 5 6; dofor attempt in 1 2 3 4 5 6; do
-  case $attempt in
-    1|4) CARD=L4 ;;
-    2|5) CARD=A100 ;;
-    *)   CARD=T4 ;;
-  esac
-  echo "=== P13 attempt $attempt on $CARD" >> "$SP/p13.log"
-  GPU=$CARD BRANCH=delegation-variants MODULE=training.harness.sequential \
-  RUN_DIR=results/P13-sequential-20260910 RESULTS_NAME=sequential_results.json \
-  ARGS="--n-eval 30" \
-  training/harness/chain_separate.sh 2 >> "$SP/p13.log" 2>&1
-  python3 -c "
-import json,sys,pathlib
-p=pathlib.Path('results/P13-sequential-20260910/sequential_results.json')
-sys.exit(0 if p.exists() and 'finished' in json.loads(p.read_text()) else 1)" && break
-  echo "    attempt $attempt did not finish; waiting before the next card" >> "$SP/p13.log"
-  sleep 300
-done
-
-GPU=L4 BRANCH=delegation-variants RUN_DIR=results/P12-formula-corpus-20260909 \
-RESULTS_NAME=separate_results-formula.json \
-ARGS="--n-eval 30 --epochs 3 --tag formula --domain-corpus training/physics/data_formula/train.jsonl" \
-training/harness/chain_separate.sh 2 >> "$SP/p12.log" 2>&1
