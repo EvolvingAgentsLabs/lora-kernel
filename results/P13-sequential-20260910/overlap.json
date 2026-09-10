@@ -1,0 +1,1537 @@
+{
+  "shared_modules": 252,
+  "rank": 16,
+  "chance_overlap": 0.038124642583151166,
+  "cosine": {
+    "mean": 0.035008258455542604,
+    "min": -0.005129193845390347,
+    "max": 0.28267232028767786,
+    "median": 0.019932362748966603
+  },
+  "col_overlap": {
+    "mean": 0.31289894364419435,
+    "min": 0.22045141458511353,
+    "max": 0.4557707905769348,
+    "median": 0.3057161569595337
+  },
+  "row_overlap": {
+    "mean": 0.07587585407530978,
+    "min": 0.03561914712190628,
+    "max": 0.09588833898305893,
+    "median": 0.07733432203531265
+  },
+  "per_module": [
+    {
+      "module": "layers.0.mlp.down_proj",
+      "cosine": 0.01625764705166054,
+      "col_overlap": 0.3162219226360321,
+      "row_overlap": 0.03903857246041298
+    },
+    {
+      "module": "layers.0.mlp.gate_proj",
+      "cosine": 0.008506704246695621,
+      "col_overlap": 0.26063451170921326,
+      "row_overlap": 0.07410331815481186
+    },
+    {
+      "module": "layers.0.mlp.up_proj",
+      "cosine": 0.007518015247610266,
+      "col_overlap": 0.29456788301467896,
+      "row_overlap": 0.07337429374456406
+    },
+    {
+      "module": "layers.0.self_attn.k_proj",
+      "cosine": 0.01733094265298588,
+      "col_overlap": 0.40772172808647156,
+      "row_overlap": 0.07419868558645248
+    },
+    {
+      "module": "layers.0.self_attn.o_proj",
+      "cosine": 0.020336302177874153,
+      "col_overlap": 0.32478734850883484,
+      "row_overlap": 0.08037146925926208
+    },
+    {
+      "module": "layers.0.self_attn.q_proj",
+      "cosine": 0.004361689025360346,
+      "col_overlap": 0.29990625381469727,
+      "row_overlap": 0.07601252943277359
+    },
+    {
+      "module": "layers.0.self_attn.v_proj",
+      "cosine": 0.02240475991515485,
+      "col_overlap": 0.4039117395877838,
+      "row_overlap": 0.07960402965545654
+    },
+    {
+      "module": "layers.1.mlp.down_proj",
+      "cosine": 0.01428536671543489,
+      "col_overlap": 0.3931054472923279,
+      "row_overlap": 0.03561914712190628
+    },
+    {
+      "module": "layers.1.mlp.gate_proj",
+      "cosine": 0.07027092989204585,
+      "col_overlap": 0.37228158116340637,
+      "row_overlap": 0.07480871677398682
+    },
+    {
+      "module": "layers.1.mlp.up_proj",
+      "cosine": 0.061543320316665796,
+      "col_overlap": 0.38318729400634766,
+      "row_overlap": 0.07490436732769012
+    },
+    {
+      "module": "layers.1.self_attn.k_proj",
+      "cosine": 0.016963234438918492,
+      "col_overlap": 0.4244078993797302,
+      "row_overlap": 0.08149904012680054
+    },
+    {
+      "module": "layers.1.self_attn.o_proj",
+      "cosine": 0.024717832811916467,
+      "col_overlap": 0.3224563002586365,
+      "row_overlap": 0.0752175971865654
+    },
+    {
+      "module": "layers.1.self_attn.q_proj",
+      "cosine": 0.009634395816967555,
+      "col_overlap": 0.3347513973712921,
+      "row_overlap": 0.07436871528625488
+    },
+    {
+      "module": "layers.1.self_attn.v_proj",
+      "cosine": 0.009635204648976521,
+      "col_overlap": 0.39312708377838135,
+      "row_overlap": 0.07962770760059357
+    },
+    {
+      "module": "layers.10.mlp.down_proj",
+      "cosine": 0.05951079725893531,
+      "col_overlap": 0.28757476806640625,
+      "row_overlap": 0.059817392379045486
+    },
+    {
+      "module": "layers.10.mlp.gate_proj",
+      "cosine": 0.018377651705927093,
+      "col_overlap": 0.23055921494960785,
+      "row_overlap": 0.07607211917638779
+    },
+    {
+      "module": "layers.10.mlp.up_proj",
+      "cosine": 0.02611858669136461,
+      "col_overlap": 0.28153908252716064,
+      "row_overlap": 0.08874841034412384
+    },
+    {
+      "module": "layers.10.self_attn.k_proj",
+      "cosine": 0.0088708034475925,
+      "col_overlap": 0.3705817461013794,
+      "row_overlap": 0.07841499894857407
+    },
+    {
+      "module": "layers.10.self_attn.o_proj",
+      "cosine": 0.013112245797469694,
+      "col_overlap": 0.3043651282787323,
+      "row_overlap": 0.07562658190727234
+    },
+    {
+      "module": "layers.10.self_attn.q_proj",
+      "cosine": 0.017321390714238917,
+      "col_overlap": 0.3071385324001312,
+      "row_overlap": 0.07344233989715576
+    },
+    {
+      "module": "layers.10.self_attn.v_proj",
+      "cosine": 0.024045658756343777,
+      "col_overlap": 0.33089229464530945,
+      "row_overlap": 0.07654549926519394
+    },
+    {
+      "module": "layers.11.mlp.down_proj",
+      "cosine": 0.05630407951311797,
+      "col_overlap": 0.3025617003440857,
+      "row_overlap": 0.056314919143915176
+    },
+    {
+      "module": "layers.11.mlp.gate_proj",
+      "cosine": 0.010185132725696332,
+      "col_overlap": 0.23456498980522156,
+      "row_overlap": 0.07589226961135864
+    },
+    {
+      "module": "layers.11.mlp.up_proj",
+      "cosine": 0.007323549896260043,
+      "col_overlap": 0.25893667340278625,
+      "row_overlap": 0.07268759608268738
+    },
+    {
+      "module": "layers.11.self_attn.k_proj",
+      "cosine": 0.018860199097654816,
+      "col_overlap": 0.42148831486701965,
+      "row_overlap": 0.07557599991559982
+    },
+    {
+      "module": "layers.11.self_attn.o_proj",
+      "cosine": 0.00612615614446938,
+      "col_overlap": 0.2913825213909149,
+      "row_overlap": 0.07620208710432053
+    },
+    {
+      "module": "layers.11.self_attn.q_proj",
+      "cosine": 0.015378635354505734,
+      "col_overlap": 0.33389246463775635,
+      "row_overlap": 0.0743488296866417
+    },
+    {
+      "module": "layers.11.self_attn.v_proj",
+      "cosine": -0.0003054760923833812,
+      "col_overlap": 0.34105461835861206,
+      "row_overlap": 0.07818353921175003
+    },
+    {
+      "module": "layers.12.mlp.down_proj",
+      "cosine": 0.044078396373381366,
+      "col_overlap": 0.3130591809749603,
+      "row_overlap": 0.060566797852516174
+    },
+    {
+      "module": "layers.12.mlp.gate_proj",
+      "cosine": 0.02325635451543226,
+      "col_overlap": 0.23162627220153809,
+      "row_overlap": 0.0790906473994255
+    },
+    {
+      "module": "layers.12.mlp.up_proj",
+      "cosine": 0.012109944550343947,
+      "col_overlap": 0.2587342858314514,
+      "row_overlap": 0.08015001565217972
+    },
+    {
+      "module": "layers.12.self_attn.k_proj",
+      "cosine": 0.006414061760168162,
+      "col_overlap": 0.4121471345424652,
+      "row_overlap": 0.07713837921619415
+    },
+    {
+      "module": "layers.12.self_attn.o_proj",
+      "cosine": 0.010862228328025804,
+      "col_overlap": 0.2961987257003784,
+      "row_overlap": 0.08109134435653687
+    },
+    {
+      "module": "layers.12.self_attn.q_proj",
+      "cosine": 0.015258656934819594,
+      "col_overlap": 0.31771034002304077,
+      "row_overlap": 0.0791444480419159
+    },
+    {
+      "module": "layers.12.self_attn.v_proj",
+      "cosine": 0.005098261867528546,
+      "col_overlap": 0.34805476665496826,
+      "row_overlap": 0.07662305980920792
+    },
+    {
+      "module": "layers.13.mlp.down_proj",
+      "cosine": 0.04957163601575803,
+      "col_overlap": 0.2849772572517395,
+      "row_overlap": 0.05506737530231476
+    },
+    {
+      "module": "layers.13.mlp.gate_proj",
+      "cosine": 0.005764082991553666,
+      "col_overlap": 0.22471529245376587,
+      "row_overlap": 0.07248075306415558
+    },
+    {
+      "module": "layers.13.mlp.up_proj",
+      "cosine": 0.01029252905171731,
+      "col_overlap": 0.2450924813747406,
+      "row_overlap": 0.07639196515083313
+    },
+    {
+      "module": "layers.13.self_attn.k_proj",
+      "cosine": 0.0055359655542884445,
+      "col_overlap": 0.3655776083469391,
+      "row_overlap": 0.07846654951572418
+    },
+    {
+      "module": "layers.13.self_attn.o_proj",
+      "cosine": 0.006254226281917128,
+      "col_overlap": 0.2923876941204071,
+      "row_overlap": 0.07363106310367584
+    },
+    {
+      "module": "layers.13.self_attn.q_proj",
+      "cosine": 0.0076249908067881865,
+      "col_overlap": 0.28816619515419006,
+      "row_overlap": 0.078523650765419
+    },
+    {
+      "module": "layers.13.self_attn.v_proj",
+      "cosine": 0.015745322806985772,
+      "col_overlap": 0.3619500398635864,
+      "row_overlap": 0.0774584636092186
+    },
+    {
+      "module": "layers.14.mlp.down_proj",
+      "cosine": 0.05413416137571759,
+      "col_overlap": 0.3098030686378479,
+      "row_overlap": 0.05749088525772095
+    },
+    {
+      "module": "layers.14.mlp.gate_proj",
+      "cosine": 0.012722641311812404,
+      "col_overlap": 0.22551970183849335,
+      "row_overlap": 0.07977648079395294
+    },
+    {
+      "module": "layers.14.mlp.up_proj",
+      "cosine": 0.0009903651180819136,
+      "col_overlap": 0.25793641805648804,
+      "row_overlap": 0.07339043915271759
+    },
+    {
+      "module": "layers.14.self_attn.k_proj",
+      "cosine": 0.018430591776416566,
+      "col_overlap": 0.36538445949554443,
+      "row_overlap": 0.08039204776287079
+    },
+    {
+      "module": "layers.14.self_attn.o_proj",
+      "cosine": 0.010322703355455222,
+      "col_overlap": 0.25377416610717773,
+      "row_overlap": 0.0686827301979065
+    },
+    {
+      "module": "layers.14.self_attn.q_proj",
+      "cosine": 0.011344228810719607,
+      "col_overlap": 0.29745417833328247,
+      "row_overlap": 0.07150189578533173
+    },
+    {
+      "module": "layers.14.self_attn.v_proj",
+      "cosine": 0.014684212844312657,
+      "col_overlap": 0.3497413098812103,
+      "row_overlap": 0.07831758260726929
+    },
+    {
+      "module": "layers.15.mlp.down_proj",
+      "cosine": 0.05185144808861773,
+      "col_overlap": 0.3189782202243805,
+      "row_overlap": 0.0564127191901207
+    },
+    {
+      "module": "layers.15.mlp.gate_proj",
+      "cosine": 0.019932362748966603,
+      "col_overlap": 0.22171005606651306,
+      "row_overlap": 0.07824587821960449
+    },
+    {
+      "module": "layers.15.mlp.up_proj",
+      "cosine": 0.00419587704915214,
+      "col_overlap": 0.255001038312912,
+      "row_overlap": 0.07383795827627182
+    },
+    {
+      "module": "layers.15.self_attn.k_proj",
+      "cosine": 0.030937642539925283,
+      "col_overlap": 0.39058390259742737,
+      "row_overlap": 0.08412021398544312
+    },
+    {
+      "module": "layers.15.self_attn.o_proj",
+      "cosine": 0.017686719805266,
+      "col_overlap": 0.31092262268066406,
+      "row_overlap": 0.07269912958145142
+    },
+    {
+      "module": "layers.15.self_attn.q_proj",
+      "cosine": 0.02266546734518057,
+      "col_overlap": 0.34568360447883606,
+      "row_overlap": 0.08113156259059906
+    },
+    {
+      "module": "layers.15.self_attn.v_proj",
+      "cosine": 0.009893578993747215,
+      "col_overlap": 0.3641711473464966,
+      "row_overlap": 0.0837470144033432
+    },
+    {
+      "module": "layers.16.mlp.down_proj",
+      "cosine": 0.0682289265401324,
+      "col_overlap": 0.3135403096675873,
+      "row_overlap": 0.0607287660241127
+    },
+    {
+      "module": "layers.16.mlp.gate_proj",
+      "cosine": 0.01889336240941689,
+      "col_overlap": 0.24077630043029785,
+      "row_overlap": 0.07153107225894928
+    },
+    {
+      "module": "layers.16.mlp.up_proj",
+      "cosine": 0.0095902551033825,
+      "col_overlap": 0.26685968041419983,
+      "row_overlap": 0.08120658993721008
+    },
+    {
+      "module": "layers.16.self_attn.k_proj",
+      "cosine": 0.026746879335493627,
+      "col_overlap": 0.3708827793598175,
+      "row_overlap": 0.08075251430273056
+    },
+    {
+      "module": "layers.16.self_attn.o_proj",
+      "cosine": 0.010740378915054886,
+      "col_overlap": 0.30564409494400024,
+      "row_overlap": 0.07586511969566345
+    },
+    {
+      "module": "layers.16.self_attn.q_proj",
+      "cosine": 0.012787730425592163,
+      "col_overlap": 0.31876233220100403,
+      "row_overlap": 0.07997845858335495
+    },
+    {
+      "module": "layers.16.self_attn.v_proj",
+      "cosine": 0.015185613681004087,
+      "col_overlap": 0.3746146559715271,
+      "row_overlap": 0.07298354804515839
+    },
+    {
+      "module": "layers.17.mlp.down_proj",
+      "cosine": 0.11078213726813564,
+      "col_overlap": 0.33081766963005066,
+      "row_overlap": 0.06359424442052841
+    },
+    {
+      "module": "layers.17.mlp.gate_proj",
+      "cosine": 0.016108711962557393,
+      "col_overlap": 0.2305823415517807,
+      "row_overlap": 0.08511219173669815
+    },
+    {
+      "module": "layers.17.mlp.up_proj",
+      "cosine": 0.009795471307428345,
+      "col_overlap": 0.27170100808143616,
+      "row_overlap": 0.08001955598592758
+    },
+    {
+      "module": "layers.17.self_attn.k_proj",
+      "cosine": 0.0331255819336059,
+      "col_overlap": 0.40578487515449524,
+      "row_overlap": 0.0802646353840828
+    },
+    {
+      "module": "layers.17.self_attn.o_proj",
+      "cosine": 0.021551540829200633,
+      "col_overlap": 0.2951473593711853,
+      "row_overlap": 0.0799216479063034
+    },
+    {
+      "module": "layers.17.self_attn.q_proj",
+      "cosine": 0.015035756389013234,
+      "col_overlap": 0.3094727396965027,
+      "row_overlap": 0.07381713390350342
+    },
+    {
+      "module": "layers.17.self_attn.v_proj",
+      "cosine": 0.015746144088486933,
+      "col_overlap": 0.3619539737701416,
+      "row_overlap": 0.0756794884800911
+    },
+    {
+      "module": "layers.18.mlp.down_proj",
+      "cosine": 0.06752276267244424,
+      "col_overlap": 0.2983627915382385,
+      "row_overlap": 0.06589363515377045
+    },
+    {
+      "module": "layers.18.mlp.gate_proj",
+      "cosine": 0.01852267911089348,
+      "col_overlap": 0.26742446422576904,
+      "row_overlap": 0.0826779380440712
+    },
+    {
+      "module": "layers.18.mlp.up_proj",
+      "cosine": 0.01566221515564547,
+      "col_overlap": 0.26364728808403015,
+      "row_overlap": 0.07634338736534119
+    },
+    {
+      "module": "layers.18.self_attn.k_proj",
+      "cosine": 0.0723381633748836,
+      "col_overlap": 0.41621169447898865,
+      "row_overlap": 0.07332564890384674
+    },
+    {
+      "module": "layers.18.self_attn.o_proj",
+      "cosine": 0.02893393099824382,
+      "col_overlap": 0.312893807888031,
+      "row_overlap": 0.08044322580099106
+    },
+    {
+      "module": "layers.18.self_attn.q_proj",
+      "cosine": 0.004942274599948588,
+      "col_overlap": 0.31010594964027405,
+      "row_overlap": 0.08024053275585175
+    },
+    {
+      "module": "layers.18.self_attn.v_proj",
+      "cosine": 0.012553331585065426,
+      "col_overlap": 0.3608682453632355,
+      "row_overlap": 0.06928256899118423
+    },
+    {
+      "module": "layers.19.mlp.down_proj",
+      "cosine": 0.07663293891294048,
+      "col_overlap": 0.3018980622291565,
+      "row_overlap": 0.05829031020402908
+    },
+    {
+      "module": "layers.19.mlp.gate_proj",
+      "cosine": 0.011411172666550137,
+      "col_overlap": 0.2593652307987213,
+      "row_overlap": 0.07618805021047592
+    },
+    {
+      "module": "layers.19.mlp.up_proj",
+      "cosine": 0.013009253876991983,
+      "col_overlap": 0.26363956928253174,
+      "row_overlap": 0.0804627537727356
+    },
+    {
+      "module": "layers.19.self_attn.k_proj",
+      "cosine": 0.01705735395180964,
+      "col_overlap": 0.40243324637413025,
+      "row_overlap": 0.07263460010290146
+    },
+    {
+      "module": "layers.19.self_attn.o_proj",
+      "cosine": 0.028636378807012284,
+      "col_overlap": 0.2732425630092621,
+      "row_overlap": 0.07879039645195007
+    },
+    {
+      "module": "layers.19.self_attn.q_proj",
+      "cosine": 0.0017790838329356132,
+      "col_overlap": 0.2813596725463867,
+      "row_overlap": 0.07446198165416718
+    },
+    {
+      "module": "layers.19.self_attn.v_proj",
+      "cosine": 0.013583890761462726,
+      "col_overlap": 0.3631804883480072,
+      "row_overlap": 0.07413528114557266
+    },
+    {
+      "module": "layers.2.mlp.down_proj",
+      "cosine": 0.24631312685516762,
+      "col_overlap": 0.2856433689594269,
+      "row_overlap": 0.0474359355866909
+    },
+    {
+      "module": "layers.2.mlp.gate_proj",
+      "cosine": 0.011106378085885944,
+      "col_overlap": 0.3374742269515991,
+      "row_overlap": 0.07353243976831436
+    },
+    {
+      "module": "layers.2.mlp.up_proj",
+      "cosine": 0.019608547224950566,
+      "col_overlap": 0.36159923672676086,
+      "row_overlap": 0.07740854471921921
+    },
+    {
+      "module": "layers.2.self_attn.k_proj",
+      "cosine": 0.011520289592857074,
+      "col_overlap": 0.4557707905769348,
+      "row_overlap": 0.07470442354679108
+    },
+    {
+      "module": "layers.2.self_attn.o_proj",
+      "cosine": 0.011436419178179008,
+      "col_overlap": 0.31292811036109924,
+      "row_overlap": 0.07559492439031601
+    },
+    {
+      "module": "layers.2.self_attn.q_proj",
+      "cosine": 0.0042240635269186495,
+      "col_overlap": 0.3452097177505493,
+      "row_overlap": 0.07800228148698807
+    },
+    {
+      "module": "layers.2.self_attn.v_proj",
+      "cosine": 0.0006083321198229454,
+      "col_overlap": 0.38608482480049133,
+      "row_overlap": 0.07885034382343292
+    },
+    {
+      "module": "layers.20.mlp.down_proj",
+      "cosine": 0.05926339577839222,
+      "col_overlap": 0.32850003242492676,
+      "row_overlap": 0.06280253827571869
+    },
+    {
+      "module": "layers.20.mlp.gate_proj",
+      "cosine": 0.022323436408248052,
+      "col_overlap": 0.24703745543956757,
+      "row_overlap": 0.07677551358938217
+    },
+    {
+      "module": "layers.20.mlp.up_proj",
+      "cosine": 0.008075302078413215,
+      "col_overlap": 0.2568601369857788,
+      "row_overlap": 0.06924126297235489
+    },
+    {
+      "module": "layers.20.self_attn.k_proj",
+      "cosine": 0.00781730207835461,
+      "col_overlap": 0.3835879862308502,
+      "row_overlap": 0.08214601874351501
+    },
+    {
+      "module": "layers.20.self_attn.o_proj",
+      "cosine": 0.011668199798514262,
+      "col_overlap": 0.29997774958610535,
+      "row_overlap": 0.07695622742176056
+    },
+    {
+      "module": "layers.20.self_attn.q_proj",
+      "cosine": 0.019057163058106664,
+      "col_overlap": 0.3049015998840332,
+      "row_overlap": 0.07696160674095154
+    },
+    {
+      "module": "layers.20.self_attn.v_proj",
+      "cosine": 0.013653724346426293,
+      "col_overlap": 0.38273876905441284,
+      "row_overlap": 0.08028486371040344
+    },
+    {
+      "module": "layers.21.mlp.down_proj",
+      "cosine": 0.07554477225621666,
+      "col_overlap": 0.31547489762306213,
+      "row_overlap": 0.06695915758609772
+    },
+    {
+      "module": "layers.21.mlp.gate_proj",
+      "cosine": 0.03504833665104339,
+      "col_overlap": 0.24891214072704315,
+      "row_overlap": 0.07768616825342178
+    },
+    {
+      "module": "layers.21.mlp.up_proj",
+      "cosine": 0.0232380856176926,
+      "col_overlap": 0.2743974030017853,
+      "row_overlap": 0.07874620705842972
+    },
+    {
+      "module": "layers.21.self_attn.k_proj",
+      "cosine": 0.018215015191186783,
+      "col_overlap": 0.3766214847564697,
+      "row_overlap": 0.07586244493722916
+    },
+    {
+      "module": "layers.21.self_attn.o_proj",
+      "cosine": 0.017587359332499636,
+      "col_overlap": 0.2984176576137543,
+      "row_overlap": 0.07733432203531265
+    },
+    {
+      "module": "layers.21.self_attn.q_proj",
+      "cosine": 0.016869759519664535,
+      "col_overlap": 0.27398887276649475,
+      "row_overlap": 0.07845529913902283
+    },
+    {
+      "module": "layers.21.self_attn.v_proj",
+      "cosine": 0.009892547037519833,
+      "col_overlap": 0.32351526618003845,
+      "row_overlap": 0.07997071743011475
+    },
+    {
+      "module": "layers.22.mlp.down_proj",
+      "cosine": 0.03957346458350291,
+      "col_overlap": 0.3047102987766266,
+      "row_overlap": 0.062270913273096085
+    },
+    {
+      "module": "layers.22.mlp.gate_proj",
+      "cosine": 0.02825819675122236,
+      "col_overlap": 0.2603829503059387,
+      "row_overlap": 0.08340176939964294
+    },
+    {
+      "module": "layers.22.mlp.up_proj",
+      "cosine": 0.020821923083950093,
+      "col_overlap": 0.26117321848869324,
+      "row_overlap": 0.08181747049093246
+    },
+    {
+      "module": "layers.22.self_attn.k_proj",
+      "cosine": 0.0058175898674203905,
+      "col_overlap": 0.36741986870765686,
+      "row_overlap": 0.07165908813476562
+    },
+    {
+      "module": "layers.22.self_attn.o_proj",
+      "cosine": 0.016809099421279197,
+      "col_overlap": 0.28724703192710876,
+      "row_overlap": 0.08067411929368973
+    },
+    {
+      "module": "layers.22.self_attn.q_proj",
+      "cosine": 0.016609515706609058,
+      "col_overlap": 0.2652308940887451,
+      "row_overlap": 0.07843516767024994
+    },
+    {
+      "module": "layers.22.self_attn.v_proj",
+      "cosine": 0.016391163502846192,
+      "col_overlap": 0.36947983503341675,
+      "row_overlap": 0.07841317355632782
+    },
+    {
+      "module": "layers.23.mlp.down_proj",
+      "cosine": 0.11556900782751535,
+      "col_overlap": 0.3019895851612091,
+      "row_overlap": 0.06963644921779633
+    },
+    {
+      "module": "layers.23.mlp.gate_proj",
+      "cosine": 0.03607481752380435,
+      "col_overlap": 0.26862257719039917,
+      "row_overlap": 0.08687886595726013
+    },
+    {
+      "module": "layers.23.mlp.up_proj",
+      "cosine": 0.04408466924258974,
+      "col_overlap": 0.27162668108940125,
+      "row_overlap": 0.08025989681482315
+    },
+    {
+      "module": "layers.23.self_attn.k_proj",
+      "cosine": 0.012635369356256657,
+      "col_overlap": 0.38864439725875854,
+      "row_overlap": 0.0741606056690216
+    },
+    {
+      "module": "layers.23.self_attn.o_proj",
+      "cosine": 0.024996033470692507,
+      "col_overlap": 0.28290557861328125,
+      "row_overlap": 0.08066806197166443
+    },
+    {
+      "module": "layers.23.self_attn.q_proj",
+      "cosine": 0.03156219125915809,
+      "col_overlap": 0.29308614134788513,
+      "row_overlap": 0.07693759351968765
+    },
+    {
+      "module": "layers.23.self_attn.v_proj",
+      "cosine": 0.017717611229402557,
+      "col_overlap": 0.34671786427497864,
+      "row_overlap": 0.07737670838832855
+    },
+    {
+      "module": "layers.24.mlp.down_proj",
+      "cosine": 0.055363799913719605,
+      "col_overlap": 0.2960905134677887,
+      "row_overlap": 0.058547936379909515
+    },
+    {
+      "module": "layers.24.mlp.gate_proj",
+      "cosine": 0.03439057965821419,
+      "col_overlap": 0.24238966405391693,
+      "row_overlap": 0.08203893154859543
+    },
+    {
+      "module": "layers.24.mlp.up_proj",
+      "cosine": 0.036141172470055445,
+      "col_overlap": 0.2620161175727844,
+      "row_overlap": 0.0747939944267273
+    },
+    {
+      "module": "layers.24.self_attn.k_proj",
+      "cosine": 0.03945116865588699,
+      "col_overlap": 0.40492215752601624,
+      "row_overlap": 0.07722188532352448
+    },
+    {
+      "module": "layers.24.self_attn.o_proj",
+      "cosine": 0.02934819693929188,
+      "col_overlap": 0.283222496509552,
+      "row_overlap": 0.08121957629919052
+    },
+    {
+      "module": "layers.24.self_attn.q_proj",
+      "cosine": 0.040209648721609925,
+      "col_overlap": 0.30808427929878235,
+      "row_overlap": 0.08068185299634933
+    },
+    {
+      "module": "layers.24.self_attn.v_proj",
+      "cosine": 0.037241075559128096,
+      "col_overlap": 0.36405783891677856,
+      "row_overlap": 0.07657904177904129
+    },
+    {
+      "module": "layers.25.mlp.down_proj",
+      "cosine": 0.09777319423494184,
+      "col_overlap": 0.31834301352500916,
+      "row_overlap": 0.07464807480573654
+    },
+    {
+      "module": "layers.25.mlp.gate_proj",
+      "cosine": 0.06393228792829739,
+      "col_overlap": 0.25076377391815186,
+      "row_overlap": 0.08837921172380447
+    },
+    {
+      "module": "layers.25.mlp.up_proj",
+      "cosine": 0.04323661423824935,
+      "col_overlap": 0.24692048132419586,
+      "row_overlap": 0.08389592170715332
+    },
+    {
+      "module": "layers.25.self_attn.k_proj",
+      "cosine": 0.018726898848555176,
+      "col_overlap": 0.40437257289886475,
+      "row_overlap": 0.07575779408216476
+    },
+    {
+      "module": "layers.25.self_attn.o_proj",
+      "cosine": 0.05545976124519827,
+      "col_overlap": 0.2908138334751129,
+      "row_overlap": 0.07859688252210617
+    },
+    {
+      "module": "layers.25.self_attn.q_proj",
+      "cosine": 0.013422435027691838,
+      "col_overlap": 0.32910865545272827,
+      "row_overlap": 0.07985226064920425
+    },
+    {
+      "module": "layers.25.self_attn.v_proj",
+      "cosine": -0.005129193845390347,
+      "col_overlap": 0.3667164444923401,
+      "row_overlap": 0.08162306249141693
+    },
+    {
+      "module": "layers.26.mlp.down_proj",
+      "cosine": 0.07941673219386941,
+      "col_overlap": 0.3151160478591919,
+      "row_overlap": 0.07694163918495178
+    },
+    {
+      "module": "layers.26.mlp.gate_proj",
+      "cosine": 0.05340450734367331,
+      "col_overlap": 0.24639774858951569,
+      "row_overlap": 0.08314971625804901
+    },
+    {
+      "module": "layers.26.mlp.up_proj",
+      "cosine": 0.05576763203851427,
+      "col_overlap": 0.24238434433937073,
+      "row_overlap": 0.08820924162864685
+    },
+    {
+      "module": "layers.26.self_attn.k_proj",
+      "cosine": 0.030127336013610985,
+      "col_overlap": 0.4115021228790283,
+      "row_overlap": 0.07912181317806244
+    },
+    {
+      "module": "layers.26.self_attn.o_proj",
+      "cosine": 0.06689272355992021,
+      "col_overlap": 0.3040081262588501,
+      "row_overlap": 0.08481722325086594
+    },
+    {
+      "module": "layers.26.self_attn.q_proj",
+      "cosine": 0.02362676029877946,
+      "col_overlap": 0.3057161569595337,
+      "row_overlap": 0.07257463037967682
+    },
+    {
+      "module": "layers.26.self_attn.v_proj",
+      "cosine": 0.03693623500923814,
+      "col_overlap": 0.35732656717300415,
+      "row_overlap": 0.07873578369617462
+    },
+    {
+      "module": "layers.27.mlp.down_proj",
+      "cosine": 0.14465434295786408,
+      "col_overlap": 0.2885807752609253,
+      "row_overlap": 0.07677365094423294
+    },
+    {
+      "module": "layers.27.mlp.gate_proj",
+      "cosine": 0.0416607943971607,
+      "col_overlap": 0.23814119398593903,
+      "row_overlap": 0.08202343434095383
+    },
+    {
+      "module": "layers.27.mlp.up_proj",
+      "cosine": 0.03969320643110353,
+      "col_overlap": 0.25726059079170227,
+      "row_overlap": 0.0928889662027359
+    },
+    {
+      "module": "layers.27.self_attn.k_proj",
+      "cosine": 0.0044564599767957045,
+      "col_overlap": 0.38418352603912354,
+      "row_overlap": 0.07316973060369492
+    },
+    {
+      "module": "layers.27.self_attn.o_proj",
+      "cosine": 0.1415880861840414,
+      "col_overlap": 0.2751438617706299,
+      "row_overlap": 0.09588833898305893
+    },
+    {
+      "module": "layers.27.self_attn.q_proj",
+      "cosine": 0.0250302097990251,
+      "col_overlap": 0.28374871611595154,
+      "row_overlap": 0.07775290310382843
+    },
+    {
+      "module": "layers.27.self_attn.v_proj",
+      "cosine": 0.028412513059566585,
+      "col_overlap": 0.37151679396629333,
+      "row_overlap": 0.07255806028842926
+    },
+    {
+      "module": "layers.28.mlp.down_proj",
+      "cosine": 0.15153658696796724,
+      "col_overlap": 0.27739426493644714,
+      "row_overlap": 0.07697946578264236
+    },
+    {
+      "module": "layers.28.mlp.gate_proj",
+      "cosine": 0.046213168895709617,
+      "col_overlap": 0.24236243963241577,
+      "row_overlap": 0.08530040830373764
+    },
+    {
+      "module": "layers.28.mlp.up_proj",
+      "cosine": 0.048917194754756414,
+      "col_overlap": 0.2451566457748413,
+      "row_overlap": 0.0842675119638443
+    },
+    {
+      "module": "layers.28.self_attn.k_proj",
+      "cosine": 0.012274493317176852,
+      "col_overlap": 0.37911054491996765,
+      "row_overlap": 0.07332552969455719
+    },
+    {
+      "module": "layers.28.self_attn.o_proj",
+      "cosine": 0.04859268905814328,
+      "col_overlap": 0.30099982023239136,
+      "row_overlap": 0.0826682448387146
+    },
+    {
+      "module": "layers.28.self_attn.q_proj",
+      "cosine": 0.02515881452594424,
+      "col_overlap": 0.2875327169895172,
+      "row_overlap": 0.08197727799415588
+    },
+    {
+      "module": "layers.28.self_attn.v_proj",
+      "cosine": 0.042929959195893215,
+      "col_overlap": 0.3245926797389984,
+      "row_overlap": 0.0767945721745491
+    },
+    {
+      "module": "layers.29.mlp.down_proj",
+      "cosine": 0.13782658220526778,
+      "col_overlap": 0.31704533100128174,
+      "row_overlap": 0.07713300734758377
+    },
+    {
+      "module": "layers.29.mlp.gate_proj",
+      "cosine": 0.05211679013311825,
+      "col_overlap": 0.2530441880226135,
+      "row_overlap": 0.08676319569349289
+    },
+    {
+      "module": "layers.29.mlp.up_proj",
+      "cosine": 0.04666579194617175,
+      "col_overlap": 0.2597620189189911,
+      "row_overlap": 0.08694863319396973
+    },
+    {
+      "module": "layers.29.self_attn.k_proj",
+      "cosine": 0.06383927544439945,
+      "col_overlap": 0.39661991596221924,
+      "row_overlap": 0.0782112181186676
+    },
+    {
+      "module": "layers.29.self_attn.o_proj",
+      "cosine": 0.060355596415235975,
+      "col_overlap": 0.3134455382823944,
+      "row_overlap": 0.07927508652210236
+    },
+    {
+      "module": "layers.29.self_attn.q_proj",
+      "cosine": 0.031205170579755984,
+      "col_overlap": 0.31246480345726013,
+      "row_overlap": 0.07489224523305893
+    },
+    {
+      "module": "layers.29.self_attn.v_proj",
+      "cosine": 0.028640107707832846,
+      "col_overlap": 0.3424637019634247,
+      "row_overlap": 0.07531017065048218
+    },
+    {
+      "module": "layers.3.mlp.down_proj",
+      "cosine": 0.1032277530800317,
+      "col_overlap": 0.30695170164108276,
+      "row_overlap": 0.044330984354019165
+    },
+    {
+      "module": "layers.3.mlp.gate_proj",
+      "cosine": 0.03765162147245721,
+      "col_overlap": 0.31626400351524353,
+      "row_overlap": 0.08045882731676102
+    },
+    {
+      "module": "layers.3.mlp.up_proj",
+      "cosine": 0.010342307671239063,
+      "col_overlap": 0.3506200313568115,
+      "row_overlap": 0.07873579859733582
+    },
+    {
+      "module": "layers.3.self_attn.k_proj",
+      "cosine": 0.0065961600084709785,
+      "col_overlap": 0.37605980038642883,
+      "row_overlap": 0.07999591529369354
+    },
+    {
+      "module": "layers.3.self_attn.o_proj",
+      "cosine": 0.010167688687250948,
+      "col_overlap": 0.29987338185310364,
+      "row_overlap": 0.06422974914312363
+    },
+    {
+      "module": "layers.3.self_attn.q_proj",
+      "cosine": 0.007487408392565967,
+      "col_overlap": 0.308610200881958,
+      "row_overlap": 0.07326801866292953
+    },
+    {
+      "module": "layers.3.self_attn.v_proj",
+      "cosine": 0.02156279894711697,
+      "col_overlap": 0.35474449396133423,
+      "row_overlap": 0.07107381522655487
+    },
+    {
+      "module": "layers.30.mlp.down_proj",
+      "cosine": 0.27986761137933464,
+      "col_overlap": 0.34103909134864807,
+      "row_overlap": 0.058905575424432755
+    },
+    {
+      "module": "layers.30.mlp.gate_proj",
+      "cosine": 0.05993515278576115,
+      "col_overlap": 0.25228071212768555,
+      "row_overlap": 0.08944258093833923
+    },
+    {
+      "module": "layers.30.mlp.up_proj",
+      "cosine": 0.06336869687740936,
+      "col_overlap": 0.2612955570220947,
+      "row_overlap": 0.08777870982885361
+    },
+    {
+      "module": "layers.30.self_attn.k_proj",
+      "cosine": 0.02119453354025948,
+      "col_overlap": 0.39342159032821655,
+      "row_overlap": 0.0769081860780716
+    },
+    {
+      "module": "layers.30.self_attn.o_proj",
+      "cosine": 0.05374408552754305,
+      "col_overlap": 0.28855040669441223,
+      "row_overlap": 0.08576752990484238
+    },
+    {
+      "module": "layers.30.self_attn.q_proj",
+      "cosine": 0.03430716551269185,
+      "col_overlap": 0.298276424407959,
+      "row_overlap": 0.07901028543710709
+    },
+    {
+      "module": "layers.30.self_attn.v_proj",
+      "cosine": 0.02828269530122677,
+      "col_overlap": 0.390221506357193,
+      "row_overlap": 0.08016104251146317
+    },
+    {
+      "module": "layers.31.mlp.down_proj",
+      "cosine": 0.1824792842402728,
+      "col_overlap": 0.2938585579395294,
+      "row_overlap": 0.08028972893953323
+    },
+    {
+      "module": "layers.31.mlp.gate_proj",
+      "cosine": 0.03504306782254494,
+      "col_overlap": 0.23961135745048523,
+      "row_overlap": 0.08147907257080078
+    },
+    {
+      "module": "layers.31.mlp.up_proj",
+      "cosine": 0.03910662871531111,
+      "col_overlap": 0.25492000579833984,
+      "row_overlap": 0.08637887239456177
+    },
+    {
+      "module": "layers.31.self_attn.k_proj",
+      "cosine": 0.018579459350277973,
+      "col_overlap": 0.37202513217926025,
+      "row_overlap": 0.0745372399687767
+    },
+    {
+      "module": "layers.31.self_attn.o_proj",
+      "cosine": 0.12210168984493856,
+      "col_overlap": 0.2836432158946991,
+      "row_overlap": 0.0858507975935936
+    },
+    {
+      "module": "layers.31.self_attn.q_proj",
+      "cosine": 0.019543168938908752,
+      "col_overlap": 0.2638908326625824,
+      "row_overlap": 0.08290121704339981
+    },
+    {
+      "module": "layers.31.self_attn.v_proj",
+      "cosine": 0.022204350592906,
+      "col_overlap": 0.3541993200778961,
+      "row_overlap": 0.08181917667388916
+    },
+    {
+      "module": "layers.32.mlp.down_proj",
+      "cosine": 0.15978891594491182,
+      "col_overlap": 0.30217283964157104,
+      "row_overlap": 0.07684022933244705
+    },
+    {
+      "module": "layers.32.mlp.gate_proj",
+      "cosine": 0.03923017481483772,
+      "col_overlap": 0.23266589641571045,
+      "row_overlap": 0.08676939457654953
+    },
+    {
+      "module": "layers.32.mlp.up_proj",
+      "cosine": 0.05276741299369105,
+      "col_overlap": 0.24449047446250916,
+      "row_overlap": 0.08179104328155518
+    },
+    {
+      "module": "layers.32.self_attn.k_proj",
+      "cosine": 0.011800255443598312,
+      "col_overlap": 0.3807295262813568,
+      "row_overlap": 0.07757457345724106
+    },
+    {
+      "module": "layers.32.self_attn.o_proj",
+      "cosine": 0.1343700036617988,
+      "col_overlap": 0.3503086566925049,
+      "row_overlap": 0.08884023874998093
+    },
+    {
+      "module": "layers.32.self_attn.q_proj",
+      "cosine": 0.016371754923084268,
+      "col_overlap": 0.2754864990711212,
+      "row_overlap": 0.08008772879838943
+    },
+    {
+      "module": "layers.32.self_attn.v_proj",
+      "cosine": 0.07861447489799232,
+      "col_overlap": 0.3898766040802002,
+      "row_overlap": 0.08371079713106155
+    },
+    {
+      "module": "layers.33.mlp.down_proj",
+      "cosine": 0.0994292849141956,
+      "col_overlap": 0.32820332050323486,
+      "row_overlap": 0.07646680623292923
+    },
+    {
+      "module": "layers.33.mlp.gate_proj",
+      "cosine": 0.03631514078570351,
+      "col_overlap": 0.22553902864456177,
+      "row_overlap": 0.07992305606603622
+    },
+    {
+      "module": "layers.33.mlp.up_proj",
+      "cosine": 0.034391415109560244,
+      "col_overlap": 0.24969148635864258,
+      "row_overlap": 0.08228013664484024
+    },
+    {
+      "module": "layers.33.self_attn.k_proj",
+      "cosine": 0.029458282095280463,
+      "col_overlap": 0.3984219431877136,
+      "row_overlap": 0.077428437769413
+    },
+    {
+      "module": "layers.33.self_attn.o_proj",
+      "cosine": 0.17873814095928842,
+      "col_overlap": 0.3674384355545044,
+      "row_overlap": 0.09094301611185074
+    },
+    {
+      "module": "layers.33.self_attn.q_proj",
+      "cosine": 0.022903180800191908,
+      "col_overlap": 0.27994632720947266,
+      "row_overlap": 0.08172247558832169
+    },
+    {
+      "module": "layers.33.self_attn.v_proj",
+      "cosine": 0.09510923890917303,
+      "col_overlap": 0.4196108281612396,
+      "row_overlap": 0.08621001988649368
+    },
+    {
+      "module": "layers.34.mlp.down_proj",
+      "cosine": 0.15446440871380704,
+      "col_overlap": 0.32062676548957825,
+      "row_overlap": 0.08023637533187866
+    },
+    {
+      "module": "layers.34.mlp.gate_proj",
+      "cosine": 0.04705766952784371,
+      "col_overlap": 0.2274121791124344,
+      "row_overlap": 0.0820109024643898
+    },
+    {
+      "module": "layers.34.mlp.up_proj",
+      "cosine": 0.04087317174583617,
+      "col_overlap": 0.2627003788948059,
+      "row_overlap": 0.08342746645212173
+    },
+    {
+      "module": "layers.34.self_attn.k_proj",
+      "cosine": 0.00991735370797642,
+      "col_overlap": 0.38404786586761475,
+      "row_overlap": 0.07531720399856567
+    },
+    {
+      "module": "layers.34.self_attn.o_proj",
+      "cosine": 0.09829481556811921,
+      "col_overlap": 0.30855071544647217,
+      "row_overlap": 0.08564924448728561
+    },
+    {
+      "module": "layers.34.self_attn.q_proj",
+      "cosine": 0.02465830205078511,
+      "col_overlap": 0.2829868495464325,
+      "row_overlap": 0.0799286961555481
+    },
+    {
+      "module": "layers.34.self_attn.v_proj",
+      "cosine": 0.03660215230888899,
+      "col_overlap": 0.35012009739875793,
+      "row_overlap": 0.07782981544733047
+    },
+    {
+      "module": "layers.35.mlp.down_proj",
+      "cosine": 0.28267232028767786,
+      "col_overlap": 0.36583203077316284,
+      "row_overlap": 0.07229985296726227
+    },
+    {
+      "module": "layers.35.mlp.gate_proj",
+      "cosine": 0.07615098750763505,
+      "col_overlap": 0.2529903054237366,
+      "row_overlap": 0.08996013551950455
+    },
+    {
+      "module": "layers.35.mlp.up_proj",
+      "cosine": 0.06362461526506165,
+      "col_overlap": 0.29337117075920105,
+      "row_overlap": 0.08787453919649124
+    },
+    {
+      "module": "layers.35.self_attn.k_proj",
+      "cosine": 0.010739351865969875,
+      "col_overlap": 0.33447110652923584,
+      "row_overlap": 0.07676339894533157
+    },
+    {
+      "module": "layers.35.self_attn.o_proj",
+      "cosine": 0.08434778856561079,
+      "col_overlap": 0.3143003582954407,
+      "row_overlap": 0.08091215789318085
+    },
+    {
+      "module": "layers.35.self_attn.q_proj",
+      "cosine": 0.008329825020903976,
+      "col_overlap": 0.24949011206626892,
+      "row_overlap": 0.07070709764957428
+    },
+    {
+      "module": "layers.35.self_attn.v_proj",
+      "cosine": 0.06213086954625095,
+      "col_overlap": 0.3909488320350647,
+      "row_overlap": 0.08513814955949783
+    },
+    {
+      "module": "layers.4.mlp.down_proj",
+      "cosine": 0.015934433661045883,
+      "col_overlap": 0.32158228754997253,
+      "row_overlap": 0.041385114192962646
+    },
+    {
+      "module": "layers.4.mlp.gate_proj",
+      "cosine": 0.00983263880094334,
+      "col_overlap": 0.3080676794052124,
+      "row_overlap": 0.07866780459880829
+    },
+    {
+      "module": "layers.4.mlp.up_proj",
+      "cosine": 0.025211645657932498,
+      "col_overlap": 0.348468542098999,
+      "row_overlap": 0.07463198155164719
+    },
+    {
+      "module": "layers.4.self_attn.k_proj",
+      "cosine": 0.01835369681742304,
+      "col_overlap": 0.4187147319316864,
+      "row_overlap": 0.07161477208137512
+    },
+    {
+      "module": "layers.4.self_attn.o_proj",
+      "cosine": 0.005117171999421654,
+      "col_overlap": 0.2980051338672638,
+      "row_overlap": 0.07633065432310104
+    },
+    {
+      "module": "layers.4.self_attn.q_proj",
+      "cosine": 0.020818133468573446,
+      "col_overlap": 0.3218369781970978,
+      "row_overlap": 0.08199606090784073
+    },
+    {
+      "module": "layers.4.self_attn.v_proj",
+      "cosine": 0.007523292707858492,
+      "col_overlap": 0.3491547405719757,
+      "row_overlap": 0.07323804497718811
+    },
+    {
+      "module": "layers.5.mlp.down_proj",
+      "cosine": 0.012262054337018128,
+      "col_overlap": 0.2998693883419037,
+      "row_overlap": 0.04433774948120117
+    },
+    {
+      "module": "layers.5.mlp.gate_proj",
+      "cosine": 0.02633722917946144,
+      "col_overlap": 0.23473908007144928,
+      "row_overlap": 0.08008751273155212
+    },
+    {
+      "module": "layers.5.mlp.up_proj",
+      "cosine": 0.0335997595613026,
+      "col_overlap": 0.2827894985675812,
+      "row_overlap": 0.07733513414859772
+    },
+    {
+      "module": "layers.5.self_attn.k_proj",
+      "cosine": 0.0021997632775505194,
+      "col_overlap": 0.3675515651702881,
+      "row_overlap": 0.07152888178825378
+    },
+    {
+      "module": "layers.5.self_attn.o_proj",
+      "cosine": 0.008975239843321933,
+      "col_overlap": 0.2835095524787903,
+      "row_overlap": 0.07017779350280762
+    },
+    {
+      "module": "layers.5.self_attn.q_proj",
+      "cosine": 0.0008580424471865836,
+      "col_overlap": 0.27351513504981995,
+      "row_overlap": 0.07448095083236694
+    },
+    {
+      "module": "layers.5.self_attn.v_proj",
+      "cosine": 0.00847714658747548,
+      "col_overlap": 0.3290146291255951,
+      "row_overlap": 0.07449190318584442
+    },
+    {
+      "module": "layers.6.mlp.down_proj",
+      "cosine": 0.01839653109803213,
+      "col_overlap": 0.2853981852531433,
+      "row_overlap": 0.04702785238623619
+    },
+    {
+      "module": "layers.6.mlp.gate_proj",
+      "cosine": 0.03232862211325637,
+      "col_overlap": 0.22968077659606934,
+      "row_overlap": 0.07962939143180847
+    },
+    {
+      "module": "layers.6.mlp.up_proj",
+      "cosine": 0.022047711585132215,
+      "col_overlap": 0.27314260601997375,
+      "row_overlap": 0.07925208657979965
+    },
+    {
+      "module": "layers.6.self_attn.k_proj",
+      "cosine": 0.0101482448567196,
+      "col_overlap": 0.4051307737827301,
+      "row_overlap": 0.07014959305524826
+    },
+    {
+      "module": "layers.6.self_attn.o_proj",
+      "cosine": 0.008280709114452542,
+      "col_overlap": 0.29525992274284363,
+      "row_overlap": 0.07395420223474503
+    },
+    {
+      "module": "layers.6.self_attn.q_proj",
+      "cosine": 0.018533904252732582,
+      "col_overlap": 0.29422634840011597,
+      "row_overlap": 0.08258485794067383
+    },
+    {
+      "module": "layers.6.self_attn.v_proj",
+      "cosine": 0.0033236159117432398,
+      "col_overlap": 0.33215150237083435,
+      "row_overlap": 0.0748128592967987
+    },
+    {
+      "module": "layers.7.mlp.down_proj",
+      "cosine": 0.022200849891858967,
+      "col_overlap": 0.30317845940589905,
+      "row_overlap": 0.0515308678150177
+    },
+    {
+      "module": "layers.7.mlp.gate_proj",
+      "cosine": 0.027943267959305903,
+      "col_overlap": 0.2546553313732147,
+      "row_overlap": 0.07422877103090286
+    },
+    {
+      "module": "layers.7.mlp.up_proj",
+      "cosine": 0.019696584522221814,
+      "col_overlap": 0.257485955953598,
+      "row_overlap": 0.0736946389079094
+    },
+    {
+      "module": "layers.7.self_attn.k_proj",
+      "cosine": 0.01651173665634555,
+      "col_overlap": 0.45326846837997437,
+      "row_overlap": 0.07969249784946442
+    },
+    {
+      "module": "layers.7.self_attn.o_proj",
+      "cosine": 0.007356378711923769,
+      "col_overlap": 0.3279716670513153,
+      "row_overlap": 0.07392290979623795
+    },
+    {
+      "module": "layers.7.self_attn.q_proj",
+      "cosine": 0.009215894896985393,
+      "col_overlap": 0.34900543093681335,
+      "row_overlap": 0.08058658987283707
+    },
+    {
+      "module": "layers.7.self_attn.v_proj",
+      "cosine": 0.013639389911253533,
+      "col_overlap": 0.3549294173717499,
+      "row_overlap": 0.07290121912956238
+    },
+    {
+      "module": "layers.8.mlp.down_proj",
+      "cosine": 0.019103488214417826,
+      "col_overlap": 0.2624128460884094,
+      "row_overlap": 0.046912189573049545
+    },
+    {
+      "module": "layers.8.mlp.gate_proj",
+      "cosine": 0.008901494613948409,
+      "col_overlap": 0.2314414232969284,
+      "row_overlap": 0.08103799819946289
+    },
+    {
+      "module": "layers.8.mlp.up_proj",
+      "cosine": 0.01861562002350809,
+      "col_overlap": 0.24684523046016693,
+      "row_overlap": 0.06925501674413681
+    },
+    {
+      "module": "layers.8.self_attn.k_proj",
+      "cosine": 0.011468901044544524,
+      "col_overlap": 0.41250959038734436,
+      "row_overlap": 0.07260046899318695
+    },
+    {
+      "module": "layers.8.self_attn.o_proj",
+      "cosine": 0.0006670923874822566,
+      "col_overlap": 0.28868019580841064,
+      "row_overlap": 0.07724087685346603
+    },
+    {
+      "module": "layers.8.self_attn.q_proj",
+      "cosine": 0.007826597464535096,
+      "col_overlap": 0.3191109895706177,
+      "row_overlap": 0.0730685144662857
+    },
+    {
+      "module": "layers.8.self_attn.v_proj",
+      "cosine": 0.01364712311999388,
+      "col_overlap": 0.3441776633262634,
+      "row_overlap": 0.07425566017627716
+    },
+    {
+      "module": "layers.9.mlp.down_proj",
+      "cosine": 0.03225265266461676,
+      "col_overlap": 0.2745053768157959,
+      "row_overlap": 0.052144210785627365
+    },
+    {
+      "module": "layers.9.mlp.gate_proj",
+      "cosine": 0.023596181552675326,
+      "col_overlap": 0.22045141458511353,
+      "row_overlap": 0.07739169895648956
+    },
+    {
+      "module": "layers.9.mlp.up_proj",
+      "cosine": 0.01993123240700643,
+      "col_overlap": 0.27094566822052,
+      "row_overlap": 0.07152600586414337
+    },
+    {
+      "module": "layers.9.self_attn.k_proj",
+      "cosine": 0.005915521041929993,
+      "col_overlap": 0.37123972177505493,
+      "row_overlap": 0.07366668432950974
+    },
+    {
+      "module": "layers.9.self_attn.o_proj",
+      "cosine": 0.008241704265060696,
+      "col_overlap": 0.2701129615306854,
+      "row_overlap": 0.07856019586324692
+    },
+    {
+      "module": "layers.9.self_attn.q_proj",
+      "cosine": 0.002239756654169103,
+      "col_overlap": 0.2971870005130768,
+      "row_overlap": 0.07196502387523651
+    },
+    {
+      "module": "layers.9.self_attn.v_proj",
+      "cosine": 0.011547494855008136,
+      "col_overlap": 0.33026549220085144,
+      "row_overlap": 0.07744552195072174
+    }
+  ]
+}

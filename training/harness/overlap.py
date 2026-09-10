@@ -24,10 +24,13 @@ WHAT IS COMPUTED, per target module and adapter pair:
                 B_k and B_d — where each adapter writes
   row_overlap   the same for the row spaces of A_k and A_d — what each reads
 
-A rank-16 subspace drawn at random in 2048 dimensions has an expected principal
-angle cosine near sqrt(r/d) ~ 0.09, so that is the number "unrelated" looks like,
-and the report prints it beside the measurement rather than leaving the reader to
-guess the scale.
+"Unrelated" is not one number. Two random rank-`r` subspaces of R^d have a mean
+principal-angle cosine near sqrt(r/d), and `d` differs per module — 2048 for
+`q_proj`, 11008 for `up_proj`. A first version of this script computed one chance
+value from one module's input dimension and applied it to all 252, which turned a
+3.5x result into an 8x one [ran] 2026-09-10. Chance is now computed per module,
+against the space that projection actually writes into or reads from, and what is
+reported is the RATIO of measured overlap to chance.
 
     python3 -m training.harness.overlap adapters/kernel adapters/domain
 """
@@ -76,9 +79,16 @@ def compare(kernel_path: str, domain_path: str, scale: float = 2.0) -> dict:
         dWd = (Bd.float() @ Ad.float()) * scale
         num = float((dWk * dWd).sum())
         den = float(dWk.norm() * dWd.norm()) or 1.0
+        r = Ak.shape[0]
+        col_chance = math.sqrt(r / Bk.shape[0])   # B writes into R^out
+        row_chance = math.sqrt(r / Ak.shape[1])   # A reads from R^in
+        col = _principal(Bk, Bd)
+        row = _principal(Ak.T, Ad.T)
         rows.append({"module": name, "cosine": num / den,
-                     "col_overlap": _principal(Bk, Bd),
-                     "row_overlap": _principal(Ak.T, Ad.T)})
+                     "col_overlap": col, "col_chance": col_chance,
+                     "col_ratio": col / col_chance,
+                     "row_overlap": row, "row_chance": row_chance,
+                     "row_ratio": row / row_chance})
     if not rows:
         return {"shared_modules": 0,
                 "note": "the two adapters modify no matrix in common"}
@@ -88,12 +98,12 @@ def compare(kernel_path: str, domain_path: str, scale: float = 2.0) -> dict:
         return {"mean": sum(v) / len(v), "min": v[0], "max": v[-1],
                 "median": v[len(v) // 2]}
 
-    r = ka[shared[0]][0].shape[0]
-    d = ka[shared[0]][0].shape[1]
-    return {"shared_modules": len(rows), "rank": r,
-            "chance_overlap": math.sqrt(r / d),
-            "cosine": stat("cosine"), "col_overlap": stat("col_overlap"),
-            "row_overlap": stat("row_overlap"), "per_module": rows}
+    return {"shared_modules": len(rows), "rank": ka[shared[0]][0].shape[0],
+            "cosine": stat("cosine"),
+            "col_overlap": stat("col_overlap"), "col_chance": stat("col_chance"),
+            "col_ratio": stat("col_ratio"),
+            "row_overlap": stat("row_overlap"), "row_chance": stat("row_chance"),
+            "row_ratio": stat("row_ratio"), "per_module": rows}
 
 
 def main() -> int:
@@ -109,14 +119,16 @@ def main() -> int:
     slim = {k: v for k, v in res.items() if k != "per_module"}
     print(json.dumps(slim, indent=2))
     if res.get("shared_modules"):
-        print(f"\nUnrelated rank-{res['rank']} subspaces in {res['rank']}/"
-              f"{res['chance_overlap']:.3f}-scaled space overlap about "
-              f"{res['chance_overlap']:.3f}. Measured column overlap: "
-              f"{res['col_overlap']['mean']:.3f}.")
-        print("Near chance means the two adapters already write in different "
-              "directions and still compete — which is P11's reading, and kills "
-              "orthogonality regularisation as a fix. Well above chance means "
-              "P11's disjoint result needs another explanation.")
+        print(f"\nwhere they WRITE: {res['col_ratio']['mean']:.2f}x chance "
+              f"(median {res['col_ratio']['median']:.2f}, "
+              f"max {res['col_ratio']['max']:.2f})")
+        print(f"what they READ:   {res['row_ratio']['mean']:.2f}x chance")
+        print(f"delta alignment:  cosine {res['cosine']['mean']:+.3f}")
+        print("\nA ratio near 1 means the two adapters already occupy different "
+              "directions and compete anyway — P11's reading, and orthogonality "
+              "regularisation would be a fix for a problem that is not there. "
+              "A ratio well above 1 means they contend for the same directions "
+              "and forcing them apart is worth buying.")
     return 0
 
 
