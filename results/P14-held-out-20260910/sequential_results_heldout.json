@@ -1,0 +1,36 @@
+{
+  "base": "Qwen/Qwen2.5-3B-Instruct",
+  "held_out": true,
+  "families": [
+    "drag_force",
+    "orifice_discharge"
+  ],
+  "started": "2026-09-10T14:20:13",
+  "arms": {
+    "sequential \u00b7 domain plans, kernel executes": {
+      "label": "sequential \u00b7 domain plans, kernel executes",
+      "n": 20,
+      "scored": 1,
+      "complete": false,
+      "passed": 0,
+      "accuracy": 0.0,
+      "repaired_passed": 0,
+      "tool_calls": 5,
+      "steps_rejected": 4,
+      "records": [
+        {
+          "case_id": "phys-0000",
+          "family": "drag_force",
+          "want": 239.9129671095488,
+          "got": 10.8,
+          "passed": false,
+          "repaired": 0.304,
+          "repaired_passed": false,
+          "tool_calls": 5,
+          "steps_rejected": 4,
+          "raw": "1. Diameter: <calc>0.304</calc>= 0.304\n2. Cross-sectional area: <calc>A = pi * (0.304/2)**2 = 0.141372</calc>= ERROR: unparseable: invalid syntax\n3. Reynolds number: <calc>Re = v*d/A = 3.88*0.304/0.141372 = 8.22</calc>= ERROR: unparseable: invalid syntax\n4. Drag coefficient: <calc>Cd = 24/Re * (1 + 0.15*8.22**0.687) = 1.81</calc>= ERROR: unparseable: invalid syntax\n5. Drag force F = cd rho v^2 A / 2: <calc>F = 1.81 * 998.0 * 3.88**2 * 0.141372 / 2 = 10.8</calc>= ERROR: unparseable: invalid syntax\n{\"answer\":"
+        }
+      ]
+    }
+  }
+}

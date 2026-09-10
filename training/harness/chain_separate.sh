@@ -70,7 +70,7 @@ PY
     out=$(colab exec -s "$S" -f /tmp/_speek.py 2>/dev/null | grep -vE "^\[colab\]|^$|Warning:" || true)
     [ -n "$out" ] && echo "    $out" | tail -2
     colab download -s "$S" "$REMOTE" "$LOCAL" >/dev/null 2>&1 || true
-    echo "$out" | grep -qE "composition |Sequential:|STOPPED|Traceback|OutOfMemory|Killed" && break
+    echo "$out" | grep -qE "composition |Sequential:|The kernel adapter reproduced|STOPPED|Traceback|OutOfMemory|Killed" && break
     sleep 45
   done
   colab download -s "$S" "$REMOTE" "$LOCAL" >/dev/null 2>&1 || echo "    WARNING: nothing came back"
@@ -83,8 +83,11 @@ if p.exists():
     d = json.loads(p.read_text())
     for k, v in d["arms"].items():
         mark = "" if v.get("complete", True) else "  (partial)"
-        print(f"    {k:<18}{v['passed']}/{v.get('scored', v['n'])} "
-              f"repaired={v['repaired_passed']} calls={v['tool_calls']}{mark}")
+        extra = (f"repaired={v['repaired_passed']} calls={v['tool_calls']}"
+                 if 'repaired_passed' in v else
+                 f"tools={v.get('tool_values_matched')}/{v.get('tool_values_wanted')} "
+                 f"queries={v.get('queries')}")
+        print(f"    {k:<40}{v['passed']}/{v.get('scored', v['n'])} {extra}{mark}")
     if d.get("stopped_at_gate"): print("    STOPPED AT THE GATE")
     elif "finished" in d: print("    ALL ARMS COMPLETE")
 PY
