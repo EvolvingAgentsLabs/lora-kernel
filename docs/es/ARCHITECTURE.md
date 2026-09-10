@@ -107,13 +107,26 @@ Sus fórmulas son exactas; sólo falla la aritmética. Al experto le falta la
 delegación y nada más.
 [`results/P9-shared-contract-20260909/`](../../results/P9-shared-contract-20260909/BRIEF.md)
 
-**La segunda mitad — servirlos juntos — sigue sin medirse.** Los brazos de
-composición de P8 estaban confundidos (los dos corpus enseñaron notaciones
-distintas y todos los brazos corrieron con el prompt de uno de ellos), y P9 es la
-corrida que saca el confound. Hasta que reporte, la configuración con evidencia
-detrás es el adaptador **fusionado** — 40/40 con calculadora — que es justo el
-precio que esta sección dice que el diseño existe para evitar. Decir "sin medir",
-no "funciona".
+**Servirlos juntos ya está medido, y funciona de una sola manera.** Aplicar los
+dos a la vez los hace competir por la misma palabra: apilados delegan en 5 de 30
+casos, matrices disjuntas lo empeoran, y ponderar uno borra al otro **[ran]**
+`results/P9-…`, `results/P11-…`. **Turnarse elimina la competencia por completo** —
+la delegación pasa de 0,6 a 4,7 llamadas por caso
+**[ran]** `results/P13-sequential-20260910/`. Así que la opción 1 de §5 es el modo
+de composición, y el precio son dos forward passes por paso y un runtime que se
+hace cargo del límite del turno.
+
+**Lo que sigue sin probarse es el valor propio del kernel.** En una suite con una
+sola herramienta, un harness delgado le ganó al adaptador kernel 23/30 contra 9/30,
+porque la llamada era copia de una expresión que el experto ya había escrito. Si un
+protocolo aprendido se gana sus pesos donde la llamada **no** es copia se está
+midiendo, contra un competidor escrito a mano que saca 92,9%.
+
+**Y la región del experto tiene un borde duro que no siente** [ran]
+`results/P14-held-out-20260910/`: fórmulas exactas 30/30 adentro, 1/20 una familia
+afuera, sin nada en la salida que marque la diferencia. La promoción por región
+necesita un guardia, y el primer candidato lee la tasa de rechazo de la **capa de
+herramientas** en vez de la confianza del modelo.
 
 ## 5. El torneo
 

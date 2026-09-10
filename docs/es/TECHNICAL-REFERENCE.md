@@ -162,9 +162,18 @@ en costo creciente:
    adaptador de dominio, que es el costo que este diseño existe para eliminar.
    Listado para ser rechazado.
 
-**Estado medido, 2026-09-09 [ran].** La opción 3 es la única que funcionó: un adaptador fusionado saca **40/40** con la calculadora, con brecha de retiro 0,000. La opción 2 se corrió dos veces — apilada y mezclada a 0,5/0,5 — y sacó **0/30** las dos, pero esos brazos están **confundidos**, no falsados: los dos corpus enseñaron notaciones distintas y todos los brazos corrieron con el system prompt de uno de ellos. P9 re-corre la opción 2 bajo un contrato compartido. **La opción 1, la default declarada de esta sección, nunca se midió.**
+**Estado medido, 2026-09-09 [ran].** La opción 3 es la única que funcionó: un adaptador fusionado saca **40/40** con la calculadora, con brecha de retiro 0,000. La opción 2 se corrió dos veces — apilada y mezclada a 0,5/0,5 — y sacó **0/30** las dos, pero esos brazos están **confundidos**, no falsados: los dos corpus enseñaron notaciones distintas y todos los brazos corrieron con el system prompt de uno de ellos. P9 re-corre la opción 2 bajo un contrato compartido. **La opción 1, la default declarada de esta sección, se midió el 2026-09-10 y es la que funciona.**
 
-La opción 1 es la default hasta que se mida otra cosa.
+**La opción 1 se midió el 2026-09-10 y funciona** [ran]
+`results/P13-sequential-20260910/`. Turnarse mueve la delegación de **0,6 a 4,7
+llamadas por caso** y más que duplica la exactitud: la competencia que sufre la
+opción 2 es una propiedad de pedirle a dos adaptadores la misma palabra, no de
+los adaptadores. Es la default porque es el único modo que funciona, no porque
+sea el más barato.
+
+**Lo que cuesta la opción 1**: dos forward passes por paso en vez de uno, y un
+runtime que se hace cargo del límite del turno. La composición se muda de los
+pesos al bucle — una concesión real, y el precio del único modo que compone.
 
 ## 6. La función de fitness
 

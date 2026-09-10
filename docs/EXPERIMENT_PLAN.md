@@ -51,13 +51,13 @@ already exist, before a single adapter is trained.
 | step | objective | first gate it opens | cost | state |
 |---|---|---|---|---|
 | **S0** | the instrument measures what it claims | everything | $0, local | **DONE, and it moved the plan** — §3 |
-| **S1** | headroom: can this suite show a withdrawal gap at all | S2 | $0.47 spent | **DONE — FAILED the gate, three targets** — §4 |
+| **S1** | headroom: can this suite show a withdrawal gap at all | S2 | $0.47 + a local re-run | **DONE — failed on the clinical suite, settled on fluid mechanics at +0.533** — §4, P10 |
 | **S2** | does **agreement** order candidates the way verified quality does | S4 | included above | **DONE — 14/15 pairs, but against peers** — §5 |
 | **S3** | attribution: does a lexical/embedding router do the same job | the routing claim | $0, offline | **DONE — mechanism 9/10, but ties the keyword rule** — §6 |
 | **S4** | **the adapters** — does specialisation happen, and is it per region | S5 | free Colab T4 | **DONE. Q1 +63.3 points, probe negative. Q2 yes, +20 points, asymmetric** — §6 |
-| **S5** | **the withdrawal gap** | the product | GPU + frontier | `NEXT` after S4 |
-| **S6** | `harness.lora` against the −85 % schema baseline | the kernel | GPU rental | **under review — S0 says it is upstream of α, §12** |
-| **S7** | the tournament, with a held-out verifier | evolution | GPU rental | after S5 |
+| **S5** | **the withdrawal gap** | the product | GPU + frontier | **DONE in region — 0.000.** The region's edge is hard and the expert cannot feel it — P7, P14 |
+| **S6** | `harness.lora` — a kernel apart from the expert | the kernel | GPU rental | **half done. Composition solved by taking turns (P13); whether the kernel is worth its weights is being measured (P15)** |
+| **S7** | the tournament, with a held-out verifier | evolution | GPU rental | **blocked: there is no judge without an oracle** — `OPEN-PROBLEMS.md` problem 4 |
 
 Two rules govern the sequence. **Arms are bought one at a time** — the arm that
 can kill the hypothesis runs before the arm that explains it. **Nothing that

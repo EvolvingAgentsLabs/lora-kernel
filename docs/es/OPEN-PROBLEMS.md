@@ -63,6 +63,13 @@ falta las dos mitades: el modelo chico con calculadora y sin entrenar no acierta
 ninguna a pesar de pedirla cincuenta y tres veces, y el modelo entrenado sin
 calculadora acierta cuatro de cuarenta. Ninguna mitad vale nada sola.
 
+**Y dos parches sí componen, siempre que se turnen.** Aplicados a la vez pelean por
+cada palabra; alternados — el especialista nombra la magnitud siguiente y frena, el
+parche de procedimiento escribe el pedido, la herramienta responde, el especialista
+retoma — los pedidos pasan de 0,6 por problema a **4,7**. La competencia nunca fue
+una propiedad de los parches. Era una propiedad de hacerlos producir la misma
+palabra.
+
 **Hay lugar real para mejorar.** Un modelo caro puntúa perfecto en este material y
 el chico saca menos de la mitad, así que hay una brecha genuina que un
 especialista puede cerrar. (Casi nos engañamos acá, y la historia está en
@@ -293,6 +300,20 @@ dónde el especialista fue puesto a prueba, no dónde deja de funcionar. Esas do
 cosas no son la misma, y la diferencia entre ellas es exactamente la región donde
 va a aparecer una respuesta segura y equivocada.
 
+**Hay un candidato, encontrado mirando el proceso en vez del modelo.** Se listaron
+seis señales de antemano y se revisaron las seis sobre transcripciones ya
+guardadas. Sólo una separa: **cuán seguido la herramienta rechaza lo que la cadena
+le pide**. Dentro de la región eso pasa en el 15% de los pedidos; afuera, en el 63%
+— porque el especialista nombra magnitudes que no entiende y la capa de
+herramientas no puede convertir esos nombres en un pedido válido. **La herramienta
+falla donde la prosa no**, y un guardia que lea eso nunca tiene que preguntarle al
+modelo cómo se siente.
+
+Todavía no es un detector, y no hay que citarlo como tal: las señales se eligieron
+con las respuestas ya a la vista, el umbral se ajusta sobre los mismos cincuenta
+problemas que lo puntúan, y los dos tipos desconocidos usados son los únicos que
+tiene este material. Confirmarlo pide dos más, con el umbral fijado de antemano.
+
 ### Cómo sabríamos que quedó resuelto
 
 Un especialista que se abstenga, o derive hacia arriba, sobre material fuera de su
@@ -410,8 +431,10 @@ queden visibles:
   una brecha real entre el modelo caro y el chico. La prueba anterior se corrió
   contra casi-iguales, donde no había nada que ordenar. El instrumento existe y el
   material existe.
-- **Medir bien el problema del borde.** El 0 de 10 sobre problemas desconocidos
-  vino de una corrida que se cortó y nunca se guardó. Re-correrla es una tarde.
+- ~~Medir bien el problema del borde.~~ **Hecho, y es peor de lo que sugería la
+  corrida cortada**: fórmulas exactas treinta de treinta dentro de la región y una
+  de veinte afuera. Lo que queda no es una medición sino un guardia, y el primer
+  candidato está en el Problema 3.
 - **Poner precio a sostener muchos parches a la vez.** Nuestro primer intento midió
   nuestro propio banco de pruebas en vez del sistema de servicio, y está anulado.
   Hacerlo bien es trabajo conocido con una herramienta conocida.

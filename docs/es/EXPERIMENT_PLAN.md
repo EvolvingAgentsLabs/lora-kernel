@@ -51,13 +51,13 @@ se responde con modelos que ya existen, antes de entrenar un solo adaptador.
 | paso | objetivo | primera compuerta que abre | costo | estado |
 |---|---|---|---|---|
 | **S0** | que el instrumento mida lo que dice | todo | $0, local | **DONE, y movió el plan** — §3 |
-| **S1** | headroom: ¿puede esta suite mostrar una brecha de retiro? | S2 | $0,47 gastados | **DONE — FALLÓ la compuerta, tres targets** — §4 |
+| **S1** | headroom: ¿puede esta suite mostrar una brecha de retiro? | S2 | $0,47 + una re-corrida local | **HECHO — falló en la suite clínica, quedó resuelto en mecánica de fluidos con +0,533** — §4, P10 |
 | **S2** | ¿el **acuerdo** ordena a los candidatos como los ordena la calidad verificada? | S4 | incluido arriba | **DONE — 14/15 pares, pero contra pares** — §5 |
 | **S3** | atribución: ¿un router léxico o de embeddings hace lo mismo? | la afirmación de ruteo | $0, offline | **DONE — mecanismo 9/10, pero empata con la regla léxica** — §6 |
 | **S4** | **los adaptadores** — ¿hay especialización, y es por región? | S5 | Colab T4 gratis | **DONE. P1 +63,3 puntos, sonda negativa. P2 sí, +20 puntos, asimétrica** — §6 |
-| **S5** | **la brecha de retiro** | el producto | GPU + frontera | `NEXT` tras S4 |
-| **S6** | `harness.lora` contra el baseline de −85 % de esquema | el kernel | GPU alquilada | **en revisión — S0 dice que está aguas arriba de α, §12** |
-| **S7** | el torneo, con un verificador no visto | la evolución | GPU alquilada | tras S5 |
+| **S5** | **la brecha de retiro** | el producto | GPU + frontera | **HECHA en región — 0,000.** El borde de la región es duro y el experto no lo siente — P7, P14 |
+| **S6** | `harness.lora` — un kernel separado del experto | el kernel | GPU alquilada | **a medias. La composición se resolvió turnándose (P13); si el kernel vale sus pesos se está midiendo (P15)** |
+| **S7** | el torneo, con un verificador no visto | la evolución | GPU alquilada | **bloqueado: no hay juez sin oráculo** — `OPEN-PROBLEMS.md` problema 4 |
 
 Dos reglas gobiernan la secuencia. **Los arms se compran de a uno** — el que
 puede matar la hipótesis corre antes que el que la explica. **Nada que necesite
