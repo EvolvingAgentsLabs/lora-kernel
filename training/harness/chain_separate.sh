@@ -12,6 +12,14 @@ LOCAL="$RUN_DIR/$RESULTS_NAME"
 REMOTE=/content/lora-kernel/$RESULTS_NAME
 
 for i in $(seq 1 "$SESSIONS"); do
+  # A FINISHED RUN DOES NOT NEED ANOTHER SESSION. The loop used to spend its whole
+  # allowance regardless, so a completed experiment provisioned a fresh L4 and
+  # retrained both adapters for forty minutes before discovering there was nothing
+  # to do — twice, and both times the next experiment waited behind it [ran].
+  if [ -f "$LOCAL" ] && grep -q '"finished"' "$LOCAL" 2>/dev/null; then
+    echo "=== $RESULTS_NAME already says finished — no further sessions"
+    break
+  fi
   S="sep$(date +%H%M%S)"
   echo "=== session $i of $SESSIONS · $S · $GPU · base $BASE"
   colab new --gpu "$GPU" -s "$S" >/dev/null
