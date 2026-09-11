@@ -1,0 +1,68 @@
+{
+  "w3": 0.1,
+  "pairs": 3,
+  "agree": 1,
+  "agree_taxed": 1,
+  "candidates": [
+    {
+      "pool": "P13 in-region",
+      "name": "sequential",
+      "true_accuracy": 0.3,
+      "tokens": 410.3666666666667,
+      "judge_accuracy": 0.5666666666666667,
+      "judged": 30,
+      "fitness": 0.5666666666666667,
+      "fitness_taxed": 0.4879115489593995
+    },
+    {
+      "pool": "P13 in-region",
+      "name": "control",
+      "true_accuracy": 0.7666666666666667,
+      "tokens": 360.6666666666667,
+      "judge_accuracy": 1.0,
+      "judged": 30,
+      "fitness": 1.0,
+      "fitness_taxed": 0.9307830092118731
+    },
+    {
+      "pool": "P14 held-out",
+      "name": "sequential",
+      "true_accuracy": 0.0,
+      "tokens": 512.3,
+      "judge_accuracy": 0.1,
+      "judged": 20,
+      "fitness": 0.1,
+      "fitness_taxed": 0.0016824462640737115
+    },
+    {
+      "pool": "P14 held-out",
+      "name": "control",
+      "true_accuracy": 0.05,
+      "tokens": 336.05,
+      "judge_accuracy": 0.0,
+      "judged": 20,
+      "fitness": 0.0,
+      "fitness_taxed": -0.06449270726714432
+    },
+    {
+      "pool": "P15 multi-tool",
+      "name": "kernel adapter writes the calls",
+      "true_accuracy": 0.3333333333333333,
+      "tokens": 521.0666666666667,
+      "judge_accuracy": 0.3,
+      "judged": 30,
+      "fitness": 0.3,
+      "fitness_taxed": 0.19999999999999998
+    },
+    {
+      "pool": "P15 multi-tool",
+      "name": "hand-written rule writes the calls",
+      "true_accuracy": 0.23076923076923078,
+      "tokens": 471.9230769230769,
+      "judge_accuracy": 0.5384615384615384,
+      "judged": 26,
+      "fitness": 0.5384615384615384,
+      "fitness_taxed": 0.44789288245020076
+    }
+  ]
+}

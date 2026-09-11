@@ -66,21 +66,32 @@ def judge_all(cands, tag: str, cache: dict) -> dict:
     from training.physics.multitool import FAMILIES as MT_FAMILIES
     from training.physics.multitool import generate as mt_generate
 
-    problems: dict[str, str] = {}
+    # KEYED BY POOL AS WELL AS CASE. `phys-0000` is a hydrostatic gate among the
+    # trained families and a falling sphere among the held-out ones — the same id
+    # for different problems. A dict keyed on the id alone let P14's statements
+    # overwrite P13's, so the judge was shown the wrong problem for all sixty of
+    # P13's chains and called every one of them incorrect [ran] 2026-09-11. It read
+    # as "selection fails", which would have killed S7 on a dictionary key.
+    problems: dict[tuple[str, str], str] = {}
     for c in cands:
         if c["pool"].startswith("P15"):
             rows = mt_generate(30, 616161, MT_FAMILIES)
         else:
             fams = HELD_OUT_FAMILIES if "held-out" in c["pool"] else TRAIN_FAMILIES
             rows = generate(30, 515151, fams, style="working")
-        problems.update({r["case_id"]: r["prompt"].split("\n\n")[0] for r in rows})
+        problems.update({(c["pool"], r["case_id"]): r["prompt"].split("\n\n")[0]
+                         for r in rows})
 
     for c in cands:
         key = f"{c['pool']}::{c['name']}"
         todo = [r for r in c["records"] if f"{key}::{r['case_id']}" not in cache]
         if todo:
             print(f"[judge] {key} — {len(todo)} to score", flush=True)
-            rows = [{"problem": problems.get(r["case_id"], ""), "chain": r["raw"]}
+            missing = [r for r in todo if (c["pool"], r["case_id"]) not in problems]
+            assert not missing, (
+                f"{len(missing)} cases in {key} have no problem statement — "
+                "judging a chain without its problem measures nothing")
+            rows = [{"problem": problems[(c["pool"], r["case_id"])], "chain": r["raw"]}
                     for r in todo]
             for r, v in zip(todo, judge_model(tag, rows)):
                 cache[f"{key}::{r['case_id']}"] = v
