@@ -53,10 +53,37 @@ def _si(value: float, unit: str) -> float:
     return value * UNITS[unit][1]
 
 
+# INVENTED NAMES AND VALUES DRAWN PER CASE. A fixed table of seven fluids is
+# fourteen numbers, and an expert trained on 600 examples learns them and beats
+# every arm that queries — 27/30 against 10/30 [ran] `results/P15-…`. A fluid
+# called XJ-7 whose density exists only in this problem cannot be recalled, so a
+# step that needs it has to ask. What an expert can still learn is WHICH property
+# the step needs, which is the physics and is what an expert is for.
+CODES = "ABCDEFGHJKLMNPQRSTVWXYZ"
+
+
 def _fluid(rng) -> tuple[str, int, float, float]:
-    name, t = rng.choice(LIQUIDS)
-    row = FLUIDS[(name, t)]
-    return name, t, row["density"], row["viscosity"]
+    name = f"{rng.choice(CODES)}{rng.choice(CODES)}-{rng.randrange(2, 99)}"
+    t = rng.choice([10, 20, 25, 40, 60, 80])
+    density = round(rng.uniform(620.0, 1480.0), 1)
+    viscosity = float(f"{rng.uniform(2.4e-4, 1.9):.3g}")
+    return name, t, density, viscosity
+
+
+def handbook_for(name: str, t: int, density: float, viscosity: float) -> dict:
+    """The table this one problem carries — held by the TOOL, never printed.
+
+    A FIRST DRAFT PRINTED IT IN THE STATEMENT AND THAT REPEATED P15'S FAULT WITH A
+    NEW FACE. If the density is in the prompt, a model copies it and the lookup is
+    decoration again: P15 failed because the value could be remembered, and a
+    printed handbook fails because it can be read. Naming the fluid and keeping its
+    properties inside the tool is what makes the call necessary — the value was not
+    in training, and it is not in the question.
+
+    Both properties are stored even when one is unused, so a step has to name which
+    one it wants rather than take the only number available.
+    """
+    return {(name.lower(), t): {"density": density, "viscosity": viscosity}}
 
 
 def _friction(re_: float, eps: float, d: float) -> float:
@@ -110,11 +137,12 @@ def pipe_head_loss(rng):
         ("Head loss h = f (L/D) v^2 / (2g)",
          "calc", f"{f:.6g} * ({L}/{d:.6g}) * {v:.6g}**2 / (2*{G})"),
     ]
-    return stmt, h, "m", chain
+    book = handbook_for(name, t, rho, mu)
+    return stmt, h, "m", chain, book
 
 
 def hydrostatic_force(rng):
-    name, t, rho, _ = _fluid(rng)
+    name, t, rho, mu = _fluid(rng)
     lu = rng.choice(LEN_UNITS)
     w_raw = round(rng.uniform(300, 2500), 1) if lu == "mm" else round(rng.uniform(30, 250), 1)
     h_raw = round(rng.uniform(300, 2000), 1) if lu == "mm" else round(rng.uniform(30, 200), 1)
@@ -144,11 +172,12 @@ def hydrostatic_force(rng):
         ("Resultant force F = rho g h_c A",
          "calc", f"{rho} * {G} * {hc:.6g} * {w * hh:.6g}"),
     ]
-    return stmt, f, "N", chain
+    book = handbook_for(name, t, rho, mu)
+    return stmt, f, "N", chain, book
 
 
 def venturi_flow(rng):
-    name, t, rho, _ = _fluid(rng)
+    name, t, rho, mu = _fluid(rng)
     lu, pu = rng.choice(LEN_UNITS), rng.choice(PRESSURE_UNITS)
     d1_raw = round(rng.uniform(80, 400), 1) if lu == "mm" else round(rng.uniform(8, 40), 1)
     ratio = rng.uniform(0.35, 0.7)
@@ -181,7 +210,8 @@ def venturi_flow(rng):
         ("Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2)))",
          "calc", f"{a2:.6g} * sqrt(2*{dp:.6g} / ({rho} * (1 - ({a2:.6g}/{a1:.6g})**2)))"),
     ]
-    return stmt, q, "m^3/s", chain
+    book = handbook_for(name, t, rho, mu)
+    return stmt, q, "m^3/s", chain, book
 
 
 def manning_channel(rng):
@@ -218,7 +248,7 @@ def manning_channel(rng):
         ("Discharge Q = (1/n) A R^(2/3) sqrt(S)",
          "calc", f"(1/{n}) * {a:.6g} * {r:.6g}**(2/3) * sqrt({s})"),
     ]
-    return stmt, q, "m^3/s", chain
+    return stmt, q, "m^3/s", chain, {}
 
 
 FAMILIES = {"pipe_head_loss": pipe_head_loss, "hydrostatic_force": hydrostatic_force,
@@ -245,8 +275,9 @@ def generate(n: int, seed: int, families: dict | None = None) -> list[dict]:
     out = []
     for i in range(n):
         name = names[i % len(names)]
-        stmt, ans, unit, chain = fams[name](rng)
+        stmt, ans, unit, chain, book = fams[name](rng)
         out.append({"case_id": f"mt-{i:04d}", "family": name,
+                    "handbook": [[list(k), v] for k, v in book.items()],
                     "prompt": f"{stmt}\n\n{INSTRUCTION % unit}",
                     "answer": ans, "unit": unit, "chain": chain,
                     "tools_needed": sorted({t for _, t, _ in chain})})

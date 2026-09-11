@@ -83,7 +83,16 @@ def _args(text: str) -> dict[str, str]:
     return out
 
 
-def lookup(text: str) -> float:
+def lookup(text: str, handbook: dict | None = None) -> float:
+    """A property, from the handbook this problem carries or the fixed table.
+
+    THE HANDBOOK IS WHY THIS TOOL CAN BE NEEDED AT ALL. With a fixed table of
+    fourteen numbers, an expert trained on 600 examples memorises it and beats
+    every arm that bothers to query — measured at 27/30 against 10/30 [ran]
+    `results/P15-multitool-20260910/`. A handbook drawn per case cannot be
+    memorised, because the value did not exist when the expert was trained.
+    """
+    table = handbook if handbook is not None else FLUIDS
     a = _args(text)
     missing = {"fluid", "property"} - set(a)
     if missing:
@@ -94,9 +103,10 @@ def lookup(text: str) -> float:
         t = int(round(float(a.get("t", "20"))))
     except ValueError:
         raise ToolError(f"temperature {a.get('t')!r} is not a number") from None
-    if (fluid, t) not in FLUIDS:
-        raise ToolError(f"no table entry for {fluid} at {t} C")
-    row = FLUIDS[(fluid, t)]
+    if (fluid, t) not in table:
+        named = sorted({f for f, _ in table})
+        raise ToolError(f"no entry for {fluid} at {t} C; this handbook lists {named}")
+    row = table[(fluid, t)]
     if prop not in row:
         raise ToolError(f"{fluid} has no property {prop!r}")
     return row[prop]
@@ -131,13 +141,15 @@ def calc(text: str) -> float:
 HANDLERS = {"calc": calc, "lookup": lookup, "convert": convert}
 
 
-def answer(name: str, body: str) -> float:
+def answer(name: str, body: str, handbook: dict | None = None) -> float:
     if name not in HANDLERS:
         raise ToolError(f"no tool named {name!r}")
+    if name == "lookup":
+        return lookup(body, handbook)
     return HANDLERS[name](body)
 
 
-def fill(text: str) -> tuple[str, int, int]:
+def fill(text: str, handbook: dict | None = None) -> tuple[str, int, int]:
     """Answer every call in a finished chain. Used on the oracle's own chains."""
     calls = fails = 0
 
@@ -145,7 +157,7 @@ def fill(text: str) -> tuple[str, int, int]:
         nonlocal calls, fails
         calls += 1
         try:
-            return f"{m.group(0)}= {answer(m.group(1), m.group(2)):.6g}"
+            return f"{m.group(0)}= {answer(m.group(1), m.group(2), handbook):.6g}"
         except ToolError:
             fails += 1
             return m.group(0)
