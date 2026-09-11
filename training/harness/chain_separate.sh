@@ -72,6 +72,7 @@ PY
   # polled a channel that no longer existed for up to 105 minutes while the log
   # repeated its last line [ran] 2026-09-10. Silence is now counted, and a session
   # that has stopped answering ends the attempt instead of consuming its window.
+  printf 'print("ALIVE")\n' > /tmp/_alive.py
   QUIET=0
   for _ in $(seq 1 140); do
     out=$(colab exec -s "$S" -f /tmp/_speek.py 2>/dev/null | grep -vE "^\[colab\]|^$|Warning:" || true)
@@ -80,9 +81,19 @@ PY
       QUIET=0
     else
       QUIET=$((QUIET + 1))
-      if [ "$QUIET" -ge 6 ] && ! colab sessions 2>/dev/null | grep -q "\[$S\]"; then
-        echo "    session $S stopped answering and is no longer listed — giving up on it"
-        break
+      # A DEAD CHANNEL DOES NOT ALWAYS DEAD-LIST. The previous version required the
+      # session to vanish from `colab sessions` before giving up, and a session that
+      # is still listed but mute sailed straight past it — five hours against a
+      # channel that answered nothing [ran] 2026-09-11, the fourth time this shape
+      # of failure has cost a run. So the channel is probed directly, with a command
+      # that cannot fail for any reason except the channel being gone.
+      if [ "$QUIET" -ge 6 ]; then
+        ALIVE=$(colab exec -s "$S" -f /tmp/_alive.py 2>/dev/null | grep -c ALIVE || true)
+        if [ "$ALIVE" = "0" ]; then
+          echo "    session $S is not answering a trivial command — giving up on it"
+          break
+        fi
+        QUIET=0
       fi
     fi
     colab download -s "$S" "$REMOTE" "$LOCAL" >/dev/null 2>&1 || true
