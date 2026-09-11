@@ -55,3 +55,57 @@ twenty and should not count. Getting 2 of 3 instead of 1 of 3 is a mechanism
 working, not a result about tournaments.
 
 **Redesign count: 0.**
+
+---
+
+## Outcome (2026-09-11) [ran]
+
+| candidate | true | model | procedural | **both** | either |
+|---|---|---|---|---|---|
+| P13 · control | 0.767 | 1.000 | 0.767 | **0.767** | 1.000 |
+| P13 · sequential | 0.300 | 0.567 | 0.300 | **0.267** | 0.600 |
+| P15 · kernel adapter | **0.333** | 0.300 | 0.267 | **0.267** | 0.300 |
+| P15 · hand-written rule | 0.231 | **0.538** | 0.346 | **0.231** | 0.654 |
+
+| fitness | pairs with a real gap ordered right |
+|---|---|
+| model judge alone | 1/2 |
+| procedural alone | 1/2 |
+| **both must accept** | **2/2** |
+| either may accept | 1/2 |
+
+**Requiring both judges to accept is the only combination that orders both pairs
+the way the oracle does**, and the cell it closes is exactly the one P19 named:
+
+| | wrong work that looks clean | correct work |
+|---|---|---|
+| model judge alone | accepts **41%** | accepts 96% |
+| **both must accept** | accepts **2%** | accepts 90% |
+
+**False acceptance falls from 41% to 2% and costs six points of correct work.**
+That is the mechanism closing, not a combination found by search: the model judge
+reads a transcript and cannot tell clean-because-correct from
+clean-because-it-never-tried; the procedural check re-executes the chain and does
+not care how it looks. Neither is sufficient and the conjunction is.
+
+**It is also nearly calibrated, which nobody asked for.** P13's control scores
+0.767 against a true 0.767, and P15's rule scores 0.231 against a true 0.231.
+
+## Limits, and they are severe
+
+**Two pairs.** A fitness that orders two pairs correctly is a mechanism with
+evidence, not a tournament. The third pair was excluded before the run for a gap of
+one problem in twenty.
+
+**The candidates were not bred by a loop.** Nothing here shows that repeated
+selection converges anywhere, or that a loop optimising this fitness would not find
+a way to satisfy both judges while being wrong.
+
+**And the procedural judge had to be repaired twice to get here**, both times
+because it was undefined on an input class rather than wrong about one: it knew
+only `<calc>` and found nothing in a multi-tool chain, then it compared the final
+answer against the last *lookup* because a chain is mixed — tagged query steps and
+untagged arithmetic. Both fixes are recorded in the code with what they cost.
+
+**Redesign count: 0 for the experiment.** Four combinations listed before scoring,
+four reported. The two changes were to an instrument that could not read the data.

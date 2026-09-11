@@ -600,6 +600,42 @@ close without a tool — and `P8` is `harness.lora`, which this table calls P7.
 The tournament, this table's P8, has not been bought.
 
 
+#### P20 — a fitness that does not select for failing quietly
+
+[`results/P20-fitness-20260911/`](../results/P20-fitness-20260911/BRIEF.md). P19
+found that a transcript-reading judge accepts **41% of wrong work that looks
+clean**, so a variant whose failures are invisible outranks one that is more often
+right. Four combinations of two judges were listed before any was scored, and all
+four reported **[ran]**:
+
+| fitness | pairs with a real gap ordered right |
+|---|---|
+| model judge alone | 1/2 |
+| procedural alone | 1/2 |
+| **both must accept** | **2/2** |
+| either may accept | 1/2 |
+
+| | wrong work that looks clean | correct work |
+|---|---|---|
+| model judge alone | accepts **41%** | accepts 96% |
+| **both must accept** | accepts **2%** | accepts 90% |
+
+**False acceptance falls from 41% to 2% for six points of correct work.** The model
+judge reads a transcript and cannot tell *clean because correct* from *clean
+because it never tried*; the procedural check re-executes the chain and is
+indifferent to how it looks. Neither is sufficient and the conjunction is — and it
+comes out nearly calibrated, scoring P13's control at 0.767 against a true 0.767
+and P15's rule at 0.231 against a true 0.231.
+
+**The obvious fix was backwards and is worth recording as such.** Subtracting the
+tool layer's rejections penalises the arm that shows its failures, which is the
+better one. A visible error is a signal: it costs correct work almost nothing and
+lets a judge reject wrong work.
+
+**Two pairs is not a tournament.** The candidates were not bred by a loop, so
+nothing here shows that repeated selection converges, or that a loop optimising
+this fitness would not learn to satisfy both judges while being wrong.
+
 #### P17 — a judge exists, and judging is easier than solving
 
 [`results/P17-judges-20260910/`](../results/P17-judges-20260910/BRIEF.md). 100

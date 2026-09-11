@@ -620,6 +620,42 @@ insertado porque la brecha no cerraba sin herramienta — y `P8` es
 no se compró.
 
 
+#### P20 — un fitness que no selecciona por fallar en silencio
+
+[`results/P20-fitness-20260911/`](../../results/P20-fitness-20260911/BRIEF.md). P19
+encontró que un juez que lee transcripciones acepta el **41% del trabajo equivocado
+que se ve limpio**, así que una variante con fallos invisibles le gana a una que
+acierta más seguido. Se listaron cuatro combinaciones de dos jueces antes de
+puntuar ninguna, y se reportan las cuatro **[ran]**:
+
+| fitness | pares con brecha real ordenados bien |
+|---|---|
+| juez modelo solo | 1/2 |
+| procedural solo | 1/2 |
+| **los dos deben aceptar** | **2/2** |
+| cualquiera puede aceptar | 1/2 |
+
+| | trabajo equivocado que se ve limpio | trabajo correcto |
+|---|---|---|
+| juez modelo solo | acepta **41%** | acepta 96% |
+| **los dos deben aceptar** | acepta **2%** | acepta 90% |
+
+**La falsa aceptación cae de 41% a 2% a cambio de seis puntos de trabajo correcto.**
+El juez modelo lee una transcripción y no puede distinguir *limpio porque está bien*
+de *limpio porque nunca lo intentó*; la comprobación procedural re-ejecuta la cadena
+y es indiferente a cómo se ve. Ninguna alcanza sola y la conjunción sí — y sale casi
+calibrada: puntúa el control de P13 en 0,767 contra una verdad de 0,767 y la regla
+de P15 en 0,231 contra 0,231.
+
+**El arreglo obvio era al revés y vale registrarlo así.** Restar los rechazos de la
+capa de herramientas castiga al brazo que muestra sus fallos, que es el mejor. Un
+error visible es una señal: le cuesta casi nada al trabajo correcto y le permite a
+un juez rechazar el equivocado.
+
+**Dos pares no son un torneo.** Los candidatos no los crió un bucle, así que nada
+acá muestra que la selección repetida converja, ni que un bucle optimizando este
+fitness no aprenda a satisfacer a los dos jueces estando equivocado.
+
 #### P17 — existe un juez, y juzgar es más fácil que resolver
 
 [`results/P17-judges-20260910/`](../../results/P17-judges-20260910/BRIEF.md). 100

@@ -1,0 +1,182 @@
+[
+  {
+    "fitness": "model judge alone",
+    "pairs": 2,
+    "agree": 1,
+    "detail": [
+      {
+        "pool": "P13 in-region",
+        "a": "sequential",
+        "b": "control",
+        "gap": 0.467,
+        "meaningful": true,
+        "oracle": "control",
+        "picked": "control",
+        "right": true
+      },
+      {
+        "pool": "P14 held-out",
+        "a": "sequential",
+        "b": "control",
+        "gap": 0.05,
+        "meaningful": false,
+        "oracle": "control",
+        "picked": "sequential",
+        "right": false
+      },
+      {
+        "pool": "P15 multi-tool",
+        "a": "kernel adapter writes the calls",
+        "b": "hand-written rule writes the calls",
+        "gap": 0.103,
+        "meaningful": true,
+        "oracle": "kernel adapter writes the calls",
+        "picked": "hand-written rule writes the calls",
+        "right": false
+      }
+    ],
+    "scores": {
+      "P13 in-region \u00b7 sequential": 0.567,
+      "P13 in-region \u00b7 control": 1.0,
+      "P14 held-out \u00b7 sequential": 0.1,
+      "P14 held-out \u00b7 control": 0.0,
+      "P15 multi-tool \u00b7 kernel adapter writes the calls": 0.3,
+      "P15 multi-tool \u00b7 hand-written rule writes the calls": 0.538
+    }
+  },
+  {
+    "fitness": "procedural alone",
+    "pairs": 2,
+    "agree": 1,
+    "detail": [
+      {
+        "pool": "P13 in-region",
+        "a": "sequential",
+        "b": "control",
+        "gap": 0.467,
+        "meaningful": true,
+        "oracle": "control",
+        "picked": "control",
+        "right": true
+      },
+      {
+        "pool": "P14 held-out",
+        "a": "sequential",
+        "b": "control",
+        "gap": 0.05,
+        "meaningful": false,
+        "oracle": "control",
+        "picked": "control",
+        "right": true
+      },
+      {
+        "pool": "P15 multi-tool",
+        "a": "kernel adapter writes the calls",
+        "b": "hand-written rule writes the calls",
+        "gap": 0.103,
+        "meaningful": true,
+        "oracle": "kernel adapter writes the calls",
+        "picked": "hand-written rule writes the calls",
+        "right": false
+      }
+    ],
+    "scores": {
+      "P13 in-region \u00b7 sequential": 0.3,
+      "P13 in-region \u00b7 control": 0.767,
+      "P14 held-out \u00b7 sequential": 0.0,
+      "P14 held-out \u00b7 control": 0.7,
+      "P15 multi-tool \u00b7 kernel adapter writes the calls": 0.267,
+      "P15 multi-tool \u00b7 hand-written rule writes the calls": 0.346
+    }
+  },
+  {
+    "fitness": "both must accept",
+    "pairs": 2,
+    "agree": 2,
+    "detail": [
+      {
+        "pool": "P13 in-region",
+        "a": "sequential",
+        "b": "control",
+        "gap": 0.467,
+        "meaningful": true,
+        "oracle": "control",
+        "picked": "control",
+        "right": true
+      },
+      {
+        "pool": "P14 held-out",
+        "a": "sequential",
+        "b": "control",
+        "gap": 0.05,
+        "meaningful": false,
+        "oracle": "control",
+        "picked": "control",
+        "right": true
+      },
+      {
+        "pool": "P15 multi-tool",
+        "a": "kernel adapter writes the calls",
+        "b": "hand-written rule writes the calls",
+        "gap": 0.103,
+        "meaningful": true,
+        "oracle": "kernel adapter writes the calls",
+        "picked": "kernel adapter writes the calls",
+        "right": true
+      }
+    ],
+    "scores": {
+      "P13 in-region \u00b7 sequential": 0.267,
+      "P13 in-region \u00b7 control": 0.767,
+      "P14 held-out \u00b7 sequential": 0.0,
+      "P14 held-out \u00b7 control": 0.0,
+      "P15 multi-tool \u00b7 kernel adapter writes the calls": 0.267,
+      "P15 multi-tool \u00b7 hand-written rule writes the calls": 0.231
+    }
+  },
+  {
+    "fitness": "either may accept",
+    "pairs": 2,
+    "agree": 1,
+    "detail": [
+      {
+        "pool": "P13 in-region",
+        "a": "sequential",
+        "b": "control",
+        "gap": 0.467,
+        "meaningful": true,
+        "oracle": "control",
+        "picked": "control",
+        "right": true
+      },
+      {
+        "pool": "P14 held-out",
+        "a": "sequential",
+        "b": "control",
+        "gap": 0.05,
+        "meaningful": false,
+        "oracle": "control",
+        "picked": "control",
+        "right": true
+      },
+      {
+        "pool": "P15 multi-tool",
+        "a": "kernel adapter writes the calls",
+        "b": "hand-written rule writes the calls",
+        "gap": 0.103,
+        "meaningful": true,
+        "oracle": "kernel adapter writes the calls",
+        "picked": "hand-written rule writes the calls",
+        "right": false
+      }
+    ],
+    "scores": {
+      "P13 in-region \u00b7 sequential": 0.6,
+      "P13 in-region \u00b7 control": 1.0,
+      "P14 held-out \u00b7 sequential": 0.1,
+      "P14 held-out \u00b7 control": 0.7,
+      "P15 multi-tool \u00b7 kernel adapter writes the calls": 0.3,
+      "P15 multi-tool \u00b7 hand-written rule writes the calls": 0.654
+    }
+  }
+]
