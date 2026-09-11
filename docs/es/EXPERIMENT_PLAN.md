@@ -620,6 +620,42 @@ insertado porque la brecha no cerraba sin herramienta — y `P8` es
 no se compró.
 
 
+#### P20 — un fitness que no selecciona por fallar en silencio
+
+[`results/P20-fitness-20260911/`](../../results/P20-fitness-20260911/BRIEF.md). P19
+encontró que un juez que lee transcripciones acepta el **41% del trabajo equivocado
+que se ve limpio**, así que una variante con fallos invisibles le gana a una que
+acierta más seguido. Se listaron cuatro combinaciones de dos jueces antes de
+puntuar ninguna, y se reportan las cuatro **[ran]**:
+
+| fitness | pares con brecha real ordenados bien |
+|---|---|
+| juez modelo solo | 1/2 |
+| procedural solo | 1/2 |
+| **los dos deben aceptar** | **2/2** |
+| cualquiera puede aceptar | 1/2 |
+
+| | trabajo equivocado que se ve limpio | trabajo correcto |
+|---|---|---|
+| juez modelo solo | acepta **41%** | acepta 96% |
+| **los dos deben aceptar** | acepta **2%** | acepta 90% |
+
+**La falsa aceptación cae de 41% a 2% a cambio de seis puntos de trabajo correcto.**
+El juez modelo lee una transcripción y no puede distinguir *limpio porque está bien*
+de *limpio porque nunca lo intentó*; la comprobación procedural re-ejecuta la cadena
+y es indiferente a cómo se ve. Ninguna alcanza sola y la conjunción sí — y sale casi
+calibrada: puntúa el control de P13 en 0,767 contra una verdad de 0,767 y la regla
+de P15 en 0,231 contra 0,231.
+
+**El arreglo obvio era al revés y vale registrarlo así.** Restar los rechazos de la
+capa de herramientas castiga al brazo que muestra sus fallos, que es el mejor. Un
+error visible es una señal: le cuesta casi nada al trabajo correcto y le permite a
+un juez rechazar el equivocado.
+
+**Dos pares no son un torneo.** Los candidatos no los crió un bucle, así que nada
+acá muestra que la selección repetida converja, ni que un bucle optimizando este
+fitness no aprenda a satisfacer a los dos jueces estando equivocado.
+
 #### P17 — existe un juez, y juzgar es más fácil que resolver
 
 [`results/P17-judges-20260910/`](../../results/P17-judges-20260910/BRIEF.md). 100
@@ -692,6 +728,41 @@ respuestas a la vista, el umbral se ajusta sobre los mismos 50 puntos que lo
 puntúan, y las dos familias usadas son las únicas held-out que tiene la suite.
 Volverlo detector pide dos familias que ninguna corrida usó, un umbral fijado desde
 ésta y no reajustado, y que la separación sobreviva.
+
+#### P15 — el kernel le gana a la regla, y la suite falla su propia pregunta
+
+[`results/P15-multitool-20260910/`](../../results/P15-multitool-20260910/BRIEF.md),
+cuatro familias, tres herramientas, tres redacciones cada una, enunciados que
+nombran su fluido en vez de entregar una densidad **[ran]**:
+
+| brazo | exactitud | consultas del oráculo reproducidas | consultas | rechaz |
+|---|---|---|---|---|
+| **adaptador kernel** | **10/30** | **91/96 — 94,8%** | 118 | 19 |
+| regla escrita a mano | 7/30 | 88/96 — 91,7% | 96 | 0 |
+| **sin capa de herramientas** | **27/30** | — | **0** | 0 |
+
+**Un protocolo aprendido le gana a una regla escrita a mano donde la llamada no es
+copia**, en las dos métricas y por poco: 94,8% contra 91,7%, 10/30 contra 7/30. Eso
+da vuelta el veredicto de P13 y lo ubica — un protocolo aprendido pierde contra una
+expresión regular cuando pedir una herramienta es copiar una expresión ya escrita, y
+gana cuando es elegir entre tres herramientas y construir argumentos con clave a
+partir de prosa. **P13 midió la suite, no el adaptador.**
+
+**Y el control anula la pregunta para la que la suite fue construida.** Sin ninguna
+capa de herramientas el experto saca **27/30 sin consultar nada**, el triple que
+cualquiera de los dos brazos con herramientas. El corpus de dominio muestra los
+valores de la tabla, y siete fluidos por dos propiedades son catorce números más
+cinco conversiones — memorizable de sobra con 600 ejemplos. Las herramientas nunca
+fueron necesarias acá, y agregarlas **empeora**.
+
+**El brazo que podía matar el experimento se compró último**, contra la regla de
+este proyecto, y el brief ya había marcado la memorización como costo conocido. Se
+pagaron dos brazos antes de enterarse de que el material no los sostenía.
+
+**El arreglo es al material, no a la arquitectura**: darle a cada problema su propio
+manual, con propiedades sorteadas por caso, para que un valor no se pueda recordar y
+haya que consultarlo. El experto sabría *qué* propiedad necesita — la física — y no
+*cuánto vale*, que es trabajo de la herramienta.
 
 #### P14 — la región del experto tiene un borde duro, y el experto no lo siente
 

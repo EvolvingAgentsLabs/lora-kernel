@@ -23,6 +23,41 @@ import time
 from pathlib import Path
 
 from training.physics.repair import repair
+from training.physics.tools import CALL as TOOLCALL
+from training.physics.tools import ToolError, answer
+
+
+def _resolve(chain: str) -> str | None:
+    """Every tool call re-executed and replaced by the value it returns.
+
+    A CHAIN IS MIXED, AND THAT IS THE WHOLE POINT OF THE DESIGN. The query steps
+    carry tags because a tool answered them; the arithmetic steps do not, because
+    the expert wrote them and the harness evaluated them. A check that reads only
+    the tagged half compares the final answer against the last *lookup* and rejects
+    a chain that was right [ran] 2026-09-11. Resolving the calls first leaves one
+    uniform chain of `expression = value` lines for the ordinary walk to score.
+
+    Returns None when a call is refused or carried a value the tool disagrees with,
+    because either is a defect the chain cannot be right despite.
+    """
+    out, last = [], 0
+    for m in TOOLCALL.finditer(chain):
+        try:
+            value = answer(m.group(1), m.group(2))
+        except ToolError:
+            return None
+        tail = chain[m.end():].lstrip()
+        claimed = re.match(r"=\s*(-?\d+\.?\d*(?:[eE][-+]?\d+)?)", tail)
+        if claimed:
+            if abs(float(claimed.group(1)) - value) > 1e-3 * max(abs(value), 1):
+                return None
+            skip = len(chain[m.end():]) - len(tail) + claimed.end()
+        else:
+            skip = 0
+        out.append(chain[last:m.start()] + f"{value:.6g}")
+        last = m.end() + skip
+    return "".join(out) + chain[last:]
+
 
 SOURCES = [("results/P13-sequential-20260910/sequential_results.json", "in"),
            ("results/P14-held-out-20260910/sequential_results_heldout.json", "out")]
@@ -58,14 +93,23 @@ def pool() -> list[dict]:
 def judge_procedural(row) -> bool:
     """No model is asked anything, so no model can flatter it.
 
-    Re-evaluates every step exactly and accepts the solution only if the number it
-    finishes on is the number its own chain implies. It is blind to a wrong
-    formula by construction — that blindness is the measurement.
+    Re-executes every step and accepts the solution only if the number it finishes
+    on is the number its own chain implies. It is blind to a wrong formula by
+    construction — that blindness is the measurement.
+
+    IT HAS TO READ EVERY TOOL, NOT ONLY THE CALCULATOR. A first version knew only
+    `<calc>`, so on a multi-tool chain it found nothing evaluable and returned
+    False for both arms of a pair — a tie at zero, broken arbitrarily, that read
+    as "the procedural check does not help" [ran] 2026-09-11. A chain that queries
+    a table is re-queried; a chain that converts a unit is re-converted.
     """
-    value, ok, bad = repair(row["chain"])
+    chain = _resolve(row["chain"])
+    if chain is None:
+        return False
+    value, ok, bad = repair(chain)
     if value is None or ok == 0:
         return False
-    m = re.findall(r"-?\d+\.?\d*(?:[eE][-+]?\d+)?", row["chain"].replace(",", ""))
+    m = re.findall(r"-?\d+\.?\d*(?:[eE][-+]?\d+)?", chain.replace(",", ""))
     if not m:
         return False
     claimed = float(m[-1])
