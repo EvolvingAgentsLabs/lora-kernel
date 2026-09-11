@@ -729,6 +729,41 @@ puntúan, y las dos familias usadas son las únicas held-out que tiene la suite.
 Volverlo detector pide dos familias que ninguna corrida usó, un umbral fijado desde
 ésta y no reajustado, y que la separación sobreviva.
 
+#### P15 — el kernel le gana a la regla, y la suite falla su propia pregunta
+
+[`results/P15-multitool-20260910/`](../../results/P15-multitool-20260910/BRIEF.md),
+cuatro familias, tres herramientas, tres redacciones cada una, enunciados que
+nombran su fluido en vez de entregar una densidad **[ran]**:
+
+| brazo | exactitud | consultas del oráculo reproducidas | consultas | rechaz |
+|---|---|---|---|---|
+| **adaptador kernel** | **10/30** | **91/96 — 94,8%** | 118 | 19 |
+| regla escrita a mano | 7/30 | 88/96 — 91,7% | 96 | 0 |
+| **sin capa de herramientas** | **27/30** | — | **0** | 0 |
+
+**Un protocolo aprendido le gana a una regla escrita a mano donde la llamada no es
+copia**, en las dos métricas y por poco: 94,8% contra 91,7%, 10/30 contra 7/30. Eso
+da vuelta el veredicto de P13 y lo ubica — un protocolo aprendido pierde contra una
+expresión regular cuando pedir una herramienta es copiar una expresión ya escrita, y
+gana cuando es elegir entre tres herramientas y construir argumentos con clave a
+partir de prosa. **P13 midió la suite, no el adaptador.**
+
+**Y el control anula la pregunta para la que la suite fue construida.** Sin ninguna
+capa de herramientas el experto saca **27/30 sin consultar nada**, el triple que
+cualquiera de los dos brazos con herramientas. El corpus de dominio muestra los
+valores de la tabla, y siete fluidos por dos propiedades son catorce números más
+cinco conversiones — memorizable de sobra con 600 ejemplos. Las herramientas nunca
+fueron necesarias acá, y agregarlas **empeora**.
+
+**El brazo que podía matar el experimento se compró último**, contra la regla de
+este proyecto, y el brief ya había marcado la memorización como costo conocido. Se
+pagaron dos brazos antes de enterarse de que el material no los sostenía.
+
+**El arreglo es al material, no a la arquitectura**: darle a cada problema su propio
+manual, con propiedades sorteadas por caso, para que un valor no se pueda recordar y
+haya que consultarlo. El experto sabría *qué* propiedad necesita — la física — y no
+*cuánto vale*, que es trabajo de la herramienta.
+
 #### P14 — la región del experto tiene un borde duro, y el experto no lo siente
 
 [`results/P14-held-out-20260910/`](../../results/P14-held-out-20260910/BRIEF.md),

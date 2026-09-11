@@ -200,7 +200,7 @@ trabajo y se actualiza en la misma sesión en que un paso reporta.
 | **S3** | que el router valga más que una tabla | 🟡 empata |
 | **S4** | que el experto se especialice por región | ✅ **+63,3** |
 | **S5** | cerrar la brecha de retiro | ✅ **0,000** en región |
-| **S6** | `harness.lora` — kernel separado del experto | 🟢 **casi** — composición resuelta; el kernel va arriba de una regla escrita a mano, falta un brazo |
+| **S6** | `harness.lora` — kernel separado del experto | 🟢 **composición resuelta, kernel arriba** — 94,8% contra 91,7% de una regla donde la llamada no es copia. Pero un control **sin** capa de herramientas le ganó a los dos, 27/30: las herramientas de la suite eran memorizables |
 | **S7** | el torneo que evoluciona los expertos | 🟢 **desbloqueado y construyéndose** — existe un juez, y juzgar es más fácil que resolver |
 
 **Lo que funciona.** El protocolo se aprende solo y viaja a un dominio que nunca
@@ -213,7 +213,7 @@ con vLLM multi-LoRA.
 
 | | qué falla | plan |
 |:--:|---|---|
-| 1 | **El valor del kernel** — perdió contra una expresión regular en una suite donde la llamada era copia | **midiéndose, y va arriba**: reproduce las consultas del oráculo al **94,8% contra 91,6% de la regla**, exactitud 10/30 contra 6/26. Falta un brazo |
+| 1 | **Una suite donde las herramientas hagan falta** — el kernel le ganó a la regla **94,8% a 91,7%**, pero un control sin capa de herramientas les ganó a los dos con 27/30 respondiendo de memoria | darle a cada problema su propio manual, con propiedades por caso, para que un valor no se pueda recordar y haya que consultarlo |
 | 2 | **El experto no siente el borde de su región** — 30/30 adentro, 1/20 afuera, inventando física con la misma voz | se encontró una señal: la tasa de rechazo de la capa de herramientas va **0,15 → 0,63**. Falta confirmarla en dos familias sin usar, con el umbral fijo |
 | 3 | ~~No hay juez sin oráculo.~~ **Medido: existe un juez.** La frontera corrige a **0,89** balanceado y un par a **0,82** — mientras ese mismo par *resuelve* el material a 0,467 | queda el caso donde nada disponible pueda resolver el trabajo, del que esta corrida no habla |
 | 4 | **El router empata con una tabla de búsqueda** | necesita expertos por familia y material donde superficie y sustancia se separen |

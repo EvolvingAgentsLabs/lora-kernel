@@ -706,6 +706,40 @@ the two families used are the only held-out families the suite has. Making it on
 needs two families neither run used, a threshold fixed from this run rather than
 refitted, and the separation surviving.
 
+#### P15 — the kernel beats the rule, and the suite fails its own question
+
+[`results/P15-multitool-20260910/`](../results/P15-multitool-20260910/BRIEF.md),
+four families, three tools, three phrasings each, statements that name their fluid
+instead of handing over a density **[ran]**:
+
+| arm | accuracy | oracle's queries reproduced | queries | rejected |
+|---|---|---|---|---|
+| **kernel adapter** | **10/30** | **91/96 — 94.8%** | 118 | 19 |
+| hand-written rule | 7/30 | 88/96 — 91.7% | 96 | 0 |
+| **no tool layer at all** | **27/30** | — | **0** | 0 |
+
+**A learned protocol beats a hand-written rule where the call is not a copy**, on
+both metrics and narrowly: 94.8% against 91.7%, 10/30 against 7/30. That reverses
+P13's verdict and locates it — a learned protocol loses to a regular expression
+when asking for a tool means copying an expression already written, and wins when
+it means choosing between three tools and building keyed arguments out of prose.
+**P13 measured the suite, not the adapter.**
+
+**And the control voids the question the suite was built for.** With no tool layer
+at all the expert scores **27/30 while asking nothing**, three times either tool
+arm. The domain corpus shows the table's values, and seven fluids times two
+properties is fourteen numbers plus five conversions — memorisable many times over
+from 600 examples. The tools were never necessary here, and adding them *hurts*.
+
+**The arm that could kill the experiment was bought last**, against this project's
+own rule, and the brief had already flagged memorisation as a known cost. Two arms
+were paid for before learning the material could not support them.
+
+**The fix is to the material, not the architecture**: give each problem its own
+handbook, with properties drawn per case, so a value cannot be recalled and has to
+be queried. The expert would know *which* property it needs — the physics — and not
+*what it is*, which is the tool's job.
+
 #### P14 — the expert's region has a hard edge, and the expert cannot feel it
 
 [`results/P14-held-out-20260910/`](../results/P14-held-out-20260910/BRIEF.md),
