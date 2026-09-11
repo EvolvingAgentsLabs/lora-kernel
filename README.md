@@ -227,8 +227,8 @@ the work and is updated the same session a step reports.
 | **S3** | the router beats a lookup table | 🟡 ties |
 | **S4** | the expert specialises per region | ✅ **+63.3** |
 | **S5** | close the withdrawal gap | ✅ **0.000** in region |
-| **S6** | `harness.lora` — kernel apart from the expert | 🟡 half solved |
-| **S7** | the tournament that evolves the experts | ❌ — but its blocker is gone: **a judge exists**, and judging is easier than solving |
+| **S6** | `harness.lora` — kernel apart from the expert | 🟢 **nearly** — composition solved; the kernel is ahead of a hand-written rule with one arm left |
+| **S7** | the tournament that evolves the experts | 🟢 **unblocked and being built** — a judge exists, and judging is easier than solving |
 
 **What works.** The protocol is learnable on its own and travels to a domain it
 never saw. The expert's physics is exact inside its region, 30/30. **The two
@@ -240,11 +240,11 @@ pool is servable with vLLM multi-LoRA.
 
 | | what fails | plan |
 |:--:|---|---|
-| 1 | **The kernel has not shown it is worth its weights** — it lost to a regular expression | a three-tool suite where the call is not a copy. The bar is **92.9%** |
+| 1 | **The kernel's worth** — it lost to a regular expression on a suite where the call was a copy | **being measured, and it is ahead**: reproducing the oracle's queries **94.8% against the rule's 91.6%**, accuracy 10/30 against 6/26. One arm left |
 | 2 | **The expert cannot feel its region's edge** — 30/30 inside, 1/20 outside, inventing physics in the same voice | a signal was found: the tool layer's rejection rate runs **0.15 → 0.63**. Needs confirming on two unused families with the threshold fixed |
 | 3 | ~~There is no judge without an oracle.~~ **Measured: a judge exists.** The frontier grades at **0.89** balanced and a peer at **0.82** — while that same peer *solves* the material at 0.467 | what is left is the case where nothing available can solve the work, which this run cannot speak to |
 | 4 | **The router ties a keyword lookup** | needs per-family experts and material where surface and substance come apart |
-| 5 | **The tournament** | unblocked — the grade can come from a peer, which is what a withdrawn frontier leaves behind |
+| 5 | **The tournament is unbuilt** — the only objective never touched | the grade can come from a peer, which is what a withdrawn frontier leaves behind. Being built now |
 
 ## What has actually run
 
