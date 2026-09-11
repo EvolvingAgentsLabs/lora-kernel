@@ -46,7 +46,7 @@ sys.exit(0 if p.exists() and 'finished' in json.loads(p.read_text()) else 1)" 2>
 for attempt in 1 2 3; do
   finished results/P14-held-out-20260910/sequential_results_heldout.json && break
   echo "=== P14 attempt $attempt" >> "$SP/p14.log"
-  GPU=L4 BRANCH=judges MODULE=training.harness.sequential \
+  GPU=L4 BRANCH=tournament MODULE=training.harness.sequential \
   RUN_DIR=results/P14-held-out-20260910 RESULTS_NAME=sequential_results_heldout.json \
   ARGS="--n-eval 20 --held-out" \
   training/harness/chain_separate.sh 2 >> "$SP/p14.log" 2>&1
@@ -56,7 +56,7 @@ done
 for attempt in 1 2 3; do
   finished results/P15-multitool-20260910/multitool_results.json && break
   echo "=== P15 attempt $attempt" >> "$SP/p15.log"
-  GPU=L4 BRANCH=judges MODULE=training.harness.multitool_run \
+  GPU=L4 BRANCH=tournament MODULE=training.harness.multitool_run \
   RUN_DIR=results/P15-multitool-20260910 RESULTS_NAME=multitool_results.json \
   ARGS="--n-eval 30" \
   training/harness/chain_separate.sh 3 >> "$SP/p15.log" 2>&1
@@ -65,7 +65,7 @@ done
 for attempt in 1 2 3; do
   finished results/P18-confirm-20260910/sequential_results_confirm.json && break
   echo "=== P18 attempt $attempt" >> "$SP/p18.log"
-  GPU=L4 BRANCH=judges MODULE=training.harness.sequential \
+  GPU=L4 BRANCH=tournament MODULE=training.harness.sequential \
   RUN_DIR=results/P18-confirm-20260910 RESULTS_NAME=sequential_results_confirm.json \
   ARGS="--n-eval 20 --confirm" \
   training/harness/chain_separate.sh 2 >> "$SP/p18.log" 2>&1
