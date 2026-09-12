@@ -166,3 +166,35 @@ number to distrust.
 - **Combining it with the judge conjunction from P20** is the obvious next question
   and has not been asked: they fail differently, and P20 showed that two weak checks
   with opposite error profiles beat either alone.
+
+---
+
+## Addendum — composing the guard with the mechanical check (2026-09-12) [ran]
+
+An external proposal suggested a cascade: run the dimensional guard first as a cheap
+structural filter and escalate whatever it flags. That keeps its 22% false alarm
+intact, because escalation happens on the dimensional verdict alone. The measurement
+says the opposite composition is the right one.
+
+**All 7 of the dimensional false alarms are accepted by the mechanical check — 7 of
+7.** The two fail independently, and in the useful direction.
+
+| escalation rule | detects out of region | false alarm on correct in-region work |
+|---|---|---|
+| dimensional alone | 0.78 dev · **0.80 conf** | **0.22** |
+| **dimensional AND mechanical both fail** | 0.50 dev · **0.47 conf** | **0.00** |
+| dimensional OR mechanical fails | 0.93 | 0.28 |
+
+**The conjunction removes the false alarm entirely and keeps half the detection**,
+and it holds on the confirmation families at 0.47. For a guard whose job is to decide
+when to escalate, a false alarm of zero is the property that lets it be switched on
+at all: **half of out-of-region work caught, and not one correct answer stopped.**
+
+The proposal's compounding warning was right in magnitude — a blind triple `AND` of
+three acceptance tests would reject about 30% of correct work — but the fix is not
+to order the checks by cost. It is to require **two independent failures before
+escalating**, which is the same shape as P20's conjunction and works for the same
+reason: the two checks are blind in different places.
+
+**This is one sample of 7 false alarms and 40 out-of-region chains.** The zero is a
+zero on small numbers, and the detection halving is the price. Neither is settled.
