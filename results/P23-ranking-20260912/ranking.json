@@ -1,0 +1,156 @@
+{
+  "gemini-3.5-flash-lite @6k, n=60 \u2014 naturally weaker, failures complete": {
+    "rows": [
+      {
+        "name": "qwen3.5:2b",
+        "verified": 0.21666666666666667,
+        "agreement": 0.183,
+        "character": 0.0,
+        "agreement_where_target_wrong": 0.0,
+        "informative_cases": 17,
+        "by_family": {
+          "hydrostatic_force": "5/10",
+          "manning_channel": "0/10",
+          "pipe_head_loss": "0/10",
+          "pump_power": "0/10",
+          "terminal_velocity": "2/10",
+          "venturi_flow": "4/10"
+        },
+        "shared_cases": 60
+      },
+      {
+        "name": "qwen3.5:4b",
+        "verified": 0.48333333333333334,
+        "agreement": 0.4,
+        "character": 0.0,
+        "agreement_where_target_wrong": 0.0,
+        "informative_cases": 17,
+        "by_family": {
+          "hydrostatic_force": "9/10",
+          "manning_channel": "2/10",
+          "pipe_head_loss": "1/10",
+          "pump_power": "1/10",
+          "terminal_velocity": "4/10",
+          "venturi_flow": "7/10"
+        },
+        "shared_cases": 60
+      },
+      {
+        "name": "qwen3.5:9b",
+        "verified": 0.65,
+        "agreement": 0.55,
+        "character": 0.0,
+        "agreement_where_target_wrong": 0.118,
+        "informative_cases": 17,
+        "by_family": {
+          "hydrostatic_force": "9/10",
+          "manning_channel": "4/10",
+          "pipe_head_loss": "2/10",
+          "pump_power": "3/10",
+          "terminal_velocity": "9/10",
+          "venturi_flow": "6/10"
+        },
+        "shared_cases": 60
+      },
+      {
+        "name": "gemma4:12b",
+        "verified": 0.43333333333333335,
+        "agreement": 0.35,
+        "character": 0.0,
+        "agreement_where_target_wrong": 0.059,
+        "informative_cases": 17,
+        "by_family": {
+          "hydrostatic_force": "8/10",
+          "manning_channel": "5/10",
+          "pipe_head_loss": "1/10",
+          "pump_power": "0/10",
+          "terminal_velocity": "5/10",
+          "venturi_flow": "2/10"
+        },
+        "shared_cases": 60
+      }
+    ],
+    "pairs": 6,
+    "right": 6,
+    "inversions": [],
+    "collapsed": false,
+    "decisive": true
+  },
+  "gemini-3.8-flash @6k \u2014 the tautology control (30/30)": {
+    "rows": [
+      {
+        "name": "qwen3.5:2b",
+        "verified": 0.21666666666666667,
+        "agreement": 0.2,
+        "character": 0.0,
+        "agreement_where_target_wrong": 0.0,
+        "informative_cases": 0,
+        "by_family": {
+          "hydrostatic_force": "3/5",
+          "manning_channel": "1/5",
+          "pipe_head_loss": "0/5",
+          "pump_power": "0/5",
+          "terminal_velocity": "1/5",
+          "venturi_flow": "1/5"
+        },
+        "shared_cases": 30
+      },
+      {
+        "name": "qwen3.5:4b",
+        "verified": 0.48333333333333334,
+        "agreement": 0.433,
+        "character": 0.0,
+        "agreement_where_target_wrong": 0.0,
+        "informative_cases": 0,
+        "by_family": {
+          "hydrostatic_force": "5/5",
+          "manning_channel": "2/5",
+          "pipe_head_loss": "0/5",
+          "pump_power": "1/5",
+          "terminal_velocity": "2/5",
+          "venturi_flow": "3/5"
+        },
+        "shared_cases": 30
+      },
+      {
+        "name": "qwen3.5:9b",
+        "verified": 0.65,
+        "agreement": 0.7,
+        "character": 0.0,
+        "agreement_where_target_wrong": 0.0,
+        "informative_cases": 0,
+        "by_family": {
+          "hydrostatic_force": "5/5",
+          "manning_channel": "5/5",
+          "pipe_head_loss": "0/5",
+          "pump_power": "2/5",
+          "terminal_velocity": "5/5",
+          "venturi_flow": "4/5"
+        },
+        "shared_cases": 30
+      },
+      {
+        "name": "gemma4:12b",
+        "verified": 0.43333333333333335,
+        "agreement": 0.4,
+        "character": 0.0,
+        "agreement_where_target_wrong": 0.0,
+        "informative_cases": 0,
+        "by_family": {
+          "hydrostatic_force": "4/5",
+          "manning_channel": "5/5",
+          "pipe_head_loss": "0/5",
+          "pump_power": "0/5",
+          "terminal_velocity": "3/5",
+          "venturi_flow": "0/5"
+        },
+        "shared_cases": 30
+      }
+    ],
+    "pairs": 6,
+    "right": 6,
+    "inversions": [],
+    "collapsed": false,
+    "decisive": false
+  }
+}

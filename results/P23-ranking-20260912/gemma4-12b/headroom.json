@@ -16,19 +16,19 @@
     "ollama:gemma4:12b": {
       "model": "ollama:gemma4:12b",
       "n": 60,
-      "passed": 23,
-      "accuracy": 0.3833,
+      "passed": 26,
+      "accuracy": 0.4333,
       "unparsed": 0,
-      "seconds": 886.9,
+      "seconds": 1197.7,
       "thinking_chars": 0,
-      "without_json": 16,
+      "without_json": 17,
       "by_family": {
-        "hydrostatic_force": "8/9",
-        "manning_channel": "8/9",
-        "pipe_head_loss": "0/9",
-        "pump_power": "0/9",
-        "terminal_velocity": "5/9",
-        "venturi_flow": "2/9"
+        "hydrostatic_force": "9/10",
+        "manning_channel": "9/10",
+        "pipe_head_loss": "0/10",
+        "pump_power": "0/10",
+        "terminal_velocity": "6/10",
+        "venturi_flow": "2/10"
       },
       "records": [
         {
@@ -624,6 +624,72 @@
           "has_json": false,
           "raw": "To compute the volumetric flow rate ($Q$) for a horizontal venturi meter under ideal, incompressible, and frictionless conditions, we use the Bernoulli equation and the continuity equation.\n\n**Given Data:**\n- Inlet diameter ($D_1$): $0.116\\text{ m}$\n- Throat diameter ($D_2$): $0.0499\\text{ m}$\n- Flu",
           "tail": "6.134 / 0.9653} = \\sqrt{99.58} = 10.0$.\n$Q = 0.0019615 \\times 10.0 = 0.0196$.\n\nLet's re-calculate $1 - (A_2/A_1)^2$ correctly.\n$A_2/A_1 = (0.0499/0.116)^2 = 0.18628$.\n$(A_2/A_1)^2 = 0.0347$.\n$1 - 0.03"
+        },
+        {
+          "case_id": "phys-0054",
+          "family": "hydrostatic_force",
+          "want": 27597.813628770004,
+          "got": 27571.11,
+          "passed": true,
+          "chars": 1402,
+          "has_json": true,
+          "raw": "To compute the magnitude of the resultant hydrostatic force on the gate, we use the hydrostatic pressure formula for a submerged plane surface.\n\n**1. Identify the given parameters:**\n*   Width of the gate ($w$): $0.73\\text{ m}$\n*   Height of the gate ($h$): $2.95\\text{ m}$\n*   Density of the fluid (",
+          "tail": "text{ Pa} \\times 2.1535\\text{ m}^2$$\n$$F = 27,571.1111... \\text{ N}$$\n\nRounding to the appropriate precision based on the input values:\n$F \\approx 27,571.11\\text{ N}$\n\n```json\n{\"answer\": 27571.11}\n```"
+        },
+        {
+          "case_id": "phys-0055",
+          "family": "manning_channel",
+          "want": 1.1616960571985102,
+          "got": 1.16415,
+          "passed": true,
+          "chars": 1308,
+          "has_json": true,
+          "raw": "To compute the discharge in the rectangular open channel, we use Manning's equation.\n\n**Given Data:**\n*   Bed width ($b$) = $2.54\\text{ m}$\n*   Flow depth ($y$) = $0.57\\text{ m}$\n*   Bed slope ($S$) = $0.00201$\n*   Manning's roughness coefficient ($n$) = $0.03$\n\n**Step-by-step Calculation:**\n\n1.  **",
+          "tail": "**\n    $Q = A \\times v$\n    $Q = 1.4498\\text{ m}^2 \\times 0.80315\\text{ m/s} \\approx 1.16415\\text{ m}^3/\\text{s}$\n\nRounding to appropriate precision:\n$Q \\approx 1.164$\n\n```json\n{\"answer\": 1.16415}\n```"
+        },
+        {
+          "case_id": "phys-0056",
+          "family": "pipe_head_loss",
+          "want": 6.754593169579066,
+          "got": 13.8114,
+          "passed": false,
+          "chars": 1907,
+          "has_json": true,
+          "raw": "To compute the head loss along the pipe, we follow these engineering steps:\n\n**1. Identify given parameters:**\n*   Density ($\\rho$): $998.0 \\text{ kg/m}^3$\n*   Dynamic viscosity ($\\mu$): $0.001002 \\text{ Pa}\\cdot\\text{s}$\n*   Flow rate ($Q$): $0.02731 \\text{ m}^3/\\text{s}$\n*   Diameter ($D$): $0.133",
+          "tail": "culation with higher precision:*\n$v = 1.984315$\n$Re = 261555.5$\n$f = 0.048536$\n$h_f = 0.048536 \\times (188.9/0.133) \\times (1.984315^2 / (2 \\times 9.80665)) = 13.8114$\n\n```json\n{\"answer\": 13.8114}\n```"
+        },
+        {
+          "case_id": "phys-0057",
+          "family": "pump_power",
+          "want": 573.9703320185794,
+          "got": 2.0,
+          "passed": false,
+          "chars": 7284,
+          "has_json": false,
+          "raw": "To solve for the shaft power required to overcome the head loss, we follow these engineering steps:\n\n**1. Calculate the flow velocity ($v$):**\nThe cross-sectional area $A = \\frac{\\pi D^2}{4}$.\n$A = \\frac{\\pi \\times (0.064 \\text{ m})^2}{4} \\approx 0.0321699 \\text{ m}^2$.\n$v = \\frac{Q}{A} = \\frac{0.00",
+          "tail": " it possible the formula is $f = 0.25 / [\\log_{10}(\\frac{\\epsilon}{3.7D} + \\frac{5.04}{Re^{0.09}})]^2$?\nLet's try $f = 0.25 / [\\log_{10}(\\frac{\\epsilon}{3.7D} + \\frac{5.04}{Re^{0.09}})]^2$.\nWait, I'll"
+        },
+        {
+          "case_id": "phys-0058",
+          "family": "terminal_velocity",
+          "want": 0.00039654621656091596,
+          "got": 0.000396788,
+          "passed": true,
+          "chars": 1559,
+          "has_json": true,
+          "raw": "To compute the terminal settling velocity of the sphere, we follow these engineering steps:\n\n**1. Identify given parameters (SI units):**\n*   Diameter ($d$) = $0.0002012 \\text{ m}$\n*   Radius ($r$) = $d/2 = 0.0001006 \\text{ m}$\n*   Density of sphere ($\\rho_s$) = $1114.9 \\text{ kg/m}^3$\n*   Density o",
+          "tail": "**\n$Re = \\frac{\\rho_f v_t d}{\\mu} = \\frac{1025 \\times 0.000396788 \\times 0.0002012}{0.005} \\approx 0.016$\nSince $Re < 0.1$, the assumption of Stokes flow is valid.\n\n```json\n{\"answer\": 0.000396788}\n```"
+        },
+        {
+          "case_id": "phys-0059",
+          "family": "venturi_flow",
+          "want": 0.1012605203334763,
+          "got": 1.01804,
+          "passed": false,
+          "chars": 2091,
+          "has_json": true,
+          "raw": "To compute the volumetric flow rate ($Q$) for a horizontal venturi meter under ideal, incompressible, and frictionless conditions, we use the Bernoulli equation and the continuity equation.\n\n**1. Identify given parameters:**\n*   Inlet diameter ($D_1$): $0.205\\text{ m}$\n*   Throat diameter ($D_2$): $",
+          "tail": "616}{868.826}}$\n*   $Q = 0.119881 \\times \\sqrt{72.081}$\n*   $Q = 0.119881 \\times 8.49006$\n*   $Q \\approx 1.01804$\n\nRounding to appropriate precision:\n$Q \\approx 1.018$\n\n```json\n{\"answer\": 1.01804}\n```"
         }
       ]
     }

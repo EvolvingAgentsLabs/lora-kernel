@@ -216,3 +216,81 @@ is supposed to detect and is the opposite of the truncation artefact.
 clean, only that its first two data points are not the artefact that voided the
 previous target. The column is printed per candidate so the question stays askable
 rather than assumed.
+
+---
+
+## Outcome (2026-09-12) — the criterion holds against a target that is ahead [ran]
+
+| candidate | verified | **agreement** | character α | agreement where the target was WRONG |
+|---|--:|--:|--:|--:|
+| `qwen3.5:2b` | 0.217 | 0.183 | 0.000 | 0.000 |
+| `qwen3.5:4b` | 0.483 | 0.400 | 0.000 | 0.000 |
+| `qwen3.5:9b` | **0.650** | **0.550** | 0.000 | **0.118** |
+| `gemma4:12b` | 0.433 | 0.350 | 0.000 | 0.059 |
+
+**6 of 6 discriminable pairs ordered correctly.**
+
+### The ordering it reproduced was not the obvious one
+
+    verified:   qwen3.5:9b  >  qwen3.5:4b  >  gemma4:12b  >  qwen3.5:2b
+
+**The 12B model ranks third, below a 4B.** A criterion that simply tracked parameter
+count would have got that pair backwards; agreement did not. That is the
+discriminating case in this ladder, and it is the reason the result is worth more
+than the 14-of-15 it replaces — those were peers, ordered in the order their sizes
+already suggested.
+
+### What the informative subset says on its own
+
+The target is right on 43 of 60, and **on a case the target got right, agreeing with
+it is being correct**. Only the 17 it got wrong can separate the criterion from the
+oracle. Scored on those alone:
+
+| candidate | values of the target's 17 errors reproduced |
+|---|--:|
+| `qwen3.5:9b` | **2** |
+| `gemma4:12b` | 1 |
+| `qwen3.5:4b` | 0 |
+| `qwen3.5:2b` | 0 |
+
+**4 of 6 pairs, and two unresolved rather than inverted** — `4b` cannot be separated
+from `2b` or from `12b`, because all three sit at or near zero. The subset points
+the same way as the global number everywhere it points at all, and **it does not
+invert anything**; it is simply too small to rank four models by itself.
+
+So the honest statement has two halves. **The pre-registered criterion passed, 6/6.**
+And the part of the evidence that cannot be a tautology is **three reproduced errors
+across four candidates** — consistent, directional, and thin.
+
+### The control does exactly what it was bought to do
+
+Against `gemini-3.8-flash` at 30/30 the same table also reads 6/6 — and the runner
+refuses to let that stand as evidence:
+
+    0 of 30 cases are informative — the ones the target got wrong.
+    WARNING — no candidate reproduced a single one of the target's wrong
+    values, so this ordering rests entirely on its easy subset
+
+**A perfect target makes agreement a synonym for correctness**, and a clean 6/6 from
+it means nothing. Printing both arms beside each other is what makes the first one
+readable.
+
+### Character α, one more time
+
+**0.000 for every candidate against every target.** The criterion §11 settled on
+semantics is not a refinement of character agreement; character agreement on this
+material is simply dead. It is carried because it once scored 1/5 with one target
+and 4/5 with another on the same candidates.
+
+### What this does and does not establish
+
+**Establishes**: agreement with a target that is genuinely ahead — 43/60 against a
+best candidate's 39/60, with every failure a finished answer — orders four
+candidates the way verified quality does, including a pair that size gets wrong.
+S2's caveat is discharged: this is no longer agreement with a peer.
+
+**Does not establish**: that it works when the target's lead is large. This target is
+four cases ahead of `qwen3.5:9b`. A frontier that is far ahead has a smaller error
+set, and the informative subset shrinks toward zero — which is the 30/30 arm above,
+where the method has nothing to measure. **The criterion is validated in the band
+where the target is ahead but fallible, and that band is where it was tested.**
