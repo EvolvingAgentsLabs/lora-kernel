@@ -715,6 +715,91 @@ result. **The defence is not that each fix was justified: it is that the
 confirmation set was scored once, after all seven, on material never opened during
 development, and it held.**
 
+#### P21 — the learned protocol ties the hand-written rule, as pre-registered
+
+[`results/P21-handbook-20260911/`](../results/P21-handbook-20260911/BRIEF.md).
+P15's material could be answered from memory, so the suite gained a **handbook drawn
+per case**: the properties a problem needs did not exist when the expert was trained
+and cannot be recalled. The killing arm was bought first and it worked — a control
+with no tool layer at all fell from **27/30 to 6/30** **[ran]**.
+
+| arm | final answer | oracle's tool values | calls | refused |
+|---|--:|--:|--:|--:|
+| no tool layer at all | **6/30** | 0/96 | 0 | 0 |
+| hand-written rule | 5/30 | 93/96 = **0.969** | 96 | **0** |
+| kernel adapter | 4/30 | 94/96 = **0.979** | 116 | **20** |
+
+**One value apart on the axis declared in advance, and the brief fixed before the
+run that a kernel within three is a tie.** It is reported as a tie. All three arms
+tie on the final answer too, with the *no-tool* control highest — which the headroom
+check predicted: 22 of the rule's 25 failures held every oracle value and the expert
+still answered wrong, so a perfect tool layer could only ever have moved three cases.
+
+**What separates them is character.** The rule makes 96 calls with none refused; the
+kernel makes 116 with 20 refused — **a 17.2% rejection rate** — and still ends ahead
+on coverage. Of its 14 failed cases carrying a rejection, **13 obtained every oracle
+value anyway**. The failure taxonomy therefore over-attributes to protocol here, and
+`classify` is left alone rather than reordered after seeing which arm it penalises.
+
+**Settled**: a learned protocol is neither worth its weights over a hand-written rule
+on this suite nor worse than one — the opposite of P13's 9/30 against 23/30.
+**Not settled**: whether 17.2% wasted calls matter against a paid or slow tool, and
+whether any of it ports. The rule is **144 lines** that know this suite's label
+vocabulary, unit table, fluid names and phrasings; the adapter learned from a corpus
+containing none of the evaluation families. A tie between those is not a tie in kind,
+but P21 did not measure portability and P9's transfer result remains the only
+evidence for it.
+
+#### P23 — S2 re-bought against a target that is actually ahead · RUNNING
+
+[`results/P23-ranking-20260912/`](../results/P23-ranking-20260912/BRIEF.md). S2
+passed 14 of 15 pairs against targets that were **peers** of the strongest candidate,
+which tests the criterion's mechanics and not the architecture's claim. P10 found a
+suite where a target is genuinely ahead, and its answers are already on disk.
+
+**The first replacement target was void, and the data that voided it was already
+there.** Against a 30/30 target, agreeing with the target is being correct, so the
+ordering test would pass tautologically. The same model at a smaller budget scores
+17/30 — and **all 13 of those failures are truncations**, derivations cut off
+mid-page whose "answer" is a pipe area. At the full budget it answers 13 of 13
+correctly. The target was not wrong, it was silent.
+
+**`gemini-3.5-flash-lite` at the full budget qualifies**: 43/60, nothing unparsed,
+and **17 of 17 failures are complete responses** against a pre-registered bar of
+0.80 **[ran]**. The ladder so far, all with nothing unparsed:
+
+| candidate | verified |
+|---|--:|
+| `qwen3.5:2b` | 13/60 |
+| `qwen3.5:4b` | 29/60 |
+| `qwen3.5:9b` | 39/60 |
+| `gemma4:12b` | running |
+| *target* | *43/60* |
+
+Differences of 16 and 10 cases — the ±1 tie that voided S2a is not in play.
+**Redesign count: 3**, accounted for in the brief rather than reinterpreted, and the
+budget is declared spent: if the test voids at n=60, S2 is reported unanswerable on
+this suite.
+
+#### P24 — the one number where code beats weights · BUILT, NOT RUN
+
+[`results/P24-constrained-20260912/`](../results/P24-constrained-20260912/BRIEF.md).
+P21 left exactly one: 0 refused calls against 20. The adapter is not worse at knowing
+what to ask, it is worse at *saying* it — and a sampler can close that. A grammar
+mask over the kernel's turn, ~120 lines, no weights and no extra forward pass.
+
+**The result is predicted from P21's own transcripts, before any GPU [ran]**: replayed
+over every call the tools refused, the mask makes **14 of 19 impossible**. The five it
+misses are syntactically perfect calls refused for a reason no grammar can see — the
+adapter asking for water when the problem's handbook holds invented codes. **A mask
+that caught those would be deciding content**, so the pre-registration is corrected
+downward before the run: rejections fall to about five, not to zero, and **a run
+reaching zero voids the arm**.
+
+`grammar_check.py` replays all 2226 calls in both corpora and the evaluation and
+fails if one legal character is refused. It caught three bugs in the grammar before
+any of it ran; each would have appeared on a GPU as the adapter getting worse.
+
 #### P18 — the guard is falsified: P16 measured two families, not a boundary
 
 [`results/P18-confirm-20260910/`](../results/P18-confirm-20260910/BRIEF.md). P16's

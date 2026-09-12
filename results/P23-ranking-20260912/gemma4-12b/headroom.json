@@ -16,19 +16,19 @@
     "ollama:gemma4:12b": {
       "model": "ollama:gemma4:12b",
       "n": 60,
-      "passed": 19,
-      "accuracy": 0.3167,
+      "passed": 22,
+      "accuracy": 0.3667,
       "unparsed": 0,
-      "seconds": 3357.6,
+      "seconds": 411.6,
       "thinking_chars": 0,
-      "without_json": 12,
+      "without_json": 13,
       "by_family": {
-        "hydrostatic_force": "7/8",
-        "manning_channel": "7/8",
+        "hydrostatic_force": "8/9",
+        "manning_channel": "8/9",
         "pipe_head_loss": "0/8",
-        "pump_power": "0/7",
-        "terminal_velocity": "4/7",
-        "venturi_flow": "1/7"
+        "pump_power": "0/8",
+        "terminal_velocity": "4/8",
+        "venturi_flow": "2/8"
       },
       "records": [
         {
@@ -525,6 +525,61 @@
           "has_json": false,
           "raw": "To compute the head loss along the pipe, we follow these engineering steps:\n\n1.  **Identify given parameters:**\n    *   Density ($\\rho$): $998.0 \\text{ kg/m}^3$\n    *   Dynamic viscosity ($\\mu$): $0.0015 \\text{ Pa}\\cdot\\text{s}$\n    *   Flow rate ($Q$): $0.04168 \\text{ m}^3/\\text{s}$\n    *   Diamete",
           "tail": "}(1.14211) = 0.0578$ is wrong.\n$\\log_{10}(1.14211) = 0.0578$ is wrong. $\\log_{10}(1.14211) = 0.0578$ is wrong.\n$\\log_{10}(1.14211) = 0.0578$ is wrong. $\\log_{10}(1.14211) = 0.0578$ is wrong.\n$\\log_{10"
+        },
+        {
+          "case_id": "phys-0045",
+          "family": "pump_power",
+          "want": 15104.16136201708,
+          "got": 5.0,
+          "passed": false,
+          "chars": 7385,
+          "has_json": false,
+          "raw": "To solve for the head loss and the required shaft power, we follow these engineering steps:\n\n**1. Identify Given Parameters:**\n*   Density ($\\rho$): $998.0 \\text{ kg/m}^3$\n*   Dynamic Viscosity ($\\mu$): $0.001002 \\text{ Pa}\\cdot\\text{s}$\n*   Flow Rate ($Q$): $0.0534 \\text{ m}^3/\\text{s}$\n*   Diamete",
+          "tail": "og_{10}(\\frac{\\epsilon}{3.7D} + \\frac{5.04}{Re^{0.056}})]^2$.\nActually, the value of $\\log_{10}(0.97900574)$ is $-0.00956$.\nWait, the formula is $f = 0.25 / [\\log_{10}(\\frac{\\epsilon}{3.7D} + \\frac{5."
+        },
+        {
+          "case_id": "phys-0046",
+          "family": "terminal_velocity",
+          "want": 0.001832020820653333,
+          "got": 1.837,
+          "passed": false,
+          "chars": 1964,
+          "has_json": true,
+          "raw": "To compute the terminal settling velocity of the sphere, we follow these engineering steps:\n\n1.  **Identify given parameters (SI units):**\n    *   Diameter ($d$) = $0.0001624 \\text{ m}$\n    *   Radius ($r$) = $d/2 = 0.0000812 \\text{ m}$\n    *   Density of sphere ($\\rho_s$) = $1635.5 \\text{ kg/m}^3$\n",
+          "tail": "n:**\n    $v_t = \\frac{9.80665 \\cdot (0.0001624)^2 \\cdot 637.5}{18 \\cdot 0.005} = 1.83678...$\n\nRounding to significant figures based on the input (4 significant figures):\n\n```json\n{\"answer\": 1.837}\n```"
+        },
+        {
+          "case_id": "phys-0047",
+          "family": "venturi_flow",
+          "want": 0.11276001663312527,
+          "got": 0.11351,
+          "passed": true,
+          "chars": 2474,
+          "has_json": true,
+          "raw": "To compute the volumetric flow rate ($Q$) for a horizontal venturi meter under ideal, incompressible, and frictionless conditions, we use the Bernoulli equation and the continuity equation.\n\n**Given Data:**\n- Inlet diameter ($D_1$): $0.225\\text{ m}$\n- Throat diameter ($D_2$): $0.1242\\text{ m}$\n- Flu",
+          "tail": "7035 = 0.9062965$\n$v_2 = \\sqrt{69152.6 / (880 \\times 0.9062965)} = \\sqrt{69152.6 / 797.53712} = \\sqrt{86.6851}$\n$v_2 = 9.3105$\n$Q = 0.01218955 \\times 9.3105 = 0.11351$\n\n```json\n{\"answer\": 0.11351}\n```"
+        },
+        {
+          "case_id": "phys-0048",
+          "family": "hydrostatic_force",
+          "want": 125156.61661619815,
+          "got": 124101.11,
+          "passed": true,
+          "chars": 1417,
+          "has_json": true,
+          "raw": "To compute the magnitude of the resultant hydrostatic force on the gate, we use the hydrostatic pressure formula for a submerged plane surface.\n\n**1. Identify the given parameters:**\n*   Width of the gate ($w$): $0.89\\text{ m}$\n*   Height of the gate ($h$): $3.87\\text{ m}$\n*   Density of the fluid (",
+          "tail": "t{ Pa} \\times 3.4443\\text{ m}^2$$\n$$F = 124,101.111\\dots\\text{ N}$$\n\nRounding to the appropriate precision based on the input values:\n$F \\approx 124,101.11\\text{ N}$\n\n```json\n{\"answer\": 124101.11}\n```"
+        },
+        {
+          "case_id": "phys-0049",
+          "family": "manning_channel",
+          "want": 3.894399934500192,
+          "got": 3.8954,
+          "passed": true,
+          "chars": 1220,
+          "has_json": true,
+          "raw": "To compute the discharge in the rectangular open channel, we use Manning's equation.\n\n**Given Data:**\n*   Bed width ($b$) = $2.47\\text{ m}$\n*   Flow depth ($y$) = $1.39\\text{ m}$\n*   Bed slope ($S$) = $0.00204$\n*   Manning's roughness coefficient ($n$) = $0.03$\n\n**Step-by-step Calculation:**\n\n1.  **",
+          "tail": "Q$):**\n    $Q = A \\times v$\n    $Q = 3.4333\\text{ m}^2 \\times 1.1351\\text{ m/s} \\approx 3.8954\\text{ m}^3/\\text{s}$\n\nRounding to appropriate precision:\n$Q \\approx 3.90$\n\n```json\n{\"answer\": 3.8954}\n```"
         }
       ]
     }

@@ -739,6 +739,94 @@ buscando su resultado. **La defensa no es que cada arreglo estuviera justificado
 que el conjunto de confirmación se puntuó una sola vez, después de los siete, sobre
 material nunca abierto durante el desarrollo, y se sostuvo.**
 
+#### P21 — el protocolo aprendido empata con la regla escrita a mano, como estaba pre-registrado
+
+[`results/P21-handbook-20260911/`](../../results/P21-handbook-20260911/BRIEF.md).
+El material de P15 se podía responder de memoria, así que la suite ganó un **manual
+por caso**: las propiedades que un problema necesita no existían cuando el experto se
+entrenó y no se pueden recordar. El brazo que podía matar la hipótesis se compró
+primero y funcionó — un control sin capa de herramientas cayó de **27/30 a 6/30**
+**[ran]**.
+
+| brazo | respuesta final | valores del oráculo | llamadas | rechazadas |
+|---|--:|--:|--:|--:|
+| sin capa de herramientas | **6/30** | 0/96 | 0 | 0 |
+| regla escrita a mano | 5/30 | 93/96 = **0,969** | 96 | **0** |
+| kernel adapter | 4/30 | 94/96 = **0,979** | 116 | **20** |
+
+**Un valor de diferencia en el eje declarado de antemano, y el brief fijó antes de
+correr que un kernel a menos de tres es empate.** Se reporta empate. Los tres brazos
+empatan también en respuesta final, con el control *sin herramientas* arriba — que es
+lo que predijo el chequeo de headroom: 22 de los 25 fallos de la regla tenían todos
+los valores del oráculo y el experto igual respondió mal, así que una capa perfecta
+sólo podía mover tres casos.
+
+**Lo que los separa es el carácter.** La regla hace 96 llamadas sin ninguna rechazada;
+el kernel hace 116 con 20 rechazadas — **17,2%** — y aun así termina arriba en
+cobertura. De sus 14 casos fallidos con rechazo, **13 obtuvieron igual todos los
+valores del oráculo**. La taxonomía de fallos sobre-atribuye a protocolo acá, y
+`classify` se deja como está en vez de reordenarse después de ver a qué brazo castiga.
+
+**Zanjado**: un protocolo aprendido no vale más que una regla escrita a mano en esta
+suite, ni menos — lo opuesto al 9/30 contra 23/30 de P13. **Sin zanjar**: si un 17,2%
+de llamadas desperdiciadas importa contra una herramienta paga o lenta, y si algo de
+esto es portable. La regla son **144 líneas** que conocen el vocabulario de etiquetas
+de esta suite, su tabla de unidades, sus fluidos y sus frases; el adaptador aprendió
+de un corpus sin ninguna familia de evaluación. Un empate entre esos dos no es empate
+en especie, pero P21 no midió portabilidad y el resultado de transferencia de P9 sigue
+siendo la única evidencia.
+
+#### P23 — S2 recomprado contra un target que sí está adelante · CORRIENDO
+
+[`results/P23-ranking-20260912/`](../../results/P23-ranking-20260912/BRIEF.md). S2
+pasó 14 de 15 pares contra targets que eran **pares** del candidato más fuerte, lo que
+prueba la mecánica del criterio y no la afirmación de la arquitectura. P10 encontró una
+suite donde un target sí está adelante, y sus respuestas ya están en disco.
+
+**El primer target de reemplazo quedó anulado, y el dato que lo anuló ya estaba ahí.**
+Contra un target de 30/30, estar de acuerdo con el target es estar en lo correcto, así
+que el test pasaría tautológicamente. El mismo modelo con presupuesto menor saca 17/30
+— y **los 13 fallos son truncamientos**, derivaciones cortadas a mitad de página cuya
+"respuesta" es un área de cañería. A presupuesto completo acierta los 13 de 13. El
+target no estaba equivocado, estaba callado.
+
+**`gemini-3.5-flash-lite` a presupuesto completo califica**: 43/60, nada sin parsear, y
+**17 de 17 fallos son respuestas completas** contra una barra pre-registrada de 0,80
+**[ran]**. La escalera hasta ahora, todos con nada sin parsear:
+
+| candidato | verificado |
+|---|--:|
+| `qwen3.5:2b` | 13/60 |
+| `qwen3.5:4b` | 29/60 |
+| `qwen3.5:9b` | 39/60 |
+| `gemma4:12b` | corriendo |
+| *target* | *43/60* |
+
+Diferencias de 16 y 10 casos — el empate de ±1 que anuló S2a no está en juego.
+**Conteo de rediseños: 3**, contabilizado en el brief en vez de reinterpretado, y el
+presupuesto queda declarado gastado: si el test se anula a n=60, S2 se reporta no
+respondible en esta suite.
+
+#### P24 — el único número donde el código le gana a los pesos · CONSTRUIDO, SIN CORRER
+
+[`results/P24-constrained-20260912/`](../../results/P24-constrained-20260912/BRIEF.md).
+P21 dejó exactamente uno: 0 llamadas rechazadas contra 20. El adaptador no es peor
+sabiendo qué pedir, es peor *diciéndolo* — y un sampler puede cerrar eso. Una máscara
+gramatical sobre el turno del kernel, ~120 líneas, sin pesos y sin forward pass extra.
+
+**El resultado está predicho desde los transcripts de P21, antes de la GPU [ran]**:
+replayada sobre cada llamada que los tools rechazaron, la máscara vuelve **imposibles
+14 de 19**. Las cinco que se le escapan son llamadas sintácticamente perfectas
+rechazadas por algo que ninguna gramática puede ver — el adaptador pidiendo agua
+cuando el manual del problema tiene códigos inventados. **Una máscara que atrapara eso
+estaría decidiendo contenido**, así que la pre-registración se corrige a la baja antes
+de correr: las rechazadas caen a unas cinco, no a cero, y **una corrida que llegue a
+cero anula el brazo**.
+
+`grammar_check.py` replaya las 2226 llamadas de ambos corpus y la evaluación y falla si
+un solo carácter legal es rechazado. Encontró tres bugs en la gramática antes de que
+nada corriera; cada uno habría aparecido en la GPU como el adaptador empeorando.
+
 #### P18 — el guardia queda falsificado: P16 midió dos familias, no un borde
 
 [`results/P18-confirm-20260910/`](../../results/P18-confirm-20260910/BRIEF.md). El
