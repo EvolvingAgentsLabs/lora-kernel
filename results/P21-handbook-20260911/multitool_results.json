@@ -819,25 +819,25 @@
       "label": "kernel adapter writes the calls",
       "layer": "kernel",
       "n": 30,
-      "scored": 2,
+      "scored": 3,
       "complete": false,
       "passed": 0,
       "accuracy": 0.0,
-      "queries": 5,
+      "queries": 9,
       "rejected": 0,
-      "declined": 12,
-      "tool_values_matched": 5,
-      "tool_values_wanted": 5,
+      "declined": 18,
+      "tool_values_matched": 9,
+      "tool_values_wanted": 9,
       "failure_modes": {
-        "failed": 2,
+        "failed": 3,
         "by_mode": {
           "malformed": 0,
           "missing": 0,
           "wrong args": 0,
-          "physics": 2
+          "physics": 3
         },
         "protocol": 0,
-        "physics": 2,
+        "physics": 3,
         "share_physics": 1.0
       },
       "records": [
@@ -866,6 +866,19 @@
           "matched": 2,
           "wanted": 2,
           "raw": "1. Channel width: <convert>value=1701.6; from=mm; to=m</convert>= 1.7016\n2. Flow depth: <convert>value=1377.8; from=mm; to=m</convert>= 1.3778\n3. Flow area: <convert>value\n1.7016 * 1.3778, from=m, to=m^2</convert> \n4. Wetted perimeter: <convert>value\n1.7016 + 2*1.3778, from=m, to=m</convert> = 4.4572\n5. Hydraulic radius R = A/P: <convert>value\n1.3778 / 4.4572, from=m, to=m</convert> = 0.309993\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <convert>value\n1/0.017 * 1.3778**2/3.0 * 0.309993**(2/3), from=m**2/s, to=m**3/s</convert> \n"
+        },
+        {
+          "case_id": "mt-0002",
+          "family": "pipe_head_loss",
+          "want": 0.24219236092172494,
+          "got": 2.0,
+          "passed": false,
+          "queries": 4,
+          "rejected": 0,
+          "declined": 6,
+          "matched": 4,
+          "wanted": 4,
+          "raw": "1. Flow rate: <convert>value=25.6; from=m^3/h; to=m^3/s</convert>= 0.00711111\n2. Pipe diameter: <convert>value=23.9; from=cm; to=m</convert>= 0.239\n3. Density of the fluid: <lookup>fluid=Zv-76; property=density; T=10</lookup>= 1343.9\n4. Dynamic viscosity: <lookup>fluid=Zv-76; property=viscosity; T=10</lookup>= 0.113\n5. Cross-sectional area: pi/4 * <convert>value\n23.9; from=m; to=m</convert>**2 = 0.420069\n6. Velocity v = Q/A: <convert>value\n0.00711111; from=m^3/s; to=m/s</convert> = 0.0167529\n7. Reynolds number: <convert>value\n1343.9; from=kg/m^3; to=N/m^2</convert> / (<convert>value\n"
         }
       ]
     }
