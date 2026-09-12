@@ -284,7 +284,7 @@ def generate(n: int, seed: int, families: dict | None = None) -> list[dict]:
     return out
 
 
-def domain_chain(chain) -> str:
+def domain_chain(chain, handbook=None) -> str:
     """The same solution with the PROTOCOL removed and the physics kept.
 
     A tool step becomes `3. Density of the fluid: 998.2` — the label and the value
@@ -301,7 +301,7 @@ def domain_chain(chain) -> str:
     from training.physics.tools import answer
     lines, last = [], 0.0
     for i, (label, tool, body) in enumerate(chain, 1):
-        last = answer(tool, body)
+        last = answer(tool, body, handbook)
         if tool == "calc":
             lines.append(f"{i}. {label}: {body} = {last:.6g}")
         else:
@@ -325,7 +325,7 @@ def main() -> int:
                  "answer": r["answer"], "unit": r["unit"],
                  "messages": [{"role": "system", "content": SYSTEM},
                               {"role": "user", "content": r["prompt"]},
-                              {"role": "assistant", "content": domain_chain(r["chain"])}]}
+                              {"role": "assistant", "content": domain_chain(r["chain"], {tuple(k): v for k, v in r["handbook"]})}]}
                 for r in rows]
     text = "\n".join(json.dumps(r) for r in rows) + "\n"
     if args.out:

@@ -32,11 +32,13 @@ import pathlib
 import random
 
 from training.physics.multitool import INSTRUCTION
-from training.physics.tools import FLUIDS, UNITS, answer
+from training.physics.multitool import _fluid, handbook_for
+from training.physics.tools import UNITS, answer
 from training.protocol import SYSTEM
 
-LIQUIDS = [("water", 10), ("water", 20), ("water", 40), ("water", 60),
-           ("seawater", 20), ("ethanol", 20), ("glycerin", 20), ("sae30 oil", 20)]
+# THE KERNEL CORPUS USES INVENTED FLUIDS TOO. If it trained against the fixed
+# table it would learn those fourteen numbers and stop querying, which is the
+# behaviour P15 measured and this material exists to remove [ran].
 FLOW = ["L/s", "m^3/h", "L/min", "m^3/s"]        # m^3/s is the trap: no convert
 LENGTH = ["mm", "cm", "m", "in"]                 # m is the trap
 PRESSURE = ["kPa", "bar", "mbar", "Pa"]          # Pa is the trap
@@ -47,26 +49,24 @@ def _si(v: float, u: str) -> float:
 
 
 def mass_flow(rng):
-    name, t = rng.choice(LIQUIDS)
+    name, t, rho, mu = _fluid(rng)
     u = rng.choice(FLOW)
     q = round(rng.uniform(2, 90), 1)
-    rho = FLUIDS[(name, t)]["density"]
     chain = []
     if u != "m^3/s":
         chain.append(("Volumetric flow", "convert", f"value={q}; from={u}; to=m^3/s"))
     chain.append(("Density of the fluid", "lookup",
                   f"fluid={name}; property=density; T={t}"))
     chain.append(("Mass flow", "calc", f"{rho} * {_si(q, u):.6g}"))
-    stmt = (f"Mass flow equals density times volumetric flow. {name.capitalize()} "
+    stmt = (f"Mass flow equals density times volumetric flow. {name} "
             f"at {t} C is delivered at {q} {u}. Compute the mass flow.")
-    return stmt, "kg/s", chain
+    return stmt, "kg/s", chain, handbook_for(name, t, rho, mu)
 
 
 def column_pressure(rng):
-    name, t = rng.choice(LIQUIDS)
+    name, t, rho, mu = _fluid(rng)
     u = rng.choice(LENGTH)
     h = round(rng.uniform(50, 900), 1) if u in ("mm", "cm") else round(rng.uniform(1, 9), 2)
-    rho = FLUIDS[(name, t)]["density"]
     chain = []
     if u != "m":
         chain.append(("Column height", "convert", f"value={h}; from={u}; to=m"))
@@ -76,19 +76,17 @@ def column_pressure(rng):
     stmt = (f"The pressure under a still column of liquid is density times 9.80665 "
             f"times height. A column of {name} at {t} C stands {h} {u} tall. What "
             f"is the pressure at its base?")
-    return stmt, "Pa", chain
+    return stmt, "Pa", chain, handbook_for(name, t, rho, mu)
 
 
 def kinematic_viscosity(rng):
-    name, t = rng.choice(LIQUIDS)
-    rho = FLUIDS[(name, t)]["density"]
-    mu = FLUIDS[(name, t)]["viscosity"]
+    name, t, rho, mu = _fluid(rng)
     chain = [("Dynamic viscosity", "lookup", f"fluid={name}; property=viscosity; T={t}"),
              ("Density of the fluid", "lookup", f"fluid={name}; property=density; T={t}"),
              ("Kinematic viscosity", "calc", f"{mu} / {rho}")]
     stmt = (f"Kinematic viscosity is dynamic viscosity divided by density. Give it "
             f"for {name} at {t} C.")
-    return stmt, "m^2/s", chain
+    return stmt, "m^2/s", chain, handbook_for(name, t, rho, mu)
 
 
 def force_from_pressure(rng):
@@ -105,7 +103,7 @@ def force_from_pressure(rng):
                   f"{_si(p, pu):.6g} * {_si(a_side, lu) ** 2:.6g}"))
     stmt = (f"Force equals pressure times area. A square plate of side {a_side} {lu} "
             f"has {p} {pu} acting uniformly on it. Find the force.")
-    return stmt, "N", chain
+    return stmt, "N", chain, {}
 
 
 def flow_ratio(rng):
@@ -118,7 +116,7 @@ def flow_ratio(rng):
              ("Ratio", "calc", f"{_si(a, u1):.6g} / {_si(b, u2):.6g}")]
     stmt = (f"One line carries {a} {u1} and another carries {b} {u2}. How many "
             f"times larger is the first flow than the second?")
-    return stmt, "dimensionless", chain
+    return stmt, "dimensionless", chain, {}
 
 
 TASKS = [mass_flow, column_pressure, kinematic_viscosity, force_from_pressure,
@@ -129,11 +127,11 @@ FORBIDDEN = ("reynolds", "friction factor", "manning", "venturi", "throat",
              "gate", "swamee")
 
 
-def render(chain) -> tuple[str, float]:
+def render(chain, handbook=None) -> tuple[str, float]:
     """The chain with every call answered, and the value it ends on."""
     lines, last = [], 0.0
     for i, (label, tool, body) in enumerate(chain, 1):
-        last = answer(tool, body)
+        last = answer(tool, body, handbook)
         lines.append(f"{i}. {label}: <{tool}>{body}</{tool}>= {last:.6g}")
     return "\n".join(lines) + f'\n\n{{"answer": {last:.6g}}}', last
 
@@ -149,8 +147,8 @@ def main() -> int:
     rows, no_convert = [], 0
     for i in range(args.n):
         task = TASKS[i % len(TASKS)]
-        stmt, unit, chain = task(rng)
-        body, _ = render(chain)
+        stmt, unit, chain, book = task(rng)
+        body, _ = render(chain, book)
         tools = sorted({t for _, t, _ in chain})
         no_convert += "convert" not in tools
         rows.append({"case_id": f"mtk-{i:04d}", "task": task.__name__,

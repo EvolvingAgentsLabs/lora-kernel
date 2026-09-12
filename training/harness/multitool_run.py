@@ -55,7 +55,7 @@ def _statement(prompt: str) -> str:
     return prompt.split("\n\n")[0]
 
 
-def run_case(step, prompt: str, layer: str, max_steps: int = 10):
+def run_case(step, prompt: str, layer: str, handbook=None, max_steps: int = 10):
     """One problem. Returns (transcript, queries, rejected, declined)."""
     out, queries, rejected, declined = "", 0, 0, 0
     stmt = _statement(prompt)
@@ -89,7 +89,7 @@ def run_case(step, prompt: str, layer: str, max_steps: int = 10):
             out += " " + call
             queries += 1
             try:
-                out += f"= {answer(m.group(1), m.group(2)):.6g}\n"
+                out += f"= {answer(m.group(1), m.group(2), handbook):.6g}\n"
             except ToolError as e:
                 rejected += 1
                 out += f"= ERROR: {e}\n"
@@ -123,7 +123,15 @@ def make_step(peft_model, tok, max_new_tokens: int):
 
 
 def oracle_tool_values(row) -> list[float]:
-    return [answer(t, b) for _, t, b in row["chain"] if t in QUERIES]
+    book = _book(row)
+    return [answer(t, b, book) for _, t, b in row["chain"] if t in QUERIES]
+
+
+def _book(row) -> dict:
+    """The handbook this problem carries. It lives in the tool, never in the
+    prompt — a printed handbook can be copied, and P15 died of a table that
+    could be remembered [ran]."""
+    return {tuple(k): v for k, v in row.get("handbook", [])}
 
 
 def score(step, rows, rtol, label, layer, prev=None, save=None):
@@ -149,17 +157,18 @@ def score(step, rows, rtol, label, layer, prev=None, save=None):
     for i, row in enumerate(rows, 1):
         if row["case_id"] in done:
             continue
-        text, q, rej, dec = run_case(step, row["prompt"], layer)
+        text, q, rej, dec = run_case(step, row["prompt"], layer, _book(row))
         got = parse_answer(text)
         # HOW MANY OF THE ORACLE'S QUERIES DID THIS ARM ACTUALLY REPRODUCE? The
         # final answer folds tool errors and physics errors together; this does
         # not, and it is the number the 92.9% bar is stated in.
         want_vals = oracle_tool_values(row)
         got_vals = []
+        book = _book(row)
         for m in CALL.finditer(text):
             if m.group(1) in QUERIES:
                 try:
-                    got_vals.append(answer(m.group(1), m.group(2)))
+                    got_vals.append(answer(m.group(1), m.group(2), book))
                 except ToolError:
                     pass
         pool = list(want_vals)
@@ -205,6 +214,9 @@ def main() -> int:
     ap.add_argument("--targets",
                     default="q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj")
     ap.add_argument("--four-bit", dest="four_bit", action="store_true")
+    ap.add_argument("--gate", type=float, default=0.35,
+                    help="if the no-tool arm reaches this, the material is still "
+                         "memorisable and the other arms are not bought")
     args = ap.parse_args()
 
     from peft import PeftModel
@@ -258,9 +270,23 @@ def main() -> int:
         summary["arms"][label] = score(step, ev, args.rtol, label, layer, prev, bank)
         save()
 
-    run("kernel adapter writes the calls", "kernel")   # the claim, bought first
-    run("hand-written rule writes the calls", "rule")  # the bar
-    run("no tool layer at all", "none")                # prices the tools themselves
+    # THE KILLING ARM IS BOUGHT FIRST. P15 ordered this last and paid for two arms
+    # before learning its material could be answered from memory [ran]. If the
+    # expert still scores well with no tool layer, the handbook did not work and
+    # the other two arms are not bought.
+    run("no tool layer at all", "none")
+    if summary["arms"]["no tool layer at all"]["accuracy"] >= args.gate:
+        print(f"[gate] STOPPED. With no tool layer the expert scores "
+              f"{summary['arms']['no tool layer at all']['accuracy']:.3f}, at or "
+              f"above the gate of {args.gate:.2f}: the material is still "
+              "answerable without the tools and the other arms measure nothing.",
+              flush=True)
+        summary["stopped_at_gate"] = True
+        summary["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")
+        save()
+        return 0
+    run("hand-written rule writes the calls", "rule")   # the bar
+    run("kernel adapter writes the calls", "kernel")    # the claim
 
     a = summary["arms"]
     print(f"\n{'arm':<40}{'passed':>9}{'tool steps':>13}{'queries':>9}{'rejected':>10}")

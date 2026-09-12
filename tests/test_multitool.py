@@ -42,7 +42,8 @@ def _expert(labels, exprs):
 def test_the_rule_layer_answers_queries_and_defers_the_rest():
     step = _expert(["Gate width", "Density of the fluid", "Area of the gate"],
                    ["2 * 3"])
-    out, queries, rejected, declined = run_case(step, ROW["prompt"], "rule")
+    book = {tuple(k): v for k, v in ROW["handbook"]}
+    out, queries, rejected, declined = run_case(step, ROW["prompt"], "rule", book)
     assert queries == 2 and rejected == 0, (queries, rejected)
     assert declined == 1, declined
     assert "<convert>" in out and "<lookup>" in out, out
@@ -75,15 +76,30 @@ def test_the_kernel_declines_by_choosing_calc():
 
 
 @check
+def test_a_lookup_outside_this_problems_handbook_is_refused():
+    """The handbook is per case, so a fluid from another problem is not an
+    interpolation — it is an error, and the run must see it as one."""
+    def step(adapter, user, prefix, stops):
+        if adapter == "kernel":
+            return " <lookup>fluid=ZZ-99; property=density; T=20</lookup>"
+        return '1. Density of the fluid:' if not prefix else '\n{"answer": 42}'
+
+    book = {tuple(k): v for k, v in ROW["handbook"]}
+    out, queries, rejected, _ = run_case(step, ROW["prompt"], "kernel", book)
+    assert queries == 1 and rejected == 1, (queries, rejected)
+    assert "ERROR" in out and "zz-99" in out.lower(), out
+
+
+@check
 def test_a_query_the_tool_rejects_is_counted_and_shown():
     def step(adapter, user, prefix, stops):
         if adapter == "kernel":
             return " <lookup>fluid=mercury; property=density; T=20</lookup>"
         return '1. Density of the fluid:' if not prefix else '\n{"answer": 42}'
 
-    out, queries, rejected, _ = run_case(step, ROW["prompt"], "kernel")
+    out, queries, rejected, _ = run_case(step, ROW["prompt"], "kernel", {})
     assert queries == 1 and rejected == 1, (queries, rejected)
-    assert "ERROR" in out and "mercury" in out, out
+    assert "ERROR" in out, out
 
 
 if __name__ == "__main__":

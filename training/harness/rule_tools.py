@@ -63,9 +63,17 @@ def _quantities(statement: str, dim: str) -> list[tuple[float, str, int]]:
             for m in re.finditer(pattern, statement)]
 
 
+# `HQ-59`, `XJ-7` — the codes a per-case handbook uses. The rule has to read these
+# or it cannot query at all on the new material, and a competitor that cannot
+# compete is not a competitor. This is a fair repair to the baseline, not a tweak
+# to the treatment: the material changed under it.
+CODE = re.compile(r"\b([A-Za-z]{2}-\d{1,2})\b")   # `Da-84` opens a sentence
+
+
 def _fluid_and_temperature(statement: str) -> tuple[str, int] | None:
     low = statement.lower()
-    name = next((f for f in FLUID_NAMES if f in low), None)
+    m = CODE.search(statement)
+    name = m.group(1).lower() if m else next((f for f in FLUID_NAMES if f in low), None)
     if name is None:
         return None
     m = re.search(rf"({NUM})\s*C\b", statement)
@@ -85,8 +93,14 @@ def _pick(statement, label, qs, near):
     give up — so it does.
     """
     low = statement.lower()
-    if re.search(rf"{NUM}\s*\w+\s+by\s+{NUM}", low) and len(qs) >= 2:
-        want_second = any(w in label.lower() for w in ("height", "depth", "tall"))
+    # "X by Y" and "narrows from X to Y" both order their pair by convention and
+    # name neither: width then height, inlet then throat. A rule that gave up here
+    # would lose a phrasing it can obviously read.
+    ordered = (re.search(rf"{NUM}\s*\w+\s+by\s+{NUM}", low)
+               or re.search(rf"from\s+{NUM}\s*\w+\s+to\s+{NUM}", low))
+    if ordered and len(qs) >= 2:
+        want_second = any(w in label.lower()
+                          for w in ("height", "depth", "tall", "throat"))
         return qs[1] if want_second else qs[0]
 
     def cost(q):

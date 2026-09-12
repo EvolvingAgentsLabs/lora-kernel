@@ -49,3 +49,26 @@ the answer genuinely is not in the weights.
 
 **Redesign count: 0.** This is a new experiment on new material, not P15 retuned —
 P15's numbers stand as published.
+
+---
+
+**Built and verified before any GPU was bought (2026-09-11) [ran].**
+
+| check | result |
+|---|---|
+| the oracle's chains still reach their answers | **400/400** |
+| statements containing a value from their own handbook | **0/400** |
+| the hand-written bar, repaired for the new phrasings | **94.0%** |
+
+**Two faults of my own, caught before the run rather than by it.** The first draft
+**printed the handbook in the statement**, which repeats P15's fault with a new
+face: a density in the prompt is copied, and the call is decoration again. And the
+rule had fluid names hard-coded, so it could not query at all on invented codes —
+leaving it that way would have handed the kernel a win by default. Both fixed; the
+bar came out *higher* than on the old material, 94.0% against 92.9%.
+
+**The kernel's own corpus uses invented fluids too**, or it would learn the fixed
+table and stop querying — the behaviour this material exists to remove.
+
+**The gate is in the runner**: if the no-tool arm reaches 0.35, the material is
+still answerable from memory and arms 2 and 3 are not bought.
