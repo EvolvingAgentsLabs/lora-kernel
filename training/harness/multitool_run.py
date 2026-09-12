@@ -249,10 +249,20 @@ def main() -> int:
     def save():
         RESULTS.write_text(json.dumps(summary, indent=2))
 
+    # AN ADAPTER IS ITS WEIGHTS, NOT ITS DIRECTORY. This check used to be
+    # `Path(path).exists()`, and a session-carrying tarball shipped an EMPTY
+    # `adapters/domain-mt` — the directory trl creates before it has written
+    # anything [ran] 2026-09-12. That would have skipped training and scored the
+    # base model wearing an adapter's name, silently, with every other number in
+    # the run looking normal. Keying on the weights file makes the failure loud.
     for name, rows, path in (("kernel", kernel_rows, "adapters/kernel-mt"),
                              ("domain", domain_rows, "adapters/domain-mt")):
-        if not Path(path).exists():
-            print(f"[train] {name}", flush=True)
+        if not (Path(path) / "adapter_model.safetensors").exists():
+            if Path(path).exists():
+                print(f"[train] {name} — directory present but no weights in it",
+                      flush=True)
+            else:
+                print(f"[train] {name}", flush=True)
             train_adapter(args.base, rows, path, args)
             free()
 

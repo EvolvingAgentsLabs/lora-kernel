@@ -95,8 +95,15 @@ import subprocess
 subprocess.Popen(
     "cd /content/lora-kernel && "
     "([ -f adapters.tgz ] && tar xzf adapters.tgz || true) && "
-    "(nohup bash -c 'while [ ! -d adapters/domain-mt ]; do sleep 20; done; "
-    "sleep 20; tar czf adapters.tgz adapters' >/dev/null 2>&1 &) && "
+    # A DIRECTORY IS NOT A TRAINED ADAPTER. The first version of this watcher
+    # waited for `adapters/domain-mt` to EXIST and fired the moment trl created
+    # it, shipping back a 106 MB tarball whose domain adapter was an empty
+    # directory [ran] 2026-09-12. The runner skips training when the directory is
+    # present, so that tarball would have scored an untrained adapter in silence.
+    # The trigger is the weights file, and only the weights files are packed.
+    "(nohup bash -c 'while [ ! -f adapters/domain-mt/adapter_model.safetensors ] "
+    "|| [ ! -f adapters/kernel-mt/adapter_model.safetensors ]; do sleep 20; done; "
+    "sleep 10; tar czf adapters.tgz adapters' >/dev/null 2>&1 &) && "
     "nohup python -u -m $MODULE --base $BASE $ARGS > run.log 2>&1 &", shell=True)
 PY
   tmo 180 colab exec -s "$S" -f /tmp/_srun.py >/dev/null 2>&1 || true
