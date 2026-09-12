@@ -1,7 +1,7 @@
 {
   "base": "Qwen/Qwen2.5-3B-Instruct",
   "rule_bar": 0.929,
-  "started": "2026-09-12T11:07:12",
+  "started": "2026-09-12T15:37:59",
   "arms": {
     "no tool layer at all": {
       "label": "no tool layer at all",
@@ -819,15 +819,27 @@
       "label": "kernel adapter writes the calls",
       "layer": "kernel",
       "n": 30,
-      "scored": 1,
+      "scored": 3,
       "complete": false,
       "passed": 0,
       "accuracy": 0.0,
-      "queries": 3,
+      "queries": 9,
       "rejected": 0,
-      "declined": 4,
-      "tool_values_matched": 3,
-      "tool_values_wanted": 3,
+      "declined": 18,
+      "tool_values_matched": 9,
+      "tool_values_wanted": 9,
+      "failure_modes": {
+        "failed": 3,
+        "by_mode": {
+          "malformed": 0,
+          "missing": 0,
+          "wrong args": 0,
+          "physics": 3
+        },
+        "protocol": 0,
+        "physics": 3,
+        "share_physics": 1.0
+      },
       "records": [
         {
           "case_id": "mt-0000",
@@ -841,6 +853,32 @@
           "matched": 3,
           "wanted": 3,
           "raw": "1. Gate width: <convert>value=1844.2; from=mm; to=m</convert>= 1.8442\n2. Gate height: <convert>value=723.6; from=mm; to=m</convert>= 0.7236\n3. Density of the fluid: <lookup>fluid=TD-78; property=density; T=20</lookup>= 882.3\n4. Depth of the centroid: 1.76 + 0.7236/2 = 2.1218\n5. Area of the gate: <convert>value\n1844.2*723.6; from=mm^2; to=m^2</convert>= 0.13913\n6. Resultant force F = rho g h_c A: 882.3 * 9.80665 * 2.1218 * 0.13913 = 2554.24\n{\"answer\":"
+        },
+        {
+          "case_id": "mt-0001",
+          "family": "manning_channel",
+          "want": 3.4218930157693417,
+          "got": 3.0,
+          "passed": false,
+          "queries": 2,
+          "rejected": 0,
+          "declined": 8,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=1701.6; from=mm; to=m</convert>= 1.7016\n2. Flow depth: <convert>value=1377.8; from=mm; to=m</convert>= 1.3778\n3. Flow area: <convert>value\n1.7016 * 1.3778, from=m, to=m^2</convert> \n4. Wetted perimeter: <convert>value\n1.7016 + 2*1.3778, from=m, to=m</convert> = 4.4572\n5. Hydraulic radius R = A/P: <convert>value\n1.3778 / 4.4572, from=m, to=m</convert> = 0.309993\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <convert>value\n1/0.017 * 1.3778**2/3.0 * 0.309993**(2/3), from=m**2/s, to=m**3/s</convert> \n"
+        },
+        {
+          "case_id": "mt-0002",
+          "family": "pipe_head_loss",
+          "want": 0.24219236092172494,
+          "got": 2.0,
+          "passed": false,
+          "queries": 4,
+          "rejected": 0,
+          "declined": 6,
+          "matched": 4,
+          "wanted": 4,
+          "raw": "1. Flow rate: <convert>value=25.6; from=m^3/h; to=m^3/s</convert>= 0.00711111\n2. Pipe diameter: <convert>value=23.9; from=cm; to=m</convert>= 0.239\n3. Density of the fluid: <lookup>fluid=Zv-76; property=density; T=10</lookup>= 1343.9\n4. Dynamic viscosity: <lookup>fluid=Zv-76; property=viscosity; T=10</lookup>= 0.113\n5. Cross-sectional area: pi/4 * <convert>value\n23.9; from=m; to=m</convert>**2 = 0.420069\n6. Velocity v = Q/A: <convert>value\n0.00711111; from=m^3/s; to=m/s</convert> = 0.0167529\n7. Reynolds number: <convert>value\n1343.9; from=kg/m^3; to=N/m^2</convert> / (<convert>value\n"
         }
       ]
     }
