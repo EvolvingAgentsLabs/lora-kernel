@@ -76,11 +76,17 @@ def step(name, cmd):
 step("clone", "rm -rf /content/lora-kernel && cd /content && git clone -q -b $BRANCH "
               "https://github.com/EvolvingAgentsLabs/lora-kernel.git && "
               "cd lora-kernel && git log --oneline -1")
-step("curl?", "which curl || (apt-get -qq update && apt-get -qq install -y curl)")
-# THE ONE-LINER INSTALLER PUTS THE BINARY IN /usr/local/bin AND THAT IS NOT ALWAYS
-# ON PATH for a non-login shell, which is what `subprocess(shell=True)` gives you —
-# `/bin/sh: 1: ollama: not found` came back from a machine that had just installed
-# it [ran] 2026-09-12. The tarball is unpacked where the PATH already looks.
+# THE INSTALLER NEEDS zstd AND SAYS SO ONLY IN PASSING. Without it the script
+# prints a list of package managers and exits **rc=0**, installing nothing — so
+# every downstream step reported `ollama: not found` while the install itself
+# looked like it had succeeded [ran] 2026-09-12. Its whole error message, as it
+# reaches the log, is `- Arch: sudo pacman -S zstd`.
+step("deps", "apt-get -qq update >/dev/null 2>&1; apt-get -qq install -y curl zstd 2>&1 | tail -1; which curl zstd")
+# NO BACKTICKS OR PARENTHESES IN THIS HEREDOC. It is unquoted so that BRANCH
+# interpolates, which means bash also expands anything inside it that looks like a
+# command substitution — and a prose comment did, three times, into the chain log.
+# The installer drops the binary in /usr/local/bin, which a non-login shell does
+# not always carry on PATH, so the link step below exists.
 step("install", "curl -fsSL https://ollama.com/install.sh | sh 2>&1 | tail -2")
 step("where", "ls -l /usr/local/bin/ollama /usr/bin/ollama 2>&1 | tail -2")
 step("link", "ln -sf /usr/local/bin/ollama /usr/bin/ollama 2>&1; ollama --version 2>&1 | tail -1")
