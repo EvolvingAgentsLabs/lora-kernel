@@ -1,7 +1,7 @@
 {
   "base": "Qwen/Qwen2.5-3B-Instruct",
   "rule_bar": 0.929,
-  "started": "2026-09-12T15:37:59",
+  "started": "2026-09-12T16:39:55",
   "arms": {
     "no tool layer at all": {
       "label": "no tool layer at all",
@@ -819,26 +819,26 @@
       "label": "kernel adapter writes the calls",
       "layer": "kernel",
       "n": 30,
-      "scored": 16,
-      "complete": false,
-      "passed": 3,
-      "accuracy": 0.1875,
-      "queries": 63,
-      "rejected": 10,
-      "declined": 78,
-      "tool_values_matched": 52,
-      "tool_values_wanted": 52,
+      "scored": 30,
+      "complete": true,
+      "passed": 4,
+      "accuracy": 0.1333,
+      "queries": 116,
+      "rejected": 20,
+      "declined": 153,
+      "tool_values_matched": 94,
+      "tool_values_wanted": 96,
       "failure_modes": {
-        "failed": 13,
+        "failed": 26,
         "by_mode": {
-          "malformed": 6,
+          "malformed": 14,
           "missing": 0,
           "wrong args": 0,
-          "physics": 7
+          "physics": 12
         },
-        "protocol": 6,
-        "physics": 7,
-        "share_physics": 0.538
+        "protocol": 14,
+        "physics": 12,
+        "share_physics": 0.462
       },
       "records": [
         {
@@ -1048,8 +1048,191 @@
           "matched": 4,
           "wanted": 4,
           "raw": "1. Inlet diameter: <convert>value=134.2; from=mm; to=m</convert>= 0.1342\n2. Throat diameter: <convert>value=71.8; from=mm; to=m</convert>= 0.0718\n3. Pressure drop: <convert>value=454.6; from=mbar; to=Pa</convert>= 45460\n4. Density of the fluid: <lookup>fluid=TS-69; property=density; T=10</lookup>= 967.7\n5. Inlet area: pi/4 * <convert>value\nSolve the problem as a single JSON object: {\"answer\": <number>}, where <number> is the numeric value in m^3/s.\n20.0119= 9\n6. Discharge Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): 0.0718**2 * sqrt(2*45460 / (967.7 * (1 - (0.0718/0.1342)**2)))<output>\n{\"answer\":"
+        },
+        {
+          "case_id": "mt-0016",
+          "family": "hydrostatic_force",
+          "want": 20304.349928432643,
+          "got": 23211.3,
+          "passed": false,
+          "queries": 3,
+          "rejected": 0,
+          "declined": 4,
+          "matched": 3,
+          "wanted": 3,
+          "raw": "1. Gate width: <convert>value=108.8; from=cm; to=m</convert>= 1.088\n2. Gate height: <convert>value=74.4; from=cm; to=m</convert>= 0.744\n3. Density of the fluid: <lookup>fluid=FE-31; property=density; T=40</lookup>= 900\n4. Depth of the centroid: <convert>value\n5. Resultant force F = rho g h_c B: <math>\n6. 900.0 * 9.80665 * 2.47 + 1.088 * 0.744 * 900.0 * 9.80665</math> \n7. = 23211.3\n</json>{\"answer\":"
+        },
+        {
+          "case_id": "mt-0017",
+          "family": "manning_channel",
+          "want": 10.117577417971926,
+          "got": 0.530002,
+          "passed": false,
+          "queries": 3,
+          "rejected": 1,
+          "declined": 7,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=255.0; from=cm; to=m</convert>= 2.55\n2. Flow depth: <convert>value=127.6; from=cm; to=m</convert>= 1.276\n3. Flow area: <convert>value\n2.55 * 1.276, from=m, to=m^2</convert> <lookup>fluid=water; property=viscosity; T=20</lookup>= ERROR: no entry for water at 20 C; this handbook lists []\n4. Wetted perimeter: <convert>value\n2.55 + 2*1.276, from=m, to=m</convert> = 5.092\n5. Hydraulic radius R = A/P: <convert>value\n1.276 / 5.092, from=m^2, to=m</convert> = 0.251417\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <math>result\n1/0.027 * 0.251417**(2/3) * sqrt(0.01284), from=m**2/s, to=m^3/s</math> = 0.530002\n"
+        },
+        {
+          "case_id": "mt-0018",
+          "family": "pipe_head_loss",
+          "want": 1.3540031768877645,
+          "got": 0.0472956,
+          "passed": false,
+          "queries": 6,
+          "rejected": 2,
+          "declined": 3,
+          "matched": 4,
+          "wanted": 4,
+          "raw": "1. Flow rate: <convert>value=39.1; from=L/s; to=m^3/s</convert>= 0.0391\n2. Pipe diameter: <convert>value=38.7; from=cm; to=m</convert>= 0.387\n3. Density of the fluid: <lookup>fluid=QN-58; property=density; T=80</lookup>= 793.6\n4. Dynamic viscosity: <lookup>fluid=QN-58; property=viscosity; T=80</lookup>= 0.822\n5. Cross-sectional area: pi/4 * 0.387**2 = 0.117628\n6. Velocity v = Q/A: 0.0391 / 0.117628 = 0.332404\n7. Reynolds number: <lookup>Re=1514; nu=0.822; f=0.018</lookup>= ERROR: lookup needs ['fluid', 'property']\n8. Friction factor: <lookup>fluid=QN-58; property=f; Re=1514</lookup>= ERROR: no entry for qn-58 at 20 C; this handbook lists ['qn-58']\n9. Head loss h = f (L/D) v^2 / (2g): 0.018 *"
+        },
+        {
+          "case_id": "mt-0019",
+          "family": "venturi_flow",
+          "want": 0.06623423586302991,
+          "got": 6.0,
+          "passed": false,
+          "queries": 4,
+          "rejected": 1,
+          "declined": 2,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Inlet diameter: <convert>value=227.3; from=mm; to=m</convert>= 0.2273\n2. Throat diameter: <convert>value=112.7; from=mm; to=m</convert>= 0.1127\n3. Pressure drop: <convert>value=0.284; from=kPa; to=Pa</convert>= 284\n4. Density of the fluid: <lookup>fluid=water; property=density; T=25</lookup>= ERROR: no entry for water at 25 C; this handbook lists ['pw-81']\n5. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <convert>value\n6. Result: <convert>value\n{\"answer\":"
+        },
+        {
+          "case_id": "mt-0020",
+          "family": "hydrostatic_force",
+          "want": 53991.33354496216,
+          "got": 39240.3,
+          "passed": false,
+          "queries": 3,
+          "rejected": 0,
+          "declined": 7,
+          "matched": 3,
+          "wanted": 3,
+          "raw": "1. Gate width: <convert>value=113.8; from=cm; to=m</convert>= 1.138\n2. Gate height: <convert>value=196.1; from=cm; to=m</convert>= 1.961\n3. Density of the fluid: <lookup>fluid=ZL-39; property=density; T=10</lookup>= 927.3\n4. Depth of the centroid: <convert>value\n1.68 + 1.961/2; from=m; to=m</convert>= 1.8505\n5. Area of the gate: <convert>value\n1.138 * 1.961; from=m; to=m^2</convert>= 2.2411\n6. Resultant force F = rho g h_c A: <math>\n927.3 * 9.80665 * 1.8505 * 2.2411\n</math> = 39240.3\n"
+        },
+        {
+          "case_id": "mt-0021",
+          "family": "manning_channel",
+          "want": 11.49081703861255,
+          "got": 3.0,
+          "passed": false,
+          "queries": 3,
+          "rejected": 1,
+          "declined": 7,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=249.2; from=cm; to=m</convert>= 2.492\n2. Flow depth: <convert>value=113.7; from=cm; to=m</convert>= 1.137\n3. Flow area: <convert>value\n2.492 * 1.137 = 2.84514</convert> <lookup>fluid=water; property=viscosity; T=20</lookup>= ERROR: no entry for water at 20 C; this handbook lists []\n4. Wetted perimeter: <convert>value\n2.492 + 2*1.137 = 4.765</convert> <lookup>fluid\n2.84514 / 1.0 = 2.84514</lookup> + 2= 2\n5. Hydraulic radius R = A/P: <convert>value\n2.84514 / 2 = 1.42257</convert> m\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <convert>value\n"
+        },
+        {
+          "case_id": "mt-0022",
+          "family": "pipe_head_loss",
+          "want": 1.586425943536138,
+          "got": 0.00297531,
+          "passed": false,
+          "queries": 5,
+          "rejected": 1,
+          "declined": 4,
+          "matched": 4,
+          "wanted": 4,
+          "raw": "1. Flow rate: <convert>value=21.8; from=L/min; to=m^3/s</convert>= 0.000363333\n2. Pipe diameter: <convert>value=8.3; from=cm; to=m</convert>= 0.083\n3. Density of the fluid: <lookup>fluid=VN-36; property=density; T=20</lookup>= 1301.5\n4. Dynamic viscosity: <lookup>fluid=VN-36; property=viscosity; T=20</lookup>= 1.39\n5. Cross-sectional area: pi/4 * 0.083**2 = 0.00541061\n6. Velocity v = Q/A: 0.000363333 / 0.00541061 = 0.0671519\n7. Reynolds number: 1301.5 * 0.0671519 * 0.083 / 1.39 = 5.21874\n8. Friction factor: <lookup>Re=5.21874; nu=1.39; f=0.023</lookup>= ERROR: lookup needs ['fluid', 'property']\n9. Head loss h = f (L/D) v^2 / (2g): 0.023 * (46.7/0.083) * 0.0671519**2 / (2*9.80665) = 0.0029753"
+        },
+        {
+          "case_id": "mt-0023",
+          "family": "venturi_flow",
+          "want": 0.4010873830012109,
+          "got": 0.52311,
+          "passed": false,
+          "queries": 5,
+          "rejected": 1,
+          "declined": 4,
+          "matched": 4,
+          "wanted": 4,
+          "raw": "1. Inlet diameter: <convert>value=327.6; from=mm; to=m</convert>= 0.3276\n2. Throat diameter: <convert>value=182.3; from=mm; to=m</convert>= 0.1823\n3. Pressure drop: <convert>value=87.53; from=kPa; to=Pa</convert>= 87530\n4. Density of the fluid: <lookup>fluid=We-74; property=density; T=40</lookup>= 820\n5. Inlet area: pi/4 * <convert>value\n5.3, from=m; to=m2</convert> = 0.025901 <convert>value=0.1823; from=m; to=m2</convert>= ERROR: unknown unit 'm2'\n6. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <convert>value\n6.3, from=m; to=m2</convert> * sqrt(2*87530 / (820.0 * (1 - (0.025901/0.04308)**2))) = 0.025901 * sqrt(2*87530 / (820.0 * (1 - (0.025901/0.04308)**2))) = 0.52311\n7. Result: {\"answer"
+        },
+        {
+          "case_id": "mt-0024",
+          "family": "hydrostatic_force",
+          "want": 30038.312716830867,
+          "got": 1740.43,
+          "passed": false,
+          "queries": 3,
+          "rejected": 0,
+          "declined": 6,
+          "matched": 3,
+          "wanted": 3,
+          "raw": "1. Gate width: <convert>value=1003.1; from=mm; to=m</convert>= 1.0031\n2. Gate height: <convert>value=1008.5; from=mm; to=m</convert>= 1.0085\n3. Density of the fluid: <lookup>fluid=RX-2; property=density; T=40</lookup>= 1031.9\n4. Depth of the centroid: <convert>value\n1.0031 + 1.0085/2 - 2.43 = 0.1676</convert> \n5. Area of the gate: <convert>value\n1.0031 * 1.0085 = 1.01143</convert> m^2\n6. Resultant force F = rho g h_c A: <math>\n1031.9 * 9.80665 * 0.1676 * 1.01143 = 1740.43</math> N\n{\"answer\":"
+        },
+        {
+          "case_id": "mt-0025",
+          "family": "manning_channel",
+          "want": 13.551781863874421,
+          "got": 3.0,
+          "passed": false,
+          "queries": 3,
+          "rejected": 1,
+          "declined": 7,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=3164.0; from=mm; to=m</convert>= 3.164\n2. Flow depth: <convert>value=1398.3; from=mm; to=m</convert>= 1.3983\n3. Flow area: <convert>value\n3.164 * 1.3983 = 4.30713</convert> \n4. Wetted perimeter: <convert>value\n3.164 + 2*1.3983 = 5.9606</convert> m\n5. Hydraulic radius R = A/P: <convert>value\n4.30713 / 5.9606 = 0.724112</convert> m <lookup>fluid=Water; property=viscosity; T=20</lookup>= ERROR: no entry for water at 20 C; this handbook lists []\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <convert>value\n1/0.019 * 4.30713 * 0.724112**(2/3) * sqrt(0.00504) = 5.73132</convert> m^3/s\n"
+        },
+        {
+          "case_id": "mt-0026",
+          "family": "pipe_head_loss",
+          "want": 1.999988690659031,
+          "got": 7.0,
+          "passed": false,
+          "queries": 4,
+          "rejected": 0,
+          "declined": 6,
+          "matched": 4,
+          "wanted": 4,
+          "raw": "1. Flow rate: <convert>value=48.2; from=m^3/h; to=m^3/s</convert>= 0.0133889\n2. Pipe diameter: <convert>value=26.3; from=cm; to=m</convert>= 0.263\n3. Density of the fluid: <lookup>fluid=Yn-34; property=density; T=60</lookup>= 1231.7\n4. Dynamic viscosity: <lookup>fluid=Yn-34; property=viscosity; T=60</lookup>= 1.87\n5. Cross-sectional area: pi/4 * <value>26.3</value>**2 \n   = 610.04\n6. Velocity v = Q/A: <convert>value\n   = 0.0133889 / 610.04\n   = 0.000219113\n7. Reynolds number: <convert>value\n"
+        },
+        {
+          "case_id": "mt-0027",
+          "family": "venturi_flow",
+          "want": 0.027907828199976503,
+          "got": 0.203,
+          "passed": false,
+          "queries": 6,
+          "rejected": 2,
+          "declined": 4,
+          "matched": 4,
+          "wanted": 4,
+          "raw": "1. Inlet diameter: <convert>value=234.0; from=mm; to=m</convert>= 0.234\n2. Throat diameter: <convert>value=90.2; from=mm; to=m</convert>= 0.0902\n3. Pressure drop: <convert>value=8.78; from=kPa; to=Pa</convert>= 8780\n4. Density of the fluid: <lookup>fluid=Dt-39; property=density; T=40</lookup>= 941.4\n5. Inlet area: pi/4 * <convert>value\n5. = 234.0**2</convert>/1000 = 0.5605 <convert>value\n6. = 90.2**2</convert>= ERROR: convert needs ['from', 'to', 'value']\n7. Throat area: <convert>value\n7. = 90.2**2</convert>= ERROR: convert needs ['from', 'to', 'value']\n8. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <convert>value\n8. = 0.0902**2 * sqrt(2*8780 / (941.4 * (1 - (0.0902/0.234)**2)))</convert"
+        },
+        {
+          "case_id": "mt-0028",
+          "family": "hydrostatic_force",
+          "want": 66007.34542954099,
+          "got": 50800.3,
+          "passed": false,
+          "queries": 3,
+          "rejected": 0,
+          "declined": 7,
+          "matched": 3,
+          "wanted": 3,
+          "raw": "1. Gate width: <convert>value=189.7; from=cm; to=m</convert>= 1.897\n2. Gate height: <convert>value=190.5; from=cm; to=m</convert>= 1.905\n3. Density of the fluid: <lookup>fluid=LK-16; property=density; T=10</lookup>= 898.7\n4. Depth of the centroid: <convert>value\n1.12 + 1.905/2; from=m; to=m</convert>= 1.5125\n5. Area of the gate: <convert>value\n1.897 * 1.905; from=m; to=m^2</convert>= 3.60833\n6. Resultant force F = rho g h_c A: <math>\n898.7 * 9.80665 * 1.5125 * 3.60833\n</math> = 50800.3\n"
+        },
+        {
+          "case_id": "mt-0029",
+          "family": "manning_channel",
+          "want": 1.4225608651293704,
+          "got": 1.41425,
+          "passed": true,
+          "queries": 2,
+          "rejected": 0,
+          "declined": 7,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=1396.1; from=mm; to=m</convert>= 1.3961\n2. Flow depth: <convert>value=506.3; from=mm; to=m</convert>= 0.5063\n3. Flow area: <convert>value\n1.3961 * 0.5063 = 0.704837\n4. Wetted perimeter: <convert>value\n1.3961 + 2*0.5063 = 2.4087\n5. Hydraulic radius R = A/P: <convert>value\n0.704837 / 2.4087 = 0.292131\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): (1/0.031) * 0.704837 * 0.292131**(2/3) * sqrt(0.01996) = 1.41425\n{\"answer\":"
         }
       ]
     }
-  }
+  },
+  "finished": "2026-09-12T17:06:05"
 }
