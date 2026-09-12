@@ -69,6 +69,14 @@ resumes — asking goes from 0.6 times per problem to **4.7**. The competition w
 never a property of the patches. It was a property of making them produce the same
 word.
 
+**And there is now material where the tools are genuinely necessary.** An earlier
+suite failed its own purpose: the specialist had memorised the fourteen table values
+it needed, so it scored 27 of 30 while asking for nothing, and a suite whose tool
+calls can be recalled cannot measure what a tool layer is worth. Giving each problem
+its own handbook — a substance with an invented name and properties that exist only
+in that problem — drops the same specialist to **6 of 30 when it cannot ask**. The
+value was not in training and is not in the question, so it has to be requested.
+
 **There is real room to improve.** An expensive model scores perfectly on this
 material and the small one scores under half, so there is a genuine gap for a
 specialist to close. (We nearly fooled ourselves here, and the story is in
@@ -249,73 +257,128 @@ A set of requests on which the keyword method performs at chance, and the
 agreement-based method still picks correctly. Without the first half, the second
 half proves nothing.
 
-## Problem 3 — a specialist that does not know the edge of its own expertise
+## Problem 3 — a specialist that cannot feel the edge of what it knows
+
+**This is the problem that blocks the product, and it is stated here in full so it
+can be handed to someone with no other context.**
 
 ### What we see
 
-The physics specialist was trained on six kinds of problem. Hand it a seventh —
-still fluid mechanics, still the same style of question, just a kind it never
-saw — and it produces a confident, well-formatted, wrong answer.
+We trained a specialist on six kinds of fluid-mechanics problem, then gave it two
+kinds it had never seen — same subject, same style of question, differing only in
+which physical relation they need.
 
-This is now measured properly rather than glimpsed. Scoring its *formulas* rather
-than its arithmetic, the specialist is right **thirty times out of thirty** on the
-material it was trained for and **once out of twenty** on two kinds it was not.
-The drop is not gradual, and the problems either side of it look alike.
+Scoring its **formulas** rather than its arithmetic: **30 out of 30** inside its six
+kinds, **1 out of 20** on the two it never saw. The drop is not gradual.
 
-What the failure looks like matters more than the number. It keeps the numbered
-structure, the confident phrasing and the plausible vocabulary, and makes the
-physics up: a "volume fraction" that is not one, a regime test that is not the
-regime test, a force law that is not the force law. The same specialist that
-scores perfectly on its own material wrote that, in the same voice.
+And the part that matters more than the number: **nothing in its output marks the
+difference.** Same numbered structure, same confident phrasing, same plausible
+vocabulary. It invents the physics:
 
-It does not hesitate. It does not say the problem is unfamiliar. It answers the
-way it answers everything.
+    2. Volume fraction: 4/3 * pi/6 = 0.698132
+    4. Stokes regime? v*d/(rho*mu) = 3.88*0.304/(998.0*0.001002) = 1.12832 < 1
+    6. Drag force F = rho v^2 C_d / (2 S) = 998.0*3.88**2/(2*0.698132)
 
-This matters more than an accuracy number, because of how the system is supposed
-to be used. The whole plan is to let a specialist take over a category of work
-once it has proven itself on that category, and to stop paying for the expensive
-model on that category. If a specialist cannot tell when a request has drifted
-outside what it proved itself on, then "proven on this category" is a promise it
-cannot keep. The first request from just outside the boundary gets a confident
-wrong answer with nothing watching.
+A "volume fraction" that is not one. A regime test that is not the regime test. A
+force law that is not the force law. The specialist that scores perfectly on its own
+material wrote that, in the same voice.
 
-### What we do not know
+**So the second phase of the design is a promise the system cannot keep.** It says
+"proven on this region", and the first request from just outside gets a confident
+wrong answer with nothing watching. Worse, and structurally: the evidence available
+when that decision is made is the record of where the specialist **has been
+tested**, not where it **stops working**. Those are different sets, and the
+difference between them is exactly where the confident wrong answer lives.
 
-We do not know how to give a specialist a usable sense of its own boundary.
+### What we tried, and what each attempt ruled out
 
-The obvious approach — ask it how confident it is — is known to be unreliable, and
-in our own runs the wrong answers arrive with exactly the same fluent presentation
-as the right ones. There is no visible difference to key on.
+**Ask the model how confident it is.** Not bought, because our own runs answer it:
+wrong answers arrive with the same fluency, structure and vocabulary as right ones.
+There is nothing visible to key on.
 
-There is a second, quieter version of the problem. Even if a specialist could
-recognise unfamiliar requests, the system needs to decide the boundary of a
-category **before** it stops paying for the expensive model, and the only evidence
-available at that point is the record of agreement described in Problem 2 — which
-tells you where the specialist has been tested, not where it stops working. Those
-two are not the same, and the difference between them is exactly the region where
-a confident wrong answer will appear.
+**Watch the process instead of the model.** The specialist works by calling tools,
+and a harness answers those calls. Outside its region it names quantities it does
+not understand, so perhaps the *tool layer's* failures mark the edge that the prose
+does not.
 
-**There is one candidate, found by looking at the process instead of the model.**
-Six signals were listed in advance and all six checked over transcripts already on
-disk. Only one separates: **how often the tool refuses what the chain asks for**.
-Inside the region that happens on 15% of requests; outside, on 63% — because the
-specialist names quantities it does not understand and the tool layer cannot turn
-those names into a valid request. **The tool fails where the prose does not**, and
-a guard reading that never has to ask the model how it feels.
+Six candidate signals were listed **before any was looked at** — calls per problem,
+rejected calls, rejection rate, steps, chains with nothing evaluable, transcript
+length — and all six checked. One separated on both configurations: **the rate at
+which the tool refuses what the chain asks for**, 15% inside against 63% outside,
+classifying 86% of cases with a single threshold.
 
-It is not a detector yet, and it must not be quoted as one: the signals were chosen
-with the answers already visible, the threshold is fitted on the same fifty
-problems that score it, and the two unfamiliar kinds used are the only unfamiliar
-kinds this material has. Confirming it needs two more, with the threshold fixed
-beforehand.
+**And it failed confirmation.** The signals had been chosen with the answers visible
+and the threshold fitted on the same fifty problems that scored it, so a
+confirmation was pre-registered: two *new* kinds of problem, threshold **fixed**.
+Outside the region the tool refuses at **0.18** against **0.15** inside, and the
+guard scores 0.62 where chance is 0.60.
+
+**The 86% was a property of those two kinds of problem, not of a boundary.** The
+cheap direction — read the process rather than the model — is exhausted: the process
+does not know either.
+
+### What is left, and why each is unattractive
+
+**A second specialist whose disagreement flags the edge.** Doubles the cost of every
+guarded request, and only detects an edge where some *other* specialist happens to
+be competent — not the same set as "outside this one's region", and possibly a small
+fraction of it.
+
+**Sample the expensive model after withdrawal.** The industry answer; it works, and
+it costs money forever on every guarded request, which is the cost withdrawal exists
+to remove. It turns a step change into a discount.
+
+**Shrink regions until the edge is far away.** Multiplies specialists and routing
+burden, and does not remove the problem — it makes the first out-of-region request
+rarer and no less confident.
+
+### What a proposal has to satisfy
+
+Each of these is here because something we tried failed on it.
+
+1. **No consulting the expensive model on the guarded path.** A guard that pays for
+   what it replaced is not a guard. Sampling a fraction offline is a different
+   proposal, allowed, but its cost must be stated as a fraction and defended.
+2. **No relying on the specialist's self-report.** Measured: wrong answers are
+   indistinguishable in presentation from right ones.
+3. **No needing the correct answer at serving time.** If it had that, the specialist
+   would be unnecessary.
+4. **It must separate "outside the region" from "inside and difficult".** A detector
+   that fires on every hard problem costs throughput and will be switched off.
+5. **Any threshold must be fixable in advance.** A threshold tuned on the material
+   it is tested on is the mistake that killed the last candidate.
+6. **Cheap enough to run on every request**, or its sampling rate is part of the
+   proposal.
 
 ### How we would know it was solved
 
-A specialist that declines, or defers upward, on material outside its category at
-a much higher rate than on material inside it — measured on both, with the
-comparison made explicit. A method that makes it decline on everything is not a
-solution, and the measurement has to be built so that it cannot be passed that
-way.
+Accuracy separating in-region from out-of-region material, **on kinds of problem the
+proposal was not developed against, with any threshold fixed beforehand** — reported
+beside the rate at which it fires on hard-but-in-region problems, because a guard
+that cannot tell those apart is unusable however good its headline looks.
+
+**The bar is low and nothing has cleared it: our best candidate scored 0.62 where
+chance was 0.60.**
+
+The instruments exist: problems with exact ground truth in kinds no specialist was
+trained on, transcripts whose correctness is known, a judge that is right 82% of the
+time without seeing the answer, and a pre-registration discipline that treats a
+candidate found by searching as a hypothesis until it survives material it was not
+found on.
+
+### The narrow version of the question
+
+Not "how does a model know what it does not know", which is a research programme,
+but:
+
+> Given a specialist measured as competent on a set of examples, and a new request,
+> is there anything **cheap and observable** — in the request, in the specialist's
+> behaviour, in the tools it uses, or in comparisons that do not involve the
+> expensive model — that distinguishes a request it will handle from one it will
+> answer confidently and wrongly?
+
+We have measured that the answer is not the model's confidence and not the tool
+layer's failure rate. We do not know what else to look at.
 
 ## Problem 4 — who grades the work once the teacher leaves
 
@@ -343,20 +406,35 @@ to be right often enough to be worth obeying.
 
 ### What we do not know
 
-In our experiments we had a perfect judge for free: the problems were generated
-from closed-form formulas, so the exact answer was known before the question was
-asked. That is why the results in this project are trustworthy, and it is also why
-they do not transfer. Real work does not come with an answer key.
+**A judge exists, and that much is now measured.** Over 100 chains whose
+correctness was known — 33 right, 67 wrong, so answering "wrong" every time scores
+0.67 — a large model grades at **0.89**, balanced on both classes, and a model the
+same size as the one being graded manages **0.82**.
 
-We do not know where the judge comes from in a domain that has no oracle. The
-candidates all have visible problems. A second AI model as judge shares the blind
-spots of the thing it is judging. A human is accurate and far too slow and
-expensive to close a loop with. Tests written in advance only cover what someone
-thought to write down.
+**And the useful half is the small model's pair of numbers.** It *solves* this
+material at 0.467 and *judges* it at 0.82. **Judging is easier than solving**, by a
+wide margin, for the same model on the same problems. That is what makes the
+improvement loop buildable after the expensive model leaves: the grade does not have
+to come from something that could have done the work.
 
-We have not chosen among these, and we have not designed the experiment that would
-choose. This is the least-explored problem in the project and it sits underneath
-the entire self-improvement half of the design.
+**One combination is better than either judge alone.** A purely mechanical check —
+re-run the chain's own arithmetic and ask whether its answer follows — accepts 94%
+of correct work and only 52% of wrong work, the opposite error profile to the model
+judge. Requiring **both** to accept drops false acceptance of clean-looking wrong
+work from **41% to 2%**, at a cost of six points of correct work, and it comes out
+nearly calibrated.
+
+**What we still do not know is the case that matters most.** The large model judges
+well here partly because it can *solve* this material — it scores perfectly on it.
+Where nothing available can solve the work, judging is untested, and that is
+precisely the domain where a specialist would be worth having. Nothing in these runs
+speaks to it.
+
+**And selection is not accuracy.** A judge right 82% of the time can still rank two
+candidates the wrong way round. On pairs with a real gap the conjunction orders them
+correctly, but that is two pairs, and the candidates were not produced by an
+improvement loop — so nothing shows that repeated selection converges, or that a loop
+optimising this grade would not learn to satisfy both judges while being wrong.
 
 ### How we would know it was solved
 
@@ -421,9 +499,21 @@ not done, and it is worth separating them so the genuinely open problems above
 stay visible:
 
 - **Re-testing whether agreement ranks specialists correctly**, now that there is
-  a real gap between the expensive model and the small one. The earlier test was
-  run against near-equals, where there was nothing to rank. The instrument exists
-  and the material exists.
+  a real gap between the expensive model and the small one, and a judge to compare
+  it against. The earlier test was run against near-equals, where there was nothing
+  to rank. The instrument exists and the material exists, and this has been listed
+  here long enough to be embarrassing.
+- **Measuring the acceptance rate the design is named after.** The architecture
+  rests on how often a small model produces exactly what a large one would, and we
+  have never computed it — we substituted a coarser answer-level agreement because
+  models of different families cut text differently. Within a single family the
+  fine-grained version is measurable, we have the models, and it has never been
+  bought. This is the most conspicuous gap in the project.
+- **Forbidding the malformed call outright.** A tool request can be made
+  syntactically impossible rather than merely unlikely, by constraining what the
+  model is allowed to write at each step. It was set aside when syntax was not the
+  dominant failure; it has since cost 19 of 118 requests in one run, which is a
+  different argument than the one that shelved it.
 - ~~Measuring the boundary problem properly.~~ **Done, and it is worse than the
   cut-short run suggested**: formulas exact 30 times out of 30 inside the region and
   once out of twenty outside it. What is left is not a measurement but a guard, and

@@ -70,6 +70,15 @@ retoma — los pedidos pasan de 0,6 por problema a **4,7**. La competencia nunca
 una propiedad de los parches. Era una propiedad de hacerlos producir la misma
 palabra.
 
+**Y ahora hay material donde las herramientas hacen falta de verdad.** Una suite
+anterior falló su propio propósito: el especialista había memorizado los catorce
+valores de tabla que necesitaba, así que sacaba 27 de 30 sin pedir nada, y una suite
+cuyas llamadas se pueden recordar no puede medir cuánto vale una capa de
+herramientas. Darle a cada problema su propio manual —una sustancia con nombre
+inventado y propiedades que existen sólo en ese problema— baja al mismo especialista
+a **6 de 30 cuando no puede preguntar**. El valor no estaba en el entrenamiento y no
+está en la consigna, así que hay que pedirlo.
+
 **Hay lugar real para mejorar.** Un modelo caro puntúa perfecto en este material y
 el chico saca menos de la mitad, así que hay una brecha genuina que un
 especialista puede cerrar. (Casi nos engañamos acá, y la historia está en
@@ -252,75 +261,131 @@ Un conjunto de pedidos en el que el método de palabras clave rinda como el azar
 el método basado en acuerdo siga eligiendo bien. Sin la primera mitad, la segunda
 no prueba nada.
 
-## Problema 3 — un especialista que no conoce el borde de su propia especialidad
+## Problema 3 — un especialista que no siente el borde de lo que sabe
+
+**Éste es el problema que bloquea el producto, y va enunciado completo acá para que
+se lo pueda entregar a alguien sin ningún otro contexto.**
 
 ### Lo que vemos
 
-El especialista de física se entrenó con seis tipos de problema. Dele un séptimo
-— sigue siendo mecánica de fluidos, sigue siendo el mismo estilo de consigna, sólo
-que un tipo que nunca vio — y produce una respuesta segura, bien formateada y
-equivocada.
+Entrenamos un especialista con seis tipos de problema de mecánica de fluidos y
+después le dimos dos que nunca había visto — misma materia, mismo estilo de
+consigna, difieren sólo en qué relación física hace falta.
 
-Esto ahora está medido en serio y no entrevisto. Puntuando sus *fórmulas* en vez de
-su aritmética, el especialista acierta **treinta de treinta** en el material para el
-que fue entrenado y **una de veinte** en dos tipos para los que no. La caída no es
-gradual, y los problemas de un lado y del otro se parecen.
+Puntuando sus **fórmulas** y no su aritmética: **30 de 30** dentro de sus seis
+tipos, **1 de 20** en los dos que nunca vio. La caída no es gradual.
 
-Cómo se ve el fallo importa más que el número. Conserva la estructura numerada, la
-seguridad y el vocabulario plausible, e inventa la física: una "fracción de volumen"
-que no lo es, un test de régimen que no es el test de régimen, una ley de fuerza que
-no es la ley de fuerza. El mismo especialista que puntúa perfecto en su propio
-material escribió eso, con la misma voz.
+Y lo que importa más que el número: **nada en su salida marca la diferencia.** Misma
+estructura numerada, misma seguridad, mismo vocabulario plausible. Inventa la
+física:
 
-No duda. No dice que el problema le resulta desconocido. Responde como responde
-todo.
+    2. Fracción de volumen: 4/3 * pi/6 = 0.698132
+    4. ¿Régimen de Stokes? v*d/(rho*mu) = 3.88*0.304/(998.0*0.001002) = 1.12832 < 1
+    6. Fuerza de arrastre F = rho v^2 C_d / (2 S) = 998.0*3.88**2/(2*0.698132)
 
-Esto importa más que un número de exactitud, por cómo se supone que se usa el
-sistema. Todo el plan es dejar que un especialista se haga cargo de una categoría
-de trabajo una vez que se probó en esa categoría, y dejar de pagar el modelo caro
-para esa categoría. Si un especialista no puede darse cuenta de cuándo un pedido se
-corrió afuera de aquello en lo que se probó, entonces "probado en esta categoría"
-es una promesa que no puede sostener. El primer pedido de apenas afuera del borde
-recibe una respuesta segura y equivocada sin nadie mirando.
+Una "fracción de volumen" que no lo es. Un test de régimen que no es el test de
+régimen. Una ley de fuerza que no es la ley de fuerza. El especialista que puntúa
+perfecto en su propio material escribió eso, con la misma voz.
 
-### Lo que no sabemos
+**Así que la segunda fase del diseño es una promesa que el sistema no puede
+sostener.** Dice "probado en esta región", y el primer pedido de apenas afuera
+recibe una respuesta segura y equivocada sin nadie mirando. Peor, y estructural: la
+evidencia disponible cuando se toma esa decisión es el registro de dónde el
+especialista **fue puesto a prueba**, no dónde **deja de funcionar**. Son conjuntos
+distintos, y la diferencia entre ellos es exactamente donde vive la respuesta segura
+y equivocada.
 
-No sabemos cómo darle a un especialista una noción usable de su propio borde.
+### Qué probamos, y qué descartó cada intento
 
-El enfoque obvio — preguntarle cuán seguro está — se sabe poco confiable, y en
-nuestras propias corridas las respuestas equivocadas llegan con exactamente la
-misma presentación fluida que las correctas. No hay diferencia visible sobre la
-cual apoyarse.
+**Preguntarle al modelo cuán seguro está.** No comprado, porque nuestras propias
+corridas lo contestan: las respuestas equivocadas llegan con la misma fluidez,
+estructura y vocabulario que las correctas. No hay nada visible sobre lo cual
+apoyarse.
 
-Hay una segunda versión, más silenciosa, del problema. Aunque un especialista
-pudiera reconocer pedidos desconocidos, el sistema tiene que decidir el borde de
-una categoría **antes** de dejar de pagar el modelo caro, y la única evidencia
-disponible en ese momento es el registro de acuerdo del Problema 2 — que te dice
-dónde el especialista fue puesto a prueba, no dónde deja de funcionar. Esas dos
-cosas no son la misma, y la diferencia entre ellas es exactamente la región donde
-va a aparecer una respuesta segura y equivocada.
+**Mirar el proceso en vez del modelo.** El especialista trabaja llamando
+herramientas, y un harness responde esas llamadas. Fuera de su región nombra
+magnitudes que no entiende, así que quizás los fallos de **la capa de herramientas**
+marcan el borde que la prosa no marca.
 
-**Hay un candidato, encontrado mirando el proceso en vez del modelo.** Se listaron
-seis señales de antemano y se revisaron las seis sobre transcripciones ya
-guardadas. Sólo una separa: **cuán seguido la herramienta rechaza lo que la cadena
-le pide**. Dentro de la región eso pasa en el 15% de los pedidos; afuera, en el 63%
-— porque el especialista nombra magnitudes que no entiende y la capa de
-herramientas no puede convertir esos nombres en un pedido válido. **La herramienta
-falla donde la prosa no**, y un guardia que lea eso nunca tiene que preguntarle al
-modelo cómo se siente.
+Se listaron seis señales candidatas **antes de mirar ninguna** — llamadas por
+problema, llamadas rechazadas, tasa de rechazo, pasos, cadenas sin nada evaluable,
+largo de la transcripción — y se revisaron las seis. Una separaba en las dos
+configuraciones: **la tasa con que la herramienta rechaza lo que la cadena pide**,
+15% adentro contra 63% afuera, clasificando el 86% de los casos con un solo umbral.
 
-Todavía no es un detector, y no hay que citarlo como tal: las señales se eligieron
-con las respuestas ya a la vista, el umbral se ajusta sobre los mismos cincuenta
-problemas que lo puntúan, y los dos tipos desconocidos usados son los únicos que
-tiene este material. Confirmarlo pide dos más, con el umbral fijado de antemano.
+**Y falló la confirmación.** Las señales se habían elegido con las respuestas a la
+vista y el umbral ajustado sobre los mismos cincuenta problemas que lo puntuaban,
+así que se pre-registró una confirmación: dos tipos de problema *nuevos*, umbral
+**fijo**. Fuera de la región la herramienta rechaza al **0,18** contra **0,15**
+adentro, y el guardia puntúa 0,62 donde el azar es 0,60.
+
+**El 86% era una propiedad de esos dos tipos de problema, no de un borde.** La
+dirección barata —leer el proceso en vez del modelo— está agotada: el proceso
+tampoco sabe.
+
+### Qué queda, y por qué cada opción es poco atractiva
+
+**Un segundo especialista cuyo desacuerdo marque el borde.** Duplica el costo de
+cada pedido custodiado, y sólo detecta un borde donde *otro* especialista resulte
+competente — que no es el mismo conjunto que "fuera de la región de éste", y puede
+ser una fracción chica.
+
+**Muestrear el modelo caro después del retiro.** La respuesta de la industria;
+funciona, y cuesta plata para siempre en cada pedido custodiado, que es el costo que
+el retiro existe para eliminar. Convierte un salto en un descuento.
+
+**Achicar las regiones hasta que el borde quede lejos.** Multiplica especialistas y
+carga de ruteo, y no elimina el problema — vuelve más raro el primer pedido fuera de
+región, y nada menos seguro.
+
+### Qué tiene que satisfacer una propuesta
+
+Cada punto está porque algo que probamos falló ahí.
+
+1. **No consultar al modelo caro en el camino custodiado.** Un guardia que paga
+   aquello que reemplazó no es un guardia. Muestrear una fracción fuera de línea es
+   otra propuesta, permitida, pero su costo hay que enunciarlo como fracción y
+   defenderlo.
+2. **No apoyarse en el auto-reporte del especialista.** Medido: las respuestas
+   equivocadas son indistinguibles en presentación de las correctas.
+3. **No necesitar la respuesta correcta en tiempo de servicio.** Si la tuviera, el
+   especialista sobraría.
+4. **Tiene que separar "fuera de la región" de "adentro y difícil".** Un detector
+   que se dispara con todo problema difícil cuesta rendimiento y lo van a apagar.
+5. **Cualquier umbral debe poder fijarse de antemano.** Un umbral ajustado sobre el
+   material con el que se lo prueba es el error que mató al último candidato.
+6. **Lo bastante barato para correr en cada pedido**, o su tasa de muestreo es parte
+   de la propuesta.
 
 ### Cómo sabríamos que quedó resuelto
 
-Un especialista que se abstenga, o derive hacia arriba, sobre material fuera de su
-categoría a una tasa mucho más alta que sobre material de adentro — medido sobre
-los dos, con la comparación explícita. Un método que lo haga abstenerse de todo no
-es una solución, y la medición tiene que estar construida de modo que no se la
-pueda pasar así.
+Exactitud separando material en región de material fuera, **sobre tipos de problema
+contra los que la propuesta no fue desarrollada y con cualquier umbral fijado de
+antemano** — reportada al lado de la tasa con que se dispara en problemas difíciles
+pero en región, porque un guardia que no distingue esos dos casos es inusable por
+bueno que se vea su titular.
+
+**La vara es baja y nada la superó: nuestro mejor candidato sacó 0,62 donde el azar
+era 0,60.**
+
+Los instrumentos existen: problemas con verdad exacta en tipos con los que no se
+entrenó ningún especialista, transcripciones cuya corrección se conoce, un juez que
+acierta el 82% sin ver la respuesta, y una disciplina de pre-registro que trata a un
+candidato encontrado buscando como hipótesis hasta que sobreviva material sobre el
+que no fue encontrado.
+
+### La versión angosta de la pregunta
+
+No "cómo sabe un modelo lo que no sabe", que es un programa de investigación, sino:
+
+> Dado un especialista medido como competente sobre un conjunto de ejemplos, y un
+> pedido nuevo, ¿hay algo **barato y observable** — en el pedido, en la conducta del
+> especialista, en las herramientas que usa, o en comparaciones que no involucren al
+> modelo caro — que distinga un pedido que va a resolver de uno que va a contestar
+> con seguridad y mal?
+
+Medimos que la respuesta no es la confianza del modelo y no es la tasa de fallo de
+la capa de herramientas. No sabemos qué más mirar.
 
 ## Problema 4 — quién corrige el trabajo cuando el maestro se va
 
@@ -348,21 +413,34 @@ juez tiene que acertar lo bastante seguido como para que valga la pena obedecerl
 
 ### Lo que no sabemos
 
-En nuestros experimentos teníamos un juez perfecto y gratis: los problemas se
-generaban a partir de fórmulas cerradas, así que la respuesta exacta se conocía
-antes de formular la pregunta. Por eso los resultados de este proyecto son
-confiables, y también por eso no transfieren. El trabajo real no viene con
-solucionario.
+**Existe un juez, y eso ya está medido.** Sobre 100 cadenas con corrección conocida
+— 33 bien, 67 mal, así que contestar "mal" siempre saca 0,67 — un modelo grande
+corrige a **0,89**, balanceado en las dos clases, y un modelo del mismo tamaño que
+el corregido llega a **0,82**.
 
-No sabemos de dónde sale el juez en un dominio que no tiene oráculo. Los
-candidatos tienen todos problemas visibles. Un segundo modelo de IA como juez
-comparte los puntos ciegos de aquello que juzga. Una persona es precisa y
-demasiado lenta y cara como para cerrar un bucle con ella. Las pruebas escritas de
-antemano sólo cubren lo que a alguien se le ocurrió anotar.
+**Y la mitad útil es el par de números del modelo chico.** *Resuelve* este material
+a 0,467 y lo *juzga* a 0,82. **Juzgar es más fácil que resolver**, por mucho, para
+el mismo modelo sobre los mismos problemas. Eso es lo que vuelve construible el
+bucle de mejora después de que el modelo caro se va: la nota no tiene que venir de
+algo capaz de haber hecho el trabajo.
 
-No elegimos entre estas opciones, y no diseñamos el experimento que elegiría. Es el
-problema menos explorado del proyecto y está debajo de toda la mitad de
-auto-mejora del diseño.
+**Una combinación es mejor que cualquiera de los dos jueces solo.** Una comprobación
+puramente mecánica —re-ejecutar la aritmética de la propia cadena y preguntar si su
+respuesta se sigue— acepta el 94% del trabajo correcto y sólo el 52% del incorrecto,
+el perfil de error opuesto al del juez modelo. Exigir que **los dos** acepten baja la
+falsa aceptación de trabajo equivocado que se ve limpio de **41% a 2%**, a cambio de
+seis puntos de trabajo correcto, y sale casi calibrada.
+
+**Lo que seguimos sin saber es el caso que más importa.** El modelo grande juzga bien
+acá en parte porque puede *resolver* este material — saca perfecto en él. Donde nada
+disponible pueda resolver el trabajo, juzgar queda sin probar, y ése es justamente el
+dominio donde un especialista valdría la pena. Nada en estas corridas habla de eso.
+
+**Y seleccionar no es acertar.** Un juez que acierta el 82% de las veces puede
+ordenar dos candidatos al revés. Sobre pares con brecha real la conjunción los ordena
+bien, pero son dos pares, y los candidatos no los produjo un bucle de mejora — así
+que nada muestra que la selección repetida converja, ni que un bucle optimizando esta
+nota no aprenda a satisfacer a los dos jueces estando equivocado.
 
 ### Cómo sabríamos que quedó resuelto
 
@@ -428,9 +506,21 @@ hicimos, y vale separarlas para que los problemas genuinamente abiertos de arrib
 queden visibles:
 
 - **Volver a probar si el acuerdo ordena bien a los especialistas**, ahora que hay
-  una brecha real entre el modelo caro y el chico. La prueba anterior se corrió
-  contra casi-iguales, donde no había nada que ordenar. El instrumento existe y el
-  material existe.
+  una brecha real entre el modelo caro y el chico, y un juez contra el cual
+  compararlo. La prueba anterior se corrió contra casi-iguales, donde no había nada
+  que ordenar. El instrumento existe y el material existe, y esto lleva listado acá
+  el tiempo suficiente como para dar vergüenza.
+- **Medir la tasa de aceptación que le da nombre al diseño.** La arquitectura se
+  apoya en cuán seguido un modelo chico produce exactamente lo que produciría uno
+  grande, y nunca la calculamos — sustituimos por un acuerdo más grueso a nivel de
+  respuesta porque modelos de familias distintas cortan el texto distinto. Dentro de
+  una misma familia la versión fina es medible, tenemos los modelos, y nunca se
+  compró. Es el hueco más conspicuo del proyecto.
+- **Prohibir de plano la llamada malformada.** Un pedido a una herramienta se puede
+  volver sintácticamente imposible en vez de meramente improbable, restringiendo qué
+  le está permitido escribir al modelo en cada paso. Se dejó de lado cuando la
+  sintaxis no era el fallo dominante; desde entonces costó 19 de 118 pedidos en una
+  corrida, que es otro argumento distinto del que la archivó.
 - ~~Medir bien el problema del borde.~~ **Hecho, y es peor de lo que sugería la
   corrida cortada**: fórmulas exactas treinta de treinta dentro de la región y una
   de veinte afuera. Lo que queda no es una medición sino un guardia, y el primer

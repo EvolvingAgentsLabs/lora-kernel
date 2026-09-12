@@ -273,13 +273,9 @@ control plane empresarial.
   el target tiene que ser de frontera, y la condición de retiro.
 - [`docs/es/TECHNICAL-REFERENCE.md`](docs/es/TECHNICAL-REFERENCE.md) — mecanismos,
   α y su superficie, KV cache, action tokens, composición de adaptadores.
-- [`docs/es/PROBLEM-region-edge.md`](docs/es/PROBLEM-region-edge.md) — **el
-  enunciado autocontenido del único problema abierto que bloquea el producto**,
-  escrito para entregárselo a alguien sin contexto: qué está medido, qué se
-  probó, qué descartó cada intento, y qué debe satisfacer una propuesta ·
-  [en](docs/PROBLEM-region-edge.md)
-- [`docs/es/OPEN-PROBLEMS.md`](docs/es/OPEN-PROBLEMS.md) — **las cinco cosas que
-  no sabemos hacer**, escritas sin jerga: qué es cada problema, qué probamos, qué
+- [`docs/es/OPEN-PROBLEMS.md`](docs/es/OPEN-PROBLEMS.md) — **los problemas
+  abiertos, escritos sin jerga**, con el **Problema 3 enunciado completo para
+  entregárselo a alguien sin ningún otro contexto** — es el que bloquea el producto: qué es cada problema, qué probamos, qué
   descartó cada intento, y cómo se vería resolverlo.
 - [`docs/es/the-frontier-is-scaffolding.md`](docs/es/the-frontier-is-scaffolding.md) —
   el artículo.
