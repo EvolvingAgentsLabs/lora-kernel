@@ -62,8 +62,8 @@ sys.exit(1 if a['unparsed'] >= a['n'] else 0)" "$f" || missing=1
   trap 'colab stop -s "$S" >/dev/null 2>&1 || true' EXIT
 
   # EACH STEP REPORTS, BECAUSE THE CHAINED VERSION HID WHICH ONE FAILED. The
-  # install was piped to /dev/null and `&&`-chained, so a failed install silently
-  # skipped `ollama serve` and the only line that came back was the git HEAD —
+  # install was piped to /dev/null and '&&'-chained, so a failed install silently
+  # skipped 'ollama serve' and the only line that came back was the git HEAD —
   # which read like a healthy boot [ran] 2026-09-12.
   cat > /tmp/_oboot.py <<PY
 import subprocess
@@ -78,9 +78,9 @@ step("clone", "rm -rf /content/lora-kernel && cd /content && git clone -q -b $BR
               "cd lora-kernel && git log --oneline -1")
 # THE INSTALLER NEEDS zstd AND SAYS SO ONLY IN PASSING. Without it the script
 # prints a list of package managers and exits **rc=0**, installing nothing — so
-# every downstream step reported `ollama: not found` while the install itself
+# every downstream step reported 'ollama: not found' while the install itself
 # looked like it had succeeded [ran] 2026-09-12. Its whole error message, as it
-# reaches the log, is `- Arch: sudo pacman -S zstd`.
+# reaches the log, is '- Arch: sudo pacman -S zstd'.
 step("deps", "apt-get -qq update >/dev/null 2>&1; apt-get -qq install -y curl zstd 2>&1 | tail -1; which curl zstd")
 # NO BACKTICKS OR PARENTHESES IN THIS HEREDOC. It is unquoted so that BRANCH
 # interpolates, which means bash also expands anything inside it that looks like a
