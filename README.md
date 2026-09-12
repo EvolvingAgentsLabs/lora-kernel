@@ -227,7 +227,7 @@ the work and is updated the same session a step reports.
 | **S3** | the router beats a lookup table | 🟡 ties |
 | **S4** | the expert specialises per region | ✅ **+63.3** |
 | **S5** | close the withdrawal gap | ✅ **0.000** in region |
-| **S6** | `harness.lora` — kernel apart from the expert | 🟡 **composition solved, comparison unfinished** — taking turns works, and P21 killed the memorisation the earlier win rested on (a no-tool control fell **27/30 → 6/30** on per-case handbooks). The kernel arm on that material has **not finished** |
+| **S6** | `harness.lora` — kernel apart from the expert | 🟡 **composition solved, comparison is a tie** — taking turns works. On material where the values cannot be memorised, the kernel reproduces **94/96** of the oracle's tool calls against a hand-written rule's **93/96**: one value, inside the three pre-registered as a tie. All three arms tie on the final answer too (4, 5, 6 of 30) because the physics is the bottleneck |
 | **S7** | the tournament that evolves the experts | 🟢 **fitness fixed** — neither judge alone ranks reliably (1 of 2 pairs each); **both-must-accept gets 2 of 2** |
 
 **What works.** The protocol is learnable on its own and travels to a domain it
@@ -240,7 +240,7 @@ pool is servable with vLLM multi-LoRA.
 
 | | what fails | plan |
 |:--:|---|---|
-| 1 | ~~A suite where the tools are necessary.~~ **Built and confirmed**: with a per-case handbook the no-tool control collapses **27/30 → 6/30**, so the values must now be queried. What is missing is the comparison itself — the kernel arm stalled at 1 of 30 when its session died | relaunch the kernel arm. Note what the rule's run already says: it writes **93 of 96** tool calls correctly and still scores 5/30, so on this material the bottleneck has moved from the protocol to the physics |
+| 1 | ~~A suite where the tools are necessary.~~ ~~The comparison is missing.~~ **Both done, and the comparison is a tie**: the no-tool control collapses 27/30 → 6/30 on per-case handbooks, and on that material the kernel reaches **94/96** against the rule's **93/96** | what separates them is character, not score: the rule makes 96 calls with **none refused**, the kernel makes 116 with **20 refused** and recovers all but one. Whether a 17.2% rejection rate matters against a paid or slow tool is unmeasured |
 | 2 | **A guard on the region's edge** — the expert's formulas fall 30/30 → 1/20 outside it. Every *behavioural* signal is falsified: on unseen families the tool layer reads 0.18 against 0.15 inside, which is chance | a **structural** signal survives where behaviour did not. Dimensional algebra over (kg, m, s) detects **0.80** of out-of-region work on families sealed before the instrument existed. Alone it false-alarms at 0.22; escalating only when the dimensional **and** mechanical checks both fail **never fires in region — 0 of 60 — and still catches 0.35 of the work outside it**. It is wired as `escalate.has_left_its_region`. What is left is what escalation costs, which decides it against the wider rule that stops 60 of 67 wrong answers by sending half the in-region work away |
 | 3 | ~~There is no judge without an oracle.~~ **Measured: a judge exists.** The frontier grades at **0.89** balanced and a peer at **0.82** — while that same peer *solves* the material at 0.467 | what is left is the case where nothing available can solve the work, which this run cannot speak to |
 | 4 | **The router ties a keyword lookup** | needs per-family experts and material where surface and substance come apart |

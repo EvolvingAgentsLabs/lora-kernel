@@ -127,3 +127,66 @@ Pre-registered before the run: **a kernel result within 3 tool values of the rul
 is a tie, not a win**, and will be reported as one. Separating them would need a
 larger evaluation, and that is a purchase to argue for on its own once there is a
 reason to.
+
+---
+
+## Outcome (2026-09-12) [ran]
+
+| arm | final answer | oracle's tool values | queries | rejected | declined |
+|---|--:|--:|--:|--:|--:|
+| no tool layer at all | **6/30** | 0/96 | 0 | 0 | 0 |
+| hand-written rule | 5/30 | 93/96 = **0.969** | 96 | **0** | 182 |
+| kernel adapter | 4/30 | 94/96 = **0.979** | 116 | **20** | 153 |
+
+### The verdict is the one that was pre-registered: a tie
+
+On the axis this experiment declared in advance — the oracle's tool steps — the
+kernel reproduces **94 of 96** against the rule's **93 of 96**. That is **one
+value**, and this brief fixed before the run that *a kernel within three tool values
+of the rule is a tie, not a win*. It is reported as a tie.
+
+**And all three arms tie on the final answer too**, at 4, 5 and 6 of 30. The arm
+with **no tool layer at all scores highest**. Nothing separates them, which is what
+the headroom check said before the arm was bought: 22 of the rule's 25 failures
+were cases where it held every oracle value and the expert still answered wrong, so
+a perfect tool layer could only have moved 3 cases.
+
+### What does separate them is how the two layers behave
+
+The rule makes **96 calls and has none refused**. The kernel makes **116 and has 20
+refused — a 17.2% rejection rate** — and still ends ahead on coverage. It asks more
+often, malforms more often, and recovers.
+
+**How much does the malforming actually cost? Almost nothing, here.** Of the 14
+failed cases carrying a rejection, **13 obtained every oracle value anyway**. Only
+one came up short because of it.
+
+**So the failure taxonomy over-attributes to protocol on this arm, and it is being
+left alone.** `classify` tests `rejected > 0` before it tests coverage, so a case
+that was refused once and recovered is labelled `malformed` rather than by what
+actually sank it. That precedence was arbitrary when it was written this morning.
+Changing it now, after seeing which arm it penalises, is tuning — so the number
+stands as published and the correction travels beside it:
+
+| | as the taxonomy reports it | what the records say |
+|---|--:|--:|
+| kernel protocol failures | 14 | **1** cost a value; 13 recovered |
+| kernel physics failures | 12 | 12 |
+
+### What this settles and what it does not
+
+**Settles:** a learned protocol is *not worth its weights over a hand-written rule*
+on this suite — nor is it worse. The two are indistinguishable where the call is not
+a copy and the values cannot be memorised, which is a real answer to the question
+P13 opened and the opposite of P13's own verdict (9/30 against 23/30).
+
+**Does not settle:** whether the kernel's 17.2% rejection rate matters. On a suite
+where the harness answers instantly it costs nothing; against a paid tool or a slow
+one it is a fifth of the calls wasted. Nothing here measures that.
+
+**And does not settle the thing S6 is actually for.** The rule is 145 lines that
+know this suite's label vocabulary, unit table and phrasings. The adapter is a
+weight delta that learned the protocol from a corpus containing none of the
+evaluation families. A tie between those two is not a tie in kind — but *this
+experiment did not measure portability*, and P9's transfer result is the only
+evidence for it. The claim to make is the one that was tested.
