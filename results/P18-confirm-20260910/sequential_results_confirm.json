@@ -6,17 +6,17 @@
     "jet_reaction",
     "weir_flow"
   ],
-  "started": "2026-09-11T19:39:00",
+  "started": "2026-09-12T01:58:32",
   "arms": {
     "sequential \u00b7 domain plans, kernel executes": {
       "label": "sequential \u00b7 domain plans, kernel executes",
       "n": 20,
-      "scored": 19,
-      "complete": false,
+      "scored": 20,
+      "complete": true,
       "passed": 0,
       "accuracy": 0.0,
       "repaired_passed": 0,
-      "tool_calls": 63,
+      "tool_calls": 66,
       "steps_rejected": 23,
       "records": [
         {
@@ -246,8 +246,274 @@
           "tool_calls": 3,
           "steps_rejected": 0,
           "raw": "1. Flow area: <calc>pi * (0.0613/2)**2</calc>= 0.00295128\n2. Reaction force F = rho v A: <calc>998.0 * 0.0496 * 0.00295128</calc>= 0.146091\n3. Answer: <calc>0.146091</calc>= 0.146091\n{\"answer\":"
+        },
+        {
+          "case_id": "phys-0019",
+          "family": "weir_flow",
+          "want": 0.9714013769130754,
+          "got": 4.0,
+          "passed": false,
+          "repaired": 1.478,
+          "repaired_passed": false,
+          "tool_calls": 3,
+          "steps_rejected": 0,
+          "raw": "1. Width in SI units: <calc>1.21</calc>= 1.21\n2. Convert head from m to m: <calc>0.59</calc>= 0.59\n3. Volumetric flow rate Q = C A sqrt(2 g h): <calc>1.478</calc>= 1.478\n4. {\"answer\":"
+        }
+      ]
+    },
+    "control \u00b7 domain alone, harness repairs": {
+      "label": "control \u00b7 domain alone, harness repairs",
+      "n": 20,
+      "scored": 20,
+      "complete": true,
+      "passed": 0,
+      "accuracy": 0.0,
+      "repaired_passed": 0,
+      "tool_calls": 76,
+      "steps_rejected": 22,
+      "records": [
+        {
+          "case_id": "phys-0000",
+          "family": "jet_reaction",
+          "want": 16.209798253445967,
+          "got": 10.7245,
+          "passed": false,
+          "repaired": 10.724462319999999,
+          "repaired_passed": false,
+          "tool_calls": 3,
+          "steps_rejected": 0,
+          "raw": "1. Flow rate to volume flux: 0.0086 / pi / 4 = 0.000684366\n2. Velocity v = Q/A: 0.000684366 / (pi/4 * 0.0715**2) = 0.170446\n3. Reaction force F = rho v A: 880.0 * 0.170446 * 0.0715 = 10.7245\n{\"answer\":"
+        },
+        {
+          "case_id": "phys-0001",
+          "family": "weir_flow",
+          "want": 0.06865136637484896,
+          "got": 0.102977,
+          "passed": false,
+          "repaired": 0.10297704956227344,
+          "repaired_passed": false,
+          "tool_calls": 2,
+          "steps_rejected": 0,
+          "raw": "1. Flow area: 1.79 * 0.076 = 0.13604\n2. Volumetric flow rate Q = C A sqrt(2 g h): 0.62 * 0.13604 * sqrt(2*9.80665*0.076) = 0.102977\n{\"answer\":"
+        },
+        {
+          "case_id": "phys-0002",
+          "family": "jet_reaction",
+          "want": 49.323229057506545,
+          "got": 14.2475,
+          "passed": false,
+          "repaired": 14.247503341499998,
+          "repaired_passed": false,
+          "tool_calls": 3,
+          "steps_rejected": 0,
+          "raw": "1. Flow rate to volume flux: 0.0139= 0.0139\n2. Velocity v = Q/A: 0.0139/0.0715**2 = 2.71896\n3. Reaction force F = rho v A: 1025.0*2.71896*0.0715**2 = 14.2475\n{\"answer\":"
+        },
+        {
+          "case_id": "phys-0003",
+          "family": "weir_flow",
+          "want": 0.9138382223853849,
+          "got": 3.0,
+          "passed": false,
+          "repaired": 1.9002,
+          "repaired_passed": false,
+          "tool_calls": 2,
+          "steps_rejected": 0,
+          "raw": "1. Flow area: 1.3 * 0.54 = 0.702\n2. Q = C A sqrt(2 g h) = 0.6 * 0.702 * sqrt(2*9.806*0.54): 1.9002= 1.9002\n3. {\"answer\":"
+        },
+        {
+          "case_id": "phys-0004",
+          "family": "jet_reaction",
+          "want": 23.048769457006742,
+          "got": 7.98399,
+          "passed": false,
+          "repaired": 7.983988674696,
+          "repaired_passed": false,
+          "tool_calls": 3,
+          "steps_rejected": 0,
+          "raw": "1. Flow rate to volume flux: 0.008= 0.008\n2. Velocity v = Q/A: 0.008/0.0028674 = 2.78998\n3. Reaction force F = rho v A: 998.0*2.78998*0.0028674 = 7.98399\n{\"answer\":"
+        },
+        {
+          "case_id": "phys-0005",
+          "family": "weir_flow",
+          "want": 2.619910301077685,
+          "got": 4.0,
+          "passed": false,
+          "repaired": 0.013042859595418888,
+          "repaired_passed": false,
+          "tool_calls": 3,
+          "steps_rejected": 0,
+          "raw": "1. Width in SI units: 3.79= 3.79\n2. Convert head to SI: 0.534 * 0.0254 = 0.0135636\n3. Volumetric flow rate Q = C A sqrt(2 g h): 0.6 * 3.79 * 0.0135636**2 / 0.00102881**0.5 = 0.0130429\n4. {\"answer\":"
+        },
+        {
+          "case_id": "phys-0006",
+          "family": "jet_reaction",
+          "want": 1660.082496863042,
+          "got": 0.0244502,
+          "passed": false,
+          "repaired": 0.02445024058946845,
+          "repaired_passed": false,
+          "tool_calls": 3,
+          "steps_rejected": 0,
+          "raw": "1. Flow rate to volume flux: 0.0397= 0.0397\n2. Velocity v = Q/A: pi/4 * 0.0352**2 / 0.0397 = 0.0245123\n3. Reaction force F = rho v A: 1025.0 * 0.0245123 * pi/4 * 0.0352**2 = 0.0244502\n{\"answer\":"
+        },
+        {
+          "case_id": "phys-0007",
+          "family": "weir_flow",
+          "want": 0.5398297399959795,
+          "got": 4.0,
+          "passed": false,
+          "repaired": 0.0032930250762318062,
+          "repaired_passed": false,
+          "tool_calls": 3,
+          "steps_rejected": 0,
+          "raw": "1. Width in SI units: 0.76= 0.76\n2. Convert head to SI: 0.532 * 0.2998 = 0.159494\n3. Volumetric flow rate Q = C d^2/2g sqrt(2h/g) in SI: 0.62 * 0.76**2 / (2*9.80665) * sqrt(2*0.159494/9.80665) = 0.00329303\n4. {\"answer\":"
+        },
+        {
+          "case_id": "phys-0008",
+          "family": "jet_reaction",
+          "want": 1004.1231074860019,
+          "got": 0.052252,
+          "passed": false,
+          "repaired": 0.05225204202547627,
+          "repaired_passed": false,
+          "tool_calls": 3,
+          "steps_rejected": 0,
+          "raw": "1. Flow rate to volume flux: 0.0426= 0.0426\n2. Velocity v = Q/A: pi/4 * 0.045**2 / 0.0426 = 0.0373341\n3. Reaction force F = rho v A: 880.0 * 0.0373341 * pi/4 * 0.045**2 = 0.052252\n{\"answer\":"
+        },
+        {
+          "case_id": "phys-0009",
+          "family": "weir_flow",
+          "want": 0.1632219076809428,
+          "got": 3.0,
+          "passed": false,
+          "repaired": 0.48144,
+          "repaired_passed": false,
+          "tool_calls": 2,
+          "steps_rejected": 0,
+          "raw": "1. Flow area: 1.25 * 0.172 = 0.215\n2. Q = C A sqrt(2 g h) = 0.62 * 0.215 * sqrt(2*9.80665*0.172): 0.48144= 0.48144\n3. {\"answer\":"
+        },
+        {
+          "case_id": "phys-0010",
+          "family": "jet_reaction",
+          "want": 423.2377897817877,
+          "got": 0.192374,
+          "passed": false,
+          "repaired": 0.19237384527200002,
+          "repaired_passed": false,
+          "tool_calls": 8,
+          "steps_rejected": 6,
+          "raw": "1. Flow area: pi/4 * 0.0752**2 = 0.00444146\n2. Reaction force F = rho v A = 998.0 * 0.0434 * 0.00444146 = 0.0199999= ERROR: unparseable: invalid syntax\n3. Corrected working: 998.0 * 0.0434 * 0.00444146 = 0.192374\n4. Answer: {\"answer\": 0.192374}= ERROR: unparseable: unmatched '}'\n5. Corrected answer: {\"answer\": 0.192374}= ERROR: unparseable: unmatched '}'\n6. Final JSON: {\"answer\": 0.192374}= ERROR: unparseable: unmatched '}'\n7. Solved: {\"answer\": 0.192374}= ERROR: unparseable: unmatched '}'\n8. Final JSON: {\"answer\": 0.192374}= ERROR: unparseable: unmatched '}'\n"
+        },
+        {
+          "case_id": "phys-0011",
+          "family": "weir_flow",
+          "want": 1.4370317889871116,
+          "got": 0.0399165,
+          "passed": false,
+          "repaired": 0.03991649956073606,
+          "repaired_passed": false,
+          "tool_calls": 3,
+          "steps_rejected": 0,
+          "raw": "1. Width in SI units: 1.79= 1.79\n2. Convert head to SI: 0.59 * 0.2998 = 0.176882\n3. Volumetric flow rate Q = C S h^(3/2) / (2.0016), where C=0.6, S=1.79, h=0.176882: 0.6 * 1.79 * 0.176882**1.5 / 2.0016 = 0.0399165\n{\"answer\":"
+        },
+        {
+          "case_id": "phys-0012",
+          "family": "jet_reaction",
+          "want": 296.40023795882655,
+          "got": 28.424,
+          "passed": false,
+          "repaired": 28.424008942207998,
+          "repaired_passed": false,
+          "tool_calls": 3,
+          "steps_rejected": 0,
+          "raw": "1. Flow rate to volume flux: 0.0323= 0.0323\n2. Velocity v = Q/A: 0.0323/0.0628**2 = 8.18999\n3. Reaction force F = rho v A: 880.0*8.18999*0.0628**2 = 28.424\n{\"answer\":"
+        },
+        {
+          "case_id": "phys-0013",
+          "family": "weir_flow",
+          "want": 1.7657468011592217,
+          "got": 4.0,
+          "passed": false,
+          "repaired": 0.06919392427539123,
+          "repaired_passed": false,
+          "tool_calls": 3,
+          "steps_rejected": 0,
+          "raw": "1. Width in SI units: 3.68= 3.68\n2. Convert head to SI: 0.401 * 0.2998 = 0.12022\n3. Volumetric flow rate Q = C d^2/2g sqrt(2h/g) in SI: 0.64 * 3.68**2 / (2*9.80665) * sqrt(2*0.12022/9.80665) = 0.0691939\n4. {\"answer\":"
+        },
+        {
+          "case_id": "phys-0014",
+          "family": "jet_reaction",
+          "want": 300.7788213686552,
+          "got": 0.155789,
+          "passed": false,
+          "repaired": 0.155788530536,
+          "repaired_passed": false,
+          "tool_calls": 8,
+          "steps_rejected": 6,
+          "raw": "1. Flow area: pi/4 * 0.0742**2 = 0.00432412\n2. Reaction force F = rho v A = 998.0 * 0.0361 * 0.00432412 = 0.15914= ERROR: unparseable: invalid syntax\n3. Corrected working: 998.0 * 0.0361 * 0.00432412 = 0.155789\n4. Answer: {\"answer\": 0.155789}= ERROR: unparseable: unmatched '}'\n5. Corrected answer: {\"answer\": 0.155789}= ERROR: unparseable: unmatched '}'\n6. Final JSON: {\"answer\": 0.155789}= ERROR: unparseable: unmatched '}'\n7. Solved: {\"answer\": 0.155789}= ERROR: unparseable: unmatched '}'\n8. Final JSON: {\"answer\": 0.155789}= ERROR: unparseable: unmatched '}'\n"
+        },
+        {
+          "case_id": "phys-0015",
+          "family": "weir_flow",
+          "want": 0.1051282111601258,
+          "got": 0.00176022,
+          "passed": false,
+          "repaired": 0.00176022,
+          "repaired_passed": false,
+          "tool_calls": 8,
+          "steps_rejected": 5,
+          "raw": "1. Width in SI units: 3.5= 3.5\n2. Convert head to SI: 0.066 * 0.0254 = 0.0016764\n3. Volumetric flow rate Q = C S h^(1.0/2) : 0.6 * 3.5 * 0.0016764**1.0/2 = 0.00176022\n4. Answer: {\"answer\": 0.00176022}= ERROR: unparseable: unmatched '}'\nCorrected JSON object: {\"answer\": 0.00176022}= ERROR: unparseable: unmatched '}'\nCorrected JSON object: {\"answer\": 0.00176022}= ERROR: unparseable: unmatched '}'\nCorrected JSON object: {\"answer\": 0.00176022}= ERROR: unparseable: unmatched '}'\nCorrected JSON object: {\"answer\": 0.00176022}= ERROR: unparseable: unmatched '}'\n"
+        },
+        {
+          "case_id": "phys-0016",
+          "family": "jet_reaction",
+          "want": 2124.76592747202,
+          "got": 4.46573,
+          "passed": false,
+          "repaired": 4.4657338132075,
+          "repaired_passed": false,
+          "tool_calls": 3,
+          "steps_rejected": 0,
+          "raw": "1. Flow rate to volume flux: 0.043 / pi / 4 = 0.00342183\n2. Velocity v = Q/A: 0.00342183 / (pi/4 * 0.0337**2) = 3.83627\n3. Reaction force F = rho v A: 1025.0 * 3.83627 * 0.0337**2 = 4.46573\n{\"answer\":"
+        },
+        {
+          "case_id": "phys-0017",
+          "family": "weir_flow",
+          "want": 0.49602626683964524,
+          "got": 3.0,
+          "passed": false,
+          "repaired": 3.5041,
+          "repaired_passed": false,
+          "tool_calls": 2,
+          "steps_rejected": 0,
+          "raw": "1. Flow area: 1.18 * 0.375 = 0.4425\n2. Q = C A sqrt(2 g h) = 0.62 * 0.4425 * sqrt(2*9.80665*0.375): 3.5041= 3.5041\n3. {\"answer\":"
+        },
+        {
+          "case_id": "phys-0018",
+          "family": "jet_reaction",
+          "want": 831.9228708006532,
+          "got": 0.015175,
+          "passed": false,
+          "repaired": 0.0029512828246169576,
+          "repaired_passed": false,
+          "tool_calls": 8,
+          "steps_rejected": 5,
+          "raw": "1. Flow area: pi/4 * 0.0613**2 = 0.00295128\n2. Reaction force F = rho v A = 998.0 * 0.0496 * 0.00295128 = 0.015175= ERROR: unparseable: invalid syntax\n3. Corrected working: 1. Flow area: pi/4 * 0.0613**2 = 0.00295128\n2. Reaction force F = rho v A = 998.0 * 0.0496 * 0.00295128 = 0.015175= ERROR: unparseable: invalid syntax\n4. Corrected working: 1. Flow area: pi/4 * 0.0613**2 = 0.00295128\n2. Reaction force F = rho v A = 998.0 * 0.0496 * 0.00295128 = 0.015175= ERROR: unparseable: invalid syntax\n5. Final answer: {\"answer\": 0.015175}= ERROR: unparseable: unmatched '}'\n6. Final answer: {\"answer\": 0.015175}= ERROR: unparseable: unmatched '}'\n"
+        },
+        {
+          "case_id": "phys-0019",
+          "family": "weir_flow",
+          "want": 0.9714013769130754,
+          "got": 0.0269827,
+          "passed": false,
+          "repaired": 0.026982661714240578,
+          "repaired_passed": false,
+          "tool_calls": 3,
+          "steps_rejected": 0,
+          "raw": "1. Width in SI units: 1.21= 1.21\n2. Convert head to SI: 0.59 * 0.2998 = 0.176882\n3. Volumetric flow rate Q = C S h^(3/2) / (2.0016), where C=0.6, S=1.21, h=0.176882: 0.6 * 1.21 * 0.176882**1.5 / 2.0016 = 0.0269827\n{\"answer\":"
         }
       ]
     }
-  }
+  },
+  "finished": "2026-09-12T02:27:27"
 }

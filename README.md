@@ -241,7 +241,7 @@ pool is servable with vLLM multi-LoRA.
 | | what fails | plan |
 |:--:|---|---|
 | 1 | **A suite where the tools are necessary** — the kernel beat the rule **94.8% to 91.7%**, but a control with no tool layer beat both at 27/30 by answering from memory | give each problem its own handbook, properties drawn per case, so a value cannot be recalled and must be queried |
-| 2 | **The expert cannot feel its region's edge** — 30/30 inside, 1/20 outside, inventing physics in the same voice | a signal was found: the tool layer's rejection rate runs **0.15 → 0.63**. Needs confirming on two unused families with the threshold fixed |
+| 2 | **A guard on the region's edge** — the expert's formulas fall 30/30 → 1/20 outside it, and nothing in its prose or in the tool layer marks the difference | the tool-layer signal was **falsified**: on unseen families it reads 0.18 against 0.15 inside, which is chance. The cheap direction is exhausted; what is left is a second expert's disagreement, or sampling the frontier after withdrawal |
 | 3 | ~~There is no judge without an oracle.~~ **Measured: a judge exists.** The frontier grades at **0.89** balanced and a peer at **0.82** — while that same peer *solves* the material at 0.467 | what is left is the case where nothing available can solve the work, which this run cannot speak to |
 | 4 | **The router ties a keyword lookup** | needs per-family experts and material where surface and substance come apart |
 | 5 | **The tournament is unbuilt** — the only objective never touched | the grade can come from a peer, which is what a withdrawn frontier leaves behind. Being built now |

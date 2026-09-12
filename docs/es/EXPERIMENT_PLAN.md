@@ -694,6 +694,40 @@ respuesta vacía, así que la frontera se abstuvo en 100 de 100 y se leía como 
 puede juzgar". Los dos jueces se re-corrieron con 400; el brazo invalidado se tiró
 en vez de reportarse.
 
+#### P18 — el guardia queda falsificado: P16 midió dos familias, no un borde
+
+[`results/P18-confirm-20260910/`](../../results/P18-confirm-20260910/BRIEF.md). El
+corte de P16 aplicado sin cambios en `rejection_rate > 0,50`, sobre `weir_flow` y
+`jet_reaction` — familias que ninguna corrida que ajustara algo había visto **[ran]**:
+
+| brazo | en región | familias nuevas | exactitud del guardia |
+|---|---|---|---|
+| secuencial | 0,15 | **0,18** | **0,62** |
+| control | 0,15 | **0,14** | **0,58** |
+
+**Fuera de su región la capa de herramientas rechaza llamadas casi a la misma tasa
+que adentro.** Y 0,62 es el azar: con 30 casos dentro y 20 fuera, contestar "en
+región" siempre da 0,60.
+
+**El 0,86 de P16 vino de seis señales elegidas con las respuestas a la vista y un
+corte ajustado sobre los mismos cincuenta problemas que lo puntuaban** — justo lo
+que advertía su propio brief. La advertencia tenía razón y el número no. Para esto
+sirve una confirmación pre-registrada, y es el experimento más barato que este
+proyecto corrió.
+
+**Un matiz, porque dos cifras reales no coinciden.** Agregando todo el brazo, 23 de
+66 llamadas fueron rechazadas — 0,348. Promediando por caso, 0,18. Un detector pone
+umbral a un *caso*, así que la media por caso es la que cuenta; la agregada es más
+alta porque unos pocos casos fallan mucho y la mayoría no. Citar 0,348 habría sido
+cierto y engañoso.
+
+**Qué cuesta.** Las fórmulas del experto siguen cayendo de 30/30 dentro de su
+región a 1/20 afuera, nada en su prosa marca la diferencia, y ahora nada en la
+conducta de la capa de herramientas tampoco. **La promoción por región sigue sin
+guardia**, y la dirección barata —leer el proceso en vez del modelo— está agotada.
+Queda un segundo experto cuyo desacuerdo marque el borde, o muestrear la frontera
+después del retiro, que es el costo que el retiro existe para evitar.
+
 #### P16 — un guardia en el borde de la región, leído de la capa de herramientas y no del modelo
 
 [`results/P16-tripwire-20260910/`](../../results/P16-tripwire-20260910/BRIEF.md).
