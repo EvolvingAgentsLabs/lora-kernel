@@ -92,7 +92,7 @@ for m in$RUNS; do
   echo "=== \$m"
   ollama pull "\$m" >/dev/null 2>&1
   python -u -m training.physics.headroom --small "ollama:\$m" --large "" \\
-    --n 30 --seed 515151 --contract shared --rtol 0.02 --max-tokens 6000 \\
+    --n 60 --seed 515151 --contract shared --rtol 0.02 --max-tokens 6000 \\
     --run-dir "\$d"
 done
 echo "=== P23 CANDIDATES DONE"
