@@ -35,6 +35,7 @@ import re
 import time
 from pathlib import Path
 
+from training.harness.failure_mode import tally
 from training.harness.rule_tools import call_for
 from training.physics.multitool import FAMILIES, generate
 from training.physics.repair import repair
@@ -152,6 +153,10 @@ def score(step, rows, rtol, label, layer, prev=None, save=None):
                 "declined": sum(r["declined"] for r in recs),
                 "tool_values_matched": sum(r["matched"] for r in recs),
                 "tool_values_wanted": sum(r["wanted"] for r in recs),
+                # WHICH HALF FAILED. Accuracy folds the tool layer and the physics
+                # together; P21's rule wrote 93 of 96 calls and still scored 5/30,
+                # so the number alone pointed at the wrong next step [ran].
+                "failure_modes": tally(recs),
                 "records": recs}
 
     for i, row in enumerate(rows, 1):
@@ -295,6 +300,10 @@ def main() -> int:
         tools = f"{v['tool_values_matched']}/{v['tool_values_wanted']}"
         print(f"{k:<40}{str(v['passed']) + '/' + str(n):>9}{tools:>13}"
               f"{v['queries']:>9}{v['rejected']:>10}")
+        f = v.get("failure_modes") or tally(v["records"])
+        print(f"{'':<40}of {f['failed']} failures: protocol {f['protocol']}, "
+              f"physics {f['physics']}  "
+              + ", ".join(f"{m} {c}" for m, c in f["by_mode"].items() if c))
     ker = a.get("kernel adapter writes the calls", {})
     got = ker.get("tool_values_matched", 0) / max(ker.get("tool_values_wanted", 1), 1)
     print(f"\nThe bar is the hand-written rule at 0.929 on the oracle's tool steps.")
