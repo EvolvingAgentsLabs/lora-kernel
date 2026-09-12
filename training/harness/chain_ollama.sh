@@ -38,6 +38,21 @@ tmo () {  # tmo SECONDS cmd...  — macOS ships no coreutils `timeout`
   return $rc
 }
 
+# ONE DEFINITION OF FINISHED, USED BY BOTH LOOPS. There were two, and only one of
+# them learned about partial files: the outer loop correctly saw 45 of 60 as
+# unfinished and opened a session, while the inner loop saw a file on disk and put
+# nothing in it to run. Three sessions booted, found nothing to do and stopped,
+# about a minute apart [ran] 2026-09-12.
+complete () {  # complete MODEL -> 0 if its 60 cases are all scored
+  local f="$RUN_DIR/$(echo "$1" | tr ':.' '--')/headroom.json"
+  [ -f "$f" ] || return 1
+  python3 -c "
+import json,sys
+a=next(iter(json.load(open(sys.argv[1]))['arms'].values()))
+scored=len(a.get('records') or [])
+sys.exit(1 if (a['unparsed'] >= a['n'] or scored < a['n']) else 0)" "$f" 2>/dev/null
+}
+
 for i in $(seq 1 "$SESSIONS"); do
   # NOTHING LEFT TO DO IS NOT A REASON TO RENT A CARD. chain_separate.sh spent two
   # whole sessions retraining adapters for a finished experiment before this check
@@ -47,15 +62,7 @@ for i in $(seq 1 "$SESSIONS"); do
   # done [ran] 2026-09-12. A run where nothing parsed is a broken run.
   missing=0
   for m in $MODELS; do
-    f="$RUN_DIR/$(echo "$m" | tr ':.' '--')/headroom.json"
-    [ -f "$f" ] || { missing=1; continue; }
-    python3 -c "
-import json,sys
-a=next(iter(json.load(open(sys.argv[1]))['arms'].values()))
-scored=len(a.get('records') or [])
-# A PARTIAL FILE IS NOT A FINISHED ONE EITHER. With per-case resume a run can come
-# back with 40 of 60 scored and unparsed=0, which the earlier check read as done.
-sys.exit(1 if (a['unparsed'] >= a['n'] or scored < a['n']) else 0)" "$f" || missing=1
+    complete "$m" || missing=1
   done
   [ "$missing" = "0" ] && { echo "=== every candidate is on disk"; break; }
 
@@ -144,8 +151,7 @@ PY
   # directory, so a reclaimed session costs one model and never the ladder.
   RUNS=""
   for m in $MODELS; do
-    d="$RUN_DIR/$(echo "$m" | tr ':.' '--')"
-    [ -f "$d/headroom.json" ] && continue
+    complete "$m" && continue
     RUNS="$RUNS $m"
   done
   echo "    still to run:$RUNS"
