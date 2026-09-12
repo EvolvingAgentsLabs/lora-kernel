@@ -27,7 +27,12 @@ SESSIONS="${SESSIONS:-2}"
 tmo () {  # tmo SECONDS cmd...  — macOS ships no coreutils `timeout`
   local secs=$1; shift
   "$@" & local p=$!
-  ( sleep "$secs"; kill -9 "$p" 2>/dev/null ) >/dev/null 2>&1 & local w=$!
+  # The watchdog is disowned so that killing it does not print `Killed: 9` into
+  # the run log on every single bounded call — a log nobody reads is a log that
+  # hides the line that mattered.
+  { ( sleep "$secs"; kill -9 "$p" 2>/dev/null ) >/dev/null 2>&1 & } 2>/dev/null
+  local w=$!
+  disown "$w" 2>/dev/null || true
   wait "$p" 2>/dev/null; local rc=$?
   kill -9 "$w" 2>/dev/null
   return $rc
