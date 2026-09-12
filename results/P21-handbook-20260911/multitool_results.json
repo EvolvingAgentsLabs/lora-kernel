@@ -819,26 +819,26 @@
       "label": "kernel adapter writes the calls",
       "layer": "kernel",
       "n": 30,
-      "scored": 14,
+      "scored": 16,
       "complete": false,
       "passed": 3,
-      "accuracy": 0.2143,
-      "queries": 53,
-      "rejected": 8,
-      "declined": 71,
-      "tool_values_matched": 44,
-      "tool_values_wanted": 44,
+      "accuracy": 0.1875,
+      "queries": 63,
+      "rejected": 10,
+      "declined": 78,
+      "tool_values_matched": 52,
+      "tool_values_wanted": 52,
       "failure_modes": {
-        "failed": 11,
+        "failed": 13,
         "by_mode": {
-          "malformed": 5,
+          "malformed": 6,
           "missing": 0,
           "wrong args": 0,
-          "physics": 6
+          "physics": 7
         },
-        "protocol": 5,
-        "physics": 6,
-        "share_physics": 0.545
+        "protocol": 6,
+        "physics": 7,
+        "share_physics": 0.538
       },
       "records": [
         {
@@ -1022,6 +1022,32 @@
           "matched": 2,
           "wanted": 2,
           "raw": "1. Channel width: <convert>value=221.1; from=cm; to=m</convert>= 2.211\n2. Flow depth: <convert>value=84.4; from=cm; to=m</convert>= 0.844\n3. Flow area: <convert>value\n2.211 * 0.844 = 1.87694</ <lookup>fluid=water; property=viscosity; T=20</lookup>= ERROR: no entry for water at 20 C; this handbook lists []\n4. Wetted perimeter: <convert>value\n2.211 + 2*0.844 = 3.899</ <lookup>fluid=water; property=viscosity; T=20</lookup>= 0.001002 <convert>value=0.01115; from=; to=m/m</convert>= ERROR: unknown unit ''\n5. Hydraulic radius R = A/P: <convert>value\n1.87694 / 3.899 = 0.481131</ <lookup>fluid=water; property=viscosity; T=20</lookup>**\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): (1/0.023) * 1.87694 * "
+        },
+        {
+          "case_id": "mt-0014",
+          "family": "pipe_head_loss",
+          "want": 0.37349854365547824,
+          "got": 0.00776281,
+          "passed": false,
+          "queries": 6,
+          "rejected": 2,
+          "declined": 3,
+          "matched": 4,
+          "wanted": 4,
+          "raw": "1. Flow rate: <convert>value=43.7; from=m^3/h; to=m^3/s</convert>= 0.0121389\n2. Pipe diameter: <convert>value=39.2; from=cm; to=m</convert>= 0.392\n3. Density of the fluid: <lookup>fluid=ZW-65; property=density; T=25</lookup>= 1056.1\n4. Dynamic viscosity: <lookup>fluid=ZW-65; property=viscosity; T=25</lookup>= 0.72\n5. Cross-sectional area: pi/4 * 0.392**2 = 0.120687\n6. Velocity v = Q/A: 0.0121389 / 0.120687 = 0.100582\n7. Reynolds number: <lookup>Re=0.05444; nu=1.51e-05; f=0.023</lookup>= ERROR: lookup needs ['fluid', 'property']\n8. Friction factor: <lookup>fluid=ZW-65; property=f; Re=1.05e+03</lookup>= ERROR: no entry for zw-65 at 20 C; this handbook lists ['zw-65']\n9. Head loss h = f (L/D) v"
+        },
+        {
+          "case_id": "mt-0015",
+          "family": "venturi_flow",
+          "want": 0.04096021353948243,
+          "got": 2.0,
+          "passed": false,
+          "queries": 4,
+          "rejected": 0,
+          "declined": 4,
+          "matched": 4,
+          "wanted": 4,
+          "raw": "1. Inlet diameter: <convert>value=134.2; from=mm; to=m</convert>= 0.1342\n2. Throat diameter: <convert>value=71.8; from=mm; to=m</convert>= 0.0718\n3. Pressure drop: <convert>value=454.6; from=mbar; to=Pa</convert>= 45460\n4. Density of the fluid: <lookup>fluid=TS-69; property=density; T=10</lookup>= 967.7\n5. Inlet area: pi/4 * <convert>value\nSolve the problem as a single JSON object: {\"answer\": <number>}, where <number> is the numeric value in m^3/s.\n20.0119= 9\n6. Discharge Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): 0.0718**2 * sqrt(2*45460 / (967.7 * (1 - (0.0718/0.1342)**2)))<output>\n{\"answer\":"
         }
       ]
     }

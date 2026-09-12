@@ -172,3 +172,17 @@ Two columns, so nobody has to take the global number on faith:
   fails still can, and printing the split is cheaper than arguing about it. The
   target's failures at n=30 clustered: manning 2/5, head loss 2/5, pump power 3/5,
   while terminal velocity and venturi were perfect.
+
+### The target at n=60 holds [ran]
+
+| | n=30 | **n=60** |
+|---|--:|--:|
+| verified | 21/30 = 0.700 | **43/60 = 0.717** |
+| unparsed | 0 | **0** |
+| failures that are complete responses | 9/9 | **17/17 = 1.00** |
+| informative cases (target wrong) | 9 | **17** |
+
+Still in the band, still finishing every answer, and the informative sample nearly
+doubled as intended. Its failures cluster the same way — head loss 6, manning 5,
+pump power 4, and only 2 across the other three families — which is why the report
+prints the per-family split rather than a single number.
