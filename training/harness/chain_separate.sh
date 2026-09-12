@@ -78,10 +78,26 @@ PY
   [ -f "$LOCAL" ] && { tmo 180 colab upload -s "$S" "$LOCAL" "$REMOTE" >/dev/null && echo "    restored partial results" \
                        || echo "    WARNING: results did not upload"; }
 
+  # THE ADAPTERS ARE TRAINED ONCE, NOT ONCE PER SESSION. A reclaimed card used to
+  # cost forty minutes of retraining before it could score a single case, and this
+  # experiment paid that twice [ran] 2026-09-12. The weights are a few tens of
+  # megabytes; carrying them is strictly cheaper than rebuilding them.
+  ADAPTERS="$RUN_DIR/adapters.tgz"
+  [ -f "$ADAPTERS" ] && { tmo 300 colab upload -s "$S" "$ADAPTERS" /content/lora-kernel/adapters.tgz >/dev/null \
+                          && echo "    carried the trained adapters in" \
+                          || echo "    WARNING: adapters did not upload"; }
+
   cat > /tmp/_srun.py <<PY
 import subprocess
-subprocess.Popen("cd /content/lora-kernel && nohup python -u -m $MODULE "
-                 "--base $BASE $ARGS > run.log 2>&1 &", shell=True)
+# Unpack whatever was carried in, then start a watcher that packs the adapters up
+# the moment they exist — so the next session inherits them even if this one is
+# reclaimed mid-scoring, which is exactly how the last two were lost.
+subprocess.Popen(
+    "cd /content/lora-kernel && "
+    "([ -f adapters.tgz ] && tar xzf adapters.tgz || true) && "
+    "(nohup bash -c 'while [ ! -d adapters/domain-mt ]; do sleep 20; done; "
+    "sleep 20; tar czf adapters.tgz adapters' >/dev/null 2>&1 &) && "
+    "nohup python -u -m $MODULE --base $BASE $ARGS > run.log 2>&1 &", shell=True)
 PY
   tmo 180 colab exec -s "$S" -f /tmp/_srun.py >/dev/null 2>&1 || true
 
@@ -123,6 +139,8 @@ PY
       fi
     fi
     tmo 180 colab download -s "$S" "$REMOTE" "$LOCAL" >/dev/null 2>&1 || true
+    [ -f "$ADAPTERS" ] || tmo 300 colab download -s "$S" /content/lora-kernel/adapters.tgz \
+        "$ADAPTERS" >/dev/null 2>&1 && [ -f "$ADAPTERS" ] || true
     echo "$out" | grep -qE "composition |Sequential:|The kernel adapter reproduced|STOPPED|Traceback|OutOfMemory|Killed" && break
     sleep 45
   done
