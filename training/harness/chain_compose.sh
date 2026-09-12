@@ -32,12 +32,30 @@ LOCAL_AD="$RUN_DIR/adapters.zip"
 REMOTE=/content/lora-kernel/compose_results.json
 REMOTE_AD=/content/lora-kernel/adapters.zip
 
+
+# EVERY CALL TO THE SESSION IS BOUNDED. On 2026-09-12 a single `colab exec` peek
+# hung for **75 minutes** with no timeout, and the loop could not tell: the silence
+# counter only advances when a call RETURNS empty, so a call that never returns
+# advances nothing. Four earlier versions of this failure were about a channel that
+# answered wrongly; this one is about a channel that does not answer at all, and it
+# is invisible to every guard written for the other four.
+#
+# macOS ships no coreutils `timeout`, so this is the portable one.
+tmo () {  # tmo SECONDS cmd...
+  local secs=$1; shift
+  "$@" & local p=$!
+  ( sleep "$secs"; kill -9 "$p" 2>/dev/null ) >/dev/null 2>&1 & local w=$!
+  wait "$p" 2>/dev/null; local rc=$?
+  kill -9 "$w" 2>/dev/null
+  return $rc
+}
+
 for i in $(seq 1 "$SESSIONS"); do
   S="compose$(date +%H%M%S)"
   echo "=== session $i of $SESSIONS · $S · $GPU · base $BASE"
-  colab new --gpu "$GPU" -s "$S" >/dev/null
+  tmo 600 colab new --gpu "$GPU" -s "$S" >/dev/null
   trap 'colab stop -s "$S" >/dev/null 2>&1 || true' EXIT
-  colab install -s "$S" trl bitsandbytes "torchao>=0.16.0" >/dev/null
+  tmo 600 colab install -s "$S" trl bitsandbytes "torchao>=0.16.0" >/dev/null
 
   cat > /tmp/_cboot.py <<PY
 import subprocess
@@ -58,8 +76,8 @@ PY
   # CHECKED, and only a runtime with no checkout is a reason to give up.
   HEAD=""
   for try in 1 2 3; do
-    colab exec -s "$S" -f /tmp/_cboot.py >/dev/null 2>&1 || true
-    HEAD=$(colab exec -s "$S" -f /tmp/_ccheck.py 2>/dev/null \
+    tmo 180 colab exec -s "$S" -f /tmp/_cboot.py >/dev/null 2>&1 || true
+    HEAD=$(tmo 180 colab exec -s "$S" -f /tmp/_ccheck.py 2>/dev/null \
            | grep -vE "^\[colab\]|^$" | head -1 || true)
     case "$HEAD" in ""|*"NO CLONE"*) echo "    clone attempt $try did not take" ;;
                     *) break ;; esac
@@ -70,7 +88,7 @@ PY
   echo "    $HEAD"
 
   if [ -f "$LOCAL" ]; then
-    colab upload -s "$S" "$LOCAL" "$REMOTE" >/dev/null \
+    tmo 180 colab upload -s "$S" "$LOCAL" "$REMOTE" >/dev/null \
       && echo "    restored $(python3 -c "import json;d=json.load(open('$LOCAL'));print([(k, v.get('scored', v['n'])) for k,v in d['arms'].items()])")" \
       || echo "    WARNING: results did not upload — this session starts from nothing"
   fi
@@ -81,8 +99,8 @@ PY
   # A restore that does not work costs a retrain, which is the thing this transport
   # was added to save — and that is never worth the session it just killed.
   if [ -f "$LOCAL_AD" ] && [ "$SEND_ADAPTERS" = 1 ]; then
-    if colab upload -s "$S" "$LOCAL_AD" "$REMOTE_AD"; then
-      colab exec -s "$S" -f /dev/stdin <<'PY' 2>/dev/null || true
+    if tmo 180 colab upload -s "$S" "$LOCAL_AD" "$REMOTE_AD"; then
+      tmo 180 colab exec -s "$S" -f /dev/stdin <<'PY' 2>/dev/null || true
 import subprocess
 print(subprocess.run("cd /content/lora-kernel && unzip -qo adapters.zip && ls adapters",
                      shell=True, capture_output=True, text=True).stdout)
@@ -98,7 +116,7 @@ import subprocess
 subprocess.Popen("cd /content/lora-kernel && nohup python -u -m training.harness.compose "
                  "--base $BASE $ARGS > compose.log 2>&1 &", shell=True)
 PY
-  colab exec -s "$S" -f /tmp/_crun.py >/dev/null 2>&1 || true
+  tmo 180 colab exec -s "$S" -f /tmp/_crun.py >/dev/null 2>&1 || true
 
   cat > /tmp/_cpeek.py <<'PY'
 import subprocess
@@ -108,21 +126,21 @@ print(subprocess.run("grep -E '\\[arm\\]|\\[train\\]|\\[resume\\]|\\[corpora\\]|
                      shell=True, capture_output=True, text=True).stdout)
 PY
   for _ in $(seq 1 120); do
-    out=$(colab exec -s "$S" -f /tmp/_cpeek.py 2>/dev/null | grep -vE "^\[colab\]|^$|Warning:" || true)
+    out=$(tmo 180 colab exec -s "$S" -f /tmp/_cpeek.py 2>/dev/null | grep -vE "^\[colab\]|^$|Warning:" || true)
     [ -n "$out" ] && echo "    $out" | tail -2
-    colab download -s "$S" "$REMOTE" "$LOCAL" >/dev/null 2>&1 || true
+    tmo 180 colab download -s "$S" "$REMOTE" "$LOCAL" >/dev/null 2>&1 || true
     echo "$out" | grep -qE "composition |Traceback|OutOfMemory|Killed" && break
     sleep 45
   done
 
   # The adapters cost more than the measurement; take them home either way.
-  colab exec -s "$S" -f /dev/stdin <<'PY' >/dev/null 2>&1 || true
+  tmo 180 colab exec -s "$S" -f /dev/stdin <<'PY' >/dev/null 2>&1 || true
 import subprocess
 subprocess.run("cd /content/lora-kernel && zip -qr adapters.zip adapters", shell=True)
 PY
-  colab download -s "$S" "$REMOTE" "$LOCAL" >/dev/null 2>&1 \
+  tmo 180 colab download -s "$S" "$REMOTE" "$LOCAL" >/dev/null 2>&1 \
     || echo "    WARNING: nothing came back from this session"
-  colab download -s "$S" "$REMOTE_AD" "$LOCAL_AD" >/dev/null 2>&1 || true
+  tmo 180 colab download -s "$S" "$REMOTE_AD" "$LOCAL_AD" >/dev/null 2>&1 || true
   colab stop -s "$S" >/dev/null 2>&1 || true
   trap - EXIT
 
