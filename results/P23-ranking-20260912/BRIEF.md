@@ -58,3 +58,35 @@ target, forced by the discovery that the target chosen does not have the propert
 the design required. The stopping condition stands: a third redesign is the point
 at which this is looking for a result rather than measuring one, and S2 would be
 reported unanswerable on this suite instead.
+
+---
+
+## The replacement target, pre-registered before the call (2026-09-12)
+
+A target that is **naturally** weaker rather than artificially silenced: a smaller
+frontier model at the **full 6k budget**, on the same 30 cases and seed, under the
+same shared contract. Its errors have to be finished answers that are wrong.
+
+**First and only purchase in this round: `google/gemini-3.5-flash-lite`.** It is
+the weakest frontier model this project has already used, so nothing is being
+shopped for.
+
+### The three outcomes, and what each decides
+
+| it scores | verdict |
+|---|---|
+| **30/30** | the suite has no gradient between the frontier and a 3B; the tautology is not escapable here |
+| **≤ 14/30** | it is at or below `qwen3.5:4b`'s 14/30 and is not a target at all |
+| **between** | **S2 has its arm** — but only if the next check passes |
+
+### And the check that the last round did not have
+
+**At least 80% of its failures must be complete responses.** The run stores `chars`,
+`has_json` and the tail of every answer — fields the P10 records predate, which is
+why the truncation had to be reconstructed from intermediate values. If its failures
+are cut off mid-derivation, this is the same void arm with a different model on it,
+and it is reported void rather than used.
+
+**If no model lands in the band with complete failures, S2 is declared not
+answerable on this suite and the objective closes at redesign 2.** There is no
+third attempt; that was fixed before the first.
