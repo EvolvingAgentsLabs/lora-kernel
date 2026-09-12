@@ -223,7 +223,7 @@ the work and is updated the same session a step reports.
 |:--:|---|---|
 | **S0** | the instrument measures what it claims | ✅ |
 | **S1** | a real gap against the frontier | ✅ **+0.533** |
-| **S2** | agreement ranks experts | 🟡 only against peers |
+| **S2** | agreement ranks experts | ✅ **6/6 pairs** against a target that is ahead |
 | **S3** | the router beats a lookup table | 🟡 ties |
 | **S4** | the expert specialises per region | ✅ **+63.3** |
 | **S5** | close the withdrawal gap | ✅ **0.000** in region |

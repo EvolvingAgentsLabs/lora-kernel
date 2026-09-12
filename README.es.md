@@ -196,7 +196,7 @@ trabajo y se actualiza en la misma sesión en que un paso reporta.
 |:--:|---|---|
 | **S0** | que el instrumento mida lo que dice | ✅ |
 | **S1** | que haya brecha contra la frontera | ✅ **+0,533** |
-| **S2** | que el acuerdo ordene expertos | 🟡 sólo contra pares |
+| **S2** | que el acuerdo ordene expertos | ✅ **6/6 pares** contra un target que está adelante |
 | **S3** | que el router valga más que una tabla | 🟡 empata |
 | **S4** | que el experto se especialice por región | ✅ **+63,3** |
 | **S5** | cerrar la brecha de retiro | ✅ **0,000** en región |
