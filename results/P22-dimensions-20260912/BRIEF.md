@@ -73,3 +73,79 @@ no new material. If it works, the confirmation on families it was not developed
 against is the next run and is cheap.
 
 **Redesign count: 0.**
+
+---
+
+## Outcome (2026-09-12) [ran]
+
+**First, the check against material that cannot be wrong.** On 120 oracle chains —
+correct by construction — the guard flags **none of them**. It is consistent on 100
+and abstains on 20, all of them `manning_channel`, whose final step is `R**(2/3)`
+and which this algebra cannot type. A guard that convicts the innocent is worthless
+however well it separates, so this came before the headline.
+
+**Then the measurement, on the 100 transcripts P13 and P14 already banked:**
+
+| group | n | flagged | rate |
+|---|---|---|---|
+| in region | 60 | 14 | 0.23 |
+| **outside the region** | 40 | **29** | **0.72** |
+| in region **and correct** | 32 | 6 | **0.19** |
+
+| | |
+|---|---|
+| separation | **0.75** against a chance line of **0.60** |
+| counting only the 71 chains it had an opinion on (coverage 0.71) | **0.79**, false alarm 0.35 |
+| false alarm on correct in-region work | **0.19** |
+
+**This is the first signal that separates.** The behavioural guard managed 0.62
+against the same 0.60 line and was falsified on new families; this reaches 0.75, and
+0.79 on the chains it will speak about. It flags **72% of out-of-region work**
+while leaving **81% of correct in-region work alone**.
+
+**And it is not usable yet.** One correct chain in five is flagged, and a deployment
+that stops one good answer in five to ask the expensive model has spent a large part
+of what withdrawal was supposed to save. The pre-registration said both numbers
+count, and the second one is not good enough.
+
+**Coverage is the other cost.** It has no opinion on 29 of 100 chains, and the
+abstentions are not random — they are concentrated in the one family whose formula
+uses a fractional power. A guard that is silent on a sixth of the work is a guard
+with a hole in exactly one shape.
+
+## Two faults in the instrument, both found by checking against known-correct work
+
+Both were caught because the oracle chains are correct **by construction**, so any
+flag there is the checker's fault and not the chain's.
+
+1. **The verdict was read off the last step that happened to type, not the last
+   step.** Manning's final step is untypeable, so the guard was comparing a
+   hydraulic radius — a length — against a flow rate, and convicting twenty correct
+   chains. An untypeable final step is an absence of evidence; it now abstains.
+2. **`Pa.s` matched the `Pa` prefix.** The unit table held `Pa s` and `Pa*s` but not
+   the spelling the material actually uses, so a viscosity was typed as a pressure,
+   the time exponent came out by one, and twenty more correct chains were flagged.
+
+Before the fixes the false alarm on correct in-region work was **0.56**. After, it
+is **0.19**. **Redesign count: 2**, and both were an instrument that could not read
+its input rather than a rule tuned toward a friendlier number — the rule in §"The
+rule, fixed before it is scored" has not changed.
+
+## What this says to do next
+
+**It is a real signal and an unusable guard**, which is a better position than the
+project has been in on this problem, and not a solution.
+
+The honest next moves, in order of cost:
+
+- **Type what it currently abstains on.** A rational-exponent algebra handles
+  `R**(2/3)` and removes the hole. It is arithmetic on fractions and it is the
+  cheapest thing on this list.
+- **Find out what the 19% actually are.** Six chains. If they are correct answers
+  written in a way the checker mistypes, that is more instrument; if they are
+  correct answers that genuinely produce an inconsistent intermediate, the rule
+  needs rethinking rather than repairing.
+- **Only then ask whether it holds on families it was not developed against.** The
+  tripwire looked strong until exactly that question, and this guard has been
+  developed while looking at P13 and P14. Until it survives `weir_flow` and
+  `jet_reaction` with no further changes, it is a hypothesis.
