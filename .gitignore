@@ -4,3 +4,7 @@ results/.answers/
 training/data/root/
 results/**/adapters-*.zip
 results/**/adapters.zip
+
+# Trained adapters carried across Colab sessions — weights, not source.
+*.tgz
+adapters/
