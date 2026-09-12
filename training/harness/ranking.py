@@ -36,8 +36,8 @@ P23 = Path("results/P23-ranking-20260912")
 # the same model answers 13 of 13 correctly [ran]. Its row is gone from here
 # because it is struck at length in the brief, which is where history lives.
 TARGETS = [
-    ("gemini-3.5-flash-lite @6k — naturally weaker (21/30, 9 of 9 failures complete)",
-     P23 / "target-flash-lite/headroom.json",
+    ("gemini-3.5-flash-lite @6k, n=60 — naturally weaker, failures complete",
+     P23 / "target-flash-lite-n60/headroom.json",
      "openai:google/gemini-3.5-flash-lite", True),
     ("gemini-3.8-flash @6k — the tautology control (30/30)",
      P10 / "shared6k/headroom.json", "openai:google/gemini-3.8-flash", False),
@@ -85,6 +85,23 @@ def agreement(cand: dict, targ: dict) -> tuple[float, float, int]:
     return sem / n, chr_ / n, len(ids)
 
 
+def by_family(cand: dict, targ: dict) -> dict:
+    """Agreement per family, so nobody has to take the global number on faith.
+
+    THE SUITE IS BALANCED — ten cases in each of six families — so a global number
+    cannot be dragged by one topic being over-represented. It can still be dragged
+    by *which* topics the target happens to fail, and printing the split is cheaper
+    than arguing about it.
+    """
+    out: dict[str, list[int]] = {}
+    for i in sorted(set(cand) & set(targ)):
+        fam = targ[i].get("family") or cand[i].get("family") or "?"
+        out.setdefault(fam, [0, 0])
+        out[fam][1] += 1
+        out[fam][0] += close(cand[i].get("got"), targ[i].get("got"))
+    return {k: f"{a}/{b}" for k, (a, b) in sorted(out.items())}
+
+
 def main() -> int:
     cands = []
     for name, path, arm in CANDIDATES:
@@ -107,13 +124,33 @@ def main() -> int:
         rows = []
         for c in cands:
             sem, chr_, n = agreement(c["recs"], targ)
+            wrong = {i: r for i, r in targ.items() if not r["passed"]}
+            sw, _, nw = agreement(c["recs"], wrong)
             rows.append({**{k: c[k] for k in ("name", "verified")},
                          "agreement": round(sem, 3), "character": round(chr_, 3),
+                         "agreement_where_target_wrong": round(sw, 3),
+                         "informative_cases": nw,
+                         "by_family": by_family(c["recs"], targ),
                          "shared_cases": n})
-        print(f"{'candidate':<16}{'verified':>10}{'agreement':>11}{'character α':>13}")
+        print(f"{'candidate':<16}{'verified':>10}{'agreement':>11}{'character α':>13}"
+               f"{'on cases the target got WRONG':>32}")
         for r in rows:
             print(f"{r['name']:<16}{r['verified']:>10.3f}{r['agreement']:>11.3f}"
-                  f"{r['character']:>13.3f}")
+                  f"{r['character']:>13.3f}{r['agreement_where_target_wrong']:>32.3f}")
+        # AND THE SPLIT THAT SAYS WHETHER THE TEST MEASURED ANYTHING. On a case the
+        # target got RIGHT, agreeing with it is being right, so those cases cannot
+        # separate the criterion from the oracle. Only the cases it got WRONG can,
+        # and a candidate scores there only by producing the target's exact wrong
+        # value — shared derivation, not shared incompetence. If every candidate
+        # sits at 0.00 in that column, the ordering was decided entirely on the
+        # target's easy subset and says so out loud.
+        informative = sum(1 for i in sorted(set(cands[0]["recs"]) & set(targ))
+                          if not targ[i]["passed"])
+        print(f"  {informative} of {len(targ)} cases are informative — the ones the "
+              "target got wrong. On the rest, agreeing is being correct.")
+        if all(r["agreement_where_target_wrong"] == 0 for r in rows):
+            print("  WARNING — no candidate reproduced a single one of the target's "
+                  "wrong values, so this ordering rests entirely on its easy subset")
 
         # THE ORDERING TEST, over pairs whose VERIFIED scores differ. A pair that
         # ties on quality has no ordering to reproduce, and S2a already published

@@ -124,3 +124,65 @@ answers.
 **So the 9 cases where agreement and correctness can disagree are real**, and S2's
 ordering test has somewhere to be tested. The candidate ladder, cancelled when the
 first target voided, is re-queued.
+
+---
+
+## n goes to 60, before any candidate is scored (2026-09-12)
+
+**Why, and it is not the reason first offered.** The obvious argument is ties: at
+n=30 the discrete step is 3.3%, four candidates give six pairs, and two candidates
+a single case apart are not an ordering. S2a already published a passing row built
+on exactly that and the row is struck in the plan rather than deleted.
+
+**The stronger reason is that most of this suite cannot test the criterion at all.**
+The target is right on 21 of 30 cases, and **on a case the target got right,
+agreeing with it is being correct** — those cases cannot separate the criterion
+from the oracle it stands in for. Only the 9 it got wrong can. So the informative
+sample was never 30; it was **9**. At n=60 it is 18, and the test doubles the only
+part of itself that was ever measuring anything.
+
+### And the honest accounting of the stopping rule
+
+**By a strict count this is redesign 3**, and the rule written before the first one
+says a third redesign closes S2 as unanswerable. The rule is not being quietly
+reinterpreted, so here is the argument for why it does not fire, made in the open:
+
+The rule exists to stop an experimenter tuning until the answer comes out right.
+**No candidate has been scored. There is no result to steer toward**, and a change
+made with the outcome entirely unknown cannot be result-seeking. The two earlier
+changes were forced by discovered facts — a machine, then a target that turned out
+not to have the property it was chosen for. This one is prospective.
+
+**So the budget is declared spent rather than extended.** No parameter is touched
+again: the candidates run at n=60 with the criterion, the tolerance and the
+ordering test exactly as they stand, and **if the test voids on ties at n=60, S2 is
+reported unanswerable on this suite** rather than run a fourth time.
+
+### What the report gains, and it costs nothing
+
+Two columns, so nobody has to take the global number on faith:
+
+- **agreement on the cases the target got wrong**, reported separately. A candidate
+  scores there only by producing the target's *exact* wrong value — that is shared
+  derivation, not shared incompetence. **If every candidate sits at 0.00 in that
+  column, the ordering rested entirely on the target's easy subset**, and the runner
+  says so out loud rather than letting a clean global number stand.
+- **agreement per family.** The suite is balanced ten-and-ten across six families,
+  so no topic can drag the global number by weight — but *which* topics the target
+  fails still can, and printing the split is cheaper than arguing about it. The
+  target's failures at n=30 clustered: manning 2/5, head loss 2/5, pump power 3/5,
+  while terminal velocity and venturi were perfect.
+
+### The target at n=60 holds [ran]
+
+| | n=30 | **n=60** |
+|---|--:|--:|
+| verified | 21/30 = 0.700 | **43/60 = 0.717** |
+| unparsed | 0 | **0** |
+| failures that are complete responses | 9/9 | **17/17 = 1.00** |
+| informative cases (target wrong) | 9 | **17** |
+
+Still in the band, still finishing every answer, and the informative sample nearly
+doubled as intended. Its failures cluster the same way — head loss 6, manning 5,
+pump power 4, and only 2 across the other three families — which is why the report
+prints the per-family split rather than a single number.
