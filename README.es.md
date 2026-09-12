@@ -200,8 +200,8 @@ trabajo y se actualiza en la misma sesión en que un paso reporta.
 | **S3** | que el router valga más que una tabla | 🟡 empata |
 | **S4** | que el experto se especialice por región | ✅ **+63,3** |
 | **S5** | cerrar la brecha de retiro | ✅ **0,000** en región |
-| **S6** | `harness.lora` — kernel separado del experto | 🟢 **composición resuelta, kernel arriba** — 94,8% contra 91,7% de una regla donde la llamada no es copia. Pero un control **sin** capa de herramientas le ganó a los dos, 27/30: las herramientas de la suite eran memorizables |
-| **S7** | el torneo que evoluciona los expertos | 🟢 **desbloqueado y construyéndose** — existe un juez, y juzgar es más fácil que resolver |
+| **S6** | `harness.lora` — kernel separado del experto | 🟡 **composición resuelta, comparación sin terminar** — turnarse funciona, y P21 mató la memorización sobre la que descansaba la victoria anterior (un control sin herramientas cae **27/30 → 6/30** con manuales por caso). El brazo del kernel sobre ese material **no terminó** |
+| **S7** | el torneo que evoluciona los expertos | 🟢 **la nota quedó fijada** — ningún juez solo ordena de forma confiable (1 de 2 pares cada uno); **exigir que ambos acepten acierta 2 de 2** |
 
 **Lo que funciona.** El protocolo se aprende solo y viaja a un dominio que nunca
 vio. La física del experto es exacta dentro de su región, 30/30. **Los dos parches
@@ -213,8 +213,8 @@ con vLLM multi-LoRA.
 
 | | qué falla | plan |
 |:--:|---|---|
-| 1 | **Una suite donde las herramientas hagan falta** — el kernel le ganó a la regla **94,8% a 91,7%**, pero un control sin capa de herramientas les ganó a los dos con 27/30 respondiendo de memoria | darle a cada problema su propio manual, con propiedades por caso, para que un valor no se pueda recordar y haya que consultarlo |
-| 2 | **Un guardia en el borde de la región** — las fórmulas del experto caen 30/30 → 1/20 afuera, y nada en su prosa ni en la capa de herramientas marca la diferencia | la señal de la capa de herramientas quedó **falsificada**: en familias nuevas da 0,18 contra 0,15 adentro, que es el azar. La dirección barata está agotada; queda el desacuerdo de un segundo experto, o muestrear la frontera tras el retiro |
+| 1 | ~~Una suite donde las herramientas hagan falta.~~ **Construida y confirmada**: con un manual por caso el control sin herramientas se derrumba **27/30 → 6/30**, así que ahora los valores hay que consultarlos. Falta la comparación misma — el brazo del kernel se clavó en 1 de 30 cuando murió su sesión | relanzar el brazo del kernel. Y anotar lo que ya dice la corrida de la regla: escribe **93 de 96** llamadas bien y aun así saca 5/30, así que en este material el cuello de botella se mudó del protocolo a la física |
+| 2 | **Un guardia en el borde de la región** — las fórmulas del experto caen 30/30 → 1/20 afuera. Toda señal *de comportamiento* quedó falsificada: en familias nuevas la capa de herramientas da 0,18 contra 0,15 adentro, que es el azar | sobrevive una señal **estructural** donde no sobrevivió el comportamiento. El álgebra dimensional sobre (kg, m, s) detecta el **0,80** del trabajo fuera de región en familias selladas antes de que el instrumento existiera. Sola da 0,22 de falsa alarma; escalar sólo cuando fallan la dimensional **y** la mecánica da **0,00 de falsa alarma con 0,47 de detección**. Falta cablearlo en el runtime como regla de escalada y medirlo de punta a punta |
 | 3 | ~~No hay juez sin oráculo.~~ **Medido: existe un juez.** La frontera corrige a **0,89** balanceado y un par a **0,82** — mientras ese mismo par *resuelve* el material a 0,467 | queda el caso donde nada disponible pueda resolver el trabajo, del que esta corrida no habla |
 | 4 | **El router empata con una tabla de búsqueda** | necesita expertos por familia y material donde superficie y sustancia se separen |
 | 5 | **El torneo está sin construir** — el único objetivo que nunca se tocó | la nota puede venir de un par, que es lo que deja una frontera retirada. Se está construyendo |
