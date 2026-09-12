@@ -115,6 +115,21 @@ def main() -> int:
         print("fewer than three candidates on disk; nothing to order yet")
         return 0
 
+    # EVERY CANDIDATE IS SCORED ON THE SAME CASES OR NONE OF THEM IS. A partial
+    # run produces a real accuracy over a smaller suite and a real agreement over a
+    # smaller intersection, and nothing in the table says so — gemma4:12b sat in a
+    # dry run at 50 cases against everyone else's 60, ranked fourth, and looked
+    # exactly like a model that is worse [ran] 2026-09-12. A ladder built from
+    # different sample sizes is not a ladder.
+    sizes = {c["name"]: len(c["recs"]) for c in cands}
+    if len(set(sizes.values())) > 1:
+        print("REFUSING TO ORDER — the candidates were not scored on the same cases:")
+        for n, k in sorted(sizes.items(), key=lambda kv: -kv[1]):
+            print(f"  {n:<16}{k:>4} cases")
+        print("Finish the short ones, or drop them. A ladder built from different "
+              "sample sizes is not a ladder.")
+        return 1
+
     report = {}
     for label, path, arm, decisive in TARGETS:
         targ = load(path, arm)
