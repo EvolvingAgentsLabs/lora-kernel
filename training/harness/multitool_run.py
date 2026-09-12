@@ -41,7 +41,7 @@ from training.physics.repair import repair
 from training.physics.tools import CALL, ToolError, answer
 from training.protocol import SYSTEM
 
-RESULTS = Path("multitool_results.json")
+RESULTS = Path("multitool_results.json")   # per run dir; P15 and P21 never share one
 LABEL_END = ":"
 ANSWER = re.compile(r'\{\s*"answer"')
 QUERIES = ("convert", "lookup")
