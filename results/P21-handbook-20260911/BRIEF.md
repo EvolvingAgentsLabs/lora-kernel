@@ -72,3 +72,58 @@ table and stop querying — the behaviour this material exists to remove.
 
 **The gate is in the runner**: if the no-tool arm reaches 0.35, the material is
 still answerable from memory and arms 2 and 3 are not bought.
+
+---
+
+## Addendum — why each case failed, and what is left to win (2026-09-12) [ran]
+
+`training/harness/failure_mode.py` classifies a failed case by asking the oracle,
+not by catching an exception. A malformed call the tool happens to accept is not a
+protocol success, and a well-formed `lookup` of the wrong fluid is not a physics
+failure — so the verdict is **did this arm obtain the values the oracle obtained**:
+
+    rejected > 0        malformed    the tool refused the call
+    accepted < wanted   missing      it did not ask where the oracle asked
+    matched  < wanted   wrong args   it asked, and got a different value
+    otherwise           physics      it held every value and still answered wrong
+
+It is computed from what the runner already stores, so it applies to the two arms
+that reported before it existed. **No GPU was bought for this.**
+
+| arm | passes | fails | protocol | physics |
+|---|--:|--:|--:|--:|
+| no tool layer at all | 6/30 | 24 | **24** (all *missing*) | 0 |
+| hand-written rule | 5/30 | 25 | 3 (*wrong args*) | **22** |
+
+The no-tool arm failing 24 of 24 by never asking is the classifier's own sanity
+check: an arm with no tool layer must fail that way, and it does.
+
+### The finding, and it is about headroom
+
+**On this material the tool layer is no longer the bottleneck — the physics is.**
+Of the rule's 25 failures, 22 are cases where it obtained every value the oracle
+obtained and the expert still answered wrong. Per family: hydrostatic 6, Manning 7,
+head loss 4, venturi 5 — the physics fails everywhere, not in one corner.
+
+That bounds what the third arm can possibly show:
+
+- **On the final answer, a perfect tool layer takes the rule from 5/30 to 8/30.**
+  Three cases. A treatment cannot move more than that, whatever it is.
+- **On the pre-registered axis — the oracle's tool steps — the rule reproduces
+  93 of 96, or 0.969**, above its own published bar of 0.929. **Three tool values
+  are available to win.**
+
+This is CLAUDE.md §3's headroom rule arriving before the arm rather than after it.
+The instrument has almost no room left in the direction the treatment would move.
+
+### What is bought anyway, and what would not count
+
+The kernel arm **is** run, at the same `--n-eval 30`, because the outcome it can
+still resolve is the one that matters: P13 measured a learned protocol at 9/30
+against a rule's 23/30, and a defeat of that size is visible at any n. **A narrow
+win is not.**
+
+Pre-registered before the run: **a kernel result within 3 tool values of the rule
+is a tie, not a win**, and will be reported as one. Separating them would need a
+larger evaluation, and that is a purchase to argue for on its own once there is a
+reason to.
