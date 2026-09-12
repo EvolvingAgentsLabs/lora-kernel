@@ -132,3 +132,30 @@ bugs in the grammar before any of it ran:
 
 **A mask that blocks a legal call measures itself.** Each of those would have shown
 up on a GPU as the adapter getting worse.
+
+---
+
+## How the arm is bought
+
+The masked run inherits P21's finished arms rather than re-buying them, so only the
+treatment costs GPU time:
+
+    cp results/P21-handbook-20260911/multitool_results.json \
+       results/P24-constrained-20260912/
+    python3 -m training.harness.multitool_run --base Qwen/Qwen2.5-3B-Instruct \
+        --n-eval 30 --masked
+
+The runner skips every arm already marked complete, and the masked arm is written
+under its own label — `kernel adapter, grammar-masked` — so **the unmasked number
+is not overwritten by the thing it is being compared against.** All four arms end
+up in one file, on the same cases, from the same adapters.
+
+**The adapters are the same weights**, carried by the session cache rather than
+retrained, or the comparison would include a second training run. Nothing about the
+model changes between the two kernel arms; the only difference is a boolean mask
+over the sampler on the kernel's turn.
+
+**The mask is applied to the kernel turn only.** The domain adapter writes physics
+and prose, and constraining that would be constraining the expert's work rather than
+the protocol — which is this repository's recurring way of building an instrument
+that does the subject's job.

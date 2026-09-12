@@ -106,8 +106,16 @@ def run_case(step, prompt: str, layer: str, handbook=None, max_steps: int = 10):
     return out, queries, rejected, declined
 
 
-def make_step(peft_model, tok, max_new_tokens: int):
+def make_step(peft_model, tok, max_new_tokens: int, masked: bool = False):
+    """P24: the same step, optionally with the grammar mask over the sampler.
+
+    THE MASK IS APPLIED TO THE KERNEL TURN ONLY. The domain adapter writes physics
+    and prose, and constraining that would be constraining the expert's work rather
+    than the protocol — which is the thing this repository keeps finding out the
+    hard way when an instrument starts doing the subject's job.
+    """
     import torch
+    from transformers import LogitsProcessorList
 
     def step(adapter, user, prefix, stops):
         peft_model.set_adapter(adapter)
@@ -115,10 +123,15 @@ def make_step(peft_model, tok, max_new_tokens: int):
         text = tok.apply_chat_template(msgs, tokenize=False,
                                        add_generation_prompt=True) + prefix
         ids = tok(text, return_tensors="pt").to(peft_model.device)
+        extra = {}
+        if masked and adapter == "kernel":
+            from training.harness.mask import CallMask
+            extra["logits_processor"] = LogitsProcessorList(
+                [CallMask(tok, ids["input_ids"].shape[1])])
         with torch.no_grad():
             o = peft_model.generate(**ids, max_new_tokens=max_new_tokens,
                                     do_sample=False, pad_token_id=tok.pad_token_id,
-                                    stop_strings=list(stops), tokenizer=tok)
+                                    stop_strings=list(stops), tokenizer=tok, **extra)
         return tok.decode(o[0][ids["input_ids"].shape[1]:], skip_special_tokens=True)
     return step
 
@@ -219,6 +232,10 @@ def main() -> int:
     ap.add_argument("--targets",
                     default="q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj")
     ap.add_argument("--four-bit", dest="four_bit", action="store_true")
+    ap.add_argument("--masked", action="store_true",
+                    help="P24: constrain the kernel turn with the call grammar. "
+                         "The pre-registered prediction is rejections 20 -> ~5 "
+                         "and coverage unchanged; a run reaching 0 voids the arm.")
     ap.add_argument("--gate", type=float, default=0.35,
                     help="if the no-tool arm reaches this, the material is still "
                          "memorisable and the other arms are not bought")
@@ -270,7 +287,9 @@ def main() -> int:
     peft_model = PeftModel.from_pretrained(model, "adapters/kernel-mt",
                                            adapter_name="kernel")
     peft_model.load_adapter("adapters/domain-mt", adapter_name="domain")
-    step = make_step(peft_model, tok, args.max_new_tokens)
+    step = make_step(peft_model, tok, args.max_new_tokens, args.masked)
+    if args.masked:
+        print("[P24] the kernel turn is grammar-masked", flush=True)
 
     def run(label, layer):
         prev = summary["arms"].get(label)
@@ -301,7 +320,9 @@ def main() -> int:
         save()
         return 0
     run("hand-written rule writes the calls", "rule")   # the bar
-    run("kernel adapter writes the calls", "kernel")    # the claim
+    label = ("kernel adapter, grammar-masked" if args.masked
+             else "kernel adapter writes the calls")
+    run(label, "kernel")    # the claim
 
     a = summary["arms"]
     print(f"\n{'arm':<40}{'passed':>9}{'tool steps':>13}{'queries':>9}{'rejected':>10}")
@@ -314,7 +335,7 @@ def main() -> int:
         print(f"{'':<40}of {f['failed']} failures: protocol {f['protocol']}, "
               f"physics {f['physics']}  "
               + ", ".join(f"{m} {c}" for m, c in f["by_mode"].items() if c))
-    ker = a.get("kernel adapter writes the calls", {})
+    ker = a.get(label, {})
     got = ker.get("tool_values_matched", 0) / max(ker.get("tool_values_wanted", 1), 1)
     print(f"\nThe bar is the hand-written rule at 0.929 on the oracle's tool steps.")
     print(f"The kernel adapter reproduced {got:.3f}.")
