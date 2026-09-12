@@ -227,8 +227,8 @@ the work and is updated the same session a step reports.
 | **S3** | the router beats a lookup table | 🟡 ties |
 | **S4** | the expert specialises per region | ✅ **+63.3** |
 | **S5** | close the withdrawal gap | ✅ **0.000** in region |
-| **S6** | `harness.lora` — kernel apart from the expert | 🟢 **composition solved, kernel ahead** — 94.8% against a rule's 91.7% where the call is not a copy. But a control with **no** tool layer beat both, 27/30: the suite's tools were memorisable |
-| **S7** | the tournament that evolves the experts | 🟢 **unblocked and being built** — a judge exists, and judging is easier than solving |
+| **S6** | `harness.lora` — kernel apart from the expert | 🟡 **composition solved, comparison unfinished** — taking turns works, and P21 killed the memorisation the earlier win rested on (a no-tool control fell **27/30 → 6/30** on per-case handbooks). The kernel arm on that material has **not finished** |
+| **S7** | the tournament that evolves the experts | 🟢 **fitness fixed** — neither judge alone ranks reliably (1 of 2 pairs each); **both-must-accept gets 2 of 2** |
 
 **What works.** The protocol is learnable on its own and travels to a domain it
 never saw. The expert's physics is exact inside its region, 30/30. **The two
@@ -240,8 +240,8 @@ pool is servable with vLLM multi-LoRA.
 
 | | what fails | plan |
 |:--:|---|---|
-| 1 | **A suite where the tools are necessary** — the kernel beat the rule **94.8% to 91.7%**, but a control with no tool layer beat both at 27/30 by answering from memory | give each problem its own handbook, properties drawn per case, so a value cannot be recalled and must be queried |
-| 2 | **A guard on the region's edge** — the expert's formulas fall 30/30 → 1/20 outside it, and nothing in its prose or in the tool layer marks the difference | the tool-layer signal was **falsified**: on unseen families it reads 0.18 against 0.15 inside, which is chance. The cheap direction is exhausted; what is left is a second expert's disagreement, or sampling the frontier after withdrawal |
+| 1 | ~~A suite where the tools are necessary.~~ **Built and confirmed**: with a per-case handbook the no-tool control collapses **27/30 → 6/30**, so the values must now be queried. What is missing is the comparison itself — the kernel arm stalled at 1 of 30 when its session died | relaunch the kernel arm. Note what the rule's run already says: it writes **93 of 96** tool calls correctly and still scores 5/30, so on this material the bottleneck has moved from the protocol to the physics |
+| 2 | **A guard on the region's edge** — the expert's formulas fall 30/30 → 1/20 outside it. Every *behavioural* signal is falsified: on unseen families the tool layer reads 0.18 against 0.15 inside, which is chance | a **structural** signal survives where behaviour did not. Dimensional algebra over (kg, m, s) detects **0.80** of out-of-region work on families sealed before the instrument existed. Alone it false-alarms at 0.22; escalating only when the dimensional **and** mechanical checks both fail gives **0.00 false alarm at 0.47 detection**. What is left is wiring it into the runtime as the escalation rule and measuring end to end |
 | 3 | ~~There is no judge without an oracle.~~ **Measured: a judge exists.** The frontier grades at **0.89** balanced and a peer at **0.82** — while that same peer *solves* the material at 0.467 | what is left is the case where nothing available can solve the work, which this run cannot speak to |
 | 4 | **The router ties a keyword lookup** | needs per-family experts and material where surface and substance come apart |
 | 5 | **The tournament is unbuilt** — the only objective never touched | the grade can come from a peer, which is what a withdrawn frontier leaves behind. Being built now |
