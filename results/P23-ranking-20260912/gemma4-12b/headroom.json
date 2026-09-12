@@ -19,13 +19,13 @@
       "passed": 22,
       "accuracy": 0.3667,
       "unparsed": 0,
-      "seconds": 411.6,
+      "seconds": 555.5,
       "thinking_chars": 0,
-      "without_json": 13,
+      "without_json": 14,
       "by_family": {
         "hydrostatic_force": "8/9",
         "manning_channel": "8/9",
-        "pipe_head_loss": "0/8",
+        "pipe_head_loss": "0/9",
         "pump_power": "0/8",
         "terminal_velocity": "4/8",
         "venturi_flow": "2/8"
@@ -580,6 +580,17 @@
           "has_json": true,
           "raw": "To compute the discharge in the rectangular open channel, we use Manning's equation.\n\n**Given Data:**\n*   Bed width ($b$) = $2.47\\text{ m}$\n*   Flow depth ($y$) = $1.39\\text{ m}$\n*   Bed slope ($S$) = $0.00204$\n*   Manning's roughness coefficient ($n$) = $0.03$\n\n**Step-by-step Calculation:**\n\n1.  **",
           "tail": "Q$):**\n    $Q = A \\times v$\n    $Q = 3.4333\\text{ m}^2 \\times 1.1351\\text{ m/s} \\approx 3.8954\\text{ m}^3/\\text{s}$\n\nRounding to appropriate precision:\n$Q \\approx 3.90$\n\n```json\n{\"answer\": 3.8954}\n```"
+        },
+        {
+          "case_id": "phys-0050",
+          "family": "pipe_head_loss",
+          "want": 0.8951330835125313,
+          "got": 2.0,
+          "passed": false,
+          "chars": 7292,
+          "has_json": false,
+          "raw": "To compute the head loss along the pipe, we follow these engineering steps:\n\n1.  **Identify given parameters:**\n    *   Density ($\\rho$): $1025.0 \\text{ kg/m}^3$\n    *   Dynamic viscosity ($\\mu$): $0.0008 \\text{ Pa}\\cdot\\text{s}$\n    *   Flow rate ($Q$): $0.0441 \\text{ m}^3/\\text{s}$\n    *   Diamete",
+          "tail": "log_{10}(\\frac{\\epsilon}{3.7D} + \\frac{5.04}{Re^{0.056}})]^2$.\n    Let me check the Swamee-Jain formula again.\n    $f = 0.25 / [\\log_{10}(\\frac{\\epsilon}{3.7D} + \\frac{5.04}{Re^{0.056}})]^2$.\n    Wait"
         }
       ]
     }
