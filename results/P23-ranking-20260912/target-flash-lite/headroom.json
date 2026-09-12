@@ -1,0 +1,367 @@
+{
+  "rtol": 0.02,
+  "n": 30,
+  "style": "working",
+  "contract": "shared",
+  "families": [
+    "hydrostatic_force",
+    "manning_channel",
+    "pipe_head_loss",
+    "pump_power",
+    "terminal_velocity",
+    "venturi_flow"
+  ],
+  "seed": 515151,
+  "arms": {
+    "openai:google/gemini-3.5-flash-lite": {
+      "model": "openai:google/gemini-3.5-flash-lite",
+      "n": 30,
+      "passed": 21,
+      "accuracy": 0.7,
+      "unparsed": 0,
+      "seconds": 83.7,
+      "thinking_chars": 0,
+      "without_json": 0,
+      "by_family": {
+        "hydrostatic_force": "4/5",
+        "manning_channel": "2/5",
+        "pipe_head_loss": "2/5",
+        "pump_power": "3/5",
+        "terminal_velocity": "5/5",
+        "venturi_flow": "5/5"
+      },
+      "records": [
+        {
+          "case_id": "phys-0000",
+          "family": "hydrostatic_force",
+          "want": 131926.5701455625,
+          "got": 131802.2458,
+          "passed": true,
+          "chars": 1128,
+          "has_json": true,
+          "raw": "To find the magnitude of the resultant hydrostatic force on one face of the vertical rectangular gate, we can use the hydrostatic pressure formula for a submerged flat surface:\n\n$$F = \\rho \\cdot g \\cdot y_c \\cdot A$$\n\nwhere:\n- $\\rho = 1025.0 \\text{ kg/m}^3$ (density of the fluid)\n- $g = 9.81 \\text{ ",
+          "tail": "f the hydrostatic force ($F$):**\n   $$F = 1025.0 \\text{ kg/m}^3 \\times 9.81 \\text{ m/s}^2 \\times 2.75 \\text{ m} \\times 4.7726 \\text{ m}^2 = 131802.2458 \\text{ N}$$\n\n```json\n{\"answer\": 131802.2458}\n```"
+        },
+        {
+          "case_id": "phys-0001",
+          "family": "manning_channel",
+          "want": 13.777463571438588,
+          "got": 20.252,
+          "passed": false,
+          "chars": 914,
+          "has_json": true,
+          "raw": "To compute the discharge in the rectangular open channel, we use Manning's equation in SI units:\n\n$$Q = \\frac{1}{n} A R_h^{2/3} S^{1/2}$$\n\nwhere:\n- $n = 0.015$ (Manning's roughness coefficient)\n- $b = 1.96\\text{ m}$ (bed width)\n- $y = 1.27\\text{ m}$ (flow depth)\n- $S = 0.01518$ (bed slope)\n\nLet's br",
+          "tail": ".01518} \\approx 0.123207$$\n\n5. **Discharge ($Q$):** \n   $$Q = \\frac{1}{0.015} \\times 2.4892 \\times (0.553156)^{2/3} \\times 0.123207 \\approx 20.252\\text{ m}^3/\\text{s}$$\n\n```json\n{\"answer\": 20.252}\n```"
+        },
+        {
+          "case_id": "phys-0002",
+          "family": "pipe_head_loss",
+          "want": 1.8489593018064931,
+          "got": 1.7946,
+          "passed": false,
+          "chars": 1594,
+          "has_json": true,
+          "raw": "To find the head loss along the pipe, we follow these steps:\n\n1. **Calculate the cross-sectional area of the pipe ($A$):**\n   $$A = \\frac{\\pi D^2}{4} = \\frac{\\pi (0.22\\text{ m})^2}{4} = 0.038013\\text{ m}^2$$\n\n2. **Calculate the mean flow velocity ($V$):**\n   $$V = \\frac{Q}{A} = \\frac{0.0445\\text{ m}",
+          "tail": "g}$$\n   $$h_f = 0.015744 \\times \\frac{358.8}{0.22} \\times \\frac{(1.17064)^2}{2 \\times 9.80665}$$\n   $$h_f = 0.015744 \\times 1630.909 \\times 0.069871 = 1.7946\\text{ m}$$\n\n```json\n{\"answer\": 1.7946}\n```"
+        },
+        {
+          "case_id": "phys-0003",
+          "family": "pump_power",
+          "want": 68.53156824521123,
+          "got": 68.49,
+          "passed": true,
+          "chars": 2148,
+          "has_json": true,
+          "raw": "To find the shaft power required by the pump, we will follow a systematic step-by-step approach using the given fluid properties and operating conditions.\n\n1. **Calculate the cross-sectional area of the pipe ($A$):**\n   $$A = \\frac{\\pi D^2}{4} = \\frac{\\pi (0.081\\text{ m})^2}{4} = 0.00515299\\text{ m}",
+          "tail": "}$$\n\n7. **Calculate the shaft power ($P_s$) using the pump efficiency ($\\eta = 0.63$):**\n   $$P_s = \\frac{P_h}{\\eta} = \\frac{43.1497\\text{ W}}{0.63} = 68.4916\\text{ W}$$\n\n```json\n{\"answer\": 68.49}\n```"
+        },
+        {
+          "case_id": "phys-0004",
+          "family": "terminal_velocity",
+          "want": 0.00268488817296,
+          "got": 0.00268431634,
+          "passed": true,
+          "chars": 1386,
+          "has_json": true,
+          "raw": "To find the terminal settling velocity of a solid sphere in Stokes flow, we use Stokes' Law:\n\n$$v = \\frac{d^2 (\\rho_p - \\rho_f) g}{18 \\mu}$$\n\nwhere:\n- $d$ is the diameter of the sphere\n- $\\rho_p$ is the density of the particle (sphere)\n- $\\rho_f$ is the density of the fluid\n- $g$ is the acceleration",
+          "tail": "15 = 0.027\\text{ Pa}\\cdot\\text{s}$\n\n5. **Calculate the terminal settling velocity ($v$).**\n   - $v = \\frac{7.24765 \\times 10^{-5}}{0.027} = 0.0026843\\text{ m/s}$\n\n```json\n{\"answer\": 0.00268431634}\n```"
+        },
+        {
+          "case_id": "phys-0005",
+          "family": "venturi_flow",
+          "want": 0.11396258683641461,
+          "got": 0.11395,
+          "passed": true,
+          "chars": 1287,
+          "has_json": true,
+          "raw": "To find the volumetric flow rate through the horizontal venturi meter under ideal, incompressible, and frictionless conditions, we apply Bernoulli's equation and the continuity equation.\n\n1. **Calculate the inlet area ($A_1$):**\n   $$A_1 = \\frac{\\pi D_1^2}{4} = \\frac{\\pi (0.168\\text{ m})^2}{4} = 0.0",
+          "tail": "3}}$$\n   $$Q = 0.0092445 \\times \\sqrt{\\frac{110434.0}{726.9944}}$$\n   $$Q = 0.0092445 \\times \\sqrt{151.9062} = 0.0092445 \\times 12.3250 = 0.11395\\text{ m}^3\\text{/s}$$\n\n```json\n{\"answer\": 0.11395}\n```"
+        },
+        {
+          "case_id": "phys-0006",
+          "family": "hydrostatic_force",
+          "want": 83545.277122944,
+          "got": 83594.14,
+          "passed": true,
+          "chars": 1283,
+          "has_json": true,
+          "raw": "To find the magnitude of the resultant hydrostatic force on one face of the submerged vertical rectangular gate, we use the hydrostatic force formula:\n\n$$F = \\rho \\cdot g \\cdot y_c \\cdot A$$\n\nwhere:\n- $\\rho$ is the density of the fluid $= 998.0 \\text{ kg/m}^3$\n- $g$ is the acceleration due to gravit",
+          "tail": "of the hydrostatic force ($F$):**\n   $$F = \\gamma \\cdot y_c \\cdot A = 9790.38 \\text{ N/m}^3 \\times 1.35 \\text{ m} \\times 6.3232 \\text{ m}^2 = 83594.137... \\text{ N}$$\n\n```json\n{\"answer\": 83594.14}\n```"
+        },
+        {
+          "case_id": "phys-0007",
+          "family": "manning_channel",
+          "want": 29.651189503613413,
+          "got": 33.16,
+          "passed": false,
+          "chars": 876,
+          "has_json": true,
+          "raw": "To compute the discharge in the rectangular open channel, we use Manning's equation in SI units:\n\n$$Q = \\frac{1}{n} A R_h^{2/3} S^{1/2}$$\n\nWhere:\n- $b = 3.95\\text{ m}$ (bed width)\n- $y = 0.89\\text{ m}$ (flow depth)\n- $S = 0.01965$ (bed slope)\n- $n = 0.012$ (Manning's roughness coefficient)\n\n**Step-b",
+          "tail": "qrt{0.01965} \\approx 0.1401785$$\n\n5. **Discharge ($Q$):**\n   $$Q = \\frac{1}{0.012} \\times 3.5155 \\times (0.613525)^{2/3} \\times 0.1401785 = 33.1558\\text{ m}^3\\text{/s}$$\n\n```json\n{\"answer\": 33.16}\n```"
+        },
+        {
+          "case_id": "phys-0008",
+          "family": "pipe_head_loss",
+          "want": 10.158958087290983,
+          "got": 19.467,
+          "passed": false,
+          "chars": 1398,
+          "has_json": true,
+          "raw": "To find the head loss along the pipe, we follow these steps:\n\n1. **Calculate the cross-sectional area of the pipe ($A$):**\n   $$A = \\frac{\\pi D^2}{4} = \\frac{\\pi (0.209\\text{ m})^2}{4} = 0.0343225\\text{ m}^2$$\n\n2. **Calculate the average flow velocity ($V$):**\n   $$V = \\frac{Q}{A} = \\frac{0.08083\\te",
+          "tail": "$\n   $$h_f = 0.021204 \\times \\frac{349.9\\text{ m}}{0.209\\text{ m}} \\times \\frac{(2.35500\\text{ m}/\\text{s})^2}{2 \\times 9.80665\\text{ m}/\\text{s}^2} = 19.467\\text{ m}$$\n\n```json\n{\"answer\": 19.467}\n```"
+        },
+        {
+          "case_id": "phys-0009",
+          "family": "pump_power",
+          "want": 1123.583802071903,
+          "got": 1142.26,
+          "passed": true,
+          "chars": 1884,
+          "has_json": true,
+          "raw": "To find the shaft power the pump must deliver to overcome the head loss, we follow these steps in SI units:\n\n1. **Calculate the cross-sectional area of the pipe ($A$):**\n   $$A = \\frac{\\pi D^2}{4} = \\frac{\\pi (0.247\\,\\text{m})^2}{4} = 0.047916\\,\\text{m}^2$$\n\n2. **Calculate the mean flow velocity ($V",
+          "tail": " given the overall efficiency ($\\eta = 0.62$):**\n   $$\\dot{W}_{\\text{shaft}} = \\frac{\\dot{W}_{\\text{hyd}}}{\\eta} = \\frac{708.204\\,\\text{W}}{0.62} = 1142.26\\,\\text{W}$$\n\n```json\n{\"answer\": 1142.26}\n```"
+        },
+        {
+          "case_id": "phys-0010",
+          "family": "terminal_velocity",
+          "want": 0.0020415860668487936,
+          "got": 0.0020420968,
+          "passed": true,
+          "chars": 1125,
+          "has_json": true,
+          "raw": "To find the terminal settling velocity of the solid sphere in Stokes flow, we use Stokes' Law:\n\n$$v = \\frac{d^2 (\\rho_p - \\rho_f) g}{18 \\mu}$$\n\nwhere:\n- $d$ = diameter of the sphere = $0.0001117\\text{ m}$\n- $\\rho_p$ = density of the sphere = $2499.7\\text{ kg/m}^3$\n- $\\rho_f$ = density of the fluid =",
+          "tail": "m}/\\text{s}^2$$\n\n4. Divide by $18 \\mu$ ($18 \\times 0.005 = 0.09\\text{ Pa}\\cdot\\text{s}$):\n   $$v = \\frac{1.837887 \\times 10^{-4}}{0.09} = 0.002042097\\text{ m/s}$$\n\n```json\n{\"answer\": 0.0020420968}\n```"
+        },
+        {
+          "case_id": "phys-0011",
+          "family": "venturi_flow",
+          "want": 0.16595378329096444,
+          "got": 0.166,
+          "passed": true,
+          "chars": 1549,
+          "has_json": true,
+          "raw": "To find the volumetric flow rate through the horizontal venturi meter under ideal, incompressible, and frictionless conditions, we apply Bernoulli's equation and the continuity equation.\n\n1. **Calculate the cross-sectional area of the inlet ($A_1$):**\n   $$A_1 = \\frac{\\pi D_1^2}{4} = \\frac{\\pi (0.26",
+          "tail": "xt{ m/s}$$\n   $$Q = \\frac{0.023133}{\\sqrt{0.834291}} \\times 6.55466 = \\frac{0.023133}{0.913395} \\times 6.55466 = 0.025326 \\times 6.55466 = 0.165999\\text{ m}^3\\text{/s}$$\n\n```json\n{\"answer\": 0.166}\n```"
+        },
+        {
+          "case_id": "phys-0012",
+          "family": "hydrostatic_force",
+          "want": 30018.42239088,
+          "got": 29993.42,
+          "passed": true,
+          "chars": 850,
+          "has_json": true,
+          "raw": "1. **Determine the width ($b$), height ($h$), and fluid density ($\\rho$):**\n   - $b = 4.04\\text{ m}$\n   - $h = 0.66\\text{ m}$\n   - $\\rho = 1025.0\\text{ kg/m}^3$\n\n2. **Calculate the depth of the centroid ($y_c$):**\n   - The top edge is $s = 0.79\\text{ m}$ below the free surface.\n   - $y_c = s + \\frac",
+          "tail": "rostatic force ($F_R$):**\n   - $F_R = \\rho \\cdot g \\cdot y_c \\cdot A$\n   - $F_R = 1025.0 \\times 9.81 \\times 1.12 \\times 2.6664$\n   - $F_R \\approx 29993.4216\\text{ N}$\n\n```json\n{\"answer\": 29993.42}\n```"
+        },
+        {
+          "case_id": "phys-0013",
+          "family": "manning_channel",
+          "want": 21.60825783106168,
+          "got": 24.36,
+          "passed": false,
+          "chars": 898,
+          "has_json": true,
+          "raw": "To compute the discharge in the rectangular open channel, we use Manning's equation in SI units:\n\n$$Q = \\frac{1}{n} A R_h^{2/3} S^{1/2}$$\n\nGiven parameters:\n- Bed width ($b$) = $3.67\\text{ m}$\n- Flow depth ($y$) = $0.76\\text{ m}$\n- Bed slope ($S$) = $0.01978$\n- Manning's roughness coefficient ($n$) ",
+          "tail": "1978} = 0.140641\\text{ m}^{1/2}$$\n\n5. **Discharge ($Q$):**\n   $$Q = \\frac{1}{0.012} \\times 2.7892 \\times (0.537418)^{2/3} \\times 0.140641 = 24.3643\\text{ m}^3/\\text{s}$$\n\n```json\n{\"answer\": 24.36}\n```"
+        },
+        {
+          "case_id": "phys-0014",
+          "family": "pipe_head_loss",
+          "want": 0.8547197590568688,
+          "got": 0.847587,
+          "passed": true,
+          "chars": 1484,
+          "has_json": true,
+          "raw": "To find the head loss along the pipe, we follow these steps:\n\n1. **Calculate the cross-sectional area of the pipe ($A$):**\n   $$A = \\frac{\\pi D^2}{4} = \\frac{\\pi (0.259)^2}{4} = 0.0527318 \\text{ m}^2$$\n\n2. **Calculate the mean flow velocity ($V$):**\n   $$V = \\frac{Q}{A} = \\frac{0.04321}{0.0527318} =",
+          "tail": "  $$h_f = 0.0164940 \\times \\frac{389.0}{0.259} \\times \\frac{0.819429^2}{2 \\times 9.80665}$$\n   $$h_f = 0.0164940 \\times 1501.93 \\times 0.034235 = 0.847587 \\text{ m}$$\n\n```json\n{\"answer\": 0.847587}\n```"
+        },
+        {
+          "case_id": "phys-0015",
+          "family": "pump_power",
+          "want": 226.15205012015764,
+          "got": 224.89,
+          "passed": true,
+          "chars": 1641,
+          "has_json": true,
+          "raw": "To find the shaft power required by the pump to overcome the head loss in the pipe, we perform the following steps:\n\n1. **Calculate the cross-sectional area of the pipe ($A$):**\n   $$A = \\frac{\\pi D^2}{4} = \\frac{\\pi (0.214)^2}{4} = 0.035968 \\text{ m}^2$$\n\n2. **Calculate the mean flow velocity ($V$)",
+          "tail": " shaft power ($P_{\\text{shaft}}$) using the overall pump efficiency ($\\eta = 0.8$):**\n   $$P_{\\text{shaft}} = \\frac{P_h}{\\eta} = \\frac{179.91}{0.8} = 224.89 \\text{ W}$$\n\n```json\n{\"answer\": 224.89}\n```"
+        },
+        {
+          "case_id": "phys-0016",
+          "family": "terminal_velocity",
+          "want": 9.315637572266666e-05,
+          "got": 9.32093e-05,
+          "passed": true,
+          "chars": 1542,
+          "has_json": true,
+          "raw": "To find the terminal settling velocity of the solid sphere in Stokes flow, we can use Stokes' law. \n\n1. **Calculate the radius ($r$) of the sphere:**\n   The diameter $d = 4.4 \\times 10^{-5} \\text{ m}$, so the radius is:\n   $$r = \\frac{d}{2} = \\frac{4.4 \\times 10^{-5}}{2} = 2.2 \\times 10^{-5} \\text{ ",
+          "tail": "mes 0.005 = 0.09 \\text{ Pa}\\cdot\\text{s}$$\n\n5. **Calculate the final velocity ($v_t$):**\n   $$v_t = \\frac{8.388837 \\times 10^{-6}}{0.09} = 9.32093 \\times 10^{-5} \\text{ m/s}$$\n\n{\"answer\": 9.32093e-05}"
+        },
+        {
+          "case_id": "phys-0017",
+          "family": "venturi_flow",
+          "want": 0.05622143676401737,
+          "got": 0.056231,
+          "passed": true,
+          "chars": 1146,
+          "has_json": true,
+          "raw": "To find the volumetric flow rate through the horizontal venturi meter under ideal, incompressible, and frictionless conditions, we apply Bernoulli's equation and the continuity equation.\n\n1. **Calculate the inlet area ($A_1$):**\n   $$A_1 = \\frac{\\pi}{4} D_1^2 = \\frac{\\pi}{4} (0.216)^2 = 0.0366436 \\t",
+          "tail": " $$Q = 0.0053721 \\times \\sqrt{\\frac{106979}{976.542}}$$\n   $$Q = 0.0053721 \\times \\sqrt{109.550}$$\n   $$Q = 0.0053721 \\times 10.4666 = 0.056231 \\text{ m}^3\\text{/s}$$\n\n```json\n{\"answer\": 0.056231}\n```"
+        },
+        {
+          "case_id": "phys-0018",
+          "family": "hydrostatic_force",
+          "want": 159023.2512106875,
+          "got": 155097.44,
+          "passed": false,
+          "chars": 1001,
+          "has_json": true,
+          "raw": "To find the magnitude of the resultant hydrostatic force on one face of the gate, we use the hydrostatic pressure formula for a submerged flat surface:\n\n$$F = \\rho \\cdot g \\cdot y_c \\cdot A$$\n\nWhere:\n- $\\rho = 1025.0 \\text{ kg/m}^3$ (fluid density)\n- $g = 9.81 \\text{ m/s}^2$ (acceleration due to gra",
+          "tail": "{2} = 1.95 \\text{ m}$$\n\n3. **Calculate the magnitude of the hydrostatic force ($F$):**\n   $$F = 1025.0 \\times 9.81 \\times 1.95 \\times 8.113 = 155097.4363 \\text{ N}$$\n\n```json\n{\"answer\": 155097.44}\n```"
+        },
+        {
+          "case_id": "phys-0019",
+          "family": "manning_channel",
+          "want": 2.443150246582592,
+          "got": 2.446,
+          "passed": true,
+          "chars": 1033,
+          "has_json": true,
+          "raw": "To compute the discharge in the rectangular open channel, we use Manning's equation in SI units:\n\n$$Q = \\frac{1}{n} A R_h^{2/3} S^{1/2}$$\n\nGiven data:\n- Bed width, $b = 1.14\\text{ m}$\n- Flow depth, $y = 1.0\\text{ m}$\n- Bed slope, $S = 0.01596$\n- Manning's roughness coefficient, $n = 0.03$\n\n**Step 1:",
+          "tail": "te $(0.01596)^{1/2} \\approx 0.12633$\n$$Q = \\frac{1.14}{0.03} \\times 0.50981 \\times 0.12633 \\approx 38.0 \\times 0.50981 \\times 0.12633 \\approx 2.446\\text{ m}^3\\text{/s}$$\n\n```json\n{\"answer\": 2.446}\n```"
+        },
+        {
+          "case_id": "phys-0020",
+          "family": "pipe_head_loss",
+          "want": 26.004971215311276,
+          "got": 31.621,
+          "passed": false,
+          "chars": 1233,
+          "has_json": true,
+          "raw": "To find the head loss along the pipe, we follow these steps:\n\n1. **Calculate the cross-sectional area of the pipe ($A$):**\n   $$A = \\frac{\\pi D^2}{4} = \\frac{\\pi (0.08\\,\\text{m})^2}{4} = 5.02655 \\times 10^{-3}\\,\\text{m}^2$$\n\n2. **Calculate the mean flow velocity ($V$):**\n   $$V = \\frac{Q}{A} = \\frac",
+          "tail": "{L}{D} \\frac{V^2}{2g} = 0.02324 \\times \\frac{205.9\\,\\text{m}}{0.08\\,\\text{m}} \\times \\frac{(3.26863\\,\\text{m/s})^2}{2 \\times 9.80665\\,\\text{m/s}^2} = 31.621\\,\\text{m}$$\n\n```json\n{\"answer\": 31.621}\n```"
+        },
+        {
+          "case_id": "phys-0021",
+          "family": "pump_power",
+          "want": 842.8629661168894,
+          "got": 815.07,
+          "passed": false,
+          "chars": 1905,
+          "has_json": true,
+          "raw": "To find the shaft power required by the pump to overcome the head loss in the pipe, we proceed through the following steps using SI units:\n\n1. **Calculate the cross-sectional area of the pipe ($A$):**\n   $$A = \\frac{\\pi D^2}{4} = \\frac{\\pi (0.194)^2}{4} = 0.029589 \\text{ m}^2$$\n\n2. **Calculate the m",
+          "tail": "ate the shaft power required ($P_{\\text{shaft}}$) considering pump efficiency ($\\eta = 0.72$):**\n   $$P_{\\text{shaft}} = \\frac{P_h}{\\eta} = \\frac{586.85}{0.72} = 815.07 \\text{ W}$$\n\n{\"answer\": 815.07}"
+        },
+        {
+          "case_id": "phys-0022",
+          "family": "terminal_velocity",
+          "want": 0.0006057613551088749,
+          "got": 0.000606193,
+          "passed": true,
+          "chars": 1476,
+          "has_json": true,
+          "raw": "To find the terminal settling velocity of the solid sphere in Stokes flow, we use Stokes' Law. \n\n1. **Calculate the radius of the sphere ($r$):**\n   Given the diameter $d = 6.45 \\times 10^{-5} \\text{ m}$, the radius is:\n   $$r = \\frac{d}{2} = \\frac{6.45 \\times 10^{-5}}{2} = 3.225 \\times 10^{-5} \\tex",
+          "tail": "es 0.005}$$\n   $$v = \\frac{(4.16025 \\times 10^{-9}) \\times 1336.3 \\times 9.80665}{0.09}$$\n   $$v = \\frac{54.5574}{0.09} \\approx 6.0619 \\times 10^{-4} \\text{ m/s}$$\n\n```json\n{\"answer\": 0.000606193}\n```"
+        },
+        {
+          "case_id": "phys-0023",
+          "family": "venturi_flow",
+          "want": 0.04227747396924894,
+          "got": 0.04227,
+          "passed": true,
+          "chars": 975,
+          "has_json": true,
+          "raw": "To find the volumetric flow rate through the horizontal venturi meter under ideal, incompressible, and frictionless conditions, we apply Bernoulli's equation and the continuity equation.\n\n1. **Calculate the inlet area ($A_1$):**\n   $$A_1 = \\frac{\\pi}{4} d_1^2 = \\frac{\\pi}{4} (0.155\\text{ m})^2 = 0.0",
+          "tail": "} = \\frac{0.0083955}{0.89551} \\sqrt{\\frac{2 \\times 8944.6}{880.0}}$$\n   $$Q = 0.0093751 \\times \\sqrt{20.3286} = 0.0093751 \\times 4.5087 = 0.04227\\text{ m}^3\\text{/s}$$\n\n```json\n{\"answer\": 0.04227}\n```"
+        },
+        {
+          "case_id": "phys-0024",
+          "family": "hydrostatic_force",
+          "want": 62740.59467306399,
+          "got": 62717.387,
+          "passed": true,
+          "chars": 1299,
+          "has_json": true,
+          "raw": "To find the magnitude of the resultant hydrostatic force on one face of the gate, we use the hydrostatic pressure formula for a submerged flat surface:\n\n$$F = \\rho \\cdot g \\cdot y_c \\cdot A$$\n\nWhere:\n- $\\rho = 880.0 \\text{ kg/m}^3$ (density of the fluid)\n- $g = 9.807 \\text{ m/s}^2$ (acceleration due",
+          "tail": "**Calculate the magnitude of the resultant hydrostatic force ($F$):**\n   $$F = P_c \\cdot A = 16,692.651 \\text{ Pa} \\times 3.7572 \\text{ m}^2 = 62,717.387 \\text{ N}$$\n\n```json\n{\"answer\": 62717.387}\n```"
+        },
+        {
+          "case_id": "phys-0025",
+          "family": "manning_channel",
+          "want": 4.692297274108275,
+          "got": 4.6105,
+          "passed": true,
+          "chars": 1103,
+          "has_json": true,
+          "raw": "To compute the discharge in the rectangular open channel, we use Manning's equation in SI units:\n\n$$Q = \\frac{1}{n} A R_h^{2/3} S^{1/2}$$\n\nGiven parameters:\n- Bed width ($b$) = $1.84\\text{ m}$\n- Flow depth ($y$) = $1.15\\text{ m}$\n- Bed slope ($S$) = $0.01083$\n- Manning's roughness coefficient ($n$) ",
+          "tail": "104067$$\n$$R_h^{2/3} \\approx (0.51111)^{0.66667} \\approx 0.62796$$\n$$Q = \\frac{1}{0.03} \\times 2.116 \\times 0.62796 \\times 0.104067 \\approx 4.6105\\text{ m}^3\\text{/s}$$\n\n```json\n{\"answer\": 4.6105}\n```"
+        },
+        {
+          "case_id": "phys-0026",
+          "family": "pipe_head_loss",
+          "want": 33.5168545847374,
+          "got": 33.292,
+          "passed": true,
+          "chars": 1517,
+          "has_json": true,
+          "raw": "To find the head loss along the pipe, we follow these steps using SI units:\n\n1. **Calculate the cross-sectional area of the pipe ($A$):**\n   $$A = \\frac{\\pi D^2}{4} = \\frac{\\pi (0.113)^2}{4} \\approx 0.0100287 \\text{ m}^2$$\n\n2. **Calculate the mean flow velocity ($V$):**\n   $$V = \\frac{Q}{A} = \\frac{",
+          "tail": "597 \\times \\frac{268.4}{0.113} \\times \\frac{(3.3424)^2}{2 \\times 9.80665}$$\n   $$h_f = 0.024597 \\times 2375.22 \\times \\frac{11.1716}{19.6133} \\approx 33.292 \\text{ m}$$\n\n```json\n{\"answer\": 33.292}\n```"
+        },
+        {
+          "case_id": "phys-0027",
+          "family": "pump_power",
+          "want": 453.4776414437574,
+          "got": 442.27,
+          "passed": false,
+          "chars": 1576,
+          "has_json": true,
+          "raw": "To find the shaft power the pump must deliver to overcome the head loss, we follow these steps in SI units:\n\n1. **Calculate the cross-sectional area of the pipe ($A$):**\n   $$A = \\frac{\\pi D^2}{4} = \\frac{\\pi (0.217)^2}{4} = 0.03697 \\, \\text{m}^2$$\n\n2. **Calculate the average flow velocity ($v$):**\n",
+          "tail": "_{\\text{shaft}}$) of the pump:**\n   $$P_{\\text{shaft}} = \\frac{\\rho g Q h_f}{\\eta} = \\frac{880.0 \\times 9.80665 \\times 0.035 \\times 1.2057}{0.83} = 442.27 \\, \\text{W}$$\n\n```json\n{\"answer\": 442.27}\n```"
+        },
+        {
+          "case_id": "phys-0028",
+          "family": "terminal_velocity",
+          "want": 0.004647560258685521,
+          "got": 0.004643827,
+          "passed": true,
+          "chars": 1439,
+          "has_json": true,
+          "raw": "To find the terminal settling velocity of a solid sphere in Stokes flow, we use Stokes' law:\n\n$$v = \\frac{2}{9} \\frac{r^2 (\\rho_p - \\rho_f) g}{\\mu}$$\n\nAlternatively, expressed in terms of diameter $d$:\n\n$$v = \\frac{d^2 (\\rho_p - \\rho_f) g}{18 \\mu}$$\n\nGiven parameters:\n- Diameter ($d$) = $0.0001099\\t",
+          "tail": "018$\n\n6. Calculate the terminal velocity ($v = \\text{Numerator} / \\text{Denominator}$):\n   $v = \\frac{4.1878037 \\times 10^{-5}}{0.009018} = 0.004643827\\text{ m/s}$\n\n```json\n{\"answer\": 0.004643827}\n```"
+        },
+        {
+          "case_id": "phys-0029",
+          "family": "venturi_flow",
+          "want": 0.18120376847033356,
+          "got": 0.18122,
+          "passed": true,
+          "chars": 1466,
+          "has_json": true,
+          "raw": "To find the volumetric flow rate through the horizontal venturi meter under ideal, incompressible, and frictionless conditions, we apply Bernoulli's equation combined with the continuity equation.\n\n1. **Calculate the inlet area ($A_1$):**\n   $$A_1 = \\frac{\\pi}{4} d_1^2 = \\frac{\\pi}{4} (0.232\\text{ m",
+          "tail": "$\n   Take the square root:\n   $$\\sqrt{95.1347} = 9.75369\\text{ m/s}$$\n   Multiply by $A_2$:\n   $$Q = 0.018579\\text{ m}^2 \\times 9.75369\\text{ m/s} = 0.18122\\text{ m}^3/\\text{/s}$$\n\n{\"answer\": 0.18122}"
+        }
+      ]
+    }
+  }
+}

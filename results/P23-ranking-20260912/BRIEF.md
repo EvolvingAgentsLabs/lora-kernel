@@ -90,3 +90,37 @@ and it is reported void rather than used.
 **If no model lands in the band with complete failures, S2 is declared not
 answerable on this suite and the objective closes at redesign 2.** There is no
 third attempt; that was fixed before the first.
+
+---
+
+## The replacement target qualifies (2026-09-12) [ran]
+
+`google/gemini-3.5-flash-lite`, 30 cases, seed 515151, shared contract, 6k budget.
+**One API call's worth of work, $0.00 against a $10 ceiling.**
+
+| | |
+|---|---|
+| verified | **21/30 = 0.700** |
+| unparsed | **0/30** |
+| failures that are **complete** responses | **9/9 = 1.00** (pre-registered bar: 0.80) |
+
+It lands in the band: above `qwen3.5:4b`'s 14/30 and below the ceiling.
+
+**And the failures are the kind the design needs.** Every one ends in a finished
+derivation and a proper answer block, with a value that is plausible and wrong:
+
+| | `want` | `got` | chars |
+|---|--:|--:|--:|
+| `phys-0001` manning | 13.78 | **20.252** | 914 |
+| `phys-0002` head loss | 1.849 | **1.7946** | 1594 |
+| `phys-0008` head loss | 10.16 | **19.467** | 1398 |
+| `phys-0020` head loss | 26 | **31.621** | 1233 |
+| `phys-0027` pump power | 453.5 | **442.27** | 1576 |
+
+Compare the void arm, whose "answers" were `0.0`, `2.0`, `4.0` and `0.0359` — pipe
+areas scraped off an unfinished page. These are wrong answers. Those were no
+answers.
+
+**So the 9 cases where agreement and correctness can disagree are real**, and S2's
+ordering test has somewhere to be tested. The candidate ladder, cancelled when the
+first target voided, is re-queued.
