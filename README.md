@@ -317,6 +317,11 @@ a standard with nothing beside it never pays for itself.
 - [`docs/TECHNICAL-REFERENCE.md`](docs/TECHNICAL-REFERENCE.md) — the mechanisms,
   α and the α surface, the KV cache, action tokens, adapter composition, the
   fitness function · [es](docs/es/TECHNICAL-REFERENCE.md)
+- [`docs/PROBLEM-region-edge.md`](docs/PROBLEM-region-edge.md) — **a
+  self-contained statement of the one open problem that blocks the product**,
+  written to be handed to someone with no context: what is measured, what was
+  tried, what each attempt ruled out, and what a proposal must satisfy ·
+  [es](docs/es/PROBLEM-region-edge.md)
 - [`docs/OPEN-PROBLEMS.md`](docs/OPEN-PROBLEMS.md) — **the five things we do
   not know how to do**, written without jargon: what each problem is, what we
   tried, what each attempt ruled out, and what solving it would look like ·
