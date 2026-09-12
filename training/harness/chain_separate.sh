@@ -11,6 +11,24 @@ RESULTS_NAME="${RESULTS_NAME:-separate_results.json}"
 LOCAL="$RUN_DIR/$RESULTS_NAME"
 REMOTE=/content/lora-kernel/$RESULTS_NAME
 
+
+# EVERY CALL TO THE SESSION IS BOUNDED. On 2026-09-12 a single `colab exec` peek
+# hung for **75 minutes** with no timeout, and the loop could not tell: the silence
+# counter only advances when a call RETURNS empty, so a call that never returns
+# advances nothing. Four earlier versions of this failure were about a channel that
+# answered wrongly; this one is about a channel that does not answer at all, and it
+# is invisible to every guard written for the other four.
+#
+# macOS ships no coreutils `timeout`, so this is the portable one.
+tmo () {  # tmo SECONDS cmd...
+  local secs=$1; shift
+  "$@" & local p=$!
+  ( sleep "$secs"; kill -9 "$p" 2>/dev/null ) >/dev/null 2>&1 & local w=$!
+  wait "$p" 2>/dev/null; local rc=$?
+  kill -9 "$w" 2>/dev/null
+  return $rc
+}
+
 for i in $(seq 1 "$SESSIONS"); do
   # A FINISHED RUN DOES NOT NEED ANOTHER SESSION. The loop used to spend its whole
   # allowance regardless, so a completed experiment provisioned a fresh L4 and
@@ -22,7 +40,7 @@ for i in $(seq 1 "$SESSIONS"); do
   fi
   S="sep$(date +%H%M%S)"
   echo "=== session $i of $SESSIONS · $S · $GPU · base $BASE"
-  colab new --gpu "$GPU" -s "$S" >/dev/null
+  tmo 600 colab new --gpu "$GPU" -s "$S" >/dev/null
   trap 'colab stop -s "$S" >/dev/null 2>&1 || true' EXIT
   # THE PROVISIONING STEP IS NOT ALLOWED TO END THE RUN EITHER. A dropped
   # websocket during `install` raised RuntimeError("Connection was lost."),
@@ -30,7 +48,7 @@ for i in $(seq 1 "$SESSIONS"); do
   # experiment — so the run that was meant to be first silently became last
   # [ran] 2026-09-10. Same shape as the clone: retry, then verify.
   for try in 1 2 3; do
-    colab install -s "$S" trl bitsandbytes "torchao>=0.16.0" >/dev/null 2>&1 && break
+    tmo 600 colab install -s "$S" trl bitsandbytes "torchao>=0.16.0" >/dev/null 2>&1 && break
     echo "    install attempt $try did not take"
   done
 
@@ -50,14 +68,14 @@ PY
   # a clone that had already succeeded [ran] 2026-09-09. Retry, then verify.
   HEAD=""
   for try in 1 2 3; do
-    colab exec -s "$S" -f /tmp/_sboot.py >/dev/null 2>&1 || true
-    HEAD=$(colab exec -s "$S" -f /tmp/_scheck.py 2>/dev/null | grep -vE "^\[colab\]|^$" | head -1 || true)
+    tmo 180 colab exec -s "$S" -f /tmp/_sboot.py >/dev/null 2>&1 || true
+    HEAD=$(tmo 180 colab exec -s "$S" -f /tmp/_scheck.py 2>/dev/null | grep -vE "^\[colab\]|^$" | head -1 || true)
     case "$HEAD" in ""|*"NO CLONE"*) echo "    clone attempt $try did not take" ;; *) break ;; esac
   done
   case "$HEAD" in ""|*"NO CLONE"*) echo "    giving up: no checkout"; colab stop -s "$S" >/dev/null 2>&1; exit 1 ;; esac
   echo "    $HEAD"
 
-  [ -f "$LOCAL" ] && { colab upload -s "$S" "$LOCAL" "$REMOTE" >/dev/null && echo "    restored partial results" \
+  [ -f "$LOCAL" ] && { tmo 180 colab upload -s "$S" "$LOCAL" "$REMOTE" >/dev/null && echo "    restored partial results" \
                        || echo "    WARNING: results did not upload"; }
 
   cat > /tmp/_srun.py <<PY
@@ -65,7 +83,7 @@ import subprocess
 subprocess.Popen("cd /content/lora-kernel && nohup python -u -m $MODULE "
                  "--base $BASE $ARGS > run.log 2>&1 &", shell=True)
 PY
-  colab exec -s "$S" -f /tmp/_srun.py >/dev/null 2>&1 || true
+  tmo 180 colab exec -s "$S" -f /tmp/_srun.py >/dev/null 2>&1 || true
 
   cat > /tmp/_speek.py <<'PY'
 import subprocess
@@ -83,7 +101,7 @@ PY
   printf 'print("ALIVE")\n' > /tmp/_alive.py
   QUIET=0
   for _ in $(seq 1 140); do
-    out=$(colab exec -s "$S" -f /tmp/_speek.py 2>/dev/null | grep -vE "^\[colab\]|^$|Warning:" || true)
+    out=$(tmo 180 colab exec -s "$S" -f /tmp/_speek.py 2>/dev/null | grep -vE "^\[colab\]|^$|Warning:" || true)
     if [ -n "$out" ]; then
       echo "    $out" | tail -2
       QUIET=0
@@ -96,7 +114,7 @@ PY
       # of failure has cost a run. So the channel is probed directly, with a command
       # that cannot fail for any reason except the channel being gone.
       if [ "$QUIET" -ge 6 ]; then
-        ALIVE=$(colab exec -s "$S" -f /tmp/_alive.py 2>/dev/null | grep -c ALIVE || true)
+        ALIVE=$(tmo 180 colab exec -s "$S" -f /tmp/_alive.py 2>/dev/null | grep -c ALIVE || true)
         if [ "$ALIVE" = "0" ]; then
           echo "    session $S is not answering a trivial command — giving up on it"
           break
@@ -104,11 +122,11 @@ PY
         QUIET=0
       fi
     fi
-    colab download -s "$S" "$REMOTE" "$LOCAL" >/dev/null 2>&1 || true
+    tmo 180 colab download -s "$S" "$REMOTE" "$LOCAL" >/dev/null 2>&1 || true
     echo "$out" | grep -qE "composition |Sequential:|The kernel adapter reproduced|STOPPED|Traceback|OutOfMemory|Killed" && break
     sleep 45
   done
-  colab download -s "$S" "$REMOTE" "$LOCAL" >/dev/null 2>&1 || echo "    WARNING: nothing came back"
+  tmo 180 colab download -s "$S" "$REMOTE" "$LOCAL" >/dev/null 2>&1 || echo "    WARNING: nothing came back"
   colab stop -s "$S" >/dev/null 2>&1 || true; trap - EXIT
 
   python3 - <<PY
