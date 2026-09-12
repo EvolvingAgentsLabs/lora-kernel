@@ -43,16 +43,21 @@ def test_an_invented_law_comes_out_as_the_wrong_kind_of_quantity():
 
 
 @check_
-def test_an_untypeable_final_step_is_an_abstention_and_never_a_conviction():
-    """Manning ends in R**(2/3), which this algebra cannot type. Reading the verdict
-    off the previous step compared a length against a flow rate and convicted twenty
-    correct chains."""
-    stmt = "A rectangular channel 2.7 m wide runs 0.6 m deep on a bed slope of 0.01."
+def test_an_empirical_constant_must_be_named_or_the_chain_is_flagged():
+    """Manning's `n` is not dimensionless — it is s·m^(-1/3) — so `(1/n) A R^(2/3)
+    sqrt(S)` only types if the statement names the constant. This is the real cost
+    of the method and it is pinned here rather than hidden: a domain brings its own
+    empirical constants, and a guard that does not know them convicts correct work."""
     chain = ("1. Flow area: 2.7 * 0.6 = 1.62\n"
-             "2. Hydraulic radius: 1.62 / 3.9 = 0.415385\n"
-             "3. Discharge: (1/0.015) * 1.62 * 0.415385**(2/3) * sqrt(0.01) = 6.15\n")
-    v = check(chain, "m^3/s", stmt)
-    assert v.consistent is None, (v.consistent, v.got, v.reason)
+             "2. Wetted perimeter: 2.7 + 2*0.6 = 3.9\n"
+             "3. Hydraulic radius: 1.62 / 3.9 = 0.415385\n"
+             "4. Discharge: (1/0.015) * 1.62 * 0.415385**(2/3) * sqrt(0.01) = 6.15\n")
+    unnamed = "A rectangular channel 2.7 m wide runs 0.6 m deep on a bed slope of 0.01."
+    assert check(chain, "m^3/s", unnamed).consistent is False
+
+    named = unnamed + " Manning's roughness coefficient is 0.015."
+    v = check(chain, "m^3/s", named)
+    assert v.consistent is True, (v.got, v.want, v.reason)
 
 
 @check_

@@ -672,6 +672,49 @@ reasoning model spends that thinking and returns an empty answer, so the frontie
 abstained on 100 of 100 and read as "cannot judge". Both judges were re-run at 400;
 the arm it invalidated was thrown away rather than reported.
 
+#### P22 — dimensional consistency is the first confirmed edge signal
+
+[`results/P22-dimensions-20260912/`](../results/P22-dimensions-20260912/BRIEF.md).
+Two cheap signals had failed: the model's own confidence, and the tool layer's
+rejection rate, falsified on families it was not fitted to. The hypothesis here is
+that outside its region a specialist does not fail quietly — it **invents
+relations**, and an invented relation is unlikely to be dimensionally consistent:
+
+    6. Drag force F = rho v^2 C_d / (2 S) = 998.0*3.88**2/(2*0.698132)
+       kg/m^3 · (m/s)^2 / [1]  =  kg/(m·s^2)  — a pressure, where a force was asked
+
+It consults no model, needs no answer, and has no threshold to fit. **[ran]**:
+
+| | development (P13/P14) | **confirmation (P18)** |
+|---|---|---|
+| out-of-region work flagged | 0.78 | **0.80** |
+| coverage | 0.80 | 0.82 |
+| separation | **0.72** against a 0.60 chance line | — |
+| false alarm on correct in-region work | **0.22** | — |
+
+**It does not drop on material it was never shown.** The behavioural guard fell from
+0.63 to 0.18 at exactly this question; this holds at 0.80. Four out of five
+out-of-region chains are caught on `weir_flow` and `jet_reaction`, produced by P18
+before the guard existed.
+
+**It is not deployable.** One correct in-region chain in five is flagged, and a
+system that escalates one good answer in five has spent much of what withdrawal was
+meant to save. The pre-registration said that number counts equally.
+
+**And it is not domain-free.** Manning's `n` is s·m^(-1/3), so that family only
+types if the statement names the constant — a new domain costs a table of its own
+empirical constants. And numbers are matched by value, so an intermediate that
+happens to equal a printed quantity inherits its dimension.
+
+**The instrument changed seven times and the rule never moved.** Every change was
+the checker failing to read its input — a verdict read off the last step that
+*typed* rather than the last step, `Pa.s` matching the `Pa` prefix, integer
+exponents unable to express `R**(2/3)`, and four more, all listed in the brief.
+Seven is past where this project's own rule says a measurement is looking for its
+result. **The defence is not that each fix was justified: it is that the
+confirmation set was scored once, after all seven, on material never opened during
+development, and it held.**
+
 #### P18 — the guard is falsified: P16 measured two families, not a boundary
 
 [`results/P18-confirm-20260910/`](../results/P18-confirm-20260910/BRIEF.md). P16's

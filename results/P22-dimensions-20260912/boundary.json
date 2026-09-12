@@ -1,24 +1,24 @@
 {
-  "separation": 0.75,
+  "separation": 0.72,
   "chance": 0.6,
-  "false_alarm_on_correct_in_region": 0.1875,
-  "no_opinion": 29,
+  "false_alarm_on_correct_in_region": 0.2188,
+  "no_opinion": 20,
   "n": 100,
-  "coverage": 0.71,
-  "conditional_separation": 0.7887,
-  "conditional_false_alarm": 0.3529,
+  "coverage": 0.8,
+  "conditional_separation": 0.75,
+  "conditional_false_alarm": 0.3182,
   "by_group": {
     "in": {
       "n": 60,
-      "flagged": 14
+      "flagged": 19
     },
     "out": {
       "n": 40,
-      "flagged": 29
+      "flagged": 31
     },
     "in_correct": {
       "n": 32,
-      "flagged": 6
+      "flagged": 7
     }
   }
 }

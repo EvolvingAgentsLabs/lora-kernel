@@ -694,6 +694,51 @@ respuesta vacía, así que la frontera se abstuvo en 100 de 100 y se leía como 
 puede juzgar". Los dos jueces se re-corrieron con 400; el brazo invalidado se tiró
 en vez de reportarse.
 
+#### P22 — la consistencia dimensional es la primera señal de borde confirmada
+
+[`results/P22-dimensions-20260912/`](../../results/P22-dimensions-20260912/BRIEF.md).
+Dos señales baratas habían fallado: la confianza del propio modelo y la tasa de
+rechazo de la capa de herramientas, falsificada en familias a las que no había sido
+ajustada. La hipótesis acá es que fuera de su región un especialista no falla en
+silencio — **inventa relaciones**, y una relación inventada difícilmente sea
+dimensionalmente consistente:
+
+    6. Fuerza de arrastre F = rho v^2 C_d / (2 S) = 998.0*3.88**2/(2*0.698132)
+       kg/m^3 · (m/s)^2 / [1]  =  kg/(m·s^2)  — una presión, donde se pedía fuerza
+
+No consulta ningún modelo, no necesita la respuesta y no tiene umbral que ajustar
+**[ran]**:
+
+| | desarrollo (P13/P14) | **confirmación (P18)** |
+|---|---|---|
+| trabajo fuera de región marcado | 0,78 | **0,80** |
+| cobertura | 0,80 | 0,82 |
+| separación | **0,72** contra una línea de azar de 0,60 | — |
+| falsa alarma sobre trabajo correcto en región | **0,22** | — |
+
+**No cae sobre material que nunca vio.** El guardia conductual se desplomó de 0,63 a
+0,18 en exactamente esta pregunta; éste se sostiene en 0,80. Cuatro de cada cinco
+cadenas fuera de región quedan atrapadas en `weir_flow` y `jet_reaction`, producidas
+por P18 antes de que el guardia existiera.
+
+**No es desplegable.** Una de cada cinco cadenas correctas en región queda marcada, y
+un sistema que escala un acierto de cada cinco ya gastó buena parte de lo que el
+retiro venía a ahorrar. La pre-registración decía que ese número cuenta igual.
+
+**Y no es libre de dominio.** La `n` de Manning es s·m^(-1/3), así que esa familia
+sólo tipa si el enunciado nombra la constante — un dominio nuevo cuesta una tabla de
+sus propias constantes empíricas. Y los números se emparejan por valor, así que un
+intermedio que coincida con una cantidad impresa hereda su dimensión.
+
+**El instrumento cambió siete veces y la regla nunca se movió.** Cada cambio fue el
+verificador fallando en leer su entrada — un veredicto leído del último paso que
+*tipaba* en vez del paso final, `Pa.s` matcheando el prefijo `Pa`, exponentes enteros
+incapaces de expresar `R**(2/3)`, y cuatro más, todos listados en el brief. Siete
+está pasado el punto donde la regla de este proyecto dice que una medición está
+buscando su resultado. **La defensa no es que cada arreglo estuviera justificado: es
+que el conjunto de confirmación se puntuó una sola vez, después de los siete, sobre
+material nunca abierto durante el desarrollo, y se sostuvo.**
+
 #### P18 — el guardia queda falsificado: P16 midió dos familias, no un borde
 
 [`results/P18-confirm-20260910/`](../../results/P18-confirm-20260910/BRIEF.md). El

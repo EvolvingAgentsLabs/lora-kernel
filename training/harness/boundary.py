@@ -20,19 +20,30 @@ import json
 from pathlib import Path
 
 from training.physics.dimensions import check
-from training.physics.generate import HELD_OUT_FAMILIES, TRAIN_FAMILIES, generate
+from training.physics.generate import (CONFIRM_FAMILIES, HELD_OUT_FAMILIES,
+                                        TRAIN_FAMILIES, generate)
 
+# DEVELOPMENT: the guard was built while looking at these.
 SOURCES = [("results/P13-sequential-20260910/sequential_results.json", False),
            ("results/P14-held-out-20260910/sequential_results_heldout.json", True)]
 
+# CONFIRMATION: `weir_flow` and `jet_reaction`, produced by P18 before this guard
+# existed and never opened while it was being built. The behavioural guard looked
+# strong until exactly this question, so nothing here is a result until it survives
+# these with no further changes to the checker.
+CONFIRM = "results/P18-confirm-20260910/sequential_results_confirm.json"
 
-def rows():
-    for path, outside in SOURCES:
+
+def rows(sources=None):
+    for path, outside in (sources or SOURCES):
         p = Path(path)
         if not p.exists():
             continue
         d = json.loads(p.read_text())
-        fams = HELD_OUT_FAMILIES if outside else TRAIN_FAMILIES
+        if "confirm" in path:
+            fams = CONFIRM_FAMILIES
+        else:
+            fams = HELD_OUT_FAMILIES if outside else TRAIN_FAMILIES
         cases = {c["case_id"]: c
                  for c in generate(30, 515151, fams, style="working")}
         for arm, v in d["arms"].items():
@@ -88,6 +99,22 @@ def main() -> int:
     print(f"chains the checker could not type at all: {no_opinion}/{len(data)}")
     print("\nA guard that flags correct chains will be switched off whatever its "
           "headline says, so the second number is not a footnote.")
+
+    # THE CONFIRMATION, scored with the checker exactly as it stands.
+    if Path(CONFIRM).exists():
+        conf = [r for r in rows([(CONFIRM, True)])]
+        for r in conf:
+            r["verdict"] = check(r["chain"], r["unit"], r["statement"])
+            r["flagged"] = r["verdict"].consistent is False
+        opin = [r for r in conf if r["verdict"].consistent is not None]
+        caught = sum(r["flagged"] for r in conf)
+        print(f"\n=== confirmation on families the guard was never shown "
+              f"({len(conf)} chains, all outside any trained region)")
+        print(f"flagged {caught}/{len(conf)} = {caught/max(len(conf),1):.2f}   "
+              f"coverage {len(opin)/max(len(conf),1):.2f}")
+        print(f"development set flagged {sum(r['flagged'] for r in outside)}/"
+              f"{len(outside)} = {sum(r['flagged'] for r in outside)/len(outside):.2f} "
+              "on out-of-region work. A large drop here is the tripwire's story again.")
 
     Path("results/P22-dimensions-20260912/boundary.json").write_text(json.dumps({
         "separation": round(sep, 4), "chance": round(chance, 4),

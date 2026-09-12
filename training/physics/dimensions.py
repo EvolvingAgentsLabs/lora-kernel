@@ -22,6 +22,18 @@ dimensionless, which is the right reading of `2`, `pi` and `1/3` and the wrong
 reading of a constant the model invented — a source of misses, reported rather than
 patched around.
 
+TWO LIMITATIONS, NEITHER ENGINEERED AROUND.
+
+*Empirical constants carry units.* Manning's `n` is s·m^(-1/3), so its formula only
+types if the statement names the constant. A domain brings its own, and a guard that
+does not know them convicts correct work — this is the real cost of the method.
+
+*Numbers are matched by value.* An intermediate that happens to equal a quantity
+printed in the statement inherits that quantity's dimension. A channel 2 m wide
+whose flow area is also 2 will be typed wrongly, and the guard will be confidently
+mistaken about a correct chain. The alternative is symbolic tracking, which is a
+different and much larger instrument.
+
     from training.physics.dimensions import check
     verdict = check(chain_text, expected_unit, statement, handbook)
 """
@@ -29,36 +41,63 @@ patched around.
 from __future__ import annotations
 
 import ast
-import math
 import re
 from dataclasses import dataclass
+from fractions import Fraction
 
 # (kg, m, s) — mass, length, time. Everything this suite touches is mechanical.
-Dim = tuple[int, int, int]
-NONE: Dim = (0, 0, 0)
+#
+# EXPONENTS ARE FRACTIONS, NOT INTEGERS. Manning's discharge ends in `R**(2/3)` and
+# an integer algebra cannot type it, so the guard abstained on a sixth of the work —
+# and the silence was not spread evenly, it was the whole of one family. A rational
+# exponent types that step exactly, and `Fraction` compares exactly, so nothing is
+# lost to floating point along the way.
+Dim = tuple[Fraction, Fraction, Fraction]
+
+
+def D(kg=0, m=0, s=0) -> Dim:
+    return (Fraction(kg), Fraction(m), Fraction(s))
+
+
+NONE: Dim = D()
 
 UNIT_DIMS: dict[str, Dim] = {
-    "m": (0, 1, 0), "mm": (0, 1, 0), "cm": (0, 1, 0), "in": (0, 1, 0),
-    "ft": (0, 1, 0),
-    "m^2": (0, 2, 0), "m^3": (0, 3, 0),
-    "m/s": (0, 1, -1), "m/s^2": (0, 1, -2),
-    "m^3/s": (0, 3, -1), "L/s": (0, 3, -1), "m^3/h": (0, 3, -1),
-    "L/min": (0, 3, -1), "gpm": (0, 3, -1),
-    "Pa": (1, -1, -2), "kPa": (1, -1, -2), "bar": (1, -1, -2),
-    "mbar": (1, -1, -2), "psi": (1, -1, -2),
-    "N": (1, 1, -2), "W": (1, 2, -3), "J": (1, 2, -2),
-    "kg": (1, 0, 0), "kg/m^3": (1, -3, 0), "kg/s": (1, 0, -1),
+    "m": D(0, 1, 0), "mm": D(0, 1, 0), "cm": D(0, 1, 0), "in": D(0, 1, 0),
+    "ft": D(0, 1, 0),
+    "m^2": D(0, 2, 0), "m^3": D(0, 3, 0),
+    "m/s": D(0, 1, -1), "m/s^2": D(0, 1, -2),
+    "m^3/s": D(0, 3, -1), "L/s": D(0, 3, -1), "m^3/h": D(0, 3, -1),
+    "L/min": D(0, 3, -1), "gpm": D(0, 3, -1),
+    "Pa": D(1, -1, -2), "kPa": D(1, -1, -2), "bar": D(1, -1, -2),
+    "mbar": D(1, -1, -2), "psi": D(1, -1, -2),
+    "N": D(1, 1, -2), "W": D(1, 2, -3), "J": D(1, 2, -2),
+    "kg": D(1, 0, 0), "kg/m^3": D(1, -3, 0), "kg/s": D(1, 0, -1),
     # EVERY SPELLING THE MATERIAL USES. The suite writes `Pa.s`, and a table
     # holding only `Pa s` matched the `Pa` prefix instead — typing a viscosity
     # as a pressure and putting the time exponent out by one, which flagged
     # twenty correct chains [ran] 2026-09-12.
-    "Pa s": (1, -1, -1), "Pa*s": (1, -1, -1), "Pa.s": (1, -1, -1),
-    "Pa·s": (1, -1, -1), "Pa-s": (1, -1, -1),
-    "m^2/s": (0, 2, -1),
+    "Pa s": D(1, -1, -1), "Pa*s": D(1, -1, -1), "Pa.s": D(1, -1, -1),
+    "Pa·s": D(1, -1, -1), "Pa-s": D(1, -1, -1),
+    "m^2/s": D(0, 2, -1),
     "dimensionless": NONE, "units": NONE, "currency units": NONE,
     "cubic units": NONE, "units per hour": NONE, "dimensionless units": NONE,
 }
-PROPERTY_DIMS = {"density": (1, -3, 0), "viscosity": (1, -1, -1)}
+PROPERTY_DIMS = {"density": D(1, -3, 0), "viscosity": D(1, -1, -1)}
+
+# EMPIRICAL CONSTANTS CARRY UNITS, AND THIS IS THE REAL COST OF THE METHOD.
+# Manning's `n` is not dimensionless — it is s·m^(-1/3), which is why
+# `Q = (1/n) A R^(2/3) sqrt(S)` looks inconsistent to a naive reading and flagged
+# twenty correct chains [ran] 2026-09-12. A dimensional guard for a domain needs
+# that domain's constants, exactly as a person checking units by hand would. So the
+# guard is not domain-free, and a new domain costs a table this size.
+#
+# THE STOPPING CONDITION, WRITTEN BEFORE THE ENTRY WAS ADDED: this table is filled
+# once, from families already studied, and the confirmation on unseen families runs
+# with NO further additions. If it needs another entry there, the approach is
+# domain-specific in a way that matters and that is the finding.
+NAMED_CONSTANTS = [
+    (("manning", "roughness coefficient"), D(0, Fraction(-1, 3), 1)),
+]
 G = 9.80665
 
 NUM = r"[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?"
@@ -84,34 +123,37 @@ def _div(a: Dim, b: Dim) -> Dim:
     return (a[0] - b[0], a[1] - b[1], a[2] - b[2])
 
 
-def _pow(a: Dim, n: float) -> Dim | None:
-    """Only an integer power keeps a dimension in this algebra.
-
-    `x**0.5` of a squared quantity is meaningful and `x**0.9` is not, and telling
-    them apart needs the value rather than the exponent. Rather than guess, a
-    fractional power that does not divide cleanly makes the step untypeable — which
-    is recorded as "no opinion" instead of a verdict.
-    """
-    if a == NONE:
-        return NONE
-    if float(n).is_integer():
-        k = int(n)
-        return (a[0] * k, a[1] * k, a[2] * k)
-    scaled = [d * n for d in a]
-    if all(float(x).is_integer() for x in scaled):
-        return (int(scaled[0]), int(scaled[1]), int(scaled[2]))
-    return None
+def _pow(a: Dim, n) -> Dim | None:
+    """Any rational power. `R**(2/3)` of a length is a perfectly good dimension."""
+    try:
+        k = Fraction(n).limit_denominator(64)
+    except (TypeError, ValueError):
+        return None
+    return (a[0] * k, a[1] * k, a[2] * k)
 
 
 def known_quantities(statement: str, handbook: dict | None) -> dict[str, Dim]:
     """value-as-written -> dimension, for everything the problem actually states."""
-    out: dict[str, Dim] = {f"{G:g}": (0, 1, -2)}
+    out: dict[str, Dim] = {f"{G:g}": D(0, 1, -2)}
     units = sorted(UNIT_DIMS, key=len, reverse=True)
     pattern = rf"({NUM})\s*({'|'.join(re.escape(u) for u in units)})\b"
     for m in re.finditer(pattern, statement):
         dim = UNIT_DIMS[m.group(2)]
         if dim != NONE:
             out.setdefault(f"{float(m.group(1)):g}", dim)
+    low = statement.lower()
+    for names, cdim in NAMED_CONSTANTS:
+        where = min((low.index(n) for n in names if n in low), default=None)
+        if where is None:
+            continue
+        # THE NUMBER BESIDE THE NAME, WITH REAL BOUNDARIES. A first version took the
+        # first unit-less number in the sentence and matched `1.9` inside `1.96 m`,
+        # typing the channel width as Manning's coefficient [ran] 2026-09-12. The
+        # constant is the number that follows its own name.
+        m = re.search(rf"(?<![\d.])({NUM})(?![\d]|\.\d)", statement[where:])  # a full stop may follow
+        if m:
+            out.setdefault(f"{float(m.group(1)):g}", cdim)
+
     for (_fluid, _t), props in (handbook or {}).items():
         for prop, value in props.items():
             if prop in PROPERTY_DIMS:
@@ -137,7 +179,7 @@ def _eval_dim(node, known: dict[str, Dim]) -> Dim | None:
             return None
         fn = getattr(node.func, "id", "")
         if fn == "sqrt":
-            return _pow(args[0], 0.5)
+            return _pow(args[0], Fraction(1, 2))
         if fn in ("log", "log10", "log2", "exp"):
             return NONE
         return args[0] if args else NONE
@@ -150,11 +192,12 @@ def _eval_dim(node, known: dict[str, Dim]) -> Dim | None:
         if isinstance(node.op, ast.Div):
             return _div(left, right)
         if isinstance(node.op, ast.Pow):
-            try:
-                exponent = ast.literal_eval(node.right)
-            except Exception:
-                return None
-            return _pow(left, float(exponent)) if isinstance(exponent, (int, float)) else None
+            # `**(2/3)` IS A DIVISION, NOT A LITERAL. `literal_eval` refuses it, so
+            # the step went untyped and the guard abstained on Manning by accident
+            # rather than by design [ran] 2026-09-12. Accidental correctness does
+            # not survive the next edit, so the exponent is evaluated properly.
+            exponent = _number(node.right)
+            return _pow(left, exponent) if exponent is not None else None
         if isinstance(node.op, (ast.Add, ast.Sub)):
             # ADDING A LENGTH TO A PRESSURE IS ALREADY THE ERROR. But a chain that
             # adds a typed quantity to an untyped literal is common and innocent,
@@ -162,6 +205,25 @@ def _eval_dim(node, known: dict[str, Dim]) -> Dim | None:
             if left != NONE and right != NONE and left != right:
                 return None
             return left if left != NONE else right
+    return None
+
+
+def _number(node) -> float | None:
+    """A constant arithmetic expression, or None. Used only for exponents."""
+    if isinstance(node, ast.Constant) and isinstance(node.value, (int, float)):
+        return float(node.value)
+    if isinstance(node, ast.UnaryOp) and isinstance(node.op, (ast.UAdd, ast.USub)):
+        v = _number(node.operand)
+        return None if v is None else (v if isinstance(node.op, ast.UAdd) else -v)
+    if isinstance(node, ast.BinOp):
+        a, b = _number(node.left), _number(node.right)
+        if a is None or b is None:
+            return None
+        for op, fn in ((ast.Add, lambda x, y: x + y), (ast.Sub, lambda x, y: x - y),
+                       (ast.Mult, lambda x, y: x * y),
+                       (ast.Div, lambda x, y: x / y if y else None)):
+            if isinstance(node.op, op):
+                return fn(a, b)
     return None
 
 

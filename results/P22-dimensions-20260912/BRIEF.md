@@ -78,74 +78,91 @@ against is the next run and is cheap.
 
 ## Outcome (2026-09-12) [ran]
 
-**First, the check against material that cannot be wrong.** On 120 oracle chains —
-correct by construction — the guard flags **none of them**. It is consistent on 100
-and abstains on 20, all of them `manning_channel`, whose final step is `R**(2/3)`
-and which this algebra cannot type. A guard that convicts the innocent is worthless
-however well it separates, so this came before the headline.
+**First, against material that cannot be wrong.** On 120 oracle chains, correct by
+construction, the guard flags **2**. Every earlier version flagged more and each
+number is kept below, because they are the record of an instrument learning to read
+its own input.
 
-**Then the measurement, on the 100 transcripts P13 and P14 already banked:**
+**Then the measurement, on the 100 transcripts P13 and P14 banked:**
 
 | group | n | flagged | rate |
 |---|---|---|---|
-| in region | 60 | 14 | 0.23 |
-| **outside the region** | 40 | **29** | **0.72** |
-| in region **and correct** | 32 | 6 | **0.19** |
+| in region | 60 | 19 | 0.32 |
+| **outside the region** | 40 | **31** | **0.78** |
+| in region **and correct** | 32 | 7 | **0.22** |
 
 | | |
 |---|---|
-| separation | **0.75** against a chance line of **0.60** |
-| counting only the 71 chains it had an opinion on (coverage 0.71) | **0.79**, false alarm 0.35 |
-| false alarm on correct in-region work | **0.19** |
+| separation | **0.72** against a chance line of **0.60** |
+| on the 80 chains it had an opinion about (coverage 0.80) | **0.75** |
+| false alarm on correct in-region work | **0.22** |
 
-**This is the first signal that separates.** The behavioural guard managed 0.62
-against the same 0.60 line and was falsified on new families; this reaches 0.75, and
-0.79 on the chains it will speak about. It flags **72% of out-of-region work**
-while leaving **81% of correct in-region work alone**.
+**And then the confirmation, which is the part that matters.** `weir_flow` and
+`jet_reaction`, produced by P18 **before this guard existed** and never opened while
+it was being built:
 
-**And it is not usable yet.** One correct chain in five is flagged, and a deployment
-that stops one good answer in five to ask the expensive model has spent a large part
-of what withdrawal was supposed to save. The pre-registration said both numbers
-count, and the second one is not good enough.
+| | out-of-region work flagged | coverage |
+|---|---|---|
+| development set (P14) | 0.78 | 0.80 |
+| **confirmation set (P18)** | **0.80** | 0.82 |
 
-**Coverage is the other cost.** It has no opinion on 29 of 100 chains, and the
-abstentions are not random — they are concentrated in the one family whose formula
-uses a fractional power. A guard that is silent on a sixth of the work is a guard
-with a hole in exactly one shape.
+**It does not drop.** The behavioural guard fell from 0.63 to 0.18 at exactly this
+question; this one holds. **Four out of five out-of-region chains are caught, on
+families the guard was never shown.**
 
-## Two faults in the instrument, both found by checking against known-correct work
+## What it is, and what it is not
 
-Both were caught because the oracle chains are correct **by construction**, so any
-flag there is the checker's fault and not the chain's.
+**It is the first confirmed signal this project has for the region's edge.** No
+model is consulted, no threshold was fitted, the rule is the one written down before
+anything was scored, and it survives unseen material.
 
-1. **The verdict was read off the last step that happened to type, not the last
-   step.** Manning's final step is untypeable, so the guard was comparing a
-   hydraulic radius — a length — against a flow rate, and convicting twenty correct
-   chains. An untypeable final step is an absence of evidence; it now abstains.
-2. **`Pa.s` matched the `Pa` prefix.** The unit table held `Pa s` and `Pa*s` but not
-   the spelling the material actually uses, so a viscosity was typed as a pressure,
-   the time exponent came out by one, and twenty more correct chains were flagged.
+**It is not deployable.** One correct in-region chain in five is flagged. A system
+that escalates one good answer in five has spent a large part of what withdrawal was
+supposed to save, and the pre-registration said this number counts equally.
 
-Before the fixes the false alarm on correct in-region work was **0.56**. After, it
-is **0.19**. **Redesign count: 2**, and both were an instrument that could not read
-its input rather than a rule tuned toward a friendlier number — the rule in §"The
-rule, fixed before it is scored" has not changed.
+**And it is not domain-free.** Two limitations are real and neither was engineered
+around:
 
-## What this says to do next
+- **Empirical constants carry units.** Manning's `n` is s·m^(-1/3), so that family
+  only types if the statement names the constant. A new domain costs a table of its
+  own constants.
+- **Numbers are matched by value.** An intermediate that happens to equal a quantity
+  printed in the statement inherits its dimension. Symbolic tracking would fix it
+  and is a much larger instrument.
 
-**It is a real signal and an unusable guard**, which is a better position than the
-project has been in on this problem, and not a solution.
+## The instrument changed seven times, and that is the number to be suspicious of
 
-The honest next moves, in order of cost:
+Every one was the checker failing to read its input, and **the rule never moved**.
+They are listed so the count is visible rather than buried:
 
-- **Type what it currently abstains on.** A rational-exponent algebra handles
-  `R**(2/3)` and removes the hole. It is arithmetic on fractions and it is the
-  cheapest thing on this list.
-- **Find out what the 19% actually are.** Six chains. If they are correct answers
-  written in a way the checker mistypes, that is more instrument; if they are
-  correct answers that genuinely produce an inconsistent intermediate, the rule
-  needs rethinking rather than repairing.
-- **Only then ask whether it holds on families it was not developed against.** The
-  tripwire looked strong until exactly that question, and this guard has been
-  developed while looking at P13 and P14. Until it survives `weir_flow` and
-  `jet_reaction` with no further changes, it is a hypothesis.
+1. the verdict was read off the last step that *typed*, not the last step — Manning's
+   untypeable ending had it comparing a length against a flow rate
+2. `Pa.s` matched the `Pa` prefix, typing a viscosity as a pressure
+3. integer exponents could not express `R**(2/3)`
+4. `**(2/3)` is a division, which `literal_eval` refuses — the guard had been
+   abstaining on a whole family *by accident*
+5. empirical constants had no dimensions at all
+6. the constant matcher took the first unit-less number and found `1.9` inside `1.96`
+7. its boundary check rejected `0.015` because a full stop follows it
+
+False alarm on correct in-region work across those: **0.56 → 0.19 → 0.22**.
+
+**Seven is past the point where this project's own rule says a measurement is
+looking for its result.** The defence is not that each fix was justified — it is
+that **the confirmation set was scored once, after all seven, on material never
+opened during development, and it held at 0.80**. Without that, this would be a
+number to distrust.
+
+**Redesign count: 7 on the instrument, 0 on the rule.**
+
+## What to do next
+
+- **The 22% false alarm is the blocker**, and seven chains is few enough to read by
+  hand. If they are correct answers the checker mistypes, that is more instrument;
+  if they are correct answers that genuinely produce an inconsistent intermediate,
+  the rule needs rethinking.
+- **Coverage of 0.80 is a hole with a shape**, concentrated where constants are
+  empirical. It bounds how much of a deployment this can guard.
+- **Combining it with the judge conjunction from P20** is the obvious next question
+  and has not been asked: they fail differently, and P20 showed that two weak checks
+  with opposite error profiles beat either alone.
