@@ -60,12 +60,31 @@ def correct(got: float | None, want: float, rtol: float) -> bool:
     return got is not None and abs(got - want) <= rtol * abs(want)
 
 
-def run_model(tag: str, rows: list[dict], rtol: float, max_tokens: int) -> dict:
+def run_model(tag: str, rows: list[dict], rtol: float, max_tokens: int,
+              prev: dict | None = None, save=None) -> dict:
+    """One model over the suite, resumable at case granularity.
+
+    WHY RESUMABLE. `gemma4:12b` reached 40 of 60 twice on a rented card and lost
+    both runs when the session was reclaimed, because this function held its
+    records in memory and wrote them once at the end [ran] 2026-09-12. A model that
+    takes longer than a session lives can never finish that way, however many
+    sessions you buy. Every case is now banked as it lands.
+    """
     model = build(tag)
     per_family: dict[str, list[bool]] = defaultdict(list)
-    records, passed, unparsed, thought = [], 0, 0, 0
+    records = list((prev or {}).get("records") or [])
+    done = {r["case_id"] for r in records}
+    passed = sum(r["passed"] for r in records)
+    unparsed = sum(r["got"] is None for r in records)
+    thought = (prev or {}).get("thinking_chars", 0)
+    for r in records:
+        per_family[r["family"]].append(r["passed"])
+    if records:
+        print(f"  [{tag}] resuming with {len(records)} scored", flush=True)
     t0 = time.time()
     for i, row in enumerate(rows, 1):
+        if row["case_id"] in done:
+            continue
         try:
             r = model.chat([{"role": "system", "content": SYSTEM},
                             {"role": "user", "content": row["prompt"]}],
@@ -89,8 +108,15 @@ def run_model(tag: str, rows: list[dict], rtol: float, max_tokens: int) -> dict:
                         "want": row["answer"], "got": got, "passed": bool(ok),
                         "chars": len(text), "has_json": '"answer"' in text,
                         "raw": text[:300], "tail": text[-200:]})
+        if save:
+            save(summarise(tag, rows, records, passed, unparsed, thought,
+                           per_family, t0))
         if i % 10 == 0:
             print(f"  [{tag}] {i}/{len(rows)} passed {passed}", flush=True)
+    return summarise(tag, rows, records, passed, unparsed, thought, per_family, t0)
+
+
+def summarise(tag, rows, records, passed, unparsed, thought, per_family, t0) -> dict:
     return {
         "model": tag, "n": len(rows), "passed": passed,
         "accuracy": round(passed / len(rows), 4), "unparsed": unparsed,
@@ -139,10 +165,29 @@ def main() -> int:
                "families": sorted(fams),
                "seed": args.seed, "arms": {}}
 
+    # WHATEVER IS ALREADY ON DISK IS PICKED UP, so a reclaimed session costs the
+    # cases in flight and never the model.
+    dest = out / "headroom.json"
+    if dest.exists():
+        try:
+            summary["arms"] = json.loads(dest.read_text()).get("arms", {})
+        except json.JSONDecodeError:
+            print("[headroom] the partial results file is unreadable; starting over")
+
     for tag in [t for t in (args.small, args.large) if t]:
+        prev = summary["arms"].get(tag)
+        if prev and len(prev.get("records") or []) >= len(rows):
+            print(f"[headroom] {tag} already complete", flush=True)
+            continue
         print(f"[headroom] {tag}", flush=True)
-        summary["arms"][tag] = run_model(tag, rows, args.rtol, args.max_tokens)
-        (out / "headroom.json").write_text(json.dumps(summary, indent=2))
+
+        def bank(snapshot, _tag=tag):
+            summary["arms"][_tag] = snapshot
+            dest.write_text(json.dumps(summary, indent=2))
+
+        summary["arms"][tag] = run_model(tag, rows, args.rtol, args.max_tokens,
+                                         prev, bank)
+        dest.write_text(json.dumps(summary, indent=2))
 
     # ONE ARM IS A LEGITIMATE RUN. Re-measuring a single baseline under a second
     # contract is the cheapest arm in the project, and crashing on the report
@@ -152,7 +197,7 @@ def main() -> int:
         s, l = summary["arms"][args.small], summary["arms"][args.large]
         gap = round(l["accuracy"] - s["accuracy"], 4)
         summary["gap"] = gap
-    (out / "headroom.json").write_text(json.dumps(summary, indent=2))
+    dest.write_text(json.dumps(summary, indent=2))
     print(f"\n{'model':<44}{'passed':>10}{'accuracy':>11}{'unparsed':>10}")
     for tag in [t for t in (args.small, args.large) if t]:
         a = summary["arms"][tag]

@@ -52,7 +52,10 @@ for i in $(seq 1 "$SESSIONS"); do
     python3 -c "
 import json,sys
 a=next(iter(json.load(open(sys.argv[1]))['arms'].values()))
-sys.exit(1 if a['unparsed'] >= a['n'] else 0)" "$f" || missing=1
+scored=len(a.get('records') or [])
+# A PARTIAL FILE IS NOT A FINISHED ONE EITHER. With per-case resume a run can come
+# back with 40 of 60 scored and unparsed=0, which the earlier check read as done.
+sys.exit(1 if (a['unparsed'] >= a['n'] or scored < a['n']) else 0)" "$f" || missing=1
   done
   [ "$missing" = "0" ] && { echo "=== every candidate is on disk"; break; }
 
@@ -146,6 +149,22 @@ PY
     RUNS="$RUNS $m"
   done
   echo "    still to run:$RUNS"
+
+  # WHAT WAS ALREADY SCORED GOES BACK UP. gemma4:12b reached 40 of 60 twice and
+  # lost both runs to a reclaimed card, because the partial file only ever
+  # travelled downward [ran] 2026-09-12.
+  for m in $RUNS; do
+    d="$RUN_DIR/$(echo "$m" | tr ':.' '--')"
+    if [ -f "$d/headroom.json" ]; then
+      tmo 300 colab exec -s "$S" -f /dev/stdin <<EOF >/dev/null 2>&1 || true
+import os
+os.makedirs("/content/lora-kernel/$d", exist_ok=True)
+EOF
+      tmo 300 colab upload -s "$S" "$d/headroom.json" \
+        "/content/lora-kernel/$d/headroom.json" >/dev/null 2>&1 \
+        && echo "    carried $m partial results in" || true
+    fi
+  done
 
   cat > /tmp/_orun.py <<PY
 import subprocess
