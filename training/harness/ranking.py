@@ -167,6 +167,17 @@ def main() -> int:
             print("  WARNING — no candidate reproduced a single one of the target's "
                   "wrong values, so this ordering rests entirely on its easy subset")
 
+        # THE PER-FAMILY SPLIT WAS PROMISED IN THE PRE-REGISTRATION and was being
+        # computed into the JSON without ever being printed. The suite is balanced
+        # ten-and-ten across six families, so weight cannot drag the global number —
+        # but *which* families the target fails still can, and a reader should not
+        # have to open a file to see it.
+        fams = sorted({f for r in rows for f in r["by_family"]})
+        print(f"\n  {'by family':<16}" + "".join(f"{f[:12]:>14}" for f in fams))
+        for r in rows:
+            print(f"  {r['name']:<16}"
+                  + "".join(f"{r['by_family'].get(f, '-'):>14}" for f in fams))
+
         # THE ORDERING TEST, over pairs whose VERIFIED scores differ. A pair that
         # ties on quality has no ordering to reproduce, and S2a already published
         # a passing row built on one case of difference [ran] — struck, not deleted.

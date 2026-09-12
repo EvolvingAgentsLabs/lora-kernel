@@ -16,19 +16,19 @@
     "ollama:gemma4:12b": {
       "model": "ollama:gemma4:12b",
       "n": 60,
-      "passed": 22,
-      "accuracy": 0.3667,
+      "passed": 23,
+      "accuracy": 0.3833,
       "unparsed": 0,
-      "seconds": 555.5,
+      "seconds": 886.9,
       "thinking_chars": 0,
-      "without_json": 14,
+      "without_json": 16,
       "by_family": {
         "hydrostatic_force": "8/9",
         "manning_channel": "8/9",
         "pipe_head_loss": "0/9",
-        "pump_power": "0/8",
-        "terminal_velocity": "4/8",
-        "venturi_flow": "2/8"
+        "pump_power": "0/9",
+        "terminal_velocity": "5/9",
+        "venturi_flow": "2/9"
       },
       "records": [
         {
@@ -591,6 +591,39 @@
           "has_json": false,
           "raw": "To compute the head loss along the pipe, we follow these engineering steps:\n\n1.  **Identify given parameters:**\n    *   Density ($\\rho$): $1025.0 \\text{ kg/m}^3$\n    *   Dynamic viscosity ($\\mu$): $0.0008 \\text{ Pa}\\cdot\\text{s}$\n    *   Flow rate ($Q$): $0.0441 \\text{ m}^3/\\text{s}$\n    *   Diamete",
           "tail": "log_{10}(\\frac{\\epsilon}{3.7D} + \\frac{5.04}{Re^{0.056}})]^2$.\n    Let me check the Swamee-Jain formula again.\n    $f = 0.25 / [\\log_{10}(\\frac{\\epsilon}{3.7D} + \\frac{5.04}{Re^{0.056}})]^2$.\n    Wait"
+        },
+        {
+          "case_id": "phys-0051",
+          "family": "pump_power",
+          "want": 13047.061187413372,
+          "got": 0.2,
+          "passed": false,
+          "chars": 7159,
+          "has_json": false,
+          "raw": "To solve for the shaft power required to overcome the head loss, we follow these engineering steps:\n\n**1. Calculate the flow velocity ($v$):**\nThe cross-sectional area $A = \\frac{\\pi D^2}{4}$.\n$A = \\frac{\\pi \\times (0.267 \\text{ m})^2}{4} \\approx 0.55951 \\text{ m}^2$.\n$v = \\frac{Q}{A} = \\frac{0.1817",
+          "tail": "/ (0.4346^2) = 1.32$.\nActually, the formula is $f = 0.25 / [\\log_{10}(\\frac{\\epsilon}{3.7D} + \\frac{5.04}{Re^{0.05}})]^2$.\nLet's re-calculate: $0.25 / (0.4346^2) = 1.32$.\nWait, the formula is $f = 0.2"
+        },
+        {
+          "case_id": "phys-0052",
+          "family": "terminal_velocity",
+          "want": 0.0005068530840319361,
+          "got": 0.00051078,
+          "passed": true,
+          "chars": 2256,
+          "has_json": true,
+          "raw": "To compute the terminal settling velocity of the sphere, we follow these engineering steps:\n\n**1. Identify given parameters in SI units:**\n*   Diameter ($d$) = $3.3 \\times 10^{-5}$ m\n*   Radius ($r$) = $d/2 = 1.65 \\times 10^{-5}$ m\n*   Density of sphere ($\\rho_s$) = $1854.0$ kg/m\u00b3\n*   Density of flu",
+          "tail": "8}\n```\n(Note: Using $g=9.81$ gives $0.0005109$. Using $g=9.80665$ gives $0.00051078$. Standard practice in engineering is to provide the result of the calculation.)\n\n```json\n{\"answer\": 0.00051078}\n```"
+        },
+        {
+          "case_id": "phys-0053",
+          "family": "venturi_flow",
+          "want": 0.019511750659599016,
+          "got": 0.03,
+          "passed": false,
+          "chars": 6305,
+          "has_json": false,
+          "raw": "To compute the volumetric flow rate ($Q$) for a horizontal venturi meter under ideal, incompressible, and frictionless conditions, we use the Bernoulli equation and the continuity equation.\n\n**Given Data:**\n- Inlet diameter ($D_1$): $0.116\\text{ m}$\n- Throat diameter ($D_2$): $0.0499\\text{ m}$\n- Flu",
+          "tail": "6.134 / 0.9653} = \\sqrt{99.58} = 10.0$.\n$Q = 0.0019615 \\times 10.0 = 0.0196$.\n\nLet's re-calculate $1 - (A_2/A_1)^2$ correctly.\n$A_2/A_1 = (0.0499/0.116)^2 = 0.18628$.\n$(A_2/A_1)^2 = 0.0347$.\n$1 - 0.03"
         }
       ]
     }
