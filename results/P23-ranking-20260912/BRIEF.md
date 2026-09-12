@@ -186,3 +186,33 @@ Still in the band, still finishing every answer, and the informative sample near
 doubled as intended. Its failures cluster the same way — head loss 6, manning 5,
 pump power 4, and only 2 across the other three families — which is why the report
 prints the per-family split rather than a single number.
+
+---
+
+## Are the shared wrong answers copied or derived? (2026-09-12) [ran]
+
+The worry raised against this design was **failure-mode correlation**: if a
+candidate agrees with the target on a case the target got wrong, that might be two
+models reading the same number off the same prompt rather than two models reasoning
+alike. A truncated target made exactly that mistake — its "answers" were pipe areas
+lifted from the statement, and any model that stopped at the same step would have
+matched them.
+
+The replacement target finishes its derivations, so the question can be asked
+properly. On the three candidates already scored, **`qwen3.5:9b` reproduces 2 of the
+target's 17 wrong values**. Both were checked against the literal numbers in their
+own statements:
+
+| case | family | correct | what both said | in the statement? |
+|---|---|--:|--:|---|
+| `phys-0027` | pump power | 453.478 | **442.27** | **no — derived** |
+| `phys-0038` | head loss | 6.35164 | **6.11867** | **no — derived** |
+
+Neither value appears anywhere in the prompt. Two models arrived at the same wrong
+number by doing the same wrong thing with the same inputs, which is what agreement
+is supposed to detect and is the opposite of the truncation artefact.
+
+**Two cases is two cases.** It does not establish that the informative subset is
+clean, only that its first two data points are not the artefact that voided the
+previous target. The column is printed per candidate so the question stays askable
+rather than assumed.
