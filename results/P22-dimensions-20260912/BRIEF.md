@@ -198,3 +198,56 @@ reason: the two checks are blind in different places.
 
 **This is one sample of 7 false alarms and 40 out-of-region chains.** The zero is a
 zero on small numbers, and the detection halving is the price. Neither is settled.
+
+---
+
+## Correction — the conjunction was compared against the wrong alternative (2026-09-12) [ran]
+
+The addendum above recommended escalating only when both checks fail, because that
+takes the dimensional false alarm from 0.22 to 0.00. **The comparison it made was
+dimensional-alone against the conjunction, and it never put the mechanical check in
+as a rule of its own.** Doing that, over what the pipe actually delivers:
+
+| rule | escalates | delivers | of those right | wrong answers still out | correct sent away |
+|---|--:|--:|--:|--:|--:|
+| no guard at all | 0.00 | 100 | 0.33 | 67 | 0 |
+| mechanical alone | 0.31 | 69 | 0.48 | **36** | **0** |
+| dimensional alone | 0.50 | 50 | 0.52 | 24 | 7 |
+| either fails | 0.67 | 33 | **0.79** | **7** | 7 |
+| both fail | 0.14 | 86 | 0.38 | 53 | 0 |
+
+**The conjunction is a subset of the mechanical check, and the mechanical check
+fires on 0 of 33 correct chains.** So on the question "is this answer wrong" the
+conjunction is strictly dominated by its own half — 14 wrong answers stopped
+against 31, at the same price of zero. That is a set inclusion, not a sample.
+
+### What rescues it is that this was the wrong question
+
+Pooling in-region and out-of-region chains and counting wrong answers asks the
+guard to detect *every error*, including the expert being wrong inside a region it
+never left. That is not the job P19 left open. Split them:
+
+| rule | fires in region | correct lost | fires outside | gap |
+|---|--:|--:|--:|--:|
+| mechanical alone | 0.18 | 0 | 0.50 | 0.32 |
+| dimensional alone | 0.32 | 7 | 0.78 | 0.46 |
+| either fails | 0.50 | 7 | 0.93 | 0.43 |
+| **both fail** | **0.00** | **0** | **0.35** | 0.35 |
+
+**The conjunction never fires in region at all — 0 of 60 — and still fires on 0.35
+of the work outside it**, and 0.30 on the sealed confirmation families. A tripwire
+that costs nothing while the expert is working normally is the only kind that stays
+switched on.
+
+### So there are two rules and they are not ranked
+
+- **`has_left_its_region` = both fail.** The tripwire. Free in region, catches
+  about a third of excursions. This is what the runtime calls.
+- **`is_probably_wrong` = either fails.** The quality gate. Takes delivered
+  accuracy from 0.53 to 0.83 in region and 0.03 to 0.33 outside, and sends **half
+  the in-region work** to a bigger model to do it — which is most of what
+  withdrawal was for.
+
+Which one is right depends on what escalation costs, and this repository has not
+measured that. Naming both is the honest state; crowning one was the error the
+first addendum made.

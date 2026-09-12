@@ -1,0 +1,128 @@
+{
+  "development": {
+    "no guard at all": {
+      "escalated": 0,
+      "escalation_rate": 0.0,
+      "delivered": 100,
+      "delivered_correct": 33,
+      "accuracy_of_what_is_delivered": 0.33,
+      "wrong_answers_still_delivered": 67,
+      "correct_answers_sent_away": 0
+    },
+    "dimensional alone": {
+      "escalated": 50,
+      "escalation_rate": 0.5,
+      "delivered": 50,
+      "delivered_correct": 26,
+      "accuracy_of_what_is_delivered": 0.52,
+      "wrong_answers_still_delivered": 24,
+      "correct_answers_sent_away": 7
+    },
+    "mechanical alone": {
+      "escalated": 31,
+      "escalation_rate": 0.31,
+      "delivered": 69,
+      "delivered_correct": 33,
+      "accuracy_of_what_is_delivered": 0.478,
+      "wrong_answers_still_delivered": 36,
+      "correct_answers_sent_away": 0
+    },
+    "either fails": {
+      "escalated": 67,
+      "escalation_rate": 0.67,
+      "delivered": 33,
+      "delivered_correct": 26,
+      "accuracy_of_what_is_delivered": 0.788,
+      "wrong_answers_still_delivered": 7,
+      "correct_answers_sent_away": 7
+    },
+    "both fail": {
+      "escalated": 14,
+      "escalation_rate": 0.14,
+      "delivered": 86,
+      "delivered_correct": 33,
+      "accuracy_of_what_is_delivered": 0.384,
+      "wrong_answers_still_delivered": 53,
+      "correct_answers_sent_away": 0
+    }
+  },
+  "by_region": {
+    "no guard at all": {
+      "in_region_rate": 0.0,
+      "outside_rate": 0.0,
+      "correct_lost_in_region": 0,
+      "gap": 0.0
+    },
+    "dimensional alone": {
+      "in_region_rate": 0.317,
+      "outside_rate": 0.775,
+      "correct_lost_in_region": 7,
+      "gap": 0.458
+    },
+    "mechanical alone": {
+      "in_region_rate": 0.183,
+      "outside_rate": 0.5,
+      "correct_lost_in_region": 0,
+      "gap": 0.317
+    },
+    "either fails": {
+      "in_region_rate": 0.5,
+      "outside_rate": 0.925,
+      "correct_lost_in_region": 7,
+      "gap": 0.425
+    },
+    "both fail": {
+      "in_region_rate": 0.0,
+      "outside_rate": 0.35,
+      "correct_lost_in_region": 0,
+      "gap": 0.35
+    }
+  },
+  "confirmation": {
+    "no guard at all": {
+      "escalated": 0,
+      "escalation_rate": 0.0,
+      "delivered": 40,
+      "delivered_correct": 0,
+      "accuracy_of_what_is_delivered": 0.0,
+      "wrong_answers_still_delivered": 40,
+      "correct_answers_sent_away": 0
+    },
+    "dimensional alone": {
+      "escalated": 32,
+      "escalation_rate": 0.8,
+      "delivered": 8,
+      "delivered_correct": 0,
+      "accuracy_of_what_is_delivered": 0.0,
+      "wrong_answers_still_delivered": 8,
+      "correct_answers_sent_away": 0
+    },
+    "mechanical alone": {
+      "escalated": 14,
+      "escalation_rate": 0.35,
+      "delivered": 26,
+      "delivered_correct": 0,
+      "accuracy_of_what_is_delivered": 0.0,
+      "wrong_answers_still_delivered": 26,
+      "correct_answers_sent_away": 0
+    },
+    "either fails": {
+      "escalated": 34,
+      "escalation_rate": 0.85,
+      "delivered": 6,
+      "delivered_correct": 0,
+      "accuracy_of_what_is_delivered": 0.0,
+      "wrong_answers_still_delivered": 6,
+      "correct_answers_sent_away": 0
+    },
+    "both fail": {
+      "escalated": 12,
+      "escalation_rate": 0.3,
+      "delivered": 28,
+      "delivered_correct": 0,
+      "accuracy_of_what_is_delivered": 0.0,
+      "wrong_answers_still_delivered": 28,
+      "correct_answers_sent_away": 0
+    }
+  }
+}
