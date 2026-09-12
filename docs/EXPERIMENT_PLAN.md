@@ -672,6 +672,39 @@ reasoning model spends that thinking and returns an empty answer, so the frontie
 abstained on 100 of 100 and read as "cannot judge". Both judges were re-run at 400;
 the arm it invalidated was thrown away rather than reported.
 
+#### P18 — the guard is falsified: P16 measured two families, not a boundary
+
+[`results/P18-confirm-20260910/`](../results/P18-confirm-20260910/BRIEF.md). P16's
+cut applied unchanged at `rejection_rate > 0.50`, on `weir_flow` and `jet_reaction`
+— families no run that fitted anything had seen **[ran]**:
+
+| arm | in region | new families | guard accuracy |
+|---|---|---|---|
+| sequential | 0.15 | **0.18** | **0.62** |
+| control | 0.15 | **0.14** | **0.58** |
+
+**Outside its region the tool layer refuses calls at nearly the rate it refuses
+them inside.** 0.62 is chance: with 30 cases in and 20 out, answering "in region"
+every time scores 0.60.
+
+**P16's 0.86 came from six signals chosen with the answers visible and a cut fitted
+on the same fifty problems that scored it** — exactly what its brief warned about.
+The warning was right and the number was not. This is what a pre-registered
+confirmation is for, and it is the cheapest experiment in the project to have run.
+
+**A nuance, because two real figures disagree.** Pooled over the arm, 23 of 66 calls
+were refused — 0.348. Averaged per case it is 0.18. A detector thresholds a *case*,
+so the per-case mean is the one that counts; the pooled figure is higher because a
+few cases fail badly and most do not. Quoting 0.348 would have been true and
+misleading.
+
+**What it costs.** The expert's formulas still fall from 30/30 inside its region to
+1/20 outside, nothing in its prose marks the difference, and now nothing in the tool
+layer's behaviour does either. **Per-region promotion still has no guard**, and the
+cheap direction — read the process rather than the model — is exhausted. What
+remains is a second expert whose disagreement flags the edge, or sampling the
+frontier after withdrawal, which is the cost withdrawal exists to avoid.
+
 #### P16 — a guard on the region's edge, read from the tool layer rather than the model
 
 [`results/P16-tripwire-20260910/`](../results/P16-tripwire-20260910/BRIEF.md).

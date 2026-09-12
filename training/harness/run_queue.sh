@@ -31,6 +31,7 @@ SP="${SP:-/tmp/lora-kernel-logs}"; mkdir -p "$SP"
 #   P14 (C)  where does the expert's region actually end
 #   P15 (A)  is a learned protocol worth its weights when the call is not a copy
 #   P18      the tripwire, with P16's cut fixed and two unseen families
+#   P21      a suite where a tool call cannot be remembered or read
 #
 # Each waits for the previous to finish rather than for its process to exit, so a
 # failure does not silently promote the next experiment — that already happened
@@ -46,7 +47,7 @@ sys.exit(0 if p.exists() and 'finished' in json.loads(p.read_text()) else 1)" 2>
 for attempt in 1 2 3; do
   finished results/P14-held-out-20260910/sequential_results_heldout.json && break
   echo "=== P14 attempt $attempt" >> "$SP/p14.log"
-  GPU=L4 BRANCH=tournament MODULE=training.harness.sequential \
+  GPU=L4 BRANCH=handbook MODULE=training.harness.sequential \
   RUN_DIR=results/P14-held-out-20260910 RESULTS_NAME=sequential_results_heldout.json \
   ARGS="--n-eval 20 --held-out" \
   training/harness/chain_separate.sh 2 >> "$SP/p14.log" 2>&1
@@ -56,7 +57,7 @@ done
 for attempt in 1 2 3; do
   finished results/P15-multitool-20260910/multitool_results.json && break
   echo "=== P15 attempt $attempt" >> "$SP/p15.log"
-  GPU=L4 BRANCH=tournament MODULE=training.harness.multitool_run \
+  GPU=L4 BRANCH=handbook MODULE=training.harness.multitool_run \
   RUN_DIR=results/P15-multitool-20260910 RESULTS_NAME=multitool_results.json \
   ARGS="--n-eval 30" \
   training/harness/chain_separate.sh 3 >> "$SP/p15.log" 2>&1
@@ -65,10 +66,19 @@ done
 for attempt in 1 2 3; do
   finished results/P18-confirm-20260910/sequential_results_confirm.json && break
   echo "=== P18 attempt $attempt" >> "$SP/p18.log"
-  GPU=L4 BRANCH=tournament MODULE=training.harness.sequential \
+  GPU=L4 BRANCH=handbook MODULE=training.harness.sequential \
   RUN_DIR=results/P18-confirm-20260910 RESULTS_NAME=sequential_results_confirm.json \
   ARGS="--n-eval 20 --confirm" \
   training/harness/chain_separate.sh 2 >> "$SP/p18.log" 2>&1
+  sleep 60
+done
+for attempt in 1 2 3; do
+  finished results/P21-handbook-20260911/multitool_results.json && break
+  echo "=== P21 attempt $attempt" >> "$SP/p21.log"
+  GPU=L4 BRANCH=handbook MODULE=training.harness.multitool_run \
+  RUN_DIR=results/P21-handbook-20260911 RESULTS_NAME=multitool_results.json \
+  ARGS="--n-eval 30" \
+  training/harness/chain_separate.sh 3 >> "$SP/p21.log" 2>&1
   sleep 60
 done
 exit 0

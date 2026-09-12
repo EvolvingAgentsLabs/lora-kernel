@@ -214,7 +214,7 @@ con vLLM multi-LoRA.
 | | qué falla | plan |
 |:--:|---|---|
 | 1 | **Una suite donde las herramientas hagan falta** — el kernel le ganó a la regla **94,8% a 91,7%**, pero un control sin capa de herramientas les ganó a los dos con 27/30 respondiendo de memoria | darle a cada problema su propio manual, con propiedades por caso, para que un valor no se pueda recordar y haya que consultarlo |
-| 2 | **El experto no siente el borde de su región** — 30/30 adentro, 1/20 afuera, inventando física con la misma voz | se encontró una señal: la tasa de rechazo de la capa de herramientas va **0,15 → 0,63**. Falta confirmarla en dos familias sin usar, con el umbral fijo |
+| 2 | **Un guardia en el borde de la región** — las fórmulas del experto caen 30/30 → 1/20 afuera, y nada en su prosa ni en la capa de herramientas marca la diferencia | la señal de la capa de herramientas quedó **falsificada**: en familias nuevas da 0,18 contra 0,15 adentro, que es el azar. La dirección barata está agotada; queda el desacuerdo de un segundo experto, o muestrear la frontera tras el retiro |
 | 3 | ~~No hay juez sin oráculo.~~ **Medido: existe un juez.** La frontera corrige a **0,89** balanceado y un par a **0,82** — mientras ese mismo par *resuelve* el material a 0,467 | queda el caso donde nada disponible pueda resolver el trabajo, del que esta corrida no habla |
 | 4 | **El router empata con una tabla de búsqueda** | necesita expertos por familia y material donde superficie y sustancia se separen |
 | 5 | **El torneo está sin construir** — el único objetivo que nunca se tocó | la nota puede venir de un par, que es lo que deja una frontera retirada. Se está construyendo |
@@ -273,8 +273,9 @@ control plane empresarial.
   el target tiene que ser de frontera, y la condición de retiro.
 - [`docs/es/TECHNICAL-REFERENCE.md`](docs/es/TECHNICAL-REFERENCE.md) — mecanismos,
   α y su superficie, KV cache, action tokens, composición de adaptadores.
-- [`docs/es/OPEN-PROBLEMS.md`](docs/es/OPEN-PROBLEMS.md) — **las cinco cosas que
-  no sabemos hacer**, escritas sin jerga: qué es cada problema, qué probamos, qué
+- [`docs/es/OPEN-PROBLEMS.md`](docs/es/OPEN-PROBLEMS.md) — **los problemas
+  abiertos, escritos sin jerga**, con el **Problema 3 enunciado completo para
+  entregárselo a alguien sin ningún otro contexto** — es el que bloquea el producto: qué es cada problema, qué probamos, qué
   descartó cada intento, y cómo se vería resolverlo.
 - [`docs/es/the-frontier-is-scaffolding.md`](docs/es/the-frontier-is-scaffolding.md) —
   el artículo.
