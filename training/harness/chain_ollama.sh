@@ -42,9 +42,17 @@ for i in $(seq 1 "$SESSIONS"); do
   # NOTHING LEFT TO DO IS NOT A REASON TO RENT A CARD. chain_separate.sh spent two
   # whole sessions retraining adapters for a finished experiment before this check
   # existed [ran] 2026-09-10.
+  # A FILE IS NOT A RESULT. The first run wrote four headroom.json files in five
+  # minutes, each 0/60 with every response empty, and this check declared the work
+  # done [ran] 2026-09-12. A run where nothing parsed is a broken run.
   missing=0
   for m in $MODELS; do
-    [ -f "$RUN_DIR/$(echo "$m" | tr ':.' '--')/headroom.json" ] || missing=1
+    f="$RUN_DIR/$(echo "$m" | tr ':.' '--')/headroom.json"
+    [ -f "$f" ] || { missing=1; continue; }
+    python3 -c "
+import json,sys
+a=next(iter(json.load(open(sys.argv[1]))['arms'].values()))
+sys.exit(1 if a['unparsed'] >= a['n'] else 0)" "$f" || missing=1
   done
   [ "$missing" = "0" ] && { echo "=== every candidate is on disk"; break; }
 
@@ -53,29 +61,58 @@ for i in $(seq 1 "$SESSIONS"); do
   tmo 600 colab new --gpu "$GPU" -s "$S" >/dev/null
   trap 'colab stop -s "$S" >/dev/null 2>&1 || true' EXIT
 
+  # EACH STEP REPORTS, BECAUSE THE CHAINED VERSION HID WHICH ONE FAILED. The
+  # install was piped to /dev/null and `&&`-chained, so a failed install silently
+  # skipped `ollama serve` and the only line that came back was the git HEAD —
+  # which read like a healthy boot [ran] 2026-09-12.
   cat > /tmp/_oboot.py <<PY
 import subprocess
-print(subprocess.run(
-    "rm -rf /content/lora-kernel && cd /content && git clone -q -b $BRANCH "
-    "https://github.com/EvolvingAgentsLabs/lora-kernel.git && "
-    "(curl -fsSL https://ollama.com/install.sh | sh >/dev/null 2>&1) && "
-    "(nohup ollama serve > /content/ollama.log 2>&1 &) && sleep 8 && "
-    "cd lora-kernel && git log --oneline -1", shell=True,
-    capture_output=True, text=True).stdout)
+
+def step(name, cmd):
+    r = subprocess.run(cmd, shell=True, capture_output=True, text=True)
+    tail = (r.stdout + r.stderr).strip().splitlines()
+    print(f"{name}: rc={r.returncode} {tail[-1] if tail else ''}"[:160])
+
+step("clone", "rm -rf /content/lora-kernel && cd /content && git clone -q -b $BRANCH "
+              "https://github.com/EvolvingAgentsLabs/lora-kernel.git && "
+              "cd lora-kernel && git log --oneline -1")
+step("install", "curl -fsSL https://ollama.com/install.sh | sh 2>&1 | tail -2")
+# setsid, so the server is not a child of the cell that started it.
+step("serve", "setsid nohup ollama serve > /content/ollama.log 2>&1 < /dev/null & "
+              "sleep 12; tail -2 /content/ollama.log")
 PY
+  # THE CHECK HAS TO PROVE THE SERVER ANSWERS, NOT THAT A BINARY EXISTS. The first
+  # version verified the git checkout and took `head -1` of the output, so
+  # `ollama --version` was never even read — and four candidates ran to completion
+  # against a server that was not there, each producing 60 empty responses and a
+  # tidy `0/60` that looked exactly like a model failing the suite [ran] 2026-09-12.
+  # A generation that comes back with text is the only proof that counts.
   cat > /tmp/_ocheck.py <<'PY'
 import subprocess
-print(subprocess.run("cd /content/lora-kernel && git log --oneline -1 && "
-                     "ollama --version", shell=True,
-                     capture_output=True, text=True).stdout.strip() or "NO CLONE")
+r = subprocess.run(
+    "cd /content/lora-kernel && git log --oneline -1 && "
+    "(ollama pull qwen3.5:2b 2>&1 | tail -1) && "
+    "(ollama run qwen3.5:2b 'say OK' 2>&1 | tail -1)",
+    shell=True, capture_output=True, text=True)
+lines = [l for l in r.stdout.splitlines() if l.strip()]
+print(" | ".join(lines) if len(lines) >= 3 else "OLLAMA NOT SERVING")
 PY
   HEAD=""
   for try in 1 2 3; do
-    tmo 180 colab exec -s "$S" -f /tmp/_oboot.py >/dev/null 2>&1 || true
-    HEAD=$(tmo 180 colab exec -s "$S" -f /tmp/_ocheck.py 2>/dev/null | grep -vE "^\[colab\]|^$" | head -1 || true)
-    case "$HEAD" in ""|*"NO CLONE"*) echo "    boot attempt $try did not take" ;; *) break ;; esac
+    tmo 600 colab exec -s "$S" -f /tmp/_oboot.py >/dev/null 2>&1 || true
+    HEAD=$(tmo 600 colab exec -s "$S" -f /tmp/_ocheck.py 2>/dev/null | grep -vE "^\[colab\]|^$" | head -1 || true)
+    case "$HEAD" in
+      ""|*"NO CLONE"*|*"NOT SERVING"*) echo "    boot attempt $try did not take: ${HEAD:-silence}" ;;
+      *) break ;;
+    esac
   done
-  case "$HEAD" in ""|*"NO CLONE"*) echo "    giving up: no checkout"; colab stop -s "$S" >/dev/null 2>&1; exit 1 ;; esac
+  case "$HEAD" in
+    ""|*"NO CLONE"*|*"NOT SERVING"*)
+      echo "    GIVING UP: no checkout, or ollama is not answering. Running the"
+      echo "    candidates against a dead server produces 60 empty answers per model"
+      echo "    and a 0/60 that reads exactly like a result."
+      tmo 300 colab stop -s "$S" >/dev/null 2>&1; exit 1 ;;
+  esac
   echo "    $HEAD"
 
   # WHAT IS ALREADY DOWNLOADED DOES NOT GET RE-RUN. Each candidate writes its own
@@ -95,7 +132,7 @@ cd /content/lora-kernel
 for m in$RUNS; do
   d="$RUN_DIR/\$(echo \$m | tr ':.' '--')"
   echo "=== \$m"
-  ollama pull "\$m" >/dev/null 2>&1
+  ollama pull "\$m" 2>&1 | tail -1
   python -u -m training.physics.headroom --small "ollama:\$m" --large "" \\
     --n 60 --seed 515151 --contract shared --rtol 0.02 --max-tokens 6000 \\
     --run-dir "\$d"
