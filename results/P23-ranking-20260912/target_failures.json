@@ -1,0 +1,119 @@
+[
+  {
+    "case_id": "phys-0002",
+    "family": "pipe_head_loss",
+    "want": 1.8489593018064931,
+    "got_2k": 0.9,
+    "got_6k": 1.8473,
+    "passed_6k": true,
+    "raw_2k_ends": "1.17064\\text{ m/s}$$\n\n2. **Reynolds numb"
+  },
+  {
+    "case_id": "phys-0003",
+    "family": "pump_power",
+    "want": 68.53156824521123,
+    "got_2k": 2.0,
+    "got_6k": 68.52,
+    "passed_6k": true,
+    "raw_2k_ends": "{ m})^2 \\approx 0.0051530\\text{ m}^2$$\n\n"
+  },
+  {
+    "case_id": "phys-0005",
+    "family": "venturi_flow",
+    "want": 0.11396258683641461,
+    "got_2k": 2.0,
+    "got_6k": 0.113964,
+    "passed_6k": true,
+    "raw_2k_ends": "(0.1085\\text{ m})^2 \\approx 0.0092460\\te"
+  },
+  {
+    "case_id": "phys-0008",
+    "family": "pipe_head_loss",
+    "want": 10.158958087290983,
+    "got_2k": 4.0,
+    "got_6k": 10.18,
+    "passed_6k": true,
+    "raw_2k_ends": " \\frac{Q}{A} = \\frac{0.08083\\text{ m}^3/"
+  },
+  {
+    "case_id": "phys-0009",
+    "family": "pump_power",
+    "want": 1123.583802071903,
+    "got_2k": 0.0,
+    "got_6k": 1137.92,
+    "passed_6k": true,
+    "raw_2k_ends": "rac{\\pi}{4} (0.247\\text{ m})^2 \\approx 0"
+  },
+  {
+    "case_id": "phys-0011",
+    "family": "venturi_flow",
+    "want": 0.16595378329096444,
+    "got_2k": 2.0,
+    "got_6k": 0.165958,
+    "passed_6k": true,
+    "raw_2k_ends": "322\\text{ m}^2$$\n\n2. **Throat area ($A_2"
+  },
+  {
+    "case_id": "phys-0015",
+    "family": "pump_power",
+    "want": 226.15205012015764,
+    "got_2k": 0.0359,
+    "got_6k": 225.14,
+    "passed_6k": true,
+    "raw_2k_ends": "pi}{4} (0.214\\text{ m})^2 \\approx 0.0359"
+  },
+  {
+    "case_id": "phys-0020",
+    "family": "pipe_head_loss",
+    "want": 26.004971215311276,
+    "got_2k": 4.0,
+    "got_6k": 26.0,
+    "passed_6k": true,
+    "raw_2k_ends": "ac{Q}{A} = \\frac{0.01643\\text{ m}^3/\\tex"
+  },
+  {
+    "case_id": "phys-0021",
+    "family": "pump_power",
+    "want": 842.8629661168894,
+    "got_2k": 0.029,
+    "got_6k": 850.09,
+    "passed_6k": true,
+    "raw_2k_ends": "\\pi (0.194\\text{ m})^2}{4} \\approx 0.029"
+  },
+  {
+    "case_id": "phys-0023",
+    "family": "venturi_flow",
+    "want": 0.04227747396924894,
+    "got_2k": 4.0,
+    "got_6k": 0.04228,
+    "passed_6k": true,
+    "raw_2k_ends": "1^2 = \\frac{\\pi}{4} (0.155\\text{ m})^2 \\"
+  },
+  {
+    "case_id": "phys-0026",
+    "family": "pipe_head_loss",
+    "want": 33.5168545847374,
+    "got_2k": 0.0100287,
+    "got_6k": 33.49,
+    "passed_6k": true,
+    "raw_2k_ends": "0.113\\,\\text{m})^2}{4} \\approx 0.0100287"
+  },
+  {
+    "case_id": "phys-0027",
+    "family": "pump_power",
+    "want": 453.4776414437574,
+    "got_2k": 2.0,
+    "got_6k": 453.69,
+    "passed_6k": true,
+    "raw_2k_ends": "m}^2$$\n\n2. Flow velocity:\n   $$v = \\frac"
+  },
+  {
+    "case_id": "phys-0028",
+    "family": "terminal_velocity",
+    "want": 0.004647560258685521,
+    "got_2k": 0.0,
+    "got_6k": 0.00464915,
+    "passed_6k": true,
+    "raw_2k_ends": "05.7\\text{ kg/m}^3 - 998.0\\text{ kg/m}^3"
+  }
+]
