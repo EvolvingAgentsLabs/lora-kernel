@@ -76,7 +76,14 @@ def step(name, cmd):
 step("clone", "rm -rf /content/lora-kernel && cd /content && git clone -q -b $BRANCH "
               "https://github.com/EvolvingAgentsLabs/lora-kernel.git && "
               "cd lora-kernel && git log --oneline -1")
+step("curl?", "which curl || (apt-get -qq update && apt-get -qq install -y curl)")
+# THE ONE-LINER INSTALLER PUTS THE BINARY IN /usr/local/bin AND THAT IS NOT ALWAYS
+# ON PATH for a non-login shell, which is what `subprocess(shell=True)` gives you —
+# `/bin/sh: 1: ollama: not found` came back from a machine that had just installed
+# it [ran] 2026-09-12. The tarball is unpacked where the PATH already looks.
 step("install", "curl -fsSL https://ollama.com/install.sh | sh 2>&1 | tail -2")
+step("where", "ls -l /usr/local/bin/ollama /usr/bin/ollama 2>&1 | tail -2")
+step("link", "ln -sf /usr/local/bin/ollama /usr/bin/ollama 2>&1; ollama --version 2>&1 | tail -1")
 # setsid, so the server is not a child of the cell that started it.
 step("serve", "setsid nohup ollama serve > /content/ollama.log 2>&1 < /dev/null & "
               "sleep 12; tail -2 /content/ollama.log")
@@ -88,18 +95,27 @@ PY
   # tidy `0/60` that looked exactly like a model failing the suite [ran] 2026-09-12.
   # A generation that comes back with text is the only proof that counts.
   cat > /tmp/_ocheck.py <<'PY'
-import subprocess
-r = subprocess.run(
-    "cd /content/lora-kernel && git log --oneline -1 && "
-    "(ollama pull qwen3.5:2b 2>&1 | tail -1) && "
-    "(ollama run qwen3.5:2b 'say OK' 2>&1 | tail -1)",
-    shell=True, capture_output=True, text=True)
-lines = [l for l in r.stdout.splitlines() if l.strip()]
-print(" | ".join(lines) if len(lines) >= 3 else "OLLAMA NOT SERVING")
+import json, subprocess, urllib.request
+head = subprocess.run("cd /content/lora-kernel && git log --oneline -1", shell=True,
+                      capture_output=True, text=True).stdout.strip()
+if not head:
+    print("NO CLONE")
+else:
+    # COUNTING LINES IS NOT CHECKING. The previous gate asked for three non-empty
+    # lines and got them: a git hash and two copies of `ollama: not found` [ran].
+    # The server's own API is the only thing that cannot be faked by an error
+    # message, and it is what the harness talks to.
+    try:
+        with urllib.request.urlopen("http://localhost:11434/api/tags", timeout=15) as f:
+            n = len(json.load(f).get("models", []))
+        print(f"{head} | ollama serving, {n} models")
+    except Exception as e:
+        print(f"OLLAMA NOT SERVING: {e!r}")
 PY
   HEAD=""
   for try in 1 2 3; do
-    tmo 600 colab exec -s "$S" -f /tmp/_oboot.py >/dev/null 2>&1 || true
+    boot=$(tmo 600 colab exec -s "$S" -f /tmp/_oboot.py 2>/dev/null | grep -vE "^\[colab\]|^$" || true)
+    [ -n "$boot" ] && echo "$boot" | sed "s/^/    boot /"
     HEAD=$(tmo 600 colab exec -s "$S" -f /tmp/_ocheck.py 2>/dev/null | grep -vE "^\[colab\]|^$" | head -1 || true)
     case "$HEAD" in
       ""|*"NO CLONE"*|*"NOT SERVING"*) echo "    boot attempt $try did not take: ${HEAD:-silence}" ;;
