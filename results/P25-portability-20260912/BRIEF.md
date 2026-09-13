@@ -116,3 +116,35 @@ score zero here.
 **The rule arm is still run** rather than assumed from this replay: `call_for` is
 being asked in isolation, and the live arm asks it with the labels the expert
 actually writes, which are not guaranteed to be the oracle's.
+
+---
+
+## A third voiding condition, named before the numbers arrive (2026-09-12)
+
+The domain adapter that writes the chain **was trained on fluid mechanics**, and
+P25's problems are not. The statements carry their own formula so no subject
+knowledge is needed to solve them — but the expert still has to *name the steps*,
+and a fluids-trained adapter naming steps on a materials problem may write labels
+that correspond to nothing the oracle looked up.
+
+**If that happens, a kernel score of zero is ambiguous**: it could be a protocol
+that does not travel, or an expert that never gave it a step worth answering. Those
+are different findings and only one of them is about the thing being tested.
+
+So, fixed now:
+
+- **The arm is void if the chains do not contain the steps.** Measured from the
+  transcripts afterwards: for each case, does the expert's chain name the quantity
+  the oracle looked up? If the labels do not correspond, the tool arms had nothing
+  to hit and this experiment measured a domain adapter, not a protocol.
+- **Both tool arms receive identical labels**, so the *comparison* between them
+  survives even when the absolute numbers are low. The rule's 0/61 replay already
+  stands on the oracle's own labels — its collapse is not caused by this.
+- **The kernel adapter is carried, not retrained.** The cached tarball now holds
+  only `kernel-mt`, which is complete; the `domain-mt` directory in the old one was
+  empty, a stale artefact from before the watcher was fixed, and the runner's weight
+  check would have caught it. It is deleted rather than kept.
+
+This is the failure this repository has paid for most often: a number that is real,
+low, and about something other than the question. It is cheaper to name it now than
+to argue about it on Monday.
