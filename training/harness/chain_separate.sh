@@ -153,7 +153,7 @@ PY
     tmo 180 colab download -s "$S" "$REMOTE" "$LOCAL" >/dev/null 2>&1 || true
     [ -f "$ADAPTERS" ] || tmo 300 colab download -s "$S" /content/lora-kernel/adapters.tgz \
         "$ADAPTERS" >/dev/null 2>&1 && [ -f "$ADAPTERS" ] || true
-    echo "$out" | grep -qE "composition |Sequential:|The kernel adapter reproduced|STOPPED|Traceback|OutOfMemory|Killed" && break
+    echo "$out" | grep -qE "composition |Sequential:|The kernel adapter reproduced|\[pool\] complete|STOPPED|Traceback|OutOfMemory|Killed" && break
     sleep 45
   done
   tmo 180 colab download -s "$S" "$REMOTE" "$LOCAL" >/dev/null 2>&1 || echo "    WARNING: nothing came back"

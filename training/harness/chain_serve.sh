@@ -74,17 +74,24 @@ PY
   case "$HEAD" in ""|*"NO VLLM"*) echo "    GIVING UP: no vllm"; tmo 300 colab stop -s "$S" >/dev/null 2>&1; exit 1 ;; esac
   echo "    $HEAD"
 
-  [ -f "$ADAPTERS" ] && { tmo 600 colab upload -s "$S" "$ADAPTERS" /content/lora-kernel/adapters.tgz >/dev/null \
-      && echo "    carried the adapters in" || echo "    WARNING: adapters did not upload"; }
+  # TRAINING HAPPENS ELSEWHERE. This brief says retraining inside a serving run puts
+  # forty minutes and a second source of variance into a question about HTTP, and
+  # the first attempt proved the smaller version of that: the serving session has no
+  # `trl`, because it has no reason to [ran] 2026-09-13. The adapters are built by
+  # chain_separate.sh with MODULE=training.harness.train_pool and carried in here.
+  if [ ! -f "$ADAPTERS" ]; then
+    echo "    NO ADAPTERS. Build them first:"
+    echo "      MODULE=training.harness.train_pool RESULTS_NAME=pool.json \\"
+    echo "      RUN_DIR=$RUN_DIR ARGS= training/harness/chain_separate.sh 2"
+    exit 1
+  fi
+  tmo 600 colab upload -s "$S" "$ADAPTERS" /content/lora-kernel/adapters.tgz >/dev/null \
+      && echo "    carried the adapters in" || { echo "    adapters did not upload"; exit 1; }
 
   cat > /tmp/_vrun.py <<PY
 import subprocess
 subprocess.Popen(
     "cd /content/lora-kernel && ([ -f adapters.tgz ] && tar xzf adapters.tgz || true) && "
-    # WHATEVER THE CARRIED TARBALL IS SHORT OF, gets trained here rather than inside
-    # the serving run. P25's tarball came back with only kernel-mt in it.
-    "python -u -m training.harness.train_pool --base $BASE >> run.log 2>&1 && "
-    "(tar czf adapters.tgz adapters) && "
     "nohup python -u -m training.harness.serve_openai --base $BASE "
     "--adapter kernel=adapters/kernel-mt --adapter domain=adapters/domain-mt "
     "> run.log 2>&1 &", shell=True)

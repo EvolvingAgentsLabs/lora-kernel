@@ -53,6 +53,15 @@ def main() -> int:
         print(f"[pool] training {path} from {len(rows)} examples", flush=True)
         train_adapter(args.base, rows, path, args)
         free()
+    # A CHAIN CANNOT WATCH FOR A THING THAT WRITES NOTHING. chain_separate.sh polls
+    # a results file and breaks on its own markers; without one it would spend its
+    # whole session allowance on a job that finished in twenty minutes.
+    Path("pool.json").write_text(json.dumps({
+        "base": args.base,
+        "adapters": {p: (Path(p) / "adapter_model.safetensors").stat().st_size
+                     for p in POOL if (Path(p) / "adapter_model.safetensors").exists()},
+        "finished": True,
+    }, indent=2))
     print("[pool] complete", flush=True)
     return 0
 
