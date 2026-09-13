@@ -88,3 +88,33 @@ was failing.
 serving experiment that reports throughput from a stack it never verified is the
 C18 failure with a new face. It refused three sessions and cost nothing but their
 provisioning.
+
+---
+
+## Attempt 2 — training does not belong in a serving session (2026-09-13) [ran]
+
+vLLM 0.29.0 installed and imported once `torchaudio` and `torchvision` were removed
+first. Then:
+
+    ModuleNotFoundError: No module named 'trl'
+
+The pool trainer had been wired into the serving chain to fill whatever the carried
+tarball was short of. **A serving session has no `trl` because it has no reason to**
+— and this brief already said retraining inside a serving run puts forty minutes and
+a second source of variance into a question about HTTP. The smaller version of that
+warning arrived as an import error.
+
+So the two are separated:
+
+- **`chain_serve.sh` no longer trains anything.** If the adapters are not on disk it
+  prints the command that builds them and exits, rather than serving a pool of one
+  and calling it a pool.
+- **`train_pool` writes `pool.json`** when it finishes, because a chain cannot watch
+  for a job that writes nothing — `chain_separate.sh` polls a results file, and
+  without one it would have spent its whole session allowance on a job that finished
+  in twenty minutes.
+
+**A note that has to travel with whatever comes next.** P3's silent failure was on
+vLLM **0.28.0** and this runs **0.29.0**, on a different base. If the identity gate
+passes here, **two things changed at once** and the pass cannot be attributed to the
+dense base alone.
