@@ -148,3 +148,48 @@ So, fixed now:
 This is the failure this repository has paid for most often: a number that is real,
 low, and about something other than the question. It is cheaper to name it now than
 to argue about it on Monday.
+
+---
+
+## Redesign 1 — a defect I created, caught by the run (2026-09-12) [ran]
+
+The kernel arm was stopped after three cases. Not because of the score, but because
+of what the transcript showed:
+
+    1. Part mass: <convert>value=0.81; from=kg; to=g</convert>= 810
+    2. Density: <lookup>specimen=5262-N; property=density; T=300</lookup>
+       = ERROR: lookup needs ['fluid']
+    4. Density: <lookup>fluid=water; property=density; T=300</lookup>
+       = ERROR: no entry for water at 300 C; this handbook lists ['5262-n']
+
+**The adapter chose the right tool, read the code out of the prose, and built keyed
+arguments — and was refused for the name of a key.** It wrote `specimen=` because
+**the statement says "a part of specimen 5262-N" while the oracle's chain writes
+`material=`.** That inconsistency is mine, introduced when the domain was written.
+
+This brief's own concession says refusing a noun *measures the noun*. So the arm was
+measuring a mismatch I authored, and a zero from it would have been reported as
+portability falsified.
+
+**The fix is to the material, not to the checker.** The prose now says "material"
+everywhere the oracle's key says `material`. **The tool was not loosened** — no new
+alias, no relaxed matching — because relaxing the gate after seeing which arm it
+catches is how an instrument starts working for a result. `grammar`-style
+concessions stay exactly where they were pre-registered.
+
+**All three arms are re-run**, not just the kernel: the statements changed, so the
+cases are not the same cases. The 0/30 and 0/63 already banked are discarded rather
+than reused.
+
+**What survives from the aborted run, because it is not about the noun:**
+
+- The expert names **8 of 9** of the oracle's lookup steps on a subject it never saw,
+  and invents the value in 8 of 9 — so the third voiding condition does not fire and
+  the no-tool arm's 0/30 is the gate working, not the expert collapsing.
+- The rule's live 0/63 matched its offline 0/61 prediction exactly.
+- `<convert>value=0.81; from=kg; to=g</convert>` is a **real** protocol failure and
+  stays on the record: kilograms were already SI and the conversion runs backwards.
+  The noun fix does not touch it.
+
+**Redesign count: 1.** The stopping condition for this experiment is the project's
+usual one — a third redesign means it is looking for its result.
