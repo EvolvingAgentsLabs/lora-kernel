@@ -184,3 +184,30 @@ vocabulary**, or every module added later inherits the blindness.
 `carried the adapters in (3 chunks)` — and the kernel adapter was on the VM's disk
 each time. The cache is fixed; it was simply carrying weights to a job that had
 already exited.
+
+---
+
+## Attempt 5 — the pool came home, and the server exited on a flag (2026-09-13) [ran]
+
+**The infrastructure finally did the whole round trip.** Both adapters trained
+(114/114 steps, loss 0.328), the tarball came back at 211 MB carrying two
+`adapter_model.safetensors`, the serving chain's own guard confirmed there were two
+before it would start, and vLLM 0.29.0 installed and imported on an A100.
+
+Then:
+
+    [serve] the server exited with 2 before it answered /health
+    vllm: error: unrecognized arguments: --disable-log-requests
+
+**Exit 2 is argparse.** The flag was removed in 0.29.0 and the server died before a
+single weight was loaded. Quieter logs are not worth a flag that pins a version, so
+it is gone rather than version-guarded.
+
+Also raised: the boot timeout, from 900s to 1800s. Installing vLLM ran past fifteen
+minutes once and the check that followed found nothing — which surfaces as
+`boot attempt 1 did not take: silence`, indistinguishable from a dead channel.
+
+**The identity gate has still not been evaluated.** Nothing in this brief's table has
+a number in it, and after five attempts that is worth stating plainly rather than
+letting the narrative imply progress: **the substrate question P3 opened is still
+open.**

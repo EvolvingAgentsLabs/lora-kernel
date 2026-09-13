@@ -97,7 +97,10 @@ def main() -> int:
     cmd = ["vllm", "serve", args.base, "--enable-lora",
            "--max-lora-rank", str(args.max_lora_rank),
            "--max-loras", str(max(len(pool), 1)), "--dtype", "bfloat16",
-           "--disable-log-requests", "--lora-modules",
+           # `--disable-log-requests` was removed in vLLM 0.29.0 and the server
+           # exits 2 on it — argparse, before a single weight is loaded [ran]
+           # 2026-09-13. Quieter logs are not worth a flag that pins a version.
+           "--lora-modules",
            *[f"{n}={p}" for n, p in pool.items()]]
     print("[serve] " + " ".join(cmd), flush=True)
     log = open("vllm.log", "w")
