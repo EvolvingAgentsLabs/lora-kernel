@@ -55,6 +55,20 @@ UNITS: dict[str, tuple[str, float]] = {
     "psi": ("pressure", 6894.757), "mbar": ("pressure", 100.0),
 }
 
+# P25's second domain lives in the same table ON PURPOSE, and it is a concession to
+# the competitor rather than to the treatment. The hand-written rule reads `UNITS`,
+# so keeping the materials units in a separate module would have handed it a defeat
+# it did not earn — it would fail to convert GPa because the table it was given is
+# incomplete, not because its 144 lines are suite-specific. The claim P25 tests is
+# about vocabulary and labels; the unit table is given away for free.
+UNITS.update({
+    "MPa": ("pressure", 1e6), "GPa": ("pressure", 1e9),
+    "m^2": ("area", 1.0), "mm^2": ("area", 1e-6), "cm^2": ("area", 1e-4),
+    "N": ("load", 1.0), "kN": ("load", 1e3), "MN": ("load", 1e6),
+    "kg": ("mass", 1.0), "g": ("mass", 1e-3), "t": ("mass", 1e3),
+    "K": ("interval", 1.0), "degC": ("interval", 1.0),
+})
+
 TOOLS = ("calc", "lookup", "convert")
 CALL = re.compile(rf"<({'|'.join(TOOLS)})>(.*?)</\1>", re.S)
 
@@ -94,6 +108,12 @@ def lookup(text: str, handbook: dict | None = None) -> float:
     """
     table = handbook if handbook is not None else FLUIDS
     a = _args(text)
+    # `material` is the same argument under the name P25's domain uses for it. The
+    # tool's interface does not change between domains — that is what makes P25 a
+    # test of subject transfer rather than interface transfer — but refusing a
+    # metal called `material=` would be measuring a noun.
+    if "material" in a and "fluid" not in a:
+        a["fluid"] = a.pop("material")
     missing = {"fluid", "property"} - set(a)
     if missing:
         raise ToolError(f"lookup needs {sorted(missing)}")
@@ -108,7 +128,12 @@ def lookup(text: str, handbook: dict | None = None) -> float:
         raise ToolError(f"no entry for {fluid} at {t} C; this handbook lists {named}")
     row = table[(fluid, t)]
     if prop not in row:
-        raise ToolError(f"{fluid} has no property {prop!r}")
+        # NAMING WHAT IS AVAILABLE, as the not-found branch above already does. An
+        # adapter meeting a new domain has to derive the property key from the step
+        # label, and refusing it without saying what the keys are measures whether
+        # it guessed the noun rather than whether it followed the protocol.
+        raise ToolError(f"{fluid} has no property {prop!r}; "
+                        f"it has {sorted(row)}")
     return row[prop]
 
 

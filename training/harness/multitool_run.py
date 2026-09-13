@@ -37,6 +37,7 @@ from pathlib import Path
 
 from training.harness.failure_mode import tally
 from training.harness.rule_tools import call_for
+from training.physics import materials, multitool
 from training.physics.multitool import FAMILIES, generate
 from training.physics.repair import repair
 from training.physics.tools import CALL, ToolError, answer
@@ -232,6 +233,10 @@ def main() -> int:
     ap.add_argument("--targets",
                     default="q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj")
     ap.add_argument("--four-bit", dest="four_bit", action="store_true")
+    ap.add_argument("--domain", default="fluids", choices=["fluids", "materials"],
+                    help="P25: `materials` is a second subject with the same three "
+                         "tools and none of this suite's vocabulary. Neither "
+                         "competitor is edited for it — that is the measurement.")
     ap.add_argument("--masked", action="store_true",
                     help="P24: constrain the kernel turn with the call grammar. "
                          "The pre-registered prediction is rejections 20 -> ~5 "
@@ -244,7 +249,9 @@ def main() -> int:
     from peft import PeftModel
     from training.s4_train import free, load_base, train_adapter
 
-    ev = generate(args.n_eval, args.eval_seed, FAMILIES)
+    mod = materials if args.domain == "materials" else multitool
+    ev = mod.generate(args.n_eval, args.eval_seed, mod.FAMILIES)
+    print(f"[domain] {args.domain}: {sorted(mod.FAMILIES)}", flush=True)
     kernel_rows = [json.loads(l) for l in open(args.kernel_corpus) if l.strip()]
     domain_rows = [json.loads(l) for l in open(args.domain_corpus) if l.strip()]
     tagged = sum("<" in m["content"] for r in domain_rows
@@ -291,7 +298,10 @@ def main() -> int:
     if args.masked:
         print("[P24] the kernel turn is grammar-masked", flush=True)
 
+    suffix = "" if args.domain == "fluids" else f" · {args.domain}"
+
     def run(label, layer):
+        label = label + suffix
         prev = summary["arms"].get(label)
         if prev and prev.get("complete", True):
             return
@@ -309,9 +319,9 @@ def main() -> int:
     # expert still scores well with no tool layer, the handbook did not work and
     # the other two arms are not bought.
     run("no tool layer at all", "none")
-    if summary["arms"]["no tool layer at all"]["accuracy"] >= args.gate:
+    if summary["arms"]["no tool layer at all" + suffix]["accuracy"] >= args.gate:
         print(f"[gate] STOPPED. With no tool layer the expert scores "
-              f"{summary['arms']['no tool layer at all']['accuracy']:.3f}, at or "
+              f"{summary['arms']['no tool layer at all' + suffix]['accuracy']:.3f}, at or "
               f"above the gate of {args.gate:.2f}: the material is still "
               "answerable without the tools and the other arms measure nothing.",
               flush=True)
@@ -335,7 +345,7 @@ def main() -> int:
         print(f"{'':<40}of {f['failed']} failures: protocol {f['protocol']}, "
               f"physics {f['physics']}  "
               + ", ".join(f"{m} {c}" for m, c in f["by_mode"].items() if c))
-    ker = a.get(label, {})
+    ker = a.get(label + suffix, {})
     got = ker.get("tool_values_matched", 0) / max(ker.get("tool_values_wanted", 1), 1)
     print(f"\nThe bar is the hand-written rule at 0.929 on the oracle's tool steps.")
     print(f"The kernel adapter reproduced {got:.3f}.")
