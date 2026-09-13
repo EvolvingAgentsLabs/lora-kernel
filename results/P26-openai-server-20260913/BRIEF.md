@@ -118,3 +118,36 @@ So the two are separated:
 vLLM **0.28.0** and this runs **0.29.0**, on a different base. If the identity gate
 passes here, **two things changed at once** and the pass cannot be attributed to the
 dense base alone.
+
+---
+
+## Attempt 3 — the adapter cache never worked, and the reason is a size limit (2026-09-13) [ran]
+
+Both training sessions died at roughly sixty minutes with the adapters at forty
+minutes of training each, and neither could resume, because the cache that exists to
+carry them has never once succeeded:
+
+    WARNING: adapters did not upload
+
+**Measured against a live session rather than guessed:**
+
+| size | `colab upload` |
+|--:|---|
+| 4, 16, 32, 48, 64 MB | ok |
+| **80 MB** | **500 Internal Server Error, in 1.5 seconds** |
+
+The tarball is **106 MB**. This is not a timeout — it fails immediately — so the
+first repair anyone reaches for, raising the timeout, would have been time spent
+chasing the wrong cause. The upload is now **split into 48 MB chunks and
+reassembled on the far side**.
+
+**Three runs today paid full retraining for this**, and each time the missing cache
+looked like bad luck with session lifetimes rather than a bug that had never worked.
+A component that has never succeeded and only ever logs a warning is indistinguishable
+from one that works and is unlucky.
+
+Also fixed here: the `_srun.py` heredoc in `chain_separate.sh` is unquoted so that
+`$MODULE` interpolates, which means bash expanded a prose comment containing
+backticks and printed `adapters/domain-mt: No such file or directory` into every run
+log. The same bug was fixed in `chain_ollama.sh` this morning and not looked for
+here.

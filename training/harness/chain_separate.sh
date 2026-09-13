@@ -34,6 +34,34 @@ tmo () {  # tmo SECONDS cmd...
   return $rc
 }
 
+# COLAB'S UPLOAD ENDPOINT REFUSES A LARGE FILE WITH A 500, NOT A TIMEOUT. Measured
+# 2026-09-13 against a live session: 4, 16, 32, 48 and 64 MB all upload; 80 MB
+# fails in 1.5 seconds with `500 Internal Server Error`. The adapter tarball is
+# 106 MB, so the cache added to save forty minutes of retraining never once worked
+# — and raising the timeout, the obvious first guess, would never have helped.
+# Chunked, reassembled on the far side.
+upload_big () {  # upload_big SESSION LOCAL REMOTE
+  local S="$1" src="$2" dst="$3"
+  local dir; dir=$(mktemp -d)
+  split -b 48m "$src" "$dir/part_"
+  local n=0
+  for f in "$dir"/part_*; do
+    tmo 600 colab upload -s "$S" "$f" "/content/_up_$(basename "$f")" >/dev/null 2>&1 || {
+      echo "    chunk $(basename "$f") did not upload"; rm -rf "$dir"; return 1; }
+    n=$((n + 1))
+  done
+  rm -rf "$dir"
+  cat > /tmp/_join.py <<PYJOIN
+import glob, subprocess
+parts = sorted(glob.glob("/content/_up_part_*"))
+print(subprocess.run("cat " + " ".join(parts) + " > $dst && rm -f /content/_up_part_*"
+                     " && ls -l $dst", shell=True, capture_output=True,
+                     text=True).stdout.strip()[:120])
+PYJOIN
+  tmo 300 colab exec -s "$S" -f /tmp/_join.py >/dev/null 2>&1 || return 1
+  echo "    carried the adapters in ($n chunks)"
+}
+
 for i in $(seq 1 "$SESSIONS"); do
   # A FINISHED RUN DOES NOT NEED ANOTHER SESSION. The loop used to spend its whole
   # allowance regardless, so a completed experiment provisioned a fresh L4 and
@@ -88,8 +116,7 @@ PY
   # experiment paid that twice [ran] 2026-09-12. The weights are a few tens of
   # megabytes; carrying them is strictly cheaper than rebuilding them.
   ADAPTERS="$RUN_DIR/adapters.tgz"
-  [ -f "$ADAPTERS" ] && { tmo 300 colab upload -s "$S" "$ADAPTERS" /content/lora-kernel/adapters.tgz >/dev/null \
-                          && echo "    carried the trained adapters in" \
+  [ -f "$ADAPTERS" ] && { upload_big "$S" "$ADAPTERS" /content/lora-kernel/adapters.tgz \
                           || echo "    WARNING: adapters did not upload"; }
 
   cat > /tmp/_srun.py <<PY
@@ -101,7 +128,7 @@ subprocess.Popen(
     "cd /content/lora-kernel && "
     "([ -f adapters.tgz ] && tar xzf adapters.tgz || true) && "
     # A DIRECTORY IS NOT A TRAINED ADAPTER. The first version of this watcher
-    # waited for `adapters/domain-mt` to EXIST and fired the moment trl created
+    # waited for 'adapters/domain-mt' to EXIST and fired the moment trl created
     # it, shipping back a 106 MB tarball whose domain adapter was an empty
     # directory [ran] 2026-09-12. The runner skips training when the directory is
     # present, so that tarball would have scored an untrained adapter in silence.
