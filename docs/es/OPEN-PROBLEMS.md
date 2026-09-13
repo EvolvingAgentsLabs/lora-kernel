@@ -88,6 +88,47 @@ O sea: las dos mitades existen, cada una está sana por su cuenta, y ponerlas en
 parche funciona. El problema es ponerlas en **dos** parches, que es todo el punto
 del diseño.
 
+## Dónde está esto parado, 2026-09-12
+
+Tres de los cuatro problemas de abajo se movieron desde que se escribieron, y uno se
+cerró. Las secciones conservan su texto original — eso es lo que las hace valer la
+relectura — y esto es el delta.
+
+**El Problema 1 está cerrado dos veces.** Turnarse resolvió la composición, y la
+sospecha que sobrevivió a eso — que las llamadas eran memorizables, así que la capa
+de herramientas era decoración — se probó y se eliminó: con un manual por caso, un
+control **sin capa de herramientas** cae de 27/30 a **6/30**. Sobre ese material un
+protocolo aprendido reproduce **94 de 96** llamadas del oráculo contra **93 de 96**
+de una regla escrita a mano. El brief fijó antes de correr que tres valores es
+empate, así que se reporta empate, y la diferencia que queda es de carácter y no de
+puntaje: la regla hace 96 llamadas sin **ninguna rechazada**, el kernel hace 116 con
+**20 rechazadas**. `results/P21-handbook-20260911/`.
+
+**El Problema 2 no cambió y el Problema 3 tiene una señal que no tenía.** La guardia
+de comportamiento sigue falsificada. Sobrevive una **estructural**: el álgebra
+dimensional sobre (kg, m, s) marca el **0,80** del trabajo fuera de región en
+familias selladas antes de que el verificador existiera. Sola da 0,22 de falsa
+alarma sobre trabajo correcto en región, que es inusable — pero escalar sólo cuando
+fallan la dimensional **y** la mecánica **no se dispara nunca en región** (0 de 60) y
+aun así atrapa el 0,35 del trabajo de afuera. `escalate.has_left_its_region` es esa
+regla; `escalate.is_probably_wrong` es la ancha, que lleva el acierto entregado de
+0,53 a 0,83 en región y manda afuera la mitad del trabajo en región para lograrlo.
+**Cuál corresponde depende de cuánto cuesta escalar, y este repositorio no lo midió.**
+`results/P22-dimensions-20260912/`.
+
+**El Problema 4 tiene su criterio.** El acuerdo con un target que está genuinamente
+adelante ordena cuatro candidatos como lo hace la calidad verificada — **6 de 6 pares
+discriminables**, incluido el par que el conteo de parámetros invierte, donde un
+modelo de 12B queda debajo de uno de 4B. La mitad honesta: sólo los **17** casos que
+el target falló pueden separar el criterio del oráculo, y sobre esos solos da 4 de 6
+con dos sin resolver y ninguno invertido, a partir de tres errores reproducidos.
+`results/P23-ranking-20260912/`.
+
+**Lo que sigue siendo cierto de los cuatro**: nada de esto se midió fuera de mecánica
+de fluidos, y la regla escrita a mano con la que empata un protocolo aprendido son 144
+líneas que conocen el vocabulario de esta suite. **La portabilidad es el experimento
+sin comprar**, y es aquel del que realmente depende el empate del Problema 1.
+
 ## Problema 1 — dos especialistas que no se turnaban (resuelto; y lo que lo reemplazó)
 
 ### Lo que vemos
