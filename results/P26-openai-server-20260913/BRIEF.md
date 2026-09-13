@@ -151,3 +151,36 @@ Also fixed here: the `_srun.py` heredoc in `chain_separate.sh` is unquoted so th
 backticks and printed `adapters/domain-mt: No such file or directory` into every run
 log. The same bug was fixed in `chain_ollama.sh` this morning and not looked for
 here.
+
+---
+
+## Attempt 4 — two sessions spent on a shell default and a capital letter (2026-09-13) [ran]
+
+Both sessions of the retry ran for over an hour and produced nothing. The reason was
+one line in the VM's own log, which no watcher ever passed through:
+
+    train_pool.py: error: unrecognized arguments: --n-eval 30
+
+**Two bugs, and the second is what made the first cost two hours.**
+
+1. `ARGS="${ARGS:---n-eval 30 --epochs 3}"`. **`:-` substitutes on an empty string,
+   not only on an unset one**, so passing `ARGS=""` to run a module that takes no
+   arguments handed it another module's flags. `train_pool` died on argparse in its
+   first second.
+2. **The peek filter greps `Traceback|Error`, with a capital E.** argparse writes
+   `error:` in lower case. The failure was in the log from the start and *nothing let
+   it through*, so a session that had been dead since second one looked busy for
+   seventy-seven minutes.
+
+Both are fixed: `${ARGS-…}` substitutes only when unset, and the filter matches
+`[Ee]rror` and `[pool]`.
+
+**This is the same shape as the upload that never worked**: a component failing
+silently while its supervisor watched for the wrong thing. The repair that matters is
+not either line — it is that **the watcher and the runner have to share a
+vocabulary**, or every module added later inherits the blindness.
+
+**What survived attempt 4**: the chunked upload worked in both sessions —
+`carried the adapters in (3 chunks)` — and the kernel adapter was on the VM's disk
+each time. The cache is fixed; it was simply carrying weights to a job that had
+already exited.

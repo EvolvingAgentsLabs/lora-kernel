@@ -5,7 +5,11 @@ SESSIONS="${1:-1}"; GPU="${GPU:-L4}"
 BASE="${BASE:-Qwen/Qwen2.5-3B-Instruct}"
 RUN_DIR="${RUN_DIR:-results/P9-shared-contract-20260909}"
 BRANCH="${BRANCH:-shared-contract}"
-ARGS="${ARGS:---n-eval 30 --epochs 3}"
+# `:-` SUBSTITUTES ON AN EMPTY STRING, NOT ONLY ON AN UNSET ONE. Passing ARGS=""
+# to run a module that takes no arguments handed it `--n-eval 30 --epochs 3`
+# instead, and train_pool died on argparse in the first second of two sessions
+# that then looked busy for seventy-seven minutes each [ran] 2026-09-13.
+ARGS="${ARGS---n-eval 30 --epochs 3}"
 MODULE="${MODULE:-training.harness.separate}"
 RESULTS_NAME="${RESULTS_NAME:-separate_results.json}"
 LOCAL="$RUN_DIR/$RESULTS_NAME"
@@ -143,7 +147,7 @@ PY
   cat > /tmp/_speek.py <<'PY'
 import subprocess
 print(subprocess.run("grep -E '\\[arm\\]|\\[train\\]|\\[gate\\]|\\[corpora\\]|passed [0-9]+|"
-                     "composition |Traceback|Error|OutOfMemory|Killed' "
+                     "composition |Traceback|[Ee]rror|OutOfMemory|Killed|\\[pool\\]' "
                      "/content/lora-kernel/run.log | tail -2",
                      shell=True, capture_output=True, text=True).stdout)
 PY
