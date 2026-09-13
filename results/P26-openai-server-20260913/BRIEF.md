@@ -232,3 +232,82 @@ adapters, and answered. Every earlier attempt died before that: CUDA, a missing
 package, a removed flag. This one died *after* success, on the client.
 
 **Still no number.** Six attempts, and the identity gate is still unevaluated.
+
+---
+
+## Outcome (2026-09-13) [ran]
+
+    /v1/models -> ['Qwen/Qwen2.5-3B-Instruct', 'kernel', 'domain']
+
+### Arm 1 — the gate passes, and this is the result
+
+| model | differs from base |
+|---|---|
+| `kernel` | **yes** |
+| `domain` | **yes** |
+
+They differ in the way they were trained to:
+
+| | first words on the same prompt |
+|---|---|
+| base | `Let's solve this step-by-step:\n\n1. **Convert dimensions to meters:**` |
+| **kernel** | `1. Area of the gate: <calc>1844.2 * 723.6</calc>= 133590.6` |
+| **domain** | `1. Gate width: 1.8442\n2. Gate height: 0.7236\n3. Density of the fluid: 1395.2` |
+
+The kernel writes the protocol and delegates the arithmetic; the domain writes the
+physics in numbered steps and never emits a tag. **Two personalities over one
+resident base, selected by the `model` field of an HTTP request.** This is the
+question P3 left open on 2026-09-08 and it is answered.
+
+**The caveat travels with it.** P3's silent failure was vLLM **0.28.0** on a hybrid
+multimodal base; this is **0.29.0** on a dense one. **Two things changed**, so the
+pass cannot be attributed to the dense base alone.
+
+### Arm 2 does not test what it was built to test
+
+| | |
+|---|--:|
+| `served · kernel` | **0/30** |
+| `served · domain` | **0/30** |
+
+Both zeros are expected and neither is about vLLM. **The kernel delegates**: it emits
+`<calc>…</calc>` and waits for an answer that a single-turn `/v1/chat/completions`
+never provides, so there is no final value to score. **The domain cannot do
+arithmetic**: already measured at 1/30 raw against 30/30 when its own expressions are
+re-evaluated exactly.
+
+So the arm's stated job — *do the numbers survive the serving stack* — **cannot be
+done this way.** That comparison needs the same **harness**, not merely the same
+cases, and no earlier arm scored raw single-turn output. **This is a defect in the
+instrument, named rather than dressed up**: the zeros say nothing about serving
+fidelity in either direction, and the fidelity question is still unanswered.
+
+### Arm 3 — the pool costs nothing measurable, and the measurement is weak
+
+| | seconds | prompts/s |
+|---|--:|--:|
+| concurrency · pure | 11.14 | 2.69 |
+| concurrency · mixed | 9.97 | **3.01** |
+
+The mixed batch came out **faster**, which is not a result anyone should publish as
+"a pool is free and then some". **The two bursts run in a fixed order, pure first**,
+so the first one pays whatever warm-up exists and the second does not. A −11.9%
+"cost" is the size of that confound, not a finding.
+
+**What it does support**: the catastrophic version is ruled out. P3's voided arm
+reported a **20×** penalty for holding a pool, measured by a serial loop that was
+counting round-trips. Inside one scheduling pass, two adapters interleaved are within
+noise of one — **per-request swapping is not disqualified as a serving strategy**,
+which is what the arm was bought to find out. **Ordering it properly, with a warm-up
+burst and repeats, is unbought.**
+
+## What P26 delivers, and what it does not
+
+**Delivers**: an OpenAI-compatible endpoint where each adapter is its own model name,
+verified to actually apply, on a base this project already uses. An agent runtime can
+point at it today.
+
+**Does not deliver**: a working agent. The adapters emit `<calc>` and `<lookup>` in
+the message body; OpenAI clients expect `tool_calls`. **An agent pointed here sees
+prose containing tags and no tools at all** — as this brief said before the run, and
+the transcripts above are the evidence rather than the prediction.
