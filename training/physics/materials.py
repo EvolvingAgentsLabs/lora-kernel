@@ -50,7 +50,7 @@ def _si(value: float, unit: str) -> float:
 
 
 def _grade(rng) -> tuple[str, int, dict[str, float]]:
-    """A specimen code and the properties only this problem knows."""
+    """A material code and the properties only this problem knows."""
     name = f"{rng.randrange(1000, 9999)}-{rng.choice(GRADES)}"
     t = rng.choice([20, 60, 120, 200, 300])
     props = {
@@ -84,13 +84,13 @@ def bar_elongation(rng):
         chain.append(("Applied load", "convert", f"value={f}; from={lu}; to=N"))
     if au != "m^2":
         chain.append(("Cross-sectional area", "convert", f"value={area}; from={au}; to=m^2"))
-    chain.append(("Elastic modulus of the specimen", "lookup",
+    chain.append(("Elastic modulus of the material", "lookup",
                   f"material={name}; property=modulus; T={t}"))
     chain.append(("Elongation", "calc",
                   f"{_si(f, lu):.6g} * {span} / ({_si(area, au):.6g} * {p['modulus']:.6g})"))
     ans = _si(f, lu) * span / (_si(area, au) * p["modulus"])
     stmt = (f"Elongation equals load times length divided by the product of "
-            f"cross-sectional area and elastic modulus. A bar of specimen {name} "
+            f"cross-sectional area and elastic modulus. A bar of material {name} "
             f"held at {t} degC is {span} m long with a cross-section of {area} {au}, "
             f"and carries {f} {lu}. Find the elongation.")
     return stmt, ans, "m", chain, handbook_for(name, t, p)
@@ -112,7 +112,7 @@ def thermal_growth(rng):
     ans = p["expansion"] * _si(span, su) * rise
     stmt = (f"The change in length of a heated member is its expansion coefficient "
             f"times its original span times the temperature rise. A member of "
-            f"specimen {name}, rated at {t} degC, spans {span} {su} and is warmed "
+            f"material {name}, rated at {t} degC, spans {span} {su} and is warmed "
             f"by {rise} K. How much longer does it get?")
     return stmt, ans, "m", chain, handbook_for(name, t, p)
 
@@ -127,13 +127,13 @@ def conductor_resistance(rng):
     chain = [("Conductor cross-section", "convert", f"value={area}; from={au}; to=m^2")]
     if su != "m":
         chain.append(("Conductor run", "convert", f"value={span}; from={su}; to=m"))
-    chain.append(("Resistivity of the specimen", "lookup",
+    chain.append(("Resistivity of the material", "lookup",
                   f"material={name}; property=resistivity; T={t}"))
     chain.append(("Resistance", "calc",
                   f"{p['resistivity']:.6g} * {_si(span, su):.6g} / {_si(area, au):.6g}"))
     ans = p["resistivity"] * _si(span, su) / _si(area, au)
     stmt = (f"Resistance equals resistivity times run length divided by "
-            f"cross-sectional area. A conductor of specimen {name} at {t} degC has "
+            f"cross-sectional area. A conductor of material {name} at {t} degC has "
             f"a cross-section of {area} {au} and runs {span} {su}. What is its "
             f"resistance?")
     return stmt, ans, "ohm", chain, handbook_for(name, t, p)
@@ -154,7 +154,7 @@ def heat_to_raise(rng):
                   f"{_si(mass, mu):.6g} * {p['heat_capacity']:.6g} * {rise}"))
     ans = _si(mass, mu) * p["heat_capacity"] * rise
     stmt = (f"The heat needed to warm a part is its mass times its specific heat "
-            f"capacity times the temperature rise. A part of specimen {name}, "
+            f"capacity times the temperature rise. A part of material {name}, "
             f"characterised at {t} degC, weighs {mass} {mu} and must be warmed by "
             f"{rise} K. How much heat is needed?")
     return stmt, ans, "J", chain, handbook_for(name, t, p)
