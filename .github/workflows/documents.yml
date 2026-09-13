@@ -43,3 +43,18 @@ jobs:
           print(f"{total - bad} of {total} internal link(s) resolve")
           sys.exit(1 if bad else 0)
           PY
+
+  tests:
+    name: The sixty-one tests pass
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # THE GATE IS NOT A SUBSET OF ITSELF. Sixty-one tests sat in tests/ for five
+      # days without CI ever running one of them, and the machine they were written
+      # on had no pytest installed to run them by hand either. A suite nobody runs
+      # is documentation.
+      - run: pip install -q pytest
+      - run: python -m pytest tests/ -q

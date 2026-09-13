@@ -86,6 +86,47 @@ So: the two halves exist, each is healthy on its own, and putting them in one
 patch works. The problem is putting them in **two** patches, which is the entire
 point of the design.
 
+## Where this stands, 2026-09-12
+
+Three of the four problems below have moved since they were written, and one of
+them closed. The sections keep their original text — that is what makes them worth
+re-reading — and this is the delta.
+
+**Problem 1 is closed twice over.** Taking turns solved the composition, and the
+suspicion that survived it — that the tool calls were memorisable, so the tool
+layer was decoration — was tested and removed: with a handbook drawn per case, a
+control with **no tool layer at all** falls from 27/30 to **6/30**. On that
+material a learned protocol reproduces **94 of 96** of the oracle's calls against a
+hand-written rule's **93 of 96**. The brief fixed before the run that three values
+is a tie, so it is reported as a tie, and the remaining difference is character
+rather than score: the rule makes 96 calls with **none refused**, the kernel makes
+116 with **20 refused**. `results/P21-handbook-20260911/`.
+
+**Problem 2 is unchanged and Problem 3 has a signal it did not have.** The
+behavioural guard stays falsified. A **structural** one survives: dimensional
+algebra over (kg, m, s) flags **0.80** of out-of-region work on families sealed
+before the checker existed. Alone it false-alarms on 0.22 of correct in-region
+work, which is unusable — but escalating only when the dimensional **and**
+mechanical checks both fail **never fires in region at all** (0 of 60) and still
+catches 0.35 of the work outside it. `escalate.has_left_its_region` is that rule;
+`escalate.is_probably_wrong` is the wider one, which takes delivered accuracy from
+0.53 to 0.83 in region and sends half the in-region work away to do it. **Which is
+right depends on what escalation costs, and this repository has not measured that.**
+`results/P22-dimensions-20260912/`.
+
+**Problem 4 has its criterion.** Agreement with a target that is genuinely ahead
+orders four candidates the way verified quality does — **6 of 6 discriminable
+pairs**, including the pair a parameter count gets backwards, where a 12B model
+ranks below a 4B. The honest half: only the **17** cases the target got wrong can
+separate the criterion from the oracle, and on those alone it is 4 of 6 with two
+unresolved and none inverted, off three reproduced errors.
+`results/P23-ranking-20260912/`.
+
+**What is still true of all four**: nothing here has been measured outside fluid
+mechanics, and the hand-written rule a learned protocol ties is 144 lines that know
+this suite's vocabulary. **Portability is the unbought experiment**, and it is the
+one the tie in Problem 1 actually turns on.
+
 ## Problem 1 — two specialists that would not take turns (solved; what replaced it)
 
 ### What we see
