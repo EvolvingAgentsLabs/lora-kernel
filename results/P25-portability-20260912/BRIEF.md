@@ -193,3 +193,77 @@ than reused.
 
 **Redesign count: 1.** The stopping condition for this experiment is the project's
 usual one — a third redesign means it is looking for its result.
+
+---
+
+## Outcome (2026-09-13) [ran]
+
+| arm | final answer | oracle's tool values | calls | refused | declined |
+|---|--:|--:|--:|--:|--:|
+| no tool layer at all | 1/30 | 0/63 = 0.000 | 0 | 0 | 0 |
+| hand-written rule, unchanged | 1/30 | **0/63 = 0.000** | 0 | 0 | **183** |
+| kernel adapter, unchanged weights | 1/30 | **27/63 = 0.429** | 100 | 57 | 94 |
+
+### By the pre-registered condition, this does not establish portability
+
+The condition written before the run was: *portability is established if the kernel
+**holds near its 0.979** while the rule falls well below it.* **0.429 is not near
+0.979.** The kernel fell too, and a long way. This is reported as what it is — a
+partial result that does not meet the bar its own brief set — rather than as the
+outcome the bar was aiming at.
+
+**What is nonetheless true**: the rule contributes exactly nothing and the adapter
+contributes nearly half. 144 lines that score 0.969 in fluid mechanics **decline 183
+times** here and never write a single call; the adapter writes 100 and lands 27 of
+the oracle's values on a subject it has never seen.
+
+**And all three arms tie on the final answer at 1/30**, because reproducing 43% of
+the values does not close a chain — closing one needs all of them. **On this domain
+the system does not work.** The measurement is about the tool layer, not about a
+deliverable.
+
+### The failures are of naming, not of form
+
+| why the tools refused a call | times |
+|---|--:|
+| a property that does not exist (`expansion_coefficient` for `expansion`) | 18 |
+| a material not in the handbook (the code truncated, `5262` for `5262-N`) | 14 |
+| an unknown unit | 12 |
+| incompatible dimensions (`N` to `Pa`) | 4 |
+| the call's own form | 7 |
+
+**Fifty-six per cent of the rejections are names.** The adapter knows *that* a step
+needs a query, *which* tool it needs, and *how* to build a keyed call — and gets
+wrong what the things in a new domain are called. That vocabulary is not in its
+weights and could not be.
+
+Per family, the split is wide: `conductor_resistance` 12/21, `thermal_growth` 7/13,
+`bar_elongation` 8/19, and **`heat_to_raise` 0/10** — the family whose property is
+`heat_capacity`, a compound name the adapter never produces.
+
+### Recovery is rare, and that is the actionable part
+
+Of the 25 cases carrying a rejection, **only 2 obtained every oracle value anyway**.
+In P21 that number was 13 of 14. The difference is what the rejection *says*: in
+fluids a refused call was a malformed one and the next attempt fixed it; here it is
+a wrong noun, and the adapter mostly repeats it.
+
+The tool's error already lists the properties a material has — a fairness concession
+made before the run — and the adapter sometimes reads it and corrects. **Making the
+tools describe themselves, rather than retraining the adapter, is what this result
+points at**, and it is a runtime change rather than a training one.
+
+### What this settles
+
+**Settles**: the two competitors are not suite-bound to the same degree. A
+hand-written harness transfers **nothing**; a learned one transfers **part of
+itself**, and the part that fails is the part that is information rather than
+procedure. P21's tie was not a tie in kind, and this is the evidence — weaker than
+the brief hoped for, and in the same direction.
+
+**Does not settle**: that the protocol is portable in any usable sense. 0.429 is not
+a working system, the final answers are unchanged, and the bar this brief set was
+not met. **Whether a self-describing tool surface closes the gap is the next
+experiment, and it is unbought.**
+
+**Redesign count: 1.**
