@@ -211,3 +211,24 @@ minutes once and the check that followed found nothing — which surfaces as
 a number in it, and after five attempts that is worth stating plainly rather than
 letting the narrative imply progress: **the substrate question P3 opened is still
 open.**
+
+---
+
+## Attempt 6 — the probe crashed at the moment the server became healthy (2026-09-13) [ran]
+
+    json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+**vLLM's `/health` answers 200 with an empty body.** The readiness helper parsed
+every response as JSON, and `JSONDecodeError` was not among the exceptions the
+waiting loop caught — so the run crashed **at the exact moment the server came up**,
+which is the one moment that looks like the server failing.
+
+Two lines. The helper returns `{}` for an empty body, and the readiness loop catches
+everything: **a readiness probe that is choosy about how it fails reports the wrong
+thing.** Reproduced locally without a GPU before relaunching.
+
+**The good news is inside the crash.** The server started, loaded the base and both
+adapters, and answered. Every earlier attempt died before that: CUDA, a missing
+package, a removed flag. This one died *after* success, on the client.
+
+**Still no number.** Six attempts, and the identity gate is still unevaluated.

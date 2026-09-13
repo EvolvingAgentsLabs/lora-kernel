@@ -41,7 +41,12 @@ def post(path: str, payload: dict, timeout: int = 180) -> dict:
 
 def get(path: str, timeout: int = 10) -> dict:
     with urllib.request.urlopen(HOST + path, timeout=timeout) as r:
-        return json.load(r)
+        body = r.read()
+    # `/health` ANSWERS 200 WITH AN EMPTY BODY. Parsing it raised JSONDecodeError —
+    # not in the readiness loop's except clause — so this crashed at the exact
+    # moment the server became healthy, which is the one moment it looked like the
+    # server had failed [ran] 2026-09-13.
+    return json.loads(body) if body.strip() else {}
 
 
 def chat(model: str, prompt: str, system: str, max_tokens: int) -> str:
@@ -63,7 +68,9 @@ def wait_ready(proc, minutes: int = 12) -> bool:
         try:
             get("/health", timeout=5)
             return True
-        except (urllib.error.URLError, OSError, TimeoutError):
+        except Exception:
+            # Anything at all means not-ready-yet. A readiness probe that is choosy
+            # about how it fails is a readiness probe that reports the wrong thing.
             time.sleep(5)
     print("[serve] the server never answered /health", flush=True)
     return False
