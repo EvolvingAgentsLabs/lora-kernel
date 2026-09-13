@@ -46,11 +46,20 @@ def step(name, cmd):
 step("clone", "rm -rf /content/lora-kernel && cd /content && git clone -q -b $BRANCH "
               "https://github.com/EvolvingAgentsLabs/lora-kernel.git && "
               "cd lora-kernel && git log --oneline -1")
-step("vllm", "pip -q install 'vllm>=0.28' 2>&1 | tail -1; vllm --version")
+# COLAB SHIPS torchaudio AND torchvision BUILT AGAINST ITS OWN CUDA, and pip
+# resolving vllm's torch leaves them behind pointing at a different one:
+#   RuntimeError: PyTorch has CUDA version 13.0 whereas TorchAudio has CUDA ...
+# raised on `import`, so vllm never starts [ran] 2026-09-13. Neither is needed to
+# serve a text model, so they go before vllm arrives rather than being pinned
+# around.
+step("clear", "pip -q uninstall -y torchaudio torchvision 2>&1 | tail -1; echo cleared")
+step("vllm", "pip -q install 'vllm>=0.28' 2>&1 | tail -1")
+step("check", "python -c 'import vllm; print(vllm.__version__)' 2>&1 | tail -1")
 PY
   cat > /tmp/_vcheck.py <<'PY'
 import subprocess
-r = subprocess.run("cd /content/lora-kernel && git log --oneline -1 && vllm --version",
+r = subprocess.run("cd /content/lora-kernel && git log --oneline -1 && "
+                   "python -c 'import vllm; print(vllm.__version__)'",
                    shell=True, capture_output=True, text=True)
 lines = [l for l in r.stdout.splitlines() if l.strip()]
 print(" | ".join(lines) if len(lines) >= 2 else "NO VLLM")

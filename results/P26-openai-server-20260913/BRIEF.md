@@ -65,3 +65,26 @@ this project put into weights is a text protocol, and a translation layer that
 converts it to `tool_calls` reintroduces the hand-written harness the weights were
 meant to replace. **P26 serves the pool. Whether `harness.lora` survives contact
 with function-calling is the next brief, not this one.**
+
+---
+
+## Attempt 1 — the boot gate refused three sessions (2026-09-13) [ran]
+
+    boot vllm: rc=1 RuntimeError: Detected that PyTorch and TorchAudio were
+    compiled with different CUDA versions. PyTorch has CUDA version 13.0
+    whereas TorchAudio has CUDA version ...
+    boot attempt 3 did not take: NO VLLM
+
+Colab ships `torchaudio` and `torchvision` built against its own CUDA. Installing
+vLLM resolves a different `torch` and leaves those two behind pointing at the old
+one, and the mismatch raises on **import** — so `vllm` never starts at all.
+
+**Neither is needed to serve a text model**, so both are removed before vLLM
+arrives rather than pinned around. And the version check now imports the package
+rather than shelling out to `vllm --version`, because importing is the thing that
+was failing.
+
+**Nothing was measured and that is the point.** The boot gate was added because a
+serving experiment that reports throughput from a stack it never verified is the
+C18 failure with a new face. It refused three sessions and cost nothing but their
+provisioning.
