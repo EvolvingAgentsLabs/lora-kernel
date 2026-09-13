@@ -227,7 +227,7 @@ the work and is updated the same session a step reports.
 | **S3** | the router beats a lookup table | 🟡 ties |
 | **S4** | the expert specialises per region | ✅ **+63.3** |
 | **S5** | close the withdrawal gap | ✅ **0.000** in region |
-| **S6** | `harness.lora` — kernel apart from the expert | 🟡 **composition solved, comparison is a tie** — taking turns works. On material where the values cannot be memorised, the kernel reproduces **94/96** of the oracle's tool calls against a hand-written rule's **93/96**: one value, inside the three pre-registered as a tie. All three arms tie on the final answer too (4, 5, 6 of 30) because the physics is the bottleneck |
+| **S6** | `harness.lora` — kernel apart from the expert | 🟡 **a tie in fluids, not a tie in kind** — 94/96 against a rule's 93/96 where values cannot be memorised. On a **second subject** neither was edited for, the rule writes **0 of 63** calls and the adapter **27 of 63**: a hand-written harness transfers nothing, a learned one transfers part of itself. But 0.429 missed the 0.979 the brief asked for, and all arms still tie on the final answer |
 | **S7** | the tournament that evolves the experts | 🟢 **fitness fixed** — neither judge alone ranks reliably (1 of 2 pairs each); **both-must-accept gets 2 of 2** |
 
 **What works.** The protocol is learnable on its own and travels to a domain it

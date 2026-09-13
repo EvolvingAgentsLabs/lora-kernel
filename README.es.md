@@ -200,7 +200,7 @@ trabajo y se actualiza en la misma sesión en que un paso reporta.
 | **S3** | que el router valga más que una tabla | 🟡 empata |
 | **S4** | que el experto se especialice por región | ✅ **+63,3** |
 | **S5** | cerrar la brecha de retiro | ✅ **0,000** en región |
-| **S6** | `harness.lora` — kernel separado del experto | 🟡 **composición resuelta, comparación empatada** — turnarse funciona. Sobre material donde los valores no se pueden memorizar, el kernel reproduce **94/96** de las llamadas del oráculo contra el **93/96** de una regla escrita a mano: un valor, dentro de los tres pre-registrados como empate. Los tres brazos empatan también en respuesta final (4, 5, 6 de 30) porque el cuello de botella es la física |
+| **S6** | `harness.lora` — kernel separado del experto | 🟡 **empate en fluidos, no empate en especie** — 94/96 contra 93/96 de una regla donde los valores no se memorizan. En un **segundo tema** para el que no se editó ninguno, la regla escribe **0 de 63** llamadas y el adaptador **27 de 63**: un harness escrito a mano no transfiere nada, uno aprendido transfiere parte de sí. Pero 0,429 no llegó al 0,979 que el brief pedía, y los brazos siguen empatando en respuesta final |
 | **S7** | el torneo que evoluciona los expertos | 🟢 **la nota quedó fijada** — ningún juez solo ordena de forma confiable (1 de 2 pares cada uno); **exigir que ambos acepten acierta 2 de 2** |
 
 **Lo que funciona.** El protocolo se aprende solo y viaja a un dominio que nunca
