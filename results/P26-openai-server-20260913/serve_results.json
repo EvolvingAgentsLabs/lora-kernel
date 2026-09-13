@@ -1,0 +1,12 @@
+{
+  "base": "Qwen/Qwen2.5-3B-Instruct",
+  "pool": [
+    "kernel",
+    "domain"
+  ],
+  "arms": {
+    "server": {
+      "status": "never came up"
+    }
+  }
+}

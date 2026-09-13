@@ -94,7 +94,9 @@ print(" | ".join(lines) if len(lines) >= 2 else "NO VLLM")
 PY
   HEAD=""
   for try in 1 2 3; do
-    boot=$(tmo 900 colab exec -s "$S" -f /tmp/_vboot.py 2>/dev/null | grep -vE "^\[colab\]|^$" || true)
+    # Installing vLLM ran past 900s once and the check then found nothing, which
+    # reads as `silence` rather than as a timeout [ran] 2026-09-13.
+    boot=$(tmo 1800 colab exec -s "$S" -f /tmp/_vboot.py 2>/dev/null | grep -vE "^\[colab\]|^$" || true)
     [ -n "$boot" ] && echo "$boot" | sed "s/^/    boot /"
     HEAD=$(tmo 300 colab exec -s "$S" -f /tmp/_vcheck.py 2>/dev/null | grep -vE "^\[colab\]|^$" | head -1 || true)
     case "$HEAD" in ""|*"NO VLLM"*) echo "    boot attempt $try did not take: ${HEAD:-silence}" ;; *) break ;; esac
