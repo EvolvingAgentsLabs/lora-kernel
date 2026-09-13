@@ -26,6 +26,34 @@ tmo () {
   return $rc
 }
 
+# COLAB'S UPLOAD ENDPOINT REFUSES A LARGE FILE WITH A 500, NOT A TIMEOUT. Measured
+# 2026-09-13 against a live session: 4, 16, 32, 48 and 64 MB all upload; 80 MB
+# fails in 1.5 seconds with `500 Internal Server Error`. The adapter tarball is
+# 106 MB, so the cache added to save forty minutes of retraining never once worked
+# — and raising the timeout, the obvious first guess, would never have helped.
+# Chunked, reassembled on the far side.
+upload_big () {  # upload_big SESSION LOCAL REMOTE
+  local S="$1" src="$2" dst="$3"
+  local dir; dir=$(mktemp -d)
+  split -b 48m "$src" "$dir/part_"
+  local n=0
+  for f in "$dir"/part_*; do
+    tmo 600 colab upload -s "$S" "$f" "/content/_up_$(basename "$f")" >/dev/null 2>&1 || {
+      echo "    chunk $(basename "$f") did not upload"; rm -rf "$dir"; return 1; }
+    n=$((n + 1))
+  done
+  rm -rf "$dir"
+  cat > /tmp/_join.py <<PYJOIN
+import glob, subprocess
+parts = sorted(glob.glob("/content/_up_part_*"))
+print(subprocess.run("cat " + " ".join(parts) + " > $dst && rm -f /content/_up_part_*"
+                     " && ls -l $dst", shell=True, capture_output=True,
+                     text=True).stdout.strip()[:120])
+PYJOIN
+  tmo 300 colab exec -s "$S" -f /tmp/_join.py >/dev/null 2>&1 || return 1
+  echo "    carried the adapters in ($n chunks)"
+}
+
 for i in $(seq 1 "$SESSIONS"); do
   if [ -f "$LOCAL" ] && grep -q '"finished"\|stopped_at_gate' "$LOCAL" 2>/dev/null; then
     echo "=== already decided — no further sessions"; break
@@ -85,8 +113,8 @@ PY
     echo "      RUN_DIR=$RUN_DIR ARGS= training/harness/chain_separate.sh 2"
     exit 1
   fi
-  tmo 600 colab upload -s "$S" "$ADAPTERS" /content/lora-kernel/adapters.tgz >/dev/null \
-      && echo "    carried the adapters in" || { echo "    adapters did not upload"; exit 1; }
+  upload_big "$S" "$ADAPTERS" /content/lora-kernel/adapters.tgz \
+      || { echo "    adapters did not upload"; exit 1; }
 
   cat > /tmp/_vrun.py <<PY
 import subprocess
