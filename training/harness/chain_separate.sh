@@ -182,8 +182,19 @@ PY
       fi
     fi
     tmo 180 colab download -s "$S" "$REMOTE" "$LOCAL" >/dev/null 2>&1 || true
-    [ -f "$ADAPTERS" ] || tmo 300 colab download -s "$S" /content/lora-kernel/adapters.tgz \
-        "$ADAPTERS" >/dev/null 2>&1 && [ -f "$ADAPTERS" ] || true
+    # A STALE LOCAL COPY MUST NOT BLOCK THE FRESH ONE. This was guarded by "do we
+    # already have it", and we did — a one-adapter tarball copied in by hand — so
+    # the two-adapter one the session had just built was never fetched, and the
+    # session took it with it when it died [ran] 2026-09-13. Fetch, then keep
+    # whichever carries more weights.
+    if tmo 300 colab download -s "$S" /content/lora-kernel/adapters.tgz \
+         "$ADAPTERS.new" >/dev/null 2>&1 && [ -s "$ADAPTERS.new" ]; then
+      a=$(tar tzf "$ADAPTERS" 2>/dev/null | grep -c safetensors || echo 0)
+      b=$(tar tzf "$ADAPTERS.new" 2>/dev/null | grep -c safetensors || echo 0)
+      if [ "$b" -ge "$a" ]; then mv "$ADAPTERS.new" "$ADAPTERS"
+        echo "    fetched the adapters ($b with weights)"
+      else rm -f "$ADAPTERS.new"; fi
+    fi
     echo "$out" | grep -qE "composition |Sequential:|The kernel adapter reproduced|\[pool\] complete|STOPPED|Traceback|OutOfMemory|Killed" && break
     sleep 45
   done
@@ -195,7 +206,10 @@ import json, pathlib
 p = pathlib.Path("$LOCAL")
 if p.exists():
     d = json.loads(p.read_text())
-    for k, v in d["arms"].items():
+    # NOT EVERY RUNNER WRITES ARMS. train_pool writes a list of adapters, and this
+    # block raised KeyError on it — under `set -e` that ended the chain before the
+    # final download, losing the weights the session had just finished training.
+    for k, v in (d.get("arms") or {}).items():
         mark = "" if v.get("complete", True) else "  (partial)"
         extra = (f"repaired={v['repaired_passed']} calls={v['tool_calls']}"
                  if 'repaired_passed' in v else
