@@ -125,7 +125,9 @@ PY
 import subprocess
 subprocess.Popen(
     "cd /content/lora-kernel && ([ -f adapters.tgz ] && tar xzf adapters.tgz || true) && "
-    "nohup python -u -m $MODULE --base $BASE $MARGS "
+    # --out is passed so the runner writes the name the chain will ask for. Two
+    # pool-cost runs came home empty because those two names disagreed.
+    "nohup python -u -m $MODULE --base $BASE $MARGS --out $RESULTS_NAME "
     "> run.log 2>&1 &", shell=True)
 PY
   tmo 300 colab exec -s "$S" -f /tmp/_vrun.py >/dev/null 2>&1 || true
