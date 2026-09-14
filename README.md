@@ -216,6 +216,8 @@ were bought and three of them reported; **What has actually run**, below,
 carries the numbers. The plan they became lives in
 [`docs/EXPERIMENT_PLAN.md`](docs/EXPERIMENT_PLAN.md), which is the state of
 the work and is updated the same session a step reports.
+- [**CASE-TRIAGE.md**](docs/CASE-TRIAGE.md) — one person's morning mail, end to end: which of the twelve measured mechanisms it exercises, which two it cannot, and the gate on each phase.
+
 
 ## Where the plan stands
 

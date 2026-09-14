@@ -189,6 +189,7 @@ cuatro se compraron y tres reportaron; **Lo que realmente corrió**, más abajo,
 trae los números. El plan en que se convirtieron vive en
 [`docs/EXPERIMENT_PLAN.md`](docs/EXPERIMENT_PLAN.md), que es el estado del
 trabajo y se actualiza en la misma sesión en que un paso reporta.
+- [**CASE-TRIAGE.md**](docs/es/CASE-TRIAGE.md) — el correo de una mañana, de punta a punta: cuáles de los doce mecanismos medidos ejercita, cuáles dos no puede, y la compuerta de cada fase.
 
 ## Dónde está el plan
 
