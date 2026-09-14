@@ -37,9 +37,10 @@ Point the agent at `http://127.0.0.1:8001/v1` and set `model` to `kernel` or
 
 ## What is assembled and not measured
 
-**The multi-turn loop.** An agent sends back `role: "tool"` results and the proxy
-folds them into the transcript as `= value`, where the adapter was trained to read
-them. **Every measurement so far has been a single turn** — P27 arm 3 explicitly so.
+**The multi-turn loop — now exercised, see the worked example below.** An agent sends
+back `role: "tool"` results and the proxy folds them into the transcript as
+`= value`, where the adapter was trained to read them. **Every measurement before
+P30 was a single turn** — P27 arm 3 explicitly so.
 `tests/test_proxy.py` shows the translation is lossless and that a result lands on
 the line that asked for it; it does not show the adapter continues correctly from
 there. **That is a different claim and it has not been bought.**
@@ -128,3 +129,28 @@ the content.
 
 It also refuses to pretend: under fifty runs it says the sample is too small and that
 three shapes covering 60% of six runs is not evidence of a region.
+
+## A worked example: one person's morning mail
+
+    python3 -m training.harness.agent_sim \
+        --base-url http://127.0.0.1:8001/v1 --model kernel --n 12
+
+`training/email/` is a region shaped like a real one: a narrow task repeated every
+day, with an answer that is **mechanically checkable**. A message is important when
+at least two of *continues a thread I wrote in*, *addressed to me directly*, *asks
+something of me*, *frequent counterpart* hold — and never when it is automated.
+
+**The two decisive facts are not in the listing.** Whether the user wrote in the
+thread lives behind `thread_history`; how much real correspondence exists lives
+behind `sender_stats`. A rule reading only the listing scores **0.680 against a
+majority-class bar of 0.680** on the human messages — it does not beat guessing by a
+single case, and a test asserts that rather than trusting it.
+
+`agent_sim` is shaped like a client, not like a test: it speaks only OpenAI — a base
+URL, a model name, `tools`, `tool_calls`, `role: "tool"` — so anything it needs that
+the protocol does not provide is a gap between this project and a real runtime.
+
+**This is what closed the multi-turn loop**: 24 calls, 0 refused, 0 undecided,
+against a stub model through the real proxy. The section above no longer says that
+path is unmeasured — but note what it measures. **The plumbing, not the pool.** No
+trained adapter has been run on this suite yet.

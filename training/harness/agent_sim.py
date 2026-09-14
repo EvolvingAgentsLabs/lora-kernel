@@ -1,0 +1,187 @@
+"""An OpenClaw-shaped agent doing one person's morning triage, through the proxy.
+
+WHAT THIS EXERCISES THAT NOTHING ELSE HAS. Every measurement in this project has been
+a single turn — P27 arm 3 explicitly so — and `docs/SERVING.md` names the multi-turn
+loop as *assembled and not measured*. This is the loop: the agent sends `tools=[…]`,
+reads `tool_calls`, executes them, sends the results back as `role: "tool"`, and does
+it again until the model stops asking. **It is the first time the whole path runs.**
+
+IT IS SHAPED LIKE A CLIENT, NOT LIKE A TEST. It speaks only OpenAI: a base URL, a
+model name, `tools`, `tool_calls`, `role: "tool"`. Anything it needed that the
+protocol does not provide would be a gap between this project and a real runtime, and
+there is one, named below.
+
+THE ONE PLACE THE CLIENT KNOWS ITS OWN TOOLS. P28's arity convention renders a
+single-parameter function positionally, so the model writes
+`<thread_history>thr-000</thread_history>` and the shim hands back `{"_": "thr-000"}`.
+Mapping `_` onto the parameter's real name needs the schema — and **the client owns
+its schema**, so it happens here rather than in the converter, which stays domain-free.
+
+    python3 -m training.harness.agent_sim --base-url http://127.0.0.1:8001/v1 \\
+        --model kernel --n 12
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import time
+import urllib.error
+import urllib.request
+
+from training.email.inbox import generate
+from training.email.tools import SCHEMA, ToolError, answer
+
+SYSTEM = ("You are triaging one person's inbox. For each message decide whether it "
+          "is IMPORTANT. A message is important when at least two of these hold: it "
+          "continues a thread the user wrote in; it is addressed to the user "
+          "directly; it asks the user for something; the sender is a frequent "
+          "correspondent. An automated message is never important. Use the tools to "
+          "find out — the listing does not say. When you are sure, answer with one "
+          "line: IMPORTANT or NOT IMPORTANT.")
+
+
+def _param_name(tool: str) -> str:
+    for t in SCHEMA:
+        fn = t["function"]
+        if fn["name"] == tool:
+            req = (fn["parameters"].get("required") or
+                   sorted(fn["parameters"]["properties"]))
+            return req[0]
+    return "id"
+
+
+def _body(tool: str, arguments) -> str:
+    """`tool_calls` arguments back into the string the tool reads."""
+    a = json.loads(arguments) if isinstance(arguments, str) else dict(arguments)
+    if list(a) == ["_"]:
+        return f"{_param_name(tool)}={a['_']}"
+    return "; ".join(f"{k}={v}" for k, v in a.items())
+
+
+def chat(base_url: str, key: str | None, payload: dict, timeout: int = 300) -> dict:
+    headers = {"Content-Type": "application/json"}
+    if key:
+        headers["Authorization"] = f"Bearer {key}"
+    req = urllib.request.Request(base_url.rstrip("/") + "/chat/completions",
+                                 data=json.dumps(payload).encode(), headers=headers)
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        return json.load(r)
+
+
+def triage_one(base_url, key, model, inbox, msg, max_turns, max_tokens):
+    """One message, one conversation, as many tool turns as the model asks for."""
+    listing = (f"Message {msg['id']} in thread {msg['thread_id']}\n"
+               f"From: {msg['from_name']} <{msg['from']}>\n"
+               f"Subject: {msg['subject']}\n"
+               f"Preview: {msg['preview']}\n\n"
+               "Is this important?")
+    messages = [{"role": "system", "content": SYSTEM},
+                {"role": "user", "content": listing}]
+    calls = refused = 0
+    for _ in range(max_turns):
+        try:
+            out = chat(base_url, key, {"model": model, "messages": messages,
+                                       "tools": SCHEMA, "temperature": 0,
+                                       "max_tokens": max_tokens})
+        except urllib.error.HTTPError as e:
+            return {"verdict": None, "error": e.read()[:160].decode("utf-8", "replace"),
+                    "calls": calls, "refused": refused, "turns": len(messages)}
+        except Exception as e:
+            return {"verdict": None, "error": repr(e)[:160], "calls": calls,
+                    "refused": refused, "turns": len(messages)}
+
+        m = (out.get("choices") or [{}])[0].get("message") or {}
+        tcs = m.get("tool_calls") or []
+        messages.append({k: v for k, v in m.items()
+                         if k in ("role", "content", "tool_calls")} or
+                        {"role": "assistant", "content": ""})
+        if not tcs:
+            text = (m.get("content") or "").upper()
+            verdict = (True if "NOT IMPORTANT" not in text and "IMPORTANT" in text
+                       else False if "NOT IMPORTANT" in text else None)
+            return {"verdict": verdict, "calls": calls, "refused": refused,
+                    "turns": len(messages), "text": (m.get("content") or "")[:200]}
+        for tc in tcs:
+            fn = tc["function"]
+            calls += 1
+            try:
+                result = answer(inbox, fn["name"], _body(fn["name"], fn["arguments"]))
+            except ToolError as e:
+                refused += 1
+                result = f"ERROR: {e}"
+            messages.append({"role": "tool", "tool_call_id": tc.get("id"),
+                             "name": fn["name"], "content": result})
+    return {"verdict": None, "calls": calls, "refused": refused,
+            "turns": len(messages), "text": "(ran out of turns)"}
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--base-url", default="http://127.0.0.1:8001/v1")
+    ap.add_argument("--api-key", default=None)
+    ap.add_argument("--model", default="kernel")
+    ap.add_argument("--n", type=int, default=12)
+    ap.add_argument("--seed", type=int, default=717171)
+    ap.add_argument("--max-turns", type=int, default=6)
+    ap.add_argument("--max-tokens", type=int, default=300)
+    ap.add_argument("--out", default="triage_results.json")
+    args = ap.parse_args()
+
+    inbox = generate(args.n, args.seed)
+    truth = [m["_truth"] for m in inbox["messages"]]
+    # THE MAJORITY-CLASS BAR, PRINTED BEFORE THE RUN. Answering "not important" to
+    # everything scores this, and a system below it has learned nothing.
+    bar = max(sum(truth), len(truth) - sum(truth)) / len(truth)
+    # AND THE BAR THAT MATTERS. Spotting `noreply@` is free and a human does it at a
+    # glance, so the whole-inbox number rewards the easy half. The question the tools
+    # exist for is which HUMAN message matters, and on that subset the best rule
+    # readable from the listing scores exactly the majority class — the tools have
+    # all of the remaining margin [ran] `tests/test_email.py`.
+    human = [m for m in inbox["messages"] if not m["_facts"]["automated"]]
+    ht = [m["_truth"] for m in human]
+    hbar = max(sum(ht), len(ht) - sum(ht)) / max(len(ht), 1)
+    print(f"[sim] {args.n} messages · {sum(truth)} important · "
+          f"majority-class bar {bar:.3f}", flush=True)
+    print(f"[sim] of those, {len(human)} are human · bar on them {hbar:.3f} — "
+          f"this is where the tools decide", flush=True)
+
+    recs, t0 = [], time.time()
+    for i, msg in enumerate(inbox["messages"], 1):
+        r = triage_one(args.base_url, args.api_key, args.model, inbox, msg,
+                       args.max_turns, args.max_tokens)
+        r.update({"id": msg["id"], "truth": msg["_truth"],
+                  "correct": r["verdict"] == msg["_truth"]})
+        recs.append(r)
+        if i % 4 == 0:
+            ok = sum(x["correct"] for x in recs)
+            print(f"  [sim] {i}/{args.n} correct {ok} calls "
+                  f"{sum(x['calls'] for x in recs)}", flush=True)
+
+    ok = sum(r["correct"] for r in recs)
+    undecided = sum(r["verdict"] is None for r in recs)
+    calls = sum(r["calls"] for r in recs)
+    refused = sum(r["refused"] for r in recs)
+    hum_ids = {m["id"] for m in human}
+    hrecs = [r for r in recs if r["id"] in hum_ids]
+    hok = sum(r["correct"] for r in hrecs)
+    summary = {"model": args.model, "n": args.n, "correct": ok,
+               "accuracy": round(ok / args.n, 4), "majority_class_bar": round(bar, 4),
+               "human_n": len(hrecs), "human_correct": hok,
+               "human_accuracy": round(hok / max(len(hrecs), 1), 4),
+               "human_majority_class_bar": round(hbar, 4),
+               "undecided": undecided, "calls": calls, "refused": refused,
+               "seconds": round(time.time() - t0, 1), "records": recs}
+    with open(args.out, "w") as f:
+        json.dump(summary, f, indent=2)
+
+    print(f"\n{ok}/{args.n} = {ok/args.n:.3f} against a majority-class bar of {bar:.3f}")
+    print(f"on the {len(hrecs)} human messages: {hok}/{len(hrecs)} = "
+          f"{hok/max(len(hrecs),1):.3f} against {hbar:.3f} — the number that counts")
+    print(f"{calls} tool calls, {refused} refused, {undecided} never decided")
+    print("A system below the bar has not learned the task; it has learned to guess.")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
