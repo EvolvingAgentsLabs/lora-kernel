@@ -1081,12 +1081,37 @@ nombran su fluido en vez de entregar una densidad **[ran]**:
 | regla escrita a mano | 7/30 | 88/96 — 91,7% | 96 | 0 |
 | **sin capa de herramientas** | **27/30** | — | **0** | 0 |
 
-**Un protocolo aprendido le gana a una regla escrita a mano donde la llamada no es
+~~**Un protocolo aprendido le gana a una regla escrita a mano donde la llamada no es
 copia**, en las dos métricas y por poco: 94,8% contra 91,7%, 10/30 contra 7/30. Eso
-da vuelta el veredicto de P13 y lo ubica — un protocolo aprendido pierde contra una
-expresión regular cuando pedir una herramienta es copiar una expresión ya escrita, y
-gana cuando es elegir entre tres herramientas y construir argumentos con clave a
-partir de prosa. **P13 midió la suite, no el adaptador.**
+da vuelta el veredicto de P13 y lo ubica.~~ **Retirado el 2026-09-14: las dos
+métricas son empates.**
+
+Todos los brazos corren las mismas 30 fixtures, así que la comparación es **pareada**,
+y toda la información sobre una diferencia vive en los casos donde los dos brazos
+discrepan. Esos totales esconden **tres** discrepancias en la respuesta final y
+**cuatro contra una** en los valores de herramienta:
+
+| métrica | totales | discrepancias | p exacta a dos colas |
+|---|---|--:|--:|
+| respuesta final | 10/30 vs 7/30 | 3 : 0 | **0,250** |
+| valores del oráculo | 91/96 vs 88/96 | 4 : 1 | **0,375** |
+
+**[ran]** 2026-09-14, `tests/test_paired.py`. Tres monedas cayendo del mismo lado dan
+p = 0,25. La dirección fue consistente las dos veces y **la afirmación nunca se
+midió** — y P21, que quitó la memorización sorteando un handbook por caso, dejó a los
+mismos tres brazos en 4, 5 y 6 de 30, cada par también un empate.
+
+Lo que P15 establece es el control, no la competencia: **sin ninguna capa de
+herramientas el experto saca 27/30, el triple que cualquiera de los dos brazos con
+herramientas** (p < 0,001 contra los dos), y eso es una afirmación sobre la suite. Si
+un protocolo aprendido le gana a una expresión regular eligiendo entre tres
+herramientas **queda abierto**, y la lectura honesta de P13 es que nunca fue revertido.
+
+**El único lugar donde el código realmente le gana a los pesos sobrevive**: en P24 la
+regla escrita a mano le gana al adaptador kernel 12/30 contra 5/30 sobre **7 : 0**
+discrepancias, p = 0,016 — una diferencia real, y es desfavorable al tratamiento, que
+es justamente por qué merece el mismo cuidado. **Esto no es una duda general sobre la
+suite; es el mismo test aplicado en las dos direcciones.**
 
 **Y el control anula la pregunta para la que la suite fue construida.** Sin ninguna
 capa de herramientas el experto saca **27/30 sin consultar nada**, el triple que
