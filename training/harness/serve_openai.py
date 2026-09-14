@@ -27,6 +27,10 @@ import urllib.request
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
+# THE OUTPUT NAME FOLLOWS THE CHAIN'S. It was hardcoded, and the chain downloads
+# whatever RESULTS_NAME says — so the pool-cost run wrote `serve_results.json` on the
+# VM while the chain asked for `serve_pool_cost.json` and came home empty. Twice. Both
+# runs' numbers survive only in a log [ran] 2026-09-14.
 OUT = Path("serve_results.json")
 HOST = "http://127.0.0.1:8000"
 
@@ -89,10 +93,16 @@ def main() -> int:
     ap.add_argument("--concurrency", type=int, default=8)
     ap.add_argument("--cost-only", dest="cost_only", action="store_true",
                     help="skip the accuracy arm and measure only what a pool costs")
+    ap.add_argument("--out", default=None,
+                    help="results file; must match the chain's RESULTS_NAME")
     ap.add_argument("--repeats", type=int, default=3,
                     help="timed rounds; the order alternates so neither arm is "
                          "always first")
     args = ap.parse_args()
+
+    global OUT
+    if args.out:
+        OUT = Path(args.out)
 
     from training.physics.headroom import correct, parse_answer
     from training.physics.multitool import FAMILIES, generate

@@ -65,7 +65,13 @@ def main() -> int:
     ap.add_argument("--eval-seed", type=int, default=616161)
     ap.add_argument("--max-tokens", type=int, default=400)
     ap.add_argument("--max-lora-rank", type=int, default=16)
+    ap.add_argument("--out", default=None,
+                    help="results file; must match the chain's RESULTS_NAME")
     args = ap.parse_args()
+
+    global OUT
+    if args.out:
+        OUT = Path(args.out)
 
     from training.physics.multitool import FAMILIES, INSTRUCTION, generate
     from training.physics.tools import ToolError, answer
