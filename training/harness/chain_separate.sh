@@ -207,7 +207,7 @@ p = pathlib.Path("$LOCAL")
 if p.exists():
     d = json.loads(p.read_text())
     # NOT EVERY RUNNER WRITES ARMS. train_pool writes a list of adapters, and this
-    # block raised KeyError on it — under `set -e` that ended the chain before the
+    # block raised KeyError on it — under set -e that ended the chain before the
     # final download, losing the weights the session had just finished training.
     for k, v in (d.get("arms") or {}).items():
         mark = "" if v.get("complete", True) else "  (partial)"
