@@ -163,3 +163,55 @@ measurement.**
   that costs something measurable.
 - Either way, **a claim that the adapter "does function-calling" is a claim about
   `tools_to_instruction`**, not about the weights.
+
+---
+
+## Arm 3 outcome (2026-09-13) [ran]
+
+| arm | calls | refused | oracle's tool values | cases producing a call |
+|---|--:|--:|--:|--:|
+| trained instruction | 178 | 16 (9%) | **59/96 = 0.615** | **30/30** |
+| **OpenAI schema** | 176 | **93 (53%)** | **41/96 = 0.427** | **30/30** |
+
+**The shim costs 0.188 on the axis, and multiplies refused calls almost six-fold.**
+
+### The protocol is not switched off — the form is
+
+**Both arms produce a call in all thirty cases.** The worry named before the run —
+that describing the tools differently might stop the adapter asking at all — does not
+happen. It asks just as often and with the same number of calls (176 against 178). It
+asks *wrongly*.
+
+And the wrongness is one thing, not many:
+
+| refusal | trained | **schema** |
+|---|--:|--:|
+| an expression written as a keyed argument | 1 | **33** |
+| unknown unit | 4 | 4 |
+| no entry in the handbook | 3 | 3 |
+| everything else | 8 | 3 |
+
+**Thirty-three of the schema arm's ninety-three refusals are the `calc` mismatch this
+brief left in on purpose.** A one-property JSON schema renders as
+`<calc>expression=...</calc>`; the adapter was trained on `<calc>1.2 * 3</calc>`,
+positional. Every other refusal category is **identical across the two arms** — 4 and
+4, 3 and 3. The schema changed exactly one thing and it broke exactly that thing.
+
+### What this says, and what it does not
+
+**Says**: an OpenAI client can drive this pool today, and the translation costs
+something real and *attributable*. It is not a diffuse degradation; it is a shape
+mismatch on one tool, visible in the refusal counts, and the rest of the protocol
+crosses the bridge intact.
+
+**Does not say** that the shim is fine as written. Special-casing `calc` was refused
+before the run because a converter that learns a tool's shape stops being a
+serializer — and the number that refusal cost is now known: **33 refusals and about
+half of the 0.188 gap.** Whether a schema convention exists that is faithful for both
+keyed and positional tools **is a design question this experiment poses rather than
+answers.**
+
+**And a caveat on the absolute numbers.** The trained arm reaches 0.615 here against
+P21's 0.979, because this is a **single turn**: no harness answers the calls, so the
+model writes a whole chain without ever seeing an intermediate value. **Only the A/B
+inside this run is comparable**; neither number belongs beside P21's.
