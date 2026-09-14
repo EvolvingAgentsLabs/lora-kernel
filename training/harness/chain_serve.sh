@@ -10,9 +10,12 @@ set -euo pipefail
 GPU="${GPU:-A100}"
 BRANCH="${BRANCH:-handbook}"
 RUN_DIR="${RUN_DIR:-results/P26-openai-server-20260913}"
+MODULE="${MODULE:-training.harness.serve_openai}"
+MARGS="${MARGS:---adapter kernel=adapters/kernel-mt --adapter domain=adapters/domain-mt}"
+RESULTS_NAME="${RESULTS_NAME:-serve_results.json}"
 BASE="${BASE:-Qwen/Qwen2.5-3B-Instruct}"
 SESSIONS="${SESSIONS:-2}"
-LOCAL="$RUN_DIR/serve_results.json"
+LOCAL="$RUN_DIR/$RESULTS_NAME"
 ADAPTERS="$RUN_DIR/adapters.tgz"
 
 tmo () {
@@ -122,8 +125,7 @@ PY
 import subprocess
 subprocess.Popen(
     "cd /content/lora-kernel && ([ -f adapters.tgz ] && tar xzf adapters.tgz || true) && "
-    "nohup python -u -m training.harness.serve_openai --base $BASE "
-    "--adapter kernel=adapters/kernel-mt --adapter domain=adapters/domain-mt "
+    "nohup python -u -m $MODULE --base $BASE $MARGS "
     "> run.log 2>&1 &", shell=True)
 PY
   tmo 300 colab exec -s "$S" -f /tmp/_vrun.py >/dev/null 2>&1 || true
@@ -147,11 +149,11 @@ PY
         QUIET=0
       fi
     fi
-    tmo 300 colab download -s "$S" /content/lora-kernel/serve_results.json "$LOCAL" >/dev/null 2>&1 || true
+    tmo 300 colab download -s "$S" /content/lora-kernel/$RESULTS_NAME "$LOCAL" >/dev/null 2>&1 || true
     echo "$out" | grep -qE "prompts/s|STOPPED|Traceback|OutOfMemory|Killed|never came up" && break
     sleep 45
   done
-  tmo 300 colab download -s "$S" /content/lora-kernel/serve_results.json "$LOCAL" >/dev/null 2>&1 || true
+  tmo 300 colab download -s "$S" /content/lora-kernel/$RESULTS_NAME "$LOCAL" >/dev/null 2>&1 || true
   tmo 300 colab download -s "$S" /content/lora-kernel/vllm.log "$RUN_DIR/vllm.log" >/dev/null 2>&1 || true
   tmo 300 colab stop -s "$S" >/dev/null 2>&1 || true; trap - EXIT
 done
