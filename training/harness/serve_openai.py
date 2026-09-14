@@ -91,6 +91,9 @@ def main() -> int:
     ap.add_argument("--max-tokens", type=int, default=400)
     ap.add_argument("--max-lora-rank", type=int, default=16)
     ap.add_argument("--concurrency", type=int, default=8)
+    ap.add_argument("--gate-only", dest="gate_only", action="store_true",
+                    help="P29: serve, ask the identity question, and stop. Nothing "
+                         "is trained and nothing is scored.")
     ap.add_argument("--cost-only", dest="cost_only", action="store_true",
                     help="skip the accuracy arm and measure only what a pool costs")
     ap.add_argument("--out", default=None,
@@ -146,14 +149,44 @@ def main() -> int:
         base_text = chat(args.base, probe, SYSTEM, 120)
         gate = {}
         for name in pool:
-            t = chat(name, probe, SYSTEM, 120)
+            try:
+                t = chat(name, probe, SYSTEM, 120)
+            except Exception as e:
+                # REFUSED OUT LOUD IS NOT THE SAME AS SILENTLY IGNORED. P29 serves a
+                # deliberately foreign adapter; a shape or rank complaint is an
+                # inconclusive result, not a negative one, and it must not be
+                # recorded as "does not differ".
+                gate[name] = {"differs_from_base": None, "refused": repr(e)[:200]}
+                print(f"[gate] {name}: REFUSED — {e}"[:200], flush=True)
+                continue
             gate[name] = {"differs_from_base": t.strip() != base_text.strip(),
                           "base_head": base_text[:110], "lora_head": t[:110]}
             print(f"[gate] {name}: "
                   + ("applied" if gate[name]["differs_from_base"]
                      else "IDENTICAL TO BASE — not applied"), flush=True)
+
         results["arms"]["serving identity"] = gate
         OUT.write_text(json.dumps(results, indent=2))
+        if args.gate_only:
+            # THE WHOLE EXPERIMENT. P3 spent an A100 discovering that throughput
+            # measured on an unverified stack is worth nothing; this asks the
+            # verification question alone and pays for nothing else.
+            # THREE OUTCOMES, NOT TWO. `all(...)` over a None reads as False and
+            # would file an explicit shape complaint under "not applied" — which is
+            # the one reading this brief forbids, because a foreign adapter being
+            # refused says nothing about whether a native one would apply.
+            vals = [g["differs_from_base"] for g in gate.values()]
+            if any(v is None for v in vals):
+                verdict = "inconclusive: the adapter was refused out loud"
+            elif all(vals):
+                verdict = "applied"
+            else:
+                verdict = "not applied: served text is identical to the base"
+            print(f"[gate-only] {verdict}", flush=True)
+            results["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")
+            results["gate_verdict"] = verdict
+            OUT.write_text(json.dumps(results, indent=2))
+            return 0
         if not all(g["differs_from_base"] for g in gate.values()):
             print("[gate] STOPPED. An adapter that does not change the output is "
                   "not being served, whatever the throughput says. This is C18 and "
