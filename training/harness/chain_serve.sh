@@ -185,7 +185,16 @@ PY
       fi
     fi
     tmo 300 colab download -s "$S" /content/lora-kernel/$RESULTS_NAME "$LOCAL" >/dev/null 2>&1 || true
-    echo "$out" | grep -qE "prompts/s|decision:|STOPPED|Traceback|OutOfMemory|Killed|never came up" && break
+    # THE WATCH LOOP HAS TO KNOW EVERY WAY A RUN ENDS, not the ways the first
+    # runner ended. triage_run finishes by printing its arm table and nothing here
+    # matched it, so a completed 150-case run held an L4 for the loop's full 120
+    # iterations — ninety minutes of a card for a result already on disk
+    # [ran] 2026-09-14. The results file is the authority: if the runner wrote its
+    # completion marker, the run is over whatever the log looks like.
+    if [ -f "$LOCAL" ] && grep -q '"finished"\|"decision"\|stopped_at_gate' "$LOCAL" 2>/dev/null; then
+      echo "    the runner wrote its result — done"; break
+    fi
+    echo "$out" | grep -qE "prompts/s|decision:|clears the gate|STOPPED|Traceback|OutOfMemory|Killed|never came up" && break
     sleep 45
   done
   tmo 300 colab download -s "$S" /content/lora-kernel/$RESULTS_NAME "$LOCAL" >/dev/null 2>&1 || true
