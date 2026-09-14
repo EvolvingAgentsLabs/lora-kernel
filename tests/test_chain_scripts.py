@@ -80,3 +80,56 @@ def test_the_detector_would_have_caught_the_bug_it_was_written_for(tmp_path):
     q = tmp_path / "chain_quoted.sh"
     q.write_text("cat > /tmp/x.py <<'PY'\n# `import` is safe here\nPY\n")
     assert not unquoted_heredoc_lines(q)
+
+
+# ---------------------------------------------------------------------------
+# `set -u` AND AN OPTIONAL SWITCH ARE A DEAD CHAIN.
+#
+# chain_serve.sh referenced `$TRAINDEPS` inside a heredoc. Launched without it,
+# bash exited with `TRAINDEPS: unbound variable` — reported at the heredoc's
+# line, not the reference's, so the message points at the wrong place
+# **[ran]** 2026-09-14. Same family as the `${ARGS:-}` bug recorded inside
+# chain_separate.sh, which cost two sessions of seventy-seven minutes each.
+# ---------------------------------------------------------------------------
+
+# `;` SEPARATES ASSIGNMENTS TOO. Anchoring only at the start of a line made
+# this report `SESSIONS="${1:-1}"; GPU="${GPU:-L4}"` as an undefaulted read of
+# $GPU — a detector that invents findings is as useless as one that misses
+# them, and it was caught on its own first run.
+ASSIGN = re.compile(r"(?:^|;|\bthen\b|\bdo\b)\s*([A-Z_][A-Z0-9_]*)=", re.M)
+REF = re.compile(r"\$\{?([A-Z_][A-Z0-9_]*)\}?")
+# Shell and Colab supply these; the script is not expected to define them.
+AMBIENT = {"PATH", "HOME", "PWD", "SHELL", "USER", "TMPDIR", "LANG", "PYTHONPATH"}
+
+
+@pytest.mark.parametrize("path", CHAINS, ids=lambda p: p.name)
+def test_every_variable_is_defaulted_before_it_is_read(path):
+    """Under `set -u`, reading an unset variable ends the script.
+
+    A reference is safe if the script assigns the name itself, or if that use
+    site carries its own `:-` default. Anything else is a switch that works
+    only when the caller happens to pass it.
+    """
+    text = path.read_text()
+    if "set -u" not in text and "set -euo" not in text:
+        pytest.skip(f"{path.name} does not run under set -u")
+    assigned = set(ASSIGN.findall(text)) | AMBIENT
+    bad = []
+    for i, line in enumerate(text.splitlines(), 1):
+        for name in REF.findall(line):
+            if name in assigned:
+                continue
+            if f"${{{name}:-" in line or f"${{{name}-" in line:
+                continue          # defaulted right where it is read
+            bad.append((i, name, line.strip()))
+    assert not bad, (
+        f"{path}: read under `set -u` without a default — the chain dies on launch "
+        "when the caller omits it:\n"
+        + "\n".join(f"  line {n}: ${v}  in  {l[:90]}" for n, v, l in bad))
+
+
+def test_the_assignment_detector_sees_past_a_semicolon(tmp_path):
+    """Its own first run reported `GPU="${GPU:-L4}"` as undefaulted. It is not."""
+    p = tmp_path / "chain_semi.sh"
+    p.write_text('set -euo pipefail\nSESSIONS="${1:-1}"; GPU="${GPU:-L4}"\necho "$GPU"\n')
+    assert "GPU" in set(ASSIGN.findall(p.read_text()))
