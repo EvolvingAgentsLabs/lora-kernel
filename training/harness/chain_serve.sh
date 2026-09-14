@@ -85,6 +85,13 @@ step("clone", "rm -rf /content/lora-kernel && cd /content && git clone -q -b $BR
 # around.
 step("clear", "pip -q uninstall -y torchaudio torchvision 2>&1 | tail -1; echo cleared")
 step("vllm", "pip -q install 'vllm>=0.28' 2>&1 | tail -1")
+# PEFT AND DATASETS ONLY WHEN THE STEP TRAINS. native_gate trains a tiny adapter
+# before serving it; every other module here only serves. P26 learned what putting
+# training into a serving session costs: an import error for trl, after vLLM had
+# already installed, in a session that had no reason to carry it.
+# (No backticks in this heredoc — it is unquoted so BRANCH interpolates, and bash
+#  runs anything in here that looks like a substitution. Third time today.)
+step("train deps", "[ -z '$TRAINDEPS' ] || pip -q install peft datasets accelerate 2>&1 | tail -1; echo ok")
 step("check", "python -c 'import vllm; print(vllm.__version__)' 2>&1 | tail -1")
 PY
   cat > /tmp/_vcheck.py <<'PY'
