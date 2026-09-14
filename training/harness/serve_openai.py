@@ -87,6 +87,11 @@ def main() -> int:
     ap.add_argument("--max-tokens", type=int, default=400)
     ap.add_argument("--max-lora-rank", type=int, default=16)
     ap.add_argument("--concurrency", type=int, default=8)
+    ap.add_argument("--cost-only", dest="cost_only", action="store_true",
+                    help="skip the accuracy arm and measure only what a pool costs")
+    ap.add_argument("--repeats", type=int, default=3,
+                    help="timed rounds; the order alternates so neither arm is "
+                         "always first")
     args = ap.parse_args()
 
     from training.physics.headroom import correct, parse_answer
@@ -147,8 +152,11 @@ def main() -> int:
             OUT.write_text(json.dumps(results, indent=2))
             return 0
 
-        # ARM 2 — do the numbers survive the serving stack?
-        for name in pool:
+        # ARM 2 — do the numbers survive the serving stack? It is skipped under
+        # --cost-only because P26 established it cannot answer that question as
+        # built: a single-turn endpoint gives the kernel no answer to its calls and
+        # the domain cannot do arithmetic, so both zeros are about the harness [ran].
+        for name in ([] if args.cost_only else pool):
             recs, passed = [], 0
             t0 = time.time()
             for i, row in enumerate(rows, 1):
@@ -181,14 +189,44 @@ def main() -> int:
 
         first = list(pool)[0]
         names_cycle = list(pool)
-        results["arms"]["concurrency · pure"] = burst(lambda i: first)
-        results["arms"]["concurrency · mixed"] = burst(
-            lambda i: names_cycle[i % len(names_cycle)])
-        OUT.write_text(json.dumps(results, indent=2))
-        p = results["arms"]["concurrency · pure"]["prompts_per_second"]
-        m = results["arms"]["concurrency · mixed"]["prompts_per_second"]
-        print(f"\npure {p} prompts/s · mixed {m} prompts/s · "
+        pure = lambda i: first
+        mixed = lambda i: names_cycle[i % len(names_cycle)]
+
+        # A WARM-UP BURST, AND AN ALTERNATING ORDER. P26 ran pure then mixed, once
+        # each, and mixed came out FASTER — which is not a finding, it is the first
+        # arm paying whatever warm-up exists [ran]. The discarded burst absorbs it
+        # and the order flips each round so neither arm is always first.
+        print("[cost] warm-up burst, discarded", flush=True)
+        burst(pure)
+        rounds = []
+        for r in range(args.repeats):
+            if r % 2 == 0:
+                a = burst(pure); b = burst(mixed)
+            else:
+                b = burst(mixed); a = burst(pure)
+            rounds.append({"round": r, "pure_first": r % 2 == 0,
+                           "pure": a["prompts_per_second"],
+                           "mixed": b["prompts_per_second"]})
+            print(f"  [cost] round {r}: pure {a['prompts_per_second']} · "
+                  f"mixed {b['prompts_per_second']}"
+                  + ("  (pure first)" if r % 2 == 0 else "  (mixed first)"),
+                  flush=True)
+            results["arms"]["concurrency"] = {"rounds": rounds}
+            OUT.write_text(json.dumps(results, indent=2))
+
+        ps = sorted(x["pure"] for x in rounds)
+        ms = sorted(x["mixed"] for x in rounds)
+        med = lambda v: v[len(v) // 2]
+        p, m = med(ps), med(ms)
+        results["arms"]["concurrency"].update({
+            "pure_median": p, "mixed_median": m,
+            "pure_range": [ps[0], ps[-1]], "mixed_range": [ms[0], ms[-1]],
+            "pool_cost": round(1 - m / max(p, 1e-9), 4)})
+        print(f"\npure {p} prompts/s (spread {ps[0]}–{ps[-1]}) · "
+              f"mixed {m} (spread {ms[0]}–{ms[-1]}) · "
               f"the pool costs {1 - m / max(p, 1e-9):.1%}", flush=True)
+        print("A difference smaller than either spread is not a difference.",
+              flush=True)
         results["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")
         OUT.write_text(json.dumps(results, indent=2))
     finally:
