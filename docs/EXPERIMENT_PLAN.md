@@ -58,6 +58,7 @@ already exist, before a single adapter is trained.
 | **S5** | **the withdrawal gap** | the product | GPU + frontier | **DONE in region — 0.000.** The region's edge is hard and the expert cannot feel it — P7, P14 |
 | **S6** | `harness.lora` — a kernel apart from the expert | the kernel | GPU rental | **half done. Composition solved by taking turns (P13); whether the kernel is worth its weights is being measured (P15)** |
 | **S7** | the tournament, with a held-out verifier | evolution | GPU rental | **blocked: there is no judge without an oracle** — `OPEN-PROBLEMS.md` problem 4 |
+| **S8** | the pool behind an **OpenAI-compatible endpoint** | delivery | GPU rental | **DONE for serving, priced for tool-calling** — each adapter is its own model name and applies (P26); the tag→`tool_calls` converter is domain-free, 604/604 round trips (P27); the schema→tag direction costs **0.188** (P27 arm 3) |
 
 Two rules govern the sequence. **Arms are bought one at a time** — the arm that
 can kill the hypothesis runs before the arm that explains it. **Nothing that
@@ -599,6 +600,66 @@ win.** `P5` is the headroom check on the new suite, `P6` the withdrawal gap,
 close without a tool — and `P8` is `harness.lora`, which this table calls P7.
 The tournament, this table's P8, has not been bought.
 
+
+#### P26 — the pool answers on `/v1/chat/completions`, and each adapter applies
+
+[`results/P26-openai-server-20260913/`](../results/P26-openai-server-20260913/BRIEF.md).
+`/v1/models` lists the base and both adapters as separate model names, and the same
+prompt to each produces **different text** — the kernel writing tags and delegating
+the arithmetic, the domain writing numbered physics and never emitting a tag. **Two
+personalities over one resident base, selected by the `model` field of an HTTP
+request.** This is the substrate question P3 left open **[ran]**.
+
+**The caveat travels with it**: P3's silent failure was vLLM 0.28.0 on a hybrid
+multimodal base and this is 0.29.0 on a dense one — **two things changed**.
+
+**Arm 2 does not test what it was built to test**, and that is recorded rather than
+dressed up: both adapters score 0/30, and neither zero is about vLLM. The kernel
+emits `<calc>` and waits for an answer a single-turn endpoint never gives; the domain
+cannot do arithmetic (1/30 raw, 30/30 repaired, measured long ago). Serving fidelity
+needs the same *harness*, not merely the same cases, and remains unanswered.
+
+**Arm 3 rules out the catastrophic version and little else.** Mixed came out *faster*
+than pure — 3.01 against 2.69 prompts/s — and the two bursts run in a fixed order with
+the first paying warm-up, so **−11.9% is the size of the confound, not a finding**.
+What survives is that two adapters interleaved are within noise of one inside a single
+scheduling pass, against P3's voided 20×.
+
+#### P27 — the `tool_calls` bridge is a serializer, and the schema direction is priced
+
+[`results/P27-tool-calls-20260913/`](../results/P27-tool-calls-20260913/BRIEF.md).
+P26 closed by warning that bridging tags to `tool_calls` "reintroduces the
+hand-written harness". **That conflated deciding with serialising**, and the two
+measure differently:
+
+| | lines of code naming this suite's vocabulary |
+|---|--:|
+| the hand-written rule | **19 of 76** |
+| the tag→`tool_calls` converter | **0 of 38** |
+
+**604 of 604** calls across both suites round-trip byte-identical, and `search_flights`,
+`sql_query` and `send_email` — tools this project has no concept of — convert cleanly,
+so the losslessness is not an artefact of a shared vocabulary **[ran]**.
+
+**The other direction is not free, and now has a number.** Rendering a client's
+`tools=[…]` into the tag surface, against the trained instruction on the same thirty
+cases and the same adapter:
+
+| arm | calls | refused | oracle's tool values |
+|---|--:|--:|--:|
+| trained instruction | 178 | 16 | **59/96 = 0.615** |
+| **OpenAI schema** | 176 | **93** | **41/96 = 0.427** |
+
+**The protocol is not switched off — the form is.** Both arms produce a call in all
+thirty cases and make the same number of calls. And **33 of the schema arm's 93
+refusals are one mismatch**: a one-property JSON schema renders `<calc>expression=…
+</calc>` where the adapter was trained on `<calc>1.2 * 3</calc>`. Every other refusal
+category is identical across the arms — 4 and 4, 3 and 3.
+
+**Absolute numbers do not travel**: the trained arm is 0.615 here against P21's 0.979
+because this is a *single turn* with no harness answering, so the model writes a whole
+chain without ever seeing an intermediate value. **Only the A/B inside this run is
+comparable.**
 
 #### P20 — a fitness that does not select for failing quietly
 

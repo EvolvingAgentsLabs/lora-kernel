@@ -58,6 +58,7 @@ se responde con modelos que ya existen, antes de entrenar un solo adaptador.
 | **S5** | **la brecha de retiro** | el producto | GPU + frontera | **HECHA en región — 0,000.** El borde de la región es duro y el experto no lo siente — P7, P14 |
 | **S6** | `harness.lora` — un kernel separado del experto | el kernel | GPU alquilada | **a medias. La composición se resolvió turnándose (P13); si el kernel vale sus pesos se está midiendo (P15)** |
 | **S7** | el torneo, con un verificador no visto | la evolución | GPU alquilada | **bloqueado: no hay juez sin oráculo** — `OPEN-PROBLEMS.md` problema 4 |
+| **S8** | el pool detrás de un **endpoint compatible con OpenAI** | entrega | GPU alquilada | **HECHO para servir, con precio para function-calling** — cada adaptador es su propio nombre de modelo y se aplica (P26); el conversor etiqueta→`tool_calls` no tiene dominio, 604/604 idas y vueltas (P27); la dirección esquema→etiqueta cuesta **0,188** (P27 brazo 3) |
 
 Dos reglas gobiernan la secuencia. **Los arms se compran de a uno** — el que
 puede matar la hipótesis corre antes que el que la explica. **Nada que necesite
@@ -619,6 +620,69 @@ insertado porque la brecha no cerraba sin herramienta — y `P8` es
 `harness.lora`, al que esta tabla llama P7. El torneo, el P8 de esta tabla,
 no se compró.
 
+
+#### P26 — el pool responde en `/v1/chat/completions`, y cada adaptador se aplica
+
+[`results/P26-openai-server-20260913/`](../../results/P26-openai-server-20260913/BRIEF.md).
+`/v1/models` lista la base y los dos adaptadores como nombres de modelo distintos, y
+el mismo prompt a cada uno produce **texto distinto** — el kernel escribiendo
+etiquetas y delegando la aritmética, el dominio escribiendo física numerada sin emitir
+una sola etiqueta. **Dos personalidades sobre una base residente, seleccionadas por el
+campo `model` de una petición HTTP.** Es la pregunta de sustrato que P3 dejó abierta
+**[ran]**.
+
+**La salvedad viaja con el resultado**: el fallo silencioso de P3 fue vLLM 0.28.0
+sobre una base híbrida multimodal y esto es 0.29.0 sobre una densa — **cambiaron dos
+cosas**.
+
+**El brazo 2 no prueba lo que fue construido para probar**, y queda registrado en vez
+de disfrazado: los dos adaptadores sacan 0/30, y ninguno de los ceros es sobre vLLM.
+El kernel emite `<calc>` y espera una respuesta que un endpoint de un turno nunca da;
+el dominio no sabe aritmética (1/30 crudo, 30/30 reevaluado, medido hace tiempo). La
+fidelidad de serving necesita el mismo *harness*, no sólo los mismos casos, y sigue
+sin respuesta.
+
+**El brazo 3 descarta la versión catastrófica y poco más.** El mixto salió *más
+rápido* que el puro — 3,01 contra 2,69 prompts/s — y los dos bursts corren en orden
+fijo con el primero pagando el calentamiento, así que **−11,9% es el tamaño del
+confound, no un hallazgo**. Lo que sobrevive es que dos adaptadores intercalados están
+dentro del ruido de uno en un mismo paso de scheduling, contra el 20× anulado de P3.
+
+#### P27 — el puente a `tool_calls` es un serializador, y la dirección del esquema tiene precio
+
+[`results/P27-tool-calls-20260913/`](../../results/P27-tool-calls-20260913/BRIEF.md).
+P26 cerró advirtiendo que puentear etiquetas a `tool_calls` "reintroduce el harness
+escrito a mano". **Eso confundía decidir con serializar**, y los dos miden distinto:
+
+| | líneas de código que nombran el vocabulario de la suite |
+|---|--:|
+| la regla escrita a mano | **19 de 76** |
+| el conversor etiqueta→`tool_calls` | **0 de 38** |
+
+**604 de 604** llamadas de ambas suites vuelven byte a byte idénticas, y
+`search_flights`, `sql_query` y `send_email` — herramientas que este proyecto no
+conoce — se convierten limpiamente, así que la fidelidad no es un artefacto de un
+vocabulario compartido **[ran]**.
+
+**La otra dirección no es gratis, y ahora tiene número.** Renderizar el `tools=[…]` de
+un cliente a la superficie de etiquetas, contra la instrucción entrenada sobre los
+mismos treinta casos y el mismo adaptador:
+
+| brazo | llamadas | rechazadas | valores del oráculo |
+|---|--:|--:|--:|
+| instrucción entrenada | 178 | 16 | **59/96 = 0,615** |
+| **esquema OpenAI** | 176 | **93** | **41/96 = 0,427** |
+
+**El protocolo no se apaga — se deforma la forma.** Los dos brazos producen llamada en
+los treinta casos y hacen la misma cantidad. Y **33 de los 93 rechazos del brazo del
+esquema son una sola discrepancia**: un esquema JSON de una propiedad renderiza
+`<calc>expression=…</calc>` donde el adaptador se entrenó con `<calc>1.2 * 3</calc>`.
+Todas las demás categorías de rechazo son idénticas entre brazos — 4 y 4, 3 y 3.
+
+**Los números absolutos no viajan**: el brazo entrenado da 0,615 acá contra el 0,979
+de P21 porque esto es *un solo turno* sin harness que conteste, así que el modelo
+escribe la cadena entera sin ver un valor intermedio. **Sólo el A/B dentro de esta
+corrida es comparable.**
 
 #### P20 — un fitness que no selecciona por fallar en silencio
 
