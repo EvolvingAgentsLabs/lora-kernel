@@ -146,7 +146,7 @@ PY
   cat > /tmp/_vpeek.py <<'PY'
 import subprocess
 print(subprocess.run(
-    "grep -E 'serve\\]|gate\\]|passed [0-9]+|prompts/s|Traceback|Error|OutOfMemory|Killed' "
+    "grep -E 'serve\\]|gate\\]|tiny\\]|native\\]|passed [0-9]+|prompts/s|Traceback|[Ee]rror|OutOfMemory|Killed' "
     "/content/lora-kernel/run.log | tail -3", shell=True,
     capture_output=True, text=True).stdout)
 PY
