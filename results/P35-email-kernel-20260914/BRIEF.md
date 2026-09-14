@@ -48,6 +48,34 @@ base cannot judge, and nothing here teaches judging. Reporting a cleared protoco
 with an unmoved score is the honest result if that is what happens, and saying so
 now is what stops it being dressed up later.
 
+## A confound named before the number, not chosen after it
+
+**The corpus teaches the model to invent its own tool result.** Its assistant turns
+read `<tool>args</tool>= {…}` followed by the answer, because that is the shape the
+physics corpora use and the shape a stop-string harness expects. **The proxy sets no
+stop sequence** — it extracts tags from the finished text — so at serving time the
+model writes the tag, fabricates a result, answers from the fabrication, and *only
+then* receives the real result as a `role: "tool"` message.
+
+That is how P34's 127 calls were extracted too, so the two runs stay comparable. But
+it means **"calls accepted, score unmoved" has two explanations**, and they are not
+the same finding:
+
+| explanation | what it would mean |
+|---|---|
+| the judgement is the missing half | expected; buy a domain adapter next |
+| the model answered from its own fabrication and ignored the real result | the serving shape is wrong, and no domain adapter would fix it |
+
+**How they are told apart**, decided now: `strip_calls` removes the tags but leaves
+the fabricated `= {…}` in the assistant content. If the final verdicts track the
+fabricated values rather than the real ones, it is the second. That is readable from
+the records without another GPU run.
+
+**The fix, if it is needed**, is a `stop` list of the closing tags with
+`include_stop_str_in_output` so `CALL` still matches — deliberately **not** applied
+now, because changing the serving shape mid-experiment would make P35's call count
+incomparable with P34's.
+
 ## Headroom, checked rather than assumed
 
 - **Floor**: base alone, 0 tool calls, 39/113 **[ran]** P31.
