@@ -104,3 +104,29 @@ def test_the_null_arm_sees_a_region_when_there_is_one():
                               "--log", str(p)], capture_output=True, text=True).stdout
     assert "A REGION EXISTS" in out
     assert "80.0%" in out
+
+
+def test_the_door_is_shut_when_a_key_is_set():
+    """A tunnel turns a localhost proxy into a public GPU. It needs a door."""
+    import training.harness.openai_proxy as P
+
+    class Fake:
+        headers = {"Authorization": "Bearer wrong"}
+    P.KEY = "right"
+    try:
+        assert P.Handler._authorised(Fake()) is False
+        Fake.headers = {"Authorization": "Bearer right"}
+        assert P.Handler._authorised(Fake()) is True
+        Fake.headers = {}
+        assert P.Handler._authorised(Fake()) is False
+    finally:
+        P.KEY = None
+
+
+def test_no_key_means_no_door_and_that_is_deliberate():
+    import training.harness.openai_proxy as P
+
+    class Fake:
+        headers = {}
+    assert P.KEY is None
+    assert P.Handler._authorised(Fake()) is True

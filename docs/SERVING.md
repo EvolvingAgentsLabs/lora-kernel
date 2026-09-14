@@ -74,3 +74,40 @@ well-formed tool call. If it cannot, an adapter over it will not fix that — th
 purchase is a different base, not a training run. And calls naming a tool nobody
 offered are counted separately, because P25 measured exactly that failure at 56% of
 refusals on an unfamiliar subject.
+
+## Pointing a real agent at it
+
+Two ways, and **the first one is worth doing before the second.**
+
+### 1. Measure the traffic while the agent keeps working
+
+    python3 -m training.harness.openai_proxy \
+        --upstream https://api.openai.com --upstream-key "$OPENAI_API_KEY" \
+        --passthrough --log traffic.jsonl --api-key "$(openssl rand -hex 16)"
+
+In `--passthrough` nothing is translated: the request goes upstream exactly as it
+arrived and the reply comes back untouched. **The agent keeps giving its usual
+answers** and the run leaves a log of the shapes it sends. That log is the input the
+null arm needs, and it cannot be guessed from a suite.
+
+**Only shapes are recorded** — which tools were offered, how deep the conversation
+was, and the reply text. The prompt is not written down: it is the user's, and the
+measurement does not need it.
+
+### 2. Serve the pool through a tunnel
+
+    # inside a Colab session
+    bash training/harness/tunnel.sh
+
+It brings up vLLM with the adapters, the proxy on `:8001`, and a Cloudflare quick
+tunnel, then prints a public base URL and a generated key. Point the agent at
+`<url>/v1`.
+
+**The key is not optional and the script will not run without one.** A tunnel turns a
+localhost proxy into a public inference endpoint; an open one is somebody else's GPU,
+and a guessable URL is not a control. The comparison is constant-time.
+
+**What to expect from the answers.** The pool is a 3B with an adapter that knows
+fluid mechanics and a kernel trained on three tools. On general agent work it will be
+**bad**, and that is not a bug to report — it is the region question from the section
+above, arriving as experience instead of as a number.
