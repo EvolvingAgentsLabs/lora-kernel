@@ -112,14 +112,21 @@ def main() -> int:
     # times, and the reading was ambiguous between "the class does not apply LoRA"
     # and "this adapter is a no-op" — because nothing here had checked the second
     # [ran] 2026-09-14. So it is checked, in-process, before the adapter is handed on.
+    # THE FIRST VERSION OF THIS CHECK WAS ITSELF THE BUG IT EXISTS TO CATCH. It read
+    #     base = model.get_base_model().generate(...)
+    #     with model.disable_adapter(): pass
+    #     lora = model.generate(...)
+    # PEFT injects its layers **in place**, so `get_base_model()` still carries them
+    # and both generations went through the adapter — identical by construction. And
+    # the `disable_adapter` block was empty: the right context wrapped nothing. The
+    # control built to avoid measuring the wrong layer measured the wrong layer, and
+    # reported a working adapter as a no-op [ran] 2026-09-14.
     probe = "The adapter must change the output."
     ids = tok(probe, return_tensors="pt").to(model.device)
     with torch.no_grad():
-        base_out = model.get_base_model().generate(
-            **ids, max_new_tokens=24, do_sample=False,
-            pad_token_id=tok.pad_token_id)
         with model.disable_adapter():
-            pass
+            base_out = model.generate(**ids, max_new_tokens=24, do_sample=False,
+                                      pad_token_id=tok.pad_token_id)
         lora_out = model.generate(**ids, max_new_tokens=24, do_sample=False,
                                   pad_token_id=tok.pad_token_id)
     same = torch.equal(base_out.cpu(), lora_out.cpu())
@@ -133,9 +140,15 @@ def main() -> int:
         "lora_B_abs_sum": round(delta, 4),
         "changes_output_in_process": not same,
     }, indent=2), flush=True)
+    # THE NUMBERS TRAVEL WITH THE VERDICT. The refusal reached the chain log and the
+    # evidence behind it did not, because only `[tiny]`-prefixed lines pass the peek
+    # filter — so a diagnosis printed on the VM was invisible where it was needed.
+    print(f"[tiny] lora_B_abs_sum={delta:.4f} changes_output={not same}", flush=True)
     if same or delta == 0.0:
-        print("[tiny] THIS ADAPTER IS A NO-OP IN PROCESS. Asking a serving gate "
-              "about it would measure the adapter, not the server.", flush=True)
+        why = ("the optimiser never moved lora_B" if delta == 0.0
+               else "lora_B moved but the output did not change")
+        print(f"[tiny] THIS ADAPTER IS A NO-OP IN PROCESS: {why}. Asking a serving "
+              "gate about it would measure the adapter, not the server.", flush=True)
         return 1
     return 0 if w.exists() and w.stat().st_size > 100_000 else 1
 
