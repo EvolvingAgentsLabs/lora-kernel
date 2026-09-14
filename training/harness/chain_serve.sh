@@ -161,7 +161,14 @@ PY
   cat > /tmp/_vpeek.py <<'PY'
 import subprocess
 print(subprocess.run(
-    "grep -E 'serve\\]|gate\\]|tiny\\]|native\\]|matrix\\]|passed [0-9]+|prompts/s|Traceback|[Ee]rror|OutOfMemory|Killed' "
+    # EVERY RUNNER'S PREFIX, NOT THE ONES THIS CHAIN STARTED WITH. triage_run
+    # prints `[run]` and `[arm]`; neither was here, so a 150-case scoring run
+    # showed as silence for its whole length and could not have been stopped
+    # early [ran] 2026-09-14. Fifth time a log held the answer and a filter
+    # kept it out, so tests/test_chain_scripts.py now checks the two agree.
+    "grep -E 'serve\\]|gate\\]|tiny\\]|native\\]|matrix\\]|run\\]|arm\\]|resume\\]|"
+    "cost\\]|domain\\]|P24\\]|"
+    "passed [0-9]+|clears the gate|prompts/s|Traceback|[Ee]rror|OutOfMemory|Killed' "
     "/content/lora-kernel/run.log | tail -3", shell=True,
     capture_output=True, text=True).stdout)
 PY
