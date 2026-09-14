@@ -46,6 +46,23 @@ def _wait(url: str, minutes: int, proc=None) -> bool:
     return False
 
 
+def _probe(model: str, port: int = 8001) -> str | None:
+    """One deterministic completion, used only to tell two model names apart."""
+    body = json.dumps({"model": model, "temperature": 0, "max_tokens": 24,
+                       "messages": [{"role": "user",
+                                     "content": "In one sentence, what are you?"}]})
+    req = urllib.request.Request(f"http://127.0.0.1:{port}/v1/chat/completions",
+                                 data=body.encode(),
+                                 headers={"Content-Type": "application/json"})
+    try:
+        with urllib.request.urlopen(req, timeout=120) as r:
+            out = json.loads(r.read())
+        return (out["choices"][0]["message"].get("content") or "")
+    except Exception as e:
+        print(f"[run] probe of {model} failed: {e!r}"[:160], flush=True)
+        return None
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--base", default="Qwen/Qwen2.5-3B-Instruct")
@@ -104,6 +121,30 @@ def main() -> int:
             OUT.write_text(json.dumps(results, indent=2))
             return 1
         print("[run] proxy up", flush=True)
+
+        # THE ADAPTERS HAVE TO BE APPLIED BEFORE ANY SCORE MEANS ANYTHING. vLLM
+        # accepts a LoRA, logs that it loaded it, and can serve the base anyway —
+        # measured on a named model class in P33 [ran]. A null result here would
+        # otherwise be ambiguous between "the adapter did not help" and "there was
+        # no adapter", and that ambiguity has already cost this project four runs.
+        if pool:
+            gate = {}
+            base_text = _probe(args.base)
+            for name in pool:
+                t = _probe(name)
+                gate[name] = {"differs_from_base": None if t is None else
+                              t.strip() != (base_text or "").strip()}
+                print(f"[run] gate {name}: "
+                      + ("applied" if gate[name]["differs_from_base"]
+                         else "IDENTICAL TO BASE — not applied"), flush=True)
+            results["identity_gate"] = gate
+            OUT.write_text(json.dumps(results, indent=2))
+            if not all(g["differs_from_base"] for g in gate.values()):
+                print("[run] STOPPED. Every number after this would measure the "
+                      "base, not the pool.", flush=True)
+                results["stopped_at_gate"] = True
+                OUT.write_text(json.dumps(results, indent=2))
+                return 1
 
         for arm in [a.strip() for a in args.arms.split(",") if a.strip()]:
             model = args.base if arm == "base" else arm
