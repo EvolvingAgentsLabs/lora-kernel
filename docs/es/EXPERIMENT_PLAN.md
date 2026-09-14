@@ -684,6 +684,46 @@ llamadas, 0 rechazadas, 0 sin decidir**. Eso ahora es un test y no una esperanza
 **Ningún modelo entrenado corrió sobre esta suite** — el stub prueba la plomería, no
 el pool.
 
+#### P31 — la base no puede hacer triage, y eso no significa lo que decía el brief
+
+[`results/P31-triage-headroom-20260914/`](../../results/P31-triage-headroom-20260914/BRIEF.md).
+Qwen2.5-3B-Instruct, sin adaptador, 150 mensajes por vLLM, el proxy y el loop de
+agente real. Contestó **`NOT IMPORTANT` a los 150, con palabras idénticas, en la
+primera llamada al modelo** — **39/113 = 0,345** en los mensajes humanos contra una
+barra de 0,655, p exacta a una cola = **1,000**, y **0 llamadas a herramientas**
+**[ran]**.
+
+La superficie de herramientas no fue el problema: el renderizado del proxy se
+reprodujo fuera de línea y al modelo se le mostraron los tres tags más la línea *"Use
+the tools to find out — the listing does not say"*. **Se le ofrecieron las
+herramientas, se le dijo que las usara, y no pidió ninguna.**
+
+**La regla pre-registrada decía que la compra siguiente es otra base, y esa regla se
+retira en vez de aplicarse.** Razonaba que "un adaptador enseña una política; no
+enseña a un modelo a sostener una conversación de herramientas que no puede
+sostener". P8 midió lo contrario sobre esta misma base **[ran]**:
+
+| brazo | llamadas a herramientas en 30 casos |
+|---|--:|
+| base + tool | 44 |
+| **kernel + tool** | **169** |
+| domain + tool | 0 |
+
+Un adaptador de protocolo casi cuadruplica cuántas veces esta base pide una
+herramienta; un adaptador de dominio sin protocolo en su corpus lo baja a cero. **El
+fallo que P31 observó es exactamente el que un adaptador de protocolo existe para
+reparar**, así que piso-en-la-base no implica piso-con-adaptador, y comprar otra base
+sería gastar plata sobre una inferencia que este repositorio ya contradijo.
+
+**La comparación es sugestiva, no exacta**, y el límite queda anotado con ella: P8
+corre física por un harness de stop-string, P31 corre email por la convención
+`tools=[…]` de OpenAI. Lo que transfiere es el contraste interno de P8 — misma base,
+misma tarea, mismo canal — no el conteo crudo.
+
+**Lo que el brazo sí establece**: la base no puede sola; la suite no se contesta desde
+el listado; y los 0,320 de margen siguen enteros del lado de las herramientas, sin que
+nadie los haya reclamado.
+
 #### P33 — la misma pregunta de LoRA sobre una base cuya respuesta ya conocemos · CORRIENDO
 
 [`results/P33-lora-matrix-20260914/`](../../results/P33-lora-matrix-20260914/BRIEF.md).

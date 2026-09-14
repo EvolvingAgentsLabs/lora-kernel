@@ -1,0 +1,19 @@
+{
+  "control_base": "Qwen/Qwen2.5-3B-Instruct",
+  "subject_base": "Qwen/Qwen3.5-4B",
+  "arms": {
+    "control": {
+      "base": "Qwen/Qwen2.5-3B-Instruct",
+      "G1": {
+        "passed": true,
+        "adapter": "adapters/tiny-control"
+      },
+      "G2": {
+        "passed": true,
+        "verdict": "applied",
+        "exit": 0
+      },
+      "seconds": 323
+    }
+  }
+}

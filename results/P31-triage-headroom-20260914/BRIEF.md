@@ -66,3 +66,72 @@ is the size this arm is bought at — one redesign, before the run, recorded her
 compared; this is the floor check that decides whether the comparison is worth
 running at all. A number that beats the bar is permission to continue, not a result
 about the architecture.
+
+
+---
+
+# Result — 2026-09-14 **[ran]**
+
+`triage_results.json`, `arm_base.json`. Qwen2.5-3B-Instruct, no adapter, 150
+messages through vLLM 0.29.0, the proxy and the real agent loop.
+
+| | |
+|---|--:|
+| human messages | **39/113 = 0.345** |
+| majority-class bar | 0.655 |
+| clears the gate at | 83/113 |
+| exact one-sided p | **1.000** |
+| **tool calls** | **0 of 150** |
+| refused · undecided | 0 · 0 |
+
+**It answered `NOT IMPORTANT` to all 150, in identical words, on the first model
+call.** The 0.345 is exactly 1 − 0.655: it said "not important" to everything, and
+scored the complement of the bar rather than the bar.
+
+## The loop closed, and the tools really were offered
+
+The void condition was written for refusals and undecided verdicts, and there were
+none of either. To rule out the third way this could fail — a tool surface the model
+never saw — the proxy's rendering was reproduced offline. The model was shown all
+three tags and the line *"Use the tools to find out — the listing does not say"*.
+**It was offered the tools, told to use them, and asked for none.**
+
+## The falsification rule was wrong, and it is corrected here rather than applied
+
+The rule read: *"the next purchase is a different base rather than a training run.
+An adapter teaches a policy; it does not teach a model to hold a six-turn tool
+conversation it cannot hold."*
+
+**P8 measured the opposite on this exact base** — `Qwen/Qwen2.5-3B-Instruct`,
+`results/P8-harness-lora-20260909/compose_results.json` **[ran]**:
+
+| arm | tool calls on 30 cases |
+|---|--:|
+| base + tool | 44 |
+| **kernel + tool** | **169** |
+| domain + tool | 0 |
+
+A protocol adapter nearly quadruples how often this base asks for a tool, and a
+domain adapter with no protocol in its corpus suppresses asking to zero. **The
+failure P31 observed — never asking — is precisely the one a protocol adapter is
+built to repair.**
+
+**The comparison is suggestive, not exact, and that is stated rather than glossed.**
+P8 runs a different task through a different channel: physics, with the harness
+stopping generation at `</calc>` and continuing. P31 runs email through the OpenAI
+`tools=[…]` convention and the proxy. What transfers is the *within-P8* contrast —
+same base, same task, same channel, 44 → 169 — not the raw count.
+
+So "base at the floor ⇒ adapter at the floor" does not follow, and buying a
+different base on the strength of it would spend money on an inference this
+repository has already contradicted. **The next arm is the protocol adapter on this
+suite, not a different base.**
+
+## What this arm does establish
+
+- **The base cannot do triage unaided**, decisively: p = 1.000 against its own bar,
+  and it never consults anything.
+- **The suite is not trivially answerable.** A model that reads only the listing and
+  guesses lands at or below the bar, which is what the material was built to force.
+- **The margin is entirely unclaimed.** All 0.320 of it still sits with the tools,
+  and nothing has yet reached for it.
