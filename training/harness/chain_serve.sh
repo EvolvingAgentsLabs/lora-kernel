@@ -80,7 +80,7 @@ step("clone", "rm -rf /content/lora-kernel && cd /content && git clone -q -b $BR
 # COLAB SHIPS torchaudio AND torchvision BUILT AGAINST ITS OWN CUDA, and pip
 # resolving vllm's torch leaves them behind pointing at a different one:
 #   RuntimeError: PyTorch has CUDA version 13.0 whereas TorchAudio has CUDA ...
-# raised on `import`, so vllm never starts [ran] 2026-09-13. Neither is needed to
+# raised on import, so vllm never starts [ran] 2026-09-13. Neither is needed to
 # serve a text model, so they go before vllm arrives rather than being pinned
 # around.
 step("clear", "pip -q uninstall -y torchaudio torchvision 2>&1 | tail -1; echo cleared")
@@ -89,8 +89,9 @@ step("vllm", "pip -q install 'vllm>=0.28' 2>&1 | tail -1")
 # before serving it; every other module here only serves. P26 learned what putting
 # training into a serving session costs: an import error for trl, after vLLM had
 # already installed, in a session that had no reason to carry it.
-# (No backticks in this heredoc — it is unquoted so BRANCH interpolates, and bash
-#  runs anything in here that looks like a substitution. Third time today.)
+# (No backticks in this heredoc: it is unquoted so BRANCH interpolates, a leading
+#  hash comments nothing here, and bash runs whatever looks like a substitution.
+#  Four times now, so tests/test_chain_scripts.py fails the build instead.)
 # torchao IS PINNED HERE FOR THE SAME REASON chain_separate.sh pins it: Colab ships
 # 0.10.0, transformers refuses anything under 0.16.0, and the refusal arrives as an
 # ImportError in the first second of the run. That fix has been in the training chain
