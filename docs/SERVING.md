@@ -53,3 +53,24 @@ there. **That is a different claim and it has not been bought.**
   with that sentence rather than faking it.
 - **It adds no domain knowledge.** It names no tool, no argument and no unit; a test
   fails if that ever stops being true.
+
+## Before training anything for a new deployment
+
+    python3 -m training.harness.openai_proxy --upstream … --log traffic.jsonl
+    python3 -m training.harness.null_arm --log traffic.jsonl
+
+Two questions, both answered from the traffic itself and neither needing a GPU beyond
+the base already being served.
+
+**Is there a region?** The architecture's claim is that a small expert beats a
+generalist *inside its region* — S5 closed the withdrawal gap to 0.000 in region, and
+the same expert's formulas fall 30/30 to 1/20 outside it. If the traffic is a long
+tail there is nothing to specialise in, and the honest recommendation is a
+generalist. The instrument says `NO REGION` when the three commonest shapes cover
+less than 60% of requests, and it is written so it can say that.
+
+**Can the base hold the protocol?** How often the base model *alone* emits a
+well-formed tool call. If it cannot, an adapter over it will not fix that — the next
+purchase is a different base, not a training run. And calls naming a tool nobody
+offered are counted separately, because P25 measured exactly that failure at 56% of
+refusals on an unfamiliar subject.

@@ -40,6 +40,7 @@ from training.harness.tool_calls import (CALL, from_tool_call, strip_calls,
 UPSTREAM = "http://127.0.0.1:8000"
 ARITY = True          # P28: recovers 55% of the schema's cost, 0 domain lines
 ENUMS = False         # P28: made it worse — not carried forward
+LOG = None            # --log <path> records traffic for the null arm
 
 
 def _fetch(path: str, payload: dict | None, timeout: int = 600):
@@ -152,6 +153,21 @@ class Handler(BaseHTTPRequestHandler):
         except Exception as e:
             return self._send(502, {"error": {"message": repr(e)}})
 
+        if LOG:
+            # TRAFFIC IS RECORDED SO THE NULL ARM HAS SOMETHING TO MEASURE. What an
+            # agent actually asks for cannot be guessed from a suite, and the first
+            # question about a new deployment is whether the base can do the job at
+            # all — which needs its traffic, not ours.
+            with open(LOG, "a") as f:
+                f.write(json.dumps({
+                    "model": req.get("model"),
+                    "tools": [((x.get("function") or x).get("name"))
+                              for x in (tools or [])],
+                    "turns": len(req.get("messages") or []),
+                    "reply": ((up.get("choices") or [{}])[0].get("message") or {}
+                              ).get("content") or "",
+                }) + "\n")
+
         for choice in up.get("choices", []):
             msg = choice.get("message") or {}
             text = msg.get("content") or ""
@@ -167,11 +183,14 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--upstream", default=UPSTREAM)
     ap.add_argument("--port", type=int, default=8001)
+    ap.add_argument("--log", default=None,
+                    help="append one line per request, for training.harness.null_arm")
     ap.add_argument("--enums", action="store_true",
                     help="P28 measured this as harmful; off unless asked")
     args = ap.parse_args()
     globals()["UPSTREAM"] = args.upstream
     globals()["ENUMS"] = args.enums
+    globals()["LOG"] = args.log
 
     print(f"[proxy] :{args.port} -> {UPSTREAM}  arity={ARITY} enums={ENUMS}",
           flush=True)
