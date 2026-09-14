@@ -1047,12 +1047,36 @@ instead of handing over a density **[ran]**:
 | hand-written rule | 7/30 | 88/96 — 91.7% | 96 | 0 |
 | **no tool layer at all** | **27/30** | — | **0** | 0 |
 
-**A learned protocol beats a hand-written rule where the call is not a copy**, on
+~~**A learned protocol beats a hand-written rule where the call is not a copy**, on
 both metrics and narrowly: 94.8% against 91.7%, 10/30 against 7/30. That reverses
-P13's verdict and locates it — a learned protocol loses to a regular expression
-when asking for a tool means copying an expression already written, and wins when
-it means choosing between three tools and building keyed arguments out of prose.
-**P13 measured the suite, not the adapter.**
+P13's verdict and locates it.~~ **Withdrawn 2026-09-14: both metrics are ties.**
+
+Every arm runs the same 30 fixtures, so the comparison is **paired**, and the only
+information about a difference lives in the cases where the two arms disagree. Those
+totals hide **three** disagreements on the final answer and **four against one** on
+the tool values:
+
+| metric | totals | disagreements | exact two-sided p |
+|---|---|--:|--:|
+| final answer | 10/30 vs 7/30 | 3 : 0 | **0.250** |
+| oracle's tool values | 91/96 vs 88/96 | 4 : 1 | **0.375** |
+
+**[ran]** 2026-09-14, `tests/test_paired.py`. Three coin flips landing the same way
+is a p of 0.25. The direction was consistent both times and **the claim was never
+measured** — and P21, which removed the memorisation by drawing a handbook per case,
+put the same three arms at 4, 5 and 6 of 30, every pair a tie as well.
+
+So what P15 establishes is the control, not the contest: **with no tool layer at all
+the expert scores 27/30, three times either tool arm** (p < 0.001 against both), and
+that is a statement about the suite. Whether a learned protocol beats a regular
+expression at choosing among three tools **remains open**, and the honest reading of
+P13 is that it was never reversed.
+
+**The one place code genuinely beats weights survives**: in P24 the hand-written rule
+beats the kernel adapter 12/30 to 5/30 on **7 : 0** disagreements, p = 0.016 — a real
+difference, and it is unflattering to the treatment, which is why it is worth the
+same care. **This is not a blanket doubt about the suite; it is the same test applied
+in both directions.**
 
 **And the control voids the question the suite was built for.** With no tool layer
 at all the expert scores **27/30 while asking nothing**, three times either tool

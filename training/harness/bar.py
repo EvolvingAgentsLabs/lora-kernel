@@ -73,3 +73,52 @@ def power(n: int, bar: float, p_true: float, alpha: float = 0.05) -> float:
     seed nobody recorded.
     """
     return sf(threshold(n, bar, alpha), n, p_true)
+
+
+# ---------------------------------------------------------------------------
+# COMPARING TWO ARMS ON THE SAME CASES IS NOT COMPARING TWO BARS.
+#
+# Every arm in this repository runs the same fixture set, so the cases are
+# PAIRED and the only information about a difference lives in the cases where
+# the two arms disagree. Reading `10/30 against 7/30` as a win throws that away:
+# those two numbers hide **three** disagreements, and three coin flips landing
+# the same way is a p of 0.25.
+#
+# This was not hypothetical. P15's headline read "a learned protocol beats a
+# hand-written rule ... 94.8% against 91.7%, 10/30 against 7/30. That reverses
+# P13's verdict and locates it." Both metrics are ties — 3:0 and 4:1, p=0.250
+# and p=0.375 **[ran]** 2026-09-14. The direction was consistent and the claim
+# was not measured.
+# ---------------------------------------------------------------------------
+
+def sign_test(a_better: int, b_better: int) -> float:
+    """Exact two-sided p for `a` and `b` differing, given only the disagreements.
+
+    Ties between the arms carry no information about which is better and are
+    correctly excluded — that is what makes this the paired test and not a
+    comparison of two independent proportions.
+    """
+    n = a_better + b_better
+    if n == 0:
+        return 1.0
+    return min(1.0, 2 * sf(max(a_better, b_better), n, 0.5))
+
+
+def compare(a: dict, b: dict, alpha: float = 0.05) -> dict:
+    """Two arms as {case_id: passed}. Decided on the cases where they disagree."""
+    ids = sorted(set(a) & set(b))
+    only_a = sum(bool(a[i]) and not b[i] for i in ids)
+    only_b = sum(bool(b[i]) and not a[i] for i in ids)
+    p = sign_test(only_a, only_b)
+    return {
+        "n_paired": len(ids),
+        "a_total": sum(bool(a[i]) for i in ids),
+        "b_total": sum(bool(b[i]) for i in ids),
+        "only_a": only_a, "only_b": only_b,
+        "discordant": only_a + only_b,
+        "p_value": round(p, 5),
+        "different": p <= alpha,
+        # THE SENTENCE THAT SHOULD BE WRITTEN WHEN IT IS NOT DIFFERENT.
+        "reading": ("the arms differ" if p <= alpha else
+                    "a tie: the totals differ but the cases behind them do not"),
+    }
