@@ -159,3 +159,30 @@ over the sampler on the kernel's turn.
 and prose, and constraining that would be constraining the expert's work rather than
 the protocol — which is this repository's recurring way of building an instrument
 that does the subject's job.
+
+---
+
+## A comparability problem, fixed before the run (2026-09-13)
+
+The recipe above inherits P21's finished arms and adds a masked one. **P21's
+adapters no longer exist**: its session died and the weights now on disk were
+retrained in a P26 session. Same base, same corpora, same hyperparameters — and not
+the same weights, because nothing here pins training to be bit-reproducible.
+
+Comparing a masked arm against an unmasked arm **trained in a different run** puts
+the training variance inside the treatment effect, and this brief's own prediction is
+a difference of a few refused calls. That is smaller than the noise it would be
+measured against.
+
+**So P24 is self-contained.** Both kernel arms run against the *same* adapter files,
+carried in and not retrained:
+
+    run 1   --n-eval 30            no-tool · rule · kernel (unmasked)
+    run 2   --n-eval 30 --masked   kernel, grammar-masked
+
+The runner skips arms already marked complete, so run 2 buys only the treatment. The
+control it is compared against was produced minutes earlier by the same weights on
+the same cases.
+
+**P21's numbers stay where they are** and are not restated here; the comparison that
+decides P24 lives entirely inside P24.
