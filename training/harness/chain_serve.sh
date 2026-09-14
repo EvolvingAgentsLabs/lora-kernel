@@ -58,7 +58,7 @@ PYJOIN
 }
 
 for i in $(seq 1 "$SESSIONS"); do
-  if [ -f "$LOCAL" ] && grep -q '"finished"\|stopped_at_gate' "$LOCAL" 2>/dev/null; then
+  if [ -f "$LOCAL" ] && grep -q '"finished"\|stopped_at_gate\|"decision"' "$LOCAL" 2>/dev/null; then
     echo "=== already decided — no further sessions"; break
   fi
   S="srv$(date +%H%M%S)"
@@ -123,14 +123,21 @@ PY
   # the first attempt proved the smaller version of that: the serving session has no
   # `trl`, because it has no reason to [ran] 2026-09-13. The adapters are built by
   # chain_separate.sh with MODULE=training.harness.train_pool and carried in here.
-  if [ ! -f "$ADAPTERS" ]; then
+  # A RUN THAT TRAINS ITS OWN ADAPTER HAS NOTHING TO CARRY IN. native_gate and
+  # lora_matrix build one on the VM, and refusing to start them for want of a
+  # tarball they never read cost two launches [ran] 2026-09-14.
+  if [ -n "${SKIP_ADAPTERS:-}" ]; then
+    echo "    this module trains its own adapter — nothing to carry in"
+  elif [ ! -f "$ADAPTERS" ]; then
     echo "    NO ADAPTERS. Build them first:"
     echo "      MODULE=training.harness.train_pool RESULTS_NAME=pool.json \\"
     echo "      RUN_DIR=$RUN_DIR ARGS= training/harness/chain_separate.sh 2"
     exit 1
   fi
-  upload_big "$S" "$ADAPTERS" /content/lora-kernel/adapters.tgz \
-      || { echo "    adapters did not upload"; exit 1; }
+  if [ -z "${SKIP_ADAPTERS:-}" ]; then
+    upload_big "$S" "$ADAPTERS" /content/lora-kernel/adapters.tgz \
+        || { echo "    adapters did not upload"; exit 1; }
+  fi
 
   cat > /tmp/_vrun.py <<PY
 import subprocess
@@ -146,7 +153,7 @@ PY
   cat > /tmp/_vpeek.py <<'PY'
 import subprocess
 print(subprocess.run(
-    "grep -E 'serve\\]|gate\\]|tiny\\]|native\\]|passed [0-9]+|prompts/s|Traceback|[Ee]rror|OutOfMemory|Killed' "
+    "grep -E 'serve\\]|gate\\]|tiny\\]|native\\]|matrix\\]|passed [0-9]+|prompts/s|Traceback|[Ee]rror|OutOfMemory|Killed' "
     "/content/lora-kernel/run.log | tail -3", shell=True,
     capture_output=True, text=True).stdout)
 PY
@@ -163,7 +170,7 @@ PY
       fi
     fi
     tmo 300 colab download -s "$S" /content/lora-kernel/$RESULTS_NAME "$LOCAL" >/dev/null 2>&1 || true
-    echo "$out" | grep -qE "prompts/s|STOPPED|Traceback|OutOfMemory|Killed|never came up" && break
+    echo "$out" | grep -qE "prompts/s|decision:|STOPPED|Traceback|OutOfMemory|Killed|never came up" && break
     sleep 45
   done
   tmo 300 colab download -s "$S" /content/lora-kernel/$RESULTS_NAME "$LOCAL" >/dev/null 2>&1 || true
