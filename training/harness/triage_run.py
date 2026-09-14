@@ -27,6 +27,8 @@ import time
 import urllib.request
 from pathlib import Path
 
+from training.harness.bar import verdict
+
 OUT = Path("triage_results.json")
 
 
@@ -125,17 +127,28 @@ def main() -> int:
                                         "stderr": r.stderr[-400:]}
             OUT.write_text(json.dumps(results, indent=2))
 
-        print(f"\n{'arm':<16}{'human':>12}{'bar':>8}{'calls':>8}{'refused':>9}"
-              f"{'undecided':>11}")
+        print(f"\n{'arm':<16}{'human':>12}{'bar':>8}{'needs':>8}{'p':>8}"
+              f"{'calls':>8}{'refused':>9}{'undecided':>11}")
         for arm, v_ in results["arms"].items():
             if "human_accuracy" not in v_:
                 continue
+            # THE VERDICT IS COMPUTED, NOT EYEBALLED. Printing accuracy beside a bar
+            # invites the reading that one case above it is a pass; a model sitting
+            # exactly at the bar does that 45% of the time [ran] 2026-09-14.
+            d = verdict(v_["human_correct"], v_["human_n"],
+                        v_["human_majority_class_bar"])
+            v_["gate"] = d
             print(f"{arm:<16}{v_['human_correct']}/{v_['human_n']:<8}"
-                  f"{v_['human_majority_class_bar']:>8.3f}{v_['calls']:>8}"
-                  f"{v_['refused']:>9}{v_['undecided']:>11}")
-        print("\nThe number that decides this phase is the human-message accuracy "
-              "against its bar.\nBelow it, an adapter over this base cannot help and "
-              "the next purchase is a different base.")
+                  f"{d['bar']:>8.3f}{d['passes_at']:>8}{d['p_value']:>8.3f}"
+                  f"{v_['calls']:>8}{v_['refused']:>9}{v_['undecided']:>11}")
+            print(f"  -> {arm}: "
+                  + ("clears the gate" if d["beats_the_bar"]
+                     else "does NOT clear the gate")
+                  + (" (above the bar, but inside what the bar itself produces)"
+                     if d["exceeds_bar_without_clearing_the_gate"] else ""))
+        print("\nThe gate is an exact one-sided binomial test against the majority "
+              "class at alpha=0.05,\nnot `accuracy > bar`. Below it, an adapter over "
+              "this base cannot help and the next\npurchase is a different base.")
         results["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")
         OUT.write_text(json.dumps(results, indent=2))
     finally:
