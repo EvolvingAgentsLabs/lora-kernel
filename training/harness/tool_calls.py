@@ -68,7 +68,8 @@ def strip_calls(text: str) -> str:
     return CALL.sub("", text).strip()
 
 
-def tools_to_instruction(tools: list[dict]) -> str:
+def tools_to_instruction(tools: list[dict], arity: bool = False,
+                        enums: bool = False) -> str:
     """An OpenAI `tools=[…]` schema, rendered as the tag surface the adapter knows.
 
     THIS IS THE HALF THAT IS NOT FREE, and it is named rather than hidden. The
@@ -82,8 +83,28 @@ def tools_to_instruction(tools: list[dict]) -> str:
     lines = []
     for t in tools:
         fn = t.get("function", t)
-        keys = sorted((fn.get("parameters") or {}).get("properties") or {})
-        shape = "; ".join(f"{k}=..." for k in keys) or "..."
+        params = (fn.get("parameters") or {})
+        props = params.get("properties") or {}
+        keys = sorted(props)
+        required = params.get("required") or keys
+
+        # CONVENTION A — ARITY. A function with exactly one required parameter is
+        # rendered positionally. This keys on a COUNT, not on a name: nothing here
+        # knows which tool it is looking at. P27 measured what its absence costs —
+        # 33 of 93 refusals were `<calc>expression=...</calc>` against a model
+        # trained on `<calc>1.2 * 3</calc>` [ran].
+        if arity and len(required) == 1:
+            shape = "..."
+        else:
+            def one(k):
+                # CONVENTION B — ENUMS. A parameter that declares its allowed values
+                # shows them. The names are schema, written by whoever declared the
+                # tool; the values behind them stay data, so the adapter still has to
+                # call the tool to learn what a modulus is.
+                vals = (props.get(k) or {}).get("enum") if enums else None
+                return f"{k}={'|'.join(map(str, vals))}" if vals else f"{k}=..."
+            shape = "; ".join(one(k) for k in keys) or "..."
+
         lines.append(f"<{fn['name']}>{shape}</{fn['name']}>"
                      + (f"  — {fn['description']}" if fn.get("description") else ""))
     return ("The following tools are available. Ask for one by writing its tag on "
