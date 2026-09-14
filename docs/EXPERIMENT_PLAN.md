@@ -662,6 +662,48 @@ assembled and not measured; an OpenAI client sending `tools=[…]`, reading
 trained model has been run on this suite** — the stub proves the plumbing, not the
 pool.
 
+#### P34 — the protocol transfers as behaviour, not as vocabulary
+
+[`results/P34-protocol-transfer-20260914/`](../results/P34-protocol-transfer-20260914/BRIEF.md).
+`kernel-mt` — trained on `<calc>`, `<lookup>` and `<convert>` over fluid mechanics —
+served over Qwen2.5-3B against the **email** suite, whose tools it has never seen.
+
+| | base alone (P31) | **kernel-mt** |
+|---|--:|--:|
+| tool calls | 0 | **127** |
+| refused | 0 | **127** |
+| cases that asked | 0 of 150 | **123 of 150** |
+| human messages | 39/113 = 0.345 | 39/113 = 0.345 |
+
+**Zero became 127, and every one was refused.** The base alone asked for nothing 150
+times; with the protocol adapter the same base reaches for a tool in 123 of 150 cases
+on a domain with no overlap — in the vocabulary it learned, not the one this suite
+has **[ran]**.
+
+This is the middle of three readings written down before the run, and neither
+neighbour fits: the protocol **does** cross vocabularies (0 → 127), and it does
+**not** serve tools it was never trained on (0 of 127 answered).
+
+**Accuracy did not move — 39/113 both times, identical.** A protocol adapter that
+asks and is refused scores what a base that never asks scores. **The ask is the
+finding and the score is not**, which the brief said in advance it would report
+either way.
+
+**What was not bought**: which name it reached for. The record counted refusals
+without recording the ask, and that was fixed the same session so the next run
+answers it for free. It was not bought as its own arm because **it cannot change the
+next purchase** — a wrong name and a malformed argument both lead to a protocol
+adapter trained on this tool vocabulary, and a corpus built from the tools' own
+schema covers both.
+
+**For the pool thesis this is the non-obvious half.** The reusable capability is the
+**disposition to ask**, and it demonstrably survives a complete change of domain,
+task and tool names. What does not travel is the vocabulary — cheap to teach, and
+domain-specific by nature. So the pool does not need a protocol adapter per domain
+for the *behaviour*; it needs one that knows the *names*. Whether one adapter can
+carry several tool sets is now a question about training data rather than about
+whether the idea works.
+
 #### P31 — the base cannot do triage, and that does not mean what the brief said
 
 [`results/P31-triage-headroom-20260914/`](../results/P31-triage-headroom-20260914/BRIEF.md).
