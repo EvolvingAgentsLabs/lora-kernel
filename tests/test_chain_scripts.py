@@ -97,7 +97,11 @@ def test_the_detector_would_have_caught_the_bug_it_was_written_for(tmp_path):
 # $GPU — a detector that invents findings is as useless as one that misses
 # them, and it was caught on its own first run.
 ASSIGN = re.compile(r"(?:^|;|\bthen\b|\bdo\b)\s*([A-Z_][A-Z0-9_]*)=", re.M)
-REF = re.compile(r"\$\{?([A-Z_][A-Z0-9_]*)\}?")
+# THE NAME HAS TO END WHERE THE DETECTOR SAYS IT DOES. Without the lookahead
+# this reads `$_self` — an ordinary lowercase local — as a reference to `$_`,
+# and reports it as an undefaulted environment variable. Second false positive
+# this guard has produced, and both were about where a token stops.
+REF = re.compile(r"\$\{?([A-Z_][A-Z0-9_]*)\}?(?![A-Za-z0-9_])")
 # Shell and Colab supply these; the script is not expected to define them.
 AMBIENT = {"PATH", "HOME", "PWD", "SHELL", "USER", "TMPDIR", "LANG", "PYTHONPATH"}
 
@@ -181,3 +185,42 @@ def test_the_watcher_knows_every_prefix_its_runners_print():
         "these runners print progress under a prefix no chain watcher matches, so "
         "their runs read as silence:\n"
         + "\n".join(f"  {k}: {sorted(v)}" for k, v in sorted(missing.items())))
+
+
+# ---------------------------------------------------------------------------
+# EDITING A RUNNING SCRIPT MOVES THE GROUND UNDER IT.
+#
+# Bash reads a script incrementally, by byte offset. A patch that landed while a
+# chain was running killed the live instance with `line 184: syntax error near
+# unexpected token 'done'` — after its run had finished but before its trap could
+# stop the Colab session, which is where that afternoon's orphans came from
+# **[ran]** 2026-09-14. Running from a copy makes it impossible rather than
+# forbidden.
+# ---------------------------------------------------------------------------
+
+@pytest.mark.parametrize("path", CHAINS, ids=lambda p: p.name)
+def test_a_chain_runs_from_a_copy_of_itself(path):
+    text = path.read_text()
+    assert "CHAIN_REEXEC" in text, (
+        f"{path} runs from its own file; editing it mid-run corrupts the running "
+        "instance")
+    # the guard has to come before anything that takes time, or it guards nothing
+    body = text.splitlines()
+    i = next(n for n, l in enumerate(body) if "CHAIN_REEXEC" in l)
+    before = "\n".join(body[:i])
+    assert "colab " not in before, f"{path} talks to Colab before re-execing"
+
+
+@pytest.mark.parametrize("path", CHAINS, ids=lambda p: p.name)
+def test_the_copy_does_not_steal_the_exit_trap(path):
+    """These scripts spend EXIT on `colab stop`, and bash keeps one handler."""
+    text = path.read_text()
+    if "colab stop" not in text:
+        pytest.skip(f"{path.name} sets no session trap")
+    assert "trap 'rm -f \"$CHAIN_REEXEC\"' EXIT" not in text
+
+
+def test_the_reference_detector_does_not_read_a_lowercase_local_as_an_env_var():
+    """`$_self` is not a reference to `$_`. Pinned, because it reported one."""
+    assert REF.findall('cat "$0" > "$_self" && chmod +x "$_self"') == []
+    assert REF.findall('echo "$GPU and ${BRANCH}"') == ["GPU", "BRANCH"]

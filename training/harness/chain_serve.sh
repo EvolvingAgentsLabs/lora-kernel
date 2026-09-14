@@ -7,6 +7,24 @@
 # not a training one, and retraining inside it would put forty minutes and a second
 # source of variance into a question about HTTP.
 set -euo pipefail
+
+# BASH READS A SCRIPT INCREMENTALLY, BY BYTE OFFSET. Editing this file while it is
+# running moves the ground under the running instance: on 2026-09-14 a patch landed
+# mid-loop and the live chain died with `line 184: syntax error near unexpected
+# token 'done'`, after its run had finished but before its trap could stop the
+# session — which is where that afternoon's orphaned Colab sessions came from [ran].
+#
+# Telling the next person not to edit a running script is a rule they have to
+# remember. Running from a copy makes it impossible instead.
+if [ -z "${CHAIN_REEXEC:-}" ]; then
+  _self="$(mktemp -t chain)" || exit 1
+  cat "$0" > "$_self" && chmod +x "$_self" || exit 1
+  CHAIN_REEXEC="$_self" exec "$_self" "$@"
+fi
+# THE COPY IS DELIBERATELY NOT TRAPPED FOR CLEANUP. Bash keeps one handler per
+# signal, and these scripts already spend their EXIT trap on `colab stop` — which
+# is worth more than a few kilobytes in /tmp. Leaving the copy behind is the
+# cheaper of the two failures.
 GPU="${GPU:-A100}"
 BRANCH="${BRANCH:-handbook}"
 RUN_DIR="${RUN_DIR:-results/P26-openai-server-20260913}"
