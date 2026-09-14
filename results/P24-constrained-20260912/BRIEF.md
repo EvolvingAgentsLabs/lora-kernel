@@ -186,3 +186,38 @@ the same cases.
 
 **P21's numbers stay where they are** and are not restated here; the comparison that
 decides P24 lives entirely inside P24.
+
+---
+
+## The treatment crashed on a shape the local checker could not see (2026-09-14) [ran]
+
+The three control arms completed. The masked arm died on its first step:
+
+    RuntimeError: The size of tensor a (151665) must match the size of tensor b
+    (151936) at non-singleton dimension 0
+
+**Qwen pads its embedding matrix past the vocabulary** — 151936 columns against
+151665 tokens — and `CallMask` built its boolean mask to `len(tokenizer)`.
+
+**`grammar_check.py` could never have caught this.** It replays 2226 calls through
+the grammar and proves the mask forbids nothing the oracle writes; it says nothing
+about tensor widths, because the grammar and the sampler are different layers. A
+checker that verifies one layer is not a checker for the other, and believing
+otherwise is how a green local suite precedes a red GPU run.
+
+The mask is built to the **score width**, re-built if that width ever changes, and
+the padding columns stay `False` because nothing can legally be emitted there.
+**Reproduced without a GPU** — a fake tokenizer of 8 tokens against a 12-wide score
+tensor — so the repair has a test that fails without it.
+
+### The control stands and is not re-bought
+
+| arm | passes | oracle's tool values | calls | refused |
+|---|--:|--:|--:|--:|
+| no tool layer at all | 7/30 | 0/96 | 0 | 0 |
+| hand-written rule | 12/30 | 93/96 = 0.969 | 96 | **0** |
+| kernel, unmasked | 5/30 | **94/96 = 0.979** | 122 | **23 (19%)** |
+
+A clean replication of P21's shape on freshly trained weights, and **the 23 refusals
+are the number P24 exists to attack**. The masked arm is re-queued against exactly
+these three.
