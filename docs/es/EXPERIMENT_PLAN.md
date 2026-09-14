@@ -684,6 +684,49 @@ llamadas, 0 rechazadas, 0 sin decidir**. Eso ahora es un test y no una esperanza
 **Ningún modelo entrenado corrió sobre esta suite** — el stub prueba la plomería, no
 el pool.
 
+#### P34 — el protocolo transfiere como conducta, no como vocabulario
+
+[`results/P34-protocol-transfer-20260914/`](../../results/P34-protocol-transfer-20260914/BRIEF.md).
+`kernel-mt` — entrenado sobre `<calc>`, `<lookup>` y `<convert>` en mecánica de
+fluidos — servido sobre Qwen2.5-3B contra la suite de **email**, cuyas herramientas
+nunca vio.
+
+| | base sola (P31) | **kernel-mt** |
+|---|--:|--:|
+| llamadas a herramientas | 0 | **127** |
+| rechazadas | 0 | **127** |
+| casos que pidieron algo | 0 de 150 | **123 de 150** |
+| mensajes humanos | 39/113 = 0,345 | 39/113 = 0,345 |
+
+**Cero se volvió 127, y las 127 fueron rechazadas.** La base sola no pidió nada 150
+veces; con el adaptador de protocolo la misma base estira la mano hacia una
+herramienta en 123 de 150 casos sobre un dominio sin ningún solapamiento — en el
+vocabulario que aprendió, no en el que esta suite tiene **[ran]**.
+
+Es la lectura del medio de las tres escritas antes de correr, y ninguna vecina
+encaja: el protocolo **sí** cruza vocabularios (0 → 127), y **no** sirve herramientas
+para las que no fue entrenado (0 de 127 contestadas).
+
+**La exactitud no se movió — 39/113 las dos veces, idéntico.** Un adaptador de
+protocolo que pide y es rechazado saca lo mismo que una base que nunca pide. **El
+pedido es el hallazgo y el puntaje no lo es**, que es lo que el brief dijo de
+antemano que reportaría en cualquier dirección.
+
+**Lo que no se compró**: qué nombre pidió. El registro contaba rechazos sin registrar
+el pedido, y eso se arregló la misma sesión para que la próxima corrida lo conteste
+gratis. No se compró como brazo propio porque **no puede cambiar la compra
+siguiente** — un nombre equivocado y un argumento malformado llevan los dos a un
+adaptador de protocolo entrenado sobre este vocabulario, y un corpus armado desde el
+esquema de las herramientas cubre ambos.
+
+**Para la tesis del pool esta es la mitad no obvia.** La capacidad reutilizable es la
+**disposición a preguntar**, y sobrevive demostrablemente a un cambio completo de
+dominio, tarea y nombres de herramienta. Lo que no viaja es el vocabulario — barato
+de enseñar y específico del dominio por naturaleza. Así que el pool no necesita un
+adaptador de protocolo por dominio para la *conducta*; necesita uno que sepa los
+*nombres*. Si un solo adaptador puede llevar varios conjuntos de herramientas es
+ahora una pregunta sobre datos de entrenamiento y no sobre si la idea funciona.
+
 #### P31 — la base no puede hacer triage, y eso no significa lo que decía el brief
 
 [`results/P31-triage-headroom-20260914/`](../../results/P31-triage-headroom-20260914/BRIEF.md).
