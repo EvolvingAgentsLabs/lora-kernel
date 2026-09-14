@@ -130,3 +130,30 @@ def test_no_key_means_no_door_and_that_is_deliberate():
         headers = {}
     assert P.KEY is None
     assert P.Handler._authorised(Fake()) is True
+
+
+def test_the_openclaw_reader_keeps_shapes_and_drops_content():
+    """The snapshot holds private conversations. The region question does not need
+    them, and a reader that keeps them anyway is a leak with a rationale."""
+    from training.harness.openclaw_traffic import _tool_names
+    msgs = [
+        {"role": "user", "content": "something private"},
+        {"role": "assistant", "content": "also private",
+         "tool_calls": [{"function": {"name": "read_file",
+                                      "arguments": '{"path":"/secret"}'}}]},
+        {"role": "tool", "name": "read_file", "content": "secret contents"},
+    ]
+    names = _tool_names(msgs)
+    assert names.count("read_file") == 2
+    assert not any("private" in n or "secret" in n for n in names)
+
+
+def test_the_reader_says_when_a_sample_is_too_small_to_mean_anything():
+    import subprocess, sys, tempfile, pathlib
+    with tempfile.TemporaryDirectory() as d:
+        out = subprocess.run(
+            [sys.executable, "-m", "training.harness.openclaw_traffic",
+             "--db", str(pathlib.Path(d) / "nope.sqlite"),
+             "--out", str(pathlib.Path(d) / "t.jsonl")],
+            capture_output=True, text=True).stdout
+    assert "too little" in out

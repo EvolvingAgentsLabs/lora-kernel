@@ -112,3 +112,20 @@ una URL difícil de adivinar no es un control. La comparación es de tiempo cons
 de fluidos y un kernel entrenado en tres herramientas. En trabajo de agente general va
 a andar **mal**, y eso no es un bug para reportar — es la pregunta de la región de la
 sección anterior, llegando como experiencia en vez de como número.
+
+### Cuando la credencial del agente no se puede proxyear
+
+`--passthrough` necesita un token que el proxy pueda reenviar. Un OpenClaw que habla
+con ChatGPT por una sesión OAuth no lo tiene — meter un proxy en el medio significaría
+tomar la credencial del usuario, y además no hace falta:
+
+    python3 -m training.harness.openclaw_traffic --out traffic.jsonl
+    python3 -m training.harness.null_arm --log traffic.jsonl
+
+**OpenClaw ya registra cada corrida.** Esto lee su log de trayectoria y emite las
+mismas líneas que consume el brazo nulo — **sin el prompt, sin el texto del asistente
+y sin los argumentos de ninguna llamada.** La pregunta de la región es sobre formas, y
+ninguna necesita el contenido.
+
+Y se niega a fingir: con menos de cincuenta corridas avisa que la muestra es muy chica
+y que tres formas cubriendo el 60% de seis corridas no es evidencia de una región.
