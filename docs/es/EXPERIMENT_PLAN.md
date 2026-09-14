@@ -684,6 +684,52 @@ llamadas, 0 rechazadas, 0 sin decidir**. Eso ahora es un test y no una esperanza
 **Ningún modelo entrenado corrió sobre esta suite** — el stub prueba la plomería, no
 el pool.
 
+#### P33 — la misma pregunta de LoRA sobre una base cuya respuesta ya conocemos · CORRIENDO
+
+[`results/P33-lora-matrix-20260914/`](../../results/P33-lora-matrix-20260914/BRIEF.md).
+**Pre-registrado antes de correr, y existe porque cuatro corridas produjeron un
+resultado ilegible.** Cada una preguntó si vLLM aplica un LoRA a `Qwen3.5-4B`; cada
+una contestó `IDENTICAL TO BASE`; y ninguna podía separar *la clase del modelo no
+aplica LoRA* de *el adaptador nunca se entrenó* de *el chequeo mismo estaba mal*.
+Era el chequeo, dos veces — así que **los dos diagnósticos sobre Qwen3.5 de esta
+página quedaron retirados el 2026-09-14**: que su adaptador tocaba sólo los MLP (el
+árbol de módulos cargado sí lleva `q_proj`), y que la clase no sirve LoRA (medido a
+través de un self-check que generaba dos veces a través del adaptador y llamaba
+idénticos a los resultados).
+
+**Lo que faltaba nunca fue un sujeto mejor. Era un control.** Un resultado negativo
+sólo se lee al lado de uno positivo tomado de la misma manera, así que el
+procedimiento idéntico corre sobre `Qwen2.5-3B-Instruct` — donde P26 midió base 0/60
+contra adaptador 20/60 **[ran]** — en la misma sesión que el sujeto.
+
+| compuerta | pregunta | concluyente sola |
+|---|---|---|
+| **G1** en proceso | ¿se movió `lora_B` **y** cambió la salida? | sí — un adaptador no-op nunca llega a G2 |
+| **G2** servido | ¿el texto de vLLM difiere del de la base? | sí |
+| **G3** fusionado | se compra sólo si G2 falla | sí, y **no es un pool** |
+
+**Falsificación, escrita antes de correr**: si el control falla cualquiera de las dos
+compuertas la corrida es **nula** y ninguna afirmación sobre Qwen3.5 la sobrevive.
+Esa fila no existía en ninguna de las cuatro corridas previas, y es lo único que
+separa "el sujeto es malo" de "el instrumento es malo".
+
+**G3 tiene su precio dicho de antemano, no descubierto después.** Fusionar escribe el
+delta en los pesos y sirve un modelo común — la propia guía de unsloth para Qwen3.5
+pasa por `save_pretrained_merged` exactamente por eso **[read]**. Funciona, y cuesta
+una copia completa de los pesos por experto, sin base compartida y sin swapping por
+request: justo lo que esta arquitectura existe para evitar.
+
+**Nota de instrumento que sobrevivió a la corrida.** El chain murió antes de que la
+A100 hiciera nada, por un comentario de Python dentro de un heredoc sin comillas:
+
+    # raised on `import`, so vllm never starts
+
+Ahí el `#` no comenta nada y los backticks ejecutan. `chain_serve.sh` ya llevaba una
+nota que decía *"No backticks in this heredoc — tercera vez hoy"*; la cuarta llegó en
+una línea agregada debajo. Una regla que una persona tiene que recordar no es una
+regla, así que `tests/test_chain_scripts.py` ahora falla el build por eso — y
+encontró dos instancias vivas apenas existió, incluida la advertencia misma **[ran]**.
+
 #### P26 — el pool responde en `/v1/chat/completions`, y cada adaptador se aplica
 
 [`results/P26-openai-server-20260913/`](../../results/P26-openai-server-20260913/BRIEF.md).

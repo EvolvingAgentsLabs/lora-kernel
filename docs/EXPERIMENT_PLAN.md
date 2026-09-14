@@ -662,6 +662,52 @@ assembled and not measured; an OpenAI client sending `tools=[…]`, reading
 trained model has been run on this suite** — the stub proves the plumbing, not the
 pool.
 
+#### P33 — the same LoRA question on a base whose answer we already know · RUNNING
+
+[`results/P33-lora-matrix-20260914/`](../results/P33-lora-matrix-20260914/BRIEF.md).
+**Pre-registered before the run, and it exists because four runs produced an
+unreadable result.** Each asked whether vLLM applies a LoRA to `Qwen3.5-4B`; each
+answered `IDENTICAL TO BASE`; and none could separate *the model class does not
+apply LoRA* from *the adapter was never trained* from *the check itself was wrong*.
+It was the check, twice — so **both Qwen3.5 diagnoses on this page were withdrawn
+on 2026-09-14**: that its adapter touched only MLPs (the loaded module tree does
+carry `q_proj`), and that the class does not serve LoRA (measured through a
+self-check that generated twice through the adapter and called the results
+identical).
+
+**The missing piece was never a better subject. It was a control.** A negative
+result is only readable beside a positive one taken the same way, so the identical
+procedure runs on `Qwen2.5-3B-Instruct` — where P26 measured base 0/60 against
+adapter 20/60 **[ran]** — in the same session as the subject.
+
+| gate | question | conclusive on its own |
+|---|---|---|
+| **G1** in-process | did `lora_B` move **and** did the output change | yes — a no-op adapter is never handed to G2 |
+| **G2** served | does vLLM's text differ from the base | yes |
+| **G3** merged | bought only if G2 fails | yes, and it is **not a pool** |
+
+**Falsification, written before the run**: if the control fails either gate the run
+is **void** and no claim about Qwen3.5 survives it. That row did not exist in any of
+the four earlier runs, and it is the only thing that separates "the subject is bad"
+from "the harness is bad".
+
+**G3 is priced rather than discovered.** Merging writes the delta into the weights
+and serves an ordinary model — unsloth's own Qwen3.5 guide routes through
+`save_pretrained_merged` for exactly this **[read]**. It works, and it costs one
+full copy of the weights per expert with no shared base and no per-request
+swapping: the thing this architecture exists to avoid.
+
+**Instrument note that outlived the run.** The chain died before the A100 did any
+work, on a Python comment inside an unquoted heredoc:
+
+    # raised on `import`, so vllm never starts
+
+There, `#` comments nothing and backticks execute. `chain_serve.sh` already carried
+a note reading *"No backticks in this heredoc — third time today"*; the fourth
+arrived in a line added beneath it. A rule a person has to remember is not a rule,
+so `tests/test_chain_scripts.py` now fails the build on it — and found two live
+instances the moment it existed, including the warning comment itself **[ran]**.
+
 #### P26 — the pool answers on `/v1/chat/completions`, and each adapter applies
 
 [`results/P26-openai-server-20260913/`](../results/P26-openai-server-20260913/BRIEF.md).
