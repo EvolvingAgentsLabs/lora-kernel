@@ -127,3 +127,39 @@ syntax.
 
 **Arm 3 — end to end against the served kernel with `tools=[…]` — is bought and not
 yet run.**
+
+---
+
+## Arm 3, as built (2026-09-13)
+
+Two arms over the same thirty cases, the same adapter and the same server. **One
+difference**: how the tools are described.
+
+| arm | the tool surface the model reads |
+|---|---|
+| trained instruction | the protocol prompt the adapter saw in training |
+| **OpenAI schema** | the same three tools as `tools=[…]`, rendered by `tools_to_instruction` |
+
+**The shim runs client-side, and that is the honest architecture.** vLLM will not
+emit `tool_calls` for an adapter that writes tags and nothing here asks it to: the
+client sends tools, the shim renders them into the surface, the model writes tags,
+and `to_tool_calls` turns the reply into what an OpenAI client reads.
+
+### A mismatch the schema creates, left in on purpose
+
+The renderer produces `<calc>expression=...</calc>` because that is what a JSON
+schema with one property says. **The adapter was trained on `<calc>1.2 * 3</calc>` —
+positional, no key.** Repairing that by special-casing `calc` would be the shim
+learning a tool's shape, which is the line this whole step exists to keep the
+converter on the right side of. **It is left in, and whatever it costs is part of the
+measurement.**
+
+### What each outcome means
+
+- **The shim is transparent** if the schema arm matches the trained arm on the
+  oracle's tool values. An agent runtime can then speak its own language to this pool.
+- **The schema rendering is the expensive half** if it collapses — and the honest
+  claim becomes that `harness.lora` decides well and is reached through a translation
+  that costs something measurable.
+- Either way, **a claim that the adapter "does function-calling" is a claim about
+  `tools_to_instruction`**, not about the weights.
