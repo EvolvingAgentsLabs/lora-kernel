@@ -133,3 +133,51 @@ def test_the_assignment_detector_sees_past_a_semicolon(tmp_path):
     p = tmp_path / "chain_semi.sh"
     p.write_text('set -euo pipefail\nSESSIONS="${1:-1}"; GPU="${GPU:-L4}"\necho "$GPU"\n')
     assert "GPU" in set(ASSIGN.findall(p.read_text()))
+
+
+# ---------------------------------------------------------------------------
+# A FILTER THAT DOES NOT KNOW A RUNNER'S PREFIX TURNS ITS RUN INTO SILENCE.
+#
+# The chain watches a remote log through `grep -E '...'`. Five times a run
+# produced exactly the line that explained it and the filter dropped it:
+# argparse writes `error:` while the filter had `Error`; a `[tiny]` diagnosis
+# printed on the VM was invisible where it was needed; and a 150-case
+# `triage_run` scoring pass showed as silence for its whole length because
+# `[run]` and `[arm]` were never in the pattern **[ran]** 2026-09-14.
+#
+# CLAUDE.md: "Never let a long run hide its position." A run whose position is
+# invisible cannot be stopped early, and stopping early is where the money is.
+# ---------------------------------------------------------------------------
+
+import pathlib
+
+PREFIX = re.compile(r'^\s*print\(f?"\[(\w+)\]', re.M)
+RUNNERS = sorted(pathlib.Path("training/harness").glob("*.py"))
+
+
+def peek_patterns(path: pathlib.Path) -> set[str]:
+    """The bracketed tags a chain script's watcher will actually surface."""
+    return set(re.findall(r"(\w+)\\\\\]", path.read_text()))
+
+
+def test_the_watcher_knows_every_prefix_its_runners_print():
+    """Anything a runner announces itself with has to reach the watching terminal."""
+    watched = set()
+    for chain in CHAINS:
+        watched |= peek_patterns(chain)
+    assert watched, "no bracketed prefixes found in any chain's peek filter"
+
+    # Only the modules a chain can actually launch as MODULE=... matter here.
+    launchable = {"serve_openai", "lora_matrix", "native_gate", "triage_run",
+                  "multitool_run", "train_pool", "tiny_adapter"}
+    missing = {}
+    for f in RUNNERS:
+        if f.stem not in launchable:
+            continue
+        for tag in set(PREFIX.findall(f.read_text())):
+            if tag not in watched:
+                missing.setdefault(f.name, set()).add(tag)
+    assert not missing, (
+        "these runners print progress under a prefix no chain watcher matches, so "
+        "their runs read as silence:\n"
+        + "\n".join(f"  {k}: {sorted(v)}" for k, v in sorted(missing.items())))
