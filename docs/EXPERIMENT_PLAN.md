@@ -662,6 +662,45 @@ assembled and not measured; an OpenAI client sending `tools=[…]`, reading
 trained model has been run on this suite** — the stub proves the plumbing, not the
 pool.
 
+#### P31 — the base cannot do triage, and that does not mean what the brief said
+
+[`results/P31-triage-headroom-20260914/`](../results/P31-triage-headroom-20260914/BRIEF.md).
+Qwen2.5-3B-Instruct, no adapter, 150 messages through vLLM, the proxy and the real
+agent loop. It answered **`NOT IMPORTANT` to all 150, in identical words, on the
+first model call** — **39/113 = 0.345** on the human messages against a bar of
+0.655, exact one-sided p = **1.000**, and **0 tool calls** **[ran]**.
+
+The tool surface was not the problem: the proxy's rendering was reproduced offline
+and the model was shown all three tags plus *"Use the tools to find out — the
+listing does not say"*. **It was offered the tools, told to use them, and asked for
+none.**
+
+**The pre-registered rule said the next purchase is a different base, and that rule
+is withdrawn rather than applied.** It reasoned that "an adapter teaches a policy;
+it does not teach a model to hold a tool conversation it cannot hold". P8 measured
+the opposite on this exact base **[ran]**:
+
+| arm | tool calls on 30 cases |
+|---|--:|
+| base + tool | 44 |
+| **kernel + tool** | **169** |
+| domain + tool | 0 |
+
+A protocol adapter nearly quadruples how often this base asks for a tool; a domain
+adapter with no protocol in its corpus suppresses asking to zero. **The failure P31
+observed is exactly the one a protocol adapter exists to repair**, so base-at-floor
+does not imply adapter-at-floor, and buying a different base would spend money on an
+inference this repository has already contradicted.
+
+**The comparison is suggestive, not exact**, and the limit is recorded with it: P8
+runs physics through a stop-string harness, P31 runs email through the OpenAI
+`tools=[…]` convention. What transfers is the within-P8 contrast — same base, same
+task, same channel — not the raw count.
+
+**What the arm does establish**: the base cannot do this unaided; the suite is not
+answerable from the listing; and all 0.320 of the margin still sits with the tools,
+unclaimed.
+
 #### P33 — the same LoRA question on a base whose answer we already know · RUNNING
 
 [`results/P33-lora-matrix-20260914/`](../results/P33-lora-matrix-20260914/BRIEF.md).
