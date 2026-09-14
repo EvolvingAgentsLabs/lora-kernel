@@ -87,10 +87,37 @@ def main() -> int:
     model.save_pretrained(out)
     tok.save_pretrained(out)
     w = out / "adapter_model.safetensors"
-    print(json.dumps({"out": str(out), "weights_bytes": w.stat().st_size if w.exists() else 0,
-                      "target_modules": names}, indent=2))
-    # A SAVED DIRECTORY IS NOT A TRAINED ADAPTER — the lesson that nearly scored the
-    # base model wearing an adapter's name.
+
+    # A SAVED DIRECTORY IS NOT A TRAINED ADAPTER, and a trained adapter is not a
+    # CHANGED OUTPUT. The gate that consumes this reported IDENTICAL TO BASE three
+    # times, and the reading was ambiguous between "the class does not apply LoRA"
+    # and "this adapter is a no-op" — because nothing here had checked the second
+    # [ran] 2026-09-14. So it is checked, in-process, before the adapter is handed on.
+    probe = "The adapter must change the output."
+    ids = tok(probe, return_tensors="pt").to(model.device)
+    with torch.no_grad():
+        base_out = model.get_base_model().generate(
+            **ids, max_new_tokens=24, do_sample=False,
+            pad_token_id=tok.pad_token_id)
+        with model.disable_adapter():
+            pass
+        lora_out = model.generate(**ids, max_new_tokens=24, do_sample=False,
+                                  pad_token_id=tok.pad_token_id)
+    same = torch.equal(base_out.cpu(), lora_out.cpu())
+    delta = float(sum((p_.detach().float().abs().sum().item())
+                      for n_, p_ in model.named_parameters() if "lora_B" in n_))
+
+    print(json.dumps({
+        "out": str(out), "weights_bytes": w.stat().st_size if w.exists() else 0,
+        "target_modules": names,
+        # lora_B starts at zero, so a nonzero sum is proof the optimiser moved it.
+        "lora_B_abs_sum": round(delta, 4),
+        "changes_output_in_process": not same,
+    }, indent=2), flush=True)
+    if same or delta == 0.0:
+        print("[tiny] THIS ADAPTER IS A NO-OP IN PROCESS. Asking a serving gate "
+              "about it would measure the adapter, not the server.", flush=True)
+        return 1
     return 0 if w.exists() and w.stat().st_size > 100_000 else 1
 
 
