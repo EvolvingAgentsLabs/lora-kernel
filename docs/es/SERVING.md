@@ -37,9 +37,10 @@ Apuntá el agente a `http://127.0.0.1:8001/v1` y poné `model` en `kernel` o `do
 
 ## Qué está ensamblado y sin medir
 
-**El bucle multi-turno.** Un agente devuelve resultados con `role: "tool"` y el proxy
-los pliega en la transcripción como `= valor`, donde el adaptador fue entrenado para
-leerlos. **Todas las mediciones hasta acá fueron de un solo turno** — P27 brazo 3
+**El bucle multi-turno — ahora ejercitado, ver el ejemplo trabajado abajo.** Un agente
+devuelve resultados con `role: "tool"` y el proxy los pliega en la transcripción como
+`= valor`, donde el adaptador fue entrenado para leerlos. **Todas las mediciones
+anteriores a P30 fueron de un solo turno** — P27 brazo 3
 explícitamente. `tests/test_proxy.py` muestra que la traducción no pierde nada y que
 un resultado aterriza en la línea que lo pidió; **no** muestra que el adaptador siga
 correctamente desde ahí. **Esa es otra afirmación y no está comprada.**
@@ -129,3 +130,30 @@ ninguna necesita el contenido.
 
 Y se niega a fingir: con menos de cincuenta corridas avisa que la muestra es muy chica
 y que tres formas cubriendo el 60% de seis corridas no es evidencia de una región.
+
+## Un ejemplo trabajado: el correo de una mañana
+
+    python3 -m training.harness.agent_sim \
+        --base-url http://127.0.0.1:8001/v1 --model kernel --n 12
+
+`training/email/` es una región con forma de una real: una tarea estrecha repetida
+todos los días, con una respuesta **verificable mecánicamente**. Un mensaje es
+importante cuando se cumplen al menos dos de *continúa un hilo en el que escribí*,
+*dirigido a mí directamente*, *me pide algo*, *remitente frecuente* — y nunca cuando
+es automático.
+
+**Los dos hechos decisivos no están en el listado.** Si el usuario escribió en el
+hilo vive detrás de `thread_history`; cuánta correspondencia real existe vive detrás
+de `sender_stats`. Una regla que sólo lee el listado saca **0,680 contra una barra de
+clase mayoritaria de 0,680** sobre los mensajes humanos — no le gana al azar
+informado ni por un caso, y hay un test que lo afirma en vez de confiarlo.
+
+`agent_sim` tiene forma de cliente, no de test: habla sólo OpenAI — una base URL, un
+nombre de modelo, `tools`, `tool_calls`, `role: "tool"` — así que cualquier cosa que
+necesite y el protocolo no provea es una brecha entre este proyecto y un runtime
+real.
+
+**Esto es lo que cerró el bucle multi-turno**: 24 llamadas, 0 rechazadas, 0 sin
+decidir, contra un modelo stub a través del proxy real. La sección de arriba ya no
+dice que ese camino esté sin medir — pero mirá qué mide. **La plomería, no el pool.**
+Ningún adaptador entrenado corrió todavía sobre esta suite.

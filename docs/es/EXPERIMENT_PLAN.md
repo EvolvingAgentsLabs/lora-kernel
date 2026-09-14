@@ -58,6 +58,7 @@ se responde con modelos que ya existen, antes de entrenar un solo adaptador.
 | **S5** | **la brecha de retiro** | el producto | GPU + frontera | **HECHA en región — 0,000.** El borde de la región es duro y el experto no lo siente — P7, P14 |
 | **S6** | `harness.lora` — un kernel separado del experto | el kernel | GPU alquilada | **a medias. La composición se resolvió turnándose (P13); si el kernel vale sus pesos se está midiendo (P15)** |
 | **S7** | el torneo, con un verificador no visto | la evolución | GPU alquilada | **bloqueado: no hay juez sin oráculo** — `OPEN-PROBLEMS.md` problema 4 |
+| **S9** | una **región** que es la mañana de alguien, y el bucle multi-turno | entrega | gratis | **el bucle cierra** — 24 llamadas, 0 rechazadas, 0 sin decidir; el techo de la suite leyendo el listado es exactamente su clase mayoritaria, y su verdad es verificable mecánicamente (P30) |
 | **S8** | el pool detrás de un **endpoint compatible con OpenAI** | entrega | GPU alquilada | **HECHO para servir, con precio para function-calling** — cada adaptador es su propio nombre de modelo y se aplica (P26); el conversor etiqueta→`tool_calls` no tiene dominio, 604/604 idas y vueltas (P27); la dirección esquema→etiqueta cuesta **0,188** (P27 brazo 3) |
 
 Dos reglas gobiernan la secuencia. **Los arms se compran de a uno** — el que
@@ -658,6 +659,30 @@ ellos — y los fallos de manual subieron **3 → 17**: decirle al adaptador par
 vocabulario lo hizo consultar con más confianza y errar en otro argumento. **"El 56%
 de los rechazos fuera de dominio son nombres" sobrevive; "entonces decile los nombres"
 no se sigue.**
+
+#### P30 — una región que es la mañana de alguien, y la primera corrida multi-turno
+
+[`results/P30-email-triage-20260914/`](../../results/P30-email-triage-20260914/BRIEF.md).
+Triar el correo de una persona es una tarea estrecha repetida a diario, y a
+diferencia de la mecánica de fluidos **la respuesta correcta es verificable
+mecánicamente** — un verificador sin juez, que es lo que a S7 todavía le falta.
+
+**La suite tuvo que fallar su propio test dos veces antes de valer la pena.** Una
+regla que sólo lee el listado llegaba a **0,795** contra una barra de 0,520 en el
+primer borrador, porque `Re:` se escribía exactamente cuando el usuario había
+respondido y el preview traía el pedido; **0,770** en el segundo, porque `noreply@`
+se ve y lo automático nunca es importante. El segundo fallo corrigió el instrumento y
+no el material: detectar un remitente automático es gratis y un humano lo hace de un
+vistazo, así que el techo se mide sobre los mensajes **humanos**, donde queda en
+**0,680 contra una barra de 0,680** — exactamente la clase mayoritaria, con los 0,320
+de margen restante enteramente para las herramientas.
+
+**Y el bucle multi-turno corrió por primera vez.** `docs/SERVING.md` lo llamaba
+ensamblado y sin medir; un cliente OpenAI mandando `tools=[…]`, leyendo `tool_calls`,
+ejecutándolas y devolviendo resultados `role: "tool"` cerró el camino con **24
+llamadas, 0 rechazadas, 0 sin decidir**. Eso ahora es un test y no una esperanza.
+**Ningún modelo entrenado corrió sobre esta suite** — el stub prueba la plomería, no
+el pool.
 
 #### P26 — el pool responde en `/v1/chat/completions`, y cada adaptador se aplica
 

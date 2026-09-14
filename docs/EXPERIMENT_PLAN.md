@@ -58,6 +58,7 @@ already exist, before a single adapter is trained.
 | **S5** | **the withdrawal gap** | the product | GPU + frontier | **DONE in region — 0.000.** The region's edge is hard and the expert cannot feel it — P7, P14 |
 | **S6** | `harness.lora` — a kernel apart from the expert | the kernel | GPU rental | **half done. Composition solved by taking turns (P13); whether the kernel is worth its weights is being measured (P15)** |
 | **S7** | the tournament, with a held-out verifier | evolution | GPU rental | **blocked: there is no judge without an oracle** — `OPEN-PROBLEMS.md` problem 4 |
+| **S9** | a **region** that is somebody's morning, and the multi-turn loop | delivery | free | **the loop closes** — 24 calls, 0 refused, 0 undecided; the suite's ceiling from the listing is exactly its majority class, and its truth is mechanically checkable (P30) |
 | **S8** | the pool behind an **OpenAI-compatible endpoint** | delivery | GPU rental | **DONE for serving, priced for tool-calling** — each adapter is its own model name and applies (P26); the tag→`tool_calls` converter is domain-free, 604/604 round trips (P27); the schema→tag direction costs **0.188** (P27 arm 3) |
 
 Two rules govern the sequence. **Arms are bought one at a time** — the arm that
@@ -636,6 +637,30 @@ aimed at — `property=D` appears seven times without them and never with them �
 handbook misses rose **3 → 17**: telling the adapter part of the vocabulary made it
 query more confidently and miss on a different argument. **"56% of out-of-domain
 refusals are names" survives; "so tell it the names" does not follow.**
+
+#### P30 — a region that is somebody's morning, and the first multi-turn run
+
+[`results/P30-email-triage-20260914/`](../results/P30-email-triage-20260914/BRIEF.md).
+Triaging one person's mail is a narrow task repeated daily, and unlike fluid
+mechanics **the right answer is mechanically checkable** — a verifier without a
+judge, which is what S7 still lacks.
+
+**The suite had to fail its own test twice before it was worth running.** A
+listing-only rule reached **0.795** against a 0.520 bar in the first draft, because
+`Re:` was written exactly when the user had replied and the preview carried the ask;
+**0.770** in the second, because `noreply@` is visible and automated is never
+important. The second failure corrected the instrument rather than the material:
+spotting an automated sender is free and a human does it at a glance, so the ceiling
+is checked on the **human** messages, where it lands at **0.680 against a bar of
+0.680** — exactly the majority class, with all 0.320 of the remaining margin owned by
+the tools.
+
+**And the multi-turn loop ran for the first time.** `docs/SERVING.md` called it
+assembled and not measured; an OpenAI client sending `tools=[…]`, reading
+`tool_calls`, executing them and returning `role: "tool"` results closed the path at
+**24 calls, 0 refused, 0 undecided**. That is now a test rather than a hope. **No
+trained model has been run on this suite** — the stub proves the plumbing, not the
+pool.
 
 #### P26 — the pool answers on `/v1/chat/completions`, and each adapter applies
 
