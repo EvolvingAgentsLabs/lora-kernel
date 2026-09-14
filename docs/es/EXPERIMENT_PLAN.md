@@ -621,6 +621,44 @@ insertado porque la brecha no cerraba sin herramienta — y `P8` es
 no se compró.
 
 
+#### P24 — una máscara gramatical compra limpieza, no acierto
+
+[`results/P24-constrained-20260912/`](../../results/P24-constrained-20260912/BRIEF.md).
+Enmascarar el sampler para que una llamada malformada sea imposible en vez de
+improbable. Los rechazos caen **23 → 10** mientras los valores del oráculo quedan en
+**94/96, idénticos** — el canje para el que fue construida, y una *subida* de
+cobertura habría significado que la gramática hacía el trabajo del adaptador. La
+respuesta final va de 5/30 a 4/30, que es un caso: **P21 ya mostró que 22 de 25
+fallos eran física con todos los valores en la mano.** La predicción, replayada
+offline sobre los transcripts de P21, decía que el 74% de los rechazos se volverían
+imposibles y fue el 57% — buen predictor de dirección, optimista de tamaño, porque la
+reparación es una propiedad de la distribución de fallos que encuentra y no una
+constante de la máscara. Y el tratamiento crasheó una vez sobre una forma que
+`grammar_check.py` no podía ver: Qwen rellena su matriz de embeddings más allá del
+vocabulario, y **un verificador de la gramática no es un verificador del sampler**.
+
+#### P28 — una convención de esquema funciona, la otra sale al revés
+
+[`results/P28-schema-conventions-20260914/`](../../results/P28-schema-conventions-20260914/BRIEF.md).
+
+| brazo | valores del oráculo | rechazadas |
+|---|--:|--:|
+| instrucción entrenada | 59/96 = 0,615 | 17 |
+| esquema OpenAI, plano | 41/96 = 0,427 | **88** |
+| **esquema + aridad** | 51/96 = **0,531** | **17** |
+| esquema + aridad + enums | 48/96 = 0,500 | 37 |
+
+**La aridad —un parámetro requerido se renderiza posicionalmente— baja los rechazos al
+número exacto del brazo entrenado y recupera el 55% del costo del esquema**, con 0 de
+48 líneas que nombren una herramienta o un dominio.
+
+**Los enums estaban predichos para no hacer nada acá y lo empeoraron.** Arreglaron
+aquello a lo que apuntaban — `property=D` aparece siete veces sin ellos y nunca con
+ellos — y los fallos de manual subieron **3 → 17**: decirle al adaptador parte del
+vocabulario lo hizo consultar con más confianza y errar en otro argumento. **"El 56%
+de los rechazos fuera de dominio son nombres" sobrevive; "entonces decile los nombres"
+no se sigue.**
+
 #### P26 — el pool responde en `/v1/chat/completions`, y cada adaptador se aplica
 
 [`results/P26-openai-server-20260913/`](../../results/P26-openai-server-20260913/BRIEF.md).

@@ -227,7 +227,7 @@ the work and is updated the same session a step reports.
 | **S3** | the router beats a lookup table | 🟡 ties |
 | **S4** | the expert specialises per region | ✅ **+63.3** |
 | **S5** | close the withdrawal gap | ✅ **0.000** in region |
-| **S8** | the pool behind an OpenAI endpoint | 🟢 **servable, and the bridge is priced** — each adapter is its own model name and applies (the substrate P3 left open). Tags→`tool_calls` is **domain-free**, 604/604 round trips. Schema→tags costs **0.188**, and **33 of its 93 refusals are one shape mismatch** on `calc` |
+| **S8** | the pool behind an OpenAI endpoint | 🟢 **servable, and most of the bridge's cost is recovered** — each adapter is its own model name and applies. Tags→`tool_calls` is **domain-free**, 604/604 round trips. Schema→tags cost 0.188; **one convention keyed on parameter count recovers 55% of it** and drops refusals 88→17, the trained arm's exact number. Declaring allowed values **made it worse** |
 | **S6** | `harness.lora` — kernel apart from the expert | 🟡 **a tie in fluids, not a tie in kind** — 94/96 against a rule's 93/96 where values cannot be memorised. On a **second subject** neither was edited for, the rule writes **0 of 63** calls and the adapter **27 of 63**: a hand-written harness transfers nothing, a learned one transfers part of itself. But 0.429 missed the 0.979 the brief asked for, and all arms still tie on the final answer |
 | **S7** | the tournament that evolves the experts | 🟢 **fitness fixed** — neither judge alone ranks reliably (1 of 2 pairs each); **both-must-accept gets 2 of 2** |
 
