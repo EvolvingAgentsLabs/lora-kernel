@@ -111,3 +111,20 @@ and a guessable URL is not a control. The comparison is constant-time.
 fluid mechanics and a kernel trained on three tools. On general agent work it will be
 **bad**, and that is not a bug to report — it is the region question from the section
 above, arriving as experience instead of as a number.
+
+### When the agent's credential cannot be proxied
+
+`--passthrough` needs a bearer token the proxy can forward. An OpenClaw talking to
+ChatGPT through an OAuth session has none — putting a proxy in the middle would mean
+taking the user's credential, and it is not necessary anyway:
+
+    python3 -m training.harness.openclaw_traffic --out traffic.jsonl
+    python3 -m training.harness.null_arm --log traffic.jsonl
+
+**OpenClaw already records every run.** This reads its trajectory log and emits the
+same lines the null arm consumes — **without the prompt, the assistant's text, or any
+tool call's arguments.** The region question is about shapes, and none of them need
+the content.
+
+It also refuses to pretend: under fifty runs it says the sample is too small and that
+three shapes covering 60% of six runs is not evidence of a region.
