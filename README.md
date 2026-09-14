@@ -217,6 +217,7 @@ carries the numbers. The plan they became lives in
 [`docs/EXPERIMENT_PLAN.md`](docs/EXPERIMENT_PLAN.md), which is the state of
 the work and is updated the same session a step reports.
 - [**CASE-TRIAGE.md**](docs/CASE-TRIAGE.md) — one person's morning mail, end to end: which of the twelve measured mechanisms it exercises, which two it cannot, and the gate on each phase.
+- [**CASE-TEAM.md**](docs/CASE-TEAM.md) — many groups on one GPU: the case where a standing group **is** the region, the router problem does not arise, and the pool is finally exercised as a pool.
 
 
 ## Where the plan stands

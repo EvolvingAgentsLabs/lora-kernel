@@ -190,6 +190,7 @@ trae los números. El plan en que se convirtieron vive en
 [`docs/EXPERIMENT_PLAN.md`](docs/EXPERIMENT_PLAN.md), que es el estado del
 trabajo y se actualiza en la misma sesión en que un paso reporta.
 - [**CASE-TRIAGE.md**](docs/es/CASE-TRIAGE.md) — el correo de una mañana, de punta a punta: cuáles de los doce mecanismos medidos ejercita, cuáles dos no puede, y la compuerta de cada fase.
+- [**CASE-TEAM.md**](docs/es/CASE-TEAM.md) — muchos grupos sobre una GPU: el caso donde un grupo estable **es** la región, el problema del router no aparece, y el pool por fin se ejercita como pool.
 
 ## Dónde está el plan
 
