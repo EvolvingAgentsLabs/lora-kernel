@@ -91,7 +91,11 @@ step("vllm", "pip -q install 'vllm>=0.28' 2>&1 | tail -1")
 # already installed, in a session that had no reason to carry it.
 # (No backticks in this heredoc — it is unquoted so BRANCH interpolates, and bash
 #  runs anything in here that looks like a substitution. Third time today.)
-step("train deps", "[ -z '$TRAINDEPS' ] || pip -q install peft datasets accelerate 2>&1 | tail -1; echo ok")
+# torchao IS PINNED HERE FOR THE SAME REASON chain_separate.sh pins it: Colab ships
+# 0.10.0, transformers refuses anything under 0.16.0, and the refusal arrives as an
+# ImportError in the first second of the run. That fix has been in the training chain
+# for days and was not carried across when this one learned to train [ran] 2026-09-14.
+step("train deps", "[ -z '$TRAINDEPS' ] || pip -q install peft datasets accelerate 'torchao>=0.16.0' 2>&1 | tail -1; echo ok")
 step("check", "python -c 'import vllm; print(vllm.__version__)' 2>&1 | tail -1")
 PY
   cat > /tmp/_vcheck.py <<'PY'
