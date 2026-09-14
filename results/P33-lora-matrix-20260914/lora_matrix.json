@@ -14,6 +14,22 @@
         "exit": 0
       },
       "seconds": 323
+    },
+    "subject": {
+      "base": "Qwen/Qwen3.5-4B",
+      "G1": {
+        "passed": true,
+        "adapter": "adapters/tiny-subject"
+      },
+      "G2": {
+        "passed": false,
+        "verdict": "not applied: served text is identical to the base",
+        "exit": 0
+      },
+      "seconds": 495
     }
-  }
+  },
+  "control_valid": true,
+  "reading": "the adapter trains and changes the output in process, and vLLM serves the base anyway \u2014 a serving-stack limit, not a model one",
+  "decision": "Qwen2.5 for the end-to-end; G3 says whether merging is a fallback"
 }

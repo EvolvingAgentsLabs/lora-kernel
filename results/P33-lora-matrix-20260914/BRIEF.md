@@ -68,3 +68,63 @@ fallback exists, and its cost is stated rather than discovered later.
   cannot be trained this way on this architecture, which is about the model.
 - **A pass on both is not permission to switch.** It says the family is available;
   whether to pay for retraining is a separate decision with its own arithmetic.
+
+---
+
+# Result — 2026-09-14 **[ran]**
+
+`lora_matrix.json`, `vllm-subject.log`. Both bases in one A100 session, vLLM 0.29.0.
+
+| base | role | G1 in-process | G2 served | seconds |
+|---|---|---|---|--:|
+| `Qwen2.5-3B-Instruct` | control | **passed** · `lora_B=18660.98` | **applied** | 323 |
+| `Qwen3.5-4B` | subject | **passed** · `lora_B=18739.84` | **IDENTICAL TO BASE** | 495 |
+
+**`control_valid: true`.** The procedure was proved on a base whose answer was
+already known, in the same session, on the same vLLM — so the subject's negative is
+a fact about Qwen3.5 and not about this code.
+
+## The reading
+
+> the adapter trains and changes the output in process, and vLLM serves the base
+> anyway — **a serving-stack limit, not a model one**
+
+This is different in every respect from the two claims withdrawn earlier the same
+day. Qwen3.5 is **not** incapable of LoRA: `lora_B_abs_sum = 18739.84` across all
+twelve projections — including `in_proj_qkv` and `out_proj` on the 24 linear-attention
+layers — and the output changes under `disable_adapter`. What fails is the serving
+stack.
+
+**And it fails silently, which is the whole of C18.** `vllm.log` carries
+
+    Loaded new LoRA adapter: name 'tiny', path 'adapters/tiny-subject'
+
+vLLM accepts the adapter, announces it, and serves the base. Nothing in the log says
+otherwise. A deployment reading that line would believe it was serving an expert.
+
+## Why the control was the experiment
+
+Four earlier runs produced this same `IDENTICAL TO BASE` and it was unreadable every
+time — twice it was the check itself, and both diagnoses had to be withdrawn. One
+arm whose answer was already known converts the fifth instance from an ambiguity
+into a measurement. **The control cost 323 seconds.**
+
+## One design decision that mattered
+
+The subject's G2 carries **`"exit": 0`**. `serve_openai` exits cleanly on a run whose
+gate said *not applied*, so reading the return code instead of the verdict file would
+have reported the subject as a pass — the same shape of error that produced the two
+withdrawn diagnoses. The verdict is read from the file by construction, and a test
+pins it.
+
+## Decision
+
+**Qwen 2.5 for the end-to-end.** Not because Qwen3.5 is weaker, but because a pool of
+QLoRAs needs adapters swappable per request over one resident base, and vLLM does not
+apply them on this class.
+
+**G3 was not bought.** Merging (`save_pretrained_merged`, which unsloth's own Qwen3.5
+guide recommends for vLLM **[read]**) would serve an ordinary model and would work —
+at one full copy of the weights per expert, with no shared base and no swapping. That
+is not a pool, so it is recorded as a priced fallback rather than an option, and no
+GPU time was spent confirming what it would cost us architecturally.
