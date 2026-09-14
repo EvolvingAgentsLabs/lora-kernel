@@ -15,6 +15,13 @@ MARGS="${MARGS:---adapter kernel=adapters/kernel-mt --adapter domain=adapters/do
 RESULTS_NAME="${RESULTS_NAME:-serve_results.json}"
 BASE="${BASE:-Qwen/Qwen2.5-3B-Instruct}"
 SESSIONS="${SESSIONS:-2}"
+# THE TWO OPTIONAL SWITCHES, DEFAULTED HERE RATHER THAN AT THEIR USE SITES.
+# `set -u` turns a bare $TRAINDEPS inside a heredoc into a dead chain, and it
+# died at line 69 with the reason printed as the heredoc's line number rather
+# than the reference's [ran] 2026-09-14. Same family as the ${ARGS:-} bug
+# recorded in chain_separate.sh, which cost two sessions.
+TRAINDEPS="${TRAINDEPS:-}"
+SKIP_ADAPTERS="${SKIP_ADAPTERS:-}"
 LOCAL="$RUN_DIR/$RESULTS_NAME"
 ADAPTERS="$RUN_DIR/adapters.tgz"
 
@@ -96,7 +103,7 @@ step("vllm", "pip -q install 'vllm>=0.28' 2>&1 | tail -1")
 # 0.10.0, transformers refuses anything under 0.16.0, and the refusal arrives as an
 # ImportError in the first second of the run. That fix has been in the training chain
 # for days and was not carried across when this one learned to train [ran] 2026-09-14.
-step("train deps", "[ -z '$TRAINDEPS' ] || pip -q install peft datasets accelerate 'torchao>=0.16.0' 2>&1 | tail -1; echo ok")
+step("train deps", "[ -z '${TRAINDEPS:-}' ] || pip -q install peft datasets accelerate 'torchao>=0.16.0' 2>&1 | tail -1; echo ok")
 step("check", "python -c 'import vllm; print(vllm.__version__)' 2>&1 | tail -1")
 PY
   cat > /tmp/_vcheck.py <<'PY'
