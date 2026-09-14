@@ -34,6 +34,7 @@ class CallMask(LogitsProcessor):
         self.prefix_len = prefix_len
         self.g = grammar or CallGrammar()
         self._pieces = None
+        self._width = 0          # set from the first scores tensor
         self._cache: dict[str, torch.Tensor] = {}
         self.blocked = 0          # how often the mask actually bit
 
@@ -53,7 +54,12 @@ class CallMask(LogitsProcessor):
         hit = self._cache.get(key)
         if hit is not None:
             return hit
-        keep = torch.zeros(len(self._vocab()), dtype=torch.bool)
+        # THE LOGITS ARE WIDER THAN THE TOKENIZER. Qwen pads its embedding matrix
+        # past the vocabulary — 151936 columns against 151665 tokens — and a mask
+        # built to the tokenizer's length dies on the first step with a shape
+        # mismatch [ran] 2026-09-14. The mask is built to the score width, and the
+        # padding columns stay False because nothing can legally be emitted there.
+        keep = torch.zeros(self._width, dtype=torch.bool)
         for i, piece in enumerate(self._vocab()):
             if not piece:
                 continue
@@ -76,6 +82,9 @@ class CallMask(LogitsProcessor):
 
     def __call__(self, input_ids: torch.LongTensor,
                  scores: torch.FloatTensor) -> torch.FloatTensor:
+        if scores.shape[-1] != self._width:
+            self._width = scores.shape[-1]
+            self._cache.clear()
         for b in range(input_ids.shape[0]):
             text = self.tok.decode(input_ids[b][self.prefix_len:],
                                    skip_special_tokens=True)
