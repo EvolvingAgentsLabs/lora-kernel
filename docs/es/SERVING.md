@@ -75,3 +75,40 @@ llamada bien formada. Si no puede, un adaptador encima no lo arregla — la comp
 siguiente es otra base, no un entrenamiento. Y las llamadas que nombran una
 herramienta que nadie ofreció se cuentan aparte, porque P25 midió exactamente ese
 fallo en el 56% de los rechazos sobre un tema desconocido.
+
+## Apuntar un agente real
+
+Dos formas, y **la primera conviene hacerla antes que la segunda.**
+
+### 1. Medir el tráfico mientras el agente sigue trabajando
+
+    python3 -m training.harness.openai_proxy \
+        --upstream https://api.openai.com --upstream-key "$OPENAI_API_KEY" \
+        --passthrough --log traffic.jsonl --api-key "$(openssl rand -hex 16)"
+
+En `--passthrough` no se traduce nada: el pedido va arriba tal como llegó y la
+respuesta vuelve sin tocar. **El agente sigue dando sus respuestas de siempre** y la
+corrida deja un registro de las formas que envía. Ese registro es la entrada que el
+brazo nulo necesita, y no se puede adivinar desde una suite.
+
+**Sólo se registran formas** — qué herramientas se ofrecieron, cuán profunda fue la
+conversación, y el texto de la respuesta. El prompt no se escribe: es del usuario, y
+la medición no lo necesita.
+
+### 2. Servir el pool por un túnel
+
+    # dentro de una sesión de Colab
+    bash training/harness/tunnel.sh
+
+Levanta vLLM con los adaptadores, el proxy en `:8001` y un túnel rápido de
+Cloudflare, e imprime una URL base pública y una clave generada. Apuntá el agente a
+`<url>/v1`.
+
+**La clave no es opcional y el script no corre sin una.** Un túnel convierte un proxy
+de localhost en un endpoint de inferencia público; uno abierto es la GPU de otro, y
+una URL difícil de adivinar no es un control. La comparación es de tiempo constante.
+
+**Qué esperar de las respuestas.** El pool es un 3B con un adaptador que sabe mecánica
+de fluidos y un kernel entrenado en tres herramientas. En trabajo de agente general va
+a andar **mal**, y eso no es un bug para reportar — es la pregunta de la región de la
+sección anterior, llegando como experiencia en vez de como número.

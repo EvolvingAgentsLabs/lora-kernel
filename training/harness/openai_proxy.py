@@ -41,13 +41,19 @@ UPSTREAM = "http://127.0.0.1:8000"
 ARITY = True          # P28: recovers 55% of the schema's cost, 0 domain lines
 ENUMS = False         # P28: made it worse — not carried forward
 LOG = None            # --log <path> records traffic for the null arm
+KEY = None            # --api-key: required once this is reachable from outside
+PASSTHROUGH = False   # --passthrough: forward untouched, log shapes only
+UP_KEY = None         # --upstream-key: the credential the upstream itself wants
 
 
 def _fetch(path: str, payload: dict | None, timeout: int = 600):
+    headers = {"Content-Type": "application/json"}
+    if UP_KEY:
+        headers["Authorization"] = f"Bearer {UP_KEY}"
     req = urllib.request.Request(
         UPSTREAM + path, method="POST" if payload is not None else "GET",
         data=json.dumps(payload).encode() if payload is not None else None,
-        headers={"Content-Type": "application/json"})
+        headers=headers)
     with urllib.request.urlopen(req, timeout=timeout) as r:
         body = r.read()
     return json.loads(body) if body.strip() else {}
@@ -100,6 +106,26 @@ def render_tools(messages: list[dict], tools: list[dict]) -> list[dict]:
     return out + [{"role": "user", "content": block}]
 
 
+def _record(req: dict, tools, up: dict) -> None:
+    """One line per request, for `training.harness.null_arm`.
+
+    WHAT AN AGENT ACTUALLY ASKS FOR CANNOT BE GUESSED FROM A SUITE. Only the shapes
+    are kept — which tools were offered, how deep the conversation was, and the
+    reply's text, which is what the null arm reads to count well-formed calls. The
+    prompt is not written down: it is the user's, and the measurement does not need
+    it.
+    """
+    msg = ((up.get("choices") or [{}])[0].get("message") or {})
+    with open(LOG, "a") as f:
+        f.write(json.dumps({
+            "model": req.get("model"),
+            "tools": [((x.get("function") or x).get("name")) for x in (tools or [])],
+            "turns": len(req.get("messages") or []),
+            "reply": msg.get("content") or "",
+            "upstream_tool_calls": len(msg.get("tool_calls") or []),
+        }) + "\n")
+
+
 class Handler(BaseHTTPRequestHandler):
     protocol_version = "HTTP/1.1"
 
@@ -115,12 +141,27 @@ class Handler(BaseHTTPRequestHandler):
         pass
 
     def do_GET(self):
+        if not self._authorised():
+            return self._send(401, {"error": {"message": "unauthorised"}})
         try:
             self._send(200, _fetch(self.path, None, timeout=30))
         except Exception as e:
             self._send(502, {"error": {"message": repr(e)}})
 
+    def _authorised(self) -> bool:
+        """ONCE THIS IS REACHABLE FROM OUTSIDE, IT NEEDS A DOOR. A tunnel turns a
+        localhost proxy into a public inference endpoint, and an open one is
+        somebody else's free GPU. The key is compared in constant time so the
+        comparison itself does not leak its length."""
+        if not KEY:
+            return True
+        import hmac
+        got = (self.headers.get("Authorization") or "").removeprefix("Bearer ").strip()
+        return hmac.compare_digest(got, KEY)
+
     def do_POST(self):
+        if not self._authorised():
+            return self._send(401, {"error": {"message": "unauthorised"}})
         n = int(self.headers.get("Content-Length") or 0)
         try:
             req = json.loads(self.rfile.read(n) or b"{}")
@@ -131,6 +172,23 @@ class Handler(BaseHTTPRequestHandler):
                 return self._send(200, _fetch(self.path, req))
             except Exception as e:
                 return self._send(502, {"error": {"message": repr(e)}})
+
+        if PASSTHROUGH:
+            # MEASURE BEFORE BUILDING. In this mode nothing is translated: the
+            # request goes upstream exactly as it arrived and the reply comes back
+            # untouched. What it buys is the traffic — the shapes an agent actually
+            # sends — which is the input the null arm needs and which no suite can
+            # guess. It lets a deployment be measured while it keeps working.
+            try:
+                up = _fetch(self.path, req)
+            except urllib.error.HTTPError as e:
+                return self._send(e.code, {"error": {"message": e.read()[:400].decode(
+                    "utf-8", "replace")}})
+            except Exception as e:
+                return self._send(502, {"error": {"message": repr(e)}})
+            if LOG:
+                _record(req, req.get("tools"), up)
+            return self._send(200, up)
 
         tools = req.pop("tools", None)
         req.pop("tool_choice", None)
@@ -154,19 +212,7 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(502, {"error": {"message": repr(e)}})
 
         if LOG:
-            # TRAFFIC IS RECORDED SO THE NULL ARM HAS SOMETHING TO MEASURE. What an
-            # agent actually asks for cannot be guessed from a suite, and the first
-            # question about a new deployment is whether the base can do the job at
-            # all — which needs its traffic, not ours.
-            with open(LOG, "a") as f:
-                f.write(json.dumps({
-                    "model": req.get("model"),
-                    "tools": [((x.get("function") or x).get("name"))
-                              for x in (tools or [])],
-                    "turns": len(req.get("messages") or []),
-                    "reply": ((up.get("choices") or [{}])[0].get("message") or {}
-                              ).get("content") or "",
-                }) + "\n")
+            _record(req, tools, up)
 
         for choice in up.get("choices", []):
             msg = choice.get("message") or {}
@@ -183,6 +229,14 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--upstream", default=UPSTREAM)
     ap.add_argument("--port", type=int, default=8001)
+    ap.add_argument("--api-key", dest="api_key", default=None,
+                    help="require this bearer token; set it whenever the proxy is "
+                         "reachable from outside localhost")
+    ap.add_argument("--upstream-key", dest="upstream_key", default=None,
+                    help="bearer token the upstream itself requires")
+    ap.add_argument("--passthrough", action="store_true",
+                    help="translate nothing; forward and log shapes. Use this to "
+                         "measure a deployment while it keeps working")
     ap.add_argument("--log", default=None,
                     help="append one line per request, for training.harness.null_arm")
     ap.add_argument("--enums", action="store_true",
@@ -191,8 +245,15 @@ def main() -> int:
     globals()["UPSTREAM"] = args.upstream
     globals()["ENUMS"] = args.enums
     globals()["LOG"] = args.log
+    globals()["KEY"] = args.api_key
+    globals()["UP_KEY"] = args.upstream_key
+    globals()["PASSTHROUGH"] = args.passthrough
+    if args.api_key is None and args.passthrough:
+        print("[proxy] WARNING: no --api-key. Do not expose this.", flush=True)
 
-    print(f"[proxy] :{args.port} -> {UPSTREAM}  arity={ARITY} enums={ENUMS}",
+    print(f"[proxy] :{args.port} -> {args.upstream}  "
+          f"{'passthrough' if args.passthrough else f'arity={ARITY} enums={args.enums}'}"
+          f"  auth={'on' if args.api_key else 'OFF'}  log={args.log or 'off'}",
           flush=True)
     ThreadingHTTPServer(("0.0.0.0", args.port), Handler).serve_forever()
     return 0
