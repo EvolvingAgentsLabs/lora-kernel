@@ -25,6 +25,48 @@ untouched.
 Point the agent at `http://127.0.0.1:8001/v1` and set `model` to `kernel` or
 `domain`. `/v1/models` lists them.
 
+## The base has to be one vLLM actually applies adapters to — check, do not assume
+
+**vLLM can accept a LoRA, log that it loaded it, and serve the base.** No error, no
+warning. On `Qwen/Qwen3.5-4B` the server prints
+
+    Loaded new LoRA adapter: name 'tiny', path 'adapters/tiny-subject'
+
+and then returns text **byte-identical to the base** for every request **[ran]**
+`results/P33-lora-matrix-20260914/`. The adapter in that run was real — trained on
+that base, `lora_B` moved, and it changed the model's output in process. A
+deployment reading that log line would believe it was serving an expert.
+
+**So the first thing to run against a new base is the identity gate**, before any
+accuracy number is collected:
+
+    python3 -m training.harness.serve_openai --base <model> \
+        --adapter tiny=<adapter> --gate-only --out gate.json
+
+It sends one prompt to the base and to each adapter and compares. Read
+`gate_verdict` **from the file** — the process exits 0 on a clean run whose gate said
+*not applied*, so a return code is not the answer.
+
+| verdict | meaning |
+|---|---|
+| `applied` | the served text differs from the base; go on |
+| `not applied: served text is identical to the base` | **stop**; every number after this measures the base |
+| `inconclusive: the adapter was refused out loud` | a shape or rank mismatch, not a silent no-op |
+
+**The families this repository has checked:**
+
+| base | adapters applied by vLLM 0.29.0 |
+|---|---|
+| `Qwen/Qwen2.5-3B-Instruct` | **yes** — the pool runs on it |
+| `Qwen/Qwen3.5-4B` | **no**, silently |
+
+Qwen3.5 is not the weaker model and this is not a quality judgement: it trains a LoRA
+perfectly well. It is a **serving-stack** limit, and a pool needs adapters swappable
+per request over one resident base. Merging the delta into the weights
+(`save_pretrained_merged`) does serve correctly and is what unsloth's own Qwen3.5
+guide recommends for vLLM **[read]** — at one full copy of the weights per expert,
+with no shared base and no swapping. **That works and it is not a pool.**
+
 ## What is measured, and where
 
 | | result | step |

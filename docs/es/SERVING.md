@@ -25,6 +25,49 @@ tocarlo.
 Apuntá el agente a `http://127.0.0.1:8001/v1` y poné `model` en `kernel` o `domain`.
 `/v1/models` los lista.
 
+## La base tiene que ser una a la que vLLM realmente le aplique adaptadores — se chequea, no se supone
+
+**vLLM puede aceptar un LoRA, registrar en el log que lo cargó, y servir la base.**
+Sin error, sin advertencia. Sobre `Qwen/Qwen3.5-4B` el servidor imprime
+
+    Loaded new LoRA adapter: name 'tiny', path 'adapters/tiny-subject'
+
+y después devuelve texto **idéntico byte a byte al de la base** en cada request
+**[ran]** `results/P33-lora-matrix-20260914/`. El adaptador de esa corrida era real:
+entrenado sobre esa base, con `lora_B` movido, y cambiaba la salida del modelo en
+proceso. Un despliegue que leyera esa línea del log creería estar sirviendo un experto.
+
+**Así que lo primero que se corre contra una base nueva es la compuerta de identidad**,
+antes de juntar cualquier número de exactitud:
+
+    python3 -m training.harness.serve_openai --base <modelo> \
+        --adapter tiny=<adaptador> --gate-only --out gate.json
+
+Manda un prompt a la base y a cada adaptador y compara. El `gate_verdict` se lee
+**del archivo**: el proceso sale 0 en una corrida limpia cuya compuerta dijo *not
+applied*, así que el código de retorno no es la respuesta.
+
+| veredicto | qué significa |
+|---|---|
+| `applied` | el texto servido difiere del de la base; seguir |
+| `not applied: served text is identical to the base` | **parar**; todo número posterior mide la base |
+| `inconclusive: the adapter was refused out loud` | desajuste de forma o de rango, no un no-op silencioso |
+
+**Las familias que este repositorio chequeó:**
+
+| base | ¿vLLM 0.29.0 aplica los adaptadores? |
+|---|---|
+| `Qwen/Qwen2.5-3B-Instruct` | **sí** — el pool corre sobre ella |
+| `Qwen/Qwen3.5-4B` | **no**, en silencio |
+
+Qwen3.5 no es el modelo más débil y esto no es un juicio de calidad: entrena un LoRA
+perfectamente bien. Es un límite del **stack de serving**, y un pool necesita
+adaptadores intercambiables por request sobre una base residente. Fusionar el delta
+en los pesos (`save_pretrained_merged`) sí sirve bien, y es lo que recomienda la
+propia guía de unsloth para Qwen3.5 en vLLM **[read]** — a costa de una copia completa
+de los pesos por experto, sin base compartida y sin swapping. **Eso funciona y no es
+un pool.**
+
 ## Qué está medido, y dónde
 
 | | resultado | paso |
