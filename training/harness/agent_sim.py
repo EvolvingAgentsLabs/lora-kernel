@@ -79,6 +79,7 @@ def triage_one(base_url, key, model, inbox, msg, max_turns, max_tokens):
     messages = [{"role": "system", "content": SYSTEM},
                 {"role": "user", "content": listing}]
     calls = refused = 0
+    asked: list[dict] = []
     for _ in range(max_turns):
         try:
             out = chat(base_url, key, {"model": model, "messages": messages,
@@ -101,7 +102,8 @@ def triage_one(base_url, key, model, inbox, msg, max_turns, max_tokens):
             verdict = (True if "NOT IMPORTANT" not in text and "IMPORTANT" in text
                        else False if "NOT IMPORTANT" in text else None)
             return {"verdict": verdict, "calls": calls, "refused": refused,
-                    "turns": len(messages), "text": (m.get("content") or "")[:200]}
+                    "turns": len(messages), "asked": asked,
+                    "text": (m.get("content") or "")[:200]}
         for tc in tcs:
             fn = tc["function"]
             calls += 1
@@ -109,11 +111,21 @@ def triage_one(base_url, key, model, inbox, msg, max_turns, max_tokens):
                 result = answer(inbox, fn["name"], _body(fn["name"], fn["arguments"]))
             except ToolError as e:
                 refused += 1
+                # WHAT WAS ASKED FOR, NOT ONLY THAT THE ASK FAILED. P34 measured a
+                # protocol adapter taking this base from 0 tool calls to 127 with
+                # 127 refused — and the record could not say whether it asked for a
+                # tool this suite does not have or asked correctly with malformed
+                # arguments. Those two call for different training, and the
+                # difference was invisible [ran] 2026-09-14.
+                asked.append({"name": fn["name"],
+                              "args": str(fn.get("arguments"))[:120],
+                              "error": str(e)[:120]})
                 result = f"ERROR: {e}"
             messages.append({"role": "tool", "tool_call_id": tc.get("id"),
                              "name": fn["name"], "content": result})
     return {"verdict": None, "calls": calls, "refused": refused,
-            "turns": len(messages), "text": "(ran out of turns)"}
+            "turns": len(messages), "asked": asked,
+            "text": "(ran out of turns)"}
 
 
 def main() -> int:

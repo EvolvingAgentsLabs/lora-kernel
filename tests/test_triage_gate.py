@@ -93,3 +93,46 @@ def test_the_base_only_arm_needs_no_gate(monkeypatch, tmp_path):
                         ["t", "--base", "B", "--arms", "base", "--out", str(out)])
     triage_run.main()
     assert called == [], "the base-only arm probed something it should not have"
+
+
+# ---------------------------------------------------------------------------
+# A REFUSAL COUNT WITHOUT THE ASK IS NOT A DIAGNOSIS.
+#
+# P34 took this base from 0 tool calls to 127, with 127 refused, and the record
+# could not say whether the adapter asked for a tool this suite does not have or
+# asked for the right one with malformed arguments **[ran]** 2026-09-14. Those
+# two findings call for different training, and the difference was invisible.
+# ---------------------------------------------------------------------------
+
+def test_a_refusal_records_what_was_asked_for(monkeypatch):
+    from training.harness import agent_sim
+    from training.email.inbox import generate
+
+    inbox = generate(5, 1)
+    msg = inbox["messages"][0]
+
+    turns = [
+        {"choices": [{"message": {"role": "assistant", "tool_calls": [
+            {"id": "1", "function": {"name": "lookup",
+                                     "arguments": '{"fluid": "water"}'}}]}}]},
+        {"choices": [{"message": {"role": "assistant",
+                                  "content": "NOT IMPORTANT"}}]},
+    ]
+    monkeypatch.setattr(agent_sim, "chat", lambda *a, **k: turns.pop(0))
+    r = agent_sim.triage_one("u", None, "m", inbox, msg, 6, 300)
+
+    assert r["refused"] == 1
+    assert r["asked"] and r["asked"][0]["name"] == "lookup"
+    # the name it reached for, and why the suite would not answer it
+    assert "lookup" in r["asked"][0]["error"] or r["asked"][0]["error"]
+
+
+def test_a_case_that_asks_for_nothing_records_an_empty_ask(monkeypatch):
+    from training.harness import agent_sim
+    from training.email.inbox import generate
+
+    inbox = generate(5, 1)
+    monkeypatch.setattr(agent_sim, "chat", lambda *a, **k: {
+        "choices": [{"message": {"role": "assistant", "content": "IMPORTANT"}}]})
+    r = agent_sim.triage_one("u", None, "m", inbox, inbox["messages"][0], 6, 300)
+    assert r["asked"] == [] and r["calls"] == 0
