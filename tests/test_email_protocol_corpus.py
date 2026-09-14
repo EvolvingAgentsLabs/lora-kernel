@@ -87,3 +87,20 @@ def test_the_corpus_uses_the_surface_the_proxy_renders(rows):
     served = render_tools([{"role": "user", "content": "x"}], SCHEMA)[-1]["content"]
     for tool in ("thread_history", "sender_stats", "message"):
         assert f"<{tool}>" in served and f"<{tool}>" in gen.INSTRUCTION
+
+
+def test_the_pool_knows_about_the_email_kernel():
+    from training.harness.train_pool import POOL
+    import pathlib
+    assert "adapters/kernel-email" in POOL
+    corpus = pathlib.Path(POOL["adapters/kernel-email"])
+    assert corpus.exists(), f"{corpus} is registered but not committed"
+
+
+def test_only_selects_a_subset_and_refuses_a_name_that_matches_nothing(monkeypatch):
+    """Filling every gap is right for a short tarball, wrong when one is wanted."""
+    from training.harness import train_pool
+    import sys
+    monkeypatch.setattr(sys, "argv", ["p", "--only", "nothing-like-this"])
+    # it must refuse rather than silently train the whole pool
+    assert train_pool.main() == 1

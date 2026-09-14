@@ -22,6 +22,10 @@ from pathlib import Path
 POOL = {
     "adapters/kernel-mt": "training/harness/data_mt/train.jsonl",
     "adapters/domain-mt": "training/physics/data_mt/train.jsonl",
+    # P35: the same protocol, in the email suite's vocabulary. P34 measured the
+    # physics kernel taking this base from 0 tool calls to 127 and every one
+    # refused — the disposition travels, the names do not [ran].
+    "adapters/kernel-email": "training/harness/data_ep/train.jsonl",
 }
 
 
@@ -39,11 +43,23 @@ def main() -> int:
     ap.add_argument("--targets",
                     default="q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj")
     ap.add_argument("--four-bit", dest="four_bit", action="store_true")
+    ap.add_argument("--only", default=None,
+                    help="comma-separated substrings; train only matching adapters")
     args = ap.parse_args()
 
     from training.s4_train import free, train_adapter
 
-    for path, corpus in POOL.items():
+    # `--only` EXISTS BECAUSE THE POOL GREW. Filling every gap is right when a
+    # carried tarball is short a member; it is wrong when a step wants one adapter
+    # and would otherwise pay for three on a fresh machine.
+    wanted = POOL if not args.only else {
+        p: c for p, c in POOL.items()
+        if any(o.strip() in p for o in args.only.split(","))}
+    if args.only and not wanted:
+        print(f"[pool] --only {args.only!r} matched nothing in {sorted(POOL)}")
+        return 1
+
+    for path, corpus in wanted.items():
         if (Path(path) / "adapter_model.safetensors").exists():
             print(f"[pool] {path} already has weights", flush=True)
             continue
@@ -59,7 +75,7 @@ def main() -> int:
     Path("pool.json").write_text(json.dumps({
         "base": args.base,
         "adapters": {p: (Path(p) / "adapter_model.safetensors").stat().st_size
-                     for p in POOL if (Path(p) / "adapter_model.safetensors").exists()},
+                     for p in wanted if (Path(p) / "adapter_model.safetensors").exists()},
         "finished": True,
     }, indent=2))
     print("[pool] complete", flush=True)
