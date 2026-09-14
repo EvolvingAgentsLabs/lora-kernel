@@ -42,7 +42,11 @@ TOOLS = [
     {"type": "function", "function": {
         "name": "lookup", "description": "a property of a named substance",
         "parameters": {"type": "object", "properties": {
-            "fluid": {"type": "string"}, "property": {"type": "string"},
+            "fluid": {"type": "string"},
+            # THE ENUM IS THE TOOL AUTHOR'S DECLARATION, not the shim's knowledge.
+            # A schema is where a tool says what it accepts; the shim renders
+            # whatever it is handed and knows none of these words.
+            "property": {"type": "string", "enum": ["density", "viscosity"]},
             "T": {"type": "number"}}}}},
     {"type": "function", "function": {
         "name": "convert", "description": "a quantity from one unit to another",
@@ -88,6 +92,12 @@ def main() -> int:
     log = open("vllm.log", "w")
     proc = subprocess.Popen(cmd, stdout=log, stderr=subprocess.STDOUT)
     results = {"base": args.base, "adapter": args.adapter, "arms": {}}
+    if OUT.exists():
+        try:
+            results["arms"] = json.loads(OUT.read_text()).get("arms", {})
+            print(f"[resume] arms on disk: {list(results['arms'])}", flush=True)
+        except json.JSONDecodeError:
+            pass
 
     try:
         if not wait_ready(proc):
@@ -98,11 +108,19 @@ def main() -> int:
               flush=True)
 
         rows = generate(args.n_eval, args.eval_seed, FAMILIES)
-        schema_block = tools_to_instruction(TOOLS)
-        print(f"[shim] the schema renders as:\n{schema_block}\n", flush=True)
+        for lbl, a, e in (("plain", False, False), ("arity", True, False),
+                          ("arity+enums", True, True)):
+            print(f"[shim] {lbl}:\n{tools_to_instruction(TOOLS, a, e)}\n", flush=True)
 
-        for arm, suffix in (("trained instruction", None),
-                            ("OpenAI schema", schema_block)):
+        arms = [("trained instruction", None),
+                ("OpenAI schema", tools_to_instruction(TOOLS)),
+                ("schema + arity", tools_to_instruction(TOOLS, arity=True)),
+                ("schema + arity + enums",
+                 tools_to_instruction(TOOLS, arity=True, enums=True))]
+        for arm, suffix in arms:
+            if len((results["arms"].get(arm) or {}).get("records") or []) >= len(rows):
+                print(f"[arm] {arm} already complete", flush=True)
+                continue
             recs = {"calls": 0, "malformed": 0, "matched": 0, "wanted": 0,
                     "cases_with_a_call": 0, "records": []}
             t0 = time.time()
@@ -151,12 +169,18 @@ def main() -> int:
                   f"{recs['cases_with_a_call']}/{len(rows)} cases produced a call",
                   flush=True)
 
-        a = results["arms"]["trained instruction"]
-        b = results["arms"]["OpenAI schema"]
-        ra = a["matched"] / max(a["wanted"], 1)
-        rb = b["matched"] / max(b["wanted"], 1)
-        print(f"\ntrained {ra:.3f} · schema {rb:.3f} · the shim costs "
-              f"{ra - rb:+.3f}", flush=True)
+        print("")
+        base = None
+        for arm, _ in arms:
+            v = results["arms"].get(arm)
+            if not v:
+                continue
+            r = v["matched"] / max(v["wanted"], 1)
+            base = r if base is None else base
+            print(f"{arm:26s} {v['matched']:>3}/{v['wanted']:<3} = {r:.3f}  "
+                  f"calls {v['calls']:>3}  refused {v['malformed']:>3}  "
+                  f"vs trained {r - base:+.3f}", flush=True)
+        print("the shim costs what the gap to the trained arm says", flush=True)
         results["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")
         OUT.write_text(json.dumps(results, indent=2))
     finally:
