@@ -1,0 +1,887 @@
+{
+  "base": "Qwen/Qwen2.5-3B-Instruct",
+  "adapter": "adapters/kernel-mt",
+  "arms": {
+    "trained instruction": {
+      "calls": 182,
+      "malformed": 17,
+      "matched": 59,
+      "wanted": 96,
+      "cases_with_a_call": 30,
+      "records": [
+        {
+          "case_id": "mt-0000",
+          "tool_calls": 5,
+          "matched": 0,
+          "wanted": 3,
+          "raw": "1. Area of the gate: <calc>1844.2 * 723.6</calc>= 133592.68\n2. Height of the column of fluid: <calc>1.76 - 0</calc>= 1.76\n3. Density of the fluid: <lookup>TD-78</lookup>= 1330.1\n4. Pressure at the bottom of the column: <calc>1330.1 * 1.76</calc>= 2348.94\n5. Force on the gate: <calc>133592.68 * 2348."
+        },
+        {
+          "case_id": "mt-0001",
+          "tool_calls": 5,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=1701.6; from=mm; to=m</convert>= 1.7016\n2. Channel depth: <convert>value=1377.8; from=mm; to=m</convert>= 1.3778\n3. Bed slope: <convert>value=0.00145; from=; to=m/m</convert>= 0.00145\n4. Hydraulic radius: <calc>2.0 * 1.7016 / (1.7016 + 1.3778)</calc>= 0.69999\n5. Disc"
+        },
+        {
+          "case_id": "mt-0002",
+          "tool_calls": 8,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Mass flow: <calc>76.0 / 1000 * 25.6</calc>= 1.9456\n2. Density of the fluid: <lookup>fluid=Zv-76; property=density; T=10</lookup>= 1330.7\n3. Volumetric flow: <calc>1.9456 / 3.6</calc>= 0.540444\n4. Dynamic viscosity: <lookup>fluid=Zv-76; property=viscosity; T=10</lookup>= 0.00094\n5. Kinematic visco"
+        },
+        {
+          "case_id": "mt-0003",
+          "tool_calls": 8,
+          "matched": 3,
+          "wanted": 4,
+          "raw": "1. Inlet diameter: <convert>value=23.1; from=cm; to=m</convert>= 0.231\n2. Throat diameter: <convert>value=15.1; from=cm; to=m</convert>= 0.151\n3. Area of the inlet: <calc>pi * (0.231/2)**2</calc>= 0.038679\n4. Area of the throat: <calc>pi * (0.151/2)**2</calc>= 0.017567\n5. Density of the fluid: <look"
+        },
+        {
+          "case_id": "mt-0004",
+          "tool_calls": 4,
+          "matched": 1,
+          "wanted": 3,
+          "raw": "1. Height of the column of fluid: <convert>value=2.91; from=m; to=cm</convert>= 291\n2. Density of the fluid: <lookup>fluid=XB-55; property=density; T=10</lookup>= 1287.4\n3. Pressure at the bottom of the column: <calc>1287.4 * 291</calc>= 374455\n4. Force on the gate: <calc>374455 * 0.395</calc>= 1460"
+        },
+        {
+          "case_id": "mt-0005",
+          "tool_calls": 6,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=230; from=cm; to=m</convert>= 2.3\n2. Depth: <convert>value=37.1; from=cm; to=m</convert>= 0.371\n3. Kinematic viscosity of the fluid: <lookup>fluid=water; property=viscosity; T=25</lookup>= 1.004e-05\n4. Flow: <calc>0.01126 * sqrt(2 * 9.80665 * 0.371 / 0.033)</calc>= 0"
+        },
+        {
+          "case_id": "mt-0006",
+          "tool_calls": 7,
+          "matched": 3,
+          "wanted": 4,
+          "raw": "1. Mass flow: <calc>33.8 / 3600</calc>= 0.00938889\n2. Density of the fluid: <lookup>fluid=SR-18; property=density; T=20</lookup>= 1330.7\n3. Volumetric flux: <calc>0.00938889 * 1330.7</calc>= 12.444\n4. Dynamic viscosity: <lookup>fluid=SR-18; property=viscosity; T=20</lookup>= 1.12\n5. Reynolds number:"
+        },
+        {
+          "case_id": "mt-0007",
+          "tool_calls": 5,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Pressure difference: <convert>value=64.7; from=mbar; to=Pa</convert>= 6470\n2. Density of the fluid: <lookup>fluid=VK-16; property=density; T=20</lookup>= 1350.6\n3. Area of the inlet: <calc>pi*(18.9/100)**2</calc>= 1.1342\n4. Area of the throat: <calc>pi*(8.7/100)**2</calc>= 0.02374\n5. Volumetric f"
+        },
+        {
+          "case_id": "mt-0008",
+          "tool_calls": 4,
+          "matched": 1,
+          "wanted": 3,
+          "raw": "1. Density of the fluid: <lookup>fluid=PX-3; property=density; T=25</lookup>= 1080.7\n2. Pressure at the bottom: <calc>1080.7 * 2.4</calc>= 2593.68\n3. Area of the gate: <calc>0.7364 * 0.4249</calc>= 0.311044\n4. Force: <calc>2593.68 * 0.311044</calc>= 799.99\n\n{\"answer\": 799.99}"
+        },
+        {
+          "case_id": "mt-0009",
+          "tool_calls": 3,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=3266.7; from=mm; to=m</convert>= 3.2667\n2. Flow depth: <convert>value=1017.0; from=mm; to=m</convert>= 1.017\n3. Kinematic viscosity of the fluid: <lookup>fluid=water; property=viscosity; T=25</lookup>= 1.07e-05\n4. V = Q / A, where A = b * d = 3.2667 * 1.017 = 3.319\n5"
+        },
+        {
+          "case_id": "mt-0010",
+          "tool_calls": 9,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Mass flow: <calc>54.8 / 1000 * 1000</calc>= 548\n2. Density of the fluid: <lookup>fluid=BW-97; property=density; T=25</lookup>= 1330.6\n3. Dynamic viscosity: <lookup>fluid=BW-97; property=viscosity; T=25</lookup>= 0.00091\n4. Volumetric flow: <calc>54.8 / 3600</calc>= 0.0152222\n5. Kinematic viscosit"
+        },
+        {
+          "case_id": "mt-0011",
+          "tool_calls": 6,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Pressure difference: <convert>value=175.5; from=mbar; to=Pa</convert>= 17550\n2. Density of the fluid: <lookup>fluid=Eh-2; property=density; T=10</lookup>= 1489.4\n3. Dynamic viscosity: <lookup>fluid=Eh-2; property=viscosity; T=10</lookup>= 0.0099\n4. Area of the larger pipe: <calc>pi * (176.6 / 100"
+        },
+        {
+          "case_id": "mt-0012",
+          "tool_calls": 3,
+          "matched": 1,
+          "wanted": 3,
+          "raw": "1. Density of the fluid: <lookup>fluid=KH-87; property=density; T=25</lookup>= 1490.7\n2. Pressure at the bottom: <calc>1490.7 * 2.53</calc>= 3742.24\n3. Force on the rectangle: <calc>2.263 * 8.85 * 3742.24</calc>= 74402.2\n\n{\"answer\": 74402.2}"
+        },
+        {
+          "case_id": "mt-0013",
+          "tool_calls": 5,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=221.1; from=cm; to=m</convert>= 2.211\n2. Channel depth: <convert>value=84.4; from=cm; to=m</convert>= 0.844\n3. Bed slope: <convert>value=0.01115; from=; to=m/m</convert>= 0.01115\n4. Hydraulic radius: <calc>2.211 / 2.007</calc>= 1.10169\n5. Discharge: <calc>0.023 * sqr"
+        },
+        {
+          "case_id": "mt-0014",
+          "tool_calls": 8,
+          "matched": 3,
+          "wanted": 4,
+          "raw": "1. Mass flow: <calc>43.7 / 1000 * 1291</calc>= 56.0067\n2. Density of the fluid: <lookup>fluid=ZW-65; property=density; T=25</lookup>= 1291\n3. Volumetric flux: <calc>43.7 / 3600</calc>= 0.121389\n4. Dynamic viscosity: <lookup>fluid=ZW-65; property=viscosity; T=25</lookup>= 0.00096\n5. Kinematic viscosi"
+        },
+        {
+          "case_id": "mt-0015",
+          "tool_calls": 9,
+          "matched": 4,
+          "wanted": 4,
+          "raw": "1. Inlet diameter: <convert>value=134.2; from=mm; to=m</convert>= 0.1342\n2. Throat diameter: <convert>value=71.8; from=mm; to=m</convert>= 0.0718\n3. Area of the inlet: <calc>pi * (0.1342 / 2)**2</calc>= 0.0052044\n4. Area of the throat: <calc>pi * (0.0718 / 2)**2</calc>= 0.0037111\n5. Density of the f"
+        },
+        {
+          "case_id": "mt-0016",
+          "tool_calls": 6,
+          "matched": 3,
+          "wanted": 3,
+          "raw": "1. Plate dimensions: <convert>value=74.4; from=cm; to=m</convert>= 0.744, <convert>value=108.8; from=cm; to=m</convert>= 1.088\n2. Density of the fluid: <lookup>fluid=FE-31; property=density; T=40</lookup>= 1365.9\n3. Pressure at the bottom of the plate: <calc>1365.9 * 2.47</calc>= 3362.43\n4. Area of "
+        },
+        {
+          "case_id": "mt-0017",
+          "tool_calls": 5,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Width of the channel: <convert>value=255.0; from=cm; to=m</convert>= 2.55\n2. Depth of the channel: <convert>value=127.6; from=cm; to=m</convert>= 1.276\n3. Bed slope: <convert>value=0.01284; from=; to=m/m</convert>= 0.01284\n4. Hydraulic radius: <calc>2.55 / 2.0</calc>= 1.275\n5. Discharge: <calc>0."
+        },
+        {
+          "case_id": "mt-0018",
+          "tool_calls": 8,
+          "matched": 4,
+          "wanted": 4,
+          "raw": "1. Volumetric flow: <convert>value=39.1; from=L/s; to=m^3/s</convert>= 0.0391\n2. Dynamic viscosity of the fluid: <lookup>fluid=QN-58; property=viscosity; T=80</lookup>= 0.000946\n3. Density of the fluid: <lookup>fluid=QN-58; property=density; T=80</lookup>= 1220.7\n4. Kinematic viscosity: <calc>0.0009"
+        },
+        {
+          "case_id": "mt-0019",
+          "tool_calls": 9,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Inlet diameter: <convert>value=227.3; from=mm; to=m</convert>= 0.2273\n2. Throat diameter: <convert>value=112.7; from=mm; to=m</convert>= 0.1127\n3. Area of the inlet: <calc>pi * (0.2273 / 2)**2</calc>= 0.036904\n4. Area of the throat: <calc>pi * (0.1127 / 2)**2</calc>= 0.010402\n5. Density of the fl"
+        },
+        {
+          "case_id": "mt-0020",
+          "tool_calls": 4,
+          "matched": 1,
+          "wanted": 3,
+          "raw": "1. Area of the gate: <calc>113.8 * 196.1</calc>= 22475.5\n2. Height of the column of fluid: <calc>1.68 - 0.1138</calc>= 1.5662\n3. Density of the fluid: <lookup>fluid=ZL-39; property=density; T=10</lookup>= 1330.4\n4. Force: <calc>1330.4 * 1.5662 * 22475.5</calc>= 4.6444e+07\n\n{\"answer\": 4.6444e+07}"
+        },
+        {
+          "case_id": "mt-0021",
+          "tool_calls": 5,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=249.2; from=cm; to=m</convert>= 2.492\n2. Channel depth: <convert>value=113.7; from=cm; to=m</convert>= 1.137\n3. Bed slope: <convert>value=0.01066; from=; to=m/m</convert>= 0.01066\n4. Hydraulic radius: <calc>2.492 / 2.0</calc>= 1.246\n5. Discharge: <calc>0.018 * sqrt(2"
+        },
+        {
+          "case_id": "mt-0022",
+          "tool_calls": 7,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Mass flow: <calc>21.8 / 60</calc>= 0.363333\n2. Density of the fluid: <lookup>fluid=VN-36; property=density; T=20</lookup>= 1350.4\n3. Volumetric flow: <calc>0.363333 / 1350.4</calc>= 0.00026911\n4. Dynamic viscosity: <lookup>fluid=VN-36; property=viscosity; T=20</lookup>= 0.000941\n5. Reynolds numbe"
+        },
+        {
+          "case_id": "mt-0023",
+          "tool_calls": 8,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Pressure difference: <convert>value=87.53; from=kPa; to=Pa</convert>= 87530\n2. Area of the larger pipe: <calc>pi*(327.6/1000)**2</calc>= 33.491\n3. Area of the smaller pipe: <calc>pi*(182.3/1000)**2</calc>= 1.0723\n4. Density of the fluid: <lookup>fluid=We-74; property=density; T=40</lookup>= 1320."
+        },
+        {
+          "case_id": "mt-0024",
+          "tool_calls": 4,
+          "matched": 1,
+          "wanted": 3,
+          "raw": "1. Density of the fluid: <lookup>fluid=RX-2; property=density; T=40</lookup>= 1369.7\n2. Pressure at the bottom: <calc>1369.7 * (1008.5 - 2430)</calc>= -1.611e+06\n3. Force: <calc>-1.611e+06 * 0.5</calc>= -8.055e+05\n4. Force: <calc>-8.055e+05 * 1003.1</calc>= -8.107e+09\n\n{\"answer\": -8.107e+09}"
+        },
+        {
+          "case_id": "mt-0025",
+          "tool_calls": 5,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=3164.0; from=mm; to=m</convert>= 3.164\n2. Channel depth: <convert>value=1398.3; from=mm; to=m</convert>= 1.3983\n3. Cross-sectional area: <calc>3.164 * 1.3983</calc>= 4.4971\n4. Hydraulic radius: <calc>4.4971 / 3.164</calc>= 1.4243\n5. Discharge: <calc>1.4243 * 0.00504<"
+        },
+        {
+          "case_id": "mt-0026",
+          "tool_calls": 8,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Mass flow: <calc>48.2 / 3.6</calc>= 13.4444\n2. Density of the fluid: <lookup>fluid=Yn-34; property=density; T=60</lookup>= 1379.7\n3. Volumetric flow: <calc>13.4444 / 1000</calc>= 0.0134444\n4. Dynamic viscosity: <lookup>fluid=Yn-34; property=viscosity; T=60</lookup>= 0.000926\n5. Kinematic viscosit"
+        },
+        {
+          "case_id": "mt-0027",
+          "tool_calls": 10,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Pressure difference: <convert>value=8.78; from=kPa; to=Pa</convert>= 8780\n2. Area of the larger pipe: <calc>pi*(234.0/1000)**2</calc>= 1.65036\n3. Area of the smaller pipe: <calc>pi*(90.2/1000)**2</calc>= 0.23604\n4. Density of the fluid: <lookup>fluid=Dt-39; property=density; T=40</lookup>= 1220.7"
+        },
+        {
+          "case_id": "mt-0028",
+          "tool_calls": 4,
+          "matched": 0,
+          "wanted": 3,
+          "raw": "1. Area of the gate: <calc>189.7 * 1.905</calc>= 360.406\n2. Height of the column of fluid: <calc>1.12 - 0.9 = 0.22</calc>= 0.22\n3. Density of the fluid: <lookup>fluid=LN-16; property=density; T=10</lookup>= 1330.7\n4. Force: <calc>1330.7 * 0.22 * 360.406</calc>= 104441\n\n{\"answer\": 104441}"
+        },
+        {
+          "case_id": "mt-0029",
+          "tool_calls": 4,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=1396.1; from=mm; to=m</convert>= 1.3961\n2. Flow depth: <convert>value=506.3; from=mm; to=m</convert>= 0.5063\n3. Compute the hydraulic radius: <calc>1.3961 / 2.0</calc>= 0.69805\n4. Compute the flow: <calc>0.01996 * sqrt(1.3961 / 0.031) * 0.5063</calc>= 0.17224\n\n{\"answ"
+        }
+      ],
+      "seconds": 74.7
+    },
+    "OpenAI schema": {
+      "calls": 173,
+      "malformed": 88,
+      "matched": 41,
+      "wanted": 96,
+      "cases_with_a_call": 30,
+      "records": [
+        {
+          "case_id": "mt-0000",
+          "tool_calls": 4,
+          "matched": 0,
+          "wanted": 3,
+          "raw": "1. Height of the column of fluid: <convert>value=1.76; from=m; to=m</convert>= 1.76\n2. Density of the fluid: <lookup>fluid=TD-78; property=D</lookup>= 1350\n3. Pressure at the bottom of the column: <calc>1350 * 9.80665 * 1.76</calc>= 23247.6\n4. Force on the gate: <calc>23247.6 * 0.18442 * 0.7236</cal"
+        },
+        {
+          "case_id": "mt-0001",
+          "tool_calls": 5,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=1701.6; from=mm; to=m</convert>= 1.7016\n2. Channel depth: <convert>value=1377.8; from=mm; to=m</convert>= 1.3778\n3. Bed slope: <convert>value=0.00145; from=; to=m/m</convert>= 0.00145\n4. Hydraulic radius: <calc>expression=1.7016 / 2.0</calc>= 0.8508\n5. Discharge: <ca"
+        },
+        {
+          "case_id": "mt-0002",
+          "tool_calls": 7,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Mass flow: <calc>value=4.472; unit=m^3/s</calc>= 4.472e-05\n2. Density of the fluid: <lookup>fluid=Zv-76; property=density; T=10</lookup>= 1330.4\n3. Dynamic viscosity: <lookup>fluid=Zv-76; property=viscosity; T=10</lookup>= 0.000944\n4. Volumetric flux: <calc>value=25.6/3600</calc>= 0.00699444\n5. R"
+        },
+        {
+          "case_id": "mt-0003",
+          "tool_calls": 6,
+          "matched": 1,
+          "wanted": 4,
+          "raw": "1. Inlet diameter: <calc>value=23.1; func=cm_to_m</calc>= 0.231\n2. Throat diameter: <calc>value=15.1; func=cm_to_m</calc>= 0.151\n3. Area at the inlet: <calc>value=0.231**2 * 3.14159 / 4</calc>= 0.042678\n4. Area at the throat: <calc>value=0.151**2 * 3.14159 / 4</calc>= 0.01733\n5. Density of the fluid"
+        },
+        {
+          "case_id": "mt-0004",
+          "tool_calls": 4,
+          "matched": 0,
+          "wanted": 3,
+          "raw": "1. Height of the column of fluid: <convert>value=2.91; from=m; to=m</convert>= 2.91\n2. Density of the fluid: <lookup>fluid=XB-55; property=D</lookup>= 1278.4\n3. Pressure at the bottom of the column: <calc>1278.4 * 2.91</calc>= 3700.45\n4. Force on the gate: <calc>3700.45 * 0.395 * 1.46</calc>= 2244.4"
+        },
+        {
+          "case_id": "mt-0005",
+          "tool_calls": 4,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=230.0; from=cm; to=m</convert>= 2.3\n2. Flow depth: <convert>value=37.1; from=cm; to=m</convert>= 0.371\n3. Hydraulic radius: <calc>value=2.3 / 2.0</calc>= 1.15\n4. Flow: <calc>value=1.15 * 0.01126 * sqrt(9.81) * 1.5</calc>= 0.063413\n\n{\"answer\": 0.063413}"
+        },
+        {
+          "case_id": "mt-0006",
+          "tool_calls": 7,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Mass flow: <calc>value=33.8; factor=1000/3600;</calc>= 0.938889\n2. Density of the fluid: <lookup>fluid=SR-18; property=density; T=20</lookup>= 1330.4\n3. Volumetric flux: <calc>value=0.938889; factor=1330.4/1000;</calc>= 1.242\n4. Dynamic viscosity: <lookup>fluid=SR-18; property=viscosity; T=20</lo"
+        },
+        {
+          "case_id": "mt-0007",
+          "tool_calls": 7,
+          "matched": 1,
+          "wanted": 4,
+          "raw": "1. Pressure difference: <convert>value=64.7; from=mbar; to=Pa</convert>= 6470\n2. Density of the fluid: <lookup>fluid=VK-16; property=D; T=20</lookup>= 1350.6\n3. Area of the inlet: <calc>18.9**2 / 4</calc>= 92.005\n4. Area of the throat: <calc>8.7**2 / 4</calc>= 18.525\n5. Dynamic pressure: <calc>6470 "
+        },
+        {
+          "case_id": "mt-0008",
+          "tool_calls": 3,
+          "matched": 1,
+          "wanted": 3,
+          "raw": "1. Density of the fluid: <lookup>fluid=PX-3; property=density; T=25</lookup>= 1080.7\n2. Pressure at the bottom: <calc>1080.7 * (2.4 + 0.7364)</calc>= 2884.4\n3. Force on the rectangle: <calc>736.4 * 424.9 * 2.8844</calc>= 884040\n\n{\"answer\": 884040}"
+        },
+        {
+          "case_id": "mt-0009",
+          "tool_calls": 5,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=3266.7; from=mm; to=m</convert>= 3.2667\n2. Flow depth: <convert>value=1017.0; from=mm; to=m</convert>= 1.017\n3. Kinematic viscosity of the fluid: <lookup>fluid=water; property=viscosity; T=25</lookup>= 1.004e-05\n4. V = A * y = <calc>3.2667 * 1.017</calc>= 3.3194\n5. Q"
+        },
+        {
+          "case_id": "mt-0010",
+          "tool_calls": 7,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Mass flow: <calc>value=54.8; function=1000</calc>= 54800\n2. Density of the fluid: <lookup>fluid=BW-97; property=density; T=25</lookup>= 1330.4\n3. Volumetric flow: <calc>value=54.8; function=1000</calc>= 54800.0\n4. Dynamic viscosity: <lookup>fluid=BW-97; property=viscosity; T=25</lookup>= 0.00097\n"
+        },
+        {
+          "case_id": "mt-0011",
+          "tool_calls": 6,
+          "matched": 1,
+          "wanted": 4,
+          "raw": "1. Pressure drop: <convert>value=175.5; from=mbar; to=Pa</convert>= 17550\n2. Density of the fluid: <lookup>fluid=EH-2; property=D; T=10</lookup>= 1489.3\n3. Dynamic viscosity: <lookup>fluid=EH-2; property=viscosity; T=10</lookup>= 0.00946\n4. Area of the larger pipe: <calc>0.1766**2 * 4.0</calc>= 0.13"
+        },
+        {
+          "case_id": "mt-0012",
+          "tool_calls": 4,
+          "matched": 1,
+          "wanted": 3,
+          "raw": "1. Density of the fluid: <lookup>fluid=KH-87; property=density; T=25</lookup>= 941.3\n2. Pressure at the bottom: <calc>941.3 * (2.33 - 0)</calc>= 2.19057e+03\n3. Area of the gate: <calc>0.2263 * 0.807</calc>= 0.183144\n4. Force on the gate: <calc>2.19057e+03 * 0.183144</calc>= 3.99999\n\n{\"answer\": 3.999"
+        },
+        {
+          "case_id": "mt-0013",
+          "tool_calls": 4,
+          "matched": 1,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=221.1; from=cm; to=m</convert>= 2.211\n2. Bed slope: <convert>value=0.01115; from=; to=m/m</convert>= 0.01115\n3. Hydraulic radius: <calc>expression=2.211 / (2 * (84.4 + 2.211))</calc>= 0.056791\n4. Discharge: <calc>expression=0.023 * sqrt(2 * 9.80665 * 0.056791 / 0.011"
+        },
+        {
+          "case_id": "mt-0014",
+          "tool_calls": 8,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Mass flow: <calc>value=43.7; factor=1000/3600</calc>= 1.21389\n2. Density of the fluid: <lookup>fluid=ZW-65; property=density; T=25</lookup>= 1330.6\n3. Volumetric flux: <calc>value=1.21389; factor=1330.6</calc>= 1611.4\n4. Dynamic viscosity: <lookup>fluid=ZW-65; property=viscosity; T=25</lookup>= 0"
+        },
+        {
+          "case_id": "mt-0015",
+          "tool_calls": 7,
+          "matched": 1,
+          "wanted": 4,
+          "raw": "1. Pressure difference: <convert>value=454.6; from=mbar; to=Pa</convert>= 45460\n2. Density of the fluid: <lookup>fluid=TS-69; property=D; T=10</lookup>= 1220.6\n3. Area of the inlet: <calc>134.2**2 / 4e+6</calc>= 4.20043e-05\n4. Area of the throat: <calc>71.8**2 / 4e+6</calc>= 1.11061e-05\n5. Kinematic"
+        },
+        {
+          "case_id": "mt-0016",
+          "tool_calls": 7,
+          "matched": 2,
+          "wanted": 3,
+          "raw": "1. Plate dimensions: <convert>value=74.4; from=cm; to=m</convert>= 0.744, <convert>value=108.8; from=cm; to=m</convert>= 1.088\n2. Height of the plate: <convert>value=2.47; from=m; to=m</convert>= 2.47\n3. Density of the fluid: <lookup>fluid=FE-31; property=D; T=40</lookup>= 1365.9\n4. Pressure at the "
+        },
+        {
+          "case_id": "mt-0017",
+          "tool_calls": 4,
+          "matched": 1,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=255.0; from=cm; to=m</convert>= 2.55\n2. Bed slope: <convert>value=0.01284; from=; to=m/m</convert>= 0.01284\n3. Hydraulic radius: <calc>expression=2.55 / (2 * (1 + 0.01284))</calc>= 1.2294\n4. Discharge: <calc>expression=1.2294 * 0.027 * (127.6**1.81) ** (5/8)</calc>= "
+        },
+        {
+          "case_id": "mt-0018",
+          "tool_calls": 8,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Mass flow: <calc>value=39.1; factor=1000/3600; </calc>= 1.03056\n2. Density of the fluid: <lookup>fluid=QN-58; property=density; T=80</lookup>= 1420.7\n3. Volumetric flow: <calc>value=39.1; </calc>= 39.1\n4. Dynamic viscosity: <lookup>fluid=QN-58; property=viscosity; T=80</lookup>= 0.00094\n5. Kinema"
+        },
+        {
+          "case_id": "mt-0019",
+          "tool_calls": 7,
+          "matched": 1,
+          "wanted": 4,
+          "raw": "1. Pressure difference: <convert>value=0.284; from=bar; to=Pa</convert>= 28400\n2. Density of the fluid: <lookup>fluid=WT-69; property=D; T=25</lookup>= 1220.4\n3. Area of the inlet: <calc>0.2273**2 / 4</calc>= 0.013204\n4. Area of the throat: <calc>0.1127**2 / 4</calc>= 0.0030416\n5. Kinematic viscosit"
+        },
+        {
+          "case_id": "mt-0020",
+          "tool_calls": 4,
+          "matched": 1,
+          "wanted": 3,
+          "raw": "1. Area of the gate: <calc>113.8 * 196.1</calc>= 22475.5\n2. Height of the column of fluid: <convert>value=1.68; from=m; to=cm</convert>= 168\n3. Density of the fluid: <lookup>fluid=ZL-39; property=Density; T=10</lookup>= 1200.4\n4. Force: <calc>1200.4 * 9.80665 * 168</calc>= 188447\n\n{\"answer\": 188447}"
+        },
+        {
+          "case_id": "mt-0021",
+          "tool_calls": 4,
+          "matched": 1,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=249.2; from=cm; to=m</convert>= 2.492\n2. Bed slope: <convert>value=0.01066; from=; to=m/m</convert>= 0.01066\n3. Hydraulic radius: <calc>expression=2.492 / (2 * (1 + 0.01066))</calc>= 1.1954\n4. Discharge: <calc>expression=1.1954 * 0.018 * sqrt(2 * 9.80665 * 1.1954 / 0"
+        },
+        {
+          "case_id": "mt-0022",
+          "tool_calls": 10,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Mass flow: <calc>value=21.8; factor=0.001</calc>= 0.0218\n2. Density of the fluid: <lookup>fluid=VN-36; property=density; T=20</lookup>= 1250.4\n3. Volumetric flow: <calc>value=0.0218; factor=1000</calc>= 21.8\n4. Dynamic viscosity: <lookup>fluid=VN-36; property=viscosity; T=20</lookup>= 0.00098\n5. "
+        },
+        {
+          "case_id": "mt-0023",
+          "tool_calls": 7,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Pressure difference: <convert>value=87.53; from=kPa; to=Pa</convert>= 87530\n2. Area ratio: <calc>value=4.29**2 / 1.82**2</calc>= 10.4473\n3. Density of the fluid: <lookup>fluid=We-74; property=Density; T=40</lookup>= 1320.4\n4. Mass flow: <calc>value=87530 * 1320.4 / 10.4473</calc>= 1.131e+08\n5. Dy"
+        },
+        {
+          "case_id": "mt-0024",
+          "tool_calls": 4,
+          "matched": 1,
+          "wanted": 3,
+          "raw": "1. Area of the gate: <calc>1003.1 * 1008.5</calc>= 1011679.35\n2. Density of the fluid: <lookup>fluid=RX-2; property=density; T=40</lookup>= 1330.4\n3. Pressure at the bottom: <calc>1330.4 * (2.43 - 0.243)</calc>= 30009.6\n4. Force on the gate: <calc>1011679.35 * 30009.6</calc>= 3.03522e+11\n\n{\"answer\":"
+        },
+        {
+          "case_id": "mt-0025",
+          "tool_calls": 4,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=3164.0; from=mm; to=m</convert>= 3.164\n2. Channel depth: <convert>value=1398.3; from=mm; to=m</convert>= 1.3983\n3. Cross-sectional area: <calc>3.164 * 1.3983</calc>= 4.4974\n4. Discharge: <calc>0.00504 * 4.4974</calc>= 0.02223\n\nThe volume that passes per second is: {\""
+        },
+        {
+          "case_id": "mt-0026",
+          "tool_calls": 10,
+          "matched": 0,
+          "wanted": 4,
+          "raw": "1. Mass flow: <calc>value=48.2; from=m^3/h; to=kg/s</calc>= 0.0133889\n2. Density of the fluid: <lookup>fluid=YN-34; property=D; T=60</lookup>= 1270.4\n3. Volumetric flow: <calc>value=48.2; from=m^3/h; to=m^3/s</calc>= 0.0133889\n4. Velocity: <calc>value=0.0133889; from=m^3/s; to=m/s</calc>= 0.44629\n5."
+        },
+        {
+          "case_id": "mt-0027",
+          "tool_calls": 9,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Pressure difference: <convert>value=8.78; from=kPa; to=Pa</convert>= 8780\n2. Area ratio: <calc>value=4.56**2 / 9.04**2</calc>= 2.25\n3. Density of the fluid: <lookup>fluid=Dt-39; property=density; T=40</lookup>= 1330.3\n4. Mass flow: <calc>value=8780 * 1330.3 / 2.25</calc>= 5.4241e+06\n5. Dynamic pr"
+        },
+        {
+          "case_id": "mt-0028",
+          "tool_calls": 3,
+          "matched": 1,
+          "wanted": 3,
+          "raw": "1. Area of the gate: <calc>189.7 + 100e-2 * 190.5</calc>= 3694.43\n2. Density of the fluid: <lookup>fluid=LK-16; property=density; T=10</lookup>= 1330.4\n3. Force: <calc>1330.4 * 9.80665 * 1.12</calc>= 14122.2\n\n{\"answer\": 14122.2}"
+        },
+        {
+          "case_id": "mt-0029",
+          "tool_calls": 4,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=1396.1; from=mm; to=m</convert>= 1.3961\n2. Flow depth: <convert>value=506.3; from=mm; to=m</convert>= 0.5063\n3. Hydraulic radius: <calc>value=1.3961 / 2.0</calc>= 0.69805\n4. Flow: <calc>value=0.01996 * sqrt(9.80665 * 0.69805 / 0.031)</calc>= 1.74444\n\n{\"answer\": 1.744"
+        }
+      ],
+      "seconds": 70.4
+    },
+    "schema + arity": {
+      "calls": 173,
+      "malformed": 17,
+      "matched": 51,
+      "wanted": 96,
+      "cases_with_a_call": 30,
+      "records": [
+        {
+          "case_id": "mt-0000",
+          "tool_calls": 4,
+          "matched": 1,
+          "wanted": 3,
+          "raw": "1. Height of the column of fluid: <calc>1.76</calc>= 1.76\n2. Density of the fluid: <lookup>fluid=TD-78; property=density; T=20</lookup>= 1359.4\n3. Pressure at the bottom of the column: <calc>1359.4 * 1.76</calc>= 2404.62\n4. Force on the gate: <calc>2404.62 * 0.18442 * 0.7236</calc>= 324.444\n\n{\"answe"
+        },
+        {
+          "case_id": "mt-0001",
+          "tool_calls": 5,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=1701.6; from=mm; to=m</convert>= 1.7016\n2. Channel depth: <convert>value=1377.8; from=mm; to=m</convert>= 1.3778\n3. Bed slope: <convert>value=0.00145; from=; to=m/m</convert>= 0.00145\n4. Hydraulic radius: <calc>2.0 * 1.7016 / (1 + 2.0 * 1.3778 / 1.7016)</calc>= 0.999"
+        },
+        {
+          "case_id": "mt-0002",
+          "tool_calls": 8,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Mass flow: <calc>76.4/3.6</calc>= 21.2222\n2. Density of the fluid: <lookup>fluid=Zv-76; property=density; T=10</lookup>= 1320.6\n3. Volumetric flow: <calc>21.2222/3.6</calc>= 5.89506\n4. Dynamic viscosity: <lookup>fluid=Zv-76; property=viscosity; T=10</lookup>= 0.00094\n5. Kinematic viscosity: <calc"
+        },
+        {
+          "case_id": "mt-0003",
+          "tool_calls": 6,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Inlet diameter: <calc>23.1 / 100</calc>= 0.231\n2. Throat diameter: <calc>15.1 / 100</calc>= 0.151\n3. Area at the inlet: <calc>pi * (0.231/2)^2</calc>= 0.040067\n4. Area at the throat: <calc>pi * (0.151/2)^2</calc>= 0.017589\n5. Density of the fluid: <lookup>fluid=TA-31; property=D; T=25</lookup>= 1"
+        },
+        {
+          "case_id": "mt-0004",
+          "tool_calls": 4,
+          "matched": 0,
+          "wanted": 3,
+          "raw": "1. Height of the column of fluid: <convert>value=2.91; from=m; to=m</convert>= 2.91\n2. Density of the fluid: <lookup>fluid=XB-55; property=D</lookup>= 1278.7\n3. Pressure at the bottom of the column: <calc>1278.7 * 9.80665 * 2.91</calc>= 36824.2\n4. Force on the gate: <calc>36824.2 * 0.395 * 0.146</ca"
+        },
+        {
+          "case_id": "mt-0005",
+          "tool_calls": 4,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=230.0; from=cm; to=m</convert>= 2.3\n2. Flow depth: <convert>value=37.1; from=cm; to=m</convert>= 0.371\n3. Hydraulic radius: <calc>2.3 / 2</calc>= 1.15\n4. Flow: <calc>1.15 * sqrt(9.81 * 0.01126) / 0.033</calc>= 4.44424\n\n{\"answer\": 4.44424}"
+        },
+        {
+          "case_id": "mt-0006",
+          "tool_calls": 7,
+          "matched": 3,
+          "wanted": 4,
+          "raw": "1. Mass flow: <calc>33.8 / 3600</calc>= 0.00938889\n2. Density of the fluid: <lookup>fluid=SR-18; property=density; T=20</lookup>= 1330.7\n3. Volumetric flux: <calc>0.00938889 / 1.60934</calc>= 0.0058411\n4. Dynamic viscosity: <lookup>fluid=SR-18; property=viscosity; T=20</lookup>= 0.00091\n5. Reynolds "
+        },
+        {
+          "case_id": "mt-0007",
+          "tool_calls": 5,
+          "matched": 1,
+          "wanted": 4,
+          "raw": "1. Pressure difference: <convert>value=64.7; from=mbar; to=Pa</convert>= 6470\n2. Density of the fluid: <lookup>fluid=VK-16; property=D; T=20</lookup>= 1350.6\n3. Area of the inlet: <calc>pi * (18.9 / 100)**2</calc>= 1.1343\n4. Area of the throat: <calc>pi * (8.7 / 100)**2</calc>= 0.023474\n5. Volumetri"
+        },
+        {
+          "case_id": "mt-0008",
+          "tool_calls": 4,
+          "matched": 1,
+          "wanted": 3,
+          "raw": "1. Density of the fluid: <lookup>fluid=PX-3; property=density; T=25</lookup>= 1080.4\n2. Area of the gate: <calc>736.4 / 1000 * 424.9 / 1000</calc>= 0.31345\n3. Pressure at the centroid: <calc>1080.4 * 2.4 + 101.325</calc>= 2570.4\n4. Force on the gate: <calc>0.31345 * 2570.4</calc>= 803.41\n\n{\"answer\":"
+        },
+        {
+          "case_id": "mt-0009",
+          "tool_calls": 7,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=3266.7; from=mm; to=m</convert>= 3.2667\n2. Flow depth: <convert>value=1017.0; from=mm; to=m</convert>= 1.017\n3. Kinematic viscosity of the fluid: <lookup>fluid=water; property=viscosity; T=25</lookup>= 1.004e-6\n4. V = A * y = <calc>3.2667 * 1.017</calc>= 3.3094\n5. Q "
+        },
+        {
+          "case_id": "mt-0010",
+          "tool_calls": 10,
+          "matched": 3,
+          "wanted": 4,
+          "raw": "1. Mass flow: <calc>54.8 / 1000</calc>= 0.0548\n2. Density of the fluid: <lookup>fluid=BW-97; property=density; T=25</lookup>= 1330.6\n3. Dynamic viscosity: <lookup>fluid=BW-97; property=viscosity; T=25</lookup>= 0.00094\n4. Volumetric flow: <calc>54.8 / 3600</calc>= 0.0152222\n5. Kinematic viscosity: <"
+        },
+        {
+          "case_id": "mt-0011",
+          "tool_calls": 6,
+          "matched": 1,
+          "wanted": 4,
+          "raw": "1. Pressure drop: <convert>value=175.5; from=mbar; to=Pa</convert>= 17550\n2. Density of the fluid: <lookup>fluid=EH-2; property=D; T=10</lookup>= 1489.3\n3. Dynamic viscosity: <lookup>fluid=EH-2; property=viscosity; T=10</lookup>= 0.0094\n4. Area of the larger pipe: <calc>pi * (176.6 / 1000)^2</calc>="
+        },
+        {
+          "case_id": "mt-0012",
+          "tool_calls": 3,
+          "matched": 1,
+          "wanted": 3,
+          "raw": "1. Density of the fluid: <lookup>fluid=KH-87; property=density; T=25</lookup>= 941.4\n2. Pressure at the bottom: <calc>941.4 * (8.33)</calc>= 7714.6\n3. Force on the rectangle: <calc>2.263 * 10 * 7714.6</calc>= 174047\n\n{\"answer\": 174047}"
+        },
+        {
+          "case_id": "mt-0013",
+          "tool_calls": 5,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=221.1; from=cm; to=m</convert>= 2.211\n2. Channel depth: <convert>value=84.4; from=cm; to=m</convert>= 0.844\n3. Bed slope: <convert>value=0.01115; from=; to=m/m</convert>= 0.0001115\n4. Hydraulic radius: <calc>2.211 / 2.006</calc>= 1.10179\n5. Discharge: <calc>0.023 * s"
+        },
+        {
+          "case_id": "mt-0014",
+          "tool_calls": 7,
+          "matched": 3,
+          "wanted": 4,
+          "raw": "1. Mass flow: <calc>43.7 / 3600</calc>= 0.0121389\n2. Density of the fluid: <lookup>fluid=ZW-65; property=density; T=25</lookup>= 1330.6\n3. Volumetric flux: <calc>0.0121389 / 1330.6</calc>= 9.1144e-06\n4. Dynamic viscosity: <lookup>fluid=ZW-65; property=viscosity; T=25</lookup>= 0.00114\n5. Reynolds nu"
+        },
+        {
+          "case_id": "mt-0015",
+          "tool_calls": 7,
+          "matched": 1,
+          "wanted": 4,
+          "raw": "1. Pressure difference: <convert>value=454.6; from=mbar; to=Pa</convert>= 45460\n2. Density of the fluid: <lookup>fluid=TS-69; property=D; T=10</lookup>= 1220.7\n3. Area of the inlet: <calc>pi*(134.2/1000)**2</calc>= 5.6007\n4. Area of the throat: <calc>pi*(71.8/1000)**2</calc>= 0.15823\n5. Kinematic vi"
+        },
+        {
+          "case_id": "mt-0016",
+          "tool_calls": 7,
+          "matched": 3,
+          "wanted": 3,
+          "raw": "1. Plate dimensions: <convert>value=74.4; from=cm; to=m</convert>= 0.744, <convert>value=108.8; from=cm; to=m</convert>= 1.088\n2. Height of the plate: <convert>value=2.47; from=m; to=m</convert>= 2.47\n3. Density of the fluid: <lookup>fluid=FE-31; property=density; T=40</lookup>= 1365.9\n4. Pressure a"
+        },
+        {
+          "case_id": "mt-0017",
+          "tool_calls": 5,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Width: <convert>value=255.0; from=cm; to=m</convert>= 2.55\n2. Depth: <convert>value=127.6; from=cm; to=m</convert>= 1.276\n3. Bed slope: <convert>value=0.01284; from=; to=</convert>= 0.01284\n4. Hydraulic radius: <calc>2.55 / 2.0</calc>= 1.275\n5. Discharge: <calc>0.027 * sqrt(2 * 9.80665 * 1.276 / "
+        },
+        {
+          "case_id": "mt-0018",
+          "tool_calls": 8,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Mass flow: <calc>39.1 / 1000 * 1436.7</calc>= 56.23\n2. Density of the fluid: <lookup>fluid=QN-58; property=density; T=80</lookup>= 1330.7\n3. Volumetric flux: <calc>56.23 / 0.387</calc>= 144.13\n4. Dynamic viscosity: <lookup>fluid=QN-58; property=viscosity; T=80</lookup>= 0.00092\n5. Kinematic visco"
+        },
+        {
+          "case_id": "mt-0019",
+          "tool_calls": 7,
+          "matched": 1,
+          "wanted": 4,
+          "raw": "1. Pressure difference: <convert>value=0.284; from=bar; to=Pa</convert>= 28400\n2. Density of the fluid: <lookup>fluid=WT-69; property=D; T=25</lookup>= 1201.4\n3. Area of the inlet: <calc>pi*(227.3/1000)**2</calc>= 1.6211\n4. Area of the throat: <calc>pi*(112.7/1000)**2</calc>= 0.040014\n5. Kinematic v"
+        },
+        {
+          "case_id": "mt-0020",
+          "tool_calls": 4,
+          "matched": 1,
+          "wanted": 3,
+          "raw": "1. Area of the gate: <calc>113.8 * 196.1</calc>= 22475.5\n2. Height of the column of fluid: <convert>value=1.68; from=m; to=cm</convert>= 168\n3. Density of the fluid: <lookup>fluid=ZL-39; property=Density; T=10</lookup>= 1220.4\n4. Force: <calc>1220.4 * 9.80665 * 168</calc>= 191440\n\n{\"answer\": 191440}"
+        },
+        {
+          "case_id": "mt-0021",
+          "tool_calls": 5,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=249.2; from=cm; to=m</convert>= 2.492\n2. Channel depth: <convert>value=113.7; from=cm; to=m</convert>= 1.137\n3. Bed slope: <convert>value=0.01066; from=; to=</convert>= 0.01066\n4. Hydraulic radius: <calc>2.492 / 2.0</calc>= 1.246\n5. Discharge: <calc>0.018 * sqrt(2 * "
+        },
+        {
+          "case_id": "mt-0022",
+          "tool_calls": 8,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Mass flow: <calc>21.8 / 60 * 1350</calc>= 483.8\n2. Density of the fluid: <lookup>fluid=VN-36; property=density; T=20</lookup>= 1350\n3. Volumetric flow: <calc>483.8 / 1000</calc>= 0.4838\n4. Dynamic viscosity: <lookup>fluid=VN-36; property=viscosity; T=20</lookup>= 0.00094\n5. Reynolds number: <calc"
+        },
+        {
+          "case_id": "mt-0023",
+          "tool_calls": 7,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Pressure difference: <convert>value=87.53; from=kPa; to=Pa</convert>= 87530\n2. Area ratio: <calc>1.0 / (182.3 / 1000.0)**2</calc>= 0.29144\n3. Dynamic pressure: <calc>87530 / 2.8</calc>= 31225\n4. Kinematic viscosity of the fluid: <lookup>fluid=We-74; property=viscosity; T=40</lookup>= 1.02\n5. Dens"
+        },
+        {
+          "case_id": "mt-0024",
+          "tool_calls": 4,
+          "matched": 1,
+          "wanted": 3,
+          "raw": "1. Area of the gate: <calc>1003.1 * 1008.5</calc>= 1011679\n2. Density of the fluid: <lookup>fluid=RX-2; property=density; T=40</lookup>= 1330.4\n3. Pressure at the bottom: <calc>1330.4 * 2.43</calc>= 3222.32\n4. Force on the gate: <calc>1011679 * 3222.32</calc>= 3.2531e+08\n\n{\"answer\": 3.2531e+08}"
+        },
+        {
+          "case_id": "mt-0025",
+          "tool_calls": 4,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=3164.0; from=mm; to=m</convert>= 3.164\n2. Channel depth: <convert>value=1398.3; from=mm; to=m</convert>= 1.3983\n3. Cross-sectional area: <calc>3.164 * 1.3983</calc>= 4.4701\n4. Discharge: <calc>0.00504 * 4.4701</calc>= 0.022104\n\nThe answer is {\"answer\": 0.022104}."
+        },
+        {
+          "case_id": "mt-0026",
+          "tool_calls": 9,
+          "matched": 1,
+          "wanted": 4,
+          "raw": "1. Mass flow: <calc>3.796*4.16667</calc>= 16.01\n2. Density of the fluid: <lookup>fluid=YN-34; property=D; T=60</lookup>= 1320.4\n3. Volumetric flow: <calc>16.01/3.6</calc>= 4.44722\n4. Velocity: <calc>4.44722/0.263</calc>= 16.911\n5. Reynolds number: <calc>1320.4/16.911*26.3</calc>= 2040.44\n6. Pipe dia"
+        },
+        {
+          "case_id": "mt-0027",
+          "tool_calls": 6,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Pressure difference: <convert>value=8.78; from=kPa; to=Pa</convert>= 8780\n2. Area ratio: <calc>pow(234.0/1000, 2) / pow(90.2/1000, 2)</calc>= 5.61247\n3. Dynamic pressure: <calc>8780 / 5.61247</calc>= 1555.24\n4. Density of the fluid: <lookup>fluid=Dt-39; property=density; T=40</lookup>= 1220.4\n5. "
+        },
+        {
+          "case_id": "mt-0028",
+          "tool_calls": 3,
+          "matched": 1,
+          "wanted": 3,
+          "raw": "1. Area of the gate: <calc>189.7 + 100e-2 * 190.5</calc>= 3694.43\n2. Density of the fluid: <lookup>fluid=LK-16; property=density; T=10</lookup>= 1330.6\n3. Force: <calc>1330.6 * 9.80665 * 1.12</calc>= 14414.2\n\n{\"answer\": 14414.2}"
+        },
+        {
+          "case_id": "mt-0029",
+          "tool_calls": 4,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=1396.1; from=mm; to=m</convert>= 1.3961\n2. Flow depth: <convert>value=506.3; from=mm; to=m</convert>= 0.5063\n3. Hydraulic radius: <calc>1.3961 / 2.0</calc>= 0.69805\n4. Volumetric flow: <calc>0.01996 * 0.69805 * 0.5063**2</calc>= 0.00127442\n\n{\"answer\": 0.00127442}"
+        }
+      ],
+      "seconds": 68.7
+    },
+    "schema + arity + enums": {
+      "calls": 188,
+      "malformed": 37,
+      "matched": 48,
+      "wanted": 96,
+      "cases_with_a_call": 30,
+      "records": [
+        {
+          "case_id": "mt-0000",
+          "tool_calls": 4,
+          "matched": 1,
+          "wanted": 3,
+          "raw": "1. Applied density: <lookup>fluid=TD-78; property=density; value=1000</lookup>= 1000.0\n2. Height of the column: <convert>value=1.76; from=m; to=m^3/m</convert>= 1.76\n3. Density times gravity: <calc>1000.0 * 9.80665</calc>= 9806.65\n4. Force: <calc>9806.65 * 1.76</calc>= 17208.2\n\n{\"answer\": 17208.2}"
+        },
+        {
+          "case_id": "mt-0001",
+          "tool_calls": 5,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Width: <convert>value=1701.6; from=mm; to=m</convert>= 1.7016\n2. Depth: <convert>value=1377.8; from=mm; to=m</convert>= 1.3778\n3. Bed slope: <convert>value=0.00145; from=; to=m/m</convert>= 0.00145\n4. Hydraulic radius: <calc>2.0/2.0</calc>= 1\n5. Discharge: <calc>0.017 * sqrt(2 * 9.80665 * 1.3778 "
+        },
+        {
+          "case_id": "mt-0002",
+          "tool_calls": 9,
+          "matched": 3,
+          "wanted": 4,
+          "raw": "1. Mass flow: <calc>76.4/3.6</calc>= 21.2222\n2. Density of the fluid: <lookup>fluid=Zv-76; property=density; T=10</lookup>= 1320.4\n3. Dynamic viscosity: <lookup>fluid=Zv-76; property=viscosity; T=10</lookup>= 0.000946\n4. Volumetric flow: <calc>76.4/3600</calc>= 0.0211667\n5. Kinematic viscosity: <cal"
+        },
+        {
+          "case_id": "mt-0003",
+          "tool_calls": 8,
+          "matched": 3,
+          "wanted": 4,
+          "raw": "1. Inlet diameter: <calc>23.1 / 100</calc>= 0.231\n2. Throat diameter: <calc>15.1 / 100</calc>= 0.151\n3. Area at the inlet: <calc>pi * (0.231/2)^2</calc>= 0.038679\n4. Area at the throat: <calc>pi * (0.151/2)^2</calc>= 0.017557\n5. Density of the fluid: <lookup>fluid=TA-31; property=density; T=25</look"
+        },
+        {
+          "case_id": "mt-0004",
+          "tool_calls": 5,
+          "matched": 1,
+          "wanted": 3,
+          "raw": "1. Applied density: <lookup>fluid=XB-55; property=density; T=10</lookup>= 870.7\n2. Applied height: <convert>value=2.91; from=m; to=m^3/m</convert>= 2.91\n3. Volume of the column: <calc>870.7 * 2.91</calc>= 2481.47\n4. Density of the fluid: <lookup>fluid=XB-55; property=density</lookup>= 870.7\n5. Force"
+        },
+        {
+          "case_id": "mt-0005",
+          "tool_calls": 4,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=230.0; from=cm; to=m</convert>= 2.3\n2. Flow depth: <convert>value=37.1; from=cm; to=m</convert>= 0.371\n3. Hydraulic radius: <calc>2.3 / 2</calc>= 1.15\n4. Flow: <calc>1.15 * 0.01126 * sqrt(9.80665 * 0.371)</calc>= 0.047243\n\n{\"answer\": 0.047243}"
+        },
+        {
+          "case_id": "mt-0006",
+          "tool_calls": 9,
+          "matched": 4,
+          "wanted": 4,
+          "raw": "1. Mass flow: <calc>33.8 / 3600</calc>= 0.00938889\n2. Density of the fluid: <lookup>fluid=SR-18; property=density; T=20</lookup>= 1330.4\n3. Dynamic viscosity: <lookup>fluid=SR-18; property=viscosity; T=20</lookup>= 0.000941\n4. Volumetric flux: <calc>33.8 / 3600</calc>= 0.00938889\n5. Kinematic viscos"
+        },
+        {
+          "case_id": "mt-0007",
+          "tool_calls": 6,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Pressure: <convert>value=64.7; from=mbar; to=Pa</convert>= 6470\n2. Density of the fluid: <lookup>fluid=VK-16; property=density; T=20</lookup>= 1250.6\n3. Dynamic viscosity of the fluid: <lookup>fluid=VK-16; property=viscosity; T=20</lookup>= 0.0089\n4. Area of the inlet: <calc>pi * (18.9 / 100)^2</"
+        },
+        {
+          "case_id": "mt-0008",
+          "tool_calls": 4,
+          "matched": 0,
+          "wanted": 3,
+          "raw": "1. Density of the fluid: <lookup>fluid=PX-3; property=density; value=1000</lookup>= 1000.0\n2. Dynamic viscosity of the fluid: <lookup>fluid=PX-3; property=viscosity; value=1.08</lookup>= 1.08\n3. Pressure at the bottom: <calc>1000.0 * 9.80665 * 2.4</calc>= 23534.2\n4. Force on the gate: <calc>0.7364 *"
+        },
+        {
+          "case_id": "mt-0009",
+          "tool_calls": 5,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=3266.7; from=mm; to=m</convert>= 3.2667\n2. Flow depth: <convert>value=1017.0; from=mm; to=m</convert>= 1.017\n3. Kinematic viscosity: <lookup>fluid=water; property=viscosity|T=25</lookup>= 1.004e-05\n4. Manning's roughness: <lookup>fluid=water; property=roughness|T=25<"
+        },
+        {
+          "case_id": "mt-0010",
+          "tool_calls": 10,
+          "matched": 3,
+          "wanted": 4,
+          "raw": "1. Mass flow: <calc>54.8 / 3.6</calc>= 15.2222\n2. Density of the fluid: <lookup>fluid=BW-97; property=density; T=25</lookup>= 1200.4\n3. Dynamic viscosity: <lookup>fluid=BW-97; property=viscosity; T=25</lookup>= 0.000916\n4. Volumetric flow: <calc>54.8 / 1000</calc>= 0.0548\n5. Kinematic viscosity: <ca"
+        },
+        {
+          "case_id": "mt-0011",
+          "tool_calls": 6,
+          "matched": 1,
+          "wanted": 4,
+          "raw": "1. Pressure drop: <convert>value=175.5; from=mbar; to=Pa</convert>= 17550\n2. Density of the fluid: <lookup>fluid=EH-2; T=10</lookup>= 1489.4\n3. Dynamic viscosity of the fluid: <lookup>fluid=EH-2; T=10</lookup>= 0.00886\n4. Area of the larger pipe: <calc>pi * (176.6 / 1000)^2</calc>= 0.99933\n5. Area o"
+        },
+        {
+          "case_id": "mt-0012",
+          "tool_calls": 3,
+          "matched": 0,
+          "wanted": 3,
+          "raw": "1. Density of the fluid: <lookup>fluid=KH-87; property=density; value=14.9</lookup>= 1490.1\n2. Volumetric flow: <calc>2.33*100/100 = 23.3</calc>= 23.3\n3. Force: <calc>1490.1*9.80665*23.3</calc>= 324444\n\n{\"answer\": 324444}"
+        },
+        {
+          "case_id": "mt-0013",
+          "tool_calls": 5,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Width: <convert>value=221.1; from=cm; to=m</convert>= 2.211\n2. Depth: <convert>value=84.4; from=cm; to=m</convert>= 0.844\n3. Bed slope: <convert>value=0.01115; from=; to=m/m</convert>= 0.0001115\n4. Hydraulic radius: <calc>2.211 / 2.007</calc>= 1.10169\n5. Discharge: <calc>0.023 * sqrt(2 * 9.80665 "
+        },
+        {
+          "case_id": "mt-0014",
+          "tool_calls": 7,
+          "matched": 1,
+          "wanted": 4,
+          "raw": "1. Mass flow: <calc>43.7 / 3600</calc>= 0.0121389\n2. Density of the fluid: <lookup>fluid=ZW-65; property=density; value=100</lookup>= 100.0\n3. Volumetric flow: <calc>0.0121389 * 100</calc>= 1.21389\n4. Dynamic viscosity: <lookup>fluid=ZW-65; property=density=100; T=25</lookup>= 0.00091\n5. Reynolds nu"
+        },
+        {
+          "case_id": "mt-0015",
+          "tool_calls": 8,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Pressure change: <convert>value=454.6; from=mbar; to=Pa</convert>= 45460\n2. Density of the fluid: <lookup>fluid=TS-69; property=density; T=10</lookup>= 1120.7\n3. Dynamic viscosity of the fluid: <lookup>fluid=TS-69; property=viscosity; T=10</lookup>= 0.00894\n4. Area of the inlet: <calc>pi*(134.2/1"
+        },
+        {
+          "case_id": "mt-0016",
+          "tool_calls": 6,
+          "matched": 3,
+          "wanted": 3,
+          "raw": "1. Plate dimensions: <convert>value=74.4; from=cm; to=m</convert>= 0.744, <convert>value=108.8; from=cm; to=m</convert>= 1.088\n2. Plate height: <convert>value=2.47; from=m; to=m</convert>= 2.47\n3. Density of the fluid: <lookup>fluid=FE-31; property=density; T=40</lookup>= 1365.9\n4. Pressure at the b"
+        },
+        {
+          "case_id": "mt-0017",
+          "tool_calls": 5,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Width: <convert>value=255.0; from=cm; to=m</convert>= 2.55\n2. Depth: <convert>value=127.6; from=cm; to=m</convert>= 1.276\n3. Bed slope: <convert>value=0.01284; from=; to=m/m</convert>= 0.0001284\n4. Hydraulic radius: <calc>2.55 / 2.0</calc>= 1.275\n5. Discharge: <calc>0.027 * sqrt(2 * 9.80665 * 1.2"
+        },
+        {
+          "case_id": "mt-0018",
+          "tool_calls": 8,
+          "matched": 1,
+          "wanted": 4,
+          "raw": "1. Mass flow: <calc>39.1 / 1000 * 1436.6</calc>= 56.043\n2. Density of the fluid: <lookup>fluid=QN-58; property=density; value=100</lookup>= 100.0\n3. Dynamic viscosity: <lookup>fluid=QN-58; property=viscosity; value=100</lookup>= 1.2\n4. Volumetric flux: <calc>39.1 / 1000</calc>= 0.0391\n5. Reynolds nu"
+        },
+        {
+          "case_id": "mt-0019",
+          "tool_calls": 8,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Pressure difference: <convert>value=0.284; from=bar; to=Pa</convert>= 28400\n2. Density of the fluid: <lookup>fluid=PW-81; property=density; T=25</lookup>= 1269.3\n3. Dynamic viscosity of the fluid: <lookup>fluid=PW-81; property=viscosity; T=25</lookup>= 0.00886\n4. Area of the inlet: <calc>pi*(227."
+        },
+        {
+          "case_id": "mt-0020",
+          "tool_calls": 3,
+          "matched": 0,
+          "wanted": 3,
+          "raw": "1. Density of the fluid: <lookup>fluid=ZL-39; property=density; value=120</lookup>= 120.0\n2. Height of the column of fluid: <convert>value=1.68; from=m; to=m^3/m</convert>= 1.68\n3. Force: <calc>120.0 * 9.80665 * 1.68</calc>= 1947.4\n\n{\"answer\": 1947.4}"
+        },
+        {
+          "case_id": "mt-0021",
+          "tool_calls": 5,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Width: <convert>value=249.2; from=cm; to=m</convert>= 2.492\n2. Depth: <convert>value=113.7; from=cm; to=m</convert>= 1.137\n3. Bed slope: <convert>value=0.01066; from=; to=m/m</convert>= 0.0001066\n4. Hydraulic radius: <calc>2.492 / 2.0</calc>= 1.246\n5. Discharge: <calc>0.018 * sqrt(2 * 9.80665 * 1"
+        },
+        {
+          "case_id": "mt-0022",
+          "tool_calls": 9,
+          "matched": 2,
+          "wanted": 4,
+          "raw": "1. Mass flow: <calc>21.8 / 60 * 1000</calc>= 363.333\n2. Density of the fluid: <lookup>fluid=VN-36; property=density; T=20</lookup>= 1250.4\n3. Dynamic viscosity: <lookup>fluid=VN-36; property=viscosity; T=20</lookup>= 0.00091\n4. Volumetric flow: <calc>363.333 / 1000</calc>= 0.363333\n5. Kinematic visc"
+        },
+        {
+          "case_id": "mt-0023",
+          "tool_calls": 8,
+          "matched": 1,
+          "wanted": 4,
+          "raw": "1. Density of the fluid: <lookup>fluid=We-74; property=density; value=1090</lookup>= 1090\n2. Viscosity of the fluid: <lookup>fluid=We-74; property=density; value=1090</lookup>= 0.00091\n3. Pressure difference: <convert>value=87.53; from=kPa; to=Pa</convert>= 87530\n4. Area ratio: <calc>3.14159**2 / (0"
+        },
+        {
+          "case_id": "mt-0024",
+          "tool_calls": 5,
+          "matched": 0,
+          "wanted": 3,
+          "raw": "1. Density of the fluid: <lookup>fluid=RX-2; property=density; value=46.7</lookup>= 1093.6\n2. Viscosity of the fluid: <lookup>fluid=RX-2; property=viscosity; value=1.0</lookup>= 1.0\n3. Area of the gate: <calc>1.0031*1.0085</calc>= 1.0114\n4. Pressure at the bottom: <calc>1093.6*9.80665*(1.0085-2.43)<"
+        },
+        {
+          "case_id": "mt-0025",
+          "tool_calls": 6,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=3164.0; from=mm; to=m</convert>= 3.164\n2. Channel depth: <convert>value=1398.3; from=mm; to=m</convert>= 1.3983\n3. Area of the channel: <calc>3.164 * 1.3983</calc>= 4.4973\n4. Dynamic viscosity of the fluid: <lookup>fluid=water; property=viscosity; T=20</lookup>= 1.00"
+        },
+        {
+          "case_id": "mt-0026",
+          "tool_calls": 7,
+          "matched": 1,
+          "wanted": 4,
+          "raw": "1. Mass flow: <calc>3.796*48.2/3600</calc>= 0.51233\n2. Density of the fluid: <lookup>fluid=Yn-34; T=60</lookup>= 1220.7\n3. Dynamic viscosity: <lookup>fluid=Yn-34; T=60</lookup>= 0.000914\n4. Volumetric flux: <calc>48.2/3600</calc>= 0.0133889\n5. Reynolds number: <calc>2.96*10**5</calc>= 296000\n6. Darc"
+        },
+        {
+          "case_id": "mt-0027",
+          "tool_calls": 9,
+          "matched": 1,
+          "wanted": 4,
+          "raw": "1. Density: <lookup>fluid=Dt-39; property=density; value=1265</lookup>= 1265\n2. Viscosity: <lookup>fluid=Dt-39; property=viscosity; value=0.089</lookup>= 0.089\n3. Pressure difference: <convert>value=8.78; from=kPa; to=Pa</convert>= 8780\n4. Area ratio: <calc>pow(234.0/1000, 2)/pow(90.2/1000, 2)</calc"
+        },
+        {
+          "case_id": "mt-0028",
+          "tool_calls": 4,
+          "matched": 0,
+          "wanted": 3,
+          "raw": "1. Applied density: <lookup>fluid=LK-16; property=density; value=1340</lookup>= 1340\n2. Height of the column: <convert>value=1.12; from=m; to=m^3/m</convert>= 1.12\n3. Density times gravity: <calc>1340 * 9.80665</calc>= 13091.4\n4. Force: <calc>13091.4 * 1.12</calc>= 14648.2\n\n{\"answer\": 14648.2}"
+        },
+        {
+          "case_id": "mt-0029",
+          "tool_calls": 7,
+          "matched": 2,
+          "wanted": 2,
+          "raw": "1. Channel width: <convert>value=1396.1; from=mm; to=m</convert>= 1.3961\n2. Flow depth: <convert>value=506.3; from=mm; to=m</convert>= 0.5063\n3. Hydraulic radius: <calc>1.3961 / 2.0</calc>= 0.69805\n4. Dynamic viscosity: <lookup>fluid=water; property=viscosity; T=20</lookup>= 1.004\n5. Kinematic visco"
+        }
+      ],
+      "seconds": 72.7
+    }
+  },
+  "finished": "2026-09-14T04:55:17"
+}

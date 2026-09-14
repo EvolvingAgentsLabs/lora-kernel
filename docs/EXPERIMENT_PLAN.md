@@ -601,6 +601,42 @@ close without a tool — and `P8` is `harness.lora`, which this table calls P7.
 The tournament, this table's P8, has not been bought.
 
 
+#### P24 — a grammar mask buys cleanliness, not accuracy
+
+[`results/P24-constrained-20260912/`](../results/P24-constrained-20260912/BRIEF.md).
+Masking the sampler so a malformed call is impossible rather than unlikely. Refusals
+fall **23 → 10** while the oracle's tool values stay at **94/96, identical** — the
+trade it was built for, and a coverage *rise* would have meant the grammar was doing
+the adapter's job. The final answer moves 5/30 to 4/30, which is one case: **P21
+already showed 22 of 25 failures were physics with every value in hand.** The
+prediction, replayed offline over P21's transcripts, said 74% of refusals would
+become impossible and it was 57% — a good predictor of direction, an optimistic one
+of size, because the repair is a property of the failure distribution it meets rather
+than a constant of the mask. And the treatment crashed once on a shape
+`grammar_check.py` could not see: Qwen pads its embedding matrix past the vocabulary,
+and **a checker that verifies the grammar is not a checker for the sampler**.
+
+#### P28 — one schema convention works, the other backfires
+
+[`results/P28-schema-conventions-20260914/`](../results/P28-schema-conventions-20260914/BRIEF.md).
+
+| arm | oracle's tool values | refused |
+|---|--:|--:|
+| trained instruction | 59/96 = 0.615 | 17 |
+| OpenAI schema, plain | 41/96 = 0.427 | **88** |
+| **schema + arity** | 51/96 = **0.531** | **17** |
+| schema + arity + enums | 48/96 = 0.500 | 37 |
+
+**Arity — one required parameter renders positionally — drops refusals to the trained
+arm's exact number and recovers 55% of the schema's cost**, with 0 of 48 lines naming
+a tool or a domain.
+
+**Enums were predicted to do nothing here and made it worse.** They fixed what they
+aimed at — `property=D` appears seven times without them and never with them — and
+handbook misses rose **3 → 17**: telling the adapter part of the vocabulary made it
+query more confidently and miss on a different argument. **"56% of out-of-domain
+refusals are names" survives; "so tell it the names" does not follow.**
+
 #### P26 — the pool answers on `/v1/chat/completions`, and each adapter applies
 
 [`results/P26-openai-server-20260913/`](../results/P26-openai-server-20260913/BRIEF.md).

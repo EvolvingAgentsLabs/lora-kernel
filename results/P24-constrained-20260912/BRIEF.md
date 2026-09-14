@@ -221,3 +221,36 @@ tensor — so the repair has a test that fails without it.
 A clean replication of P21's shape on freshly trained weights, and **the 23 refusals
 are the number P24 exists to attack**. The masked arm is re-queued against exactly
 these three.
+
+---
+
+## Outcome (2026-09-14) — the mask does what it claims, and it changes nothing else [ran]
+
+| arm | passes | oracle's tool values | calls | refused |
+|---|--:|--:|--:|--:|
+| no tool layer at all | 7/30 | 0/96 | 0 | 0 |
+| hand-written rule | 12/30 | 93/96 | 96 | **0** |
+| kernel, unmasked | 5/30 | **94/96** | 122 | **23 (19%)** |
+| **kernel, grammar-masked** | 4/30 | **94/96** | 124 | **10 (8%)** |
+
+**Coverage is identical — 94/96 in both.** The mask removed more than half the
+malformed calls and did not cost a single oracle value, which is exactly the trade it
+was built for and the one the second falsification condition was watching: a coverage
+*rise* would have meant the grammar was doing the adapter's job.
+
+**The prediction was 23 → about 5, and it landed at 10.** Replaying the mask over
+P21's stored transcripts said 74% of refusals would become impossible; on freshly
+trained weights it was 57%. The offline replay measured the malformations *those*
+weights made. **It was a good predictor of direction and an optimistic one of
+size**, and that is worth more than the number: the repair is not a constant of the
+mask, it is a property of the failure distribution it meets.
+
+### And it does not improve the answer
+
+5/30 to 4/30 is one case. **Removing malformed calls did not make the system better
+at the task**, and nothing here suggests it would: P21 already established that 22 of
+25 failures were physics with every oracle value in hand. **The mask buys cleanliness,
+not accuracy** — 8% wasted calls instead of 19%, which is free against an instant
+harness and real against a paid or slow tool. That was always what it was for, and it
+is worth saying plainly now that the number exists rather than letting a halved
+refusal rate imply something it does not.

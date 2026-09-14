@@ -68,3 +68,58 @@ Materials is the second purchase and only if A and B behave as predicted here.
   a symptom rather than the cause.
 - **The reading of P25 was wrong** if enums help on fluids, where there is no
   vocabulary to supply.
+
+---
+
+## Outcome (2026-09-14) [ran]
+
+| arm | oracle's tool values | calls | refused |
+|---|--:|--:|--:|
+| trained instruction | 59/96 = **0.615** | 182 | 17 |
+| OpenAI schema, plain | 41/96 = **0.427** | 173 | **88** |
+| **schema + arity** | 51/96 = **0.531** | 173 | **17** |
+| schema + arity + enums | 48/96 = **0.500** | 188 | 37 |
+
+### Arity is confirmed, and precisely
+
+**Refusals fall from 88 to 17 — the trained arm's number exactly.** The `calc` shape
+was not *a* cause of the schema's refusals; it was the whole excess. And the gap to
+the trained arm closes by **55%**: 0.188 down to 0.084.
+
+A convention that keys on a parameter count, with **0 of 48 lines of code naming any
+tool or domain**, recovers over half of what speaking OpenAI's dialect cost.
+
+### Enums are falsified, and not in the direction predicted
+
+The brief predicted enums would **do almost nothing** on fluids, because `density` and
+`viscosity` are what the adapter was trained on. They did something: **they made it
+worse**, 0.531 down to 0.500, with refusals rising 17 → 37.
+
+**And they did fix what they were aimed at.** Without enums the adapter writes
+`property=D` seven times; with them, never:
+
+| | `density` | `viscosity` | `D` | other |
+|---|--:|--:|--:|--:|
+| + arity | 13 | 9 | **7** | `Density` ×1 |
+| + arity + enums | 22 | 13 | **0** | `viscosity\|T=25`, `roughness\|T=25` |
+
+**The damage is somewhere else.** Handbook misses — a lookup for a substance or
+temperature this problem does not carry — go from **3 to 17**, and total calls rise
+from 173 to 188. Supplying part of the vocabulary made the adapter query more
+confidently and miss on a *different argument*. Only **one** call leaked the renderer's
+`|` into its body, so the separator is not the cause.
+
+### What this changes
+
+**The reading of P27 was right**: the schema's cost was mostly a shape mismatch, and
+naming the convention that fixes it costs no domain knowledge.
+
+**The reading of P25 does not transfer the way this brief assumed.** "56% of
+out-of-domain refusals are names" remains true; **"so tell it the names" does not
+follow.** Telling it the names moved the failure rather than removing it, on a suite
+where the names were not the problem to begin with. Whether enums help where the
+vocabulary *is* genuinely unknown — the materials suite — is now a different and more
+interesting question, and it is **not** the one this run answers.
+
+**Bought next, if anything**: arity alone on materials, where the shape mismatch and a
+real vocabulary gap coexist. Enums are **not** carried forward as a default.
