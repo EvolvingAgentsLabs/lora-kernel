@@ -311,3 +311,47 @@ point at it today.
 the message body; OpenAI clients expect `tool_calls`. **An agent pointed here sees
 prose containing tags and no tools at all** — as this brief said before the run, and
 the transcripts above are the evidence rather than the prediction.
+
+---
+
+## Arm 3, redone — the ordering confound is gone and a second one was under it (2026-09-14) [ran]
+
+With a discarded warm-up burst, three timed rounds and the order alternating so
+neither arm is always first:
+
+    pure  2.81 prompts/s  (spread 2.70–2.90)
+    mixed 3.04 prompts/s  (spread 2.99–3.28)
+    the pool costs -8.2%
+
+**Mixed is still faster, and now the spreads do not overlap.** So it is not the
+warm-up. The first measurement's −11.9% was partly an ordering artefact and partly
+something real — and the something real is not what the arm claims to measure.
+
+### The two arms do not generate the same amount of text
+
+| adapter | characters per answer (mean) |
+|---|--:|
+| `kernel` | **476** |
+| `domain` | **338** |
+
+**`pure` is thirty requests to the kernel; `mixed` is fifteen kernel and fifteen
+domain.** The mixed arm emits roughly 15% fewer tokens, and throughput in prompts per
+second is dominated by output length, not by adapter routing. **The −8.2% is the
+adapters writing different amounts, measured as though it were the price of holding a
+pool.**
+
+### So this arm still does not answer its question, and now it is clear why
+
+A pool's cost is the *routing* overhead: the same work, once with all requests on one
+adapter and once with them spread. **These two arms do not do the same work.** Fixing
+the ordering made the confound visible instead of removing it — which is progress of
+a kind, and not a number.
+
+**What survives, and it is the same thing as before**: the catastrophic version is
+ruled out. P3's voided arm reported **20×**; here the difference between one adapter
+and two is the size of an output-length difference. **Per-request swapping is not
+disqualified as a serving strategy**, and that remains all this arm supports.
+
+**What it would take**: normalise by generated tokens rather than requests, or hold
+the content fixed and vary only the adapter id. Neither is built. **Unbought, and now
+specified.**
