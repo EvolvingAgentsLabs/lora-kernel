@@ -1,0 +1,324 @@
+{
+  "base": "Qwen/Qwen2.5-3B-Instruct",
+  "pool": [],
+  "arms": {
+    "base": {
+      "model": "Qwen/Qwen2.5-3B-Instruct",
+      "n": 30,
+      "correct": 14,
+      "accuracy": 0.4667,
+      "majority_class_bar": 0.5333,
+      "human_n": 24,
+      "human_correct": 8,
+      "human_accuracy": 0.3333,
+      "human_majority_class_bar": 0.6667,
+      "undecided": 0,
+      "calls": 0,
+      "refused": 0,
+      "seconds": 3.8,
+      "records": [
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-000",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-001",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-002",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-003",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-004",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-005",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-006",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-007",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-008",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-009",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-010",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-011",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-012",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-013",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-014",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-015",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-016",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-017",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-018",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-019",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-020",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-021",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-022",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-023",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-024",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-025",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-026",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-027",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-028",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "text": "NOT IMPORTANT",
+          "id": "msg-029",
+          "truth": true,
+          "correct": false
+        }
+      ]
+    }
+  },
+  "finished": "2026-09-14T14:42:10"
+}
