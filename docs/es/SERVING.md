@@ -54,3 +54,24 @@ correctamente desde ahí. **Esa es otra afirmación y no está comprada.**
   proxy lo rechaza con esa frase en vez de fingirlo.
 - **No agrega conocimiento de dominio.** No nombra herramientas, argumentos ni
   unidades; hay un test que falla si eso deja de ser cierto.
+
+## Antes de entrenar nada para un despliegue nuevo
+
+    python3 -m training.harness.openai_proxy --upstream … --log traffic.jsonl
+    python3 -m training.harness.null_arm --log traffic.jsonl
+
+Dos preguntas, las dos contestadas desde el tráfico mismo y ninguna necesita GPU más
+allá de la base ya servida.
+
+**¿Hay una región?** La afirmación de la arquitectura es que un experto chico le gana
+a un generalista *dentro de su región* — S5 cerró la brecha de retiro a 0,000 en
+región, y las fórmulas de ese mismo experto caen de 30/30 a 1/20 afuera. Si el
+tráfico es cola larga no hay nada en qué especializarse, y la recomendación honesta es
+un generalista. El instrumento dice `NO REGION` cuando las tres formas más comunes
+cubren menos del 60% de los pedidos, y está escrito para poder decirlo.
+
+**¿La base sostiene el protocolo?** Con qué frecuencia el modelo base *solo* emite una
+llamada bien formada. Si no puede, un adaptador encima no lo arregla — la compra
+siguiente es otra base, no un entrenamiento. Y las llamadas que nombran una
+herramienta que nadie ofreció se cuentan aparte, porque P25 midió exactamente ese
+fallo en el 56% de los rechazos sobre un tema desconocido.

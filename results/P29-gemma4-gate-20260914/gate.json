@@ -1,0 +1,11 @@
+{
+  "base": "google/gemma-4-E4B-it",
+  "pool": [
+    "kernel"
+  ],
+  "arms": {
+    "server": {
+      "status": "never came up"
+    }
+  }
+}

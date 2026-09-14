@@ -79,3 +79,28 @@ def test_the_proxy_adds_no_domain_words():
             if l.strip() and not l.strip().startswith("#") and i not in doc]
     voc = r"\bfluid|densit|viscosit|throat|manning|venturi|water|modulus|lookup\b"
     assert not [l for l in code if re.search(voc, l, re.I)]
+
+
+def test_the_null_arm_calls_a_long_tail_a_long_tail():
+    """The instrument has to be able to say no, or it is not a gate."""
+    import json, subprocess, sys, tempfile, pathlib
+    rows = [{"tools": [f"t{i}"], "turns": 2, "reply": ""} for i in range(10)]
+    with tempfile.TemporaryDirectory() as d:
+        p = pathlib.Path(d) / "t.jsonl"
+        p.write_text("\n".join(json.dumps(r) for r in rows))
+        out = subprocess.run([sys.executable, "-m", "training.harness.null_arm",
+                              "--log", str(p)], capture_output=True, text=True).stdout
+    assert "NO REGION" in out
+
+
+def test_the_null_arm_sees_a_region_when_there_is_one():
+    import json, subprocess, sys, tempfile, pathlib
+    rows = ([{"tools": ["sql"], "turns": 2, "reply": "<sql>q=1</sql>"}] * 8
+            + [{"tools": ["other"], "turns": 9, "reply": ""}] * 2)
+    with tempfile.TemporaryDirectory() as d:
+        p = pathlib.Path(d) / "t.jsonl"
+        p.write_text("\n".join(json.dumps(r) for r in rows))
+        out = subprocess.run([sys.executable, "-m", "training.harness.null_arm",
+                              "--log", str(p)], capture_output=True, text=True).stdout
+    assert "A REGION EXISTS" in out
+    assert "80.0%" in out
