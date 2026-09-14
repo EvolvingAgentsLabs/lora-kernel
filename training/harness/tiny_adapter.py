@@ -50,13 +50,32 @@ def main() -> int:
         tok.pad_token = tok.eos_token
     model = AutoModelForCausalLM.from_pretrained(args.base, dtype=torch.bfloat16,
                                                  device_map="cuda")
-    # TARGETS ARE DISCOVERED, NOT LISTED. A hardcoded list of projection names is a
-    # list for one architecture, and the whole point here is a base we have not
-    # adapted before.
+    # TARGETS ARE DISCOVERED, AND THE FIRST VERSION ONLY PRETENDED TO BE. It filtered
+    # the discovered names through a hardcoded list — q_proj, k_proj, v_proj … — which
+    # is a list for one architecture. On Qwen3.5 **not one of those names exists**:
+    # its 24 linear-attention layers carry `in_proj_qkv`, `in_proj_z`, `out_proj`
+    # (Mamba naming), and its full-attention layers carry a fused `qkv`. So the
+    # adapter it produced touched only the MLPs and no attention at all, and the gate
+    # that consumed it could not tell "vLLM ignores this" from "this adapter barely
+    # moves the output" [ran] 2026-09-14.
+    #
+    # Every Linear is a candidate now, minus the two that are never adapted: the
+    # output head and anything in a vision tower, which would make the comparison
+    # about a modality this project does not use.
+    SKIP = ("lm_head", "visual", "vision", "patch_embed", "merger")
     names = sorted({n.split(".")[-1] for n, m in model.named_modules()
                     if isinstance(m, torch.nn.Linear)
-                    and any(k in n for k in ("q_proj", "k_proj", "v_proj", "o_proj",
-                                             "gate_proj", "up_proj", "down_proj"))})
+                    and not any(s in n for s in SKIP)})
+    attn = [n for n in names if any(k in n for k in
+                                    ("q", "k", "v", "o_proj", "qkv", "out_proj", "attn"))]
+    print(f"[tiny] Linear modules: {names}", flush=True)
+    print(f"[tiny] of those, attention-shaped: {attn}", flush=True)
+    if not attn:
+        # AN ADAPTER THAT TOUCHES NO ATTENTION IS THE CASE THAT WASTED THREE RUNS.
+        print("[tiny] REFUSING: no attention module matched. An adapter that touches "
+              "only MLPs cannot tell a serving gate what it is being asked.",
+              flush=True)
+        return 1
     print(f"[tiny] target modules found: {names}", flush=True)
     if not names:
         print("[tiny] no projection modules matched; nothing to adapt")
