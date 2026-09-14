@@ -701,7 +701,7 @@ task, same channel — not the raw count.
 answerable from the listing; and all 0.320 of the margin still sits with the tools,
 unclaimed.
 
-#### P33 — the same LoRA question on a base whose answer we already know · RUNNING
+#### P33 — Qwen3.5 trains a LoRA; vLLM serves the base anyway
 
 [`results/P33-lora-matrix-20260914/`](../results/P33-lora-matrix-20260914/BRIEF.md).
 **Pre-registered before the run, and it exists because four runs produced an
@@ -735,6 +735,39 @@ and serves an ordinary model — unsloth's own Qwen3.5 guide routes through
 `save_pretrained_merged` for exactly this **[read]**. It works, and it costs one
 full copy of the weights per expert with no shared base and no per-request
 swapping: the thing this architecture exists to avoid.
+
+## The result — 2026-09-14 **[ran]**
+
+| base | role | G1 in-process | G2 served | s |
+|---|---|---|---|--:|
+| `Qwen2.5-3B-Instruct` | control | **passed** · `lora_B=18660.98` | **applied** | 323 |
+| `Qwen3.5-4B` | subject | **passed** · `lora_B=18739.84` | **IDENTICAL TO BASE** | 495 |
+
+**`control_valid: true`**, so the subject's negative is a fact about Qwen3.5 and not
+about this code. The reading, from the table written before the run:
+
+> the adapter trains and changes the output in process, and vLLM serves the base
+> anyway — **a serving-stack limit, not a model one**
+
+**This is different in every respect from the two claims withdrawn the same day.**
+Qwen3.5 is not incapable of LoRA: `lora_B_abs_sum = 18739.84` across all twelve
+projections, `in_proj_qkv` and `out_proj` on the linear-attention layers included,
+and the output changes. What fails is the serving stack — **and it fails silently**,
+which is the whole of C18. `vllm.log` carries `Loaded new LoRA adapter: name 'tiny'`
+and then serves the base. A deployment reading that line would believe it was
+serving an expert.
+
+The subject's G2 also carries **`"exit": 0`**: `serve_openai` exits cleanly on a run
+whose gate said *not applied*, so reading the return code instead of the verdict file
+would have reported the subject as a pass — the same shape of error behind both
+withdrawn diagnoses.
+
+**Decision: Qwen 2.5 for the end-to-end.** Not because Qwen3.5 is weaker, but because
+a pool of QLoRAs needs adapters swappable per request over one resident base, and
+vLLM does not apply them on this class. **G3 was not bought**: merging would work and
+is not a pool — one full copy of the weights per expert, no shared base, no swapping
+— so it is recorded as a priced fallback rather than an option, and no GPU time went
+to confirming a cost we can state.
 
 **Instrument note that outlived the run.** The chain died before the A100 did any
 work, on a Python comment inside an unquoted heredoc:

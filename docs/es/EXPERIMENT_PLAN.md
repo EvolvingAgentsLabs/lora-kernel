@@ -724,7 +724,7 @@ misma tarea, mismo canal — no el conteo crudo.
 el listado; y los 0,320 de margen siguen enteros del lado de las herramientas, sin que
 nadie los haya reclamado.
 
-#### P33 — la misma pregunta de LoRA sobre una base cuya respuesta ya conocemos · CORRIENDO
+#### P33 — Qwen3.5 entrena un LoRA; vLLM sirve la base igual
 
 [`results/P33-lora-matrix-20260914/`](../../results/P33-lora-matrix-20260914/BRIEF.md).
 **Pre-registrado antes de correr, y existe porque cuatro corridas produjeron un
@@ -758,6 +758,38 @@ delta en los pesos y sirve un modelo común — la propia guía de unsloth para 
 pasa por `save_pretrained_merged` exactamente por eso **[read]**. Funciona, y cuesta
 una copia completa de los pesos por experto, sin base compartida y sin swapping por
 request: justo lo que esta arquitectura existe para evitar.
+
+## El resultado — 2026-09-14 **[ran]**
+
+| base | rol | G1 en proceso | G2 servido | s |
+|---|---|---|---|--:|
+| `Qwen2.5-3B-Instruct` | control | **pasa** · `lora_B=18660,98` | **applied** | 323 |
+| `Qwen3.5-4B` | sujeto | **pasa** · `lora_B=18739,84` | **IDENTICAL TO BASE** | 495 |
+
+**`control_valid: true`**, así que el negativo del sujeto es un hecho sobre Qwen3.5 y
+no sobre este código. La lectura, de la tabla escrita antes de correr:
+
+> el adaptador entrena y cambia la salida en proceso, y vLLM sirve la base igual —
+> **un límite del stack de serving, no del modelo**
+
+**Esto es distinto en todo de las dos afirmaciones retiradas el mismo día.** Qwen3.5
+no es incapaz de LoRA: `lora_B_abs_sum = 18739,84` sobre las doce proyecciones,
+incluidas `in_proj_qkv` y `out_proj` de las capas de atención lineal, y la salida
+cambia. Lo que falla es el stack de serving — **y falla en silencio**, que es C18
+entero. `vllm.log` trae `Loaded new LoRA adapter: name 'tiny'` y después sirve la
+base. Un deployment que leyera esa línea creería estar sirviendo un experto.
+
+El G2 del sujeto además trae **`"exit": 0`**: `serve_openai` sale limpio en una
+corrida cuya compuerta dijo *not applied*, así que leer el código de retorno en vez
+del archivo lo habría reportado como éxito — la misma forma de error detrás de los
+dos diagnósticos retirados.
+
+**Decisión: Qwen 2.5 para el end-to-end.** No porque Qwen3.5 sea peor, sino porque un
+pool de QLoRAs necesita adaptadores intercambiables por request sobre una base
+residente, y vLLM no los aplica en esa clase. **G3 no se compró**: fusionar
+funcionaría y no es un pool — una copia completa de los pesos por experto, sin base
+compartida ni swapping — así que queda anotado como fallback con su precio dicho en
+vez de como opción, y no se gastó GPU en confirmar un costo que podemos enunciar.
 
 **Nota de instrumento que sobrevivió a la corrida.** El chain murió antes de que la
 A100 hiciera nada, por un comentario de Python dentro de un heredoc sin comillas:
