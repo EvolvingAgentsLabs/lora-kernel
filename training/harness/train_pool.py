@@ -26,6 +26,9 @@ POOL = {
     # physics kernel taking this base from 0 tool calls to 127 and every one
     # refused — the disposition travels, the names do not [ran].
     "adapters/kernel-email": "training/harness/data_ep/train.jsonl",
+    # P36: the ceiling. Tools and judgement in one adapter — the reference point a
+    # pool has to match, not the architecture itself.
+    "adapters/email-full": "training/harness/data_ef/train.jsonl",
 }
 
 
