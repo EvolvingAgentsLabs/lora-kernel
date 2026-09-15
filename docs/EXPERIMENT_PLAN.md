@@ -1687,6 +1687,43 @@ adapter demonstrably changes vLLM's output.** The next move is a decision, not a
 run: pin a different vLLM version, or retrain the pool without `q_proj`/`k_proj`
 and re-test. Both are cheap; choosing between them is not this session's call.
 
+### Taken 2026-09-15: supervised experts first, the mechanism only if it beats them
+
+**The user's proposal, and it is adopted.** Train each subdomain expert by ordinary
+supervised fine-tuning, compose it with the kernel adapter, and spend the acceptance
+machinery only on **improving** an expert that already exists — if it can.
+
+**Why it is better, and it is not a matter of taste.** It creates the baseline the
+mechanism has to beat. Built the other way round, an expert produced by the
+tournament has nothing beside it, and whatever number it scores reads as a success.
+This repository's own rule is that **the baseline is our own previous version**, and
+under this ordering the supervised expert *is* that version.
+
+**And it puts the cheap, proven half first.** Supervised training is measured here
+several times over — distillation transfers the procedure (P6/P7, adapter plus
+calculator 40/40), the protocol is separable (P8), the tool vocabulary was learned
+exactly as intended with 0 refusals (P35). The tournament has **fitness by
+conjunction ordering 2 of 2 pairs** and a router that ties. Buying the expensive,
+least-validated half first is the wrong way round.
+
+**What it changes.** The frontier had two jobs — teacher for distillation, and
+oracle for promotion. The first stays. **The second becomes conditional**: bought
+only once there is a supervised expert for it to improve on. That moves this
+repository's stated central question one step later, which is why it is recorded
+here as a decision rather than left to drift.
+
+**What it does not make easier.** P35 measured that training one capability
+supervised **cost another** — the vocabulary was learned and asking fell from 123 of
+150 cases to 22. Training experts per subdomain and then adding the kernel meets
+exactly that interference, and **composition of two LoRAs has never been cleanly
+measured in this repository**: P8's apparent "two adapters interfere" is void on a
+notation confound and must not be cited as fact. Under this ordering that question
+stops being downstream and becomes the central one.
+
+**P36 already is the first step of both plans.** It was bought as a ceiling — is the
+margin reachable at all — and under this decision it is also the first supervised
+subdomain expert. The same spend answers both.
+
 ### Open: how to get an adapter graded at all
 
 Six infrastructure failures and three reclaimed sessions, and the adapter has
