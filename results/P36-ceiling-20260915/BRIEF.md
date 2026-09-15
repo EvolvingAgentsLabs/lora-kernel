@@ -141,3 +141,20 @@ difference is the adapter.** No composition, no shared kernel, no tournament.
   remaining 0.257 costs is unmeasured.
 - **Not generalisation.** One subdomain, one inbox generator, one base. The pool
   thesis needs a second expert before "a pool" is a word this earns.
+
+
+---
+
+## Qualified 2026-09-15 by P40: this gate verdict is not reproducible
+
+The same adapter, the same 150 cases, **temperature 0**, three runs: **84**/113 here,
+**81** in P38's pool, **82** in P40's. Every pair is a tie (4:1, 3:1, 2:3 discordant)
+and the tool-call count barely moves — 393, 393, 390. **The member does not change.**
+
+**The gate demands 83.** vLLM is not run-to-run deterministic at temperature 0, and
+this member's ±3-case spread straddles the threshold. So *"the first pool member
+clears its gate"* is true of this run and is **not a stable property**: it cleared
+once in three, and which side it lands on is decided by the scheduler.
+
+**The effect is not marginal, only the verdict is.** Against the base on the same
+cases: **8 : 51 discordant, p ≈ 0** **[ran]** `results/P40-pool-retried-20260915/`.
