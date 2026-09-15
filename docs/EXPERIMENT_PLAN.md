@@ -662,6 +662,43 @@ assembled and not measured; an OpenAI client sending `tools=[…]`, reading
 trained model has been run on this suite** — the stub proves the plumbing, not the
 pool.
 
+#### P36 — the first pool member clears its gate
+
+[`results/P36-ceiling-20260915/`](../results/P36-ceiling-20260915/BRIEF.md). One
+adapter, tools and judgement together, served over Qwen2.5-3B with the identity gate
+`applied` before a case was scored.
+
+| arm | asked in | refused | human messages | exact p |
+|---|--:|--:|--:|--:|
+| base (P31) | 0/150 | 0 | 39/113 = 0.345 | 1.000 |
+| kernel-mt, physics (P34) | 123/150 | 127 | 39/113 = 0.345 | 1.000 |
+| kernel-email, names (P35) | 22/150 | 0 | 42/113 = 0.372 | 1.000 |
+| **email-full (P36)** | **113/150** | **0** | **84/113 = 0.743** | **0.028** |
+
+**It clears** — 84 against the 83 the exact one-sided binomial demands at α = 0.05,
+and the 0.320 of margin the tools held is **28% claimed**, 0.655 → 0.743 **[ran]**.
+
+**393 calls, 0 refused.** It asked in 113 of 150 cases and in 37 it did not, and the
+37 are almost exactly the automated messages the corpus teaches to settle at a
+glance. **It learned *when* to ask, not "always ask"** — the failure a corpus that
+queried three tools for everything would have produced. 97 cases at 3 calls, 14 at
+6, 2 at 9; none ran out of turns and none was undecided. **0 of 150** answered from
+a fabricated tool result, so the confound pre-registered in P35's brief stays dead.
+
+**Under the decision taken while this ran**, the reading is not permission to keep
+measuring — it is the result: **a self-contained QLoRA, trained by ordinary
+supervised fine-tuning on one subdomain, served over a resident base and swappable
+per request, does a job the base cannot do at all.** The base's 0.345 is the exact
+complement of its own bar, from answering `NOT IMPORTANT` to everything without
+consulting anything. The whole difference is the adapter, with no composition, no
+shared kernel and no tournament.
+
+**Three things this does not claim.** Not that a composed pool could not do better —
+composition is parked and nothing here compares against it. Not a ceiling — 0.743
+against a 1.000 nothing has reached, and what the remaining 0.257 costs is
+unmeasured. **Not generalisation**: one subdomain, one generator, one base. *A pool*
+needs a second expert before the word is earned.
+
 #### P35 — the vocabulary is learnable, and learning it costs the disposition
 
 [`results/P35-email-kernel-20260914/`](../results/P35-email-kernel-20260914/BRIEF.md).

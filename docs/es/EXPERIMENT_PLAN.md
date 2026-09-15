@@ -684,6 +684,45 @@ llamadas, 0 rechazadas, 0 sin decidir**. Eso ahora es un test y no una esperanza
 **Ningún modelo entrenado corrió sobre esta suite** — el stub prueba la plomería, no
 el pool.
 
+#### P36 — el primer miembro del pool clarea su compuerta
+
+[`results/P36-ceiling-20260915/`](../../results/P36-ceiling-20260915/BRIEF.md). Un
+adaptador, herramientas y juicio juntos, servido sobre Qwen2.5-3B con la compuerta de
+identidad `applied` antes de puntuar un caso.
+
+| brazo | pidió en | rechazadas | mensajes humanos | p exacta |
+|---|--:|--:|--:|--:|
+| base (P31) | 0/150 | 0 | 39/113 = 0,345 | 1,000 |
+| kernel-mt, física (P34) | 123/150 | 127 | 39/113 = 0,345 | 1,000 |
+| kernel-email, nombres (P35) | 22/150 | 0 | 42/113 = 0,372 | 1,000 |
+| **email-full (P36)** | **113/150** | **0** | **84/113 = 0,743** | **0,028** |
+
+**Clarea** — 84 contra los 83 que exige el binomial exacto a una cola con α = 0,05, y
+los 0,320 de margen que tenían las herramientas quedan **reclamados en un 28%**,
+0,655 → 0,743 **[ran]**.
+
+**393 llamadas, 0 rechazadas.** Pidió en 113 de 150 casos y en 37 no, y esos 37 son
+casi exactamente los mensajes automáticos que el corpus enseña a resolver de un
+vistazo. **Aprendió *cuándo* preguntar, no "preguntá siempre"** — el fallo que habría
+producido un corpus que consultara tres herramientas para todo. 97 casos con 3
+llamadas, 14 con 6, 2 con 9; ninguno se quedó sin turnos y ninguno quedó indeciso.
+**0 de 150** contestaron desde un resultado fabricado, así que el confundido
+pre-registrado en el brief de P35 sigue muerto.
+
+**Bajo la decisión tomada mientras esto corría**, la lectura no es permiso para seguir
+midiendo — es el resultado: **un QLoRA autocontenido, entrenado con fine-tuning
+supervisado común sobre un subdominio, servido sobre una base residente e
+intercambiable por request, hace un trabajo que la base no puede hacer en absoluto.**
+El 0,345 de la base es el complemento exacto de su propia barra, de contestar `NOT
+IMPORTANT` a todo sin consultar nada. Toda la diferencia es el adaptador, sin
+composición, sin kernel compartido y sin torneo.
+
+**Tres cosas que esto no afirma.** No que un pool compuesto no pudiera hacerlo mejor —
+la composición está estacionada y nada acá compara contra eso. No un techo — 0,743
+contra un 1,000 que nadie alcanzó, y lo que cuesta el 0,257 restante está sin medir.
+**No generalización**: un subdominio, un generador, una base. *Un pool* necesita un
+segundo experto antes de que la palabra esté ganada.
+
 #### P35 — el vocabulario es aprendible, y aprenderlo cuesta la disposición
 
 [`results/P35-email-kernel-20260914/`](../../results/P35-email-kernel-20260914/BRIEF.md).
