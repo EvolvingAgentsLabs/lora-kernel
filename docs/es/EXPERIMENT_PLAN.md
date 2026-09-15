@@ -2070,6 +2070,31 @@ ascendente, y la elección es del usuario porque decide qué mide el proyecto:
 Hasta elegir una, S4 y S5 no se pueden comprar: promover un experto y retirar una
 frontera que nunca estuvo adelante no mide nada.
 
+### Analizado 2026-09-15: la composición puede volver como pipeline, y P4 se reapunta
+
+Análisis completo: [`../analysis/composition-and-speculative.md`](../analysis/composition-and-speculative.md).
+No se implementó nada; en este plan cambian tres cosas.
+
+- **Encadenar no es la composición que se descartó.** `base→lora1` y después
+  `base→lora2` nunca tiene dos deltas vivos en el mismo forward, así que la pregunta
+  por la interferencia no aparece — y el pool ya sirve exactamente eso, medido tres
+  veces **[ran]** P40/P41/P42. Son dos pedidos con dos nombres de modelo, y no
+  cuestan trabajo de serving.
+- **La familia de P4 está mal y su premisa no está verificada.** Dice *un Qwen3.5
+  grande*; los adaptadores están sobre Qwen2.5-3B, así que el target tiene que ser un
+  **Qwen2.5** grande. Y que un 3B y un hermano grande compartan tokenizer es
+  **[read]** — comparar dos hashes de `tokenizer.json` es lo primero que corre P4, no
+  un supuesto debajo de P4.
+- **El número que la literatura usa para esta arquitectura es aceptación, y nunca lo
+  medimos.** Todos los números de acá son exactitud entregada.
+  [TaskSpec](https://arxiv.org/html/2505.08600v1) reporta que un clasificador de
+  prompt sobre cuatro drafters específicos por tarea sube la aceptación **16% → 58%**
+  — nuestro pool, construido por otra gente, puntuado con una cantidad que no
+  necesita verificador.
+
+No adoptado: ruteo de adaptador por token (MoLoRA, WhiFlash). Es composición en el
+espacio de pesos con otro nombre, y esa pregunta se cerró hoy.
+
 ## 12. Historia
 
 | fecha | cambio a este plan | por qué |
