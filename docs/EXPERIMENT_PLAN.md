@@ -662,6 +662,47 @@ assembled and not measured; an OpenAI client sending `tools=[…]`, reading
 trained model has been run on this suite** — the stub proves the plumbing, not the
 pool.
 
+#### P41 — routing the failures to the frontier, with the frontier measured
+
+[`results/P41-routing-20260915/`](../results/P41-routing-20260915/) ·
+`training/harness/routing.py`. The pool's experts are not equally good, so the
+frontier stops being scaffolding to withdraw and becomes a **fallback for what the
+local expert is measured to fail at**. This is that, in numbers.
+
+**`google/gemini-3.8-flash` on the fluids suite, through the same client the local
+expert uses: 66/90 = 0.733** **[ran]** — not 1.000, so the earlier `≤ 0.871` was a
+bound and is now replaced by a result.
+
+| policy | delivered | leaves the machine |
+|---|--:|--:|
+| everything local | 0.546 | 0% |
+| **fluids → frontier, by region** | **0.775** | **38%** |
+| by case · tripwire `has_left_its_region` | 0.378 | 37% |
+| by case · quality gate `is_probably_wrong` | 0.689 | 91% |
+
+**Routing by region works and pays: +0.23 delivered, and 62% of the work stays on
+one resident base.** That is the pool's economic argument stated as a measurement
+rather than a hope — we pay the frontier only for the part we measured we cannot do.
+
+**And routing by case is worse than by region, which is the finding.** Both
+escalation rules — built and measured in P19/P21 — detect a chain that is
+**dimensionally or mechanically inconsistent**. This expert's chains are perfectly
+consistent and the physics is wrong: it follows the procedure, the units close, the
+arithmetic closes, the answer is not right. **The rules are looking for a failure
+this expert does not have.**
+
+So the open problem is sharp and it is new: **a routing signal that can see a chain
+which is coherent and wrong.** That is exactly where the parked acceptance
+machinery has a job — not as a promotion criterion for training, but as the
+per-case trust decision — and it is the reason §11's restatement keeps it rather
+than retiring it.
+
+**Two instrument findings paid for here.** The frontier first scored **0/4**, and
+reporting that would have said *"the frontier cannot do this suite either"* — the
+most interesting and most false conclusion available. It was a tool refusing
+`T=20 C` for its phrasing and a token cap cut to the length of an expert whose final
+messages are 19 characters. Fixed, it scored **5/6** on the same probe **[ran]**.
+
 #### P37–P40 — the pool serves two experts, and only one of them is good
 
 [`results/P40-pool-retried-20260915/`](../results/P40-pool-retried-20260915/BRIEF.md).
