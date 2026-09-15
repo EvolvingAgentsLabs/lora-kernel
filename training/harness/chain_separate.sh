@@ -217,6 +217,30 @@ PY
     sleep 45
   done
   tmo 180 colab download -s "$S" "$REMOTE" "$LOCAL" >/dev/null 2>&1 || echo "    WARNING: nothing came back"
+
+  # ONE LAST REACH FOR THE WEIGHTS, BECAUSE THE LOOP AND THE TARBALL RACE. The tar
+  # is built in the background after a sleep, and the loop breaks the moment it
+  # sees `[pool] complete` — so on the last iteration the archive may not exist
+  # yet, and stopping the session here would take nine minutes of training with it.
+  # That is not hypothetical: it happened on 2026-09-14, by a different route, and
+  # the retraining cost more than this retry ever will [ran].
+  if [ ! -s "$ADAPTERS" ] || [ "$(tar tzf "$ADAPTERS" 2>/dev/null | grep -c safetensors || echo 0)" = "0" ]; then
+    echo "    no weights yet — packing and fetching before the session goes"
+    cat > /tmp/_repack.py <<'PYPACK'
+import subprocess
+print(subprocess.run("cd /content/lora-kernel && tar czf adapters.tgz adapters "
+                     "&& ls -l adapters.tgz", shell=True, capture_output=True,
+                     text=True).stdout.strip()[-120:])
+PYPACK
+    tmo 300 colab exec -s "$S" -f /tmp/_repack.py >/dev/null 2>&1 || true
+    if tmo 600 colab download -s "$S" /content/lora-kernel/adapters.tgz \
+         "$ADAPTERS.new" >/dev/null 2>&1 && [ -s "$ADAPTERS.new" ]; then
+      mv "$ADAPTERS.new" "$ADAPTERS"
+      echo "    fetched the adapters on the way out"
+    else
+      echo "    WARNING: the weights did not come back and the session is closing"
+    fi
+  fi
   colab stop -s "$S" >/dev/null 2>&1 || true; trap - EXIT
 
   python3 - <<PY
