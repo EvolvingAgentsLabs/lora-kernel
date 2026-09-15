@@ -87,3 +87,57 @@ human messages — **83/113** on this draw. Accuracy above the bar is not a pass
 - **A monolith that clears while asking for nothing** would mean the judgement is
   readable from the listing after all, contradicting `tests/test_email.py`. Tool
   calls are reported beside the score for exactly this reason.
+
+---
+
+# Result — 2026-09-15 **[ran]**
+
+`triage_results.json`. One adapter, tools and judgement together, served over
+Qwen2.5-3B with the **identity gate `applied`** before a single case was scored.
+
+| arm | asked in | refused | human messages | exact p |
+|---|--:|--:|--:|--:|
+| base (P31) | 0/150 | 0 | 39/113 = 0.345 | 1.000 |
+| kernel-mt, physics tools (P34) | 123/150 | 127 | 39/113 = 0.345 | 1.000 |
+| kernel-email, names only (P35) | 22/150 | 0 | 42/113 = 0.372 | 1.000 |
+| **email-full (P36)** | **113/150** | **0** | **84/113 = 0.743** | **0.028** |
+
+**It clears.** 84 against the 83 the exact one-sided binomial demands at α = 0.05,
+and the margin the tools held — 0.320 between the bar and a perfect score — is
+**28% claimed**: 0.655 → 0.743.
+
+## What makes the number readable
+
+- **393 calls, 0 refused.** It asks correctly every time.
+- **It asked in 113 of 150 cases and in 37 it did not**, and the 37 are almost
+  exactly the automated messages — the ones the corpus teaches to settle at a glance
+  without spending a call. **It did not learn "always ask"; it learned *when*.**
+- **97 cases at 3 calls, 14 at 6, 2 at 9.** Some go back for more; none ran out of
+  turns, and **0 were undecided**.
+- **0 of 150** answered from a fabricated tool result. The confound pre-registered
+  in the P35 brief stays dead.
+- The **identity gate** returned `applied`, so this is the adapter and not the base.
+
+## What it means under the decision taken while it ran
+
+This brief was bought as a **ceiling** and reframed mid-run, before the number
+existed, when composition was dropped. Under that decision the reading is not
+*permission to keep measuring* — **it is the result**:
+
+> A self-contained QLoRA, trained by ordinary supervised fine-tuning on one
+> subdomain, served over a resident base and swappable per request, does a job the
+> base cannot do at all.
+
+The base scores **0.345** — the exact complement of its own bar, from answering
+`NOT IMPORTANT` to everything without consulting anything. **The whole of the
+difference is the adapter.** No composition, no shared kernel, no tournament.
+
+## What is not claimed
+
+- **Not that the split could not do better.** P34 and P35 measured the two halves
+  apart; nothing here compares a composed pool against this, because composition is
+  parked.
+- **Not a ceiling.** 0.743 against a 1.000 that nothing has reached. What the
+  remaining 0.257 costs is unmeasured.
+- **Not generalisation.** One subdomain, one inbox generator, one base. The pool
+  thesis needs a second expert before "a pool" is a word this earns.
