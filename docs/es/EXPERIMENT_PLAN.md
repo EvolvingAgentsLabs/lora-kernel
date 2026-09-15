@@ -684,6 +684,39 @@ llamadas, 0 rechazadas, 0 sin decidir**. Eso ahora es un test y no una esperanza
 **Ningún modelo entrenado corrió sobre esta suite** — el stub prueba la plomería, no
 el pool.
 
+#### P44 — la confianza que este pool ya tiene no ordena sus errores
+
+[`results/P44-calibration-20260915/`](../../results/P44-calibration-20260915/BRIEF.md).
+Un chequeo de headroom comprado **antes** de entrenar ningún adapter tipado, porque
+la propuesta de [`docs/analysis/typed-adapters.md`](../analysis/typed-adapters.md) se
+apoya en una afirmación — *el logprob del primer token es un proxy pobre* — que llegó
+**[read]** de un brief que cita a un lab sin benchmark público, y que se puede probar
+gratis sobre nuestro propio modelo.
+
+| | `email-full` | base |
+|---|--:|--:|
+| exactitud, **sin herramientas** | 0,425 | 0,345 |
+| **confianza media** | **0,902** | **0,999** |
+| ECE | 0,478 | 0,654 |
+| **AURC** | **0,612** | 0,627 |
+| piso oráculo | 0,213 | 0,289 |
+| **brecha** | **0,400** | **0,338** |
+
+**La base dice estar 99,9% segura y acierta el 34%** **[ran]**.
+
+**La fila del medio, pre-registrada, es lo que hace legible esto.** Una confianza mal
+calibrada pero *rankeable* se arregla con temperature scaling, que no cuesta
+entrenamiento — y ésa habría sido la respuesta honesta a un ECE grande solo. **Éstas
+no son rankeables**: 0,40 y 0,34 por encima del piso. El brazo tipado se **compra**,
+no empata ni se cancela.
+
+**La salvedad viaja con los números**: estas exactitudes son sin herramientas, una
+pasada desde el listado, por eso 0,425 y no el 0,741 de P43. Ésa es la línea base
+pareja que una cabeza tipada enfrentaría, y no es el experto haciendo su trabajo.
+
+**El piso a superar queda explícito**: brecha de AURC **0,400** sobre 351 casos, con
+`bar.calibration()` como instrumento.
+
 #### P43 — el end-to-end corre, y la compuerta por fin puede decidir
 
 [`results/P43-openclaw-e2e-20260915/`](../../results/P43-openclaw-e2e-20260915/BRIEF.md).
