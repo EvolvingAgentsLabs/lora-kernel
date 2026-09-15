@@ -119,8 +119,17 @@ def lookup(text: str, handbook: dict | None = None) -> float:
         raise ToolError(f"lookup needs {sorted(missing)}")
     fluid = a["fluid"].lower().replace("_", " ")
     prop = a["property"].lower()
+    # A TEMPERATURE WRITTEN WITH ITS UNIT IS A TEMPERATURE. `float("20 C")` raises,
+    # so a caller that writes `T=20 C` — which a frontier model does, and which is
+    # unambiguous — was refused for its phrasing rather than its intent. That is a
+    # check failing while the capability works, and this repository's rule is to
+    # remove such a check rather than loosen it. The adapters trained here write
+    # `T=20` and are unaffected; what changes is that a model which was never shown
+    # the convention is no longer scored on knowing it **[ran]** 2026-09-15.
+    raw = str(a.get("t", "20")).strip()
+    m = re.match(r"^([-+]?\d*\.?\d+)\s*(?:°\s*)?[CcKk]?$", raw)
     try:
-        t = int(round(float(a.get("t", "20"))))
+        t = int(round(float(m.group(1) if m else raw)))
     except ValueError:
         raise ToolError(f"temperature {a.get('t')!r} is not a number") from None
     if (fluid, t) not in table:

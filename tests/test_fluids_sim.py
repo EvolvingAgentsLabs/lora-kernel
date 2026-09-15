@@ -165,3 +165,26 @@ def test_a_run_that_ran_out_of_turns_still_carries_its_chain(monkeypatch):
             {"id": "1", "function": {"name": "calc", "arguments": '{"_": "1+1"}'}}]}}]})
     r = fs.solve_one("u", None, "m", _case(), 3, 300)
     assert r["out_of_turns"] is True and r["chain"]
+
+
+def test_a_temperature_written_with_its_unit_is_a_temperature():
+    """The check that was measuring phrasing rather than capability.
+
+    `float("20 C")` raises, so a caller writing `T=20 C` — which a frontier model
+    does, and which is unambiguous — was refused. On six probe cases that turned a
+    **0/4 into 5/6**: the zero was the harness, not the model **[ran]** 2026-09-15.
+
+    The adapters trained here write `T=20` and are unaffected. What changed is that
+    a model never shown the convention is no longer scored on knowing it.
+    """
+    from training.physics.tools import lookup
+    expected = lookup("fluid=water; property=density; T=20")
+    for written in ("20", "20 C", "20C", " 20 ", "20 °C"):
+        assert lookup(f"fluid=water; property=density; T={written}") == expected
+
+
+def test_a_temperature_that_is_not_a_number_is_still_refused():
+    """Loosening was not the fix; removing a phrasing test was."""
+    from training.physics.tools import lookup, ToolError
+    with pytest.raises(ToolError):
+        lookup("fluid=water; property=density; T=hot")
