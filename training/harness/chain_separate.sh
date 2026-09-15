@@ -62,6 +62,16 @@ tmo () {  # tmo SECONDS cmd...
 # 106 MB, so the cache added to save forty minutes of retraining never once worked
 # — and raising the timeout, the obvious first guess, would never have helped.
 # Chunked, reassembled on the far side.
+# HOW MANY TRAINED ADAPTERS A TARBALL ACTUALLY CARRIES.
+#
+# `grep -c` PRINTS ITS ZERO **AND** EXITS 1, so the obvious
+#     $(tar tzf f | grep -c safetensors || echo 0)
+# yields "0\n0" on an empty archive — which is not equal to "0", so the guard that
+# asked `= "0"` read false and skipped the rescue it exists for. That is exactly
+# how a 45-byte tarball reached disk and nine minutes of L4 training went with the
+# session [ran] 2026-09-15. One helper, one `|| true`, one place to get it wrong.
+weights_in () { tar tzf "$1" 2>/dev/null | grep -c safetensors 2>/dev/null || true; }
+
 upload_big () {  # upload_big SESSION LOCAL REMOTE
   local S="$1" src="$2" dst="$3"
   local dir; dir=$(mktemp -d)
@@ -207,8 +217,8 @@ PY
     # whichever carries more weights.
     if tmo 300 colab download -s "$S" /content/lora-kernel/adapters.tgz \
          "$ADAPTERS.new" >/dev/null 2>&1 && [ -s "$ADAPTERS.new" ]; then
-      a=$(tar tzf "$ADAPTERS" 2>/dev/null | grep -c safetensors || echo 0)
-      b=$(tar tzf "$ADAPTERS.new" 2>/dev/null | grep -c safetensors || echo 0)
+      a=$(weights_in "$ADAPTERS"); b=$(weights_in "$ADAPTERS.new")
+      a=${a:-0}; b=${b:-0}
       if [ "$b" -ge "$a" ]; then mv "$ADAPTERS.new" "$ADAPTERS"
         echo "    fetched the adapters ($b with weights)"
       else rm -f "$ADAPTERS.new"; fi
@@ -224,13 +234,14 @@ PY
   # yet, and stopping the session here would take nine minutes of training with it.
   # That is not hypothetical: it happened on 2026-09-14, by a different route, and
   # the retraining cost more than this retry ever will [ran].
-  if [ ! -s "$ADAPTERS" ] || [ "$(tar tzf "$ADAPTERS" 2>/dev/null | grep -c safetensors || echo 0)" = "0" ]; then
+  have=$(weights_in "$ADAPTERS"); have=${have:-0}
+  if [ ! -s "$ADAPTERS" ] || [ "$have" -eq 0 ]; then
     echo "    no weights yet — packing and fetching before the session goes"
     cat > /tmp/_repack.py <<'PYPACK'
 import subprocess
-print(subprocess.run("cd /content/lora-kernel && tar czf adapters.tgz adapters "
-                     "&& ls -l adapters.tgz", shell=True, capture_output=True,
-                     text=True).stdout.strip()[-120:])
+print(subprocess.run("cd /content/lora-kernel && rm -f adapters.tgz && "
+                     "tar czf adapters.tgz adapters && ls -l adapters.tgz",
+                     shell=True, capture_output=True, text=True).stdout.strip()[-120:])
 PYPACK
     tmo 300 colab exec -s "$S" -f /tmp/_repack.py >/dev/null 2>&1 || true
     if tmo 600 colab download -s "$S" /content/lora-kernel/adapters.tgz \
