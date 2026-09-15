@@ -2129,6 +2129,54 @@ frontera ahí. Por debajo, estrechar no repara a un experto que razona y la idea
 cierra. `bar.n_for(0.304, effect=0.522)` devuelve **10**, así que el brazo resuelve
 con cualquier n que corramos **[ran]**.
 
+### Analizado 2026-09-15: la suite no tiene eje de dificultad, y la compuerta era la equivocada
+
+Análisis completo: [`../analysis/sufficiency.md`](../analysis/sufficiency.md). Sin
+GPU; se regeneraron los 90 casos de P41 desde su semilla y se leyó el **largo de la
+solución del oráculo**.
+
+| familia | pasos del oráculo | herramientas | local | frontera |
+|---|---:|---:|---:|---:|
+| manning_channel | 6 | 2 | 0,304 | 0,826 |
+| hydrostatic_force | 6 | 3 | 0,043 | 0,609 |
+| venturi_flow | 7 | 3 | 0,136 | 0,682 |
+| pipe_head_loss | 9 | 3 | 0,000 | 0,818 |
+
+**[ran]** 2026-09-15.
+
+- **El piso de la suite son seis pasos y cada familia está clavada en una sola
+  profundidad**, así que profundidad y familia son la misma variable. El experimento
+  sólo podía preguntar *¿puede un 3B resolver una cadena de 6 a 9 pasos?*; nunca
+  pudo preguntar si un experto chico alcanza en la punta fácil, porque la punta
+  fácil nunca se generó.
+- **Headroom, al revés.** Chequeamos techos; para los pisos no había regla. Una
+  suite con una sola dificultad no distingue *demasiado débil* de *demasiado
+  difícil* — las dos dan 0,122. Agregado a `CLAUDE.md` §3.
+- **Qwen 2.5 es un piso que no elegimos** (C18, P33), así que todos estos números
+  son una **cota inferior** de lo que puede un experto chico, no una estimación.
+
+**Construido:** `training/physics/ladder.py`, cuatro escalones de 1 a 4 pasos por
+debajo del piso de la suite — mismo dominio, mismas tres herramientas, mismo manual
+por caso imposible de memorizar — y `fluids_sim --families {suite,ladder,full}` que
+reporta `by_steps`, exactitud contra profundidad en vez de contra nombre de familia.
+El oráculo se verifica corriendo sus propias cadenas con las herramientas reales, lo
+que cazó una discrepancia de 1,3e-6 entre respuesta y cadena en `L4`.
+
+**Reemplaza al brazo propuesto más temprano el mismo día** (*experto estrecho sobre
+`manning_channel`, compuerta 0,826*): tomaba el número de la frontera como compuerta
+sobre una familia sin punta fácil. No se compra.
+
+**Próximo brazo (preregistrado), sin entrenar nada:** la base pelada, después el
+experto `fluids-full` tal cual está, después la frontera **sólo como chequeo de
+techo**, sobre la escalera completa 1 → 9. El brazo 1 dice qué escalones pueden
+mostrar algo de un adaptador; el brazo 2 es la curva real de dónde un experto chico
+deja de alcanzar, y sólo cuesta inferencia. **Compuerta para afirmar suficiencia:
+0,90, absoluta** — con 0,80 una respuesta de cada cinco está mal y hay que
+verificarlas todas a mano, que es justo lo que saca la razón de tener el experto.
+**Falsación:** si la curva es plana — el experto falla un lookup de un paso más o
+menos al mismo ritmo que una cadena de nueve — la dificultad no es lo que lo bloquea
+y este análisis está equivocado.
+
 ## 12. Historia
 
 | fecha | cambio a este plan | por qué |

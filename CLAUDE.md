@@ -128,6 +128,20 @@ These are not style. Each one was paid for.
 - **`grep -c` prints its zero and exits 1**, so `$(… | grep -c X || echo 0)` is
   `"0\n0"`. That made a weights rescue skip itself and cost a trained adapter
   **[ran]**. Use `weights_in()` in `chain_separate.sh`.
+- **Check the floor as well as the ceiling.** The ceiling rule is written above;
+  the mirror had no rule and cost a conclusion. **If every task sits above the
+  treatment's floor, every arm fails and the failure reads as "the approach does not
+  work."** The fluids suite's oracle solutions are 6, 7 or 9 steps with **no case
+  below six**, and each family is pinned at one depth — so *this expert is too weak*
+  and *this suite is too hard* were the same number, 0.122 **[ran]** 2026-09-15. A
+  suite needs a difficulty axis before a capability claim is made on it;
+  `training/physics/ladder.py` is the fluids one.
+- **A gate copied from the frontier answers a different question.** *Can the
+  frontier be withdrawn here* is gated on the frontier's score, and P41 used it
+  correctly. *Is this expert sufficient* is gated on an **absolute** standard set by
+  the work, with the frontier reported beside it as a ceiling check and ranking
+  nothing. Asking only the first one makes every small expert look useless at
+  whatever difficulty the suite happens to have.
 - **Count instrument redesigns.** Once is fine, twice is suspicious, three times
   is looking for the result. The stopping condition goes into the plan before the
   run.

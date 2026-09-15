@@ -188,3 +188,39 @@ def test_a_temperature_that_is_not_a_number_is_still_refused():
     from training.physics.tools import lookup, ToolError
     with pytest.raises(ToolError):
         lookup("fluid=water; property=density; T=hot")
+
+
+# --------------------------------------------------------------------------
+# The depth axis. Added 2026-09-15 with the ladder: every previous number was
+# measured on a suite with ONE difficulty per family and a floor of six steps,
+# so "the expert is too weak" and "the suite is too hard" were the same number.
+# --------------------------------------------------------------------------
+
+def test_by_steps_keys_on_oracle_depth_not_on_family_name():
+    from training.harness.fluids_sim import by_steps
+    recs = [{"family": "L1_property", "passed": True},
+            {"family": "L1_property", "passed": False},
+            {"family": "L2_pressure", "passed": True},
+            {"family": "pipe_head_loss", "passed": False}]
+    out = by_steps(recs)
+    assert out["1"] == {"n": 2, "passed": 1, "accuracy": 0.5}
+    assert out["2"]["accuracy"] == 1.0
+    assert out["9"]["accuracy"] == 0.0
+
+
+def test_an_unknown_family_is_reported_not_dropped():
+    from training.harness.fluids_sim import by_steps
+    out = by_steps([{"family": "something_new", "passed": True},
+                    {"family": "L1_property", "passed": True}])
+    assert out["?"]["n"] == 1
+    assert sum(r["n"] for r in out.values()) == 2
+
+
+def test_two_families_at_the_same_depth_share_a_bucket():
+    from training.harness.fluids_sim import by_steps
+    # hydrostatic_force and manning_channel are both six steps; the ladder exists
+    # because THAT is the axis, and a bucket per name would hide it.
+    out = by_steps([{"family": "hydrostatic_force", "passed": True},
+                    {"family": "manning_channel", "passed": False}])
+    assert list(out) == ["6"]
+    assert out["6"]["n"] == 2
