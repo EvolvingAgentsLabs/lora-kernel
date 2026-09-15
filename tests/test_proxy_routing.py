@@ -76,3 +76,34 @@ def test_the_key_is_read_from_the_environment_not_an_argument():
     src = inspect.getsource(px.main)
     assert "--fallback-key-env" in src
     assert '"--fallback-key"' not in src, "no flag may take the key itself"
+
+
+# ---------------------------------------------------------------------------
+# AN OPENAI-COMPATIBLE BASE URL IS WRITTEN WITH `/v1`, AND THE PATH CARRIES IT TOO.
+#
+# Concatenating gave `https://openrouter.ai/api/v1/v1/chat/completions`, which came
+# back as an HTML 404 page — and the manual had been written with the doubled form
+# in it **[ran]** 2026-09-15. Running the end-to-end is what found it.
+# ---------------------------------------------------------------------------
+
+@pytest.mark.parametrize("base,path,want", [
+    ("https://api.openai.com/v1", "/v1/chat/completions",
+     "https://api.openai.com/v1/chat/completions"),
+    ("https://openrouter.ai/api/v1", "/v1/chat/completions",
+     "https://openrouter.ai/api/v1/chat/completions"),
+    ("https://api.openai.com/v1/", "/v1/models",
+     "https://api.openai.com/v1/models"),
+    # a base written WITHOUT /v1 — the vLLM convention — must still work
+    ("http://127.0.0.1:8000", "/v1/chat/completions",
+     "http://127.0.0.1:8000/v1/chat/completions"),
+    # and a non-/v1 path is never rewritten
+    ("https://example.com/v1", "/healthz", "https://example.com/v1/healthz"),
+])
+def test_the_joined_url_has_exactly_one_v1(base, path, want):
+    assert px._join(base, path) == want
+
+
+def test_a_tunnelled_upstream_keeps_working():
+    """The pool is reached through cloudflared, which has no /v1 in its host."""
+    assert px._join("https://x.trycloudflare.com", "/v1/models") == \
+        "https://x.trycloudflare.com/v1/models"

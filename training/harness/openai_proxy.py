@@ -70,6 +70,22 @@ def routes_out(model: str | None) -> bool:
     return model not in LOCAL
 
 
+def _join(base: str, path: str) -> str:
+    """`base` + `path` with exactly one `/v1`.
+
+    AN OPENAI-COMPATIBLE BASE URL IS CONVENTIONALLY WRITTEN WITH `/v1` — every
+    client expects `https://api.openai.com/v1` — while the path the caller sends
+    already carries `/v1/chat/completions`. Concatenating gave
+    `…/api/v1/v1/chat/completions`, which OpenRouter answers with an HTML 404 page,
+    and `docs/OPENCLAW.md` had been written with the doubled form in it
+    **[ran]** 2026-09-15. The base keeps its own convention and this absorbs it.
+    """
+    base = base.rstrip("/")
+    if base.endswith("/v1") and path.startswith("/v1/"):
+        return base + path[len("/v1"):]
+    return base + path
+
+
 def _fetch(path: str, payload: dict | None, timeout: int = 600,
            base: str | None = None, key: str | None = None):
     headers = {"Content-Type": "application/json"}
@@ -77,7 +93,8 @@ def _fetch(path: str, payload: dict | None, timeout: int = 600,
     if tok:
         headers["Authorization"] = f"Bearer {tok}"
     req = urllib.request.Request(
-        (base or UPSTREAM) + path, method="POST" if payload is not None else "GET",
+        _join(base or UPSTREAM, path),
+        method="POST" if payload is not None else "GET",
         data=json.dumps(payload).encode() if payload is not None else None,
         headers=headers)
     with urllib.request.urlopen(req, timeout=timeout) as r:
