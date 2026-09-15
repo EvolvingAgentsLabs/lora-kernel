@@ -111,6 +111,36 @@ serve and you get the other line instead:
 
     [route] OUT -> gpt-5.6-sol · 4 messages · 2317 chars · 3 tools
 
+## 4b. Give the agent the inbox tools — the step that makes the demo mean something
+
+**Without this the demo shows the transport and not the expert.** P43's first turn
+made **no tool calls at all**: OpenClaw sends *its own* tools, so `email-full`
+answered from the listing alone — which is what the base does, at 0.345 **[ran]**.
+
+OpenClaw speaks MCP, so the three tools the suite scores become tools the agent owns:
+
+    cat > /tmp/inboxmcp.json5 <<'J5'
+    {
+      mcp: {
+        servers: {
+          "lora-inbox": {
+            enabled: true,
+            command: "/path/to/python",
+            args: ["-m", "training.mcp.inbox_server", "--seed", "717171", "--n", "150"],
+            cwd: "/path/to/lora-kernel"
+          }
+        }
+      }
+    }
+    J5
+
+    ~/.openclaw/bin/openclaw --profile lorakernel config patch --file /tmp/inboxmcp.json5
+
+**It serves the synthetic inbox on purpose.** `training/email/inbox.generate` draws a
+deterministic inbox from a seed; **no real correspondence is read, opened or
+forwarded**, and the seed is the suite's own so the demo and the number are about the
+same inbox. Pointing it at real mail is a different program with a different review.
+
 ### Streaming, and why it is buffered
 
 **OpenClaw streams by default**, and setting `agents.defaults.models.<model>.streaming`

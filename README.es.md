@@ -5,6 +5,16 @@ base.** Nada más es neuronal.
 
 *[Read this in English](README.md)*
 
+[![corre dentro de OpenClaw](https://img.shields.io/badge/corre_dentro_de-OpenClaw-1f6feb)](https://docs.openclaw.ai/cli)
+[![base Qwen2.5-3B](https://img.shields.io/badge/base-Qwen2.5--3B--Instruct-555)](https://huggingface.co/Qwen/Qwen2.5-3B-Instruct)
+[![servido por vLLM multi-LoRA](https://img.shields.io/badge/servido_por-vLLM_multi--LoRA-555)](https://docs.vllm.ai)
+
+**Corre dentro de un agente real.** [OpenClaw](https://docs.openclaw.ai/cli) en una
+laptop → un proxy local → un túnel → vLLM en una tarjeta alquilada → un QLoRA nuestro
+→ vuelta, con las herramientas del inbox entregadas al agente por MCP y **cero
+requests saliendo de la máquina** para lo que el pool sirve. Paso a paso:
+[`docs/es/OPENCLAW.md`](docs/es/OPENCLAW.md).
+
 > **Estado: construido y midiendo.** ~~especificado, nada construido; todavía no
 > hay ningún [ran]~~ — desactualizado desde el 2026-09-08 y corregido el
 > 2026-09-15. Toda afirmación sobre un sistema externo sigue marcada **[read]** y

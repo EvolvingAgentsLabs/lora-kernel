@@ -111,6 +111,37 @@ obtenés la otra línea:
 
     [route] OUT -> gpt-5.6-sol · 4 messages · 2317 chars · 3 tools
 
+## 4b. Darle al agente las herramientas del inbox — el paso que hace que la demo signifique algo
+
+**Sin esto la demo muestra el transporte y no al experto.** El primer turno de P43 no
+hizo **ninguna llamada a herramientas**: OpenClaw manda las suyas, así que `email-full`
+contestó sólo desde el listado — que es lo que hace la base, 0,345 **[ran]**.
+
+OpenClaw habla MCP, así que las tres herramientas que la suite puntúa pasan a ser
+herramientas del agente:
+
+    cat > /tmp/inboxmcp.json5 <<'J5'
+    {
+      mcp: {
+        servers: {
+          "lora-inbox": {
+            enabled: true,
+            command: "/ruta/a/python",
+            args: ["-m", "training.mcp.inbox_server", "--seed", "717171", "--n", "150"],
+            cwd: "/ruta/a/lora-kernel"
+          }
+        }
+      }
+    }
+    J5
+
+    ~/.openclaw/bin/openclaw --profile lorakernel config patch --file /tmp/inboxmcp.json5
+
+**Sirve el inbox sintético a propósito.** `training/email/inbox.generate` sortea un
+inbox determinista desde una semilla; **no se lee, abre ni reenvía correspondencia
+real**, y la semilla es la de la suite para que la demo y el número hablen del mismo
+inbox. Apuntarlo a correo real es otro programa con otra revisión.
+
 ### El streaming, y por qué está buffereado
 
 **OpenClaw hace streaming por defecto**, y poner
