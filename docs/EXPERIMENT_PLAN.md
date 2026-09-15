@@ -2030,6 +2030,39 @@ Nothing implemented; three things change in this plan.
 Not adopted: per-token adapter routing (MoLoRA, WhiFlash). It is weight-space
 composition under another name, and that question was closed today.
 
+### Analysed 2026-09-15: the failing expert has no already-good sub-region
+
+Full analysis: [`analysis/narrow-experts.md`](analysis/narrow-experts.md). No GPU;
+`results/P41-routing-20260915/` re-read, sliced by family and paired against the
+frontier on the same 90 cases.
+
+| family | n | local | frontier | only local | only frontier |
+|---|---:|---:|---:|---:|---:|
+| manning_channel | 23 | **0.304** | 0.826 | 1 | 13 |
+| venturi_flow | 22 | 0.136 | 0.682 | 2 | 14 |
+| hydrostatic_force | 23 | 0.043 | 0.609 | 0 | 13 |
+| pipe_head_loss | 22 | 0.000 | 0.818 | 0 | 18 |
+| **all** | **90** | **0.122** | **0.733** | **3** | **58** |
+
+**[ran]** 2026-09-15.
+
+- **Every sub-region is dominated**, so a finer router would have found nothing.
+  Narrowing a subdomain has to **create** its gain by training; it cannot reveal one
+  already sitting there.
+- **The harness half of this expert already works**: 604 calls, **0 refusals**, 6.7
+  calls per case against the frontier's 7.6, a number returned every time. What
+  fails is the physics — of 79 failures, **44 wrong**, **12 within 10% but outside
+  the 2% tolerance**, 2 off by a factor of ten.
+- **More experts is safe only while the finer boundary stays declarable.** By-region
+  routing delivers 0.775 because the region is knowable before the model runs; a
+  boundary that needs the answer read inherits by-case's 0.378.
+
+**Next arm (pre-registered).** One narrow expert on `manning_channel` alone, scored
+on fresh held-out cases of that family. **Gate: 0.826**, the frontier's number
+there. Below it, narrowing does not repair a reasoning expert and the idea is closed.
+`bar.n_for(0.304, effect=0.522)` returns **10**, so the arm resolves at any n we
+would run **[ran]**.
+
 ## 12. History
 
 | date | change to this plan | why |

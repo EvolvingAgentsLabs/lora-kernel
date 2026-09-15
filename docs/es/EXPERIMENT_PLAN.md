@@ -2095,6 +2095,40 @@ No se implementó nada; en este plan cambian tres cosas.
 No adoptado: ruteo de adaptador por token (MoLoRA, WhiFlash). Es composición en el
 espacio de pesos con otro nombre, y esa pregunta se cerró hoy.
 
+### Analizado 2026-09-15: el experto que falla no tiene ninguna subregión buena
+
+Análisis completo: [`../analysis/narrow-experts.md`](../analysis/narrow-experts.md).
+Sin GPU; se releyó `results/P41-routing-20260915/`, partido por familia y apareado
+contra la frontera sobre los mismos 90 casos.
+
+| familia | n | local | frontera | sólo local | sólo frontera |
+|---|---:|---:|---:|---:|---:|
+| manning_channel | 23 | **0.304** | 0.826 | 1 | 13 |
+| venturi_flow | 22 | 0.136 | 0.682 | 2 | 14 |
+| hydrostatic_force | 23 | 0.043 | 0.609 | 0 | 13 |
+| pipe_head_loss | 22 | 0.000 | 0.818 | 0 | 18 |
+| **todas** | **90** | **0.122** | **0.733** | **3** | **58** |
+
+**[ran]** 2026-09-15.
+
+- **Todas las subregiones están dominadas**, así que un router más fino no habría
+  encontrado nada. Estrechar un subdominio tiene que **crear** su ganancia
+  entrenando; no puede revelar una que ya estuviera ahí.
+- **La mitad "harness" de este experto ya funciona**: 604 llamadas, **0 rechazos**,
+  6,7 llamadas por caso contra las 7,6 de la frontera, y siempre devuelve un número.
+  Lo que falla es la física — de 79 fallos, **44 equivocados**, **12 dentro del 10%
+  pero fuera de la tolerancia del 2%**, 2 errados por un factor de diez.
+- **Más expertos es seguro sólo mientras el borde más fino siga siendo declarable.**
+  El ruteo por región entrega 0,775 porque la región se conoce antes de que el
+  modelo corra; un borde que exige leer la respuesta hereda el 0,378 del ruteo por
+  caso.
+
+**Próximo brazo (preregistrado).** Un experto estrecho sobre `manning_channel` solo,
+puntuado sobre casos nuevos de esa familia. **Compuerta: 0,826**, el número de la
+frontera ahí. Por debajo, estrechar no repara a un experto que razona y la idea se
+cierra. `bar.n_for(0.304, effect=0.522)` devuelve **10**, así que el brazo resuelve
+con cualquier n que corramos **[ran]**.
+
 ## 12. Historia
 
 | fecha | cambio a este plan | por qué |
