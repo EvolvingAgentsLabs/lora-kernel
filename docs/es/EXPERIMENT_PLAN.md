@@ -1740,6 +1740,43 @@ una decisión, no una corrida: fijar otra versión de vLLM, o reentrenar el pool
 `q_proj`/`k_proj` y volver a probar. Las dos son baratas; elegir entre ellas no le
 toca a esta sesión.
 
+### Tomada el 2026-09-15: primero los expertos supervisados, el mecanismo sólo si les gana
+
+**La propuesta del usuario, y se adopta.** Entrenar cada experto de subdominio con
+fine-tuning supervisado común, componerlo con el adaptador kernel, y gastar la
+maquinaria de aceptación sólo en **mejorar** un experto que ya existe — si puede.
+
+**Por qué es mejor, y no es cuestión de gusto.** Crea la línea base que el mecanismo
+tiene que superar. Construido al revés, un experto salido del torneo no tiene nada al
+lado, y cualquier número que saque se lee como éxito. La regla propia de este
+repositorio es que **la línea base somos nosotros mismos**, y bajo este orden el
+experto supervisado *es* esa versión.
+
+**Y pone primero la mitad barata y probada.** Lo supervisado está medido acá varias
+veces — la destilación transfiere el procedimiento (P6/P7, adaptador más calculadora
+40/40), el protocolo es separable (P8), el vocabulario de herramientas se aprendió
+exactamente como se quería, con 0 rechazos (P35). Del torneo tenemos **aptitud por
+conjunción ordenando 2 de 2 pares** y un router que empata. Comprar primero la mitad
+cara y menos validada es al revés.
+
+**Qué cambia.** La frontera tenía dos trabajos — maestro de destilación y oráculo de
+promoción. El primero queda. **El segundo pasa a ser condicional**: se compra recién
+cuando haya un experto supervisado sobre el cual mejorar. Eso corre un paso más tarde
+la pregunta central declarada de este repositorio, y por eso queda anotado como
+decisión y no librado a la deriva.
+
+**Lo que no vuelve más fácil.** P35 midió que entrenar una capacidad supervisadamente
+**costó otra** — el vocabulario se aprendió y preguntar cayó de 123 de 150 casos a
+22. Entrenar expertos por subdominio y después sumarles el kernel choca justo con esa
+interferencia, y **la composición de dos LoRAs nunca se midió limpiamente acá**: el
+aparente "dos adaptadores interfieren" de P8 está anulado por un confound de notación
+y no debe citarse como hecho. Bajo este orden esa pregunta deja de estar aguas abajo
+y pasa a ser la central.
+
+**P36 ya es el primer paso de los dos planes.** Se compró como techo — si el margen
+es alcanzable siquiera — y bajo esta decisión es además el primer experto supervisado
+de subdominio. El mismo gasto contesta las dos cosas.
+
 ### Abierta: cómo lograr que a un adaptador se lo califique
 
 Seis fallas de infraestructura y tres sesiones reclamadas, y al adaptador nunca
