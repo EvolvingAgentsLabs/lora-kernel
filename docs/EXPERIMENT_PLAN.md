@@ -1687,6 +1687,41 @@ adapter demonstrably changes vLLM's output.** The next move is a decision, not a
 run: pin a different vLLM version, or retrain the pool without `q_proj`/`k_proj`
 and re-test. Both are cheap; choosing between them is not this session's call.
 
+### Taken 2026-09-15: composition is dropped, and `harness.lora` parks with it
+
+**The user's call, and the reasoning is right.** `harness.lora` is precisely what
+requires composition — it exists so the protocol is taught once and every expert
+does not re-learn it. An expert that carries its own protocol has no use for it.
+
+**The thesis is untouched.** A pool of **self-contained** QLoRAs over one resident
+base, swapped per request, is still *the whole agentic system is a pool of QLoRAs*.
+Composition was an **optimisation** — share the protocol — not the claim. Dropping
+it removes machinery, not the question.
+
+**What it buys.** The one thing this repository has never measured cleanly is
+composition: P8's apparent "two adapters interfere" is void on a notation confound,
+and P35 measured that splitting has a real cost — the vocabulary was learned and
+asking fell from 123 of 150 cases to 22. Removing the split removes both the
+unmeasured mechanism and the measured cost.
+
+**What it costs, stated rather than discovered.** Every new subdomain expert pays to
+learn the protocol again. That is a **training-data** cost and not a runtime one, and
+it is small: 600 examples and nine minutes on an L4 taught the email vocabulary with
+**0 refusals** **[ran]** P35.
+
+**P34 is parked, not falsified.** That a kernel trained on fluid-mechanics tools
+takes this base from **0 to 123 of 150** cases reaching for email tools it has never
+seen is measured and stands. It is the only evidence the kernel idea has legs, and if
+self-contained experts turn out expensive to produce at scale, it returns with that
+result already paid for. The adapters stay on disk; nothing is deleted.
+
+**P36 is reframed by this, before its number existed.** It was bought as a ceiling —
+*is the margin reachable at all* — with the brief insisting a monolith that clears is
+only permission to keep measuring. Under this decision **a monolith that clears is
+the result**: the first pool member scoring on its own subdomain. And a monolith that
+fails no longer means *no pool arrangement will work*; it means **this base cannot do
+this subdomain**, which is narrower and more honest.
+
 ### Taken 2026-09-15: supervised experts first, the mechanism only if it beats them
 
 **The user's proposal, and it is adopted.** Train each subdomain expert by ordinary
