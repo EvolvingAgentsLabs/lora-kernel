@@ -37,6 +37,8 @@ from collections import Counter
 from training.harness.generate_multitool import render
 from training.physics.headroom import correct
 from training.physics import multitool as mod
+from training.harness.openai_proxy import render_tools
+from training.physics.tools import SCHEMA
 from training.protocol import SYSTEM
 
 # `multitool_run` scores this seed. A corpus holding it would be scored on problems
@@ -75,11 +77,25 @@ def main() -> int:
         assert correct(last, case["answer"], SCORER_RTOL), (
             f"{case['case_id']}: rendered {last}, suite expects {case['answer']} — "
             f"outside the scorer's own rtol of {SCORER_RTOL}")
+        # THE CORPUS MUST TEACH THE PROMPT THE MODEL WILL BE SERVED, and the first
+        # version did not. It trained on `case["prompt"]` — statement plus the
+        # physics instruction — while the proxy appends 388 characters of tool
+        # surface at serving time, listing the arguments **in alphabetical order**:
+        #     <lookup>T=...; fluid=...; property=...</lookup>
+        # where this corpus writes `fluid=...; property=...; T=...`. The adapter
+        # then emitted calls missing exactly one key — `property` 40 times and
+        # `value` 30 times — and 71 of its 606 calls were refused for a reason that
+        # had nothing to do with physics [ran] P38.
+        #
+        # So the surface is **used, not copied**: `render_tools` is the same
+        # function the proxy calls, and a copy is what drifted.
+        served = render_tools([{"role": "user", "content": case["prompt"]}],
+                              SCHEMA)[-1]["content"]
         rows.append({"case_id": case["case_id"], "family": case["family"],
                      "calls": len(case["chain"]),
                      "tools": case["tools_needed"],
                      "messages": [{"role": "system", "content": SYSTEM},
-                                  {"role": "user", "content": case["prompt"]},
+                                  {"role": "user", "content": served},
                                   {"role": "assistant", "content": body}]})
 
     # EVERY FAMILY, OR THE EXPERT IS AN EXPERT IN SOME OF THEM. The suite scores all
