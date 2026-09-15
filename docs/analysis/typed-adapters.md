@@ -26,6 +26,69 @@ reason**, and that reason is stronger than the one given — see §H1 and §10.
 
 ---
 
+## Is there any information on how it works, or why it works as claimed?
+
+**Yes for the mechanism. No for their claims. And the two do not line up.**
+
+### What the vendor publishes [read] 2026-09-15
+
+`typesafe.ai` claims *"typed decisions with calibrated probabilities"*, **"Zero
+Hallucinations"**, a training algorithm called **RLCD — Reinforcement Learning for
+Calibrated Decisions** contrasted with RLHF, and prices: *"$42 per billion input
+tokens"*, *"238× lower input price than Claude Fable 5.1"*, *"193.6× faster, 444.6×
+cheaper"* — that last one **qualified on the page itself** as *"based on workflows
+for System One tasks"*, a category they define.
+
+**No paper, no benchmark, no evaluation table, no technical documentation is
+linked.** The FAQ lists questions whose answers are not on the page. The Chris post
+cited in the brief returns **HTTP 403** and was not read; nothing here rests on it.
+
+### What the literature publishes [read]
+
+The mechanism is not secret — it is named, published and evaluated **by other
+people**:
+
+> **RLCR — Reinforcement Learning with Calibration Rewards**,
+> *Beyond Binary Rewards: Training LMs to Reason About Their Uncertainty*,
+> [arXiv:2507.16806](https://arxiv.org/abs/2507.16806). Standard RLVR's binary
+> correctness reward **plus a Brier score**. Reported: calibration improves
+> substantially **with no loss of accuracy**, in and out of domain — and, pointedly,
+> *"while ordinary RL hurts calibration, RLCR improves it."*
+
+So **why it would work is documented**: a proper scoring rule added to a verifiable
+reward makes calibration a property the objective pays for rather than a
+post-processing step. That is a real result with a real name, one letter away from
+the vendor's.
+
+### The gap between the two, which is the part that matters
+
+**RLCR keeps the reasoning chain.** The model reasons, *then* emits a confidence, and
+the paper's calibration result is for that system. **The vendor's headline cost
+claim depends on not reasoning at all** — a single forward pass is where 100× comes
+from.
+
+**The published evidence therefore does not cover the combination being sold.** It
+supports *calibrated confidence from a proper scoring rule*; it does not establish
+that the same calibration survives when the chain is removed. That is an open
+empirical question, and it is precisely the one nobody has published.
+
+**And part of the cost claim is arithmetic, not an advance.** A model that emits one
+token is cheaper than one that emits a chain of thought. Removing test-time compute
+buys a speedup by definition; what has to be earned is the accuracy and calibration
+that survive it.
+
+### What this changes for us
+
+**We do not need RL for this.** RLCR exists because reasoning traces have no
+intermediate labels — only terminal signal. **Our labels are exact**:
+`training/email/inbox.important` is a function, and every one of the 475 cases in
+`results/P43-…` carries its truth. With labels, cross-entropy over a restricted
+softmax **is already a proper scoring rule**, so calibration comes from ordinary
+supervised training and the RL machinery is unnecessary.
+
+That is the practical reading of the literature here: **it is evidence the mechanism
+is real, not a recipe we need to follow.**
+
 ## Verdicts
 
 ### H1 — "no new infrastructure" · **PARTIAL, and right for the wrong reason**
