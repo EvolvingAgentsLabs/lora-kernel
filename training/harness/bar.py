@@ -157,3 +157,115 @@ def n_for(baseline: float, effect: float = 0.05, alpha: float = 0.05,
             return n
         n = int(n * 1.3) + 1
     return None
+
+
+# ---------------------------------------------------------------------------
+# CALIBRATION — is a confidence worth reading?
+#
+# The gate vocabulary above answers *is this better than guessing*. These answer
+# *can a caller trust the number the model attaches to its own answer*, which is a
+# different question and the one a router needs: P41 measured per-case escalation
+# delivering LESS than routing by region, because the only signal that separated a
+# right local answer from a wrong one was agreement with the frontier — and that
+# costs a frontier call **[ran]**.
+#
+# A confidence is useful when three things hold, and they are not the same thing:
+#   ECE   the number means what it says       (0.8 happens 80% of the time)
+#   Brier the number is sharp as well as true (always saying 0.5 is calibrated
+#                                              and useless)
+#   AURC  the number ORDERS the errors        (the only one a router uses)
+#
+# **AURC is the one to read first.** A router does not need a calibrated number, it
+# needs the wrong answers to sit at the bottom of the ranking. A model can be badly
+# calibrated and perfectly rankable, and that model routes fine.
+# ---------------------------------------------------------------------------
+
+def ece(probs: list[float], correct: list[bool], bins: int = 10) -> float:
+    """Expected calibration error: |confidence − accuracy|, averaged over bins.
+
+    Equal-width bins, weighted by occupancy. Empty bins contribute nothing rather
+    than counting as perfect, which is how a sparse histogram flatters itself.
+    """
+    if not probs:
+        return 0.0
+    total = 0.0
+    for b in range(bins):
+        lo, hi = b / bins, (b + 1) / bins
+        idx = [i for i, p in enumerate(probs)
+               if (p > lo or (b == 0 and p >= 0)) and p <= hi]
+        if not idx:
+            continue
+        conf = sum(probs[i] for i in idx) / len(idx)
+        acc = sum(bool(correct[i]) for i in idx) / len(idx)
+        total += (len(idx) / len(probs)) * abs(conf - acc)
+    return total
+
+
+def brier(probs: list[float], correct: list[bool]) -> float:
+    """Mean squared error of the probability. Rewards being right AND sharp."""
+    if not probs:
+        return 0.0
+    return sum((p - float(bool(c))) ** 2 for p, c in zip(probs, correct)) / len(probs)
+
+
+def aurc(probs: list[float], correct: list[bool]) -> float:
+    """Area under the risk–coverage curve: does the confidence ORDER the errors?
+
+    Sort by confidence descending; at each coverage, the risk is the error rate of
+    what has been accepted so far. Lower is better, and **this is the number a
+    router reads**: it says nothing about whether 0.8 means 0.8, only about whether
+    the wrong answers are at the bottom.
+
+    TIES ARE AVERAGED, NOT RESOLVED BY POSITION. `sorted` is stable, so equal
+    confidences would break by their index — and the first check written for this
+    function reported a model that always says 0.9 as having a **perfect** ordering,
+    purely because the correct cases came first in the list. Reordering the same
+    data moved the answer from 0.094 to 0.766 **[ran]** 2026-09-15. A measurement
+    whose answer depends on case order is the same failure as one that depends on
+    the scheduler, in a new costume. Within a tied group the risk is the
+    expectation over random orderings, which is exact and costs nothing.
+    """
+    if not probs:
+        return 0.0
+    order = sorted(range(len(probs)), key=lambda i: -probs[i])
+    total = 0.0
+    wrong = 0.0
+    k = 0
+    i = 0
+    while i < len(order):
+        j = i
+        while j < len(order) and probs[order[j]] == probs[order[i]]:
+            j += 1
+        group = order[i:j]
+        rate = sum(not bool(correct[x]) for x in group) / len(group)
+        for _ in group:
+            k += 1
+            wrong += rate
+            total += wrong / k
+        i = j
+    return total / len(order)
+
+
+def aurc_floor(correct: list[bool]) -> float:
+    """The AURC an ORACLE ranking would reach — the best any confidence can do.
+
+    WHY THIS EXISTS. An AURC is unreadable alone: on an easy suite a useless
+    confidence still scores well, and on a hard one a good confidence scores badly.
+    The floor is what a perfect ordering gets on THIS suite, and the gap between a
+    model's AURC and the floor is the part that is about the model.
+    """
+    return aurc([1.0 if c else 0.0 for c in correct], correct)
+
+
+def calibration(probs: list[float], correct: list[bool], bins: int = 10) -> dict:
+    """All three, with the floor beside the AURC so it can be read at all."""
+    floor = aurc_floor(correct)
+    got = aurc(probs, correct)
+    return {"n": len(probs),
+            "accuracy": round(sum(map(bool, correct)) / max(len(correct), 1), 4),
+            "mean_confidence": round(sum(probs) / max(len(probs), 1), 4),
+            "ece": round(ece(probs, correct, bins), 4),
+            "brier": round(brier(probs, correct), 4),
+            "aurc": round(got, 4),
+            "aurc_oracle_floor": round(floor, 4),
+            "aurc_gap": round(got - floor, 4)}
