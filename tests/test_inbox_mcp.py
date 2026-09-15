@@ -84,3 +84,35 @@ def test_the_seed_makes_the_demo_match_what_was_scored():
     import inspect
     from training.mcp.inbox_server import main
     assert "717171" in inspect.getsource(main)
+
+
+def test_every_tool_declares_that_it_only_reads(inbox):
+    """Their absence is what blocked the first demo: `openclaw mcp probe` said
+    *"tools have no safety annotations; calls require approval"*, so a
+    non-interactive turn had nobody to approve and the agent answered with zero
+    tool calls **[ran]** 2026-09-15.
+
+    They are declared because they are true. All three are lookups over an
+    in-memory synthetic inbox.
+    """
+    for t in _call("tools/list", inbox)["result"]["tools"]:
+        a = t["annotations"]
+        assert a["readOnlyHint"] is True
+        assert a["destructiveHint"] is False
+        assert a["idempotentHint"] is True
+        assert a["openWorldHint"] is False
+
+
+def test_the_tools_really_do_only_read(inbox):
+    """The annotation must not be a claim the code contradicts: calling everything
+    twice leaves the inbox identical and gives the same answers."""
+    import copy, json as _json
+    before = copy.deepcopy(inbox)
+    tid = inbox["messages"][0]["thread_id"]
+    first = _call("tools/call", inbox, name="thread_history",
+                  arguments={"thread_id": tid})["result"]["content"][0]["text"]
+    second = _call("tools/call", inbox, name="thread_history",
+                   arguments={"thread_id": tid})["result"]["content"][0]["text"]
+    assert first == second                      # idempotent
+    assert _json.dumps(inbox, sort_keys=True, default=str) == \
+           _json.dumps(before, sort_keys=True, default=str)   # read-only

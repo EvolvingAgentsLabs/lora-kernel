@@ -50,9 +50,26 @@ def handle(msg: dict, inbox: dict) -> dict | None:
         return None
 
     if method == "tools/list":
+        # ANNOTATIONS, BECAUSE THEIR ABSENCE IS WHAT BLOCKED THE FIRST DEMO.
+        # `openclaw mcp probe` reported *"tools have no safety annotations; calls
+        # require approval in prompting session postures"*, so a non-interactive
+        # turn had nobody to approve and the agent answered from the listing with
+        # zero tool calls — the very failure this server exists to remove
+        # **[ran]** 2026-09-15.
+        #
+        # These are declared because they are TRUE, not to get past a gate: all
+        # three are lookups over an in-memory synthetic inbox. They read, they do
+        # not write, the same arguments give the same answer, and nothing outside
+        # this process is touched. A tool that wrote anything would not carry
+        # `readOnlyHint` and would deserve the approval prompt.
+        annotations = {"readOnlyHint": True, "destructiveHint": False,
+                       "idempotentHint": True, "openWorldHint": False}
         tools = [{"name": t["function"]["name"],
                   "description": t["function"]["description"],
-                  "inputSchema": t["function"]["parameters"]} for t in SCHEMA]
+                  "inputSchema": t["function"]["parameters"],
+                  "annotations": {**annotations,
+                                  "title": t["function"]["description"]}}
+                 for t in SCHEMA]
         return {"jsonrpc": "2.0", "id": mid, "result": {"tools": tools}}
 
     if method == "tools/call":
