@@ -68,6 +68,62 @@ propia guía de unsloth para Qwen3.5 en vLLM **[read]** — a costa de una copia
 de los pesos por experto, sin base compartida y sin swapping. **Eso funciona y no es
 un pool.**
 
+## Rutear lo que el pool no sabe hacer — el end-to-end que corre hoy
+
+**Ésta es la configuración para usar de verdad.** El pool sirve aquello en lo que está
+medido que es bueno; todo lo demás se reenvía a un modelo de frontera en tu cuenta.
+
+    # 1. el pool
+    vllm serve Qwen/Qwen2.5-3B-Instruct --enable-lora --max-lora-rank 16 \
+        --max-loras 2 --dtype bfloat16 \
+        --lora-modules email-full=adapters/email-full
+
+    # 2. la traducción, con ruta de salida
+    export OPENAI_API_KEY=...        # nunca en la línea de comandos: `ps` la ve
+    python3 -m training.harness.openai_proxy \
+        --upstream http://127.0.0.1:8000 --port 8001 \
+        --fallback https://api.openai.com/v1
+
+Apuntá el agente a `http://127.0.0.1:8001/v1`. Pedí **`email-full`** y contesta el
+experto local; pedí **cualquier otro nombre de modelo** y el request se reenvía.
+
+**Lo que se queda es lo que el pool sirve**, leído del propio `/v1/models` del
+upstream — mejor que una lista escrita a mano, que se desactualiza apenas se agrega un
+adaptador. Se puede fijar con `--local a,b` cuando querés ser explícito.
+
+### El número que esto vale
+
+| | entrega | sale de la máquina |
+|---|--:|--:|
+| todo local | 0,546 | 0% |
+| **la región que falla, reenviada** | **0,775** | **38%** |
+
+**[ran]** `results/P41-routing-20260915/`. En su región el experto local le gana a la
+base **8 : 51** sobre los mismos casos; la región donde falla, falla 12/90 y una
+frontera contesta 66/90. **Pagamos la parte que medimos que no sabemos hacer.**
+
+### Qué sale, y cómo lo ves
+
+Un request reenviado **sale de tu máquina**. Para suites sintéticas eso no es nada;
+para correo real es el mensaje. El proxy imprime una línea por request reenviado:
+
+    [route] OUT -> gpt-5 · 4 messages · 2317 chars · 3 tools
+
+**Formas, nunca contenido** — la misma línea que sostiene `openclaw_traffic.py`. Podés
+ver qué salió sin que la transcripción quede escrita en un log, y un test verifica que
+el contenido no sobrevive al anuncio.
+
+Un fallback configurado sin credencial **se niega a arrancar**, en vez de fallar en la
+primera escalación.
+
+### Qué NO hace
+
+**No decide caso por caso.** La ruta es por nombre de modelo, que es la elección del
+que llama. La escalación por caso está medida y hoy es **peor**: las dos reglas
+disponibles entregan menos que rutear por región, porque buscan una cadena
+inconsistente y las cadenas de este experto son consistentes y equivocadas **[ran]**
+P41. Es un problema abierto, no una función faltante.
+
 ## Qué está medido, y dónde
 
 | | resultado | paso |

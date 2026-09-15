@@ -67,6 +67,62 @@ per request over one resident base. Merging the delta into the weights
 guide recommends for vLLM **[read]** — at one full copy of the weights per expert,
 with no shared base and no swapping. **That works and it is not a pool.**
 
+## Routing what the pool cannot do — the end-to-end that runs today
+
+**This is the configuration to actually use.** The pool serves what it is measured to
+be good at; everything else is forwarded to a frontier model on your own account.
+
+    # 1. the pool
+    vllm serve Qwen/Qwen2.5-3B-Instruct --enable-lora --max-lora-rank 16 \
+        --max-loras 2 --dtype bfloat16 \
+        --lora-modules email-full=adapters/email-full
+
+    # 2. the translation, with a route out
+    export OPENAI_API_KEY=...        # never on the command line: `ps` sees that
+    python3 -m training.harness.openai_proxy \
+        --upstream http://127.0.0.1:8000 --port 8001 \
+        --fallback https://api.openai.com/v1
+
+Point the agent at `http://127.0.0.1:8001/v1`. Ask for **`email-full`** and the local
+expert answers; ask for **any other model name** and the request is forwarded.
+
+**What stays is what the pool serves**, read from the upstream's own `/v1/models` —
+better than a hand-kept list, which drifts the moment an adapter is added. Override
+it with `--local a,b` when you want to be explicit.
+
+### The number this is worth
+
+| | delivered | leaves the machine |
+|---|--:|--:|
+| everything local | 0.546 | 0% |
+| **the failing region forwarded** | **0.775** | **38%** |
+
+**[ran]** `results/P41-routing-20260915/`. On its own region the local expert beats
+the base **8 : 51** on the same cases; the region it fails, it fails at 12/90 and a
+frontier answers 66/90. **We pay for the part we measured we cannot do.**
+
+### What leaves, and how you can see it
+
+A forwarded request **leaves your machine**. For synthetic suites that is nothing;
+for real mail it is the message. The proxy prints one line per forwarded request:
+
+    [route] OUT -> gpt-5 · 4 messages · 2317 chars · 3 tools
+
+**Shapes, never content** — the same line `openclaw_traffic.py` holds. You can see
+what left without the transcript being written into a log, and a test asserts the
+content does not survive the announcement.
+
+A fallback configured without a credential **refuses to start**, rather than failing
+on the first escalation.
+
+### What this does not do
+
+**It does not decide per case.** The route is by model name, which is the caller's
+own choice. Per-case escalation is measured and currently **worse**: both available
+rules deliver less than routing by region, because they look for a chain that is
+inconsistent and this expert's chains are consistent and wrong **[ran]** P41. That
+is an open problem, not a missing feature.
+
 ## What is measured, and where
 
 | | result | step |
