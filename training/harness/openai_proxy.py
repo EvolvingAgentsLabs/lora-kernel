@@ -45,18 +45,57 @@ KEY = None            # --api-key: required once this is reachable from outside
 PASSTHROUGH = False   # --passthrough: forward untouched, log shapes only
 UP_KEY = None         # --upstream-key: the credential the upstream itself wants
 
+# --- routing ---------------------------------------------------------------
+#
+# WHAT THIS IS FOR. P41 measured that sending one failing subdomain to a frontier
+# takes delivered accuracy from **0.546 to 0.775** **[ran]**, and P40 measured which
+# subdomain fails. So the frontier stops being scaffolding and becomes the fallback
+# for what the local pool is measured not to do.
+#
+# THE ROUTE IS BY MODEL NAME, WHICH IS THE CALLER'S OWN CHOICE. Nothing here infers
+# a region: an agent asks for `email-full` and gets the local expert, asks for
+# `gpt-...` and is forwarded. Per-case escalation is a different and unsolved
+# problem — P41 measured both available rules delivering *less* than routing by
+# region, because they look for a chain that is inconsistent and this expert's
+# chains are consistent and wrong.
+FALLBACK = None       # --fallback: where anything not served locally goes
+FALLBACK_KEY = None   # read from an env var, never from the command line
+LOCAL: set[str] = set()   # --local: the model names that must never leave
 
-def _fetch(path: str, payload: dict | None, timeout: int = 600):
+
+def routes_out(model: str | None) -> bool:
+    """Does this request leave the machine? Local names never do."""
+    if not FALLBACK or not model:
+        return False
+    return model not in LOCAL
+
+
+def _fetch(path: str, payload: dict | None, timeout: int = 600,
+           base: str | None = None, key: str | None = None):
     headers = {"Content-Type": "application/json"}
-    if UP_KEY:
-        headers["Authorization"] = f"Bearer {UP_KEY}"
+    tok = key if base else UP_KEY
+    if tok:
+        headers["Authorization"] = f"Bearer {tok}"
     req = urllib.request.Request(
-        UPSTREAM + path, method="POST" if payload is not None else "GET",
+        (base or UPSTREAM) + path, method="POST" if payload is not None else "GET",
         data=json.dumps(payload).encode() if payload is not None else None,
         headers=headers)
     with urllib.request.urlopen(req, timeout=timeout) as r:
         body = r.read()
     return json.loads(body) if body.strip() else {}
+
+
+def _announce(model: str, payload: dict) -> None:
+    """One line per request that leaves, naming SHAPES and never content.
+
+    A deployment routing real mail to a third party should be able to see what
+    left without the transcript being printed into a log. `openclaw_traffic.py`
+    holds the same line: shapes survive, content does not.
+    """
+    msgs = payload.get("messages") or []
+    print(f"[route] OUT -> {model} · {len(msgs)} messages · "
+          f"{sum(len(str(m.get('content') or '')) for m in msgs)} chars · "
+          f"{len(payload.get('tools') or [])} tools", flush=True)
 
 
 def rebuild_transcript(messages: list[dict]) -> list[dict]:
@@ -173,6 +212,20 @@ class Handler(BaseHTTPRequestHandler):
             except Exception as e:
                 return self._send(502, {"error": {"message": repr(e)}})
 
+        # ROUTED OUT BEFORE ANY TRANSLATION. The tag surface exists because the
+        # local adapters were trained on it; a frontier model speaks `tools=[…]`
+        # natively and rendering tags at it would hand it our convention to learn.
+        if routes_out(req.get("model")):
+            _announce(req.get("model"), req)
+            try:
+                return self._send(200, _fetch(self.path, req, base=FALLBACK,
+                                              key=FALLBACK_KEY))
+            except urllib.error.HTTPError as e:
+                return self._send(e.code, {"error": {"message": e.read()[:400].decode(
+                    "utf-8", "replace")}})
+            except Exception as e:
+                return self._send(502, {"error": {"message": repr(e)}})
+
         if PASSTHROUGH:
             # MEASURE BEFORE BUILDING. In this mode nothing is translated: the
             # request goes upstream exactly as it arrived and the reply comes back
@@ -241,8 +294,46 @@ def main() -> int:
                     help="append one line per request, for training.harness.null_arm")
     ap.add_argument("--enums", action="store_true",
                     help="P28 measured this as harmful; off unless asked")
+    ap.add_argument("--fallback", default=None,
+                    help="where a model this pool does not serve is forwarded, "
+                         "e.g. https://api.openai.com/v1. Requests routed here "
+                         "LEAVE THE MACHINE")
+    ap.add_argument("--fallback-key-env", dest="fallback_key_env",
+                    default="OPENAI_API_KEY",
+                    help="env var holding the fallback credential. Never pass a key "
+                         "on the command line: it lands in `ps` and in shell history")
+    ap.add_argument("--local", default=None,
+                    help="comma-separated model names that must never leave; "
+                         "defaults to whatever the upstream lists at /v1/models")
     args = ap.parse_args()
     globals()["UPSTREAM"] = args.upstream
+    globals()["FALLBACK"] = args.fallback
+    if args.fallback:
+        import os
+        key = os.environ.get(args.fallback_key_env)
+        if not key:
+            # A FALLBACK WITHOUT A CREDENTIAL FAILS ON THE FIRST ESCALATION, which
+            # is the worst moment to find out. It fails here instead.
+            print(f"--fallback is set but ${args.fallback_key_env} is empty; "
+                  "refusing to start with a route that cannot work")
+            return 2
+        globals()["FALLBACK_KEY"] = key
+        if args.local:
+            local = {n.strip() for n in args.local.split(",") if n.strip()}
+        else:
+            # WHAT THE POOL SERVES IS WHAT STAYS. Asking the upstream is better than
+            # a hand-kept list, which drifts the moment an adapter is added.
+            try:
+                local = {m["id"] for m in
+                         _fetch("/v1/models", None, timeout=30).get("data", [])}
+            except Exception as e:
+                print(f"cannot list the local models ({e!r}); "
+                      "pass --local explicitly rather than guessing what stays")
+                return 2
+        globals()["LOCAL"] = local
+        print(f"[proxy] local, never leaves: {sorted(local)}")
+        print(f"[proxy] everything else -> {args.fallback} "
+              f"(key from ${args.fallback_key_env})")
     globals()["ENUMS"] = args.enums
     globals()["LOG"] = args.log
     globals()["KEY"] = args.api_key
