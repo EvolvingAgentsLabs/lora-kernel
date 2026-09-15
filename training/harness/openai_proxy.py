@@ -30,6 +30,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import time
 import urllib.error
 import urllib.request
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -185,6 +186,37 @@ def _record(req: dict, tools, up: dict) -> None:
 class Handler(BaseHTTPRequestHandler):
     protocol_version = "HTTP/1.1"
 
+    def _send_sse(self, up: dict):
+        """One `chat.completion.chunk` carrying the whole reply, then `[DONE]`.
+
+        The shape is what an OpenAI client parses; the content arrived all at once.
+        `x_buffered` says so in the payload rather than only in a comment.
+        """
+        chunks = []
+        for i, ch in enumerate(up.get("choices") or [{}]):
+            m = ch.get("message") or {}
+            delta = {"role": m.get("role", "assistant")}
+            if m.get("content") is not None:
+                delta["content"] = m["content"]
+            if m.get("tool_calls"):
+                delta["tool_calls"] = [
+                    {**tc, "index": j} for j, tc in enumerate(m["tool_calls"])]
+            chunks.append({"index": ch.get("index", i), "delta": delta,
+                           "finish_reason": ch.get("finish_reason", "stop")})
+        body = {"id": up.get("id", "chatcmpl-buffered"),
+                "object": "chat.completion.chunk",
+                "created": up.get("created", int(time.time())),
+                "model": up.get("model", ""),
+                "x_buffered": True,
+                "choices": chunks}
+        payload = (f"data: {json.dumps(body)}\n\n" "data: [DONE]\n\n").encode()
+        self.send_response(200)
+        self.send_header("Content-Type", "text/event-stream")
+        self.send_header("Cache-Control", "no-cache")
+        self.send_header("Content-Length", str(len(payload)))
+        self.end_headers()
+        self.wfile.write(payload)
+
     def _send(self, code: int, obj: dict):
         body = json.dumps(obj).encode()
         self.send_response(code)
@@ -262,14 +294,23 @@ class Handler(BaseHTTPRequestHandler):
 
         tools = req.pop("tools", None)
         req.pop("tool_choice", None)
-        # STREAMING IS REFUSED RATHER THAN FAKED. A tag only becomes a tool_call once
-        # its closing tag has arrived, so a streamed reply cannot carry tool_calls
-        # incrementally without buffering the whole thing — which is not streaming.
-        if req.pop("stream", False):
-            return self._send(400, {"error": {
-                "message": "stream is not supported: a tag is only a tool call once "
-                           "it is closed, so this proxy would have to buffer the "
-                           "whole reply and call it a stream"}})
+        # STREAMING IS BUFFERED, AND SAYING SO IS WHAT KEEPS IT HONEST.
+        #
+        # A tag only becomes a `tool_call` once its closing tag has arrived, so this
+        # proxy cannot emit tool calls incrementally. It used to refuse `stream`
+        # outright — "refuse rather than fake" — and that was right while the
+        # alternative was a misleading measurement. It is wrong here: **OpenClaw
+        # streams by default and its per-model `streaming: false` did not take**, so
+        # refusing made the whole pool unusable by a real agent runtime **[ran]**
+        # 2026-09-15. Being unusable is the worse failure.
+        #
+        # So the reply is fetched whole and delivered as one SSE chunk. A client
+        # that asked for a stream gets valid SSE and a correct answer; what it does
+        # not get is incremental delivery, which is a latency property and not a
+        # correctness one. Every chunk carries `x_buffered: true` so nobody reads
+        # token-by-token streaming into a reply that arrived all at once.
+        streaming = bool(req.pop("stream", False))
+        req.pop("stream_options", None)
         msgs = rebuild_transcript(req.get("messages") or [])
         req["messages"] = render_tools(msgs, tools) if tools else msgs
 
@@ -292,6 +333,8 @@ class Handler(BaseHTTPRequestHandler):
                 msg["tool_calls"] = calls
                 msg["content"] = strip_calls(text) or None
                 choice["finish_reason"] = "tool_calls"
+        if streaming:
+            return self._send_sse(up)
         return self._send(200, up)
 
 
