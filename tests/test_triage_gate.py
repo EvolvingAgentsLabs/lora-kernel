@@ -136,3 +136,24 @@ def test_a_case_that_asks_for_nothing_records_an_empty_ask(monkeypatch):
         "choices": [{"message": {"role": "assistant", "content": "IMPORTANT"}}]})
     r = agent_sim.triage_one("u", None, "m", inbox, inbox["messages"][0], 6, 300)
     assert r["asked"] == [] and r["calls"] == 0
+
+
+def test_the_email_record_carries_its_transcript(monkeypatch):
+    """A routing decision is made per case; a record holding only the last line
+    cannot be routed after the fact — which is what P40 discovered [ran]."""
+    from training.harness import agent_sim
+    from training.email.inbox import generate
+
+    inbox = generate(5, 1)
+    msg = inbox["messages"][0]
+    turns = [
+        {"choices": [{"message": {"role": "assistant", "tool_calls": [
+            {"id": "1", "function": {"name": "thread_history",
+                                     "arguments": '{"_": "%s"}' % msg["thread_id"]}}]}}]},
+        {"choices": [{"message": {"role": "assistant", "content": "IMPORTANT"}}]},
+    ]
+    monkeypatch.setattr(agent_sim, "chat", lambda *a, **k: turns.pop(0))
+    r = agent_sim.triage_one("u", None, "m", inbox, msg, 6, 300)
+    roles = [t["role"] for t in r["transcript"]]
+    assert "tool" in roles and "assistant" in roles and "user" in roles
+    assert any(t["tool"] == "thread_history" for t in r["transcript"])

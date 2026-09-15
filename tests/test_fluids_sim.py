@@ -114,3 +114,54 @@ def test_the_converter_stays_domain_free():
     for word in ("fluid", "calc", "lookup", "convert", "thread", "sender",
                  "inbox", "triage"):
         assert word not in code, f"tool_calls.py's code now names {word!r}"
+
+
+# ---------------------------------------------------------------------------
+# THE CHAIN IS THE THING THE ROUTING DECISION READS.
+#
+# `escalate.py` decides case by case whether a chain has left its region by typing
+# its units and re-evaluating its arithmetic. P40 stored only the final message —
+# `{"answer": 35584.2}` — so the question the whole pool exists to answer was not
+# computable from a completed run **[ran]** 2026-09-15.
+# ---------------------------------------------------------------------------
+
+def test_the_record_carries_the_chain_the_escalation_rules_need(monkeypatch):
+    case = _case()
+    turns = []
+    for label, tool, body in case["chain"]:
+        args = (json.dumps({"_": body}) if tool == "calc" else
+                json.dumps(dict(p.split("=", 1) for p in
+                                [x.strip() for x in body.split(";")])))
+        turns.append({"choices": [{"message": {"role": "assistant", "tool_calls": [
+            {"id": label, "function": {"name": tool, "arguments": args}}]}}]})
+    turns.append({"choices": [{"message": {
+        "role": "assistant", "content": '{"answer": %.6g}' % case["answer"]}}]})
+    monkeypatch.setattr(fs, "chat", lambda *a, **k: turns.pop(0))
+    r = fs.solve_one("u", None, "m", case, 20, 300)
+
+    assert "chain" in r and r["chain"], "no chain was kept"
+    # every call the model made is in it, each carrying the answer it received
+    for _, tool, _ in case["chain"]:
+        assert f"<{tool}>" in r["chain"]
+    assert "= " in r["chain"], "the tool results were not folded back in"
+    # and the escalation rules can actually read it
+    from training.harness.escalate import is_probably_wrong, should_escalate
+    assert is_probably_wrong(r["chain"], r["unit"], r["statement"]) in (True, False)
+    assert should_escalate(r["chain"], r["unit"], r["statement"]) in (True, False)
+
+
+def test_the_unit_and_statement_travel_with_it(monkeypatch):
+    """The dimensional check needs both; a record without them cannot be routed."""
+    monkeypatch.setattr(fs, "chat", lambda *a, **k: {"choices": [{"message": {
+        "role": "assistant", "content": '{"answer": 1}'}}]})
+    r = fs.solve_one("u", None, "m", _case(), 6, 300)
+    assert r["unit"] and r["statement"]
+
+
+def test_a_run_that_ran_out_of_turns_still_carries_its_chain(monkeypatch):
+    """That case is exactly the one a router would want to send away."""
+    monkeypatch.setattr(fs, "chat", lambda *a, **k: {"choices": [{"message": {
+        "role": "assistant", "tool_calls": [
+            {"id": "1", "function": {"name": "calc", "arguments": '{"_": "1+1"}'}}]}}]})
+    r = fs.solve_one("u", None, "m", _case(), 3, 300)
+    assert r["out_of_turns"] is True and r["chain"]

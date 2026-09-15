@@ -103,6 +103,11 @@ def triage_one(base_url, key, model, inbox, msg, max_turns, max_tokens):
                        else False if "NOT IMPORTANT" in text else None)
             return {"verdict": verdict, "calls": calls, "refused": refused,
                     "turns": len(messages), "asked": asked,
+                    # THE TRANSCRIPT, FOR THE SAME REASON fluids_sim keeps its chain:
+                    # a routing decision is made per case, and a record holding only
+                    # the last line cannot be routed after the fact [ran] P40.
+                    "transcript": [{"role": x.get("role"), "content": x.get("content"),
+                                    "tool": x.get("name")} for x in messages],
                     "text": (m.get("content") or "")[:200]}
         for tc in tcs:
             fn = tc["function"]

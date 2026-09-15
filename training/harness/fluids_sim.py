@@ -65,6 +65,36 @@ def _body(tool: str, arguments) -> str:
     return "; ".join(f"{k}={v}" for k, v in a.items())
 
 
+def _chain(messages: list[dict]) -> str:
+    """The reasoning as one text, the way the escalation rules expect to read it.
+
+    WHY THIS IS KEPT AT ALL. `escalate.py` decides case by case whether a chain has
+    left its region, and it does that by typing the units and re-evaluating the
+    arithmetic — so it needs **the chain**. P40 stored only the final message,
+    `{"answer": 35584.2}`, and the chain lived spread across turns and was thrown
+    away. The routing question the whole pool exists to answer was therefore not
+    computable from a completed run, and the run had to be bought again
+    **[ran]** 2026-09-15.
+
+    The tool results are folded back in as `= value`, which is the shape the
+    single-turn corpora use and the shape `repair` and `check` parse.
+    """
+    out = []
+    for m in messages:
+        if m.get("role") == "assistant":
+            for tc in (m.get("tool_calls") or []):
+                fn = tc["function"]
+                out.append(f"<{fn['name']}>{_body(fn['name'], fn['arguments'])}"
+                           f"</{fn['name']}>")
+            if m.get("content"):
+                out.append(m["content"])
+        elif m.get("role") == "tool":
+            # attach the answer to the call it answers, as `= value`
+            if out:
+                out[-1] = out[-1] + f"= {m.get('content', '')}"
+    return "\n".join(out)
+
+
 def solve_one(base_url, key, model, case, max_turns, max_tokens):
     """One problem, as many tool turns as the model asks for."""
     book = {tuple(k): v for k, v in case["handbook"]}
@@ -92,7 +122,8 @@ def solve_one(base_url, key, model, case, max_turns, max_tokens):
             return {"id": case["case_id"], "family": case["family"], "got": got,
                     "passed": bool(correct(got, case["answer"], SCORER_RTOL)),
                     "calls": calls, "refused": refused, "asked": asked,
-                    "text": text[:300]}
+                    "text": text[:300], "chain": _chain(messages),
+                    "unit": case["unit"], "statement": case["prompt"]}
         for tc in tcs:
             fn = tc["function"]
             calls += 1
@@ -111,7 +142,9 @@ def solve_one(base_url, key, model, case, max_turns, max_tokens):
     # RUNNING OUT OF TURNS IS ITS OWN OUTCOME, and it must not read as wrong physics.
     return {"id": case["case_id"], "family": case["family"], "got": None,
             "passed": False, "calls": calls, "refused": refused, "asked": asked,
-            "text": "(ran out of turns)", "out_of_turns": True}
+            "text": "(ran out of turns)", "out_of_turns": True,
+            "chain": _chain(messages), "unit": case["unit"],
+            "statement": case["prompt"]}
 
 
 def main() -> int:
