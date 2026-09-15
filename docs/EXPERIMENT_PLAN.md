@@ -2006,6 +2006,30 @@ cost, and the choice is the user's because it decides what the project measures:
 Until one is chosen, S4 and S5 cannot be bought: promoting an expert and
 withdrawing a frontier that was never ahead measures nothing.
 
+### Analysed 2026-09-15: composition can return as a pipeline, and P4 is re-aimed
+
+Full analysis: [`analysis/composition-and-speculative.md`](analysis/composition-and-speculative.md).
+Nothing implemented; three things change in this plan.
+
+- **Piping is not the composition that was dropped.** `base→lora1` then
+  `base→lora2` never has two deltas live in one forward pass, so the interference
+  question does not arise — and the pool already serves it, measured three times
+  **[ran]** P40/P41/P42. It is two requests with two model names, and costs no
+  serving work.
+- **P4's family is wrong and its premise is unchecked.** It says *a large Qwen3.5*;
+  the adapters are on Qwen2.5-3B, so the target must be a large **Qwen2.5**. And
+  that a 3B and a large sibling share a tokenizer is **[read]** — comparing two
+  `tokenizer.json` hashes is the first thing P4 runs, not an assumption underneath
+  it.
+- **The literature's number for this architecture is acceptance, and we have never
+  measured it.** Every number here is delivered accuracy.
+  [TaskSpec](https://arxiv.org/html/2505.08600v1) reports a prompt classifier over
+  four task-specific drafters lifting acceptance **16% → 58%** — our pool, built by
+  somebody else, scored on a quantity that needs no verifier.
+
+Not adopted: per-token adapter routing (MoLoRA, WhiFlash). It is weight-space
+composition under another name, and that question was closed today.
+
 ## 12. History
 
 | date | change to this plan | why |
