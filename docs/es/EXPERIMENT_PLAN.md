@@ -684,6 +684,73 @@ llamadas, 0 rechazadas, 0 sin decidir**. Eso ahora es un test y no una esperanza
 **Ningún modelo entrenado corrió sobre esta suite** — el stub prueba la plomería, no
 el pool.
 
+#### P37–P40 — el pool sirve dos expertos, y sólo uno es bueno
+
+[`results/P40-pool-retried-20260915/`](../../results/P40-pool-retried-20260915/BRIEF.md).
+Un segundo experto sobre un subdominio genuinamente distinto — mecánica de fluidos,
+elegida por encima de una suite de calendario justamente porque la distancia entre
+dominios es lo que la tesis afirma que no importa — entrenado igual y servido **al
+lado** del experto de email en un solo vLLM.
+
+**El sustrato funciona, medido tres veces.** Los dos adaptadores aplicados,
+**distintos entre sí**, una base residente, cada uno enrutado por el campo `model` a
+su propio cliente y su propio oráculo **[ran]**. La comprobación de distinción es
+nueva: dos nombres sobre un mismo adaptador darían dos números respetables y serían un
+solo experto, que es el fallo que más se parece a un éxito.
+
+**La co-residencia no le cuesta nada al miembro que sirve**: 84/113 solo contra 81 y
+82 en dos corridas del pool, los tres pares empatados, con 393/393/390 llamadas
+**[ran]**.
+
+| miembro | resultado | llamadas | rechazadas | sin turnos |
+|---|--:|--:|--:|--:|
+| `email-full` | 82/113 = 0,726 | 390 | 0 | — |
+| `fluids-full` | **12/90 = 0,133** | 603 | **0** | **0** |
+
+**El brazo de fluidos fue nulo una vez y ahora está limpio.** El corpus de P38 nunca
+le mostró al modelo la superficie con la que se lo sirvió — el proxy agrega 388
+caracteres que listan los argumentos alfabéticamente donde el corpus los escribe en el
+orden de las herramientas — y **71 de 606 llamadas fueron rechazadas por razones que
+no tenían nada que ver con la física**. El generador ahora *usa* `render_tools` en vez
+de una copia, y el test que verifica esto existía para email y nunca se había escrito
+para fluidos.
+
+**Arreglarlo empeoró el número, y ése es el hallazgo.** 0 rechazos, 0 turnos agotados,
+90 de 90 respondidos, 6–8 llamadas contra las 7 que enseña el corpus: **el protocolo
+salió exactamente bien y la física está mal 78 veces de 90.** Pareado contra P24 sobre
+casos que son literalmente los mismos por id, **pierde contra la regla escrita a
+mano** — 3/30 contra 12/30, 2:11 discordante, **p = 0,022** — y empata con todo lo
+demás.
+
+**Dos correcciones que este proyecto se debe a sí mismo.**
+
+1. P38 nombró *"ganarle a la regla escrita a mano, pareado"* como barra de fluidos.
+   **La regla no es un solucionador** — escribe llamadas y un modelo pone la física —
+   así que esa barra nunca fue medible como se enunció. La comparación pareada contra
+   los brazos de P24 sí lo es.
+2. **El titular de P36 queda matizado.** El mismo adaptador, los mismos casos,
+   temperatura 0, da **84, 81, 82** en tres corridas con los tres pares empatados. La
+   compuerta pide 83. vLLM no es determinista corrida a corrida, así que *"el primer
+   miembro del pool clarea su compuerta"* clareó **una vez de tres**, decidido por el
+   planificador. **El efecto no es marginal, sólo el veredicto lo es**: contra la base
+   es **8 : 51 discordante, p ≈ 0**.
+
+**Qué dice la división entre los miembros.** Funciona el miembro que tiene que
+**decidir**; falla el que tiene que **razonar**. Email es una regla de dos-de-cuatro
+sobre hechos que las herramientas entregan; fluidos compone Manning, Swamee-Jain,
+profundidades de centroide y áreas sobre números que cambian por caso. **600 ejemplos
+supervisados enseñaron el protocolo a la perfección y la física nada.**
+
+Eso ancla contra P6/P7, donde un experto de fluidos llegó a **40/40 — con calculadora,
+sobre una suite cuyos valores venían en el enunciado** **[ran]**. Acá tiene calculadora
+y además tiene que *buscar* los valores. El salto de dificultad entre esas dos suites
+ahora tiene número.
+
+**"Pool" sigue sin estar ganado**, y falta exactamente una cosa: un segundo miembro
+*útil*. Si eso pide más corpus, otro subdominio, o admitir que 600 ejemplos no compran
+razonamiento compuesto queda abierto — y es la primera pregunta que el mecanismo de
+aceptación estacionado podría estar en posición de contestar.
+
 #### P36 — el primer miembro del pool clarea su compuerta
 
 [`results/P36-ceiling-20260915/`](../../results/P36-ceiling-20260915/BRIEF.md). Un
