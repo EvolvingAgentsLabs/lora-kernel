@@ -188,3 +188,40 @@ def fill(text: str, handbook: dict | None = None) -> tuple[str, int, int]:
             return m.group(0)
 
     return CALL.sub(one, text), calls, fails
+
+
+# The same three, as an OpenAI client would declare them. **The shapes match what
+# the corpus teaches**, which is the whole point: P28 measured that rendering a
+# single-required-parameter function positionally drops refusals to the trained
+# arm's exact number, and `calc` is exactly that function — the model writes
+# `<calc>1413.5 * 9.80665</calc>` and the shim hands back `{"_": "..."}`.
+#
+# NO `enum` ON `property` OR ON THE UNITS. P28 measured declaring allowed values as
+# **harmful** here: it fixed what it aimed at and made handbook misses rise 3 → 17,
+# because telling the adapter part of the vocabulary made it query more confidently
+# and miss on a different argument **[ran]**. Not carried.
+SCHEMA = [
+    {"type": "function", "function": {
+        "name": "calc",
+        "description": "evaluate an arithmetic expression in SI units",
+        "parameters": {"type": "object",
+                       "properties": {"expression": {"type": "string"}},
+                       "required": ["expression"]}}},
+    {"type": "function", "function": {
+        "name": "lookup",
+        "description": "a property of a named fluid at a temperature, from this "
+                       "problem's handbook",
+        "parameters": {"type": "object",
+                       "properties": {"fluid": {"type": "string"},
+                                      "property": {"type": "string"},
+                                      "T": {"type": "string"}},
+                       "required": ["fluid", "property"]}}},
+    {"type": "function", "function": {
+        "name": "convert",
+        "description": "convert a value between units of the same dimension",
+        "parameters": {"type": "object",
+                       "properties": {"value": {"type": "string"},
+                                      "from": {"type": "string"},
+                                      "to": {"type": "string"}},
+                       "required": ["value", "from", "to"]}}},
+]
