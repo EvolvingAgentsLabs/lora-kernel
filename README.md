@@ -5,6 +5,16 @@ Nothing else is neural.
 
 *[Léeme en español](README.es.md)*
 
+[![runs inside OpenClaw](https://img.shields.io/badge/runs_inside-OpenClaw-1f6feb)](https://docs.openclaw.ai/cli)
+[![base Qwen2.5-3B](https://img.shields.io/badge/base-Qwen2.5--3B--Instruct-555)](https://huggingface.co/Qwen/Qwen2.5-3B-Instruct)
+[![served by vLLM multi-LoRA](https://img.shields.io/badge/served_by-vLLM_multi--LoRA-555)](https://docs.vllm.ai)
+
+**It runs inside a real agent.** [OpenClaw](https://docs.openclaw.ai/cli) on a
+laptop → a local proxy → a tunnel → vLLM on a rented card → a QLoRA of ours → back,
+with the inbox tools handed to the agent over MCP and **zero requests leaving the
+machine** for anything the pool serves. Step by step:
+[`docs/OPENCLAW.md`](docs/OPENCLAW.md).
+
 > **Status: built and measuring.** ~~specified, nothing built; there is no [ran]
 > yet~~ — stale since 2026-09-08 and corrected on 2026-09-15. Every claim about a
 > system outside this repository is still marked **[read]** and cited; claims about
