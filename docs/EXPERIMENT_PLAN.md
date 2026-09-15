@@ -662,6 +662,48 @@ assembled and not measured; an OpenAI client sending `tools=[…]`, reading
 trained model has been run on this suite** — the stub proves the plumbing, not the
 pool.
 
+#### P35 — the vocabulary is learnable, and learning it costs the disposition
+
+[`results/P35-email-kernel-20260914/`](../results/P35-email-kernel-20260914/BRIEF.md).
+A kernel trained on 600 examples of the **email tool names and nothing about
+triage**, served over Qwen2.5-3B with the identity gate `applied` before a case was
+scored.
+
+| arm | asked in | calls | refused | human messages |
+|---|--:|--:|--:|--:|
+| base (P31) | 0/150 | 0 | 0 | 39/113 = 0.345 |
+| kernel-mt, physics tools (P34) | **123/150** | 127 | **127** | 39/113 = 0.345 |
+| **kernel-email (P35)** | **22/150** | 44 | **0** | 42/113 = 0.372 |
+
+**The vocabulary was learned**: every one of the 44 asks was answered — right names,
+right argument keys, **0 refused** against P34's 127. That is the gap P34 left open,
+closed **[ran]**.
+
+**And teaching it cost the disposition**: asking fell from **123 of 150 cases to
+22**. That is the fourth outcome the brief named in advance, and the reason is
+visible in the corpus — it teaches four *question shapes*, and a triage prompt is not
+one of them. The adapter learned *ask when the question looks like this*; the physics
+kernel, trained on another domain entirely, had generalised *ask whenever you lack a
+fact*.
+
+**No arm clears the gate**, and all three **tie** on accuracy: base against
+kernel-email is **0:3 discordant, p = 0.250**, the same shape of claim withdrawn
+from P15 this morning. **The pre-registered confound is dead** — `strip_calls`
+leaves a fabricated `= {…}` in the content and **0 of 150** carry one, so the model
+did not answer from its own invention.
+
+**The sharper statement of the pool thesis.** Tool use is not one capability a LoRA
+either carries or does not. It is at least two, and they generalise differently:
+
+| | how it transfers |
+|---|---|
+| **disposition to ask** | broadly but vaguely — reaches for email tools in 123 of 150 cases, in the wrong vocabulary |
+| **vocabulary** | precisely but narrowly — asks correctly every time, only for shapes it was trained on |
+
+Neither alone reaches the margin, so the pool's next question is whether the two
+**compose** — the shape P8 already measured for physics, sequentially and by taking
+turns.
+
 #### P34 — the protocol transfers as behaviour, not as vocabulary
 
 [`results/P34-protocol-transfer-20260914/`](../results/P34-protocol-transfer-20260914/BRIEF.md).
