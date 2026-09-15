@@ -29,6 +29,9 @@ POOL = {
     # P36: the ceiling. Tools and judgement in one adapter — the reference point a
     # pool has to match, not the architecture itself.
     "adapters/email-full": "training/harness/data_ef/train.jsonl",
+    # P37: the second pool member. A genuinely different subdomain on the same
+    # resident base — one member is not a pool.
+    "adapters/fluids-full": "training/physics/data_ff/train.jsonl",
 }
 
 
