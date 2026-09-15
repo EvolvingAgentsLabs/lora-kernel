@@ -662,6 +662,68 @@ assembled and not measured; an OpenAI client sending `tools=[…]`, reading
 trained model has been run on this suite** — the stub proves the plumbing, not the
 pool.
 
+#### P37–P40 — the pool serves two experts, and only one of them is good
+
+[`results/P40-pool-retried-20260915/`](../results/P40-pool-retried-20260915/BRIEF.md).
+A second expert on a genuinely different subdomain — fluid mechanics, chosen over a
+calendar suite precisely because the distance between the domains is what the thesis
+claims does not matter — trained the same way and served **beside** the email expert
+in one vLLM.
+
+**The substrate works, measured three times.** Both adapters applied, **distinct from
+each other**, one resident base, each routed by the `model` field of an HTTP request
+to its own client and its own oracle **[ran]**. The distinctness check is new: two
+names over one adapter would produce two respectable numbers and be one expert, which
+is the failure that looks most like success.
+
+**Co-residency costs the working member nothing**: 84/113 alone against 81 and 82 in
+two pool runs, every pair a tie, with 393/393/390 tool calls **[ran]**.
+
+| member | score | calls | refused | out of turns |
+|---|--:|--:|--:|--:|
+| `email-full` | 82/113 = 0.726 | 390 | 0 | — |
+| `fluids-full` | **12/90 = 0.133** | 603 | **0** | **0** |
+
+**The fluids arm was void once and is clean now.** P38's corpus never showed the
+model the surface it was served with — the proxy appends 388 characters listing
+arguments alphabetically where the corpus writes them in tool order — and **71 of 606
+calls were refused for reasons that had nothing to do with physics**. The generator
+now *uses* `render_tools` rather than a copy of it, and the test that checks this
+existed for email and had never been written for fluids.
+
+**Fixing it made the number worse, and that is the finding.** 0 refused, 0 out of
+turns, 90 of 90 answered, 6–8 calls against the 7 the corpus teaches: **the protocol
+is exactly right and the physics is wrong 78 times out of 90.** Paired against P24 on
+cases that are literally the same by id, it **loses to the hand-written rule** —
+3/30 against 12/30, 2:11 discordant, **p = 0.022** — and ties with everything else.
+
+**Two corrections this project owes itself.**
+
+1. P38 named *"beat the hand-written rule, paired"* as the fluids bar. **The rule is
+   not a solver** — it writes calls and a model does the physics — so that bar was
+   never directly measurable as stated. The paired comparison against P24's arms is.
+2. **P36's headline is qualified.** The same adapter, the same cases, temperature 0,
+   gives **84, 81, 82** across three runs with every pair a tie. The gate demands 83.
+   vLLM is not run-to-run deterministic, so *"the first pool member clears its gate"*
+   cleared **once in three**, decided by the scheduler. **The effect is not marginal,
+   only the verdict is**: against the base it is **8 : 51 discordant, p ≈ 0**.
+
+**What the split between the members says.** The member that has to **decide** works;
+the member that has to **reason** does not. Email is a two-of-four rule over facts the
+tools hand over; fluids composes Manning, Swamee-Jain, centroid depths and areas over
+numbers that change per case. **600 supervised examples taught the protocol perfectly
+and the physics not at all.**
+
+That anchors against P6/P7, where a fluids expert reached **40/40 — with a
+calculator, on a suite whose values were given in the statement** **[ran]**. Here it
+has a calculator and must also *find* the values. The difficulty between those two
+suites now has a number on it.
+
+**"Pool" is still not earned**, and what is missing is exactly one thing: a second
+*useful* member. Whether that needs more corpus, another subdomain, or an admission
+that 600 examples do not buy composed reasoning is open — and it is the first
+question the parked acceptance mechanism might be in a position to answer.
+
 #### P36 — the first pool member clears its gate
 
 [`results/P36-ceiling-20260915/`](../results/P36-ceiling-20260915/BRIEF.md). One
