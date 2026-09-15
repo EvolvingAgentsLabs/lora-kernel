@@ -662,6 +662,42 @@ assembled and not measured; an OpenAI client sending `tools=[…]`, reading
 trained model has been run on this suite** — the stub proves the plumbing, not the
 pool.
 
+#### P43 — the end-to-end runs, and the gate can finally decide
+
+[`results/P43-openclaw-e2e-20260915/`](../results/P43-openclaw-e2e-20260915/BRIEF.md).
+
+**The gate decides now.** 260/351 human messages = **0.741** against a bar of 0.655,
+passing at 246, **exact one-sided p = 0.00036** — clear by fourteen cases, not by
+one **[ran]**.
+
+**And the accuracy barely moved**: 0.726 → 0.741, inside the spread three earlier
+runs already showed. What changed is the gate. The **84, 81, 82** that straddled a
+threshold of 83 were never the model wavering — **the suite was too small for the
+effect and the threshold sat inside its own dispersion**. Power at n = 351 is
+**87%**; at n = 113 it was **47%**.
+
+`bar.n_for(0.655, 0.071)` fixed the size *before* the run, and the brief
+pre-registered that landing near the threshold again would be read as **a smaller
+effect, not a bigger suite**.
+
+**The end-to-end runs**: OpenClaw on the user's Mac → local proxy → cloudflared →
+vLLM on an L4 → the `email-full` QLoRA → back, `status=200`, `NOT IMPORTANT`,
+`stopReason=stop`, and **zero requests left the machine**.
+
+**What it does not show.** The OpenClaw turn made **no tool calls** — OpenClaw sends
+its own tools, not the inbox's, so the expert answered from the listing alone, which
+is what the base does. **The 0.741 comes from `agent_sim`, which supplies the inbox
+tools and executes them.** The agent turn demonstrates the transport; the suite
+demonstrates the expert. Wiring the inbox tools into OpenClaw is real work and is
+not done.
+
+**Three things running it found that no test could**: a doubled `/v1` in the
+fallback URL (every test stubbed the fetch), `config patch` taking `--file` rather
+than a positional argument (the manual was wrong two hours after being written), and
+**OpenClaw streaming by default** with its per-model `streaming: false` not taking.
+The proxy's refusal — *refuse rather than fake* — was right while the alternative was
+a misleading measurement and **wrong when the alternative was being unusable**.
+
 #### P41 — routing the failures to the frontier, with the frontier measured
 
 [`results/P41-routing-20260915/`](../results/P41-routing-20260915/) ·

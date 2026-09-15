@@ -684,6 +684,43 @@ llamadas, 0 rechazadas, 0 sin decidir**. Eso ahora es un test y no una esperanza
 **Ningún modelo entrenado corrió sobre esta suite** — el stub prueba la plomería, no
 el pool.
 
+#### P43 — el end-to-end corre, y la compuerta por fin puede decidir
+
+[`results/P43-openclaw-e2e-20260915/`](../../results/P43-openclaw-e2e-20260915/BRIEF.md).
+
+**La compuerta decide ahora.** 260/351 mensajes humanos = **0,741** contra una barra
+de 0,655, pasando en 246, **p exacta a una cola = 0,00036** — clarea por catorce
+casos, no por uno **[ran]**.
+
+**Y la exactitud casi no se movió**: 0,726 → 0,741, adentro de la dispersión que tres
+corridas anteriores ya mostraban. Lo que cambió es la compuerta. Los **84, 81, 82**
+que caían a los costados de un umbral de 83 nunca fueron el modelo titubeando — **la
+suite era demasiado chica para el efecto y el umbral caía adentro de su propia
+dispersión**. La potencia a n = 351 es **87%**; a n = 113 era **47%**.
+
+`bar.n_for(0,655, 0,071)` fijó el tamaño *antes* de correr, y el brief pre-registró
+que volver a caer cerca del umbral se leería como **un efecto más chico, no una suite
+más grande**.
+
+**El end-to-end corre**: OpenClaw en la Mac del usuario → proxy local → cloudflared →
+vLLM en una L4 → el QLoRA `email-full` → vuelta, `status=200`, `NOT IMPORTANT`,
+`stopReason=stop`, y **cero requests salieron de la máquina**.
+
+**Lo que NO demuestra.** El turno de OpenClaw no hizo **ninguna llamada a
+herramientas** — OpenClaw manda sus propias herramientas, no las del inbox, así que el
+experto contestó sólo desde el listado, que es lo que hace la base. **El 0,741 viene
+de `agent_sim`, que provee las herramientas del inbox y las ejecuta.** El turno del
+agente demuestra el transporte; la suite demuestra el experto. Cablear las
+herramientas del inbox en OpenClaw es trabajo real y no está hecho.
+
+**Tres cosas que correrlo encontró y ningún test podía**: un `/v1` duplicado en la URL
+de fallback (todos los tests mockeaban el fetch), `config patch` que toma `--file` y no
+un argumento posicional (el manual estaba mal dos horas después de escrito), y
+**OpenClaw haciendo streaming por defecto** con su `streaming: false` por modelo sin
+tomar efecto. El rechazo del proxy — *rechazar en vez de fingir* — era correcto
+mientras la alternativa era una medición engañosa y **equivocado cuando la alternativa
+era ser inusable**.
+
 #### P41 — rutear los fallos a la frontera, con la frontera medida
 
 [`results/P41-routing-20260915/`](../../results/P41-routing-20260915/) ·
