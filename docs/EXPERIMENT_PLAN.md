@@ -2063,6 +2063,50 @@ there. Below it, narrowing does not repair a reasoning expert and the idea is cl
 `bar.n_for(0.304, effect=0.522)` returns **10**, so the arm resolves at any n we
 would run **[ran]**.
 
+### Analysed 2026-09-15: the suite has no difficulty axis, and the gate was the wrong one
+
+Full analysis: [`analysis/sufficiency.md`](analysis/sufficiency.md). No GPU; P41's
+90 cases regenerated from their seed and the **oracle's own solution length** read.
+
+| family | oracle steps | tools | local | frontier |
+|---|---:|---:|---:|---:|
+| manning_channel | 6 | 2 | 0.304 | 0.826 |
+| hydrostatic_force | 6 | 3 | 0.043 | 0.609 |
+| venturi_flow | 7 | 3 | 0.136 | 0.682 |
+| pipe_head_loss | 9 | 3 | 0.000 | 0.818 |
+
+**[ran]** 2026-09-15.
+
+- **The suite's floor is six steps and each family is pinned at one depth**, so
+  depth and family are the same variable. The experiment could only ask *can a 3B
+  solve a 6-to-9-step chain*; it could never ask whether a small expert is
+  sufficient at the easy end, because the easy end was never generated.
+- **Headroom, upside down.** We check ceilings; there was no rule for floors. A
+  suite with one difficulty cannot tell *too weak* apart from *too hard* — both give
+  0.122. Added to `CLAUDE.md` §3.
+- **Qwen 2.5 is a floor we did not choose** (C18, P33), so every number here is a
+  **lower bound** on what a small expert can do, not an estimate.
+
+**Built:** `training/physics/ladder.py`, four rungs at 1–4 steps below the suite's
+floor — same domain, same three tools, same unmemorisable per-case handbook — and
+`fluids_sim --families {suite,ladder,full}` reporting `by_steps`, accuracy against
+depth rather than family name. The oracle is checked by running its own chains with
+the real tools, which caught a 1.3e-6 answer/chain disagreement in `L4`.
+
+**Supersedes the arm proposed earlier the same day** (*narrow expert on
+`manning_channel`, gate 0.826*): it took the frontier's score as the gate on a
+family with no easy end. Not bought.
+
+**Next arm (pre-registered), no training:** the bare base, then the existing
+`fluids-full` expert unchanged, then the frontier as a **ceiling check only**, over
+the full ladder 1 → 9. Arm 1 says which rungs can show an adapter anything; arm 2 is
+the actual curve of where a small expert stops being sufficient, and costs inference
+only. **Gate for a sufficiency claim: 0.90, absolute** — at 0.80 one answer in five
+is wrong and every answer needs checking by hand, which removes the reason to have
+the expert. **Falsification:** if the curve is flat — the expert fails a one-step
+lookup at roughly the rate it fails a nine-step chain — difficulty is not what blocks
+it and this analysis is wrong.
+
 ## 12. History
 
 | date | change to this plan | why |

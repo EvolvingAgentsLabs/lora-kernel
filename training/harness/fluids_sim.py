@@ -32,6 +32,7 @@ import time
 import urllib.error
 
 from training.harness.agent_sim import chat
+from training.physics import ladder
 from training.physics import multitool as mod
 from training.physics.headroom import correct, parse_answer
 from training.physics.tools import SCHEMA, ToolError, answer
@@ -147,6 +148,25 @@ def solve_one(base_url, key, model, case, max_turns, max_tokens):
             "statement": case["prompt"]}
 
 
+def by_steps(records: list[dict]) -> dict:
+    """`{"3": {"n": 22, "passed": 14, "accuracy": 0.636}}`, keyed by oracle depth.
+
+    A family whose depth is unknown is reported under `"?"` rather than dropped —
+    the by-case routing arithmetic already silently lost 21 cases once and
+    published 0.957 for 0.733 **[ran]**, and a bucket nobody can see is how that
+    happens.
+    """
+    out: dict[str, dict] = {}
+    for r in records:
+        key = str(ladder.STEPS.get(r.get("family"), "?"))
+        row = out.setdefault(key, {"n": 0, "passed": 0})
+        row["n"] += 1
+        row["passed"] += bool(r["passed"])
+    for row in out.values():
+        row["accuracy"] = round(row["passed"] / row["n"], 4)
+    return dict(sorted(out.items(), key=lambda kv: (kv[0] == "?", kv[0])))
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--base-url", default="http://127.0.0.1:8001/v1")
@@ -157,9 +177,17 @@ def main() -> int:
     ap.add_argument("--max-turns", type=int, default=14)
     ap.add_argument("--max-tokens", type=int, default=300)
     ap.add_argument("--out", default="fluids_results.json")
+    # WHICH RUNGS. `suite` is the 6-to-9-step families every previous number was
+    # measured on; `ladder` is 1 to 4; `full` is both, which is the arm that shows
+    # where a small expert stops being sufficient rather than whether it matches a
+    # frontier on the hardest thing the generator makes.
+    ap.add_argument("--families", choices=("suite", "ladder", "full"),
+                    default="suite")
     args = ap.parse_args()
 
-    cases = mod.generate(args.n, args.seed, mod.FAMILIES)
+    families = {"suite": mod.FAMILIES, "ladder": ladder.LADDER,
+                "full": ladder.full_ladder()}[args.families]
+    cases = mod.generate(args.n, args.seed, families)
     recs, t0 = [], time.time()
     for i, case in enumerate(cases, 1):
         recs.append(solve_one(args.base_url, args.api_key, args.model, case,
@@ -179,9 +207,16 @@ def main() -> int:
            "out_of_turns": sum(bool(r.get("out_of_turns")) for r in recs),
            "by_family": {k: v for k, v in
                          Counter(r["family"] for r in recs if r["passed"]).items()},
+           # ACCURACY AGAINST DEPTH, not against a family name. A family name
+           # cannot be compared across domains and a step count can, and the
+           # whole point of the ladder is the curve rather than four numbers.
+           "by_steps": by_steps(recs),
            "seconds": round(time.time() - t0, 1), "records": recs}
     with open(args.out, "w") as f:
         json.dump(out, f, indent=2)
+    for depth, row in out["by_steps"].items():
+        print(f"[depth] {depth:>2} steps  {row['passed']:3d}/{row['n']:<3d} "
+              f"= {row['accuracy']:.3f}", flush=True)
     print(f"\n{out['passed']}/{out['n']} = {out['accuracy']:.3f} · "
           f"{out['calls']} calls, {out['refused']} refused, "
           f"{out['out_of_turns']} ran out of turns", flush=True)
