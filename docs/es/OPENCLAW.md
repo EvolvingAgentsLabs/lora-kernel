@@ -54,7 +54,12 @@ propio `/v1/models` del upstream y no de una lista que alguien mantiene a mano.
 los tres leídos del esquema. `openai-completions` es el adaptador que habla
 `/v1/chat/completions`.
 
-    ~/.openclaw/bin/openclaw --profile lorakernel config patch '{
+**`config patch` lee de `--file` o `--stdin`, nunca de un argumento posicional** — la
+primera versión de esta página lo tenía mal y el CLI lo dijo. Escribí el patch,
+validalo, y recién ahí aplicalo:
+
+    cat > /tmp/lorapool.json5 <<'J5'
+    {
       models: {
         providers: {
           lorapool: {
@@ -62,13 +67,17 @@ los tres leídos del esquema. `openai-completions` es el adaptador que habla
             api: "openai-completions",
             auth: "api-key",
             apiKey: "unused",
-            models: [
-              { id: "email-full", name: "Experto de triage de email (QLoRA local)" }
-            ]
+            models: [ { id: "email-full", name: "Experto de triage de email (QLoRA local)" } ]
           }
         }
       }
-    }'
+    }
+    J5
+
+    ~/.openclaw/bin/openclaw --profile lorakernel config patch \
+        --file /tmp/lorapool.json5 --dry-run     # dice en qué archivo escribiría
+    ~/.openclaw/bin/openclaw --profile lorakernel config patch \
+        --file /tmp/lorapool.json5
 
 `apiKey` lo exige el adaptador y el proxy lo ignora salvo que lo arranques con
 `--api-key`. **Arrancalo con uno en cuanto sea alcanzable desde algo que no sea
@@ -76,22 +85,46 @@ localhost.**
 
 ## 4. Apuntar un agente
 
-    ~/.openclaw/bin/openclaw --profile lorakernel config patch '{
-      agents: { defaults: { model: "lorapool/email-full" } }
-    }'
+    printf '{ agents: { defaults: { model: "lorapool/email-full" } } }\n' \
+        > /tmp/agentdef.json5
+    ~/.openclaw/bin/openclaw --profile lorakernel config patch --file /tmp/agentdef.json5
 
     ~/.openclaw/bin/openclaw --profile lorakernel models list
 
 ## 5. Correr un turno y mirar los dos lados
 
-    ~/.openclaw/bin/openclaw --profile lorakernel agent run \
-        --message "Is this important? From: bruno@acme.com  Subject: Re: the migration"
+    ~/.openclaw/bin/openclaw --profile lorakernel agent --local \
+        -m "Is this important? From: Bruno Costa <bruno.costa@tallgrass.com> \
+            Subject: Re: the migration  Preview: Hello, following up here. \
+            Answer with one line: IMPORTANT or NOT IMPORTANT."
+
+Así se ve un turno que funciona **[ran]** 2026-09-15:
+
+    [model-fetch] response provider=lorapool model=email-full status=200
+                  elapsedMs=4009 contentType=text/event-stream
+    NOT IMPORTANT
+    [agent] run ... ended with stopReason=stop
 
 Dos cosas deberían pasar a la vez: el agente contesta, y el proxy **no dice nada** —
 porque `email-full` es local y no salió nada. Pedí un modelo que el pool no sirve y
 obtenés la otra línea:
 
     [route] OUT -> gpt-5.6-sol · 4 messages · 2317 chars · 3 tools
+
+### El streaming, y por qué está buffereado
+
+**OpenClaw hace streaming por defecto**, y poner
+`agents.defaults.models.<modelo>.streaming` en `false` **no tomó efecto** **[ran]**. El
+proxy antes rechazaba `stream` de plano, con el argumento de que un tag recién es una
+llamada cuando cierra y bufferear toda la respuesta no es streaming. Ese principio era
+correcto mientras la alternativa era una medición engañosa; acá era equivocado, porque
+la alternativa era **que el pool fuera inalcanzable desde cualquier runtime de agente
+real**.
+
+Así que un request con stream se trae entero y se entrega como **un chunk SSE válido**,
+y cada chunk lleva `x_buffered: true` **en el payload** — no sólo en un comentario. El
+cliente recibe SSE correcto y una respuesta correcta. Lo que no recibe es entrega
+incremental, que es latencia y no corrección.
 
 ## Cuánto vale esto, medido
 
