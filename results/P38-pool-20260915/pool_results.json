@@ -1,0 +1,3029 @@
+{
+  "base": "Qwen/Qwen2.5-3B-Instruct",
+  "pool": [
+    "email-full",
+    "fluids-full"
+  ],
+  "arms": {
+    "email-full": {
+      "model": "email-full",
+      "n": 150,
+      "correct": 118,
+      "accuracy": 0.7867,
+      "majority_class_bar": 0.5067,
+      "human_n": 113,
+      "human_correct": 81,
+      "human_accuracy": 0.7168,
+      "human_majority_class_bar": 0.6549,
+      "undecided": 0,
+      "calls": 393,
+      "refused": 0,
+      "seconds": 615.8,
+      "records": [
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-000",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-001",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-002",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-003",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-004",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 6,
+          "refused": 0,
+          "turns": 11,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-005",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-006",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-007",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-008",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-009",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-010",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-011",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-012",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-013",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 6,
+          "refused": 0,
+          "turns": 11,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-014",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-015",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-016",
+          "truth": false,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-017",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-018",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-019",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-020",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-021",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-022",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-023",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-024",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-025",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-026",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-027",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-028",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-029",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-030",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-031",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-032",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-033",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 6,
+          "refused": 0,
+          "turns": 11,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-034",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-035",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-036",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-037",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": true,
+          "calls": 6,
+          "refused": 0,
+          "turns": 11,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-038",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-039",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-040",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-041",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-042",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-043",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 6,
+          "refused": 0,
+          "turns": 11,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-044",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-045",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-046",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-047",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-048",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-049",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 6,
+          "refused": 0,
+          "turns": 11,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-050",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-051",
+          "truth": false,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-052",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 6,
+          "refused": 0,
+          "turns": 11,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-053",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 6,
+          "refused": 0,
+          "turns": 11,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-054",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-055",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-056",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-057",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-058",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-059",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-060",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-061",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-062",
+          "truth": false,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-063",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-064",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 6,
+          "refused": 0,
+          "turns": 11,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-065",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-066",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-067",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-068",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-069",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-070",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-071",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-072",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-073",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-074",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 6,
+          "refused": 0,
+          "turns": 11,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-075",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 6,
+          "refused": 0,
+          "turns": 11,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-076",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-077",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-078",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-079",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-080",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-081",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-082",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 9,
+          "refused": 0,
+          "turns": 14,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-083",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-084",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-085",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-086",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-087",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": true,
+          "calls": 6,
+          "refused": 0,
+          "turns": 11,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-088",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-089",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-090",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-091",
+          "truth": false,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-092",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": true,
+          "calls": 6,
+          "refused": 0,
+          "turns": 11,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-093",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-094",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-095",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-096",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-097",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-098",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-099",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 6,
+          "refused": 0,
+          "turns": 11,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-100",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-101",
+          "truth": false,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-102",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-103",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-104",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-105",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-106",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-107",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-108",
+          "truth": false,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-109",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-110",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-111",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-112",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-113",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-114",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-115",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-116",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-117",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-118",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-119",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-120",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-121",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-122",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 6,
+          "refused": 0,
+          "turns": 11,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-123",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-124",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 6,
+          "refused": 0,
+          "turns": 11,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-125",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-126",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-127",
+          "truth": false,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-128",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-129",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-130",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-131",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-132",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-133",
+          "truth": false,
+          "correct": false
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-134",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-135",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-136",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-137",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-138",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-139",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-140",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-141",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-142",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-143",
+          "truth": true,
+          "correct": false
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-144",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-145",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-146",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": true,
+          "calls": 3,
+          "refused": 0,
+          "turns": 7,
+          "asked": [],
+          "text": "IMPORTANT",
+          "id": "msg-147",
+          "truth": true,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-148",
+          "truth": false,
+          "correct": true
+        },
+        {
+          "verdict": false,
+          "calls": 0,
+          "refused": 0,
+          "turns": 3,
+          "asked": [],
+          "text": "NOT IMPORTANT",
+          "id": "msg-149",
+          "truth": false,
+          "correct": true
+        }
+      ],
+      "gate": {
+        "n": 113,
+        "correct": 81,
+        "accuracy": 0.7168,
+        "bar": 0.6549,
+        "passes_at": 83,
+        "alpha": 0.05,
+        "p_value": 0.09796,
+        "beats_the_bar": false,
+        "exceeds_bar_without_clearing_the_gate": true
+      }
+    },
+    "fluids-full": {
+      "model": "fluids-full",
+      "n": 90,
+      "passed": 24,
+      "accuracy": 0.2667,
+      "calls": 606,
+      "refused": 71,
+      "out_of_turns": 0,
+      "by_family": {
+        "manning_channel": 20,
+        "venturi_flow": 2,
+        "hydrostatic_force": 2
+      },
+      "seconds": 747.2,
+      "records": [
+        {
+          "id": "mt-0000",
+          "family": "hydrostatic_force",
+          "got": 25404.3,
+          "passed": false,
+          "calls": 6,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"TD-78\", \"T\": \"20\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "It seems there was an error in the previous calculation. Let's recompute the solution step-by-step with the correct values:\n\n1. Gate width: 1844.2 mm = 1.8442 m\n2. Gate height: 723.6 mm = 0.7236 m\n3. Density of the fluid: 952.3 kg/m^3\n4. Depth of the centroid: 1.76 + 0.7236/2 = 1.9818 m\n5. Area of t"
+        },
+        {
+          "id": "mt-0001",
+          "family": "manning_channel",
+          "got": 3.40593,
+          "passed": true,
+          "calls": 6,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 3.40593}"
+        },
+        {
+          "id": "mt-0002",
+          "family": "pipe_head_loss",
+          "got": 0.12,
+          "passed": false,
+          "calls": 8,
+          "refused": 2,
+          "asked": [
+            {
+              "name": "convert",
+              "args": "{\"from\": \"m^3/h\", \"to\": \"m^3/s\"}",
+              "error": "convert needs ['value']"
+            },
+            {
+              "name": "convert",
+              "args": "{\"from\": \"cm\", \"to\": \"m\"}",
+              "error": "convert needs ['value']"
+            }
+          ],
+          "text": "{\"answer\": 0.12}"
+        },
+        {
+          "id": "mt-0003",
+          "family": "venturi_flow",
+          "got": 0.203828,
+          "passed": false,
+          "calls": 7,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"TA-31\", \"T\": \"25\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 0.203828}"
+        },
+        {
+          "id": "mt-0004",
+          "family": "hydrostatic_force",
+          "got": 15725.1,
+          "passed": false,
+          "calls": 6,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"XB-55\", \"T\": \"10\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 15725.1}"
+        },
+        {
+          "id": "mt-0005",
+          "family": "manning_channel",
+          "got": 1.17689,
+          "passed": true,
+          "calls": 6,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 1.17689}"
+        },
+        {
+          "id": "mt-0006",
+          "family": "pipe_head_loss",
+          "got": 0.050314,
+          "passed": false,
+          "calls": 8,
+          "refused": 2,
+          "asked": [
+            {
+              "name": "convert",
+              "args": "{\"from\": \"m^3/h\", \"to\": \"m^3/s\"}",
+              "error": "convert needs ['value']"
+            },
+            {
+              "name": "convert",
+              "args": "{\"from\": \"cm\", \"to\": \"m\"}",
+              "error": "convert needs ['value']"
+            }
+          ],
+          "text": "{\"answer\": 0.050314}"
+        },
+        {
+          "id": "mt-0007",
+          "family": "venturi_flow",
+          "got": 0.0198647,
+          "passed": false,
+          "calls": 7,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"VK-16\", \"T\": \"20\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 0.0198647}"
+        },
+        {
+          "id": "mt-0008",
+          "family": "hydrostatic_force",
+          "got": 6469.0,
+          "passed": false,
+          "calls": 6,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"PX-3\", \"T\": \"25\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 6469}"
+        },
+        {
+          "id": "mt-0009",
+          "family": "manning_channel",
+          "got": 7.62753,
+          "passed": true,
+          "calls": 6,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 7.62753}"
+        },
+        {
+          "id": "mt-0010",
+          "family": "pipe_head_loss",
+          "got": 130.495,
+          "passed": false,
+          "calls": 8,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"T\": \"25\", \"fluid\": \"BW-70\", \"property\": \"viscosity\"}",
+              "error": "no entry for bw-70 at 25 C; this handbook lists ['bw-97']"
+            }
+          ],
+          "text": "{\"answer\": 130.495}"
+        },
+        {
+          "id": "mt-0011",
+          "family": "venturi_flow",
+          "got": 0.0191732,
+          "passed": false,
+          "calls": 7,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"EH-2\", \"T\": \"10\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 0.0191732}"
+        },
+        {
+          "id": "mt-0012",
+          "family": "hydrostatic_force",
+          "got": 46344.0,
+          "passed": false,
+          "calls": 6,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"KH-87\", \"T\": \"25\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 46344}"
+        },
+        {
+          "id": "mt-0013",
+          "family": "manning_channel",
+          "got": 5.24343,
+          "passed": true,
+          "calls": 6,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 5.24343}"
+        },
+        {
+          "id": "mt-0014",
+          "family": "pipe_head_loss",
+          "got": 0.561049,
+          "passed": false,
+          "calls": 8,
+          "refused": 2,
+          "asked": [
+            {
+              "name": "convert",
+              "args": "{\"from\": \"m^3/h\", \"to\": \"m^3/s\"}",
+              "error": "convert needs ['value']"
+            },
+            {
+              "name": "convert",
+              "args": "{\"from\": \"cm\", \"to\": \"m\"}",
+              "error": "convert needs ['value']"
+            }
+          ],
+          "text": "{\"answer\": 0.561049}"
+        },
+        {
+          "id": "mt-0015",
+          "family": "venturi_flow",
+          "got": 0.0395544,
+          "passed": false,
+          "calls": 7,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"TS-69\", \"T\": \"10\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 0.0395544}"
+        },
+        {
+          "id": "mt-0016",
+          "family": "hydrostatic_force",
+          "got": 21799.6,
+          "passed": false,
+          "calls": 6,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"FE-31\", \"T\": \"40\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 21799.6}"
+        },
+        {
+          "id": "mt-0017",
+          "family": "manning_channel",
+          "got": 11.8665,
+          "passed": false,
+          "calls": 6,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 11.8665}"
+        },
+        {
+          "id": "mt-0018",
+          "family": "pipe_head_loss",
+          "got": 0.149387,
+          "passed": false,
+          "calls": 8,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 0.149387}"
+        },
+        {
+          "id": "mt-0019",
+          "family": "venturi_flow",
+          "got": 0.0821209,
+          "passed": false,
+          "calls": 7,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 0.0821209}"
+        },
+        {
+          "id": "mt-0020",
+          "family": "hydrostatic_force",
+          "got": 41116.1,
+          "passed": false,
+          "calls": 6,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"ZL-39\", \"T\": \"10\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 41116.1}"
+        },
+        {
+          "id": "mt-0021",
+          "family": "manning_channel",
+          "got": 11.5835,
+          "passed": true,
+          "calls": 6,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 11.5835}"
+        },
+        {
+          "id": "mt-0022",
+          "family": "pipe_head_loss",
+          "got": 0.0682,
+          "passed": false,
+          "calls": 8,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 0.0682}"
+        },
+        {
+          "id": "mt-0023",
+          "family": "venturi_flow",
+          "got": 0.373302,
+          "passed": false,
+          "calls": 7,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"WE-74\", \"T\": \"40\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 0.373302}"
+        },
+        {
+          "id": "mt-0024",
+          "family": "hydrostatic_force",
+          "got": 20805.6,
+          "passed": false,
+          "calls": 6,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"RX-2\", \"T\": \"40\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 20805.6}"
+        },
+        {
+          "id": "mt-0025",
+          "family": "manning_channel",
+          "got": 18.007,
+          "passed": false,
+          "calls": 6,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 18.007}"
+        },
+        {
+          "id": "mt-0026",
+          "family": "pipe_head_loss",
+          "got": 164.647,
+          "passed": false,
+          "calls": 8,
+          "refused": 2,
+          "asked": [
+            {
+              "name": "convert",
+              "args": "{\"from\": \"m^3/h\", \"to\": \"m^3/s\"}",
+              "error": "convert needs ['value']"
+            },
+            {
+              "name": "convert",
+              "args": "{\"from\": \"cm\", \"to\": \"m\"}",
+              "error": "convert needs ['value']"
+            }
+          ],
+          "text": "{\"answer\": 164.647}"
+        },
+        {
+          "id": "mt-0027",
+          "family": "venturi_flow",
+          "got": 0.0272082,
+          "passed": false,
+          "calls": 7,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"DT-39\", \"T\": \"40\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 0.0272082}"
+        },
+        {
+          "id": "mt-0028",
+          "family": "hydrostatic_force",
+          "got": 75467.0,
+          "passed": false,
+          "calls": 6,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"LK-16\", \"T\": \"10\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 75467}"
+        },
+        {
+          "id": "mt-0029",
+          "family": "manning_channel",
+          "got": 1.42654,
+          "passed": true,
+          "calls": 6,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 1.42654}"
+        },
+        {
+          "id": "mt-0030",
+          "family": "pipe_head_loss",
+          "got": 0.0473361,
+          "passed": false,
+          "calls": 8,
+          "refused": 2,
+          "asked": [
+            {
+              "name": "convert",
+              "args": "{\"from\": \"L/min\", \"to\": \"m^3/s\"}",
+              "error": "convert needs ['value']"
+            },
+            {
+              "name": "convert",
+              "args": "{\"from\": \"mm\", \"to\": \"m\"}",
+              "error": "convert needs ['value']"
+            }
+          ],
+          "text": "{\"answer\": 0.0473361}"
+        },
+        {
+          "id": "mt-0031",
+          "family": "venturi_flow",
+          "got": 0.0298905,
+          "passed": false,
+          "calls": 7,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"FE-11\", \"T\": \"80\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 0.0298905}"
+        },
+        {
+          "id": "mt-0032",
+          "family": "hydrostatic_force",
+          "got": 93402.8,
+          "passed": false,
+          "calls": 6,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"KQ-23\", \"T\": \"60\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 93402.8}"
+        },
+        {
+          "id": "mt-0033",
+          "family": "manning_channel",
+          "got": 1.51515,
+          "passed": true,
+          "calls": 6,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 1.51515}"
+        },
+        {
+          "id": "mt-0034",
+          "family": "pipe_head_loss",
+          "got": 0.266319,
+          "passed": false,
+          "calls": 8,
+          "refused": 2,
+          "asked": [
+            {
+              "name": "convert",
+              "args": "{\"from\": \"L/s\", \"to\": \"m^3/s\"}",
+              "error": "convert needs ['value']"
+            },
+            {
+              "name": "convert",
+              "args": "{\"from\": \"cm\", \"to\": \"m\"}",
+              "error": "convert needs ['value']"
+            }
+          ],
+          "text": "{\"answer\": 0.266319}"
+        },
+        {
+          "id": "mt-0035",
+          "family": "venturi_flow",
+          "got": 0.0100513,
+          "passed": false,
+          "calls": 7,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"KK-33\", \"T\": \"10\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 0.0100513}"
+        },
+        {
+          "id": "mt-0036",
+          "family": "hydrostatic_force",
+          "got": 162798.0,
+          "passed": false,
+          "calls": 6,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"PZ-75\", \"T\": \"80\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 162798}"
+        },
+        {
+          "id": "mt-0037",
+          "family": "manning_channel",
+          "got": 2.6001,
+          "passed": false,
+          "calls": 6,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 2.6001}"
+        },
+        {
+          "id": "mt-0038",
+          "family": "pipe_head_loss",
+          "got": 0.0226921,
+          "passed": false,
+          "calls": 8,
+          "refused": 2,
+          "asked": [
+            {
+              "name": "convert",
+              "args": "{\"from\": \"L/min\", \"to\": \"m^3/s\"}",
+              "error": "convert needs ['value']"
+            },
+            {
+              "name": "convert",
+              "args": "{\"from\": \"cm\", \"to\": \"m\"}",
+              "error": "convert needs ['value']"
+            }
+          ],
+          "text": "{\"answer\": 0.0226921}"
+        },
+        {
+          "id": "mt-0039",
+          "family": "venturi_flow",
+          "got": 0.265801,
+          "passed": false,
+          "calls": 7,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"CN-87\", \"T\": \"80\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 0.265801}"
+        },
+        {
+          "id": "mt-0040",
+          "family": "hydrostatic_force",
+          "got": 20845.0,
+          "passed": false,
+          "calls": 6,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"CG-78\", \"T\": \"25\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 20845}"
+        },
+        {
+          "id": "mt-0041",
+          "family": "manning_channel",
+          "got": 1.67094,
+          "passed": true,
+          "calls": 6,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 1.67094}"
+        },
+        {
+          "id": "mt-0042",
+          "family": "pipe_head_loss",
+          "got": 0.640002,
+          "passed": false,
+          "calls": 8,
+          "refused": 2,
+          "asked": [
+            {
+              "name": "convert",
+              "args": "{\"from\": \"m^3/h\", \"to\": \"m^3/s\"}",
+              "error": "convert needs ['value']"
+            },
+            {
+              "name": "convert",
+              "args": "{\"from\": \"mm\", \"to\": \"m\"}",
+              "error": "convert needs ['value']"
+            }
+          ],
+          "text": "{\"answer\": 0.640002}"
+        },
+        {
+          "id": "mt-0043",
+          "family": "venturi_flow",
+          "got": 0.0247952,
+          "passed": false,
+          "calls": 7,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 0.0247952}"
+        },
+        {
+          "id": "mt-0044",
+          "family": "hydrostatic_force",
+          "got": 16965.1,
+          "passed": false,
+          "calls": 6,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"MJ-56\", \"T\": \"60\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 16965.1}"
+        },
+        {
+          "id": "mt-0045",
+          "family": "manning_channel",
+          "got": 9.45475,
+          "passed": true,
+          "calls": 6,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 9.45475}"
+        },
+        {
+          "id": "mt-0046",
+          "family": "pipe_head_loss",
+          "got": 0.639405,
+          "passed": false,
+          "calls": 8,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 0.639405}"
+        },
+        {
+          "id": "mt-0047",
+          "family": "venturi_flow",
+          "got": 0.187513,
+          "passed": true,
+          "calls": 7,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 0.187513}"
+        },
+        {
+          "id": "mt-0048",
+          "family": "hydrostatic_force",
+          "got": 23737.5,
+          "passed": true,
+          "calls": 6,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"WJ-86\", \"T\": \"40\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 23737.5}"
+        },
+        {
+          "id": "mt-0049",
+          "family": "manning_channel",
+          "got": 3.95267,
+          "passed": true,
+          "calls": 6,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 3.95267}"
+        },
+        {
+          "id": "mt-0050",
+          "family": "pipe_head_loss",
+          "got": 1.4177,
+          "passed": false,
+          "calls": 8,
+          "refused": 2,
+          "asked": [
+            {
+              "name": "convert",
+              "args": "{\"from\": \"m^3/h\", \"to\": \"m^3/s\"}",
+              "error": "convert needs ['value']"
+            },
+            {
+              "name": "convert",
+              "args": "{\"from\": \"mm\", \"to\": \"m\"}",
+              "error": "convert needs ['value']"
+            }
+          ],
+          "text": "{\"answer\": 1.4177}"
+        },
+        {
+          "id": "mt-0051",
+          "family": "venturi_flow",
+          "got": 0.105938,
+          "passed": false,
+          "calls": 7,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"WP-6\", \"T\": \"80\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 0.105938}"
+        },
+        {
+          "id": "mt-0052",
+          "family": "hydrostatic_force",
+          "got": 13724.9,
+          "passed": false,
+          "calls": 6,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 13724.9}"
+        },
+        {
+          "id": "mt-0053",
+          "family": "manning_channel",
+          "got": 0.244361,
+          "passed": true,
+          "calls": 6,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 0.244361}"
+        },
+        {
+          "id": "mt-0054",
+          "family": "pipe_head_loss",
+          "got": 7.90418,
+          "passed": false,
+          "calls": 8,
+          "refused": 2,
+          "asked": [
+            {
+              "name": "convert",
+              "args": "{\"from\": \"L/min\", \"to\": \"m^3/s\"}",
+              "error": "convert needs ['value']"
+            },
+            {
+              "name": "convert",
+              "args": "{\"from\": \"cm\", \"to\": \"m\"}",
+              "error": "convert needs ['value']"
+            }
+          ],
+          "text": "{\"answer\": 7.90418}"
+        },
+        {
+          "id": "mt-0055",
+          "family": "venturi_flow",
+          "got": 0.0585363,
+          "passed": false,
+          "calls": 7,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"XP-9\", \"T\": \"80\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 0.0585363}"
+        },
+        {
+          "id": "mt-0056",
+          "family": "hydrostatic_force",
+          "got": 19873.6,
+          "passed": false,
+          "calls": 6,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"JY-59\", \"T\": \"80\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 19873.6}"
+        },
+        {
+          "id": "mt-0057",
+          "family": "manning_channel",
+          "got": 9.59334,
+          "passed": true,
+          "calls": 6,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 9.59334}"
+        },
+        {
+          "id": "mt-0058",
+          "family": "pipe_head_loss",
+          "got": 86.0101,
+          "passed": false,
+          "calls": 8,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 86.0101}"
+        },
+        {
+          "id": "mt-0059",
+          "family": "venturi_flow",
+          "got": 0.0207504,
+          "passed": false,
+          "calls": 7,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"MA-48\", \"T\": \"20\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 0.0207504}"
+        },
+        {
+          "id": "mt-0060",
+          "family": "hydrostatic_force",
+          "got": 134482.0,
+          "passed": false,
+          "calls": 6,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"TN-9\", \"T\": \"10\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 134482}"
+        },
+        {
+          "id": "mt-0061",
+          "family": "manning_channel",
+          "got": 6.34385,
+          "passed": true,
+          "calls": 6,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 6.34385}"
+        },
+        {
+          "id": "mt-0062",
+          "family": "pipe_head_loss",
+          "got": 0.026,
+          "passed": false,
+          "calls": 8,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 0.0260}"
+        },
+        {
+          "id": "mt-0063",
+          "family": "venturi_flow",
+          "got": 0.0854138,
+          "passed": false,
+          "calls": 7,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"HH-36\", \"T\": \"10\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 0.0854138}"
+        },
+        {
+          "id": "mt-0064",
+          "family": "hydrostatic_force",
+          "got": 7569.83,
+          "passed": false,
+          "calls": 6,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"ZL-72\", \"T\": \"25\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 7569.83}"
+        },
+        {
+          "id": "mt-0065",
+          "family": "manning_channel",
+          "got": 0.371755,
+          "passed": true,
+          "calls": 6,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 0.371755}"
+        },
+        {
+          "id": "mt-0066",
+          "family": "pipe_head_loss",
+          "got": 0.552664,
+          "passed": false,
+          "calls": 8,
+          "refused": 2,
+          "asked": [
+            {
+              "name": "convert",
+              "args": "{\"from\": \"L/min\", \"to\": \"m^3/s\"}",
+              "error": "convert needs ['value']"
+            },
+            {
+              "name": "convert",
+              "args": "{\"from\": \"mm\", \"to\": \"m\"}",
+              "error": "convert needs ['value']"
+            }
+          ],
+          "text": "{\"answer\": 0.552664}"
+        },
+        {
+          "id": "mt-0067",
+          "family": "venturi_flow",
+          "got": 0.187527,
+          "passed": false,
+          "calls": 7,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"SP-28\", \"T\": \"25\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 0.187527}"
+        },
+        {
+          "id": "mt-0068",
+          "family": "hydrostatic_force",
+          "got": 4434.92,
+          "passed": false,
+          "calls": 6,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"CF-4\", \"T\": \"80\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 4434.92}"
+        },
+        {
+          "id": "mt-0069",
+          "family": "manning_channel",
+          "got": 12.1317,
+          "passed": true,
+          "calls": 6,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 12.1317}"
+        },
+        {
+          "id": "mt-0070",
+          "family": "pipe_head_loss",
+          "got": 0.0439983,
+          "passed": false,
+          "calls": 8,
+          "refused": 2,
+          "asked": [
+            {
+              "name": "convert",
+              "args": "{\"from\": \"m^3/h\", \"to\": \"m^3/s\"}",
+              "error": "convert needs ['value']"
+            },
+            {
+              "name": "convert",
+              "args": "{\"from\": \"mm\", \"to\": \"m\"}",
+              "error": "convert needs ['value']"
+            }
+          ],
+          "text": "{\"answer\": 0.0439983}"
+        },
+        {
+          "id": "mt-0071",
+          "family": "venturi_flow",
+          "got": 0.0329321,
+          "passed": true,
+          "calls": 7,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 0.0329321}"
+        },
+        {
+          "id": "mt-0072",
+          "family": "hydrostatic_force",
+          "got": 130202.0,
+          "passed": false,
+          "calls": 6,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"ZD-97\", \"T\": \"40\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 130202}"
+        },
+        {
+          "id": "mt-0073",
+          "family": "manning_channel",
+          "got": 11.1176,
+          "passed": true,
+          "calls": 6,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 11.1176}"
+        },
+        {
+          "id": "mt-0074",
+          "family": "pipe_head_loss",
+          "got": 0.101,
+          "passed": false,
+          "calls": 8,
+          "refused": 2,
+          "asked": [
+            {
+              "name": "convert",
+              "args": "{\"from\": \"m^3/h\", \"to\": \"m^3/s\"}",
+              "error": "convert needs ['value']"
+            },
+            {
+              "name": "convert",
+              "args": "{\"from\": \"cm\", \"to\": \"m\"}",
+              "error": "convert needs ['value']"
+            }
+          ],
+          "text": "{\"answer\": 0.101}"
+        },
+        {
+          "id": "mt-0075",
+          "family": "venturi_flow",
+          "got": 0.036454,
+          "passed": false,
+          "calls": 7,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"RN-12\", \"T\": \"40\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 0.036454}"
+        },
+        {
+          "id": "mt-0076",
+          "family": "hydrostatic_force",
+          "got": 8879.64,
+          "passed": false,
+          "calls": 6,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"JX-45\", \"T\": \"20\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 8879.64}"
+        },
+        {
+          "id": "mt-0077",
+          "family": "manning_channel",
+          "got": 3.06803,
+          "passed": true,
+          "calls": 6,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 3.06803}"
+        },
+        {
+          "id": "mt-0078",
+          "family": "pipe_head_loss",
+          "got": 0.708599,
+          "passed": false,
+          "calls": 8,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 0.708599}"
+        },
+        {
+          "id": "mt-0079",
+          "family": "venturi_flow",
+          "got": 0.0515461,
+          "passed": false,
+          "calls": 7,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"AS-4\", \"T\": \"80\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 0.0515461}"
+        },
+        {
+          "id": "mt-0080",
+          "family": "hydrostatic_force",
+          "got": 2484.01,
+          "passed": true,
+          "calls": 6,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"MN-22\", \"T\": \"20\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 2484.01}"
+        },
+        {
+          "id": "mt-0081",
+          "family": "manning_channel",
+          "got": 2.83711,
+          "passed": true,
+          "calls": 6,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 2.83711}"
+        },
+        {
+          "id": "mt-0082",
+          "family": "pipe_head_loss",
+          "got": 0.99607,
+          "passed": false,
+          "calls": 8,
+          "refused": 2,
+          "asked": [
+            {
+              "name": "convert",
+              "args": "{\"from\": \"m^3/h\", \"to\": \"m^3/s\"}",
+              "error": "convert needs ['value']"
+            },
+            {
+              "name": "convert",
+              "args": "{\"from\": \"cm\", \"to\": \"m\"}",
+              "error": "convert needs ['value']"
+            }
+          ],
+          "text": "{\"answer\": 0.99607}"
+        },
+        {
+          "id": "mt-0083",
+          "family": "venturi_flow",
+          "got": 0.461065,
+          "passed": false,
+          "calls": 7,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"VV-79\", \"T\": \"40\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 0.461065}"
+        },
+        {
+          "id": "mt-0084",
+          "family": "hydrostatic_force",
+          "got": 19580.7,
+          "passed": false,
+          "calls": 6,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"BW-33\", \"T\": \"20\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 19580.7}"
+        },
+        {
+          "id": "mt-0085",
+          "family": "manning_channel",
+          "got": 0.380007,
+          "passed": true,
+          "calls": 6,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 0.380007}"
+        },
+        {
+          "id": "mt-0086",
+          "family": "pipe_head_loss",
+          "got": 232.449,
+          "passed": false,
+          "calls": 8,
+          "refused": 2,
+          "asked": [
+            {
+              "name": "convert",
+              "args": "{\"from\": \"m^3/h\", \"to\": \"m^3/s\"}",
+              "error": "convert needs ['value']"
+            },
+            {
+              "name": "convert",
+              "args": "{\"from\": \"cm\", \"to\": \"m\"}",
+              "error": "convert needs ['value']"
+            }
+          ],
+          "text": "{\"answer\": 232.449}"
+        },
+        {
+          "id": "mt-0087",
+          "family": "venturi_flow",
+          "got": 0.106258,
+          "passed": false,
+          "calls": 7,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"WQ-50\", \"T\": \"10\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 0.106258}"
+        },
+        {
+          "id": "mt-0088",
+          "family": "hydrostatic_force",
+          "got": 25011.9,
+          "passed": false,
+          "calls": 6,
+          "refused": 1,
+          "asked": [
+            {
+              "name": "lookup",
+              "args": "{\"fluid\": \"GF-20\", \"T\": \"10\"}",
+              "error": "lookup needs ['property']"
+            }
+          ],
+          "text": "{\"answer\": 25011.9}"
+        },
+        {
+          "id": "mt-0089",
+          "family": "manning_channel",
+          "got": 3.19706,
+          "passed": true,
+          "calls": 6,
+          "refused": 0,
+          "asked": [],
+          "text": "{\"answer\": 3.19706}"
+        }
+      ],
+      "gate": {
+        "beats_the_bar": null,
+        "accuracy": 0.2667
+      }
+    }
+  },
+  "identity_gate": {
+    "email-full": {
+      "differs_from_base": true
+    },
+    "fluids-full": {
+      "differs_from_base": true
+    }
+  },
+  "members_are_distinct": true,
+  "finished": "2026-09-15T11:28:12"
+}
