@@ -684,6 +684,46 @@ llamadas, 0 rechazadas, 0 sin decidir**. Eso ahora es un test y no una esperanza
 **Ningún modelo entrenado corrió sobre esta suite** — el stub prueba la plomería, no
 el pool.
 
+#### P35 — el vocabulario es aprendible, y aprenderlo cuesta la disposición
+
+[`results/P35-email-kernel-20260914/`](../../results/P35-email-kernel-20260914/BRIEF.md).
+Un kernel entrenado sobre 600 ejemplos de los **nombres de las herramientas de email
+y nada sobre triage**, servido sobre Qwen2.5-3B con la compuerta de identidad
+`applied` antes de puntuar un solo caso.
+
+| brazo | pidió en | llamadas | rechazadas | mensajes humanos |
+|---|--:|--:|--:|--:|
+| base (P31) | 0/150 | 0 | 0 | 39/113 = 0,345 |
+| kernel-mt, herramientas de física (P34) | **123/150** | 127 | **127** | 39/113 = 0,345 |
+| **kernel-email (P35)** | **22/150** | 44 | **0** | 42/113 = 0,372 |
+
+**El vocabulario se aprendió**: las 44 preguntas fueron contestadas — nombres
+correctos, claves correctas, **0 rechazadas** contra las 127 de P34. Ese era el hueco
+que P34 dejó abierto, y se cerró **[ran]**.
+
+**Y enseñarlo costó la disposición**: preguntar cayó de **123 de 150 casos a 22**. Es
+la cuarta salida que el brief nombró de antemano, y la razón se ve en el corpus —
+enseña cuatro *formas de pregunta*, y un prompt de triage no es ninguna. El adaptador
+aprendió *preguntá cuando la pregunta se vea así*; el kernel de física, entrenado en
+otro dominio por completo, había generalizado *preguntá cuando te falte un dato*.
+
+**Ningún brazo clarea la compuerta**, y los tres **empatan** en exactitud: base contra
+kernel-email es **0:3 discordante, p = 0,250**, la misma forma de afirmación retirada
+de P15 esta mañana. **El confundido pre-registrado está muerto** — `strip_calls` deja
+un `= {…}` fabricado en el contenido y **0 de 150** lo llevan, así que el modelo no
+contestó desde su propia invención.
+
+**El enunciado más filoso de la tesis del pool.** El uso de herramientas no es una
+capacidad que un LoRA lleva o no lleva. Son al menos dos, y generalizan distinto:
+
+| | cómo transfiere |
+|---|---|
+| **disposición a preguntar** | ampliamente pero vagamente — estira la mano en 123 de 150 casos, con el vocabulario equivocado |
+| **vocabulario** | precisamente pero angostamente — pregunta bien siempre, sólo para las formas que entrenó |
+
+Ninguna sola alcanza el margen, así que la pregunta siguiente del pool es si las dos
+**componen** — la forma que P8 ya midió para física, secuencialmente y por turnos.
+
 #### P34 — el protocolo transfiere como conducta, no como vocabulario
 
 [`results/P34-protocol-transfer-20260914/`](../../results/P34-protocol-transfer-20260914/BRIEF.md).

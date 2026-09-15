@@ -89,3 +89,66 @@ incomparable with P34's.
 
 Not a comparison with `kernel-mt`. P34 already measured that arm, and re-running it
 would buy a number this brief can cite.
+
+---
+
+# Result — 2026-09-14 **[ran]**
+
+`triage_results.json`. `kernel-email` trained on 600 examples, served over
+Qwen2.5-3B, **identity gate `applied`** before a single case was scored.
+
+| arm | asked in | calls | refused | human messages |
+|---|--:|--:|--:|--:|
+| base (P31) | 0/150 | 0 | 0 | 39/113 = 0.345 |
+| kernel-mt, physics tools (P34) | **123/150** | 127 | **127** | 39/113 = 0.345 |
+| **kernel-email (P35)** | **22/150** | 44 | **0** | 42/113 = 0.372 |
+
+## Two findings, and the second is the surprising row
+
+**The vocabulary is learnable and was learned.** Every one of the 44 asks was
+answered — right names, right argument keys, **0 refused** against P34's 127. That
+was precisely the gap P34 left open, and it closed.
+
+**And teaching it cost the disposition.** Asking collapsed from **123 of 150 cases
+to 22**. That is the fourth outcome this brief named in advance — *"training on this
+vocabulary cost the disposition P34 measured — the most surprising outcome, and the
+one that would most change the plan"* — and it is what happened.
+
+The likely reason is visible in the corpus: it teaches **four question shapes**, and
+a triage prompt is not one of them. The adapter appears to have learned *ask when the
+question looks like this*, not *ask whenever you lack a fact*. The physics kernel,
+trained on a different domain entirely, generalised the second and not the first.
+
+## The gate, and the confound that is ruled out
+
+**42/113 against 83/113 needed, p = 1.000 — it does not clear.** And all three arms
+**tie** on accuracy: base vs kernel-email is **0:3 discordant, p = 0.250**, which is
+the same shape of claim this project withdrew from P15 earlier today. Three cases is
+not a result.
+
+**The pre-registered confound is dead.** `strip_calls` leaves a fabricated `= {…}`
+in the final content, and **0 of 150** cases carry one. The model did not answer from
+its own invention, so "calls accepted, score unmoved" is **not** the serving shape —
+it is the second reading this brief named: **the protocol is learnable and the
+judgement is the missing half.**
+
+## What this establishes for the pool
+
+The two halves of tool use come apart, and each one transfers **differently**:
+
+| | how it transfers |
+|---|---|
+| **disposition to ask** | **broadly but vaguely** — a physics kernel makes the base reach for email tools in 123 of 150 cases, in the wrong vocabulary |
+| **vocabulary** | **precisely but narrowly** — an email kernel asks correctly every time, and only for the question shapes it was trained on |
+
+**Neither alone reaches the margin.** That is a sharper statement of the pool thesis
+than the project had this morning: a capability is not one thing that a LoRA either
+carries or does not. It is at least two, with different generalisation, and the pool's
+question becomes whether they can be **composed** — which is the shape P8 already
+measured for physics, sequentially and by taking turns.
+
+## What is not claimed
+
+Nothing about triage quality. No arm has cleared the bar, and the 0.320 of margin is
+still unclaimed. **The judgement half has not been built**, and this step deliberately
+did not build it.
