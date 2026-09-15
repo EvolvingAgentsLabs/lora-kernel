@@ -64,3 +64,37 @@ def test_the_result_file_records_what_crosses(tmp_path, monkeypatch):
     st.main()
     d = json.loads((tmp_path / "tunnel.json").read_text())
     assert d["pool"] == ["e"] and d["status"] == "vllm never came up"
+
+
+# ---------------------------------------------------------------------------
+# THE LONG WORK BELONGS ON THE VM, NOT ON THE USER'S LAPTOP.
+#
+# A 475-case scoring run was killed by the user pausing their machine, and it could
+# not be moved onto the VM afterwards: once the chain exits it takes the session
+# NAME with it, and `colab exec` addresses sessions by name. The tunnel stayed
+# reachable over HTTP and the VM stayed unreachable for anything else
+# **[ran]** 2026-09-15.
+# ---------------------------------------------------------------------------
+
+def test_the_score_flag_parses_a_model_and_a_count():
+    model, _, n = "email-full:475".partition(":")
+    assert model == "email-full" and n == "475"
+
+
+def test_a_count_left_off_falls_back_rather_than_crashing():
+    model, _, n = "email-full".partition(":")
+    assert model == "email-full" and (n or "150") == "150"
+
+
+def test_scoring_is_optional_and_off_by_default():
+    """A tunnel opened for interactive use must not start a 25-minute run."""
+    import inspect
+    src = inspect.getsource(st.main)
+    assert '"--score", default=None' in src
+
+
+def test_the_reason_the_vm_scores_itself_is_recorded_in_the_code():
+    """So the next person does not helpfully move it back to the laptop."""
+    import inspect
+    src = inspect.getsource(st)
+    assert "session NAME" in src and "pausing their machine" in src
