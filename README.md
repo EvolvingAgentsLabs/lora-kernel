@@ -5,8 +5,18 @@ Nothing else is neural.
 
 *[Léeme en español](README.es.md)*
 
-> **Status: specified, nothing built.** Every claim about a system outside this
-> repository is marked **[read]** and cited. There is no **[ran]** yet.
+> **Status: built and measuring.** ~~specified, nothing built; there is no [ran]
+> yet~~ — stale since 2026-09-08 and corrected on 2026-09-15. Every claim about a
+> system outside this repository is still marked **[read]** and cited; claims about
+> this one are marked **[ran]** with the run directory that produced them.
+>
+> **Where it stands:** two adapters serve from one resident base, selected by the
+> `model` field of an HTTP request. **One of them is good** — it beats the base
+> 8 : 51 on the same cases. **One of them is not** — it follows the protocol
+> perfectly and gets the physics wrong 78 times in 90. Sending that one to a
+> frontier model takes delivered accuracy from **0.546 to 0.775** with 38% of cases
+> leaving the machine. *A pool with two useful members is what this does not yet
+> have.*
 
 ---
 
@@ -41,6 +51,13 @@ That property is what makes this architecture work, and it is why **the choice o
 target is the whole design**:
 
 > **The target is a frontier model.** The experts are its drafters.
+
+**Restated 2026-09-15.** The frontier was scaffolding, to be withdrawn once the
+experts matched it. It is not being withdrawn: it is **the fallback for what the
+experts are measured to fail at**, and the design question moved with it — from
+*can we remove the target* to **can we tell, per case, when the local answer is
+good enough to keep**. Acceptance was a promotion criterion for training; its open
+job is now that trust decision **[ran]** `results/P41-routing-20260915/`.
 
 Because the target is frontier-grade, a high acceptance rate means something
 precise and valuable: *this small expert already produces what the frontier would

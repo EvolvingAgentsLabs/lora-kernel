@@ -1,11 +1,31 @@
 # lora-kernel — instructions for coding agents
 
-This repository has one job: find out whether **acceptance against a frontier
-target is a valid promotion criterion for small experts**, and then whether the
-frontier can be withdrawn without losing verified quality.
+This repository has one job: **build the agentic system as a pool of
+self-contained QLoRAs over one resident base, discover which of them are good
+enough to trust, and route what they cannot do to a frontier model.**
 
-Everything else — the adapter pool, the tournament, the kernel adapter, the
-verticals — is downstream of that and must not be built before it.
+~~find out whether acceptance against a frontier target is a valid promotion
+criterion for small experts, and then whether the frontier can be withdrawn
+without losing verified quality~~ — **restated 2026-09-15**, and the history is
+kept because the change was earned rather than chosen:
+
+- **The frontier is no longer scaffolding to withdraw. It is a permanent
+  component**, used where the local expert is measured to fail. P41 delivered
+  **0.546 → 0.775** by sending one failing subdomain away, with 38% of cases
+  leaving the machine **[ran]**.
+- **Acceptance is not retired; it moved.** It was a promotion criterion for
+  training. Its open job now is as a **routing signal** — deciding, per case,
+  whether the local answer can be trusted. That is the same question asked where
+  it pays.
+- **Experts are trained by ordinary supervised fine-tuning first**, and the
+  acceptance machinery is bought only to improve one that already exists (decided
+  2026-09-15, `docs/EXPERIMENT_PLAN.md` §11).
+- **Composition is out.** `harness.lora` is parked, not falsified: its measured
+  result — a physics kernel taking a base from 0 to 123 of 150 cases reaching for
+  email tools — stands and waits.
+
+Everything else — the tournament, the verticals, a router that picks the member —
+is downstream of a pool with **two useful members**, which it does not yet have.
 
 The workspace rules in `../AGENTS.md` apply here in full. What follows is what
 this repository adds.
@@ -35,13 +55,15 @@ So, the rules that keep a session on the project:
   machine is a 16 GB arm64 Mac: it cannot serve vLLM and cannot hold a 26B. Do
   not propose local training of a large model, and do not let the machine's
   limits shrink the experiment — move the experiment to Colab instead.
-- **The models this project uses are the ones the user named**:
-  `google/gemma-4-26B-A4B-it` and `google/gemma-4-E4B-it` for the adapters
-  (`gemma-4-12B-it` is the local baseline already measured), and small qwen3.5
-  models as candidates. Not a menu to re-litigate each session.
-- **Do not spend a session shopping for a target.** The frontier is scaffolding
-  and it is designed to be removed; if it fails its gate, record it and go back
-  to the adapters.
+- **The base is `Qwen/Qwen2.5-3B-Instruct`, and that is settled by measurement,
+  not preference.** P33 read it against a control: vLLM 0.29.0 loads a LoRA on
+  `Qwen3.5-4B`, logs that it did, and **serves the base anyway** **[ran]**. Gemma 4
+  is not a peft base (`Gemma4ClippableLinear` is not `nn.Linear`). Do not
+  re-litigate this; run `serve_openai --gate-only` against any new base instead.
+- **Do not spend a session shopping for a target.** `google/gemini-3.8-flash`
+  scores **66/90** on the fluids suite through the same client the local expert
+  uses **[ran]** P41. That is the fallback's number; a better one is a purchase,
+  not a prerequisite.
 - **When in doubt, the next step is the one that puts a weight delta on disk.**
 
 ## 1. The plan is the state
@@ -86,6 +108,26 @@ These are not style. Each one was paid for.
 - **Persist every result as it lands, and stream position.** A run you cannot see
   the position of cannot be stopped early; a report written only at the end makes
   aborting cost everything.
+- **A corpus must teach the prompt the model will be served.** The proxy appends
+  the tool surface with arguments in **alphabetical** order; a corpus trained on the
+  bare statement produced **71 refusals of 606 calls that looked like physics** and
+  voided a whole run **[ran]** P38. Build the corpus by *calling* `render_tools`, not
+  by copying what it prints — the copy is what drifted.
+- **Keep the chain, not the last line.** A routing decision is made per case and
+  reads the chain; P40 stored `{"answer": 35584.2}` and the question the pool exists
+  to answer was not computable from a finished run **[ran]**.
+- **A threshold inside the run-to-run spread reports the scheduler.** The same
+  adapter, the same cases, temperature 0, scored **84, 81, 82** against a gate
+  demanding 83 — every pair a tie **[ran]** P36/P38/P40. vLLM is not deterministic
+  run to run. Read a clears/does-not verdict *beside* the paired comparison, never
+  instead of it, and say which one is marginal.
+- **A guard that reads source must read the code.** Three guards in one day fired on
+  prose describing the absence they check for — `automated` inside an automated
+  email's body, `fluid` inside a comment saying *no fluid names*, the broken idiom
+  inside the comment documenting it **[ran]** 2026-09-15.
+- **`grep -c` prints its zero and exits 1**, so `$(… | grep -c X || echo 0)` is
+  `"0\n0"`. That made a weights rescue skip itself and cost a trained adapter
+  **[ran]**. Use `weights_in()` in `chain_separate.sh`.
 - **Count instrument redesigns.** Once is fine, twice is suspicious, three times
   is looking for the result. The stopping condition goes into the plan before the
   run.
@@ -131,5 +173,12 @@ open a PR and merge it to `main`.**
 ## 7. What is out of scope until the plan says otherwise
 
 Cross-adapter KV cache work, tree attention across adapters, a bespoke inference
-runtime, vertical packs, the control plane. All of it is downstream of the
-withdrawal gap in [`docs/EXPERIMENT_PLAN.md`](docs/EXPERIMENT_PLAN.md) §S5.
+runtime, vertical packs, the control plane. ~~All of it is downstream of the
+withdrawal gap in §S5.~~ **Restated 2026-09-15**: the withdrawal gap is closed and
+the frontier is staying, so all of it is now downstream of **a pool with two useful
+members** — which needs a second expert that clears its own bar, and a routing
+signal that can see a chain which is coherent and wrong.
+
+**Composition and `harness.lora` are parked, not out of scope**: they return if
+producing self-contained experts turns out expensive at scale, with P34's result
+already paid for.

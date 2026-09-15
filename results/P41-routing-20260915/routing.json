@@ -1,0 +1,40 @@
+{
+  "policies": {
+    "everything local": {
+      "delivered": 131,
+      "n": 240,
+      "accuracy": 0.5458,
+      "escalated": 0,
+      "escalated_share": 0.0
+    },
+    "fluids to the frontier": {
+      "delivered": 186,
+      "n": 240,
+      "accuracy": 0.775,
+      "escalated": 90,
+      "escalated_share": 0.375
+    },
+    "by case \u00b7 fluids \u00b7 tripwire (has_left_its_region)": {
+      "n": 90,
+      "kept": 57,
+      "escalated": 33,
+      "escalated_share": 0.3667,
+      "delivered": 34,
+      "delivered_accuracy": 0.3778,
+      "kept_and_right": 8,
+      "sent_and_right": 26,
+      "records_without_a_chain": 0
+    },
+    "by case \u00b7 fluids \u00b7 quality gate (is_probably_wrong)": {
+      "n": 90,
+      "kept": 8,
+      "escalated": 82,
+      "escalated_share": 0.9111,
+      "delivered": 62,
+      "delivered_accuracy": 0.6889,
+      "kept_and_right": 0,
+      "sent_and_right": 62,
+      "records_without_a_chain": 0
+    }
+  }
+}

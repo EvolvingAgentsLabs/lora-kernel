@@ -5,8 +5,18 @@ base.** Nada más es neuronal.
 
 *[Read this in English](README.md)*
 
-> **Estado: especificado, nada construido.** Toda afirmación sobre un sistema
-> externo va marcada **[read]** y citada. Todavía no hay ningún **[ran]**.
+> **Estado: construido y midiendo.** ~~especificado, nada construido; todavía no
+> hay ningún [ran]~~ — desactualizado desde el 2026-09-08 y corregido el
+> 2026-09-15. Toda afirmación sobre un sistema externo sigue marcada **[read]** y
+> citada; las que son sobre éste van marcadas **[ran]** con el directorio de la
+> corrida que las produjo.
+>
+> **Dónde está:** dos adaptadores se sirven desde una base residente, elegidos por
+> el campo `model` de un request HTTP. **Uno es bueno** — le gana a la base 8 : 51
+> sobre los mismos casos. **El otro no** — sigue el protocolo a la perfección y se
+> equivoca en la física 78 veces de 90. Mandar ése a un modelo de frontera lleva la
+> entrega de **0,546 a 0,775**, con el 38% de los casos saliendo de la máquina.
+> *Un pool con dos miembros útiles es lo que todavía no tiene.*
 
 ---
 
@@ -41,6 +51,14 @@ Esa propiedad es lo que hace funcionar a esta arquitectura, y por eso **la
 elección del target es todo el diseño**:
 
 > **El target es un modelo de frontera.** Los expertos son sus drafters.
+
+**Reformulado el 2026-09-15.** La frontera era andamio, a retirar cuando los
+expertos la igualaran. No se está retirando: es **el fallback para lo que los
+expertos fallan, medido**, y la pregunta de diseño se movió con ella — de *¿podemos
+sacar el target?* a **¿podemos decir, caso por caso, cuándo la respuesta local
+alcanza?**. La aceptación era criterio de promoción para entrenar; su trabajo
+abierto es ahora esa decisión de confianza **[ran]**
+`results/P41-routing-20260915/`.
 
 Como el target es de frontera, una tasa de aceptación alta significa algo preciso
 y valioso: *este experto chico ya produce lo que la frontera habría producido, en

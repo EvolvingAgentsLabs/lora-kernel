@@ -684,6 +684,48 @@ llamadas, 0 rechazadas, 0 sin decidir**. Eso ahora es un test y no una esperanza
 **Ningún modelo entrenado corrió sobre esta suite** — el stub prueba la plomería, no
 el pool.
 
+#### P41 — rutear los fallos a la frontera, con la frontera medida
+
+[`results/P41-routing-20260915/`](../../results/P41-routing-20260915/) ·
+`training/harness/routing.py`. Los expertos del pool no son igual de buenos, así que
+la frontera deja de ser andamio a retirar y pasa a ser **fallback para lo que el
+experto local falla, medido**. Esto es eso, en números.
+
+**`google/gemini-3.8-flash` sobre la suite de fluidos, por el mismo cliente que usa
+el experto local: 66/90 = 0,733** **[ran]** — no 1,000, así que el `≤ 0,871` anterior
+era una cota y queda reemplazado por un resultado.
+
+| política | entrega | sale de la máquina |
+|---|--:|--:|
+| todo local | 0,546 | 0% |
+| **fluidos → frontera, por región** | **0,775** | **38%** |
+| por caso · tripwire `has_left_its_region` | 0,378 | 37% |
+| por caso · quality gate `is_probably_wrong` | 0,689 | 91% |
+
+**El ruteo por región funciona y paga: +0,23 entregado, y el 62% del trabajo se queda
+sobre una base residente.** Ése es el argumento económico del pool enunciado como
+medición y no como esperanza — le pagamos a la frontera sólo la parte que medimos que
+no sabemos hacer.
+
+**Y el ruteo por caso es PEOR que por región, que es el hallazgo.** Las dos reglas de
+escalación — construidas y medidas en P19/P21 — detectan una cadena **dimensional o
+mecánicamente inconsistente**. Las cadenas de este experto son perfectamente
+consistentes y la física está mal: sigue el procedimiento, las unidades cierran, la
+aritmética cierra, y la respuesta no es la correcta. **Las reglas buscan un fallo que
+este experto no tiene.**
+
+Así que el problema abierto es filoso y es nuevo: **una señal de ruteo que vea una
+cadena coherente y equivocada.** Ahí es exactamente donde la maquinaria de aceptación
+estacionada tiene trabajo — no como criterio de promoción para entrenar, sino como la
+decisión de confianza por caso — y es la razón por la que la reformulación de §11 la
+conserva en vez de retirarla.
+
+**Dos hallazgos de instrumento pagados acá.** La frontera sacó primero **0/4**, y
+reportarlo habría dicho *"la frontera tampoco puede con esta suite"* — la conclusión
+más interesante y más falsa disponible. Era una herramienta rechazando `T=20 C` por su
+redacción y un tope de tokens cortado a la medida de un experto cuyos mensajes finales
+tienen 19 caracteres. Arreglado, sacó **5/6** en la misma sonda **[ran]**.
+
 #### P37–P40 — el pool sirve dos expertos, y sólo uno es bueno
 
 [`results/P40-pool-retried-20260915/`](../../results/P40-pool-retried-20260915/BRIEF.md).
