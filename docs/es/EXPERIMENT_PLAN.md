@@ -1740,6 +1740,44 @@ una decisión, no una corrida: fijar otra versión de vLLM, o reentrenar el pool
 `q_proj`/`k_proj` y volver a probar. Las dos son baratas; elegir entre ellas no le
 toca a esta sesión.
 
+### Tomada el 2026-09-15: se deja la composición, y `harness.lora` se estaciona con ella
+
+**Decisión del usuario, y el diagnóstico es correcto.** `harness.lora` es justamente
+lo que requiere composición — existe para que el protocolo se enseñe una vez y cada
+experto no lo re-aprenda. Un experto que trae su propio protocolo no tiene trabajo
+para él.
+
+**La tesis queda intacta.** Un pool de QLoRAs **autocontenidos** sobre una base
+residente, intercambiados por request, sigue siendo *todo el sistema agéntico son
+QLoRAs*. La composición era una **optimización** — compartir el protocolo — no el
+enunciado. Sacarla saca maquinaria, no la pregunta.
+
+**Qué compra.** Lo único que este repositorio nunca midió limpiamente es la
+composición: el aparente "dos adaptadores interfieren" de P8 está anulado por un
+confound de notación, y P35 midió que partir tiene un costo real — el vocabulario se
+aprendió y preguntar cayó de 123 de 150 casos a 22. Sacar el split saca a la vez el
+mecanismo sin medir y el costo medido.
+
+**Qué cuesta, dicho en vez de descubierto.** Cada experto de subdominio nuevo paga
+aprender el protocolo otra vez. Es un costo de **datos de entrenamiento**, no de
+runtime, y es chico: 600 ejemplos y nueve minutos de L4 enseñaron el vocabulario de
+email con **0 rechazos** **[ran]** P35.
+
+**P34 queda estacionado, no falsificado.** Que un kernel entrenado sobre herramientas
+de mecánica de fluidos lleve a esta base de **0 a 123 de 150** casos estirando la mano
+hacia herramientas de email que nunca vio está medido y se sostiene. Es la única
+evidencia de que la idea del kernel tiene patas, y si producir expertos autocontenidos
+sale caro a escala, vuelve con ese resultado ya pago. Los adaptadores quedan en disco;
+no se borra nada.
+
+**P36 queda re-encuadrado por esto, antes de que existiera su número.** Se compró como
+techo — *si el margen es alcanzable siquiera* — con el brief insistiendo en que un
+monolito que clarea es sólo permiso para seguir midiendo. Bajo esta decisión **un
+monolito que clarea es el resultado**: el primer miembro del pool puntuando en su
+subdominio. Y un monolito que falla ya no significa *ninguna disposición del pool
+sirve*; significa **esta base no puede con este subdominio**, que es más angosto y más
+honesto.
+
 ### Tomada el 2026-09-15: primero los expertos supervisados, el mecanismo sólo si les gana
 
 **La propuesta del usuario, y se adopta.** Entrenar cada experto de subdominio con

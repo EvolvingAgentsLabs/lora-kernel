@@ -18,7 +18,31 @@ either — and composition, a judgement adapter and a wider protocol corpus woul
 three purchases made against a number that was never there. That is the headroom
 rule, and this is the cheapest way to apply it.
 
-## The monolith is the ceiling, not the thesis
+## Reframed 2026-09-15, before the number: this IS the thesis's first member
+
+**Decision taken mid-run**: composition is dropped for now, and with it
+`harness.lora` — the kernel adapter exists to be shared across experts, and an
+expert that carries its own protocol has no use for it. **The thesis is untouched**:
+a pool of self-contained QLoRAs over one resident base, swapped per request, is
+still *the whole agentic system is a pool of QLoRAs*. Composition was an
+optimisation — teach the protocol once — not the claim.
+
+So the section below is superseded on one point, and the correction is written
+**before the number exists** rather than after it:
+
+- ~~a monolith that clears is permission to keep measuring, not a result about the
+  architecture~~ — under this decision **a monolith that clears IS the result**: the
+  first pool member scoring on its subdomain.
+- The falsification gets smaller and more honest too. A monolith that fails no
+  longer means *no pool arrangement will work*; it means **this base cannot do this
+  subdomain**, which is a narrower claim and the right one.
+
+**P34 is parked, not falsified.** That a physics kernel takes this base from 0 to
+123 of 150 cases reaching for email tools is measured and stands. It is the only
+evidence the kernel idea has legs, and if self-contained experts turn out expensive
+to produce at scale, the kernel returns with that result already paid for.
+
+## ~~The monolith is the ceiling, not the thesis~~ — superseded above
 
 One adapter that learns **the tools and the judgement together** — the analogue of
 what P8 used in fluid mechanics, *one adapter that learned the physics and the
