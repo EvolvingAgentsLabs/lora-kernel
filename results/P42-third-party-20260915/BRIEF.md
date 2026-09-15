@@ -63,3 +63,71 @@ rather than as *the arms tied*.
 **Not that a third-party adapter is a pool member worth having.** Applying is not
 being useful. The useful-second-member problem is untouched by this step and stays
 open.
+
+---
+
+# Result — 2026-09-15 **[ran]**
+
+`third_party_results.json`.
+
+## The substrate generalises — a stranger's LoRA joins the pool
+
+```
+[3p] gate email-full (ours):  applied
+[3p] gate arc        (theirs): applied
+[3p] members differ from each other: True
+```
+
+A LoRA trained by someone else, published on HuggingFace, downloaded onto the VM and
+served **beside ours in one vLLM** — both distinct from the base and from each other.
+Their replies to the same probe say it without ambiguity:
+
+| member | "In one sentence, what are you?" |
+|---|---|
+| `email-full` (ours) | *"I am an artificial intelligence designed to answer questions and provide information."* |
+| `arc` (theirs) | *"I am an AI assistant created by Alibaba Cloud."* |
+
+**The substrate is not ours; it is vLLM's.** Every pool result before this used
+adapters from one script, at one rank, on the same seven modules. This is a claim a
+third party can now reproduce.
+
+## Half the candidates could not be loaded safely
+
+```
+persona: refused — no adapter_model.safetensors:
+         a .bin adapter is a pickle and is not loaded
+```
+
+The persona adapter is published as a **pickle**; loading it runs whatever is inside
+it, on a VM that had an API key in its environment. **The check fired on the first
+stranger's file this project ever touched**, and it refused one of the two
+candidates. For a deployment that mounts public adapters this is a required filter,
+not a laboratory precaution.
+
+## The accuracy arm should have been cancelled, and my rule bought it
+
+| | |
+|---|--:|
+| base on ARC | 163/200 = **0.815** |
+| their adapter | 165/200 = 0.825 |
+| paired | 6 : 8 discordant, **p = 0.791 — a tie** |
+
+The rule read *cancel if less than 0.10 of accuracy is left above the baseline*.
+0.185 was left, so it **bought**. But at n = 200 over a 0.815 baseline the power to
+see a **+0.05** adapter is **55%**, and to see the **+0.01** that actually appeared,
+**8%**. **The arm was unresolvable before it was purchased.**
+
+**Margin was never the right quantity.** The same margin buys very different
+resolution depending on where the baseline sits — variance is largest near 0.5 and
+collapses near 1.0. `bar.resolvable()` now asks the question the buyer has, and
+`bar.n_for()` reports the suite that *would* have resolved it: **466 cases**, not
+200.
+
+## What this does not claim
+
+**Not that the third-party adapter is useless** — the arm could not tell. Its own
+card reports a gain on ARC; this run neither confirms nor contradicts it, and says
+so rather than reporting a tie as a refutation.
+
+**Not a second useful pool member.** Applying is not being useful. That problem is
+exactly where it was.

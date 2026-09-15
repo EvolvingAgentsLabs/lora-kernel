@@ -122,3 +122,38 @@ def compare(a: dict, b: dict, alpha: float = 0.05) -> dict:
         "reading": ("the arms differ" if p <= alpha else
                     "a tie: the totals differ but the cases behind them do not"),
     }
+
+
+def resolvable(n: int, baseline: float, effect: float = 0.05,
+               alpha: float = 0.05, want: float = 0.80) -> dict:
+    """Can a run of `n` cases tell an `effect`-sized improvement from nothing?
+
+    HEADROOM IS A QUESTION ABOUT POWER, NOT ABOUT MARGIN, and P42 is what taught
+    that. Its rule was *cancel the arm if less than 0.10 of accuracy is left above
+    the baseline*. The base scored **0.815** on ARC, 0.185 was left, so the arm was
+    **bought** — and at n=200 over a 0.815 baseline the power to see a +0.05 adapter
+    is **55%**, and to see the +0.01 that actually appeared, **8%**. The arm was
+    unresolvable before it was purchased **[ran]** 2026-09-15.
+
+    Margin is the wrong quantity because the same margin buys very different
+    resolution depending on where the baseline sits: near 0.5 the variance is
+    largest and near 1.0 it collapses. Power asks the question the buyer has.
+    """
+    k = threshold(n, baseline, alpha)
+    got = sf(k, n, min(baseline + effect, 1.0))
+    return {"n": n, "baseline": round(baseline, 4), "effect": effect,
+            "passes_at": k, "power": round(got, 4), "want": want,
+            "resolvable": got >= want,
+            "why": (f"a +{effect:g} improvement would be seen {got:.0%} of the time; "
+                    f"buy the arm only above {want:.0%}")}
+
+
+def n_for(baseline: float, effect: float = 0.05, alpha: float = 0.05,
+          want: float = 0.80, cap: int = 5000) -> int | None:
+    """The smallest suite that could resolve `effect`. `None` if `cap` cannot."""
+    n = 10
+    while n <= cap:
+        if resolvable(n, baseline, effect, alpha, want)["resolvable"]:
+            return n
+        n = int(n * 1.3) + 1
+    return None

@@ -63,3 +63,43 @@ def test_the_gate_moves_with_the_bar_it_is_given():
     the other sample's bar is how a comparison quietly becomes wrong.
     """
     assert threshold(100, 0.667) < threshold(100, 0.80)
+
+
+# ---------------------------------------------------------------------------
+# HEADROOM IS A QUESTION ABOUT POWER, NOT ABOUT MARGIN.
+#
+# P42's rule was "cancel the arm if less than 0.10 of accuracy is left above the
+# baseline". The base scored 0.815 on ARC, 0.185 was left, the arm was **bought**
+# — and at n=200 it could see a +0.05 adapter 55% of the time and the +0.01 that
+# actually appeared 8% of the time **[ran]** 2026-09-15.
+# ---------------------------------------------------------------------------
+
+def test_the_margin_rule_would_have_bought_p42s_unresolvable_arm():
+    from training.harness.bar import resolvable
+    assert 1.0 - 0.815 > 0.10                      # the old rule said: buy
+    assert resolvable(200, 0.815, 0.05)["resolvable"] is False   # the new one: no
+
+
+def test_the_same_margin_buys_different_resolution_at_different_baselines():
+    """Which is why margin was never the right quantity: variance is largest near
+    0.5 and collapses near 1.0."""
+    from training.harness.bar import n_for
+    near_half = n_for(0.50, 0.05)
+    near_one = n_for(0.90, 0.05)
+    assert near_half and near_one and near_half > near_one
+
+
+def test_a_big_enough_effect_is_resolvable_on_a_tiny_suite():
+    from training.harness.bar import n_for
+    assert n_for(0.815, 0.20) < 50
+
+
+def test_it_reports_the_suite_that_would_have_worked():
+    from training.harness.bar import n_for
+    n = n_for(0.815, 0.05)
+    assert n is not None and n > 200, "P42 ran 200; it needed more"
+
+
+def test_an_unreachable_effect_returns_none_rather_than_a_number():
+    from training.harness.bar import n_for
+    assert n_for(0.999, 0.05, cap=200) is None
