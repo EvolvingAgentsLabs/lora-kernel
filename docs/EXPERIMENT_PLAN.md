@@ -662,6 +662,40 @@ assembled and not measured; an OpenAI client sending `tools=[…]`, reading
 trained model has been run on this suite** — the stub proves the plumbing, not the
 pool.
 
+#### P44 — the confidence this pool already has does not order its errors
+
+[`results/P44-calibration-20260915/`](../results/P44-calibration-20260915/BRIEF.md).
+A headroom check bought **before** any typed adapter was trained, because the
+proposal in [`docs/analysis/typed-adapters.md`](analysis/typed-adapters.md) rests on
+a claim — *a first-token logprob is a poor proxy* — that arrived **[read]** from a
+brief citing a lab with no public benchmark, and that is testable on our own model
+for free.
+
+| | `email-full` | base |
+|---|--:|--:|
+| accuracy, **no tools** | 0.425 | 0.345 |
+| **mean confidence** | **0.902** | **0.999** |
+| ECE | 0.478 | 0.654 |
+| **AURC** | **0.612** | 0.627 |
+| oracle floor | 0.213 | 0.289 |
+| **gap** | **0.400** | **0.338** |
+
+**The base says it is 99.9% sure and is right 34% of the time** **[ran]**.
+
+**The pre-registered middle row is what makes this readable.** A confidence that is
+miscalibrated but *rankable* is fixed by temperature scaling, which costs no
+training — and that would have been the honest answer to a large ECE alone. **These
+are not rankable**: 0.40 and 0.34 above the floor. The typed arm is **bought**, not
+tied and not cancelled.
+
+**The caveat travels with the numbers**: these accuracies are tool-free, one forward
+pass from the listing, which is why 0.425 and not P43's 0.741. That is the
+like-for-like baseline a typed head would face, and it is not the expert doing its
+job.
+
+**The floor to beat is now explicit**: AURC gap **0.400** on 351 cases, with
+`bar.calibration()` as the instrument.
+
 #### P43 — the end-to-end runs, and the gate can finally decide
 
 [`results/P43-openclaw-e2e-20260915/`](../results/P43-openclaw-e2e-20260915/BRIEF.md).

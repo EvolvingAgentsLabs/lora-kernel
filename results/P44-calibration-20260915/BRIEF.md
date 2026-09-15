@@ -55,3 +55,61 @@ easy suite a useless confidence still scores well.
 **Not that a typed adapter would be better.** This measures what exists. Whether a
 restricted softmax trained with a proper scoring rule beats it is the next arm, and
 it is only worth buying if this one leaves room.
+
+---
+
+# Result — 2026-09-15 **[ran]**
+
+`confidence.json`. 475 messages, 351 human, **a confidence read on every one of
+475 for both arms** — so the serving path is not the story.
+
+| | `email-full` | base |
+|---|--:|--:|
+| accuracy, **no tools** | 0.425 | 0.345 |
+| **mean confidence** | **0.902** | **0.999** |
+| ECE | 0.478 | **0.654** |
+| Brier | 0.498 | 0.654 |
+| **AURC** | **0.612** | 0.627 |
+| oracle floor | 0.213 | 0.289 |
+| **gap** | **0.400** | **0.338** |
+
+**The base says it is 99.9% sure and is right 34% of the time.** The expert says 90%
+and is right 42%.
+
+## The pre-registered reading: the typed arm is bought
+
+The brief named three outcomes before the numbers existed, and this is the third:
+
+- ~~small gap → cancelled~~ — the gap is **0.40**.
+- ~~large ECE with a small gap → temperature scaling, not a typed head~~ — **this is
+  the row that mattered and it does not apply.** A confidence that is miscalibrated
+  but *rankable* is fixed by a post-processing step costing no training. **These are
+  not rankable**: 0.40 and 0.34 above the floor.
+- **large gap → bought.** The confidence is on the wire and it does not order the
+  errors.
+
+Writing that middle row in advance is what makes this readable. A large ECE alone
+would have been a bad reason to train anything.
+
+## What it establishes beyond this project
+
+The proposal's premise — *a first-token logprob is a poor proxy, biased by format,
+tokenisation and prompt* — arrived as **[read]** from a brief citing a lab with no
+public paper or benchmark. **It is now [ran] on our own model**, and the failure is
+not subtle: near-saturated confidence on a task the model gets wrong more often than
+right.
+
+## The caveat that travels with the numbers
+
+**These accuracies are tool-free**: one forward pass from the listing, no
+`thread_history`, no `sender_stats`. That is why 0.425 and not the 0.741 P43
+measured. It is deliberate — **a typed adapter also answers in one forward pass
+without tools**, so this is the like-for-like baseline it would have to beat — but it
+is *not* the number for the expert doing its job, and it is not presented as one.
+
+## What is not claimed
+
+**Not that a typed head will fix this.** This measures what exists and says the room
+is there. Whether a restricted softmax trained with a proper scoring rule closes the
+gap is the next arm, and it now has a floor to beat: **AURC gap 0.400 for
+`email-full`**, on these 351 cases, with `bar.calibration()` as the instrument.
