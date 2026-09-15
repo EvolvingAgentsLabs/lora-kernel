@@ -162,12 +162,21 @@ def main() -> int:
         base_arc = score_arc(args.base, items)
         res["arms"]["base on ARC"] = base_arc
         OUT.write_text(json.dumps(res, indent=2))
+        # HEADROOM IS POWER, NOT MARGIN — and this line is what taught that. It used
+        # to read `cancel if 1 - accuracy < 0.10`; the base scored 0.815, 0.185 was
+        # left, the arm was bought, and at n=200 over a 0.815 baseline it could see
+        # a +0.05 adapter 55% of the time and the +0.01 that appeared 8% of the
+        # time. It was unresolvable before it was purchased **[ran]** 2026-09-15.
+        from training.harness.bar import n_for, resolvable
         bar = res["arc"]["majority_bar"]
-        room = 1.0 - base_arc["accuracy"]
+        rv = resolvable(len(items), base_arc["accuracy"], effect=0.05)
+        rv["n_that_would_resolve_it"] = n_for(base_arc["accuracy"], 0.05)
+        res["headroom"] = rv
         print(f"[3p] headroom: base {base_arc['accuracy']:.3f} against a bar of "
-              f"{bar:.3f} — {room:.3f} left above it", flush=True)
-        res["accuracy_arm"] = ("cancelled: the base is at the ceiling" if room < 0.10
-                               else "bought")
+              f"{bar:.3f} · {rv['why']}", flush=True)
+        res["accuracy_arm"] = ("bought" if rv["resolvable"] else
+                               f"cancelled: unresolvable at n={rv['n']}; "
+                               f"{rv['n_that_would_resolve_it']} cases would resolve it")
         print(f"[3p] accuracy arm: {res['accuracy_arm']}", flush=True)
 
         # THE SUBSTRATE ARM RUNS EITHER WAY — it does not depend on headroom.
