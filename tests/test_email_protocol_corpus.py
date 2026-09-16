@@ -93,7 +93,8 @@ def test_the_pool_knows_about_the_email_kernel():
     from training.harness.train_pool import POOL
     import pathlib
     assert "adapters/kernel-email" in POOL
-    corpus = pathlib.Path(POOL["adapters/kernel-email"])
+    # POOL entries are records now, not paths — see training/harness/contract.py.
+    corpus = pathlib.Path(POOL["adapters/kernel-email"]["corpus"])
     assert corpus.exists(), f"{corpus} is registered but not committed"
 
 
