@@ -237,12 +237,18 @@ def generate(n: int, seed: int, me: str = "me@ownmail.com",
 
 
 def tools_needed(case: dict) -> list[str]:
-    """Which tools the oracle has to call, given what the prompt already gave away."""
+    """Which tools the oracle has to call, given what the prompt already gave away.
+
+    `owed` and `counterpart` ask about the WHOLE inbox while the listing shows one
+    message, so they start with `inbox` — without it a model cannot learn that
+    `msg-007` exists and both regions would be unanswerable for every arm. See
+    `desk_tools.py`.
+    """
     need = {
         "importance": ["thread_history", "sender_stats", "message"],
-        "owed": ["thread_history", "message", "sender_stats"],
+        "owed": ["inbox", "message", "thread_history", "sender_stats"],
         "commitment": ["thread_history", "message", "sender_stats"],
-        "counterpart": ["sender_stats", "thread_history", "message"],
+        "counterpart": ["inbox", "sender_stats", "thread_history", "message"],
     }[case["region"]]
     return need[: max(1, case["depth"])]
 
