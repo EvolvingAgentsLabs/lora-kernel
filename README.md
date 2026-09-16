@@ -132,19 +132,21 @@ measured for free inside inference that was going to happen anyway.**
 ```mermaid
 flowchart TD
     P["PROMPT / CURRENT STATE"]
-    A["Draft QLoRA<br>clinical-admin"]
-    B["Draft QLoRA<br>contract-review"]
-    C["Draft QLoRA<br>incident-triage"]
-    T["TARGET — FRONTIER MODEL<br>one forward pass, tree attention"]
-    W["The branch the frontier accepted most wins<br>the expert that already thinks like the frontier, here"]
+    A["Draft QLoRA<br>importance"]
+    B["Draft QLoRA<br>owed"]
+    C["Draft QLoRA<br>commitment"]
+    T["TARGET — Qwen2.5-32B-Instruct-AWQ<br>same family, same tokenizer, same card"]
+    W["The branch the target accepted most wins<br>a ranking of experts that needs NO JUDGE"]
+    V["and the verifier, on the SAME cases<br>because a rejection is either model being wrong"]
 
     P --> A
     P --> B
     P --> C
-    A -- "branch: code this referral" --> T
-    B -- "branch: flag this clause" --> T
-    C -- "branch: page the on-call" --> T
+    A -- "branch" --> T
+    B -- "branch" --> T
+    C -- "branch" --> T
     T ==> W
+    W -.-> V
 
     classDef expert fill:#EAF1F9,stroke:#3E52A3,color:#15171B
     classDef target fill:#FDF4E6,stroke:#8A5C10,color:#15171B
@@ -152,6 +154,8 @@ flowchart TD
     class A,B,C expert
     class T target
     class W win
+    class V neutral
+    classDef neutral fill:#F4F3F0,stroke:#C4C4BF,color:#15171B
 ```
 
 Routing costs nothing extra. The tokens were generated. The verification pass was
@@ -174,20 +178,27 @@ surface Phase A produced. The answer is now assembled from the experts.
 
 ```mermaid
 flowchart LR
-    subgraph PA["PHASE A — the frontier is the target"]
+    subgraph PA["PHASE A — the LOCAL 32B is the target"]
         direction TB
-        A1["experts draft"] --> A2["FRONTIER verifies"] --> A3["α accumulates, per region"]
+        A1["experts draft"] --> A2["the 32B verifies,<br>token by token"] --> A3["acceptance accumulates,<br>per region"]
     end
-    subgraph PB["PHASE B — the frontier is gone"]
+    subgraph PB["PHASE B — the 32B is gone, for that region"]
         direction TB
-        B1["router selects"] --> B2["EXPERT generates"] --> B3["no frontier call"]
+        B1["a dict selects<br>(1.000 with twelve keywords)"] --> B2["EXPERT generates alone"] --> B3["no 32B call"]
     end
-    PA == "withdraw, per region, above your threshold" ==> PB
+    subgraph FR["THE FRONTIER — permanent, and never the target"]
+        direction TB
+        F1["what the pool is MEASURED to fail<br>0.546 → 0.775, 38% leaving"]
+    end
+    PA == "acceptance crossed AND the verified score held" ==> PB
+    PB -. "the regions no expert covers" .-> FR
 
     classDef a fill:#FDF4E6,stroke:#8A5C10,color:#15171B
     classDef b fill:#E7F1EA,stroke:#2E7D4F,color:#15171B
     class A1,A2,A3 a
     class B1,B2,B3 b
+    class F1 f
+    classDef f fill:#FCF3F1,stroke:#B0523C,color:#15171B
 ```
 
 |  | Phase A | Phase B |
@@ -203,6 +214,16 @@ is measured rather than argued.
 ## The four adapters, in detail
 
 ### 1. `harness.lora` — the kernel
+
+> **Parked 2026-09-15, and the section is kept because the reasons are the record.**
+> On the suite that measured it, a learned protocol scored **9/30** where twenty lines
+> of `re` scored **23/30** — that suite had one tool, so asking for it was copying an
+> expression already written **[ran]** P13. And splitting the capability cost the
+> disposition: taught the vocabulary separately, asking fell from **123 of 150 cases
+> to 22** **[ran]** P35. **Experts are self-contained now**, each declaring the band
+> its corpus taught (`training/harness/contract.py`), because an expert served outside
+> its band does not simplify — it over-solves, on **18 of 18** cases **[ran]** P45.
+
 
 One adapter trained on nothing but the execution protocol: tool-call syntax,
 **action tokens** (`<invoke_tool name="sql">`, `<eval_state>`, `<observe>`),

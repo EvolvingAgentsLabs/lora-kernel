@@ -50,19 +50,22 @@ Dos consecuencias definen este proyecto:
 flowchart LR
     E["un experto de dominio<br>afinado lejos de la base"]
     B["verificado por<br>LA BASE COMPARTIDA"]
-    F["verificado por<br>UN MODELO DE FRONTERA"]
-    RB["α alta significa:<br>este experto se alejó menos<br><b>anticorrelacionado con la pericia</b>"]
-    RF["α alta significa:<br>ya produce lo que produciría la frontera<br><b>una puntuación de destilación</b>"]
+    F["verificado por<br>UNA API DE FRONTERA"]
+    L["verificado por<br>UN MODELO MÁS GRANDE DE LA MISMA FAMILIA"]
+    RB["aceptación alta significa:<br>este experto se alejó menos<br><b>anticorrelacionado con la pericia</b>"]
+    RF["<b>IMPOSIBLE</b> — sin logprobs de una continuación<br>forzada, y otro tokenizer<br>C2, C3 · medido en P48"]
+    RL["aceptación alta significa:<br>ya produce lo que produciría el 32B, acá<br><b>un ranking que no necesita juez</b>"]
 
     E --> B --> RB
     E --> F --> RF
+    E --> L --> RL
 
     classDef bad fill:#FCF3F1,stroke:#B0523C,color:#15171B
     classDef good fill:#E7F1EA,stroke:#2E7D4F,color:#15171B
     classDef neutral fill:#F4F3F0,stroke:#C4C4BF,color:#15171B
-    class RB bad
-    class RF good
-    class E,B,F neutral
+    class RB,RF bad
+    class RL good
+    class E,B,F,L neutral
 ```
 
 La rama derecha es la arquitectura. La izquierda es la razón por la que el target

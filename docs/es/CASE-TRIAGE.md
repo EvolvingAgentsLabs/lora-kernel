@@ -112,7 +112,7 @@ flowchart TD
   P0["P30 ✓ el bucle cierra<br/>24 llamadas · 0 rechazadas · 0 sin decidir"] --> P1
   P1["Fase 1 — headroom<br/>modelo base, sin adaptador, sobre esta suite"] -->|"¿supera 0,680?"| P2
   P1 -->|"no"| X1["parar: la base no puede.<br/>otra base, no un entrenamiento"]
-  P2["Fase 2 — el target de frontera<br/>el modelo de la persona, misma suite"] -->|"¿brecha > 0,15?"| P3
+  P2["Fase 2 — la REFERENCIA<br/>un modelo más fuerte, sobre la misma suite"] -->|"¿brecha > 0,15?"| P3
   P2 -->|"no"| X2["parar: no hay nada que destilar"]
   P3["Fase 3 — entrenar triage-lora<br/>sobre los veredictos del target"] --> P4
   P4["Fase 4 — retirar la frontera<br/>volver a medir sin ella"] --> P5

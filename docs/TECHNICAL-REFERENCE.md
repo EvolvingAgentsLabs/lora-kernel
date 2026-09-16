@@ -49,19 +49,22 @@ Two consequences define this project:
 flowchart LR
     E["a domain expert<br>fine-tuned away from the base"]
     B["verified by<br>THE SHARED BASE"]
-    F["verified by<br>A FRONTIER MODEL"]
-    RB["high α means:<br>this expert drifted least<br><b>anti-correlated with expertise</b>"]
-    RF["high α means:<br>it already produces what the frontier would<br><b>a distillation score</b>"]
+    F["verified by<br>A FRONTIER API"]
+    L["verified by<br>A LARGER MODEL OF THE SAME FAMILY"]
+    RB["high acceptance means:<br>this expert drifted least<br><b>anti-correlated with expertise</b>"]
+    RF["<b>IMPOSSIBLE</b> — no logprobs for a forced<br>continuation, and a different tokenizer<br>C2, C3 · measured P48"]
+    RL["high acceptance means:<br>it already produces what the 32B would, here<br><b>a ranking that needs no judge</b>"]
 
     E --> B --> RB
     E --> F --> RF
+    E --> L --> RL
 
     classDef bad fill:#FCF3F1,stroke:#B0523C,color:#15171B
     classDef good fill:#E7F1EA,stroke:#2E7D4F,color:#15171B
     classDef neutral fill:#F4F3F0,stroke:#C4C4BF,color:#15171B
-    class RB bad
-    class RF good
-    class E,B,F neutral
+    class RB,RF bad
+    class RL good
+    class E,B,F,L neutral
 ```
 
 The right-hand branch is the architecture. The left-hand one is the reason the
