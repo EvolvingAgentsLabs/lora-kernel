@@ -66,7 +66,7 @@ Reemplazá todo eso por **deltas de pesos sobre un único modelo base residente*
 |---|---|
 | el harness — esquemas, parsers, reintentos | **`harness.lora`** — un adaptador que *emite* action tokens de forma nativa |
 | un agente | **un QLoRA de dominio**, unos cientos de MB, intercambiable en caliente |
-| el router — una llamada extra a un modelo | **la tasa de aceptación**, que cae de un pase que ya estabas pagando |
+| el router — una llamada extra a un modelo | **un dict** para la ruta gruesa (1,000 con doce palabras clave **[ran]**) y **aceptación** para rankear expertos que se parecen — la mitad que un dict no puede |
 | el bucle de evolución | **un torneo de adaptadores**, puntuados y promovidos |
 | la memoria | markdown + git — **deliberadamente no neuronal** |
 | el entorno de ejecución | un sandbox — **deliberadamente no neuronal** |
@@ -159,7 +159,7 @@ flowchart TD
 El enrutamiento no cuesta nada extra. Los tokens ya se generaron. El pase de
 verificación ya iba a ocurrir. El ganador es un subproducto.
 
-## Retiro de la frontera
+## El retiro — del target local, por región; la frontera se queda
 
 El modelo de frontera es **andamio**, y el diseño dice cuándo sacarlo.
 

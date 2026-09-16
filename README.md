@@ -62,7 +62,7 @@ Replace all of it with **weight deltas on one resident base model**.
 |---|---|
 | the harness — tool schemas, parsers, retry logic | **`harness.lora`** — an adapter that *emits* action tokens natively |
 | an agent | **a domain QLoRA**, a few hundred MB, hot-swappable |
-| the router — an extra model call | **acceptance rate**, falling out of a pass already being paid for |
+| the router — an extra model call | **a dict** for the coarse route (1.000 with twelve keywords **[ran]**) and **acceptance** for ranking experts that resemble each other — the half a dict cannot do |
 | the evolution loop | **a tournament over adapters**, scored and promoted |
 | memory | markdown + git — **deliberately not neural** |
 | the execution environment | a sandbox — **deliberately not neural** |
@@ -157,7 +157,7 @@ flowchart TD
 Routing costs nothing extra. The tokens were generated. The verification pass was
 already happening. The winner is a by-product of arithmetic already paid for.
 
-## Frontier withdrawal — the part that makes it an architecture rather than a trick
+## Withdrawal — of the local target, per region; the frontier stays
 
 The frontier model is **scaffolding**, and the design says when to remove it.
 

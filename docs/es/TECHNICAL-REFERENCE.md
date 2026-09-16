@@ -14,6 +14,21 @@
 
 ## 1. Decodificación especulativa
 
+> **Reestructurado el 2026-09-16 — dos propósitos, y reclamábamos los dos.**
+>
+> | propósito | qué gana | ¿lo puede reclamar esta arquitectura? |
+> |---|---|---|
+> | **latencia** — hacer rápido al modelo grande | una cabeza de drafting entrenada sobre **los estados ocultos de ese target**, y existe una para `Qwen2.5-32B-Instruct` **[read]** | **no** |
+> | **ranking** — qué experto ya produce lo que produciría el grande | **k expertos de dominio drafteando contra un target** | **sí, y sólo esto** |
+>
+> Así que nada de lo de abajo es una afirmación de velocidad. El target es un **modelo
+> más grande de la misma familia** (`Qwen2.5-32B-Instruct-AWQ`, tokenizer byte-idéntico
+> **[ran]** P48), nunca una API de frontera — que no devuelve logprobs de una
+> continuación forzada ni comparte tokenizer, así que no puede verificar un token
+> drafteado. Si alguna vez se quiere un número de velocidad,
+> `examples/specdec_bench` ya lo mide en tres stacks y este repo no debería rehacerlo.
+
+
 Un **drafter** propone `k` tokens. El **target** los puntúa en las `k+1`
 posiciones en un solo forward pass. El muestreo por rechazo acepta un prefijo y
 vuelve a muestrear en el primer rechazo, construido de modo que **los tokens
@@ -112,6 +127,15 @@ resolverlo después de E1, no antes.
 
 ## 4. `harness.lora` — el adaptador kernel
 
+> **Aparcado, no falsificado — 2026-09-15.** En la suite que lo midió, un protocolo
+> aprendido sacó **9/30** donde veinte líneas de `re` sacaron **23/30**, porque esa
+> suite tenía una sola herramienta y pedirla era copiar una expresión ya escrita
+> **[ran]** P13. Y partir la capacidad costó la disposición: enseñado el vocabulario
+> aparte, pedir cayó de **123 de 150 casos a 22** **[ran]** P35. Lo reemplazaron
+> **expertos autocontenidos** con banda declarada (`training/harness/contract.py`).
+> El resultado de abajo queda en pie y espera.
+
+
 Entrenado sólo en el protocolo de ejecución, nunca en contenido de dominio.
 
 ### 4.1 Action tokens
@@ -153,6 +177,12 @@ Tres números, juntos:
 Ganar en tokens y perder en llamadas malformadas no es ganar.
 
 ## 5. Componer dos adaptadores
+
+> **Descartada en el espacio de pesos, gratis como pipeline — 2026-09-15/16.** La
+> interferencia de P8 era nula por un confound de notación. Lo que no cuesta nada es
+> **encadenar**: `base→lora1` y después `base→lora2` nunca tiene dos deltas vivos en un
+> mismo forward, y el pool ya sirve esa forma — dos pedidos con dos nombres de modelo.
+
 
 El kernel y un experto de dominio tienen que estar los dos activos. Tres opciones,
 en costo creciente:
