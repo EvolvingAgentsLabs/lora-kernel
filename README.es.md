@@ -40,9 +40,13 @@ requests saliendo de la máquina** para lo que el pool sirve. Paso a paso:
 >   margen AURC reportado para la confianza del experto era el techo de información
 >   de la entrada, no el modelo. Un head tipado que lee sólo el listado quedó
 >   cancelado antes de la GPU.
-> - **La ruta gruesa no necesita modelo.** Doce líneas de palabras clave eligen la
->   superficie de herramientas correcta el **1,000** de las veces; el baseline de la
->   ruta fina es 0,845.
+> - **La ruta gruesa no necesita modelo — y eso es una crítica, no un logro.** Doce
+>   líneas de palabras clave eligen la superficie correcta el **1,000** de las veces.
+>   Un problema de discriminación que se resuelve con doce palabras clave no es una
+>   prueba de selección de expertos: **los dos miembros están demasiado lejos para
+>   encontrarse en un mismo problema.** La ruta fina, donde las familias difieren sólo
+>   por una conversión de unidades, cae a **0,845** — ahí es donde la selección se
+>   pone difícil de verdad.
 > - **El target especulativo lo decide un hash.** Todos los tamaños de
 >   `Qwen2.5-Instruct` comparten un tokenizer byte-idéntico con nuestra base; la
 >   línea `Qwen3.x` cambió su vocabulario en la 3.5, así que sus modelos de 27B
@@ -360,6 +364,16 @@ nombrado. Nada de esta sección se infiere de un paper ni de un README.
 - **Un pool más grande que dos.** `--max-loras` sólo fue 1 o 2 acá. S-LoRA reporta
   miles en una máquina **[read]**; lo nuestro no se probó arriba de dos, y el diseño
   por capas es lo primero que necesitaría más.
+- **Varios expertos cercanos sobre un mismo problema.** Lo próximo a construir, y la
+  razón es una corrección de la línea de arriba: dos miembros útiles es necesario y
+  no suficiente — **tienen que estar lo bastante cerca para coexistir**. Tres expertos
+  de redacción sobre una bandeja, un set de herramientas, una base, **cambiando sólo
+  la política**, elegidos por **aceptación** y no por un router — porque cuando los
+  candidatos se parecen, *qué experto parece relevante* y *qué experto escribió lo que
+  el grande hubiera escrito* dejan de ser la misma pregunta. Redactar además **no
+  tiene verificador mecánico**, que es donde el torneo de S7 siempre se trabó, y la
+  aceptación no necesita ninguno. Diseño y compuertas:
+  [`docs/analysis/close-experts.md`](docs/analysis/close-experts.md). **No construido.**
 - **Que un adaptador tipado ayude.** La versión que lee sólo el listado quedó
   cancelada por su propio chequeo de headroom; la que va después de la cadena de
   herramientas está especificada y su primera medición todavía corría cuando se

@@ -27,6 +27,21 @@ kept because the change was earned rather than chosen:
 Everything else — the tournament, the verticals, a router that picks the member —
 is downstream of a pool with **two useful members**, which it does not yet have.
 
+**Restated 2026-09-16, and the correction was the user's.** Two useful members is
+necessary and not sufficient: **they have to be close enough to meet in one
+problem.** The two we have are fluid mechanics and inbox triage, which never co-occur
+— and the proof is a number I first reported as good news: a twelve-line keyword rule
+picks the right one **1.000** of the time **[ran]**. A discrimination problem solved
+by twelve keywords is not a test of expert selection. The same run shows where it
+gets hard: the fine route falls to **0.845**, confusing families that differ only in
+whether a unit needs converting.
+
+So the objective is **several close experts on one problem**, selected by
+**acceptance** rather than by a router — because when candidates resemble each other
+the prompt stops carrying the answer, and *which expert looks relevant* and *which
+expert wrote what the larger model would have written* come apart. Design:
+[`docs/analysis/close-experts.md`](docs/analysis/close-experts.md).
+
 The workspace rules in `../AGENTS.md` apply here in full. What follows is what
 this repository adds.
 

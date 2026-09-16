@@ -38,8 +38,12 @@ machine** for anything the pool serves. Step by step:
 > - **Most of a calibration gap can belong to the suite.** 69–82% of the AURC room
 >   reported for the expert's confidence was the information ceiling of the input,
 >   not the model. A typed head reading only the listing was cancelled before the GPU.
-> - **The coarse route needs no model.** Twelve lines of keywords pick the right tool
->   surface **1.000** of the time; the fine route baseline is 0.845.
+> - **The coarse route needs no model — and that is a criticism, not a win.** Twelve
+>   lines of keywords pick the right tool surface **1.000** of the time. A
+>   discrimination problem solved by twelve keywords is not a test of expert
+>   selection: **the two members are too far apart to ever meet in one problem.** The
+>   fine route, where families differ only by a unit conversion, falls to **0.845** —
+>   which is where selection actually gets hard.
 > - **The speculative target is decided by a hash.** Every `Qwen2.5-Instruct` size
 >   shares a byte-identical tokenizer with our base; the `Qwen3.x` line changed its
 >   vocabulary at 3.5, so its 27B models **cannot verify our drafters at all**.
@@ -384,6 +388,16 @@ Nothing in this section is inferred from a paper or a README.
 - **A pool larger than two.** `--max-loras` has only ever been 1 or 2 here. S-LoRA
   reports thousands on one machine **[read]**; ours is untested above two, and the
   layered design is the first thing that would need more.
+- **Several close experts on one problem.** The next thing to build, and the reason
+  is a correction to the line above: two useful members is necessary and not
+  sufficient — **they have to be close enough to co-occur**. Three reply-drafting
+  experts over one inbox, one set of tools, one base, **only the policy differing**,
+  selected by **acceptance** rather than by a router — because when candidates
+  resemble each other, *which expert looks relevant* and *which expert wrote what the
+  larger model would have written* stop being the same question. Drafting also has
+  **no mechanical verifier**, which is where S7's tournament has always stalled, and
+  acceptance needs none. Design and gates:
+  [`docs/analysis/close-experts.md`](docs/analysis/close-experts.md). **Not built.**
 - **That a typed adapter helps.** The listing-only version was cancelled by its own
   headroom check; the version that sits after the tool chain is specified and its
   first measurement was still running when this was written.
