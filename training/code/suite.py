@@ -95,21 +95,42 @@ def expected(algorithm: str, language: str) -> str:
     return _EXPECTED[key]
 
 
+#: Where an implementation begins, in each language. Everything above it states the
+#: PROBLEM — the constants and the input — and is never cut.
+IMPLEMENTATION = ("def ", "function ", "static ", "int main", "class ", "let x",
+                  "x, y, z, w =", "public ")
+
+
 def _body_lines(source: str) -> tuple[list[str], int]:
     """The lines that may be cut, and where they start.
 
-    The header comment and the first constant stay: they say what the program is, and
-    cutting them would change the *question* rather than the difficulty.
+    NOTHING THAT DEFINES THE PROBLEM IS EVER CUT, AND THE FIRST VERSION CUT IT. It
+    kept the header comment and started cutting at the first non-comment line, so at
+    the deepest truncation a CRC program was reduced to its polynomial and lost the
+    line holding its **input string**. Two programs with the same constants and
+    different inputs then produced an **identical prompt with different answers** —
+    5 of 180 cases, and no model can be right about both. That is not a difficulty,
+    it is an unanswerable case, and it would have made the deepest depth meaningless
+    across the whole suite **[ran]** 2026-09-16, caught by the corpus split test.
+
+    So the cut starts where the *implementation* starts. What is above it — the
+    comment, the constants, the data — states the question; what is below it is the
+    answer, and that is the only thing depth removes.
     """
     lines = source.splitlines()
-    start = 0
+    start = None
     for i, line in enumerate(lines):
-        s = line.strip()
-        if s and not s.startswith(("#", "//", "/*", "*", "import ", "#include",
-                                   "const ALPHABET", "from ")):
+        if line.strip().startswith(IMPLEMENTATION):
             start = i
             break
-    return lines, max(start, 1)
+    if start is None:                      # no recognisable implementation head
+        for i, line in enumerate(lines):
+            s = line.strip()
+            if s and not s.startswith(("#", "//", "/*", "*", "import ", "#include",
+                                       "from ")):
+                start = i
+                break
+    return lines, max(start or 1, 1)
 
 
 def truncate(source: str, depth: int) -> tuple[str, int]:
@@ -128,11 +149,31 @@ INSTRUCTION = (
 )
 
 
-def prompt_for(algorithm: str, language: str, prefix: str) -> str:
+SPEC_PREAMBLE = "Task: implement"
+
+
+def prompt_for(spec: str, language: str, prefix: str) -> str:
+    """The served prompt. CALLED, never copied — P38 voided a run over that drift."""
     return (f"Language: {language}\n"
-            f"Task: implement {SPEC[algorithm]}.\n\n"
+            f"{SPEC_PREAMBLE} {spec}.\n\n"
             f"{INSTRUCTION}\n\n"
             f"```{language}\n{prefix}```")
+
+
+def cut_points(source: str, n: int, rng) -> list[tuple[int, str, int]]:
+    """`n` truncations of one program, spread over the depth scale.
+
+    Drawn rather than fixed, so two programs of the same family do not present the
+    same cut twice — which would make a corpus of near-duplicates.
+    """
+    lines, start = _body_lines(source)
+    body = len(lines) - start
+    out = []
+    for depth in sorted(rng.sample(sorted(DEPTHS), min(n, len(DEPTHS)))):
+        cut = max(1, round(body * DEPTHS[depth]))
+        keep = len(lines) - cut
+        out.append((depth, "\n".join(lines[:keep]) + "\n", cut))
+    return out
 
 
 def generate(languages=LANGUAGES, algorithms=ALGORITHMS,
@@ -148,7 +189,7 @@ def generate(languages=LANGUAGES, algorithms=ALGORITHMS,
                     "case_id": f"{algorithm}-{language}-d{depth}",
                     "region": language, "algorithm": algorithm, "depth": depth,
                     "lines_removed": cut, "prefix": prefix,
-                    "prompt": prompt_for(algorithm, language, prefix),
+                    "prompt": prompt_for(SPEC[algorithm], language, prefix),
                     "reference_sha": hashlib.sha256(source.encode()).hexdigest()[:12],
                 })
     return cases
@@ -168,6 +209,24 @@ def strip_fences(text: str) -> str:
             continue
         out.append(line)
     return "\n".join(out)
+
+
+def verify_against(prefix: str, language: str, want: str, completion: str) -> dict:
+    """Concatenate, run, compare to a string the caller already knows.
+
+    A DRAWN PROGRAM CARRIES ITS OWN ANSWER. `families.py` computes it while generating
+    the case, from an oracle written independently of the three implementations — and
+    `tests/test_families.py` asserts all three agree with it. Re-deriving it by running
+    a reference here would be slower and would also make the corpus depend on a
+    toolchain it does not need.
+    """
+    whole = prefix + strip_fences(completion)
+    try:
+        got = run_source(whole, language)
+    except RunError as e:
+        return {"correct": False, "why": str(e)[:200], "got": None, "want": want}
+    return {"correct": got == want, "got": got[:200], "want": want,
+            "why": "" if got == want else "output differs"}
 
 
 def verify(case: dict, completion: str) -> dict:
