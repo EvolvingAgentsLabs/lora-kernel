@@ -174,7 +174,7 @@ PY
 
   cat > /tmp/_speek.py <<'PY'
 import subprocess
-print(subprocess.run("grep -E '\[(serve|gate|tiny|native|matrix|run|arm|resume|cost|domain|P24|sweep|depth|fluids|sim|pool|judge|conf|shim|tunnel|3p|read|skip|train|corpora)\]|passed [0-9]+|"
+print(subprocess.run("grep -E '\[(serve|gate|tiny|native|matrix|run|arm|resume|cost|domain|P24|sweep|depth|fluids|sim|pool|judge|conf|shim|tunnel|3p|read|skip|train|corpora|draft)\]|passed [0-9]+|"
                      "composition |Traceback|[Ee]rror|OutOfMemory|Killed|\\[pool\\]' "
                      "/content/lora-kernel/run.log | tail -2",
                      shell=True, capture_output=True, text=True).stdout)
