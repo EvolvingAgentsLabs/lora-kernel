@@ -2357,6 +2357,43 @@ así que el chico emite varios tokens mientras el grande emite uno.
   autorizar un retiro — el score verificado no debe caer donde se saca el target. Es
   la lección de S5 y aplica sin cambios.
 
+### Planificado 2026-09-16: expertos cercanos sobre un mismo problema, elegidos por aceptación
+
+Diseño: [`../analysis/close-experts.md`](../analysis/close-experts.md). **Nada construido.**
+
+**La corrección, y da vuelta un resultado mío.** La ruta gruesa de P1 dio **1,000** y
+yo la reporté como *la capa es un dict, qué barato*. La lectura correcta es que **un
+problema de discriminación que se resuelve con doce palabras clave no es una prueba
+de selección de expertos** — mecánica de fluidos y triaje de email nunca se encuentran
+en un mismo problema. La misma corrida muestra el régimen difícil: la ruta fina cae a
+**0,845**, confundiendo familias que difieren sólo en si hay que convertir una unidad.
+
+**Tres expertos de redacción sobre una bandeja**, un solo set de herramientas, una
+base, **cambiando sólo la política**: `draft-client`, `draft-team`, `draft-vendor`.
+
+**Por qué aceptación y no router.** Un router pregunta qué experto *parece*
+relevante; la aceptación pregunta qué experto *escribió lo que el modelo grande
+hubiera escrito*. Sólo la segunda sobrevive cuando los candidatos se parecen. Y
+redactar **no tiene verificador mecánico**, que es donde el torneo de S7 siempre se
+trabó — mientras que la aceptación no necesita ninguno.
+
+**Target: `Qwen2.5-32B-Instruct`**, tokenizer byte-idéntico **[ran]** P48.
+`Qwen3.6-27B` no puede verificar a nuestros drafters — 248.044 entradas contra
+151.643 — y queda disponible como referencia de calidad, que es otro trabajo.
+
+| paso | qué compra | ¿entrena? | compuerta |
+|---|---|---|---|
+| **P49** | **headroom** — ¿el target redacta mejor que la base pelada? | no | un chequeo mecánico de contenido (¿están los hechos requeridos en el borrador?) debe separarlos por un margen que `bar.resolvable()` llame detectable. **Si no, el diseño no se compra** |
+| **P50** | ¿son tres expertos tres expertos, y la aceptación varía por temática? | sí, 3 | `members_are_distinct` del pool, y después por temática el experto que corresponde le gana al mejor de los otros en un **test de signos apareado** |
+| **P51** | la selección corriendo dentro de OpenClaw, sobre las herramientas MCP y la bandeja que ya funcionan **[ran]** P43 | no | sólo si P50 despeja |
+
+**Falsación, antes de correr:** aceptación plana en la grilla experto × temática
+significa un experto con tres nombres, y el gate del pool es lo que lo dice.
+
+**El riesgo que no es excusa:** lo bastante cerca para ser interesante es lo bastante
+cerca para estar dentro del ruido. El chequeo de potencia va antes del brazo, no
+después.
+
 ## 12. Historia
 
 | fecha | cambio a este plan | por qué |

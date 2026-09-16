@@ -2274,6 +2274,42 @@ emits several tokens while the large one emits one.
   not authorise a withdrawal — the verified score must not drop where the target is
   removed. That is S5's lesson and it applies unchanged.
 
+### Planned 2026-09-16: close experts on one problem, selected by acceptance
+
+Design: [`analysis/close-experts.md`](analysis/close-experts.md). **Nothing built.**
+
+**The correction, and it inverts a result of mine.** P1's coarse route scored
+**1.000** and I reported it as *the layer is a dict, how cheap*. The right reading is
+that **a discrimination problem solved by twelve keywords is not a test of expert
+selection** — fluid mechanics and inbox triage never meet in one problem. The same
+run shows the hard regime: the fine route falls to **0.845**, confusing families that
+differ only in whether a unit needs converting.
+
+**Three drafting experts on one inbox**, one set of tools, one base, **only the policy
+differing**: `draft-client`, `draft-team`, `draft-vendor`.
+
+**Why acceptance and not a router.** A router asks which expert *looks* relevant;
+acceptance asks which expert *wrote what the larger model would have written*. Only
+the second survives when candidates resemble each other. And drafting has **no
+mechanical verifier**, which is where S7's tournament has always stalled — while
+acceptance needs none.
+
+**Target: `Qwen2.5-32B-Instruct`**, byte-identical tokenizer **[ran]** P48.
+`Qwen3.6-27B` cannot verify our drafters at all — 248,044 entries against 151,643 —
+and stays available as a quality reference, a different job.
+
+| step | what it buys | trains? | gate |
+|---|---|---|---|
+| **P49** | **headroom** — does the target draft better than the bare base? | no | a mechanical content check (are the required facts in the draft?) must separate them by a margin `bar.resolvable()` calls detectable. **If not, the design is unbought** |
+| **P50** | are three experts three experts, and does acceptance vary by temática? | yes, 3 | pool `members_are_distinct`, then per temática the matching expert beats the best other on a **paired sign test** |
+| **P51** | the selection running inside OpenClaw, over the MCP tools and inbox that already work **[ran]** P43 | no | only if P50 clears |
+
+**Falsification, before the run:** flat acceptance across the expert × temática grid
+means one expert with three names, and the pool gate is what says so.
+
+**The risk that is not an excuse:** close enough to be interesting is close enough to
+be within noise. A power check runs before the arm, not after it.
+
 ## 12. History
 
 | date | change to this plan | why |
