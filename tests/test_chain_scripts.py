@@ -160,8 +160,17 @@ RUNNERS = sorted(pathlib.Path("training/harness").glob("*.py"))
 
 
 def peek_patterns(path: pathlib.Path) -> set[str]:
-    """The bracketed tags a chain script's watcher will actually surface."""
-    return set(re.findall(r"(\w+)\\\\\]", path.read_text()))
+    """The bracketed tags a chain script's watcher will actually surface.
+
+    Both shapes: one tag per alternative (`run\\]|arm\\]`) and a single
+    alternation group (`(run|arm)\\]`), which is what the filters became when
+    they had to hold two dozen prefixes.
+    """
+    body = path.read_text()
+    tags = set(re.findall(r"(\w+)\\\\\]", body))
+    for group in re.findall(r"\(([\w|]+)\)\\\\\]", body):
+        tags |= set(group.split("|"))
+    return tags
 
 
 def test_the_watcher_knows_every_prefix_its_runners_print():
@@ -171,9 +180,15 @@ def test_the_watcher_knows_every_prefix_its_runners_print():
         watched |= peek_patterns(chain)
     assert watched, "no bracketed prefixes found in any chain's peek filter"
 
-    # Only the modules a chain can actually launch as MODULE=... matter here.
-    launchable = {"serve_openai", "lora_matrix", "native_gate", "triage_run",
-                  "multitool_run", "train_pool", "tiny_adapter"}
+    # WHICH MODULES A CHAIN CAN LAUNCH, DERIVED. This was a hand-kept list, and a
+    # hand-kept list always lags the newest runner — which is exactly the one whose
+    # position nobody can see yet. `ladder_sweep` printed `[sweep]`, no filter
+    # matched it, and this guard passed because the module was not on the list
+    # **[ran]** 2026-09-15. A chain launches `python -m MODULE --out NAME`, so a
+    # module with a `--out` flag and a `__main__` is one a chain can launch.
+    launchable = {f.stem for f in RUNNERS
+                  if '"--out"' in f.read_text() and "__main__" in f.read_text()}
+    assert len(launchable) > 10, f"the derivation stopped finding runners: {launchable}"
     missing = {}
     for f in RUNNERS:
         if f.stem not in launchable:
