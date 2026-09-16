@@ -128,3 +128,15 @@ def test_train_one_exits_after_training_rather_than_serving():
     assert "train_adapter" in body
     for must_not in ("vllm", "serve", "urllib"):
         assert must_not not in body.lower().split("\"\"\"")[-1], must_not
+
+
+def test_step_zero_passes_maps_to_compare_not_counts():
+    """`TypeError: 'int' object is not iterable`, twice — P53 and again P54.
+
+    The first time it was worked around by computing the verdict by hand rather
+    than repaired, so it cost the same crash again at the end of a second session.
+    """
+    import pathlib
+    body = pathlib.Path("training/code/step_zero.py").read_text()
+    assert "compare({r[\"id\"]" in body
+    assert "compare(only_a, only_b)" not in body

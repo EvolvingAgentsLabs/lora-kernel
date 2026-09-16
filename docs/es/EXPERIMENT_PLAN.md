@@ -2563,6 +2563,36 @@ la base, con **38 de 180** completaciones que ni compilan.
 y dos programas de una familia nunca compartan respuesta. **Segundo rediseño
 post-resultado de una suite hoy; el contador va en dos.**
 
+### P54 — 2026-09-16 **[ran]** · el paso cero pasa con +0,863, y agota la suite
+
+Reporte: [`../../results/P54-step-zero-rebuilt-20260916/RESULT.md`](../../results/P54-step-zero-rebuilt-20260916/RESULT.md).
+
+**base 27/197 = 0,137 · adaptador 197/197 = 1,000**, apareado, 170 a 0, p < 1e-5.
+
+**El chequeo de filtración fue primero, y esto no es P53.** Completaciones retenidas
+literales en entrenamiento: **0 de 197** contra las 180 de 180 de P53. Todas las
+completaciones que produjo el adaptador son distintas. Generalizó sobre constantes
+sorteadas del espacio completo de 32 bits, así que **el +0,863 es real**.
+
+**Y lo que aprendió es más angosto de lo que el número sugiere.** Con las constantes en
+blanco, las 197 completaciones colapsan a **6 esqueletos distintos** — dos familias por
+tres profundidades de corte son unas seis combinaciones (familia, punto de corte), cada
+una con una única forma correcta. La tarea es *reconocer cuál de seis aplica y poner
+constantes que están en el comentario*. La base igual llega sólo a 0,137, así que no es
+trivial; pero es **esta familia de plantilla**, no completación de código.
+
+**Entonces: el paso cero está contestado que SÍ** — una base con el LoRA adecuado
+aprende este predicado y le gana por lejos. **Y nada aguas abajo es medible acá**: un
+experto en 1,000 no se puede rankear, y la aceptación no tiene nada que discriminar. Es
+el techo de P42 llegando desde el lado del tratamiento.
+
+**La suite siguiente necesita variedad estructural, no más constantes** — el arreglo que
+falló dos veces fue variar los *valores*; lo que tiene que variar es la *forma* de la
+cola. Objetivo: tantos esqueletos distintos como casos, no seis.
+
+**Proceso:** `compare` toma dos mapas, y el mismo `TypeError` terminó P53 **y** P54,
+porque la primera vez se esquivó en vez de repararse. Arreglado, con test.
+
 ## 12. Historia
 
 | fecha | cambio a este plan | por qué |
