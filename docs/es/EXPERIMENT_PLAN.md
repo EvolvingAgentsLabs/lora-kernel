@@ -40,6 +40,49 @@ sobre dos afirmaciones, y sólo esas dos valen la primera plata:
 calidad verificada, la afirmación 1 es falsa y la aceptación no puede ser el
 criterio de promoción. La arquitectura sobreviviría; el router gratis, no.
 
+---
+
+### Reformulada el 2026-09-16, y ésta es la versión construible
+
+La pregunta de arriba nunca se contestó — se **disolvió**, porque la configuración
+que suponía no era construible. Una API de frontera no puede ser target especulativo:
+no devuelve logprobs de una continuación *forzada* (C2) ni comparte el tokenizer de
+la base (C3) **[ran]** P48. Así que la afirmación 1 nunca tuvo precio (S3 empató con
+una regex que leía `clinic:` del prompt) y la 2 se cerró con una calculadora en vez de
+con aceptación (P7, 40/40).
+
+**La misma pregunta, en la configuración que sí existe:**
+
+> **¿Ordena la aceptación contra un modelo más grande de la misma familia a los
+> expertos chicos como los ordena la calidad verificada — y se puede después retirar
+> ese modelo, por región, sin que caiga el score verificado?**
+
+Cada palabra de eso es medible hoy, y ninguna lo era el 2026-09-07:
+
+| qué necesita | estado |
+|---|---|
+| un target contra el que verificar nuestros tokens | **`Qwen2.5-32B-Instruct-AWQ`** — `tokenizer.json` byte-idéntico, 19,3 GB, entra al lado del 3B en una A100 **[ran]** P48 |
+| un pool que sirva varios adaptadores sobre una base | **construido, medido tres veces**, incluso con el adaptador de un tercero **[ran]** P40/P41/P42 |
+| una suite donde aceptación y calidad verificada se lean las dos | **construida** — `training/email/desk.py`, cuatro regiones × cuatro profundidades, respuestas checkeables |
+| una suite cuyos números sean evidencia | **siete compuertas en código**; las cuatro suites previas fallan, la nueva pasa tres y renuncia a una con nombre **[ran]** P50 |
+| un corpus capaz de producir un drafter que valga aceptar | **conocido y sin construir** — lo tiene que generar el **target**, no un oráculo |
+| expertos lo bastante cercanos para que elegir sea una pregunta real | **todavía no** — los dos que tenemos se distinguen con doce palabras clave al 1,000 |
+
+**Qué cambió en la afirmación 2.** La frontera no es lo que se retira — es el fallback
+permanente para lo que el pool falla, medido, y vale **0,546 → 0,775** **[ran]** P41.
+Lo que una aceptación alta permitiría retirar es el **32B local**, por región, que es
+una versión más barata y más honesta del mismo producto.
+
+**Qué falsifica la pregunta reformulada, sin cambios de espíritu:** si la aceptación no
+ordena a los expertos como los ordena el verificador, sobre los mismos casos, el router
+gratis no existe. El pool, el sustrato de serving y el ruteo por región sobreviven a
+eso; se pierde sólo el router, que hoy es un dict de todos modos.
+
+**Qué queda afuera para siempre.** Aceptación contra una *API de frontera* — no
+difícil: imposible. Composición en el espacio de pesos y `harness.lora` — descartadas
+por medición, y encadenar no cuesta nada si alguna vez se quieren. Una cabeza EAGLE
+como mecanismo de ranking — una por target, no hay entre qué elegir.
+
 ## 2. El orden, y por qué éste y no el de la especificación
 
 [`ARCHITECTURE.md` §7](ARCHITECTURE.md) lista E0–E4 y tiene razón sobre el
