@@ -1,4 +1,14 @@
 # Todo el stack de agentes son sólo deltas de pesos
+> **Leer como de su fecha, 2026-09-10.** La tesis del título fue reformulada dos
+> veces desde entonces, las dos por medición. **La frontera no se está retirando** —
+> es el fallback permanente para lo que los expertos fallan, medido, y vale 0,546 →
+> 0,775 **[ran]** P41. Y **la frontera nunca pudo ser el target especulativo**: no
+> devuelve logprobs de una continuación forzada ni comparte el tokenizer, así que ese
+> papel es de un modelo grande de la misma familia servido en la misma placa **[ran]**
+> P48. Lo que sobrevive es el argumento de que el target tiene que ser *mejor que los
+> expertos* y que la aceptación se puede leer gratis. Posición actual:
+> [`EXPERIMENT_PLAN.md`](EXPERIMENT_PLAN.md) y [`STACK.md`](STACK.md).
+
 ### *Cómo la decodificación especulativa convierte los sistemas multi-agente, los harnesses y el enrutamiento zero-shot en un pool de QLoRAs — y vuelve obsoleto al modelo de frontera.*
 
 *[Read this in English](../the-frontier-is-scaffolding.md)*

@@ -43,6 +43,18 @@ surface exists would be assuming the result.
 
 ## 2. Why the target must be frontier-grade
 
+> **Superseded on the target, 2026-09-16 — and by measurement.** This section argues
+> the target must be frontier-grade. A **frontier API cannot be a speculative target
+> at all**: it returns no logprobs for a *forced* continuation (C2) and does not share
+> the base's tokenizer (C3). The target is a **larger model of the same family served
+> on the same card** — `Qwen2.5-32B-Instruct`, byte-identical tokenizer **[ran]** P48
+> — and the frontier keeps a different job: it answers what the pool is *measured* to
+> fail, which took delivered accuracy from 0.546 to 0.775 **[ran]** P41. The argument
+> below still holds for **why the target has to be better than the experts**; what it
+> gets wrong is that only a frontier can be. See [`STACK.md`](STACK.md) §2 and
+> [`analysis/close-experts.md`](analysis/close-experts.md) §4.
+
+
 Speculative decoding emits the *target's* distribution. So what acceptance rate
 measures is **agreement with whatever you chose to verify with**, and the choice
 therefore decides what the number means:

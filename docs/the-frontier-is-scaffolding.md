@@ -1,4 +1,14 @@
 # The Entire Agent Stack is Just Weight Deltas
+> **Read as of its date, 2026-09-10.** The thesis in the title was restated twice
+> since, both times by measurement. **The frontier is not being withdrawn** — it is
+> the permanent fallback for what the experts are measured to fail, worth 0.546 →
+> 0.775 **[ran]** P41. And **the frontier was never able to be the speculative target
+> anyway**: it returns no logprobs for a forced continuation and does not share the
+> tokenizer, so that role belongs to a large same-family model served on the same
+> card **[ran]** P48. What survives is the argument that the target must be *better
+> than the experts* and that acceptance can be read for free. Current position:
+> [`EXPERIMENT_PLAN.md`](EXPERIMENT_PLAN.md) and [`STACK.md`](STACK.md).
+
 ### *How speculative decoding turns multi-agent systems, harnesses, and zero-shot routing into a pool of QLoRAs — and makes the frontier model obsolete.*
 
 *[Léeme en español](es/the-frontier-is-scaffolding.md)*

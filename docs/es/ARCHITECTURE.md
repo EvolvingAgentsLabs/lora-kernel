@@ -43,6 +43,19 @@ router antes de que exista la superficie de α sería asumir el resultado.
 
 ## 2. Por qué el target tiene que ser de frontera
 
+> **Superado en lo del target, 2026-09-16 — y por medición.** Esta sección sostiene
+> que el target tiene que ser de grado frontera. Una **API de frontera no puede ser
+> target especulativo en absoluto**: no devuelve logprobs de una continuación
+> *forzada* (C2) ni comparte el tokenizer de la base (C3). El target es un **modelo
+> más grande de la misma familia servido en la misma placa** — `Qwen2.5-32B-Instruct`,
+> tokenizer byte-idéntico **[ran]** P48 — y la frontera conserva otro trabajo:
+> contesta lo que el pool falla, *medido*, lo que llevó la entrega de 0,546 a 0,775
+> **[ran]** P41. El argumento de abajo sigue valiendo para **por qué el target tiene
+> que ser mejor que los expertos**; lo que se equivoca es en que sólo una frontera
+> puede serlo. Ver [`STACK.md`](STACK.md) §2 y
+> [`analysis/close-experts.md`](../analysis/close-experts.md) §4.
+
+
 La decodificación especulativa emite la distribución del *target*. Así que lo que
 mide la tasa de aceptación es **la coincidencia con lo que hayas elegido para
 verificar**, y esa elección decide qué significa el número:

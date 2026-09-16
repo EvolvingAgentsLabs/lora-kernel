@@ -88,6 +88,42 @@ O sea: las dos mitades existen, cada una está sana por su cuenta, y ponerlas en
 parche funciona. El problema es ponerlas en **dos** parches, que es todo el punto
 del diseño.
 
+## Dónde está esto, 2026-09-16
+
+Cuatro días después, y el delta es sobre todo cosas que se **sacan**. Todo esto es
+**[ran]**, con su directorio de corrida.
+
+**El Problema 2 tuvo su medición, y la respuesta es incómoda.** Elegir el
+especialista correcto *por región* paga: **0,546 → 0,775**, con el 38% de los casos
+saliendo de la máquina. Elegirlo *por caso* no — el tripwire entrega **0,378** y la
+compuerta de calidad **0,689**, las dos por debajo de no elegir por caso en absoluto
+`results/P41-routing-20260915/`. Y eso resuelve lo que la nota del 2026-09-12 dejaba
+abierto: **el costo de escalar no es lo que decide entre las dos reglas, porque
+ninguna le gana al ruteo por región.**
+
+**El Problema 3 es más filoso y peor.** El especialista no sólo no siente el borde de
+su región — no siente el borde de su **corpus**. Servido con problemas más
+superficiales que los que entrenó, `fluids-full` sobre-resuelve en **18 de 18** casos,
+y a tres pasos la **base pelada le gana, 0,167 a 0,000**
+`results/P45-ladder-sweep-20260915/`. Un corpus con una sola dificultad enseña un
+piso, no sólo una habilidad — y nada en la salida marca la diferencia, que es la
+misma invisibilidad que describe el Problema 3.
+
+**Una confianza que el modelo le pone a su propia respuesta no lo rescata, y casi
+todo el margen que se reportó para eso nunca estuvo.** Agrupar los casos por lo que un
+predictor puede ver da el techo: en el inbox completo los dos brazos ya están en él,
+margen **0,030** y **0,007**; en el subconjunto humano el mejor predictor que sólo lee
+el listado es una **constante**, que no ordena nada. El **69-82%** del margen medido
+era la suite `results/P46-ranking-ceiling-20260916/`.
+
+**Y el problema detrás de todos ellos cambió de nombre.** Era *un pool con dos
+miembros útiles*. Ahora es **un pool con dos miembros útiles lo bastante cerca para
+encontrarse en un mismo problema** — porque los dos que tenemos son mecánica de
+fluidos y triaje de email, y una regla de doce palabras clave los distingue el
+**1,000** de las veces. Un problema de discriminación que se resuelve con doce
+palabras clave no es una prueba de selección de expertos. Diseño del reemplazo:
+[`../analysis/close-experts.md`](../analysis/close-experts.md).
+
 ## Dónde está esto parado, 2026-09-12
 
 Tres de los cuatro problemas de abajo se movieron desde que se escribieron, y uno se
