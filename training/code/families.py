@@ -30,6 +30,18 @@ import random
 LANGUAGES = ("python", "javascript", "c")
 
 
+#: Structural choices drawn per instance. P54 measured that varying only the
+#: CONSTANTS leaves one skeleton per (family, cut point): 197 completions collapsed
+#: to **6** distinct shapes with the numbers blanked, so an adapter that recognises
+#: which of six applies reaches 1.000 without computing anything **[ran]**. What has
+#: to vary is what gets WRITTEN, not what gets substituted into it.
+CRC_NAMES = [("reg", "byte", "crc"), ("acc", "b", "checksum"),
+             ("state", "octet", "compute"), ("h", "ch", "digest"),
+             ("value", "c", "crc_of")]
+XS_NAMES = [("next_value", "t"), ("step", "tmp"), ("advance", "u"),
+            ("pull", "s"), ("emit", "v")]
+
+
 def _crc(data: bytes, poly: int, init: int, final: int) -> int:
     crc = init
     for byte in data:
@@ -52,12 +64,20 @@ def crc_family(rng: random.Random) -> dict:
     final = rng.randrange(0, 2 ** 32)
     word = "".join(rng.choice("abcdefghijklmnopqrstuvwxyz-") for _ in range(rng.randrange(5, 14)))
     answer = _crc(word.encode(), poly, init, final)
+    reg, byte, fn = rng.choice(CRC_NAMES)
+    # `while` and `for` produce genuinely different tails for the same algorithm.
+    loop = rng.choice(["for", "while"])
+    inner_py = (f"        for _ in range(8):" if loop == "for"
+                else f"        k = 0\n        while k < 8:")
+    step_py = ("            " if loop == "for" else "            ")
+    tail_py = "" if loop == "for" else "\n            k += 1"
     return {
         "family": "crc", "answer": str(answer),
         # The literals this instance drew. A completion that contains none of them
         # is the same text for every instance of the family, which is what P53
         # measured: 180 of 180 held-out completions already in the training set.
-        "varies": [f"0x{poly:08X}", f"0x{init:08X}", f"0x{final:08X}", word],
+        "varies": [f"0x{poly:08X}", f"0x{init:08X}", f"0x{final:08X}", word,
+                   reg, fn],
         "spec": (f"a reflected CRC-32 with polynomial 0x{poly:08X}, initial value "
                  f"0x{init:08X} and final xor 0x{final:08X}, computed bit by bit "
                  f"(no lookup table)"),
@@ -65,15 +85,15 @@ def crc_family(rng: random.Random) -> dict:
 # Reflected CRC-32: polynomial 0x{poly:08X}, init 0x{init:08X}, final xor 0x{final:08X}.
 DATA = b"{word}"
 
-def crc(data):
-    reg = 0x{init:08X}
-    for byte in data:
-        reg ^= byte
-        for _ in range(8):
-            reg = (reg >> 1) ^ (0x{poly:08X} if reg & 1 else 0)
-    return (reg ^ 0x{final:08X}) & 0xFFFFFFFF
+def {fn}(data):
+    {reg} = 0x{init:08X}
+    for {byte} in data:
+        {reg} ^= {byte}
+{inner_py}
+{step_py}{reg} = ({reg} >> 1) ^ (0x{poly:08X} if {reg} & 1 else 0){tail_py}
+    return ({reg} ^ 0x{final:08X}) & 0xFFFFFFFF
 
-print(crc(DATA))
+print({fn}(DATA))
 ''',
         "javascript": f'''\
 // Reflected CRC-32: polynomial 0x{poly:08X}, init 0x{init:08X}, final xor 0x{final:08X}.
@@ -136,13 +156,14 @@ def xorshift_family(rng: random.Random) -> dict:
     b = rng.randrange(1, 32)
     c = rng.randrange(1, 32)
     seed = tuple(rng.randrange(1, 2 ** 31) for _ in range(4))
-    n = rng.choice([6, 8, 10])
+    n = rng.randrange(5, 13)
     answer = " ".join(str(v) for v in _xorshift(seed, a, b, c, n))
     sx, sy, sz, sw = seed
+    fn, tmp = rng.choice(XS_NAMES)
     return {
         "family": "xorshift", "answer": answer,
         "varies": [str(sx), str(sy), str(sz), str(sw), f"<< {a}", f">> {b}",
-                   f">> {c}", f"({n})"],
+                   f">> {c}", f"({n})", fn, tmp],
         "spec": (f"xorshift128 with shifts {a}, {b} and {c}, printing the first {n} "
                  f"outputs space-separated"),
         "python": f'''\
@@ -154,14 +175,14 @@ def make_state():
 
 x, y, z, w = make_state()
 
-def next_value():
+def {fn}():
     global x, y, z, w
-    t = (x ^ ((x << {a}) & M)) & M
+    {tmp} = (x ^ ((x << {a}) & M)) & M
     x, y, z = y, z, w
-    w = ((w ^ (w >> {c})) ^ (t ^ (t >> {b}))) & M
+    w = ((w ^ (w >> {c})) ^ ({tmp} ^ ({tmp} >> {b}))) & M
     return w
 
-print(" ".join(str(next_value()) for _ in range({n})))
+print(" ".join(str({fn}()) for _ in range({n})))
 ''',
         "javascript": f'''\
 // xorshift128, shifts {a}, {b}, {c}. Print the first {n} outputs.
