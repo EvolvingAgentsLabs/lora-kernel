@@ -97,3 +97,36 @@ def test_two_programs_of_one_family_do_not_share_a_completion():
                 continue
             assert len(set(comps)) > 1, (
                 f"{family} at depth {depth}: every program has the same completion")
+
+
+def test_held_out_skeletons_are_measured_even_though_they_are_not_novel():
+    """The ceiling, asserted so it cannot be forgotten or quietly re-patched.
+
+    P53 memorised one tail per family. P54 memorised one skeleton per (family, cut) —
+    197 completions, 6 skeletons. Adding names and loop forms raised the shape space
+    to about 60, and 720 training examples cover every shape twelve times over, so
+    **204 of 204** held-out skeletons are still in training **[ran]** 2026-09-16.
+
+    This test does not demand novelty, because the generator cannot provide it: for a
+    held-out shape to be unseen the structural space must exceed the training set,
+    which needs roughly ten structural dimensions of four choices each. It records
+    the number instead, so a future change that claims to fix it has to move it.
+    """
+    import re
+    held = build(40, EVAL_SEED, "python")
+    train_sk = {re.sub(r"0x[0-9A-Fa-f]+|\b\d+\b", "N", c["completion"])
+                for c in build(120, TRAIN_SEED, "python")}
+    seen = sum(re.sub(r"0x[0-9A-Fa-f]+|\b\d+\b", "N", c["completion"]) in train_sk
+               for c in held)
+    # Recorded, not aspirational. If a change makes this drop, the docstring is stale.
+    assert seen == len(held), (
+        f"held-out skeleton novelty changed: {len(held) - seen} of {len(held)} are "
+        "now unseen — update docs/analysis/generated-code-ceiling.md")
+
+
+def test_structural_variety_at_least_broke_the_six_skeleton_collapse():
+    """Not a fix, but not nothing: 6 shapes became about 60."""
+    import re
+    held = build(90, EVAL_SEED, "python")
+    sk = {re.sub(r"0x[0-9A-Fa-f]+|\b\d+\b", "N", c["completion"]) for c in held}
+    assert len(sk) > 20, f"only {len(sk)} distinct skeletons; P54 had 6"

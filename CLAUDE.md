@@ -197,6 +197,15 @@ These are not style. Each one was paid for.
   **69-82% of it was the suite**, and on the full inbox both arms were already at the
   ceiling — 0.030 and 0.007 left **[ran]** P46. `training/harness/ceiling.py`, and it
   costs no GPU.
+- **A generated suite's shape space is bounded by its generator, and an adapter
+  memorises shapes.** Three attempts, each defeated one level up: P53 memorised **one
+  tail per family** (180/180 held-out completions verbatim in training); P54 memorised
+  **one skeleton per (family, cut)** — 197 distinct completions, **6** skeletons; and
+  adding names and loop forms raised the space to about **60**, which 720 training
+  examples cover **twelve times over** **[ran]** 2026-09-16. For a held-out shape to
+  be novel the space must exceed the training set — roughly ten structural dimensions
+  of four choices each, which is a program generator and a different project.
+  **Stop at three.** [`docs/analysis/generated-code-ceiling.md`](docs/analysis/generated-code-ceiling.md).
 - **A distinct prompt is not a distinct question.** P53's step zero scored the
   adapter **180/180** against the base's 56/180, paired, p < 1e-5 — and **every one of
   those 180 held-out completions was already in the training set, word for word**
