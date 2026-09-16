@@ -147,6 +147,98 @@ hurt.
 3. **Layer 2 only as a measured A/B on one expert.** The only prior evidence here is
    negative, and adopting it across the pool means retraining everything.
 
+## 6b. Do the three payoffs survive the layering?
+
+The question is whether stacking layers still pays off in **speculative decoding**,
+in **QLoRA cheapness**, and in **having many experts** — over one base model.
+Taking them one at a time, because two survive and one is conditional.
+
+### One base across every layer — this is the load-bearing property, and it gets better
+
+Every member sits on one resident base, selected by the `model` field of an HTTP
+request; measured three times, including with a stranger's adapter beside ours
+**[ran]** P40/P41/P42. So *k* layers × *m* experts is `k·m` **rank-16 deltas over one
+set of base weights** — roughly 100 MB each, not 6 GB each.
+
+**More layers make this argument stronger, not weaker.** A layer whose expert is a
+separate model would multiply the resident cost; a layer whose expert is an adapter
+adds a rounding error. The whole thesis is that the system is a pool of adapters over
+one base, and layering is the first structure that actually needs many of them.
+
+> **The unmeasured thing, and it is the only real risk in this answer: we have never
+> served more than TWO adapters at once.** `--max-loras` has only ever been 1 or 2
+> here. S-LoRA reports thousands on one machine **[read]**; whether *our* stack holds
+> latency at ten or twenty is a guess. It is also a **cheap test** — load ten copies
+> of the two adapters we have under ten names and watch tokens/s. No training, no new
+> corpus, one short session.
+
+### Many experts — the layering *reduces* how many have to be trained
+
+This is the part that inverts the worry. A layer is cheap when it is a **rule** and
+expensive when it is an **expert**, and §1 measured which is which:
+
+| layer | job | what it has to be |
+|---|---|---|
+| 1 · subspecialty | which suite | **a dict** — 1.000 lexically |
+| 2 · structural tokens | prompt shape | a prompt change, if anything |
+| 3 · domain sub-experts | the work | **an expert** |
+| 4 · tool surface | which tools to expose | **a dict** — same decision as layer 1 |
+
+**Three of the four layers train nothing.** So the pool does not grow with the number
+of layers; it stays *domain experts plus a routing table*. And the cost that genuinely
+multiplies — **N experts is N corpora and N chances at P38's drift** — is untouched by
+adding decision layers.
+
+### Latency — the reason the layering is affordable at all
+
+A naive reading says *k* layers cost *k* forward passes. It does not, because the
+layers are of two kinds:
+
+- **Decision layers are nearly free.** *k* typed questions about one context cost
+  **one prefill** — prefill the shared context once, repeat the KV cache across
+  branches, one batched forward, slice each branch's logits to its own candidates
+  ([`constrained-decoding.md`](constrained-decoding.md)). Layers 1 and 4 are one
+  decision with two consumers, so they are one slice of one pass.
+- **Generation layers cost a full pass each.** Layer 3 is the only one that generates.
+
+**So the four-layer design costs about one extra forward pass in total, not four** —
+and only if layer 1 is ever promoted from a dict to a model.
+
+### Speculative decoding — conditional, and the layering is what makes it work
+
+Two facts have to be held together.
+
+**It pays only against a bigger target.** A 3B drafting for a 3B has acceptance 1.0
+and identical cost: nothing is saved. Speculative decoding needs a large same-family
+target, which is **P4** — still unbought, and its shared-tokenizer premise still
+`[read]` rather than measured.
+
+**But when it is live, the layering is exactly what the literature says it needs.**
+TaskSpec reports a prompt classifier over four task-specific drafters lifting
+acceptance **16% → 58%** **[read]** — that is layer 1 choosing layer 3's drafter,
+published. Without a layer naming candidates you are back to evaluating all of them,
+which is the original worry.
+
+**And one thing is free here that usually is not.** Every member shares the resident
+base's tokenizer, so **any adapter can draft for any other** with no cross-vocabulary
+machinery — the problem OmniDraft exists to solve does not arise. The drafter/target
+pairing is unconstrained by construction.
+
+> **An idea this makes available, named as untested rather than planned.** Acceptance
+> between *two same-size local experts* is an agreement signal that costs no frontier
+> call — and P41 found that agreeing with a stronger model is the one escalation
+> signal that works, while costing exactly that call **[ran]**. Whether local-local
+> agreement correlates with correctness is **unmeasured**, and it costs two local
+> passes rather than one, so it is a candidate and not a plan.
+
+### The summary
+
+| payoff | survives the layering? | why |
+|---|---|---|
+| **one resident base** | **yes, strengthened** | `k·m` adapters, one set of weights — but never tested above 2 |
+| **many experts** | **yes, and fewer are needed** | three of four layers are rules, not models |
+| **speculative decoding** | **conditional on P4** | same-size drafting saves nothing; the layering supplies the drafter choice it needs |
+
 ## 7. What this does not claim
 
 - **Not that a learned router is useless.** It is unpriced above 0.845 on fine

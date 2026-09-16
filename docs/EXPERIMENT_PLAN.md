@@ -2208,6 +2208,17 @@ a twelve-line keyword rule over 140 fluids cases spanning all seven ladder depth
 
 `tests/test_router_baseline.py` keeps the number re-runnable rather than quoted.
 
+### Open 2026-09-16: we have never served more than two adapters at once
+
+`--max-loras` has only ever been 1 or 2 in this repository — the largest pool ever
+served is `['email-full', 'fluids-full']` **[ran]** P41. The layered design in
+[`analysis/layered-routing.md`](analysis/layered-routing.md) §6b is the first thing
+that needs many, and S-LoRA's *thousands on one machine* is **[read]**, not ours.
+
+**The cheap test, unbought:** load ten names over the two adapters we already have and
+watch tokens/s against a single-adapter baseline. No training, no corpus, one short
+session. It is the only real risk in the claim that the layering is affordable.
+
 ## 12. History
 
 | date | change to this plan | why |
