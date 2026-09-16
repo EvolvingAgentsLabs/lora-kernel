@@ -88,6 +88,19 @@ def band(base: dict, target: dict) -> dict:
     }
 
 
+#: NATIVE TOOL CALLING, NOT THE TAG SURFACE. vLLM refuses `tool_choice: auto`
+#: without these two flags and returns **HTTP 400 on every request** — P51's first
+#: attempt scored 240 of 240 cases as errors and printed `correct 0 calls 0 refused
+#: 0`, which reads exactly like a floor result **[ran]** 2026-09-16.
+#:
+#: And the flags are the right fix rather than the proxy, which is the other path
+#: this repository has. The proxy renders tools as **tags in the prompt**, a surface
+#: our older adapters were trained on — but P51 profiles **stock** models, and making
+#: them speak a protocol they never saw would measure the protocol instead of the
+#: task. This whole line uses the tool API the models actually know.
+TOOL_FLAGS = ["--enable-auto-tool-choice", "--tool-call-parser", "hermes"]
+
+
 def serve(model: str, port: int, extra: list[str]) -> subprocess.Popen:
     cmd = ["vllm", "serve", model, "--port", str(port), *extra]
     print(f"[desk] {' '.join(cmd)}", flush=True)
@@ -104,8 +117,13 @@ def main() -> int:
     ap.add_argument("--max-turns", type=int, default=8)
     ap.add_argument("--max-tokens", type=int, default=250)
     ap.add_argument("--max-model-len", type=int, default=8192)
+    ap.add_argument("--tool-parser", default="hermes",
+                    help="vLLM's parser for this family's tool-call format")
+    ap.add_argument("--extra", nargs="*", default=[],
+                    help="further flags passed straight to `vllm serve`")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
+    TOOL_FLAGS[-1] = args.tool_parser
     if args.out:
         globals()["OUT"] = Path(args.out)
 
@@ -116,7 +134,8 @@ def main() -> int:
 
     for arm, model in (("base", args.base), ("target", args.target)):
         p = serve(model, 8000, ["--max-model-len", str(args.max_model_len),
-                                "--gpu-memory-utilization", "0.90"])
+                                "--gpu-memory-utilization", "0.90",
+                                *TOOL_FLAGS, *args.extra])
         try:
             if not _wait("http://127.0.0.1:8000/health", 25, p):
                 results["arms"][arm] = {"status": "never came up"}
