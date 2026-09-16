@@ -429,6 +429,11 @@ a standard with nothing beside it never pays for itself.
 
 ## Documents
 
+- [`docs/STACK.md`](docs/STACK.md) — **the inventory: every model id, every adapter
+  hyperparameter, every vLLM flag**, with the run that established it — the base and
+  why it is settled by measurement, the two targets and the tokenizer table, the five
+  adapters with their bands and scores, the training recipe, the serve command flag
+  by flag, what is refused and by what · [es](docs/es/STACK.md)
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — the seven layers, why the
   target must be frontier-grade, and the withdrawal condition · [es](docs/es/ARCHITECTURE.md)
 - [`docs/TECHNICAL-REFERENCE.md`](docs/TECHNICAL-REFERENCE.md) — the mechanisms,

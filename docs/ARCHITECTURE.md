@@ -1,5 +1,8 @@
 # Architecture
 
+> **For the concrete stack — which base, which targets, which adapters at which
+> rank, which vLLM flags — see [`STACK.md`](STACK.md).**
+
 > **Specification.** Nothing here is built. Written to be argued with before it
 > is, which is cheaper.
 >

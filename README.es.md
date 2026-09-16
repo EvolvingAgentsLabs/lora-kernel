@@ -389,6 +389,11 @@ control plane empresarial.
 
 ## Documentos
 
+- [`docs/es/STACK.md`](docs/es/STACK.md) — **el inventario: cada id de modelo, cada
+  hiperparámetro de adaptador, cada flag de vLLM**, con la corrida que lo estableció
+  — la base y por qué está resuelta por medición, los dos targets y la tabla de
+  tokenizers, los cinco adaptadores con sus bandas y puntajes, la receta de
+  entrenamiento, el comando de serving flag por flag, y qué se rechaza y con qué
 - [`docs/es/ARCHITECTURE.md`](docs/es/ARCHITECTURE.md) — las siete capas, por qué
   el target tiene que ser de frontera, y la condición de retiro.
 - [`docs/es/TECHNICAL-REFERENCE.md`](docs/es/TECHNICAL-REFERENCE.md) — mecanismos,
