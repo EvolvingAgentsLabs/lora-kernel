@@ -157,6 +157,13 @@ These are not style. Each one was paid for.
   **69-82% of it was the suite**, and on the full inbox both arms were already at the
   ceiling — 0.030 and 0.007 left **[ran]** P46. `training/harness/ceiling.py`, and it
   costs no GPU.
+- **Write the records before the summary, not after.** The rule above says persist
+  every result as it lands; the failure it does not name is a runner that scores
+  everything, then crashes computing its own summary with the file still unopened. A
+  `KeyError` on a field name written from memory — `aurc_floor` for
+  `aurc_oracle_floor` — threw away **475 cases of rented L4** that had already
+  finished **[ran]** 2026-09-16. Dump the records first, compute the summary in a
+  `try`, dump again.
 - **Count instrument redesigns.** Once is fine, twice is suspicious, three times
   is looking for the result. The stopping condition goes into the plan before the
   run.
