@@ -44,6 +44,8 @@ import time
 import urllib.request
 from pathlib import Path
 
+from training.harness.stream import run_streaming
+
 OUT = Path("ladder_sweep.json")
 
 SUFFICIENCY_GATE = 0.90
@@ -202,19 +204,21 @@ def main() -> int:
         # the second one unnecessary, so it is bought first — never as a grid.
         for arm, model in (("base", args.base), ("expert", name)):
             print(f"[sweep] arm {arm} · model {model}", flush=True)
-            r = subprocess.run([sys.executable, "-u", "-m",
-                                "training.harness.fluids_sim",
-                                "--base-url", "http://127.0.0.1:8001/v1",
-                                "--model", model, "--families", "full",
-                                "--n", str(args.n), "--seed", str(args.seed),
-                                "--max-tokens", str(args.max_tokens),
-                                "--out", f"arm_{arm}.json"],
-                               capture_output=True, text=True)
-            print(r.stdout[-1200:], flush=True)
+            # STREAMED, NOT CAPTURED. `capture_output=True` holds the runner's
+            # `[fluids] 40/140 passed 9` lines until it exits, so a twenty-minute
+            # arm reads as silence and cannot be stopped early.
+            rc, tail = run_streaming([sys.executable, "-u", "-m",
+                                      "training.harness.fluids_sim",
+                                      "--base-url", "http://127.0.0.1:8001/v1",
+                                      "--model", model, "--families", "full",
+                                      "--n", str(args.n), "--seed", str(args.seed),
+                                      "--max-tokens", str(args.max_tokens),
+                                      "--out", f"arm_{arm}.json"])
             p = Path(f"arm_{arm}.json")
             results["arms"][arm] = (json.loads(p.read_text()) if p.exists()
                                     else {"status": "produced nothing",
-                                          "stderr": r.stderr[-400:]})
+                                          "returncode": rc,
+                                          "output": tail[-1200:]})
             save()      # persisted before the next arm starts, always
 
         results["verdict"] = verdict_of(results["arms"])

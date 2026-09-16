@@ -1,0 +1,12 @@
+{
+  "base": "Qwen/Qwen2.5-3B-Instruct",
+  "adapter": "fluids-full",
+  "n": 140,
+  "seed": 454545,
+  "gate": 0.9,
+  "families": "full",
+  "arms": {},
+  "identity_gate": {
+    "differs_from_base": true
+  }
+}
