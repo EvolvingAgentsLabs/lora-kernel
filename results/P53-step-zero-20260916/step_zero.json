@@ -1,0 +1,17 @@
+{
+  "base": "Qwen/Qwen2.5-3B-Instruct",
+  "adapter": "code-python",
+  "n": 180,
+  "min_effect": 0.1,
+  "arms": {},
+  "power": {
+    "n": 180,
+    "baseline": 0.3,
+    "effect": 0.1,
+    "passes_at": 65,
+    "power": 0.8734,
+    "want": 0.8,
+    "resolvable": true,
+    "why": "a +0.1 improvement would be seen 87% of the time; buy the arm only above 80%"
+  }
+}
