@@ -36,6 +36,7 @@ is what `profile` is for.
 from __future__ import annotations
 
 import collections
+import difflib
 import re
 from dataclasses import dataclass, field
 
@@ -152,6 +153,34 @@ def depth_is_not_the_region(cases: list[dict], region_of, depth_of) -> Finding:
                    len(pinned) / max(len(by_region), 1))
 
 
+def the_answer_is_not_a_copy(cases: list[dict], prompt_of, answer_of) -> Finding:
+    """P13's question for a task with no tool calls: is the answer already there?
+
+    P13 measured a learned protocol losing 9/30 to twenty lines of `re`, because the
+    suite had one tool and asking for it meant **copying an expression already
+    written**. The gate above asks that of a tool surface. A completion task has no
+    tools, and the same failure has a different face: if the text to be produced is a
+    verbatim run of the text already shown, the model is transcribing rather than
+    solving — and a transcription suite cannot rank experts.
+
+    Measured as the **longest common run** between the prompt and the answer, as a
+    fraction of the answer. It is the generous reading: one long shared run is the
+    strongest evidence of copying, and short incidental matches are ignored.
+    """
+    worst = 0.0
+    for c in cases:
+        a = (answer_of(c) or "").strip()
+        if not a:
+            continue
+        sm = difflib.SequenceMatcher(None, prompt_of(c), a, autojunk=False)
+        m = sm.find_longest_match(0, len(prompt_of(c)), 0, len(a))
+        worst = max(worst, m.size / len(a))
+    ok = worst < 0.60
+    return Finding("the_answer_is_not_a_copy", ok,
+                   f"the most copy-like case shares {worst:.3f} of its answer as one "
+                   f"run with its prompt", worst)
+
+
 def asking_is_a_decision(cases: list[dict], tools_of) -> Finding:
     """P13. With one tool, asking for it is copying an expression already written.
 
@@ -223,7 +252,8 @@ def _lexical_rule(cases, region_of, prompt_of, per_region: int = 8):
 
 
 def inspect(name: str, cases: list[dict], *, region_of, prompt_of, depth_of,
-            tools_of, waive: dict[str, str] | None = None) -> Report:
+            tools_of=None, answer_of=None,
+            waive: dict[str, str] | None = None) -> Report:
     """Every gate a generator can answer, plus the four that wait for a model.
 
     `waive` maps a gate name to **the purpose it is waived for**, and the reason is
@@ -236,13 +266,19 @@ def inspect(name: str, cases: list[dict], *, region_of, prompt_of, depth_of,
     waive = waive or {}
     for g in waive:
         if g not in {"region_not_in_the_prompt", "has_a_difficulty_axis",
-                     "depth_is_not_the_region", "asking_is_a_decision"}:
+                     "depth_is_not_the_region", "asking_is_a_decision",
+                     "the_answer_is_not_a_copy"}:
             raise ValueError(f"{g!r} is not a gate a generator can decide")
     findings = [
         region_not_in_the_prompt(cases, region_of, prompt_of),
         has_a_difficulty_axis(cases, depth_of),
         depth_is_not_the_region(cases, region_of, depth_of),
-        asking_is_a_decision(cases, tools_of),
+        # EXACTLY ONE OF THESE APPLIES, chosen by the task's shape rather than by
+        # preference. A tool-calling suite is asked whether choosing a tool is a
+        # decision; a completion suite is asked whether the answer is already in the
+        # prompt. Offering both and waiving one would be a gate ignored by habit.
+        (asking_is_a_decision(cases, tools_of) if tools_of is not None
+         else the_answer_is_not_a_copy(cases, prompt_of, answer_of)),
         *model_gates(),
     ]
     for f in findings:
