@@ -19,20 +19,53 @@ import argparse
 import json
 from pathlib import Path
 
+from training.harness import contract
+
+# EACH MEMBER IS A RECORD, NOT A PATH. A corpus is everything the trainer needs and
+# nothing a caller needs; see `contract.py` for why a band and an output kind are
+# now declared, and what P44 and P45 measured to make each of them a field.
+#
+# THE BANDS BELOW ARE READ OFF THE CORPORA, NOT CHOSEN — and doing that rather than
+# asserting it caught three of five wrong on the first pass: `kernel-mt` is 2-4 and
+# not 6-9, `kernel-email` is 1-1 exactly, and `domain-mt` calls nothing at all in
+# 600 of 600 examples **[ran]** 2026-09-15. `tests/test_contract.py` re-reads every
+# corpus and fails if a declaration drifts from what was trained.
 POOL = {
-    "adapters/kernel-mt": "training/harness/data_mt/train.jsonl",
-    "adapters/domain-mt": "training/physics/data_mt/train.jsonl",
+    "adapters/kernel-mt": contract.text(
+        "training/harness/data_mt/train.jsonl", contract.band(2, 4)),
+    # Zero throughout: this is the physics corpus with the protocol removed and the
+    # reasoning kept, so it never calls a tool. Declaring that is what stops a
+    # router handing it a task whose answer has to come from a handbook.
+    "adapters/domain-mt": contract.text(
+        "training/physics/data_mt/train.jsonl", contract.band(0, 0)),
     # P35: the same protocol, in the email suite's vocabulary. P34 measured the
     # physics kernel taking this base from 0 tool calls to 127 and every one
     # refused — the disposition travels, the names do not [ran].
-    "adapters/kernel-email": "training/harness/data_ep/train.jsonl",
+    "adapters/kernel-email": contract.text(
+        "training/harness/data_ep/train.jsonl", contract.band(1, 1),
+        note="every one of its 600 examples calls exactly once"),
     # P36: the ceiling. Tools and judgement in one adapter — the reference point a
     # pool has to match, not the architecture itself.
-    "adapters/email-full": "training/harness/data_ef/train.jsonl",
+    # 0 is not an error here: 154 of 598 examples answer with no call at all, which
+    # is the corpus teaching that some messages need no lookup. An expert whose floor
+    # is 1 would have to invent a call for those, which is P45's failure mode in the
+    # other direction.
+    "adapters/email-full": contract.text(
+        "training/harness/data_ef/train.jsonl", contract.band(0, 3)),
     # P37: the second pool member. A genuinely different subdomain on the same
     # resident base — one member is not a pool.
-    "adapters/fluids-full": "training/physics/data_ff/train.jsonl",
+    #
+    # ITS BAND IS THE WHOLE P45 RESULT. Trained on 6-to-9-step chains only, it
+    # over-solves on 18 of 18 cases below that and the bare base beats it at three
+    # steps, 0.167 to 0.000 [ran]. Declaring (6, 9) is what lets a router refuse it
+    # a two-step problem instead of receiving fluent nonsense.
+    "adapters/fluids-full": contract.text(
+        "training/physics/data_ff/train.jsonl", contract.band(6, 9)),
 }
+
+# Checked at import, so a member that a caller could not act on never reaches a
+# training run, a serving run or a router.
+contract.validate_pool(POOL)
 
 
 def main() -> int:
@@ -65,7 +98,8 @@ def main() -> int:
         print(f"[pool] --only {args.only!r} matched nothing in {sorted(POOL)}")
         return 1
 
-    for path, corpus in wanted.items():
+    for path, record in wanted.items():
+        corpus = record["corpus"]
         if (Path(path) / "adapter_model.safetensors").exists():
             print(f"[pool] {path} already has weights", flush=True)
             continue
