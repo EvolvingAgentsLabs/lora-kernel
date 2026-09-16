@@ -2177,6 +2177,49 @@ verificarlas todas a mano, que es justo lo que saca la razón de tener el expert
 menos al mismo ritmo que una cadena de nueve — la dificultad no es lo que lo bloquea
 y este análisis está equivocado.
 
+### P45 — 2026-09-15 **[ran]** · FALSIFICADO, y no por la dificultad
+
+Reporte: [`../../results/P45-ladder-sweep-20260915/RESULT.md`](../../results/P45-ladder-sweep-20260915/RESULT.md).
+Una L4, dos brazos, 140 casos cada uno, semilla 454545. La sesión se apagó sola.
+
+| profundidad del oráculo | base | experto | n |
+|---:|---:|---:|---:|
+| 1 | 0,111 | 0,278 | 18 |
+| 2 | 0,000 | 0,000 | 18 |
+| 3 | **0,167** | **0,000** | 18 |
+| 4 | 0,000 | 0,000 | 18 |
+| 6 | 0,000 | 0,382 | 34 |
+| 7 | 0,000 | 0,000 | 17 |
+| 9 | 0,000 | 0,000 | 17 |
+| **total** | **5/140** | **18/140** | |
+
+**Se disparó la falsación preregistrada**: punta fácil 0,069, punta dura 0,191 — la
+fácil está *por debajo* de la dura, no apenas dentro de 0,15. La afirmación que
+compró la corrida — que la profundidad es el eje que revela una banda de suficiencia
+en este experto — está equivocada, y equivocada en una dirección que nadie propuso.
+
+**El mecanismo, medido.** Por debajo de su profundidad de entrenamiento el experto
+**sobre-resuelve en 18 de 18** casos; en ella o por encima, **0 de 17**. Su cadena
+mediana tiene piso en unas cinco llamadas y no baja. Pedido `ρ g h` en dos pasos,
+convirtió metros a metros, **inventó un área de 100 mm²** y contestó sobre fuerza.
+**Un corpus con una sola dificultad enseña un piso, no sólo una habilidad** —
+agregado a `CLAUDE.md` §3.
+
+**Qué sobrevive.** No que este experto tenga una banda de suficiencia: no la tiene,
+porque esa banda nunca estuvo en sus datos. Pero la afirmación general — que un
+experto chico puede alcanzar en un nivel conocido y aceptable — sigue **sin probar**,
+porque ningún experto de este repo fue entrenado nunca con un problema fácil. La
+punta fácil que le faltaba a la suite pasó a faltarle al experto, porque el corpus se
+genera desde la suite.
+
+**Deliberadamente no lanzado:** un experto entrenado sobre la escalera completa. El
+brief decía que una curva plana frena la GPU, e inventar una hipótesis y comprarla la
+misma noche es como un instrumento empieza a buscar un resultado. Queda especificado.
+
+**Salvedad sobre el brazo de la base:** 140 llamadas para 140 casos, 85 rechazadas,
+contra 810 y 75 del experto. Mide **disposición**, no dificultad — no citar *"la base
+saca 0,111 en un paso"* como *"los problemas de un paso son difíciles"*.
+
 ## 12. Historia
 
 | fecha | cambio a este plan | por qué |
