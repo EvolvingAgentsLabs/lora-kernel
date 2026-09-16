@@ -1,0 +1,6 @@
+tk_Qwen_Qwen2.5-14B-Instruct.json            c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539
+tk_Qwen_Qwen2.5-32B-Instruct.json            c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539
+tk_Qwen_Qwen2.5-3B-Instruct.json             c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539
+tk_Qwen_Qwen2.5-72B-Instruct.json            c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539
+tk_Qwen_Qwen2.5-7B-Instruct.json             c0382117ea329cdf097041132f6d735924b697924d6f6fc3945713e96ce87539
+tk_Qwen_Qwen3-32B.json                       aeb13307a71acd8fe81861d94ad54ab689df773318809eed3cbe794b4492dae4

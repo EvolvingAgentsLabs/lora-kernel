@@ -2297,6 +2297,66 @@ ya tenemos y mirar tokens/s contra un baseline de un solo adaptador. Sin entrena
 corpus, una sesión corta. Es el único riesgo real en la afirmación de que las capas
 son asequibles.
 
+### P48 — 2026-09-16 **[ran]** · la premisa del tokenizer, verificada en vez de asumida
+
+`results/P48-tokenizer-compat-20260916/`. **Sin GPU.** Se hashearon los tokenizers
+publicados y se compararon id por id. C3 decía *un target de frontera no comparte el
+tokenizer de la base* y P4 asumía que uno de la misma familia sí; ninguna de las dos
+estaba medida.
+
+| target | vocab del target | ids coinciden | usable | ids extra |
+|---|---:|---|---|---:|
+| **Qwen2.5-7B / 14B / 32B / 72B-Instruct** | 151.643 | **sí** | **sí** | 0 |
+| Qwen3-14B / Qwen3-32B | 151.643 | **sí** | **sí** | 4 (`<think>`, …) |
+| **Qwen3.5-27B / Qwen3.6-27B / Qwen3.8-27B** | **248.044** | **no** | **NO** | 26-33 |
+
+**El drafter es `Qwen2.5-3B-Instruct`**, la base sobre la que viven todos los
+adaptadores. **El vocabulario de Qwen3.x cambió en la 3.5** — 151.643 → 248.044 — así
+que los 27B no sirven como target especulativo por buenos que sean.
+`Qwen2.5-32B-Instruct` es la elección: tokenizer byte-idéntico, sin canal de
+pensamiento, mismo chat template.
+
+- **Un target de la misma familia no necesita argumento.** Todos los tamaños de
+  Qwen2.5-Instruct hashean el mismo archivo.
+- **Un target de otra generación es usable**, que es lo que C3 había descartado. Los
+  `merges` gobiernan texto→ids, que ocurre una vez para el prompt; la especulación
+  vive en el espacio de ids después de eso.
+- **Lo que los hashes no muestran:** los cuatro ids que sólo el target tiene son
+  inalcanzables para el drafter, así que un target **pensante** rechaza en cada
+  `<think>`. La regla C7 —leer la aceptación en el canal de respuesta— deja ahí de ser
+  una convención y pasa a ser la diferencia entre una tasa de aceptación real y una
+  ficticia.
+
+Instrumento: `training/harness/tokenizer_compat.py`, 5 tests. **Es el primer paso de
+P4**, antes de servir nada.
+
+### P4 reformulado 2026-09-16: la aceptación como torneo, retiro por subdominio
+
+Análisis: [`../analysis/layered-routing.md`](../analysis/layered-routing.md) §6b.
+
+La redacción vieja —*servir un Qwen3.5 grande al lado de los adaptadores 2B,
+aceptación a nivel token por fin medible*— era una afirmación de velocidad. La forma
+ahora es:
+
+**k drafters expertos de un mismo tamaño contra un target más grande.** Que todos los
+drafters sean 3B es irrelevante; lo que paga es que el target sea más grande y lento,
+así que el chico emite varios tokens mientras el grande emite uno.
+
+- **La aceptación se vuelve un ranking de expertos que no necesita juez** — mismo
+  target, mismo prefijo, mismas condiciones. Es lo que el torneo de S7 nunca tuvo, y
+  es la cantidad que la literatura usa para esta arquitectura mientras todos nuestros
+  números son exactitud entregada.
+- **Restaura la brecha de retiro en la granularidad correcta.** Si el experto de un
+  subdominio alcanza al target lo suficiente, el target se retira **para ese
+  subdominio** — la misma granularidad por región que entregó 0,546 → 0,775 **[ran]**
+  P41.
+- **La aceptación sola no dice quién tenía razón.** Un rechazo es el chico
+  equivocándose o el grande equivocándose, y sólo el verificador al lado los separa.
+  El brazo es *aceptación y score verificado sobre los mismos casos*.
+- **Compuerta, a preregistrar antes de correr:** un umbral de aceptación solo no puede
+  autorizar un retiro — el score verificado no debe caer donde se saca el target. Es
+  la lección de S5 y aplica sin cambios.
+
 ## 12. Historia
 
 | fecha | cambio a este plan | por qué |

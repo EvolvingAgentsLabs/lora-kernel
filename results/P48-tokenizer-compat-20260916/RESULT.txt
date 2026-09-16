@@ -1,0 +1,12 @@
+drafter: Qwen/Qwen2.5-3B-Instruct  (the base every adapter here sits on)
+
+target                    target vocab  ids match  usable  extra ids
+Qwen2.5-7B-Instruct            151,643       True    True  0
+Qwen2.5-14B-Instruct           151,643       True    True  0
+Qwen2.5-32B-Instruct           151,643       True    True  0
+Qwen2.5-72B-Instruct           151,643       True    True  0
+Qwen3-14B                      151,643       True    True  4
+Qwen3-32B                      151,643       True    True  4
+Qwen3.5-27B                    248,044      False   False  26
+Qwen3.6-27B                    248,044      False   False  26
+Qwen3.8-27B                    248,044      False   False  33
