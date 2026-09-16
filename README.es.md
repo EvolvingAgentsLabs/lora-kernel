@@ -389,6 +389,10 @@ control plane empresarial.
 
 ## Documentos
 
+- [`docs/es/REPORT.md`](docs/es/REPORT.md) — **el plan original contra lo que pasó**,
+  el patrón de las fallas (casi todo resultado negativo es la suite, no la
+  arquitectura), qué está genuinamente bloqueado, y qué nos dan y qué no los
+  módulos de decodificación especulativa de NVIDIA
 - [`docs/es/STACK.md`](docs/es/STACK.md) — **el inventario: cada id de modelo, cada
   hiperparámetro de adaptador, cada flag de vLLM**, con la corrida que lo estableció
   — la base y por qué está resuelta por medición, los dos targets y la tabla de
