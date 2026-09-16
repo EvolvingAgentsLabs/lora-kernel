@@ -16,6 +16,7 @@ A rule a person has to remember is not a rule. This is the gate that replaces it
 """
 
 import pathlib
+import sys
 import re
 
 import pytest
@@ -239,3 +240,112 @@ def test_the_reference_detector_does_not_read_a_lowercase_local_as_an_env_var():
     """`$_self` is not a reference to `$_`. Pinned, because it reported one."""
     assert REF.findall('cat "$0" > "$_self" && chmod +x "$_self"') == []
     assert REF.findall('echo "$GPU and ${BRANCH}"') == ["GPU", "BRANCH"]
+
+
+# ---------------------------------------------------------------------------
+# What a chain installs has to cover what the trainer imports. Fourth time a
+# hand-kept list has lagged the thing it was supposed to track: `chain_serve.sh`
+# learned to train, and its dependency line was never brought in line with the two
+# chains that always did — so a run reached `SFTTrainer` and died on
+# `ModuleNotFoundError: No module named 'trl'` after twenty minutes of boot
+# **[ran]** 2026-09-16. The failure was even documented in a comment two lines
+# above the list, recorded as *do not train in a serving session* rather than as
+# *the list is short*.
+# ---------------------------------------------------------------------------
+
+#: Third-party modules the trainer imports that arrive with vLLM or with Colab, so
+#: a chain does not have to install them. Anything else it imports, it must.
+BUNDLED = {"torch", "transformers", "numpy"}
+
+TRAINER = pathlib.Path("training/s4_train.py")
+
+
+def trainer_imports() -> set[str]:
+    """Top-level third-party modules `s4_train` imports, at any indentation."""
+    body = TRAINER.read_text()
+    found = set()
+    for m in re.finditer(r"^\s*(?:from|import)\s+([a-zA-Z_][\w]*)", body, re.M):
+        name = m.group(1)
+        if name in ("training", "__future__"):
+            continue
+        if name in sys.stdlib_module_names:
+            continue
+        found.add(name)
+    return found
+
+
+def test_the_trainer_still_imports_what_we_think():
+    needed = trainer_imports() - BUNDLED
+    assert "trl" in needed and "peft" in needed and "datasets" in needed
+
+
+#: What `trl` brings with it, from its own published requirements: accelerate,
+#: datasets, transformers and peft **[read]** PyPI 2026-09-16. A chain that installs
+#: trl therefore does not have to name those, and demanding it would fail the two
+#: chains that have trained correctly for weeks.
+TRANSITIVE = {"trl": {"accelerate", "datasets", "peft", "transformers"}}
+
+
+INSTALL = re.compile(r"(?:pip -q install|colab install(?:\s+-s\s+\S+)?)([^\n\"']*)")
+
+
+def install_commands(body: str) -> str:
+    """Only the package names, never the prose around them.
+
+    THE FILE IS THE WRONG THING TO SEARCH, AND SEARCHING IT WAS THIS CHECK'S OWN
+    FIRST BUG. `chain_serve.sh` carries two comments about the P26 failure, both of
+    which contain the word `trl` — so a substring test over the whole script found
+    the dependency in the very prose explaining that it was missing. Three guards in
+    this repository have now fired on text describing the absence they check for
+    **[ran]**; this is the fourth, caught by a test written to break it on purpose.
+    """
+    return " ".join(m.group(1) for m in INSTALL.finditer(body))
+
+
+def _installs_python_packages(body: str) -> bool:
+    """A chain that only reaches for apt is not a chain that trains.
+
+    `chain_ollama.sh` installs `curl` and `zstd` to fetch a model server. Asking it
+    for `peft` would be asking the wrong script.
+    """
+    return bool(install_commands(body).strip())
+
+
+def test_every_chain_that_can_train_installs_what_the_trainer_imports():
+    needed = trainer_imports() - BUNDLED
+    missing = {}
+    for chain in CHAINS:
+        body = chain.read_text()
+        if not _installs_python_packages(body):
+            continue
+        installed = install_commands(body)
+        covered = set()
+        for pkg, brings in TRANSITIVE.items():
+            if pkg in installed:
+                covered |= brings
+        absent = sorted(n for n in needed - covered if n not in installed)
+        if absent:
+            missing[chain.name] = absent
+    assert not missing, (
+        "these chains can train and do not install what the trainer imports, so a "
+        "run dies at the import after paying for its boot:\n"
+        + "\n".join(f"  {k}: {v}" for k, v in sorted(missing.items())))
+
+
+def test_removing_trl_from_a_chain_is_caught():
+    """The check has to fail on the thing that actually happened.
+
+    `chain_serve.sh` learned to train and kept a dependency line that predated it,
+    so a run died on `No module named 'trl'` after twenty minutes of boot.
+    """
+    needed = trainer_imports() - BUNDLED
+    body = pathlib.Path("training/harness/chain_serve.sh").read_text()
+    broken = install_commands(body.replace("peft trl datasets", "peft datasets"))
+    covered = set()
+    for pkg, brings in TRANSITIVE.items():
+        if pkg in broken:
+            covered |= brings
+    assert sorted(n for n in needed - covered if n not in broken) == ["trl"]
+    # and the word IS in the file, in the comments explaining the failure — which
+    # is exactly why the file is the wrong thing to search.
+    assert "trl" in body.replace("peft trl datasets", "peft datasets")

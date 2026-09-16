@@ -197,6 +197,16 @@ These are not style. Each one was paid for.
   **69-82% of it was the suite**, and on the full inbox both arms were already at the
   ceiling — 0.030 and 0.007 left **[ran]** P46. `training/harness/ceiling.py`, and it
   costs no GPU.
+- **What a chain installs is derived from what the trainer imports, never kept by
+  hand.** `chain_serve.sh` learned to train and its dependency line was never brought
+  in line with the two chains that always did, so P53 reached `SFTTrainer` and died on
+  `No module named 'trl'` **after twenty minutes of boot** **[ran]** 2026-09-16. The
+  failure was documented in a comment two lines above the short list — recorded as
+  *do not train in a serving session* rather than as *the list is short*. Fourth
+  hand-kept list to lag the thing it tracked.
+  **And the check must read the install command, not the file:** its own first version
+  searched the whole script and found `trl` in the comments explaining that `trl` was
+  missing. Fourth guard to fire on prose describing the absence it checks for.
 - **An arm proves it can reach its tools before it scores anything.** P51's first
   attempt served vLLM without `--enable-auto-tool-choice --tool-call-parser`, so
   **every one of 240 requests returned HTTP 400** — and the progress line read

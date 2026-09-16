@@ -121,7 +121,7 @@ step("vllm", "pip -q install 'vllm>=0.28' 2>&1 | tail -1")
 # 0.10.0, transformers refuses anything under 0.16.0, and the refusal arrives as an
 # ImportError in the first second of the run. That fix has been in the training chain
 # for days and was not carried across when this one learned to train [ran] 2026-09-14.
-step("train deps", "[ -z '${TRAINDEPS:-}' ] || pip -q install peft datasets accelerate 'torchao>=0.16.0' 2>&1 | tail -1; echo ok")
+step("train deps", "[ -z '${TRAINDEPS:-}' ] || pip -q install peft trl datasets accelerate 'torchao>=0.16.0' 2>&1 | tail -1; echo ok")
 step("check", "python -c 'import vllm; print(vllm.__version__)' 2>&1 | tail -1")
 PY
   cat > /tmp/_vcheck.py <<'PY'
