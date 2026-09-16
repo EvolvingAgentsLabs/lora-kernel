@@ -46,6 +46,11 @@ class Finding:
     passed: bool | None          # None = needs a model
     detail: str
     value: float | None = None
+    #: Why this suite is allowed to fail this gate. A WAIVER IS NOT A PASS and it is
+    #: not silence: it prints, it names the purpose it was granted for, and it can
+    #: only be set deliberately. The alternative is a gate that gets ignored by
+    #: habit, and a gate ignored by habit has stopped being a gate.
+    waived_for: str | None = None
 
 
 @dataclass
@@ -55,8 +60,13 @@ class Report:
 
     @property
     def usable(self) -> bool:
-        """False if any gate that COULD be decided was failed."""
-        return all(f.passed is not False for f in self.findings)
+        """False if any gate that COULD be decided was failed and not waived."""
+        return all(f.passed is not False or f.waived_for
+                   for f in self.findings)
+
+    @property
+    def waived(self) -> list[str]:
+        return [f.gate for f in self.findings if f.waived_for]
 
     @property
     def undecided(self) -> list[str]:
@@ -66,8 +76,12 @@ class Report:
         rows = [f"{self.name}"]
         for f in self.findings:
             mark = {True: "pass", False: "FAIL", None: "needs a model"}[f.passed]
+            if f.waived_for:
+                mark = "WAIVED"
             v = "" if f.value is None else f"  {f.value:.3f}"
             rows.append(f"  {mark:14} {f.gate:26}{v}  {f.detail}")
+            if f.waived_for:
+                rows.append(f"  {'':14} {'':26}  waived for: {f.waived_for}")
         return "\n".join(rows)
 
 
@@ -209,12 +223,29 @@ def _lexical_rule(cases, region_of, prompt_of, per_region: int = 8):
 
 
 def inspect(name: str, cases: list[dict], *, region_of, prompt_of, depth_of,
-            tools_of) -> Report:
-    """Every gate a generator can answer, plus the four that wait for a model."""
-    return Report(name, [
+            tools_of, waive: dict[str, str] | None = None) -> Report:
+    """Every gate a generator can answer, plus the four that wait for a model.
+
+    `waive` maps a gate name to **the purpose it is waived for**, and the reason is
+    required rather than optional. A suite cannot both price a learned router and
+    test acceptance-as-ranking: the router needs the region hidden, ranking does
+    not care. S3 is what happens when that is left ambiguous — its routing arm tied
+    exactly with a rule reading the region out of the prompt. Choosing one and
+    saying so is the difference between a waiver and an excuse.
+    """
+    waive = waive or {}
+    for g in waive:
+        if g not in {"region_not_in_the_prompt", "has_a_difficulty_axis",
+                     "depth_is_not_the_region", "asking_is_a_decision"}:
+            raise ValueError(f"{g!r} is not a gate a generator can decide")
+    findings = [
         region_not_in_the_prompt(cases, region_of, prompt_of),
         has_a_difficulty_axis(cases, depth_of),
         depth_is_not_the_region(cases, region_of, depth_of),
         asking_is_a_decision(cases, tools_of),
         *model_gates(),
-    ])
+    ]
+    for f in findings:
+        if f.gate in waive and f.passed is False:
+            f.waived_for = waive[f.gate]
+    return Report(name, findings)
