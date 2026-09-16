@@ -191,6 +191,23 @@ These are not style. Each one was paid for.
   `aurc_oracle_floor` — threw away **475 cases of rented L4** that had already
   finished **[ran]** 2026-09-16. Dump the records first, compute the summary in a
   `try`, dump again.
+- **A suite passes `training/suite_gates.py` or its numbers are not evidence.** The
+  report of 2026-09-16 lined up every negative result of ten days and found the same
+  thing underneath almost all of them: the suite was wrong, not the architecture.
+  Seven ways, each paid for. They are now gates, and **all four suites this project
+  has ever measured on fail at least one** **[ran]**
+  `results/P50-suite-audit-20260916/`:
+  - **every region of every suite sits at exactly one depth** — 4 of 4, 8 of 8, 2 of
+    2, 3 of 3 — so region and difficulty are one variable everywhere, which is P45
+    generalised and it was never noticed outside fluids;
+  - the region is readable off the prompt at **0.856** (fluids) and **0.940** (email
+    triage) against chance;
+  - email drafting has **one** difficulty for all 180 cases.
+  Four of the seven gates need a model and say so rather than guessing. And the
+  deepest finding has no gate at all, because a check over a generator has the same
+  author as the generator: **a generated suite cannot contain a difficulty nobody
+  thought of.** The answer to that one is to let the base model choose where the
+  difficulty is.
 - **Count instrument redesigns.** Once is fine, twice is suspicious, three times
   is looking for the result. The stopping condition goes into the plan before the
   run.
