@@ -178,6 +178,12 @@ def main() -> int:
     ap.add_argument("--max-turns", type=int, default=6)
     ap.add_argument("--max-tokens", type=int, default=300)
     ap.add_argument("--out", default="triage_results.json")
+    # P47. The confidence at the END of a tool chain, which P46 says is where the
+    # only remaining room is: the listing carries one bit, but `thread_history` and
+    # `sender_stats` carry the two facts the definition needs, so with the tools the
+    # ceiling collapses to the oracle floor.
+    ap.add_argument("--logprobs", type=int, default=0,
+                    help="ask for N top_logprobs and score the calibration too")
     args = ap.parse_args()
 
     inbox = generate(args.n, args.seed)
@@ -201,7 +207,7 @@ def main() -> int:
     recs, t0 = [], time.time()
     for i, msg in enumerate(inbox["messages"], 1):
         r = triage_one(args.base_url, args.api_key, args.model, inbox, msg,
-                       args.max_turns, args.max_tokens)
+                       args.max_turns, args.max_tokens, args.logprobs)
         r.update({"id": msg["id"], "truth": msg["_truth"],
                   "correct": r["verdict"] == msg["_truth"]})
         recs.append(r)
@@ -224,6 +230,40 @@ def main() -> int:
                "human_majority_class_bar": round(hbar, 4),
                "undecided": undecided, "calls": calls, "refused": refused,
                "seconds": round(time.time() - t0, 1), "records": recs}
+
+    if args.logprobs:
+        from training.harness.bar import calibration
+        from training.harness.ceiling import room
+        for label, rs in (("all", recs), ("human", hrecs)):
+            # ONLY THE CASES WHERE THE FIRST TOKEN WAS THE DECISION. A model that
+            # opens with prose puts a word where the verdict should be, and reading
+            # that as a confidence measures phrasing. The share is reported, and the
+            # brief voids the run above 20%.
+            usable = [r for r in rs if r.get("confidence") is not None]
+            read_rate = len(usable) / max(len(rs), 1)
+            if not usable:
+                summary[f"calibration_{label}"] = {"n": 0, "read_rate": 0.0,
+                                                   "void": True}
+                continue
+            c = calibration([r["confidence"] for r in usable],
+                            [bool(r["correct"]) for r in usable])
+            # WITH THE TOOLS THE CEILING IS THE ORACLE FLOOR, because every fact the
+            # definition needs is recoverable — so the measured gap IS the room, and
+            # `room()` is called with a ceiling of 0 rather than left to a reader.
+            c |= {"read_rate": round(read_rate, 4),
+                  "void": read_rate < 0.80,
+                  "room": room(c["aurc"] - c["aurc_floor"], 0.0)}
+            summary[f"calibration_{label}"] = c
+            print(f"[conf] {label:5} n={len(usable)} read={read_rate:.3f} "
+                  f"ece={c['ece']:.4f} brier={c['brier']:.4f} "
+                  f"aurc={c['aurc']:.4f} floor={c['aurc_floor']:.4f} "
+                  f"gap={c['aurc']-c['aurc_floor']:.4f}", flush=True)
+        # The gate lives with the run that pre-registered it, not inline here.
+        from training.harness.tool_confidence import arm_verdict
+        g = (summary.get("calibration_human") or {})
+        gap = (g.get("aurc", 0) - g.get("aurc_floor", 0)) if g.get("n") else None
+        summary["verdict"] = arm_verdict(gap, g.get("read_rate", 0.0))
+        print(f"[conf] {summary['verdict']}", flush=True)
     with open(args.out, "w") as f:
         json.dump(summary, f, indent=2)
 
