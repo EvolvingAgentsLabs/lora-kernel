@@ -34,9 +34,13 @@ def _run(monkeypatch, tmp_path, texts, names=("email-full", "fluids-full")):
 
     def spy(cmd, *a, **k):
         commands.append(list(cmd))
-        return type("R", (), {"stdout": "", "stderr": ""})()
+        return 0, ""
 
-    monkeypatch.setattr(pool_run.subprocess, "run", spy)
+    # THE SEAM IS `run_streaming`, NOT `subprocess.run`. The arms were switched to
+    # a streaming child so a twenty-minute scoring pass stops reading as silence;
+    # a spy still pointed at `subprocess.run` records nothing and asserts on an
+    # empty list — the test failing, not the runner.
+    monkeypatch.setattr(pool_run, "run_streaming", spy)
     monkeypatch.chdir(tmp_path)
     argv = ["p", "--base", "B", "--out", str(out)]
     for n in names:

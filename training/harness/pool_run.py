@@ -36,6 +36,7 @@ import urllib.request
 from pathlib import Path
 
 from training.harness.bar import compare, verdict
+from training.harness.stream import run_streaming
 
 OUT = Path("pool_results.json")
 
@@ -143,16 +144,18 @@ def main() -> int:
                           if "email" in name else
                           ("training.harness.fluids_sim", ["--n", str(args.n_fluids)]))
             print(f"[pool] scoring {name} with {mod.rsplit('.', 1)[-1]}", flush=True)
-            r = subprocess.run([sys.executable, "-u", "-m", mod,
-                                "--base-url", "http://127.0.0.1:8001/v1",
-                                "--model", name, "--max-tokens", str(args.max_tokens),
-                                *extra, "--out", f"arm_{name}.json"],
-                               capture_output=True, text=True)
-            print(r.stdout[-900:], flush=True)
+            # Streamed rather than captured — see stream.py. A 150-case arm that
+            # says nothing until it ends is a run nobody can stop early.
+            rc, tail = run_streaming([sys.executable, "-u", "-m", mod,
+                                      "--base-url", "http://127.0.0.1:8001/v1",
+                                      "--model", name,
+                                      "--max-tokens", str(args.max_tokens),
+                                      *extra, "--out", f"arm_{name}.json"])
             p = Path(f"arm_{name}.json")
             results["arms"][name] = (json.loads(p.read_text()) if p.exists()
                                      else {"status": "produced nothing",
-                                           "stderr": r.stderr[-400:]})
+                                           "returncode": rc,
+                                           "output": tail[-900:]})
             OUT.write_text(json.dumps(results, indent=2))
 
         print(f"\n{'member':<14}{'score':>12}{'gate':>10}{'calls':>8}{'refused':>9}")
