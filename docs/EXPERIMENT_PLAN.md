@@ -2310,6 +2310,45 @@ means one expert with three names, and the pool gate is what says so.
 **The risk that is not an excuse:** close enough to be interesting is close enough to
 be within noise. A power check runs before the arm, not after it.
 
+### P49 — 2026-09-16 **[ran]** · bought, and one temática of three has no headroom
+
+Report: [`../results/P49-draft-headroom-20260916/RESULT.md`](../results/P49-draft-headroom-20260916/RESULT.md).
+One A100, two arms, 90 cases, **no training**. Session stopped cleanly.
+
+| arm | complete drafts | fact rate |
+|---|---:|---:|
+| `Qwen2.5-32B-Instruct-AWQ` | **76/90 = 0.844** | 0.948 |
+| `Qwen2.5-3B-Instruct` | **49/90 = 0.544** | 0.756 |
+
+**Margin 0.300 against a pre-registered 0.10 — the design is bought.**
+
+**But the headline hides the thing that matters:**
+
+| temática | target | base | gap |
+|---|---:|---:|---:|
+| **client** | 0.667 | **0.033** | **0.633** |
+| vendor | 0.867 | 0.633 | 0.233 |
+| **team** | **1.000** | **0.967** | **0.033** |
+
+**`team` has no headroom** — both arms at the ceiling, which is P42's ARC failure
+isolated to one temática. The 0.300 margin is almost entirely `client`, where the
+base completes **1 of 30**.
+
+**What the base does, read rather than inferred:** it writes a reasonable reply and
+omits the concrete details — the reference missing 28 times, the amount 25. And the
+check is not measuring punctuation: of **80** missing facts across both arms, **0**
+appear written another way.
+
+**Three consequences for P50.**
+1. **`team` is fixed or dropped.** Averaging in a saturated temática dilutes whatever
+   the other two show. Note the two with headroom both require an **amount** and the
+   one without requires a **first name**.
+2. **The gap is a capability gap, not a style gap** — *always name the reference and
+   the figure* is a policy, trainable and mechanically checkable, and a better-defined
+   target than "write in the client register".
+3. **Even the target misses 10 of 30 on `client`**, so acceptance against it is not
+   correctness. `carries()` stays **beside** acceptance, never behind it.
+
 ## 12. History
 
 | date | change to this plan | why |
