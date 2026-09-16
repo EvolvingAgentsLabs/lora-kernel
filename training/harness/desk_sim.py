@@ -135,6 +135,36 @@ def summarise(records: list[dict]) -> dict:
             "by_region": dict(sorted(by_region.items()))}
 
 
+class Preflight(RuntimeError):
+    """The serving path is wrong, and it is wrong before any money is spent."""
+
+
+def preflight(base_url, key, model, case, max_tokens) -> dict:
+    """One case, checked, before the other 239 are paid for.
+
+    THIS IS THE FIX FOR P51's FIRST ATTEMPT. vLLM refuses `tool_choice: auto`
+    without `--enable-auto-tool-choice --tool-call-parser`, and returns **HTTP 400
+    on every request**. The arm scored 240 of 240 cases as errors and reported
+    `correct 0 calls 0 refused 0` — indistinguishable from a model that simply
+    cannot do the task **[ran]** 2026-09-16.
+
+    A run that cannot reach its tools is not a difficult run, it is a broken one, and
+    the difference has to be visible in the first ten seconds rather than the last.
+    So: one call, and it must come back **without an error and with a tool call**.
+    A model that answers this suite's first question without asking anything has
+    either been told the answer or cannot see the tools; both are worth stopping for.
+    """
+    r = ask_one(base_url, key, model, case, 2, max_tokens)
+    if r.get("error"):
+        raise Preflight(f"the serving path rejected a tool call: {r['error'][:200]}")
+    if not r.get("calls"):
+        raise Preflight(
+            "the model answered without calling a tool. Either the tools are not "
+            "reaching it, or the prompt gives the answer away — neither is a "
+            f"difficulty. It said: {str(r.get('said'))[:160]!r}")
+    return r
+
+
 def run(base_url, key, model, cases, max_turns, max_tokens, out: Path,
         every: int = 20) -> list[dict]:
     """Score every case, checkpointing as it goes. P47 was lost twice without this."""
@@ -146,6 +176,9 @@ def run(base_url, key, model, cases, max_turns, max_tokens, out: Path,
             print(f"[desk] could not reuse {out}: {e!r}", flush=True)
     if done:
         print(f"[desk] resuming — {len(done)} already scored", flush=True)
+    if not done:
+        preflight(base_url, key, model, cases[0], max_tokens)
+        print(f"[desk] preflight ok for {model}", flush=True)
     recs: list[dict] = []
     t0 = time.time()
     for i, case in enumerate(cases, 1):
@@ -164,8 +197,12 @@ def run(base_url, key, model, cases, max_turns, max_tokens, out: Path,
                                        "seconds": round(time.time() - t0, 1),
                                        "records": recs}, indent=2))
             s = summarise(recs)
+            # ERRORS BELONG IN THE PROGRESS LINE. Without them `correct 0 calls 0
+            # refused 0` is what a floor result and a broken serving path both look
+            # like, and P51's first attempt printed exactly that for 240 cases.
+            bad = "" if not s["errors"] else f"  ERRORS {s['errors']}/{i}"
             print(f"[desk] {model} {i}/{len(cases)} correct {s['correct']} "
-                  f"calls {s['calls']} refused {s['refused']}", flush=True)
+                  f"calls {s['calls']} refused {s['refused']}{bad}", flush=True)
     return recs
 
 

@@ -176,6 +176,14 @@ These are not style. Each one was paid for.
   **69-82% of it was the suite**, and on the full inbox both arms were already at the
   ceiling — 0.030 and 0.007 left **[ran]** P46. `training/harness/ceiling.py`, and it
   costs no GPU.
+- **An arm proves it can reach its tools before it scores anything.** P51's first
+  attempt served vLLM without `--enable-auto-tool-choice --tool-call-parser`, so
+  **every one of 240 requests returned HTTP 400** — and the progress line read
+  `correct 0 calls 0 refused 0`, which is exactly what a model that cannot do the
+  task looks like **[ran]** 2026-09-16. One probe call, checked for an error *and*
+  for a tool call, costs ten seconds and would have saved the arm. Errors belong in
+  the progress line for the same reason: a broken run must not be able to look like
+  a floor.
 - **A long run checkpoints and resumes, or a dead session costs all of it.** P47
   was lost **twice on the same measurement**: to a `KeyError` after all 475 cases had
   been scored, and then to a Colab session that stopped answering at **260 of 475**
