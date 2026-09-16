@@ -36,3 +36,46 @@ def test_a_low_read_rate_voids_the_run_before_any_gap_is_read():
 
 def test_no_confidence_at_all_is_void_rather_than_a_zero_gap():
     assert arm_verdict(None, 1.0).startswith("VOID")
+
+
+# --------------------------------------------------------------------------
+# The two failures that cost P47's first run: a key written from memory, and a
+# summary computed before the records were on disk **[ran]** 2026-09-16.
+# --------------------------------------------------------------------------
+
+def test_calibration_returns_the_keys_its_consumer_reads():
+    """Written against the real shape, not a remembered one.
+
+    The first draft read `aurc_floor` and recomputed a gap that `calibration()`
+    already returns. The KeyError landed after 475 cases had been scored and
+    before the file was opened, so the whole run was lost.
+    """
+    from training.harness.bar import calibration
+    c = calibration([0.9, 0.6, 0.3], [True, False, False])
+    for key in ("aurc", "aurc_oracle_floor", "aurc_gap", "ece", "brier", "n"):
+        assert key in c, f"{key} is missing; a consumer reading it would crash"
+    assert "aurc_floor" not in c, "the name the first draft invented is still absent"
+
+
+def test_the_records_are_on_disk_before_the_summary_math_can_fail(tmp_path,
+                                                                 monkeypatch):
+    """A crash in the summary must not cost the run that produced it."""
+    import json
+    import sys
+
+    from training.harness import agent_sim
+
+    monkeypatch.setattr(agent_sim, "triage_one", lambda *a, **k: {
+        "verdict": True, "calls": 1, "refused": 0, "turns": 2,
+        "confidence": 0.8, "answered_first": True, "asked": [], "text": "IMPORTANT"})
+    # Make the calibration block blow up the way the real one did.
+    import training.harness.bar as bar
+    monkeypatch.setattr(bar, "calibration",
+                        lambda *a, **k: (_ for _ in ()).throw(KeyError("aurc_floor")))
+    out = tmp_path / "r.json"
+    monkeypatch.setattr(sys, "argv", ["p", "--n", "8", "--out", str(out),
+                                      "--logprobs", "20"])
+    assert agent_sim.main() == 0
+    saved = json.loads(out.read_text())
+    assert len(saved["records"]) == 8, "the expensive part was lost to a summary bug"
+    assert "calibration_error" in saved

@@ -231,7 +231,16 @@ def main() -> int:
                "undecided": undecided, "calls": calls, "refused": refused,
                "seconds": round(time.time() - t0, 1), "records": recs}
 
+    # WRITTEN BEFORE THE SUMMARY MATH, NOT AFTER. The first version computed the
+    # calibration block first and a `KeyError` in it threw away 475 cases of rented
+    # L4 — the expensive part had finished and the file had not been opened yet
+    # **[ran]** 2026-09-16. CLAUDE.md already says to persist every result as it
+    # lands; this is the line that makes that true for this runner.
+    with open(args.out, "w") as f:
+        json.dump(summary, f, indent=2)
+
     if args.logprobs:
+      try:
         from training.harness.bar import calibration
         from training.harness.ceiling import room
         for label, rs in (("all", recs), ("human", hrecs)):
@@ -250,23 +259,32 @@ def main() -> int:
             # WITH THE TOOLS THE CEILING IS THE ORACLE FLOOR, because every fact the
             # definition needs is recoverable — so the measured gap IS the room, and
             # `room()` is called with a ceiling of 0 rather than left to a reader.
+            # `calibration()` returns `aurc_oracle_floor` and `aurc_gap`. The
+            # first draft invented `aurc_floor` and recomputed a field that was
+            # already there; both mistakes came from writing against a remembered
+            # shape instead of the real one.
             c |= {"read_rate": round(read_rate, 4),
                   "void": read_rate < 0.80,
-                  "room": room(c["aurc"] - c["aurc_floor"], 0.0)}
+                  "room": room(c["aurc_gap"], 0.0)}
             summary[f"calibration_{label}"] = c
             print(f"[conf] {label:5} n={len(usable)} read={read_rate:.3f} "
                   f"ece={c['ece']:.4f} brier={c['brier']:.4f} "
-                  f"aurc={c['aurc']:.4f} floor={c['aurc_floor']:.4f} "
-                  f"gap={c['aurc']-c['aurc_floor']:.4f}", flush=True)
+                  f"aurc={c['aurc']:.4f} floor={c['aurc_oracle_floor']:.4f} "
+                  f"gap={c['aurc_gap']:.4f}", flush=True)
         # The gate lives with the run that pre-registered it, not inline here.
         from training.harness.tool_confidence import arm_verdict
         g = (summary.get("calibration_human") or {})
-        gap = (g.get("aurc", 0) - g.get("aurc_floor", 0)) if g.get("n") else None
-        summary["verdict"] = arm_verdict(gap, g.get("read_rate", 0.0))
+        summary["verdict"] = arm_verdict(g.get("aurc_gap") if g.get("n") else None,
+                                         g.get("read_rate", 0.0))
         print(f"[conf] {summary['verdict']}", flush=True)
-    with open(args.out, "w") as f:
+      except Exception as e:
+        # A SUMMARY THAT CANNOT BE COMPUTED IS NOT A RUN THAT DID NOT HAPPEN. The
+        # records are already on disk; this says so instead of exiting non-zero and
+        # letting the caller record "produced nothing".
+        summary["calibration_error"] = repr(e)[:300]
+        print(f"[conf] calibration failed, records kept: {e!r}", flush=True)
+      with open(args.out, "w") as f:
         json.dump(summary, f, indent=2)
-
     print(f"\n{ok}/{args.n} = {ok/args.n:.3f} against a majority-class bar of {bar:.3f}")
     print(f"on the {len(hrecs)} human messages: {hok}/{len(hrecs)} = "
           f"{hok/max(len(hrecs),1):.3f} against {hbar:.3f} — the number that counts")

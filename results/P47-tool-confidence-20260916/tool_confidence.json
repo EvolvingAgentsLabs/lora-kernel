@@ -4,8 +4,15 @@
   "n": 475,
   "seed": 717171,
   "top_logprobs": 20,
-  "arms": {},
+  "arms": {
+    "email-full-with-tools": {
+      "status": "produced nothing",
+      "returncode": 1,
+      "output": "rrect 328 calls 995\n  [sim] 404/475 correct 331 calls 1007\n  [sim] 408/475 correct 334 calls 1013\n  [sim] 412/475 correct 337 calls 1022\n  [sim] 416/475 correct 339 calls 1034\n  [sim] 420/475 correct 343 calls 1040\n  [sim] 424/475 correct 346 calls 1049\n  [sim] 428/475 correct 350 calls 1058\n  [sim] 432/475 correct 354 calls 1070\n  [sim] 436/475 correct 358 calls 1073\n  [sim] 440/475 correct 360 calls 1088\n  [sim] 444/475 correct 362 calls 1097\n  [sim] 448/475 correct 365 calls 1109\n  [sim] 452/475 correct 369 calls 1121\n  [sim] 456/475 correct 372 calls 1133\n  [sim] 460/475 correct 376 calls 1145\n  [sim] 464/475 correct 379 calls 1154\n  [sim] 468/475 correct 383 calls 1166\n  [sim] 472/475 correct 387 calls 1175\nTraceback (most recent call last):\n  File \"<frozen runpy>\", line 203, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/content/lora-kernel/training/harness/agent_sim.py\", line 279, in <module>\n    raise SystemExit(main())\n                     ~~~~^^\n  File \"/content/lora-kernel/training/harness/agent_sim.py\", line 255, in main\n    \"room\": room(c[\"aurc\"] - c[\"aurc_floor\"], 0.0)}\n                             ~^^^^^^^^^^^^^^\nKeyError: 'aurc_floor'"
+    }
+  },
   "identity_gate": {
     "differs_from_base": true
-  }
+  },
+  "finished": "2026-09-16T10:45:45"
 }
