@@ -2480,6 +2480,36 @@ with **38 of 180** completions failing to run.
 programs of one family never share an answer. **Second post-result suite redesign
 today; the counter is at two.**
 
+### P54 — 2026-09-16 **[ran]** · step zero passes at +0.863, and the suite is exhausted
+
+Report: [`../results/P54-step-zero-rebuilt-20260916/RESULT.md`](../results/P54-step-zero-rebuilt-20260916/RESULT.md).
+
+**base 27/197 = 0.137 · adapter 197/197 = 1.000**, paired, 170 to 0, p < 1e-5.
+
+**The leak check ran first, and this is not P53.** Held-out completions verbatim in
+training: **0 of 197** against P53's 180 of 180. Every completion the adapter produced
+was different. It generalised across constants drawn from the full 32-bit space, so
+**the +0.863 is real**.
+
+**And what it learned is narrower than the number sounds.** With constants blanked the
+197 completions collapse to **6 distinct skeletons** — two families by three cut
+depths is about six (family, cut-point) combinations, each with one correct shape. The
+task is *recognise which of six applies and fill in constants readable in the spec
+comment*. The base still reaches only 0.137, so it is not trivial; but it is **this
+template family**, not code completion.
+
+**So: step zero is answered YES** — a base with the right LoRA learns this predicate
+and beats the base widely. **And nothing downstream is measurable here**: an expert at
+1.000 cannot be ranked, and acceptance has nothing to discriminate. P42's ceiling from
+the treatment side.
+
+**The next suite needs structural variety, not more constants** — the fix that failed
+twice was varying the *values*; what must vary is the *shape* of the tail. Target: as
+many distinct skeletons as cases, not six.
+
+**Process:** `compare` takes two maps and the same `TypeError` ended P53 *and* P54,
+because the first time it was worked around rather than repaired. Fixed, with a test.
+
 ## 12. History
 
 | date | change to this plan | why |

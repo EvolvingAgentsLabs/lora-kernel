@@ -193,12 +193,15 @@ def main() -> int:
                 "records": recs}
             OUT.write_text(json.dumps(results, indent=2))
 
-        by_id = {r["id"]: r for r in arms["base"]}
-        only_a = sum(1 for r in arms["adapter"]
-                     if r["correct"] and not by_id[r["id"]]["correct"])
-        only_b = sum(1 for r in arms["adapter"]
-                     if not r["correct"] and by_id[r["id"]]["correct"])
-        results["paired"] = compare(only_a, only_b)
+        # `compare` TAKES TWO MAPS, NOT TWO COUNTS. Passing counts raised
+        # `TypeError: 'int' object is not iterable` **twice** — in P53 and again in
+        # P54, because the first time it was worked around by computing the verdict
+        # by hand instead of fixing it. A bug diagnosed and not repaired costs the
+        # same twice.
+        results["paired"] = compare({r["id"]: r["correct"] for r in arms["adapter"]},
+                                    {r["id"]: r["correct"] for r in arms["base"]})
+        only_a = results["paired"]["only_a"]
+        only_b = results["paired"]["only_b"]
         a = results["arms"]["adapter"]["accuracy"]
         b = results["arms"]["base"]["accuracy"]
         results["verdict"] = {
