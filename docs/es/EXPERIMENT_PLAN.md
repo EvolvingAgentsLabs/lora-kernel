@@ -2535,6 +2535,34 @@ que el gradiente de `commitment` aterrice dentro de la banda — **cambios de su
 la banda fija**, que es un acto distinto de mover la banda. Sería el **primer rediseño
 post-resultado** de esta suite; el contador arranca en uno.
 
+### P53 — 2026-09-16 **[ran]** · el paso cero pasa con +0,689, y el número es nulo
+
+Reporte: [`../../results/P53-step-zero-20260916/RESULT.md`](../../results/P53-step-zero-20260916/RESULT.md).
+
+**base 56/180 = 0,311 · adaptador 180/180 = 1,000**, apareado, el adaptador ganando
+124 casos que la base pierde y perdiendo 0, p exacta < 1e-5. La compuerta preregistrada
+pasa.
+
+**Y todas las completaciones retenidas aparecen literales en el entrenamiento — 180 de
+180.** Los prompts difieren porque difieren las constantes; la *completación* es
+idéntica, porque las constantes se referencian por nombre y viven en el prefijo. El
+adaptador aprendió una cola por familia, no a computar nada.
+
+**Lo causó el arreglo anterior.** La partición del corpus encontró que el corte más
+profundo se llevaba la línea con la entrada del programa, así que dos programas daban
+el mismo prompt con respuestas distintas; la reparación volvió incortable todo lo que
+está arriba de la implementación — lo que puso cada valor variable en el prefijo y dejó
+la cola constante. Parametrizar las constantes no sirvió de nada, porque las constantes
+son justo la parte que nunca hay que escribir.
+
+**Qué sobrevive:** la maquinaria entera — entrenamiento en subproceso, C18, verificación
+por ejecución sobre 360 completaciones sin un solo error de transporte — y el 0,311 de
+la base, con **38 de 180** completaciones que ni compilan.
+
+**El arreglo:** poner las constantes en línea donde se usan, para que la cola las lleve
+y dos programas de una familia nunca compartan respuesta. **Segundo rediseño
+post-resultado de una suite hoy; el contador va en dos.**
+
 ## 12. Historia
 
 | fecha | cambio a este plan | por qué |

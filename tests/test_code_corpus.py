@@ -59,3 +59,41 @@ def test_the_training_file_is_the_shape_the_trainer_reads():
         roles = [m["role"] for m in r["messages"]]
         assert roles == ["user", "assistant"]
         assert r["messages"][1]["content"].strip()
+
+
+# ---------------------------------------------------------------------------
+# The check that would have voided P53 before it ran. Its prompts were all
+# distinct and every one of its 180 held-out COMPLETIONS was already in the
+# training set, word for word — so a +0.689 delta with p < 1e-5 measured one
+# memorised tail per family **[ran]** 2026-09-16.
+# ---------------------------------------------------------------------------
+
+def test_held_out_completions_are_not_already_in_the_training_set():
+    """Distinct prompts are not enough. The completion is what gets written.
+
+    P53's constants lived in the prefix and were referenced by name, so one tail was
+    correct for every instance of a family. Parameterising the constants did nothing,
+    because the constants are the part that never has to be written.
+    """
+    held = build(40, EVAL_SEED, "python")
+    train = {c["completion"] for c in build(120, TRAIN_SEED, "python")}
+    repeated = [c["case_id"] for c in held if c["completion"] in train]
+    share = len(repeated) / len(held)
+    assert share < 0.20, (
+        f"{len(repeated)} of {len(held)} held-out completions are already in the "
+        "training set verbatim — the adapter can memorise the tail instead of "
+        "learning the shape")
+
+
+def test_two_programs_of_one_family_do_not_share_a_completion():
+    """The sharpest form of the same check, and the one P53 failed outright."""
+    cases = build(30, 4242, "python")
+    for family in {c["family"] for c in cases}:
+        same_depth = {}
+        for c in (x for x in cases if x["family"] == family):
+            same_depth.setdefault(c["depth"], []).append(c["completion"])
+        for depth, comps in same_depth.items():
+            if len(comps) < 2:
+                continue
+            assert len(set(comps)) > 1, (
+                f"{family} at depth {depth}: every program has the same completion")
