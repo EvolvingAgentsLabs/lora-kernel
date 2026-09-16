@@ -143,7 +143,7 @@ PY
 
   cat > /tmp/_cpeek.py <<'PY'
 import subprocess
-print(subprocess.run("grep -E '\[(serve|gate|tiny|native|matrix|run|arm|resume|cost|domain|P24|sweep|depth|fluids|sim|pool|judge|conf|shim|tunnel|3p|read|skip|train|corpora|draft|desk)\]|passed [0-9]+|"
+print(subprocess.run("grep -E '\[(serve|gate|tiny|native|matrix|run|arm|resume|cost|domain|P24|sweep|depth|fluids|sim|pool|judge|conf|shim|tunnel|3p|read|skip|train|corpora|draft|desk|zero|code)\]|passed [0-9]+|"
                      "composition|Traceback|Error|OutOfMemory|Killed' "
                      "/content/lora-kernel/compose.log | tail -2",
                      shell=True, capture_output=True, text=True).stdout)
