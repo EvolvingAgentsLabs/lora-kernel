@@ -2502,6 +2502,39 @@ entrenamiento online es para modelos que entran en memoria — un 3B entra, en l
 que ya alquilamos. Los terabytes son del camino *offline* y yo generalicé el costo de
 uno a los dos. Lo que no cambió: **una cabeza EAGLE no puede rankear expertos.**
 
+### P51 — 2026-09-16 **[ran]** · sesión 1 de 4: la banda disparó, `usable: false`
+
+Reporte: [`../../results/P51-desk-profile-20260916/RESULT.md`](../../results/P51-desk-profile-20260916/RESULT.md).
+Una A100, dos brazos, 240 casos, **sin entrenar**. La sesión se apagó sola.
+
+**base 69/240 = 0,288 · target 101/240 = 0,421**, y tres celdas de dieciséis
+sobreviven a la banda — las tres de `importance`. El grid colapsó en una fila, que es
+lo que el brief decía que frenaría las otras tres sesiones. **La banda no se mueve.**
+
+**Dos regiones de cuatro son incontestables para los dos modelos.** `owed` saca
+**0,000 también con el target**, en las cuatro profundidades; `counterpart` llega a
+0,133 como mucho. Las dos preguntan sobre todo el inbox — enumerar 24 hilos, después
+consultar por candidato, después comparar — y ni un 3B ni un 32B lo terminan en 8
+turnos. Por la regla de este mismo proyecto, esas son **celdas rotas, no difíciles**.
+
+**Y la regla encontró su propio defecto.** `commitment@4` es **base 0,000, target
+1,000** — descartada porque la base está en el piso, por una cláusula escrita para
+*"todos los brazos fallan y se lee como que el enfoque no funciona"*. Pero el target
+prueba que la tarea se puede, así que esa celda es **exactamente la forma que un
+experto chico existe para cerrar**, con toda la distancia a la vista. `commitment` va
+1,000 → 0,800 → 0,133 → 0,000 mientras el target se mantiene en 1,000: el gradiente
+más limpio que produjo este proyecto, y la banda tiró su mitad de abajo.
+
+**Notarlo después de los números es justo cuando no se puede arreglar por mi cuenta.**
+La cláusula del piso necesita una compañera — *salvo que el target despeje la celda* —
+y hacer ese cambio ahora es indistinguible de mover la banda para que encaje. Queda
+escrito, y la decisión es tuya.
+
+**Próximo movimiento, si se toma:** volver contestables `owed` y `counterpart` y hacer
+que el gradiente de `commitment` aterrice dentro de la banda — **cambios de suite con
+la banda fija**, que es un acto distinto de mover la banda. Sería el **primer rediseño
+post-resultado** de esta suite; el contador arranca en uno.
+
 ## 12. Historia
 
 | fecha | cambio a este plan | por qué |
