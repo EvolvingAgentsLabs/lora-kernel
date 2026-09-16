@@ -1,0 +1,41 @@
+fluids · the suite P41 and P45 measured
+  FAIL           region_not_in_the_prompt    0.856  a keyword rule recovers the region 0.856 of the time against 0.250 chance over 4 regions (limit 0.625)
+  pass           has_a_difficulty_axis       3.000  3 distinct depths {6: 46, 7: 22, 9: 22}
+  FAIL           depth_is_not_the_region     1.000  4 of 4 regions sit at one depth: ['hydrostatic_force', 'manning_channel', 'pipe_head_loss', 'venturi_flow']
+  pass           asking_is_a_decision        1.000  3 tools in the suite; 1.000 of cases need two or more
+  needs a model  base_not_at_the_ceiling     P42: the base scored 0.815 where the adapter scored 0.825. Run the base first; a suite it already passes cannot show a treatment anything.
+  needs a model  base_not_on_the_floor       P45's mirror: if every case is above the treatment's floor every arm fails and the failure reads as 'the approach does not work'.
+  needs a model  no_region_is_saturated      P49: `team` scored 1.000 against the base's 0.967 while the other two had room. A saturated region dilutes every average it enters.
+  needs a model  the_input_can_support_ranking  P46: group the cases by what a predictor can see; if one group holds them all, the best possible confidence is a constant and orders nothing.
+
+fluids · with the P45 ladder bolted on
+  FAIL           region_not_in_the_prompt    0.843  a keyword rule recovers the region 0.843 of the time against 0.125 chance over 8 regions (limit 0.562)
+  pass           has_a_difficulty_axis       7.000  7 distinct depths {1: 18, 2: 18, 3: 18, 4: 18, 6: 34, 7: 17, 9: 17}
+  FAIL           depth_is_not_the_region     1.000  8 of 8 regions sit at one depth: ['L1_property', 'L2_pressure', 'L3_pressure_converted', 'L4_force_on_base']
+  pass           asking_is_a_decision        0.871  3 tools in the suite; 0.871 of cases need two or more
+  needs a model  base_not_at_the_ceiling     P42: the base scored 0.815 where the adapter scored 0.825. Run the base first; a suite it already passes cannot show a treatment anything.
+  needs a model  base_not_on_the_floor       P45's mirror: if every case is above the treatment's floor every arm fails and the failure reads as 'the approach does not work'.
+  needs a model  no_region_is_saturated      P49: `team` scored 1.000 against the base's 0.967 while the other two had room. A saturated region dilutes every average it enters.
+  needs a model  the_input_can_support_ranking  P46: group the cases by what a predictor can see; if one group holds them all, the best possible confidence is a constant and orders nothing.
+
+email triage · the suite P43 and P44 measured
+  FAIL           region_not_in_the_prompt    0.940  a keyword rule recovers the region 0.940 of the time against 0.500 chance over 2 regions (limit 0.750)
+  FAIL           has_a_difficulty_axis       2.000  2 distinct depths {0: 79, 3: 221}
+  FAIL           depth_is_not_the_region     1.000  2 of 2 regions sit at one depth: ['automated', 'human']
+  pass           asking_is_a_decision        0.737  3 tools in the suite; 0.737 of cases need two or more
+  needs a model  base_not_at_the_ceiling     P42: the base scored 0.815 where the adapter scored 0.825. Run the base first; a suite it already passes cannot show a treatment anything.
+  needs a model  base_not_on_the_floor       P45's mirror: if every case is above the treatment's floor every arm fails and the failure reads as 'the approach does not work'.
+  needs a model  no_region_is_saturated      P49: `team` scored 1.000 against the base's 0.967 while the other two had room. A saturated region dilutes every average it enters.
+  needs a model  the_input_can_support_ranking  P46: group the cases by what a predictor can see; if one group holds them all, the best possible confidence is a constant and orders nothing.
+
+email drafting · the suite P49 measured
+  pass           region_not_in_the_prompt    0.489  a keyword rule recovers the region 0.489 of the time against 0.333 chance over 3 regions (limit 0.667)
+  FAIL           has_a_difficulty_axis       1.000  1 distinct depths {3: 180}
+  FAIL           depth_is_not_the_region     1.000  3 of 3 regions sit at one depth: ['client', 'team', 'vendor']
+  pass           asking_is_a_decision        1.000  3 tools in the suite; 1.000 of cases need two or more
+  needs a model  base_not_at_the_ceiling     P42: the base scored 0.815 where the adapter scored 0.825. Run the base first; a suite it already passes cannot show a treatment anything.
+  needs a model  base_not_on_the_floor       P45's mirror: if every case is above the treatment's floor every arm fails and the failure reads as 'the approach does not work'.
+  needs a model  no_region_is_saturated      P49: `team` scored 1.000 against the base's 0.967 while the other two had room. A saturated region dilutes every average it enters.
+  needs a model  the_input_can_support_ranking  P46: group the cases by what a predictor can see; if one group holds them all, the best possible confidence is a constant and orders nothing.
+
+4 of 4 suites fail at least one gate that could be decided without a model.
