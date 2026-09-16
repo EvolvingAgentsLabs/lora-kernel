@@ -27,6 +27,26 @@ requests saliendo de la máquina** para lo que el pool sirve. Paso a paso:
 > equivoca en la física 78 veces de 90. Mandar ése a un modelo de frontera lleva la
 > entrega de **0,546 a 0,775**, con el 38% de los casos saliendo de la máquina.
 > *Un pool con dos miembros útiles es lo que todavía no tiene.*
+>
+> **Y cuatro cosas medidas el 2026-09-15/16 cambiaron qué construir después, tres de
+> ellas cancelando algo:**
+>
+> - **Un experto queda encerrado en la profundidad que le enseñó su corpus.** Por
+>   debajo de su banda, `fluids-full` **sobre-resuelve en 18 de 18** casos —
+>   inventando un área para contestar algo que nadie preguntó — y a tres pasos **la
+>   base pelada le gana, 0,167 contra 0,000**. Un corpus con una sola dificultad
+>   enseña un piso, no sólo una habilidad.
+> - **Casi todo un margen de calibración puede ser de la suite.** El 69–82% del
+>   margen AURC reportado para la confianza del experto era el techo de información
+>   de la entrada, no el modelo. Un head tipado que lee sólo el listado quedó
+>   cancelado antes de la GPU.
+> - **La ruta gruesa no necesita modelo.** Doce líneas de palabras clave eligen la
+>   superficie de herramientas correcta el **1,000** de las veces; el baseline de la
+>   ruta fina es 0,845.
+> - **El target especulativo lo decide un hash.** Todos los tamaños de
+>   `Qwen2.5-Instruct` comparten un tokenizer byte-idéntico con nuestra base; la
+>   línea `Qwen3.x` cambió su vocabulario en la 3.5, así que sus modelos de 27B
+>   **no pueden verificar a nuestros drafters**.
 
 ---
 
@@ -60,7 +80,8 @@ modelo target.** El muestreo por rechazo lo garantiza. **[read]**
 Esa propiedad es lo que hace funcionar a esta arquitectura, y por eso **la
 elección del target es todo el diseño**:
 
-> **El target es un modelo de frontera.** Los expertos son sus drafters.
+> ~~**El target es un modelo de frontera.** Los expertos son sus drafters.~~
+> **El target es un modelo más grande de la misma familia, servido en la misma placa.**
 
 **Reformulado el 2026-09-15.** La frontera era andamio, a retirar cuando los
 expertos la igualaran. No se está retirando: es **el fallback para lo que los
@@ -69,6 +90,36 @@ sacar el target?* a **¿podemos decir, caso por caso, cuándo la respuesta local
 alcanza?**. La aceptación era criterio de promoción para entrenar; su trabajo
 abierto es ahora esa decisión de confianza **[ran]**
 `results/P41-routing-20260915/`.
+
+*2026-09-16:* una API de frontera no puede ser target especulativo: no devuelve los
+logprobs de una continuación forzada ni comparte el tokenizer (C2, C3). **Un modelo
+grande local sí puede**, y ahora la elección está medida en vez de asumida **[ran]**
+`results/P48-tokenizer-compat-20260916/`:
+
+| target | vocab | ¿sirve como target especulativo? |
+|---|---:|---|
+| **Qwen2.5-7B / 14B / 32B / 72B** | 151.643 | **sí — `tokenizer.json` byte-idéntico** |
+| Qwen3-14B / Qwen3-32B | 151.643 | sí, con 4 ids que sólo el target tiene (`<think>`, …) |
+| Qwen3.5 / 3.6 / 3.8-27B | **248.044** | **no — otro vocabulario** |
+
+Así que el diseño tiene **tres niveles, no dos**, y cada uno está por una razón
+distinta:
+
+    expertos chicos  ——  draftean, un adaptador por subdominio, ~100 MB cada uno
+          ↓ la aceptación dice qué subdominios ya cubren
+    un grande local  ——  verifica token a token; retirable POR SUBDOMINIO
+          ↓ el ruteo por región dice qué subdominios no cubren
+    la frontera      ——  contesta lo que los expertos fallan, medido (0,546 → 0,775)
+
+**Lo que eso compra, y es lo que el torneo de S7 nunca tuvo:** con todos los expertos
+drafteando contra el mismo target, **la aceptación es un ranking de expertos que no
+necesita juez ni verificador** — mismo target, mismo prefijo, mismas condiciones.
+
+**Lo que no compra por sí solo:** un rechazo es el chico equivocándose o el grande
+equivocándose, y sólo el verificador al lado los separa. La aceptación sola nunca
+puede autorizar un retiro; el score verificado tiene que aguantar donde se saca el
+target. **Nada de esta estructura de niveles se corrió** — ver *Lo que no corrió*.
+
 
 Como el target es de frontera, una tasa de aceptación alta significa algo preciso
 y valioso: *este experto chico ya produce lo que la frontera habría producido, en
@@ -260,6 +311,13 @@ nombrado. Nada de esta sección se infiere de un paper ni de un README.
 | afirmación | medición | dónde |
 |---|---|---|
 | **Existe una brecha de frontera**, y es **+0,533**, no +0,975 | `gemini-3.8-flash` **30/30** contra `qwen3.5:4b` **14/30**, mismos 30 casos, un contrato compartido, 6000 tokens. El mismo modelo local saca **0/30** con el prompt que P5–P8 usó para todas sus líneas de base — así que **0,467 del 0,975 original era el prompt diciéndole a la base que no pensara** **[ran]**. En una suite clínica el mismo test falló tres veces — ninguna frontera estuvo nunca adelante | `results/P5-physics-headroom-20260908/` |
+| **Un pool se sirve, con el adaptador de un tercero al lado** | dos adaptadores residentes sobre una base, cada uno distinto de la base *y entre sí*; la compuerta rechaza un pool cuyos miembros sean el mismo modelo | `results/P40-…`, `results/P42-third-party-20260915/` |
+| **Un experto es genuinamente bueno** | `email-full` con herramientas: **260/351 = 0,741**, p exacta de una cola **0,00036** contra la barra de clase mayoritaria | `results/P43-openclaw-e2e-20260915/` |
+| **Rutear por región paga; rutear por caso no** | todo local **0,546**; fluidos → frontera **0,775** con 38% saliendo; tripwire por caso **0,378**, compuerta de calidad por caso **0,689** | `results/P41-routing-20260915/` |
+| **La suite no tenía eje de dificultad, y el experto está encerrado en la profundidad de su corpus** | las soluciones del oráculo eran de 6, 7 o 9 pasos, **sin un solo caso por debajo de seis**. Con escalones de 1 a 4, el experto **sobre-resuelve en 18 de 18** por debajo de su banda y **0 de 17** en ella o por encima; a tres pasos la base pelada le gana **0,167 a 0,000** | `results/P45-ladder-sweep-20260915/` |
+| **El 69-82% de un margen de calibración medido era la suite** | agrupar los casos por lo que un predictor puede ver da el techo: en el inbox completo los dos brazos ya están en él, margen **0,030** y **0,007**; en el subconjunto humano el mejor predictor que sólo lee el listado es una **constante** | `results/P46-ranking-ceiling-20260916/` |
+| **La ruta gruesa no necesita modelo** | doce líneas de palabras clave eligen la superficie correcta el **1,000** de las veces sobre 200 casos; el baseline de la ruta fina es **0,845** | `tests/test_router_baseline.py` |
+| **El target especulativo lo decide un hash** | todos los tamaños de `Qwen2.5-Instruct` comparten tokenizer byte-idéntico con la base; `Qwen3-14B/32B` son compatibles en ids con 4 ids extra; **`Qwen3.5/3.6/3.8-27B` tienen 248.044 entradas y no pueden verificar a nuestros drafters** | `results/P48-tokenizer-compat-20260916/` |
 | La destilación transfiere el **procedimiento pero no la aritmética** | el experto reproduce la cadena del maestro paso por paso y calcula pi/4·0,22² como 0,037006 en vez de 0,038013 | `results/P6-withdrawal-20260908/` |
 | **La brecha de retiro se cierra** | adaptador + calculadora **40/40** = el maestro. Brecha de retiro **0,000** | `results/P7-calculator-20260908/` |
 | …y hacen falta **las dos mitades** | base + calculadora **0/40** con 53 llamadas; adaptador solo **4/40** | ídem |
@@ -291,6 +349,21 @@ nombrado. Nada de esta sección se infiere de un paper ni de un README.
   repositorio y no el planificador de vLLM: está anulado.
 - **KV cache entre adaptadores**, el torneo, el router, y el retiro de la frontera
   a cualquier escala mayor que una región.
+
+- **Los tres niveles, y cada capa del diseño por capas.** Expertos chicos drafteando
+  contra un target grande local, la aceptación como ranking de torneo, el retiro por
+  subdominio, una capa de subespecialidad que además elige la superficie de
+  herramientas, marcadores estructurales en el prompt — **todo eso es análisis**
+  (`docs/analysis/`) y **nada se corrió**. Lo medido son las *entradas* de esas
+  decisiones: la compatibilidad de tokenizers, el baseline de ruteo, el piso de
+  profundidad y el techo de calibración.
+- **Un pool más grande que dos.** `--max-loras` sólo fue 1 o 2 acá. S-LoRA reporta
+  miles en una máquina **[read]**; lo nuestro no se probó arriba de dos, y el diseño
+  por capas es lo primero que necesitaría más.
+- **Que un adaptador tipado ayude.** La versión que lee sólo el listado quedó
+  cancelada por su propio chequeo de headroom; la que va después de la cadena de
+  herramientas está especificada y su primera medición todavía corría cuando se
+  escribió esto.
 
 ## Cómo se libera
 

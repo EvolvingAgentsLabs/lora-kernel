@@ -27,6 +27,22 @@ machine** for anything the pool serves. Step by step:
 > frontier model takes delivered accuracy from **0.546 to 0.775** with 38% of cases
 > leaving the machine. *A pool with two useful members is what this does not yet
 > have.*
+>
+> **And four things measured on 2026-09-15/16 changed what to build next, three of
+> them by cancelling something:**
+>
+> - **An expert is locked to the depth its corpus taught.** Below its training depth
+>   `fluids-full` over-solves on **18 of 18** cases — inventing an area to answer a
+>   question nobody asked — and at three steps the **bare base beats it, 0.167 to
+>   0.000**. A corpus with one difficulty teaches a floor, not just a skill.
+> - **Most of a calibration gap can belong to the suite.** 69–82% of the AURC room
+>   reported for the expert's confidence was the information ceiling of the input,
+>   not the model. A typed head reading only the listing was cancelled before the GPU.
+> - **The coarse route needs no model.** Twelve lines of keywords pick the right tool
+>   surface **1.000** of the time; the fine route baseline is 0.845.
+> - **The speculative target is decided by a hash.** Every `Qwen2.5-Instruct` size
+>   shares a byte-identical tokenizer with our base; the `Qwen3.x` line changed its
+>   vocabulary at 3.5, so its 27B models **cannot verify our drafters at all**.
 
 ---
 
@@ -60,14 +76,48 @@ Rejection sampling guarantees it. **[read]**
 That property is what makes this architecture work, and it is why **the choice of
 target is the whole design**:
 
-> **The target is a frontier model.** The experts are its drafters.
+> ~~**The target is a frontier model.** The experts are its drafters.~~
+> **The target is a larger model of the same family, served on the same card.**
 
-**Restated 2026-09-15.** The frontier was scaffolding, to be withdrawn once the
-experts matched it. It is not being withdrawn: it is **the fallback for what the
-experts are measured to fail at**, and the design question moved with it — from
-*can we remove the target* to **can we tell, per case, when the local answer is
-good enough to keep**. Acceptance was a promotion criterion for training; its open
-job is now that trust decision **[ran]** `results/P41-routing-20260915/`.
+**Restated twice, and the second one is the useful shape.**
+
+*2026-09-15:* the frontier was scaffolding to be withdrawn once the experts matched
+it. It is not being withdrawn — it is **the fallback for what the experts are
+measured to fail at**, and the design question moved from *can we remove the target*
+to *can we tell when the local answer is good enough to keep* **[ran]**
+`results/P41-routing-20260915/`.
+
+*2026-09-16:* a frontier API cannot be a speculative target at all — it does not
+return the logprobs of a forced continuation and it does not share the tokenizer
+(C2, C3). **A local large model can**, and now the choice is measured rather than
+assumed **[ran]** `results/P48-tokenizer-compat-20260916/`:
+
+| target | vocab | usable as a speculative target? |
+|---|---:|---|
+| **Qwen2.5-7B / 14B / 32B / 72B** | 151,643 | **yes — byte-identical `tokenizer.json`** |
+| Qwen3-14B / Qwen3-32B | 151,643 | yes, with 4 target-only ids (`<think>`, …) |
+| Qwen3.5 / 3.6 / 3.8-27B | **248,044** | **no — a different vocabulary** |
+
+So the design has **three tiers, not two**, and each one is there for a different
+reason:
+
+    small experts   ——  draft, one adapter per subdomain, ~100 MB each
+          ↓ acceptance says which subdomains they already cover
+    a local large   ——  verifies token by token; withdrawable PER SUBDOMAIN
+          ↓ region routing says which subdomains they do not cover
+    the frontier    ——  answers what the experts are measured to fail (0.546 → 0.775)
+
+**What that buys, and it is the thing S7's tournament never had:** with every expert
+drafting against the same target, **acceptance is a ranking of experts that needs no
+judge and no verifier** — same target, same prefix, same conditions. It is also the
+quantity the literature reports for this architecture while every number here is
+delivered accuracy.
+
+**What it does not buy on its own:** a rejection is either the small model being
+wrong or the large one being wrong, and only the verifier beside it separates them.
+Acceptance alone must never authorise a withdrawal; the verified score has to hold
+where the target is removed. **None of this tier structure has been run** — see
+*What has not run*.
 
 Because the target is frontier-grade, a high acceptance rate means something
 precise and valuable: *this small expert already produces what the frontier would
@@ -296,6 +346,13 @@ Nothing in this section is inferred from a paper or a README.
 | **The best modular result needs no kernel weights** | the expert writing its own chain with a thin harness executing the arithmetic exactly: **23/30 raw, 30/30 repaired** — no merged adapter, no protocol in the expert's weights | same |
 | **A pool is servable** | vLLM 0.28.0 multi-LoRA on `Qwen2.5-3B-Instruct`: the adapter changes the output, and served accuracy matches `transformers` for the same recipe | `results/P3-vllm-20260908/` |
 | Acceptance by characters measures **format, not agreement** | identical answers score 0.00 across formats; different answers score 0.44 within one. The promotion criterion is **semantic answer agreement** | `results/S0*/` |
+| **A pool serves, with a stranger's adapter beside ours** | two adapters resident on one base, each differing from the base *and from each other*; the gate refuses a pool whose members are the same model | `results/P40-…`, `results/P42-third-party-20260915/` |
+| **One expert is genuinely good** | `email-full` with tools: **260/351 = 0.741**, exact one-sided p = **0.00036** against the majority-class bar | `results/P43-openclaw-e2e-20260915/` |
+| **Routing by region pays; routing by case does not** | everything local **0.546**; fluids → frontier **0.775** with 38% leaving; per-case tripwire **0.378**, per-case quality gate **0.689**. The rules cannot see a chain that is coherent and wrong | `results/P41-routing-20260915/` |
+| **The suite had no difficulty axis, and the expert is locked to its corpus's depth** | oracle solutions were 6, 7 or 9 steps with **no case below six**. Given rungs at 1-4, the expert **over-solves on 18 of 18** below its band and **0 of 17** at or above it; at three steps the bare base beats it **0.167 to 0.000** | `results/P45-ladder-sweep-20260915/` |
+| **69-82% of a measured calibration gap was the suite** | grouping cases by what a predictor can see gives the ceiling: on the full inbox both arms are already at it, room **0.030** and **0.007**; on the human subset the best listing-only predictor is a **constant** | `results/P46-ranking-ceiling-20260916/` |
+| **The coarse route needs no model** | twelve lines of keywords pick the right tool surface **1.000** of the time over 200 cases; the fine route baseline is **0.845**, and its worst confusion is the depth boundary | `tests/test_router_baseline.py` |
+| **The speculative target is decided by a hash** | every `Qwen2.5-Instruct` size shares a byte-identical tokenizer with the base; `Qwen3-14B/32B` are id-compatible with 4 target-only ids; **`Qwen3.5/3.6/3.8-27B` have a 248,044-entry vocabulary and cannot verify our drafters** | `results/P48-tokenizer-compat-20260916/` |
 
 ## What has not run, and is not claimed
 
@@ -317,6 +374,19 @@ Nothing in this section is inferred from a paper or a README.
   own loop rather than vLLM's scheduler and is void.
 - **Cross-adapter KV cache**, the tournament, the router, frontier withdrawal at
   any scale beyond one region.
+- **The three tiers, and every layer of the layered design.** Small experts drafting
+  against a local large target, acceptance as a tournament ranking, withdrawal per
+  subdomain, a subspecialty layer that also picks the tool surface, structural
+  markers in the prompt — **all of it is analysis** (`docs/analysis/`) and **none of
+  it has been run**. What is measured is the *inputs* to those decisions: the
+  tokenizer compatibility, the routing baseline, the depth floor, the calibration
+  ceiling.
+- **A pool larger than two.** `--max-loras` has only ever been 1 or 2 here. S-LoRA
+  reports thousands on one machine **[read]**; ours is untested above two, and the
+  layered design is the first thing that would need more.
+- **That a typed adapter helps.** The listing-only version was cancelled by its own
+  headroom check; the version that sits after the tool chain is specified and its
+  first measurement was still running when this was written.
 
 ## How this is released
 
