@@ -176,6 +176,14 @@ These are not style. Each one was paid for.
   **69-82% of it was the suite**, and on the full inbox both arms were already at the
   ceiling — 0.030 and 0.007 left **[ran]** P46. `training/harness/ceiling.py`, and it
   costs no GPU.
+- **A long run checkpoints and resumes, or a dead session costs all of it.** P47
+  was lost **twice on the same measurement**: to a `KeyError` after all 475 cases had
+  been scored, and then to a Colab session that stopped answering at **260 of 475**
+  **[ran]** 2026-09-16. The first fix moved the summary after the write and did not
+  help the second, because the loop still wrote **once, at the end**. A runner over a
+  rented card writes every N cases and skips what is already on disk — and the chain
+  downloads the partial file, because a checkpoint nobody fetches is a checkpoint
+  nobody has.
 - **Write the records before the summary, not after.** The rule above says persist
   every result as it lands; the failure it does not name is a runner that scores
   everything, then crashes computing its own summary with the file still unopened. A

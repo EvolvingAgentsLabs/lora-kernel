@@ -29,6 +29,8 @@ import time
 import urllib.error
 import urllib.request
 
+from pathlib import Path
+
 from training.email.inbox import generate
 from training.email.tools import SCHEMA, ToolError, answer
 
@@ -204,13 +206,44 @@ def main() -> int:
     print(f"[sim] of those, {len(human)} are human · bar on them {hbar:.3f} — "
           f"this is where the tools decide", flush=True)
 
+    # RESUMED, NOT RESTARTED. P47 was lost twice: once to a KeyError after all 475
+    # cases had been scored, and once to a Colab session that stopped answering at
+    # 260 of 475 **[ran]** 2026-09-16. The first fix moved the summary after the
+    # write and did not help the second, because this loop still wrote **once, at
+    # the end**. CLAUDE.md says to persist every result as it lands; a runner that
+    # holds 475 cases in memory and writes at the finish does not.
+    done: dict[str, dict] = {}
+    if Path(args.out).exists():
+        try:
+            prev = json.loads(Path(args.out).read_text())
+            done = {r["id"]: r for r in prev.get("records", []) if "id" in r}
+        except Exception as e:
+            print(f"[sim] could not reuse {args.out}: {e!r}", flush=True)
+    if done:
+        print(f"[sim] resuming — {len(done)} of {args.n} already scored", flush=True)
+
     recs, t0 = [], time.time()
+
+    def checkpoint():
+        """Everything scored so far, in the shape the summary will have."""
+        ok_ = sum(r["correct"] for r in recs)
+        Path(args.out).write_text(json.dumps(
+            {"model": args.model, "n": args.n, "correct": ok_,
+             "partial": len(recs) < args.n, "records": recs}, indent=2))
+
     for i, msg in enumerate(inbox["messages"], 1):
+        if msg["id"] in done:
+            recs.append(done[msg["id"]])
+            continue
         r = triage_one(args.base_url, args.api_key, args.model, inbox, msg,
                        args.max_turns, args.max_tokens, args.logprobs)
         r.update({"id": msg["id"], "truth": msg["_truth"],
                   "correct": r["verdict"] == msg["_truth"]})
         recs.append(r)
+        # A DEAD SESSION SHOULD COST MINUTES, NOT THE RUN. 25 is roughly three
+        # minutes of scoring at the rate measured in P43.
+        if len(recs) % 25 == 0:
+            checkpoint()
         if i % 4 == 0:
             ok = sum(x["correct"] for x in recs)
             print(f"  [sim] {i}/{args.n} correct {ok} calls "

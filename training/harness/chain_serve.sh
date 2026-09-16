@@ -216,5 +216,12 @@ PY
   done
   tmo 300 colab download -s "$S" /content/lora-kernel/$RESULTS_NAME "$LOCAL" >/dev/null 2>&1 || true
   tmo 300 colab download -s "$S" /content/lora-kernel/vllm.log "$RUN_DIR/vllm.log" >/dev/null 2>&1 || true
+  # THE PARTIAL ARMS, NOT ONLY THE FINISHED RESULT. P47 died at 260 of 475 with a
+  # checkpoint on the VM that nobody fetched, so the next attempt had nothing to
+  # resume from and paid for those 260 again [ran] 2026-09-16. A checkpoint nobody
+  # downloads is a checkpoint nobody has.
+  for _arm in arm_base arm_expert arm_tools arm_email-full arm_fluids-full; do
+    tmo 120 colab download -s "$S" "/content/lora-kernel/$_arm.json"         "$RUN_DIR/$_arm.json" >/dev/null 2>&1 || true
+  done
   tmo 300 colab stop -s "$S" >/dev/null 2>&1 || true; trap - EXIT
 done

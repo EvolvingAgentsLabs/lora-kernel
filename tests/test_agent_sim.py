@@ -67,3 +67,83 @@ def test_a_preamble_is_reported_as_unread_not_averaged_in(monkeypatch):
     assert r["verdict"] is True          # the verdict is still readable from the text
     assert r["answered_first"] is False  # but the confidence is not
     assert r["confidence"] is None
+
+
+# --------------------------------------------------------------------------
+# Resumability. P47 was lost twice on the same measurement: to a KeyError after
+# all 475 cases had been scored, and to a Colab session that stopped answering at
+# 260 of 475 **[ran]** 2026-09-16. The first fix did not help the second, because
+# the loop still wrote once, at the end.
+# --------------------------------------------------------------------------
+
+def _stub(monkeypatch, seen):
+    from training.harness import agent_sim
+
+    def one(base_url, key, model, inbox, msg, *a, **k):
+        seen.append(msg["id"])
+        return {"verdict": msg["_truth"], "calls": 1, "refused": 0, "turns": 2,
+                "confidence": 0.8, "answered_first": True, "asked": [],
+                "text": "IMPORTANT"}
+
+    monkeypatch.setattr(agent_sim, "triage_one", one)
+    return agent_sim
+
+
+def test_a_run_checkpoints_before_it_finishes(tmp_path, monkeypatch):
+    import json
+    import sys
+
+    seen = []
+    agent_sim = _stub(monkeypatch, seen)
+    out = tmp_path / "r.json"
+
+    # Die after the first checkpoint, the way a reclaimed session does.
+    real = agent_sim.triage_one
+
+    def explode(*a, **k):
+        if len(seen) >= 30:
+            raise RuntimeError("session stopped answering")
+        return real(*a, **k)
+
+    monkeypatch.setattr(agent_sim, "triage_one", explode)
+    monkeypatch.setattr(sys, "argv", ["p", "--n", "60", "--out", str(out)])
+    try:
+        agent_sim.main()
+    except RuntimeError:
+        pass
+    saved = json.loads(out.read_text())
+    assert saved["partial"] is True
+    assert len(saved["records"]) == 25, "nothing was persisted before the death"
+
+
+def test_a_second_attempt_resumes_instead_of_rescoring(tmp_path, monkeypatch,
+                                                       capsys):
+    import sys
+
+    seen = []
+    agent_sim = _stub(monkeypatch, seen)
+    out = tmp_path / "r.json"
+    monkeypatch.setattr(sys, "argv", ["p", "--n", "40", "--out", str(out)])
+    agent_sim.main()
+    first = len(seen)
+    assert first == 40
+
+    seen.clear()
+    agent_sim.main()
+    # THE POINT: the second attempt pays for nothing it already has.
+    assert seen == [], f"rescored {len(seen)} cases that were already on disk"
+    assert "resuming" in capsys.readouterr().out
+
+
+def test_an_unreadable_checkpoint_is_reported_and_does_not_stop_the_run(
+        tmp_path, monkeypatch, capsys):
+    import sys
+
+    seen = []
+    agent_sim = _stub(monkeypatch, seen)
+    out = tmp_path / "r.json"
+    out.write_text("{ this is not json")
+    monkeypatch.setattr(sys, "argv", ["p", "--n", "8", "--out", str(out)])
+    assert agent_sim.main() == 0
+    assert "could not reuse" in capsys.readouterr().out
+    assert len(seen) == 8
