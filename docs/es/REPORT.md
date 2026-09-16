@@ -151,10 +151,54 @@ más rápido abarata la medición de aceptación — P49 se pasó casi una hora 
 esperando a un modelo de 19,3 GB. Es una compra de ingeniería, ortogonal a la tesis, y
 está disponible hecha.
 
-**Lo que no hay que hacer** es entrenar una cabeza EAGLE nosotros. El camino offline
-de Model-Optimizer pide *"varios a decenas de terabytes"* de estados ocultos
-**[read]**; el online colocaliza draft y target. Ninguno es un workspace que alquila
-una A100 por hora, y ninguno contesta la pregunta que realmente tenemos.
+~~**Lo que no hay que hacer** es entrenar una cabeza EAGLE nosotros. El camino
+offline pide *"varios a decenas de terabytes"*; el online colocaliza draft y target.
+Ninguno es un workspace que alquila una A100 por hora.~~
+
+**Corregido el 2026-09-16 sobre el README completo y no sobre un resumen.** Dos de
+esas frases fueron apresuradas.
+
+- **Qwen 2.5 está en la matriz de soporte** para Medusa, EAGLE1/2 y EAGLE3 **[read]**.
+  No es una curiosidad de la comunidad: es una familia soportada.
+- **El camino online es para modelos base que entran en memoria de GPU**, y su ejemplo
+  es Llama-3.2-1B. El nuestro es un **3B**. En la A100 que este proyecto ya alquila,
+  eso es viable. Los terabytes son del camino *offline*, para modelos demasiado
+  grandes para colocalizar — y yo generalicé el costo de un camino a los dos.
+
+Lo que no cambió es que **una cabeza EAGLE no puede rankear expertos**: hay una por
+target y no hay entre qué elegir. Sigue siendo una compra de latencia.
+
+### Lo único de ahí adentro que cambia lo que construimos
+
+> *"Para lograr tasas de aceptación más altas en decodificación especulativa, conviene
+> usar como datos de entrenamiento conversaciones generadas por el modelo base. Eso
+> asegura que la distribución de salida del draft se alinee con la del base."*
+> **[read]**
+
+Eso es sobre drafts EAGLE, y **aplica directo a nuestros LoRA**. Todo corpus de este
+repo se genera desde un **oráculo** — la cadena que escribiría un solucionador
+correcto. Si la aceptación contra un target va a ser el criterio de promoción, el
+corpus que produce al drafter debería generarlo **el target**, no un oráculo. Nadie
+había conectado las dos cosas.
+
+**Y la sutileza es lo que la vuelve señal de ranking y no uniforme.** Cada experto se
+entrena con conversaciones generadas por el target **sólo para su región**. Entonces
+el experto A coincide con el target en A, el B en B, y la aceptación varía por región
+— que es justo la señal que el experimento necesita. **Si todos los expertos se
+entrenaran con la salida del target en todas las regiones, la aceptación sería
+uniforme y el ranking colapsaría.** Ese es el modo de falla a preregistrar en la
+sesión 3.
+
+### Dos cosas que conviene no confundir
+
+- **La compresión de vocabulario del draft (`d2t.pt`) no une dos familias.** Mapea un
+  vocabulario de draft *más chico* de vuelta a los ids del propio target — comprime
+  uno, no reconcilia dos. Las 248.044 entradas de `Qwen3.6-27B` siguen siendo
+  inservibles como target para nuestros drafters.
+- **`examples/specdec_bench` ya valida aceptación** en vLLM, SGLang y TRT-LLM sobre un
+  conjunto de datasets **[read]**. La regla de este workspace es reusar un instrumento
+  antes que construir uno; si alguna vez medimos aceptación como afirmación de
+  velocidad, ahí es donde hay que medirla.
 
 ## 7. Qué cambiar, planteado como opciones y no como decisión
 

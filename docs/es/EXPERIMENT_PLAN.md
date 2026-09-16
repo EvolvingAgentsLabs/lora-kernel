@@ -2433,6 +2433,32 @@ de otra forma.
 3. **Hasta el target falla 10 de 30 en `client`**, así que aceptación contra él no es
    corrección. `carries()` va **al lado** de la aceptación, nunca detrás.
 
+### Corregido 2026-09-16: el corpus de un drafter lo debería escribir el target
+
+Leer el README completo de Model-Optimizer en vez de un resumen cambió dos cosas en
+[`../REPORT.md`](../REPORT.md) §6, y una cambia la **sesión 2**.
+
+> *"Para lograr tasas de aceptación más altas conviene usar como datos de
+> entrenamiento conversaciones generadas por el modelo base. Eso asegura que la
+> distribución de salida del draft se alinee con la del base."* **[read]**
+
+**Todo corpus de este repo se genera desde un oráculo** — la cadena que escribiría un
+solucionador correcto. Si la aceptación contra un target es el criterio de promoción,
+el corpus que produce al drafter lo debería generar **ese target**. Nadie había
+conectado las dos cosas.
+
+**Y la sutileza es lo que la mantiene como señal de ranking.** Cada experto se entrena
+con conversaciones generadas por el target **sólo de su región**. Entonces A coincide
+con el target en A, B en B, y la aceptación varía por región — que es la señal que
+necesita la sesión 3. **Si todos se entrenaran con la salida del target en todas las
+regiones, la aceptación sería uniforme y el ranking colapsaría.** Preregistrar contra
+eso.
+
+También corregido: **Qwen 2.5 está en la matriz de soporte de EAGLE3**, y el camino de
+entrenamiento online es para modelos que entran en memoria — un 3B entra, en la A100
+que ya alquilamos. Los terabytes son del camino *offline* y yo generalicé el costo de
+uno a los dos. Lo que no cambió: **una cabeza EAGLE no puede rankear expertos.**
+
 ## 12. Historia
 
 | fecha | cambio a este plan | por qué |
