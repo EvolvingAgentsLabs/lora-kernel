@@ -197,6 +197,16 @@ These are not style. Each one was paid for.
   **69-82% of it was the suite**, and on the full inbox both arms were already at the
   ceiling — 0.030 and 0.007 left **[ran]** P46. `training/harness/ceiling.py`, and it
   costs no GPU.
+- **A distinct prompt is not a distinct question.** P53's step zero scored the
+  adapter **180/180** against the base's 56/180, paired, p < 1e-5 — and **every one of
+  those 180 held-out completions was already in the training set, word for word**
+  **[ran]** 2026-09-16. The prompts all differed, because the constants differed; the
+  *completion* was identical, because the constants were referenced by name and lived
+  in the prefix. The adapter memorised one tail per family.
+  **Deduplicate on what gets written, not only on what gets asked** — and check that
+  what the answer contains comes from a space large enough not to recur: five
+  polynomials across two hundred programs is thirty combinations and the tail repeats
+  with them.
 - **Training releases its GPU memory by exiting, not by asking.** P53 trained an
   adapter in-process and vLLM refused to start beside it: *"Free memory on device
   cuda:0 (32.79/39.49 GiB) on startup is less than desired GPU memory utilization

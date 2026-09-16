@@ -2453,6 +2453,33 @@ down, left for a decision.
 which is a different act from moving the band. It would be the **first post-result
 redesign** of this suite; the counter starts at one.
 
+### P53 — 2026-09-16 **[ran]** · step zero passes at +0.689, and the number is void
+
+Report: [`../results/P53-step-zero-20260916/RESULT.md`](../results/P53-step-zero-20260916/RESULT.md).
+
+**base 56/180 = 0.311 · adapter 180/180 = 1.000**, paired, the adapter winning 124
+cases the base loses and losing 0, exact p < 1e-5. The pre-registered gate passes.
+
+**And every held-out completion appears verbatim in the training set — 180 of 180.**
+The prompts differ, because the constants differ; the *completion* is identical,
+because the constants are referenced by name and live in the prefix. The adapter
+learned one tail per family, not how to compute anything.
+
+**The previous fix caused it.** The corpus split found the deepest cut removing the
+line holding a program's input, so two programs gave an identical prompt with
+different answers; the repair made everything above the implementation uncuttable —
+which put every varying value in the prefix and left the tail constant. Parameterising
+the constants did nothing, because the constants are the part that never has to be
+written.
+
+**What survives:** the machinery, entirely — subprocess training, C18, execution-based
+verification over 360 completions with zero transport errors — and the base's 0.311
+with **38 of 180** completions failing to run.
+
+**The fix:** inline the constants at their use site so the tail carries them and two
+programs of one family never share an answer. **Second post-result suite redesign
+today; the counter is at two.**
+
 ## 12. History
 
 | date | change to this plan | why |

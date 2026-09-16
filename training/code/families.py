@@ -41,49 +41,53 @@ def _crc(data: bytes, poly: int, init: int, final: int) -> int:
 
 def crc_family(rng: random.Random) -> dict:
     """A reflected CRC-32 with a drawn polynomial over a drawn string."""
-    poly = rng.choice([0xEDB88320, 0x82F63B78, 0xEB31D82E, 0xD5828281, 0x9823B6E1])
-    init = rng.choice([0xFFFFFFFF, 0x00000000, 0xA5A5A5A5])
-    final = rng.choice([0xFFFFFFFF, 0x00000000])
+    # DRAWN FROM A LARGE SPACE, NOT A LIST OF FIVE. A pool of 5 polynomials x 3
+    # inits x 2 finals is 30 combinations, so across 200 programs each one recurs
+    # about seven times and the completion recurs with it — which is why P53's
+    # adapter could memorise one tail and score 1.000 on held-out cases. The
+    # arithmetic does not care whether the polynomial is a standard one; the
+    # program is still deterministic and still verified by execution.
+    poly = rng.randrange(1, 2 ** 32) | 1
+    init = rng.randrange(0, 2 ** 32)
+    final = rng.randrange(0, 2 ** 32)
     word = "".join(rng.choice("abcdefghijklmnopqrstuvwxyz-") for _ in range(rng.randrange(5, 14)))
     answer = _crc(word.encode(), poly, init, final)
     return {
         "family": "crc", "answer": str(answer),
+        # The literals this instance drew. A completion that contains none of them
+        # is the same text for every instance of the family, which is what P53
+        # measured: 180 of 180 held-out completions already in the training set.
+        "varies": [f"0x{poly:08X}", f"0x{init:08X}", f"0x{final:08X}", word],
         "spec": (f"a reflected CRC-32 with polynomial 0x{poly:08X}, initial value "
                  f"0x{init:08X} and final xor 0x{final:08X}, computed bit by bit "
                  f"(no lookup table)"),
         "python": f'''\
 # Reflected CRC-32: polynomial 0x{poly:08X}, init 0x{init:08X}, final xor 0x{final:08X}.
-POLY = 0x{poly:08X}
-INIT = 0x{init:08X}
-FINAL = 0x{final:08X}
 DATA = b"{word}"
 
 def crc(data):
-    reg = INIT
+    reg = 0x{init:08X}
     for byte in data:
         reg ^= byte
         for _ in range(8):
-            reg = (reg >> 1) ^ (POLY if reg & 1 else 0)
-    return (reg ^ FINAL) & 0xFFFFFFFF
+            reg = (reg >> 1) ^ (0x{poly:08X} if reg & 1 else 0)
+    return (reg ^ 0x{final:08X}) & 0xFFFFFFFF
 
 print(crc(DATA))
 ''',
         "javascript": f'''\
 // Reflected CRC-32: polynomial 0x{poly:08X}, init 0x{init:08X}, final xor 0x{final:08X}.
-const POLY = 0x{poly:08X};
-const INIT = 0x{init:08X};
-const FINAL = 0x{final:08X};
 const DATA = Buffer.from("{word}");
 
 function crc(data) {{
-  let reg = INIT >>> 0;
+  let reg = 0x{init:08X} >>> 0;
   for (const byte of data) {{
     reg = (reg ^ byte) >>> 0;
     for (let k = 0; k < 8; k++) {{
-      reg = (reg & 1) ? ((reg >>> 1) ^ POLY) >>> 0 : reg >>> 1;
+      reg = (reg & 1) ? ((reg >>> 1) ^ 0x{poly:08X}) >>> 0 : reg >>> 1;
     }}
   }}
-  return ((reg ^ FINAL) >>> 0);
+  return ((reg ^ 0x{final:08X}) >>> 0);
 }}
 
 console.log(crc(DATA));
@@ -94,18 +98,14 @@ console.log(crc(DATA));
 #include <stdint.h>
 #include <string.h>
 
-#define POLY 0x{poly:08X}u
-#define INIT 0x{init:08X}u
-#define FINAL 0x{final:08X}u
-
 static uint32_t crc(const unsigned char *data, size_t n) {{
-    uint32_t reg = INIT;
+    uint32_t reg = 0x{init:08X}u;
     for (size_t i = 0; i < n; i++) {{
         reg ^= data[i];
         for (int k = 0; k < 8; k++)
-            reg = (reg & 1) ? ((reg >> 1) ^ POLY) : (reg >> 1);
+            reg = (reg & 1) ? ((reg >> 1) ^ 0x{poly:08X}u) : (reg >> 1);
     }}
-    return reg ^ FINAL;
+    return reg ^ 0x{final:08X}u;
 }}
 
 int main(void) {{
@@ -131,19 +131,28 @@ def _xorshift(seed, a, b, c, n):
 
 def xorshift_family(rng: random.Random) -> dict:
     """xorshift128 with drawn shift amounts and a drawn seed."""
-    a, b, c = rng.choice([(11, 8, 19), (13, 17, 5), (5, 14, 1), (9, 7, 23), (15, 4, 21)])
+    # Same reason: five shift triples is five distinct tails.
+    a = rng.randrange(1, 32)
+    b = rng.randrange(1, 32)
+    c = rng.randrange(1, 32)
     seed = tuple(rng.randrange(1, 2 ** 31) for _ in range(4))
     n = rng.choice([6, 8, 10])
     answer = " ".join(str(v) for v in _xorshift(seed, a, b, c, n))
     sx, sy, sz, sw = seed
     return {
         "family": "xorshift", "answer": answer,
+        "varies": [str(sx), str(sy), str(sz), str(sw), f"<< {a}", f">> {b}",
+                   f">> {c}", f"({n})"],
         "spec": (f"xorshift128 with shifts {a}, {b} and {c}, printing the first {n} "
                  f"outputs space-separated"),
         "python": f'''\
 # xorshift128, shifts {a}, {b}, {c}. Print the first {n} outputs.
 M = 0xFFFFFFFF
-x, y, z, w = {sx}, {sy}, {sz}, {sw}
+
+def make_state():
+    return [{sx}, {sy}, {sz}, {sw}]
+
+x, y, z, w = make_state()
 
 def next_value():
     global x, y, z, w
@@ -156,7 +165,13 @@ print(" ".join(str(next_value()) for _ in range({n})))
 ''',
         "javascript": f'''\
 // xorshift128, shifts {a}, {b}, {c}. Print the first {n} outputs.
-let x = {sx}, y = {sy}, z = {sz}, w = {sw};
+let x, y, z, w;
+
+function makeState() {{
+  x = {sx}; y = {sy}; z = {sz}; w = {sw};
+}}
+
+makeState();
 
 function nextValue() {{
   const t = (x ^ (x << {a})) >>> 0;
@@ -174,7 +189,11 @@ console.log(out.join(" "));
 #include <stdio.h>
 #include <stdint.h>
 
-static uint32_t x = {sx}u, y = {sy}u, z = {sz}u, w = {sw}u;
+static uint32_t x, y, z, w;
+
+static void make_state(void) {{
+    x = {sx}u; y = {sy}u; z = {sz}u; w = {sw}u;
+}}
 
 static uint32_t next_value(void) {{
     uint32_t t = x ^ (x << {a});
@@ -184,6 +203,7 @@ static uint32_t next_value(void) {{
 }}
 
 int main(void) {{
+    make_state();
     for (int i = 0; i < {n}; i++)
         printf("%u%s", next_value(), i == {n} - 1 ? "\\n" : " ");
     return 0;

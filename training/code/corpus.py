@@ -38,9 +38,16 @@ def cases_from(program: dict, language: str, cuts: int, rng: random.Random) -> l
     source = program[language]
     out = []
     for depth, prefix, removed in cut_points(source, cuts, rng):
+        completion = source[len(prefix):]
+        # THE COMPLETION HAS TO CARRY SOMETHING THIS INSTANCE DREW. Otherwise the
+        # tail is the same text for every program of the family, and an adapter that
+        # memorises one tail scores 1.000 on held-out cases without computing
+        # anything — which is exactly what P53 measured, 180 of 180 **[ran]**.
+        if not any(v in completion for v in program.get("varies", [])):
+            continue
         out.append({
             "family": program["family"], "region": language, "depth": depth,
-            "prefix": prefix, "completion": source[len(prefix):],
+            "prefix": prefix, "completion": completion,
             "answer": program["answer"], "spec": program["spec"],
             "lines_removed": removed,
             "prompt": prompt_for(program["spec"], language, prefix),
@@ -69,11 +76,22 @@ def main() -> int:
     ap.add_argument("--out", default="training/code/data")
     args = ap.parse_args()
 
-    held = build(args.eval_programs, EVAL_SEED, args.language, args.cuts)
+    train_all = build(args.programs, TRAIN_SEED, args.language, args.cuts)
+    held_all = build(args.eval_programs, EVAL_SEED, args.language, args.cuts)
+
+    # DEDUPLICATED ON THE COMPLETION AS WELL AS THE PROMPT. P53's prompts were all
+    # distinct and every one of its 180 held-out **completions** was already in the
+    # training set, so the adapter scored 1.000 by reproducing one memorised tail
+    # **[ran]**. A distinct prompt is not a distinct question when the answer is the
+    # same text.
+    train_prompts = {c["prompt"] for c in train_all}
+    train_completions = {c["completion"] for c in train_all}
+    held = [c for c in held_all
+            if c["prompt"] not in train_prompts
+            and c["completion"] not in train_completions]
     held_prompts = {c["prompt"] for c in held}
-    train = [c for c in build(args.programs, TRAIN_SEED, args.language, args.cuts)
-             if c["prompt"] not in held_prompts]
-    dropped = args.programs * args.cuts - len(train)
+    train = [c for c in train_all if c["prompt"] not in held_prompts]
+    dropped = len(held_all) - len(held)
 
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
@@ -88,7 +106,8 @@ def main() -> int:
         for c in held:
             f.write(json.dumps(c) + "\n")
     print(f"[corpus] {len(train)} training examples, {len(held)} held out, "
-          f"{dropped} dropped for reproducing an evaluation prompt")
+          f"{dropped} held-out cases dropped for repeating a training prompt "
+          f"or completion", flush=True)
     return 0
 
 
