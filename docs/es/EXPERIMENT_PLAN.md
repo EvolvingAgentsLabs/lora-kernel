@@ -2394,6 +2394,45 @@ significa un experto con tres nombres, y el gate del pool es lo que lo dice.
 cerca para estar dentro del ruido. El chequeo de potencia va antes del brazo, no
 después.
 
+### P49 — 2026-09-16 **[ran]** · se compra, y una temática de tres no tiene headroom
+
+Reporte: [`../../results/P49-draft-headroom-20260916/RESULT.md`](../../results/P49-draft-headroom-20260916/RESULT.md).
+Una A100, dos brazos, 90 casos, **sin entrenar nada**. La sesión se apagó sola.
+
+| brazo | borradores completos | tasa de hechos |
+|---|---:|---:|
+| `Qwen2.5-32B-Instruct-AWQ` | **76/90 = 0,844** | 0,948 |
+| `Qwen2.5-3B-Instruct` | **49/90 = 0,544** | 0,756 |
+
+**Margen 0,300 contra un 0,10 preregistrado — el diseño se compra.**
+
+**Pero el titular esconde lo que importa:**
+
+| temática | target | base | brecha |
+|---|---:|---:|---:|
+| **client** | 0,667 | **0,033** | **0,633** |
+| vendor | 0,867 | 0,633 | 0,233 |
+| **team** | **1,000** | **0,967** | **0,033** |
+
+**`team` no tiene headroom** — los dos brazos en el techo, que es el fallo de ARC de
+P42 aislado en una temática. El margen de 0,300 es casi todo `client`, donde la base
+completa **1 de 30**.
+
+**Qué hace la base, leído y no inferido:** escribe una respuesta razonable y **omite
+los datos concretos** — la referencia falta 28 veces y el monto 25. Y el chequeo no
+mide puntuación: de **80** hechos faltantes en los dos brazos, **0** aparecen escritos
+de otra forma.
+
+**Tres consecuencias para P50.**
+1. **`team` se arregla o se saca.** Promediar una temática saturada diluye lo que
+   muestren las otras dos. Ojo: las dos con headroom piden un **monto** y la que no
+   tiene pide un **nombre de pila**.
+2. **La brecha es de capacidad, no de estilo** — *nombrar siempre la referencia y la
+   cifra* es una política, entrenable y chequeable mecánicamente, y un objetivo mejor
+   definido que "escribir en registro de cliente".
+3. **Hasta el target falla 10 de 30 en `client`**, así que aceptación contra él no es
+   corrección. `carries()` va **al lado** de la aceptación, nunca detrás.
+
 ## 12. Historia
 
 | fecha | cambio a este plan | por qué |
