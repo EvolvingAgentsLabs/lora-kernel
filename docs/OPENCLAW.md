@@ -38,9 +38,18 @@ On the rented card, per [`SERVING.md`](SERVING.md); then, here:
     export OPENAI_API_KEY=...          # never on the command line: `ps` sees that
     python3 -m training.harness.openai_proxy \
         --upstream http://127.0.0.1:8000 --port 8001 \
+        --prune \
         --fallback https://api.openai.com/v1
 
-It prints what stays and what leaves before serving a single request:
+**`--prune` is what makes §4b worth doing**, and it is explained there. It prints
+each member's declared tag surface:
+
+    [prune] email-full: ['thread_history', 'sender_stats', 'message']
+    [prune] fluids-full: ['calc', 'lookup', 'convert']
+    [prune] domain-mt: no tools — declares none
+    [prune] a model not listed above is offered every tool, unpruned
+
+It also prints what stays and what leaves, before serving a single request:
 
     [proxy] local, never leaves: ['email-full', 'Qwen/Qwen2.5-3B-Instruct']
     [proxy] everything else -> https://api.openai.com/v1 (key from $OPENAI_API_KEY)
@@ -140,6 +149,43 @@ OpenClaw speaks MCP, so the three tools the suite scores become tools the agent 
 deterministic inbox from a seed; **no real correspondence is read, opened or
 forwarded**, and the seed is the suite's own so the demo and the number are about the
 same inbox. Pointing it at real mail is a different program with a different review.
+
+### Attaching the server is not enough — the surface has to be pruned
+
+**Offering the three tools does not remove the problem P43 found; it adds three lines
+to it.** An agent runtime sends its *whole* toolbox, so the expert sees its own three
+tags among dozens it has never met — and two separate things are then wrong with what
+it reads:
+
+| | what goes wrong | what it costs, measured |
+|---|---|---|
+| **volume** | dozens of tag names the weights never saw | P25: on an unknown surface the adapter reaches **27 of 63** — it knows a step needs a lookup and gets the name wrong **[ran]** |
+| **renaming** | the three it *does* know arrive as `mcp__lora-inbox__message` | a tag it has never written, so knowing the tool does not help |
+
+`--prune` fixes both, and it does it **without the proxy learning a single tool
+name**. Each pool member declares the tags its corpus taught it — the same place its
+difficulty band lives, in `contract.py` — and the proxy keeps only the offered tools
+that match one, by exact name or by the last segment of a namespaced one
+(`mcp__…__`, `.`, `/`, `:`). A call the adapter writes leaves under the name the
+agent offered, so the agent can still route it.
+
+**What arrives at the model is then byte-for-byte the block it trained on** —
+`tests/test_prune.py` asserts exactly that against the corpus, and asserting it is
+what caught the first version alphabetising the three lines into an order the adapter
+had never read **[ran]** 2026-09-16.
+
+Two things this deliberately does not do:
+
+- **It does not re-offer what it dropped.** A member that recognises none of the
+  offered tools gets none, and the request log says so in `tools_offered` against
+  `tools`. Falling back to the full surface would be re-offering the one P25 priced.
+- **It does not guess between two servers.** If two offered tools end in the same tag
+  the tag is dropped, because calling the wrong one of two tools is worse than
+  calling neither.
+
+**It is off by default.** Every measurement before today ran without it, and an
+instrument that quietly changes what the model sees stops comparing to itself.
+`--prune` on and off is the pair of arms the question needs.
 
 ### Streaming, and why it is buffered
 

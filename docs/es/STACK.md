@@ -42,7 +42,7 @@ muere. El chequeo es capacidad de cómputo ≥ 8.0 **[ran]** 2026-09-08.
 | target candidato | vocab | ids coinciden | ¿sirve como target especulativo? |
 |---|---:|---|---|
 | `Qwen2.5-7B / 14B / 32B / 72B-Instruct` | 151.643 | sí | **sí — archivo byte-idéntico** |
-| `Qwen3-14B`, `Qwen3-32B` | 151.643 | sí | sí, con 4 ids que sólo el target tiene (151665-151668: `<tool_response>`, `</tool_response>`, `<think>`, `</think>`) |
+| `Qwen3-14B`, `Qwen3-32B` | 151.643 | sí | sí, con 4 ids que sólo el target tiene (151665-151668: `<tool_response>`, `</tool_response>`, `<think>`, `</think>`) — **una mejora disponible, no adoptada**; ver [`analysis/qwen3-migration.md`](../analysis/qwen3-migration.md) |
 | `Qwen3.5-27B`, `Qwen3.6-27B`, `Qwen3.8-27B` | **248.044** | **no** | **no — otro vocabulario** |
 
 Una API de frontera nunca puede ser target especulativo: no devuelve logprobs de una
@@ -55,17 +55,26 @@ Todos son **LoRA sobre la misma base**, hiperparámetros idénticos, difiriendo 
 el corpus. Cada uno pesa **119.801.528 bytes** de `adapter_model.safetensors` — unos
 114 MiB, contra ~6 GB de pesos de la base.
 
-| adaptador | corpus | filas | banda | qué puntúa |
-|---|---|---:|---|---|
-| `email-full` | `training/harness/data_ef/train.jsonl` | 598 | 0-3 pasos | **384/475 = 0,808**; en mensajes humanos **260/351 = 0,741** contra barra 0,655, p exacta **0,00036** **[ran]** P43 |
-| `fluids-full` | `training/physics/data_ff/train.jsonl` | 600 | 6-9 pasos | **11/90 = 0,122** contra 0,733 de la frontera **[ran]** P41; bajo su banda sobre-resuelve **18 de 18** **[ran]** P45 |
-| `kernel-mt` | `training/harness/data_mt/train.jsonl` | 600 | 2-4 pasos | el protocolo sin el dominio |
-| `kernel-email` | `training/harness/data_ep/train.jsonl` | 600 | 1-1 pasos | el mismo protocolo en el vocabulario del email |
-| `domain-mt` | `training/physics/data_mt/train.jsonl` | 600 | **0-0 pasos** | la física con el protocolo sacado — no llama nada, por diseño |
+| adaptador | corpus | filas | banda | superficie | qué puntúa |
+|---|---|---:|---|---|---|
+| `email-full` | `training/harness/data_ef/train.jsonl` | 598 | 0-3 pasos | `thread_history`, `sender_stats`, `message` | **384/475 = 0,808**; en mensajes humanos **260/351 = 0,741** contra barra 0,655, p exacta **0,00036** **[ran]** P43 |
+| `fluids-full` | `training/physics/data_ff/train.jsonl` | 600 | 6-9 pasos | `calc`, `lookup`, `convert` | **11/90 = 0,122** contra 0,733 de la frontera **[ran]** P41; bajo su banda sobre-resuelve **18 de 18** **[ran]** P45 |
+| `kernel-mt` | `training/harness/data_mt/train.jsonl` | 600 | 2-4 pasos | `calc`, `convert`, `lookup` | el protocolo sin el dominio |
+| `kernel-email` | `training/harness/data_ep/train.jsonl` | 600 | 1-1 pasos | `thread_history`, `sender_stats`, `message` | el mismo protocolo en el vocabulario del email |
+| `domain-mt` | `training/physics/data_mt/train.jsonl` | 600 | **0-0 pasos** | **ninguna** — no llama nada | la física con el protocolo sacado — no llama nada, por diseño |
 
-**Las bandas se leen de los corpus, no se declaran** — `tests/test_contract.py` relee
-cada uno, y hacerlo cazó tres de cinco mal en el primer intento **[ran]**. Declaradas
-en `POOL` vía `training/harness/contract.py`.
+**Las bandas y las superficies se leen de los corpus, no se declaran** —
+`tests/test_contract.py` y `tests/test_prune.py` releen cada uno, y hacerlo cazó tres
+de cinco bandas mal en el primer intento **[ran]**, y después el *orden* de la
+superficie mal en todos los corpus que enseñan uno **[ran]** 2026-09-16. Declaradas en
+`POOL` vía `training/harness/contract.py`.
+
+**El orden de una superficie es parte de ella, donde el corpus enseña uno.** Los tres
+corpus que llevan bloque de herramientas lo listan en un orden fijo en cada prompt, y
+ninguno de esos órdenes es alfabético; renderizar una superficie podada ordenada le
+mostraría al adaptador un listado que nunca leyó. Los dos corpus `-mt` no llevan
+bloque, así que sus etiquetas se escriben alfabéticamente para decir que no se enseñó
+ningún orden.
 
 ### Hiperparámetros LoRA — idénticos para todos
 

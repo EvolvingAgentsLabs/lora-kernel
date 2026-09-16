@@ -106,6 +106,12 @@ grande local sí puede**, y ahora la elección está medida en vez de asumida **
 | Qwen3-14B / Qwen3-32B | 151.643 | sí, con 4 ids que sólo el target tiene (`<think>`, …) |
 | Qwen3.5 / 3.6 / 3.8-27B | **248.044** | **no — otro vocabulario** |
 
+**Y el target nunca necesitó LoRA** — C18 restringe al *drafter*, que es donde vive el
+pool. Así que un target Qwen 3 está disponible hoy sin costo de ingeniería, mientras
+`Qwen3.8-27B` sigue bloqueado: obligaría a mover el drafter a la familia para la que
+está medido que vLLM no sirve adaptadores. Por qué esa migración va tercera y no
+primera: [`docs/analysis/qwen3-migration.md`](docs/analysis/qwen3-migration.md).
+
 Así que el diseño tiene **tres niveles, no dos**, y cada uno está por una razón
 distinta:
 

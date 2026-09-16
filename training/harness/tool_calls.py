@@ -109,3 +109,83 @@ def tools_to_instruction(tools: list[dict], arity: bool = False,
                      + (f"  — {fn['description']}" if fn.get("description") else ""))
     return ("The following tools are available. Ask for one by writing its tag on "
             "the line that needs it:\n" + "\n".join(lines)) if lines else ""
+
+
+# NAMESPACE PUNCTUATION, which is the only thing this module knows about how agent
+# runtimes rename a tool. OpenClaw offers an MCP tool as `mcp__<server>__<tool>`;
+# other runtimes use a dot, a slash or a colon. Keying on the punctuation rather
+# than on a prefix list keeps this a serializer: it recognises *that* a name is
+# namespaced, never *which* namespace it came from.
+NAMESPACE = re.compile(r"__|[./:]")
+
+
+def _tail(name: str) -> str:
+    return NAMESPACE.split(name)[-1]
+
+
+def prune(tools: list[dict], surface: list[str]) -> tuple[list[dict], dict, dict]:
+    """Keep only the offered tools the member has a tag for, under the tag's name.
+
+    WHY THIS EXISTS. P43 ran the end-to-end and the agent turn made **no tool calls
+    at all** — OpenClaw offers its own toolbox, and `email-full` was trained on three
+    tags **[ran]** `results/P43-openclaw-e2e-20260915/`. Two separate things were
+    wrong with what it saw, and they have to be fixed separately because they are
+    separately measurable:
+
+        VOLUME     dozens of tag names the weights have never seen. P25 measured the
+                   cost of an unknown surface at 27 of 63 — it knows a step needs a
+                   lookup and gets the name wrong **[ran]**.
+        RENAMING   even a tool it does know arrives as `mcp__lora-inbox__message`,
+                   which is not the tag `<message>` it writes.
+
+    Returns `(kept, forward, back)`. `kept` is the offered schemas rewritten to the
+    member's own tag names, `forward` maps tag -> the caller's name, and `back` is
+    its inverse, so a call this adapter writes leaves under the name the caller
+    offered. **Without the rename back, pruning would produce calls the agent
+    cannot route** — it asked for `mcp__lora-inbox__message` and a `<message>` means
+    nothing to it.
+
+    THE MATCH IS EXACT FIRST, THEN THE LAST NAMESPACE SEGMENT. An exact name always
+    wins. An ambiguous tail — two offered tools whose last segment is the same tag —
+    is **dropped**, because calling the wrong one of two tools is worse than calling
+    neither, and this module has no way to prefer one.
+
+    AN EMPTY RESULT IS A RESULT. A member that recognises none of the offered tools
+    gets no tools, and the caller sees that in the record rather than in a fallback
+    that quietly re-offers the surface P25 already priced.
+    """
+    by_tag: dict[str, list[dict]] = {t: [] for t in surface}
+    for t in tools or []:
+        fn = t.get("function", t)
+        name = fn.get("name")
+        if not isinstance(name, str):
+            continue
+        if name in by_tag:
+            by_tag[name] = [t]          # an exact name wins outright
+        else:
+            tail = _tail(name)
+            if tail in by_tag and not any(
+                    (x.get("function", x)).get("name") == tail for x in by_tag[tail]):
+                by_tag[tail].append(t)
+
+    kept, forward = [], {}
+    for tag in surface:
+        hits = by_tag.get(tag) or []
+        if len(hits) != 1:
+            continue                     # absent, or ambiguous and therefore refused
+        t = hits[0]
+        fn = dict(t.get("function", t))
+        forward[tag] = fn["name"]
+        fn["name"] = tag
+        kept.append({**t, "function": fn} if "function" in t else fn)
+    return kept, forward, {v: k for k, v in forward.items()}
+
+
+def rename_calls(calls: list[dict], forward: dict) -> list[dict]:
+    """Put the caller's own names back on the calls the adapter wrote."""
+    out = []
+    for c in calls:
+        fn = dict(c["function"])
+        fn["name"] = forward.get(fn["name"], fn["name"])
+        out.append({**c, "function": fn})
+    return out

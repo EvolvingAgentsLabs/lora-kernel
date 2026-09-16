@@ -38,7 +38,16 @@ En la tarjeta alquilada, según [`SERVING.md`](SERVING.md); después, acá:
     export OPENAI_API_KEY=...          # nunca en la línea de comandos: `ps` la ve
     python3 -m training.harness.openai_proxy \
         --upstream http://127.0.0.1:8000 --port 8001 \
+        --prune \
         --fallback https://api.openai.com/v1
+
+**`--prune` es lo que hace que el §4b valga la pena**, y se explica ahí. Imprime la
+superficie de etiquetas que declara cada miembro:
+
+    [prune] email-full: ['thread_history', 'sender_stats', 'message']
+    [prune] fluids-full: ['calc', 'lookup', 'convert']
+    [prune] domain-mt: no tools — declares none
+    [prune] a model not listed above is offered every tool, unpruned
 
 Imprime qué se queda y qué sale antes de servir un solo request:
 
@@ -141,6 +150,45 @@ herramientas del agente:
 inbox determinista desde una semilla; **no se lee, abre ni reenvía correspondencia
 real**, y la semilla es la de la suite para que la demo y el número hablen del mismo
 inbox. Apuntarlo a correo real es otro programa con otra revisión.
+
+### Enchufar el servidor no alcanza — hay que podar la superficie
+
+**Ofrecer las tres herramientas no elimina el problema que encontró P43; le agrega
+tres líneas.** Un runtime de agentes manda su caja de herramientas *entera*, así que
+el experto ve sus tres etiquetas entre decenas que nunca conoció — y ahí hay dos
+cosas distintas mal en lo que lee:
+
+| | qué sale mal | cuánto cuesta, medido |
+|---|---|---|
+| **volumen** | decenas de nombres de etiqueta que los pesos nunca vieron | P25: sobre una superficie desconocida el adaptador llega a **27 de 63** — sabe *que* un paso necesita un lookup y le erra al nombre **[ran]** |
+| **renombrado** | las tres que *sí* conoce llegan como `mcp__lora-inbox__message` | una etiqueta que nunca escribió, así que conocer la herramienta no le sirve |
+
+`--prune` arregla las dos, y lo hace **sin que el proxy aprenda un solo nombre de
+herramienta**. Cada miembro del pool declara las etiquetas que le enseñó su corpus —
+en el mismo lugar donde vive su banda de dificultad, `contract.py` — y el proxy
+conserva sólo las herramientas ofrecidas que coinciden con una, por nombre exacto o
+por el último segmento de uno con namespace (`mcp__…__`, `.`, `/`, `:`). Una llamada
+que escribe el adaptador sale con el nombre que ofreció el agente, así el agente
+todavía puede rutearla.
+
+**Lo que llega al modelo es entonces, byte a byte, el bloque con el que entrenó** —
+`tests/test_prune.py` lo afirma exactamente contra el corpus, y afirmarlo fue lo que
+descubrió que la primera versión alfabetizaba las tres líneas en un orden que el
+adaptador nunca había leído **[ran]** 2026-09-16.
+
+Dos cosas que esto deliberadamente no hace:
+
+- **No vuelve a ofrecer lo que descartó.** Un miembro que no reconoce ninguna de las
+  herramientas ofrecidas se queda sin ninguna, y el log del request lo dice en
+  `tools_offered` contra `tools`. Caer de vuelta a la superficie completa sería
+  volver a ofrecer la que P25 ya tarifó.
+- **No adivina entre dos servidores.** Si dos herramientas ofrecidas terminan en la
+  misma etiqueta, la etiqueta se descarta: llamar a la equivocada de dos es peor que
+  no llamar a ninguna.
+
+**Viene apagado por defecto.** Toda medición anterior a hoy corrió sin él, y un
+instrumento que cambia en silencio lo que ve el modelo deja de compararse consigo
+mismo. `--prune` prendido y apagado es justo el par de brazos que la pregunta pide.
 
 ### El streaming, y por qué está buffereado
 

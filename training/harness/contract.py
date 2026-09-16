@@ -33,7 +33,14 @@ agree on.
 
 from __future__ import annotations
 
+import re
+
 KINDS = ("text", "typed")
+
+# A tag name is what `tool_calls.CALL` will accept back out of a reply. Declaring a
+# surface the serializer could never parse would be declaring a capability nobody
+# can exercise.
+TAG = re.compile(r"^[A-Za-z_][\w-]*$")
 
 
 class ContractError(ValueError):
@@ -56,14 +63,49 @@ def band(lo: int, hi: int) -> dict:
     return {"min_steps": lo, "max_steps": hi}
 
 
-def text(corpus: str, trained_on: dict, note: str = "") -> dict:
-    return {"corpus": corpus, "band": trained_on,
+def surface(tags) -> list[str]:
+    """The tag names a member was trained to write — its tool vocabulary.
+
+    THE FIELD P43 FORCED INTO EXISTENCE, and it is the band's exact counterpart.
+    A band says *how deep* a problem may be; a surface says *which tools exist* for
+    the member being asked. Without it a caller can hand an adapter trained on three
+    tags an agent runtime's whole toolbox, and P43 measured what happens: the
+    OpenClaw turn made **no tool calls at all**, because the tags it was offered were
+    not tags this expert has ever seen **[ran]** `results/P43-openclaw-e2e-20260915/`.
+
+    P25 priced the same failure from the other side: on a subject whose tag names it
+    had never seen, the adapter reached 27 of 63 — it knows *that* a step needs a
+    lookup and gets the name wrong **[ran]**.
+
+    AN EMPTY SURFACE IS A DECLARATION, NOT AN OMISSION. `domain-mt` calls nothing in
+    600 of 600 examples; `[]` is the true statement about it, and it is what lets a
+    caller know not to offer it tools rather than guess from silence.
+
+    **THE ORDER IS PART OF THE DECLARATION AND IS NOT SORTED.** The first version of
+    this function sorted, and rendering the pruned surface back produced a block that
+    matched the corpus in every character except the order of its three lines — while
+    `email-full` saw `thread_history, sender_stats, message` in that order in 598 of
+    598 training prompts **[ran]** 2026-09-16. Alphabetising it would have shipped a
+    prompt the adapter was never trained on and called it a repair.
+    """
+    out = []
+    for t in tags:
+        if t not in out:
+            out.append(t)
+    return out
+
+
+def text(corpus: str, trained_on: dict, note: str = "",
+         tags: list[str] | None = None) -> dict:
+    return {"corpus": corpus, "band": trained_on, "surface": surface(tags or []),
             "output_contract": {"kind": "text"}, "note": note}
 
 
 def typed(corpus: str, trained_on: dict, values: list[str],
-          value_tokens: list[int], note: str = "") -> dict:
+          value_tokens: list[int], note: str = "",
+          tags: list[str] | None = None) -> dict:
     return {"corpus": corpus, "band": trained_on, "note": note,
+            "surface": surface(tags or []),
             "output_contract": {"kind": "typed", "type": "enum",
                                 "values": values, "value_tokens": value_tokens}}
 
@@ -81,6 +123,23 @@ def validate(path: str, record: dict) -> dict:
         raise ContractError(f"{path}: band must carry min_steps and max_steps")
     if b["min_steps"] < 0 or b["max_steps"] < b["min_steps"]:
         raise ContractError(f"{path}: band {b} is not a range")
+
+    # A SURFACE IS OPTIONAL TO DECLARE AND CHECKED ONCE DECLARED. A record written
+    # before this field existed is still actionable — a caller reads `None` as "this
+    # member does not say", which is different from "this member knows no tools" and
+    # has to stay different.
+    sf = record.get("surface")
+    if sf is not None:
+        if not isinstance(sf, list) or any(not isinstance(t, str) for t in sf):
+            raise ContractError(f"{path}: surface must be a list of tag names")
+        if len(set(sf)) != len(sf):
+            raise ContractError(f"{path}: a tag is declared twice in the surface")
+        bad = [t for t in sf if not TAG.match(t)]
+        if bad:
+            raise ContractError(
+                f"{path}: {bad} cannot be parsed back out of a reply by "
+                "tool_calls.CALL — declaring them would declare a capability "
+                "nobody can exercise")
 
     oc = record["output_contract"]
     kind = oc.get("kind")
@@ -111,6 +170,17 @@ def accepts(record: dict, steps: int) -> bool:
     """
     b = record["band"]
     return b["min_steps"] <= steps <= b["max_steps"]
+
+
+def offers(record: dict, tag: str) -> bool:
+    """Does this member have a tag for that tool?
+
+    `None` — the member does not declare a surface — answers yes, because a record
+    written before the field existed makes no claim either way and refusing it would
+    be reading silence as a denial.
+    """
+    sf = record.get("surface")
+    return True if sf is None else tag in sf
 
 
 def validate_pool(pool: dict) -> dict:

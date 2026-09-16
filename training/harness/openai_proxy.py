@@ -35,8 +35,10 @@ import urllib.error
 import urllib.request
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
-from training.harness.tool_calls import (CALL, from_tool_call, strip_calls,
-                                         to_tool_calls, tools_to_instruction)
+from training.harness.contract import validate
+from training.harness.tool_calls import (CALL, from_tool_call, prune, rename_calls,
+                                         strip_calls, to_tool_calls,
+                                         tools_to_instruction)
 
 UPSTREAM = "http://127.0.0.1:8000"
 ARITY = True          # P28: recovers 55% of the schema's cost, 0 domain lines
@@ -45,6 +47,38 @@ LOG = None            # --log <path> records traffic for the null arm
 KEY = None            # --api-key: required once this is reachable from outside
 PASSTHROUGH = False   # --passthrough: forward untouched, log shapes only
 UP_KEY = None         # --upstream-key: the credential the upstream itself wants
+PRUNE = False         # --prune: offer a member only the tools it declares a tag for
+
+# --- the tool surface ------------------------------------------------------
+#
+# WHAT THIS DOES NOT DO, STILL. This module names no tool, no argument and no unit.
+# The surface it prunes to is **the member's own declaration**, read out of
+# `contract.py` — the same place the band it was trained on lives. The proxy learns
+# which tags exist the way a router learns which depths are safe: by asking the
+# adapter, not by knowing the domain.
+#
+# WHY IT IS OFF BY DEFAULT. Every measurement before today ran without it, and P27's
+# 604/604 round trips used exact names where pruning is a no-op — but *this path has
+# never been run against an agent*, and a behaviour change hidden inside an
+# instrument is how a suite stops comparing to itself. `--prune` on and off is
+# exactly the pair of arms the question needs.
+POOL_SURFACE: dict[str, list[str]] = {}
+
+
+def _load_surfaces() -> dict[str, list[str]]:
+    """`{served model name: its declared tags}`, from the pool registry.
+
+    The registry keys adapters by directory (`adapters/email-full`) and vLLM serves
+    them by basename (`email-full`), which is the name a client puts in `model`.
+    A member that declares no surface is left out: silence is not a denial.
+    """
+    from training.harness.train_pool import POOL
+    out = {}
+    for path, record in POOL.items():
+        sf = validate(path, record).get("surface")
+        if sf is not None:
+            out[path.rsplit("/", 1)[-1]] = sf
+    return out
 
 # --- routing ---------------------------------------------------------------
 #
@@ -116,7 +150,7 @@ def _announce(model: str, payload: dict) -> None:
           f"{len(payload.get('tools') or [])} tools", flush=True)
 
 
-def rebuild_transcript(messages: list[dict]) -> list[dict]:
+def rebuild_transcript(messages: list[dict], back: dict | None = None) -> list[dict]:
     """Fold an agent's `tool_calls` / `tool` results back into the tag transcript.
 
     THIS IS THE MULTI-TURN PATH AND IT IS UNMEASURED. An OpenAI client keeps the
@@ -127,13 +161,19 @@ def rebuild_transcript(messages: list[dict]) -> list[dict]:
 
     A result whose `tool_call_id` matches nothing is appended rather than dropped:
     losing a value the agent computed is worse than a transcript in an odd order.
+
+    `back` maps the caller's tool names to the member's own tags. When the surface
+    has been pruned, an earlier turn in the agent's history calls
+    `mcp__lora-inbox__message` and the adapter is reading a transcript of
+    `<message>` — folding the history under the caller's name would show the model
+    its own past work in a vocabulary it does not have.
     """
     out, pending = [], {}
     for m in messages:
         role = m.get("role")
         if role == "assistant" and m.get("tool_calls"):
             text = m.get("content") or ""
-            for tc in m["tool_calls"]:
+            for tc in rename_calls(m["tool_calls"], back or {}):
                 text += ("\n" if text and not text.endswith("\n") else "")
                 text += from_tool_call(tc)
                 pending[tc.get("id")] = len(out)
@@ -163,7 +203,7 @@ def render_tools(messages: list[dict], tools: list[dict]) -> list[dict]:
     return out + [{"role": "user", "content": block}]
 
 
-def _record(req: dict, tools, up: dict) -> None:
+def _record(req: dict, tools, up: dict, offered: int | None = None) -> None:
     """One line per request, for `training.harness.null_arm`.
 
     WHAT AN AGENT ACTUALLY ASKS FOR CANNOT BE GUESSED FROM A SUITE. Only the shapes
@@ -177,6 +217,11 @@ def _record(req: dict, tools, up: dict) -> None:
         f.write(json.dumps({
             "model": req.get("model"),
             "tools": [((x.get("function") or x).get("name")) for x in (tools or [])],
+            # HOW MANY WERE OFFERED AND HOW MANY SURVIVED. Two counts, because the
+            # two failures they separate are different: an agent offering nothing
+            # this member knows, and an agent offering fifty of which three landed.
+            # P43 could not tell them apart from the outside.
+            "tools_offered": len(tools or []) if offered is None else offered,
             "turns": len(req.get("messages") or []),
             "reply": msg.get("content") or "",
             "upstream_tool_calls": len(msg.get("tool_calls") or []),
@@ -294,6 +339,13 @@ class Handler(BaseHTTPRequestHandler):
 
         tools = req.pop("tools", None)
         req.pop("tool_choice", None)
+        # PRUNE BEFORE RENDERING, so the block the adapter reads carries its own tag
+        # names and nothing else. `forward` puts the caller's names back on the way
+        # out; `back` rewrites the history on the way in.
+        offered, forward, back = len(tools or []), {}, {}
+        surface = POOL_SURFACE.get(req.get("model")) if PRUNE else None
+        if surface is not None and tools:
+            tools, forward, back = prune(tools, surface)
         # STREAMING IS BUFFERED, AND SAYING SO IS WHAT KEEPS IT HONEST.
         #
         # A tag only becomes a `tool_call` once its closing tag has arrived, so this
@@ -311,7 +363,7 @@ class Handler(BaseHTTPRequestHandler):
         # token-by-token streaming into a reply that arrived all at once.
         streaming = bool(req.pop("stream", False))
         req.pop("stream_options", None)
-        msgs = rebuild_transcript(req.get("messages") or [])
+        msgs = rebuild_transcript(req.get("messages") or [], back)
         req["messages"] = render_tools(msgs, tools) if tools else msgs
 
         try:
@@ -323,13 +375,13 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(502, {"error": {"message": repr(e)}})
 
         if LOG:
-            _record(req, tools, up)
+            _record(req, tools, up, offered=offered)
 
         for choice in up.get("choices", []):
             msg = choice.get("message") or {}
             text = msg.get("content") or ""
             if tools and CALL.search(text):
-                calls = to_tool_calls(text)
+                calls = rename_calls(to_tool_calls(text), forward)
                 msg["tool_calls"] = calls
                 msg["content"] = strip_calls(text) or None
                 choice["finish_reason"] = "tool_calls"
@@ -354,6 +406,11 @@ def main() -> int:
                     help="append one line per request, for training.harness.null_arm")
     ap.add_argument("--enums", action="store_true",
                     help="P28 measured this as harmful; off unless asked")
+    ap.add_argument("--prune", action="store_true",
+                    help="offer each pool member only the tools it declares a tag "
+                         "for, matching an exact name or the last namespace segment "
+                         "of one. P43's agent turn made zero tool calls because it "
+                         "was offered a toolbox this expert had never seen")
     ap.add_argument("--fallback", default=None,
                     help="where a model this pool does not serve is forwarded, "
                          "e.g. https://api.openai.com/v1. Requests routed here "
@@ -395,6 +452,14 @@ def main() -> int:
         print(f"[proxy] everything else -> {args.fallback} "
               f"(key from ${args.fallback_key_env})")
     globals()["ENUMS"] = args.enums
+    globals()["PRUNE"] = args.prune
+    if args.prune:
+        globals()["POOL_SURFACE"] = _load_surfaces()
+        # ANNOUNCED, BECAUSE IT CHANGES WHAT THE MODEL SEES. A filter nobody can see
+        # from outside is the kind that gets blamed on the weights later.
+        for name, sf in sorted(POOL_SURFACE.items()):
+            print(f"[prune] {name}: {sf or 'no tools — declares none'}")
+        print("[prune] a model not listed above is offered every tool, unpruned")
     globals()["LOG"] = args.log
     globals()["KEY"] = args.api_key
     globals()["UP_KEY"] = args.upstream_key

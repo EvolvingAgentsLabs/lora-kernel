@@ -25,6 +25,18 @@ from training.harness import contract
 # nothing a caller needs; see `contract.py` for why a band and an output kind are
 # now declared, and what P44 and P45 measured to make each of them a field.
 #
+# THE SURFACES ARE READ THE SAME WAY, and for the same reason: P43's OpenClaw turn
+# made zero tool calls because the agent offered its own toolbox to an expert trained
+# on three tags [ran]. `tests/test_prune.py` re-reads every corpus for both fields.
+#
+# ORDER IS DECLARED WHERE IT WAS TAUGHT AND NOWHERE ELSE. The email corpora carry an
+# offered block, and every one of their prompts lists it `thread_history,
+# sender_stats, message` — so that order is a fact about what the adapter read, and
+# rendering it any other way ships a prompt it never saw. `fluids-full` has a block
+# too, reading `calc, lookup, convert`. The two `-mt` corpora carry **no listing at
+# all**: their call order varies row to row, so there is nothing to preserve and
+# `kernel-mt`'s tags are written alphabetically to say so.
+#
 # THE BANDS BELOW ARE READ OFF THE CORPORA, NOT CHOSEN — and doing that rather than
 # asserting it caught three of five wrong on the first pass: `kernel-mt` is 2-4 and
 # not 6-9, `kernel-email` is 1-1 exactly, and `domain-mt` calls nothing at all in
@@ -32,18 +44,22 @@ from training.harness import contract
 # corpus and fails if a declaration drifts from what was trained.
 POOL = {
     "adapters/kernel-mt": contract.text(
-        "training/harness/data_mt/train.jsonl", contract.band(2, 4)),
+        "training/harness/data_mt/train.jsonl", contract.band(2, 4),
+        tags=["calc", "convert", "lookup"]),
     # Zero throughout: this is the physics corpus with the protocol removed and the
     # reasoning kept, so it never calls a tool. Declaring that is what stops a
     # router handing it a task whose answer has to come from a handbook.
+    # Its surface is empty for the same reason its band is (0, 0) — not an omission,
+    # the true statement about a corpus that calls nothing in 600 of 600 examples.
     "adapters/domain-mt": contract.text(
-        "training/physics/data_mt/train.jsonl", contract.band(0, 0)),
+        "training/physics/data_mt/train.jsonl", contract.band(0, 0), tags=[]),
     # P35: the same protocol, in the email suite's vocabulary. P34 measured the
     # physics kernel taking this base from 0 tool calls to 127 and every one
     # refused — the disposition travels, the names do not [ran].
     "adapters/kernel-email": contract.text(
         "training/harness/data_ep/train.jsonl", contract.band(1, 1),
-        note="every one of its 600 examples calls exactly once"),
+        note="every one of its 600 examples calls exactly once",
+        tags=["thread_history", "sender_stats", "message"]),
     # P36: the ceiling. Tools and judgement in one adapter — the reference point a
     # pool has to match, not the architecture itself.
     # 0 is not an error here: 154 of 598 examples answer with no call at all, which
@@ -51,7 +67,8 @@ POOL = {
     # is 1 would have to invent a call for those, which is P45's failure mode in the
     # other direction.
     "adapters/email-full": contract.text(
-        "training/harness/data_ef/train.jsonl", contract.band(0, 3)),
+        "training/harness/data_ef/train.jsonl", contract.band(0, 3),
+        tags=["thread_history", "sender_stats", "message"]),
     # P37: the second pool member. A genuinely different subdomain on the same
     # resident base — one member is not a pool.
     #
@@ -60,7 +77,8 @@ POOL = {
     # steps, 0.167 to 0.000 [ran]. Declaring (6, 9) is what lets a router refuse it
     # a two-step problem instead of receiving fluent nonsense.
     "adapters/fluids-full": contract.text(
-        "training/physics/data_ff/train.jsonl", contract.band(6, 9)),
+        "training/physics/data_ff/train.jsonl", contract.band(6, 9),
+        tags=["calc", "lookup", "convert"]),
 }
 
 # Checked at import, so a member that a caller could not act on never reaches a

@@ -42,7 +42,7 @@ generation dies. The check is compute capability ≥ 8.0 **[ran]** 2026-09-08.
 | candidate target | vocab | ids match | usable as a speculative target |
 |---|---:|---|---|
 | `Qwen2.5-7B / 14B / 32B / 72B-Instruct` | 151,643 | yes | **yes — byte-identical file** |
-| `Qwen3-14B`, `Qwen3-32B` | 151,643 | yes | yes, with 4 target-only ids (151665-151668: `<tool_response>`, `</tool_response>`, `<think>`, `</think>`) |
+| `Qwen3-14B`, `Qwen3-32B` | 151,643 | yes | yes, with 4 target-only ids (151665-151668: `<tool_response>`, `</tool_response>`, `<think>`, `</think>`) — **an available upgrade, not adopted**; see [`analysis/qwen3-migration.md`](analysis/qwen3-migration.md) |
 | `Qwen3.5-27B`, `Qwen3.6-27B`, `Qwen3.8-27B` | **248,044** | **no** | **no — a different vocabulary** |
 
 A frontier API can never be a speculative target: it returns no logprobs for a
@@ -55,17 +55,24 @@ All of them are **LoRA on the same base**, identical hyperparameters, differing 
 in corpus. Each is **119,801,528 bytes** of `adapter_model.safetensors` — about
 114 MiB, against ~6 GB of base weights.
 
-| adapter | corpus | rows | band | what it scores |
-|---|---|---:|---|---|
-| `email-full` | `training/harness/data_ef/train.jsonl` | 598 | 0-3 steps | **384/475 = 0.808**; on human messages **260/351 = 0.741** against a 0.655 bar, exact p **0.00036** **[ran]** P43 |
-| `fluids-full` | `training/physics/data_ff/train.jsonl` | 600 | 6-9 steps | **11/90 = 0.122** against the frontier's 0.733 **[ran]** P41; below its band it over-solves **18 of 18** **[ran]** P45 |
-| `kernel-mt` | `training/harness/data_mt/train.jsonl` | 600 | 2-4 steps | the protocol without the domain |
-| `kernel-email` | `training/harness/data_ep/train.jsonl` | 600 | 1-1 steps | the same protocol in the email vocabulary |
-| `domain-mt` | `training/physics/data_mt/train.jsonl` | 600 | **0-0 steps** | the physics with the protocol removed — calls nothing, by design |
+| adapter | corpus | rows | band | surface | what it scores |
+|---|---|---:|---|---|---|
+| `email-full` | `training/harness/data_ef/train.jsonl` | 598 | 0-3 steps | `thread_history`, `sender_stats`, `message` | **384/475 = 0.808**; on human messages **260/351 = 0.741** against a 0.655 bar, exact p **0.00036** **[ran]** P43 |
+| `fluids-full` | `training/physics/data_ff/train.jsonl` | 600 | 6-9 steps | `calc`, `lookup`, `convert` | **11/90 = 0.122** against the frontier's 0.733 **[ran]** P41; below its band it over-solves **18 of 18** **[ran]** P45 |
+| `kernel-mt` | `training/harness/data_mt/train.jsonl` | 600 | 2-4 steps | `calc`, `convert`, `lookup` | the protocol without the domain |
+| `kernel-email` | `training/harness/data_ep/train.jsonl` | 600 | 1-1 steps | `thread_history`, `sender_stats`, `message` | the same protocol in the email vocabulary |
+| `domain-mt` | `training/physics/data_mt/train.jsonl` | 600 | **0-0 steps** | **none** — calls nothing | the physics with the protocol removed — calls nothing, by design |
 
-**Bands are read off the corpora, not declared** — `tests/test_contract.py` re-reads
-every one, and doing that caught three of five wrong on the first pass **[ran]**.
-Declared in `POOL` via `training/harness/contract.py`.
+**Bands and surfaces are read off the corpora, not declared** — `tests/test_contract.py`
+and `tests/test_prune.py` re-read every one, and doing that caught three of five bands
+wrong on the first pass **[ran]**, then the surface *order* wrong on every corpus that
+teaches one **[ran]** 2026-09-16. Declared in `POOL` via `training/harness/contract.py`.
+
+**The order of a surface is part of it, where a corpus teaches one.** The three
+corpora that carry an offered block list it in a fixed order in every prompt, and none
+of those orders is alphabetical; rendering a pruned surface sorted would show the
+adapter a listing it never read. The two `-mt` corpora carry no block, so their tags
+are written alphabetically to say that no order was taught.
 
 ### LoRA hyperparameters — identical for every adapter
 
