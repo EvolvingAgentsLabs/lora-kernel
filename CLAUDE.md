@@ -60,10 +60,14 @@ So, the rules that keep a session on the project:
   `Qwen3.5-4B`, logs that it did, and **serves the base anyway** **[ran]**. Gemma 4
   is not a peft base (`Gemma4ClippableLinear` is not `nn.Linear`). Do not
   re-litigate this; run `serve_openai --gate-only` against any new base instead.
-- **Do not spend a session shopping for a target.** `google/gemini-3.8-flash`
-  scores **66/90** on the fluids suite through the same client the local expert
-  uses **[ran]** P41. That is the fallback's number; a better one is a purchase,
-  not a prerequisite.
+- **Do not spend a session shopping for a target — the two that matter are
+  already decided by measurement.** The **fallback** is `google/gemini-3.8-flash`,
+  **66/90** on the fluids suite through the same client the local expert uses
+  **[ran]** P41. The **speculative target** is `Qwen2.5-32B-Instruct`, because every
+  `Qwen2.5-Instruct` size shares a byte-identical `tokenizer.json` with the base
+  while the `Qwen3.x` line changed its vocabulary at 3.5 — its 27B models have
+  248,044 entries and cannot verify our drafters at all **[ran]** P48. Run
+  `training/harness/tokenizer_compat.py` before proposing any other.
 - **When in doubt, the next step is the one that puts a weight delta on disk.**
 
 ## 1. The plan is the state
