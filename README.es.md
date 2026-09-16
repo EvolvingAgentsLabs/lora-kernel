@@ -134,19 +134,21 @@ dentro de una inferencia que igual ibas a pagar.**
 ```mermaid
 flowchart TD
     P["PROMPT / ESTADO ACTUAL"]
-    A["Draft QLoRA<br>clinical-admin"]
-    B["Draft QLoRA<br>contract-review"]
-    C["Draft QLoRA<br>incident-triage"]
-    T["TARGET — MODELO DE FRONTERA<br>un solo forward pass, tree attention"]
-    W["Gana la rama con mayor tasa de aceptación<br>el experto que ya piensa como la frontera, en esta región"]
+    A["Draft QLoRA<br>importance"]
+    B["Draft QLoRA<br>owed"]
+    C["Draft QLoRA<br>commitment"]
+    T["TARGET — Qwen2.5-32B-Instruct-AWQ<br>misma familia, mismo tokenizer, misma placa"]
+    W["Gana la rama que el target aceptó más<br>un ranking de expertos que NO NECESITA JUEZ"]
+    V["y el verificador, sobre los MISMOS casos<br>porque un rechazo es cualquiera de los dos equivocándose"]
 
     P --> A
     P --> B
     P --> C
-    A -- "rama: codificar esta derivación" --> T
-    B -- "rama: marcar esta cláusula" --> T
-    C -- "rama: despertar al de guardia" --> T
+    A -- "rama" --> T
+    B -- "rama" --> T
+    C -- "rama" --> T
     T ==> W
+    W -.-> V
 
     classDef expert fill:#EAF1F9,stroke:#3E52A3,color:#15171B
     classDef target fill:#FDF4E6,stroke:#8A5C10,color:#15171B
@@ -154,6 +156,8 @@ flowchart TD
     class A,B,C expert
     class T target
     class W win
+    class V neutral
+    classDef neutral fill:#F4F3F0,stroke:#C4C4BF,color:#15171B
 ```
 
 El enrutamiento no cuesta nada extra. Los tokens ya se generaron. El pase de
@@ -176,20 +180,27 @@ produjo la Fase A.
 
 ```mermaid
 flowchart LR
-    subgraph PA["FASE A — la frontera es el target"]
+    subgraph PA["FASE A — el 32B LOCAL es el target"]
         direction TB
-        A1["los expertos borradorean"] --> A2["la FRONTERA verifica"] --> A3["α se acumula, por región"]
+        A1["los expertos borradorean"] --> A2["el 32B verifica,<br>token a token"] --> A3["la aceptación se acumula,<br>por región"]
     end
-    subgraph PB["FASE B — la frontera ya no está"]
+    subgraph PB["FASE B — el 32B ya no está, para esa región"]
         direction TB
-        B1["el router selecciona"] --> B2["el EXPERTO genera"] --> B3["sin llamada a frontera"]
+        B1["un dict selecciona<br>(1,000 con doce palabras clave)"] --> B2["el EXPERTO genera solo"] --> B3["sin llamada al 32B"]
     end
-    PA == "se retira, por región, sobre tu umbral" ==> PB
+    subgraph FR["LA FRONTERA — permanente, y nunca el target"]
+        direction TB
+        F1["lo que el pool falla, MEDIDO<br>0,546 → 0,775, 38% saliendo"]
+    end
+    PA == "la aceptación cruzó Y el score verificado aguantó" ==> PB
+    PB -. "las regiones que ningún experto cubre" .-> FR
 
     classDef a fill:#FDF4E6,stroke:#8A5C10,color:#15171B
     classDef b fill:#E7F1EA,stroke:#2E7D4F,color:#15171B
     class A1,A2,A3 a
     class B1,B2,B3 b
+    class F1 f
+    classDef f fill:#FCF3F1,stroke:#B0523C,color:#15171B
 ```
 
 |  | Fase A | Fase B |
@@ -206,6 +217,15 @@ puntaje verificado después de sacar la frontera, menos el que tenía con ella.
 Hacer chica esa brecha *es* el proyecto.
 
 ## Los cuatro adaptadores
+
+
+> **Aparcado el 2026-09-15, y queda escrito porque las razones son el registro.** En
+> la suite que lo midió, un protocolo aprendido sacó **9/30** donde veinte líneas de
+> `re` sacaron **23/30** — esa suite tenía una sola herramienta, así que pedirla era
+> copiar una expresión ya escrita **[ran]** P13. Y partir la capacidad costó la
+> disposición: pedir cayó de **123 de 150 casos a 22** **[ran]** P35. **Los expertos
+> son autocontenidos ahora**, cada uno declarando la banda que le enseñó su corpus
+> (`training/harness/contract.py`).
 
 **1 · `harness.lora` — el kernel.** Entrenado en nada más que el protocolo de
 ejecución: sintaxis de tools, **action tokens** (`<invoke_tool name="sql">`,

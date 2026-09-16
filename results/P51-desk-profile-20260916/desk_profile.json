@@ -1,0 +1,11 @@
+{
+  "base": "Qwen/Qwen2.5-3B-Instruct",
+  "target": "Qwen/Qwen2.5-32B-Instruct-AWQ",
+  "n": 240,
+  "seed": 424242,
+  "band": [
+    0.15,
+    0.7
+  ],
+  "arms": {}
+}

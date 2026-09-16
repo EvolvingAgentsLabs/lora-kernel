@@ -111,7 +111,7 @@ flowchart TD
   P0["P30 ✓ the loop closes<br/>24 calls · 0 refused · 0 undecided"] --> P1
   P1["Phase 1 — headroom<br/>base model, no adapter, on this suite"] -->|"beats 0.680?"| P2
   P1 -->|"no"| X1["stop: the base cannot do it.<br/>a different base, not a training run"]
-  P2["Phase 2 — the frontier target<br/>the person's own model, same suite"] -->|"gap > 0.15?"| P3
+  P2["Phase 2 — the REFERENCE<br/>a stronger model, scored on the same suite"] -->|"gap > 0.15?"| P3
   P2 -->|"no"| X2["stop: nothing to distil"]
   P3["Phase 3 — train triage-lora<br/>on the target's verdicts"] --> P4
   P4["Phase 4 — withdraw the frontier<br/>re-measure without it"] --> P5
