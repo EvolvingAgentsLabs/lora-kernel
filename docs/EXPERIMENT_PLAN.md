@@ -2420,6 +2420,39 @@ path is for models that fit in GPU memory — a 3B does, on the A100 this projec
 already rents. The terabytes belong to the *offline* path and I generalised one path's
 cost to both. What has not changed: **an EAGLE head cannot rank experts.**
 
+### P51 — 2026-09-16 **[ran]** · session 1 of 4: the band fired, `usable: false`
+
+Report: [`../results/P51-desk-profile-20260916/RESULT.md`](../results/P51-desk-profile-20260916/RESULT.md).
+One A100, two arms, 240 cases, **no training**. Session stopped cleanly.
+
+**base 69/240 = 0.288 · target 101/240 = 0.421**, and three cells of sixteen survive
+the band — all of them `importance`. The grid collapsed into a row, which the brief
+said would stop the next three sessions. **The band is not being moved.**
+
+**Two regions of four are unanswerable for both models.** `owed` scores **0.000 for
+the target too**, across all four depths; `counterpart` reaches 0.133 at best. Both
+ask about the whole inbox — enumerate 24 threads, then query per candidate, then
+compare — and neither a 3B nor a 32B finishes that in 8 turns. By this project's own
+rule those are **broken cells, not hard ones**.
+
+**And the rule found its own flaw.** `commitment@4` is **base 0.000, target 1.000** —
+dropped because the base is on the floor, by a clause written for *"every arm fails
+and it reads as the approach not working"*. But the target proves the task is doable,
+so that cell is the **exact shape a small expert exists to close**, with the whole
+distance visible. `commitment` runs 1.000 → 0.800 → 0.133 → 0.000 while the target
+holds 1.000 throughout: the cleanest gradient this project has produced, and the band
+threw away its bottom half.
+
+**Noticing that after the numbers is precisely when it cannot be fixed unilaterally.**
+The floor clause needs a companion — *unless the target clears the cell* — and making
+that change now is indistinguishable from moving the band to fit the result. Written
+down, left for a decision.
+
+**Next move, if taken:** make `owed` and `counterpart` answerable and land
+`commitment`'s gradient inside the band — **suite changes with the band held fixed**,
+which is a different act from moving the band. It would be the **first post-result
+redesign** of this suite; the counter starts at one.
+
 ## 12. History
 
 | date | change to this plan | why |
