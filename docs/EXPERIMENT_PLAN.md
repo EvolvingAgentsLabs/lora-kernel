@@ -2178,6 +2178,36 @@ the next treatment.
 New rule in `CLAUDE.md` §3: check the ceiling on ranking, not only on accuracy.
 Instrument: `training/harness/ceiling.py`.
 
+### Analysed 2026-09-16: four layers, and P1 is finally priced
+
+Full analysis: [`analysis/layered-routing.md`](analysis/layered-routing.md). No GPU.
+
+**P1 — *price the router* — has been open since 2026-09-08 and is now answered**, by
+a twelve-line keyword rule over 140 fluids cases spanning all seven ladder depths plus
+60 email listings **[ran]** 2026-09-16, n = 200:
+
+| question | decides | lexical baseline |
+|---|---|---|
+| **coarse** — which suite | **which tool surface to mount** | **1.000** |
+| fine — which family | which drafter to prefer | 0.845 |
+
+- **The coarse route needs no model.** It is the job the tool-surface layer needs and
+  it is perfect with keywords. Layer 1 starts as a **dict**.
+- **Layers 1 and 4 are one artifact** — one decision, two consumers — and it is the
+  live product blocker: 54 tools in front of an expert trained on 3, none called
+  **[ran]**. `contract.accepts()` gives it a refusal rule for free.
+- **The residual fine confusion is the depth boundary** (`L2` vs `L3` are the same
+  physics, one needs a conversion), which is what `band` declares and P45 measured.
+- **Layer 2 (structural tokens) is a corpus change, not an input change**, and the one
+  adjacent result is negative: P28's declared values were *harmful*, handbook misses
+  3 → 17. Buy it as an A/B on one expert or not at all.
+- **Layer 3 is downstream of P4** — a 3B drafting for a 3B buys nothing. When it is
+  live the pairing is unconstrained, because every member shares the resident base's
+  tokenizer. TaskSpec and Not-a-Bandit both say *pick with a classifier*, never
+  evaluate all.
+
+`tests/test_router_baseline.py` keeps the number re-runnable rather than quoted.
+
 ## 12. History
 
 | date | change to this plan | why |

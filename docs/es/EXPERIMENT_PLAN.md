@@ -2251,6 +2251,39 @@ entrenar** — el próximo chequeo de headroom, no el próximo tratamiento.
 Regla nueva en `CLAUDE.md` §3: chequear el techo del *ordenamiento*, no sólo el de la
 exactitud. Instrumento: `training/harness/ceiling.py`.
 
+### Analizado 2026-09-16: cuatro capas, y P1 por fin tiene precio
+
+Análisis completo: [`../analysis/layered-routing.md`](../analysis/layered-routing.md).
+Sin GPU.
+
+**P1 — *ponerle precio al router* — estaba abierto desde el 2026-09-08 y queda
+contestado**, con una regla de doce líneas de palabras clave sobre 140 casos de
+fluidos que cubren las siete profundidades de la escalera más 60 listados de email
+**[ran]** 2026-09-16, n = 200:
+
+| pregunta | decide | baseline léxico |
+|---|---|---|
+| **gruesa** — qué suite | **qué superficie de herramientas montar** | **1,000** |
+| fina — qué familia | qué drafter preferir | 0,845 |
+
+- **La ruta gruesa no necesita modelo.** Es el trabajo que la capa de herramientas
+  necesita y sale perfecto con palabras clave. La capa 1 empieza siendo un **dict**.
+- **Las capas 1 y 4 son un solo artefacto** — una decisión, dos consumidores — y es el
+  bloqueo vivo del producto: 54 herramientas frente a un experto entrenado con 3, y no
+  llamó ninguna **[ran]**. `contract.accepts()` le da la regla de rechazo gratis.
+- **La confusión fina que queda es el borde de profundidad** (`L2` y `L3` son la misma
+  física, una necesita conversión), que es lo que declara `band` y lo que midió P45.
+- **La capa 2 (tokens estructurales) es un cambio de corpus, no de entrada**, y el
+  único resultado cercano es negativo: los valores declarados de P28 fueron
+  *dañinos*, fallos de manual 3 → 17. Se compra como A/B sobre un experto o no se
+  compra.
+- **La capa 3 está aguas abajo de P4** — un 3B drafteando para un 3B no compra nada.
+  Cuando esté viva el emparejamiento es libre, porque todos los miembros comparten el
+  tokenizer de la base residente. TaskSpec y Not-a-Bandit dicen lo mismo: *elegir con
+  un clasificador*, nunca evaluar a todos.
+
+`tests/test_router_baseline.py` mantiene el número re-corrible en vez de citado.
+
 ## 12. Historia
 
 | fecha | cambio a este plan | por qué |
