@@ -27,6 +27,27 @@ kept because the change was earned rather than chosen:
 Everything else — the tournament, the verticals, a router that picks the member —
 is downstream of a pool with **two useful members**, which it does not yet have.
 
+**The buildable form of the original question, restated 2026-09-16** (plan §1):
+
+> **Does acceptance against a larger model of the same family order small experts the
+> way verified quality orders them — and can that model then be withdrawn, per region,
+> without the verified score falling?**
+
+Four things about it are settled and should not be re-derived:
+
+- **The target is `Qwen2.5-32B-Instruct-AWQ`**, not a frontier. A frontier API cannot
+  verify a drafted token **at all** — no logprobs for a forced continuation, a
+  different tokenizer **[ran]** P48. The frontier keeps a different, permanent job:
+  answering what the pool is measured to fail, worth 0.546 → 0.775.
+- **Acceptance is for ranking, never for speed.** A drafting head trained on the
+  target's hidden states beats our experts at latency and one exists for this target
+  **[read]**; what it cannot do is choose between k experts. That is the only claim
+  this architecture uniquely has.
+- **A drafter's corpus is written by the target, not by an oracle** — and each expert
+  sees only its own region, or acceptance comes out flat and the ranking collapses.
+- **The suite passes `training/suite_gates.py` first.** All four suites this project
+  previously measured on fail at least one **[ran]** P50.
+
 **Restated 2026-09-16, and the correction was the user's.** Two useful members is
 necessary and not sufficient: **they have to be close enough to meet in one
 problem.** The two we have are fluid mechanics and inbox triage, which never co-occur

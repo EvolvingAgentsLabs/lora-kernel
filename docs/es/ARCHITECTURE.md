@@ -15,10 +15,10 @@
 ```mermaid
 flowchart TB
     L1["<b>1 · HOST</b><br>vLLM — una GPU, un modelo base residente,<br>multi-LoRA serving, adaptadores en batch por request"]
-    L2["<b>2 · TARGET</b><br>FASE A: un modelo de frontera. Verifica, y su coincidencia es la medición<br>FASE B: retirado. Lo reemplaza sólo el router"]
-    L3["<b>3 · KERNEL</b><br>harness.lora — action tokens, sintaxis de tools,<br>transiciones de estado, formas de error. Siempre cargado"]
+    L2["<b>2 · TARGET</b> — un MODELO MÁS GRANDE DE LA MISMA FAMILIA, servido local.<br>Verifica token a token; retirable POR REGIÓN donde un experto lo alcanza"]
+    L3["<b>3 · FALLBACK</b> — un modelo de frontera, permanente.<br>Contesta lo que el pool falla, MEDIDO. 0,546 → 0,775"]
     L4["<b>4 · USER SPACE</b><br>el pool de expertos. QLoRAs de dominio, intercambiados en caliente,<br>versionados, puntuados, promovidos, retirados"]
-    L5["<b>5 · ROUTER</b><br>FASE A: tasa de aceptación α, gratis<br>FASE B: un router chico ajustado a la superficie de α"]
+    L5["<b>5 · SELECCIÓN</b><br>ruta gruesa: un dict, 1,000 con doce palabras clave<br>ranking entre expertos cercanos: aceptación"]
     L6["<b>6 · MEMORIA</b><br>markdown + git. No neuronal, a propósito"]
     L7["<b>7 · SUEÑO</b><br>offline: trazas → dataset DPO/GRPO → siguiente delta.<br>Torneo, promoción, retiro"]
 
@@ -41,108 +41,97 @@ capa 1 es el runtime de otro.** Ése es el sistema entero — y la capa 5 está
 dibujada como la única caja abierta a propósito, porque llamar "especulativo" al
 router antes de que exista la superficie de α sería asumir el resultado.
 
-## 2. Por qué el target tiene que ser de frontera
+## 2. Por qué el target tiene que ser más grande — y por qué no puede ser una API de frontera
 
-> **Superado en lo del target, 2026-09-16 — y por medición.** Esta sección sostiene
-> que el target tiene que ser de grado frontera. Una **API de frontera no puede ser
-> target especulativo en absoluto**: no devuelve logprobs de una continuación
-> *forzada* (C2) ni comparte el tokenizer de la base (C3). El target es un **modelo
-> más grande de la misma familia servido en la misma placa** — `Qwen2.5-32B-Instruct`,
-> tokenizer byte-idéntico **[ran]** P48 — y la frontera conserva otro trabajo:
-> contesta lo que el pool falla, *medido*, lo que llevó la entrega de 0,546 a 0,775
-> **[ran]** P41. El argumento de abajo sigue valiendo para **por qué el target tiene
-> que ser mejor que los expertos**; lo que se equivoca es en que sólo una frontera
-> puede serlo. Ver [`STACK.md`](STACK.md) §2 y
-> [`analysis/close-experts.md`](../analysis/close-experts.md) §4.
+La propiedad que hace funcionar esto no es una nota al pie: **bajo muestreo por
+rechazo los tokens emitidos se distribuyen exactamente como los habría emitido el
+target** **[read]**. Así que el target define qué significa "correcto", y todo lo demás
+es una pregunta sobre costo.
 
+Por eso el target tiene que ser **mejor que los expertos** — y por eso, durante toda
+la vida de este documento, "mejor" se leyó como "frontera".
 
-La decodificación especulativa emite la distribución del *target*. Así que lo que
-mide la tasa de aceptación es **la coincidencia con lo que hayas elegido para
-verificar**, y esa elección decide qué significa el número:
+**Esa lectura era incorrecta, y no es cuestión de grado.** Una API de frontera no
+puede ser target especulativo **en absoluto**:
 
-| target | qué te dice una α alta |
-|---|---|
-| el modelo base compartido | este experto se alejó menos de la base — *anticorrelacionado con la especialización* |
-| **un modelo de frontera** | **este experto ya produce lo que produciría la frontera, acá** |
+- no devuelve los logprobs de una continuación **forzada** (C2), así que no hay contra
+  qué verificar;
+- no comparte el tokenizer de la base (C3), así que un id drafteado no significa la
+  misma cadena para los dos modelos.
 
-El segundo es una puntuación de destilación. Ése es el diseño.
+Medido y no argumentado **[ran]** `results/P48-tokenizer-compat-20260916/`:
 
-Es la única regla que mantiene coherente la arquitectura, y es por eso que la
-frontera no es una optimización sino un componente: **sacala en la Fase A y el
-router está midiendo otra cosa.**
+| target candidato | vocab | ¿sirve? |
+|---|---:|---|
+| `Qwen2.5-7B / 14B / 32B / 72B-Instruct` | 151.643 | **sí — `tokenizer.json` byte-idéntico** |
+| `Qwen3-14B`, `Qwen3-32B` | 151.643 | sí, con 4 ids que sólo el target tiene |
+| `Qwen3.5 / 3.6 / 3.8-27B` | **248.044** | **no — otro vocabulario** |
 
-## 3. El retiro de la frontera
+**Así que el target es `Qwen2.5-32B-Instruct-AWQ`** — 19,3 GB, entra al lado del 3B en
+una A100, y su `tokenizer.json` hashea igual que el de la base. Un modelo de frontera
+conserva otro trabajo, en la capa 3, donde es permanente.
 
-La frontera es andamio con una condición de retiro declarada.
+### Y el target no es lo que hace rápido a esto
 
-**Fase A.** Los expertos borradorean, la frontera verifica, α se acumula por
-experto y por región del problema. El costo es de frontera; la calidad es de
-frontera; la medición es gratis.
+La decodificación especulativa tiene **dos** propósitos y este proyecto reclamaba los
+dos. Para **latencia** gana una cabeza de drafting entrenada sobre los estados ocultos
+del propio target, y existe una para exactamente este target **[read]**. Nuestros
+expertos de dominio nunca le van a ganar en eso, porque ella no tiene otro trabajo.
 
-**Fase B.** Para una región donde la α de un experto cruzó el umbral, se lo
-promueve de drafter a generador, se retira la frontera, y el router elige. El
-costo colapsa a inferencia local.
+**Lo que no puede hacer es rankear.** Hay una cabeza por target, así que no hay entre
+qué elegir. **La aceptación como ranking sin juez sobre k expertos es la afirmación
+que sobrevive**, y es lo único que esta arquitectura tiene y una cabeza EAGLE no.
 
-**El umbral es una decisión de producto, tomada sobre una superficie medida.**
-¿Cuánta coincidencia con la frontera exigís antes de que un experto conteste
-solo? Por región. Registrado, revisable y reversible — una región puede volver a
-Fase A cuando su puntaje verificado baja.
+## 3. El retiro — del target, por región, y no de la frontera
 
-**El número que decide toda la arquitectura** es la brecha de retiro: el puntaje
-verificado de tarea después del retiro, menos el que tenía la frontera. Hacer
-chica esa brecha *es* el proyecto.
+~~El modelo de frontera es andamio, y el diseño dice cuándo sacarlo.~~
 
-## 4. Composición — kernel más experto
+**Reformulado el 2026-09-15 y otra vez el 2026-09-16, las dos por medición.** La
+frontera no es andamio: es el fallback para lo que el pool falla, *medido*, y mandarle
+un subdominio que falla llevó la entrega de **0,546 a 0,775** con el 38% de los casos
+saliendo de la máquina **[ran]** `results/P41-routing-20260915/`.
 
-El kernel y el experto son adaptadores distintos y tienen que seguir siéndolo.
+**Lo que significa retirar ahora es más barato y más honesto.** Donde la aceptación de
+un experto contra el 32B local es suficientemente alta, **el 32B sale para esa región**
+y el experto genera solo. La frontera se queda donde está, contestando las regiones que
+ningún experto cubre.
 
-- `harness.lora` es dueño de **cómo actuar**: action tokens, sintaxis de tools,
-  estado.
-- un adaptador de dominio es dueño de **qué es cierto** en su región.
+**La aceptación sola no lo autoriza.** Un rechazo es el chico equivocándose o el grande
+equivocándose, y sólo un verificador sobre los mismos casos los separa — por eso la
+suite donde se mide esto tiene uno, y por eso los pisos tipo `carries()` van **al lado**
+de la aceptación y no detrás.
 
-Fusionarlos obligaría a cada adaptador de dominio a re-aprender el protocolo, que
-es justo el costo que este diseño existe para eliminar. Servirlos juntos es una
-cuestión de composición multi-adaptador y se trata en
-[`TECHNICAL-REFERENCE.md` §5](TECHNICAL-REFERENCE.md).
+**El orden que se sigue de eso.** La fase A sirve el target y acumula, por región, con
+qué experto sigue coincidiendo. La fase B saca el target donde ese número cruzó un
+umbral **y el score verificado aguantó**. Dos condiciones, no una.
 
+## 4. Composición — descartada, y qué la reemplazó
 
-### Qué está medido y qué no [ran]
+~~El kernel y el experto son adaptadores distintos y tienen que seguir siéndolo.~~
 
-La primera mitad de esta sección ya es un resultado y no una afirmación. Un
-adaptador kernel entrenado con 600 ejemplos **sin nada de física** — tickets de
-compra, promedios, crecimiento compuesto, volúmenes de cono — entró a mecánica de
-fluidos y llamó a la herramienta en **30 de 30** casos, sin malformar **ni una
-llamada**, bajo un prompt que nunca menciona la herramienta. El protocolo se puede
-aprender en pesos propios y transfiere a un dominio que su corpus nunca contuvo.
-[`results/P8-harness-lora-20260909/`](../../results/P8-harness-lora-20260909/BRIEF.md)
+**Descartada el 2026-09-15, por medición.** Dos resultados la cerraron:
 
-La mitad de dominio también es un resultado: con su aritmética reparada paso a
-paso, las cadenas de un experto de física llegan a la respuesta del oráculo en
-**30 de 30** casos mientras su puntaje crudo es **1 de 30**, con cero llamadas.
-Sus fórmulas son exactas; sólo falla la aritmética. Al experto le falta la
-delegación y nada más.
-[`results/P9-shared-contract-20260909/`](../../results/P9-shared-contract-20260909/BRIEF.md)
+- **La interferencia aparente de P8 era nula** por un confound de notación — los brazos
+  nunca fueron comparables.
+- **P35 midió lo que cuesta partir una capacidad.** Enseñado el vocabulario de
+  herramientas aparte del dominio, el vocabulario se aprendió y la *disposición* se
+  perdió: pedir cayó de **123 de 150 casos a 22** **[ran]**.
 
-**Servirlos juntos ya está medido, y funciona de una sola manera.** Aplicar los
-dos a la vez los hace competir por la misma palabra: apilados delegan en 5 de 30
-casos, matrices disjuntas lo empeoran, y ponderar uno borra al otro **[ran]**
-`results/P9-…`, `results/P11-…`. **Turnarse elimina la competencia por completo** —
-la delegación pasa de 0,6 a 4,7 llamadas por caso
-**[ran]** `results/P13-sequential-20260910/`. Así que la opción 1 de §5 es el modo
-de composición, y el precio son dos forward passes por paso y un runtime que se
-hace cargo del límite del turno.
+Y `harness.lora` perdió su propio caso en el camino: un protocolo aprendido sacó
+**9/30** donde veinte líneas de `re` sacaron **23/30**, porque esa suite tenía una sola
+herramienta y pedirla era copiar una expresión ya escrita **[ran]** P13.
 
-**Lo que sigue sin probarse es el valor propio del kernel.** En una suite con una
-sola herramienta, un harness delgado le ganó al adaptador kernel 23/30 contra 9/30,
-porque la llamada era copia de una expresión que el experto ya había escrito. Si un
-protocolo aprendido se gana sus pesos donde la llamada **no** es copia se está
-midiendo, contra un competidor escrito a mano que saca 92,9%.
+**Lo que la reemplazó: expertos autocontenidos.** Cada adaptador lleva su propia
+disposición a buscar herramientas, en el vocabulario con el que va a ser servido.
+`contract.py` lo vuelve declarable — un miembro declara la **banda** que le enseñó su
+corpus, porque un experto servido fuera de ella no simplifica: **sobre-resuelve**. Por
+debajo de su banda `fluids-full` inventó un área en **18 de 18** casos y la base pelada
+le ganó a tres pasos, 0,167 contra 0,000 **[ran]** P45.
 
-**Y la región del experto tiene un borde duro que no siente** [ran]
-`results/P14-held-out-20260910/`: fórmulas exactas 30/30 adentro, 1/20 una familia
-afuera, sin nada en la salida que marque la diferencia. La promoción por región
-necesita un guardia, y el primer candidato lee la tasa de rechazo de la **capa de
-herramientas** en vez de la confianza del modelo.
+**Y encadenar no cuesta nada si alguna vez se quiere la composición de vuelta.**
+`base→lora1` y después `base→lora2` nunca tiene dos deltas vivos en el mismo forward,
+así que la pregunta por la interferencia no aparece — y el pool ya sirve esa forma. Son
+dos pedidos con dos nombres de modelo.
 
 ## 5. El torneo
 
@@ -181,13 +170,30 @@ cada resultado.
 
 ## 7. Orden de trabajo
 
-| | | condiciona |
+~~E0 headroom · E1 la superficie de α contra un target de frontera · E2 retiro ·
+E3 `harness.lora` · E4 el torneo~~
+
+**Reestructurado el 2026-09-16.** E1 suponía un target de frontera, que no puede
+verificar tokens; el adaptador de E3 perdió contra veinte líneas de `re`. Lo reemplazan
+cuatro sesiones, cada una capaz de terminar lo que sigue.
+
+| | | termina la línea si |
 |---|---|---|
-| **E0** | headroom sobre la base sola | todo |
-| **E1** | la superficie de α: 2 expertos, 1 target de frontera | E2 |
-| **E2** | retiro: promover, sacar la frontera, medir la brecha | el producto |
-| **E3** | `harness.lora` contra el baseline de −85% de schema | el kernel |
-| **E4** | el torneo, con un verificador retenido | la evolución |
+| **S1** | **perfilar** base y target sobre el grid región × profundidad; la banda donde la base no está ni en el piso ni en el techo se elige **una vez** | la base está arriba de 0,70 en todo, abajo de 0,15 en todo, o el target falla la mayoría de las celdas |
+| **S2** | **entrenar los expertos** — cada uno con conversaciones que **generó el target para su propia región**, no de un oráculo | — |
+| **S3** | **el ranking**: aceptación por experto y región, con el score verificado al lado | la aceptación no ordena a los expertos como los ordena el verificador |
+| **S4** | **reserva** — tres de las últimas corridas murieron o quedaron nulas | — |
+
+**Dos reglas de las que depende el orden.** La banda se elige una vez y no se revisa,
+sea cual sea el resultado de un tratamiento posterior — elegirla dos veces es el
+instrumento buscando un resultado. Y **ningún brazo puntúa nada antes de que un
+preflight pruebe que llega a sus herramientas**: el primer intento de P51 devolvió HTTP
+400 en los 240 casos e imprimió `correct 0 calls 0 refused 0`, que es lo que parece un
+piso **[ran]**.
+
+**Antes de todo eso, la suite pasa `training/suite_gates.py`** o sus números no son
+evidencia. Las cuatro suites que este proyecto midió antes fallan al menos una **[ran]**
+`results/P50-suite-audit-20260916/`.
 
 ## 8. Deliberadamente sin construir todavía
 

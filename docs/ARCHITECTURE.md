@@ -15,10 +15,10 @@
 ```mermaid
 flowchart TB
     L1["<b>1 · HOST</b><br>vLLM — one GPU, one resident base model,<br>multi-LoRA serving, adapters batched per request"]
-    L2["<b>2 · TARGET</b><br>PHASE A: a frontier model. Verifies, and its agreement is the measurement<br>PHASE B: withdrawn. Replaced by the router alone"]
-    L3["<b>3 · KERNEL</b><br>harness.lora — action tokens, tool syntax,<br>state transitions, error shapes. Always loaded"]
+    L2["<b>2 · TARGET</b> — a LARGER MODEL OF THE SAME FAMILY, served locally.<br>Verifies token by token; withdrawable PER REGION where an expert reaches it"]
+    L3["<b>3 · FALLBACK</b> — a frontier model, permanent.<br>Answers what the pool is MEASURED to fail. 0.546 → 0.775"]
     L4["<b>4 · USER SPACE</b><br>the expert pool. Domain QLoRAs, hot-swapped,<br>versioned, scored, promoted, retired"]
-    L5["<b>5 · ROUTER</b><br>PHASE A: acceptance rate α, free<br>PHASE B: a small router fitted to the α surface"]
+    L5["<b>5 · SELECTION</b><br>coarse route: a dict, 1.000 with twelve keywords<br>ranking between close experts: acceptance"]
     L6["<b>6 · MEMORY</b><br>markdown + git. Not neural, on purpose"]
     L7["<b>7 · DREAM</b><br>offline: traces → DPO/GRPO dataset → next delta.<br>Tournament, promotion, retirement"]
 
@@ -36,110 +36,118 @@ flowchart TB
     class L6 text
 ```
 
-**Layers 3, 4 and 7 produce only adapters. Layer 6 produces only text. Layer 1 is
-somebody else's runtime.** That is the whole system — and layer 5 is drawn as the
-one open box on purpose, because naming the router "speculative" before the α
-surface exists would be assuming the result.
+**Restructured 2026-09-16.** Three layers changed and the reasons are measured.
 
-## 2. Why the target must be frontier-grade
+- **Layer 2 was "a frontier model, then withdrawn".** A frontier API cannot verify
+  tokens at all — no logprobs for a forced continuation (C2), a different tokenizer
+  (C3) **[ran]** P48. The target is a **larger model of the same family, on the same
+  card**, and what gets withdrawn is *it*, per region, not the frontier.
+- **Layer 3 was `harness.lora`, the kernel adapter.** Composition in weight space is
+  dropped — P8's result was void on a notation confound and P35 measured the cost of
+  splitting a capability in two: asking fell from 123 of 150 cases to 22 **[ran]**.
+  The frontier took that slot, because it turned out to be a permanent component
+  rather than scaffolding: routing a failing region to it delivers **0.546 → 0.775**
+  **[ran]** P41.
+- **Layer 5 was "α, free".** Half of it is free and the other half is a dict: the
+  coarse route scores **1.000** with twelve keywords **[ran]**, so a learned router
+  is unbought. Acceptance is for the half a dict cannot do — **ranking experts that
+  resemble each other** — and that is the only claim an EAGLE head cannot also serve.
 
-> **Superseded on the target, 2026-09-16 — and by measurement.** This section argues
-> the target must be frontier-grade. A **frontier API cannot be a speculative target
-> at all**: it returns no logprobs for a *forced* continuation (C2) and does not share
-> the base's tokenizer (C3). The target is a **larger model of the same family served
-> on the same card** — `Qwen2.5-32B-Instruct`, byte-identical tokenizer **[ran]** P48
-> — and the frontier keeps a different job: it answers what the pool is *measured* to
-> fail, which took delivered accuracy from 0.546 to 0.775 **[ran]** P41. The argument
-> below still holds for **why the target has to be better than the experts**; what it
-> gets wrong is that only a frontier can be. See [`STACK.md`](STACK.md) §2 and
-> [`analysis/close-experts.md`](analysis/close-experts.md) §4.
+**Layers 4 and 7 produce only adapters. Layer 6 produces only text. Layer 1 is
+somebody else's runtime.**
 
+## 2. Why the target must be bigger — and why it cannot be a frontier API
 
-Speculative decoding emits the *target's* distribution. So what acceptance rate
-measures is **agreement with whatever you chose to verify with**, and the choice
-therefore decides what the number means:
+The property that makes this work is not a footnote: **under rejection sampling the
+emitted tokens are distributed exactly as the target would have emitted them**
+**[read]**. So the target decides what "correct" means, and everything else is a
+question about cost.
 
-| target | what a high α tells you |
-|---|---|
-| the shared base model | this expert has drifted least from the base — *anti-correlated with specialisation* |
-| **a frontier model** | **this expert already produces what the frontier would, here** |
+Which is why the target has to be **better than the experts** — and why, for three
+years of this document's assumptions, "better" was read as "frontier".
 
-The second is a distillation score. It is the design.
+**That reading was wrong, and it is not a matter of degree.** A frontier API cannot
+be a speculative target **at all**:
 
-This is the single rule that keeps the architecture coherent, and it is why the
-frontier is not an optimisation but a component: **remove it in Phase A and the
-router is measuring the wrong thing.**
+- it does not return the logprobs of a **forced** continuation (C2), so there is
+  nothing to verify against;
+- it does not share the base's tokenizer (C3), so a drafted id does not mean the same
+  string to both models.
 
-## 3. Frontier withdrawal
+Measured rather than argued **[ran]** `results/P48-tokenizer-compat-20260916/`:
 
-The frontier is scaffolding with a stated removal condition.
+| candidate target | vocab | usable |
+|---|---:|---|
+| `Qwen2.5-7B / 14B / 32B / 72B-Instruct` | 151,643 | **yes — byte-identical `tokenizer.json`** |
+| `Qwen3-14B`, `Qwen3-32B` | 151,643 | yes, with 4 target-only ids |
+| `Qwen3.5 / 3.6 / 3.8-27B` | **248,044** | **no — a different vocabulary** |
 
-**Phase A.** Experts draft, frontier verifies, α accumulates per expert per
-region of the problem space. Cost is frontier cost; quality is frontier quality;
-the measurement is free.
+**So the target is `Qwen2.5-32B-Instruct-AWQ`** — 19.3 GB, fits beside the 3B on one
+A100, and its `tokenizer.json` hashes identically to the base's. A frontier model
+keeps a different job, in layer 3, where it is permanent.
 
-**Phase B.** For a region where an expert's α crossed threshold, promote it from
-drafter to generator, drop the frontier, and let the router choose. Cost collapses
-to local inference.
+### And the target is not what makes this fast
 
-**The threshold is a product decision, made on a measured surface.** How much
-frontier agreement do you require before an expert answers alone? Per region.
-Recorded, revisable, and reversible — a region can be sent back to Phase A when
-its verified score drops.
+Speculative decoding has **two** purposes and this project had been claiming both.
+For **latency**, a drafting head trained on the target's own hidden states wins, and
+one exists for exactly this target **[read]**. Our domain experts will never beat it
+at that, because it has no other job.
 
-**The number that decides the whole architecture** is the withdrawal gap: the
-verified task score after withdrawal, minus the score the frontier had. Making
-that gap small *is* the project.
+**What it cannot do is rank.** There is one head per target, so there is nothing to
+choose between. **Acceptance as a judge-free ranking over k experts is the claim that
+survives**, and it is the only thing this architecture has that an EAGLE head does
+not.
 
-## 4. Composition — kernel plus expert
+## 3. Withdrawal — of the target, per region, and not of the frontier
 
-The kernel and the expert are different adapters and must stay so.
+~~The frontier model is scaffolding, and the design says when to remove it.~~
 
-- `harness.lora` owns **how to act**: action tokens, tool syntax, state.
-- a domain adapter owns **what is true** in its region.
+**Restated 2026-09-15 and again 2026-09-16, both times by measurement.** The frontier
+is not scaffolding: it is the fallback for what the pool is *measured* to fail, and
+sending one failing subdomain to it took delivered accuracy from **0.546 to 0.775**
+with 38% of cases leaving the machine **[ran]** `results/P41-routing-20260915/`.
 
-Merging them would make every domain adapter re-learn the protocol, which is the
-cost this design exists to remove. Serving them together is a multi-adapter
-composition question and is treated in
-[`TECHNICAL-REFERENCE.md` §5](TECHNICAL-REFERENCE.md).
+**What withdrawal means now is cheaper and more honest.** Where an expert's acceptance
+against the local 32B is high enough, **the 32B comes out for that region** and the
+expert generates alone. The frontier stays where it is, answering the regions no
+expert covers.
 
+**Acceptance alone cannot authorise it.** A rejection is either the small model being
+wrong or the large one being wrong, and only a verifier on the same cases separates
+them — which is why the suite this is measured on has one, and why `carries()`-style
+floors sit *beside* acceptance rather than behind it.
 
-### What is measured, and what is not [ran]
+**The order that follows from that.** Phase A serves the target and accumulates, per
+region, which expert it keeps agreeing with. Phase B removes the target where that
+number crossed a threshold **and the verified score held**. Two conditions, not one.
 
-The first half of this section is now a result rather than a claim. A kernel
-adapter trained on 600 examples containing **no physics whatsoever** — shop
-receipts, means, compound growth, cone volumes — walked into fluid mechanics and
-called the tool on **30 of 30** cases, malforming **not one call**, under a prompt
-that never mentions the tool. The protocol is learnable in weights of its own and
-it transfers to a domain its corpus never contained.
-[`results/P8-harness-lora-20260909/`](../results/P8-harness-lora-20260909/BRIEF.md)
+## 4. Composition — dropped, and what replaced it
 
-The domain half is a result too: with its arithmetic repaired step by step, a
-physics expert's chains reach the oracle's answer on **30 of 30** cases while its
-raw score is **1 of 30**, with zero tool calls. Its formulas are exact; only its
-arithmetic fails. The expert needs delegation and nothing else.
-[`results/P9-shared-contract-20260909/`](../results/P9-shared-contract-20260909/BRIEF.md)
+~~The kernel and the expert are different adapters and must stay so.~~
 
-**Serving them together is now measured, and it works only one way.** Applying
-both at once makes them compete for the same word: stacked they delegate on 5 of
-30 cases, disjoint matrices make it worse, and weighting one up deletes the other
-**[ran]** `results/P9-…`, `results/P11-…`. **Taking turns removes the competition
-entirely** — delegation goes from 0.6 to 4.7 calls per case
-**[ran]** `results/P13-sequential-20260910/`. So §5's option 1 is the composition
-mode, and the price is two forward passes per step and a runtime that owns the
-turn boundary.
+**Dropped 2026-09-15, on measurement.** Two results closed it:
 
-**What remains unproven is the kernel's own value.** In a suite with one tool a
-thin harness beat the kernel adapter 23/30 to 9/30, because the call was a copy of
-an expression the expert had already written. Whether a learned protocol earns its
-weights where the call is *not* a copy is being measured, against a hand-written
-competitor that scores 92.9%.
+- **P8's apparent interference was void** on a notation confound — the arms were
+  never comparable.
+- **P35 measured what splitting a capability costs.** Taught the tool vocabulary
+  separately from the domain, the vocabulary was learned and the *disposition* was
+  lost: asking fell from **123 of 150 cases to 22** **[ran]**.
 
-**And the expert's region has a hard edge it cannot feel** [ran]
-`results/P14-held-out-20260910/`: formulas exact 30/30 inside, 1/20 one family
-outside, with nothing in the output marking the difference. Per-region promotion
-needs a guard, and the first candidate reads the *tool layer's* rejection rate
-rather than the model's confidence.
+And `harness.lora` lost its own case on the way: a learned protocol scored **9/30**
+where twenty lines of `re` scored **23/30**, because that suite had one tool and
+asking for it was copying an expression already written **[ran]** P13.
+
+**What replaced it: self-contained experts.** Each adapter carries its own disposition
+to reach for tools, in the vocabulary it will be served with. `contract.py` makes that
+declarable — a member states the **band** its corpus taught, because an expert served
+outside it does not simplify, it **over-solves**: below its band `fluids-full`
+invented an area on **18 of 18** cases and the bare base beat it at three steps,
+0.167 to 0.000 **[ran]** P45.
+
+**And piping costs nothing if composition is ever wanted back.** `base→lora1` then
+`base→lora2` never has two deltas live in one forward pass, so the interference
+question does not arise — and the pool already serves exactly that shape. It is two
+requests with two model names.
 
 ## 5. The tournament
 
@@ -179,18 +187,40 @@ every result.
 
 ## 7. Order of work
 
-| | | gates |
+~~E0 headroom · E1 the α surface against a frontier target · E2 withdrawal · E3
+`harness.lora` · E4 the tournament~~
+
+**Restructured 2026-09-16.** E1 assumed a frontier target, which cannot verify tokens;
+E3's adapter lost to twenty lines of `re`. What replaces them is four sessions, each
+able to end what follows it.
+
+| | | ends the line if |
 |---|---|---|
-| **E0** | headroom on the base alone | everything |
-| **E1** | the α surface: 2 experts, 1 frontier target | E2 |
-| **E2** | withdrawal: promote, remove the frontier, measure the gap | the product |
-| **E3** | `harness.lora` against the −85% schema baseline | the kernel |
-| **E4** | the tournament, with a held-out verifier | evolution |
+| **S1** | **profile** the base and the target over the region × depth grid; the band where the base is neither on the floor nor at the ceiling is chosen **once** | the base is above 0.70 everywhere, below 0.15 everywhere, or the target fails most cells |
+| **S2** | **train the experts** — each on conversations **the target generated for its own region**, not on an oracle's | — |
+| **S3** | **the ranking**: acceptance per expert per region, with the verified score beside it | acceptance does not order the experts the way the verifier does |
+| **S4** | **reserve** — three of the last runs died or were void | — |
+
+**Two rules the order depends on.** The band is chosen once and never revisited,
+whatever a later treatment scores — choosing it twice is the instrument looking for a
+result. And **no arm scores anything before a preflight proves it can reach its
+tools**: P51's first attempt returned HTTP 400 on all 240 cases and printed
+`correct 0 calls 0 refused 0`, which is what a floor looks like **[ran]**.
+
+**Before any of it, the suite passes `training/suite_gates.py`** or its numbers are
+not evidence. All four suites this project previously measured on fail at least one
+**[ran]** `results/P50-suite-audit-20260916/`.
 
 ## 8. Deliberately not built yet
 
 - **Tree attention across adapters.** The KV-cache problem is the expensive part
-  and it is only worth solving once E1 says the branches are worth comparing.
-- **Ten verticals, adapter marketplace, control plane.** Downstream of E2.
+  and it is only worth solving once S3 says the branches are worth comparing.
+- **Ten verticals, adapter marketplace, control plane.** Downstream of a pool with
+  two useful members **close enough to meet in one problem** — which is the thing
+  nine days of work has not produced, and the reason the suite was regenerated.
+- **An EAGLE or Medusa head of our own.** Qwen 2.5 is in Model-Optimizer's support
+  matrix and the online path fits a 3B on the A100 this project rents **[read]** — so
+  it is possible, and it is still a **latency** purchase. It cannot rank experts,
+  which is the only thing we need speculative decoding for.
 - **A new inference runtime.** vLLM is the substrate. Needing our own would be a
   finding, not a plan.

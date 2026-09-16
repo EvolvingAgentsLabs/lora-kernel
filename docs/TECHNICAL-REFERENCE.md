@@ -14,6 +14,21 @@
 
 ## 1. Speculative decoding
 
+> **Restructured 2026-09-16 — two purposes, and we had been claiming both.**
+>
+> | purpose | what wins | can this architecture claim it? |
+> |---|---|---|
+> | **latency** — make the big model fast | a drafting head trained on **that target's hidden states**, and one exists for `Qwen2.5-32B-Instruct` **[read]** | **no** |
+> | **ranking** — which expert already produces what the big model would | **k domain experts drafting against one target** | **yes, and only this** |
+>
+> So nothing below is a speed claim. The target is a **larger model of the same
+> family** (`Qwen2.5-32B-Instruct-AWQ`, byte-identical tokenizer **[ran]** P48), never
+> a frontier API — which returns no logprobs for a forced continuation and does not
+> share the tokenizer, so it cannot verify a drafted token at all. If a speed number
+> is ever wanted, `examples/specdec_bench` already measures it across three serving
+> stacks and this repository should not rebuild that.
+
+
 A **drafter** proposes `k` tokens. The **target** scores all `k+1` positions in
 one forward pass. Rejection sampling accepts a prefix and resamples at the first
 rejection, constructed so that **accepted tokens are distributed exactly as the
@@ -111,6 +126,15 @@ after E1, not before.
 
 ## 4. `harness.lora` — the kernel adapter
 
+> **Parked, not falsified — 2026-09-15.** On the suite that measured it, a learned
+> protocol scored **9/30** where twenty lines of `re` scored **23/30**, because that
+> suite had one tool and asking for it was copying an expression already written
+> **[ran]** P13. And splitting the capability cost the disposition: taught the
+> vocabulary separately, asking fell from **123 of 150 cases to 22** **[ran]** P35.
+> What replaced it is **self-contained experts** with a declared band
+> (`training/harness/contract.py`). The result below stands and waits.
+
+
 Trained on the execution protocol only, never on domain content.
 
 ### 4.1 Action tokens
@@ -150,6 +174,12 @@ Three numbers, together:
 Winning on tokens and losing on malformed calls is not winning.
 
 ## 5. Composing two adapters
+
+> **Dropped in weight space, free as a pipeline — 2026-09-15/16.** P8's interference
+> was void on a notation confound. What costs nothing is **piping**: `base→lora1` then
+> `base→lora2` never has two deltas live in one forward pass, and the pool already
+> serves that shape — two requests with two model names.
+
 
 The kernel and a domain expert must both be active. Three options, in increasing
 cost:
