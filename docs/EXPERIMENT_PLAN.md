@@ -2148,6 +2148,36 @@ how an instrument starts looking for a result. Specified and waiting.
 810 and 75. It measures **disposition**, not difficulty — do not quote *"the base
 gets 0.111 at one step"* as *"one-step problems are hard"*.
 
+### P46 — 2026-09-16 **[ran]** · most of P44's room was the suite
+
+Report: [`../results/P46-ranking-ceiling-20260916/RESULT.md`](../results/P46-ranking-ceiling-20260916/RESULT.md).
+**No GPU.** P44's own 475 cases, inbox regenerated from its seed with ids and truth
+verified to match before any join.
+
+| subset · arm | measured gap | 95% CI | ceiling | room | is the suite |
+|---|---:|---|---:|---:|---:|
+| all · email-full | 0.128 | [0.105, 0.155] | 0.098 | **+0.030** | 77% |
+| all · base | 0.105 | [0.084, 0.127] | 0.098 | **+0.007** | 94% |
+| human · email-full | 0.400 | [0.346, 0.449] | 0.277 | +0.123 | 69% |
+| human · base | 0.338 | [0.288, 0.388] | 0.277 | +0.062 | 82% |
+
+**P44 asked whether the gap was large. It never asked how much was claimable.** On
+the full inbox both arms are already at the ceiling. On the human subset the ceiling
+predictor is a **constant** — one group, `rankable: false` — so the remaining 0.123
+is room to stop being *worse* than a constant, not room to rank.
+
+**The listing-only typed arm is cancelled**: a constant confidence routes nothing,
+which is exactly the blindness P41 found in per-case escalation.
+
+**Re-aimed:** a typed final answer **on top of** the tool chain. With the tools every
+fact is recoverable, the truth is decidable, the ceiling collapses to the oracle
+floor. `email-full` reaches 0.741 with tools **[ran]** P43 and nobody has measured the
+confidence on *that* answer. **Serving, no training** — the next headroom check, not
+the next treatment.
+
+New rule in `CLAUDE.md` §3: check the ceiling on ranking, not only on accuracy.
+Instrument: `training/harness/ceiling.py`.
+
 ## 12. History
 
 | date | change to this plan | why |

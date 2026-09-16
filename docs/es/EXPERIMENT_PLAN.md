@@ -2220,6 +2220,37 @@ misma noche es como un instrumento empieza a buscar un resultado. Queda especifi
 contra 810 y 75 del experto. Mide **disposición**, no dificultad — no citar *"la base
 saca 0,111 en un paso"* como *"los problemas de un paso son difíciles"*.
 
+### P46 — 2026-09-16 **[ran]** · casi todo el margen de P44 era la suite
+
+Reporte: [`../../results/P46-ranking-ceiling-20260916/RESULT.md`](../../results/P46-ranking-ceiling-20260916/RESULT.md).
+**Sin GPU.** Los mismos 475 casos de P44, con el inbox regenerado desde su semilla y
+los ids y la verdad verificados antes de cruzar nada.
+
+| subconjunto · brazo | gap medido | IC 95% | techo | margen | es la suite |
+|---|---:|---|---:|---:|---:|
+| all · email-full | 0,128 | [0,105, 0,155] | 0,098 | **+0,030** | 77% |
+| all · base | 0,105 | [0,084, 0,127] | 0,098 | **+0,007** | 94% |
+| human · email-full | 0,400 | [0,346, 0,449] | 0,277 | +0,123 | 69% |
+| human · base | 0,338 | [0,288, 0,388] | 0,277 | +0,062 | 82% |
+
+**P44 preguntó si el gap era grande. Nunca preguntó cuánto de él era reclamable.** En
+el inbox completo los dos brazos ya están en el techo. En el subconjunto humano el
+predictor de techo es una **constante** — un solo grupo, `rankable: false` — así que
+los 0,123 que quedan son margen para dejar de ser *peor* que una constante, no para
+ordenar mejor.
+
+**Se cancela el brazo tipado que lee sólo el listado**: una confianza constante no
+rutea nada, que es exactamente la ceguera que P41 encontró en la escalación por caso.
+
+**Reapuntado:** una respuesta tipada **encima** de la cadena de herramientas, no en
+lugar de ella. Con las herramientas todos los hechos son recuperables, la verdad
+queda decidible y el techo colapsa al piso del oráculo. `email-full` llega a 0,741 con
+herramientas **[ran]** P43 y nadie midió la confianza de *esa* respuesta. **Servir, sin
+entrenar** — el próximo chequeo de headroom, no el próximo tratamiento.
+
+Regla nueva en `CLAUDE.md` §3: chequear el techo del *ordenamiento*, no sólo el de la
+exactitud. Instrumento: `training/harness/ceiling.py`.
+
 ## 12. Historia
 
 | fecha | cambio a este plan | por qué |

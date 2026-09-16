@@ -149,6 +149,14 @@ These are not style. Each one was paid for.
   its training depth, **0 of 17**. On three-step problems the **bare base beats it,
   0.167 to 0.000** **[ran]** 2026-09-15. Train on the band you intend to serve, and
   never read a specialised expert's score on an easier band as a capability.
+- **Check the ceiling on *ranking*, not only on accuracy.** A calibration number
+  has its own headroom and it is set by the information in the input. Group the
+  cases by what the model can actually see; inside a group every case is identical,
+  so the best any model can output is that group's base rate, and the AURC of *that*
+  is what is achievable. P44 read a **0.400** AURC gap as room for a typed head;
+  **69-82% of it was the suite**, and on the full inbox both arms were already at the
+  ceiling — 0.030 and 0.007 left **[ran]** P46. `training/harness/ceiling.py`, and it
+  costs no GPU.
 - **Count instrument redesigns.** Once is fine, twice is suspicious, three times
   is looking for the result. The stopping condition goes into the plan before the
   run.
