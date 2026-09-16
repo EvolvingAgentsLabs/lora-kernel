@@ -208,10 +208,28 @@ and only if layer 1 is ever promoted from a dict to a model.
 
 Two facts have to be held together.
 
-**It pays only against a bigger target.** A 3B drafting for a 3B has acceptance 1.0
-and identical cost: nothing is saved. Speculative decoding needs a large same-family
-target, which is **P4** — still unbought, and its shared-tokenizer premise still
-`[read]` rather than measured.
+**It pays only against a bigger target — and the comparison that matters is
+drafter-against-target, not drafter-against-drafter.** An earlier draft of this
+section said *"a 3B drafting for a 3B saves nothing"*, which described the degenerate
+case of one model drafting for itself and read as if same-size experts were the
+problem. They are not. **k experts all of one size, drafting against one larger
+target, is the architecture** — that every drafter is 3B is irrelevant; what pays is
+that the target is bigger and slower, so the small model emits several tokens in the
+time the large one emits one.
+
+And that turns acceptance into something this project has wanted since S7:
+**a ranking of experts that needs no judge and no verifier.** Same target, same
+prefix, same conditions — each expert's acceptance rate is directly comparable. It is
+also the shape of the **withdrawal gap**, restored at the right granularity: if a
+subdomain's expert reaches the target closely enough, the target can be withdrawn
+**for that subdomain**, which is exactly the per-region granularity that already
+delivered 0.546 → 0.775 **[ran]** P41.
+
+**Acceptance alone does not say who was right.** Where the drafter is rejected there
+are two cases — the small model was wrong, or the small model was right and the large
+one was not — and only the verifier beside it can tell them apart. Both suites have
+one, so the arm is *acceptance and verified score on the same cases*, never acceptance
+alone.
 
 **But when it is live, the layering is exactly what the literature says it needs.**
 TaskSpec reports a prompt classifier over four task-specific drafters lifting
@@ -221,8 +239,30 @@ which is the original worry.
 
 **And one thing is free here that usually is not.** Every member shares the resident
 base's tokenizer, so **any adapter can draft for any other** with no cross-vocabulary
-machinery — the problem OmniDraft exists to solve does not arise. The drafter/target
-pairing is unconstrained by construction.
+machinery. The only pair that ever needed checking is base-against-target, and it has
+now been checked rather than assumed **[ran]** 2026-09-16,
+`results/P48-tokenizer-compat-20260916/`:
+
+| target | target vocab | ids match | usable | extra ids |
+|---|---:|---|---|---:|
+| **Qwen2.5-7B / 14B / 32B / 72B-Instruct** | 151,643 | **yes** | **yes** | 0 |
+| Qwen3-14B / Qwen3-32B | 151,643 | **yes** | **yes** | 4 (`<think>`, …) |
+| **Qwen3.5-27B / Qwen3.6-27B / Qwen3.8-27B** | **248,044** | **no** | **NO** | 26-33 |
+
+**The Qwen3.x line changed its vocabulary at 3.5**: 151,643 entries becomes 248,044,
+so `Qwen3.6-27B` — the strongest candidate on quality — **cannot verify our drafters'
+tokens at all**. Only the original Qwen3 (14B, 32B) still shares the map.
+
+So a **cross-generation target is usable**, which the plan's C3 had written off. The
+catch the hashes do not show is the one that would ruin the number: those four ids are
+emittable by the target and unreachable by the drafter, so a **thinking** target
+rejects at every `<think>` it opens. C7 already says acceptance is read on the answer
+channel; against a thinking target that stops being a convention and becomes the
+difference between a real acceptance rate and a fictional one.
+
+**The clean choice is therefore a large Qwen2.5** — identical tokenizer, no thinking
+channel, same chat template — with Qwen3 available as a second, harder arm rather than
+as the first one.
 
 > **An idea this makes available, named as untested rather than planned.** Acceptance
 > between *two same-size local experts* is an agreement signal that costs no frontier

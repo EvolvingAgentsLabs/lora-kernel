@@ -2219,6 +2219,61 @@ that needs many, and S-LoRA's *thousands on one machine* is **[read]**, not ours
 watch tokens/s against a single-adapter baseline. No training, no corpus, one short
 session. It is the only real risk in the claim that the layering is affordable.
 
+### P48 — 2026-09-16 **[ran]** · the tokenizer premise, checked instead of assumed
+
+`results/P48-tokenizer-compat-20260916/`. **No GPU.** Published tokenizers hashed and
+compared id-by-id. C3 said *a frontier target does not share the base's tokenizer*
+and P4 assumed a same-family one did; neither had been measured.
+
+| target | target vocab | ids match | usable | extra ids |
+|---|---:|---|---|---:|
+| **Qwen2.5-7B / 14B / 32B / 72B-Instruct** | 151,643 | **yes** | **yes** | 0 |
+| Qwen3-14B / Qwen3-32B | 151,643 | **yes** | **yes** | 4 (`<think>`, …) |
+| **Qwen3.5-27B / Qwen3.6-27B / Qwen3.8-27B** | **248,044** | **no** | **NO** | 26-33 |
+
+**Drafter is `Qwen2.5-3B-Instruct`**, the base every adapter here sits on.
+**The Qwen3.x vocabulary changed at 3.5** — 151,643 → 248,044 — so the 27B models are
+unusable as speculative targets however good they are. `Qwen2.5-32B-Instruct` is the
+choice: byte-identical tokenizer, no thinking channel, same chat template.
+
+- **A same-family target needs no argument.** Every Qwen2.5-Instruct size hashes the
+  same file.
+- **A cross-generation target is usable**, which C3 had written off. `merges` govern
+  text→ids, which happens once for the prompt; speculation lives in id space after
+  that.
+- **The catch the hashes do not show:** the four target-only ids are unreachable by
+  the drafter, so a **thinking** target rejects at every `<think>`. C7's rule — read
+  acceptance on the answer channel — stops being a convention there and becomes the
+  difference between a real acceptance rate and a fictional one.
+
+Instrument: `training/harness/tokenizer_compat.py`, 5 tests. **It is P4's first step**,
+run before anything is served.
+
+### P4 restated 2026-09-16: acceptance as the tournament, withdrawal per subdomain
+
+Analysis: [`analysis/layered-routing.md`](analysis/layered-routing.md) §6b.
+
+The old wording — *serve a large Qwen3.5 beside the 2B adapters, token-level
+acceptance measurable at last* — was a speed claim. The shape now is:
+
+**k expert drafters of one size against one larger target.** That every drafter is 3B
+is irrelevant; what pays is that the target is bigger and slower, so a small model
+emits several tokens while the large one emits one.
+
+- **Acceptance becomes a ranking of experts that needs no judge** — same target, same
+  prefix, same conditions. That is what S7's tournament never had, and the quantity
+  the literature uses for this architecture while every number here is delivered
+  accuracy.
+- **It restores the withdrawal gap at the right granularity.** If a subdomain's expert
+  reaches the target closely enough, the target is withdrawn **for that subdomain** —
+  the same per-region granularity that delivered 0.546 → 0.775 **[ran]** P41.
+- **Acceptance alone does not say who was right.** A rejection is either the small
+  model being wrong or the large one being wrong, and only the verifier beside it
+  separates them. The arm is *acceptance and verified score on the same cases*.
+- **Gate, to be pre-registered before the run:** an acceptance threshold alone must
+  not authorise a withdrawal — the verified score must not drop where the target is
+  removed. That is S5's lesson and it applies unchanged.
+
 ## 12. History
 
 | date | change to this plan | why |
