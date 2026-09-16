@@ -7,6 +7,12 @@ paper, benchmark or API is public.
 
 ---
 
+> **Follow-up, 2026-09-16.** A second vendor artefact showed the same pattern — a
+> restricted softmax labelled `parallel_constrained_calibrated` with no calibration
+> anywhere in its code — and reading it settled that a narrower softmax cannot move a
+> ranking number. See [`constrained-decoding.md`](constrained-decoding.md). It does
+> confirm one thing here: `value_tokens` is load-bearing, not a convenience.
+
 ## 0. The thing to read first
 
 **The brief describes a repository that mostly does not exist here**, and that is

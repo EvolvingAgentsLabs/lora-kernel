@@ -69,8 +69,25 @@ def chat(base_url: str, key: str | None, payload: dict, timeout: int = 300) -> d
         return json.load(r)
 
 
-def triage_one(base_url, key, model, inbox, msg, max_turns, max_tokens):
-    """One message, one conversation, as many tool turns as the model asks for."""
+def triage_one(base_url, key, model, inbox, msg, max_turns, max_tokens,
+               logprobs: int = 0):
+    """One message, one conversation, as many tool turns as the model asks for.
+
+    `logprobs` > 0 asks the server for that many `top_logprobs` and reads a
+    confidence off the FINAL turn — the one where the model stops calling tools and
+    answers. P44 measured this quantity in the tool-free configuration; P46 then
+    showed that configuration has almost no room in it, because the listing alone
+    carries one bit and a constant cannot rank **[ran]**. With the tools every fact
+    the definition needs is recoverable, so this is where a confidence can be worth
+    something — and it could not be read at all until now.
+
+    THE FIRST TOKEN HAS TO BE THE DECISION, AND IT MIGHT NOT BE. `IMPORTANT` and
+    `NOT IMPORTANT` differ at the first token, which is why the mass there is the
+    whole verdict — but a model that opens with prose puts a word there instead, and
+    reading that as a confidence would measure phrasing. `confidence` comes back
+    `None` in that case and `answered_first` says so, so the share is countable and
+    a run can be declared void on it rather than quietly averaging it in.
+    """
     listing = (f"Message {msg['id']} in thread {msg['thread_id']}\n"
                f"From: {msg['from_name']} <{msg['from']}>\n"
                f"Subject: {msg['subject']}\n"
@@ -82,9 +99,11 @@ def triage_one(base_url, key, model, inbox, msg, max_turns, max_tokens):
     asked: list[dict] = []
     for _ in range(max_turns):
         try:
-            out = chat(base_url, key, {"model": model, "messages": messages,
-                                       "tools": SCHEMA, "temperature": 0,
-                                       "max_tokens": max_tokens})
+            payload = {"model": model, "messages": messages, "tools": SCHEMA,
+                       "temperature": 0, "max_tokens": max_tokens}
+            if logprobs:
+                payload |= {"logprobs": True, "top_logprobs": logprobs}
+            out = chat(base_url, key, payload)
         except urllib.error.HTTPError as e:
             return {"verdict": None, "error": e.read()[:160].decode("utf-8", "replace"),
                     "calls": calls, "refused": refused, "turns": len(messages)}
@@ -101,7 +120,23 @@ def triage_one(base_url, key, model, inbox, msg, max_turns, max_tokens):
             text = (m.get("content") or "").upper()
             verdict = (True if "NOT IMPORTANT" not in text and "IMPORTANT" in text
                        else False if "NOT IMPORTANT" in text else None)
+            conf = None
+            if logprobs:
+                from training.harness.confidence import confidence_from
+                _said, conf, _why = confidence_from(out)
             return {"verdict": verdict, "calls": calls, "refused": refused,
+                    "confidence": conf,
+                    # Read where the failure happens, not where it surfaces: a
+                    # confidence that is None because the model preambled is a
+                    # different fact from one that is None because the server sent
+                    # no logprobs, and only the first is about the model.
+                    # `said` IS THE WRONG VARIABLE HERE and the test caught it:
+                    # `confidence_from` reads the verdict from the TEXT, so
+                    # "Based on the thread history, this is IMPORTANT" parses fine
+                    # while its first token is `Based`. The confidence is what has
+                    # to be None-checked, because it is the thing read at position
+                    # zero **[ran]** 2026-09-16.
+                    "answered_first": None if not logprobs else conf is not None,
                     "turns": len(messages), "asked": asked,
                     # THE TRANSCRIPT, FOR THE SAME REASON fluids_sim keeps its chain:
                     # a routing decision is made per case, and a record holding only
