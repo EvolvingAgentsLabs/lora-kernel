@@ -99,3 +99,32 @@ def test_summarise_separates_did_not_run_from_wrong_output():
     s = summarise(recs)
     assert s["did_not_run"] == 1 and s["wrong_output"] == 1
     assert s["by_cell"]["crc32@1"]["rate"] == pytest.approx(1 / 3, abs=1e-3)
+
+
+# ---------------------------------------------------------------------------
+# Training in-process left 6.7 GiB held and vLLM refused to start beside it.
+# `free()` returns cached blocks to the allocator; it cannot release the CUDA
+# context, and nothing that runs inside a process can **[ran]** 2026-09-16.
+# ---------------------------------------------------------------------------
+
+def test_step_zero_trains_in_a_separate_process():
+    """A comment saying so is not the same as doing so.
+
+    P26's brief already said not to train inside a serving run. That was overridden
+    with a reason sound about the question and wrong about the mechanism, so the
+    check is on the code rather than on the intent.
+    """
+    import pathlib
+    body = pathlib.Path("training/code/step_zero.py").read_text()
+    assert "training.code.train_one" in body
+    # and NOT by importing the trainer into this process
+    assert "from training.s4_train import" not in body
+    assert "train_adapter(" not in body
+
+
+def test_train_one_exits_after_training_rather_than_serving():
+    import pathlib
+    body = pathlib.Path("training/code/train_one.py").read_text()
+    assert "train_adapter" in body
+    for must_not in ("vllm", "serve", "urllib"):
+        assert must_not not in body.lower().split("\"\"\"")[-1], must_not

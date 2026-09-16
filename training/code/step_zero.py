@@ -143,17 +143,20 @@ def main() -> int:
     OUT.write_text(json.dumps(results, indent=2))
 
     if not (Path(args.adapter_path) / "adapter_model.safetensors").exists():
-        rows = [json.loads(l) for l in open(args.train) if l.strip()]
-        print(f"[zero] training {args.adapter_path} on {len(rows)} examples",
-              flush=True)
-        from types import SimpleNamespace
-
-        from training.s4_train import free, train_adapter
-        train_adapter(args.base, rows, args.adapter_path, SimpleNamespace(
-            epochs=args.epochs, r=16, alpha=32, lr=2e-4, batch=2, accum=8,
-            max_seq=1536, seed=0, four_bit=False,
-            targets="q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"))
-        free()
+        # A SEPARATE PROCESS, AND THE REASON IS MEASURED. Training in-process left
+        # 6.7 GiB held when vLLM started, and it refused: `free()` returns cached
+        # blocks to the allocator but cannot release the CUDA context — nothing that
+        # runs inside a process can. Only exiting does **[ran]** 2026-09-16.
+        print(f"[zero] training {args.adapter_path} in its own process", flush=True)
+        rc = subprocess.call([sys.executable, "-u", "-m", "training.code.train_one",
+                              "--base", args.base, "--train", args.train,
+                              "--out-dir", args.adapter_path,
+                              "--epochs", str(args.epochs)])
+        if rc != 0 or not (Path(args.adapter_path)
+                           / "adapter_model.safetensors").exists():
+            results["arms"]["train"] = {"status": f"training exited {rc}"}
+            OUT.write_text(json.dumps(results, indent=2))
+            return 1
         print("[zero] trained", flush=True)
 
     v = subprocess.Popen(

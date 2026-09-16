@@ -197,6 +197,15 @@ These are not style. Each one was paid for.
   **69-82% of it was the suite**, and on the full inbox both arms were already at the
   ceiling — 0.030 and 0.007 left **[ran]** P46. `training/harness/ceiling.py`, and it
   costs no GPU.
+- **Training releases its GPU memory by exiting, not by asking.** P53 trained an
+  adapter in-process and vLLM refused to start beside it: *"Free memory on device
+  cuda:0 (32.79/39.49 GiB) on startup is less than desired GPU memory utilization
+  (0.9, 35.54 GiB)"* — **6.7 GiB still held** **[ran]** 2026-09-16. `free()` runs
+  `gc.collect()` and `empty_cache()`, which return cached blocks to the allocator;
+  neither releases the CUDA context, and nothing running *inside* a process can.
+  Train in a subprocess. P26's brief already said not to train inside a serving run,
+  and overriding it with a reason that was sound about the *question* did not change
+  the *mechanism*.
 - **What a chain installs is derived from what the trainer imports, never kept by
   hand.** `chain_serve.sh` learned to train and its dependency line was never brought
   in line with the two chains that always did, so P53 reached `SFTTrainer` and died on

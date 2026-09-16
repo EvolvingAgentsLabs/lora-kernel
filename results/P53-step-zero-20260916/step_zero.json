@@ -3,7 +3,11 @@
   "adapter": "code-python",
   "n": 180,
   "min_effect": 0.1,
-  "arms": {},
+  "arms": {
+    "server": {
+      "status": "never came up"
+    }
+  },
   "power": {
     "n": 180,
     "baseline": 0.3,
