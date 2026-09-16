@@ -429,6 +429,10 @@ a standard with nothing beside it never pays for itself.
 
 ## Documents
 
+- [`docs/REPORT.md`](docs/REPORT.md) — **the original plan against what happened**,
+  the pattern in the failures (almost every negative result is the suite, not the
+  architecture), what is genuinely blocked, and what NVIDIA's speculative-decoding
+  modules do and do not give us · [es](docs/es/REPORT.md)
 - [`docs/STACK.md`](docs/STACK.md) — **the inventory: every model id, every adapter
   hyperparameter, every vLLM flag**, with the run that established it — the base and
   why it is settled by measurement, the two targets and the tokenizer table, the five
