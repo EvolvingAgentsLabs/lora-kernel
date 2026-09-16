@@ -1,5 +1,8 @@
 # Serving the pool to an agent runtime
 
+> **The exact serve command, every flag and why, the adapter inventory and the
+> tokenizer compatibility table are in [`STACK.md`](STACK.md).**
+
 This is what an agent — OpenClaw, Hermes, anything speaking OpenAI — talks to. Every
 piece of it was measured before it was assembled, and the one piece that was not is
 named at the bottom rather than left to be discovered.

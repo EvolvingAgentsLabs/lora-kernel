@@ -1,5 +1,9 @@
 # Technical reference
 
+> **Every concrete value — model ids, adapter hyperparameters, vLLM flags — is in
+> [`STACK.md`](STACK.md), read off the code and the artefacts. This page explains
+> the mechanisms; that one says what we actually run.**
+
 > **Reference for mechanisms that exist; specification for the parts that do
 > not.** Every claim about a system outside this repository is **[read]** and
 > cited. Nothing here has been run.

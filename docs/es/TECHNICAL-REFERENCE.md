@@ -1,5 +1,9 @@
 # Referencia técnica
 
+> **Todo valor concreto — ids de modelo, hiperparámetros de adaptador, flags de
+> vLLM — está en [`STACK.md`](STACK.md), leído del código y de los artefactos.
+> Esta página explica los mecanismos; aquélla dice qué corremos de verdad.**
+
 > **Referencia para los mecanismos que existen; especificación para los que no.**
 > Toda afirmación sobre un sistema externo va marcada **[read]** y citada. Nada de
 > acá se corrió.

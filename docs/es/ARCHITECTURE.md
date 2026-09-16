@@ -1,5 +1,8 @@
 # Arquitectura
 
+> **Para el stack concreto — qué base, qué targets, qué adaptadores a qué rank,
+> qué flags de vLLM — ver [`STACK.md`](STACK.md).**
+
 > **Especificación.** Nada de acá está construido. Escrito para que se lo discuta
 > antes de construirlo, que sale más barato.
 >

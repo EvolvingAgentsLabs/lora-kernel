@@ -1,5 +1,9 @@
 # Servir el pool a un runtime de agentes
 
+> **El comando de serving exacto, cada flag y por qué, el inventario de
+> adaptadores y la tabla de compatibilidad de tokenizers están en
+> [`STACK.md`](STACK.md).**
+
 Esto es con lo que habla un agente — OpenClaw, Hermes, cualquiera que hable OpenAI.
 Cada pieza fue medida antes de ensamblarse, y la única que no lo fue está nombrada al
 final en vez de quedar para descubrirse.
