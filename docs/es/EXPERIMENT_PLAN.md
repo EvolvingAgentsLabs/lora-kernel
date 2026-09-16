@@ -2284,6 +2284,19 @@ fluidos que cubren las siete profundidades de la escalera más 60 listados de em
 
 `tests/test_router_baseline.py` mantiene el número re-corrible en vez de citado.
 
+### Abierto 2026-09-16: nunca servimos más de dos adaptadores a la vez
+
+`--max-loras` sólo fue 1 o 2 en este repo — el pool más grande que se sirvió es
+`['email-full', 'fluids-full']` **[ran]** P41. El diseño por capas de
+[`../analysis/layered-routing.md`](../analysis/layered-routing.md) §6b es lo primero
+que necesita muchos, y los *miles en una máquina* de S-LoRA son **[read]**, no
+nuestros.
+
+**La prueba barata, sin comprar:** cargar diez nombres sobre los dos adaptadores que
+ya tenemos y mirar tokens/s contra un baseline de un solo adaptador. Sin entrenar, sin
+corpus, una sesión corta. Es el único riesgo real en la afirmación de que las capas
+son asequibles.
+
 ## 12. Historia
 
 | fecha | cambio a este plan | por qué |
