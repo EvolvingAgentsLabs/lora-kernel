@@ -58,6 +58,53 @@ They are deliberately **close**: all three are reply drafting, all three occur i
 person's inbox on the same day, and a keyword rule should struggle between the first
 and the third.
 
+## 3b. How close are they, actually? Measured before anything was trained
+
+The design rests on the three being **close**, and the fluids/email pair was rejected
+for being separable by twelve keywords. So the same keyword rule was written against
+these three, knowing the generator — the generous direction — and run over 180 cases
+**[ran]** 2026-09-16:
+
+| what the selector can see | keyword accuracy |
+|---|---:|
+| **the listing alone**, before any tool | **0.000** |
+| the listing **plus the thread** | **1.000** |
+
+**Neither number is what the design assumed.** These three are not close in the sense
+of *hard to tell apart*; they are a **step function** — impossible before the tool
+call, trivial after it.
+
+### What that does and does not break
+
+**It does not break the reason to prefer this over fluids-vs-email.** There, the
+listing itself gave the answer at 1.000, so selection was trivial *from the prompt*.
+Here the prompt gives **nothing**, so *which expert looks relevant* genuinely cannot
+be answered before the work starts.
+
+**It does change what P50 can test.** Once the thread is read, a dict picks the
+temática. So the question stops being *can we tell them apart* and becomes:
+
+> **Does the obviously matching expert actually write the better reply?**
+
+That is a sharper claim, and it is the one acceptance is for. A router says which
+expert *looks* relevant; acceptance says which one **wrote what the larger model would
+have written**. If the matching expert always wins, a dict suffices and acceptance is
+redundant here. **If it does not — if `draft-client` writes better team replies than
+`draft-team` does — then specialisation by temática is the wrong axis, and that is
+worth knowing before three more corpora are built on it.**
+
+### The alternative, named and not taken unilaterally
+
+The temáticas could be redesigned to be genuinely confusable — three **registers on
+the same subject matter** rather than three subject matters. That is closer to
+*"depending on the draft or the idea, one of the two works better"*, and it would put
+separability in the middle rather than at the ends.
+
+**It is a redesign, and this repository counts them.** Once is fine, twice is
+suspicious, three times is looking for the result. This would be the first, so it is
+affordable — but it changes what the experiment claims, which makes it a decision to
+take deliberately rather than while building.
+
 ## 4. The target is decided by a hash, not by quality
 
 **`Qwen2.5-32B-Instruct`.** Every `Qwen2.5-Instruct` size shares a **byte-identical**

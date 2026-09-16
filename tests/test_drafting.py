@@ -84,3 +84,57 @@ def test_render_is_called_rather_than_copied():
     inbox = generate(6, 15)
     for c in inbox["cases"]:
         assert c["prompt"] == render(c)
+
+
+# --------------------------------------------------------------------------
+# How separable are the three temáticas, and where. Measured 2026-09-16 before
+# anything was trained, because the whole design rests on them being CLOSE — and
+# the fluids/email pair was rejected for being separable by twelve keywords.
+# --------------------------------------------------------------------------
+
+KEYS = {
+    "client": ("quote", "sign", "delivery", "logistics", "figure", "q-"),
+    "team": ("blocked", "migration", "sprint", "batch", "capacity", "eng-",
+             "window"),
+    "vendor": ("invoice", "outstanding", "payment", "finance", "terms",
+               "signed copy", "inv-"),
+}
+
+
+def _guess(text):
+    t = text.lower()
+    n, fam = max((sum(t.count(k) for k in ks), f) for f, ks in KEYS.items())
+    return fam if n else "?"
+
+
+def _rate(get):
+    inbox = generate(180, 909090)
+    hit = sum(_guess(get(inbox, c)) == c["topic"] for c in inbox["cases"])
+    return hit / len(inbox["cases"])
+
+
+def test_the_listing_alone_reveals_nothing_about_the_temática():
+    """Selection before the thread is read is impossible, not merely hard.
+
+    This is the property the design wanted: a router looking at the listing has
+    nothing to go on, so *which expert looks relevant* cannot be answered from the
+    prompt. Measured **0.000** with a keyword rule written knowing the generator.
+    """
+    assert _rate(lambda inbox, c: c["prompt"]) == 0.0
+
+
+def test_the_thread_makes_it_trivial_and_that_is_the_uncomfortable_half():
+    """And after the thread is read, twelve keywords separate them perfectly.
+
+    So these three are not *close* in the sense the design needed — they are a step
+    function: impossible before the tool call, trivial after it. The claim P50 can
+    still test is not *can we tell them apart* but **does the obviously matching
+    expert actually write the better reply** — which is a different and more
+    interesting question, and the one acceptance answers.
+
+    If this ever falls below 1.0 the suite has drifted; the number is recorded so
+    the drift is visible rather than inferred.
+    """
+    from training.harness.draft_headroom import thread_inline
+    r = _rate(lambda inbox, c: c["prompt"] + "\n" + thread_inline(inbox, c))
+    assert r == 1.0, f"separability with the thread moved to {r:.3f}"
