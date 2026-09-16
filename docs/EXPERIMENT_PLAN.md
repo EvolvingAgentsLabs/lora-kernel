@@ -2107,6 +2107,47 @@ the expert. **Falsification:** if the curve is flat — the expert fails a one-s
 lookup at roughly the rate it fails a nine-step chain — difficulty is not what blocks
 it and this analysis is wrong.
 
+### P45 — 2026-09-15 **[ran]** · FALSIFIED, and not by difficulty
+
+Report: [`../results/P45-ladder-sweep-20260915/RESULT.md`](../results/P45-ladder-sweep-20260915/RESULT.md).
+One L4, two arms, 140 cases each, seed 454545. Session stopped cleanly.
+
+| oracle depth | base | expert | n |
+|---:|---:|---:|---:|
+| 1 | 0.111 | 0.278 | 18 |
+| 2 | 0.000 | 0.000 | 18 |
+| 3 | **0.167** | **0.000** | 18 |
+| 4 | 0.000 | 0.000 | 18 |
+| 6 | 0.000 | 0.382 | 34 |
+| 7 | 0.000 | 0.000 | 17 |
+| 9 | 0.000 | 0.000 | 17 |
+| **total** | **5/140** | **18/140** | |
+
+**The pre-registered falsification fired**: easy end 0.069, hard end 0.191 — the
+easy end is *below* the hard one, not merely within 0.15 of it. The claim that
+bought the run — depth is the axis that reveals a sufficiency band in this expert —
+is wrong, and wrong in a direction nobody proposed.
+
+**The mechanism, measured.** Below its training depth the expert over-solves on
+**18 of 18** cases; at or above it, **0 of 17**. Its median chain floors near five
+calls and will not go under. Asked for `ρ g h` in two steps it converted metres to
+metres, invented an area of 100 mm², and answered about force. **A corpus with one
+difficulty teaches a floor, not just a skill** — added to `CLAUDE.md` §3.
+
+**What survives.** Not that this expert has a sufficiency band: it does not, because
+that band was never in its training data. But the general claim — a small expert can
+be sufficient at a known acceptable level — is **untested**, since no expert here has
+ever been trained on an easy problem. The suite's missing easy end became the
+expert's, because the corpus is generated from the suite.
+
+**Deliberately not launched:** an expert trained on the full ladder. The brief said a
+flat curve stops the GPU, and inventing a hypothesis and buying it the same night is
+how an instrument starts looking for a result. Specified and waiting.
+
+**Caveat on the base arm:** 140 calls for 140 cases, 85 refused, against the expert's
+810 and 75. It measures **disposition**, not difficulty — do not quote *"the base
+gets 0.111 at one step"* as *"one-step problems are hard"*.
+
 ## 12. History
 
 | date | change to this plan | why |

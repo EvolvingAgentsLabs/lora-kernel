@@ -142,6 +142,13 @@ These are not style. Each one was paid for.
   the work, with the frontier reported beside it as a ceiling check and ranking
   nothing. Asking only the first one makes every small expert look useless at
   whatever difficulty the suite happens to have.
+- **A corpus with one difficulty teaches a floor, not just a skill.** P45: every
+  example the fluids expert saw was a 6-to-9-step chain, and below that depth it
+  over-solves on **18 of 18** cases — median five calls where the oracle needs two,
+  inventing an area to answer a question about force that nobody asked. At or above
+  its training depth, **0 of 17**. On three-step problems the **bare base beats it,
+  0.167 to 0.000** **[ran]** 2026-09-15. Train on the band you intend to serve, and
+  never read a specialised expert's score on an easier band as a capability.
 - **Count instrument redesigns.** Once is fine, twice is suspicious, three times
   is looking for the result. The stopping condition goes into the plan before the
   run.
