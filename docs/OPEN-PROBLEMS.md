@@ -86,6 +86,41 @@ So: the two halves exist, each is healthy on its own, and putting them in one
 patch works. The problem is putting them in **two** patches, which is the entire
 point of the design.
 
+## Where this stands, 2026-09-16
+
+Four days on, and the delta is mostly things being **taken away**. Every one of
+these is **[ran]**, with its run directory.
+
+**Problem 2 got its measurement, and the answer is uncomfortable.** Choosing the
+right specialist *by region* pays: **0.546 → 0.775**, with 38% of cases leaving the
+machine. Choosing *per case* does not — the tripwire delivers **0.378** and the
+quality gate **0.689**, both below doing nothing per case at all
+`results/P41-routing-20260915/`. And that settles the question the 2026-09-12 note
+left open: **escalation cost is not what decides between the two rules, because
+neither beats routing by region.**
+
+**Problem 3 is sharper and worse.** Not only can the specialist not feel the edge of
+its region — it cannot feel the edge of its **corpus**. Served problems shallower
+than the ones it trained on, `fluids-full` over-solves on **18 of 18** cases, and at
+three steps the **bare base beats it, 0.167 to 0.000**
+`results/P45-ladder-sweep-20260915/`. A corpus with one difficulty teaches a floor,
+not just a skill — and nothing in the output marks the difference, which is the same
+invisibility Problem 3 describes.
+
+**A confidence the model attaches to its own answer does not rescue it, and most of
+the room reported for one was never there.** Grouping cases by what a predictor can
+actually see gives the ceiling: on the full inbox both arms are already at it, room
+**0.030** and **0.007**; on the human subset the best possible listing-only predictor
+is a **constant**, which orders nothing. **69-82%** of the measured gap was the suite
+`results/P46-ranking-ceiling-20260916/`.
+
+**And the problem behind all of them has been renamed.** It was *a pool with two
+useful members*. It is now **a pool with two useful members close enough to meet in
+one problem** — because the two we have are fluid mechanics and inbox triage, and a
+twelve-line keyword rule tells them apart **1.000** of the time. A discrimination
+problem solved by twelve keywords is not a test of expert selection. Design for the
+replacement: [`analysis/close-experts.md`](analysis/close-experts.md).
+
 ## Where this stands, 2026-09-12
 
 Three of the four problems below have moved since they were written, and one of
