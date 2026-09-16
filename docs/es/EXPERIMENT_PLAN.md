@@ -2593,6 +2593,65 @@ cola. Objetivo: tantos esqueletos distintos como casos, no seis.
 **Proceso:** `compare` toma dos mapas, y el mismo `TypeError` terminó P53 **y** P54,
 porque la primera vez se esquivó en vez de repararse. Arreglado, con test.
 
+### Analizado 2026-09-16: si conviene pasarse a la familia Qwen 3, y la respuesta es todavía no
+
+Análisis completo: [`../analysis/qwen3-migration.md`](../analysis/qwen3-migration.md).
+Sin GPU.
+
+**El hecho que replantea todo: el target nunca necesitó LoRA.** C18 — vLLM loguea
+`Loaded new LoRA adapter` y sirve la base igual **[ran]** P33 — restringe al
+**drafter**, que es donde vive el pool. No dice nada de un modelo denso al que sólo
+se le pide verificar.
+
+Así que la pregunta se parte, y las mitades tienen respuestas distintas:
+
+| | respuesta | por qué |
+|---|---|---|
+| un **target** Qwen 3 | **disponible hoy, gratis** | `Qwen3-32B` son 151.643 ids, coinciden, 4 sólo del target **[ran]** P48. Servirlo con el pensamiento apagado, porque esos 4 ids son `<think>`/`<tool_response>` y el drafter no tiene columna para ellos |
+| `Qwen3.8-27B` como target | **bloqueado** | 248.044 ids. Obliga a mover el drafter a 3.x, y 3.x es donde vive C18 |
+
+**El mecanismo que se propone para C18 no es lo que dice nuestro propio log.** Acierta
+en que la clase es `Qwen3_5ForConditionalGeneration` y en que la atención lineal GDN
+está corriendo **[ran]**; se equivoca en que los kernels del lado del lenguaje no
+despachan — cada línea `no matching PunicaWrapper` nombra un módulo `visual.`,
+`_lora_expand_kernel` compiló JIT *durante la inferencia*, y "el adaptador tocaba sólo
+los MLP" es un diagnóstico que P33 ya **retiró**. La falla está medida; el mecanismo
+**no se conoce**, y queda anotado como no conocido.
+
+**Por qué igual va tercero.** Este proyecto le compra **ranking** a la decodificación
+especulativa, no latencia — y α nunca se midió, contra ningún target.
+`Qwen2.5-32B-Instruct` alcanza para medirlo. Un target más nuevo y más lento no acerca
+esa medición; encarece una que no se tomó. Y
+[`../analysis/generated-code-ceiling.md`](../analysis/generated-code-ceiling.md) anota
+el bloqueo más duro que hay debajo: **rankear necesita expertos que difieran en
+calidad**, y este proyecto tiene un experto útil.
+
+Orden: expertos que difieran en calidad → α los rankea o no → *después* un target que
+valga la migración.
+
+### Construido 2026-09-16: la superficie de herramientas que declara cada miembro, y la poda
+
+**No es un experimento — es la reparación que P43 nombró y dejó sin hacer.** `--prune`
+en `openai_proxy`, `surface` en el contrato del pool, `tests/test_prune.py`.
+
+El turno de agente de P43 no hizo **ninguna llamada a herramientas** **[ran]**, y había
+dos cosas separables mal en lo que leía el experto: el **volumen** de etiquetas
+desconocidas (P25 tarifa una superficie desconocida en 27 de 63 **[ran]**) y el
+**renombrado** de las tres que sí conocía a `mcp__lora-inbox__…`. Ahora cada miembro
+declara las etiquetas que le enseñó su corpus, al lado de la banda, y el proxy conserva
+sólo las herramientas ofrecidas que coinciden con una — nombre exacto, o el último
+segmento de uno con namespace. Las llamadas salen con el nombre de quien llamó.
+
+**Lo que apareció al construirlo, y que ninguna cantidad de lectura habría dado.**
+Renderizar la superficie podada y exigir que sea igual al bloque entrenado **carácter
+por carácter** cazó que la primera versión alfabetizaba las tres líneas — un bloque que
+`email-full` nunca había leído, en un cambio cuyo propósito entero era mostrarle el
+bloque que sí había leído **[ran]** 2026-09-16. El orden ahora es parte de la
+declaración donde el corpus enseña uno, y alfabético donde no.
+
+**Viene apagado por defecto**, porque toda medición anterior a hoy corrió sin él.
+`--prune` prendido y apagado es el par de brazos, y no se corrió.
+
 ## 12. Historia
 
 | fecha | cambio a este plan | por qué |

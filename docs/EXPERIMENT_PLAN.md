@@ -2510,6 +2510,63 @@ many distinct skeletons as cases, not six.
 **Process:** `compare` takes two maps and the same `TypeError` ended P53 *and* P54,
 because the first time it was worked around rather than repaired. Fixed, with a test.
 
+### Analysed 2026-09-16: whether to move to the Qwen 3 family, and the answer is not yet
+
+Full analysis: [`analysis/qwen3-migration.md`](analysis/qwen3-migration.md). No GPU.
+
+**The fact that reframes it: the target never needed LoRA.** C18 — vLLM logs
+`Loaded new LoRA adapter` and serves the base anyway **[ran]** P33 — constrains the
+**drafter**, which is where the pool lives. It says nothing about a dense model that
+is only ever asked to verify.
+
+So the question splits, and the halves have different answers:
+
+| | answer | why |
+|---|---|---|
+| a Qwen 3 **target** | **available today, free** | `Qwen3-32B` is 151,643 ids, matching, 4 target-only **[ran]** P48. Serve it with thinking off, since those 4 ids are `<think>`/`<tool_response>` and the drafter has no column for them |
+| `Qwen3.8-27B` as target | **blocked** | 248,044 ids. It forces the drafter onto 3.x, and 3.x is where C18 lives |
+
+**The proposed mechanism for C18 is not what our own log says.** It is right that the
+class is `Qwen3_5ForConditionalGeneration` and that GDN linear attention is running
+**[ran]**; it is wrong that the language-side kernels fail to dispatch — every
+`no matching PunicaWrapper` line names a `visual.` module, `_lora_expand_kernel` JIT
+compiled *during inference*, and "the adapter touched only MLPs" is a diagnosis P33
+already **withdrew**. The failure is measured; the mechanism is **not known**, and is
+recorded as not known.
+
+**Why it is third in line anyway.** This project buys **ranking** from speculative
+decoding, not latency — and α has never been measured, on any target.
+`Qwen2.5-32B-Instruct` is enough to measure it. A newer, slower target does not bring
+that measurement closer; it makes an untaken one more expensive. And
+[`analysis/generated-code-ceiling.md`](analysis/generated-code-ceiling.md) records the
+harder blocker underneath: **ranking needs experts that differ in quality**, and this
+project has one useful expert.
+
+Order: experts that differ in quality → α ranks them or does not → *then* a target
+worth migrating to.
+
+### Built 2026-09-16: the tool surface each member declares, and pruning to it
+
+**Not an experiment — the repair P43 named and left undone.** `--prune` on
+`openai_proxy`, `surface` on the pool contract, `tests/test_prune.py`.
+
+P43's agent turn made **no tool calls at all** **[ran]**, and two separable things
+were wrong with what the expert read: the **volume** of unknown tags (P25 prices an
+unknown surface at 27 of 63 **[ran]**) and the **renaming** of the three it knew into
+`mcp__lora-inbox__…`. Each member now declares the tags its corpus taught it, beside
+the band, and the proxy keeps only offered tools matching one — exact name, or the
+last segment of a namespaced one. Calls leave under the caller's name.
+
+**What building it found, which no amount of reading would have.** Rendering the
+pruned surface back and requiring it to equal the trained block **character for
+character** caught the first version alphabetising the three lines — a block
+`email-full` had never read, in a change whose entire purpose was to show it the block
+it had read **[ran]** 2026-09-16. Order is now part of the declaration where a corpus
+teaches one, and sorted where none does.
+
+**It is off by default**, because every measurement before today ran without it.
+`--prune` on and off is the arm pair, and it has not been run.
+
 ## 12. History
 
 | date | change to this plan | why |

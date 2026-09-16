@@ -102,6 +102,12 @@ assumed **[ran]** `results/P48-tokenizer-compat-20260916/`:
 | Qwen3-14B / Qwen3-32B | 151,643 | yes, with 4 target-only ids (`<think>`, …) |
 | Qwen3.5 / 3.6 / 3.8-27B | **248,044** | **no — a different vocabulary** |
 
+**And the target never needed LoRA** — C18 constrains the *drafter*, which is where
+the pool lives. So a Qwen 3 target is available today at no engineering cost, while
+`Qwen3.8-27B` stays blocked: it would force the drafter onto the family vLLM is
+measured not to serve adapters for. Why that migration is third in line and not
+first: [`docs/analysis/qwen3-migration.md`](docs/analysis/qwen3-migration.md).
+
 So the design has **three tiers, not two**, and each one is there for a different
 reason:
 
