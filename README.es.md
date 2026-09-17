@@ -387,6 +387,10 @@ nombrado. Nada de esta sección se infiere de un paper ni de un README.
   (`docs/analysis/`) y **nada se corrió**. Lo medido son las *entradas* de esas
   decisiones: la compatibilidad de tokenizers, el baseline de ruteo, el piso de
   profundidad y el techo de calibración.
+  **P55 es la primera corrida de la aceptación como ranking** — sobre expertos
+  graduados por construcción, pre-registrada en
+  [`results/P55-graded-ranking-20260916/BRIEF.md`](results/P55-graded-ranking-20260916/BRIEF.md).
+  Todavía no corrió.
 - **Un pool más grande que dos.** `--max-loras` sólo fue 1 o 2 acá. S-LoRA reporta
   miles en una máquina **[read]**; lo nuestro no se probó arriba de dos, y el diseño
   por capas es lo primero que necesitaría más.

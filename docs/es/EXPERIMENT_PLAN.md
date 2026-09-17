@@ -2652,6 +2652,47 @@ declaración donde el corpus enseña uno, y alfabético donde no.
 **Viene apagado por defecto**, porque toda medición anterior a hoy corrió sin él.
 `--prune` prendido y apagado es el par de brazos, y no se corrió.
 
+### Pre-registrado 2026-09-16: P55 — aceptación como ranking, sobre expertos graduados por construcción
+
+Brief: [`../results/P55-graded-ranking-20260916/BRIEF.md`](../../results/P55-graded-ranking-20260916/BRIEF.md).
+Runner `training/harness/accept_rank.py`, compuertas como código en
+`tests/test_accept_rank.py`. **Nada corrido todavía.**
+
+**La primera prueba de la afirmación central.** La aceptación contra un target más
+grande nunca se midió contra ningún target, y el motivo nunca fue hardware: rankear
+necesita expertos que difieran en calidad, y este proyecto tuvo uno. Así que los
+expertos se gradúan **por construcción** — `g75 ⊂ g200 ⊂ email-full`, un corpus, una
+base, sólo cambia la cantidad de datos — y el verificador tiene que ordenarlos *antes*
+de que se sirva el target.
+
+**Una deriva corpus/serving encontrada en el camino, y arreglada primero.** El corpus
+renderiza una cadena como `<tag>…</tag>= {resultado}`; servido vía `tool_calls` el
+experto no puede recibir un resultado a mitad de generación y **lo inventa** — el
+registro de P43 tiene `= {"turns": 1, "i_wrote_in_thread": false}` donde la
+herramienta dijo `2, true` **[ran]**. El runner sirve al drafter como enseña el
+corpus: parar en `</tag>`, inyectar el resultado real, seguir. Los resultados
+inventados se cuentan (`stray_results`), nunca se puntúan.
+
+**Aceptación en tokens, por primera vez.** Mismo tokenizer **[ran]** P48, así que al
+target se le entrega el draft tal cual y se le piden `prompt_logprobs`: un token se
+acepta sii su rango bajo el target es 1. Reportada sobre todos los tokens de decisión
+(primaria), los spans de etiqueta, el span del veredicto y como prefijo aceptado —
+porque una cadena son ~40 tokens y el veredicto es uno, y *"α no rankea"* tiene que
+poder decir dónde vivió el acuerdo.
+
+**Un mecanismo por compuerta, una compuerta por sesión:** servir en modo corpus y C18
+→ un target que le gane al experto *en triage* (P49 lo compró en drafting) → los
+preflights del instrumento → los grados resueltos por el verificador → la prueba de
+orden. Veredictos pre-registrados: SUPPORTED / FALSIFIED / UNRESOLVED (un fracaso, no
+un empate) / M1 no desbloqueado / UNBOUGHT.
+
+**Pista D — `Qwen3.8-27B` como modelo grande** está en la ruta, como mecanismos en
+orden. **D0 [ran] hoy:** `Qwen3.5-2B` y `Qwen3.5-4B` comparten espacio de ids con
+`Qwen3.8-27B` — 248.044 ids, 7 sólo del target, todos especiales de audio/TTS;
+`<think>` es compartido. D1 re-verifica C18 bajo el vLLM que la cadena instala hoy;
+D2 lee el mecanismo con el log en la mano; D4 es este instrumento apuntado a
+3.8-27B. Nada de P55 depende de D; D4 depende de todo P55.
+
 ## 12. Historia
 
 | fecha | cambio a este plan | por qué |
