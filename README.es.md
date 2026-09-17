@@ -379,8 +379,9 @@ flowchart LR
 **Construido y medido.** Una base residente; deltas conmutados por el campo `model`;
 servidos por vLLM detrás de un endpoint OpenAI; alcanzables desde un agente real sin
 que nada salga; la superficie de herramientas podada a lo que cada miembro declara. Un
-experto en **0,989** sobre su propia región; la ruta de serving que le costaba 18
-puntos, encontrada y arreglada. El instrumento de aceptación construido, con
+experto en **0,989** sobre su propia región, **liberado como `email-full@v1`**: re-servido
+reproduce su registro caso por caso, y un reentrenamiento del mismo corpus empata 1 : 0
+**[ran]** P57; la ruta de serving que le costaba 18 puntos, encontrada y arreglada. El instrumento de aceptación construido, con
 preflights y compuertas. Los espacios de ids medidos por par; la ruta a `Qwen3.8-27B`
 nombrada mecanismo por mecanismo.
 

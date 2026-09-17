@@ -58,7 +58,7 @@ in corpus. Each is **119,801,528 bytes** of `adapter_model.safetensors` — abou
 
 | adapter | corpus | rows | band | surface | what it scores |
 |---|---|---:|---|---|---|
-| `email-full` | `training/harness/data_ef/train.jsonl` | 598 | 0-3 steps | `thread_history`, `sender_stats`, `message` | **384/475 = 0.808**; on human messages **260/351 = 0.741** against a 0.655 bar, exact p **0.00036** **[ran]** P43 |
+| `email-full` — **released as `email-full@v1`** | `training/harness/data_ef/train.jsonl` | 598 | 0-3 steps | `thread_history`, `sender_stats`, `message` | in corpus mode **471/475 = 0.992**, human **347/351 = 0.989**, reproduced in three sessions; a re-training from the same corpus ties it 1 : 0 **[ran]** P55 A, P57. Through `tool_calls`: 0.808, human 0.741 against a 0.655 bar, p 0.00036 **[ran]** P43 |
 | `fluids-full` | `training/physics/data_ff/train.jsonl` | 600 | 6-9 steps | `calc`, `lookup`, `convert` | **11/90 = 0.122** against the frontier's 0.733 **[ran]** P41; below its band it over-solves **18 of 18** **[ran]** P45 |
 | `kernel-mt` | `training/harness/data_mt/train.jsonl` | 600 | 2-4 steps | `calc`, `convert`, `lookup` | the protocol without the domain |
 | `kernel-email` | `training/harness/data_ep/train.jsonl` | 600 | 1-1 steps | `thread_history`, `sender_stats`, `message` | the same protocol in the email vocabulary |

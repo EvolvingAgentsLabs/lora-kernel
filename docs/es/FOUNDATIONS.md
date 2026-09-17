@@ -716,6 +716,7 @@ arriba depende de D; D4 depende de todo.
 | §3.3 | tabla de mapas de ids | P48; P55 `D0-tokenizers.txt` |
 | §4.2 | 29.933.568 parámetros ↔ 119.801.528 bytes | `STACK.md` §3 |
 | §4.4, §8.1 | deriva: 0,741 → 0,989 | P43 `arm_email_475.json`; P55 A |
+| §4.4, §9.2 | **un release reproduce**: re-servido 0 : 0 contra su registro; reentrenado 1 : 0 — varianza de entrenamiento un caso en 475 | P57 `release.json`, `releases/email-full@v1.json` |
 | §5.2 | compuerta de identidad C18 | P33 `lora_matrix.json`; P55 A `applied`; **Fase 0 P56: los dos miembros 3/3 `applied`, herramientas alcanzables, stop honrado** |
 | §5.3 | forma de `prompt_logprobs` | P55 A `preflight_target` |
 | §5.4 | preflight del stop; shim posicional | P55 A intentos 1, 2 |
