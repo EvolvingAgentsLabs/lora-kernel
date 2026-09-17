@@ -246,3 +246,28 @@ def test_every_stop_string_is_a_closing_tag_of_a_declared_tool():
     from training.harness.train_pool import POOL
     surface = POOL["adapters/email-full"]["surface"]
     assert sorted(c[2:-1] for c in CLOSE) == sorted(surface)
+
+
+# --- the preflight cannot fail on the model's phrasing ------------------------
+
+def test_the_stop_check_is_decided_by_the_mechanism_not_the_model(monkeypatch):
+    """Session A stopped on a preflight that asked the base to write a tag and got
+    `NOT IMPORTANT` back **[ran]** 2026-09-17. The replacement counts, and passes
+    whether the server returns the stop string or only names it."""
+    import training.harness.accept_rank as ar
+    seen = {}
+
+    def fake_post(path, payload, timeout=300):
+        seen.update(payload)
+        return {"choices": [{"text": "3", "stop_reason": "3"}]}
+    monkeypatch.setattr(ar, "post", fake_post)
+    chk = ar.stop_check("m", "p")
+    assert chk["stop_included"] is True
+    assert seen["stop"] == ["3"] and seen["include_stop_str_in_output"] is True
+    assert seen["prompt"].endswith("1, 2, ")
+
+    def withheld(path, payload, timeout=300):
+        return {"choices": [{"text": "", "stop_reason": "3"}]}
+    monkeypatch.setattr(ar, "post", withheld)
+    chk = ar.stop_check("m", "p")
+    assert chk["stop_included"] is False and chk["stop_reason"] == "3"

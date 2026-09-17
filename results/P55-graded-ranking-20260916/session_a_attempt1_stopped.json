@@ -6,5 +6,12 @@
   "identity": "accepted iff the drafted token has rank 1 under the target at temperature 0; alpha = accepted / drafted decision tokens",
   "started": "2026-09-17T08:49:07",
   "arms": {},
-  "accept": {}
+  "accept": {},
+  "majority_bar_human": 0.6552706552706553,
+  "preflight_base": {
+    "kind": "draft",
+    "stop_included": false,
+    "sample": "NOT IMPORTANT"
+  },
+  "stopped": "the server does not stop at a closing tag"
 }
