@@ -712,5 +712,6 @@ all of it.
 | §9.3 | power at $n=351$ | `bar.resolvable` **[ran]** 2026-09-16 |
 | §10.2 | 3.5 → 3.8 id space | P55 `D0-tokenizers.txt` |
 | §10.5 D1 | vLLM resolves to 0.29.0 | P55 A boot log |
+| §4.4 | **an unknown surface is extrapolation**: unpruned (54 tools) the expert copies tags off the block, 225 of 227 calls refused; pruned, 8 of 1160; the block is ~7,956 vs ~77 tokens | P59 `attribution.json` |
 | §6.4 | **α, $\mathbb{E}[\tau]$, speed-up** | **not yet measured** |
 | §7.4 | **the ordering verdict** | **closed without a verdict, 2026-09-17**: no generated suite satisfies §7.2 and offers a non-trivial ordering at once — P55 A, P55b |

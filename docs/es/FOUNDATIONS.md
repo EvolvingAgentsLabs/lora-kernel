@@ -728,5 +728,6 @@ arriba depende de D; D4 depende de todo.
 | §9.3 | potencia a $n=351$ | `bar.resolvable` **[ran]** 2026-09-16 |
 | §10.2 | espacio de ids 3.5 → 3.8 | P55 `D0-tokenizers.txt` |
 | §10.5 D1 | vLLM resuelve a 0.29.0 | log de boot de P55 A |
+| §4.4 | **una superficie desconocida es extrapolación**: sin podar (54 herramientas) el experto copia etiquetas del bloque, 225 de 227 llamadas rechazadas; podado, 8 de 1160; el bloque son ~7.956 contra ~77 tokens | P59 `attribution.json` |
 | §6.4 | **α, $\mathbb{E}[\tau]$, aceleración** | **todavía no medido** |
 | §7.4 | **el veredicto de orden** | **cerrado sin veredicto, 2026-09-17**: ninguna suite generada satisface el §7.2 y ofrece a la vez un orden no trivial — P55 A, P55b |

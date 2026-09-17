@@ -186,9 +186,17 @@ Dos cosas que esto deliberadamente no hace:
   misma etiqueta, la etiqueta se descarta: llamar a la equivocada de dos es peor que
   no llamar a ninguna.
 
-**Viene apagado por defecto.** Toda medición anterior a hoy corrió sin él, y un
-instrumento que cambia en silencio lo que ve el modelo deja de compararse consigo
-mismo. `--prune` prendido y apagado es justo el par de brazos que la pregunta pide.
+**Medido, P59 [ran] 2026-09-17**, sobre la superficie que OpenClaw manda de verdad (54
+herramientas, grabadas de un turno): **sin podar, el experto copia etiquetas del bloque** —
+llama a `agents_list`, `apply_patch`, `ask_user`, `browser` — 225 de 227 llamadas
+rechazadas por el inbox, y dentro de OpenClaw esas se habrían *ejecutado*. Podado a sus
+tres: 1160 llamadas, 8 rechazadas. Exactitud 0,664 → 0,729 en mensajes humanos, 87 : 64,
+$p = 0,073$ — empate a $n = 475$; la conducta no. El bloque son **~7.956 tokens** sin podar,
+**~77** podado.
+
+**Así que: arrancá el proxy con `--prune`.** Sigue siendo un flag para que el brazo sin
+podar se pueda volver a comprar; ya no es el default que esta página recomendaba en
+contra.
 
 ### El streaming, y por qué está buffereado
 

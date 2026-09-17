@@ -385,9 +385,16 @@ reproduce su registro caso por caso, y un reentrenamiento del mismo corpus empat
 preflights y compuertas. Los espacios de ids medidos por par; la ruta a `Qwen3.8-27B`
 nombrada mecanismo por mecanismo.
 
+**Fase 5, primera compra [ran] P59.** Sobre la superficie de 54 herramientas que OpenClaw
+manda de verdad, el experto sin podar **copia etiquetas del bloque** — `agents_list`,
+`apply_patch`, `browser` — 225 de 227 llamadas rechazadas, y contesta desde el listado al
+nivel de la barra mayoritaria; podado a sus tres hace 1160 llamadas, 8 rechazadas, a
+0,729. Exactitud 87 : 64, $p = 0,073$ — empate a $n = 475$; **la conducta no empata**, y
+dentro de un runtime real esas llamadas se ejecutan. `--prune` es el default que los
+docs recomiendan, y el prefill baja de **~7.956 a ~77 tokens** por turno.
+
 **Todavía no.** La aceptación nunca se midió contra ningún target, y el veredicto de
-orden nunca corrió — las dos filas que FOUNDATIONS §11 marca *no medido*. Un pool de
-más de dos. El drafter 3.x. El torneo.
+orden cerró sin uno. Un pool de más de dos. El drafter 3.x. El torneo.
 
 | # | mecanismo | estado | compuerta |
 |---|---|---|---|
