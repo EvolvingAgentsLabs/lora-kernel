@@ -380,8 +380,8 @@ pool larger than two. The 3.x drafter. The tournament.
 | **M0** | the drafter served **in corpus mode** — through `tool_calls` it *invents* the result it cannot receive | ✅ **[ran]** 0.808 → **0.992** | stop honoured; adapter ≠ base on 8 probes (C18) |
 | **M-target** | a target worth accepting against **on this task** | ❌ triage: **0.746 < 0.989**, 2 : 87 **[ran]**; ✅ desk `commitment`: 32B **1.000** at every depth **[ran]** P51 | beats the best expert, paired, $p\le0.05$ |
 | **M-α** | acceptance in **tokens** by forced `prompt_logprobs` | ✅ preflights pass **[ran]**; not yet run | templates identical; one entry per token with `rank` |
-| **M1** | **experts that differ in quality** — graded nested corpora | `NEXT` P55b: desk `commitment`, `g25 ⊂ g75 ⊂ 600`; risk named: a one-call task may saturate every grade | verifier resolves ≥ 1 pair, or the target is not served |
-| **M2** | **the ordering test** — the thesis | `NEXT` with M1 | SUPPORTED / FALSIFIED / UNRESOLVED-as-failure, written before the run |
+| **M1** | **experts that differ in quality** — graded nested corpora | ✅ on one bit **[ran]** P55b: `g25` 0, `g75` **240/240**, `g600` **240/240** — the risk named came true, **no intermediate grade** | verifier resolves ≥ 1 pair, or the target is not served |
+| **M2** | **the ordering test** — the thesis | ❌ **not bought, twice [ran]**: on triage the 32B is below the expert (0.746 < 0.989); on the desk too (0.967 < 1.000, 0 : 8). **An untrained same-family 32B is not a valid target for a task a 3B was trained on.** Redesign counter 2 of 3 | SUPPORTED / FALSIFIED / UNRESOLVED-as-failure, written before the run |
 | **D0–D4** | the route to `Qwen3.8-27B` | D0 ✅, D1 void, **D2 next**, D4 blocked on D2 | see above |
 
 The steps that got here, each with its number, are in

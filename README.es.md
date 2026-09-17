@@ -394,8 +394,8 @@ más de dos. El drafter 3.x. El torneo.
 | **M0** | el drafter servido **en modo corpus** — vía `tool_calls` *inventa* el resultado que no puede recibir | ✅ **[ran]** 0,808 → **0,992** | stop honrado; adaptador ≠ base en 8 sondas (C18) |
 | **M-target** | un target que valga la pena **en esta tarea** | ❌ triage: **0,746 < 0,989**, 2 : 87 **[ran]**; ✅ desk `commitment`: 32B **1,000** en cada profundidad **[ran]** P51 | le gana al mejor experto, pareado, $p\le0,05$ |
 | **M-α** | aceptación en **tokens** por `prompt_logprobs` forzados | ✅ preflights pasan **[ran]**; todavía no corrió | templates idénticos; una entrada por token con `rank` |
-| **M1** | **expertos que difieren en calidad** — corpus anidados graduados | `NEXT` P55b: desk `commitment`, `g25 ⊂ g75 ⊂ 600`; riesgo nombrado: una tarea de una llamada puede saturar todos los grados | el verificador resuelve ≥ 1 par, o el target no se sirve |
-| **M2** | **la prueba de orden** — la tesis | `NEXT` con M1 | SUPPORTED / FALSIFIED / UNRESOLVED-como-fracaso, escrito antes de correr |
+| **M1** | **expertos que difieren en calidad** — corpus anidados graduados | ✅ por un bit **[ran]** P55b: `g25` 0, `g75` **240/240**, `g600` **240/240** — el riesgo nombrado se cumplió, **sin grado intermedio** | el verificador resuelve ≥ 1 par, o el target no se sirve |
+| **M2** | **la prueba de orden** — la tesis | ❌ **no comprada, dos veces [ran]**: en triage el 32B queda debajo del experto (0,746 < 0,989); en el desk también (0,967 < 1,000, 0 : 8). **Un 32B de la misma familia sin entrenar no es target válido para una tarea en la que un 3B fue entrenado.** Contador de rediseños 2 de 3 | SUPPORTED / FALSIFIED / UNRESOLVED-como-fracaso, escrito antes de correr |
 | **D0–D4** | la ruta a `Qwen3.8-27B` | D0 ✅, D1 vacío, **D2 siguiente**, D4 bloqueado por D2 | ver arriba |
 
 Los pasos que llegaron hasta acá, cada uno con su número, están en

@@ -36,6 +36,7 @@ whose values could be recalled being answered 27/30 without calling anything.
 from __future__ import annotations
 
 import random
+import re
 
 REGIONS = ("importance", "owed", "commitment", "counterpart")
 
@@ -253,8 +254,52 @@ def tools_needed(case: dict) -> list[str]:
     return need[: max(1, case["depth"])]
 
 
+MONTHS = ["january", "february", "march", "april", "may", "june", "july",
+          "august", "september", "october", "november", "december"]
+
+
+def dates_in(text: str) -> set[tuple[int, int]]:
+    """Every (month, day) a text names, in any shape a model writes.
+
+    A DATE IS A DATE IN ANY SHAPE. The first verifier was a literal substring, and
+    P55b measured what that costs: the 32B answered `2023-01-05` for a truth of
+    `January 5` on 5 of its 13 "wrong" cases — right date, other shape — and the
+    gate read them as the target being weaker **[ran]** 2026-09-17. A check that
+    fails while the capability works measures phrasing; this repository deletes such
+    checks rather than loosening them. `September 6`, `Sep 6`, `6 September`,
+    `2023-09-06` and `September 6th` are the same answer.
+    """
+    out = set()
+    for m in re.finditer(r"\b(?:20\d\d)-(\d{1,2})-(\d{1,2})\b", text):
+        out.add((int(m.group(1)), int(m.group(2))))
+    for m in re.finditer(r"\b([A-Za-z]{3,9})\.?\s+(\d{1,2})(?:st|nd|rd|th)?\b", text):
+        mo = _month(m.group(1))
+        if mo:
+            out.add((mo, int(m.group(2))))
+    for m in re.finditer(r"\b(\d{1,2})(?:st|nd|rd|th)?\s+(?:of\s+)?([A-Za-z]{3,9})\b", text):
+        mo = _month(m.group(2))
+        if mo:
+            out.add((mo, int(m.group(1))))
+    return out
+
+
+def _month(word: str) -> int | None:
+    w = word.lower()
+    for i, name in enumerate(MONTHS, 1):
+        if name.startswith(w[:3]) and (len(w) <= 3 or name.startswith(w)):
+            return i
+    return None
+
+
 def correct(case: dict, said: str | None) -> bool:
     """Mechanical, and the same function the corpus and the scorer both use."""
     if not said:
         return False
+    if case.get("kind") == "date" or _looks_like_date(case["answer"]):
+        want = dates_in(case["answer"])
+        return bool(want) and bool(want & dates_in(said))
     return case["answer"].lower() in said.lower()
+
+
+def _looks_like_date(answer: str) -> bool:
+    return bool(dates_in(answer))

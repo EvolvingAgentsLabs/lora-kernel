@@ -723,6 +723,8 @@ arriba depende de D; D4 depende de todo.
 | §7.2 | $Q(T) < \max Q(E)$: 2 : 87, $p=0$ | P55 A `target_gate` |
 | §8.2 | techo 0,989; gradiente de commitment | P55 A; P51 `desk_profile.json` |
 | §8.3 | el grado más chico no está saturado: $Q(g25) = 0,000$, base 0,171 — fabrica la respuesta de la herramienta | P58 `g25.json` |
+| §8.3 | **sin grado intermedio**: `g75` ≡ `g600` = 1,000 en un protocolo de una llamada; M1 pasa por un bit | P55b `p55b.json` |
+| §7.2 | **$Q(T) < \max Q(E)$ por segunda vez**: 32B 0,967 (fechas normalizadas) contra `g600` 1,000, 0 : 8, $p = 0,008$ | P55b `target_gate` |
 | §9.3 | potencia a $n=351$ | `bar.resolvable` **[ran]** 2026-09-16 |
 | §10.2 | espacio de ids 3.5 → 3.8 | P55 `D0-tokenizers.txt` |
 | §10.5 D1 | vLLM resuelve a 0.29.0 | log de boot de P55 A |
