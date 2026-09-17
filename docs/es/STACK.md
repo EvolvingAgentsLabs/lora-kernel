@@ -58,7 +58,7 @@ el corpus. Cada uno pesa **119.801.528 bytes** de `adapter_model.safetensors` �
 
 | adaptador | corpus | filas | banda | superficie | qué puntúa |
 |---|---|---:|---|---|---|
-| `email-full` | `training/harness/data_ef/train.jsonl` | 598 | 0-3 pasos | `thread_history`, `sender_stats`, `message` | **384/475 = 0,808**; en mensajes humanos **260/351 = 0,741** contra barra 0,655, p exacta **0,00036** **[ran]** P43 |
+| `email-full` — **liberado como `email-full@v1`** | `training/harness/data_ef/train.jsonl` | 598 | 0-3 pasos | `thread_history`, `sender_stats`, `message` | en modo corpus **471/475 = 0,992**, humanos **347/351 = 0,989**, reproducido en tres sesiones; un reentrenamiento del mismo corpus empata 1 : 0 **[ran]** P55 A, P57. Vía `tool_calls`: 0,808, humanos 0,741 contra barra 0,655, p 0,00036 **[ran]** P43 |
 | `fluids-full` | `training/physics/data_ff/train.jsonl` | 600 | 6-9 pasos | `calc`, `lookup`, `convert` | **11/90 = 0,122** contra 0,733 de la frontera **[ran]** P41; bajo su banda sobre-resuelve **18 de 18** **[ran]** P45 |
 | `kernel-mt` | `training/harness/data_mt/train.jsonl` | 600 | 2-4 pasos | `calc`, `convert`, `lookup` | el protocolo sin el dominio |
 | `kernel-email` | `training/harness/data_ep/train.jsonl` | 600 | 1-1 pasos | `thread_history`, `sender_stats`, `message` | el mismo protocolo en el vocabulario del email |

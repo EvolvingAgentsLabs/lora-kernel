@@ -1,0 +1,60 @@
+{
+  "name": "email-full",
+  "version": 1,
+  "base": "Qwen/Qwen2.5-3B-Instruct",
+  "recipe": {
+    "r": 16,
+    "lora_alpha": 32,
+    "epochs": 3,
+    "lr": 0.0002,
+    "batch": 2,
+    "accum": 8,
+    "max_seq": 1536,
+    "seed": 0,
+    "targets": "q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"
+  },
+  "corpus": "training/harness/data_ef/train.jsonl",
+  "corpus_sha256": "382c67d2d16b355b9b4aa1093d9452e05087ede4913e2fdfb21d5ea1a1c0948f",
+  "adapter_sha256": "a73f60395f7c1d815f290115bc50b3a3b4b8747369a791eee591750a9d594586",
+  "adapter_tarball": "results/P43-openclaw-e2e-20260915/adapters.tgz",
+  "prompt_sha": "cce49fe3841a573c",
+  "suite": "email",
+  "n": 475,
+  "score": {
+    "correct": 471,
+    "human_correct": 347
+  },
+  "retrained": {
+    "adapter_sha256": "7d2d345cf8f00a1e9a9e70e048373c3bffc6cce1b37fc0b3205927602078ee1e",
+    "correct": 472
+  },
+  "pairs": [
+    {
+      "pair": "re-served vs recorded",
+      "n_paired": 475,
+      "a_total": 471,
+      "b_total": 471,
+      "only_a": 0,
+      "only_b": 0,
+      "discordant": 0,
+      "p_value": 1.0,
+      "different": false,
+      "reading": "a tie: the totals differ but the cases behind them do not",
+      "state": "tie"
+    },
+    {
+      "pair": "re-trained vs re-served",
+      "n_paired": 475,
+      "a_total": 472,
+      "b_total": 471,
+      "only_a": 1,
+      "only_b": 0,
+      "discordant": 1,
+      "p_value": 1.0,
+      "different": false,
+      "reading": "a tie: the totals differ but the cases behind them do not",
+      "state": "tie"
+    }
+  ],
+  "run": "results/P57-release-20260917/release.json"
+}

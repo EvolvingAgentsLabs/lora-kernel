@@ -366,8 +366,9 @@ flowchart LR
 **Built and measured.** One resident base; deltas switched by the `model` field;
 served by vLLM behind an OpenAI endpoint; reachable from a real agent with nothing
 leaving; the tool surface pruned to what each member declares. One expert at
-**0.989** on its own region; the serving path that was costing it 18 points found and
-fixed. The acceptance instrument built, preflighted and gated. The id spaces measured
+**0.989** on its own region, **released as `email-full@v1`**: re-served it reproduces its record
+case for case, and a re-training from the same corpus ties it 1 : 0 **[ran]** P57; the serving
+path that was costing it 18 points found and fixed. The acceptance instrument built, preflighted and gated. The id spaces measured
 by pair; the route to `Qwen3.8-27B` named mechanism by mechanism.
 
 **Not yet.** Acceptance has never been measured against any target, and the ordering

@@ -700,6 +700,7 @@ all of it.
 | §3.3 | id-map table | P48; P55 `D0-tokenizers.txt` |
 | §4.2 | 29,933,568 params ↔ 119,801,528 bytes | `STACK.md` §3 |
 | §4.4, §8.1 | drift: 0.741 → 0.989 | P43 `arm_email_475.json`; P55 A |
+| §4.4, §9.2 | **a release reproduces**: re-served 0 : 0 against its record; re-trained 1 : 0 — training variance one case in 475 | P57 `release.json`, `releases/email-full@v1.json` |
 | §5.2 | C18 identity gate | P33 `lora_matrix.json`; P55 A `applied`; **Phase 0 P56: both members 3/3 `applied`, tools reachable, stop honoured** |
 | §5.3 | `prompt_logprobs` shape | P55 A `preflight_target` |
 | §5.4 | stop preflight; positional shim | P55 A attempts 1, 2 |
