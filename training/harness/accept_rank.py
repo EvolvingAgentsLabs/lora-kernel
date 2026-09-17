@@ -65,7 +65,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 from training.email.inbox import generate
-from training.email.tools import ToolError, answer
+from training.email.tools import SCHEMA, ToolError, answer
 from training.harness import bar
 from training.harness.agent_sim import SYSTEM
 from training.harness.generate_email_full import listing
@@ -85,6 +85,28 @@ PROBE = 8              # cases on which an adapter must differ from the base at 
 def user_text(msg: dict) -> str:
     """The user turn, byte for byte what the corpus generator wrote."""
     return f"{listing(msg)}\n\n{INSTRUCTION}"
+
+
+# THE ARITY CONVENTION, ON THE WAY IN. P28 renders a single-required-parameter tool
+# as `<tag>...</tag>`, so a model that follows the block writes `<thread_history>
+# thr-003</thread_history>` — positionally, as told. `agent_sim` maps that body onto
+# the parameter's name before the tool sees it; the first version of this loop did
+# not, and the untrained 32B had 749 of 1243 calls refused with "is not key=value"
+# for obeying the instruction it was given **[ran]** 2026-09-17,
+# `session_a_attempt2_positional.json`. Keyed on a COUNT, never on a name.
+POSITIONAL = {t["function"]["name"]: (t["function"]["parameters"].get("required")
+                                      or sorted(t["function"]["parameters"]["properties"]))[0]
+              for t in SCHEMA
+              if len(t["function"]["parameters"].get("required")
+                     or t["function"]["parameters"]["properties"]) == 1}
+
+
+def keyed(tool: str, body: str) -> str:
+    """A positional body becomes `param=body` when the tool has exactly one parameter."""
+    b = body.strip()
+    if "=" not in b and tool in POSITIONAL and b:
+        return f"{POSITIONAL[tool]}={b}"
+    return body
 
 
 def parse_verdict(text: str):
@@ -122,7 +144,7 @@ def run_chain(gen, inbox: dict, max_calls: int = 6) -> dict:
         m = list(TAG.finditer(out))[-1]           # the call just closed
         calls += 1
         try:
-            res = answer(inbox, m.group(1), m.group(2))
+            res = answer(inbox, m.group(1), keyed(m.group(1), m.group(2)))
         except ToolError as e:
             refused += 1
             res = f"ERROR: {e}"

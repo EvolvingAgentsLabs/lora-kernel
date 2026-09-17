@@ -271,3 +271,22 @@ def test_the_stop_check_is_decided_by_the_mechanism_not_the_model(monkeypatch):
     monkeypatch.setattr(ar, "post", withheld)
     chk = ar.stop_check("m", "p")
     assert chk["stop_included"] is False and chk["stop_reason"] == "3"
+
+
+# --- the arity convention on the way in ---------------------------------------
+
+def test_a_positional_body_is_keyed_by_parameter_count_not_by_name():
+    """The untrained 32B wrote `<thread_history>thr-003</thread_history>` because the
+    block told it to, and 749 of its calls were refused for it **[ran]** 2026-09-17."""
+    from training.harness.accept_rank import POSITIONAL, keyed
+    assert set(POSITIONAL) == {"thread_history", "sender_stats", "message"}
+    assert keyed("thread_history", "thr-003") == "thread_id=thr-003"
+    assert keyed("message", " msg-007 ") == "id=msg-007"
+    assert keyed("thread_history", "thread_id=thr-003") == "thread_id=thr-003"   # untouched
+    assert keyed("nonesuch", "x") == "x"                                         # unknown tool: left alone
+
+
+def test_a_positional_call_is_answered_in_the_loop():
+    gen = scripted(f"<thread_history>{HUMAN['thread_id']}</thread_history>", "IMPORTANT")
+    out = run_chain(gen, INBOX)
+    assert out["refused"] == 0 and '= {"turns":' in out["text"]
