@@ -230,3 +230,26 @@ score = w₁ · éxito verificado de la tarea
 - **Memoria**: markdown bajo git, legible y diffeable por una persona.
 - **Ejecución**: el sandbox donde corren las herramientas.
 - **Verificación**: un verificador cuya fuerza se declara con cada resultado.
+
+## 8. Las fórmulas detrás de §1–§7, y dónde se deriva cada una
+
+Esta referencia nombra mecanismos; [`FOUNDATIONS.md`](FOUNDATIONS.md) los deriva. La
+correspondencia, para que ninguna sección de acá se lea sin su matemática:
+
+| acá | el enunciado | derivado en |
+|---|---|---|
+| §1 decodificación especulativa | una ronda draftea $k$ ids de $q$, los verifica todos en una pasada del target, acepta $\tilde x_i$ con prob. $\min(1, p/q)$, emite del residual $\max(0, p-q)$ en el primer rechazo — y la salida es **exactamente** $p$ | FOUNDATIONS §6.1–6.2 |
+| §1.2 tasa de aceptación | a $T=0$: $\alpha_T(E,c) = \tfrac{1}{n_c}\sum_i \mathbf 1[\tilde x_i = \arg\max p_T(\cdot\mid\cdot)]$; largo aceptado esperado $\mathbb{E}[\tau] = \tfrac{1-\alpha^{k+1}}{1-\alpha}$; aceleración $\mathbb{E}[\tau]/(kc+1)$ | §6.3–6.4 |
+| §1.1 qué verifica | la afirmación de orden $Q(E_a)>Q(E_b)\Rightarrow\alpha_T(E_a)>\alpha_T(E_b)$ vale sólo bajo $Q(T)\ge\max_a Q(E_a)$; la α en caracteres de las primeras corridas medía layout porque los espacios de ids diferían (C3) | §7.1–7.2, §3.2 |
+| §1.3 la superficie α | tres α por caso — todos los tokens, spans de tag, span del veredicto — más el prefijo aceptado; el texto que aporta el harness en ningún span | §7.3 |
+| §2 serving multi-adaptador | $y_j = x_jW + s\,(x_jA_{i(j)})B_{i(j)}$, recolectado por id de adaptador; C18 es el test de que el segundo término está presente | §5.2 |
+| §3 la caché KV | $\text{bytes}_{KV}(t) = 2LH_{kv}d_h\,t\,b$: 36 KB/token en el 3B, 256 KB/token en el 32B; piso de decode $t_{\text{step}}\gtrsim B_W/\mathcal B$ | §2.2–2.3 |
+| §4 `harness.lora` | un delta $\tfrac{\alpha}{r}AB$ sobre las mismas siete proyecciones que cada adaptador de dominio; 29.933.568 parámetros a $r=16$ en el 3B | §4.1–4.2 |
+| §5 componer dos adaptadores | $W + \Delta_1 + \Delta_2$ es una suma de dos términos de bajo rango entrenados por separado — por eso interfieren: ninguna pérdida vio nunca el delta del otro | §4.4 |
+| §6 la función de fitness | el test de signos exacto bilateral sobre casos discordantes, $p = \min(1, 2\Pr[\mathrm{Bin}(n_d,\tfrac12)\ge\max(u,n_d-u)])$ | §9.2 |
+| §7 lo que no es neuronal | sin fórmula, por diseño | — |
+
+Dos números que esta referencia ha citado como mediciones **todavía no están medidos**,
+y decirlo acá es el sentido de la tabla: **$\alpha$ contra cualquier target**, y **el
+veredicto de orden** (FOUNDATIONS §11). Todo lo demás de la tabla tiene una corrida
+debajo.

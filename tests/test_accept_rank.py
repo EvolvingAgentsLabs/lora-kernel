@@ -1,6 +1,15 @@
 """P55's instrument, exercised without a GPU: the corpus-mode loop, the token-level
 acceptance read off `prompt_logprobs`, and the three gates as code.
 
+THE MATHEMATICS THESE GUARD (docs/FOUNDATIONS.md §6.3, §7, §9.2). At temperature 0 the
+target is one-hot, so speculative decoding's test — accept with probability
+min(1, p_T/q) — reduces to: token i is accepted iff  x̃_i = argmax p_T(· | prefix, x̃_<i),
+read here as `rank == 1`. Per case, α = accepted / decision tokens; α_tags and
+α_verdict split the same sum by span; α_lcp counts the accepted prefix per span. The
+claim under test is Q(E_a) > Q(E_b) ⇒ α_T(E_a) > α_T(E_b), which is only about quality
+when Q(T) ≥ max_a Q(E_a) — the target gate — and is decided pairwise by the exact
+two-sided sign test on discordant cases, p = min(1, 2·Pr[Bin(n_d, ½) ≥ max(u, n_d−u)]).
+
 WHAT THESE GUARD. Every number the run will print passes through these functions.
 A loop that scored the injected `= {result}` lines, an acceptance that read the
 wrong rank, or a gate that bought the design on a tie would each produce a clean

@@ -75,6 +75,21 @@ Una GPU. Un modelo base residente. Un pool de deltas chicos que vLLM intercambia
 por request. El sistema agéntico deja de ser software que llama a un modelo y
 pasa a ser **un modelo poniéndose distintos adaptadores**.
 
+### La matemática, en una pantalla
+
+Todo lo de arriba es una afirmación sobre cuatro objetos, cada uno escrito paso a paso
+con su corrida en [`docs/es/FOUNDATIONS.md`](docs/es/FOUNDATIONS.md):
+
+| objeto | la fórmula | dónde |
+|---|---|---|
+| **un experto es un delta** | $W' = W + \tfrac{\alpha}{r} A B$, $r=16$: **29.933.568** parámetros, **119.801.528** bytes en disco — la derivación y el artefacto coinciden **[ran]** | §4 |
+| **generar es una recursión que el target paga una vez por token** | $t_{\text{step}} \gtrsim B_W / \mathcal{B}$: el 32B tiene piso de ~13 ms/token porque lee 19,3 GB por paso, no porque multiplique | §2 |
+| **la aceptación a temperatura 0 es igualdad de argmax** | aceptar $\tilde x_i$ sii $\tilde x_i = \arg\max p_T(\cdot \mid \text{prefijo}, \tilde x_{<i})$; tokens esperados por ronda $\mathbb{E}[\tau] = \tfrac{1-\alpha^{k+1}}{1-\alpha}$, aceleración $\mathbb{E}[\tau]/(kc+1)$ | §6 |
+| **la aceptación rankea expertos sólo bajo un target más fuerte** | $Q(E_a) > Q(E_b) \Rightarrow \alpha_T(E_a) > \alpha_T(E_b)$ **exige** $Q(T) \ge \max_a Q(E_a)$ — P55 A encontró $0,746 < 0,989$, pareado 2 : 87, y no compró la prueba **[ran]** | §7 |
+
+La regla que este proyecto mantiene desde ahora: **cada documento lleva su matemática, y
+cada corrida en Colab actualiza la fórmula que instancia.**
+
 ## El mecanismo, y por qué funciona
 
 La decodificación especulativa tiene una propiedad que no es una nota al pie:
@@ -461,6 +476,13 @@ control plane empresarial.
 
 ## Documentos
 
+- [`docs/es/FOUNDATIONS.md`](docs/es/FOUNDATIONS.md) — **la matemática, paso a paso y
+  atada a lo que corrió**: el modelo como función, por qué el decode está limitado por
+  memoria, BPE y mapas de ids, LoRA como delta con su cuenta reconciliada con el
+  artefacto, el motor, la decodificación especulativa con su exactitud y aceleración, la
+  aceptación como ranking con su precondición, las tareas como funciones, la
+  estadística, y por qué la familia Qwen 3 y `Qwen3.8-27B` pueden ser el modelo grande ·
+  [en](docs/FOUNDATIONS.md)
 - [`docs/es/REPORT.md`](docs/es/REPORT.md) — **el plan original contra lo que pasó**,
   el patrón de las fallas (casi todo resultado negativo es la suite, no la
   arquitectura), qué está genuinamente bloqueado, y qué nos dan y qué no los

@@ -225,3 +225,25 @@ score = w₁ · verified task success
 - **Memory**: markdown under git, readable and diffable by a person.
 - **Execution**: the sandbox where tools run.
 - **Verification**: a verifier whose strength is stated with every result.
+
+## 8. The formulas behind §1–§7, and where each is derived
+
+This reference names mechanisms; [`FOUNDATIONS.md`](FOUNDATIONS.md) derives them.
+The correspondence, so that no section here is read without its mathematics:
+
+| here | the statement | derived in |
+|---|---|---|
+| §1 speculative decoding | one round drafts $k$ ids from $q$, verifies all in one target pass, accepts $\tilde x_i$ w.p. $\min(1, p/q)$, emits from the residual $\max(0, p-q)$ at the first rejection — and the output is **exactly** $p$ | FOUNDATIONS §6.1–6.2 |
+| §1.2 acceptance rate | at $T=0$: $\alpha_T(E,c) = \tfrac{1}{n_c}\sum_i \mathbf 1[\tilde x_i = \arg\max p_T(\cdot\mid\cdot)]$; expected accepted length $\mathbb{E}[\tau] = \tfrac{1-\alpha^{k+1}}{1-\alpha}$; speed-up $\mathbb{E}[\tau]/(kc+1)$ | §6.3–6.4 |
+| §1.1 what verifies | the ordering claim $Q(E_a)>Q(E_b)\Rightarrow\alpha_T(E_a)>\alpha_T(E_b)$ holds only under $Q(T)\ge\max_a Q(E_a)$; the character-α of the early runs measured layout because the id spaces differed (C3) | §7.1–7.2, §3.2 |
+| §1.3 the α surface | three α per case — all tokens, tag spans, verdict span — plus the accepted prefix; harness-supplied text in no span | §7.3 |
+| §2 multi-adapter serving | $y_j = x_jW + s\,(x_jA_{i(j)})B_{i(j)}$, gathered by adapter id; C18 is the test that the second term is present | §5.2 |
+| §3 the KV cache | $\text{bytes}_{KV}(t) = 2LH_{kv}d_h\,t\,b$: 36 KB/token on the 3B, 256 KB/token on the 32B; decode floor $t_{\text{step}}\gtrsim B_W/\mathcal B$ | §2.2–2.3 |
+| §4 `harness.lora` | a delta $\tfrac{\alpha}{r}AB$ on the same seven projections as every domain adapter; 29,933,568 parameters at $r=16$ on the 3B | §4.1–4.2 |
+| §5 composing two adapters | $W + \Delta_1 + \Delta_2$ is a sum of two low-rank terms trained separately — which is why they interfere: neither loss ever saw the other's delta | §4.4 |
+| §6 the fitness function | the exact two-sided sign test on discordant cases, $p = \min(1, 2\Pr[\mathrm{Bin}(n_d,\tfrac12)\ge\max(u,n_d-u)])$ | §9.2 |
+| §7 what is not neural | no formula, by design | — |
+
+Two numbers this reference has cited as measurements are **not yet measured**, and
+saying so here is the point of the table: **$\alpha$ against any target**, and **the
+ordering verdict** (FOUNDATIONS §11). Everything else in the table has a run under it.

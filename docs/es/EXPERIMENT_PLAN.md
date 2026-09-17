@@ -2678,6 +2678,16 @@ la aceptación contra él premiaría estar de acuerdo con veredictos equivocados
 dos cosas a la vez, las dos de la suite: el mejor experto está en el techo (0,99) y el
 target está por debajo (0,75).
 
+**La matemática de este paso** ([`FOUNDATIONS.md`](FOUNDATIONS.md) §7, §9). La
+afirmación es $Q(E_a) > Q(E_b) \Rightarrow \alpha_T(E_a) > \alpha_T(E_b)$ con
+$\alpha_T(E,c) = \tfrac{1}{n_c}\sum_i \mathbf 1[\tilde x_i = \arg\max p_T(\cdot\mid\cdot)]$;
+es sobre calidad sólo bajo $Q(T) \ge \max_a Q(E_a)$, que es lo que M-target prueba como
+test de signos pareado y lo que falló acá ($0,746 < 0,989$, 2 : 87). Los grados son
+resolubles a $n=351$ sólo para $\delta \ge 0,07$ (potencia 0,93), lo que los fijó en
+75 / 200 / 598. **Próximo paso, en los mismos términos:** una suite donde valga
+$Q(T) \ge \max Q(E)$ y $\max Q(E) < 1$ — la región `commitment` del desk satisface la
+primera por medición (target 1,000 en cada profundidad) y la segunda por su gradiente.
+
 **Candidato a rediseño, contado como el primero:** mover la prueba de orden a la
 región `commitment` del desk, donde P51 ya midió al 32B en **1,000 en las cuatro
 profundidades** y a la base cayendo **1,000 → 0,800 → 0,133 → 0,000** **[ran]** — un
