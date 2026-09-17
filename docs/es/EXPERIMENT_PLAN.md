@@ -2421,7 +2421,7 @@ redactar **no tiene verificador mecánico**, que es donde el torneo de S7 siempr
 trabó — mientras que la aceptación no necesita ninguno.
 
 **Target: `Qwen2.5-32B-Instruct`**, tokenizer byte-idéntico **[ran]** P48.
-`Qwen3.6-27B` no puede verificar a nuestros drafters — 248.044 entradas contra
+`Qwen3.6-27B` no puede verificar a nuestros drafters *Qwen 2.5* — un drafter `Qwen3.5` sí puede ser verificado por `Qwen3.8-27B` **[ran]** D0 — 248.044 entradas contra
 151.643 — y queda disponible como referencia de calidad, que es otro trabajo.
 
 | paso | qué compra | ¿entrena? | compuerta |

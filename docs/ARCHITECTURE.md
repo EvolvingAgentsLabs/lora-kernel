@@ -80,7 +80,8 @@ Measured rather than argued **[ran]** `results/P48-tokenizer-compat-20260916/`:
 |---|---:|---|
 | `Qwen2.5-7B / 14B / 32B / 72B-Instruct` | 151,643 | **yes — byte-identical `tokenizer.json`** |
 | `Qwen3-14B`, `Qwen3-32B` | 151,643 | yes, with 4 target-only ids |
-| `Qwen3.5 / 3.6 / 3.8-27B` | **248,044** | **no — a different vocabulary** |
+| `Qwen3.5 / 3.6 / 3.8-27B` — *with the Qwen 2.5 drafter* | **248,044** | **no — a different vocabulary; the drafter is what moves** |
+| **`Qwen3.8-27B` with a `Qwen3.5-2B / 4B` drafter — the goal** | 248,044 | **yes**, 7 target-only audio/TTS ids **[ran]** D0 |
 
 **So the target is `Qwen2.5-32B-Instruct-AWQ`** — 19.3 GB, fits beside the 3B on one
 A100, and its `tokenizer.json` hashes identically to the base's. A frontier model
