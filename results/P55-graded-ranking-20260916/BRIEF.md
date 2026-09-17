@@ -193,3 +193,24 @@ of a mechanism that does not work.
   - **The gate itself worked as written**: it refused a target that scored below the
     expert, p = 0.0, and did not serve acceptance. Attempt 3 re-runs everything under
     the repaired loop — one serving of each model, ~35 min.
+- **2026-09-17 attempt 3**, `srv062147`, `main` at `5e2374a`, harness repaired — ran to
+  the target gate and stopped **`UNBOUGHT`, cleanly**. `session_a.json`.
+  - `email-full` **471/475 = 0.992** again (human 0.989, 0 refused) — **reproducible
+    across sessions**, 31 s.
+  - The 32B, positional calls accepted: **386/475 = 0.813**, human **262/351 = 0.746**,
+    1248 calls, 195 refused (all `wrong id`: it passes `msg-003` where a thread id is
+    needed, then recovers), 0 XML, 6 undecided. Paired on human cases against the
+    expert: **target right where the expert is wrong: 2; expert right where the target
+    is wrong: 87; p = 0.0**. The target is resolvably *worse*.
+  - **Where it loses is the rule, not the protocol.** All 83 wrong verdicts are human
+    cases where it made 3–4 calls, got every fact, and misapplied *"at least two of
+    these hold"* — e.g. `i_wrote=true`, `frequent=false`, `addressed_directly=false`,
+    a statement body → one signal → NOT IMPORTANT; it said IMPORTANT.
+  - **So M-target fails for the reason the gate was written for**: on this task an
+    untrained 32B is not stronger than the trained 3B, and acceptance against it would
+    reward the expert for agreeing with wrong verdicts. **The ordering test is not
+    purchased on this suite.** Two things fail at once and both are about the suite,
+    not the instrument: the best expert sits at the ceiling (0.99), and the target
+    sits below it (0.75).
+  - Everything the instrument needed passed: C18, stop, templates, `prompt_logprobs`.
+    **M0 and M-α are unlocked; M-target is not, here.**

@@ -2571,11 +2571,34 @@ teaches one, and sorted where none does.
 
 Brief: [`../results/P55-graded-ranking-20260916/BRIEF.md`](../results/P55-graded-ranking-20260916/BRIEF.md).
 Runner `training/harness/accept_rank.py`, gates as code in `tests/test_accept_rank.py`.
-**`RUNNING` — session A launched 2026-09-17 on an A100** (`srv054155`), branch `main`
-at `8d8ff52`. First fact it returned before serving a model: the chain installs
-`vllm>=0.28` and resolves to **0.29.0 — the same version P33 ran** **[ran]**, so track D1
-as designed has nothing newer to re-check; D2 (the mechanism, read with the log)
-is the live step for the 3.x drafter.
+**Session A — `DONE`, 2026-09-17, three attempts, stopped `UNBOUGHT` at M-target.**
+Result: [`../results/P55-graded-ranking-20260916/session_a.json`](../results/P55-graded-ranking-20260916/session_a.json);
+attempts 1 and 2 kept under their own names — both were instrument faults of mine (a
+preflight that measured the base's phrasing; a loop that refused the positional calls
+the block itself asks for), each fixed with a test before the relaunch.
+
+| arm | all 475 | human 351 | calls · refused | what it says |
+|---|---:|---:|---|---|
+| `Qwen2.5-3B` base | 0.516 | **0.345** | 0 · 0 | reproduces P31 exactly |
+| **`email-full`, corpus mode** | **0.992** | **0.989** | 1053 · **0** | **M0 unlocked**: through `tool_calls` the same adapter scored 0.808 (P43). Served as its corpus teaches — stop at `</tag>`, inject the real result — it solves the task. Reproduced in two sessions, 31 s each |
+| `Qwen2.5-32B-AWQ`, corpus mode | 0.813 | **0.746** | 1248 · 195 | gets every fact in 3–4 calls and **misapplies the rule** on 83 human cases; paired against the expert **2 : 87**, p = 0.0 — **resolvably worse** |
+
+**M-α's preflights all passed** — C18 `applied`, templates identical, `prompt_logprobs`
+one entry per token with `rank` — so the instrument is ready and was never run:
+**the gate refused the target for the reason it was written for.** On this suite an
+untrained 32B is not stronger than the trained 3B, and acceptance against it would
+reward agreeing with wrong verdicts. Two things fail at once, both about the suite:
+the best expert sits at the ceiling (0.99) and the target sits below it (0.75).
+
+**Redesign candidate, counted as the first:** move the ordering test to the desk's
+`commitment` region, where P51 already measured the 32B at **1.000 across all four
+depths** and the base falling **1.000 → 0.800 → 0.133 → 0.000** **[ran]** — a target
+stronger than the base by construction and a gradient no expert will sit on top of.
+Needs a desk corpus (none exists) and three graded desk experts. Left for a decision.
+
+Also from the boot: the chain installs `vllm>=0.28` and resolves to **0.29.0 — the same
+version P33 ran** **[ran]**, so track D1 has nothing newer to re-check; D2 is the live
+step for a 3.x drafter.
 
 **The first test of the central claim.** Acceptance against a larger target has never
 been measured on any target, and the reason was never hardware: ranking needs experts

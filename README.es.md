@@ -324,11 +324,11 @@ compuerta que falla detiene la corrida antes de comprar el mecanismo siguiente.
 
 | # | mecanismo | estado | compuerta |
 |---|---|---|---|
-| **M0** | el drafter servido **en modo corpus** — parar en `</tag>`, inyectar el resultado real, seguir. Vía `tool_calls` *inventa* el resultado que no puede recibir **[ran]** P43 | `RUNNING` sesión A | stop string honrado; el adaptador difiere de la base en 8 casos sonda (C18) |
-| **M-target** | un target que valga la pena **en esta tarea** (P49 compró el 32B en drafting, no en triage) | `RUNNING` sesión A | le gana a `email-full` sobre los mismos casos humanos, pareado, p ≤ 0,05 |
-| **M-α** | aceptación en **tokens** por `prompt_logprobs` forzados — la primera α con espacio de ids compartido | `RUNNING` sesión A | templates idénticos; una entrada por token con `rank` |
-| **M1** | **expertos que difieren en calidad**: `g75 ⊂ g200 ⊂ email-full` | `NEXT` sesión B+C | el verificador resuelve ≥ 1 de 3 pares, o el target no se sirve |
-| **M2** | **la prueba de orden** — la tesis | `NEXT` sesión B+C | SUPPORTED / FALSIFIED / UNRESOLVED-como-fracaso, escrito antes de correr |
+| **M0** | el drafter servido **en modo corpus** — parar en `</tag>`, inyectar el resultado real, seguir. Vía `tool_calls` *inventa* el resultado que no puede recibir **[ran]** P43 | ✅ **[ran]** `email-full` **0,992** en modo corpus contra 0,808 vía `tool_calls` | stop string honrado; el adaptador difiere de la base en 8 casos sonda (C18) |
+| **M-target** | un target que valga la pena **en esta tarea** (P49 compró el 32B en drafting, no en triage) | ❌ **UNBOUGHT [ran]** — el 32B da **0,746** en casos humanos contra 0,989 del experto, pareado 2 : 87; consigue los hechos y aplica mal la regla. En esta suite el target es más débil que el experto | le gana a `email-full` sobre los mismos casos humanos, pareado, p ≤ 0,05 |
+| **M-α** | aceptación en **tokens** por `prompt_logprobs` forzados — la primera α con espacio de ids compartido | ✅ preflights pasan **[ran]**; **todavía no corrió** — la compuerta anterior rechazó | templates idénticos; una entrada por token con `rank` |
+| **M1** | **expertos que difieren en calidad**: `g75 ⊂ g200 ⊂ email-full` | `BLOCKED` hasta una suite con un target más fuerte — candidato a rediseño: la región `commitment` del desk, 32B en 1,000 en toda la profundidad **[ran]** P51 | el verificador resuelve ≥ 1 de 3 pares, o el target no se sirve |
+| **M2** | **la prueba de orden** — la tesis | `BLOCKED` con M1 | SUPPORTED / FALSIFIED / UNRESOLVED-como-fracaso, escrito antes de correr |
 | **D0** | un drafter Qwen 3.x que comparta espacio de ids con **`Qwen3.8-27B`** | ✅ **[ran]** `Qwen3.5-2B` y `-4B`, 7 ids sólo del target, todos de audio/TTS | — |
 | **D1** | vLLM aplicando un LoRA sobre una base 3.x (C18) | `BLOCKED` — la cadena instala el último vLLM y **sigue siendo 0.29.0** **[ran]** 2026-09-17, así que no hay nada más nuevo que re-verificar todavía | `applied` sobre el adaptador diminuto de P33 |
 | **D2** | el mecanismo de C18, leído con el log en la mano (G3 merge; mapeo clave PEFT ↔ módulo vLLM) | `NEXT` después de A | — |
