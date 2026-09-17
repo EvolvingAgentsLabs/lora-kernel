@@ -337,3 +337,50 @@ def test_the_record_keeps_both_counts_and_no_prompt(tmp_path):
     row = json.loads(log.read_text().splitlines()[0])
     assert row["tools_offered"] == 53 and len(row["tools"]) == 3
     assert "SECRET PROSE" not in log.read_text()
+
+
+# --- P59: a runtime's own tool with the member's bare name --------------------------
+
+def test_the_members_keys_beat_a_colliding_bare_name():
+    """OpenClaw offers `message` (action, channel, target, …) beside
+    `lora-inbox__message` (id) **[ran]** P59. The corpus writes `<message>id=…`."""
+    tools = [fn("message", action="", channel="", target=""), fn("lora-inbox__message", id="")]
+    kept, fwd, _ = prune(tools, ["message"], {"message": ["id"]})
+    assert fwd == {"message": "lora-inbox__message"}
+    assert kept[0]["function"]["parameters"]["required"] == ["id"]
+
+
+def test_without_declared_keys_the_exact_name_still_wins():
+    tools = [fn("mcp__other__message"), fn("message")]
+    _, fwd, _ = prune(tools, ["message"])
+    assert fwd["message"] == "message"
+
+
+def test_the_real_openclaw_surface_prunes_to_the_three_inbox_tools():
+    """The recording P59 made of one OpenClaw turn: 54 tools, streaming."""
+    import pathlib
+    rec = pathlib.Path("results/P59-prune-attribution-20260917/openclaw_tools.json")
+    tools = json.loads(rec.read_text())
+    assert len(tools) == 54
+    member = POOL["adapters/email-full"]
+    kept, fwd, _ = prune(tools, member["surface"], member["surface_args"])
+    assert fwd == {"thread_history": "lora-inbox__thread_history",
+                   "sender_stats": "lora-inbox__sender_stats",
+                   "message": "lora-inbox__message"}
+
+
+@pytest.mark.parametrize("path,record", sorted(POOL.items()))
+def test_the_declared_keys_are_what_the_corpus_writes(path, record):
+    """Read off the corpus, like the band and the surface."""
+    seen = {}
+    with open(record["corpus"]) as f:
+        for line in f:
+            if not line.strip():
+                continue
+            for m in CALL.finditer(json.dumps(json.loads(line))):
+                body = m.group(2)
+                if "=" in body:
+                    seen.setdefault(m.group(1), set()).update(
+                        k.strip() for k in re.findall(r"([\w.\-]+)\s*=", body))
+    for tag, keys in (record.get("surface_args") or {}).items():
+        assert set(keys) <= seen.get(tag, set()), (path, tag, keys, seen.get(tag))
