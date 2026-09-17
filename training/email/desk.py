@@ -96,6 +96,89 @@ def _desk(rng, n_threads: int, me: str) -> dict:
     return {"me": me, "messages": msgs, "threads": threads, "sent_counts": senders}
 
 
+# --------------------------------------------------------------------------
+# THE DEEP BAND — commitment_deep. Reviewed 2026-09-17: the ordering between graded
+# experts is decided by the material's difficulty, and `commitment` has none for a
+# trained model — the promise is always the LAST message and `message(id)` returns
+# it, one call and a copy (g75 ≡ g600 = 1.000 **[ran]** P55b). Here a thread carries
+# `depth` rounds: my promise, the sender's follow-up (sometimes proposing another
+# date — a distractor), my revised promise that supersedes the first, the sender's
+# acknowledgement. The answer is MY LATEST promise; at depth ≥ 2 the last message is
+# the sender's, so `message` alone cannot answer and the history has to be read and
+# discriminated. Depth is structural: rounds = depth, and `_given` hides `depth`
+# lines as every other region does.
+#
+# ITS OWN RNG, ITS OWN IDS, OPT-IN ONLY. `_desk` is not touched and `generate` draws
+# nothing extra unless the region is requested — `generate(960, 424242)` still
+# yields the 240 `commitment` cases P51 and P55b scored, byte for byte
+# (`tests/test_desk_deep.py` pins the hash).
+# --------------------------------------------------------------------------
+
+DEEP = "commitment_deep"
+PROPOSALS = ["Could you do it by {d} instead?", "Would {d} work for you?",
+             "We were hoping for {d}.", "Any chance of {d}?"]
+
+
+def _date(rng) -> str:
+    return f"{rng.choice(MONTHS)} {rng.randrange(1, 28)}"
+
+
+def _deepen(desk: dict, seed: int, n: int = 24) -> None:
+    """Append `n` deep threads to a desk, drawn from a seed-derived RNG."""
+    if desk.get("_deepened"):
+        return
+    rng = random.Random(seed ^ 0xDEE9)
+    me = desk["me"]
+    base = len(desk["messages"])
+    for i in range(n):
+        name, addr = _person(rng)
+        tid, mid = f"thr-{base + i:03d}", f"msg-{base + i:03d}"
+        depth = 1 + i % 4
+        body = [{"from": addr, "to": [me], "cc": [], "preview": "Could you confirm this?"}]
+        promises, proposals = [], []
+        # round 1: my promise
+        promises.append(_date(rng))
+        body.append({"from": me, "to": [addr], "preview": f"I will have it to you by {promises[-1]}."})
+        # MONOTONE IN READING, BY CONSTRUCTION. From depth 2 on the LAST message is the
+        # sender's, so `message(id)` never returns the answer and the history has to be
+        # read; each further depth adds one more date to discriminate.
+        #   1  ask · my promise                                  (last = mine)
+        #   2  ask · my promise · sender proposes a date         (last = sender's)
+        #   3  … · my revised promise · sender acknowledges      (two promises, one proposal)
+        #   4  … · sender proposes again · my final · ack        (three promises, two proposals)
+        if depth >= 2:
+            prop = _date(rng)
+            proposals.append(prop)
+            body.append({"from": addr, "to": [me], "cc": [],
+                         "preview": rng.choice(PROPOSALS).format(d=prop)})
+        if depth >= 3:
+            promises.append(_date(rng))
+            body.append({"from": me, "to": [addr],
+                         "preview": f"Change of plan — make that {promises[-1]}."})
+        if depth >= 4:
+            prop = _date(rng)
+            proposals.append(prop)
+            body.append({"from": addr, "to": [me], "cc": [],
+                         "preview": rng.choice(PROPOSALS).format(d=prop)})
+            promises.append(_date(rng))
+            body.append({"from": me, "to": [addr],
+                         "preview": f"Final answer: {promises[-1]}."})
+        if depth >= 3:
+            body.append({"from": addr, "to": [me], "cc": [], "preview": "Noted, thanks."})
+        desk["threads"][tid] = body
+        desk["sent_counts"].setdefault(addr, rng.randrange(0, 2))
+        desk["messages"].append({
+            "id": mid, "thread_id": tid, "from_name": name, "from": addr,
+            "subject": rng.choice(SUBJECTS), "preview": PREVIEW,
+            "_facts": {"i_wrote_in_thread": True, "addressed_directly": True,
+                       "asks_something": True, "frequent_sender": False,
+                       "automated": False, "promised": True,
+                       "due": promises[-1], "promises": promises,
+                       "proposals": proposals, "rounds": depth},
+        })
+    desk["_deepened"] = True
+
+
 def _important(f: dict) -> bool:
     return sum(bool(f[k]) for k in ("i_wrote_in_thread", "addressed_directly",
                                     "asks_something", "frequent_sender")) >= 2
@@ -134,6 +217,16 @@ def _given(msg: dict, hide: int, region: str, desk: dict | None = None) -> str:
         lines = [f"You made a promise in this thread: {yn(f['promised'])}",
                  f"The promise is yours, not the sender's: yes",
                  f"It is in the last message you wrote: yes",
+                 f"The thread has {len(desk['threads'][msg['thread_id']])} messages"]
+    elif region == DEEP:
+        # FACTS ABOUT HOW TO READ THE THREAD, never the date. What is handed over is
+        # that a promise exists, that a later one supersedes, that the sender's dates
+        # are not mine — the shape of the discrimination, with the values behind the
+        # tool. Hiding these is the depth axis in the prompt; the rounds are the
+        # depth axis in the thread.
+        lines = [f"You made a promise in this thread: yes",
+                 f"If you promised more than once, the latest one counts: yes",
+                 f"Dates the sender proposed are not your commitment: yes",
                  f"The thread has {len(desk['threads'][msg['thread_id']])} messages"]
     elif region == "counterpart":
         # Facts about HOW to compute the answer, never about who it is. The first
@@ -186,6 +279,19 @@ def build(rng, region: str, depth: int, desk: dict) -> dict | None:
                 "kind": "date", "focus": pick["id"],
                 "question": "What date did you commit to in this thread?",
                 "given": _given(pick, depth, region, desk), "msg": pick}
+    if region == DEEP:
+        # ONE CASE PER (thread, depth): the thread's rounds ARE its depth, so a case at
+        # depth d is drawn from the deep threads built with d rounds.
+        pool = [m for m in desk["messages"] if m["_facts"].get("rounds") == depth]
+        if not pool:
+            return None
+        pick = rng.choice(pool)
+        return {"region": region, "depth": depth, "answer": pick["_facts"]["due"],
+                "kind": "date", "focus": pick["id"],
+                "question": "What date did you commit to in this thread? If you "
+                            "committed more than once, the latest one counts.",
+                "given": _given(pick, depth, region, desk), "msg": pick,
+                "distractors": pick["_facts"]["promises"][:-1] + pick["_facts"]["proposals"]}
     if region == "counterpart":
         best = max(desk["messages"], key=lambda m: desk["sent_counts"][m["from"]])
         # THE FOCUS IS NOT THE ANSWER'S MESSAGE, AND THE FIRST VERSION MADE IT SO.
@@ -221,6 +327,8 @@ def generate(n: int, seed: int, me: str = "me@ownmail.com",
     rng = random.Random(seed)
     grid = [(r, d) for r in sorted(regions) for d in sorted(depths)]
     desk = _desk(rng, 24, me)
+    if DEEP in regions:
+        _deepen(desk, seed)
     cases = []
     i = 0
     while len(cases) < n:
@@ -228,6 +336,8 @@ def generate(n: int, seed: int, me: str = "me@ownmail.com",
         i += 1
         if i % 40 == 0:
             desk = _desk(rng, 24, me)       # a fresh inbox, so nothing memorises
+            if DEEP in regions:
+                _deepen(desk, seed + i)
         c = build(rng, region, depth, desk)
         if c is None:
             continue
@@ -250,12 +360,18 @@ def tools_needed(case: dict) -> list[str]:
         "owed": ["inbox", "message", "thread_history", "sender_stats"],
         "commitment": ["thread_history", "message", "sender_stats"],
         "counterpart": ["inbox", "sender_stats", "thread_history", "message"],
+        DEEP: ["thread_history"],
     }[case["region"]]
     return need[: max(1, case["depth"])]
 
 
-MONTHS = ["january", "february", "march", "april", "may", "june", "july",
-          "august", "september", "october", "november", "december"]
+# THE VERIFIER'S MONTH TABLE HAS ITS OWN NAME. The first version called this
+# `MONTHS`, shadowing the generator's six capitalised months at the top of the file
+# — so every desk drawn after #206 landed used twelve lowercase ones, and the
+# `commitment` suite P51 and P55b scored had silently moved **[ran]** 2026-09-17,
+# caught by the hash guard `tests/test_desk_deep.py` pins.
+MONTH_NAMES = ["january", "february", "march", "april", "may", "june", "july",
+               "august", "september", "october", "november", "december"]
 
 
 def dates_in(text: str) -> set[tuple[int, int]]:
@@ -285,7 +401,7 @@ def dates_in(text: str) -> set[tuple[int, int]]:
 
 def _month(word: str) -> int | None:
     w = word.lower()
-    for i, name in enumerate(MONTHS, 1):
+    for i, name in enumerate(MONTH_NAMES, 1):
         if name.startswith(w[:3]) and (len(w) <= 3 or name.startswith(w)):
             return i
     return None
@@ -296,8 +412,12 @@ def correct(case: dict, said: str | None) -> bool:
     if not said:
         return False
     if case.get("kind") == "date" or _looks_like_date(case["answer"]):
+        # EXACTLY ONE DATE, AND THE RIGHT ONE. The deep band puts distractor dates in
+        # the thread; an answer that names two of them would pass a substring test
+        # while having decided nothing. Named dates in the answer must be one.
         want = dates_in(case["answer"])
-        return bool(want) and bool(want & dates_in(said))
+        got = dates_in(said)
+        return bool(want) and len(got) == 1 and got == want
     return case["answer"].lower() in said.lower()
 
 

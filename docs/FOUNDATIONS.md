@@ -708,6 +708,7 @@ all of it.
 | §8.2 | ceiling 0.989; commitment gradient | P55 A; P51 `desk_profile.json` |
 | §8.3 | the smallest grade is not saturated: $Q(g25) = 0.000$, base 0.171 — it fabricates the tool's answer | P58 `g25.json` |
 | §8.3 | **no intermediate grade**: `g75` ≡ `g600` = 1.000 on a one-call protocol; M1 passes on one bit | P55b `p55b.json` |
+| §8.2 | **a deeper band exists by construction**: `commitment_deep`, the latest of 1–3 promises among the sender's proposals, last message the sender's from depth 2; the shallow suite pinned by hash after #206 had silently moved it (0 mismatches vs P55b) | P60 §3a, `tests/test_desk_deep.py` |
 | §7.2 | **$Q(T) < \max Q(E)$ a second time**: 32B 0.967 (date-normalised) vs `g600` 1.000, 0 : 8, $p = 0.008$ | P55b `target_gate` |
 | §9.3 | power at $n=351$ | `bar.resolvable` **[ran]** 2026-09-16 |
 | §10.2 | 3.5 → 3.8 id space | P55 `D0-tokenizers.txt` |
