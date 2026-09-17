@@ -411,13 +411,15 @@ def applied(base: list[dict], adapter: list[dict], n: int = PROBE) -> dict:
     # 8 of 8 probes — `applied` over an arm that had produced nothing **[ran]**. A
     # check that passes while the capability is broken; only records with a text on
     # both sides are probed, and too few of them is its own verdict.
-    b = {r["id"]: r["text"] for r in base if r.get("text") is not None and "error" not in r}
-    a = {r["id"]: r["text"] for r in adapter if r.get("text") is not None and "error" not in r}
+    b = {r["id"]: r["text"] for r in base if (r.get("text") or "").strip() and "error" not in r}
+    a = {r["id"]: r["text"] for r in adapter if (r.get("text") or "").strip() and "error" not in r}
     ids = sorted(set(a) & set(b))[:n]
     differs = sum(a[i] != b[i] for i in ids)
+    # EMPTY IS NOT A DIFFERENCE EITHER: an adapter answering "" on every probe reads
+    # as `differs` against any base text, and would have called itself applied.
     if len(ids) < 3:
         return {"probed": len(ids), "differs": differs,
-                "verdict": f"UNREADABLE: only {len(ids)} probes with text on both sides"}
+                "verdict": f"UNREADABLE: only {len(ids)} probes with non-empty text on both sides"}
     return {"probed": len(ids), "differs": differs,
             "verdict": "applied" if differs else "NOT APPLIED: identical to the base"}
 

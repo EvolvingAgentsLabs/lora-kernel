@@ -71,9 +71,16 @@ def _say(model: str, prompt: str, tok, max_tokens: int = 48) -> str:
 def identity(base: str, member: str, tok, probes=PROBES) -> dict:
     """G1. A member vLLM did not apply serves the base's text."""
     pairs = [(_say(base, p, tok), _say(member, p, tok)) for p in probes]
-    differs = sum(a != b for a, b in pairs)
-    return {"probed": len(pairs), "differs": differs,
-            "applied": differs >= NEED,
+    # AN EMPTY ARM IS NOT A DIFFERENCE. P58's C18 gate read `None` against text as
+    # "differs" on 8 of 8 probes over an arm that had produced nothing **[ran]**, and
+    # this gate would have read `""` the same way. A probe counts only when BOTH sides
+    # answered; a member that answers empty is reported as an empty arm, never as
+    # applied.
+    readable = [(a, b) for a, b in pairs if a.strip() and b.strip()]
+    empty = len(pairs) - len(readable)
+    differs = sum(a != b for a, b in readable)
+    return {"probed": len(readable), "empty": empty, "differs": differs,
+            "applied": differs >= NEED and empty == 0,
             "samples": [{"base": a[:60], "member": b[:60]} for a, b in pairs]}
 
 
@@ -107,9 +114,11 @@ def tools_reachable(proxy: str, member: str) -> dict:
 def verdict(record: dict) -> dict:
     """The one line CI reads, and the reason a person reads."""
     g1 = {m: r["applied"] for m, r in record["G1"].items()}
+    empty = [f"G1:{m} (empty arm, {r.get('empty', 0)} probes)" for m, r in record["G1"].items()
+             if r.get("empty")]
     g2 = record.get("G2") or {}
     g3 = record.get("G3", {}).get("stop_included", False)
-    failed = [f"G1:{m}" for m, ok in g1.items() if not ok]
+    failed = [f"G1:{m}" for m, ok in g1.items() if not ok and not any(e.startswith(f"G1:{m} ") for e in empty)] + empty
     failed += [f"G2:{m}" for m, r in g2.items() if r.get("reachable") is False]
     if not g3:
         failed.append("G3")

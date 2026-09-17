@@ -159,7 +159,11 @@ def main() -> int:
                 gate[name] = {"differs_from_base": None, "refused": repr(e)[:200]}
                 print(f"[gate] {name}: REFUSED — {e}"[:200], flush=True)
                 continue
-            gate[name] = {"differs_from_base": t.strip() != base_text.strip(),
+            # AN EMPTY ANSWER IS NOT A DIFFERENCE (P58: a gate read nothing-vs-text as
+            # applied). Both sides must have answered for the probe to count.
+            both = bool(t.strip()) and bool(base_text.strip())
+            gate[name] = {"differs_from_base": (t.strip() != base_text.strip()) if both else None,
+                          "empty_arm": not both,
                           "base_head": base_text[:110], "lora_head": t[:110]}
             print(f"[gate] {name}: "
                   + ("applied" if gate[name]["differs_from_base"]

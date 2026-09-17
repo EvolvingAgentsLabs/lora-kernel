@@ -46,3 +46,22 @@ def test_a_server_that_does_not_stop_fails():
 def test_a_pool_with_no_member_is_empty_not_ok():
     v = verdict({"G1": {}, "G2": None, "G3": {"stop_included": True}})
     assert v["pass"] is False and "EMPTY" in v["reading"]
+
+
+# --- P58's class of fault: an empty arm must never read as applied ------------------
+
+def test_an_empty_member_answer_is_an_empty_arm_not_a_difference(monkeypatch):
+    import training.harness.verify_substrate as vs
+    answers = {"base": "the sky is blue because", "m": ""}
+    monkeypatch.setattr(vs, "_say", lambda model, prompt, tok, max_tokens=48: answers["base" if model == "base" else "m"])
+    r = vs.identity("base", "m", tok=None, probes=("a", "b", "c"))
+    assert r["applied"] is False and r["empty"] == 3 and r["probed"] == 0
+    v = vs.verdict({"G1": {"m": r}, "G2": None, "G3": {"stop_included": True}})
+    assert v["pass"] is False and any("empty arm" in f for f in v["failed"])
+
+
+def test_a_member_that_answers_differently_on_every_probe_is_applied(monkeypatch):
+    import training.harness.verify_substrate as vs
+    monkeypatch.setattr(vs, "_say", lambda model, prompt, tok, max_tokens=48: f"{model}:{prompt}")
+    r = vs.identity("base", "m", tok=None, probes=("a", "b", "c"))
+    assert r["applied"] is True and r["empty"] == 0 and r["differs"] == 3
