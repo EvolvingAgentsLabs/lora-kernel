@@ -1,0 +1,10 @@
+{
+  "base": "Qwen/Qwen2.5-3B-Instruct",
+  "target": "Qwen/Qwen2.5-32B-Instruct-AWQ",
+  "n": 475,
+  "seed": 717171,
+  "identity": "accepted iff the drafted token has rank 1 under the target at temperature 0; alpha = accepted / drafted decision tokens",
+  "started": "2026-09-17T08:49:07",
+  "arms": {},
+  "accept": {}
+}

@@ -303,6 +303,48 @@ trabajo y se actualiza en la misma sesión en que un paso reporta.
 
 ## Dónde está el plan
 
+### Estado y hoja de ruta, 2026-09-17
+
+**El estado, en un párrafo.** El sustrato funciona y se midió tres veces: un
+`Qwen2.5-3B-Instruct` residente, miembros QLoRA conmutados por el campo `model`,
+servidos por vLLM detrás de un endpoint OpenAI, alcanzables desde un runtime de
+agentes real con cero pedidos saliendo de la máquina. **Un miembro es útil**
+(`email-full`, 0,741 en mensajes humanos, p = 0,00036 **[ran]** P43); el segundo
+(`fluids-full`) sigue el protocolo y se equivoca en la física. La superficie de
+herramientas que ofrece un agente ahora se **poda a lo que cada miembro declara**
+(#190), lo que quita el motivo por el que el turno de agente de P43 no llamó nada. Y
+**la afirmación central — la aceptación rankea expertos como los rankea la calidad —
+se está midiendo por primera vez, ahora mismo**: la sesión A de P55 está en un A100
+mientras se escribe esto (lanzada el 2026-09-17, brief en
+[`results/P55-graded-ranking-20260916/BRIEF.md`](results/P55-graded-ranking-20260916/BRIEF.md)).
+
+**La hoja de ruta es una lista de mecanismos, desbloqueados de a uno.** Cada fila es
+algo que este proyecto nunca tuvo, con la compuerta que dice si ahora lo tiene. Una
+compuerta que falla detiene la corrida antes de comprar el mecanismo siguiente.
+
+| # | mecanismo | estado | compuerta |
+|---|---|---|---|
+| **M0** | el drafter servido **en modo corpus** — parar en `</tag>`, inyectar el resultado real, seguir. Vía `tool_calls` *inventa* el resultado que no puede recibir **[ran]** P43 | `RUNNING` sesión A | stop string honrado; el adaptador difiere de la base en 8 casos sonda (C18) |
+| **M-target** | un target que valga la pena **en esta tarea** (P49 compró el 32B en drafting, no en triage) | `RUNNING` sesión A | le gana a `email-full` sobre los mismos casos humanos, pareado, p ≤ 0,05 |
+| **M-α** | aceptación en **tokens** por `prompt_logprobs` forzados — la primera α con espacio de ids compartido | `RUNNING` sesión A | templates idénticos; una entrada por token con `rank` |
+| **M1** | **expertos que difieren en calidad**: `g75 ⊂ g200 ⊂ email-full` | `NEXT` sesión B+C | el verificador resuelve ≥ 1 de 3 pares, o el target no se sirve |
+| **M2** | **la prueba de orden** — la tesis | `NEXT` sesión B+C | SUPPORTED / FALSIFIED / UNRESOLVED-como-fracaso, escrito antes de correr |
+| **D0** | un drafter Qwen 3.x que comparta espacio de ids con **`Qwen3.8-27B`** | ✅ **[ran]** `Qwen3.5-2B` y `-4B`, 7 ids sólo del target, todos de audio/TTS | — |
+| **D1** | vLLM aplicando un LoRA sobre una base 3.x (C18) | `BLOCKED` — la cadena instala el último vLLM y **sigue siendo 0.29.0** **[ran]** 2026-09-17, así que no hay nada más nuevo que re-verificar todavía | `applied` sobre el adaptador diminuto de P33 |
+| **D2** | el mecanismo de C18, leído con el log en la mano (G3 merge; mapeo clave PEFT ↔ módulo vLLM) | `NEXT` después de A | — |
+| **D4** | **este instrumento apuntado a `Qwen3.8-27B`**, pool graduado reentrenado sobre `Qwen3.5-4B` | `BLOCKED` por D1/D2 | la misma tabla de veredictos que M2 |
+
+**Por qué en este orden.** Un target más nuevo y más lento no acerca la medición del
+ranking; α nunca se había medido contra ningún target, y `Qwen2.5-32B` alcanza para
+medirla. Si M2 dice que la aceptación no rankea, D4 habría comprado una versión más
+rápida de un mecanismo que no funciona. Nada de M depende de D; D4 depende de todo M.
+
+**Qué cambiaría la hoja de ruta.** M-target UNBOUGHT → no hay target que valga la
+pena en triage; la prueba de orden no se compra y el próximo diseño es una suite más
+dura, no un modelo más grande. M1 no desbloqueado → los grados no son grados;
+ensancharlos o graduar por pasos (contador de rediseños: 1). M2 FALSIFIED → el router
+gratis desaparece y la arquitectura sobrevive sin él, como el §1 del plan siempre dijo.
+
 | | objetivo | estado |
 |:--:|---|---|
 | **S0** | que el instrumento mida lo que dice | ✅ |
