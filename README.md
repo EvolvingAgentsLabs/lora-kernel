@@ -350,11 +350,11 @@ A gate that fails stops the run before the next mechanism is bought.
 
 | # | mechanism | state | gate |
 |---|---|---|---|
-| **M0** | the drafter served **in corpus mode** — stop at `</tag>`, inject the real result, continue. Through `tool_calls` it *invents* the result it cannot receive **[ran]** P43 | `RUNNING` session A | stop string honoured; adapter differs from base on 8 probe cases (C18) |
-| **M-target** | a target worth accepting against **on this task** (P49 bought the 32B on drafting, not triage) | `RUNNING` session A | beats `email-full` on the same human cases, paired, p ≤ 0.05 |
-| **M-α** | acceptance in **tokens** by forced `prompt_logprobs` — the first α with a shared id space | `RUNNING` session A | chat templates identical; one entry per token with `rank` |
-| **M1** | **experts that differ in quality**: `g75 ⊂ g200 ⊂ email-full` | `NEXT` session B+C | verifier resolves ≥ 1 of 3 pairs, or the target is not served |
-| **M2** | **the ordering test** — the thesis | `NEXT` session B+C | SUPPORTED / FALSIFIED / UNRESOLVED-as-failure, written before the run |
+| **M0** | the drafter served **in corpus mode** — stop at `</tag>`, inject the real result, continue. Through `tool_calls` it *invents* the result it cannot receive **[ran]** P43 | ✅ **[ran]** `email-full` **0.992** in corpus mode against 0.808 through `tool_calls` | stop string honoured; adapter differs from base on 8 probe cases (C18) |
+| **M-target** | a target worth accepting against **on this task** (P49 bought the 32B on drafting, not triage) | ❌ **UNBOUGHT [ran]** — the 32B scores **0.746** on human cases against the expert's 0.989, paired 2 : 87; it gets the facts and misapplies the rule. On this suite the target is weaker than the expert | beats `email-full` on the same human cases, paired, p ≤ 0.05 |
+| **M-α** | acceptance in **tokens** by forced `prompt_logprobs` — the first α with a shared id space | ✅ preflights pass **[ran]**; **not yet run** — the gate before it refused | chat templates identical; one entry per token with `rank` |
+| **M1** | **experts that differ in quality**: `g75 ⊂ g200 ⊂ email-full` | `BLOCKED` on a suite with a stronger target — redesign candidate: the desk's `commitment` region, 32B at 1.000 across depth **[ran]** P51 | verifier resolves ≥ 1 of 3 pairs, or the target is not served |
+| **M2** | **the ordering test** — the thesis | `BLOCKED` with M1 | SUPPORTED / FALSIFIED / UNRESOLVED-as-failure, written before the run |
 | **D0** | a Qwen 3.x drafter sharing an id space with **`Qwen3.8-27B`** | ✅ **[ran]** `Qwen3.5-2B` and `-4B`, 7 target-only ids, all audio/TTS | — |
 | **D1** | vLLM applying a LoRA on a 3.x base (C18) | `BLOCKED` — the chain installs the latest vLLM and it is **still 0.29.0** **[ran]** 2026-09-17, so there is nothing newer to re-check yet | `applied` on P33's tiny adapter |
 | **D2** | the C18 mechanism, read with the log in hand (G3 merge; PEFT-key ↔ vLLM-module mapping) | `NEXT` after A | — |

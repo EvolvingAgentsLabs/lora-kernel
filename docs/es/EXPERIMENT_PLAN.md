@@ -2657,11 +2657,37 @@ declaración donde el corpus enseña uno, y alfabético donde no.
 Brief: [`../results/P55-graded-ranking-20260916/BRIEF.md`](../../results/P55-graded-ranking-20260916/BRIEF.md).
 Runner `training/harness/accept_rank.py`, compuertas como código en
 `tests/test_accept_rank.py`.
-**`RUNNING` — sesión A lanzada el 2026-09-17 en un A100** (`srv054155`), rama `main`
-en `8d8ff52`. Primer hecho que devolvió antes de servir un modelo: la cadena instala
-`vllm>=0.28` y resuelve a **0.29.0 — la misma versión que corrió P33** **[ran]**, así
-que la pista D1 tal como está diseñada no tiene nada más nuevo que re-verificar; D2 (el
-mecanismo, leído con el log) es el paso vivo para el drafter 3.x.
+**Sesión A — `DONE`, 2026-09-17, tres intentos, detenida `UNBOUGHT` en M-target.**
+Resultado: [`../../results/P55-graded-ranking-20260916/session_a.json`](../../results/P55-graded-ranking-20260916/session_a.json);
+los intentos 1 y 2 quedan con su propio nombre — los dos fueron fallas mías del
+instrumento (un preflight que medía la frase de la base; un loop que rechazaba las
+llamadas posicionales que el propio bloque pide), cada una arreglada con un test antes
+de relanzar.
+
+| brazo | 475 | humanos 351 | llamadas · rechazadas | qué dice |
+|---|---:|---:|---|---|
+| base `Qwen2.5-3B` | 0,516 | **0,345** | 0 · 0 | reproduce P31 exacto |
+| **`email-full`, modo corpus** | **0,992** | **0,989** | 1053 · **0** | **M0 desbloqueado**: vía `tool_calls` el mismo adaptador dio 0,808 (P43). Servido como enseña su corpus — parar en `</tag>`, inyectar el resultado real — resuelve la tarea. Reproducido en dos sesiones, 31 s cada una |
+| `Qwen2.5-32B-AWQ`, modo corpus | 0,813 | **0,746** | 1248 · 195 | consigue todos los hechos en 3–4 llamadas y **aplica mal la regla** en 83 casos humanos; pareado contra el experto **2 : 87**, p = 0,0 — **resolublemente peor** |
+
+**Todos los preflights de M-α pasaron** — C18 `applied`, templates idénticos,
+`prompt_logprobs` con una entrada por token y `rank` — así que el instrumento está
+listo y nunca corrió: **la compuerta rechazó el target por la razón para la que fue
+escrita.** En esta suite un 32B sin entrenar no es más fuerte que el 3B entrenado, y
+la aceptación contra él premiaría estar de acuerdo con veredictos equivocados. Fallan
+dos cosas a la vez, las dos de la suite: el mejor experto está en el techo (0,99) y el
+target está por debajo (0,75).
+
+**Candidato a rediseño, contado como el primero:** mover la prueba de orden a la
+región `commitment` del desk, donde P51 ya midió al 32B en **1,000 en las cuatro
+profundidades** y a la base cayendo **1,000 → 0,800 → 0,133 → 0,000** **[ran]** — un
+target más fuerte que la base por construcción y un gradiente sobre el que ningún
+experto se va a sentar. Necesita un corpus de desk (no existe) y tres expertos de desk
+graduados. Queda para decidir.
+
+También del boot: la cadena instala `vllm>=0.28` y resuelve a **0.29.0 — la misma
+versión que corrió P33** **[ran]**, así que la pista D1 no tiene nada más nuevo que
+re-verificar; D2 es el paso vivo para un drafter 3.x.
 
 **La primera prueba de la afirmación central.** La aceptación contra un target más
 grande nunca se midió contra ningún target, y el motivo nunca fue hardware: rankear
