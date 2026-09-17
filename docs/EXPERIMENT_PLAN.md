@@ -2567,6 +2567,46 @@ teaches one, and sorted where none does.
 **It is off by default**, because every measurement before today ran without it.
 `--prune` on and off is the arm pair, and it has not been run.
 
+### Pre-registered 2026-09-16: P55 — acceptance as ranking, on experts graded by construction
+
+Brief: [`../results/P55-graded-ranking-20260916/BRIEF.md`](../results/P55-graded-ranking-20260916/BRIEF.md).
+Runner `training/harness/accept_rank.py`, gates as code in `tests/test_accept_rank.py`.
+**Nothing run yet.**
+
+**The first test of the central claim.** Acceptance against a larger target has never
+been measured on any target, and the reason was never hardware: ranking needs experts
+that differ in quality, and this project has had one. So the experts are graded **by
+construction** — `g75 ⊂ g200 ⊂ email-full`, one corpus, one base, only the amount of
+data changing — and the verifier must order them *before* the target is served.
+
+**A corpus/serving drift found on the way, and fixed first.** The corpus renders a
+chain as `<tag>…</tag>= {result}`; served through `tool_calls` the expert cannot
+receive a result mid-generation and **invents one** — P43's record has
+`= {"turns": 1, "i_wrote_in_thread": false}` where the tool said `2, true` **[ran]**.
+The runner serves the drafter the way the corpus teaches: stop at `</tag>`, inject
+the real result, continue. Invented results are counted (`stray_results`), never
+scored.
+
+**Acceptance in tokens, for the first time.** Same tokenizer **[ran]** P48, so the
+target is handed the draft verbatim and asked for `prompt_logprobs`: a token is
+accepted iff its rank under the target is 1. Reported over all decision tokens
+(primary), the tag spans, the verdict span, and as the accepted prefix — because a
+chain is ~40 tokens and the verdict is one, and *"α does not rank"* has to be able to
+say where the agreement lived.
+
+**One mechanism per gate, one gate per session:** corpus-mode serving and C18 →
+a target that beats the expert *on triage* (P49 bought it on drafting) → the
+instrument's preflights → the grades resolved by the verifier → the ordering test.
+Verdicts pre-registered: SUPPORTED / FALSIFIED / UNRESOLVED (a failure, not a tie) /
+M1 not unlocked / UNBOUGHT.
+
+**Track D — `Qwen3.8-27B` as the large model** is on the route, as mechanisms in
+order. **D0 [ran] today:** `Qwen3.5-2B` and `Qwen3.5-4B` share an id space with
+`Qwen3.8-27B` — 248,044 ids, 7 target-only, all audio/TTS specials; `<think>` is
+shared. D1 re-checks C18 under the vLLM the chain installs today; D2 reads the
+mechanism with the log in hand; D4 is this instrument pointed at 3.8-27B. Nothing in
+P55 depends on D; D4 depends on all of P55.
+
 ## 12. History
 
 | date | change to this plan | why |

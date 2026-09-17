@@ -412,6 +412,10 @@ Nothing in this section is inferred from a paper or a README.
   it has been run**. What is measured is the *inputs* to those decisions: the
   tokenizer compatibility, the routing baseline, the depth floor, the calibration
   ceiling.
+  **P55 is the first run of acceptance as ranking** — on experts graded by
+  construction, pre-registered in
+  [`results/P55-graded-ranking-20260916/BRIEF.md`](results/P55-graded-ranking-20260916/BRIEF.md).
+  Not run yet.
 - **A pool larger than two.** `--max-loras` has only ever been 1 or 2 here. S-LoRA
   reports thousands on one machine **[read]**; ours is untested above two, and the
   layered design is the first thing that would need more.

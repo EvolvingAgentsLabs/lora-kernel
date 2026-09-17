@@ -1,0 +1,19 @@
+# D0 — which Qwen 3.x drafters share an id space with Qwen3.8-27B
+# [ran] 2026-09-16 from this machine, tokenizer.json fetched from the Hub, no GPU.
+#
+target Qwen/Qwen3.8-27B  sha256 0997f410c57a1f4e53b09e4be8f4a172d90edd9564368fb0847030937229b9f3
+
+drafter                 vocab  ids match  target-only  target-only ids
+Qwen/Qwen3.5-2B        248044       True            7  248070:<|audio_start|>, 248071:<|audio_end|>, 248072:<tts_pad>, 248073:<tts_text_bos>, 248074:<tts_text_eod>, 248075:<tts_text_bos_single>, 248076:<|audio_pad|>
+                     sha256 5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42
+Qwen/Qwen3.5-4B        248044       True            7  248070:<|audio_start|>, 248071:<|audio_end|>, 248072:<tts_pad>, 248073:<tts_text_bos>, 248074:<tts_text_eod>, 248075:<tts_text_bos_single>, 248076:<|audio_pad|>
+                     sha256 5f9e4d4901a92b997e463c1f46055088b6cca5ca61a6522d1b9f64c4bb81cb42
+
+# Not reachable without authentication (HTTP 401) — existence UNCONFIRMED, not asserted:
+#   Qwen/Qwen3.6-2B  Qwen/Qwen3.6-4B  Qwen/Qwen3.8-0.8B  Qwen/Qwen3.8-2B  Qwen/Qwen3.8-4B  Qwen/Qwen3.8-8B
+#
+# Reading: a Qwen3.5 drafter can be verified by Qwen3.8-27B in id space. The seven
+# target-only ids are modality specials the drafter can never propose — guaranteed
+# rejections at any position the target opens one, handled by keeping the target on
+# text and thinking off. What still blocks the pair is C18: vLLM serving a LoRA on
+# Qwen3.5 as the base [ran] P33. That is track D1/D2 in BRIEF.md.
