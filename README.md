@@ -71,6 +71,21 @@ One GPU. One base model resident. A pool of small deltas swapped per request by
 vLLM's multi-LoRA serving. The agentic system stops being software that calls a
 model and becomes **a model wearing different adapters**.
 
+### The mathematics, in one screen
+
+Everything above is a claim about four objects, each written out step by step with
+its run in [`docs/FOUNDATIONS.md`](docs/FOUNDATIONS.md):
+
+| object | the formula | where |
+|---|---|---|
+| **an expert is a delta** | $W' = W + \tfrac{\alpha}{r} A B$, $r=16$: **29,933,568** parameters, **119,801,528** bytes on disk — derivation and artefact agree **[ran]** | §4 |
+| **generating is a recursion the target pays for once per token** | $t_{\text{step}} \gtrsim B_W / \mathcal{B}$: the 32B floors at ~13 ms/token because it reads 19.3 GB per step, not because it multiplies | §2 |
+| **acceptance at temperature 0 is argmax equality** | accept $\tilde x_i$ iff $\tilde x_i = \arg\max p_T(\cdot \mid \text{prefix}, \tilde x_{<i})$; expected tokens per round $\mathbb{E}[\tau] = \tfrac{1-\alpha^{k+1}}{1-\alpha}$, speed-up $\mathbb{E}[\tau]/(kc+1)$ | §6 |
+| **acceptance ranks experts only above a stronger target** | $Q(E_a) > Q(E_b) \Rightarrow \alpha_T(E_a) > \alpha_T(E_b)$ **requires** $Q(T) \ge \max_a Q(E_a)$ — P55 A found $0.746 < 0.989$, paired 2 : 87, and did not buy the test **[ran]** | §7 |
+
+The rule this project now keeps: **every document carries its mathematics, and every
+Colab run updates the formula it instantiates.**
+
 ## The mechanism that makes routing free — and the reason it works
 
 Speculative decoding has one property that is not a footnote: **the emitted
@@ -502,6 +517,12 @@ a standard with nothing beside it never pays for itself.
 
 ## Documents
 
+- [`docs/FOUNDATIONS.md`](docs/FOUNDATIONS.md) — **the mathematics, step by step and
+  tied to what ran**: the model as a function, why decode is memory-bound, BPE and
+  id maps, LoRA as a delta with its count reconciled to the artefact, the engine,
+  speculative decoding with its exactness and speed-up, acceptance as ranking with
+  its precondition, the tasks as functions, the statistics, and why the Qwen 3 family
+  and `Qwen3.8-27B` can be the large model · [es](docs/es/FOUNDATIONS.md)
 - [`docs/REPORT.md`](docs/REPORT.md) — **the original plan against what happened**,
   the pattern in the failures (almost every negative result is the suite, not the
   architecture), what is genuinely blocked, and what NVIDIA's speculative-decoding

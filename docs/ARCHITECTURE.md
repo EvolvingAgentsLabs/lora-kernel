@@ -224,3 +224,24 @@ not evidence. All four suites this project previously measured on fail at least 
   which is the only thing we need speculative decoding for.
 - **A new inference runtime.** vLLM is the substrate. Needing our own would be a
   finding, not a plan.
+
+## The mathematics of each layer
+
+Every layer above is a formula with a run under it; the derivations are in
+[`FOUNDATIONS.md`](FOUNDATIONS.md) and only the statement is repeated here.
+
+| layer | what it is, as mathematics | the number under it |
+|---|---|---|
+| **1 · HOST** | one resident $\theta$; a request with adapter $i$ computes $y = xW + s\,(xA_i)B_i$ per projection, batched across requests by adapter id (§5.2) | C18 identity gate: `applied` on `Qwen2.5-3B`, identical on `Qwen3.5-4B` **[ran]** P33; `applied` 6/8 probes **[ran]** P55 A |
+| **2 · TARGET** | verifies a draft in one teacher-forced pass; at $T=0$ accept $\tilde x_i$ iff $\tilde x_i = \arg\max p_T(\cdot\mid\text{prefix},\tilde x_{<i})$ (§6.3); a verify pass costs one weight read for $k+1$ positions (§2.3) | same id space as the base: byte-identical tokenizer **[ran]** P48; `prompt_logprobs` returns rank per token **[ran]** P55 A |
+| **3 · FALLBACK** | outside the mathematics of acceptance on purpose: no logprobs for a forced continuation (C2), no shared ids (C3) — it answers, it never verifies | routing by region 0.546 → 0.775 **[ran]** P41 |
+| **4 · USER SPACE** | each member is $\Delta_i = \tfrac{\alpha}{r}A_iB_i$ over the seven projections of every block (§4.1); 29,933,568 parameters each (§4.2) | 119,801,528 bytes per adapter **[ran]** `STACK.md` §3 |
+| **5 · SELECTION** | coarse: a lookup; fine: $\arg\max_i \alpha_T(E_i, c)$ — valid only when $Q(T)\ge\max_i Q(E_i)$ (§7.2) | the precondition failed on triage, $0.746 < 0.989$ **[ran]** P55 A; unmeasured elsewhere |
+| **6 · MEMORY** | not neural; no formula, by design | — |
+| **7 · DREAM** | the tournament's fitness is a paired sign test on discordant cases (§9.2), never two totals | 84/81/82 were three ties **[ran]** P36/P38/P40 |
+
+**The withdrawal condition, formally.** Layer 2 is withdrawable in a region $R$ when
+the expert alone matches the verified score it reaches with the target's verification:
+$Q_R(E) \ge Q_R(E \mid T) - \varepsilon$ on a paired test. Measured once, in-region,
+with a calculator standing in for the target: gap **0.000** **[ran]** S5 — never yet
+with acceptance, because acceptance has never been measured (§11 of FOUNDATIONS).

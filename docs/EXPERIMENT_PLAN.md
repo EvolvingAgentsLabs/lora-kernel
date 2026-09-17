@@ -2590,6 +2590,16 @@ untrained 32B is not stronger than the trained 3B, and acceptance against it wou
 reward agreeing with wrong verdicts. Two things fail at once, both about the suite:
 the best expert sits at the ceiling (0.99) and the target sits below it (0.75).
 
+**The mathematics of this step** ([`FOUNDATIONS.md`](FOUNDATIONS.md) §7, §9). The
+claim is $Q(E_a) > Q(E_b) \Rightarrow \alpha_T(E_a) > \alpha_T(E_b)$ with
+$\alpha_T(E,c) = \tfrac{1}{n_c}\sum_i \mathbf 1[\tilde x_i = \arg\max p_T(\cdot\mid\cdot)]$;
+it is only about quality under $Q(T) \ge \max_a Q(E_a)$, which is what M-target tests
+as a paired sign test and what failed here ($0.746 < 0.989$, 2 : 87). The grades are
+resolvable at $n=351$ only for $\delta \ge 0.07$ (power 0.93), which fixed them at
+75 / 200 / 598. **Next step, in the same terms:** a suite where $Q(T) \ge \max Q(E)$
+holds and $\max Q(E) < 1$ — the desk's `commitment` region satisfies the first by
+measurement (target 1.000 at every depth) and the second by its gradient.
+
 **Redesign candidate, counted as the first:** move the ordering test to the desk's
 `commitment` region, where P51 already measured the 32B at **1.000 across all four
 depths** and the base falling **1.000 → 0.800 → 0.133 → 0.000** **[ran]** — a target

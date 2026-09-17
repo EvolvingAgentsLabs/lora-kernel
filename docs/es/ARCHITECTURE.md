@@ -203,3 +203,24 @@ evidencia. Las cuatro suites que este proyecto midió antes fallan al menos una 
 - **Diez verticales, marketplace de adaptadores, control plane.** Río abajo de E2.
 - **Un runtime de inferencia propio.** vLLM es el sustrato. Necesitar uno propio
   sería un hallazgo, no un plan.
+
+## La matemática de cada capa
+
+Cada capa de arriba es una fórmula con una corrida debajo; las derivaciones están en
+[`FOUNDATIONS.md`](FOUNDATIONS.md) y acá se repite sólo el enunciado.
+
+| capa | qué es, como matemática | el número debajo |
+|---|---|---|
+| **1 · HOST** | un $\theta$ residente; un pedido con adaptador $i$ calcula $y = xW + s\,(xA_i)B_i$ por proyección, batcheado entre pedidos por id de adaptador (§5.2) | compuerta de identidad C18: `applied` en `Qwen2.5-3B`, idéntico en `Qwen3.5-4B` **[ran]** P33; `applied` 6/8 sondas **[ran]** P55 A |
+| **2 · TARGET** | verifica un draft en una pasada con teacher forcing; a $T=0$ acepta $\tilde x_i$ sii $\tilde x_i = \arg\max p_T(\cdot\mid\text{prefijo},\tilde x_{<i})$ (§6.3); una pasada de verificación cuesta una lectura de pesos por $k+1$ posiciones (§2.3) | mismo espacio de ids que la base: tokenizer byte-idéntico **[ran]** P48; `prompt_logprobs` devuelve el rango por token **[ran]** P55 A |
+| **3 · FALLBACK** | fuera de la matemática de la aceptación a propósito: sin logprobs para una continuación forzada (C2), sin ids compartidos (C3) — contesta, nunca verifica | ruteo por región 0,546 → 0,775 **[ran]** P41 |
+| **4 · USER SPACE** | cada miembro es $\Delta_i = \tfrac{\alpha}{r}A_iB_i$ sobre las siete proyecciones de cada bloque (§4.1); 29.933.568 parámetros cada uno (§4.2) | 119.801.528 bytes por adaptador **[ran]** `STACK.md` §3 |
+| **5 · SELECTION** | gruesa: una tabla; fina: $\arg\max_i \alpha_T(E_i, c)$ — válida sólo cuando $Q(T)\ge\max_i Q(E_i)$ (§7.2) | la precondición falló en triage, $0,746 < 0,989$ **[ran]** P55 A; sin medir en otro lado |
+| **6 · MEMORY** | no neuronal; sin fórmula, por diseño | — |
+| **7 · DREAM** | el fitness del torneo es un test de signos pareado sobre casos discordantes (§9.2), nunca dos totales | 84/81/82 fueron tres empates **[ran]** P36/P38/P40 |
+
+**La condición de retiro, formalmente.** La capa 2 es retirable en una región $R$
+cuando el experto solo iguala el puntaje verificado que alcanza con la verificación del
+target: $Q_R(E) \ge Q_R(E \mid T) - \varepsilon$ en un test pareado. Medido una vez, en
+región, con una calculadora en lugar del target: brecha **0,000** **[ran]** S5 — nunca
+todavía con aceptación, porque la aceptación nunca se midió (§11 de FOUNDATIONS).

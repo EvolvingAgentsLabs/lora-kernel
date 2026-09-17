@@ -4,6 +4,10 @@
 `training/harness/accept_rank.py`; the gates below are its code, tested in
 `tests/test_accept_rank.py` on the two outcomes each can have.
 
+**Mathematics:** every identity this brief relies on — acceptance as argmax equality,
+the three α, the precondition $Q(T)\ge\max Q(E)$, the paired sign test and its power —
+is derived in [`docs/FOUNDATIONS.md`](../../docs/FOUNDATIONS.md) §6–§9.
+
 ## The claim, and why it has never been tested
 
 The architecture's central claim: **a small expert's acceptance rate against a larger
