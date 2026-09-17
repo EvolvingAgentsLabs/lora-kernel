@@ -132,7 +132,7 @@ def run_chain(gen, inbox: dict, max_calls: int = 6, suite=None) -> dict:
     tool = suite.answer if suite else answer
     pos = suite.positional if suite else POSITIONAL
     parse = suite.parse if suite else parse_verdict
-    out, spans, calls, refused, stray = "", [], 0, 0, 0
+    out, spans, calls, refused, stray, malformed = "", [], 0, 0, 0, 0
     for _ in range(max_calls + 1):
         chunk = gen(out)
         # TRUST THE STOP STRING ONLY AS FAR AS IT GOES. Anything past the first
@@ -149,8 +149,19 @@ def run_chain(gen, inbox: dict, max_calls: int = 6, suite=None) -> dict:
         out += chunk
         if cut is None:
             break
-        m = list(tag.finditer(out))[-1]           # the call just closed
         calls += 1
+        matches = list(tag.finditer(out))
+        # A CLOSING TAG WITH NO CANONICAL OPENING is a malformed call, not a crash.
+        # `g25` wrote `<message id=msg-003>…</message>` — the XML-attribute form —
+        # and the first version of this loop died on `[-1]` of an empty match list
+        # for 209 of 240 cases, recording no text at all **[ran]** P58. The model is
+        # told, as it is told about a refused call, and the chain continues.
+        if not matches or matches[-1].end() != len(out):
+            refused += 1
+            malformed += 1
+            out += "= ERROR: malformed call — write <tag>key=value</tag>\n"
+            continue
+        m = matches[-1]                           # the call just closed
         try:
             res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
         except ToolError as e:
@@ -159,7 +170,7 @@ def run_chain(gen, inbox: dict, max_calls: int = 6, suite=None) -> dict:
         out += f"= {res}\n"
     finished = cut is None
     return {"text": out, "spans": spans, "calls": calls, "refused": refused,
-            "stray_results": stray,
+            "malformed": malformed, "stray_results": stray,
             "verdict": parse(spans[-1]["text"]) if finished else None,
             "ran_out": not finished}
 
@@ -395,10 +406,18 @@ def alpha_of(scored: list[dict]) -> dict:
 
 def applied(base: list[dict], adapter: list[dict], n: int = PROBE) -> dict:
     """C18: an adapter vLLM loaded and did not apply serves the base's text."""
-    b = {r["id"]: r.get("text") for r in base if "text" in r}
-    a = {r["id"]: r.get("text") for r in adapter if "text" in r}
-    ids = [i for i in sorted(set(a) & set(b)) if b[i] is not None][:n]
+    # AN ERRORED RECORD IS NOT A DIFFERENCE. P58's g25 arm failed 209 of 240 requests,
+    # its records carried `text: None`, and this gate read None ≠ text as "differs" on
+    # 8 of 8 probes — `applied` over an arm that had produced nothing **[ran]**. A
+    # check that passes while the capability is broken; only records with a text on
+    # both sides are probed, and too few of them is its own verdict.
+    b = {r["id"]: r["text"] for r in base if r.get("text") is not None and "error" not in r}
+    a = {r["id"]: r["text"] for r in adapter if r.get("text") is not None and "error" not in r}
+    ids = sorted(set(a) & set(b))[:n]
     differs = sum(a[i] != b[i] for i in ids)
+    if len(ids) < 3:
+        return {"probed": len(ids), "differs": differs,
+                "verdict": f"UNREADABLE: only {len(ids)} probes with text on both sides"}
     return {"probed": len(ids), "differs": differs,
             "verdict": "applied" if differs else "NOT APPLIED: identical to the base"}
 
@@ -659,6 +678,7 @@ def summarise(recs: list[dict]) -> dict:
             "undecided": sum(r["verdict"] is None for r in ok),
             "calls": sum(r["calls"] for r in ok), "refused": sum(r["refused"] for r in ok),
             "stray_results": sum(r.get("stray_results", 0) for r in ok),
+            "malformed": sum(r.get("malformed", 0) for r in ok),
             "partial": False}
 
 
