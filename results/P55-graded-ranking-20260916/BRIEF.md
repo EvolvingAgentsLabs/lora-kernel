@@ -244,3 +244,18 @@ what keep the two unknowns attributable.
 1.000 (M-target on the ceiling — the gate as written refuses a tie, and that reading
 is reported as *ceiling*, not as *weaker target*). Redesign counter after this run:
 **2 of 3**.
+
+### P55b — result, 2026-09-17 **[ran]** `results/P55b-desk-ranking-20260917/p55b.json`
+
+| arm | 240 | reading |
+|---|---:|---|
+| base | 38 | wanders into self-closing XML |
+| `g25` | **0** | fabricates the email in XML, 240/240 |
+| `g75` | **240** | perfect — 75 examples suffice for a one-call protocol |
+| `g600` | **240** | ≡ `g75`, 0 : 0 |
+| 32B, corpus mode | 227 → **232** with a date-normalising verifier | 5 losses were format (`2023-01-05` for `January 5`) — the literal check was deleted; 4 wander `thread_history → inbox` and say *no date*, 3 run out, 1 wrong |
+
+**M1 passed on one bit** (both resolved pairs are `g25` against a perfect grade); **M-target
+UNBOUGHT for the right reason**: 0 : 8, $p = 0.008$, the untrained target below the trained
+expert — the second suite where $Q(T) < \max Q(E)$. **Acceptance was not measured.** Both
+risks named before the run came true. Redesign counter: **2 of 3**.

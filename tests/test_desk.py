@@ -147,3 +147,22 @@ def test_an_unknown_gate_cannot_be_waived():
         inspect("x", _suite(n=16), region_of=lambda c: c["region"],
                 prompt_of=lambda c: c["prompt"], depth_of=lambda c: c["depth"],
                 tools_of=tools_needed, waive={"base_not_at_the_ceiling": "nope"})
+
+
+# --- P55b: a date is a date in any shape ----------------------------------------
+
+def test_a_date_in_another_shape_is_the_same_answer():
+    """The 32B wrote `2023-01-05` for `January 5` on 5 of its 13 'wrong' cases."""
+    from training.email.desk import correct
+    case = {"answer": "January 5", "kind": "date"}
+    for said in ("January 5", "2023-01-05", "Jan 5", "5 January", "January 5th",
+                 "I committed to January 5.", "the 5th of January"):
+        assert correct(case, said), said
+    for said in ("January 6", "2023-02-05", "no date", "", None):
+        assert not correct(case, said), said
+
+
+def test_non_date_answers_still_match_by_substring():
+    from training.email.desk import correct
+    assert correct({"answer": "msg-007", "kind": "id"}, "It is msg-007.")
+    assert not correct({"answer": "Hugo Duarte", "kind": "name"}, "Ana Costa")
