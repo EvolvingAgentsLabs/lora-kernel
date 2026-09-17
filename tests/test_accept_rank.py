@@ -299,3 +299,20 @@ def test_a_positional_call_is_answered_in_the_loop():
     gen = scripted(f"<thread_history>{HUMAN['thread_id']}</thread_history>", "IMPORTANT")
     out = run_chain(gen, INBOX)
     assert out["refused"] == 0 and '= {"turns":' in out["text"]
+
+
+# --- P58: a malformed close is a refusal, and errors are not differences ---------
+
+def test_a_closing_tag_without_a_canonical_opening_is_a_malformed_call_not_a_crash():
+    """g25 wrote `<message id=msg-003>…</message>`; the loop died on it 209 times."""
+    gen = scripted("<message id=msg-003>id=msg-003</message>", "NOT IMPORTANT")
+    out = run_chain(gen, INBOX)
+    assert out["malformed"] == 1 and out["refused"] == 1
+    assert "= ERROR: malformed call" in out["text"] and out["verdict"] is False
+
+
+def test_the_identity_gate_does_not_read_an_error_as_a_difference():
+    base = recs([True] * 8)
+    broken = [{"id": r["id"], "error": "IndexError"} for r in base]
+    v = applied(base, broken)
+    assert v["verdict"].startswith("UNREADABLE") and v["probed"] == 0
