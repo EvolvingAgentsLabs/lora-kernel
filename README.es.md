@@ -1,8 +1,9 @@
 # lora-kernel
 
-**Todo el sistema agéntico es un pool de deltas QLoRA sobre un modelo base residente,
-rankeado por un modelo más grande de la misma familia que verifica sus tokens.** Nada
-más es neuronal.
+**Un pool de deltas QLoRA sobre un modelo base residente, rankeado por un modelo más
+grande de la misma familia que verifica sus tokens, con un modelo de frontera como
+fallback permanente para lo que el pool está medido que falla.** Nada más es
+neuronal.
 
 *[Read me in English](README.md)*
 
@@ -18,33 +19,119 @@ de vuelta, con las herramientas del inbox entregadas al agente por MCP y **cero
 pedidos saliendo de la máquina** para todo lo que sirve el pool **[ran]** P43. Paso a
 paso: [`docs/es/OPENCLAW.md`](docs/es/OPENCLAW.md).
 
-> **Estado, 2026-09-17.** Cada afirmación sobre este repositorio es **[ran]** con su
-> directorio de corrida; cada afirmación sobre cualquier otra cosa es **[read]** y
-> citada; lo que no se pudo verificar desde acá es **[unverified]** y nunca sostiene
-> nada.
->
-> - **El sustrato está medido, tres veces:** una base residente, deltas conmutados
->   por el campo `model`, servidos por vLLM, alcanzables desde un agente real.
-> - **Un experto es genuinamente bueno.** Servido como enseña su corpus, `email-full`
->   da **0,992** (mensajes humanos **0,989**), contra **0,808** vía `tool_calls`
->   **[ran]** P55 A — la ruta de serving, no los pesos, costaba 18 puntos.
-> - **La afirmación central tiene instrumento y todavía no tiene veredicto.** La
->   aceptación en tokens contra un target de la misma familia está construida y con
->   preflights; en la suite de triage el 32B sin entrenar dio **0,746 < 0,989**, así
->   que la compuerta se negó a comprar un ranking contra un target más débil
->   **[ran]** P55 A. La próxima corrida es en una suite donde el target está medido
->   más fuerte (P55b).
-> - **El objetivo es `Qwen3.8-27B` como modelo grande**, y la ruta es una lista corta
->   de mecanismos, uno de los cuales está bloqueado y nombrado abajo.
+Cada afirmación sobre este repositorio es **[ran]** con su directorio de corrida; cada
+afirmación sobre cualquier otra cosa es **[read]** y citada; lo que no se pudo
+verificar desde acá es **[unverified]** y nunca sostiene nada. Cada fórmula está
+derivada, paso a paso y atada a su corrida, en
+[`docs/es/FOUNDATIONS.md`](docs/es/FOUNDATIONS.md). **La regla que este proyecto
+mantiene: cada documento lleva su matemática, y cada corrida en Colab actualiza la
+fórmula que instancia.**
 
 ---
 
-## La tesis
+## Para qué sirve, y qué esperar de esto
 
-Un sistema multi-agente hoy es Python orquestando llamadas a APIs: un modelo router,
-un modelo planificador, esquemas JSON en cada prompt, un parser adivinando si el
-modelo quiso llamar a una herramienta. Reemplazar todo eso por **deltas de pesos
-sobre una base residente**:
+**No** es un modelo de 3B que le gana a un modelo de frontera. **Es una arquitectura
+por niveles que absorbe localmente la parte repetitiva y de alto volumen del tráfico
+de una organización y manda afuera sólo el residuo** — y los números de abajo son la
+razón por la que la frase está escrita así.
+
+### Los puntos medidos
+
+| configuración | exactitud entregada | sale de la máquina | corrida |
+|---|---:|---:|---|
+| todo local — el pool solo | **0,546** | 0 % | **[ran]** P41 |
+| **la región que falla ruteada a la frontera** | **0,775** | **38 %** | **[ran]** P41 |
+| un experto, en su propia tarea, servido como enseña su corpus | **0,992** (mensajes humanos 0,989) | 0 % | **[ran]** P55 A |
+| el mismo experto, servido vía `tool_calls` | 0,808 (humanos 0,741, barra 0,655, $p = 0,00036$) | 0 % | **[ran]** P43 |
+
+Las dos primeras filas son toda la tesis en miniatura. El plan original llamaba a la
+frontera *andamio* a retirar cuando los expertos la igualaran; retirarla midió
+**0,546**. Conservarla para lo que el pool está *medido* que falla — ruteado por
+región, no adivinado por caso — midió **0,775** con el 62 % del tráfico sin salir
+nunca. **La frontera se queda. Se queda para el residuo.**
+
+### La economía, como modelo con sus entradas rotuladas
+
+Sea $\rho$ la fracción de pedidos servidos localmente y $1-\rho$ la que va a una API de
+frontera. Con $c_L$ el costo marginal de un pedido local y $c_F$ el de uno de frontera,
+
+$$
+\frac{\text{costo}_{\text{híbrido}}}{\text{costo}_{\text{frontera}}}
+\;=\; \rho\,\frac{c_L}{c_F} + (1-\rho),
+\qquad
+\text{calidad}_{\text{híbrida}} = \rho\,Q_L + (1-\rho)\,Q_F .
+$$
+
+Lo que está **medido**: $\rho = 0,62$ y $\text{calidad} = 0,775$ sobre el pool de dos
+regiones **[ran]** P41; un experto local en su propia región a $Q_L \approx 0,99$
+**[ran]** P55 A; un delta local de **119.801.528 bytes** sobre una base que se lee una
+vez por token **[ran]**. Lo que está **estimado, y se dice**: $c_L/c_F$. Un token
+local es una porción de una GPU-hora amortizada sobre todos los pedidos de esa hora;
+un token de frontera es un precio de lista. Sea cual sea la relación a tus precios,
+la línea de costo de arriba es lineal en ella, y con $\rho = 0,62$ el híbrido queda
+entre el **38 % del costo de frontera** (con $c_L \to 0$) y el costo de frontera (con
+$c_L = c_F$). Tres reducciones más están medidas en forma y todavía no en tokens: la
+superficie de herramientas que ofrece un agente se poda de **54 líneas a 3** antes
+de armar el prompt (#190 **[ran]**); las instrucciones que vivirían en un system
+prompt viven en los pesos; y **nada de lo que sirve el pool se manda a ningún lado**
+**[ran]** P43.
+
+### Dónde funcionan los expertos chicos, y dónde fallan — las dos cosas medidas
+
+**Funcionan como obreros de línea de montaje sobre una región cerrada**: una tarea
+fija, herramientas fijas, una regla mecánica. `email-full` aprende *qué* herramienta,
+*con qué argumento*, y la regla *al menos dos de cuatro señales* hasta **0,989** en
+mensajes humanos **[ran]**; el experto de fluidos reproduce el procedimiento de su
+maestro paso a paso, **30/30** dentro de su región **[ran]** P9.
+
+**Fallan en el borde, en silencio.** El mismo experto de fluidos cae a **1 de 20** en
+familias que nunca vio — *con la misma fluidez, la misma estructura y la misma
+confianza*, inventando fórmulas **[ran]** P22. Por debajo de su profundidad de
+entrenamiento sobre-resuelve en **18 de 18** casos y la base pelada le gana, 0,167 a
+0,000 **[ran]** P45. Cada guardia *conductual* probada — tasa de llamadas, largo del
+transcript, un tripwire — dio **0,62 contra un azar de 0,60** **[ran]** P18. Una
+guardia *estructural* sobrevive: el álgebra dimensional sobre $(\text{kg}, \text{m},
+\text{s})$ atrapa el **0,80** del trabajo fuera de región, da falsa alarma 0,22 sola, y
+combinada con el chequeo mecánico dispara **0 de 60** en región y sigue atrapando 0,35
+afuera **[ran]** P22.
+
+Entonces: **usarlos donde la tarea se repite miles de veces por día y la regla es
+conocible; no usarlos solos donde un fallo silencioso cuesta más que la llamada que
+ahorró.**
+
+### Sólo modelos chicos — hoy no, y la proporción de largo plazo es una hipótesis
+
+Hoy las guardias no son lo bastante confiables para correr sin el fallback, y el
+número que lo dice es el de arriba: 0,62 contra 0,60. Los mecanismos con los que esta
+arquitectura apuesta a subir $\rho$ son tres, cada uno con la matemática en la que se
+apoya:
+
+1. **Ruteo estructural, no inferido.** La propia estructura del software — la sala, el
+   formulario, el endpoint — nombra al experto. Un diccionario de doce palabras clave
+   ya rutea el caso grueso en **1,000** **[ran]**; eso es tanto una crítica a la suite
+   como una victoria, y también es cómo rutea un despliegue real
+   ([`docs/es/CASE-TEAM.md`](docs/es/CASE-TEAM.md): el grupo estable *es* la región).
+2. **Verificación mecánica, y después escalar.** Donde la salida del experto se puede
+   comprobar — un esquema, un test, una regla como `important()` — la frontera se
+   llama sólo cuando el chequeo falla. Esa es la condición de retiro
+   $Q_R(E) \ge Q_R(E\mid T) - \varepsilon$ en un test pareado, medida una vez en región
+   con una calculadora en lugar del target: brecha **0,000** **[ran]** P7.
+3. **Decodificación especulativa dentro de una familia.** Un experto chico draftea, un
+   modelo local más grande verifica en una pasada, y los tokens emitidos se
+   distribuyen exactamente como los del grande (§ *Cómo funciona*). Donde vale, la
+   *calidad* del modelo grande llega a casi el *costo* del chico — y su tasa de
+   aceptación rankea a los expertos sin juez.
+
+**La expectativa, entonces:** $\rho$ alrededor de 0,6 está medido sobre un pool de dos
+regiones; los mecanismos de arriba son los que lo moverían hacia 0,85–0,9 en regiones
+nombradas estructuralmente y comprobables mecánicamente. **Esa proporción es una
+hipótesis con ruta, no un resultado**, y 1,0 no está en la ruta: el trabajo fuera de
+distribución y el arbitraje del residuo son para lo que se conserva la frontera.
+
+---
+
+## La tesis, con la fórmula al lado de cada reemplazo
 
 | lo que es hoy | en qué se convierte | la matemática |
 |---|---|---|
@@ -53,11 +140,6 @@ sobre una base residente**:
 | el harness — esquemas, parsers, reintentos | **serving en modo corpus**: parar en `</tag>`, inyectar el resultado real, seguir | $s_j = s_{j-1}\,\|\,\tilde s_j\,\|\,\texttt{= tool}(\tilde s_j)$ |
 | el loop de evolución | **un torneo sobre adaptadores**, promovidos por un test pareado | $p = \min(1, 2\Pr[\mathrm{Bin}(n_d,\tfrac12)\ge\max(u,n_d-u)])$ |
 | memoria, ejecución | markdown + git; un sandbox — **deliberadamente no neuronal** | — |
-
-Cada fórmula está derivada, paso a paso y atada a su corrida, en
-[`docs/es/FOUNDATIONS.md`](docs/es/FOUNDATIONS.md). **La regla que este proyecto
-mantiene: cada documento lleva su matemática, y cada corrida en Colab actualiza la
-fórmula que instancia.**
 
 ---
 
@@ -125,7 +207,9 @@ $$
 que es lo que calculan los kernels Punica / `bgmv` de vLLM **[read]** y lo que activa
 `--enable-lora --max-loras k --lora-modules nombre=ruta` **[ran]**. **C18 es el test de
 que el segundo término está presente**: el mismo prompt por la base y por el
-adaptador, los textos tienen que diferir.
+adaptador, los textos tienen que diferir. `--max-loras` sólo fue 1 o 2 acá; S-LoRA
+reporta miles en una máquina **[read]**, y el nuestro no está probado por encima de
+dos.
 
 En la línea 3.5/3.8 el bloque es distinto — tres capas de atención lineal **Gated
 DeltaNet** por cada una de atención completa **[read]** `config.json`, la recurrencia
@@ -261,8 +345,7 @@ que elegiste **y el puntaje verificado se sostiene sin el target** — $Q_R(E) \
 Q_R(E\mid T) - \varepsilon$ en un test pareado — el target sale de esa región y el
 experto genera solo. Una API de frontera nunca es el target — sin logprobs forzados
 (C2), sin ids compartidos (C3) — es el **fallback** permanente para lo que el pool está
-*medido* que falla: rutear una región que falla hacia ella llevó la exactitud entregada
-de **0,546 → 0,775** con el 38 % de los casos saliendo **[ran]** P41.
+*medido* que falla: **0,546 → 0,775** con el 38 % de los casos saliendo **[ran]** P41.
 
 ```mermaid
 flowchart LR
@@ -291,11 +374,19 @@ flowchart LR
 
 ---
 
-## Dónde está el plan — mecanismos, de a uno
+## El progreso, resumido
 
-Cada fila es algo que este proyecto nunca tuvo, con la compuerta que dice si ahora lo
-tiene. Una compuerta que falla detiene la corrida antes de comprar el mecanismo
-siguiente.
+**Construido y medido.** Una base residente; deltas conmutados por el campo `model`;
+servidos por vLLM detrás de un endpoint OpenAI; alcanzables desde un agente real sin
+que nada salga; la superficie de herramientas podada a lo que cada miembro declara. Un
+experto en **0,989** sobre su propia región; la ruta de serving que le costaba 18
+puntos, encontrada y arreglada. El instrumento de aceptación construido, con
+preflights y compuertas. Los espacios de ids medidos por par; la ruta a `Qwen3.8-27B`
+nombrada mecanismo por mecanismo.
+
+**Todavía no.** La aceptación nunca se midió contra ningún target, y el veredicto de
+orden nunca corrió — las dos filas que FOUNDATIONS §11 marca *no medido*. Un pool de
+más de dos. El drafter 3.x. El torneo.
 
 | # | mecanismo | estado | compuerta |
 |---|---|---|---|
@@ -318,14 +409,10 @@ Los pasos que llegaron hasta acá, cada uno con su número, están en
 | **S10** | la base sobre la que corre el pool | ✅ **Qwen 2.5, decidido contra un control** — C18 sobre `Qwen3.5-4B` |
 | **S8** | el pool detrás de un endpoint OpenAI | 🟢 tags→`tool_calls` sin dominio, 604/604; la superficie podada a lo que cada miembro declara (#190) |
 | **S3** | el router le gana a una tabla | 🟡 empata con un diccionario de doce palabras en **1,000** — los miembros están demasiado lejos para encontrarse en un problema |
-| **S6** | `harness.lora` — el protocolo aparte del experto | 🟡 estacionado: pierde contra veinte líneas de `re` donde la llamada es una copia; viaja donde una regla no (27 de 63 contra 0) |
+| **S6** | `harness.lora` — el protocolo aparte del experto | 🟡 estacionado, y reabierto abajo como el extra experimental |
 | **S7** | el torneo | 🟢 fitness fijado: los dos jueces tienen que aceptar |
 
----
-
-## Lo que realmente corrió
-
-Todo lo de acá es **[ran]** con su directorio; nada se infiere de un paper.
+### Lo que realmente corrió
 
 | afirmación | medición | dónde |
 |---|---|---|
@@ -336,6 +423,7 @@ Todo lo de acá es **[ran]** con su directorio; nada se infiere de un paper.
 | **El desk tiene target y gradiente** | `commitment`: 32B **1,000** en cada profundidad, una llamada `message` cada uno; base 1,000 → 0,000 | `results/P51-desk-profile-20260916/` |
 | **Un experto despeja su compuerta dentro de un agente real** | 260/351 = 0,741, $p=0,00036$ exacto; OpenClaw → proxy → túnel → vLLM → QLoRA, cero pedidos saliendo | `results/P43-openclaw-e2e-20260915/` |
 | **Rutear por región paga; por caso no** | 0,546 → **0,775** con 38 % saliendo; reglas por caso 0,378 y 0,689 | `results/P41-routing-20260915/` |
+| **El experto no siente su borde; una guardia estructural sí** | 30/30 en región → 1/20 afuera con la misma confianza; guardias conductuales 0,62 contra azar 0,60; el álgebra dimensional atrapa 0,80, combinada dispara 0/60 en región | `results/P18-…/`, `results/P22-dimensions-20260912/` |
 | **Un experto está atado a la profundidad de su corpus** | bajo su banda sobre-resuelve **18 de 18**; a tres pasos la base pelada le gana 0,167 : 0,000 | `results/P45-ladder-sweep-20260915/` |
 | **El 69–82 % de un margen de calibración era la suite** | agrupando por lo que un predictor puede ver, el techo deja margen 0,030 y 0,007 | `results/P46-ranking-ceiling-20260916/` |
 | **La ruta gruesa no necesita modelo** | doce palabras clave, **1,000** sobre 200 casos; la ruta fina cae a 0,845 | `tests/test_router_baseline.py` |
@@ -344,20 +432,28 @@ Todo lo de acá es **[ran]** con su directorio; nada se infiere de un paper.
 
 ---
 
-## Lo que no corrió, y no se afirma
+## Extra experimental: cuánto del harness puede ser un LoRA
 
-- **α contra ningún target**, y **el veredicto de orden** — las dos filas de
-  FOUNDATIONS §11 marcadas *todavía no medido*. P55b es la corrida.
-- **Un pool de más de dos** en una placa; la caché KV entre adaptadores (ramas de
-  adaptadores distintos no comparten $K, V$ — el problema de ingeniería abierto,
-  nombrado y no esquivado); el torneo; el retiro más allá de una región.
-- **Nada de D2–D4** — el drafter 3.x está bloqueado por un mecanismo medido y no
-  entendido; la regla después de dos diagnósticos retirados es leerlo con el log en
-  la mano.
-- **`harness.lora` ganándose sus pesos** donde la llamada no es una copia; varios
-  expertos cercanos sobre un problema seleccionados por aceptación
-  ([`docs/analysis/close-experts.md`](docs/analysis/close-experts.md)); una cabeza
-  tipada.
+El diseño original tenía un `harness.lora` — el protocolo de ejecución en los pesos,
+para que el esquema salga del prompt y el formato se emita en vez de parsearse. Se
+estacionó por números, y los números son la razón por la que se reabre sólo como
+experimento:
+
+| medido | qué dice |
+|---|---|
+| un protocolo aprendido **9/30** donde veinte líneas de `re` dan **23/30**, en una suite con una herramienta **[ran]** P13 | donde la llamada es una copia de una expresión ya escrita, el código gana y los pesos no pueden |
+| el mismo adaptador de protocolo sobre un **segundo tema** para el que nunca se editó: **27 de 63** llamadas donde la regla escrita a mano escribe **0 de 63** **[ran]** P25 | un harness escrito a mano no transfiere nada; uno aprendido transfiere parte de sí |
+| una convención por conteo de parámetros recupera el **55 %** del costo esquema→tags con **0** líneas de dominio **[ran]** P28 | la mayor parte del valor del harness son un puñado de convenciones estructurales, no conocimiento |
+
+**La pregunta experimental, enunciada para que pueda fallar:** para una superficie de
+herramientas fija y estrecha — las tres del inbox, las cuatro del desk — ¿puede la
+*decisión* de qué herramienta llamar y cómo llenar su argumento vivir en los pesos,
+dejando la *ejecución* (parar, inyectar, seguir) a veinte líneas de harness? P55 A ya
+muestra una mitad: `email-full` toma la decisión en **0,989** con **0** llamadas
+rechazadas y el harness ejecuta. La compuerta de la otra mitad es la que S6 fijó y no
+alcanzó: tasa de llamadas malformadas **y** tokens, ambas contra el incumbente en
+código, sobre una superficie donde la llamada *no* es una copia. No es una afirmación
+de producto; es un experimento acotado con su propio número a batir.
 
 ## Lo que deliberadamente NO es un LoRA
 
@@ -382,11 +478,7 @@ pipeline gestionado de dream/evolución; el plano de control enterprise.
 ## Documentos
 
 - [`docs/es/FOUNDATIONS.md`](docs/es/FOUNDATIONS.md) — **la matemática, paso a paso y
-  atada a lo que corrió**: el modelo como función, por qué el decode está limitado por
-  memoria, BPE y mapas de ids, LoRA con su cuenta reconciliada con el artefacto, el
-  motor, la decodificación especulativa con su exactitud y aceleración, la aceptación
-  como ranking con su precondición, las tareas como funciones, la estadística, por qué
-  la familia Qwen 3 y `Qwen3.8-27B` son el objetivo · [en](docs/FOUNDATIONS.md)
+  atada a lo que corrió** · [en](docs/FOUNDATIONS.md)
 - [`docs/es/EXPERIMENT_PLAN.md`](docs/es/EXPERIMENT_PLAN.md) — cada paso con su
   compuerta, su falsación y su número · [en](docs/EXPERIMENT_PLAN.md)
 - [`docs/es/STACK.md`](docs/es/STACK.md) — el inventario: cada id de modelo,
@@ -395,12 +487,12 @@ pipeline gestionado de dream/evolución; el plano de control enterprise.
   de cada una y la condición de retiro · [en](docs/ARCHITECTURE.md)
 - [`docs/es/TECHNICAL-REFERENCE.md`](docs/es/TECHNICAL-REFERENCE.md) — los mecanismos y
   la fórmula detrás de cada uno · [en](docs/TECHNICAL-REFERENCE.md)
-- [`docs/es/REPORT.md`](docs/es/REPORT.md) — el plan original contra lo que pasó, y qué
-  dan y qué no los módulos especulativos de NVIDIA · [en](docs/REPORT.md)
+- [`docs/es/REPORT.md`](docs/es/REPORT.md) — el plan original contra lo que pasó ·
+  [en](docs/REPORT.md)
 - [`docs/es/OPEN-PROBLEMS.md`](docs/es/OPEN-PROBLEMS.md) — los problemas abiertos, sin
   jerga · [en](docs/OPEN-PROBLEMS.md)
-- [`docs/es/OPENCLAW.md`](docs/es/OPENCLAW.md) — apuntar un agente real al pool, paso a
-  paso · [en](docs/OPENCLAW.md)
+- [`docs/es/OPENCLAW.md`](docs/es/OPENCLAW.md) — apuntar un agente real al pool ·
+  [en](docs/OPENCLAW.md)
 - [`docs/es/CASE-TRIAGE.md`](docs/es/CASE-TRIAGE.md),
   [`docs/es/CASE-TEAM.md`](docs/es/CASE-TEAM.md) — la mañana de una persona; muchos
   grupos en una GPU
