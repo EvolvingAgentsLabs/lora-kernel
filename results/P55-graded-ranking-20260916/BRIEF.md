@@ -218,3 +218,29 @@ of a mechanism that does not work.
     sits below it (0.75).
   - Everything the instrument needed passed: C18, stop, templates, `prompt_logprobs`.
     **M0 and M-α are unlocked; M-target is not, here.**
+
+---
+
+## P55b — the desk, pre-registered 2026-09-17 before the run
+
+**Suite:** desk `commitment`, 240 cases (`desk.generate(960, 424242)`, 60 per depth),
+verifier `desk.correct` (substring on the date), floor 0 — M-target reduces to the
+paired test. **Grades:** `g25 ⊂ g75 ⊂ g600` on `training/harness/data_desk/train.jsonl`
+(the target's one-`message` chain), same recipe, seed 0. **Already measured:** base
+**0.171** in corpus mode (P58); `g25` **0.000** — fabricates the email in XML (P58);
+the 32B **1.000** at every depth through `tool_calls` (P51), to be re-measured here in
+corpus mode.
+
+**Order inside one session, each stage persisted before the next:** train g25, g75,
+g600 → draft base + three grades → **M1 gate** (≥ 1 adjacent pair resolved, paired
+$p \le 0.05$; otherwise the target is not served) → serve the 32B → its own triage →
+**M-target gate** (beats `g600`, paired) → acceptance over four arms → **M2 verdict**
+(§7.4, unchanged). One session because carrying three adapters between sessions runs
+through an upload endpoint measured to fail above 80 MB; the gates in sequence are
+what keep the two unknowns attributable.
+
+**Risks, named:** `g75` may also fabricate (then the only resolved pair is
+`g25`/`g600` and M1 passes on one bit); `g600` may sit at 1.000 beside a target at
+1.000 (M-target on the ceiling — the gate as written refuses a tie, and that reading
+is reported as *ceiling*, not as *weaker target*). Redesign counter after this run:
+**2 of 3**.

@@ -706,6 +706,7 @@ all of it.
 | §5.4 | stop preflight; positional shim | P55 A attempts 1, 2 |
 | §7.2 | $Q(T) < \max Q(E)$: 2 : 87, $p=0$ | P55 A `target_gate` |
 | §8.2 | ceiling 0.989; commitment gradient | P55 A; P51 `desk_profile.json` |
+| §8.3 | the smallest grade is not saturated: $Q(g25) = 0.000$, base 0.171 — it fabricates the tool's answer | P58 `g25.json` |
 | §9.3 | power at $n=351$ | `bar.resolvable` **[ran]** 2026-09-16 |
 | §10.2 | 3.5 → 3.8 id space | P55 `D0-tokenizers.txt` |
 | §10.5 D1 | vLLM resolves to 0.29.0 | P55 A boot log |
