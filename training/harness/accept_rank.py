@@ -187,23 +187,45 @@ def completion(model: str, prompt: str, max_tokens: int) -> str:
     return text
 
 
+def stop_check(model: str, prompt: str) -> dict:
+    """Does the server stop at a string and hand it back? Tested on a continuation
+    the model cannot avoid, so the check cannot fail on the model's phrasing.
+
+    THE FIRST VERSION ASKED THE MODEL TO WRITE A TAG under the triage system prompt.
+    The bare base answered `NOT IMPORTANT` — no tag, so no stop, so `stop_included:
+    false` — and session A stopped on a check that was measuring the base's
+    willingness to write a tag rather than the server's handling of `stop`
+    **[ran]** 2026-09-17, one A100 boot for nothing. This one asks it to count and
+    stops at `3`: the mechanism, not the model.
+    """
+    r = post("/v1/completions", {
+        "model": model, "prompt": prompt + "1, 2, ", "temperature": 0, "max_tokens": 12,
+        "stop": ["3"], "include_stop_str_in_output": True})
+    ch = r["choices"][0]
+    text = ch.get("text") or ""
+    return {"stop_included": text.endswith("3"),
+            "stop_reason": ch.get("stop_reason"), "sample": text[:40]}
+
+
 def preflight(model: str, tok, kind: str) -> dict:
     """One request of each shape before 475 of them. P27 sent 240 that all failed."""
     prompt = tok.apply_chat_template(
-        [{"role": "system", "content": SYSTEM},
-         {"role": "user", "content": "Write the tag <message>id=msg-000</message> and nothing else."}],
+        [{"role": "system", "content": "You count."},
+         {"role": "user", "content": "Count from 1 to 6, comma separated."}],
         tokenize=False, add_generation_prompt=True)
     out = {"kind": kind}
     if kind in ("draft", "both"):
-        text = completion(model, prompt, 40)
-        out["stop_included"] = any(text.endswith(c) for c in CLOSE)
-        out["sample"] = text[:80]
+        chk = stop_check(model, prompt)
+        # EITHER PATH IS FINE. A server that returns the stop string, or one that
+        # withholds it but names it in `stop_reason` — `completion()` handles both.
+        out["stop_included"] = chk["stop_included"] or chk["stop_reason"] == "3"
+        out["stop_detail"] = chk
     if kind in ("accept", "both"):
-        r = post("/v1/completions", {"model": model, "prompt": prompt + "<message>",
+        r = post("/v1/completions", {"model": model, "prompt": prompt + "1, 2, 3",
                                      "max_tokens": 1, "temperature": 0,
                                      "prompt_logprobs": 1})
         pl = (r["choices"][0].get("prompt_logprobs") or [])
-        n = len(tok(prompt + "<message>")["input_ids"])
+        n = len(tok(prompt + "1, 2, 3")["input_ids"])
         out["prompt_logprobs_len"] = len(pl)
         out["prompt_tokens"] = n
         out["shape_ok"] = (len(pl) == n and pl[0] is None
