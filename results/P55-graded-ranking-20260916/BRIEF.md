@@ -168,3 +168,28 @@ of a mechanism that does not work.
 - The chain's `pip install 'vllm>=0.28'` resolved to **0.29.0** **[ran]** — the version
   P33 ran. **D1 as designed is void**: there is no newer vLLM to re-check C18 under.
   D2 becomes the live step for the 3.x drafter.
+- **2026-09-17 attempt 2**, `srv055733`, `main` at `1df7366` — ran to the target gate and
+  stopped `UNBOUGHT`. Kept as `session_a_attempt2_positional.json`. What it bought:
+  - **M0 is unlocked with a number.** `email-full` in corpus mode: **471/475 = 0.992**,
+    human **347/351 = 0.989**, 1053 calls, **0 refused, 0 invented results**, in 32 s
+    **[ran]**. Through `tool_calls` the same adapter scored 384/475 = 0.808 (P43). The
+    drift was costing it ~18 points; served as the corpus teaches, it solves the task.
+  - **The base reproduces P31 exactly**: human 121/351 = **0.345**, 0 calls **[ran]**.
+  - **C18 `applied`** (6 of 8 probes differ); chat templates identical; `prompt_logprobs`
+    came back one entry per token with `rank` — **M-α's preflights pass**.
+  - **The target's number is an artefact of this harness, not a fact about the 32B.**
+    1243 calls, 749 refused, human 0.339. The block renders one-parameter tools as
+    `<tag>...</tag>` (P28's arity convention) and the 32B obeyed it — `<thread_history>
+    thr-003</thread_history>` — while this loop, unlike `agent_sim`, had no shim mapping
+    a positional body onto the parameter name. **351 of 475 cases opened with a
+    positional call, i.e. every human case.** Refusals by kind: 352 positional, 337
+    wrong key (the model hunting for the key after the first refusal), 60 wrong id.
+    136 cases drifted into XML-attribute tags after refusals — the model's own
+    deviation, but downstream of the first one. The 32B *adapts mid-chain* (retries
+    `id=`, then `thread_id=`), which is why it still reached 0.51 overall.
+  - **Fix:** the same convention on the way in — a positional body becomes `param=body`
+    when the tool has exactly one parameter; keyed on the count, never on a name. The
+    expert is unaffected (it writes keyed bodies, 0 refused before and after).
+  - **The gate itself worked as written**: it refused a target that scored below the
+    expert, p = 0.0, and did not serve acceptance. Attempt 3 re-runs everything under
+    the repaired loop — one serving of each model, ~35 min.
