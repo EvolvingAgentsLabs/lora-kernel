@@ -70,6 +70,7 @@ from training.harness import bar
 from training.harness.agent_sim import SYSTEM
 from training.harness.generate_email_full import listing
 from training.harness.generate_email_protocol import INSTRUCTION
+from training.harness import suites
 
 EVAL_SEED = 717171     # the suite's own draw; excluded from every corpus by content
 EVAL_N = 475           # P43's size, fixed by bar.n_for before that run
@@ -101,11 +102,12 @@ POSITIONAL = {t["function"]["name"]: (t["function"]["parameters"].get("required"
                      or t["function"]["parameters"]["properties"]) == 1}
 
 
-def keyed(tool: str, body: str) -> str:
+def keyed(tool: str, body: str, positional: dict | None = None) -> str:
     """A positional body becomes `param=body` when the tool has exactly one parameter."""
+    pos = POSITIONAL if positional is None else positional
     b = body.strip()
-    if "=" not in b and tool in POSITIONAL and b:
-        return f"{POSITIONAL[tool]}={b}"
+    if "=" not in b and tool in pos and b:
+        return f"{pos[tool]}={b}"
     return body
 
 
@@ -118,18 +120,24 @@ def parse_verdict(text: str):
     return None
 
 
-def run_chain(gen, inbox: dict, max_calls: int = 6) -> dict:
+def run_chain(gen, inbox: dict, max_calls: int = 6, suite=None) -> dict:
     """Generate, stop at every closing tag, answer it for real, continue.
 
     `gen(prefix)` returns the model's continuation after `prefix` (the assistant
     text so far). It is the whole harness, the shape `physics.calc` already has.
+    `suite` decides the tags, the tools and the verdict rule; the default is triage.
     """
+    close = suite.close if suite else CLOSE
+    tag = suite.tag if suite else TAG
+    tool = suite.answer if suite else answer
+    pos = suite.positional if suite else POSITIONAL
+    parse = suite.parse if suite else parse_verdict
     out, spans, calls, refused, stray = "", [], 0, 0, 0
     for _ in range(max_calls + 1):
         chunk = gen(out)
         # TRUST THE STOP STRING ONLY AS FAR AS IT GOES. Anything past the first
         # closing tag is the model guessing an answer it was told to ask for.
-        cuts = [chunk.index(c) + len(c) for c in CLOSE if c in chunk]
+        cuts = [chunk.index(c) + len(c) for c in close if c in chunk]
         cut = min(cuts) if cuts else None
         if cut is not None:
             chunk = chunk[:cut]
@@ -141,10 +149,10 @@ def run_chain(gen, inbox: dict, max_calls: int = 6) -> dict:
         out += chunk
         if cut is None:
             break
-        m = list(TAG.finditer(out))[-1]           # the call just closed
+        m = list(tag.finditer(out))[-1]           # the call just closed
         calls += 1
         try:
-            res = answer(inbox, m.group(1), keyed(m.group(1), m.group(2)))
+            res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
         except ToolError as e:
             refused += 1
             res = f"ERROR: {e}"
@@ -152,7 +160,7 @@ def run_chain(gen, inbox: dict, max_calls: int = 6) -> dict:
     finished = cut is None
     return {"text": out, "spans": spans, "calls": calls, "refused": refused,
             "stray_results": stray,
-            "verdict": parse_verdict(spans[-1]["text"]) if finished else None,
+            "verdict": parse(spans[-1]["text"]) if finished else None,
             "ran_out": not finished}
 
 
@@ -195,16 +203,16 @@ def stop(proc) -> None:
         proc.kill()
 
 
-def completion(model: str, prompt: str, max_tokens: int) -> str:
+def completion(model: str, prompt: str, max_tokens: int, close=CLOSE) -> str:
     r = post("/v1/completions", {
         "model": model, "prompt": prompt, "temperature": 0, "max_tokens": max_tokens,
-        "stop": list(CLOSE), "include_stop_str_in_output": True})
+        "stop": list(close), "include_stop_str_in_output": True})
     ch = r["choices"][0]
     text = ch.get("text") or ""
     # BELT AND BRACES ON THE STOP STRING. If the server honoured `stop` but not
     # `include_stop_str_in_output`, `stop_reason` still names the tag it stopped at.
     reason = ch.get("stop_reason")
-    if isinstance(reason, str) and reason in CLOSE and not text.endswith(reason):
+    if isinstance(reason, str) and reason in close and not text.endswith(reason):
         text += reason
     return text
 
@@ -259,41 +267,41 @@ def preflight(model: str, tok, kind: str) -> dict:
 
 # --- the two stages --------------------------------------------------------------
 
-def draft_arm(model: str, tok, inbox: dict, max_tokens: int, concurrency: int,
+def draft_arm(model: str, tok, suite, cases: list, max_tokens: int, concurrency: int,
               done: dict, checkpoint) -> list[dict]:
     """Every case through the corpus-mode loop, persisted as it lands."""
-    msgs = inbox["messages"]
-    todo = [m for m in msgs if m["id"] not in done]
+    todo = [c for c in cases if c.id not in done]
     print(f"[rank] arm {model}: {len(todo)} to draft, {len(done)} resumed", flush=True)
 
-    def one(msg):
+    def one(case):
         base_prompt = tok.apply_chat_template(
-            [{"role": "system", "content": SYSTEM},
-             {"role": "user", "content": user_text(msg)}],
+            [{"role": "system", "content": suite.system},
+             {"role": "user", "content": suite.user_text(case)}],
             tokenize=False, add_generation_prompt=True)
         try:
-            chain = run_chain(lambda prefix: completion(model, base_prompt + prefix, max_tokens),
-                              inbox)
+            chain = run_chain(lambda prefix: completion(model, base_prompt + prefix,
+                                                        max_tokens, suite.close),
+                              case.ctx, suite=suite)
         except Exception as e:                      # transport, never folded into a score
-            return {"id": msg["id"], "error": repr(e)[:160]}
-        return {"id": msg["id"], "human": not msg["_facts"]["automated"],
-                "truth": msg["_truth"], "correct": chain["verdict"] == msg["_truth"],
+            return {"id": case.id, "error": repr(e)[:160]}
+        return {"id": case.id, "human": case.human, "truth": case.truth,
+                "correct": bool(case.verify(chain["verdict"])), **case.meta,
                 "prompt_sha": hashlib.sha256(base_prompt.encode()).hexdigest()[:16],
                 **chain}
 
     t0, n = time.time(), 0
     with ThreadPoolExecutor(max_workers=concurrency) as ex:
-        for f in as_completed([ex.submit(one, m) for m in todo]):
+        for f in as_completed([ex.submit(one, c) for c in todo]):
             rec = f.result()
             done[rec["id"]] = rec
             n += 1
             if n % 25 == 0 or n == len(todo):
                 checkpoint()
                 ok = sum(r.get("correct", False) for r in done.values())
-                print(f"[rank] arm {model} {len(done)}/{len(msgs)} correct {ok} "
+                print(f"[rank] arm {model} {len(done)}/{len(cases)} correct {ok} "
                       f"{time.time() - t0:.0f}s", flush=True)
     checkpoint()
-    return [done[m["id"]] for m in msgs if m["id"] in done]
+    return [done[c.id] for c in cases if c.id in done]
 
 
 def accepted_flags(prompt_logprobs: list, ids: list[int], start: int) -> list[bool]:
@@ -326,17 +334,17 @@ def score_span(model: str, tok, prefix: str, span: str) -> dict:
             "shift": len(ids_p) - k, "flags": flags}
 
 
-def accept_arm(model: str, tok, inbox: dict, drafts: list[dict], concurrency: int,
+def accept_arm(model: str, tok, suite, cases: list, drafts: list[dict], concurrency: int,
                done: dict, checkpoint) -> list[dict]:
-    by_id = {m["id"]: m for m in inbox["messages"]}
+    by_id = {c.id: c for c in cases}
     todo = [d for d in drafts if d["id"] not in done and "spans" in d]
     print(f"[rank] accept {len(todo)} drafts, {len(done)} resumed", flush=True)
 
     def one(d):
-        msg = by_id[d["id"]]
+        case = by_id[d["id"]]
         base_prompt = tok.apply_chat_template(
-            [{"role": "system", "content": SYSTEM},
-             {"role": "user", "content": user_text(msg)}],
+            [{"role": "system", "content": suite.system},
+             {"role": "user", "content": suite.user_text(case)}],
             tokenize=False, add_generation_prompt=True)
         if hashlib.sha256(base_prompt.encode()).hexdigest()[:16] != d.get("prompt_sha"):
             return {"id": d["id"], "error": "the prompt is not the one the draft saw"}
@@ -475,8 +483,10 @@ def main() -> int:
                     help="name=corpus.jsonl — trained in its own process first")
     ap.add_argument("--target", default=None)
     ap.add_argument("--stage", choices=("draft", "accept", "all"), default="all")
-    ap.add_argument("--n", type=int, default=EVAL_N)
-    ap.add_argument("--seed", type=int, default=EVAL_SEED)
+    ap.add_argument("--suite", default="email",
+                    help="email (triage, 3 tags) or desk[:region] (4 tags, free-text answer)")
+    ap.add_argument("--n", type=int, default=None, help="defaults to the suite's own size")
+    ap.add_argument("--seed", type=int, default=None, help="defaults to the suite's own draw")
     ap.add_argument("--max-tokens", type=int, default=160)
     ap.add_argument("--concurrency", type=int, default=8)
     ap.add_argument("--max-model-len", type=int, default=4096)
@@ -491,7 +501,11 @@ def main() -> int:
     from transformers import AutoTokenizer
     tok = AutoTokenizer.from_pretrained(args.base)
 
-    results = {"base": args.base, "target": args.target, "n": args.n, "seed": args.seed,
+    suite = suites.load(args.suite)
+    args.n = args.n or suite.eval_n
+    args.seed = args.seed or suite.eval_seed
+    results = {"suite": suite.name, "base": args.base, "target": args.target,
+               "n": args.n, "seed": args.seed,
                "identity": "accepted iff the drafted token has rank 1 under the target "
                            "at temperature 0; alpha = accepted / drafted decision tokens",
                "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "arms": {}, "accept": {}}
@@ -508,10 +522,11 @@ def main() -> int:
         OUT.write_text(json.dumps(results, indent=2))
 
     save()
-    inbox = generate(args.n, args.seed)
-    human = [m for m in inbox["messages"] if not m["_facts"]["automated"]]
-    ht = [m["_truth"] for m in human]
-    results["majority_bar_human"] = max(sum(ht), len(ht) - sum(ht)) / len(ht)
+    cases = suite.cases(args.n, args.seed)
+    results["cases"] = len(cases)
+    results["majority_bar_human"] = suite.bar(cases)
+    print(f"[rank] suite {suite.name}: {len(cases)} cases, bar {results['majority_bar_human']:.3f}",
+          flush=True)
 
     # TRAINING IN ITS OWN PROCESS, BEFORE ANY SERVER. train_one.py says why: nothing
     # inside a process releases the CUDA context, and vLLM refused to start beside a
@@ -550,8 +565,8 @@ def main() -> int:
                 results["stopped"] = "the server does not stop at a closing tag"; save(); return 1
             for name, model in [("base", args.base)] + [(k, k) for k in adapters]:
                 arm = results["arms"].setdefault(name, {"model": model, "records": {}})
-                recs = draft_arm(model, tok, inbox, args.max_tokens, args.concurrency,
-                                 arm["records"], save)
+                recs = draft_arm(model, tok, suite, cases, args.max_tokens,
+                                 args.concurrency, arm["records"], save)
                 arm.update(summarise(recs))
                 if name != "base":
                     arm["applied"] = applied(arm_records("base"), recs)
@@ -592,8 +607,8 @@ def main() -> int:
                 save(); return 1
             # HEADROOM: the target triages the same inbox, the same way.
             arm = results["arms"].setdefault("target", {"model": args.target, "records": {}})
-            recs = draft_arm(args.target, tok, inbox, args.max_tokens, args.concurrency,
-                             arm["records"], save)
+            recs = draft_arm(args.target, tok, suite, cases, args.max_tokens,
+                             args.concurrency, arm["records"], save)
             arm.update(summarise(recs)); save()
             best = order[-1] if order else next((k for k in adapters), None)
             if best:
@@ -610,7 +625,7 @@ def main() -> int:
                 if name not in results["arms"]:
                     continue
                 acc = results["accept"].setdefault(name, {"records": {}})
-                scored = accept_arm(args.target, tok, inbox, arm_records(name),
+                scored = accept_arm(args.target, tok, suite, cases, arm_records(name),
                                     args.concurrency, acc["records"], save)
                 acc.update(summarise_alpha(scored)); save()
                 print(f"[rank] alpha {name}: {json.dumps({k: v for k, v in acc.items() if k != 'records'})}",
