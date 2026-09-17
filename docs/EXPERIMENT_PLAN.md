@@ -2571,7 +2571,11 @@ teaches one, and sorted where none does.
 
 Brief: [`../results/P55-graded-ranking-20260916/BRIEF.md`](../results/P55-graded-ranking-20260916/BRIEF.md).
 Runner `training/harness/accept_rank.py`, gates as code in `tests/test_accept_rank.py`.
-**Nothing run yet.**
+**`RUNNING` — session A launched 2026-09-17 on an A100** (`srv054155`), branch `main`
+at `8d8ff52`. First fact it returned before serving a model: the chain installs
+`vllm>=0.28` and resolves to **0.29.0 — the same version P33 ran** **[ran]**, so track D1
+as designed has nothing newer to re-check; D2 (the mechanism, read with the log)
+is the live step for the 3.x drafter.
 
 **The first test of the central claim.** Acceptance against a larger target has never
 been measured on any target, and the reason was never hardware: ranking needs experts

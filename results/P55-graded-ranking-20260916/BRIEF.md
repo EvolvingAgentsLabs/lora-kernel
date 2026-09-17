@@ -159,3 +159,12 @@ D4 runs.
 closer; α has never been measured on any target, and `Qwen2.5-32B` is enough to
 measure it. If A–C say acceptance does not rank, D4 would have bought a faster version
 of a mechanism that does not work.
+
+---
+
+## Notes during the run — appended, gates untouched
+
+- **2026-09-17 session A launched**, `srv054155`, A100, branch `main` at `8d8ff52`.
+- The chain's `pip install 'vllm>=0.28'` resolved to **0.29.0** **[ran]** — the version
+  P33 ran. **D1 as designed is void**: there is no newer vLLM to re-check C18 under.
+  D2 becomes the live step for the 3.x drafter.

@@ -86,6 +86,38 @@ So: the two halves exist, each is healthy on its own, and putting them in one
 patch works. The problem is putting them in **two** patches, which is the entire
 point of the design.
 
+## Where this stands, 2026-09-17
+
+**The central measurement is finally being taken.** Every problem below was framed
+around a claim nobody had tested — that acceptance against a larger model ranks
+experts the way verified quality ranks them — and the reason was never hardware:
+ranking needs experts that differ in quality, and there was one. P55 makes three
+from one corpus (`g75 ⊂ g200 ⊂ email-full`) and requires the verifier to order them
+before the target is served. Session A is running as this is written; the brief and
+verdict table were written first:
+[`../results/P55-graded-ranking-20260916/BRIEF.md`](../results/P55-graded-ranking-20260916/BRIEF.md).
+
+**A corpus/serving drift, found on the way, is now a named problem.** The corpus
+renders `<tag>…</tag>= {result}` in one turn; served through `tool_calls` the expert
+cannot receive a result mid-generation and **invents one** — `= {"turns": 1,
+"i_wrote_in_thread": false}` where the tool said `2, true` **[ran]** P43. Every later
+decision in that chain rests on a made-up fact. It never showed in the score because
+the final turn sees real results; it would have ruined any acceptance measurement.
+The fix is to serve the way the corpus teaches — stop, inject, continue — and P55's
+runner does that. **Problem 6 is this drift**: how many other served behaviours are
+corpus-mode behaviours the harness is quietly mis-serving?
+
+**Problem 2 gained its cheapest repair.** The agent's 54-tool surface is pruned to the
+three the member declares, by a structural rule that names no tool (#190). Whether
+that turns zero calls into calls is the one product measurement still unbought.
+
+**And the large model has a route.** `Qwen3.8-27B` cannot verify a Qwen 2.5 drafter
+(248,044 ≠ 151,643) — but the target never needed LoRA, and `Qwen3.5-2B/4B` share its
+id space **[ran]** `D0-tokenizers.txt`. What blocks the pair is C18 on the *drafter*
+side, and the vLLM the chain installs today is **still 0.29.0**, the version that
+served the base anyway. The mechanism stays unknown until it is read with the log in
+hand.
+
 ## Where this stands, 2026-09-16
 
 Four days on, and the delta is mostly things being **taken away**. Every one of

@@ -88,6 +88,40 @@ O sea: las dos mitades existen, cada una está sana por su cuenta, y ponerlas en
 parche funciona. El problema es ponerlas en **dos** parches, que es todo el punto
 del diseño.
 
+## Dónde está esto, 2026-09-17
+
+**La medición central por fin se está tomando.** Cada problema de abajo se formuló
+alrededor de una afirmación que nadie había probado — que la aceptación contra un
+modelo más grande rankea expertos como los rankea la calidad verificada — y el motivo
+nunca fue hardware: rankear necesita expertos que difieran en calidad, y había uno.
+P55 hace tres de un corpus (`g75 ⊂ g200 ⊂ email-full`) y exige que el verificador
+los ordene antes de servir el target. La sesión A está corriendo mientras se escribe
+esto; el brief y la tabla de veredictos se escribieron antes:
+[`../../results/P55-graded-ranking-20260916/BRIEF.md`](../../results/P55-graded-ranking-20260916/BRIEF.md).
+
+**Una deriva corpus/serving, encontrada en el camino, es ahora un problema con
+nombre.** El corpus renderiza `<tag>…</tag>= {resultado}` en un turno; servido vía
+`tool_calls` el experto no puede recibir un resultado a mitad de generación y **lo
+inventa** — `= {"turns": 1, "i_wrote_in_thread": false}` donde la herramienta dijo
+`2, true` **[ran]** P43. Cada decisión posterior de esa cadena descansa en un hecho
+inventado. Nunca apareció en el puntaje porque el turno final ve resultados reales;
+habría arruinado cualquier medición de aceptación. El arreglo es servir como enseña
+el corpus — parar, inyectar, seguir — y el runner de P55 lo hace. **El problema 6 es
+esta deriva**: ¿cuántos otros comportamientos servidos son comportamientos de modo
+corpus que el harness sirve mal en silencio?
+
+**El problema 2 ganó su reparación más barata.** La superficie de 54 herramientas del
+agente se poda a las tres que el miembro declara, por una regla estructural que no
+nombra ninguna herramienta (#190). Si eso convierte cero llamadas en llamadas es la
+única medición de producto que sigue sin comprar.
+
+**Y el modelo grande tiene ruta.** `Qwen3.8-27B` no puede verificar un drafter Qwen
+2.5 (248.044 ≠ 151.643) — pero el target nunca necesitó LoRA, y `Qwen3.5-2B/4B`
+comparten su espacio de ids **[ran]** `D0-tokenizers.txt`. Lo que bloquea el par es
+C18 del lado del *drafter*, y el vLLM que la cadena instala hoy **sigue siendo
+0.29.0**, la versión que sirvió la base igual. El mecanismo queda desconocido hasta
+leerlo con el log en la mano.
+
 ## Dónde está esto, 2026-09-16
 
 Cuatro días después, y el delta es sobre todo cosas que se **sacan**. Todo esto es

@@ -2656,7 +2656,12 @@ declaración donde el corpus enseña uno, y alfabético donde no.
 
 Brief: [`../results/P55-graded-ranking-20260916/BRIEF.md`](../../results/P55-graded-ranking-20260916/BRIEF.md).
 Runner `training/harness/accept_rank.py`, compuertas como código en
-`tests/test_accept_rank.py`. **Nada corrido todavía.**
+`tests/test_accept_rank.py`.
+**`RUNNING` — sesión A lanzada el 2026-09-17 en un A100** (`srv054155`), rama `main`
+en `8d8ff52`. Primer hecho que devolvió antes de servir un modelo: la cadena instala
+`vllm>=0.28` y resuelve a **0.29.0 — la misma versión que corrió P33** **[ran]**, así
+que la pista D1 tal como está diseñada no tiene nada más nuevo que re-verificar; D2 (el
+mecanismo, leído con el log) es el paso vivo para el drafter 3.x.
 
 **La primera prueba de la afirmación central.** La aceptación contra un target más
 grande nunca se midió contra ningún target, y el motivo nunca fue hardware: rankear

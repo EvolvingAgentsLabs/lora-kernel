@@ -330,6 +330,48 @@ the work and is updated the same session a step reports.
 
 ## Where the plan stands
 
+### Status and roadmap, 2026-09-17
+
+**Status, in one paragraph.** The substrate works and has been measured three times:
+one resident `Qwen2.5-3B-Instruct`, QLoRA members switched by the `model` field,
+served by vLLM behind an OpenAI endpoint, reachable from a real agent runtime with
+zero requests leaving the machine. **One member is useful** (`email-full`, 0.741 on
+human messages, p = 0.00036 **[ran]** P43); the second (`fluids-full`) follows the
+protocol and gets the physics wrong. The tool surface an agent offers is now **pruned
+to what each member declares** (#190), which removes the reason P43's agent turn
+called nothing. And **the central claim — acceptance ranks experts the way quality
+ranks them — is being measured for the first time, right now**: P55 session A is on
+an A100 as this is written (launched 2026-09-17, brief in
+[`results/P55-graded-ranking-20260916/BRIEF.md`](results/P55-graded-ranking-20260916/BRIEF.md)).
+
+**The roadmap is a list of mechanisms, unlocked one at a time.** Each row is
+something this project has never had, with the gate that says whether it now does.
+A gate that fails stops the run before the next mechanism is bought.
+
+| # | mechanism | state | gate |
+|---|---|---|---|
+| **M0** | the drafter served **in corpus mode** — stop at `</tag>`, inject the real result, continue. Through `tool_calls` it *invents* the result it cannot receive **[ran]** P43 | `RUNNING` session A | stop string honoured; adapter differs from base on 8 probe cases (C18) |
+| **M-target** | a target worth accepting against **on this task** (P49 bought the 32B on drafting, not triage) | `RUNNING` session A | beats `email-full` on the same human cases, paired, p ≤ 0.05 |
+| **M-α** | acceptance in **tokens** by forced `prompt_logprobs` — the first α with a shared id space | `RUNNING` session A | chat templates identical; one entry per token with `rank` |
+| **M1** | **experts that differ in quality**: `g75 ⊂ g200 ⊂ email-full` | `NEXT` session B+C | verifier resolves ≥ 1 of 3 pairs, or the target is not served |
+| **M2** | **the ordering test** — the thesis | `NEXT` session B+C | SUPPORTED / FALSIFIED / UNRESOLVED-as-failure, written before the run |
+| **D0** | a Qwen 3.x drafter sharing an id space with **`Qwen3.8-27B`** | ✅ **[ran]** `Qwen3.5-2B` and `-4B`, 7 target-only ids, all audio/TTS | — |
+| **D1** | vLLM applying a LoRA on a 3.x base (C18) | `BLOCKED` — the chain installs the latest vLLM and it is **still 0.29.0** **[ran]** 2026-09-17, so there is nothing newer to re-check yet | `applied` on P33's tiny adapter |
+| **D2** | the C18 mechanism, read with the log in hand (G3 merge; PEFT-key ↔ vLLM-module mapping) | `NEXT` after A | — |
+| **D4** | **this instrument pointed at `Qwen3.8-27B`**, graded pool retrained on `Qwen3.5-4B` | `BLOCKED` on D1/D2 | the same verdict table as M2 |
+
+**Why in this order.** A newer, slower target does not bring the ranking measurement
+closer; α had never been measured on any target, and `Qwen2.5-32B` is enough to
+measure it. If M2 says acceptance does not rank, D4 would have bought a faster
+version of a mechanism that does not work. Nothing in M depends on D; D4 depends on
+all of M.
+
+**What would change the roadmap.** M-target UNBOUGHT → no target worth accepting
+against on triage; the ordering test is not purchased and the next design is a
+harder suite, not a bigger model. M1 not unlocked → the grades are not grades; widen
+them or grade by steps (redesign counter: 1). M2 FALSIFIED → the free router is gone
+and the architecture survives without it, as §1 of the plan always said.
+
 | | objective | state |
 |:--:|---|---|
 | **S0** | the instrument measures what it claims | ✅ |
