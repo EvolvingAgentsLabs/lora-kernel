@@ -272,8 +272,12 @@ def main() -> int:
             checkpoint()
         if i % 4 == 0:
             ok = sum(x["correct"] for x in recs)
+            # ERRORS IN THE PROGRESS LINE. P59's off-arm failed every request on
+            # context length and read as `correct 0 calls 0` — a floor — until the
+            # records were opened **[ran]** 2026-09-17. The same lesson as P51's 400s.
             print(f"  [sim] {i}/{args.n} correct {ok} calls "
-                  f"{sum(x['calls'] for x in recs)}", flush=True)
+                  f"{sum(x['calls'] for x in recs)} errors "
+                  f"{sum(1 for x in recs if x.get('error'))}", flush=True)
 
     ok = sum(r["correct"] for r in recs)
     undecided = sum(r["verdict"] is None for r in recs)
@@ -288,6 +292,7 @@ def main() -> int:
                "human_accuracy": round(hok / max(len(hrecs), 1), 4),
                "human_majority_class_bar": round(hbar, 4),
                "undecided": undecided, "calls": calls, "refused": refused,
+               "errors": sum(1 for r in recs if r.get("error")),
                "seconds": round(time.time() - t0, 1), "records": recs}
 
     # WRITTEN BEFORE THE SUMMARY MATH, NOT AFTER. The first version computed the

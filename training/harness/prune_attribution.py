@@ -57,16 +57,33 @@ def sim(model: str, n: int, tools_json: str, out: Path, port: int = 8001,
 
 
 def _map(arm: dict) -> dict:
+    """{case: correct} over the records that actually ran. An errored record is not
+    a wrong answer: P59's first attempt had all 475 `--prune off` requests fail with
+    "maximum context length is 4096" — the 54-tool block does not fit — and a map
+    that counted them as incorrect produced PRUNING PAYS 385 : 0 over an arm that had
+    never reached the model **[ran]** 2026-09-17."""
     return {r["id"]: bool(r.get("correct")) for r in arm.get("records", [])
-            if "id" in r and r.get("verdict") is not None or "id" in r}
+            if "id" in r and not r.get("error")}
+
+
+def errors(arm: dict) -> int:
+    return sum(1 for r in arm.get("records", []) if r.get("error"))
 
 
 def compare(off: dict, on: dict) -> dict:
-    c = bar.compare(_map(on), _map(off))
+    e_off, e_on = errors(off), errors(on)
     calls_off = off.get("calls", 0); calls_on = on.get("calls", 0)
+    # AN ARM WITH ERRORS VOIDS THE VERDICT. A broken run must not be able to look like
+    # a floor; the count is reported and the comparison is not made.
+    if e_off or e_on:
+        return {"state": "VOID", "errors_off": e_off, "errors_on": e_on,
+                "calls_off": calls_off, "calls_on": calls_on,
+                "reading": (f"VOID: transport errors — off {e_off}, on {e_on} of "
+                            f"{len(off.get('records', []))}; nothing is compared")}
+    c = bar.compare(_map(on), _map(off))
     state = ("PRUNING PAYS" if c["different"] and c["only_a"] > c["only_b"] else
              "PRUNING HURTS" if c["different"] else "a tie")
-    return {**c, "calls_off": calls_off, "calls_on": calls_on,
+    return {**c, "errors_off": 0, "errors_on": 0, "calls_off": calls_off, "calls_on": calls_on,
             "human_off": off.get("human_accuracy"), "human_on": on.get("human_accuracy"),
             "state": state,
             "reading": (f"{state}: --prune off {off.get('human_accuracy')} vs on "
@@ -81,7 +98,11 @@ def main() -> int:
     ap.add_argument("--model", default="email-full")
     ap.add_argument("--tools", required=True, help="JSON list of the tool schemas a runtime sends")
     ap.add_argument("--n", type=int, default=475)
-    ap.add_argument("--max-model-len", type=int, default=4096)
+    # THE 54-TOOL BLOCK NEEDS ROOM. Rendered, it is several thousand tokens on its
+    # own; at 4096 every `--prune off` request was refused before reaching the model
+    # **[ran]** P59 attempt 1. The runtime that sent it (OpenClaw, P43) got an answer,
+    # because vLLM was serving at its default length there.
+    ap.add_argument("--max-model-len", type=int, default=16384)
     ap.add_argument("--out", default=str(OUT))
     args = ap.parse_args()
     out = Path(args.out); out.parent.mkdir(parents=True, exist_ok=True)
@@ -110,8 +131,9 @@ def main() -> int:
             try:
                 arm_out = out.parent / f"arm_prune_{name}.json"
                 result["arms"][name] = sim(args.model, args.n, args.tools, arm_out)
-                print(f"[attr] arm prune={name}: human {result['arms'][name].get('human_accuracy')} "
-                      f"calls {result['arms'][name].get('calls')}", flush=True)
+                a = result["arms"][name]
+                print(f"[attr] arm prune={name}: human {a.get('human_accuracy')} "
+                      f"calls {a.get('calls')} errors {errors(a)}", flush=True)
                 save()
             finally:
                 stop(px)
