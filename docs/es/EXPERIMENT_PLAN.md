@@ -31,7 +31,7 @@ sesión y (d) una condición de falla escrita antes de correr.
 
 | # | pieza | depende de | compuerta | estado |
 |---|---|---|---|---|
-| **0** | el sustrato de serving — C18 en cada miembro (≥ 2 de 3 sondas difieren), herramientas alcanzables por el proxy, stop honrado. Spec: [`SUBSTRATE-GATE.md`](SUBSTRATE-GATE.md) | — | `verdict.json` `pass: true` | `NEXT` — P56 |
+| **0** | el sustrato de serving — C18 en cada miembro (≥ 2 de 3 sondas difieren), herramientas alcanzables por el proxy, stop honrado. Spec: [`SUBSTRATE-GATE.md`](SUBSTRATE-GATE.md) | — | `verdict.json` `pass: true` | ✅ **[ran]** P56, 2026-09-17: los dos miembros `applied` **3/3**, herramientas alcanzables por el proxy (`email-full` 1 llamada; `fluids-full` ninguna — podado a su propia superficie), stop honrado. `results/P56-substrate-20260917/verdict.json` |
 | **1** | un release reproducible de `email-full`: adaptador + corpus + hash del prompt, re-servido en modo corpus y pareado contra su 471/475 registrado | 0 | el re-serving empata por el test pareado | `NEXT` — P57 |
 | **2** | una suite con verificador y gradiente: `suite_gates`; gradiente de la base ≥ 0,30 en profundidad; el target le gana al mejor experto, pareado, $p \le 0,05$ (M-target, FOUNDATIONS §7.2) | 1 | las tres en una región | desk `commitment`: gradiente **1,000 → 0,000** y target **1,000** en cada profundidad **[ran]** P51; M-target se re-prueba formalmente en la sesión de la Fase 3 contra el mejor grado |
 | **3** | expertos que el verificador ordena (M1): `g25 ⊂ g75 ⊂ 600`; **el grado más chico se entrena y puntúa primero** — si `g25` ya satura, se para | 2 | ≥ 1 par adyacente resuelto, $p \le 0,05$ | `NEXT` — P55b |

@@ -53,6 +53,14 @@ What runs on any machine, every time, is the static half: `tests/test_contract.p
 (the pool's declarations against its corpora) and `tests/test_verify_substrate.py`
 (the verdict logic on every outcome a gate can have).
 
+## First run — P56, 2026-09-17 **[ran]**
+
+L4, both pool members carried in (P41's tarball), proxy started with `--prune`.
+**`SUBSTRATE OK`**: P0 lists `email-full` and `fluids-full`; G1 **3/3** probes differ for each;
+G2 `email-full` answers with **1 tool call**, `fluids-full` answers with none — the pruned
+surface offers it no inbox tool, which is the right shape; G3 `stop_reason: '3'`.
+`results/P56-substrate-20260917/verdict.json`.
+
 ## Its place in the plan
 
 - **Phase 0 ✅ is the entry to every other phase.**
