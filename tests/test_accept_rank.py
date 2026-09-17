@@ -174,12 +174,27 @@ def test_the_target_gate_buys_only_a_resolvable_win():
     assert g["bought"] is True and g["only_a"] == 30 and g["only_b"] == 0
 
 
-def test_the_target_gate_refuses_a_tie_and_a_target_below_the_bar():
+def test_the_target_gate_follows_section_7_2_a_tie_is_not_a_refusal():
+    """Q(T) >= max Q(E): a target that is not resolvably worse, with a total at least
+    the expert's, is a valid target — including a tie at the ceiling. A target below
+    the bar, or resolvably worse, still is not."""
     expert = recs([True] * 60 + [False] * 40)
-    tie = recs([True] * 62 + [False] * 38)
-    assert target_gate(tie, expert, 0.5)["bought"] is False
+    tie_above = recs([True] * 62 + [False] * 38)
+    assert target_gate(tie_above, expert, 0.5)["bought"] is True
+    tie_below = recs([True] * 58 + [False] * 42)
+    assert target_gate(tie_below, expert, 0.5)["bought"] is False
     weak = recs([True] * 90 + [False] * 10)
     assert target_gate(weak, expert, majority_bar=0.95)["bought"] is False
+    worse = recs([True] * 30 + [False] * 70)
+    g = target_gate(worse, expert, 0.1)
+    assert g["bought"] is False and "resolvably worse" in g["reading"]
+
+
+def test_a_tie_at_the_ceiling_is_bought_and_named():
+    expert = recs([True] * 100)
+    target = recs([True] * 100)
+    g = target_gate(target, expert, 0.5)
+    assert g["bought"] is True and g["tie_at_ceiling"] is True and "ceiling" in g["reading"]
 
 
 def test_grades_that_the_verifier_cannot_order_stop_the_run():

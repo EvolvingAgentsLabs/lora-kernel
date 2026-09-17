@@ -730,4 +730,4 @@ arriba depende de D; D4 depende de todo.
 | §10.5 D1 | vLLM resuelve a 0.29.0 | log de boot de P55 A |
 | §4.4 | **una superficie desconocida es extrapolación**: sin podar (54 herramientas) el experto copia etiquetas del bloque, 225 de 227 llamadas rechazadas; podado, 8 de 1160; el bloque son ~7.956 contra ~77 tokens | P59 `attribution.json` |
 | §6.4 | **α, $\mathbb{E}[\tau]$, aceleración** | **todavía no medido** |
-| §7.4 | **el veredicto de orden** | **cerrado sin veredicto, 2026-09-17**: ninguna suite generada satisface el §7.2 y ofrece a la vez un orden no trivial — P55 A, P55b |
+| §7.4 | **el veredicto de orden** | **no medido**: el §7.2 falla para un target *sin entrenar* en dos regiones fáciles (P55 A, P55b); reabierto como un brazo — un target entrenado sobre una banda más profunda (P60) |

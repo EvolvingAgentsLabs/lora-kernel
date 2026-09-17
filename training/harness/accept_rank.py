@@ -431,15 +431,26 @@ def _map(records: list[dict], key: str = "correct", human_only: bool = True) -> 
 
 def target_gate(target: list[dict], expert: list[dict], majority_bar: float) -> dict:
     """The skill's trap: verify against something not stronger and a high α means
-    *drifted least*. So the target must beat the best expert on the same cases."""
+    *drifted least*. FOUNDATIONS §7.2 states the precondition as Q(T) >= max Q(E), and
+    the gate follows it literally since 2026-09-17: the target must be **not
+    resolvably worse** than the best expert on the same cases, with a total at least
+    the expert's. The first version demanded a resolvable *win*, which no target can
+    produce against an expert at the ceiling — a tie at the ceiling is a result, not a
+    failure of the gate. Neither verdict taken so far changes (2 : 87 and 0 : 8 are
+    losses under both rules)."""
     c = bar.compare(_map(target), _map(expert))
     t_acc = c["a_total"] / c["n_paired"] if c["n_paired"] else 0.0
-    bought = c["different"] and c["only_a"] > c["only_b"] and t_acc > majority_bar
+    worse = c["different"] and c["only_b"] > c["only_a"]
+    bought = (not worse) and c["a_total"] >= c["b_total"] and t_acc > majority_bar and c["n_paired"] > 0
+    ceiling = bought and not c["different"] and c["b_total"] == c["n_paired"]
     return {**c, "target_human_accuracy": round(t_acc, 4), "majority_bar": majority_bar,
-            "bought": bought,
-            "reading": ("BOUGHT: the target beats the expert on paired cases" if bought else
-                        "UNBOUGHT: the target is not resolvably better than the expert — "
-                        "acceptance against it would measure similarity, not quality")}
+            "bought": bought, "tie_at_ceiling": ceiling,
+            "reading": ("BOUGHT at the ceiling: the target ties an expert at 1.000 — Q(T) >= max Q(E) holds"
+                        if ceiling else
+                        "BOUGHT: Q(T) >= max Q(E) on paired cases" if bought else
+                        "UNBOUGHT: the target is resolvably worse than the expert — "
+                        "acceptance against it would measure similarity, not quality" if worse else
+                        "UNBOUGHT: the target's total is below the expert's, or below the bar")}
 
 
 def grades_gate(arms: dict[str, list[dict]], order: list[str]) -> dict:
@@ -514,6 +525,13 @@ def main() -> int:
     ap.add_argument("--epochs", type=float, default=3)
     ap.add_argument("--order", default="g75,g200,email-full",
                     help="grades from least to most data, for the ordering test")
+    # α AS A DESCRIPTION, NOT A RANKING. When M-target refuses, acceptance against
+    # that target cannot order experts by quality — but it still says *where* a small
+    # expert agrees with a larger one, token by token. Reviewed 2026-09-17: worth
+    # fifteen minutes as a reported number, marked so nobody reads it as a verdict.
+    ap.add_argument("--accept-anyway", dest="accept_anyway", action="store_true",
+                    help="measure acceptance even if M-target is unbought; the result "
+                         "is tagged descriptive and the ranking verdict is not computed")
     ap.add_argument("--out", default=None)
     args = ap.parse_args()
     if args.out:
@@ -637,10 +655,14 @@ def main() -> int:
                                                      results["majority_bar_human"])
                 print(f"[rank] target: {results['target_gate']['reading']}", flush=True)
                 save()
-                if not results["target_gate"]["bought"]:
+                if not results["target_gate"]["bought"] and not args.accept_anyway:
                     results["stopped_at_gate"] = "target"
                     results["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S"); save()
                     return 0
+                if not results["target_gate"]["bought"]:
+                    results["descriptive"] = ("acceptance measured against a target M-target "
+                                              "refused: it describes agreement and RANKS NOTHING")
+                    print(f"[rank] {results['descriptive']}", flush=True)
             # ACCEPTANCE, over every drafted arm.
             for name in ["base"] + list(adapters):
                 if name not in results["arms"]:
@@ -654,7 +676,7 @@ def main() -> int:
         finally:
             stop(p)
 
-        if "grades_gate" in results:
+        if "grades_gate" in results and not results.get("descriptive"):
             alphas = {g: list(results["accept"].get(g, {}).get("records", {}).values())
                       for g in order}
             results["ranking"] = {k: ranking_verdict(results["grades_gate"], alphas, k)
