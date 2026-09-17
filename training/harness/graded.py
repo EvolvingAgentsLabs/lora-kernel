@@ -31,6 +31,13 @@ FULL = Path("training/harness/data_ef/train.jsonl")
 SIZES = (75, 200)
 SEED = 0
 
+# THE DESK'S GRADES ARE WIDER, ON PURPOSE. Its `commitment` task is one call and a copy
+# **[ran]** P51 — the 32B solved 60 of 60 with a single `message` — so a 75-example
+# grade may already sit at the ceiling. 25 is chosen so the lowest grade has barely met
+# the protocol; if even that saturates, M1 fails on the ceiling and the brief says so.
+DESK = Path("training/harness/data_desk/train.jsonl")
+DESK_SIZES = (25, 75)
+
 
 def nested_subsets(rows: list[dict], sizes=SIZES, seed: int = SEED) -> dict[int, list[dict]]:
     order = list(range(len(rows)))
@@ -38,20 +45,33 @@ def nested_subsets(rows: list[dict], sizes=SIZES, seed: int = SEED) -> dict[int,
     return {k: [rows[i] for i in sorted(order[:k])] for k in sizes}
 
 
-def path_for(size: int) -> Path:
-    return FULL.with_name(f"train_g{size}.jsonl")
+def path_for(size: int, full: Path = FULL) -> Path:
+    return full.with_name(f"train_g{size}.jsonl")
 
 
-def write(rows: list[dict] | None = None) -> dict[int, Path]:
-    rows = rows or [json.loads(l) for l in FULL.read_text().splitlines() if l.strip()]
-    out = {}
-    for size, sub in nested_subsets(rows).items():
-        # THE SAME BALANCE RULE THE FULL CORPUS ENFORCES. A 75-row draw that came
-        # out 80% one answer would teach that answer, and the grade would then
-        # differ from the others in *what* it learned rather than *how much*.
+def balanced(sub: list[dict]) -> str | None:
+    """What a grade must not lose relative to the full corpus — or why it is refused.
+
+    Triage rows carry `truth`: a 75-row draw that came out 80% one answer would teach
+    that answer, and the grade would differ in *what* it learned rather than *how
+    much*. Desk rows carry `depth`: a grade that never saw a depth cannot be scored on
+    it against the others.
+    """
+    if "truth" in sub[0]:
         share = sum(r["truth"] for r in sub) / len(sub)
-        assert 0.3 <= share <= 0.7, f"g{size} is {share:.0%} important — too lopsided"
-        p = path_for(size)
+        return None if 0.3 <= share <= 0.7 else f"{share:.0%} important — too lopsided"
+    depths = {r["depth"] for r in sub}
+    return None if depths == {1, 2, 3, 4} else f"depths {sorted(depths)} only"
+
+
+def write(rows: list[dict] | None = None, full: Path = FULL,
+          sizes=SIZES) -> dict[int, Path]:
+    rows = rows or [json.loads(l) for l in full.read_text().splitlines() if l.strip()]
+    out = {}
+    for size, sub in nested_subsets(rows, sizes).items():
+        why = balanced(sub)
+        assert why is None, f"g{size} of {full.name}: {why}"
+        p = path_for(size, full)
         p.write_text("\n".join(json.dumps(r) for r in sub) + "\n")
         out[size] = p
     return out
@@ -60,3 +80,5 @@ def write(rows: list[dict] | None = None) -> dict[int, Path]:
 if __name__ == "__main__":
     for size, p in write().items():
         print(f"g{size}: {p}")
+    for size, p in write(full=DESK, sizes=DESK_SIZES).items():
+        print(f"desk g{size}: {p}")
