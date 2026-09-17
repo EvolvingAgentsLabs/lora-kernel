@@ -316,3 +316,10 @@ def test_the_identity_gate_does_not_read_an_error_as_a_difference():
     broken = [{"id": r["id"], "error": "IndexError"} for r in base]
     v = applied(base, broken)
     assert v["verdict"].startswith("UNREADABLE") and v["probed"] == 0
+
+
+def test_the_identity_gate_does_not_read_an_empty_text_as_a_difference():
+    base = recs([True] * 8)
+    empty = [{"id": r["id"], "text": "", "human": True, "correct": False} for r in base]
+    v = applied(base, empty)
+    assert v["verdict"].startswith("UNREADABLE") and v["probed"] == 0
