@@ -102,6 +102,11 @@ def _email() -> Suite:
 
 # --- the desk: four tags, a free-text answer verified by substring ---------------
 
+def _all_regions():
+    from training.email.desk import REGIONS
+    return REGIONS
+
+
 def _desk(region: str = "commitment") -> Suite:
     from training.email.desk import correct, generate
     from training.email.desk_tools import SCHEMA, answer
@@ -116,7 +121,9 @@ def _desk(region: str = "commitment") -> Suite:
         return [Case(id=c["case_id"], user=c["prompt"], ctx=c["desk"], truth=c["answer"],
                      verify=(lambda said, cc=c: correct(cc, said)), human=True,
                      meta={"region": c["region"], "depth": c["depth"]})
-                for c in generate(n, seed)["cases"] if c["region"] == region]
+                for c in generate(n, seed, regions=(region,) if region == "commitment_deep"
+                                  else None or _all_regions())["cases"]
+                if c["region"] == region]
 
     # A DATE HAS NO MAJORITY CLASS. The floor a target must clear on its own is 0 here
     # and the gate reduces to the paired test against the best expert — which is the
@@ -125,7 +132,11 @@ def _desk(region: str = "commitment") -> Suite:
                  tags=("inbox", "thread_history", "sender_stats", "message"), answer=answer,
                  positional=_positional(SCHEMA),
                  parse=lambda text: text.strip() or None,
-                 cases=cases, bar=lambda cs: 0.0, eval_seed=424242, eval_n=960)
+                 # THE DEEP BAND IS ITS OWN GRID: generate(n, seed, regions=(deep,)) spreads
+                 # n over four depths, so 240 cases is 60 per depth — the shallow band's
+                 # size, and the power `bar.resolvable` priced at 0.92 for +0.10.
+                 cases=cases, bar=lambda cs: 0.0, eval_seed=424242,
+                 eval_n=240 if region == "commitment_deep" else 960)
 
 
 def load(name: str) -> Suite:

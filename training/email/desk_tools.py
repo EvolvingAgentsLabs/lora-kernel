@@ -44,7 +44,30 @@ def inbox(desk: dict, text: str = "") -> str:
                        for m in desk["messages"]])
 
 
-HANDLERS = {"inbox": inbox, "thread_history": thread_history,
+def thread_history_with_messages(desk: dict, text: str) -> str:
+    """The inbox's `thread_history`, plus the messages themselves.
+
+    THE DESK'S OWN SURFACE, AND ONLY THE DESK'S. `commitment_deep` asks for the
+    latest of several promises across a thread where the last message is the
+    sender's; without the previews a model cannot read what was promised, and the
+    region would be unanswerable for every arm — the same fault `inbox` was added to
+    remove. The triage surface (`training/email/tools.py`) is untouched: the released
+    adapter was trained against it (P38).
+    """
+    base = json.loads(thread_history(desk, text))
+    a = _parse(text)
+    tid = a.get("thread_id") or a.get("thread") or a.get("id")
+    base["messages"] = [{"from": h["from"], "preview": h["preview"]}
+                        for h in desk["threads"][tid]]
+    return json.dumps(base)
+
+
+def _parse(text: str) -> dict:
+    from training.email.tools import _args
+    return _args(text)
+
+
+HANDLERS = {"inbox": inbox, "thread_history": thread_history_with_messages,
             "sender_stats": sender_stats, "message": message}
 
 

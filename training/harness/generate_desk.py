@@ -57,7 +57,16 @@ INSTRUCTION = tools_to_instruction(SCHEMA, arity=True, enums=False)
 
 
 def chain_for(case: dict) -> list[tuple[str, str]]:
-    """The target's chain: one `message` call, then the date **[ran]** P51, 60 of 60."""
+    """The chain the corpus teaches.
+
+    `commitment`: the target's — one `message` call, then the date **[ran]** P51, 60 of
+    60. `commitment_deep`: the ORACLE's — `thread_history`, read the previews, answer
+    my latest promise. Written by the oracle and not by the target on purpose: the
+    review named the confound — a corpus written by the target makes α measure the
+    target's style, not quality — and this band exists to measure quality.
+    """
+    if case["region"] == "commitment_deep":
+        return [("thread_history", f"thread_id={case['msg']['thread_id']}")]
     return [("message", f"id={case['msg']['id']}")]
 
 
@@ -74,28 +83,40 @@ def render(case: dict) -> dict:
                          {"role": "assistant", "content": "\n".join(lines)}]}
 
 
-def eval_prompts() -> set[str]:
-    return {c["prompt"] for c in generate(EVAL_N, EVAL_SEED)["cases"]}
+def eval_prompts(region: str = REGION) -> set[str]:
+    regions = (region,) if region == "commitment_deep" else None
+    kw = {"regions": regions} if regions else {}
+    return {c["prompt"] for c in generate(EVAL_N, EVAL_SEED, **kw)["cases"]}
 
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--n", type=int, default=600)
     ap.add_argument("--seed", type=int, default=515151)
-    ap.add_argument("--out", default=str(OUT))
+    ap.add_argument("--region", default=REGION,
+                    help="commitment (one call, the shallow band) or commitment_deep")
+    ap.add_argument("--out", default=None,
+                    help="defaults to data_desk/train.jsonl or data_desk_deep/train.jsonl")
     args = ap.parse_args()
     assert args.seed != EVAL_SEED, "the corpus would draw the evaluation's desks"
+    region = args.region
+    out_path = args.out or (str(OUT) if region == REGION else str(OUT).replace("data_desk", "data_desk_deep"))
 
-    held_out = eval_prompts()
+    held_out = eval_prompts(region)
     rng = random.Random(args.seed)
     rows, skipped, i = [], 0, 0
+    from training.email.desk import _deepen
     desk = _desk(rng, 24, "me@ownmail.com")
+    if region == "commitment_deep":
+        _deepen(desk, args.seed)
     while len(rows) < args.n:
         depth = DEPTHS[i % len(DEPTHS)]
         i += 1
         if i % 40 == 0:
             desk = _desk(rng, 24, "me@ownmail.com")
-        c = build(rng, REGION, depth, desk)
+            if region == "commitment_deep":
+                _deepen(desk, args.seed + i)
+        c = build(rng, region, depth, desk)
         if c is None:
             continue
         c |= {"case_id": f"dc-{len(rows):04d}", "desk": desk}
@@ -105,7 +126,7 @@ def main() -> int:
             continue
         rows.append(render(c))
 
-    p = pathlib.Path(args.out)
+    p = pathlib.Path(out_path)
     p.parent.mkdir(parents=True, exist_ok=True)
     p.write_text("\n".join(json.dumps(r) for r in rows) + "\n")
     by_depth = {d: sum(r["depth"] == d for r in rows) for d in DEPTHS}
