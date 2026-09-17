@@ -21,6 +21,33 @@ Rules that bind whoever edits this file: update a step's row **in the same
 session** the step finishes; keep superseded text visible with a reason rather
 than deleting it; update the Spanish mirror in the same commit.
 
+## 0b. The order of dependencies — phases, bottom-up (adopted 2026-09-17)
+
+The plan is a stack: **each layer is validated alone, frozen with a test that
+protects it, and only then is the layer above built on it.** `CLAUDE.md` §8 carries
+the rule; this is the state. No piece counts as working until it has (a) a
+preflight, (b) a persisted artefact, (c) a test that re-verifies it every session,
+and (d) a failure condition written before it runs.
+
+| # | piece | depends on | gate | state |
+|---|---|---|---|---|
+| **0** | the serving substrate — C18 on every member (≥ 2 of 3 probes differ), tools reachable through the proxy, stop honoured. Spec: [`SUBSTRATE-GATE.md`](SUBSTRATE-GATE.md) | — | `verdict.json` `pass: true` | `NEXT` — P56 |
+| **1** | a reproducible release of `email-full`: adapter + corpus + prompt hash, re-served in corpus mode and paired against its recorded 471/475 | 0 | the re-serve is a tie by the paired test | `NEXT` — P57 |
+| **2** | a suite with a verifier and a gradient: `suite_gates`; base gradient ≥ 0.30 across depth; the target beats the best expert, paired, $p \le 0.05$ (M-target, FOUNDATIONS §7.2) | 1 | all three on one region | desk `commitment`: gradient **1.000 → 0.000** and target **1.000** at every depth **[ran]** P51; M-target formally re-tested in Phase 3's session against the best grade |
+| **3** | experts the verifier orders (M1): `g25 ⊂ g75 ⊂ 600`; **the smallest grade is trained and scored first** — if `g25` already saturates, stop | 2 | ≥ 1 adjacent pair resolved, $p \le 0.05$ | `NEXT` — P55b |
+| **4** | the ordering verdict by acceptance (M-α, M2): three α per case, SUPPORTED / FALSIFIED / UNRESOLVED-as-failure written first (§7.4) | 3 | the thesis itself | blocked on 3 |
+| **5** | the product with real groups (CASE-TEAM), `--prune` off as the attribution arm; every new member enters through Phase 1's door | 1 | 0.546 → 0.775 reproduced on new traffic, the leaving share measured | after 1 |
+| **6** | the route to `Qwen3.8-27B`: D2 (C18's mechanism, with the log) → D3 → D4 | **4 = SUPPORTED** | D2: `applied` on the identity gate | blocked on 4 |
+
+**The three outcomes of Phase 4 are committed now.** SUPPORTED opens Phase 6 and the
+tournament. FALSIFIED closes acceptance-as-ranking for good and the README is
+rewritten around the measured product. UNRESOLVED permits one more redesign — the
+third is the stopping condition (counter: 2 of 3 after P55b).
+
+**Map from the mechanisms above to the phases:** C18 → 0 · S9, S10 → 1 · P50
+suite gates, headroom, M-target → 2 · M1 → 3 · M-α, M2 → 4 · S8, S3, pool > 2 → 5 ·
+D2–D4 → 6.
+
 ## 1. The one question
 
 > **Is acceptance against a frontier target a valid promotion criterion for a

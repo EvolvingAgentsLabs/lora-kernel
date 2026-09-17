@@ -21,6 +21,33 @@ Reglas para quien edite este archivo: actualizar la fila de un paso **en la mism
 sesión** en que el paso termina; dejar visible el texto superado con su razón en
 vez de borrarlo; actualizar el espejo en inglés en el mismo commit.
 
+## 0b. El orden de dependencias — fases, de abajo hacia arriba (adoptado 2026-09-17)
+
+El plan es una pila: **cada capa se valida sola, queda congelada con un test que la
+protege, y sólo entonces la capa de arriba se construye sobre ella.** `CLAUDE.md` §8
+lleva la regla; esto es el estado. Ninguna pieza cuenta como funcionando hasta tener
+(a) un preflight, (b) un artefacto persistido, (c) un test que la re-verifica en cada
+sesión y (d) una condición de falla escrita antes de correr.
+
+| # | pieza | depende de | compuerta | estado |
+|---|---|---|---|---|
+| **0** | el sustrato de serving — C18 en cada miembro (≥ 2 de 3 sondas difieren), herramientas alcanzables por el proxy, stop honrado. Spec: [`SUBSTRATE-GATE.md`](SUBSTRATE-GATE.md) | — | `verdict.json` `pass: true` | `NEXT` — P56 |
+| **1** | un release reproducible de `email-full`: adaptador + corpus + hash del prompt, re-servido en modo corpus y pareado contra su 471/475 registrado | 0 | el re-serving empata por el test pareado | `NEXT` — P57 |
+| **2** | una suite con verificador y gradiente: `suite_gates`; gradiente de la base ≥ 0,30 en profundidad; el target le gana al mejor experto, pareado, $p \le 0,05$ (M-target, FOUNDATIONS §7.2) | 1 | las tres en una región | desk `commitment`: gradiente **1,000 → 0,000** y target **1,000** en cada profundidad **[ran]** P51; M-target se re-prueba formalmente en la sesión de la Fase 3 contra el mejor grado |
+| **3** | expertos que el verificador ordena (M1): `g25 ⊂ g75 ⊂ 600`; **el grado más chico se entrena y puntúa primero** — si `g25` ya satura, se para | 2 | ≥ 1 par adyacente resuelto, $p \le 0,05$ | `NEXT` — P55b |
+| **4** | el veredicto de orden por aceptación (M-α, M2): tres α por caso, SUPPORTED / FALSIFIED / UNRESOLVED-como-fracaso escritos antes (§7.4) | 3 | la tesis misma | bloqueado por 3 |
+| **5** | el producto con grupos reales (CASE-TEAM), `--prune` apagado como brazo de atribución; cada miembro nuevo entra por la puerta de la Fase 1 | 1 | 0,546 → 0,775 reproducido sobre tráfico nuevo, con la fracción que sale medida | después de 1 |
+| **6** | la ruta a `Qwen3.8-27B`: D2 (el mecanismo de C18, con el log) → D3 → D4 | **4 = SUPPORTED** | D2: `applied` en la compuerta de identidad | bloqueado por 4 |
+
+**Los tres desenlaces de la Fase 4 quedan comprometidos ahora.** SUPPORTED abre la
+Fase 6 y el torneo. FALSIFIED cierra la aceptación-como-ranking para siempre y el
+README se reescribe alrededor del producto medido. UNRESOLVED permite un rediseño más
+— el tercero es la condición de parada (contador: 2 de 3 después de P55b).
+
+**Mapa de los mecanismos de arriba a las fases:** C18 → 0 · S9, S10 → 1 · compuertas
+de suite P50, headroom, M-target → 2 · M1 → 3 · M-α, M2 → 4 · S8, S3, pool > 2 → 5 ·
+D2–D4 → 6.
+
 ## 1. La única pregunta
 
 > **¿Es la aceptación contra un target de frontera un criterio válido de

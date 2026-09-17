@@ -465,6 +465,8 @@ pipeline; the enterprise control plane.
 
 - [`docs/FOUNDATIONS.md`](docs/FOUNDATIONS.md) — **the mathematics, step by step and
   tied to what ran** · [es](docs/es/FOUNDATIONS.md)
+- [`docs/SUBSTRATE-GATE.md`](docs/SUBSTRATE-GATE.md) — Phase 0: the serving substrate as a
+  gate, and why each of its four checks exists · [es](docs/es/SUBSTRATE-GATE.md)
 - [`docs/EXPERIMENT_PLAN.md`](docs/EXPERIMENT_PLAN.md) — every step with its gate,
   falsification and number · [es](docs/es/EXPERIMENT_PLAN.md)
 - [`docs/STACK.md`](docs/STACK.md) — the inventory: every model id, adapter

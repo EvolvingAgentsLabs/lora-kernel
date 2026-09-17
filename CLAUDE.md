@@ -102,8 +102,11 @@ So, the rules that keep a session on the project:
   **[ran]** P41. The **speculative target** is `Qwen2.5-32B-Instruct`, because every
   `Qwen2.5-Instruct` size shares a byte-identical `tokenizer.json` with the base
   while the `Qwen3.x` line changed its vocabulary at 3.5 — its 27B models have
-  248,044 entries and cannot verify our drafters at all **[ran]** P48. Run
-  `training/harness/tokenizer_compat.py` before proposing any other.
+  248,044 entries and cannot verify a **Qwen 2.5** drafter **[ran]** P48. Usability
+  is a property of the *pair*: a `Qwen3.5-2B/4B` drafter shares `Qwen3.8-27B`'s id
+  space **[ran]** D0, which is why the 27B is the **goal** and the drafter is what
+  moves (README, *The goal*). Run `training/harness/tokenizer_compat.py` before
+  proposing any other pair.
 - **When in doubt, the next step is the one that puts a weight delta on disk.**
 
 ## 1. The plan is the state
@@ -329,3 +332,53 @@ signal that can see a chain which is coherent and wrong.
 **Composition and `harness.lora` are parked, not out of scope**: they return if
 producing self-contained experts turns out expensive at scale, with P34's result
 already paid for.
+
+## 8. The order of dependencies — phases, bottom-up (adopted 2026-09-17)
+
+The plan is a stack. **Each layer is validated alone, frozen with a test that
+protects it, and only then is the layer above built on it.** This formalises what
+§3 already says as explicit dependencies, because every time a layer above was
+touched while one below was in doubt it cost a whole run (P53, P55 A twice).
+
+**The global rule.** No piece counts as working until it has **(a) a preflight,
+(b) a persisted artefact, (c) a test that re-verifies it every session, and (d) a
+failure condition written before it runs.**
+
+| # | piece | depends on | the arm that kills first | cost |
+|---|---|---|---|---|
+| **0** | the serving substrate — C18 on every pool member, tools reachable, stop honoured | nothing | the identity gate | minutes |
+| **1** | a reproducible release of `email-full` (adapter + corpus + prompt hash), re-served and paired against its recorded run | 0 | the re-serve | low |
+| **2** | a suite with a verifier and a gradient: `suite_gates` pass; base gradient ≥ 0.30 across depth; **target beats the best expert, paired, $p \le 0.05$** (M-target) | 1 | headroom, **zero GPU** where P51 already measured it | zero → low |
+| **3** | experts the verifier orders (M1): nested grades, adjacent pairs paired | 2 | **the smallest grade alone** — if `g25` already saturates, stop before `g75` | medium |
+| **4** | the ordering verdict by acceptance (M-α, M2) — *the thesis* | 3 | the thesis itself | medium–high |
+| **5** | the product end to end with real groups (CASE-TEAM), `--prune` off as the attribution arm | 1 | attribution of `--prune` | medium |
+| **6** | the route to `Qwen3.8-27B` (D2 → D3 → D4) | **4 = SUPPORTED** | D2 with the log in hand | high |
+
+**Phase 0** is `training/harness/verify_substrate.py` (spec:
+[`docs/SUBSTRATE-GATE.md`](docs/SUBSTRATE-GATE.md)); it is the entry to everything
+and is re-run whenever vLLM or the base changes — the only permitted way to
+re-validate. **Phase 6 is blocked on M2 SUPPORTED as a dependency, not a
+preference**: if acceptance does not rank, D4 buys a faster version of a mechanism
+that does not work.
+
+Three transversal rules, added to §3's:
+
+- **Freeze per piece.** When a phase passes, its prompt, corpus, flags and vLLM
+  version are frozen; changing any of them is a **counted redesign** — for what works
+  as well as for the instrument.
+- **One unknown per run.** Phase 4 measures acceptance *over grades Phase 3 already
+  validated*. Training grades and measuring α in one session and getting a strange
+  number is not attributable; the phase split is the free attribution.
+- **The negative outcome is a deliverable.** If M1 or M2 fails, the plan ends there
+  and the README is rewritten around the measured product. That commitment is signed
+  *before* Phase 4 runs: FALSIFIED closes acceptance-as-ranking for good; UNRESOLVED
+  allows one more redesign (the third is the stopping condition, already written).
+
+## 9. The mathematics is required, everywhere (adopted 2026-09-17)
+
+Every document, the tests' documentation and every next-step entry carry the
+formula they rest on, tied to the run that instantiates it —
+[`docs/FOUNDATIONS.md`](docs/FOUNDATIONS.md) derives them and §11 there maps section
+→ run. **Every Colab run updates the formula it instantiates.** A formula with no run
+under it is a claim; a run with no formula over it is a number.
+

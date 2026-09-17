@@ -479,6 +479,8 @@ pipeline gestionado de dream/evolución; el plano de control enterprise.
 
 - [`docs/es/FOUNDATIONS.md`](docs/es/FOUNDATIONS.md) — **la matemática, paso a paso y
   atada a lo que corrió** · [en](docs/FOUNDATIONS.md)
+- [`docs/es/SUBSTRATE-GATE.md`](docs/es/SUBSTRATE-GATE.md) — Fase 0: el sustrato de serving
+  como compuerta, y por qué existe cada uno de sus cuatro chequeos · [en](docs/SUBSTRATE-GATE.md)
 - [`docs/es/EXPERIMENT_PLAN.md`](docs/es/EXPERIMENT_PLAN.md) — cada paso con su
   compuerta, su falsación y su número · [en](docs/EXPERIMENT_PLAN.md)
 - [`docs/es/STACK.md`](docs/es/STACK.md) — el inventario: cada id de modelo,
