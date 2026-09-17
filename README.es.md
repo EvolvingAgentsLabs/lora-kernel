@@ -497,6 +497,9 @@ pipeline gestionado de dream/evolución; el plano de control enterprise.
   de cada una y la condición de retiro · [en](docs/ARCHITECTURE.md)
 - [`docs/es/TECHNICAL-REFERENCE.md`](docs/es/TECHNICAL-REFERENCE.md) — los mecanismos y
   la fórmula detrás de cada uno · [en](docs/TECHNICAL-REFERENCE.md)
+- [`docs/es/REPORT-2026-09-17.md`](docs/es/REPORT-2026-09-17.md) — **el reporte del día para
+  un revisor externo**: qué se hizo con su número, qué no y por qué tipo de razón, las seis
+  fallas de instrumento y las preguntas que quedan · [en](docs/REPORT-2026-09-17.md)
 - [`docs/es/REPORT.md`](docs/es/REPORT.md) — el plan original contra lo que pasó ·
   [en](docs/REPORT.md)
 - [`docs/es/OPEN-PROBLEMS.md`](docs/es/OPEN-PROBLEMS.md) — los problemas abiertos, sin

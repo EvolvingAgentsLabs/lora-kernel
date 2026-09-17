@@ -483,6 +483,9 @@ pipeline; the enterprise control plane.
   each, and the withdrawal condition · [es](docs/es/ARCHITECTURE.md)
 - [`docs/TECHNICAL-REFERENCE.md`](docs/TECHNICAL-REFERENCE.md) — the mechanisms and the
   formula behind each · [es](docs/es/TECHNICAL-REFERENCE.md)
+- [`docs/REPORT-2026-09-17.md`](docs/REPORT-2026-09-17.md) — **the day's report for an
+  outside reviewer**: what was done with its number, what was not and by which kind of
+  reason, the six instrument faults, and the questions left · [es](docs/es/REPORT-2026-09-17.md)
 - [`docs/REPORT.md`](docs/REPORT.md) — the original plan against what happened ·
   [es](docs/es/REPORT.md)
 - [`docs/OPEN-PROBLEMS.md`](docs/OPEN-PROBLEMS.md) — the open problems, without jargon ·
