@@ -56,6 +56,14 @@ Lo que corre en cualquier máquina, siempre, es la mitad estática:
 `tests/test_verify_substrate.py` (la lógica del veredicto sobre cada desenlace que
 una compuerta puede tener).
 
+## Primera corrida — P56, 2026-09-17 **[ran]**
+
+L4, los dos miembros del pool subidos (el tarball de P41), proxy arrancado con `--prune`.
+**`SUBSTRATE OK`**: P0 lista `email-full` y `fluids-full`; G1 **3/3** sondas difieren para
+cada uno; G2 `email-full` responde con **1 llamada**, `fluids-full` responde sin ninguna — la
+superficie podada no le ofrece herramienta de inbox, que es la forma correcta; G3
+`stop_reason: '3'`. `results/P56-substrate-20260917/verdict.json`.
+
 ## Su lugar en el plan
 
 - **La Fase 0 ✅ es la entrada de todas las demás.**

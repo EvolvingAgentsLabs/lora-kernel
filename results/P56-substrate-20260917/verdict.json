@@ -1,0 +1,82 @@
+{
+  "base": "Qwen/Qwen2.5-3B-Instruct",
+  "started": "2026-09-17T15:43:20",
+  "P0": {
+    "served": [
+      "Qwen/Qwen2.5-3B-Instruct",
+      "email-full",
+      "fluids-full"
+    ],
+    "members": [
+      "email-full",
+      "fluids-full"
+    ]
+  },
+  "G1": {
+    "email-full": {
+      "probed": 3,
+      "differs": 3,
+      "applied": true,
+      "samples": [
+        {
+          "base": "The sky appears blue because of Rayleigh scattering, which i",
+          "member": "The sky appears blue because during the day, when sunlight e"
+        },
+        {
+          "base": "When answering an email, a careful reader should ensure they",
+          "member": "When reading an important message in an inbox, a careful rea"
+        },
+        {
+          "base": "A pressure drop in a pipe primarily depends on the fluid's v",
+          "member": "A pressure drop in a pipe depends on the fluid's viscosity, "
+        }
+      ]
+    },
+    "fluids-full": {
+      "probed": 3,
+      "differs": 3,
+      "applied": true,
+      "samples": [
+        {
+          "base": "The sky appears blue because of Rayleigh scattering, which i",
+          "member": "The sky appears blue because sunlight, after traveling throu"
+        },
+        {
+          "base": "When answering an email, a careful reader should ensure they",
+          "member": "A careful reader checking an email before answering it typic"
+        },
+        {
+          "base": "A pressure drop in a pipe primarily depends on the fluid's v",
+          "member": "A pressure drop in a pipe depends on the fluid's viscosity, "
+        }
+      ]
+    }
+  },
+  "G2": {
+    "email-full": {
+      "reachable": true,
+      "tool_calls": 1,
+      "answered": true
+    },
+    "fluids-full": {
+      "reachable": true,
+      "tool_calls": 0,
+      "answered": true
+    }
+  },
+  "G3": {
+    "stop_included": true,
+    "stop_reason": "3",
+    "sample": "3"
+  },
+  "verdict": {
+    "pass": true,
+    "failed": [],
+    "members": [
+      "email-full",
+      "fluids-full"
+    ],
+    "reading": "SUBSTRATE OK \u2014 every member applies, tools reachable, stop honoured"
+  },
+  "finished": "2026-09-17T15:43:40"
+}
