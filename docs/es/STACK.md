@@ -43,7 +43,8 @@ muere. El chequeo es capacidad de cómputo ≥ 8.0 **[ran]** 2026-09-08.
 |---|---:|---|---|
 | `Qwen2.5-7B / 14B / 32B / 72B-Instruct` | 151.643 | sí | **sí — archivo byte-idéntico** |
 | `Qwen3-14B`, `Qwen3-32B` | 151.643 | sí | sí, con 4 ids que sólo el target tiene (151665-151668: `<tool_response>`, `</tool_response>`, `<think>`, `</think>`) — **una mejora disponible, no adoptada**; ver [`analysis/qwen3-migration.md`](../analysis/qwen3-migration.md) |
-| `Qwen3.5-27B`, `Qwen3.6-27B`, `Qwen3.8-27B` | **248.044** | **no** | **no — otro vocabulario** |
+| `Qwen3.5-27B`, `Qwen3.6-27B`, `Qwen3.8-27B` **con el drafter Qwen 2.5** | **248.044** | **no** | **no — otro vocabulario; los drafters 2.5 no llegan** |
+| **`Qwen3.8-27B` con un drafter `Qwen3.5-2B / 4B` — el objetivo** | 248.044 | sí | **sí** — mapa idéntico, 7 ids sólo del target de audio/TTS, `<think>` compartido **[ran]** `results/P55-graded-ranking-20260916/D0-tokenizers.txt` |
 
 Una API de frontera nunca puede ser target especulativo: no devuelve logprobs de una
 continuación **forzada** (C2) y no comparte el tokenizer (C3). Chequear cualquier par

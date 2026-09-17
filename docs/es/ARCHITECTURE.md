@@ -65,7 +65,8 @@ Medido y no argumentado **[ran]** `results/P48-tokenizer-compat-20260916/`:
 |---|---:|---|
 | `Qwen2.5-7B / 14B / 32B / 72B-Instruct` | 151.643 | **sí — `tokenizer.json` byte-idéntico** |
 | `Qwen3-14B`, `Qwen3-32B` | 151.643 | sí, con 4 ids que sólo el target tiene |
-| `Qwen3.5 / 3.6 / 3.8-27B` | **248.044** | **no — otro vocabulario** |
+| `Qwen3.5 / 3.6 / 3.8-27B` — *con el drafter Qwen 2.5* | **248.044** | **no — otro vocabulario; lo que se mueve es el drafter** |
+| **`Qwen3.8-27B` con un drafter `Qwen3.5-2B / 4B` — el objetivo** | 248.044 | **sí**, 7 ids sólo del target de audio/TTS **[ran]** D0 |
 
 **Así que el target es `Qwen2.5-32B-Instruct-AWQ`** — 19,3 GB, entra al lado del 3B en
 una A100, y su `tokenizer.json` hashea igual que el de la base. Un modelo de frontera

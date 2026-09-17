@@ -43,7 +43,8 @@ generation dies. The check is compute capability ≥ 8.0 **[ran]** 2026-09-08.
 |---|---:|---|---|
 | `Qwen2.5-7B / 14B / 32B / 72B-Instruct` | 151,643 | yes | **yes — byte-identical file** |
 | `Qwen3-14B`, `Qwen3-32B` | 151,643 | yes | yes, with 4 target-only ids (151665-151668: `<tool_response>`, `</tool_response>`, `<think>`, `</think>`) — **an available upgrade, not adopted**; see [`analysis/qwen3-migration.md`](analysis/qwen3-migration.md) |
-| `Qwen3.5-27B`, `Qwen3.6-27B`, `Qwen3.8-27B` | **248,044** | **no** | **no — a different vocabulary** |
+| `Qwen3.5-27B`, `Qwen3.6-27B`, `Qwen3.8-27B` **with the Qwen 2.5 drafter** | **248,044** | **no** | **no — a different vocabulary; the 2.5 drafters cannot reach them** |
+| **`Qwen3.8-27B` with a `Qwen3.5-2B / 4B` drafter — the goal** | 248,044 | yes | **yes** — identical map, 7 target-only audio/TTS ids, `<think>` shared **[ran]** `results/P55-graded-ranking-20260916/D0-tokenizers.txt` |
 
 A frontier API can never be a speculative target: it returns no logprobs for a
 **forced** continuation (C2) and does not share the tokenizer (C3). Check any new

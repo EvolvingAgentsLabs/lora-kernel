@@ -2340,7 +2340,7 @@ mechanical verifier**, which is where S7's tournament has always stalled — whi
 acceptance needs none.
 
 **Target: `Qwen2.5-32B-Instruct`**, byte-identical tokenizer **[ran]** P48.
-`Qwen3.6-27B` cannot verify our drafters at all — 248,044 entries against 151,643 —
+`Qwen3.6-27B` cannot verify our *Qwen 2.5* drafters at all — 248,044 entries against 151,643; a `Qwen3.5` drafter can be verified by `Qwen3.8-27B` **[ran]** D0 —
 and stays available as a quality reference, a different job.
 
 | step | what it buys | trains? | gate |
