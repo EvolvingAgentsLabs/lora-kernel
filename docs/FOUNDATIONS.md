@@ -714,4 +714,4 @@ all of it.
 | §10.5 D1 | vLLM resolves to 0.29.0 | P55 A boot log |
 | §4.4 | **an unknown surface is extrapolation**: unpruned (54 tools) the expert copies tags off the block, 225 of 227 calls refused; pruned, 8 of 1160; the block is ~7,956 vs ~77 tokens | P59 `attribution.json` |
 | §6.4 | **α, $\mathbb{E}[\tau]$, speed-up** | **not yet measured** |
-| §7.4 | **the ordering verdict** | **closed without a verdict, 2026-09-17**: no generated suite satisfies §7.2 and offers a non-trivial ordering at once — P55 A, P55b |
+| §7.4 | **the ordering verdict** | **not measured**: §7.2 fails for an *untrained* target in two easy regions (P55 A, P55b); reopened as one arm — a trained target on a deeper band (P60) |

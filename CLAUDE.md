@@ -352,7 +352,7 @@ failure condition written before it runs.**
 | **3** | experts the verifier orders (M1): nested grades, adjacent pairs paired | 2 | **the smallest grade alone** — if `g25` already saturates, stop before `g75` | medium |
 | **4** | the ordering verdict by acceptance (M-α, M2) — *the thesis* | 3 | the thesis itself | medium–high |
 | **5** | the product end to end with real groups (CASE-TEAM), `--prune` off as the attribution arm | 1 | attribution of `--prune` | medium |
-| **6** | the route to `Qwen3.8-27B` (D2 → D3 → D4) | **4 = SUPPORTED** — and Phase 4 **closed without a verdict on 2026-09-17**: M2 is not buyable on any suite this project can generate (twice measured, $Q(T) < \max Q(E)$); the route stays blocked by design until a real-data suite with a verifier exists | D2 with the log in hand | high |
+| **6** | the route to `Qwen3.8-27B` (D2 → D3 → D4) | **4 = SUPPORTED** — and Phase 4 **reopened as one arm on 2026-09-17 after review**: what is measured is $Q(T) < \max Q(E)$ for an *untrained* target in two easy regions, not that no generated suite has the window — the next arm is a trained 32B on a deeper `commitment` band (P60). The route stays blocked until M2 has a verdict | D2 with the log in hand | high |
 
 **Phase 0** is `training/harness/verify_substrate.py` (spec:
 [`docs/SUBSTRATE-GATE.md`](docs/SUBSTRATE-GATE.md)); it is the entry to everything
