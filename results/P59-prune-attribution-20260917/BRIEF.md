@@ -57,3 +57,33 @@ on-arm of attempt 1 stands on its own: **385/475, human 261/351 = 0.744**, 1169 
 
 Nothing about a live OpenClaw turn (the client here is `agent_sim`, not OpenClaw);
 nothing about the ordering test (closed); nothing about latency.
+
+---
+
+## Result — attempt 2, 2026-09-17 **[ran]** `attribution.json`, A100, 0 errors in either arm
+
+| arm | 475 | human 351 | calls | refused | what it writes |
+|---|---:|---:|---:|---:|---|
+| `--prune off` — 54 tools, room for the block | 357 | **0.664** | 227 | **225** | `IMPORTANT` 344 times, `NOT IMPORTANT` 131 — answers from the listing at the majority bar (0.655) |
+| `--prune on` — the member's three | 380 | **0.729** | 1160 | 8 | uses its tools; P43's 0.744 within noise |
+
+**Paired over 475: 87 : 64, $p = 0.073$ — a tie by the pre-registered $p \le 0.05$.**
+Power at this $n$ for a +0.05 effect is 0.81 and `n_for` says 466, so the run was sized
+at the edge on purpose and the edge is where it landed: the pruned arm wins more cases
+than it loses, and not resolvably.
+
+**The behaviour is not a tie.** Unpruned, the expert **copies tags off the block**: it
+calls `agents_list`, `agents_wait`, `apply_patch`, `ask_user`, `browser`, `canvas` —
+the first entries of the 54-line listing, six cases each — **225 of 227 calls refused,
+2 answered**. That is P25's measured failure (an unknown surface: knows a step needs a
+tool, gets the name wrong) inside the product path, and it did not reproduce P43's
+*zero* calls because `agent_sim` is not OpenClaw: OpenClaw would have **executed**
+those calls. **Unpruned, an expert inside an agent runtime reaches for `apply_patch`
+and `browser`.** Pruning is not an optimisation; it is the boundary.
+
+And the prefill: **~7,956 tokens** of tool block per turn unpruned against **~77**
+pruned, measured before any model was served.
+
+**Reading for Phase 5:** `--prune` becomes the default the docs recommend, on the
+behaviour evidence; the accuracy delta is real in direction and unresolved at this
+$n$, and is not the reason.

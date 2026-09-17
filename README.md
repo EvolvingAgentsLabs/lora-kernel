@@ -371,9 +371,16 @@ case for case, and a re-training from the same corpus ties it 1 : 0 **[ran]** P5
 path that was costing it 18 points found and fixed. The acceptance instrument built, preflighted and gated. The id spaces measured
 by pair; the route to `Qwen3.8-27B` named mechanism by mechanism.
 
+**Phase 5, first buy [ran] P59.** On the 54-tool surface OpenClaw actually sends, the
+unpruned expert **copies tags off the block** — `agents_list`, `apply_patch`, `browser` —
+225 of 227 calls refused, and answers from the listing at the majority bar; pruned to
+its three it makes 1160 calls, 8 refused, at 0.729. Accuracy 87 : 64, $p = 0.073$ — a
+tie at $n = 475$; **behaviour is not a tie**, and inside a real runtime those calls
+execute. `--prune` is the default the docs recommend, and the prefill drops from
+**~7,956 to ~77 tokens** per turn.
+
 **Not yet.** Acceptance has never been measured against any target, and the ordering
-verdict has never been run — the two rows FOUNDATIONS §11 marks *not measured*. A
-pool larger than two. The 3.x drafter. The tournament.
+verdict is closed without one. A pool larger than two. The 3.x drafter. The tournament.
 
 | # | mechanism | state | gate |
 |---|---|---|---|

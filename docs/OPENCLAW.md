@@ -183,9 +183,15 @@ Two things this deliberately does not do:
   the tag is dropped, because calling the wrong one of two tools is worse than
   calling neither.
 
-**It is off by default.** Every measurement before today ran without it, and an
-instrument that quietly changes what the model sees stops comparing to itself.
-`--prune` on and off is the pair of arms the question needs.
+**Measured, P59 [ran] 2026-09-17**, on the surface OpenClaw actually sends (54 tools,
+recorded from one turn): **unpruned, the expert copies tags off the block** — it calls
+`agents_list`, `apply_patch`, `ask_user`, `browser` — 225 of 227 calls refused by the
+inbox, and inside OpenClaw those would have *executed*. Pruned to its three: 1160 calls,
+8 refused. Accuracy 0.664 → 0.729 on human messages, 87 : 64, $p = 0.073$ — a tie at
+$n = 475$; the behaviour is not. The block is **~7,956 tokens** unpruned, **~77** pruned.
+
+**So: start the proxy with `--prune`.** It stays a flag so the unpruned arm can be
+bought again; it is no longer the default this page recommends against.
 
 ### Streaming, and why it is buffered
 
