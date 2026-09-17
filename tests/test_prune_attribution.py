@@ -33,3 +33,13 @@ def test_the_runtime_name_resolves_to_the_inbox_tool_on_its_last_segment():
     for name in ("lora-inbox__thread_history", "mcp__x__thread_history", "a.b.thread_history"):
         assert inbox_tool(name) == "thread_history"
     assert inbox_tool("message") == "message"
+
+
+def test_an_arm_with_transport_errors_voids_the_verdict_rather_than_scoring_zero():
+    """P59 attempt 1: all 475 off-arm requests failed at max-model-len 4096 and the
+    first compare read them as 385 : 0 — a broken run wearing a floor."""
+    off = {"records": [{"id": f"m{i}", "error": "HTTP 400 context length"} for i in range(100)],
+           "calls": 0, "human_accuracy": 0.0}
+    on = arm([True] * 80 + [False] * 20, 300, 0.8)
+    v = compare(off, on)
+    assert v["state"] == "VOID" and v["errors_off"] == 100 and "n_paired" not in v
