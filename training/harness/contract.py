@@ -96,8 +96,9 @@ def surface(tags) -> list[str]:
 
 
 def text(corpus: str, trained_on: dict, note: str = "",
-         tags: list[str] | None = None) -> dict:
+         tags: list[str] | None = None, args: dict | None = None) -> dict:
     return {"corpus": corpus, "band": trained_on, "surface": surface(tags or []),
+            "surface_args": dict(args or {}),
             "output_contract": {"kind": "text"}, "note": note}
 
 
@@ -140,6 +141,20 @@ def validate(path: str, record: dict) -> dict:
                 f"{path}: {bad} cannot be parsed back out of a reply by "
                 "tool_calls.CALL — declaring them would declare a capability "
                 "nobody can exercise")
+
+    # THE ARGUMENT KEYS A TAG IS WRITTEN WITH, read off the corpus like the band. They
+    # exist because a runtime's own tool can carry the same bare name as a member's
+    # tag: OpenClaw offers a native `message` (`action`, `channel`, `target`, …)
+    # beside `lora-inbox__message` (`id`) **[ran]** P59, and a prune keyed on the
+    # name alone hands the member's `<message>` to the wrong tool. The keys say which.
+    sa = record.get("surface_args") or {}
+    if not isinstance(sa, dict):
+        raise ContractError(f"{path}: surface_args must map tag -> list of keys")
+    for tag, keys in sa.items():
+        if sf is not None and tag not in sf:
+            raise ContractError(f"{path}: surface_args names {tag!r}, not in the surface")
+        if not isinstance(keys, list) or any(not isinstance(k, str) for k in keys):
+            raise ContractError(f"{path}: surface_args[{tag!r}] must be a list of keys")
 
     oc = record["output_contract"]
     kind = oc.get("kind")

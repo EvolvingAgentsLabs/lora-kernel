@@ -59,7 +59,8 @@ POOL = {
     "adapters/kernel-email": contract.text(
         "training/harness/data_ep/train.jsonl", contract.band(1, 1),
         note="every one of its 600 examples calls exactly once",
-        tags=["thread_history", "sender_stats", "message"]),
+        tags=["thread_history", "sender_stats", "message"],
+        args={"thread_history": ["thread_id"], "sender_stats": ["address"], "message": ["id"]}),
     # P36: the ceiling. Tools and judgement in one adapter — the reference point a
     # pool has to match, not the architecture itself.
     # 0 is not an error here: 154 of 598 examples answer with no call at all, which
@@ -68,7 +69,11 @@ POOL = {
     # other direction.
     "adapters/email-full": contract.text(
         "training/harness/data_ef/train.jsonl", contract.band(0, 3),
-        tags=["thread_history", "sender_stats", "message"]),
+        tags=["thread_history", "sender_stats", "message"],
+        # THE KEYS THE CORPUS WRITES, and why they are declared: P59 recorded OpenClaw
+        # offering its own `message` tool (action, channel, target, …) beside
+        # `lora-inbox__message` (id). Only the key tells them apart.
+        args={"thread_history": ["thread_id"], "sender_stats": ["address"], "message": ["id"]}),
     # P37: the second pool member. A genuinely different subdomain on the same
     # resident base — one member is not a pool.
     #

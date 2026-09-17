@@ -25,6 +25,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import time
 import urllib.error
 import urllib.request
@@ -43,7 +44,21 @@ SYSTEM = ("You are triaging one person's inbox. For each message decide whether 
           "line: IMPORTANT or NOT IMPORTANT.")
 
 
+# THE INBOX TOOL BEHIND A RUNTIME'S NAME. OpenClaw offers an MCP tool as
+# `lora-inbox__thread_history` **[ran]** P43; the proxy renames it to the member's tag
+# on the way in and back to the caller's name on the way out, so what this client
+# receives in `tool_calls` is its own prefixed name. The last namespace segment is the
+# inbox tool — the same structural rule `tool_calls.prune` applies, keyed on
+# punctuation and never on a tool list.
+NAMESPACE = re.compile(r"__|[./:]")
+
+
+def inbox_tool(name: str) -> str:
+    return NAMESPACE.split(name)[-1]
+
+
 def _param_name(tool: str) -> str:
+    tool = inbox_tool(tool)
     for t in SCHEMA:
         fn = t["function"]
         if fn["name"] == tool:
@@ -72,7 +87,7 @@ def chat(base_url: str, key: str | None, payload: dict, timeout: int = 300) -> d
 
 
 def triage_one(base_url, key, model, inbox, msg, max_turns, max_tokens,
-               logprobs: int = 0):
+               logprobs: int = 0, tools: list[dict] | None = None):
     """One message, one conversation, as many tool turns as the model asks for.
 
     `logprobs` > 0 asks the server for that many `top_logprobs` and reads a
@@ -101,7 +116,8 @@ def triage_one(base_url, key, model, inbox, msg, max_turns, max_tokens,
     asked: list[dict] = []
     for _ in range(max_turns):
         try:
-            payload = {"model": model, "messages": messages, "tools": SCHEMA,
+            payload = {"model": model, "messages": messages,
+                       "tools": SCHEMA if tools is None else tools,
                        "temperature": 0, "max_tokens": max_tokens}
             if logprobs:
                 payload |= {"logprobs": True, "top_logprobs": logprobs}
@@ -150,7 +166,8 @@ def triage_one(base_url, key, model, inbox, msg, max_turns, max_tokens,
             fn = tc["function"]
             calls += 1
             try:
-                result = answer(inbox, fn["name"], _body(fn["name"], fn["arguments"]))
+                result = answer(inbox, inbox_tool(fn["name"]),
+                                _body(fn["name"], fn["arguments"]))
             except ToolError as e:
                 refused += 1
                 # WHAT WAS ASKED FOR, NOT ONLY THAT THE ASK FAILED. P34 measured a
@@ -184,10 +201,19 @@ def main() -> int:
     # only remaining room is: the listing carries one bit, but `thread_history` and
     # `sender_stats` carry the two facts the definition needs, so with the tools the
     # ceiling collapses to the oracle floor.
+    # THE SURFACE A REAL RUNTIME SENDS, replayed. P43 measured OpenClaw offering 54
+    # tools to an expert trained on 3, and the expert calling none; `--tools-json`
+    # hands this client that surface (or any other) instead of the inbox three, so
+    # the proxy's `--prune` can be bought as an arm rather than assumed.
+    ap.add_argument("--tools-json", default=None,
+                    help="a JSON list of OpenAI tool schemas to offer instead of the inbox three")
     ap.add_argument("--logprobs", type=int, default=0,
                     help="ask for N top_logprobs and score the calibration too")
     args = ap.parse_args()
 
+    tools = json.loads(Path(args.tools_json).read_text()) if args.tools_json else None
+    if tools is not None:
+        print(f"[sim] offering {len(tools)} tools from {args.tools_json}", flush=True)
     inbox = generate(args.n, args.seed)
     truth = [m["_truth"] for m in inbox["messages"]]
     # THE MAJORITY-CLASS BAR, PRINTED BEFORE THE RUN. Answering "not important" to
@@ -236,7 +262,7 @@ def main() -> int:
             recs.append(done[msg["id"]])
             continue
         r = triage_one(args.base_url, args.api_key, args.model, inbox, msg,
-                       args.max_turns, args.max_tokens, args.logprobs)
+                       args.max_turns, args.max_tokens, args.logprobs, tools)
         r.update({"id": msg["id"], "truth": msg["_truth"],
                   "correct": r["verdict"] == msg["_truth"]})
         recs.append(r)

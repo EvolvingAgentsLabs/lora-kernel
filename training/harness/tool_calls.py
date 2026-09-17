@@ -123,7 +123,13 @@ def _tail(name: str) -> str:
     return NAMESPACE.split(name)[-1]
 
 
-def prune(tools: list[dict], surface: list[str]) -> tuple[list[dict], dict, dict]:
+def _keys(t: dict) -> set[str]:
+    fn = t.get("function", t)
+    return set((fn.get("parameters") or {}).get("properties") or {})
+
+
+def prune(tools: list[dict], surface: list[str],
+          args: dict | None = None) -> tuple[list[dict], dict, dict]:
     """Keep only the offered tools the member has a tag for, under the tag's name.
 
     WHY THIS EXISTS. P43 ran the end-to-end and the agent turn made **no tool calls
@@ -145,35 +151,51 @@ def prune(tools: list[dict], surface: list[str]) -> tuple[list[dict], dict, dict
     cannot route** — it asked for `mcp__lora-inbox__message` and a `<message>` means
     nothing to it.
 
-    THE MATCH IS EXACT FIRST, THEN THE LAST NAMESPACE SEGMENT. An exact name always
-    wins. An ambiguous tail — two offered tools whose last segment is the same tag —
-    is **dropped**, because calling the wrong one of two tools is worse than calling
-    neither, and this module has no way to prefer one.
+    THE MATCH IS BY NAME — EXACT OR THE LAST NAMESPACE SEGMENT — AND THEN BY THE KEYS
+    THE MEMBER WRITES. P59 recorded a runtime offering its own `message` tool
+    (`action`, `channel`, `target`, …) beside the member's `lora-inbox__message`
+    (`id`) **[ran]**; a rule that let the exact name win handed the member's
+    `<message>id=…</message>` to a messaging tool. So when `args` names the keys a
+    tag is written with, a candidate whose parameters carry all of them beats one
+    that does not, whatever its name. With no `args`, an exact name wins as before.
+    An ambiguity that survives both rules is **dropped**, because calling the wrong
+    one of two tools is worse than calling neither.
 
     AN EMPTY RESULT IS A RESULT. A member that recognises none of the offered tools
     gets no tools, and the caller sees that in the record rather than in a fallback
     that quietly re-offers the surface P25 already priced.
     """
-    by_tag: dict[str, list[dict]] = {t: [] for t in surface}
+    args = args or {}
+    cands: dict[str, list[dict]] = {t: [] for t in surface}
     for t in tools or []:
         fn = t.get("function", t)
         name = fn.get("name")
         if not isinstance(name, str):
             continue
-        if name in by_tag:
-            by_tag[name] = [t]          # an exact name wins outright
-        else:
-            tail = _tail(name)
-            if tail in by_tag and not any(
-                    (x.get("function", x)).get("name") == tail for x in by_tag[tail]):
-                by_tag[tail].append(t)
+        tail = name if name in cands else _tail(name)
+        if tail in cands:
+            cands[tail].append(t)
+
+    def pick(tag: str, hits: list[dict]) -> dict | None:
+        if not hits:
+            return None
+        want = set(args.get(tag) or [])
+        if want:
+            fitting = [t for t in hits if want <= _keys(t)]
+            if len(fitting) == 1:
+                return fitting[0]
+            if len(fitting) > 1:
+                hits = fitting
+        exact = [t for t in hits if (t.get("function", t)).get("name") == tag]
+        if len(exact) == 1 and not want:
+            return exact[0]
+        return hits[0] if len(hits) == 1 else None
 
     kept, forward = [], {}
     for tag in surface:
-        hits = by_tag.get(tag) or []
-        if len(hits) != 1:
+        t = pick(tag, cands.get(tag) or [])
+        if t is None:
             continue                     # absent, or ambiguous and therefore refused
-        t = hits[0]
         fn = dict(t.get("function", t))
         forward[tag] = fn["name"]
         fn["name"] = tag

@@ -63,6 +63,7 @@ PRUNE = False         # --prune: offer a member only the tools it declares a tag
 # instrument is how a suite stops comparing to itself. `--prune` on and off is
 # exactly the pair of arms the question needs.
 POOL_SURFACE: dict[str, list[str]] = {}
+POOL_ARGS: dict[str, dict] = {}
 
 
 def _load_surfaces() -> dict[str, list[str]]:
@@ -75,9 +76,12 @@ def _load_surfaces() -> dict[str, list[str]]:
     from training.harness.train_pool import POOL
     out = {}
     for path, record in POOL.items():
-        sf = validate(path, record).get("surface")
+        rec = validate(path, record)
+        sf = rec.get("surface")
         if sf is not None:
-            out[path.rsplit("/", 1)[-1]] = sf
+            name = path.rsplit("/", 1)[-1]
+            out[name] = sf
+            POOL_ARGS[name] = rec.get("surface_args") or {}
     return out
 
 # --- routing ---------------------------------------------------------------
@@ -345,7 +349,7 @@ class Handler(BaseHTTPRequestHandler):
         offered, forward, back = len(tools or []), {}, {}
         surface = POOL_SURFACE.get(req.get("model")) if PRUNE else None
         if surface is not None and tools:
-            tools, forward, back = prune(tools, surface)
+            tools, forward, back = prune(tools, surface, POOL_ARGS.get(req.get("model")))
         # STREAMING IS BUFFERED, AND SAYING SO IS WHAT KEEPS IT HONEST.
         #
         # A tag only becomes a `tool_call` once its closing tag has arrived, so this
