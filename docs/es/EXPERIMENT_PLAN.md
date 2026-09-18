@@ -60,7 +60,7 @@ lleva la regla; esto es el estado.
 
 | # | hito | depende de | compuerta | estado |
 |---|---|---|---|---|
-| **1** | pesos o harness en una región: base / base + `knowledge/email-triage.md` / `email-full@v1`, una sesión, los 475 casos de P55 | Fase 1 | `kb_pays`, `weights_needed`, `harness_replaces_weights` pre-registrados en el brief; los errores anulan un brazo | **P61 CORRIENDO** 2026-09-18 |
+| **1** | pesos o harness en una región: base / base + `knowledge/email-triage.md` / `email-full@v1`, una sesión, los 475 casos de P55 | Fase 1 | `kb_pays`, `weights_needed`, `harness_replaces_weights` pre-registrados en el brief; los errores anulan un brazo | ✅ **[ran]** P61 2026-09-18: **HACEN FALTA LOS PESOS** — base+kb **0 llamadas** en 351/351 humanos, 0,601 debajo de la barra de mayoría 0,655 (el test de signos solo leyó un default dado vuelta como pagando: 164 : 74 — guarda agregada, número conservado); experto 0,989, **137 : 1**; documento 914 tokens/request |
 | **2** | ruteo por request | 1 | el clasificador de región ≥ el 0,775 por región de P41 sobre el mismo tráfico | SIGUIENTE |
 | **3** | OpenClaw en vivo con `--prune`; una plantilla de perfil por tarea | Fase 5 | cero llamadas a herramientas no ofrecidas; nada sale para la región del miembro | necesita una laptop y un túnel |
 | **4** | la primera región real, personalizada a mano | 1–3, sandbox, claves rotadas | la compuerta de release de la Fase 1 | — |
@@ -716,9 +716,11 @@ insertado porque la brecha no cerraba sin herramienta — y `P8` es
 no se compró.
 
 
-#### P61 — pesos o harness en la región de email · CORRIENDO
+#### P61 — pesos o harness en la región de email **[ran]** 2026-09-18 · HACEN FALTA LOS PESOS
 
 Una incógnita: ¿la base 3B, con `knowledge/email-triage.md` en su system prompt, resuelve la región de email como el experto QLoRA? Tres brazos, una sesión L4, los 475 casos de P55, el loop en modo corpus; pre-registrado en `results/P61-knowledge-vs-weights-20260918/BRIEF.md` (FOUNDATIONS §7.3, el test de signos sobre pares discordantes): `kb_pays` (base+kb > base, $p<0,05$), `weights_needed` (experto > base+kb, $p<0,05$), `harness_replaces_weights` (ninguno, y exactitud humana dentro de 0,05). La línea de precio se graba con el veredicto: tokens del documento por request, llamadas a herramientas por caso. La falla escrita primero: base+kb ≤ base cierra el lado del harness para esta base. Por qué un procedimiento y no la regla: P55 **[ran]** tiene a la base contestando NOT IMPORTANT con **cero llamadas a herramientas en 230 de 351** mensajes humanos aunque el system prompt enuncia la regla.
+
+**Resultado [ran].** **Hito 1 [ran] 2026-09-18, P61 — hacen falta los pesos en esta región, y la razón es precisa.** La base con el documento de procedimiento hizo **0 llamadas a herramientas en 351 de 351** mensajes humanos, igual que la base pelada: no sigue un procedimiento escrito en el contexto. Su exactitud se movió 0,345 → 0,601 porque el documento le dio vuelta la respuesta por defecto, todavía debajo de la barra de siempre-IMPORTANT de 0,655; el experto, en 0,989 con 1053 llamadas, le gana **137 : 1**. El documento cuesta 914 tokens en cada request; el adaptador, ninguno. Así que en un 3B el harness lleva conocimiento, no procedimiento — el procedimiento tiene que estar en los pesos. El `kb_pays` pre-registrado disparó con 164 : 74, $p = 0$ — un test de signos contra una base que contesta una palabra no distingue un procedimiento seguido de un default dado vuelta; ahora lo guarda la barra de mayoría (`knowledge_arm.verdict`, test agregado, la sesión releída con `--reread`, brazos intactos). `results/P61-knowledge-vs-weights-20260918/session.json`. **Qué decide:** en un 3B la personalización sólo por documento queda cerrada; los documentos llevan conocimiento sobre un adaptador que lleva el procedimiento, o la base tiene que ser más grande — el próximo documento no se escribe para esta base.
 
 #### P60 §3b — vLLM aplica un LoRA sobre el 32B AWQ **[ran]** 2026-09-18
 
