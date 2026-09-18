@@ -64,7 +64,7 @@ is the state.
 | **2** | routing per request | 1 | the region classifier ≥ P41's by-region 0.775 on the same traffic | ✅ **[ran]** P62 2026-09-18, zero GPU: replay on P41's 240 cases, by request **0.775 = by region**, **0 misrouted**, 37.5 % out; `openai_proxy --auto` ships it |
 | **3** | OpenClaw live with `--prune`; a profile template per task | Phase 5 | zero calls to tools not offered; nothing leaves for the member's region | ✅ **[ran]** P63 2026-09-18: **LIVE** on attempt 7 — 40/40 local, 0 invented, 19/32 human turns call a tool, 0.688 vs bar 0.655 (descriptive); the runtime-prompt arm 2/32, 0.281; six live-path faults fixed with tests |
 | **4** | the first real region, customised by hand | 1–3, sandbox, keys rotated | Phase 1's release gate | — |
-| **5** | second and third regions | 4 | each clears its own bar against the base | — |
+| **5** | second and third regions | 4 | each clears its own bar against the base | **synthetic half ✅ [ran]** P64 2026-09-18: `desk-commitment@v1` RELEASED — G1/G2 both members, `auto` routes each by its question, ties recorded g600 240/240 (0 discordant), beats the base **202 : 0**; real regions wait on 4 |
 | **6** | traces → corpus → gate → release without hands | 4, 5 | the automated release ties the hand-made one, paired | — |
 | **7** | `Qwen3.8-27B` (Phase 6) | 5, and the frontier bill | D2 | — |
 
@@ -697,6 +697,22 @@ win.** `P5` is the headroom check on the new suite, `P6` the withdrawal gap,
 close without a tool — and `P8` is `harness.lora`, which this table calls P7.
 The tournament, this table's P8, has not been bought.
 
+
+#### P64 — milestone 5, synthetic: the second useful member **[ran]** 2026-09-18 · RELEASED on the second attempt
+
+One unknown: does the desk `commitment` expert enter through Phase 1's door and co-reside with `email-full@v1` on one base, routed by its question? Pre-registered in [`results/P64-second-member-20260918/BRIEF.md`](../results/P64-second-member-20260918/BRIEF.md). One L4 session, 16 minutes: `desk-commitment` retrained from `data_desk/train.jsonl` (600 examples, `release_gate.RECIPE`) in a subprocess, then served beside `email-full` in one vLLM behind the proxy with `--prune --member-prompt --auto`; desk suite, 240 cases, seed 424242 — P55b's cases.
+
+**Result [ran].** Every pre-registered gate passes, read off `pool_second.json`: G1 identity `applied` 3/3 for both members; G2 tools reachable for both; G2′ `auto` serves a desk prompt with `desk-commitment` and a listing with `email-full`; the new arm **ties the recorded g600, 240/240 against 240/240 with 0 discordant pairs**; and it beats the base **240 to 38, discordant 202 : 0**. With $b$ and $c$ the discordant counts the exact sign test is
+
+$$p = 2\sum_{k=0}^{\min(b,c)} \binom{b+c}{k} 2^{-(b+c)} = 2\cdot 2^{-202} \approx 3\times10^{-61}.$$
+
+The base is not idle on this region — **331 calls, 13 refused, 3 malformed, 19 undecided** — it reaches for the tools and does not know what to do with what comes back; the member makes **240 calls on 240 cases, 0 refused**. The adapter came home this time: `adapter_model.safetensors` hashes to the manifest's `05022bec…` **[ran]**. Manifest: `releases/desk-commitment@v1.json`.
+
+**Checked before it was believed, zero GPU:** 0 of 240 evaluated case ids and 0 of 240 evaluated prompts occur in the 600-example corpus (P53's failure); the answer is a date read off a tool result, and the base with the same tool is at 0.158, so the 1.000 is the protocol and not recall.
+
+**What it does not say.** A ceiling cannot rank: `g75` already saturates this band (P55b), so nothing here orders experts, and the `commitment_deep` band (P60 §3c/3d) is unmeasured. The router was exercised on one probe per member live and on generated prompts offline (60/60, 60/60, 150/150, 140/140) — its real test is milestone 4's traffic. And these two members *do* meet in one problem — they read the same inbox, which is why keys on the listing misrouted 15 of 60 and keys on the question do not — but the selection between them is still made by a dictionary, not by acceptance.
+
+**Attempt 1** released on 60 cases — the suite's `eval_n` default — and left the weights on the card; kept under `attempt1_60_cases_weights_lost/`. One fix of the runner, not a redesign of the instrument: the gates and the brief did not move.
 
 #### P63 — milestone 3: the live OpenClaw turn **[ran]** 2026-09-18 · LIVE on the seventh attempt
 

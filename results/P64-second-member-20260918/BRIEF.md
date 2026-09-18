@@ -28,3 +28,22 @@ reproduce this region — no manifest. A tie with the base: the member is not us
 A wrong live route: the region table is not ready for two members on one inbox.
 
 **Not measured:** the desk-deep band (P60 §3c/3d, behind this); real traffic for the router.
+
+## Result — attempt 2 **[ran]** 2026-09-18 · RELEASED
+
+Colab L4, session `srv180332`, 21:11 → 21:27 UTC. Read off `pool_second.json`, not the log:
+
+| gate | outcome |
+|---|---|
+| G1 identity | `applied`, 3/3 probes differ, both members |
+| G2 tools reachable | both |
+| G2′ `auto` | desk prompt → `desk-commitment`; listing → `email-full` |
+| ties recorded g600 | 240/240 vs 240/240, **0 discordant**, $p = 1$ |
+| beats the base | 240 vs 38, **202 : 0**, $p = 2\cdot2^{-202}$ |
+
+Base arm: 331 calls, 13 refused, 3 malformed, 19 undecided. Member: 240 calls, 0 refused.
+`adapters_out.tgz` came home; the safetensors hashes to the manifest's `05022bec…`.
+Zero-GPU leak check: 0/240 case ids and 0/240 prompts of the evaluation occur in the corpus.
+
+Attempt 1 (`attempt1_60_cases_weights_lost/`) released on the suite's default 60 cases and
+left the weights on the card — a runner fix, not a redesign; gates and brief unchanged.

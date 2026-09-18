@@ -1,0 +1,61 @@
+{
+  "name": "desk-commitment",
+  "version": 1,
+  "base": "Qwen/Qwen2.5-3B-Instruct",
+  "recipe": {
+    "r": 16,
+    "lora_alpha": 32,
+    "epochs": 3,
+    "lr": 0.0002,
+    "batch": 2,
+    "accum": 8,
+    "max_seq": 1536,
+    "seed": 0,
+    "targets": "q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"
+  },
+  "corpus": "training/harness/data_desk/train.jsonl",
+  "corpus_sha256": "adc58b90daa49e65c4bd9e8a00c8c30878dce31312386805982eb6a5ab594c07",
+  "adapter_sha256": "05022bec5e4d46502496b7a42ef757f74c0b8f0b33d2f756ad8cb700c1a09d59",
+  "prompt_sha": "36363b6b11965da7",
+  "suite": "desk:commitment",
+  "n": 240,
+  "score": {
+    "correct": 240,
+    "human_correct": 240
+  },
+  "recorded": {
+    "path": "results/P55b-desk-ranking-20260917/p55b.json",
+    "arm": "g600",
+    "n": 240,
+    "correct": 240
+  },
+  "pairs": [
+    {
+      "pair": "new vs recorded",
+      "n_paired": 240,
+      "a_total": 240,
+      "b_total": 240,
+      "only_a": 0,
+      "only_b": 0,
+      "discordant": 0,
+      "p_value": 1.0,
+      "different": false,
+      "reading": "a tie: the totals differ but the cases behind them do not",
+      "state": "tie"
+    },
+    {
+      "pair": "new vs base",
+      "n_paired": 240,
+      "a_total": 240,
+      "b_total": 38,
+      "only_a": 202,
+      "only_b": 0,
+      "discordant": 202,
+      "p_value": 0.0,
+      "different": true,
+      "reading": "the arms differ",
+      "state": "improvement"
+    }
+  ],
+  "run": "pool_second.json"
+}

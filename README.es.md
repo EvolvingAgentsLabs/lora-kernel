@@ -68,7 +68,7 @@ corre encima.
 | 2 | **ruteo por request** — el proxy decide local o frontera sin que el cliente nombre un modelo | cualquier cliente usa la API | **[ran]** P62, cero GPU: `--auto` rutea por texto; el replay sobre los 240 casos de P41 **empata al por región en 0,775, 0 mal ruteados**, 37,5 % afuera |
 | 3 | **OpenClaw en vivo** con `--prune`, una plantilla de perfil por tarea | la interfaz de alto nivel sobre la API | **[ran]** P63: **EN VIVO** al 7º intento — 40/40 local, 0 llamadas inventadas, 19/32 turnos humanos llaman una herramienta, 0,688 contra barra 0,655; el miembro servido bajo su prompt liberado (`--member-prompt`); bajo el prompt del runtime 2/32 y 0,281 |
 | 4 | **la primera región real** de un cliente, personalizada a mano, liberada por la puerta de la Fase 1 | el servicio con tráfico real | 1–3, un sandbox real para código, claves rotadas |
-| 5 | segunda y tercera región — la tabla de regiones por cliente | un pool de hecho, no de nombre | 4 |
+| 5 | segunda y tercera región — la tabla de regiones por cliente | un pool de hecho, no de nombre | 4 — **mitad sintética [ran]** P64: `desk-commitment@v1` liberado junto a `email-full@v1` en un vLLM, **240/240** empatando la corrida grabada (0 discordantes), **202 : 0** contra la base, `--auto` ruteando a cada uno por su pregunta; las regiones de un cliente esperan al 4 |
 | 6 | **trazas → corpus → compuerta → release sin manos** | la automatización prometida | 4, 5 |
 | 7 | un modelo grande local — `Qwen3.8-27B` (D2 → D4) | mover parte de "lo general" de la frontera a local | 5, y sólo si la cuenta de frontera lo justifica |
 
