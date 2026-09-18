@@ -9,3 +9,4 @@ results/**/adapters-*.zip
 results/**/adapters.zip
 results/*/adapters.tgz
 training/data/root/
+results/*/adapters_out.tgz

@@ -349,3 +349,13 @@ def test_removing_trl_from_a_chain_is_caught():
     # and the word IS in the file, in the comments explaining the failure — which
     # is exactly why the file is the wrong thing to search.
     assert "trl" in body.replace("peft trl datasets", "peft datasets")
+
+
+
+def test_the_chain_brings_a_runner_s_adapters_home():
+    """P64 attempt 1 [ran]: a released member's weights stayed on the card."""
+    from pathlib import Path
+    chain = Path("training/harness/chain_serve.sh").read_text()
+    assert "adapters_out.tgz" in chain
+    assert "adapters_out.tgz" in Path("training/harness/pool_second.py").read_text()
+    assert "results/*/adapters_out.tgz" in Path(".gitignore").read_text()

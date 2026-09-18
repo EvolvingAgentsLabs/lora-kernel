@@ -92,7 +92,8 @@ def main() -> int:
     ap.add_argument("--recorded", default="results/P55b-desk-ranking-20260917/p55b.json")
     ap.add_argument("--recorded-arm", dest="recorded_arm", default="g600")
     ap.add_argument("--suite", default="desk")
-    ap.add_argument("--n", type=int, default=240)
+    ap.add_argument("--n", type=int, default=0, help="desks to generate; 0 = the suite's eval_n "
+                    "(960 desks → 240 commitment cases). Attempt 1 passed 240 and scored 60 [ran]")
     ap.add_argument("--max-tokens", type=int, default=160)
     ap.add_argument("--concurrency", type=int, default=8)
     ap.add_argument("--max-model-len", type=int, default=8192)
@@ -124,7 +125,8 @@ def main() -> int:
     from transformers import AutoTokenizer
     tok = AutoTokenizer.from_pretrained(args.base)
     suite = suites.load(args.suite)
-    cases = suite.cases(args.n, suite.eval_seed)
+    cases = suite.cases(args.n or suite.eval_n, suite.eval_seed)
+    print(f"[pool] {len(cases)} cases from {args.n or suite.eval_n} desks (seed {suite.eval_seed})", flush=True)
     recorded = json.loads(Path(args.recorded).read_text())["arms"][args.recorded_arm]["records"]
     recorded = recorded if isinstance(recorded, list) else list(recorded.values())
     rec["recorded"] = {"path": args.recorded, "arm": args.recorded_arm, "n": len(recorded),
@@ -190,6 +192,12 @@ def main() -> int:
             "score": {"correct": rec["arms"][NAME]["correct"], "human_correct": rec["arms"][NAME]["human_correct"]},
             "recorded": rec["recorded"], "pairs": rec["pairs"], "run": str(out)}, indent=2))
         print(f"[pool] manifest written: {man}", flush=True)
+    # THE WEIGHTS COME HOME OR THE RELEASE IS A NUMBER. Attempt 1 released a member
+    # whose adapter stayed on the card and the chain stopped the session [ran] — the
+    # same way P55b's grades were lost. The chain downloads `adapters_out.tgz`.
+    subprocess.call(["tar", "czf", "adapters_out.tgz", new] + (
+        [f"releases/{NAME}@v1.json"] if rec["verdict"]["released"] else []))
+    print("[pool] adapters packed: adapters_out.tgz", flush=True)
     return 0 if rec["verdict"]["released"] else 1
 
 

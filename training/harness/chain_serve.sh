@@ -216,6 +216,10 @@ PY
   done
   tmo 300 colab download -s "$S" /content/lora-kernel/$RESULTS_NAME "$LOCAL" >/dev/null 2>&1 || true
   tmo 300 colab download -s "$S" /content/lora-kernel/vllm.log "$RUN_DIR/vllm.log" >/dev/null 2>&1 || true
+  # WEIGHTS A RUNNER PRODUCED COME HOME. P64 attempt 1 trained and released a member
+  # and this chain stopped the session with the adapter still on it [ran] 2026-09-18;
+  # a runner that trains packs `adapters_out.tgz` and it is fetched here.
+  tmo 600 colab download -s "$S" /content/lora-kernel/adapters_out.tgz "$RUN_DIR/adapters_out.tgz" >/dev/null 2>&1 || true
   # THE PARTIAL ARMS, NOT ONLY THE FINISHED RESULT. P47 died at 260 of 475 with a
   # checkpoint on the VM that nobody fetched, so the next attempt had nothing to
   # resume from and paid for those 260 again [ran] 2026-09-16. A checkpoint nobody
