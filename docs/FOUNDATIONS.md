@@ -590,6 +590,20 @@ $\alpha$ to agree or disagree with.
 
 ---
 
+### 8.4 Delivered accuracy under a routing policy
+
+A policy $r$ sends case $x$ to a local member $m$ or out to the frontier. With
+$L_m(x) \in \{0,1\}$ whether member $m$ answers $x$ right, $F(x)$ whether the
+frontier does, and $m^*(x)$ the member of $x$'s region,
+
+$$\mathrm{delivered}(r) = \frac{1}{n}\sum_x \Big( [r(x) = (\mathrm{local}, m^*(x))]\,L_{m^*}(x) + [r(x) = \mathrm{out}]\,F(x) + [r(x) = (\mathrm{local}, m \ne m^*(x))]\cdot 0 \Big)$$
+
+A case handed to the wrong member counts as wrong by construction — the conservative
+reading. The by-region policy (P41) is $r(x) = \mathrm{region}(x)$ read off a label;
+routing per request replaces the label by a classifier and can lose only by its
+misroutes, so the two are compared on the same cases and the gate is a tie with zero
+misroutes. **[ran]** P62: by region 0.775, by request 0.775, misroutes 0 (§11).
+
 ## 9. Statistics used, and only these
 
 ### 9.1 The majority bar
@@ -718,3 +732,4 @@ all of it.
 | §7.4 | **the ordering verdict** | **not measured**: §7.2 fails for an *untrained* target in two easy regions (P55 A, P55b); reopened as one arm — a trained target on a deeper band (P60) |
 | §10.5 D2 / §3.4 | **a LoRA applies over the AWQ 32B**: mean $|\Delta\ell|$ 0.22–0.49 nats vs base-vs-base 0.000, 3/3; text gate 2/3 | P60 §3b `awq_gate.json` |
 | §7.3, §8.2 | **weights or harness — weights**: base 0.345, base + 914-token procedure 0.601 (both 0 tool calls, under the 0.655 majority bar), expert 0.989; expert vs base+kb **137 : 1**; the sign test alone read the flipped default as paying (164 : 74) — the majority bar guards it | P61 `session.json` |
+| §8.4 | **routing per request ties by region**: 0.775 = 0.775, 0 misroutes, 37.5 % out on P41's 240 cases | P62 `replay.json` (zero GPU) |
