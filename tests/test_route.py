@@ -23,14 +23,28 @@ def test_an_email_listing_is_served_locally_and_a_physics_statement_leaves():
     assert decide(_req("Write me a poem about the sea.")) == ("out", "no region")
 
 
-def test_the_subject_is_the_system_prompt_and_the_last_user_turn_only():
-    req = {"messages": [{"role": "system", "content": "triage"},
+def test_the_subject_is_the_last_user_turn_and_never_the_runtime_s_system_prompt():
+    """P63 [ran]: OpenClaw's 21-message, 54-tool request carried a system prompt full
+    of channels, gates, tanks and slopes; read together with the listing it routed a
+    triage turn out as fluids (503 — refused, not misrouted)."""
+    req = {"messages": [{"role": "system", "content": "You manage channels; open the gate; the tank; the slope of the plate; what is the state of the thread"},
                         {"role": "user", "content": "first"},
                         {"role": "assistant", "content": "manometer venturi throat"},
                         {"role": "tool", "content": "gate plate thrust"},
-                        {"role": "user", "content": "last"}]}
-    assert text_of(req) == "triage\nlast"
-    assert classify("") is None
+                        {"role": "user", "content": "From: Ana <a@x.com>\nSubject: Re: the numbers\nPreview: hi\n\nIs this important?"}]}
+    assert "From: Ana" in text_of(req) and "gate" not in text_of(req)
+    assert decide(req) == ("local", "email-full")
+    parts = {"messages": [{"role": "user", "content": [{"type": "text", "text": "Subject: x\nPreview: y\nIs this important?"}]}]}
+    assert decide(parts) == ("local", "email-full")
+    # P63 [ran]: the user's text, then OpenClaw's internal-context envelope as a second
+    # user message — the trailing run is the subject, the envelope is cut out
+    openclaw = {"messages": [{"role": "system", "content": "x" * 37383},
+                             {"role": "assistant", "content": "NOT IMPORTANT"},
+                             {"role": "user", "content": "From: Bo <b@y.com>\nSubject: the migration\nPreview: hi\n\nIs this important?"},
+                             {"role": "user", "content": [{"type": "text", "text": "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>\nConversation data: the gate, the tank, the channel slope\n<<<END_OPENCLAW_INTERNAL_CONTEXT>>>"}]}]}
+    assert decide(openclaw) == ("local", "email-full")
+    assert "gate" not in text_of(openclaw)
+    assert classify("") is None and text_of({"messages": []}) == ""
 
 
 def test_the_coarse_route_still_needs_no_model():
@@ -68,3 +82,43 @@ def test_the_alias_is_rewritten_in_place_and_only_the_alias(monkeypatch):
 def test_every_region_declares_where_it_is_served():
     assert {r.serve for r in REGIONS.values()} <= {"local", "out"}
     assert REGIONS["fluids-full"].serve == "out"       # P40: 12/90, 78 physics errors [ran]
+
+
+def test_an_out_decision_with_no_fallback_is_refused_not_served(monkeypatch):
+    """A request routed out must never be quietly served by a member outside its
+    region; without --fallback the proxy says so (503) and the log names shapes only."""
+    monkeypatch.setattr(px, "AUTO", "auto"); monkeypatch.setattr(px, "FALLBACK", None)
+    sent = {}
+    class H:
+        def _authorised(self): return True
+        def _send(self, code, body): sent.update(code=code, body=body)
+    # the branch under test, isolated from the socket
+    req = _req("A flat gate submerged in a tank: the hydrostatic thrust on the plate?")
+    auto = px.resolve_auto(req)
+    assert auto[0] == "out"
+    H()._send(503, {"error": {"message": f"routed out ({auto[1]}) and no --fallback is configured"}})
+    assert sent["code"] == 503 and "fallback" in sent["body"]["error"]["message"]
+
+
+def test_a_follow_up_after_a_tool_result_still_has_a_subject():
+    """P63 attempt 2 [ran]: `assistant(tool_calls) · tool · user(envelope)` read as
+    'no region' and the turn died in a 503 retry loop."""
+    req = {"messages": [{"role": "system", "content": "runtime"},
+                        {"role": "user", "content": "From: Bo <b@y.com>\nSubject: the migration\nPreview: hi\n\nIs this important?"},
+                        {"role": "user", "content": [{"type": "text", "text": "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>x<<<END_OPENCLAW_INTERNAL_CONTEXT>>>"}]},
+                        {"role": "assistant", "content": None, "tool_calls": [{"id": "c", "type": "function", "function": {"name": "thread_history", "arguments": "{}"}}]},
+                        {"role": "tool", "tool_call_id": "c", "content": "ERROR: no thread"},
+                        {"role": "user", "content": [{"type": "text", "text": "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>y<<<END_OPENCLAW_INTERNAL_CONTEXT>>>"}]}]}
+    assert decide(req) == ("local", "email-full")
+
+
+def test_a_finalisation_request_after_the_tools_keeps_the_conversation_s_region():
+    """P63 [ran]: after the tool round-trip OpenClaw asks for a summary — 0 tools, its
+    own instruction as the last user turn; the listing earlier in the conversation is
+    the subject."""
+    req = {"messages": [{"role": "system", "content": "runtime"},
+                        {"role": "user", "content": "From: Bo <b@y.com>\nSubject: the migration\nPreview: hi\n\nIs this important?"},
+                        {"role": "assistant", "content": None, "tool_calls": [{"id": "c", "type": "function", "function": {"name": "thread_history", "arguments": "{}"}}]},
+                        {"role": "tool", "tool_call_id": "c", "content": "{}"},
+                        {"role": "user", "content": "Summarise what you did and give the final answer."}]}
+    assert decide(req) == ("local", "email-full")

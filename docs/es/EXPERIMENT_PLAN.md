@@ -62,7 +62,7 @@ lleva la regla; esto es el estado.
 |---|---|---|---|---|
 | **1** | pesos o harness en una región: base / base + `knowledge/email-triage.md` / `email-full@v1`, una sesión, los 475 casos de P55 | Fase 1 | `kb_pays`, `weights_needed`, `harness_replaces_weights` pre-registrados en el brief; los errores anulan un brazo | ✅ **[ran]** P61 2026-09-18: **HACEN FALTA LOS PESOS** — base+kb **0 llamadas** en 351/351 humanos, 0,601 debajo de la barra de mayoría 0,655 (el test de signos solo leyó un default dado vuelta como pagando: 164 : 74 — guarda agregada, número conservado); experto 0,989, **137 : 1**; documento 914 tokens/request |
 | **2** | ruteo por request | 1 | el clasificador de región ≥ el 0,775 por región de P41 sobre el mismo tráfico | ✅ **[ran]** P62 2026-09-18, cero GPU: replay sobre los 240 casos de P41, por request **0,775 = por región**, **0 mal ruteados**, 37,5 % afuera; lo entrega `openai_proxy --auto` |
-| **3** | OpenClaw en vivo con `--prune`; una plantilla de perfil por tarea | Fase 5 | cero llamadas a herramientas no ofrecidas; nada sale para la región del miembro | necesita una laptop y un túnel |
+| **3** | OpenClaw en vivo con `--prune`; una plantilla de perfil por tarea | Fase 5 | cero llamadas a herramientas no ofrecidas; nada sale para la región del miembro | ✅ **[ran]** P63 2026-09-18: **EN VIVO** al intento 7 — 40/40 local, 0 inventadas, 19/32 turnos humanos llaman una herramienta, 0,688 contra barra 0,655 (descriptivo); el brazo con prompt del runtime 2/32, 0,281; seis fallas del camino en vivo corregidas con tests |
 | **4** | la primera región real, personalizada a mano | 1–3, sandbox, claves rotadas | la compuerta de release de la Fase 1 | — |
 | **5** | segunda y tercera región | 4 | cada una supera su propia barra contra la base | — |
 | **6** | trazas → corpus → compuerta → release sin manos | 4, 5 | el release automático empata al hecho a mano, pareado | — |
@@ -715,6 +715,10 @@ insertado porque la brecha no cerraba sin herramienta — y `P8` es
 `harness.lora`, al que esta tabla llama P7. El torneo, el P8 de esta tabla,
 no se compró.
 
+
+#### P63 — hito 3: el turno en vivo de OpenClaw **[ran]** 2026-09-18 · EN VIVO al séptimo intento
+
+OpenClaw 2026.9.4 en esta Mac → proxy local (`--prune --auto`) → cloudflared → vLLM en una L4 → `email-full@v1`; las herramientas del inbox por MCP; 40 turnos sintéticos, una sesión cada uno; identidad a través del túnel 3/3. Pre-registrado: todo turno local, ninguna llamada a una herramienta no ofrecida, ≥ la mitad de los turnos humanos llama una herramienta; exactitud contra la barra 0,655, descriptiva con n = 32. **Bajo el prompt del runtime (intento 4): NOT LIVE — 2/32 turnos humanos llaman una herramienta, humanos 0,281**, la conducta de la base pelada con las herramientas al alcance. **Bajo el prompt liberado del miembro (intento 7, `--member-prompt`, el tope de idas y vueltas y 256 tokens por paso — las dos cotas del loop del corpus): EN VIVO — 40/40 local, 0 inventadas, 19/32 turnos humanos llaman una herramienta, 22/32 = 0,688 contra 0,655 ($p = 0,43$)**, 3,5 s por turno. Seis fallas del camino en vivo en el medio, cada una encontrada por el camino real y corregida con test: el router leía el system prompt de 37 KB del runtime y su sobre de contexto interno; el experto repetía el bloque de herramientas y el proxy ejecutaba sus propios placeholders; sin corte en `</tag>` el experto inventaba el resultado de la herramienta de un tirón; sin tope de idas y vueltas (30 repeticiones de una llamada malformada); sin cota de tokens (turnos de tres minutos); el lock de gateway de un turno matado. **Qué decide: un miembro es lo que su corpus enseñó — el bloque y el prompt; `--prune` y `--member-prompt` son los defaults para un miembro.** Libro de intentos en `results/P63-openclaw-live-20260918/BRIEF.md`; cada intento guardado al lado.
 
 #### P62 — ruteo por request: el cliente no nombra modelo **[ran]** 2026-09-18 · EMPATA, cero GPU
 

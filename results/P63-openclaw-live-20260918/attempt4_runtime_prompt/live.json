@@ -1,0 +1,761 @@
+{
+ "model": "lorapool/auto",
+ "profile": "lorakernel",
+ "n": 40,
+ "seed": 717171,
+ "started": "2026-09-18T08:55:48",
+ "records": {
+  "msg-000": {
+   "id": "msg-000",
+   "human": false,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 5.5,
+   "reply_tail": "RTANT\n\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 8ab28e45-291f-4c94-a8ee-6ac32f81ca64 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-001": {
+   "id": "msg-001",
+   "human": true,
+   "truth": true,
+   "verdict": null,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 15,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 14,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 20.0,
+   "reply_tail": "m\u001b[39m\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 72e19472-55b2-457d-aa75-eec12d22b7c1 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-002": {
+   "id": "msg-002",
+   "human": true,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 4.1,
+   "reply_tail": "Type=text/event-stream\u001b[39m\nNOT IMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 1e925f18-7770-485b-9bd9-51496996e8b2 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-003": {
+   "id": "msg-003",
+   "human": true,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.3,
+   "reply_tail": "RTANT\n\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 11bcd50b-fd4b-4ced-b72f-3f213ff6fddd ended with stopReason=stop\u001b[39m"
+  },
+  "msg-004": {
+   "id": "msg-004",
+   "human": false,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.1,
+   "reply_tail": "RTANT\n\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 4204482d-abaf-4c34-8c79-df187d956442 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-005": {
+   "id": "msg-005",
+   "human": true,
+   "truth": true,
+   "verdict": false,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.0,
+   "reply_tail": "Type=text/event-stream\u001b[39m\nNOT IMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 378cee03-7b0d-4720-99fc-ee073b95ff88 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-006": {
+   "id": "msg-006",
+   "human": true,
+   "truth": true,
+   "verdict": false,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.2,
+   "reply_tail": "RTANT\n\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run f96c666f-d59d-49f7-af21-90a4c06a8180 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-007": {
+   "id": "msg-007",
+   "human": true,
+   "truth": true,
+   "verdict": false,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.2,
+   "reply_tail": "Type=text/event-stream\u001b[39m\nNOT IMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run fa6614aa-75be-4c99-b063-e6278d6b4de9 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-008": {
+   "id": "msg-008",
+   "human": false,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.8,
+   "reply_tail": "RTANT\n\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 61992cf9-4884-429a-a60e-7e9dd3405d4f ended with stopReason=stop\u001b[39m"
+  },
+  "msg-009": {
+   "id": "msg-009",
+   "human": true,
+   "truth": true,
+   "verdict": false,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.9,
+   "reply_tail": "written in this thread and whether I did?\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 1d7e9cdd-280d-4212-b9e9-4688170f00d7 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-010": {
+   "id": "msg-010",
+   "human": false,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.6,
+   "reply_tail": "RTANT\n\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run b424aa64-16d4-46fb-ac9b-3e0ef591205c ended with stopReason=stop\u001b[39m"
+  },
+  "msg-011": {
+   "id": "msg-011",
+   "human": true,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 4.3,
+   "reply_tail": "RTANT\n\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run ee1fc1c8-bcaf-4b93-9b6f-088f6e920504 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-012": {
+   "id": "msg-012",
+   "human": true,
+   "truth": true,
+   "verdict": false,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 4.2,
+   "reply_tail": "RTANT\n\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 246e28df-a061-4411-9c53-9ca1392d3ee6 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-013": {
+   "id": "msg-013",
+   "human": true,
+   "truth": true,
+   "verdict": false,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.8,
+   "reply_tail": "Type=text/event-stream\u001b[39m\nNOT IMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 55583987-c9a8-432a-bb91-4b574bf1ba28 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-014": {
+   "id": "msg-014",
+   "human": true,
+   "truth": true,
+   "verdict": false,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.9,
+   "reply_tail": "RTANT\n\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 87b8e0f6-b86d-41d5-90c5-ac287c156612 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-015": {
+   "id": "msg-015",
+   "human": true,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.9,
+   "reply_tail": "Type=text/event-stream\u001b[39m\nNOT IMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run d476f5de-3c25-444a-b59f-fc5bb5ae3b86 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-016": {
+   "id": "msg-016",
+   "human": true,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.7,
+   "reply_tail": "RTANT\n\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 0039cacc-b92d-49f3-9083-6b3f0f4fd76b ended with stopReason=stop\u001b[39m"
+  },
+  "msg-017": {
+   "id": "msg-017",
+   "human": true,
+   "truth": true,
+   "verdict": false,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.6,
+   "reply_tail": "RTANT\n\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run c50feffb-12ea-4a9e-893c-792ab122b37e ended with stopReason=stop\u001b[39m"
+  },
+  "msg-018": {
+   "id": "msg-018",
+   "human": true,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.7,
+   "reply_tail": "RTANT\n\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run fe3e62a5-666b-4a8e-9630-9978800317d8 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-019": {
+   "id": "msg-019",
+   "human": true,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 4.1,
+   "reply_tail": "MPORTANT\n\nI did not write in this thread.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 436a95d2-bb62-42e7-91c1-50bf96aeb9dd ended with stopReason=stop\u001b[39m"
+  },
+  "msg-020": {
+   "id": "msg-020",
+   "human": true,
+   "truth": true,
+   "verdict": false,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.9,
+   "reply_tail": "RTANT\n\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run a0ca9773-4f96-4b61-a720-b989d7b80554 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-021": {
+   "id": "msg-021",
+   "human": true,
+   "truth": true,
+   "verdict": false,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.8,
+   "reply_tail": "RTANT\n\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 9e0b8a9c-241c-41e7-b1bc-9cc928e17722 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-022": {
+   "id": "msg-022",
+   "human": true,
+   "truth": true,
+   "verdict": false,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.8,
+   "reply_tail": "RTANT\n\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 14597ac9-b606-4819-8b6b-0404a77046d8 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-023": {
+   "id": "msg-023",
+   "human": false,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 4.1,
+   "reply_tail": "RTANT\n\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run af067aa5-65d8-4873-8283-be73dcab6aa7 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-024": {
+   "id": "msg-024",
+   "human": true,
+   "truth": true,
+   "verdict": false,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.9,
+   "reply_tail": "RTANT\n\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 46c54d0e-f936-41fd-bb0e-938e63a56a65 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-025": {
+   "id": "msg-025",
+   "human": true,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 4.5,
+   "reply_tail": " it:\n<thread_history>...</thread_history>\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 5d313215-8a12-4cc5-8479-e500a77811b4 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-026": {
+   "id": "msg-026",
+   "human": false,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.7,
+   "reply_tail": "RTANT\n\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 7a8db10e-b72e-4d12-962e-a44e927bf549 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-027": {
+   "id": "msg-027",
+   "human": true,
+   "truth": true,
+   "verdict": false,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.9,
+   "reply_tail": "RTANT\n\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 4ef218d3-95b6-43cd-8ec2-ddc972a4ef7d ended with stopReason=stop\u001b[39m"
+  },
+  "msg-028": {
+   "id": "msg-028",
+   "human": true,
+   "truth": true,
+   "verdict": false,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.8,
+   "reply_tail": "RTANT\n\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run f61c7c89-2b32-479c-bcc9-7c8bd0eabd09 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-029": {
+   "id": "msg-029",
+   "human": true,
+   "truth": true,
+   "verdict": false,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.8,
+   "reply_tail": "RTANT\n\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run dbc8608e-b22b-4ded-ad98-39c5b762aff7 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-030": {
+   "id": "msg-030",
+   "human": false,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.7,
+   "reply_tail": "RTANT\n\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 530c8170-8e7a-487d-82d3-cd397c430ac9 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-031": {
+   "id": "msg-031",
+   "human": true,
+   "truth": true,
+   "verdict": false,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.5,
+   "reply_tail": "Type=text/event-stream\u001b[39m\nNOT IMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 54d93cbe-7841-4111-8605-a6dc17d2e636 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-032": {
+   "id": "msg-032",
+   "human": false,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.9,
+   "reply_tail": "RTANT\n\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run ded85144-d803-4721-8ddf-ddace3f98422 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-033": {
+   "id": "msg-033",
+   "human": true,
+   "truth": false,
+   "verdict": null,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 21,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 20,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 24.2,
+   "reply_tail": "m\u001b[39m\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 9eae8f03-15cd-4565-9b63-1d1cec43ad59 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-034": {
+   "id": "msg-034",
+   "human": true,
+   "truth": true,
+   "verdict": false,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 4.9,
+   "reply_tail": "Type=text/event-stream\u001b[39m\nNOT IMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 3561d766-ac38-431a-9485-417bb3bf5e5c ended with stopReason=stop\u001b[39m"
+  },
+  "msg-035": {
+   "id": "msg-035",
+   "human": true,
+   "truth": true,
+   "verdict": false,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.8,
+   "reply_tail": "RTANT\n\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 0356dc27-188f-473a-bb42-ca4e6c31994f ended with stopReason=stop\u001b[39m"
+  },
+  "msg-036": {
+   "id": "msg-036",
+   "human": true,
+   "truth": true,
+   "verdict": false,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.9,
+   "reply_tail": "isting of who has written in this thread?\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 7e606b8a-b071-4e4b-a664-1a39f574b6cb ended with stopReason=stop\u001b[39m"
+  },
+  "msg-037": {
+   "id": "msg-037",
+   "human": true,
+   "truth": true,
+   "verdict": false,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.8,
+   "reply_tail": "RTANT\n\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 05414e4b-02c2-4e3c-a141-34d16ab56676 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-038": {
+   "id": "msg-038",
+   "human": true,
+   "truth": true,
+   "verdict": false,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.8,
+   "reply_tail": "RTANT\n\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 27ead960-a80c-469e-b5a1-346634fcd0e6 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-039": {
+   "id": "msg-039",
+   "human": true,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 4.1,
+   "reply_tail": "RTANT\n\nThe following tools are available.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run e6d45980-3ab5-4303-9309-e53912886836 ended with stopReason=stop\u001b[39m"
+  }
+ },
+ "verdict": {
+  "n": 40,
+  "errors": 0,
+  "routed_local": 40,
+  "routed_out": 0,
+  "invented": 0,
+  "human": {
+   "n": 32,
+   "correct": 9,
+   "accuracy": 0.2812,
+   "with_a_call": 2,
+   "call_share": 0.0625
+  },
+  "undecided": 2,
+  "gate": {
+   "n": 32,
+   "correct": 9,
+   "accuracy": 0.2812,
+   "bar": 0.655,
+   "passes_at": 26,
+   "alpha": 0.05,
+   "p_value": 1.0,
+   "beats_the_bar": false,
+   "exceeds_bar_without_clearing_the_gate": false
+  },
+  "routed_local_all": true,
+  "calls_reach_the_live_path": true,
+  "agent_uses_the_tools": false,
+  "passes": false,
+  "reading": "NOT LIVE: 40/40 local, 0 invented calls, 2/32 human turns called a tool, human 0.2812 vs bar 0.655"
+ },
+ "finished": "2026-09-18T08:58:58"
+}

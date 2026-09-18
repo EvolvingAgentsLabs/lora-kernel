@@ -1,0 +1,20 @@
+{
+ "probed": 3,
+ "differs": 3,
+ "empty": 0,
+ "applied": true,
+ "samples": [
+  {
+   "base": "The sky appears blue because of Rayleigh scattering, which i",
+   "member": "The sky appears blue because during the day, when sunlight e"
+  },
+  {
+   "base": "When answering an email, a careful reader should ensure they",
+   "member": "When reading an important message in an inbox, a careful rea"
+  },
+  {
+   "base": "A pressure drop in a pipe primarily depends on the fluid's v",
+   "member": "A pressure drop in a pipe depends on the fluid's viscosity, "
+  }
+ ]
+}

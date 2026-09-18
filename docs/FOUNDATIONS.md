@@ -733,3 +733,4 @@ all of it.
 | §10.5 D2 / §3.4 | **a LoRA applies over the AWQ 32B**: mean $|\Delta\ell|$ 0.22–0.49 nats vs base-vs-base 0.000, 3/3; text gate 2/3 | P60 §3b `awq_gate.json` |
 | §7.3, §8.2 | **weights or harness — weights**: base 0.345, base + 914-token procedure 0.601 (both 0 tool calls, under the 0.655 majority bar), expert 0.989; expert vs base+kb **137 : 1**; the sign test alone read the flipped default as paying (164 : 74) — the majority bar guards it | P61 `session.json` |
 | §8.4 | **routing per request ties by region**: 0.775 = 0.775, 0 misroutes, 37.5 % out on P41's 240 cases | P62 `replay.json` (zero GPU) |
+| §4.4, §8.1 | **the live turn is corpus mode or it is nothing**: under the runtime's prompt 2/32 human turns call a tool (0.281); under the member's released prompt with `</tag>` stops, the round-trip cap and 256 tokens/step, 19/32 call and 0.688 vs bar 0.655 ($p=0.43$), 40/40 local | P63 `live.json`, attempts 4 and 7 |

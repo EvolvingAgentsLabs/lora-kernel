@@ -1,0 +1,536 @@
+{
+ "model": "lorapool/auto",
+ "profile": "lorakernel",
+ "n": 40,
+ "seed": 717171,
+ "started": "2026-09-18T08:47:51",
+ "records": {
+  "msg-000": {
+   "id": "msg-000",
+   "human": false,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 4.5,
+   "reply_tail": "Type=text/event-stream\u001b[39m\nNOT IMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 5d1f3a37-0a89-4e84-9641-a4cca83bc968 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-001": {
+   "id": "msg-001",
+   "human": true,
+   "truth": true,
+   "verdict": false,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.1,
+   "reply_tail": "Type=text/event-stream\u001b[39m\nNOT IMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 949b8a84-1f2f-48e1-a68d-bd045ea8d416 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-002": {
+   "id": "msg-002",
+   "human": true,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.1,
+   "reply_tail": "Type=text/event-stream\u001b[39m\nNOT IMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 7e1cb9f5-db4d-4ede-8930-2b277c09831a ended with stopReason=stop\u001b[39m"
+  },
+  "msg-003": {
+   "id": "msg-003",
+   "human": true,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.6,
+   "reply_tail": "hread? Ask with one line: THREAD_HISTORY.\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 34621702-b7de-4d62-840d-243991b4a33d ended with stopReason=stop\u001b[39m"
+  },
+  "msg-004": {
+   "id": "msg-004",
+   "human": false,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.4,
+   "reply_tail": "Type=text/event-stream\u001b[39m\nNOT IMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run f641cdda-e27d-4119-8399-73549352fbf6 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-005": {
+   "id": "msg-005",
+   "human": true,
+   "truth": true,
+   "verdict": false,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.2,
+   "reply_tail": "TANT\n\nDo you want to continue the thread?\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run e0dcdb9f-7463-461c-9d46-3c9df0e332b5 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-006": {
+   "id": "msg-006",
+   "human": true,
+   "truth": true,
+   "verdict": false,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.8,
+   "reply_tail": "written in this thread and whether I did?\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run a900871a-9b6a-4ad5-a553-069573c51f35 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-007": {
+   "id": "msg-007",
+   "human": true,
+   "error": "timeout"
+  },
+  "msg-008": {
+   "id": "msg-008",
+   "human": false,
+   "truth": false,
+   "verdict": null,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 1,
+    "invented": 1
+   },
+   "rc": 1,
+   "seconds": 2.5,
+   "reply_tail": ""
+  },
+  "msg-009": {
+   "id": "msg-009",
+   "human": true,
+   "truth": true,
+   "verdict": null,
+   "correct": false,
+   "route": "none",
+   "shapes": {
+    "requests": 0,
+    "tools_offered": 0,
+    "tools_kept": 0,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 1,
+   "seconds": 1.4,
+   "reply_tail": ""
+  },
+  "msg-010": {
+   "id": "msg-010",
+   "human": false,
+   "truth": false,
+   "verdict": null,
+   "correct": false,
+   "route": "none",
+   "shapes": {
+    "requests": 0,
+    "tools_offered": 0,
+    "tools_kept": 0,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 1,
+   "seconds": 1.4,
+   "reply_tail": ""
+  },
+  "msg-011": {
+   "id": "msg-011",
+   "human": true,
+   "truth": false,
+   "verdict": null,
+   "correct": false,
+   "route": "none",
+   "shapes": {
+    "requests": 0,
+    "tools_offered": 0,
+    "tools_kept": 0,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 1,
+   "seconds": 1.4,
+   "reply_tail": ""
+  },
+  "msg-012": {
+   "id": "msg-012",
+   "human": true,
+   "truth": true,
+   "verdict": null,
+   "correct": false,
+   "route": "none",
+   "shapes": {
+    "requests": 0,
+    "tools_offered": 0,
+    "tools_kept": 0,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 1,
+   "seconds": 1.4,
+   "reply_tail": ""
+  },
+  "msg-013": {
+   "id": "msg-013",
+   "human": true,
+   "truth": true,
+   "verdict": null,
+   "correct": false,
+   "route": "none",
+   "shapes": {
+    "requests": 0,
+    "tools_offered": 0,
+    "tools_kept": 0,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 1,
+   "seconds": 1.4,
+   "reply_tail": ""
+  },
+  "msg-014": {
+   "id": "msg-014",
+   "human": true,
+   "truth": true,
+   "verdict": null,
+   "correct": false,
+   "route": "none",
+   "shapes": {
+    "requests": 0,
+    "tools_offered": 0,
+    "tools_kept": 0,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 1,
+   "seconds": 1.3,
+   "reply_tail": ""
+  },
+  "msg-015": {
+   "id": "msg-015",
+   "human": true,
+   "truth": false,
+   "verdict": null,
+   "correct": false,
+   "route": "none",
+   "shapes": {
+    "requests": 0,
+    "tools_offered": 0,
+    "tools_kept": 0,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 1,
+   "seconds": 1.4,
+   "reply_tail": ""
+  },
+  "msg-016": {
+   "id": "msg-016",
+   "human": true,
+   "truth": false,
+   "verdict": null,
+   "correct": false,
+   "route": "none",
+   "shapes": {
+    "requests": 0,
+    "tools_offered": 0,
+    "tools_kept": 0,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 1,
+   "seconds": 1.3,
+   "reply_tail": ""
+  },
+  "msg-017": {
+   "id": "msg-017",
+   "human": true,
+   "truth": true,
+   "verdict": null,
+   "correct": false,
+   "route": "none",
+   "shapes": {
+    "requests": 0,
+    "tools_offered": 0,
+    "tools_kept": 0,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 1,
+   "seconds": 1.4,
+   "reply_tail": ""
+  },
+  "msg-018": {
+   "id": "msg-018",
+   "human": true,
+   "truth": false,
+   "verdict": null,
+   "correct": false,
+   "route": "none",
+   "shapes": {
+    "requests": 0,
+    "tools_offered": 0,
+    "tools_kept": 0,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 1,
+   "seconds": 1.4,
+   "reply_tail": ""
+  },
+  "msg-019": {
+   "id": "msg-019",
+   "human": true,
+   "truth": false,
+   "verdict": null,
+   "correct": false,
+   "route": "none",
+   "shapes": {
+    "requests": 0,
+    "tools_offered": 0,
+    "tools_kept": 0,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 1,
+   "seconds": 1.3,
+   "reply_tail": ""
+  },
+  "msg-020": {
+   "id": "msg-020",
+   "human": true,
+   "truth": true,
+   "verdict": null,
+   "correct": false,
+   "route": "none",
+   "shapes": {
+    "requests": 0,
+    "tools_offered": 0,
+    "tools_kept": 0,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 1,
+   "seconds": 1.4,
+   "reply_tail": ""
+  },
+  "msg-021": {
+   "id": "msg-021",
+   "human": true,
+   "truth": true,
+   "verdict": null,
+   "correct": false,
+   "route": "none",
+   "shapes": {
+    "requests": 0,
+    "tools_offered": 0,
+    "tools_kept": 0,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 1,
+   "seconds": 1.4,
+   "reply_tail": ""
+  },
+  "msg-022": {
+   "id": "msg-022",
+   "human": true,
+   "truth": true,
+   "verdict": null,
+   "correct": false,
+   "route": "none",
+   "shapes": {
+    "requests": 0,
+    "tools_offered": 0,
+    "tools_kept": 0,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 1,
+   "seconds": 1.4,
+   "reply_tail": ""
+  },
+  "msg-023": {
+   "id": "msg-023",
+   "human": false,
+   "truth": false,
+   "verdict": null,
+   "correct": false,
+   "route": "none",
+   "shapes": {
+    "requests": 0,
+    "tools_offered": 0,
+    "tools_kept": 0,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 1,
+   "seconds": 1.4,
+   "reply_tail": ""
+  },
+  "msg-024": {
+   "id": "msg-024",
+   "human": true,
+   "truth": true,
+   "verdict": null,
+   "correct": false,
+   "route": "none",
+   "shapes": {
+    "requests": 0,
+    "tools_offered": 0,
+    "tools_kept": 0,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 1,
+   "seconds": 1.4,
+   "reply_tail": ""
+  },
+  "msg-025": {
+   "id": "msg-025",
+   "human": true,
+   "truth": false,
+   "verdict": null,
+   "correct": false,
+   "route": "none",
+   "shapes": {
+    "requests": 0,
+    "tools_offered": 0,
+    "tools_kept": 0,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 1,
+   "seconds": 1.4,
+   "reply_tail": ""
+  },
+  "msg-026": {
+   "id": "msg-026",
+   "human": false,
+   "truth": false,
+   "verdict": null,
+   "correct": false,
+   "route": "none",
+   "shapes": {
+    "requests": 0,
+    "tools_offered": 0,
+    "tools_kept": 0,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 1,
+   "seconds": 1.3,
+   "reply_tail": ""
+  },
+  "msg-027": {
+   "id": "msg-027",
+   "human": true,
+   "truth": true,
+   "verdict": null,
+   "correct": false,
+   "route": "none",
+   "shapes": {
+    "requests": 0,
+    "tools_offered": 0,
+    "tools_kept": 0,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 1,
+   "seconds": 1.3,
+   "reply_tail": ""
+  },
+  "msg-028": {
+   "id": "msg-028",
+   "human": true,
+   "truth": true,
+   "verdict": null,
+   "correct": false,
+   "route": "none",
+   "shapes": {
+    "requests": 0,
+    "tools_offered": 0,
+    "tools_kept": 0,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 1,
+   "seconds": 1.3,
+   "reply_tail": ""
+  },
+  "msg-029": {
+   "id": "msg-029",
+   "human": true,
+   "truth": true,
+   "verdict": null,
+   "correct": false,
+   "route": "none",
+   "shapes": {
+    "requests": 0,
+    "tools_offered": 0,
+    "tools_kept": 0,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 1,
+   "seconds": 1.4,
+   "reply_tail": ""
+  }
+ }
+}

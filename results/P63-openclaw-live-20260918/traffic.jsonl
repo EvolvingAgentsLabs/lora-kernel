@@ -1,0 +1,59 @@
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "NOT IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "<thread_history>thread_id=thr-002</thread_history>", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 4, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "<thread_history>thread_id=thr-003</thread_history>", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 4, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "NOT IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "<thread_history>thread_id=thr-005</thread_history>", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 4, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "<thread_history>thread_id=thr-007</thread_history>", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 4, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "NOT IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "NOT IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "<thread_history>thread_id=thr-011</thread_history>", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 4, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "<thread_history>thread_id=thr-012</thread_history>", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 4, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "<thread_history>thread_id=thr-014</thread_history>", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 4, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "<thread_history>thread_id=thr-015</thread_history>", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 4, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "<thread_history>thread_id=thr-016</thread_history>", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 4, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "<thread_history>thread_id=thr-019</thread_history>", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 4, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "<thread_history>thread_id=thr-022</thread_history>", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 4, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "NOT IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "<thread_history>thread_id=thr-024</thread_history>", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 4, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "NOT IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "<thread_history>thread_id=thr-027</thread_history>", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 4, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "<thread_history>thread_id=thr-028</thread_history>", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 4, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "<thread_history>thread_id=thr-029</thread_history>", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 4, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "NOT IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "<thread_history>thread_id=thr-031</thread_history>", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 4, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "NOT IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "<thread_history>thread_id=thr-034</thread_history>", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 4, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "<thread_history>thread_id=thr-035</thread_history>", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 4, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "<thread_history>thread_id=thr-037</thread_history>", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 4, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "IMPORTANT", "upstream_tool_calls": 0}
+{"model": "email-full", "tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54, "prompt": "member", "turns": 3, "reply": "IMPORTANT", "upstream_tool_calls": 0}

@@ -1,0 +1,8 @@
+{
+  "base": "Qwen/Qwen2.5-3B-Instruct",
+  "pool": [
+    "email-full"
+  ],
+  "url": "https://focused-thereof-diverse-revenues.trycloudflare.com",
+  "holds_until": "2026-09-18T13:00:48"
+}

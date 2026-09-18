@@ -384,3 +384,69 @@ def test_the_declared_keys_are_what_the_corpus_writes(path, record):
                         k.strip() for k in re.findall(r"([\w.\-]+)\s*=", body))
     for tag, keys in (record.get("surface_args") or {}).items():
         assert set(keys) <= seen.get(tag, set()), (path, tag, keys, seen.get(tag))
+
+
+
+def test_an_echoed_instruction_block_is_not_a_tool_call():
+    """P63 [ran]: the expert answered, then echoed the block it was shown; its
+    `<tag>...</tag>` placeholders were executed as calls. The proxy's own text is not
+    a request from the model."""
+    from training.harness.tool_calls import to_tool_calls
+    echoed = ("NOT IMPORTANT\n\nThe following tools are available. Ask for one by writing its tag "
+              "on the line that needs it:\n<thread_history>...</thread_history>  — who has written\n"
+              "<sender_stats>...</sender_stats>\n<message></message>")
+    assert to_tool_calls(echoed) == []
+    real = to_tool_calls("<thread_history>thread_id=thr-001</thread_history>")
+    assert len(real) == 1 and real[0]["function"]["name"] == "thread_history"
+
+
+def test_the_block_s_header_is_a_stop_sequence_once_tools_are_rendered():
+    from training.harness.tool_calls import BLOCK_HEADER, stop_for, tools_to_instruction
+    tools = [{"type": "function", "function": {"name": "message", "parameters": {"properties": {"id": {}}, "required": ["id"]}}}]
+    assert tools_to_instruction(tools).startswith(BLOCK_HEADER)
+    assert stop_for(tools) == [BLOCK_HEADER] and stop_for([]) == []
+
+
+
+def test_a_member_is_served_under_its_released_prompt_and_the_runtime_s_is_dropped():
+    """P63 [ran]: under OpenClaw's 37 KB system prompt `email-full` made 0 tool calls
+    in 40 turns; its contract now carries the prompt its corpus taught and the proxy
+    serves it under that prompt, the tool block already pruned to its tags."""
+    from training.harness.agent_sim import SYSTEM
+    from training.harness.openai_proxy import _load_surfaces, POOL_SYSTEM, under_member_prompt
+    _load_surfaces()
+    assert POOL_SYSTEM["email-full"] == SYSTEM
+    msgs = [{"role": "system", "content": "x" * 37383}, {"role": "user", "content": "listing"},
+            {"role": "assistant", "content": "NOT IMPORTANT"}]
+    out = under_member_prompt(msgs, SYSTEM)
+    assert out[0] == {"role": "system", "content": SYSTEM} and out[1:] == msgs[1:]
+    assert sum(m["role"] == "system" for m in out) == 1
+
+
+def test_generation_stops_at_the_member_s_closing_tags_and_keeps_them():
+    from training.harness.tool_calls import BLOCK_HEADER, stop_for
+    assert stop_for([{"x": 1}], ["thread_history", "message"]) == [BLOCK_HEADER, "</thread_history>", "</message>"]
+
+
+def test_a_call_to_a_name_not_offered_stays_text():
+    from training.harness.tool_calls import keep_offered, to_tool_calls
+    calls = to_tool_calls("<tag>thread_history</tag>\n<thread_history>thread_id=thr-030</thread_history>")
+    kept, dropped = keep_offered(calls, {"thread_history", "sender_stats", "message"})
+    assert dropped == 1 and [c["function"]["name"] for c in kept] == ["thread_history"]
+
+
+
+def test_the_live_path_has_the_corpus_loop_s_cap():
+    """P63 attempt 5 [ran]: 30 round-trips of the same malformed call. The proxy's cap
+    is the corpus loop's `max_calls`."""
+    from training.harness import openai_proxy as px
+    from training.harness.accept_rank import run_chain
+    import inspect
+    assert px.MAX_ROUNDTRIPS == inspect.signature(run_chain).parameters["max_calls"].default
+
+
+
+def test_a_member_s_step_is_bounded_in_tokens():
+    from training.harness import openai_proxy as px
+    assert px.MEMBER_MAX_TOKENS == 256
+    assert px.MAX_ROUNDTRIPS * px.MEMBER_MAX_TOKENS < 4096   # a whole capped turn fits a small context

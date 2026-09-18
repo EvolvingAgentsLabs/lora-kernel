@@ -1,0 +1,68 @@
+[route] `auto` is routed per request: email-full -> local, fluids-full -> out
+[prompt] members served under their released prompt: email-full
+[prune] domain-mt: no tools — declares none
+[prune] email-full: ['thread_history', 'sender_stats', 'message']
+[prune] fluids-full: ['calc', 'lookup', 'convert']
+[prune] kernel-email: ['thread_history', 'sender_stats', 'message']
+[prune] kernel-mt: ['calc', 'convert', 'lookup']
+[prune] a model not listed above is offered every tool, unpruned
+[proxy] :8001 -> https://focused-thereof-diverse-revenues.trycloudflare.com  arity=True enums=False  auth=OFF  log=results/P63-openclaw-live-20260918/traffic.jsonl
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 5 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 5 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 5 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 5 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 5 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 5 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 5 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 5 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 5 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 5 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 5 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 5 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 5 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 5 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 5 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 5 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 5 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 5 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 5 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools
+[route] auto -> local (email-full) · 3 messages · 54 tools

@@ -35,8 +35,12 @@ P41's records, zero GPU.
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
+
+
+ENVELOPE = re.compile(r"<<<BEGIN_[A-Z_]*INTERNAL_CONTEXT>>>.*?<<<END_[A-Z_]*INTERNAL_CONTEXT>>>", re.S)
 
 
 @dataclass(frozen=True)
@@ -62,14 +66,43 @@ REGIONS: dict[str, Region] = {
 
 
 def text_of(req: dict) -> str:
-    """The system prompt and the last user turn; tool results and history are not
-    the request's subject."""
+    """The last user turn, and only that.
+
+    THE SYSTEM PROMPT IS THE RUNTIME'S, NOT THE REQUEST'S SUBJECT. The first live
+    OpenClaw turn (P63 **[ran]** 2026-09-18) arrived as 21 messages and 54 tools, and
+    its system prompt — OpenClaw's own instructions about channels, gates, tanks and
+    slopes of its tooling — out-scored the email listing in the user turn, so `auto`
+    routed a triage request out as fluids. The proxy refused it (503) rather than serve
+    it wrong, which is what the 503 is for. Tool results and history are not the
+    subject either. A content part list (OpenAI's `[{"type": "text", …}]`) is read as
+    its text parts."""
     msgs = req.get("messages") or []
-    parts = [m.get("content") for m in msgs if m.get("role") == "system"]
-    users = [m.get("content") for m in msgs if m.get("role") == "user"]
-    if users:
-        parts.append(users[-1])
-    return "\n".join(p for p in parts if isinstance(p, str))
+    # THE TRAILING RUN OF USER MESSAGES, NOT THE LAST ONE. OpenClaw sends the user's
+    # text as one `user` message and then a second `user` message carrying its own
+    # `<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>` envelope (P63 [ran]); read alone, that
+    # envelope is "no region". So every user message after the last non-user turn is
+    # the subject, with any runtime envelope cut out.
+    # AND ON A FOLLOW-UP, THE LAST REAL USER TURN ANYWHERE. After a tool call the
+    # request ends `assistant(tool_calls) · tool · user(envelope)`: the trailing user
+    # run is the envelope alone, "no region", and the turn dies in a 503 loop
+    # (P63 attempt 2 [ran]). The subject is the last user message that still says
+    # something once the envelope is cut out.
+    # AND A RUNTIME'S FINALISATION REQUEST HAS NO LISTING IN ITS LAST USER TURN AT
+    # ALL: after the tool round-trip OpenClaw asks for a summary with 0 tools and its
+    # own instruction as the user turn — "no region", 503, "finalization failed"
+    # [ran]. The subject of a conversation is all of its user text.
+    parts = []
+    for m in msgs:
+        if m.get("role") != "user":
+            continue
+        c = m.get("content")
+        if isinstance(c, list):
+            c = "\n".join(str(x.get("text", "")) for x in c if isinstance(x, dict))
+        if isinstance(c, str):
+            c = ENVELOPE.sub("", c).strip()
+            if c:
+                parts.append(c)
+    return "\n".join(parts)
 
 
 def classify(text: str, regions: dict[str, Region] = REGIONS) -> str | None:

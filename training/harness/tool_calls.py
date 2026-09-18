@@ -38,6 +38,14 @@ def to_tool_calls(text: str) -> list[dict]:
     out = []
     for i, m in enumerate(CALL.finditer(text)):
         name, body = m.group(1), m.group(2)
+        # THE BLOCK'S OWN PLACEHOLDER IS NOT A CALL. The instruction block this proxy
+        # renders writes `<thread_history>...</thread_history>`; on the first live
+        # OpenClaw turn (P63 [ran] 2026-09-18) the expert answered and then echoed that
+        # block, and every placeholder became a `tool_call` the agent executed — seven
+        # calls, one to a name nobody offered, and no verdict. Text the proxy wrote
+        # cannot be a request from the model.
+        if body.strip() in ("", "...", "…"):
+            continue
         args = {k.strip(): v.strip() for k, v in PAIR.findall(body)}
         # A body with no `key=value` in it is a positional argument — `<calc>` takes
         # an expression, not a keyed list. It is handed over under a reserved key
@@ -66,6 +74,31 @@ def from_tool_call(call: dict) -> str:
 def strip_calls(text: str) -> str:
     """The message body with its calls removed — what `content` becomes."""
     return CALL.sub("", text).strip()
+
+
+BLOCK_HEADER = "The following tools are available."
+
+
+def stop_for(tools, surface: list[str] | None = None) -> list[str]:
+    """What generation stops at once a block was rendered: the block's own header.
+
+    P63 [ran] 2026-09-18, the first live OpenClaw turns: the expert answered its one
+    line and then kept going — it reproduced the instruction block it had just been
+    shown, placeholders and all, and after it invented a call keyed on an id copied from
+    the runtime's envelope. Under the corpus's prompt it stops; under a 37 KB runtime
+    prompt it does not. Text this proxy wrote is never something the model is asking
+    for, so the moment the model starts writing it, the reply is over.
+
+    AND THE MEMBER'S CLOSING TAGS, WITH THE TAG KEPT IN THE OUTPUT. This is corpus
+    mode on the live path (P55 A: 0.808 → 0.992): a reply that runs past `</tag>`
+    lets the model *invent* the tool's answer — on the live turn for msg-030 it wrote
+    `<thread_history>thread_id=thr-030</thread_history>= {"turns": 1, …}` in one
+    breath [ran]. Stopping at the closing tag hands the call to the agent while the
+    result is still the agent's to supply. vLLM honours `include_stop_str_in_output`;
+    the substrate gate's G3 checks exactly that (SUBSTRATE-GATE.md)."""
+    if not tools:
+        return []
+    return [BLOCK_HEADER] + [f"</{t}>" for t in (surface or [])]
 
 
 def tools_to_instruction(tools: list[dict], arity: bool = False,
@@ -201,6 +234,14 @@ def prune(tools: list[dict], surface: list[str],
         fn["name"] = tag
         kept.append({**t, "function": fn} if "function" in t else fn)
     return kept, forward, {v: k for k, v in forward.items()}
+
+
+def keep_offered(calls: list[dict], offered: set[str]) -> tuple[list[dict], int]:
+    """Calls to names the member was never offered are text, not tool calls. On the
+    live path a `<tag>thread_history</tag>` went out as a call to a tool named `tag`
+    [ran]; an agent runtime turns that into its own error and another round-trip."""
+    kept = [c for c in calls if c["function"]["name"] in offered]
+    return kept, len(calls) - len(kept)
 
 
 def rename_calls(calls: list[dict], forward: dict) -> list[dict]:

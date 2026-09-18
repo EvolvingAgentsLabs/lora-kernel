@@ -20,6 +20,7 @@ import json
 from pathlib import Path
 
 from training.harness import contract
+from training.harness.agent_sim import SYSTEM as EMAIL_SYSTEM
 
 # EACH MEMBER IS A RECORD, NOT A PATH. A corpus is everything the trainer needs and
 # nothing a caller needs; see `contract.py` for why a band and an output kind are
@@ -70,6 +71,7 @@ POOL = {
     "adapters/email-full": contract.text(
         "training/harness/data_ef/train.jsonl", contract.band(0, 3),
         tags=["thread_history", "sender_stats", "message"],
+        system=EMAIL_SYSTEM,
         # THE KEYS THE CORPUS WRITES, and why they are declared: P59 recorded OpenClaw
         # offering its own `message` tool (action, channel, target, …) beside
         # `lora-inbox__message` (id). Only the key tells them apart.
