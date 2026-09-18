@@ -2713,6 +2713,32 @@ shared. D1 re-checks C18 under the vLLM the chain installs today; D2 reads the
 mechanism with the log in hand; D4 is this instrument pointed at 3.8-27B. Nothing in
 P55 depends on D; D4 depends on all of P55.
 
+### Analysed 2026-09-18: Skill-to-LoRA and Adaptive Minds, read against the record
+
+Full analysis: [`analysis/s2l-and-adaptive-minds.md`](analysis/s2l-and-adaptive-minds.md). No GPU, all **[read]**.
+
+**Neither moves the critical path.** S2L (a `SKILL.md` turned into a per-skill LoRA,
+Qwen3.6-27B) reports 59 / 54 / 65 of 210 for no-skill / full text / adapter — the sign
+of P61 and an effect inside the noise ($z = 1.19$ and $0.65$, unpaired, no seeds), so it
+is related work and not support; P61's 137 : 1 **[ran]** is the evidence. Its
+self-distillation does not transfer: the teacher is base + document, which on this base
+makes zero tool calls **[ran]** P61. Adaptive Minds (the base model reads adapter
+metadata and names the member) reports keyword routing falling from 48.3% at 5 adapters
+to 31.7% at 30 — `route.py`'s predictable failure at milestone 5.
+
+Three things are recorded and none is bought:
+
+- **The router candidate for milestone 4**, parked because the dictionary is at 1.000
+  and any challenger ties: base-as-router over each release's `description`, the
+  measured `serve: local|out` table still deciding, **frontier as the default**, scored
+  on **misrouted-to-local** (FOUNDATIONS §8.4's zero term), abstention arm first.
+- **A first arm for D2:** S2L's adapters apply on Qwen3.6-27B under vLLM **[read]** and
+  target `q_proj,v_proj` only, where P33's covered the linear-attention projections.
+  `tiny_adapter` with those two targets on `Qwen3.5-4B` through `--gate-only`, beside
+  the Qwen2.5-3B control, localises C18 to the target modules or rules that out.
+- **At 27B the procedure document still does not help [read]** — do not assume
+  milestone 7 rescues the harness-only arm; `knowledge_arm` over the 32B measures it.
+
 ## 12. History
 
 | date | change to this plan | why |
