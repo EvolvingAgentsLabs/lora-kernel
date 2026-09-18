@@ -1,0 +1,11 @@
+{
+  "train_base": "Qwen/Qwen2.5-32B-Instruct",
+  "serve_base": "Qwen/Qwen2.5-32B-Instruct-AWQ",
+  "started": "2026-09-18T08:45:07",
+  "train_rc": 0,
+  "verdict": {
+    "applied": null,
+    "reading": "the AWQ base never came up with the adapter"
+  },
+  "finished": "2026-09-18T08:53:52"
+}

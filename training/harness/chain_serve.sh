@@ -121,7 +121,7 @@ step("vllm", "pip -q install 'vllm>=0.28' 2>&1 | tail -1")
 # 0.10.0, transformers refuses anything under 0.16.0, and the refusal arrives as an
 # ImportError in the first second of the run. That fix has been in the training chain
 # for days and was not carried across when this one learned to train [ran] 2026-09-14.
-step("train deps", "[ -z '${TRAINDEPS:-}' ] || pip -q install peft trl datasets accelerate 'torchao>=0.16.0' 2>&1 | tail -1; echo ok")
+step("train deps", "[ -z '${TRAINDEPS:-}' ] || pip -q install peft trl datasets accelerate bitsandbytes 'torchao>=0.16.0' 2>&1 | tail -1; echo ok")
 step("check", "python -c 'import vllm; print(vllm.__version__)' 2>&1 | tail -1")
 PY
   cat > /tmp/_vcheck.py <<'PY'
@@ -184,7 +184,7 @@ print(subprocess.run(
     # showed as silence for its whole length and could not have been stopped
     # early [ran] 2026-09-14. Fifth time a log held the answer and a filter
     # kept it out, so tests/test_chain_scripts.py now checks the two agree.
-    "grep -E '(serve|gate|tiny|native|matrix|run|arm|resume|cost|domain|P24|sweep|depth|fluids|sim|pool|judge|conf|shim|tunnel|3p|read|skip|train|corpora|draft|desk|zero|code|rank|substrate|release|attr|sim)\\]|"
+    "grep -E '(serve|gate|tiny|native|matrix|run|arm|resume|cost|domain|P24|sweep|depth|fluids|sim|pool|judge|conf|shim|tunnel|3p|read|skip|train|corpora|draft|desk|zero|code|rank|substrate|release|attr|sim|awq|tiny|precision)\\]|"
     "passed [0-9]+|clears the gate|prompts/s|Traceback|[Ee]rror|OutOfMemory|Killed' "
     "/content/lora-kernel/run.log | tail -3", shell=True,
     capture_output=True, text=True).stdout)
