@@ -63,7 +63,7 @@ corre encima.
 
 | # | hito | qué compra | estado |
 |---|---|---|---|
-| 1 | **pesos o harness** en una región — la base con un procedimiento escrito contra el experto entrenado, misma suite, mismo loop (P61) | cuánto cuesta una personalización: un documento pagado por request en tokens, o un adaptador entrenado una vez | corriendo 2026-09-18 |
+| 1 | **pesos o harness** en una región — la base con un procedimiento escrito contra el experto entrenado, misma suite, mismo loop (P61) | cuánto cuesta una personalización: un documento pagado por request en tokens, o un adaptador entrenado una vez | **[ran]** P61: **hacen falta los pesos** — base+documento 0 llamadas, 0,601 debajo de la barra 0,655; experto 137 : 1 |
 | 2 | **ruteo por request** — el proxy decide local o frontera sin que el cliente nombre un modelo | cualquier cliente usa la API | siguiente; el clasificador de región medido contra el 0,775 de P41 |
 | 3 | **OpenClaw en vivo** con `--prune`, una plantilla de perfil por tarea | la interfaz de alto nivel sobre la API | necesita una laptop y un túnel |
 | 4 | **la primera región real** de un cliente, personalizada a mano, liberada por la puerta de la Fase 1 | el servicio con tráfico real | 1–3, un sandbox real para código, claves rotadas |
@@ -76,6 +76,8 @@ La tesis del ranking por aceptación (M2) ya no está en este camino: P60 §3b *
 entrenado se sirve sobre la base AWQ — y queda programada detrás del hito 5 como
 compuerta de calidad de las respuestas locales, no como dependencia de nada de lo de
 arriba.
+
+**Hito 1 [ran] 2026-09-18, P61 — hacen falta los pesos en esta región, y la razón es precisa.** La base con el documento de procedimiento hizo **0 llamadas a herramientas en 351 de 351** mensajes humanos, igual que la base pelada: no sigue un procedimiento escrito en el contexto. Su exactitud se movió 0,345 → 0,601 porque el documento le dio vuelta la respuesta por defecto, todavía debajo de la barra de siempre-IMPORTANT de 0,655; el experto, en 0,989 con 1053 llamadas, le gana **137 : 1**. El documento cuesta 914 tokens en cada request; el adaptador, ninguno. Así que en un 3B el harness lleva conocimiento, no procedimiento — el procedimiento tiene que estar en los pesos.
 
 ---
 
@@ -476,6 +478,7 @@ Los pasos que llegaron hasta acá, cada uno con su número, están en
 
 | afirmación | medición | dónde |
 |---|---|---|
+| **Un 3B no sigue un procedimiento escrito en el contexto** | base 0,345 → base + procedimiento de 914 tokens 0,601, las dos con **0 llamadas** en 351 mensajes humanos, debajo de la barra de mayoría 0,655; experto 0,989 con 1053 llamadas, **137 : 1** sobre base+documento | `results/P61-knowledge-vs-weights-20260918/session.json` |
 | **Un LoRA aplica sobre el 32B AWQ** | adaptador de juguete (150 pasos, base NF4) servido sobre `Qwen2.5-32B-Instruct-AWQ`: media de $|\Delta\ell|$ 0,49 / 0,34 / 0,22 nats contra base-vs-base 0,000, **3/3**; compuerta de texto 2/3; el engine lo cargó y usó el wrapper Punica de GPU | `results/P60-deep-window-20260917/awq_gate.json` |
 | **La ruta de serving costaba 18 puntos** | el mismo adaptador de 598 ejemplos: 0,808 vía `tool_calls`, **0,992** en modo corpus, reproducido en dos sesiones a 31 s | `results/P55-graded-ranking-20260916/` |
 | **Un 32B sin entrenar no es un target válido en triage** | humanos 0,746 contra 0,989 del experto, pareado **2 : 87**, $p=0$; consigue los hechos y aplica mal la regla | ídem |

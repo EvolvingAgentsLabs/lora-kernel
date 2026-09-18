@@ -66,13 +66,25 @@ def human_acc(records: list[dict]) -> float:
     return sum(bool(r.get("correct")) for r in h) / len(h) if h else float("nan")
 
 
-def verdict(base: list[dict], kb: list[dict], expert: list[dict] | None, gap: float = GAP) -> dict:
+def verdict(base: list[dict], kb: list[dict], expert: list[dict] | None, gap: float = GAP,
+            majority: float | None = None) -> dict:
     """The pre-registered reading of three arms. A NaN accuracy or a missing expert arm
-    leaves the corresponding claim unresolved rather than decided."""
+    leaves the corresponding claim unresolved rather than decided.
+
+    THE MAJORITY BAR IS A GUARD ADDED AFTER THE FIRST RUN, AND THE NUMBER IT GUARDS
+    STANDS. P61 **[ran]** 2026-09-18: base+kb beat the base 164 : 74, $p = 0$, with
+    **zero tool calls on 351 of 351** human messages — the document had flipped the
+    base's default answer from NOT IMPORTANT (0.345) towards IMPORTANT (0.601), still
+    under the always-IMPORTANT bar of 0.655. A sign test against a base that answers
+    one word cannot tell a procedure followed from a default flipped; the bar can.
+    `kb_pays` therefore also requires human(base+kb) > majority."""
     out = {"kb_vs_base": bar.compare(passed(kb), passed(base)),
-           "human": {"base": human_acc(base), "kb": human_acc(kb)}}
+           "human": {"base": human_acc(base), "kb": human_acc(kb)}, "majority": majority,
+           "kb_calls": sum(r.get("calls", 0) for r in kb if r.get("human"))}
     c = out["kb_vs_base"]
-    out["kb_pays"] = bool(c["p_value"] < 0.05 and c["only_a"] > c["only_b"])
+    better = bool(c["p_value"] < 0.05 and c["only_a"] > c["only_b"])
+    out["kb_above_bar"] = None if majority is None else bool(out["human"]["kb"] > majority)
+    out["kb_pays"] = better and out["kb_above_bar"] is not False
     if expert is None:
         out.update(weights_needed=None, harness_replaces_weights=None,
                    reading="no expert arm — the weights side of the question was not measured")
@@ -85,9 +97,13 @@ def verdict(base: list[dict], kb: list[dict], expert: list[dict] | None, gap: fl
     out["harness_replaces_weights"] = bool(not out["weights_needed"] and hk == hk and he == he
                                            and hk >= he - gap)
     if out["weights_needed"]:
+        doc = ("pays" if out["kb_pays"] else
+               f"does not pay — {c['only_a']}:{c['only_b']} over the base but human {hk:.3f} is under the "
+               f"majority bar {majority:.3f}" if out["kb_above_bar"] is False else "does not pay")
         out["reading"] = (f"WEIGHTS NEEDED: the expert beats base+kb {e['only_a']}:{e['only_b']} "
-                          f"(p={e['p_value']}); the document {'pays' if out['kb_pays'] else 'does not pay'} "
-                          f"against the plain base ({c['only_a']}:{c['only_b']}, p={c['p_value']})")
+                          f"(p={e['p_value']}); the document {doc} against the plain base "
+                          f"({c['only_a']}:{c['only_b']}, p={c['p_value']}); base+kb made "
+                          f"{out['kb_calls']} tool calls on human messages")
     elif out["harness_replaces_weights"]:
         out["reading"] = (f"HARNESS REPLACES WEIGHTS on this region: base+kb human {hk:.3f} vs expert "
                           f"{he:.3f}, {e['only_a']}:{e['only_b']} p={e['p_value']}")
@@ -95,6 +111,18 @@ def verdict(base: list[dict], kb: list[dict], expert: list[dict] | None, gap: fl
         out["reading"] = (f"UNRESOLVED at this n: expert vs base+kb {e['only_a']}:{e['only_b']} "
                           f"p={e['p_value']}, human gap {he - hk:+.3f}")
     return out
+
+
+def reread(path: Path, suite) -> dict:
+    """Re-read a finished session's verdict with the majority bar; the arms are untouched."""
+    rec = json.loads(path.read_text()); A = rec["arms"]
+    cases = suite.cases(rec["n"], rec["seed"])
+    rec["verdict"] = verdict(list(A["base"]["records"].values()), list(A["base+kb"]["records"].values()),
+                             list(A["expert"]["records"].values()) if "expert" in A else None,
+                             majority=suite.bar(cases))
+    rec["reread"] = time.strftime("%Y-%m-%dT%H:%M:%S")
+    path.write_text(json.dumps(rec, indent=1))
+    return rec["verdict"]
 
 
 def main() -> int:
@@ -110,9 +138,14 @@ def main() -> int:
     ap.add_argument("--concurrency", type=int, default=8)
     ap.add_argument("--max-model-len", type=int, default=4096)
     ap.add_argument("--out", default=str(OUT))
+    ap.add_argument("--reread", action="store_true", help="re-read --out's verdict with the majority bar")
     args = ap.parse_args()
 
     suite = load(args.suite)
+    if args.reread:
+        v = reread(Path(args.out), suite)
+        print(f"[kb] {v['reading']}", flush=True)
+        return 0
     n, seed = args.n or suite.eval_n, args.seed or suite.eval_seed
     cases = suite.cases(n, seed)
     text = Path(args.knowledge).read_text()
@@ -165,7 +198,8 @@ def main() -> int:
         stop(p)
     A = rec["arms"]
     rec["verdict"] = verdict(list(A["base"]["records"].values()), list(A["base+kb"]["records"].values()),
-                             list(A["expert"]["records"].values()) if "expert" in A else None)
+                             list(A["expert"]["records"].values()) if "expert" in A else None,
+                             majority=suite.bar(cases))
     rec["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")
     save()
     print(f"[kb] {rec['verdict']['reading']}", flush=True)

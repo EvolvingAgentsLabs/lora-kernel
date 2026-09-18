@@ -59,7 +59,7 @@ serves, routes, prunes, releases and measures; the customisations are what runs 
 
 | # | milestone | what it buys | state |
 |---|---|---|---|
-| 1 | **weights or harness** on one region — the base with a written procedure against the trained expert, same suite, same loop (P61) | what a customisation costs: a document paid per request in tokens, or an adapter trained once | running 2026-09-18 |
+| 1 | **weights or harness** on one region — the base with a written procedure against the trained expert, same suite, same loop (P61) | what a customisation costs: a document paid per request in tokens, or an adapter trained once | **[ran]** P61: **weights needed** — base+document 0 tool calls, 0.601 under the 0.655 bar; expert 137 : 1 |
 | 2 | **routing per request** — the proxy decides local or frontier without the client naming a model | any client uses the API | next; the region classifier measured against P41's 0.775 |
 | 3 | **OpenClaw live** with `--prune`, a profile template per task | the high-level interface over the API | needs a laptop and a tunnel |
 | 4 | **the first real region** of a customer, customised by hand, released through Phase 1's door | the service with real traffic | 1–3, a real sandbox for code, keys rotated |
@@ -71,6 +71,8 @@ The acceptance-ranking thesis (M2) is no longer on this path: P60 §3b **[ran]**
 2026-09-18 shows the arm that would decide it is buildable — a trained target serves
 over the AWQ base — and it is scheduled behind milestone 5 as a quality gate on local
 answers, not as a dependency of anything above.
+
+**Milestone 1 [ran] 2026-09-18, P61 — weights are needed on this region, and the reason is precise.** The base with the procedure document made **0 tool calls on 351 of 351** human messages, exactly like the plain base: it does not follow a written procedure in context. Its accuracy moved 0.345 → 0.601 because the document flipped its default answer, still under the always-IMPORTANT bar of 0.655; the expert, at 0.989 with 1053 calls, beats it **137 : 1**. The document costs 914 tokens on every request; the adapter costs none. So on a 3B the harness carries knowledge, not procedure — the procedure has to be in the weights.
 
 ---
 
@@ -460,6 +462,7 @@ The steps that got here, each with its number, are in
 
 | claim | measurement | where |
 |---|---|---|
+| **A 3B does not follow a written procedure in context** | base 0.345 → base + 914-token procedure 0.601, both with **0 tool calls** on 351 human messages, under the 0.655 majority bar; expert 0.989 with 1053 calls, **137 : 1** over base+document | `results/P61-knowledge-vs-weights-20260918/session.json` |
 | **A LoRA applies over the AWQ 32B** | toy adapter (150 steps, NF4 base) served over `Qwen2.5-32B-Instruct-AWQ`: mean $|\Delta\ell|$ 0.49 / 0.34 / 0.22 nats vs base-vs-base 0.000, **3/3**; text gate 2/3; the engine loaded it and used the Punica GPU wrapper | `results/P60-deep-window-20260917/awq_gate.json` |
 | **The serving path was costing 18 points** | the same 598-example adapter: 0.808 through `tool_calls`, **0.992** in corpus mode, reproduced in two sessions at 31 s | `results/P55-graded-ranking-20260916/` |
 | **An untrained 32B is not a valid target on triage** | human 0.746 vs the expert's 0.989, paired **2 : 87**, $p=0$; it gets the facts and misapplies the rule | same |

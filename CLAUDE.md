@@ -411,6 +411,11 @@ Three rules that follow:
   a quality gate on local answers, and the redesign counter (2 of 3) still applies.
 - **A customisation is measured before it is sold.** Every region enters through the
   same door: a suite with a verifier, the base as the headroom arm, the sign test.
+- **Milestone 1 is measured [ran] P61 2026-09-18: on a 3B the procedure has to be in the
+  weights.** Base + a 914-token procedure document made 0 tool calls on 351/351 human
+  messages and stayed under the majority bar; the expert beats it 137 : 1. Do not write
+  another procedure document for this base; a document carries knowledge on top of an
+  adapter, or the base is larger and that is measured first.
 - **Artisanal is allowed; unmeasured is not.** A hand-written document or a
   hand-trained adapter is fine in the first months if its number is on disk.
 

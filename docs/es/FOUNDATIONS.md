@@ -733,4 +733,4 @@ arriba depende de D; D4 depende de todo.
 | §6.4 | **α, $\mathbb{E}[\tau]$, aceleración** | **todavía no medido** |
 | §7.4 | **el veredicto de orden** | **no medido**: el §7.2 falla para un target *sin entrenar* en dos regiones fáciles (P55 A, P55b); reabierto como un brazo — un target entrenado sobre una banda más profunda (P60) |
 | §10.5 D2 / §3.4 | **un LoRA aplica sobre el 32B AWQ**: media de $|\Delta\ell|$ 0,22–0,49 nats contra base-vs-base 0,000, 3/3; compuerta de texto 2/3 | P60 §3b `awq_gate.json` |
-| §7.3 | **pesos o harness**: base / base + documento de procedimiento / experto, test de signos sobre pares discordantes | P61 `session.json` — **corriendo** |
+| §7.3, §8.2 | **pesos o harness — pesos**: base 0,345, base + procedimiento de 914 tokens 0,601 (las dos con 0 llamadas, debajo de la barra de mayoría 0,655), experto 0,989; experto contra base+kb **137 : 1**; el test de signos solo leyó el default dado vuelta como pagando (164 : 74) — la barra de mayoría lo guarda | P61 `session.json` |

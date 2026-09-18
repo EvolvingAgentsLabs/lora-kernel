@@ -49,3 +49,16 @@ def test_errors_are_not_folded_into_a_score():
     base = _recs([True] * 10); kb = [{"id": f"m{i}", "error": "boom", "human": True} for i in range(10)]
     v = verdict(base, kb, None)
     assert v["kb_vs_base"]["n_paired"] == 0 and not v["kb_pays"]
+
+
+def test_a_flipped_default_under_the_majority_bar_does_not_count_as_paying():
+    """P61 [ran]: 164 : 74 over the base with zero tool calls, human 0.601 under the
+    always-IMPORTANT bar of 0.655 — the sign test alone read a flipped default as a
+    procedure followed."""
+    n = 300
+    base = _recs([False] * n)                                  # always NOT IMPORTANT
+    kb = _recs([i % 5 != 0 for i in range(n)])                 # better, but under the bar
+    v = verdict(base, kb, None, majority=0.9)
+    assert v["kb_vs_base"]["only_a"] > 0 and v["kb_above_bar"] is False and not v["kb_pays"]
+    assert verdict(base, kb, None, majority=0.5)["kb_pays"]
+    assert verdict(base, kb, None)["kb_pays"]                  # no bar known: the old reading

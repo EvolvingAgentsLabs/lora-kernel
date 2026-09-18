@@ -60,7 +60,7 @@ is the state.
 
 | # | milestone | depends on | gate | state |
 |---|---|---|---|---|
-| **1** | weights or harness on one region: base / base + `knowledge/email-triage.md` / `email-full@v1`, one session, P55's 475 cases | Phase 1 | `kb_pays`, `weights_needed`, `harness_replaces_weights` pre-registered in the brief; errors void an arm | **P61 RUNNING** 2026-09-18 |
+| **1** | weights or harness on one region: base / base + `knowledge/email-triage.md` / `email-full@v1`, one session, P55's 475 cases | Phase 1 | `kb_pays`, `weights_needed`, `harness_replaces_weights` pre-registered in the brief; errors void an arm | ✅ **[ran]** P61 2026-09-18: **WEIGHTS NEEDED** — base+kb **0 tool calls** on 351/351 human, 0.601 under the 0.655 majority bar (the sign test alone read a flipped default as paying: 164 : 74 — guard added, number kept); expert 0.989, **137 : 1**; document 914 tokens/request |
 | **2** | routing per request | 1 | the region classifier ≥ P41's by-region 0.775 on the same traffic | NEXT |
 | **3** | OpenClaw live with `--prune`; a profile template per task | Phase 5 | zero calls to tools not offered; nothing leaves for the member's region | needs a laptop and a tunnel |
 | **4** | the first real region, customised by hand | 1–3, sandbox, keys rotated | Phase 1's release gate | — |
@@ -698,9 +698,11 @@ close without a tool — and `P8` is `harness.lora`, which this table calls P7.
 The tournament, this table's P8, has not been bought.
 
 
-#### P61 — weights or harness on the email region · RUNNING
+#### P61 — weights or harness on the email region **[ran]** 2026-09-18 · WEIGHTS NEEDED
 
 One unknown: does the plain 3B, given `knowledge/email-triage.md` in its system prompt, resolve the email region as the QLoRA expert does? Three arms, one L4 session, P55's 475 cases, the corpus-mode loop; pre-registered in `results/P61-knowledge-vs-weights-20260918/BRIEF.md` (FOUNDATIONS §7.3, the sign test on discordant pairs): `kb_pays` (base+kb > base, $p<0.05$), `weights_needed` (expert > base+kb, $p<0.05$), `harness_replaces_weights` (neither, and human accuracy within 0.05). The price line is recorded with the verdict: document tokens per request, tool calls per case. Failure written first: base+kb ≤ base closes the harness side for this base. Why a procedure and not the rule: P55 **[ran]** has the base answering NOT IMPORTANT with **zero tool calls on 230 of 351** human messages although the system prompt states the rule.
+
+**Result [ran].** **Milestone 1 [ran] 2026-09-18, P61 — weights are needed on this region, and the reason is precise.** The base with the procedure document made **0 tool calls on 351 of 351** human messages, exactly like the plain base: it does not follow a written procedure in context. Its accuracy moved 0.345 → 0.601 because the document flipped its default answer, still under the always-IMPORTANT bar of 0.655; the expert, at 0.989 with 1053 calls, beats it **137 : 1**. The document costs 914 tokens on every request; the adapter costs none. So on a 3B the harness carries knowledge, not procedure — the procedure has to be in the weights. The pre-registered `kb_pays` fired on 164 : 74, $p = 0$ — a sign test against a base that answers one word cannot tell a procedure followed from a default flipped; the majority bar now guards it (`knowledge_arm.verdict`, test added, the session re-read with `--reread`, arms untouched). `results/P61-knowledge-vs-weights-20260918/session.json`. **What it decides:** on a 3B, customisation by document alone is closed; documents carry knowledge on top of an adapter that carries the procedure, or the base has to be larger — the next document is not written for this base.
 
 #### P60 §3b — vLLM applies a LoRA over the AWQ 32B **[ran]** 2026-09-18
 
