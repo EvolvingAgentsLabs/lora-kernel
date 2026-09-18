@@ -1,0 +1,71 @@
+{
+  "train_base": "Qwen/Qwen2.5-32B-Instruct",
+  "serve_base": "Qwen/Qwen2.5-32B-Instruct-AWQ",
+  "lora": "tiny32=adapters/tiny32",
+  "started": "2026-09-18T09:52:32",
+  "train_rc": 0,
+  "G1": {
+    "probed": 3,
+    "empty": 0,
+    "differs": 2,
+    "applied": true,
+    "samples": [
+      {
+        "base": "The sky appears blue because the Earth's atmosphere scatters",
+        "member": "The sky appears blue because the Earth's atmosphere scatters"
+      },
+      {
+        "base": "Before answering an email, a careful reader typically checks",
+        "member": "Before answering an email, a careful reader typically checks"
+      },
+      {
+        "base": "A pressure drop in a pipe depends on factors including fluid",
+        "member": "A pressure drop in a pipe depends on factors including the f"
+      }
+    ]
+  },
+  "G1_logprob": {
+    "probes": 3,
+    "differ": 3,
+    "need": 2,
+    "applied": true,
+    "rows": [
+      {
+        "probe": "Explain in two sentences why the sky is ",
+        "tokens": 13,
+        "member_vs_base": 0.49014002770686954,
+        "base_vs_base": 0.0,
+        "applied": true
+      },
+      {
+        "probe": "List three things a careful reader check",
+        "tokens": 13,
+        "member_vs_base": 0.3393056116138513,
+        "base_vs_base": 0.0,
+        "applied": true
+      },
+      {
+        "probe": "Write one line describing what a pressur",
+        "tokens": 13,
+        "member_vs_base": 0.2201556142132994,
+        "base_vs_base": 0.0,
+        "applied": true
+      }
+    ]
+  },
+  "engine_lora_lines": [
+    "(APIServer pid=9852) INFO 09-18 10:02:26 [api_utils.py:286] non-default args: {'model_tag': 'Qwen/Qwen2.5-32B-Instruct-AWQ', 'lora_modules': [LoRAModulePath(name='tiny32', path='adapters/tiny32', base_model_name=None, is",
+    "(EngineCore pid=10162) INFO 09-18 10:03:04 [core.py:123] Initializing a V1 LLM engine (v0.29.0) with config: model='Qwen/Qwen2.5-32B-Instruct-AWQ', speculative_config=None, tokenizer='Qwen/Qwen2.5-32B-Instruct-AWQ', skip",
+    "(EngineCore pid=10162) INFO 09-18 10:04:13 [punica_selector.py:20] Using PunicaWrapperGPU.",
+    "(EngineCore pid=10162) WARNING 09-18 10:05:41 [utils.py:279] Using default LoRA kernel configs",
+    "(APIServer pid=9852) INFO 09-18 10:09:11 [serving.py:216] Loaded new LoRA adapter: name 'tiny32', path 'adapters/tiny32'",
+    "(APIServer pid=9852) WARNING 09-18 10:09:16 [input_processor.py:196] vLLM has deprecated support for supporting different tokenizers for different LoRAs. By default, vLLM uses base model's tokenizer. If you are using a L"
+  ],
+  "verdict": {
+    "applied": true,
+    "text_gate": true,
+    "logprob_gate": true,
+    "reading": "APPLIED: the member's logprobs differ from the base's beyond 10.0\u00d7 the base's own noise on 3/3 probes (text gate 2/3) \u2014 option A can be served"
+  },
+  "finished": "2026-09-18T10:09:22"
+}
