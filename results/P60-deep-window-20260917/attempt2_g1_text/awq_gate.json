@@ -1,0 +1,40 @@
+{
+  "train_base": "Qwen/Qwen2.5-32B-Instruct",
+  "serve_base": "Qwen/Qwen2.5-32B-Instruct-AWQ",
+  "lora": "tiny32=adapters/tiny32",
+  "started": "2026-09-18T09:28:40",
+  "train_rc": 0,
+  "G1": {
+    "probed": 3,
+    "empty": 0,
+    "differs": 1,
+    "applied": false,
+    "samples": [
+      {
+        "base": "The sky appears blue because the Earth's atmosphere scatters",
+        "member": "The sky appears blue because the Earth's atmosphere scatters"
+      },
+      {
+        "base": "Before answering an email, a careful reader typically checks",
+        "member": "Before answering an email, a careful reader typically checks"
+      },
+      {
+        "base": "A pressure drop in a pipe depends on factors including fluid",
+        "member": "A pressure drop in a pipe depends on factors including the f"
+      }
+    ]
+  },
+  "engine_lora_lines": [
+    "(APIServer pid=5226) INFO 09-18 09:37:16 [api_utils.py:286] non-default args: {'model_tag': 'Qwen/Qwen2.5-32B-Instruct-AWQ', 'lora_modules': [LoRAModulePath(name='tiny32', path='adapters/tiny32', base_model_name=None, is",
+    "(EngineCore pid=5532) INFO 09-18 09:37:53 [core.py:123] Initializing a V1 LLM engine (v0.29.0) with config: model='Qwen/Qwen2.5-32B-Instruct-AWQ', speculative_config=None, tokenizer='Qwen/Qwen2.5-32B-Instruct-AWQ', skip_",
+    "(EngineCore pid=5532) INFO 09-18 09:39:01 [punica_selector.py:20] Using PunicaWrapperGPU.",
+    "(EngineCore pid=5532) WARNING 09-18 09:40:27 [utils.py:279] Using default LoRA kernel configs",
+    "(APIServer pid=5226) INFO 09-18 09:43:54 [serving.py:216] Loaded new LoRA adapter: name 'tiny32', path 'adapters/tiny32'",
+    "(APIServer pid=5226) WARNING 09-18 09:44:01 [input_processor.py:196] vLLM has deprecated support for supporting different tokenizers for different LoRAs. By default, vLLM uses base model's tokenizer. If you are using a L"
+  ],
+  "verdict": {
+    "applied": false,
+    "reading": "NOT APPLIED over the AWQ 32B (1/3 differ, 0 empty) \u2014 option A cannot be served this way; the engine's own lora lines are in the record"
+  },
+  "finished": "2026-09-18T09:44:07"
+}

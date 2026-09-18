@@ -34,3 +34,21 @@ def test_the_chain_s_default_pool_adapters_do_not_become_the_toy_adapter():
     out = subprocess.run([sys.executable, "-m", "training.harness.awq_lora_gate", "--help"],
                          capture_output=True, text=True)
     assert "--tiny" in out.stdout and "--adapter" in out.stdout
+
+
+def test_logprob_gate_needs_a_difference_the_base_does_not_make_against_itself():
+    """Attempt 2 [ran]: engine loaded the adapter, Punica in use, 1/3 text probes changed
+    one word — a toy adapter over a 32B rarely flips an argmax. The logprob gate reads
+    the mechanism; the determinism control keeps nondeterminism from reading as a LoRA."""
+    from training.harness.awq_lora_gate import logprob_verdict, mean_abs_delta
+    nan = float("nan")
+    rows = [{"member_vs_base": 0.05, "base_vs_base": 0.0},
+            {"member_vs_base": 0.02, "base_vs_base": 0.0001},
+            {"member_vs_base": 0.0003, "base_vs_base": 0.0}]
+    v = logprob_verdict(rows)
+    assert v["applied"] and v["differ"] == 2
+    noisy = [{"member_vs_base": 0.05, "base_vs_base": 0.04}] * 3        # the base moves alone
+    assert logprob_verdict(noisy)["applied"] is False
+    assert logprob_verdict([{"member_vs_base": nan, "base_vs_base": 0.0}] * 3)["applied"] is False
+    assert mean_abs_delta([0.0, -1.0, -2.0], [0.0, -1.5, -2.0], 1) == 0.25
+    assert mean_abs_delta([nan, -1.0], [0.0, -1.0], 0) == 0.0

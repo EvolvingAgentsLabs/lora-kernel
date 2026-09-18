@@ -12,6 +12,19 @@ approximation (a delta learned against NF4 weights applied to AWQ weights) is th
 a deployment would make. The identity gate is `verify_substrate.identity` — three
 probes, both sides non-empty, at least two differ.
 
+THE TEXT GATE ALONE COULD NOT READ ATTEMPT 2. The engine loaded the adapter, used the
+Punica GPU wrapper, and one probe of three changed one word at T=0 — a 60-step toy
+adapter over a 32B moves an argmax rarely, and G1 counts argmax flips. So a second gate
+measures the mechanism where it lives: the per-token log-probabilities of a fixed
+continuation under the base, under the base again (the determinism control), and
+under the member. With $\ell_m(t)$ the member's logprob of token $t$ and $\ell_b(t)$
+the base's, the adapter is applied iff
+
+    mean_t |ℓ_m(t) − ℓ_b(t)|  >  RATIO · max(mean_t |ℓ_b(t) − ℓ_b'(t)|, FLOOR)
+
+on at least NEED of the probes — a difference the base does not produce against itself
+(FOUNDATIONS §3.4). The text gate is kept and reported beside it.
+
 WHAT THE LOG SAYS IS RECORDED TOO. Every `lora`/`Punica` line vLLM prints is kept in
 the verdict, so a `not applied` comes with the engine's own account of what it
 skipped — the reading D2 needs, taken while the log is in hand.
@@ -30,10 +43,63 @@ import sys
 import time
 from pathlib import Path
 
-from training.harness.accept_rank import serve, stop, wait_ready
-from training.harness.verify_substrate import identity
+from training.harness.accept_rank import post, serve, stop, wait_ready
+from training.harness.verify_substrate import PROBES, identity
 
 OUT = Path("awq_gate.json")
+CONTINUATION = " It depends on several things, and the first of them is"
+RATIO = 10.0        # member-vs-base must exceed this many times base-vs-base
+FLOOR = 1e-4        # nats; below this the control is float noise, not a difference
+NEED = 2            # of 3 probes
+
+
+def token_logprobs(model: str, text: str, ids: list[int]) -> list[float]:
+    r = post("/v1/completions", {"model": model, "prompt": text, "max_tokens": 1,
+                                 "temperature": 0, "prompt_logprobs": 1})
+    pl = r["choices"][0].get("prompt_logprobs") or []
+    out = []
+    for i, tid in enumerate(ids):
+        d = (pl[i] if i < len(pl) else None) or {}
+        e = d.get(tid) or d.get(str(tid))
+        out.append(float(e["logprob"]) if e and e.get("logprob") is not None else float("nan"))
+    return out
+
+
+def mean_abs_delta(a: list[float], b: list[float], start: int) -> float:
+    pairs = [(x, y) for x, y in zip(a[start:], b[start:]) if x == x and y == y]
+    return sum(abs(x - y) for x, y in pairs) / len(pairs) if pairs else float("nan")
+
+
+def logprob_verdict(rows: list[dict], ratio: float = RATIO, floor: float = FLOOR,
+                    need: int = NEED) -> dict:
+    """rows: [{"member_vs_base": Δ, "base_vs_base": Δ'}]. Applied iff Δ > ratio·max(Δ', floor)
+    on ≥ need probes. A NaN on either side is not a difference."""
+    hits = 0
+    for r in rows:
+        d, c = r["member_vs_base"], r["base_vs_base"]
+        r["applied"] = bool(d == d and c == c and d > ratio * max(c, floor))
+        hits += r["applied"]
+    return {"probes": len(rows), "differ": hits, "need": need, "applied": hits >= need}
+
+
+def logprob_gate(base: str, member: str, tok, probes=PROBES) -> dict:
+    rows = []
+    for p in probes:
+        prefix = tok.apply_chat_template([{"role": "user", "content": p}],
+                                         tokenize=False, add_generation_prompt=True)
+        text = prefix + CONTINUATION
+        ids = tok(text)["input_ids"]
+        start = len(tok(prefix)["input_ids"]) - 1          # the BPE seam is scored too
+        b1 = token_logprobs(base, text, ids)
+        b2 = token_logprobs(base, text, ids)
+        m = token_logprobs(member, text, ids)
+        rows.append({"probe": p[:40], "tokens": len(ids) - start,
+                     "member_vs_base": mean_abs_delta(m, b1, start),
+                     "base_vs_base": mean_abs_delta(b1, b2, start)})
+        print(f"[awq] Δlogprob {p[:32]!r}: member-base {rows[-1]['member_vs_base']:.5f} "
+              f"base-base {rows[-1]['base_vs_base']:.5f}", flush=True)
+    v = logprob_verdict(rows); v["rows"] = rows
+    return v
 
 
 def lora_spec(tiny: str) -> str:
@@ -59,7 +125,7 @@ def main() -> int:
     # and the toy adapter has a flag of its own.
     ap.add_argument("--adapter", action="append", default=[], help="pool adapters (ignored here)")
     ap.add_argument("--tiny", default="adapters/tiny32", help="where the toy adapter is trained")
-    ap.add_argument("--steps", type=int, default=60)
+    ap.add_argument("--steps", type=int, default=150)
     ap.add_argument("--out", default=str(OUT))
     args = ap.parse_args()
     out = Path(args.out); out.parent.mkdir(parents=True, exist_ok=True)
@@ -91,9 +157,14 @@ def main() -> int:
             rec["verdict"] = {"applied": None, "reading": "the AWQ base never came up with the adapter"}
             rec["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S"); save(); return 1
         rec["G1"] = identity(args.serve_base, "tiny32", tok)
-        print(f"[awq] G1 tiny32 over AWQ: {rec['G1']['differs']}/{rec['G1']['probed']} differ, "
+        print(f"[awq] G1 text: {rec['G1']['differs']}/{rec['G1']['probed']} differ, "
               f"{rec['G1']['empty']} empty → "
-              f"{'applied' if rec['G1']['applied'] else 'NOT APPLIED'}", flush=True)
+              f"{'applied' if rec['G1']['applied'] else 'not applied'}", flush=True)
+        save()
+        rec["G1_logprob"] = logprob_gate(args.serve_base, "tiny32", tok)
+        print(f"[awq] G1 logprob: {rec['G1_logprob']['differ']}/{rec['G1_logprob']['probes']} "
+              f"beyond {RATIO}× the base's own noise → "
+              f"{'applied' if rec['G1_logprob']['applied'] else 'not applied'}", flush=True)
     finally:
         stop(p)
     try:
@@ -102,16 +173,19 @@ def main() -> int:
                                     if re.search(r"lora|Punica|punica", l, re.I)][-40:]
     except Exception:
         rec["engine_lora_lines"] = []
-    g = rec["G1"]
-    rec["verdict"] = {"applied": g["applied"],
-                      "reading": ("APPLIED: vLLM applies a LoRA over the AWQ 32B — option A can be served"
-                                  if g["applied"] else
-                                  f"NOT APPLIED over the AWQ 32B ({g['differs']}/{g['probed']} differ, "
-                                  f"{g['empty']} empty) — option A cannot be served this way; the "
-                                  "engine's own lora lines are in the record")}
+    g, lp = rec["G1"], rec["G1_logprob"]
+    applied = lp["applied"]
+    rec["verdict"] = {"applied": applied, "text_gate": g["applied"], "logprob_gate": lp["applied"],
+                      "reading": (f"APPLIED: the member's logprobs differ from the base's beyond {RATIO}× "
+                                  f"the base's own noise on {lp['differ']}/{lp['probes']} probes "
+                                  f"(text gate {g['differs']}/{g['probed']}) — option A can be served"
+                                  if applied else
+                                  f"NOT APPLIED over the AWQ 32B: logprobs {lp['differ']}/{lp['probes']}, "
+                                  f"text {g['differs']}/{g['probed']}, {g['empty']} empty — option A "
+                                  "cannot be served this way; the engine's own lora lines are in the record")}
     rec["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S"); save()
     print(f"[awq] {rec['verdict']['reading']}", flush=True)
-    return 0 if g["applied"] else 1
+    return 0 if applied else 1
 
 
 if __name__ == "__main__":
