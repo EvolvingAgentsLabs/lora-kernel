@@ -2803,6 +2803,35 @@ orden. **D0 [ran] hoy:** `Qwen3.5-2B` y `Qwen3.5-4B` comparten espacio de ids co
 D2 lee el mecanismo con el log en la mano; D4 es este instrumento apuntado a
 3.8-27B. Nada de P55 depende de D; D4 depende de todo P55.
 
+### Analizado 2026-09-18: Skill-to-LoRA y Adaptive Minds, leídos contra el registro
+
+Análisis completo: [`../analysis/s2l-and-adaptive-minds.md`](../analysis/s2l-and-adaptive-minds.md). Sin GPU, todo **[read]**.
+
+**Ninguno mueve el camino crítico.** S2L (un `SKILL.md` convertido en un LoRA por
+skill, Qwen3.6-27B) reporta 59 / 54 / 65 de 210 para sin-skill / texto completo /
+adaptador — el signo de P61 y un efecto dentro del ruido ($z = 1{,}19$ y $0{,}65$, sin
+parear, sin semillas), así que es trabajo relacionado y no respaldo; la evidencia es el
+137 : 1 de P61 **[ran]**. Su auto-destilación no transfiere: el maestro es base +
+documento, que sobre esta base hace cero llamadas a herramientas **[ran]** P61.
+Adaptive Minds (la base lee la metadata de los adaptadores y nombra al miembro) reporta
+que el ruteo por keywords cae de 48,3% con 5 adaptadores a 31,7% con 30 — la falla
+predecible de `route.py` en el hito 5.
+
+Quedan registradas tres cosas y no se compra ninguna:
+
+- **El candidato a router para el hito 4**, estacionado porque el diccionario está en
+  1,000 y cualquier retador empata: la base como router sobre la `description` de cada
+  release, la tabla medida `serve: local|out` sigue decidiendo, **la frontera como
+  default**, puntuado por **mal-ruteados-a-local** (el término cero de FOUNDATIONS
+  §8.4), con el brazo de abstención primero.
+- **Un primer brazo para D2:** los adaptadores de S2L se aplican sobre Qwen3.6-27B bajo
+  vLLM **[read]** y apuntan sólo a `q_proj,v_proj`, mientras los de P33 cubrían las
+  proyecciones de atención lineal. `tiny_adapter` con esos dos targets sobre
+  `Qwen3.5-4B` por `--gate-only`, al lado del control Qwen2.5-3B, localiza C18 en los
+  módulos target o lo descarta.
+- **A 27B el documento de procedimiento tampoco ayuda [read]** — no asumir que el hito
+  7 rescata el brazo de sólo-harness; `knowledge_arm` sobre el 32B lo mide.
+
 ## 12. Historia
 
 | fecha | cambio a este plan | por qué |
