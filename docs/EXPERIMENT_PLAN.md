@@ -61,7 +61,7 @@ is the state.
 | # | milestone | depends on | gate | state |
 |---|---|---|---|---|
 | **1** | weights or harness on one region: base / base + `knowledge/email-triage.md` / `email-full@v1`, one session, P55's 475 cases | Phase 1 | `kb_pays`, `weights_needed`, `harness_replaces_weights` pre-registered in the brief; errors void an arm | ✅ **[ran]** P61 2026-09-18: **WEIGHTS NEEDED** — base+kb **0 tool calls** on 351/351 human, 0.601 under the 0.655 majority bar (the sign test alone read a flipped default as paying: 164 : 74 — guard added, number kept); expert 0.989, **137 : 1**; document 914 tokens/request |
-| **2** | routing per request | 1 | the region classifier ≥ P41's by-region 0.775 on the same traffic | NEXT |
+| **2** | routing per request | 1 | the region classifier ≥ P41's by-region 0.775 on the same traffic | ✅ **[ran]** P62 2026-09-18, zero GPU: replay on P41's 240 cases, by request **0.775 = by region**, **0 misrouted**, 37.5 % out; `openai_proxy --auto` ships it |
 | **3** | OpenClaw live with `--prune`; a profile template per task | Phase 5 | zero calls to tools not offered; nothing leaves for the member's region | needs a laptop and a tunnel |
 | **4** | the first real region, customised by hand | 1–3, sandbox, keys rotated | Phase 1's release gate | — |
 | **5** | second and third regions | 4 | each clears its own bar against the base | — |
@@ -697,6 +697,10 @@ win.** `P5` is the headroom check on the new suite, `P6` the withdrawal gap,
 close without a tool — and `P8` is `harness.lora`, which this table calls P7.
 The tournament, this table's P8, has not been bought.
 
+
+#### P62 — routing per request: the client names no model **[ran]** 2026-09-18 · TIES, zero GPU
+
+`route.py`: a keyword surface per region (the router baseline's dictionary, moved next to the decision), `serve: local | out` as measured (fluids out, P40). `openai_proxy --auto NAME [--auto-out MODEL]` rewrites `model` in place and logs the decision with shapes only. Instrument: `route.replay` on P41's records — delivered(policy) per FOUNDATIONS §8.4, a case handed to the wrong member counted wrong. Pre-registered in the test before the replay: ties by region and 0 misroutes. **Result:** by region 0.775 · by request **0.775** · misrouted **0** · out 37.5 %. The decision layer costs nothing on generated traffic; milestone 4 re-measures the dictionary on real traffic, where a learned classifier (the base zero-shot) is the arm to buy if it fails. `results/P62-route-per-request-20260918/`.
 
 #### P61 — weights or harness on the email region **[ran]** 2026-09-18 · WEIGHTS NEEDED
 

@@ -1,0 +1,17 @@
+{
+ "n": 240,
+ "email": 150,
+ "fluids": 90,
+ "by_region": {
+  "delivered": 186,
+  "accuracy": 0.775
+ },
+ "by_request": {
+  "delivered": 186,
+  "accuracy": 0.775,
+  "misrouted": 0,
+  "out": 90,
+  "out_share": 0.375
+ },
+ "ties_by_region": true
+}

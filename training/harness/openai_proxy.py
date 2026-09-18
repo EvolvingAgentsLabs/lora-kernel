@@ -97,9 +97,25 @@ def _load_surfaces() -> dict[str, list[str]]:
 # problem — P41 measured both available rules delivering *less* than routing by
 # region, because they look for a chain that is inconsistent and this expert's
 # chains are consistent and wrong.
+AUTO = None           # --auto: the alias a client asks for when it names no model
+AUTO_OUT = None       # --auto-out: the frontier model an `auto` request becomes when it leaves
 FALLBACK = None       # --fallback: where anything not served locally goes
 FALLBACK_KEY = None   # read from an env var, never from the command line
 LOCAL: set[str] = set()   # --local: the model names that must never leave
+
+
+def resolve_auto(req: dict) -> tuple[str, str] | None:
+    """Milestone 2: a request for the alias is routed by its text (`route.decide`).
+    Returns the decision, and rewrites `model` in place — to the member if local, to
+    `--auto-out` if it leaves. None when the request did not ask for the alias."""
+    if not AUTO or req.get("model") != AUTO:
+        return None
+    from training.harness.route import decide
+    d = decide(req)
+    req["model"] = d[1] if d[0] == "local" else (AUTO_OUT or AUTO)
+    print(f"[route] auto -> {d[0]} ({d[1]}) · {len(req.get('messages') or [])} messages · "
+          f"{len(req.get('tools') or [])} tools", flush=True)
+    return d
 
 
 def routes_out(model: str | None) -> bool:
@@ -313,7 +329,8 @@ class Handler(BaseHTTPRequestHandler):
         # ROUTED OUT BEFORE ANY TRANSLATION. The tag surface exists because the
         # local adapters were trained on it; a frontier model speaks `tools=[…]`
         # natively and rendering tags at it would hand it our convention to learn.
-        if routes_out(req.get("model")):
+        auto = resolve_auto(req)
+        if routes_out(req.get("model")) or (auto and auto[0] == "out"):
             _announce(req.get("model"), req)
             try:
                 return self._send(200, _fetch(self.path, req, base=FALLBACK,
@@ -415,6 +432,10 @@ def main() -> int:
                          "for, matching an exact name or the last namespace segment "
                          "of one. P43's agent turn made zero tool calls because it "
                          "was offered a toolbox this expert had never seen")
+    ap.add_argument("--auto", default=None,
+                    help="model alias routed per request by its text (milestone 2)")
+    ap.add_argument("--auto-out", dest="auto_out", default=None,
+                    help="the frontier model an `auto` request becomes when it leaves")
     ap.add_argument("--fallback", default=None,
                     help="where a model this pool does not serve is forwarded, "
                          "e.g. https://api.openai.com/v1. Requests routed here "
@@ -429,6 +450,12 @@ def main() -> int:
     args = ap.parse_args()
     globals()["UPSTREAM"] = args.upstream
     globals()["FALLBACK"] = args.fallback
+    globals()["AUTO"], globals()["AUTO_OUT"] = args.auto, args.auto_out
+    if args.auto:
+        from training.harness.route import REGIONS
+        print(f"[route] `{args.auto}` is routed per request: "
+              + ", ".join(f"{n} -> {r.serve}" for n, r in REGIONS.items())
+              + (f"; out becomes {args.auto_out}" if args.auto_out else ""), flush=True)
     if args.fallback:
         import os
         key = os.environ.get(args.fallback_key_env)

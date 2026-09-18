@@ -100,6 +100,13 @@ anything but localhost.**
 
     ~/.openclaw/bin/openclaw --profile lorakernel models list
 
+**Or name no member at all.** Start the proxy with `--auto auto --auto-out <frontier model>`
+and register `auto` as the provider's model: the proxy reads each request's text, serves
+it locally when it falls in a region a member is measured to resolve, and forwards it
+otherwise — the client does not know the pool. Replayed on P41's traffic it delivers
+exactly what routing by region did, 0.775 with no misroute **[ran]** P62; the line it
+prints per request names the decision and the shapes, never the content.
+
 ## 5. Run one turn and watch both sides
 
     ~/.openclaw/bin/openclaw --profile lorakernel agent --local \

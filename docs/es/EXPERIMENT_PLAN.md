@@ -61,7 +61,7 @@ lleva la regla; esto es el estado.
 | # | hito | depende de | compuerta | estado |
 |---|---|---|---|---|
 | **1** | pesos o harness en una región: base / base + `knowledge/email-triage.md` / `email-full@v1`, una sesión, los 475 casos de P55 | Fase 1 | `kb_pays`, `weights_needed`, `harness_replaces_weights` pre-registrados en el brief; los errores anulan un brazo | ✅ **[ran]** P61 2026-09-18: **HACEN FALTA LOS PESOS** — base+kb **0 llamadas** en 351/351 humanos, 0,601 debajo de la barra de mayoría 0,655 (el test de signos solo leyó un default dado vuelta como pagando: 164 : 74 — guarda agregada, número conservado); experto 0,989, **137 : 1**; documento 914 tokens/request |
-| **2** | ruteo por request | 1 | el clasificador de región ≥ el 0,775 por región de P41 sobre el mismo tráfico | SIGUIENTE |
+| **2** | ruteo por request | 1 | el clasificador de región ≥ el 0,775 por región de P41 sobre el mismo tráfico | ✅ **[ran]** P62 2026-09-18, cero GPU: replay sobre los 240 casos de P41, por request **0,775 = por región**, **0 mal ruteados**, 37,5 % afuera; lo entrega `openai_proxy --auto` |
 | **3** | OpenClaw en vivo con `--prune`; una plantilla de perfil por tarea | Fase 5 | cero llamadas a herramientas no ofrecidas; nada sale para la región del miembro | necesita una laptop y un túnel |
 | **4** | la primera región real, personalizada a mano | 1–3, sandbox, claves rotadas | la compuerta de release de la Fase 1 | — |
 | **5** | segunda y tercera región | 4 | cada una supera su propia barra contra la base | — |
@@ -715,6 +715,10 @@ insertado porque la brecha no cerraba sin herramienta — y `P8` es
 `harness.lora`, al que esta tabla llama P7. El torneo, el P8 de esta tabla,
 no se compró.
 
+
+#### P62 — ruteo por request: el cliente no nombra modelo **[ran]** 2026-09-18 · EMPATA, cero GPU
+
+`route.py`: una superficie de palabras clave por región (el diccionario del baseline del router, movido al lado de la decisión), `serve: local | out` según lo medido (fluidos afuera, P40). `openai_proxy --auto NOMBRE [--auto-out MODELO]` reescribe `model` en el lugar y registra la decisión sólo con formas. Instrumento: `route.replay` sobre los registros de P41 — entregado(política) según FOUNDATIONS §8.4, un caso entregado al miembro equivocado cuenta como mal. Pre-registrado en el test antes del replay: empata al por región y 0 mal ruteados. **Resultado:** por región 0,775 · por request **0,775** · mal ruteados **0** · afuera 37,5 %. La capa de decisión no cuesta nada sobre tráfico generado; el hito 4 vuelve a medir el diccionario sobre tráfico real, donde un clasificador aprendido (la base zero-shot) es el brazo a comprar si falla. `results/P62-route-per-request-20260918/`.
 
 #### P61 — pesos o harness en la región de email **[ran]** 2026-09-18 · HACEN FALTA LOS PESOS
 
