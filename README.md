@@ -40,7 +40,8 @@ the formula it instantiates.**
 2. **OpenClaw instances per task**, on top of the same API: a profile, its MCP tools
    pruned to the member's surface, the local model in its region and the frontier for
    the rest. One real turn has run end to end with nothing leaving (P43); the live
-   turn with `--prune` is the next buy.
+   turn with `--prune`, `--auto` and `--member-prompt` runs **[ran]** P63: 40/40 local,
+   the inbox tools called on 19 of 32 human turns, 3.5 s per turn.
 
 **Some of it is artisanal at first, on purpose.** Customising a region today means
 writing its procedure document by hand, or generating its corpus and training its
@@ -61,7 +62,7 @@ serves, routes, prunes, releases and measures; the customisations are what runs 
 |---|---|---|---|
 | 1 | **weights or harness** on one region — the base with a written procedure against the trained expert, same suite, same loop (P61) | what a customisation costs: a document paid per request in tokens, or an adapter trained once | **[ran]** P61: **weights needed** — base+document 0 tool calls, 0.601 under the 0.655 bar; expert 137 : 1 |
 | 2 | **routing per request** — the proxy decides local or frontier without the client naming a model | any client uses the API | **[ran]** P62, zero GPU: `--auto` routes by text; replay on P41's 240 cases **ties by region at 0.775, 0 misroutes**, 37.5 % out |
-| 3 | **OpenClaw live** with `--prune`, a profile template per task | the high-level interface over the API | needs a laptop and a tunnel |
+| 3 | **OpenClaw live** with `--prune`, a profile template per task | the high-level interface over the API | **[ran]** P63: **LIVE** on the 7th attempt — 40/40 local, 0 invented calls, 19/32 human turns call a tool, 0.688 vs bar 0.655; the member served under its released prompt (`--member-prompt`); under the runtime's prompt 2/32 and 0.281 |
 | 4 | **the first real region** of a customer, customised by hand, released through Phase 1's door | the service with real traffic | 1–3, a real sandbox for code, keys rotated |
 | 5 | second and third regions — the region table per client | a pool in fact, not in name | 4 |
 | 6 | **traces → corpus → gate → release without hands** | the automation promised | 4, 5 |
@@ -462,6 +463,7 @@ The steps that got here, each with its number, are in
 
 | claim | measurement | where |
 |---|---|---|
+| **The live OpenClaw turn calls the tools and stays local** | 40 turns, `--prune --auto --member-prompt`: 40/40 local, 0 invented calls, 19/32 human turns call an inbox tool, 22/32 = 0.688 vs bar 0.655 ($p=0.43$, descriptive); under the runtime's own prompt 2/32 call and 0.281. Seven attempts, six live-path faults fixed with tests (block echoed as calls, envelope read as the subject, no stop at `</tag>`, no round-trip cap, no token bound, stale gateway lock) | `results/P63-openclaw-live-20260918/` |
 | **The client names no model and loses nothing** | `--auto`: a keyword surface per region decides local or frontier; replayed on P41's 240 cases, by request **0.775 = by region 0.775**, 0 misroutes, 37.5 % out | `results/P62-route-per-request-20260918/replay.json` |
 | **A 3B does not follow a written procedure in context** | base 0.345 → base + 914-token procedure 0.601, both with **0 tool calls** on 351 human messages, under the 0.655 majority bar; expert 0.989 with 1053 calls, **137 : 1** over base+document | `results/P61-knowledge-vs-weights-20260918/session.json` |
 | **A LoRA applies over the AWQ 32B** | toy adapter (150 steps, NF4 base) served over `Qwen2.5-32B-Instruct-AWQ`: mean $|\Delta\ell|$ 0.49 / 0.34 / 0.22 nats vs base-vs-base 0.000, **3/3**; text gate 2/3; the engine loaded it and used the Punica GPU wrapper | `results/P60-deep-window-20260917/awq_gate.json` |

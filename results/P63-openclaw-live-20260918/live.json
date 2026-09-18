@@ -1,0 +1,761 @@
+{
+ "model": "lorapool/auto",
+ "profile": "lorakernel",
+ "n": 40,
+ "seed": 717171,
+ "started": "2026-09-18T09:06:56",
+ "records": {
+  "msg-000": {
+   "id": "msg-000",
+   "human": false,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 4.8,
+   "reply_tail": "Type=text/event-stream\u001b[39m\nNOT IMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run ba765bb8-5c99-428c-8a4b-da1965b74fa2 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-001": {
+   "id": "msg-001",
+   "human": true,
+   "truth": true,
+   "verdict": true,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.3,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 27abcca8-8ece-460e-96f2-63b3faf5337e ended with stopReason=stop\u001b[39m"
+  },
+  "msg-002": {
+   "id": "msg-002",
+   "human": true,
+   "truth": false,
+   "verdict": true,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 2,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 1,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 4.0,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 1393ee09-6e43-4825-9484-3af28fec5be8 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-003": {
+   "id": "msg-003",
+   "human": true,
+   "truth": false,
+   "verdict": true,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 2,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 1,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 4.8,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run cd76222b-0583-4d0b-a2c3-0bbe01644fe2 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-004": {
+   "id": "msg-004",
+   "human": false,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 2.9,
+   "reply_tail": "Type=text/event-stream\u001b[39m\nNOT IMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 13cf6b1c-5fd2-468c-b94d-d4156847ea3c ended with stopReason=stop\u001b[39m"
+  },
+  "msg-005": {
+   "id": "msg-005",
+   "human": true,
+   "truth": true,
+   "verdict": true,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 2,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 1,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 4.0,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 3760405d-e46e-47e2-9eb8-f1de4cb892c0 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-006": {
+   "id": "msg-006",
+   "human": true,
+   "truth": true,
+   "verdict": true,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 2.8,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 60286505-45b6-4af1-8e6a-bf5c36d7f005 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-007": {
+   "id": "msg-007",
+   "human": true,
+   "truth": true,
+   "verdict": true,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 2,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 1,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.9,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 7a33edb4-e93e-4eab-adc8-9a1fc06c3a10 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-008": {
+   "id": "msg-008",
+   "human": false,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.1,
+   "reply_tail": "Type=text/event-stream\u001b[39m\nNOT IMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 6172c213-66c7-4760-a07a-36f362839dfd ended with stopReason=stop\u001b[39m"
+  },
+  "msg-009": {
+   "id": "msg-009",
+   "human": true,
+   "truth": true,
+   "verdict": true,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.0,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run b476338d-eeac-491a-8465-a8c2a81a4dc4 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-010": {
+   "id": "msg-010",
+   "human": false,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.0,
+   "reply_tail": "Type=text/event-stream\u001b[39m\nNOT IMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 0767ecf8-f240-42d9-ab62-654e40d0378c ended with stopReason=stop\u001b[39m"
+  },
+  "msg-011": {
+   "id": "msg-011",
+   "human": true,
+   "truth": false,
+   "verdict": true,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 2,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 1,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.8,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 609344d5-efae-4a59-a20f-8a44e33fe559 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-012": {
+   "id": "msg-012",
+   "human": true,
+   "truth": true,
+   "verdict": true,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 2,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 1,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.7,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 4db9f7dd-9fc4-459d-83e7-a8fed1d80792 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-013": {
+   "id": "msg-013",
+   "human": true,
+   "truth": true,
+   "verdict": true,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 2.7,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 488ad723-5a9c-4a65-b0e1-b18a00080bcc ended with stopReason=stop\u001b[39m"
+  },
+  "msg-014": {
+   "id": "msg-014",
+   "human": true,
+   "truth": true,
+   "verdict": true,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 2,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 1,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.6,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 172bdb7f-87a2-4049-ba99-5dda09bac8ef ended with stopReason=stop\u001b[39m"
+  },
+  "msg-015": {
+   "id": "msg-015",
+   "human": true,
+   "truth": false,
+   "verdict": true,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 2,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 1,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.7,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 2ce91b25-bb09-4fce-b32d-86184b42fb0a ended with stopReason=stop\u001b[39m"
+  },
+  "msg-016": {
+   "id": "msg-016",
+   "human": true,
+   "truth": false,
+   "verdict": true,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 2,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 1,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.7,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run bae86558-08f1-4c8c-8149-37e1a9eacc0a ended with stopReason=stop\u001b[39m"
+  },
+  "msg-017": {
+   "id": "msg-017",
+   "human": true,
+   "truth": true,
+   "verdict": true,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 2.8,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 62911597-df8c-4f67-9a39-1159a314a65b ended with stopReason=stop\u001b[39m"
+  },
+  "msg-018": {
+   "id": "msg-018",
+   "human": true,
+   "truth": false,
+   "verdict": true,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 2.8,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 7cdbb72d-7027-4f3c-a0a3-e11616a6f1a9 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-019": {
+   "id": "msg-019",
+   "human": true,
+   "truth": false,
+   "verdict": true,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 2,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 1,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.6,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 4194878d-43bf-4b86-97cf-59db4f6bd717 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-020": {
+   "id": "msg-020",
+   "human": true,
+   "truth": true,
+   "verdict": true,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 2.7,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 9265fa59-494f-47c7-a11a-fb8dd712c05a ended with stopReason=stop\u001b[39m"
+  },
+  "msg-021": {
+   "id": "msg-021",
+   "human": true,
+   "truth": true,
+   "verdict": true,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 2.9,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run cdda404a-1b7a-495b-9d4e-169495313076 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-022": {
+   "id": "msg-022",
+   "human": true,
+   "truth": true,
+   "verdict": true,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 2,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 1,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.6,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 8f81c29f-af90-4f80-a8e3-c7fad06999a9 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-023": {
+   "id": "msg-023",
+   "human": false,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.1,
+   "reply_tail": "Type=text/event-stream\u001b[39m\nNOT IMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 9c1b2bf5-227e-46a2-a6ad-8cff16c57db6 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-024": {
+   "id": "msg-024",
+   "human": true,
+   "truth": true,
+   "verdict": true,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 2,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 1,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.6,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run cb1d98f6-e4ab-4c24-a346-122e322ceeae ended with stopReason=stop\u001b[39m"
+  },
+  "msg-025": {
+   "id": "msg-025",
+   "human": true,
+   "truth": false,
+   "verdict": true,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 2.8,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 5c0ce7db-d046-44f3-b8a4-4b5c38337350 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-026": {
+   "id": "msg-026",
+   "human": false,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.2,
+   "reply_tail": "Type=text/event-stream\u001b[39m\nNOT IMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 42180959-6a46-4c94-82b4-825035155ca0 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-027": {
+   "id": "msg-027",
+   "human": true,
+   "truth": true,
+   "verdict": true,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 2,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 1,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.6,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run f9282c81-43bc-4712-90d9-960286d96a8d ended with stopReason=stop\u001b[39m"
+  },
+  "msg-028": {
+   "id": "msg-028",
+   "human": true,
+   "truth": true,
+   "verdict": true,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 2,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 1,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.7,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 00c0ad63-a7d7-4025-9a7a-8255be801dd9 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-029": {
+   "id": "msg-029",
+   "human": true,
+   "truth": true,
+   "verdict": true,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 2,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 1,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.8,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 2bb5c4c1-0b3b-4910-b432-a23b5c75d600 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-030": {
+   "id": "msg-030",
+   "human": false,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.5,
+   "reply_tail": "Type=text/event-stream\u001b[39m\nNOT IMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 6f4c1a11-1aef-4352-95db-6618cd0e5df7 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-031": {
+   "id": "msg-031",
+   "human": true,
+   "truth": true,
+   "verdict": true,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 2,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 1,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 4.5,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 02fd2fe8-d069-4e6b-8a6b-42fd5e135cdc ended with stopReason=stop\u001b[39m"
+  },
+  "msg-032": {
+   "id": "msg-032",
+   "human": false,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.3,
+   "reply_tail": "Type=text/event-stream\u001b[39m\nNOT IMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run c4ba924a-fb5e-4856-b9b7-d4828cec93b4 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-033": {
+   "id": "msg-033",
+   "human": true,
+   "truth": false,
+   "verdict": true,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.4,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run a9e491ff-e681-490b-9e0e-1c48591d6bd4 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-034": {
+   "id": "msg-034",
+   "human": true,
+   "truth": true,
+   "verdict": true,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 2,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 1,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 4.5,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 3bddee6a-8af2-46de-8f82-e53e1d4f9a5f ended with stopReason=stop\u001b[39m"
+  },
+  "msg-035": {
+   "id": "msg-035",
+   "human": true,
+   "truth": true,
+   "verdict": true,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 2,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 1,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 4.3,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run ac02b140-8393-48d7-a39a-6f9c58cba988 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-036": {
+   "id": "msg-036",
+   "human": true,
+   "truth": true,
+   "verdict": true,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.3,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run d7fa6c13-d60c-4ba0-a28a-919f01990d85 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-037": {
+   "id": "msg-037",
+   "human": true,
+   "truth": true,
+   "verdict": true,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 2,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 1,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 4.3,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run db44e9bf-ca4e-49ba-8a42-00cecb996a43 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-038": {
+   "id": "msg-038",
+   "human": true,
+   "truth": true,
+   "verdict": true,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.3,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 1cf03588-143a-4813-bd30-45f577f7e175 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-039": {
+   "id": "msg-039",
+   "human": true,
+   "truth": false,
+   "verdict": true,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 3.5,
+   "reply_tail": "tentType=text/event-stream\u001b[39m\nIMPORTANT\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 337409ed-ae9a-49d9-b8a1-a86ce456d479 ended with stopReason=stop\u001b[39m"
+  }
+ },
+ "verdict": {
+  "n": 40,
+  "errors": 0,
+  "routed_local": 40,
+  "routed_out": 0,
+  "invented": 0,
+  "human": {
+   "n": 32,
+   "correct": 22,
+   "accuracy": 0.6875,
+   "with_a_call": 19,
+   "call_share": 0.5938
+  },
+  "undecided": 0,
+  "gate": {
+   "n": 32,
+   "correct": 22,
+   "accuracy": 0.6875,
+   "bar": 0.655,
+   "passes_at": 26,
+   "alpha": 0.05,
+   "p_value": 0.428,
+   "beats_the_bar": false,
+   "exceeds_bar_without_clearing_the_gate": true
+  },
+  "routed_local_all": true,
+  "calls_reach_the_live_path": true,
+  "agent_uses_the_tools": true,
+  "passes": true,
+  "reading": "LIVE: 40/40 local, 0 invented calls, 19/32 human turns called a tool, human 0.6875 vs bar 0.655"
+ },
+ "finished": "2026-09-18T09:09:17"
+}

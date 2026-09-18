@@ -443,3 +443,10 @@ def test_the_live_path_has_the_corpus_loop_s_cap():
     from training.harness.accept_rank import run_chain
     import inspect
     assert px.MAX_ROUNDTRIPS == inspect.signature(run_chain).parameters["max_calls"].default
+
+
+
+def test_a_member_s_step_is_bounded_in_tokens():
+    from training.harness import openai_proxy as px
+    assert px.MEMBER_MAX_TOKENS == 256
+    assert px.MAX_ROUNDTRIPS * px.MEMBER_MAX_TOKENS < 4096   # a whole capped turn fits a small context

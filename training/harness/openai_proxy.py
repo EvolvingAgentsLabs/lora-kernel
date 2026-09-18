@@ -56,6 +56,12 @@ PRUNE = False         # --prune: offer a member only the tools it declares a tag
 # messages, until the turn was killed [ran] P63 attempt 5. Past the cap a call is
 # returned as text and the agent finalises with what the model last said.
 MAX_ROUNDTRIPS = 6
+# AND A STEP IS SHORT. The corpus-mode loop asks for 160 tokens per completion
+# (`accept_rank --max-tokens`): a member's step is a call or a verdict, never an
+# essay. Unbounded, a 3B on an L4 spent three minutes per turn writing past its
+# answer with nothing to stop at (P63 attempt 6 [ran]). A member is served with at
+# most this many tokens per step; the agent's own limit applies when it is smaller.
+MEMBER_MAX_TOKENS = 256
 MEMBER_PROMPT = False # --member-prompt: serve a member under the system prompt its corpus taught
 POOL_SYSTEM: dict[str, str] = {}
 
@@ -420,6 +426,10 @@ class Handler(BaseHTTPRequestHandler):
             msgs = under_member_prompt(msgs, POOL_SYSTEM[req["model"]])
             prompt_kind = "member"
         req["messages"] = render_tools(msgs, tools) if tools else msgs
+        if surface is not None:
+            asked = req.get("max_tokens") or req.get("max_completion_tokens")
+            req["max_tokens"] = min(int(asked), MEMBER_MAX_TOKENS) if asked else MEMBER_MAX_TOKENS
+            req.pop("max_completion_tokens", None)
         if tools:
             # THE BLOCK'S HEADER IS A STOP SEQUENCE (tool_calls.stop_for): a model
             # that starts reproducing the block it was shown has finished answering.

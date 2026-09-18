@@ -1,0 +1,45 @@
+{
+ "model": "lorapool/auto",
+ "profile": "lorakernel",
+ "n": 40,
+ "seed": 717171,
+ "started": "2026-09-18T08:44:09",
+ "records": {
+  "msg-000": {
+   "id": "msg-000",
+   "human": false,
+   "truth": false,
+   "verdict": false,
+   "correct": true,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 0,
+    "invented": 0
+   },
+   "rc": 0,
+   "seconds": 4.5,
+   "reply_tail": "written in this thread and whether I did?\n\u001b[33m[agents/agent-command]\u001b[39m \u001b[36m[agent] run 6669e352-395e-4fcb-9229-74edf85df353 ended with stopReason=stop\u001b[39m"
+  },
+  "msg-001": {
+   "id": "msg-001",
+   "human": true,
+   "truth": true,
+   "verdict": null,
+   "correct": false,
+   "route": "local",
+   "shapes": {
+    "requests": 1,
+    "tools_offered": 54,
+    "tools_kept": 3,
+    "calls": 7,
+    "invented": 1
+   },
+   "rc": 1,
+   "seconds": 97.0,
+   "reply_tail": "[39m \u001b[36m[model-fetch] response provider=lorapool api=openai-completions model=auto status=503 elapsedMs=10 dispatcher=reused contentType=application/json\u001b[39m"
+  }
+ }
+}

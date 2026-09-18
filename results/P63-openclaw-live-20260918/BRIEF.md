@@ -33,3 +33,32 @@ the run is void if the tunnel changes what the model sees (P43's rule).
 open and the next step is reading OpenClaw's tool-call round-trip, not another turn.
 
 **Not measured:** latency per turn (recorded, not gated); a second region live; real mail.
+
+---
+
+# Result — 2026-09-18 **[ran]** · LIVE, on the seventh attempt
+
+**Identity through the tunnel:** 3/3 probes differ, applied (`identity_through_tunnel.json`).
+
+| attempt | what it measured | what it found |
+|---|---|---|
+| 1 | first turn | the router read OpenClaw's 37 KB system prompt (channels, gates, tanks…) and sent triage out as fluids — 503, never a wrong member |
+| 2 | first turn | OpenClaw's internal-context envelope arrives as a second `user` message: "no region" |
+| 1' | 40 turns | the expert answered, then echoed the tool block; its `<tag>...</tag>` placeholders became executed calls — 7 calls, no verdict |
+| 2' | 40 turns | after a tool result the trailing user message is only the envelope; and the finalisation request carries OpenClaw's instruction as the user turn — "no region" both ways |
+| 3 | 7 turns (runtime prompt) | 0 tool calls on 7/7; a killed turn left the profile's gateway lock, turns 9–22 died in a second each |
+| **4** | **40 turns, runtime prompt** | **NOT LIVE: 40/40 local, 0 invented, 2/32 human turns called a tool, human 0.281** — under the runtime's prompt the expert answers from the listing, as the bare base does (P43's finding, now with tools in reach) |
+| 5 | member prompt, uncapped | the expert writes a malformed call after its verdict, gets an error, writes it again: 30 round-trips, 71 messages, until killed |
+| 6 | member prompt, capped | three-minute turns: nothing bounded a step's tokens |
+| **7** | **40 turns, member prompt, cap 6, 256 tokens/step** | **LIVE: 40/40 local, 0 invented, 19/32 human turns called a tool, human 22/32 = 0.688 vs bar 0.655** ($p = 0.43$, exact — above the bar, not clearing the gate at $n = 32$, as pre-registered: descriptive); 59 requests, 19 calls, 3.5 s per turn |
+
+**What it decides.** Milestone 3 passes its three pre-registered gates with the member
+served under its released prompt. The attribution is the pair 4 → 7 on the same 40
+messages: same proxy, same tunnel, same tools; the prompt is the only treatment
+(plus the two bounds, which are the corpus loop's). **A member is what its corpus
+taught — the block, and the prompt.** `--prune` and `--member-prompt` are the
+proxy's recommended defaults for a member.
+
+**What it does not claim.** Accuracy at $n = 32$ human turns is not a gate result;
+P43's 0.741 (475 cases, `agent_sim`) and P59's 0.729 remain the numbers. Latency is
+recorded, not gated. One region live; real mail is a different program.

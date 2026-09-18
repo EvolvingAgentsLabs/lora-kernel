@@ -38,7 +38,7 @@ On the rented card, per [`SERVING.md`](SERVING.md); then, here:
     export OPENAI_API_KEY=...          # never on the command line: `ps` sees that
     python3 -m training.harness.openai_proxy \
         --upstream http://127.0.0.1:8000 --port 8001 \
-        --prune \
+        --prune --member-prompt --auto auto --auto-out gpt-5.6-sol \
         --fallback https://api.openai.com/v1
 
 **`--prune` is what makes §4b worth doing**, and it is explained there. It prints
@@ -199,6 +199,24 @@ $n = 475$; the behaviour is not. The block is **~7,956 tokens** unpruned, **~77*
 
 **So: start the proxy with `--prune`.** It stays a flag so the unpruned arm can be
 bought again; it is no longer the default this page recommends against.
+
+### What the live turn found, and why three flags are now the default for a member
+
+**Measured, P63 [ran] 2026-09-18**, 40 live turns from this very set-up: with the inbox
+tools offered and pruned, **under OpenClaw's own 37 KB system prompt the expert called a
+tool on 2 of 32 human turns and scored 0.281** — the bare base's behaviour with the
+tools in reach. Served under the prompt its corpus taught (`--member-prompt`, the
+contract's `system`), with generation cut at its closing tags, six round-trips at most
+and 256 tokens per step — the corpus loop's own bounds — **it called a tool on 19 of 32
+and scored 22/32 = 0.688 against the 0.655 bar**, 40/40 turns local, 3.5 s each. Six
+faults of the live path were found on the way and are fixed with tests: the router
+reading the runtime's system prompt and its internal-context envelope, the expert's
+echo of the tool block executed as calls, no stop at `</tag>` (it invented the tool's
+answer), no round-trip cap, no token bound, a killed turn's stale gateway lock. The
+ledger is `results/P63-openclaw-live-20260918/BRIEF.md`.
+
+**So a member is what its corpus taught — the block *and* the prompt.** `--prune`,
+`--member-prompt` and `--auto` are what the command above starts with.
 
 ### Streaming, and why it is buffered
 

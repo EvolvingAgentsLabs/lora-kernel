@@ -38,7 +38,7 @@ En la tarjeta alquilada, según [`SERVING.md`](SERVING.md); después, acá:
     export OPENAI_API_KEY=...          # nunca en la línea de comandos: `ps` la ve
     python3 -m training.harness.openai_proxy \
         --upstream http://127.0.0.1:8000 --port 8001 \
-        --prune \
+        --prune --member-prompt --auto auto --auto-out gpt-5.6-sol \
         --fallback https://api.openai.com/v1
 
 **`--prune` es lo que hace que el §4b valga la pena**, y se explica ahí. Imprime la
@@ -205,6 +205,26 @@ $p = 0,073$ — empate a $n = 475$; la conducta no. El bloque son **~7.956 token
 **Así que: arrancá el proxy con `--prune`.** Sigue siendo un flag para que el brazo sin
 podar se pueda volver a comprar; ya no es el default que esta página recomendaba en
 contra.
+
+### Qué encontró el turno en vivo, y por qué tres flags son ahora el default para un miembro
+
+**Medido, P63 [ran] 2026-09-18**, 40 turnos en vivo desde esta misma configuración: con
+las herramientas del inbox ofrecidas y podadas, **bajo el system prompt de 37 KB de
+OpenClaw el experto llamó una herramienta en 2 de 32 turnos humanos y sacó 0,281** — la
+conducta de la base pelada con las herramientas al alcance. Servido bajo el prompt que
+enseñó su corpus (`--member-prompt`, el `system` del contrato), con la generación
+cortada en sus etiquetas de cierre, seis idas y vueltas como máximo y 256 tokens por
+paso — las cotas del propio loop del corpus — **llamó una herramienta en 19 de 32 y sacó
+22/32 = 0,688 contra la barra de 0,655**, 40/40 turnos locales, 3,5 s cada uno. Seis
+fallas del camino en vivo se encontraron en el trayecto y están corregidas con tests: el
+router leyendo el system prompt del runtime y su sobre de contexto interno, el eco del
+bloque de herramientas ejecutado como llamadas, sin corte en `</tag>` (inventaba la
+respuesta de la herramienta), sin tope de idas y vueltas, sin cota de tokens, el lock de
+gateway viejo de un turno matado. El libro está en
+`results/P63-openclaw-live-20260918/BRIEF.md`.
+
+**Así que un miembro es lo que su corpus enseñó — el bloque *y* el prompt.** `--prune`,
+`--member-prompt` y `--auto` son con lo que arranca el comando de arriba.
 
 ### El streaming, y por qué está buffereado
 

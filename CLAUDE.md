@@ -416,6 +416,11 @@ Three rules that follow:
   messages and stayed under the majority bar; the expert beats it 137 : 1. Do not write
   another procedure document for this base; a document carries knowledge on top of an
   adapter, or the base is larger and that is measured first.
+- **A member is what its corpus taught — the block and the prompt [ran] P63 2026-09-18.**
+  Live, under the runtime's prompt the expert called a tool on 2/32 human turns (0.281);
+  under its released prompt with the corpus loop's bounds, 19/32 and 0.688. Serve members
+  with `--prune --member-prompt`; measure a member under any other prompt as a different
+  arm, never as the member.
 - **Artisanal is allowed; unmeasured is not.** A hand-written document or a
   hand-trained adapter is fine in the first months if its number is on disk.
 

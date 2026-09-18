@@ -62,7 +62,7 @@ is the state.
 |---|---|---|---|---|
 | **1** | weights or harness on one region: base / base + `knowledge/email-triage.md` / `email-full@v1`, one session, P55's 475 cases | Phase 1 | `kb_pays`, `weights_needed`, `harness_replaces_weights` pre-registered in the brief; errors void an arm | ✅ **[ran]** P61 2026-09-18: **WEIGHTS NEEDED** — base+kb **0 tool calls** on 351/351 human, 0.601 under the 0.655 majority bar (the sign test alone read a flipped default as paying: 164 : 74 — guard added, number kept); expert 0.989, **137 : 1**; document 914 tokens/request |
 | **2** | routing per request | 1 | the region classifier ≥ P41's by-region 0.775 on the same traffic | ✅ **[ran]** P62 2026-09-18, zero GPU: replay on P41's 240 cases, by request **0.775 = by region**, **0 misrouted**, 37.5 % out; `openai_proxy --auto` ships it |
-| **3** | OpenClaw live with `--prune`; a profile template per task | Phase 5 | zero calls to tools not offered; nothing leaves for the member's region | needs a laptop and a tunnel |
+| **3** | OpenClaw live with `--prune`; a profile template per task | Phase 5 | zero calls to tools not offered; nothing leaves for the member's region | ✅ **[ran]** P63 2026-09-18: **LIVE** on attempt 7 — 40/40 local, 0 invented, 19/32 human turns call a tool, 0.688 vs bar 0.655 (descriptive); the runtime-prompt arm 2/32, 0.281; six live-path faults fixed with tests |
 | **4** | the first real region, customised by hand | 1–3, sandbox, keys rotated | Phase 1's release gate | — |
 | **5** | second and third regions | 4 | each clears its own bar against the base | — |
 | **6** | traces → corpus → gate → release without hands | 4, 5 | the automated release ties the hand-made one, paired | — |
@@ -697,6 +697,10 @@ win.** `P5` is the headroom check on the new suite, `P6` the withdrawal gap,
 close without a tool — and `P8` is `harness.lora`, which this table calls P7.
 The tournament, this table's P8, has not been bought.
 
+
+#### P63 — milestone 3: the live OpenClaw turn **[ran]** 2026-09-18 · LIVE on the seventh attempt
+
+OpenClaw 2026.9.4 on this Mac → local proxy (`--prune --auto`) → cloudflared → vLLM on an L4 → `email-full@v1`; the inbox tools over MCP; 40 synthetic turns, one session each; identity through the tunnel 3/3. Pre-registered: every turn local, no call to a tool not offered, ≥ half the human turns call a tool; accuracy against the 0.655 bar, descriptive at n = 32. **Under the runtime's prompt (attempt 4): NOT LIVE — 2/32 human turns call a tool, human 0.281**, the bare base's behaviour with tools in reach. **Under the member's released prompt (attempt 7, `--member-prompt`, the round-trip cap and 256 tokens per step — both the corpus loop's bounds): LIVE — 40/40 local, 0 invented, 19/32 human turns call a tool, 22/32 = 0.688 vs 0.655 ($p = 0.43$)**, 3.5 s per turn. Six live-path faults between them, each found by the real path and fixed with a test: the router read the runtime's 37 KB system prompt and its internal-context envelope; the expert echoed the tool block and the proxy executed its own placeholders; no stop at `</tag>` let the expert invent the tool's result in one breath; no round-trip cap (30 repeats of one malformed call); no token bound (three-minute turns); a killed turn's gateway lock. **What it decides: a member is what its corpus taught — the block and the prompt; `--prune` and `--member-prompt` are the defaults for a member.** Ledger in `results/P63-openclaw-live-20260918/BRIEF.md`; every attempt kept beside it.
 
 #### P62 — routing per request: the client names no model **[ran]** 2026-09-18 · TIES, zero GPU
 
