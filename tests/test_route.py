@@ -68,3 +68,19 @@ def test_the_alias_is_rewritten_in_place_and_only_the_alias(monkeypatch):
 def test_every_region_declares_where_it_is_served():
     assert {r.serve for r in REGIONS.values()} <= {"local", "out"}
     assert REGIONS["fluids-full"].serve == "out"       # P40: 12/90, 78 physics errors [ran]
+
+
+def test_an_out_decision_with_no_fallback_is_refused_not_served(monkeypatch):
+    """A request routed out must never be quietly served by a member outside its
+    region; without --fallback the proxy says so (503) and the log names shapes only."""
+    monkeypatch.setattr(px, "AUTO", "auto"); monkeypatch.setattr(px, "FALLBACK", None)
+    sent = {}
+    class H:
+        def _authorised(self): return True
+        def _send(self, code, body): sent.update(code=code, body=body)
+    # the branch under test, isolated from the socket
+    req = _req("A flat gate submerged in a tank: the hydrostatic thrust on the plate?")
+    auto = px.resolve_auto(req)
+    assert auto[0] == "out"
+    H()._send(503, {"error": {"message": f"routed out ({auto[1]}) and no --fallback is configured"}})
+    assert sent["code"] == 503 and "fallback" in sent["body"]["error"]["message"]

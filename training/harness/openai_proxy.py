@@ -330,6 +330,11 @@ class Handler(BaseHTTPRequestHandler):
         # local adapters were trained on it; a frontier model speaks `tools=[…]`
         # natively and rendering tags at it would hand it our convention to learn.
         auto = resolve_auto(req)
+        if auto and auto[0] == "out" and not FALLBACK:
+            # WOULD LEAVE, AND THERE IS NOWHERE TO GO. Said in the reply and in the
+            # log, shapes only — never silently served by a member outside its region.
+            return self._send(503, {"error": {"message": f"routed out ({auto[1]}) and no "
+                                              "--fallback is configured"}})
         if routes_out(req.get("model")) or (auto and auto[0] == "out"):
             _announce(req.get("model"), req)
             try:
