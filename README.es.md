@@ -1,9 +1,10 @@
 # lora-kernel
 
-**Un pool de deltas QLoRA sobre un modelo base residente, rankeado por un modelo más
-grande de la misma familia que verifica sus tokens, con un modelo de frontera como
-fallback permanente para lo que el pool está medido que falla.** Nada más es
-neuronal.
+**El runtime de un servicio que resuelve local lo que está medido que resuelve y manda
+el resto a un modelo de frontera: un pool de deltas QLoRA y procedimientos escritos
+sobre una base residente, detrás de una API compatible con OpenAI, con instancias de
+OpenClaw por tarea encima.** El pool lo rankea un modelo más grande de la misma familia
+que verifica sus tokens; nada más es neuronal.
 
 *[Read me in English](README.md)*
 
@@ -26,6 +27,55 @@ derivada, paso a paso y atada a su corrida, en
 [`docs/es/FOUNDATIONS.md`](docs/es/FOUNDATIONS.md). **La regla que este proyecto
 mantiene: cada documento lleva su matemática, y cada corrida en Colab actualiza la
 fórmula que instancia.**
+
+## Qué provee esto, en qué orden, y qué no
+
+**El servicio es una sola cosa ofrecida por dos interfaces, en este orden:**
+
+1. **Una API compatible con OpenAI** (`/v1/chat/completions`, el proxy de
+   `training/harness/openai_proxy.py`). Un request que cae en una región que el pool
+   está medido que resuelve se contesta local — con un QLoRA, con un procedimiento
+   escrito que el harness pone en el contexto, o con los dos — y todo lo demás va a un
+   modelo de frontera, con una línea por request reenviado que nombra formas y nunca
+   contenido. **Medido hasta hoy:** 0,546 → 0,775 con 38 % saliendo (P41); una región
+   liberada como `email-full@v1` (P57); la superficie de herramientas podada a lo que
+   un miembro declara (P59).
+2. **Instancias de OpenClaw por tarea**, sobre la misma API: un perfil, sus
+   herramientas MCP podadas a la superficie del miembro, el modelo local en su región
+   y la frontera para el resto. Un turno real ya corrió de punta a punta sin que
+   saliera nada (P43); el turno en vivo con `--prune` es la próxima compra.
+
+**Parte de esto es artesanal al principio, a propósito.** Personalizar una región hoy
+es escribir a mano su documento de procedimiento, o generar su corpus y entrenar su
+adaptador con el pipeline de acá, y pasarlo por la compuerta de release. El plan es
+automatizar ese pipeline — trazas → corpus → entrenamiento → compuerta → release — en
+los próximos dos o tres meses, y cada pieza ya existe en su forma sintética.
+
+**Lo que no es parte de este runtime ni de esta versión open source:** el servicio de
+personalización en sí y sus herramientas — escribir los documentos de procedimiento
+de un cliente, entrenar sus adaptadores como servicio, la automatización de ese
+pipeline, los packs verticales entrenados y el plano de control. Este repositorio es
+el runtime que sirve, rutea, poda, libera y mide; las personalizaciones son lo que
+corre encima.
+
+**El orden del trabajo, como hitos** (`CLAUDE.md` §8b,
+[`docs/es/EXPERIMENT_PLAN.md`](docs/es/EXPERIMENT_PLAN.md) §0c):
+
+| # | hito | qué compra | estado |
+|---|---|---|---|
+| 1 | **pesos o harness** en una región — la base con un procedimiento escrito contra el experto entrenado, misma suite, mismo loop (P61) | cuánto cuesta una personalización: un documento pagado por request en tokens, o un adaptador entrenado una vez | corriendo 2026-09-18 |
+| 2 | **ruteo por request** — el proxy decide local o frontera sin que el cliente nombre un modelo | cualquier cliente usa la API | siguiente; el clasificador de región medido contra el 0,775 de P41 |
+| 3 | **OpenClaw en vivo** con `--prune`, una plantilla de perfil por tarea | la interfaz de alto nivel sobre la API | necesita una laptop y un túnel |
+| 4 | **la primera región real** de un cliente, personalizada a mano, liberada por la puerta de la Fase 1 | el servicio con tráfico real | 1–3, un sandbox real para código, claves rotadas |
+| 5 | segunda y tercera región — la tabla de regiones por cliente | un pool de hecho, no de nombre | 4 |
+| 6 | **trazas → corpus → compuerta → release sin manos** | la automatización prometida | 4, 5 |
+| 7 | un modelo grande local — `Qwen3.8-27B` (D2 → D4) | mover parte de "lo general" de la frontera a local | 5, y sólo si la cuenta de frontera lo justifica |
+
+La tesis del ranking por aceptación (M2) ya no está en este camino: P60 §3b **[ran]**
+2026-09-18 muestra que el brazo que la decidiría se puede construir — un target
+entrenado se sirve sobre la base AWQ — y queda programada detrás del hito 5 como
+compuerta de calidad de las respuestas locales, no como dependencia de nada de lo de
+arriba.
 
 ---
 
@@ -144,6 +194,8 @@ distribución y el arbitraje del residuo son para lo que se conserva la frontera
 ---
 
 ## El objetivo: `Qwen3.8-27B` como modelo grande, y la ruta hasta ahí
+
+**Hito 7 en el orden del servicio** (arriba): importa cuando el residuo de una región real justifique un modelo grande local. La ruta queda escrita porque nada en ella depende de cuándo se camine.
 
 La decodificación especulativa necesita dos modelos con **el mismo espacio de ids**
 (FOUNDATIONS §3.2): un id drafteado tiene que nombrar la misma cadena para los dos. Si
@@ -402,7 +454,7 @@ orden cerró sin uno. Un pool de más de dos. El drafter 3.x. El torneo.
 | **M-target** | un target que valga la pena **en esta tarea** | ❌ triage: **0,746 < 0,989**, 2 : 87 **[ran]**; ✅ desk `commitment`: 32B **1,000** en cada profundidad **[ran]** P51 | le gana al mejor experto, pareado, $p\le0,05$ |
 | **M-α** | aceptación en **tokens** por `prompt_logprobs` forzados | ✅ preflights pasan **[ran]**; todavía no corrió | templates idénticos; una entrada por token con `rank` |
 | **M1** | **expertos que difieren en calidad** — corpus anidados graduados | ✅ por un bit **[ran]** P55b: `g25` 0, `g75` **240/240**, `g600` **240/240** — el riesgo nombrado se cumplió, **sin grado intermedio** | el verificador resuelve ≥ 1 par, o el target no se sirve |
-| **M2** | **la prueba de orden** — la tesis | ⏸ **todavía no comprada [ran]**: un 32B *sin entrenar* queda debajo del experto entrenado en las dos suites (0,746 < 0,989; 0,967 < 1,000, 0 : 8), y en la banda fácil del desk los grados saturan (`g75` ≡ `g600`). **Corregido por revisión el mismo día:** eso muestra que la ventana falta en dos regiones fáciles con target sin entrenar — no que ninguna suite generada la tenga. **Próximo brazo (P60):** un 32B entrenado sobre el desk, una banda de `commitment` más profunda, M-target bajo `≥` | SUPPORTED / FALSIFIED / UNRESOLVED-como-fracaso, escrito antes de correr |
+| **M2** | **la prueba de orden** — la tesis | ⏸ **todavía no comprada [ran]**: un 32B *sin entrenar* queda debajo del experto entrenado en las dos suites (0,746 < 0,989; 0,967 < 1,000, 0 : 8), y en la banda fácil del desk los grados saturan (`g75` ≡ `g600`). **Corregido por revisión el mismo día:** eso muestra que la ventana falta en dos regiones fáciles con target sin entrenar — no que ninguna suite generada la tenga. **Próximo brazo (P60):** un 32B entrenado sobre el desk, una banda de `commitment` más profunda, M-target bajo `≥` **P60 §3b [ran] 2026-09-18:** vLLM aplica un LoRA sobre el 32B AWQ — compuerta de logprobs 3/3 (media de $|\Delta\ell|$ 0,22–0,49 nats contra un control base-vs-base de 0,000), compuerta de texto 2/3 — así que el brazo del target entrenado se puede construir; **programado detrás del hito 5**, no antes | SUPPORTED / FALSIFIED / UNRESOLVED-como-fracaso, escrito antes de correr |
 | **D0–D4** | la ruta a `Qwen3.8-27B` | D0 ✅, D1 vacío; **bloqueada por diseño** — la Fase 4 cerró sin veredicto, y D4 compraría una versión más rápida de un mecanismo sin veredicto | ver arriba |
 
 Los pasos que llegaron hasta acá, cada uno con su número, están en
@@ -424,6 +476,7 @@ Los pasos que llegaron hasta acá, cada uno con su número, están en
 
 | afirmación | medición | dónde |
 |---|---|---|
+| **Un LoRA aplica sobre el 32B AWQ** | adaptador de juguete (150 pasos, base NF4) servido sobre `Qwen2.5-32B-Instruct-AWQ`: media de $|\Delta\ell|$ 0,49 / 0,34 / 0,22 nats contra base-vs-base 0,000, **3/3**; compuerta de texto 2/3; el engine lo cargó y usó el wrapper Punica de GPU | `results/P60-deep-window-20260917/awq_gate.json` |
 | **La ruta de serving costaba 18 puntos** | el mismo adaptador de 598 ejemplos: 0,808 vía `tool_calls`, **0,992** en modo corpus, reproducido en dos sesiones a 31 s | `results/P55-graded-ranking-20260916/` |
 | **Un 32B sin entrenar no es un target válido en triage** | humanos 0,746 contra 0,989 del experto, pareado **2 : 87**, $p=0$; consigue los hechos y aplica mal la regla | ídem |
 | **Los espacios de ids, por par** | 2.5 → 2.5-32B byte-idéntico; 2.5 → 3.x-27B imposible; **3.5-2B/4B → 3.8-27B idéntico, 7 especiales de audio/TTS** | `results/P48-…/`, `results/P55-…/D0-tokenizers.txt` |
@@ -470,10 +523,16 @@ corregir por una persona. **Ejecución** — el sandbox donde corren las herrami
 
 ## Cómo se libera
 
-Open-core. **Abierto:** el runtime — multi-LoRA sobre vLLM, el instrumento de
-aceptación, la maquinaria de retiro; la especificación del protocolo; el conector de
-memoria markdown + git. **No abierto:** packs de adaptadores verticales entrenados; el
-pipeline gestionado de dream/evolución; el plano de control enterprise.
+Open-core, y la línea se traza en el runtime. **Abierto (este repositorio):** el proxy
+compatible con OpenAI con ruteo, poda y la línea de privacidad; el serving multi-LoRA
+sobre vLLM; el loop en modo corpus; el instrumento de aceptación y las compuertas
+(sustrato, release, suite); el pipeline sintético corpus → entrenamiento → compuerta →
+release; documentos de conocimiento inyectados por el harness; el conector de memoria
+markdown + git. **No abierto, y no parte de este runtime:** el servicio de
+personalización y sus herramientas — los documentos de procedimiento de un cliente,
+sus adaptadores entrenados como servicio, la automatización de ese pipeline —, los
+packs verticales entrenados, el pipeline gestionado de dream/evolución y el plano de
+control enterprise.
 
 ## Linaje
 
