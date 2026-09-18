@@ -20,3 +20,17 @@ def test_runner_accepts_the_chain_s_base_flag():
     out = subprocess.run([sys.executable, "-m", "training.harness.awq_lora_gate", "--help"],
                          capture_output=True, text=True)
     assert out.returncode == 0 and "--base" in out.stdout
+
+
+def test_the_chain_s_default_pool_adapters_do_not_become_the_toy_adapter():
+    """Attempt 1: `MARGS=""` fell back to `--adapter kernel=… --adapter domain=…` and the
+    runner served `tiny32=domain=adapters/domain-mt`."""
+    import subprocess, sys
+    from training.harness.awq_lora_gate import lora_spec
+    assert lora_spec("adapters/tiny32") == "tiny32=adapters/tiny32"
+    import pytest
+    with pytest.raises(SystemExit):
+        lora_spec("domain=adapters/domain-mt")
+    out = subprocess.run([sys.executable, "-m", "training.harness.awq_lora_gate", "--help"],
+                         capture_output=True, text=True)
+    assert "--tiny" in out.stdout and "--adapter" in out.stdout

@@ -36,6 +36,14 @@ from training.harness.verify_substrate import identity
 OUT = Path("awq_gate.json")
 
 
+def lora_spec(tiny: str) -> str:
+    """What vLLM is handed: exactly one `name=path`. A path carrying `=` is refused here
+    rather than by vLLM's argparse a minute after the 32B trained."""
+    if "=" in tiny or not tiny:
+        raise SystemExit(f"[awq] refusing the toy adapter path {tiny!r}: must be a bare path")
+    return f"tiny32={tiny}"
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--train-base", default="Qwen/Qwen2.5-32B-Instruct")
@@ -44,22 +52,29 @@ def main() -> int:
     # `unrecognized arguments: --base` nine times before anything trained.
     ap.add_argument("--base", "--serve-base", dest="serve_base",
                     default="Qwen/Qwen2.5-32B-Instruct-AWQ")
-    ap.add_argument("--adapter", default="adapters/tiny32")
+    # THE CHAIN'S `MARGS=""` FALLS BACK TO ITS DEFAULT `--adapter kernel=… --adapter
+    # domain=…` (`${MARGS:-…}` treats empty as unset), and a runner whose own flag is
+    # `--adapter` gets the last of those as its toy adapter path: attempt 1 asked vLLM for
+    # `tiny32=domain=adapters/domain-mt`. So the pool's flag is accepted and ignored,
+    # and the toy adapter has a flag of its own.
+    ap.add_argument("--adapter", action="append", default=[], help="pool adapters (ignored here)")
+    ap.add_argument("--tiny", default="adapters/tiny32", help="where the toy adapter is trained")
     ap.add_argument("--steps", type=int, default=60)
     ap.add_argument("--out", default=str(OUT))
     args = ap.parse_args()
     out = Path(args.out); out.parent.mkdir(parents=True, exist_ok=True)
-    rec = {"train_base": args.train_base, "serve_base": args.serve_base,
+    print(f"[awq] lora spec: {lora_spec(args.tiny)}", flush=True)
+    rec = {"train_base": args.train_base, "serve_base": args.serve_base, "lora": lora_spec(args.tiny),
            "started": time.strftime("%Y-%m-%dT%H:%M:%S")}
 
     def save():
         out.write_text(json.dumps(rec, indent=2))
 
     save()
-    if not Path(args.adapter, "adapter_model.safetensors").exists():
+    if not Path(args.tiny, "adapter_model.safetensors").exists():
         print(f"[awq] training a toy adapter on {args.train_base} in 4-bit", flush=True)
         rc = subprocess.call([sys.executable, "-m", "training.harness.tiny_adapter",
-                              "--base", args.train_base, "--out", args.adapter,
+                              "--base", args.train_base, "--out", args.tiny,
                               "--steps", str(args.steps), "--four-bit"])
         rec["train_rc"] = rc; save()
         if rc != 0:
@@ -70,7 +85,7 @@ def main() -> int:
     tok = AutoTokenizer.from_pretrained(args.serve_base)
     p = serve(args.serve_base, ["--max-model-len", "4096", "--gpu-memory-utilization", "0.90",
                                 "--enable-lora", "--max-lora-rank", "16", "--max-loras", "1",
-                                "--lora-modules", f"tiny32={args.adapter}"])
+                                "--lora-modules", lora_spec(args.tiny)])
     try:
         if not wait_ready(p, minutes=30):
             rec["verdict"] = {"applied": None, "reading": "the AWQ base never came up with the adapter"}
