@@ -16,7 +16,8 @@ WHAT THE LOG SAYS IS RECORDED TOO. Every `lora`/`Punica` line vLLM prints is kep
 the verdict, so a `not applied` comes with the engine's own account of what it
 skipped — the reading D2 needs, taken while the log is in hand.
 
-    python3 -m training.harness.awq_lora_gate --out results/P60-deep-window-20260917/awq_gate.json
+    BASE=Qwen/Qwen2.5-32B-Instruct-AWQ … MODULE=training.harness.awq_lora_gate
+    python3 -m training.harness.awq_lora_gate --base Qwen/Qwen2.5-32B-Instruct-AWQ --out results/P60-deep-window-20260917/awq_gate.json
 """
 
 from __future__ import annotations
@@ -38,7 +39,11 @@ OUT = Path("awq_gate.json")
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--train-base", default="Qwen/Qwen2.5-32B-Instruct")
-    ap.add_argument("--serve-base", default="Qwen/Qwen2.5-32B-Instruct-AWQ")
+    # `--base` IS WHAT THE CHAIN PASSES TO EVERY RUNNER (chain_serve.sh: `--base $BASE`);
+    # here it is the base the adapter is served over. The first launch died on
+    # `unrecognized arguments: --base` nine times before anything trained.
+    ap.add_argument("--base", "--serve-base", dest="serve_base",
+                    default="Qwen/Qwen2.5-32B-Instruct-AWQ")
     ap.add_argument("--adapter", default="adapters/tiny32")
     ap.add_argument("--steps", type=int, default=60)
     ap.add_argument("--out", default=str(OUT))
