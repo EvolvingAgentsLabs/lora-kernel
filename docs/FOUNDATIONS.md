@@ -716,3 +716,5 @@ all of it.
 | §4.4 | **an unknown surface is extrapolation**: unpruned (54 tools) the expert copies tags off the block, 225 of 227 calls refused; pruned, 8 of 1160; the block is ~7,956 vs ~77 tokens | P59 `attribution.json` |
 | §6.4 | **α, $\mathbb{E}[\tau]$, speed-up** | **not yet measured** |
 | §7.4 | **the ordering verdict** | **not measured**: §7.2 fails for an *untrained* target in two easy regions (P55 A, P55b); reopened as one arm — a trained target on a deeper band (P60) |
+| §10.5 D2 / §3.4 | **a LoRA applies over the AWQ 32B**: mean $|\Delta\ell|$ 0.22–0.49 nats vs base-vs-base 0.000, 3/3; text gate 2/3 | P60 §3b `awq_gate.json` |
+| §7.3 | **weights or harness**: base / base + procedure document / expert, sign test on discordant pairs | P61 `session.json` — **running** |

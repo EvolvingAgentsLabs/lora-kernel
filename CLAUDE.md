@@ -68,11 +68,16 @@ this repository adds.
 
 ## 0. Do not drift off the project — read this before choosing what to run
 
-**This project builds LoRA adapters.** The thesis is that the entire agentic
-system is a pool of QLoRAs over one base model. Everything else — the acceptance
-surface, the target, the tournament — exists to decide *which adapter* and *when*.
-A session that produces no adapter, and no measurement of an adapter, has not
-advanced the project however good its numbers are.
+**This project builds the runtime of a service: an OpenAI-compatible API that
+resolves locally what falls in a measured region and sends the rest to a frontier
+model, and OpenClaw instances per task on top of it** (README, *What this provides*).
+Local resolution is a QLoRA, a written procedure the harness puts in the context, or
+both; which one buys a region is measured, never assumed. A session that produces
+neither an adapter, nor a knowledge document measured against one, nor a measurement
+of the routing, has not advanced the project however good its numbers are. **The
+customisation service and its tooling are not part of this runtime nor of the
+open-source version** — build the instrument that measures a customisation, not the
+tooling that produces it at scale.
 
 The drift is real and it already happened once, on 2026-09-07: two sessions of
 measurement produced four instrument findings, a failed frontier gate and a
@@ -333,6 +338,12 @@ signal that can see a chain which is coherent and wrong.
 producing self-contained experts turns out expensive at scale, with P34's result
 already paid for.
 
+**Restated 2026-09-18, service order.** The customisation service and its tooling — a
+customer's procedure documents, adapters trained as a service, the automation of
+traces → corpus → gate → release — are out of scope for this runtime and for the
+open-source version. What is in scope is every instrument that measures whether a
+customisation works (P61 is the first), and the runtime that serves it.
+
 ## 8. The order of dependencies — phases, bottom-up (adopted 2026-09-17)
 
 The plan is a stack. **Each layer is validated alone, frozen with a test that
@@ -373,6 +384,35 @@ Three transversal rules, added to §3's:
   and the README is rewritten around the measured product. That commitment is signed
   *before* Phase 4 runs: FALSIFIED closes acceptance-as-ranking for good; UNRESOLVED
   allows one more redesign (the third is the stopping condition, already written).
+
+## 8b. The service order — milestones over the phases (adopted 2026-09-18)
+
+§8's phases remain the dependency order of the *instrument*. What is built next is
+decided by the **service**: first an OpenAI-compatible API that resolves locally and
+forwards the rest, then OpenClaw instances per task over it; some of it artisanal at
+first, automated over two to three months. The milestones, in order, each with the
+arm that kills it first:
+
+| # | milestone | depends on | the arm that kills first |
+|---|---|---|---|
+| **1** | weights or harness on one region (P61): base, base + procedure document, trained expert, one session, sign test on discordant pairs | Phase 1 | base + document ≤ base — a 3B does not follow a written procedure |
+| **2** | routing per request: the proxy decides local or frontier | 1 | the region classifier below P41's by-region 0.775 |
+| **3** | OpenClaw live with `--prune`; a profile template per task | Phase 5 | the live turn calls tools it was not offered |
+| **4** | the first real region, customised by hand, released through Phase 1's door | 1–3, a sandbox, keys rotated | the release gate |
+| **5** | second and third regions; the region table per client | 4 | a second member that fails its own bar (fluids did) |
+| **6** | traces → corpus → gate → release without hands | 4, 5 | the automated release regresses the hand-made one |
+| **7** | the large local model, `Qwen3.8-27B` (Phase 6) | 5, and the frontier bill | D2 |
+
+Three rules that follow:
+
+- **M2 does not block the service.** P60 §3b **[ran]** 2026-09-18: vLLM applies a
+  LoRA over the AWQ 32B (logprob gate 3/3 against a base-vs-base control; text gate
+  2/3), so the trained-target arm (3c/3d) is buildable. It runs after milestone 5, as
+  a quality gate on local answers, and the redesign counter (2 of 3) still applies.
+- **A customisation is measured before it is sold.** Every region enters through the
+  same door: a suite with a verifier, the base as the headroom arm, the sign test.
+- **Artisanal is allowed; unmeasured is not.** A hand-written document or a
+  hand-trained adapter is fine in the first months if its number is on disk.
 
 ## 9. The mathematics is required, everywhere (adopted 2026-09-17)
 

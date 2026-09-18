@@ -35,7 +35,7 @@ and (d) a failure condition written before it runs.
 | **1** | a reproducible release of `email-full`: adapter + corpus + prompt hash, re-served in corpus mode and paired against its recorded 471/475 | 0 | the re-serve is a tie by the paired test | ✅ **[ran]** P57, 2026-09-17: re-served vs recorded **0 : 0** discordant (identical case by case); re-trained from the same corpus and recipe **472/475**, vs re-served **1 : 0**, $p = 1.0$ — **training variance: one case in 475**. Manifest `releases/email-full@v1.json` |
 | **2** | a suite with a verifier and a gradient: `suite_gates`; base gradient ≥ 0.30 across depth; the target beats the best expert, paired, $p \le 0.05$ (M-target, FOUNDATIONS §7.2) | 1 | all three on one region | desk `commitment`: gradient **1.000 → 0.000** and target **1.000** at every depth **[ran]** P51 — but a **trained** expert saturates it (P55b). **`commitment_deep` built 2026-09-17** (P60 §3a): my latest promise across 1–4 rounds with the sender's dates as distractors, last message the sender's from depth 2; the shallow suite pinned by hash, 0 mismatches against P55b's truths. Its gradient for a trained expert is what P60 measures |
 | **3** | experts the verifier orders (M1): `g25 ⊂ g75 ⊂ 600`; **the smallest grade is trained and scored first** — if `g25` already saturates, stop | 2 | ≥ 1 adjacent pair resolved, $p \le 0.05$ | **P58 attempt 1** **[ran]** 2026-09-17: two instrument faults, mine — the corpus-mode loop crashed on a closing tag with no canonical opening (`g25` writes `<message id="msg-006" from=…>`, *fabricating* the email in XML instead of asking for it — 209 of 240 chains lost) and the C18 gate read an errored record as a difference (`applied` 8/8 over nothing). Both fixed with tests; `--max-model-len` 8192 for the desk (7 base requests hit 400 at 4096). Base in corpus mode **41/240 = 0.171** (it wanders into self-closing XML). **Attempt 3 clean [ran]: `g25` = 0/240** — 1152 of 1194 calls malformed, it *fabricates* the email in XML in 240 of 240 cases; C18 `applied`, 0 errors. **The kill condition did not fire** ($Q(g25) = 0.000 \ll 0.95$): the bottom grade exists. **P55b [ran]** 2026-09-17: `g75` **240/240**, `g600` **240/240**, `g25` 0 — M1 passes on **one bit**: the two resolved pairs are *broken vs perfect*, and `g75` ≡ `g600` (0 : 0). **The saturation risk was real: 75 examples suffice for a one-call protocol; no intermediate grade exists on this suite** |
-| **4** | the ordering verdict by acceptance (M-α, M2): three α per case, SUPPORTED / FALSIFIED / UNRESOLVED-as-failure written first (§7.4) | 3 | the thesis itself | **P55b stopped at M-target [ran]**: the 32B in corpus mode **227/240**, **232/240** once the verifier stopped rejecting `2023-01-05` for `January 5` (5 of its 13 losses were format; the check was deleted); the remaining 8 are real — it wanders `thread_history → inbox` and says *no date*. Against `g600` at 240/240: **0 : 8, $p = 0.008$** — the untrained target is resolvably below the trained expert, **the second time** (triage: 0.746 vs 0.989). **Not measured.** Redesign counter: 2 of 3. ~~Closed 2026-09-17 (decision D): M2 is not buyable on any suite this project can generate~~ — **corrected the same day by review: what is measured is that the window does not exist in two easy regions with an *untrained* target.** The ordering between grades is decided by the material's difficulty, and a trained target enables $Q(T) \ge \max Q(E)$. **Reopened as one arm (P60, next): a 32B trained on the desk + a deeper `commitment` band where trained grades do not saturate + M-target under §7.2's `≥`.** A brazo, not the last redesign; if the window still does not appear, the closure is signed with the right arm run |
+| **4** | the ordering verdict by acceptance (M-α, M2): three α per case, SUPPORTED / FALSIFIED / UNRESOLVED-as-failure written first (§7.4) | 3 | the thesis itself **P60 §3b [ran] 2026-09-18: the trained-target arm is servable** — a LoRA applies over the AWQ 32B (logprob gate 3/3 vs a base-vs-base control, text 2/3); 3c/3d scheduled after milestone 5 (§0c) | **P55b stopped at M-target [ran]**: the 32B in corpus mode **227/240**, **232/240** once the verifier stopped rejecting `2023-01-05` for `January 5` (5 of its 13 losses were format; the check was deleted); the remaining 8 are real — it wanders `thread_history → inbox` and says *no date*. Against `g600` at 240/240: **0 : 8, $p = 0.008$** — the untrained target is resolvably below the trained expert, **the second time** (triage: 0.746 vs 0.989). **Not measured.** Redesign counter: 2 of 3. ~~Closed 2026-09-17 (decision D): M2 is not buyable on any suite this project can generate~~ — **corrected the same day by review: what is measured is that the window does not exist in two easy regions with an *untrained* target.** The ordering between grades is decided by the material's difficulty, and a trained target enables $Q(T) \ge \max Q(E)$. **Reopened as one arm (P60, next): a 32B trained on the desk + a deeper `commitment` band where trained grades do not saturate + M-target under §7.2's `≥`.** A brazo, not the last redesign; if the window still does not appear, the closure is signed with the right arm run |
 | **5** | the product with real groups (CASE-TEAM), `--prune` off as the attribution arm; every new member enters through Phase 1's door | 1 | 0.546 → 0.775 reproduced on new traffic, the leaving share measured | **P59 [ran]** 2026-09-17, the surface OpenClaw actually sends (54 tools, recorded): `--prune off` human **0.664**, 227 calls of which **225 refused** — it copies `agents_list`, `apply_patch`, `browser`… off the block; `--prune on` **0.729**, 1160 calls, 8 refused. Paired 87 : 64, $p = 0.073$ — **a tie on accuracy at $n = 475$, not a tie in behaviour**: unpruned, the expert reaches for the runtime's own tools. Block **~7,956 → ~77 tokens** per turn. `--prune` is the recommended default. Attempt 1 void (context 4096) |
 | **6** | the route to `Qwen3.8-27B`: D2 (C18's mechanism, with the log) → D3 → D4 | **4 = SUPPORTED** | D2: `applied` on the identity gate | **blocked by design** — 4 closed without a verdict; not by the tokenizer, not by C18 |
 
@@ -47,6 +47,30 @@ third is the stopping condition (counter: 2 of 3 after P55b).
 **Map from the mechanisms above to the phases:** C18 → 0 · S9, S10 → 1 · P50
 suite gates, headroom, M-target → 2 · M1 → 3 · M-α, M2 → 4 · S8, S3, pool > 2 → 5 ·
 D2–D4 → 6.
+
+## 0c. The service order — milestones over the phases (adopted 2026-09-18)
+
+The phases above are the instrument's dependency order; **what is built next is
+decided by the service**: an OpenAI-compatible API that resolves locally what it is
+measured to resolve and forwards the rest, then OpenClaw instances per task over it.
+Artisanal at first, automated over two to three months. **The customisation service
+and its tooling are not part of this runtime nor of the open-source version**; the
+instruments that measure a customisation are. `CLAUDE.md` §8b carries the rule; this
+is the state.
+
+| # | milestone | depends on | gate | state |
+|---|---|---|---|---|
+| **1** | weights or harness on one region: base / base + `knowledge/email-triage.md` / `email-full@v1`, one session, P55's 475 cases | Phase 1 | `kb_pays`, `weights_needed`, `harness_replaces_weights` pre-registered in the brief; errors void an arm | **P61 RUNNING** 2026-09-18 |
+| **2** | routing per request | 1 | the region classifier ≥ P41's by-region 0.775 on the same traffic | NEXT |
+| **3** | OpenClaw live with `--prune`; a profile template per task | Phase 5 | zero calls to tools not offered; nothing leaves for the member's region | needs a laptop and a tunnel |
+| **4** | the first real region, customised by hand | 1–3, sandbox, keys rotated | Phase 1's release gate | — |
+| **5** | second and third regions | 4 | each clears its own bar against the base | — |
+| **6** | traces → corpus → gate → release without hands | 4, 5 | the automated release ties the hand-made one, paired | — |
+| **7** | `Qwen3.8-27B` (Phase 6) | 5, and the frontier bill | D2 | — |
+
+**M2 is off the critical path, not closed.** P60 §3b **[ran]** 2026-09-18 shows the
+trained-target arm is servable (below); 3c/3d run after milestone 5. Redesign counter
+unchanged: 2 of 3.
 
 ## 1. The one question
 
@@ -673,6 +697,14 @@ win.** `P5` is the headroom check on the new suite, `P6` the withdrawal gap,
 close without a tool — and `P8` is `harness.lora`, which this table calls P7.
 The tournament, this table's P8, has not been bought.
 
+
+#### P61 — weights or harness on the email region · RUNNING
+
+One unknown: does the plain 3B, given `knowledge/email-triage.md` in its system prompt, resolve the email region as the QLoRA expert does? Three arms, one L4 session, P55's 475 cases, the corpus-mode loop; pre-registered in `results/P61-knowledge-vs-weights-20260918/BRIEF.md` (FOUNDATIONS §7.3, the sign test on discordant pairs): `kb_pays` (base+kb > base, $p<0.05$), `weights_needed` (expert > base+kb, $p<0.05$), `harness_replaces_weights` (neither, and human accuracy within 0.05). The price line is recorded with the verdict: document tokens per request, tool calls per case. Failure written first: base+kb ≤ base closes the harness side for this base. Why a procedure and not the rule: P55 **[ran]** has the base answering NOT IMPORTANT with **zero tool calls on 230 of 351** human messages although the system prompt states the rule.
+
+#### P60 §3b — vLLM applies a LoRA over the AWQ 32B **[ran]** 2026-09-18
+
+The preflight that decides whether a trained target can be served at all. A toy adapter (150 steps, r=16, NF4 base) trained on `Qwen2.5-32B-Instruct`, served over `Qwen2.5-32B-Instruct-AWQ` with `--enable-lora`. Text gate (argmax flips on 3 probes): **2/3**. Logprob gate — mean $|\ell_m(t) - \ell_b(t)|$ over a fixed continuation, against the base-vs-base control (FOUNDATIONS §3.4): **0.49, 0.34, 0.22 nats vs 0.000 — 3/3, applied**. Three attempts, two instrument faults caught before a number was believed: the chain's empty `MARGS` fell back to the pool's `--adapter` flags and the runner handed vLLM `tiny32=domain=…` (attempt 1); the text gate alone read a 60-step adapter as *not applied* at 1/3 while the engine had loaded it and used the Punica GPU wrapper (attempt 2) — the logprob gate with a determinism control was added, with tests. `results/P60-deep-window-20260917/awq_gate.json`; attempts kept beside it.
 
 #### P24 — a grammar mask buys cleanliness, not accuracy
 
