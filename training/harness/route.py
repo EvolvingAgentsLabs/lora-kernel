@@ -53,8 +53,14 @@ class Region:
 # The keys are the router baseline's, moved next to the decision they inform. Written
 # knowing the generators, which makes them generous — the direction that is
 # conservative for "no learned router yet", and the reason milestone 4 re-measures.
+# A REGION IS ITS QUESTION, NOT ITS LISTING. Two members can share one inbox: the
+# triage expert and the desk expert both read `From: / Subject: / Preview:`, and keyed
+# on those the desk's prompts route to triage 15 of 60 times [ran] P64, zero GPU. Keyed
+# on what is asked — "is this important" against "did you commit" — the four prompt
+# sets separate 60/60, 60/60, 150/150, 140/140.
 REGIONS: dict[str, Region] = {
-    "email-full": Region("email-full", ("subject:", "preview:", "from:", "is this important"), "local"),
+    "email-full": Region("email-full", ("is this important",), "local"),
+    "desk-commitment": Region("desk-commitment", ("did you commit", "already established", "promise"), "local"),
     "fluids-full": Region("fluids-full", (
         "head loss", "friction", "roughness", "bore", "pumped",
         "gate", "plate", "thrust", "submerged", "hydrostatic",
