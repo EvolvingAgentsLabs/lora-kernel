@@ -36,6 +36,10 @@ def main() -> int:
     ap.add_argument("--alpha", type=int, default=32)
     ap.add_argument("--lr", type=float, default=2e-4)
     ap.add_argument("--max-seq", type=int, default=512)
+    # A 32B IN bf16 IS 64 GB AND DOES NOT FIT AN A100-40. P60 §3b trains the toy
+    # adapter on `Qwen2.5-32B-Instruct` to serve it over the AWQ build; in 4-bit NF4
+    # the base is ~18 GB and the delta trains in bf16 as QLoRA does (FOUNDATIONS §4.3).
+    ap.add_argument("--four-bit", dest="four_bit", action="store_true")
     args = ap.parse_args()
 
     import torch
@@ -48,8 +52,18 @@ def main() -> int:
     tok = AutoTokenizer.from_pretrained(args.base)
     if tok.pad_token is None:
         tok.pad_token = tok.eos_token
-    model = AutoModelForCausalLM.from_pretrained(args.base, dtype=torch.bfloat16,
-                                                 device_map="cuda")
+    if args.four_bit:
+        from transformers import BitsAndBytesConfig
+        from peft import prepare_model_for_kbit_training
+        model = AutoModelForCausalLM.from_pretrained(
+            args.base, device_map="cuda", dtype=torch.bfloat16,
+            quantization_config=BitsAndBytesConfig(
+                load_in_4bit=True, bnb_4bit_quant_type="nf4",
+                bnb_4bit_compute_dtype=torch.bfloat16, bnb_4bit_use_double_quant=True))
+        model = prepare_model_for_kbit_training(model)
+    else:
+        model = AutoModelForCausalLM.from_pretrained(args.base, dtype=torch.bfloat16,
+                                                     device_map="cuda")
     # TARGETS ARE DISCOVERED, AND THE FIRST VERSION ONLY PRETENDED TO BE. It filtered
     # the discovered names through a hardcoded list — q_proj, k_proj, v_proj … — which
     # is a list for one architecture. On Qwen3.5 **not one of those names exists**:
@@ -63,8 +77,10 @@ def main() -> int:
     # output head and anything in a vision tower, which would make the comparison
     # about a modality this project does not use.
     SKIP = ("lm_head", "visual", "vision", "patch_embed", "merger")
+    # UNDER 4-BIT THE LINEARS ARE `Linear4bit`, NOT `torch.nn.Linear`. A discovery
+    # keyed on the torch class would find nothing but the head and refuse.
     names = sorted({n.split(".")[-1] for n, m in model.named_modules()
-                    if isinstance(m, torch.nn.Linear)
+                    if type(m).__name__ in ("Linear", "Linear4bit")
                     and not any(s in n for s in SKIP)})
     attn = [n for n in names if any(k in n for k in
                                     ("q", "k", "v", "o_proj", "qkv", "out_proj", "attn"))]
