@@ -35,6 +35,7 @@ import argparse
 import json
 import os
 import re
+import signal
 import subprocess
 import time
 from pathlib import Path
@@ -46,7 +47,7 @@ from training.harness.generate_email_full import listing
 OPENCLAW = os.path.expanduser("~/.openclaw/bin/openclaw")
 INBOX_TAGS = ("thread_history", "sender_stats", "message")
 VERDICT = re.compile(r"\bNOT IMPORTANT\b|\bIMPORTANT\b", re.I)
-TAG = re.compile(r"<([A-Za-z_][\w.:-]*)>[^<]*</\1>")
+TAG = re.compile(r"<([A-Za-z_][\w.:-]*)>([^<]*)</\1>")
 
 
 def parse_verdict(text: str):
@@ -79,7 +80,9 @@ def shapes_of(traffic_lines: list[str]) -> dict:
         tools = r.get("tools") or []
         offered = max(offered, int(r.get("tools_offered") or 0))
         kept = max(kept, len(tools))
-        for name in TAG.findall(r.get("reply") or r.get("text") or ""):
+        for name, body in TAG.findall(r.get("reply") or r.get("text") or ""):
+            if body.strip() in ("", "...", "…"):      # the block's placeholder, echoed
+                continue
             calls += 1
             if name not in tools and name.split("__")[-1] not in tools:
                 invented += 1
@@ -141,13 +144,36 @@ def main() -> int:
         prompt = listing(m) + "\nAnswer with one line: IMPORTANT or NOT IMPORTANT."
         t0 = time.time()
         try:
-            run = subprocess.run([args.openclaw, "--profile", args.profile, "agent", "--local",
-                                  "--model", args.model, "-m", prompt],
-                                 capture_output=True, text=True, timeout=args.timeout)
+            # ONE SESSION PER TURN. The profile's main session carries every earlier
+            # turn (P43's included) into the request — 22 messages on the first live
+            # turn [ran]; a fresh id per message is what makes turns independent.
+            # ITS OWN PROCESS GROUP, so a timeout kills the node children too: the
+            # embedded agent's supervisor outlived a killed turn holding the profile's
+            # gateway lock, and turns 9–22 of attempt 3 died in a second each [ran].
+            proc = subprocess.Popen([args.openclaw, "--profile", args.profile, "agent", "--local",
+                                     "--session-id", f"p63-{m['id']}-{int(t0)}",
+                                     "--model", args.model, "-m", prompt],
+                                    stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True,
+                                    start_new_session=True)
+            try:
+                so, se = proc.communicate(timeout=args.timeout)
+            except subprocess.TimeoutExpired:
+                os.killpg(proc.pid, signal.SIGKILL)
+                proc.communicate()
+                raise
+            run = subprocess.CompletedProcess(proc.args, proc.returncode, so, se)
             text = run.stdout + "\n" + run.stderr
         except subprocess.TimeoutExpired:
             done[m["id"]] = {"id": m["id"], "human": not m["_facts"]["automated"], "error": "timeout"}
-            out.write_text(json.dumps(rec, indent=1)); continue
+            out.write_text(json.dumps(rec, indent=1))
+            # A KILLED TURN LEAVES THE PROFILE'S GATEWAY LOCK BEHIND, and every turn
+            # after it fails in a second with "failed to acquire gateway state
+            # ownership" (attempt 3 [ran]: turns 9–22 lost that way). The lock lives in
+            # the isolated profile's own tmp, so clearing it touches nothing else.
+            for lock in Path(os.path.expanduser(f"~/.openclaw-{args.profile}/tmp")).glob("openclaw-*/gateway*.lock"):
+                lock.unlink(missing_ok=True)
+                print(f"[live] cleared stale {lock.name} after the timeout", flush=True)
+            continue
         tl, t_off = read_new_lines(traffic, t_off)
         pl, p_off = read_new_lines(plog, p_off)
         route = "local" if any("[route] auto -> local" in l for l in pl) else \

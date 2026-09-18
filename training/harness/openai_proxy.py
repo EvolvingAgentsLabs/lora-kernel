@@ -36,7 +36,8 @@ import urllib.request
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 from training.harness.contract import validate
-from training.harness.tool_calls import (CALL, from_tool_call, prune, rename_calls,
+from training.harness.tool_calls import (
+    CALL, from_tool_call, keep_offered, prune, rename_calls, stop_for,
                                          strip_calls, to_tool_calls,
                                          tools_to_instruction)
 
@@ -48,6 +49,15 @@ KEY = None            # --api-key: required once this is reachable from outside
 PASSTHROUGH = False   # --passthrough: forward untouched, log shapes only
 UP_KEY = None         # --upstream-key: the credential the upstream itself wants
 PRUNE = False         # --prune: offer a member only the tools it declares a tag for
+# THE CORPUS-MODE LOOP HAS A CAP AND THE LIVE PATH HAD NONE. `accept_rank.run_chain`
+# stops after `max_calls=6`; an agent runtime executes every call the model writes,
+# and on the live turn for msg-014 the expert wrote `<thread_history>turns=2</…>`
+# after its verdict, got an error back, and wrote it again — 30 round-trips, 71
+# messages, until the turn was killed [ran] P63 attempt 5. Past the cap a call is
+# returned as text and the agent finalises with what the model last said.
+MAX_ROUNDTRIPS = 6
+MEMBER_PROMPT = False # --member-prompt: serve a member under the system prompt its corpus taught
+POOL_SYSTEM: dict[str, str] = {}
 
 # --- the tool surface ------------------------------------------------------
 #
@@ -82,7 +92,20 @@ def _load_surfaces() -> dict[str, list[str]]:
             name = path.rsplit("/", 1)[-1]
             out[name] = sf
             POOL_ARGS[name] = rec.get("surface_args") or {}
+        if rec.get("system"):
+            POOL_SYSTEM[path.rsplit("/", 1)[-1]] = rec["system"]
     return out
+
+
+def under_member_prompt(messages: list[dict], system: str) -> list[dict]:
+    """The runtime's system messages replaced by the member's released prompt.
+
+    THE TOOL BLOCK IS PRUNED TO WHAT THE MEMBER TRAINED ON; THE PROMPT IS THE SAME
+    PRINCIPLE ONE MESSAGE UP. What reaches the model is what its corpus taught — the
+    runtime's instructions about its own channels, sandboxes and sub-agents are for a
+    general agent, and a member routed a request in its region is not one."""
+    rest = [m for m in messages if m.get("role") != "system"]
+    return [{"role": "system", "content": system}] + rest
 
 # --- routing ---------------------------------------------------------------
 #
@@ -223,7 +246,8 @@ def render_tools(messages: list[dict], tools: list[dict]) -> list[dict]:
     return out + [{"role": "user", "content": block}]
 
 
-def _record(req: dict, tools, up: dict, offered: int | None = None) -> None:
+def _record(req: dict, tools, up: dict, offered: int | None = None,
+            prompt: str | None = None) -> None:
     """One line per request, for `training.harness.null_arm`.
 
     WHAT AN AGENT ACTUALLY ASKS FOR CANNOT BE GUESSED FROM A SUITE. Only the shapes
@@ -242,6 +266,7 @@ def _record(req: dict, tools, up: dict, offered: int | None = None) -> None:
             # this member knows, and an agent offering fifty of which three landed.
             # P43 could not tell them apart from the outside.
             "tools_offered": len(tools or []) if offered is None else offered,
+            "prompt": prompt,
             "turns": len(req.get("messages") or []),
             "reply": msg.get("content") or "",
             "upstream_tool_calls": len(msg.get("tool_calls") or []),
@@ -390,7 +415,19 @@ class Handler(BaseHTTPRequestHandler):
         streaming = bool(req.pop("stream", False))
         req.pop("stream_options", None)
         msgs = rebuild_transcript(req.get("messages") or [], back)
+        prompt_kind = "runtime"
+        if MEMBER_PROMPT and POOL_SYSTEM.get(req.get("model")):
+            msgs = under_member_prompt(msgs, POOL_SYSTEM[req["model"]])
+            prompt_kind = "member"
         req["messages"] = render_tools(msgs, tools) if tools else msgs
+        if tools:
+            # THE BLOCK'S HEADER IS A STOP SEQUENCE (tool_calls.stop_for): a model
+            # that starts reproducing the block it was shown has finished answering.
+            stop = req.get("stop")
+            stop = [stop] if isinstance(stop, str) else list(stop or [])
+            kept_names = [((x.get("function") or x).get("name")) for x in tools]
+            req["stop"] = stop + [s_ for s_ in stop_for(tools, kept_names) if s_ not in stop]
+            req["include_stop_str_in_output"] = True
 
         try:
             up = _fetch("/v1/chat/completions", req)
@@ -401,13 +438,24 @@ class Handler(BaseHTTPRequestHandler):
             return self._send(502, {"error": {"message": repr(e)}})
 
         if LOG:
-            _record(req, tools, up, offered=offered)
+            _record(req, tools, up, offered=offered, prompt=prompt_kind)
 
+        roundtrips = sum(1 for m in (req.get("messages") or []) if m.get("role") == "tool")
         for choice in up.get("choices", []):
             msg = choice.get("message") or {}
             text = msg.get("content") or ""
+            if tools and CALL.search(text) and roundtrips >= MAX_ROUNDTRIPS:
+                print(f"[prune] round-trip cap {MAX_ROUNDTRIPS} reached; the call is returned as text", flush=True)
+                msg["content"] = strip_calls(text) or text
+                continue
             if tools and CALL.search(text):
-                calls = rename_calls(to_tool_calls(text), forward)
+                calls, dropped = keep_offered(
+                    to_tool_calls(text), {((x.get("function") or x).get("name")) for x in tools})
+                if dropped:
+                    print(f"[prune] {dropped} call(s) to names not offered left as text", flush=True)
+                calls = rename_calls(calls, forward)
+                if not calls:
+                    continue
                 msg["tool_calls"] = calls
                 msg["content"] = strip_calls(text) or None
                 choice["finish_reason"] = "tool_calls"
@@ -437,6 +485,8 @@ def main() -> int:
                          "for, matching an exact name or the last namespace segment "
                          "of one. P43's agent turn made zero tool calls because it "
                          "was offered a toolbox this expert had never seen")
+    ap.add_argument("--member-prompt", dest="member_prompt", action="store_true",
+                    help="serve a member under the system prompt its corpus taught (contract `system`)")
     ap.add_argument("--auto", default=None,
                     help="model alias routed per request by its text (milestone 2)")
     ap.add_argument("--auto-out", dest="auto_out", default=None,
@@ -456,6 +506,7 @@ def main() -> int:
     globals()["UPSTREAM"] = args.upstream
     globals()["FALLBACK"] = args.fallback
     globals()["AUTO"], globals()["AUTO_OUT"] = args.auto, args.auto_out
+    globals()["MEMBER_PROMPT"] = args.member_prompt
     if args.auto:
         from training.harness.route import REGIONS
         print(f"[route] `{args.auto}` is routed per request: "
@@ -491,6 +542,11 @@ def main() -> int:
     globals()["PRUNE"] = args.prune
     if args.prune:
         globals()["POOL_SURFACE"] = _load_surfaces()
+    if args.member_prompt:
+        if not PRUNE:
+            _load_surfaces()          # the contract is read on the same pass
+        print(("[prompt] members served under their released prompt: " + ", ".join(sorted(POOL_SYSTEM)))
+              if POOL_SYSTEM else "[prompt] --member-prompt set but no member declares a system prompt", flush=True)
         # ANNOUNCED, BECAUSE IT CHANGES WHAT THE MODEL SEES. A filter nobody can see
         # from outside is the kind that gets blamed on the weights later.
         for name, sf in sorted(POOL_SURFACE.items()):

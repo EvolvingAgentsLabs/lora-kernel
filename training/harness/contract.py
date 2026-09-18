@@ -96,10 +96,19 @@ def surface(tags) -> list[str]:
 
 
 def text(corpus: str, trained_on: dict, note: str = "",
-         tags: list[str] | None = None, args: dict | None = None) -> dict:
-    return {"corpus": corpus, "band": trained_on, "surface": surface(tags or []),
-            "surface_args": dict(args or {}),
-            "output_contract": {"kind": "text"}, "note": note}
+         tags: list[str] | None = None, args: dict | None = None,
+         system: str | None = None) -> dict:
+    """`system` is the prompt the corpus taught, when the member has one. THE PROMPT IS
+    PART OF WHAT WAS RELEASED (`releases/<name>@v1.json` carries its hash) and a member
+    served under another runtime's prompt is a different measurement: P63 [ran]
+    2026-09-18, under OpenClaw's 37 KB system prompt, `email-full` answered every
+    turn from the listing with 0 tool calls, as the bare base does."""
+    rec = {"corpus": corpus, "band": trained_on, "surface": surface(tags or []),
+           "surface_args": dict(args or {}),
+           "output_contract": {"kind": "text"}, "note": note}
+    if system:
+        rec["system"] = system
+    return rec
 
 
 def typed(corpus: str, trained_on: dict, values: list[str],
@@ -155,6 +164,10 @@ def validate(path: str, record: dict) -> dict:
             raise ContractError(f"{path}: surface_args names {tag!r}, not in the surface")
         if not isinstance(keys, list) or any(not isinstance(k, str) for k in keys):
             raise ContractError(f"{path}: surface_args[{tag!r}] must be a list of keys")
+
+    sy = record.get("system")
+    if sy is not None and (not isinstance(sy, str) or not sy.strip()):
+        raise ContractError(f"{path}: system must be a non-empty prompt when declared")
 
     oc = record["output_contract"]
     kind = oc.get("kind")

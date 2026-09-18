@@ -17,7 +17,7 @@ def test_shapes_count_calls_and_invented_names_from_the_proxy_s_record():
     lines = [json.dumps({"tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54,
                          "reply": "<thread_history>thread_id=thr-001</thread_history>"}),
              json.dumps({"tools": ["thread_history", "sender_stats", "message"], "tools_offered": 54,
-                         "reply": "<apply_patch>x</apply_patch>\nNOT IMPORTANT"}),
+                         "reply": "<apply_patch>x</apply_patch>\nNOT IMPORTANT\n<message>...</message>"}),
              "not json"]
     s = shapes_of(lines)
     assert s == {"requests": 2, "tools_offered": 54, "tools_kept": 3, "calls": 2, "invented": 1}
