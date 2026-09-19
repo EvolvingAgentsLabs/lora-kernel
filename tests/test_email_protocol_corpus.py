@@ -89,15 +89,6 @@ def test_the_corpus_uses_the_surface_the_proxy_renders(rows):
         assert f"<{tool}>" in served and f"<{tool}>" in gen.INSTRUCTION
 
 
-def test_the_pool_knows_about_the_email_kernel():
-    from training.harness.train_pool import POOL
-    import pathlib
-    assert "adapters/kernel-email" in POOL
-    # POOL entries are records now, not paths — see training/harness/contract.py.
-    corpus = pathlib.Path(POOL["adapters/kernel-email"]["corpus"])
-    assert corpus.exists(), f"{corpus} is registered but not committed"
-
-
 def test_only_selects_a_subset_and_refuses_a_name_that_matches_nothing(monkeypatch):
     """Filling every gap is right for a short tarball, wrong when one is wanted."""
     from training.harness import train_pool

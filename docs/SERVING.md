@@ -1,7 +1,7 @@
 # Serving the pool to an agent runtime
 
-> **The exact serve command, every flag and why, the adapter inventory and the
-> tokenizer compatibility table are in [`STACK.md`](STACK.md).**
+> **The system this serves is described in [`ARCHITECTURE.md`](ARCHITECTURE.md); what each
+> number here rests on is in [`RECORD.md`](RECORD.md).**
 
 This is what an agent — OpenClaw, Hermes, anything speaking OpenAI — talks to. Every
 piece of it was measured before it was assembled, and the one piece that was not is
@@ -61,14 +61,21 @@ It sends one prompt to the base and to each adapter and compares. Read
 | base | adapters applied by vLLM 0.29.0 |
 |---|---|
 | `Qwen/Qwen2.5-3B-Instruct` | **yes** — the pool runs on it |
-| `Qwen/Qwen3.5-4B` | **no**, silently |
+| `Qwen/Qwen3.5-4B` | **yes, once the adapter's tensors are named for the class vLLM serves** — as PEFT writes them through `AutoModelForCausalLM`, **no, silently** |
 
-Qwen3.5 is not the weaker model and this is not a quality judgement: it trains a LoRA
-perfectly well. It is a **serving-stack** limit, and a pool needs adapters swappable
-per request over one resident base. Merging the delta into the weights
-(`save_pretrained_merged`) does serve correctly and is what unsloth's own Qwen3.5
-guide recommends for vLLM **[read]** — at one full copy of the weights per expert,
-with no shared base and no swapping. **That works and it is not a pool.**
+**Why the same base gives both answers — D2 [ran] 2026-09-19**,
+`results/D2-rekey-20260918/`. vLLM serves `Qwen3.5-4B` as
+`Qwen3_5ForConditionalGeneration` and activates adapter weights by
+`language_model.model.layers.N…`; an adapter trained through the text-only class names them
+`model.layers.N…`. Loading validates only the last component of each name — hence the
+*Loaded* line — and activation, finding no module by that full name, resets the slot behind
+a debug message. The same weights with 496 tensors renamed, not retrained, come back
+`applied`:
+
+    python3 -m training.harness.rekey adapters/<as-trained> adapters/<renamed>
+
+Read for five days as a serving-stack limit, it was a naming mismatch. The lesson the gate
+teaches is unchanged and sharper: **the log line is not the verdict — the served text is.**
 
 ## Routing what the pool cannot do — the end-to-end that runs today
 

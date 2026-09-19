@@ -1,7 +1,7 @@
 """How well calibrated is the confidence this pool ALREADY has?
 
 THIS IS A HEADROOM CHECK AND IT CAN CANCEL WHAT COMES AFTER IT. The typed-adapter
-proposal (`docs/analysis/typed-adapters.md`) rests on the claim that a first-token
+proposal (`docs/analysis/typed-adapters.md`, at the tag `v0.1-foundations`) rests on the claim that a first-token
 logprob is *"a poor proxy — biased by format, tokenisation and prompt"* **[read]**.
 That claim is testable on our own model, today, without training anything:
 `email-full` already answers `IMPORTANT` / `NOT IMPORTANT`, so the probability mass
@@ -35,7 +35,7 @@ from training.harness.agent_sim import SYSTEM
 from training.harness.bar import calibration
 
 #: The two answers, as the suite's own words. Both are single tokens on this base
-#: **[ran]** — see `docs/analysis/typed-adapters.md` Q5.
+#: **[ran]** — see `docs/analysis/typed-adapters.md` Q5 (tag `v0.1-foundations`).
 YES, NO = "IMPORTANT", "NOT IMPORTANT"
 
 

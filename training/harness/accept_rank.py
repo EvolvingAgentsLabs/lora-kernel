@@ -4,7 +4,7 @@ THE CLAIM UNDER TEST. The architecture says a small expert's **acceptance rate a
 a larger target** orders experts the way verified quality orders them, so a pool can
 be ranked with no judge. `REPORT.md` §6 records that this is the *only* claim that
 survives the existence of EAGLE-3 — a purpose-built head wins latency outright and
-cannot rank anything. And `docs/analysis/generated-code-ceiling.md` records why it has
+cannot rank anything. And `docs/RECORD.md` §2 (and `docs/analysis/generated-code-ceiling.md` at the tag `v0.1-foundations`) records why it has
 never been tested: **ranking needs experts that differ in quality**, and this project
 has had one useful expert. `graded.py` makes three from one corpus.
 

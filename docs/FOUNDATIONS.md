@@ -4,8 +4,9 @@
 
 This document says, step by step and in mathematics, what the models are, why
 generating with them is slow, what a LoRA is, what the engine does, what speculative
-decoding computes, why acceptance can rank experts, what the tasks are as functions,
-and why the Qwen 3 family and `Qwen3.8-27B` can be the large model. **Every formula
+decoding computes, what acceptance measures between a small expert and the large model of
+its subdomain, what the tasks and the router are as functions, and why the Qwen 3 family
+supplies both halves of a pair. **Every formula
 that has a number under it names the run that produced the number.**
 
 ## 0. How to read this, and the standing rule
@@ -93,7 +94,7 @@ $W_{out} \in \mathbb{R}^{d\times |V_{emb}|}$. In `Qwen2.5-3B` the unembedding is
 to the input embedding (`tie_word_embeddings: true`) and has $|V_{emb}| = 151{,}936$
 columns — **wider than the 151,643-entry tokenizer plus its 22 added tokens = 151,665
 ids** **[read]**/**[ran]** P48. The extra columns are padding; a mask over them masks
-nothing, which `STACK.md` §1 records because a typed head once assumed otherwise.
+nothing, which `STACK.md` §1 (the tag `v0.1-foundations`) records because a typed head once assumed otherwise.
 
 ### 1.4 The two families we serve
 
@@ -277,7 +278,7 @@ parameters are $r\,(d_{in} + d_{out})$ per matrix:
 | × 36 blocks | | **29,933,568** |
 
 At 4 bytes (fp32, PEFT's default for saved adapters) that is **119,734,272 bytes**;
-the file on disk is **119,801,528 bytes** **[ran]** `STACK.md` §3 — the 67,256-byte
+the file on disk is **119,801,528 bytes** **[ran]** `STACK.md` §3 (the tag `v0.1-foundations`) — the 67,256-byte
 difference is the safetensors header. **The derivation and the artefact agree**, and
 the adapter is ~1% of the base's 3.09 B parameters.
 
@@ -338,7 +339,7 @@ $$
 as one shared GEMM for $xW$ plus a *batched, gathered* pair of thin GEMMs (the
 `bgmv` / Punica kernels **[read]**, Chen et al. 2023; S-LoRA, Sheng et al. 2023). Flags
 here: `--enable-lora --max-lora-rank 16 --max-loras k --lora-modules name=path`
-**[ran]** `STACK.md` §5. The adapter is chosen by the request's `model` field, which is
+**[ran]** `STACK.md` §5 (the tag `v0.1-foundations`). The adapter is chosen by the request's `model` field, which is
 how the pool is addressed with no router at all.
 
 **C18 is a test of that equation.** An engine can load $(A_i, B_i)$, log
@@ -453,11 +454,11 @@ separate small model cannot. A community `Qwen2.5-32B-Instruct_EAGLE3` exists
 **[read]**. So **speculative decoding as a latency device is settled, and not by us.**
 What a single bound head cannot do is compare $k$ *different* drafters — there is one
 of it. **Acceptance as a judge-free ordering over $k$ experts** is the claim this
-architecture keeps (`REPORT.md` §6), and it is what §7 formalises.
+architecture keeps ([`RECORD.md`](RECORD.md) §5), and it is what §7 formalises.
 
 ---
 
-## 7. Acceptance as ranking — the thesis, formally
+## 7. Acceptance — between a small expert and the large model of its subdomain
 
 ### 7.1 Definitions and the claim
 
@@ -473,12 +474,21 @@ $$
 the fraction of $E$'s $n_c$ *decision tokens* on that case that the target would have
 written itself (§6.3), and $\alpha_T(E) = \tfrac1{|\mathcal C|}\sum_c \alpha_T(E,c)$.
 
-**The claim (P55):** for experts $E_1,\dots,E_m$ on one suite,
-$Q(E_a) > Q(E_b) \;\Rightarrow\; \alpha_T(E_a) > \alpha_T(E_b)$ — acceptance orders
-experts the way verified quality orders them, with **no judge and no verifier at
-serving time**. If it holds, a pool selects among close experts by letting the target
-score their drafts; if it fails, the "free router" is gone and the architecture
-survives without it.
+**The claim this project first made (P55), and what became of it.** *Acceptance orders
+experts the way verified quality orders them* — $Q(E_a) > Q(E_b) \Rightarrow
+\alpha_T(E_a) > \alpha_T(E_b)$, a free router. Its precondition (§7.2) failed twice for an
+untrained target and the question was closed without a verdict ([`RECORD.md`](RECORD.md) §2).
+
+**The claim now (2026-09-19, [`PLAN.md`](PLAN.md) milestone 4).** Let $S_\theta$ be the
+small model with the LoRA of one subdomain, $T$ the bare large model and $T_\phi$ the large
+model with a LoRA trained on the *same corpus*. The pair is speculative iff
+
+$$\alpha_{T_\phi}(S_\theta) > \alpha_{T}(S_\theta),$$
+
+paired over cases — training the large half on the subdomain makes it agree with the small
+expert's correct drafts more than the generalist does. It is read beside
+$Q(T_\phi) > Q(S_\theta)$ (milestone 3): a verifier that is not better than its drafter
+has nothing to verify. **Not yet measured.**
 
 ### 7.2 The precondition, and P55 A as its instance
 
@@ -516,15 +526,20 @@ and **the harness-supplied `= {result}` lines are in the target's prefix and in 
 span** — scoring them would score the tool. A result of "α does not rank" then says
 *where* agreement lived rather than only that it failed.
 
-### 7.4 The ordering test
+### 7.4 The test, for an ordering and for a pair
 
-For every pair $(E_a, E_b)$ the verifier resolves (§9.2), take the cases both were
-scored on and count $u = \#\{c: \alpha(E_a,c) > \alpha(E_b,c)\}$,
-$d = \#\{c: \alpha(E_a,c) < \alpha(E_b,c)\}$; ties are excluded; the exact two-sided
-binomial on $(u,d)$ decides. Written before any run: **SUPPORTED** if every resolved
-pair agrees; **FALSIFIED** if any pair is ordered the other way at $p\le0.05$;
-**UNRESOLVED** if the verifier saw a difference and $\alpha$ did not — *a failure of
-the claim as stated, not a tie* **[ran]** `results/P55-graded-ranking-20260916/BRIEF.md`.
+**As written for the ordering claim (P55).** For every pair $(E_a, E_b)$ the verifier
+resolves (§9.2), take the cases both were scored on and count
+$u = \#\{c: \alpha(E_a,c) > \alpha(E_b,c)\}$, $d = \#\{c: \alpha(E_a,c) < \alpha(E_b,c)\}$;
+ties are excluded; the exact two-sided binomial on $(u,d)$ decides. **SUPPORTED** if every
+resolved pair agrees; **FALSIFIED** if any pair is ordered the other way at $p\le0.05$;
+**UNRESOLVED** if the verifier saw a difference and $\alpha$ did not **[ran]**
+`results/P55-graded-ranking-20260916/BRIEF.md`.
+
+**For a pair (milestone 4)** the same count is taken over *targets* instead of experts:
+$u = \#\{c: \alpha_{T_\phi}(S_\theta,c) > \alpha_{T}(S_\theta,c)\}$ and $d$ its mirror, same
+binomial. The draft is the same text under both targets, so the comparison is paired by
+construction and costs one extra prefill per case (§5.3).
 
 ---
 
@@ -588,6 +603,23 @@ than fewer would confound amount with content. Same base, same $r, \alpha$, same
 epochs — so if $Q$ orders them, there is, for the first time, an ordering for
 $\alpha$ to agree or disagree with.
 
+### 8.5 The router: a classifier over corpus distributions, with abstention
+
+Each released member $m$ has a corpus $K_m$; its user turns are samples of the distribution
+$P_m$ the member was trained under. A router is a function
+$r(x) \in \{m_1,\dots,m_M,\ \mathrm{out}\}$ built from a score $s_m(x)$ per member and a
+threshold:
+
+$$r(x) = \begin{cases} \arg\max_m s_m(x) & \text{if } \max_m s_m(x) \ge \tau \ \text{and the margin to the runner-up} \ge \delta,\\ \mathrm{out} & \text{otherwise.}\end{cases}$$
+
+The dictionary of P62 is the special case $s_m(x) = \#\{\text{keys of } m \text{ in } x\}$,
+$\tau = 1$, $\delta = 1$. In §8.4's sum the only term a router can change is the third —
+a request sent to a member whose corpus it does not belong to counts as wrong — so a router
+is scored on **misrouted-to-local** and on the out share, not on accuracy, and $\tau$ is
+set on out-of-distribution text before anything else is measured: a model asked to choose
+always chooses. **[ran]** for the dictionary: P62, P64. The learned $s_m$ is
+[`PLAN.md`](PLAN.md) milestone 2.
+
 ---
 
 ### 8.4 Delivered accuracy under a routing policy
@@ -645,16 +677,21 @@ unresolvable at $n=200$ **[ran]**). §8.2 is the same rule applied to the target
 
 ---
 
-## 10. Why the Qwen 3 family, and `Qwen3.8-27B` as the large model
+## 10. The Qwen 3 family: small and large of one id space
 
-### 10.1 The target needs no LoRA
+### 10.1 Both halves carry a LoRA
 
-Speculative decoding has two models and two jobs. The **drafter** is the pool —
-multi-LoRA is *its* requirement. The **target** verifies in one pass (§6.1 step 2)
-and is one dense, unmodified model. C18 — *vLLM loads a LoRA on a 3.x base and
-serves the base anyway* **[ran]** P33 — is a statement about serving a LoRA, so **it
-constrains the drafter and says nothing about the target**. The 32B here is served
-AWQ with no adapter (§4.3) and that is exactly the target's shape.
+Speculative decoding has two models and two jobs. The **drafter** is the pool — multi-LoRA
+is *its* requirement. The **target** verifies in one pass (§6.1 step 2).
+
+~~The target is one dense, unmodified model and needs no LoRA.~~ **Restated 2026-09-19.**
+An unmodified large model scored *below* the small expert in both regions tried —
+$Q(T) < \max Q(E)$, 0.746 < 0.989 and 0.967 < 1.000 **[ran]** P55, P55b (§7.2) — so the
+target of a pair is $T_\phi$: the large model with a LoRA of the same subdomain. That makes
+serving a LoRA a requirement of **both** halves, and both are measured: over a 4-bit large
+model the adapter is applied, mean $|\Delta\ell|$ 0.22–0.49 nats against a base-vs-base
+0.000 **[ran]** P60 §3b (§4.3); over the 3.x small model it is applied once its tensors are
+named for the class vLLM serves **[ran]** D2 (§10.4).
 
 ### 10.2 The id space
 
@@ -682,37 +719,50 @@ disabled and the count of `<think>` ids in its greedy output on the suite must b
 | restrict `target_modules` to the MLP to unblock it | "the adapter touched only MLPs" was a diagnosis P33 **withdrew** — the loaded tree carries `q_proj` | **no support** |
 | an RFC closes per-request LoRA in the speculative worker; SGLang handles hybrids | not checked from here | **[unverified]** |
 
-What is known: the adapter is real (G1: `lora_B` moved, output changed in process),
-the engine says it loaded it, the served text equals the base's. **The failure is
-measured; its mechanism is not**, and this project's rule after two withdrawn
-diagnoses is to read the mechanism with the log in hand (D2), not to adopt one.
+What was known on 2026-09-17: the adapter is real (G1: `lora_B` moved, output changed in
+process), the engine says it loaded it, the served text equals the base's.
+
+**The mechanism, read and then run — D2 [ran] 2026-09-19.** With $K$ the adapter's tensor
+names, $m$ vLLM's name mapper for the served class and $M$ the served model's modules,
+
+$$\text{applied}(K) = \{\,k \in K : m(k) \in M\,\}.$$
+
+Trained through `AutoModelForCausalLM`, PEFT names tensors `model.layers.N…`; vLLM serves
+`Qwen3_5ForConditionalGeneration` and activates by `language_model.model.layers.N…`.
+Loading validates only the last component of each name and logs *Loaded*; activation looks
+up the full name and resets the slot. As trained $|\text{applied}(K)| = 0$ of 496 and the
+real activation sets 0 of 178 modules; renamed by `training/harness/rekey.py`, 496 of 496
+and 152 of 178, and the identity gate turns from `not applied` to `applied`. The 26 modules
+left empty are `lm_head`, `embed_tokens` and 24 `conv1d`, none targeted; the
+linear-attention projections are among the 152.
 
 ### 10.5 The route, as mechanisms
 
 | # | mechanism | state |
 |---|---|---|
-| D0 | a 3.x drafter sharing an id space with 3.8-27B | **[ran]** ✓ |
+| D0 | a 3.x small model sharing an id space with 3.8-27B | **[ran]** ✓ |
 | D1 | C18 under a newer vLLM | void — the chain installs the latest and it is **0.29.0**, P33's version **[ran]** |
-| D2 | the C18 mechanism: G3 merge-and-serve; PEFT key ↔ vLLM module mapping, with the log | next |
-| D3 | thinking off, verified by count | inside D4 |
-| D4 | the P55 instrument, `--base Qwen/Qwen3.5-4B --target Qwen/Qwen3.8-27B`, graded pool retrained on 3.5-4B | blocked on D2 |
+| D2 | the C18 mechanism: PEFT key ↔ vLLM module mapping, with the log | **[ran]** ✓ 2026-09-19 — a naming mismatch (§10.4) |
+| D3 | thinking off, verified by count | inside milestones 3–4 |
+| ~~D4~~ | ~~the ranking instrument pointed at 3.5-4B → 3.8-27B~~ | retired with the ranking claim; replaced by [`PLAN.md`](PLAN.md) milestones 1, 3 and 4 |
 
-**Why the order.** Everything in §6–§7 is target-agnostic given §3.2; the instrument
-built on Qwen 2.5 is the one D4 runs. If §7 fails on 2.5, D4 would buy a faster
-version of a mechanism that does not rank. Nothing above depends on D; D4 depends on
-all of it.
+**Why the order.** Everything in §6–§7 is target-agnostic given §3.2. Milestone 1 moves the
+released members to the 3.x small model with their Qwen 2.5 releases as the control;
+milestone 3 trains the large half; milestone 4 measures §7.1's inequality.
 
 ---
 
 ## 11. Map: section → run
 
+**Runs named here that have no directory on `main` live at the tag `v0.1-foundations`.**
+
 | section | formula / claim | run that instantiates it |
 |---|---|---|
-| §1.3 | embedding width > vocabulary | `STACK.md` §1, P48 |
+| §1.3 | embedding width > vocabulary | `STACK.md` §1 (the tag `v0.1-foundations`), P48 |
 | §1.4–1.5 | dimensions, hybrid `layer_types` | `config.json` **[read]** 2026-09-17; P33 log |
 | §2.4 | batching: 475 chains, 31 s / 230 s | P55 A `session_a.json` |
 | §3.3 | id-map table | P48; P55 `D0-tokenizers.txt` |
-| §4.2 | 29,933,568 params ↔ 119,801,528 bytes | `STACK.md` §3 |
+| §4.2 | 29,933,568 params ↔ 119,801,528 bytes | `STACK.md` §3 (the tag `v0.1-foundations`) |
 | §4.4, §8.1 | drift: 0.741 → 0.989 | P43 `arm_email_475.json`; P55 A |
 | §4.4, §9.2 | **a release reproduces**: re-served 0 : 0 against its record; re-trained 1 : 0 — training variance one case in 475 | P57 `release.json`, `releases/email-full@v1.json` |
 | §5.2 | C18 identity gate | P33 `lora_matrix.json`; P55 A `applied`; **Phase 0 P56: both members 3/3 `applied`, tools reachable, stop honoured** |
@@ -729,9 +779,11 @@ all of it.
 | §10.5 D1 | vLLM resolves to 0.29.0 | P55 A boot log |
 | §4.4 | **an unknown surface is extrapolation**: unpruned (54 tools) the expert copies tags off the block, 225 of 227 calls refused; pruned, 8 of 1160; the block is ~7,956 vs ~77 tokens | P59 `attribution.json` |
 | §6.4 | **α, $\mathbb{E}[\tau]$, speed-up** | **not yet measured** |
-| §7.4 | **the ordering verdict** | **not measured**: §7.2 fails for an *untrained* target in two easy regions (P55 A, P55b); reopened as one arm — a trained target on a deeper band (P60) |
+| §7.4 | **the ordering verdict** | **closed without a verdict 2026-09-19**: §7.2 fails for an *untrained* target in two easy regions (P55 A, P55b). What survived it is the trained target — now the large half of a pair (§7.1, §10.1) |
 | §10.5 D2 / §3.4 | **a LoRA applies over the AWQ 32B**: mean $|\Delta\ell|$ 0.22–0.49 nats vs base-vs-base 0.000, 3/3; text gate 2/3 | P60 §3b `awq_gate.json` |
 | §10.5 D2 | **C18 is a naming mismatch**: $\text{applied}(K)=\{k\in K: m(k)\in M\}$ — as trained 0 of 496 tensors land on the served text stack and the real activation sets 0 of 178 modules (`not applied`); renamed, 496 of 496 and 152 of 178 (`applied`); control `applied` | D2 `lora_matrix.json`, `vllm.log` |
+| §7.1, §7.4 | **the pair inequality** $\alpha_{T_\phi}(S_\theta) > \alpha_T(S_\theta)$ | **not yet measured** — [`PLAN.md`](PLAN.md) milestone 4 |
+| §8.5 | **the router as a classifier with abstention**; the dictionary is its special case | dictionary: P62, P64; the learned score: **not yet measured** — milestone 2 |
 | §7.3, §8.2 | **weights or harness — weights**: base 0.345, base + 914-token procedure 0.601 (both 0 tool calls, under the 0.655 majority bar), expert 0.989; expert vs base+kb **137 : 1**; the sign test alone read the flipped default as paying (164 : 74) — the majority bar guards it | P61 `session.json` |
 | §8.4 | **routing per request ties by region**: 0.775 = 0.775, 0 misroutes, 37.5 % out on P41's 240 cases | P62 `replay.json` (zero GPU) |
 | §4.4, §8.1 | **the live turn is corpus mode or it is nothing**: under the runtime's prompt 2/32 human turns call a tool (0.281); under the member's released prompt with `</tag>` stops, the round-trip cap and 256 tokens/step, 19/32 call and 0.688 vs bar 0.655 ($p=0.43$), 40/40 local | P63 `live.json`, attempts 4 and 7 |

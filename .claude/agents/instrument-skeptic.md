@@ -1,6 +1,6 @@
 ---
 name: instrument-skeptic
-description: Adversarially reviews a measurement instrument before its numbers are believed — checks for the known ways a run produces a clean and wrong number. Use after building or changing anything that produces a metric, and before any result is written into docs/EXPERIMENT_PLAN.md as established.
+description: Adversarially reviews a measurement instrument before its numbers are believed — checks for the known ways a run produces a clean and wrong number. Use after building or changing anything that produces a metric, and before any result is written into docs/PLAN.md as established.
 tools: Read, Bash, Grep, Glob
 model: sonnet
 ---

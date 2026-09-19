@@ -72,9 +72,12 @@ def test_a_backwards_band_is_refused():
 
 
 def test_accepts_is_the_question_p45_made_answerable():
-    fluids = POOL["adapters/fluids-full"]
-    assert not contract.accepts(fluids, 2), "a two-step problem is outside its band"
-    assert contract.accepts(fluids, 7)
+    # The retired fluids member was trained on 6-to-9-step chains only and over-solved
+    # 18 of 18 cases below that band [ran] P45 (tag v0.1-foundations). The band is what
+    # lets a router refuse such a member a two-step problem.
+    deep_only = {"band": contract.band(6, 9)}
+    assert not contract.accepts(deep_only, 2), "a two-step problem is outside its band"
+    assert contract.accepts(deep_only, 7)
 
 
 def test_a_typed_member_without_token_ids_is_refused():

@@ -1,573 +1,210 @@
 # lora-kernel
 
-**The runtime of a service that resolves locally what it is measured to resolve and
-sends the rest to a frontier model: a pool of QLoRA deltas and written procedures over
-one resident base, behind an OpenAI-compatible API, with OpenClaw instances per task
-on top.** The pool is ranked by a larger model of the same family that verifies its
-tokens; nothing else is neural.
+**Experts are corpora. A request goes to the expert whose corpus it looks like, and to a
+frontier model when it looks like none.**
 
-*[Léeme en español](README.es.md)*
+[![license Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
+[![family Qwen 3.x](https://img.shields.io/badge/family-Qwen%203.x-8A5C10)](docs/ARCHITECTURE.md)
+[![record v0.1-foundations](https://img.shields.io/badge/record-v0.1--foundations-555)](docs/RECORD.md)
 
-[![runs inside OpenClaw](https://img.shields.io/badge/runs_inside-OpenClaw-1f6feb)](https://docs.openclaw.ai/cli)
-[![base today Qwen2.5-3B](https://img.shields.io/badge/base_today-Qwen2.5--3B--Instruct-555)](https://huggingface.co/Qwen/Qwen2.5-3B-Instruct)
-[![target today Qwen2.5-32B-AWQ](https://img.shields.io/badge/target_today-Qwen2.5--32B--AWQ-555)](https://huggingface.co/Qwen/Qwen2.5-32B-Instruct-AWQ)
-[![goal Qwen3.8-27B](https://img.shields.io/badge/goal-Qwen3.8--27B-8A5C10)](https://huggingface.co/Qwen/Qwen3.8-27B)
-[![served by vLLM multi-LoRA](https://img.shields.io/badge/served_by-vLLM_multi--LoRA-555)](https://docs.vllm.ai)
+*[Español](README.es.md)*
 
-**It runs inside a real agent.** [OpenClaw](https://docs.openclaw.ai/cli) on a laptop
-→ a local proxy → a tunnel → vLLM on a rented card → a QLoRA of ours → back, with the
-inbox tools handed to the agent over MCP and **zero requests leaving the machine** for
-anything the pool serves **[ran]** P43. Step by step: [`docs/OPENCLAW.md`](docs/OPENCLAW.md).
+lora-kernel is the runtime of a service: an **OpenAI-compatible API** that answers locally
+what falls inside a measured region and forwards the rest to a frontier model, and
+**OpenClaw instances per task** on top of it. A region is a small QLoRA expert trained by
+ordinary supervised fine-tuning on one corpus, released through a gate, and served beside
+the others on one resident base.
 
-Every claim about this repository is **[ran]** with its run directory; every claim
-about anything else is **[read]** and cited; what could not be checked from here is
-**[unverified]** and never load-bearing. Every formula is derived, step by step and
-tied to its run, in [`docs/FOUNDATIONS.md`](docs/FOUNDATIONS.md). **The rule this
-project keeps: every document carries its mathematics, and every Colab run updates
-the formula it instantiates.**
-
-## What this provides, in what order, and what it does not
-
-**The service is one thing offered through two interfaces, in this order:**
-
-1. **An OpenAI-compatible API** (`/v1/chat/completions`, the proxy in
-   `training/harness/openai_proxy.py`). A request that falls in a region the pool is
-   measured to resolve is answered locally — by a QLoRA, by a written procedure the
-   harness puts in the context, or both — and everything else goes to a frontier
-   model, with one line per forwarded request naming shapes and never content.
-   **Measured so far:** 0.546 → 0.775 with 38 % leaving (P41); one region released as
-   `email-full@v1` (P57); the tool surface pruned to what a member declares (P59).
-2. **OpenClaw instances per task**, on top of the same API: a profile, its MCP tools
-   pruned to the member's surface, the local model in its region and the frontier for
-   the rest. One real turn has run end to end with nothing leaving (P43); the live
-   turn with `--prune`, `--auto` and `--member-prompt` runs **[ran]** P63: 40/40 local,
-   the inbox tools called on 19 of 32 human turns, 3.5 s per turn.
-
-**Some of it is artisanal at first, on purpose.** Customising a region today means
-writing its procedure document by hand, or generating its corpus and training its
-adapter through the pipeline here, and putting it through the release gate. The plan
-is to automate that pipeline — traces → corpus → training → gate → release — over the
-next two to three months, and every piece of it already exists in its synthetic form.
-
-**What is not part of this runtime nor of this open-source version:** the
-customisation service itself and its tooling — writing a customer's procedure
-documents, training their adapters as a service, the automation of that pipeline, the
-trained vertical packs and the control plane. This repository is the runtime that
-serves, routes, prunes, releases and measures; the customisations are what runs on it.
-
-**The order of the work, as milestones** (`CLAUDE.md` §8b,
-[`docs/EXPERIMENT_PLAN.md`](docs/EXPERIMENT_PLAN.md) §0c):
-
-| # | milestone | what it buys | state |
-|---|---|---|---|
-| 1 | **weights or harness** on one region — the base with a written procedure against the trained expert, same suite, same loop (P61) | what a customisation costs: a document paid per request in tokens, or an adapter trained once | **[ran]** P61: **weights needed** — base+document 0 tool calls, 0.601 under the 0.655 bar; expert 137 : 1 |
-| 2 | **routing per request** — the proxy decides local or frontier without the client naming a model | any client uses the API | **[ran]** P62, zero GPU: `--auto` routes by text; replay on P41's 240 cases **ties by region at 0.775, 0 misroutes**, 37.5 % out |
-| 3 | **OpenClaw live** with `--prune`, a profile template per task | the high-level interface over the API | **[ran]** P63: **LIVE** on the 7th attempt — 40/40 local, 0 invented calls, 19/32 human turns call a tool, 0.688 vs bar 0.655; the member served under its released prompt (`--member-prompt`); under the runtime's prompt 2/32 and 0.281 |
-| 4 | **the first real region** of a customer, customised by hand, released through Phase 1's door | the service with real traffic | 1–3, a real sandbox for code, keys rotated |
-| 5 | second and third regions — the region table per client | a pool in fact, not in name | 4 — **synthetic half [ran]** P64: `desk-commitment@v1` released beside `email-full@v1` on one vLLM, **240/240** tying the recorded run (0 discordant), **202 : 0** against the base, `--auto` routing each by its question; a customer's regions wait on 4 |
-| 6 | **traces → corpus → gate → release without hands** | the automation promised | 4, 5 |
-| 7 | a large local model — `Qwen3.8-27B` (D2 → D4) | moving part of "general" from the frontier to local | 5, and only if the frontier bill justifies it |
-
-The acceptance-ranking thesis (M2) is no longer on this path: P60 §3b **[ran]**
-2026-09-18 shows the arm that would decide it is buildable — a trained target serves
-over the AWQ base — and it is scheduled behind milestone 5 as a quality gate on local
-answers, not as a dependency of anything above.
-
-**Milestone 1 [ran] 2026-09-18, P61 — weights are needed on this region, and the reason is precise.** The base with the procedure document made **0 tool calls on 351 of 351** human messages, exactly like the plain base: it does not follow a written procedure in context. Its accuracy moved 0.345 → 0.601 because the document flipped its default answer, still under the always-IMPORTANT bar of 0.655; the expert, at 0.989 with 1053 calls, beats it **137 : 1**. The document costs 914 tokens on every request; the adapter costs none. So on a 3B the harness carries knowledge, not procedure — the procedure has to be in the weights.
+Every claim below is marked **[ran]** (observed in this repository, run directory named)
+or **[read]** (inferred from source or a paper). Everything measured so far is on
+**generated suites** — no real traffic has passed through it yet. That is the first thing
+to know about the numbers.
 
 ---
 
-## What this is for, and what to expect from it
+## The idea, in three decisions
 
-**Not** a 3B model that beats a frontier model. **A tiered architecture that absorbs
-the high-volume, repetitive part of an organisation's traffic locally and sends only
-the residue out** — and the numbers below are the reason the sentence is written that
-way.
+Twelve days of measurement reduced the design to one observation: **what makes an expert
+work, and what makes routing work, is the distribution of the expert's corpus.** An expert
+called a tool on 2 of 32 live turns under the runtime's prompt and on 19 of 32 under the
+prompt its corpus taught **[ran]** P63. A keyword router misrouted 15 of 60 requests when
+keyed on what two experts' inputs share, and none when keyed on what their corpora ask
+**[ran]** P64. Same fact, seen twice. The design follows from it.
 
-### The measured points
-
-| configuration | delivered accuracy | leaves the machine | run |
-|---|---:|---:|---|
-| everything local — the pool alone | **0.546** | 0 % | **[ran]** P41 |
-| **the failing region routed to the frontier** | **0.775** | **38 %** | **[ran]** P41 |
-| one expert, on its own task, served as its corpus teaches | **0.992** (human messages 0.989) | 0 % | **[ran]** P55 A |
-| the same expert, served through `tool_calls` | 0.808 (human 0.741, bar 0.655, $p = 0.00036$) | 0 % | **[ran]** P43 |
-
-The first two rows are the whole thesis in miniature. The original plan called the
-frontier *scaffolding* to be withdrawn once the experts matched it; withdrawing it
-measured **0.546**. Keeping it for what the pool is *measured* to fail — routed by
-region, not guessed per case — measured **0.775** with 62 % of the traffic never
-leaving. **The frontier stays. It stays for the residue.**
-
-### The economics, as a model with its inputs labelled
-
-Let a fraction $\rho$ of requests be served locally and $1-\rho$ go to a frontier API.
-With $c_L$ the marginal cost of a local request and $c_F$ of a frontier one,
-
-$$
-\frac{\text{cost}_{\text{hybrid}}}{\text{cost}_{\text{frontier}}}
-\;=\; \rho\,\frac{c_L}{c_F} + (1-\rho),
-\qquad
-\text{quality}_{\text{hybrid}} = \rho\,Q_L + (1-\rho)\,Q_F .
-$$
-
-What is **measured**: $\rho = 0.62$ and $\text{quality} = 0.775$ on the two-region
-pool **[ran]** P41; a local expert on its own region at $Q_L \approx 0.99$ **[ran]**
-P55 A; a local delta of **119,801,528 bytes** over a base that is read once per
-token **[ran]**. What is **estimated, and said so**: $c_L/c_F$. A local token is a
-share of one GPU-hour amortised over every request that hour; a frontier token is a
-list price. Whatever the ratio is at your prices, the cost line above is linear in
-it, and with $\rho = 0.62$ the hybrid sits between **38 % of frontier cost** (at
-$c_L \to 0$) and frontier cost (at $c_L = c_F$). Three further reductions are
-measured in shape and not yet in tokens: the tool surface an agent offers is pruned
-from **54 lines to 3** before the prompt is built (#190 **[ran]**); the instructions
-that would live in a system prompt live in the weights instead; and **nothing that
-the pool serves is sent anywhere** **[ran]** P43.
-
-### Where small experts work, and where they fail — both measured
-
-**They work as assembly-line workers on a closed region**: a fixed task, fixed tools,
-a mechanical rule. `email-full` learns *which* tool, *with what argument*, and the
-rule *at least two of four signals* to **0.989** on human messages **[ran]**; the
-fluids expert reproduces its teacher's procedure step for step, **30/30** inside its
-region **[ran]** P9.
-
-**They fail at the edge, silently.** The same fluids expert falls to **1 of 20** on
-families it never saw — *with the same fluency, the same structure and the same
-confidence*, inventing formulas **[ran]** P22. Below its training depth it
-over-solves on **18 of 18** cases and the bare base beats it, 0.167 to 0.000 **[ran]**
-P45. Every *behavioural* guard tried — tool-call rate, transcript length, a tripwire —
-scored **0.62 against a chance of 0.60** **[ran]** P18. One *structural* guard
-survives: dimensional algebra over $(\text{kg}, \text{m}, \text{s})$ catches **0.80** of
-out-of-region work, false-alarms 0.22 alone, and combined with the mechanical check
-fires **0 of 60** in region while still catching 0.35 outside **[ran]** P22.
-
-So: **use them where the task repeats thousands of times a day and the rule is
-knowable; do not use them alone where a silent failure costs more than the call it
-saved.**
-
-### Small models only — not today, and the long-run ratio is a hypothesis
-
-Today the guards are not reliable enough to run without the fallback, and the number
-that says so is the one above: 0.62 against 0.60. The mechanisms this architecture
-bets on for moving $\rho$ up are three, each with the mathematics it rests on:
-
-1. **Structural routing, not inferred routing.** The software's own structure — the
-   room, the form, the endpoint — names the expert. A twelve-keyword dict already
-   routes the coarse case at **1.000** **[ran]**; that is a criticism of the suite as
-   much as a win, and it is also how a real deployment routes
-   ([`docs/CASE-TEAM.md`](docs/CASE-TEAM.md): the standing group *is* the region).
-2. **Mechanical verification, then escalate.** Where the expert's output can be
-   checked — a schema, a test, a rule such as `important()` — the frontier is called
-   only when the check fails. That is the withdrawal condition
-   $Q_R(E) \ge Q_R(E\mid T) - \varepsilon$ on a paired test, measured once in region
-   with a calculator standing in for the target: gap **0.000** **[ran]** P7.
-3. **Speculative decoding inside one family.** A small expert drafts, a local larger
-   model verifies in one pass, and the emitted tokens are distributed exactly as the
-   larger model's (§ *How it works*). Where it holds, the *quality* of the large
-   model comes at close to the *cost* of the small one — and its acceptance rate
-   ranks the experts with no judge.
-
-**The expectation, then:** $\rho$ around 0.6 is measured on a two-region pool; the
-mechanisms above are what would move it towards 0.85–0.9 on regions that are
-structurally named and mechanically checkable. **That ratio is a hypothesis with a
-route, not a result**, and 1.0 is not on the route at all: out-of-distribution work
-and the arbitration of the residue are what the frontier is kept for.
-
----
-
-## The thesis, with the formula beside each replacement
-
-| what it is today | what it becomes | the mathematics |
-|---|---|---|
-| an agent | **a domain QLoRA**, ~114 MB, hot-swapped per request | $W' = W + \tfrac{\alpha}{r}AB$ on seven projections per block — **29,933,568** parameters at $r=16$, **119,801,528** bytes on disk, derivation and artefact agree **[ran]** |
-| the router — an extra model call | **a dict** for the coarse route (1.000 with twelve keywords **[ran]**) and **acceptance** for ranking experts that resemble each other | $\arg\max_i \alpha_T(E_i, c)$, valid iff $Q(T) \ge \max_i Q(E_i)$ |
-| the harness — schemas, parsers, retries | **corpus-mode serving**: stop at `</tag>`, inject the real result, continue | $s_j = s_{j-1}\,\|\,\tilde s_j\,\|\,\texttt{= tool}(\tilde s_j)$ |
-| the evolution loop | **a tournament over adapters**, promoted on a paired test | $p = \min(1, 2\Pr[\mathrm{Bin}(n_d,\tfrac12)\ge\max(u,n_d-u)])$ |
-| memory, execution | markdown + git; a sandbox — **deliberately not neural** | — |
-
----
-
-## The goal: `Qwen3.8-27B` as the large model, and the route there
-
-**Milestone 7 in the service order** (above): it matters once a real region's residue justifies a large local model. The route stays written because nothing in it depends on when it is walked.
-
-Speculative decoding needs two models with **the same id space** (FOUNDATIONS §3.2):
-a drafted id must name the same string to both. Whether a pair is usable is a fact
-about the *pair*, never about one model — and the table is indexed that way, because
-an earlier version of it read as a verdict on the 27B and was wrong:
-
-| drafter → target | tokenizer ids | id map | target-only ids | usable |
-|---|---:|---|---:|---|
-| **Qwen2.5-3B → Qwen2.5-32B** *(today)* | 151,643 | byte-identical file | 0 | **yes** **[ran]** P48 |
-| Qwen2.5-3B → Qwen3-32B | 151,643 | identical map | 4 (`<think>`, …) | yes **[ran]** P48 |
-| Qwen2.5-3B → Qwen3.5 / 3.6 / 3.8-27B | 151,643 vs **248,044** | different | — | **no** **[ran]** P48 — *the 2.5 drafters cannot reach it* |
-| **Qwen3.5-2B / 4B → Qwen3.8-27B** *(the goal)* | 248,044 | identical map | 7, all audio/TTS specials; `<think>` shared | **yes** **[ran]** D0 |
-
-So the 27B is reachable, and the drafter is what moves: the pool migrates from a
-`Qwen2.5-3B` base to a `Qwen3.5-4B` base. **The target itself needs no LoRA** — it
-verifies, it never holds an adapter — so nothing about serving adapters constrains it.
-What constrains the *drafter* is one measured fact, C18: vLLM 0.29.0 loads a LoRA on
-`Qwen3.5-4B`, logs that it did, and serves the base anyway, while the same procedure
-on `Qwen2.5-3B` comes back `applied` **[ran]** P33 — **and D2 [ran] 2026-09-19 found why: the
-adapter's tensor names, not the serving stack.** Renamed, the same adapter is applied. The
-route, as mechanisms:
-
-| # | mechanism | state | gate |
-|---|---|---|---|
-| **D0** | a 3.x drafter sharing an id space with the 27B | ✅ **[ran]** | id map identical, no collisions |
-| **D1** | C18 under a newer vLLM | void — the chain installs the latest and it is **0.29.0**, P33's version **[ran]** | — |
-| **D2** | **the C18 mechanism**, read with the log in hand: ~~G3 merge-and-serve;~~ the PEFT-key ↔ vLLM-module mapping | ✅ **[ran]** D2 2026-09-19: **a naming mismatch.** The adapter trained through `AutoModelForCausalLM` names its tensors `model.layers.N…`; vLLM serves `Qwen3_5ForConditionalGeneration` and activates by `language_model.model.layers.N…`. Same weights, 496 tensors renamed, not retrained: `not applied` → **`applied`**, the real activation going from 0 to 152 of 178 modules | `applied` on the identity gate |
-| **D3** | thinking off on the 27B | inside D4 | `<think>` ids emitted on the suite: **0** |
-| **D4** | the P55 instrument, `--base Qwen/Qwen3.5-4B --target Qwen/Qwen3.8-27B`, graded pool retrained on the 3.5-4B | blocked on D2 | the same verdict table as M2 |
-
-**Why the goal is not the first step.** Every mechanism below is target-agnostic given
-the id space; the instrument built on Qwen 2.5 is the one D4 runs. If acceptance turns
-out not to rank on 2.5 (M2), D4 would buy a faster version of a mechanism that does
-not work. Nothing in M depends on D; D4 depends on all of M.
-
----
-
-## How it works, block by block
-
-### The drafter: one base, a pool of deltas
-
-A decoder block maps $h \in \mathbb{R}^{T\times d}$ through seven linear maps —
-$W_q, W_k, W_v, W_o$ around causal attention with RoPE and grouped-query heads, and
-$W_{gate}, W_{up}, W_{down}$ in a SwiGLU MLP (FOUNDATIONS §1.2). An expert patches
-exactly those seven in every block:
-
-$$
-xW' \;=\; xW \;+\; \tfrac{\alpha}{r}\,(xA)B,
-\qquad A\in\mathbb{R}^{d_{in}\times r},\ B\in\mathbb{R}^{r\times d_{out}},\ r=16.
-$$
-
-$W$ is never touched, so the base stays resident and a request batch in which request
-$j$ names adapter $i(j)$ is one shared GEMM plus a gathered pair of thin ones,
-
-$$
-y_j = x_j W + s\,(x_j A_{i(j)})\,B_{i(j)},
-$$
-
-which is what vLLM's Punica / `bgmv` kernels compute **[read]** and what
-`--enable-lora --max-loras k --lora-modules name=path` turns on **[ran]**. **C18 is the
-test that the second term is present**: same prompt through base and adapter, texts
-must differ. `--max-loras` has only ever been 1 or 2 here; S-LoRA reports thousands on
-one machine **[read]**, and ours is untested above two.
-
-On the 3.5/3.8 line the block is different — three **Gated DeltaNet** linear-attention
-layers for every full-attention one **[read]** `config.json`, the recurrence
-
-$$
-S_t = \alpha_t\,(I - \beta_t k_t k_t^\top)\,S_{t-1} + \beta_t\,k_t v_t^\top,\qquad o_t = S_t^\top q_t,
-$$
-
-with a fixed $d_k\times d_v$ state per layer instead of a growing KV cache. **Its
-projections are still linear maps** $\tilde hW$, so the delta above applies to them
-unchanged; whether the *engine* applies it is C18, a property of the kernel path and
-not of the algebra.
-
-### The target: one teacher-forced pass verifies a whole draft
-
-Generation is the recursion $x_t \sim p(\cdot\mid x_{<t})$; decode reads every weight
-once per token, so its floor is $t_{\text{step}} \gtrsim B_W/\mathcal B$ — **~13
-ms/token for a 19.3 GB target on an A100** — and a 27B with 48 recurrent layers is
-slow per token for the same reason. A verify pass over a prefix and $k$ drafted ids
-costs **one** such read for all $k+1$ positions (FOUNDATIONS §2.3–2.4). At temperature
-0 the target is one-hot, so speculative decoding's acceptance test
-$\min(1, p_T/q)$ collapses to
-
-$$
-\text{accept } \tilde x_i \iff \tilde x_i = \arg\max_v\, p_T(v \mid \text{prefix}, \tilde x_{<i}),
-$$
-
-read here as *rank = 1* in the target's `prompt_logprobs` — the full teacher-forced
-distribution along a given text, returned by one prefill, generating nothing
-**[ran]** P55 A. The emitted sequence is distributed exactly as the target's whatever
-the drafter is (FOUNDATIONS §6.2), which is why acceptance is a statement *about the
-drafter*. With per-token rate $\alpha$ and $k$ drafts,
-
-$$
-\mathbb{E}[\tau] = \frac{1-\alpha^{k+1}}{1-\alpha},
-\qquad
-\text{speed-up} = \frac{\mathbb{E}[\tau]}{k\,c + 1},\quad c = \frac{t_{\text{draft}}}{t_{\text{target}}},
-$$
-
-and the gain grows as $c \to 0$ — a 4B drafting for a slow 27B is exactly the regime
-where a large, recursive target justifies the machinery. **No α has been measured yet;
-the instrument is built.**
-
-On a hybrid target the verify pass runs the drafted tokens through the recurrence
-above inside vLLM's chunked GDN prefill kernel and through the full-attention layers
-with their paged KV; the seven target-only ids are modality specials the text task
-never reaches, and `<think>` — shared by both models — is a serving flag (D3).
-
-### Inside vLLM: which parts do what
-
-| component | job here | evidence |
-|---|---|---|
-| engine + scheduler (continuous batching) | $n$ sequences share one weight read per step; 475 chains through the 3B in **31 s**, the 32B in **230 s** at concurrency 8 | **[ran]** P55 A |
-| PagedAttention KV cache | $\text{bytes}_{KV}(t) = 2LH_{kv}d_h\,t\,b$ — 36 KB/token on the 3B, 256 KB/token on the 32B | **[read]** config |
-| GDN state cache (`Mamba cache mode … align`) | the fixed $S_t$ per linear layer on 3.5/3.8 models | **[ran]** P33 log |
-| `LoRAModelManager` + `PunicaWrapper` (`bgmv` shrink/expand) | the gathered delta term on the **drafter's** `Linear` modules; the log names which modules it skips — on `Qwen3.5-4B` every skipped one was `visual.*` | **[ran]** P33 log |
-| OpenAI server: `/v1/completions` with `stop`, `include_stop_str_in_output` | the corpus-mode loop: generate to `</tag>`, inject, continue | **[ran]** P55 A |
-| OpenAI server: `prompt_logprobs` | the target's rank of every drafted token in one prefill | **[ran]** P55 A |
-| native speculative worker (`speculative_config`) | **not used**: it binds one drafter at start-up; per-request adapter forwarding into it is **[unverified]** | — |
-
-**Two instances, then.** The drafter server holds the base and the pool; the target
-server holds the large model alone. The drafter writes the whole chain in corpus
-mode; the target scores it by `prompt_logprobs`. Under the argmax identity the
-per-token verdicts are exactly what a fused loop would compute — one prefill per span
-rather than per round, more expensive per token and equally informative, and it needs
-nothing from vLLM's speculative path. It also gives no wall-clock speed-up, which this
-project is not buying: **latency is EAGLE's** — a per-target head trained on the
-target's hidden states drafts better than any separate expert **[read]** — and what a
-single bound head cannot do is compare $k$ different experts. **Ranking is ours.**
+1. **An expert is its corpus** — the tool block, the argument keys and their order, the
+   system prompt, the depth band. It is served under exactly that, or it is a different
+   model. The release contract records all of it.
+2. **The router is a very small model of those same corpora.** It decides which expert's
+   distribution a request falls in, and **abstains** when it falls in none. Abstention is
+   the frontier. The router never decides that a region is *good* — a measured table does.
+3. **Each subdomain gets a pair: a LoRA on a small model and a LoRA on a large one, trained
+   on the same corpus.** The small one drafts, the large one verifies — speculative
+   decoding inside the subdomain. The pair is the local answer to "this region is too hard
+   for the small expert", before anything leaves the machine.
 
 ```mermaid
 flowchart LR
-    subgraph D["DRAFTER SERVER — the pool"]
-        direction TB
-        B["resident base<br>today Qwen2.5-3B · goal Qwen3.5-4B"]
-        E1["δ₁ = (α/r)A₁B₁"]
-        E2["δ₂"]
-        E3["δ₃"]
-        B --- E1
-        B --- E2
-        B --- E3
-    end
-    subgraph T["TARGET SERVER — the large model, no adapter"]
-        direction TB
-        V["one teacher-forced pass<br>prompt_logprobs → rank of every drafted token<br>today Qwen2.5-32B-AWQ · goal Qwen3.8-27B"]
-    end
-    E1 -- "draft, corpus mode" --> V
-    E2 -- "draft" --> V
-    E3 -- "draft" --> V
-    V ==> R["α per expert, per case<br>the branch the target agrees with most wins — no judge"]
-    R -.-> Q["the verifier on the SAME cases:<br>valid only while Q(T) ≥ max Q(E)"]
-
-    classDef base fill:#F4F3F0,stroke:#C4C4BF,color:#15171B
-    classDef expert fill:#EAF1F9,stroke:#3E52A3,color:#15171B
-    classDef target fill:#FDF4E6,stroke:#8A5C10,color:#15171B
-    classDef win fill:#E7F1EA,stroke:#2E7D4F,color:#15171B
-    class B base
-    class E1,E2,E3 expert
-    class V target
-    class R win
-    class Q base
+    C["client<br>OpenAI API · OpenClaw"] --> P["proxy<br>prune · member prompt"]
+    P --> R["router<br>tiny model of the experts' corpora"]
+    R -- "falls in a corpus" --> S["small model + expert LoRA<br>drafts"]
+    S --> L["large model + LoRA of the same subdomain<br>verifies"]
+    R -- "falls in none · or region measured to fail" --> F["frontier model"]
+    L --> A["answer"]
+    F --> A
+    classDef local fill:#e8f1e4,stroke:#4a7a3a,color:#1d3314
+    classDef out fill:#f4e6d4,stroke:#9a6a2a,color:#3d2a0e
+    class P,R,S,L local
+    class F out
 ```
 
-### Why acceptance ranks — and when it cannot
-
-For experts $E_1,\dots,E_m$ on a suite with a mechanical verifier, verified quality is
-$Q(E)$ and acceptance is $\alpha_T(E) = $ the fraction of $E$'s decision tokens the
-target would have written. **The claim:**
-
-$$
-Q(E_a) > Q(E_b) \;\Rightarrow\; \alpha_T(E_a) > \alpha_T(E_b),
-$$
-
-an ordering of experts with no judge at serving time. It is only about *quality* when
-$Q(T) \ge \max_a Q(E_a)$: below that, $\alpha$ rewards the expert that shares the
-target's mistakes. That inequality is a gate, tested as a paired sign test before any
-acceptance is bought, and **it fired on the triage suite**: the untrained 32B got every
-fact and misapplied the rule, $0.746 < 0.989$, expert right where target wrong on 87
-cases against 2 **[ran]** P55 A. The instrument was ready and correctly not run. The
-desk's `commitment` region is where the same 32B is measured at **1.000 on every
-depth** **[ran]** P51 — P55b runs there.
+**The family is Qwen 3.x, small and large**: `Qwen3.5-4B` (or `2B`) and `Qwen3.8-27B`,
+which share one id space — 248,044 ids **[ran]** D0 — so the large one can verify what the
+small one drafts. The design is family-agnostic by construction: a `Gemma 4 2B` / `Gemma 4
+12B` pair is the named alternative, behind one known blocker (below).
 
 ---
 
-## Withdrawal — of the local target, per region; the frontier stays
+## What works — measured
 
-The large target is scaffolding *per region*. While it verifies, every accepted or
-rejected token is a free datum: for each region of the problem space, which expert
-the target keeps agreeing with. When an expert's acceptance crosses the threshold you
-chose **and the verified score holds without the target** — $Q_R(E) \ge Q_R(E\mid T) -
-\varepsilon$ on a paired test — the target comes out of that region and the expert
-generates alone. A frontier API is never the target — no forced logprobs (C2), no
-shared ids (C3) — it is the permanent **fallback** for what the pool is *measured* to
-fail: **0.546 → 0.775** with 38 % of cases leaving **[ran]** P41.
+All on `Qwen2.5-3B-Instruct`, the base everything released so far was trained on.
 
-```mermaid
-flowchart LR
-    subgraph PA["PHASE A — the local large model is the target"]
-        direction TB
-        A1["experts draft"] --> A2["the target verifies,<br>token by token"] --> A3["acceptance accumulates,<br>per region"]
-    end
-    subgraph PB["PHASE B — the target is gone, for that region"]
-        direction TB
-        B1["a dict selects"] --> B2["the expert generates alone"] --> B3["no large-model call"]
-    end
-    subgraph FR["THE FRONTIER — permanent, and never the target"]
-        direction TB
-        F1["what the pool is MEASURED to fail<br>0.546 → 0.775, 38% leaving"]
-    end
-    PA == "acceptance crossed AND the verified score held" ==> PB
-    PB -. "the regions no expert covers" .-> FR
-
-    classDef a fill:#FDF4E6,stroke:#8A5C10,color:#15171B
-    classDef b fill:#E7F1EA,stroke:#2E7D4F,color:#15171B
-    classDef f fill:#FCF3F1,stroke:#B0523C,color:#15171B
-    class A1,A2,A3 a
-    class B1,B2,B3 b
-    class F1 f
-```
-
----
-
-## Progress, summarised
-
-**Built and measured.** One resident base; deltas switched by the `model` field;
-served by vLLM behind an OpenAI endpoint; reachable from a real agent with nothing
-leaving; the tool surface pruned to what each member declares. One expert at
-**0.989** on its own region, **released as `email-full@v1`**: re-served it reproduces its record
-case for case, and a re-training from the same corpus ties it 1 : 0 **[ran]** P57; the serving
-path that was costing it 18 points found and fixed. The acceptance instrument built, preflighted and gated. The id spaces measured
-by pair; the route to `Qwen3.8-27B` named mechanism by mechanism.
-
-**Phase 5, first buy [ran] P59.** On the 54-tool surface OpenClaw actually sends, the
-unpruned expert **copies tags off the block** — `agents_list`, `apply_patch`, `browser` —
-225 of 227 calls refused, and answers from the listing at the majority bar; pruned to
-its three it makes 1160 calls, 8 refused, at 0.729. Accuracy 87 : 64, $p = 0.073$ — a
-tie at $n = 475$; **behaviour is not a tie**, and inside a real runtime those calls
-execute. `--prune` is the default the docs recommend, and the prefill drops from
-**~7,956 to ~77 tokens** per turn.
-
-**Not yet.** Acceptance has never been measured against any target, and the ordering
-verdict is closed without one. A pool larger than two. The 3.x drafter. The tournament.
-
-| # | mechanism | state | gate |
-|---|---|---|---|
-| **M0** | the drafter served **in corpus mode** — through `tool_calls` it *invents* the result it cannot receive | ✅ **[ran]** 0.808 → **0.992** | stop honoured; adapter ≠ base on 8 probes (C18) |
-| **M-target** | a target worth accepting against **on this task** | ❌ triage: **0.746 < 0.989**, 2 : 87 **[ran]**; ✅ desk `commitment`: 32B **1.000** at every depth **[ran]** P51 | beats the best expert, paired, $p\le0.05$ |
-| **M-α** | acceptance in **tokens** by forced `prompt_logprobs` | ✅ preflights pass **[ran]**; not yet run | templates identical; one entry per token with `rank` |
-| **M1** | **experts that differ in quality** — graded nested corpora | ✅ on one bit **[ran]** P55b: `g25` 0, `g75` **240/240**, `g600` **240/240** — the risk named came true, **no intermediate grade** | verifier resolves ≥ 1 pair, or the target is not served |
-| **M2** | **the ordering test** — the thesis | ⏸ **not bought yet [ran]**: an *untrained* 32B is below the trained expert on both suites (0.746 < 0.989; 0.967 < 1.000, 0 : 8), and on the easy desk band the grades saturate (`g75` ≡ `g600`). **Corrected by review the same day:** that shows the window is absent in two easy regions with an untrained target — not that no generated suite has it. **Next arm (P60):** a 32B trained on the desk, a deeper `commitment` band, M-target under `≥` **P60 §3b [ran] 2026-09-18:** vLLM applies a LoRA over the AWQ 32B — logprob gate 3/3 (mean $|\Delta\ell|$ 0.22–0.49 nats against a base-vs-base control of 0.000), text gate 2/3 — so the trained-target arm is buildable; **scheduled behind milestone 5**, not before it | SUPPORTED / FALSIFIED / UNRESOLVED-as-failure, written before the run |
-| **D0–D4** | the route to `Qwen3.8-27B` | D0 ✅, D1 void; **blocked by design** — Phase 4 closed without a verdict, and D4 would buy a faster version of a mechanism with no verdict | see above |
-
-The steps that got here, each with its number, are in
-[`docs/EXPERIMENT_PLAN.md`](docs/EXPERIMENT_PLAN.md); the compact record:
-
-| | objective | state |
-|:--:|---|---|
-| **S1** | a real gap against the frontier | ✅ **+0.533** once the prompt stopped telling the baseline not to think |
-| **S4** | the expert specialises per region | ✅ **+63.3** |
-| **S5** | the withdrawal gap closes, with a calculator standing in for the target | ✅ **0.000** in region |
-| **S9** | a region that is somebody's morning, end to end inside a real agent | ✅ **0.741** through `tool_calls` (P43) → **0.989** in corpus mode (P55 A), zero requests leaving |
-| **S10** | the base the pool runs on | ✅ **Qwen 2.5, decided against a control** — C18 on `Qwen3.5-4B` |
-| **S8** | the pool behind an OpenAI endpoint | 🟢 tags→`tool_calls` domain-free, 604/604; the surface pruned to what each member declares (#190) |
-| **S3** | the router beats a lookup table | 🟡 ties a twelve-keyword dict at **1.000** — the members are too far apart to meet in one problem |
-| **S6** | `harness.lora` — protocol apart from the expert | 🟡 parked, and reopened below as the experimental extra |
-| **S7** | the tournament | 🟢 fitness fixed: both judges must accept |
-
-### What has actually run
-
-| claim | measurement | where |
+| what | the number | run |
 |---|---|---|
-| **The live OpenClaw turn calls the tools and stays local** | 40 turns, `--prune --auto --member-prompt`: 40/40 local, 0 invented calls, 19/32 human turns call an inbox tool, 22/32 = 0.688 vs bar 0.655 ($p=0.43$, descriptive); under the runtime's own prompt 2/32 call and 0.281. Seven attempts, six live-path faults fixed with tests (block echoed as calls, envelope read as the subject, no stop at `</tag>`, no round-trip cap, no token bound, stale gateway lock) | `results/P63-openclaw-live-20260918/` |
-| **The client names no model and loses nothing** | `--auto`: a keyword surface per region decides local or frontier; replayed on P41's 240 cases, by request **0.775 = by region 0.775**, 0 misroutes, 37.5 % out | `results/P62-route-per-request-20260918/replay.json` |
-| **A 3B does not follow a written procedure in context** | base 0.345 → base + 914-token procedure 0.601, both with **0 tool calls** on 351 human messages, under the 0.655 majority bar; expert 0.989 with 1053 calls, **137 : 1** over base+document | `results/P61-knowledge-vs-weights-20260918/session.json` |
-| **A LoRA applies over the AWQ 32B** | toy adapter (150 steps, NF4 base) served over `Qwen2.5-32B-Instruct-AWQ`: mean $|\Delta\ell|$ 0.49 / 0.34 / 0.22 nats vs base-vs-base 0.000, **3/3**; text gate 2/3; the engine loaded it and used the Punica GPU wrapper | `results/P60-deep-window-20260917/awq_gate.json` |
-| **The serving path was costing 18 points** | the same 598-example adapter: 0.808 through `tool_calls`, **0.992** in corpus mode, reproduced in two sessions at 31 s | `results/P55-graded-ranking-20260916/` |
-| **An untrained 32B is not a valid target on triage** | human 0.746 vs the expert's 0.989, paired **2 : 87**, $p=0$; it gets the facts and misapplies the rule | same |
-| **The id spaces, by pair** | 2.5 → 2.5-32B byte-identical; 2.5 → 3.x-27B impossible; **3.5-2B/4B → 3.8-27B identical, 7 audio/TTS specials** | `results/P48-…/`, `results/P55-…/D0-tokenizers.txt` |
-| **C18** | vLLM loads a LoRA on `Qwen3.5-4B` and serves the base; the control on `Qwen2.5-3B` applies; the skipped modules are all `visual.*` | `results/P33-lora-matrix-20260914/` |
-| **The desk has a target and a gradient** | `commitment`: 32B **1.000** at every depth, one `message` call each; base 1.000 → 0.000 | `results/P51-desk-profile-20260916/` |
-| **One expert clears its gate inside a real agent** | 260/351 = 0.741, exact $p=0.00036$; OpenClaw → proxy → tunnel → vLLM → QLoRA, zero requests leaving | `results/P43-openclaw-e2e-20260915/` |
-| **Routing by region pays; by case it does not** | 0.546 → **0.775** with 38 % leaving; per-case rules 0.378 and 0.689 | `results/P41-routing-20260915/` |
-| **The expert cannot feel its edge; a structural guard can** | 30/30 in region → 1/20 outside with the same confidence; behavioural guards 0.62 vs chance 0.60; dimensional algebra catches 0.80, combined fires 0/60 in region | `results/P18-…/`, `results/P22-dimensions-20260912/` |
-| **An expert is locked to its corpus's depth** | below its band it over-solves **18 of 18**; at three steps the bare base beats it 0.167 : 0.000 | `results/P45-ladder-sweep-20260915/` |
-| **69–82 % of a calibration gap was the suite** | grouped by what a predictor can see, the ceiling leaves room 0.030 and 0.007 | `results/P46-ranking-ceiling-20260916/` |
-| **The coarse route needs no model** | twelve keywords, **1.000** over 200 cases; the fine route falls to 0.845 | `tests/test_router_baseline.py` |
-| **Acceptance by characters measures format** | identical answers 0.00 across formats, different answers 0.44 within one — the reason α is now in tokens on a shared id space | `results/S0*/` |
-| **The withdrawal gap closes, with a calculator** | adapter + calculator **40/40** = the teacher; base + calculator 0/40 | `results/P7-calculator-20260908/` |
+| **One vLLM, one base, several adapters**, each request served by its own | identity `applied` on every member, tools reachable, stop honoured | **[ran]** P56 |
+| **`email-full@v1`** — inbox triage, tools and judgement in one adapter | **0.989** on human messages against the base's **0.345**; re-served and re-trained, both tie the recorded run | **[ran]** P36, P57 |
+| **`desk-commitment@v1`** — a second member on the *same inbox*, a different question | **240/240** against the base's **38/240**, discordant **202 : 0**; ties its recorded run | **[ran]** P64 |
+| **On a 3B the procedure has to be in the weights** | base + a 914-token procedure document: **0 tool calls on 351/351**, 0.601, under the majority bar; the expert beats it **137 : 1** | **[ran]** P61 |
+| **The API routes per request**; the client names no model | replay on 240 cases: **0.546 → 0.775**, 0 misrouted, 37.5 % leave for the frontier | **[ran]** P41, P62 |
+| **OpenClaw, live, from a laptop** | 40/40 turns local, 0 invented calls, 19/32 human turns call a tool, 0.688 against a 0.655 bar | **[ran]** P63 |
+| **A member must be served its own tool surface** | offered OpenClaw's 54 tools it copies tags off the block: 225 of 227 calls refused; pruned, 8 of 1160 | **[ran]** P59 |
+| **vLLM applies a LoRA over a quantised large model** (`Qwen2.5-32B-AWQ`) | logprob gate 3/3, mean \|Δℓ\| 0.22–0.49 nats against a base-vs-base 0.000 | **[ran]** P60 §3b |
+| **Qwen 3.5 adapters are servable** — "vLLM ignores them" was a naming mismatch | same weights, 496 tensors renamed, not retrained: `not applied` → **`applied`**, 0 → 152 of 178 modules | **[ran]** D2 |
+
+The expert that **decides** — look something up, judge, answer — works. The expert that
+has to **reason** through a long chain does not: the fluid-mechanics member followed its
+protocol perfectly and got the physics wrong on 78 of 90 **[ran]** P40. That region is
+served by the frontier, and the router's table says so.
+
+## What does not work, or is not measured
+
+- **No real data.** Every suite is generated by this repository. A generated suite cannot
+  contain a difficulty its author did not think of **[ran]** P50.
+- **The saving in money has never been measured.** "37.5 % leave" is a share of generated
+  cases, not a bill.
+- **The router is a keyword dictionary.** It is at 1.000 on generated prompts, which means
+  nothing can beat it there; it already cracked once with two close members.
+- **No large-model half exists yet.** No LoRA has been trained on a 27B, and an *untrained*
+  large model scored **below** the small expert in its own region — 0.967 against 1.000 on
+  the desk, 0.746 against 0.989 on triage **[ran]** P55, P55b. That result is the reason
+  the large model gets a LoRA of the same subdomain rather than being used bare.
+- **No signal sees "coherent and wrong".** Hand-written rules missed it; agreement with a
+  frontier sees it but buys quality, not saving **[ran]** P41.
+- **Nothing released is on Qwen 3.x yet.** D2 removed the obstacle; the retraining is
+  milestone 1.
+
+The full ledger, including everything that failed and why, is [`docs/RECORD.md`](docs/RECORD.md).
 
 ---
 
-## Experimental extra: how much of the harness can be a LoRA
+## Where it goes — the milestones
 
-The original design had a `harness.lora` — the execution protocol in weights, so
-that the schema leaves the prompt and the format is emitted rather than parsed. It
-was parked on numbers, and the numbers are why it is reopened only as an
-experiment:
+Each has a gate and the arm that can kill it, written before it runs
+([`docs/PLAN.md`](docs/PLAN.md)). Arms are bought in sequence, never as a grid.
 
-| measured | what it says |
+| # | milestone | the arm that kills it first |
+|---|---|---|
+| **1** | **The pool on Qwen 3.x small.** Retrain `email-full` and `desk-commitment` on `Qwen3.5-4B`, tensors named for the class vLLM serves | the identity gate on a *real* adapter (D2's was a 60-step toy); then: loses, paired, to its Qwen 2.5 release |
+| **2** | **The router as a tiny model of the corpora**, abstaining to the frontier | a zero-GPU classifier on the corpora's prompts misroutes to a local member more than the dictionary does, on prompts the dictionary was *not* written for |
+| **3** | **The large half**: a LoRA on `Qwen3.8-27B` from the same corpus, on the deep band where the small expert has headroom | vLLM does not apply it (logprob gate); then: large + LoRA does not beat small + LoRA, paired |
+| **4** | **The speculative pair**: acceptance of small-LoRA drafts under large-LoRA verification | acceptance no higher than against the bare large model — the matched LoRA buys nothing |
+| **5** | **The first real region**, by hand, through the same release gate | the release gate |
+| **6** | **The service policy**: router → small → pair → frontier, with the bill measured | the local share costs more than it saves |
+
+**Engineering constraints these carry** — facts, not objections:
+
+- vLLM ships multi-LoRA and speculative decoding, but **a LoRA-adapted drafter is an RFC,
+  not a feature [read]**. Milestone 4 therefore measures acceptance the way this
+  repository already does — one teacher-forced pass of the large model over the small
+  one's draft (`prompt_logprobs`) — and reports α with its `k` beside the verified score.
+  The speed-up is a separate claim and needs the runtime feature.
+- A 27B does not fit the L4 the pool runs on. The large half is A100 work, 4-bit.
+- The `<think>` channel of the 3.x line is switched off for members; their corpora never
+  taught it.
+- **Gemma 4** as the alternative family: `Gemma4ClippableLinear` is not an `nn.Linear`, so
+  PEFT cannot attach to it as it stands **[ran]** P29. `lora_matrix` is the gate that would
+  reopen it.
+
+---
+
+## Run it
+
+```bash
+# the gates that need no GPU
+python -m pytest tests -q
+python scripts/check-mirrors.py
+
+# the routing replay — by request against by region, zero GPU
+python -m training.harness.route
+
+# anything that needs a GPU runs on Colab through one chain, streamed and resumable
+GPU=L4 BRANCH=main MODULE=training.harness.verify_substrate \
+  RUN_DIR=results/my-run training/harness/chain_serve.sh
+```
+
+Serving the pool to an agent, the proxy's flags and the substrate gate:
+[`docs/SERVING.md`](docs/SERVING.md). OpenClaw, step by step, as it ran live:
+[`docs/OPENCLAW.md`](docs/OPENCLAW.md).
+
+A member is served with three flags, and they are the default for a reason each:
+`--prune` (its own tool surface), `--member-prompt` (the prompt its corpus taught),
+`--auto` (the client names no model).
+
+## The release contract
+
+A region enters through one door: a suite with a verifier, the base as the headroom arm,
+an exact sign test on discordant pairs. What comes out is a manifest —
+[`releases/email-full@v1.json`](releases/email-full@v1.json),
+[`releases/desk-commitment@v1.json`](releases/desk-commitment@v1.json) — holding the base,
+the recipe, the corpus hash, the adapter hash, the prompt hash and the paired comparisons
+that admitted it. **The corpus named there is also what the router is trained on.** One
+artefact defines the expert and its region.
+
+## What is in the box
+
+| path | what |
 |---|---|
-| a learned protocol **9/30** where twenty lines of `re` score **23/30**, on a suite with one tool **[ran]** P13 | where the call is a copy of an expression already written, code wins and weights cannot |
-| the same protocol adapter on a **second subject** it was never edited for: **27 of 63** calls where the hand-written rule writes **0 of 63** **[ran]** P25 | a hand-written harness transfers nothing; a learned one transfers part of itself |
-| a convention keyed on parameter count recovers **55 %** of the schema→tags cost with **0** domain lines **[ran]** P28 | most of the harness's value is a handful of structural conventions, not knowledge |
-
-**The experimental question, stated so it can fail:** for a fixed, narrow tool
-surface — the three inbox tools, the four desk tools — can the *decision* of which
-tool to call and how to fill its argument live in the weights, with the *execution*
-(stop, inject, continue) left to twenty lines of harness? P55 A already shows one
-half: `email-full` makes the decision at **0.989** with **0 refused** calls and the
-harness executes. The gate for the other half is the one S6 set and missed:
-malformed-call rate **and** tokens, both against the code incumbent, on a surface
-where the call is *not* a copy. Not a product claim; a bounded experiment with its
-own number to beat.
-
-## What is deliberately not a LoRA
-
-**Memory** — markdown under git, because a weight delta cannot be read, diffed or
-corrected by a person. **Execution** — the sandbox where tools run.
-
-## How this is released
-
-Open-core, and the line is drawn at the runtime. **Open (this repository):** the
-OpenAI-compatible proxy with routing, pruning and the privacy line; multi-LoRA serving
-over vLLM; the corpus-mode loop; the acceptance instrument and the gates (substrate,
-release, suite); the synthetic pipeline corpus → training → gate → release; knowledge
-documents injected by the harness; the markdown + git memory connector. **Not open,
-and not part of this runtime:** the customisation service and its tooling — a
-customer's procedure documents, their adapters trained as a service, the automation
-of that pipeline — the trained vertical packs, the managed dream/evolution pipeline
-and the enterprise control plane.
-
-## Lineage
-
-| | |
-|---|---|
-| [`evolving-agents`](https://github.com/EvolvingAgentsLabs/evolving-agents) | The active repository — flows, memory at four levels, agents as markdown |
-| [`gemma4nanoloop`](https://github.com/EvolvingAgentsLabs/gemma4nanoloop) | The measured case that a small local model runs a closed loop |
-| `agentvcs` | Versions code, skills, goals, models and traces together — the substrate the tournament scores over |
+| `training/harness/openai_proxy.py`, `route.py` | the API: pruning, the member prompt, routing per request |
+| `training/harness/train_pool.py`, `contract.py` | the pool registry — each member a record read off its corpus |
+| `training/harness/release_gate.py`, `pool_second.py`, `verify_substrate.py` | the door a member enters through |
+| `training/harness/accept_rank.py`, `awq_lora_gate.py` | acceptance, and a LoRA over a large quantised model — the two halves of milestone 3–4 |
+| `training/harness/lora_matrix.py`, `rekey.py` | does this base serve a LoRA at all — with a control, and D2's renaming |
+| `training/harness/knowledge_arm.py`, `null_arm.py`, `training/suite_gates.py` | headroom before anything is trained |
+| `training/email/`, `training/mcp/` | the inbox and desk suites, and the inbox tools as an MCP server |
+| `training/harness/chain_serve.sh` | the Colab chain: provision, run detached, stream, fetch, stop |
+| `releases/`, `results/` | the manifests, and the runs the documents cite |
 
 ## Documents
 
-- [`docs/FOUNDATIONS.md`](docs/FOUNDATIONS.md) — **the mathematics, step by step and
-  tied to what ran** · [es](docs/es/FOUNDATIONS.md)
-- [`docs/SUBSTRATE-GATE.md`](docs/SUBSTRATE-GATE.md) — Phase 0: the serving substrate as a
-  gate, and why each of its four checks exists · [es](docs/es/SUBSTRATE-GATE.md)
-- [`docs/EXPERIMENT_PLAN.md`](docs/EXPERIMENT_PLAN.md) — every step with its gate,
-  falsification and number · [es](docs/es/EXPERIMENT_PLAN.md)
-- [`docs/STACK.md`](docs/STACK.md) — the inventory: every model id, adapter
-  hyperparameter and vLLM flag, with its run · [es](docs/es/STACK.md)
-- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) — the seven layers, the mathematics of
-  each, and the withdrawal condition · [es](docs/es/ARCHITECTURE.md)
-- [`docs/TECHNICAL-REFERENCE.md`](docs/TECHNICAL-REFERENCE.md) — the mechanisms and the
-  formula behind each · [es](docs/es/TECHNICAL-REFERENCE.md)
-- [`docs/REPORT-2026-09-17.md`](docs/REPORT-2026-09-17.md) — **the day's report for an
-  outside reviewer**: what was done with its number, what was not and by which kind of
-  reason, the six instrument faults, and the questions left · [es](docs/es/REPORT-2026-09-17.md)
-- [`docs/REPORT.md`](docs/REPORT.md) — the original plan against what happened ·
-  [es](docs/es/REPORT.md)
-- [`docs/OPEN-PROBLEMS.md`](docs/OPEN-PROBLEMS.md) — the open problems, without jargon ·
-  [es](docs/es/OPEN-PROBLEMS.md)
-- [`docs/OPENCLAW.md`](docs/OPENCLAW.md) — pointing a real agent at the pool ·
-  [es](docs/es/OPENCLAW.md)
-- [`docs/CASE-TRIAGE.md`](docs/CASE-TRIAGE.md), [`docs/CASE-TEAM.md`](docs/CASE-TEAM.md)
-  — one person's morning; many groups on one GPU
-- [`tests/README.md`](tests/README.md) — every test file and the identity it guards
-- [`docs/the-frontier-is-scaffolding.md`](docs/the-frontier-is-scaffolding.md) — the
-  article · [es](docs/es/the-frontier-is-scaffolding.md)
+| | |
+|---|---|
+| [`docs/PLAN.md`](docs/PLAN.md) | the living plan — milestones, gates, kill arms |
+| [`docs/RECORD.md`](docs/RECORD.md) | everything measured, including what failed; each line names its run |
+| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | the system: experts, router, the pair, the frontier |
+| [`docs/FOUNDATIONS.md`](docs/FOUNDATIONS.md) | the mathematics, tied to the runs that instantiate it |
+| [`docs/SERVING.md`](docs/SERVING.md) · [`docs/OPENCLAW.md`](docs/OPENCLAW.md) · [`docs/SUBSTRATE-GATE.md`](docs/SUBSTRATE-GATE.md) | running it |
+| [`CLAUDE.md`](CLAUDE.md) | instructions for coding agents, and the measurement rules that were paid for |
 
-## Acknowledgement
+**The record before this rewrite** — seventy-four run directories, the retired experts,
+the analyses and the 2,800-line plan — is the tag
+[`v0.1-foundations`](https://github.com/EvolvingAgentsLabs/lora-kernel/tree/v0.1-foundations).
+A P-number cited here without a directory on `main` lives there.
 
-This line of enquiry began with a conversation with
-**[Ismael Faro](https://github.com/ismaelfaro)**, who suggested studying
-speculative decoding and what it could be used for.
+## Scope
 
----
+Open source: the runtime, the release contract, the gates. **Not part of this runtime nor
+of the open-source version:** the customisation service and its tooling — a customer's
+corpora, adapters trained as a service, the automation of traces → corpus → gate →
+release. This repository builds the instrument that measures a customisation, not the
+tooling that produces it at scale.
 
-<sub>Apache 2.0 · [Evolving Agents Labs](https://github.com/EvolvingAgentsLabs)</sub>
+Apache 2.0. The idea began in a conversation with Ismael Faro.

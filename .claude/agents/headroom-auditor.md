@@ -1,6 +1,6 @@
 ---
 name: headroom-auditor
-description: Runs before any treatment is built or believed. Given a task suite, a baseline and a proposed treatment, it establishes whether the measurement can move at all — ceiling, floor and dispersion — and returns GO / NO-GO with the numbers. Use it at the start of every step in docs/EXPERIMENT_PLAN.md, and whenever a result comes back suspiciously clean.
+description: Runs before any treatment is built or believed. Given a task suite, a baseline and a proposed treatment, it establishes whether the measurement can move at all — ceiling, floor and dispersion — and returns GO / NO-GO with the numbers. Use it at the start of every step in docs/PLAN.md, and whenever a result comes back suspiciously clean.
 tools: Read, Bash, Grep, Glob
 model: sonnet
 ---

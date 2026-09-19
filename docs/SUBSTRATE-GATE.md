@@ -5,7 +5,7 @@
 Companion to `training/harness/verify_substrate.py`. The serving substrate — one
 resident base, a pool of LoRAs that vLLM **actually applies**, tools reachable
 through the proxy, stop strings honoured — is the layer everything in
-[`EXPERIMENT_PLAN.md`](EXPERIMENT_PLAN.md) §0b stands on. It used to be checked by
+[`PLAN.md`](PLAN.md) stands on. It used to be checked by
 ritual. This is the gate, and each row exists because a number already paid for it.
 
 ## The mathematics it guards
@@ -66,5 +66,5 @@ surface offers it no inbox tool, which is the right shape; G3 `stop_reason: '3'`
 - **Phase 0 ✅ is the entry to every other phase.**
 - **If vLLM or the base changes, Phase 0 re-runs before anything else** — the only
   permitted way to re-validate. If it breaks, the plan stops until it passes.
-- **G1 is the same gate Phase 6 will run on `Qwen3.5-4B` (D2)** before D4 — the same
-  script with another base and other members, not another script.
+- **G1 is the gate milestone 1 runs on `Qwen3.5-4B`** — on a full-recipe member adapter,
+  since D2's was a 60-step toy ([`PLAN.md`](PLAN.md)). Same gate, same control beside it.

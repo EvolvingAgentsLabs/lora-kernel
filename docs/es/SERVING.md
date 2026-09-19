@@ -1,8 +1,7 @@
 # Servir el pool a un runtime de agentes
 
-> **El comando de serving exacto, cada flag y por qué, el inventario de
-> adaptadores y la tabla de compatibilidad de tokenizers están en
-> [`STACK.md`](STACK.md).**
+> **El sistema que esto sirve está descrito en [`ARCHITECTURE.md`](ARCHITECTURE.md); en qué
+> se apoya cada número de acá está en [`RECORD.md`](RECORD.md).**
 
 Esto es con lo que habla un agente — OpenClaw, Hermes, cualquiera que hable OpenAI.
 Cada pieza fue medida antes de ensamblarse, y la única que no lo fue está nombrada al
@@ -62,15 +61,22 @@ applied*, así que el código de retorno no es la respuesta.
 | base | ¿vLLM 0.29.0 aplica los adaptadores? |
 |---|---|
 | `Qwen/Qwen2.5-3B-Instruct` | **sí** — el pool corre sobre ella |
-| `Qwen/Qwen3.5-4B` | **no**, en silencio |
+| `Qwen/Qwen3.5-4B` | **sí, una vez que los tensores del adaptador llevan los nombres de la clase que vLLM sirve** — tal como los escribe PEFT por `AutoModelForCausalLM`, **no, en silencio** |
 
-Qwen3.5 no es el modelo más débil y esto no es un juicio de calidad: entrena un LoRA
-perfectamente bien. Es un límite del **stack de serving**, y un pool necesita
-adaptadores intercambiables por request sobre una base residente. Fusionar el delta
-en los pesos (`save_pretrained_merged`) sí sirve bien, y es lo que recomienda la
-propia guía de unsloth para Qwen3.5 en vLLM **[read]** — a costa de una copia completa
-de los pesos por experto, sin base compartida y sin swapping. **Eso funciona y no es
-un pool.**
+**Por qué la misma base da las dos respuestas — D2 [ran] 2026-09-19**,
+`results/D2-rekey-20260918/`. vLLM sirve `Qwen3.5-4B` como
+`Qwen3_5ForConditionalGeneration` y activa los pesos del adaptador por
+`language_model.model.layers.N…`; un adaptador entrenado por la clase de sólo texto los
+nombra `model.layers.N…`. La carga valida sólo el último componente de cada nombre — de ahí
+la línea *Loaded* — y la activación, al no encontrar un módulo con ese nombre completo,
+resetea el slot detrás de un mensaje de debug. Los mismos pesos con 496 tensores
+renombrados, sin reentrenar, vuelven `applied`:
+
+    python3 -m training.harness.rekey adapters/<tal-como-se-entrenó> adapters/<renombrado>
+
+Leído durante cinco días como un límite del stack de serving, era un desajuste de nombres.
+La lección que enseña la compuerta no cambia y se afila: **la línea del log no es el
+veredicto — el texto servido lo es.**
 
 ## Rutear lo que el pool no sabe hacer — el end-to-end que corre hoy
 

@@ -1,6 +1,6 @@
 ---
 name: colab-runner
-description: Executes GPU work on a Colab runtime from this terminal with the Colab CLI — provisions the accelerator, clones the branch, launches the run detached, watches it, and brings the artifacts back. Use for any step in docs/EXPERIMENT_PLAN.md that trains or serves an adapter.
+description: Executes GPU work on a Colab runtime from this terminal with the Colab CLI — provisions the accelerator, clones the branch, launches the run detached, watches it, and brings the artifacts back. Use for any step in docs/PLAN.md that trains or serves an adapter.
 tools: Read, Bash, Grep, Glob, Edit
 model: sonnet
 ---
