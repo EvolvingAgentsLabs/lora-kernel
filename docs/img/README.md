@@ -22,6 +22,7 @@ English in both language versions.
 | `memory-five-pieces.png` | wide, ~1600 px | ⬜ wanted | `docs/MEMORY.md`, `docs/es/MEMORY.md`, `docs/ARCHITECTURE.md`, `docs/es/ARCHITECTURE.md` |
 | `memory-walkthrough.png` | wide, ~1600 px | ✅ **in** | `README.md`, `README.es.md`, `docs/MEMORY.md`, `docs/es/MEMORY.md` |
 | `request-path.png` | wide, ~1600 px | ✅ **in** | `README.md`, `README.es.md` |
+| `solution-architecture.png` | wide, ~1600 px | ⬜ wanted | `README.md`, `README.es.md` |
 
 ## Briefs
 
@@ -48,3 +49,7 @@ A vertical storyboard of seven numbered panels joined by one line, like a subway
 ### `request-path.png`
 
 A clean left-to-right flow in the same style, five stations on one line: "client (OpenAI API · OpenClaw)" → "proxy — prunes the tools to the member's own, swaps in the member's prompt" → "router — abstains when it looks like no corpus" → "expert + its library" → "answer". From the router a dashed branch drops down and runs along the bottom to "frontier", rejoining at "answer". Under the expert station, a small inset shows the three verbs as three keys on a keyboard: `search`, `open`, `calc`.
+
+### `solution-architecture.png`
+
+One wide solution-architecture diagram in the repository's warm flat style, five layers top to bottom. TOP, one long band "people": four groups with small faceless silhouettes — "patients", "families and visitors", "clinicians", "staff". LEFT COLUMN, a tall box "agent runtime — one agent per role", holding six cards: "front desk", "nursing procedures", "billing and coding", "purchasing and stock", "staffing and payroll", "IT". CENTRE, two boxes the agents exchange arrows with: "scheduling" (appointments · admissions · rooms · events) and "back office" (communications · operations · purchasing · payroll · reporting). RIGHT COLUMN, the channels: "app", and "messaging" splitting into "patients" and "internal". BOTTOM, the systems of record: one drum "one database" and three small boxes, "identity and permissions", "payments", "monitoring" — generic, no brand names, no logos. NOW THE POINT OF THE PICTURE: under the agent-runtime column, where a cloud API would normally be, draw ONE graphics card as a bookshelf — a thick spine "one small resident model" and six thin coloured spines, one per role card above, each joined to its card by a thin line. Under each thin spine a two-drawer card file: "how we do it here" and "what we know". A small signpost sits between the runtime and the shelf: "router — the role a message comes from is the route". A dashed line leaves the signpost for a distant building, "frontier — everything unmeasured", and a second dashed line ends at a person: "or a human, where policy says nothing leaves the building". A thin band under the shelf: "runtime — referee: applies this site's rules before a note is shown". One caption inside the image, bottom right: "records stay in the database; habits go in the adapter; knowledge stays in notes a person can read".
