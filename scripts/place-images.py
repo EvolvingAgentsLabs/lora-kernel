@@ -94,7 +94,7 @@ def documents():
 
 
 def language(doc: Path) -> str:
-    rel = doc.relative_to(ROOT).as_posix()
+    rel = doc.resolve().relative_to(ROOT).as_posix()      # callers pass relative paths too
     return "es" if rel.startswith("docs/es/") or rel.endswith(".es.md") else "en"
 
 
