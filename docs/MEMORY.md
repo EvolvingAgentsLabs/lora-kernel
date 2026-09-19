@@ -83,7 +83,7 @@ source: Nursing Skills (Open RN), ch. 23 — CC BY 4.0
 Vigorously cleanse the catheter cap for at least {{seconds}} seconds and allow it to dry.
 ```
 
-A **procedure** note is only a skeleton — its ordered step titles and the id of the first step. The
+A **procedure** note is only a skeleton — its ordered step ~~titles~~ **labels** (the slug of each step's id: `20 cleanse cap`) and the id of the first step. *Amended by W1 **[ran]**: thirty-two numbered titles are 230 tokens against this document's own limit of 150; labels are 98.* The
 detail lives in the steps. Reading a 32-step checklist at once and *walking* it are different
 tasks, and the second is the one being built.
 
@@ -428,7 +428,7 @@ Each package ends in a gate, fits a sixty-minute Colab session where it needs a 
 
 | # | package | needs a model? | gate |
 |---|---|---|---|
-| W1 | `memory/notes.py`, the lint, and the first library: IV therapy, three procedures as skeleton + steps, a small wiki | no | the lint passes; every walk the oracle needs exists |
+| W1 | `memory/notes.py`, the lint, and the first library: IV therapy, three procedures as skeleton + steps, a small wiki | no | the lint passes; every walk the oracle needs exists — ✅ **[ran] 2026-09-19**: 94 notes, 0 findings, 72/72 walks ([`BRIEF`](../results/M7-W1-library-20260919/BRIEF.md)) |
 | W2 | `memory/runtime.py`, `layers.py`, `guard.py` on the existing corpus-mode loop | no | **every oracle walk passes through the runtime**, 0 refusals, guard silent; a violating walk is cut |
 | W3 | `memory/index.py`, radar **R0**, beside a lexical baseline | Colab, minutes | recall@3 of the needed note on oracle queries; the baseline reported beside it |
 | W4 | the corpus generator: unmemorisable slots, opaque ids, distractors, dead ends, depth mix | no | no slot value in any statement; no evaluated walk in the corpus |
