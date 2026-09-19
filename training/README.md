@@ -1,97 +1,43 @@
-# `training/` — the adapters
+# `training/` — experts, their corpora, and the gates they enter through
 
-The rest of this repository measures *which* expert answers. This directory makes
-the experts.
-
-## Why it lives here and runs there
-
-A 26B does not fit on the machine this project is developed on, and this project
-is adapters — so anything needing a GPU ships as a notebook, committed, with its
-data and its grader beside it. Open
-[`lora_kernel_colab.ipynb`](lora_kernel_colab.ipynb) in Colab, set the runtime to
-GPU, run it top to bottom.
+Everything here either **produces a weight delta**, **serves one**, or **decides whether a
+number about one can be believed**. It lives in this repository and runs on Colab: this
+machine is a 16 GB laptop and cannot hold vLLM, let alone a 27B.
 
 ## What is in the box
 
-| file | what it does |
+| path | what |
 |---|---|
-| [`build_dataset.py`](build_dataset.py) | generates the training corpus with the sealed benchmark's own generator at a different seed, and **refuses to write if any training prompt matches a sealed one** |
-| [`evaluate.py`](evaluate.py) | the exact verifier — one copy, grading every arm, because a base and an adapter graded by different code are not comparable |
-| [`lora_kernel_colab.ipynb`](lora_kernel_colab.ipynb) | baseline → QLoRA → adapter, then two region experts cross-evaluated |
-| `data/*.jsonl` | 600 train, 120 val, 60 val_delta, plus per-clinic splits |
+| `email/` | the two suites with a mechanical verifier: inbox triage (`inbox.py`, `tools.py`) and the desk's `commitment` region (`desk.py`, `desk_tools.py`) — shallow and deep bands |
+| `mcp/inbox_server.py` | the inbox tools as an MCP server, so a real agent can use a member |
+| `harness/data_ef/`, `harness/data_desk/`, `harness/data_desk_deep/` | the released corpora, hashed in `../releases/*.json`. **A corpus is the expert's definition and the router's training set** |
+| `harness/generate_email_full.py`, `generate_desk.py`, `graded.py` | the generators — they *call* `render_tools`, so the corpus teaches the served prompt |
+| `harness/train_pool.py`, `contract.py` | the pool registry: each member a record read off its corpus |
+| `harness/openai_proxy.py`, `route.py`, `serve_tunnel.py` | the API: prune, member prompt, route per request; the tunnel for a live agent |
+| `harness/release_gate.py`, `pool_second.py`, `verify_substrate.py`, `serve_openai.py` | the door a member enters through, and the identity gate |
+| `harness/accept_rank.py`, `awq_lora_gate.py` | acceptance by teacher forcing; a LoRA over a large quantised model |
+| `harness/lora_matrix.py`, `tiny_adapter.py`, `rekey.py`, `tokenizer_compat.py` | is this base — and this pair — usable at all |
+| `harness/knowledge_arm.py`, `null_arm.py`, `ceiling.py`, `bar.py`, `suite_gates.py` | headroom, ceilings and the statistics, before and after |
+| `harness/openclaw_live.py`, `openclaw_traffic.py`, `tunnel.sh` | the live OpenClaw turn, and shapes read from its own log |
+| `harness/chain_serve.sh`, `chain_separate.sh` | the Colab chains |
+| `physics/` | what the routing replay and the identity gate still read from the fluids suite — the region measured to fail and served out |
 
-Regenerate the data with:
+## Running on Colab, from a terminal
 
-    python3 -m training.build_dataset --n-train 600 --n-val 120
+```bash
+GPU=L4 BRANCH=<branch> MODULE=training.harness.<runner> \
+  RESULTS_NAME=<file>.json MARGS="<runner flags>" \
+  RUN_DIR=results/<run> training/harness/chain_serve.sh > results/<run>/chain.log 2>&1
+```
 
-## The two questions, and the probe
+- The brief goes in `results/<run>/BRIEF.md` **before** this line runs.
+- `TRAINDEPS=1` when the runner trains; `SKIP_ADAPTERS=1` when no released adapter has to be
+  carried in; `BASE=<model>` for a base other than the default.
+- One chain at a time — they share `/tmp/_v*.py`. The chain streams position, fetches
+  partial results, and stops its own session on exit.
+- **The verdict is in the results file, never in the exit code.**
+- Install order that works on a Colab runtime: vLLM first (it pins torch), then the training
+  dependencies, `torchaudio` removed.
 
-1. **Does specialisation happen?** The adapter must beat the base on `val`.
-2. **Do experts differ by region?** The α-trained and β-trained adapters must each
-   win on their own clinic — otherwise the pool is one expert with three names and
-   there is nothing to route between.
-
-And `val_delta` is the clinic where an unpublished rule **inverts**. It is in no
-training split. An adapter that memorised the rule scores well on `val` and
-collapses here; that gap is the **false-promotion** number and it is reported
-beside every gain. A gain without it is not a result.
-
-## Models
-
-`google/gemma-4-E4B-it` on a free T4, `google/gemma-4-26B-A4B-it` on an A100.
-`google/gemma-4-12B-it` is the baseline this workspace has already measured at
-12/20 on the sealed delta split, so it is the honest thing to beat.
-
-## Running it headlessly, from a terminal
-
-The [Colab CLI](https://github.com/googlecolab/google-colab-cli) runs the same
-code on a Colab GPU without a browser, which is what lets an agent execute this
-step rather than hand it to a person:
-
-    colab new --gpu T4 -s s4
-    colab install -s s4 trl bitsandbytes
-    colab exec -s s4        # bootstrap: clone this branch on the runtime
-    colab exec -s s4 -f training/s4_train.py
-    colab download -s s4 lora-kernel/s4_results.json ./s4_results.json
-    colab stop -s s4
-
-### One arm per session, because the free tier does not keep one
-
-Colab reclaimed three sessions inside roughly forty minutes of GPU work each
-**[ran]** 2026-09-08. [`chain_colab.sh`](chain_colab.sh) runs the experiment as a
-chain instead: each session provisions, **restores the partial results from this
-machine**, completes exactly one arm, hands the results back, and stops.
-
-    training/chain_colab.sh        # one arm
-    training/chain_colab.sh 3      # three arms, three sessions
-
-The state of the experiment lives here between sessions, not on the runtime. It
-is idempotent — an arm already in the results file is skipped — so running it
-more times than there are arms left costs one session start and nothing else.
-
-**Two install pins are load-bearing on macOS** — both were failures, not
-precautions **[ran]** 2026-09-07:
-
-    uv tool install --force --python 3.12 --with "jupyter-kernel-client<1" google-colab-cli
-
-Python 3.13 loads a `cryptography` wheel whose Rust binding cannot find
-`_BIO_ADDR_free`, and `jupyter-kernel-client` 1.x renamed `KernelClient`, which
-the CLI still imports. Without both pins every command fails at import.
-
-### The dependency order that works on a Colab runtime
-
-Discovered one failure at a time **[ran]** 2026-09-08, and worth following exactly:
-
-    pip install -q vllm            # pins its own torch AND torchvision
-    pip uninstall -y torchaudio    # ONLY this one — vllm needs torchvision
-    pip install -q --no-deps trl 'torchao>=0.16.0'
-
-vLLM upgrades torch to a CUDA build the image's `torchaudio` disagrees with, and
-the mismatch raises at *import* — during training, not during serving. Removing
-`torchvision` too breaks torch's own metadata. `trl` and `torchao` go in with
-`--no-deps` so they cannot pull a second torch. And wait for the install to
-finish before launching anything: a run started underneath it fails with the
-version error and looks like a code bug.
-
-`--gpu` accepts `T4, L4, G4, H100, A100`; the larger ones need a Colab Pro
-entitlement (`colab pay`).
+The rules that were paid for are in [`../CLAUDE.md`](../CLAUDE.md) §3; the milestones these
+runners serve are in [`../docs/PLAN.md`](../docs/PLAN.md).

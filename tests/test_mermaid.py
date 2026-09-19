@@ -22,7 +22,9 @@ KINDS = ("flowchart", "graph", "sequenceDiagram", "stateDiagram", "classDiagram"
 
 
 def test_there_are_diagrams_to_check():
-    assert len(BLOCKS) >= 10
+    # The README and the architecture document each draw the system, in two languages.
+    # Fewer than that means a rewrite dropped the pictures without anyone deciding to.
+    assert len(BLOCKS) >= 6
 
 
 @pytest.mark.parametrize("md,i,body", BLOCKS,
@@ -44,11 +46,11 @@ def test_every_class_has_a_classdef(md, i, body):
     assert used <= defined, f"{md}#{i} uses {sorted(used - defined)} with no classDef"
 
 
-#: Documents that are published artefacts with a date on them. Their diagrams are
-#: what was said then, and a header note above each says so. Changing them would be
-#: rewriting the record rather than correcting it.
-HISTORICAL = {"docs/the-frontier-is-scaffolding.md",
-              "docs/es/the-frontier-is-scaffolding.md"}
+#: Documents that are published artefacts with a date on them, whose diagrams are what was
+#: said then. None is on `main` since the rewrite of 2026-09-19 — the article that drew a
+#: frontier as the target lives at the tag `v0.1-foundations` — and the set stays so the
+#: next dated artefact has somewhere to be named.
+HISTORICAL: set = set()
 
 NODE = re.compile(r'\[\s*"(.*?)"\s*\]', re.S)
 

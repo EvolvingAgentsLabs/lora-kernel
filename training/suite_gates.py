@@ -1,6 +1,6 @@
 """What a suite has to satisfy before a number measured on it means anything.
 
-WHY THIS EXISTS. `docs/REPORT.md` lined up every negative result of the last ten
+WHY THIS EXISTS. The report of 2026-09-16 (`docs/REPORT.md` at the tag `v0.1-foundations`; its findings are `docs/RECORD.md` §3) lined up every negative result of the last ten
 days and found the same thing underneath almost all of them: **the suite was wrong,
 not the architecture**. Seven distinct ways, each paid for:
 

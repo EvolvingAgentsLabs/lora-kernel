@@ -1,248 +1,145 @@
 # Architecture
 
-> **For the concrete stack — which base, which targets, which adapters at which
-> rank, which vLLM flags — see [`STACK.md`](STACK.md).**
+The system as designed on 2026-09-19. What is built and measured is marked **[ran]**; what
+is designed and not built says so. The measurements behind every choice are in
+[`RECORD.md`](RECORD.md); the order of work is [`PLAN.md`](PLAN.md).
 
-> **Specification.** Nothing here is built. Written to be argued with before it
-> is, which is cheaper.
->
-> *[Léeme en español](es/ARCHITECTURE.md)*
+## 1. One fact, three components
 
----
+**An expert is the distribution of its corpus.** Not the weights alone: the tool block, the
+argument keys and their order, the system prompt, the depth of the problems it saw. Served
+outside that distribution it is a different, worse model — 2 of 32 live turns call a tool
+under a foreign prompt, 19 of 32 under its own **[ran]** P63; below its training depth a
+reasoning expert over-solves 18 of 18 **[ran]** P45.
 
-## 1. The stack
+Everything else is that fact applied three times:
+
+| component | what it is | state |
+|---|---|---|
+| **the expert** | a QLoRA on the small model, trained by SFT on one corpus, released with a contract that records the distribution | **[ran]** two released, on Qwen 2.5 |
+| **the router** | a very small model *of the same corpora*: which expert's distribution does this request fall in — or none | a keyword dictionary **[ran]**; the model is milestone 2 |
+| **the pair** | a second LoRA, on the large model, trained on the *same corpus*; the small one drafts, the large one verifies | designed; milestones 3–4 |
 
 ```mermaid
 flowchart TB
-    L1["<b>1 · HOST</b><br>vLLM — one GPU, one resident base model,<br>multi-LoRA serving, adapters batched per request"]
-    L2["<b>2 · TARGET</b> — a LARGER MODEL OF THE SAME FAMILY, served locally.<br>Verifies token by token; withdrawable PER REGION where an expert reaches it"]
-    L3["<b>3 · FALLBACK</b> — a frontier model, permanent.<br>Answers what the pool is MEASURED to fail. 0.546 → 0.775"]
-    L4["<b>4 · USER SPACE</b><br>the expert pool. Domain QLoRAs, hot-swapped,<br>versioned, scored, promoted, retired"]
-    L5["<b>5 · SELECTION</b><br>coarse route: a dict, 1.000 with twelve keywords<br>ranking between close experts: acceptance"]
-    L6["<b>6 · MEMORY</b><br>markdown + git. Not neural, on purpose"]
-    L7["<b>7 · DREAM</b><br>offline: traces → DPO/GRPO dataset → next delta.<br>Tournament, promotion, retirement"]
-
-    L1 --- L2 --- L3 --- L4 --- L5 --- L6 --- L7
-
-    classDef host fill:#F4F3F0,stroke:#C4C4BF,color:#15171B
-    classDef target fill:#FDF4E6,stroke:#8A5C10,color:#15171B
-    classDef lora fill:#EAF1F9,stroke:#3E52A3,color:#15171B
-    classDef open fill:#FCF3F1,stroke:#B0523C,color:#15171B
-    classDef text fill:#E7F1EA,stroke:#2E7D4F,color:#15171B
-    class L1 host
-    class L2 target
-    class L3,L4,L7 lora
-    class L5 open
-    class L6 text
+    subgraph REL["a release = one corpus, recorded"]
+        K["corpus<br>block · keys · order · prompt · band"]
+    end
+    K --> E["expert LoRA on the small model"]
+    K --> T["LoRA on the large model<br>same subdomain"]
+    K --> R["router<br>one class per corpus + abstain"]
+    R -- "this corpus" --> E
+    E -- "drafts" --> T
+    R -- "no corpus" --> F["frontier model"]
+    classDef art fill:#eef0f6,stroke:#4a5a8a,color:#1a2240
+    classDef local fill:#e8f1e4,stroke:#4a7a3a,color:#1d3314
+    classDef out fill:#f4e6d4,stroke:#9a6a2a,color:#3d2a0e
+    class K art
+    class E,T,R local
+    class F out
 ```
 
-**Restructured 2026-09-16.** Three layers changed and the reasons are measured.
+One artefact — the corpus named in the release manifest — defines the expert, trains its
+large half, and trains the router's class for it. Adding a region adds one corpus.
 
-- **Layer 2 was "a frontier model, then withdrawn".** A frontier API cannot verify
-  tokens at all — no logprobs for a forced continuation (C2), a different tokenizer
-  (C3) **[ran]** P48. The target is a **larger model of the same family, on the same
-  card**, and what gets withdrawn is *it*, per region, not the frontier.
-- **Layer 3 was `harness.lora`, the kernel adapter.** Composition in weight space is
-  dropped — P8's result was void on a notation confound and P35 measured the cost of
-  splitting a capability in two: asking fell from 123 of 150 cases to 22 **[ran]**.
-  The frontier took that slot, because it turned out to be a permanent component
-  rather than scaffolding: routing a failing region to it delivers **0.546 → 0.775**
-  **[ran]** P41.
-- **Layer 5 was "α, free".** Half of it is free and the other half is a dict: the
-  coarse route scores **1.000** with twelve keywords **[ran]**, so a learned router
-  is unbought. Acceptance is for the half a dict cannot do — **ranking experts that
-  resemble each other** — and that is the only claim an EAGLE head cannot also serve.
+## 2. The request path
 
-**Layers 4 and 7 produce only adapters. Layer 6 produces only text. Layer 1 is
-somebody else's runtime.**
-
-## 2. Why the target must be bigger — and why it cannot be a frontier API
-
-The property that makes this work is not a footnote: **under rejection sampling the
-emitted tokens are distributed exactly as the target would have emitted them**
-**[read]**. So the target decides what "correct" means, and everything else is a
-question about cost.
-
-Which is why the target has to be **better than the experts** — and why, for three
-years of this document's assumptions, "better" was read as "frontier".
-
-**That reading was wrong, and it is not a matter of degree.** A frontier API cannot
-be a speculative target **at all**:
-
-- it does not return the logprobs of a **forced** continuation (C2), so there is
-  nothing to verify against;
-- it does not share the base's tokenizer (C3), so a drafted id does not mean the same
-  string to both models.
-
-Measured rather than argued **[ran]** `results/P48-tokenizer-compat-20260916/`:
-
-| candidate target | vocab | usable |
-|---|---:|---|
-| `Qwen2.5-7B / 14B / 32B / 72B-Instruct` | 151,643 | **yes — byte-identical `tokenizer.json`** |
-| `Qwen3-14B`, `Qwen3-32B` | 151,643 | yes, with 4 target-only ids |
-| `Qwen3.5 / 3.6 / 3.8-27B` — *with the Qwen 2.5 drafter* | **248,044** | **no — a different vocabulary; the drafter is what moves** |
-| **`Qwen3.8-27B` with a `Qwen3.5-2B / 4B` drafter — the goal** | 248,044 | **yes**, 7 target-only audio/TTS ids **[ran]** D0 |
-
-**So the target is `Qwen2.5-32B-Instruct-AWQ`** — 19.3 GB, fits beside the 3B on one
-A100, and its `tokenizer.json` hashes identically to the base's. A frontier model
-keeps a different job, in layer 3, where it is permanent.
-
-### And the target is not what makes this fast
-
-Speculative decoding has **two** purposes and this project had been claiming both.
-For **latency**, a drafting head trained on the target's own hidden states wins, and
-one exists for exactly this target **[read]**. Our domain experts will never beat it
-at that, because it has no other job.
-
-**What it cannot do is rank.** There is one head per target, so there is nothing to
-choose between. **Acceptance as a judge-free ranking over k experts is the claim that
-survives**, and it is the only thing this architecture has that an EAGLE head does
-not.
-
-## 3. Withdrawal — of the target, per region, and not of the frontier
-
-~~The frontier model is scaffolding, and the design says when to remove it.~~
-
-**Restated 2026-09-15 and again 2026-09-16, both times by measurement.** The frontier
-is not scaffolding: it is the fallback for what the pool is *measured* to fail, and
-sending one failing subdomain to it took delivered accuracy from **0.546 to 0.775**
-with 38% of cases leaving the machine **[ran]** `results/P41-routing-20260915/`.
-
-**What withdrawal means now is cheaper and more honest.** Where an expert's acceptance
-against the local 32B is high enough, **the 32B comes out for that region** and the
-expert generates alone. The frontier stays where it is, answering the regions no
-expert covers.
-
-**Acceptance alone cannot authorise it.** A rejection is either the small model being
-wrong or the large one being wrong, and only a verifier on the same cases separates
-them — which is why the suite this is measured on has one, and why `carries()`-style
-floors sit *beside* acceptance rather than behind it.
-
-**The order that follows from that.** Phase A serves the target and accumulates, per
-region, which expert it keeps agreeing with. Phase B removes the target where that
-number crossed a threshold **and the verified score held**. Two conditions, not one.
-
-## 4. Composition — dropped, and what replaced it
-
-~~The kernel and the expert are different adapters and must stay so.~~
-
-**Dropped 2026-09-15, on measurement.** Two results closed it:
-
-- **P8's apparent interference was void** on a notation confound — the arms were
-  never comparable.
-- **P35 measured what splitting a capability costs.** Taught the tool vocabulary
-  separately from the domain, the vocabulary was learned and the *disposition* was
-  lost: asking fell from **123 of 150 cases to 22** **[ran]**.
-
-And `harness.lora` lost its own case on the way: a learned protocol scored **9/30**
-where twenty lines of `re` scored **23/30**, because that suite had one tool and
-asking for it was copying an expression already written **[ran]** P13.
-
-**What replaced it: self-contained experts.** Each adapter carries its own disposition
-to reach for tools, in the vocabulary it will be served with. `contract.py` makes that
-declarable — a member states the **band** its corpus taught, because an expert served
-outside it does not simplify, it **over-solves**: below its band `fluids-full`
-invented an area on **18 of 18** cases and the bare base beat it at three steps,
-0.167 to 0.000 **[ran]** P45.
-
-**And piping costs nothing if composition is ever wanted back.** `base→lora1` then
-`base→lora2` never has two deltas live in one forward pass, so the interference
-question does not arise — and the pool already serves exactly that shape. It is two
-requests with two model names.
-
-## 5. The tournament
-
-Per executed task:
-
-```
-score = w₁ · verified task success
-      + w₂ · α (against the frontier target)
-      − w₃ · tokens consumed
+```mermaid
+sequenceDiagram
+    participant C as client
+    participant P as proxy
+    participant R as router
+    participant S as small + LoRA
+    participant L as large + LoRA
+    participant F as frontier
+    C->>P: chat completion, no model named
+    P->>R: the conversation's user text, runtime envelope cut out
+    alt falls in a member's corpus, region served locally
+        R-->>P: member
+        P->>S: member prompt, pruned tools, corpus-mode bounds
+        S->>L: draft, where the region is measured to need the pair
+        L-->>P: verified answer
+    else falls in none, or region measured to fail
+        R-->>P: out
+        P->>F: forwarded as it came
+    end
+    P-->>C: answer, with the route logged as shapes only
 ```
 
-- **`w₁` must come from a verifier the loop cannot see.** Otherwise the loop
-  breeds adapters that flatter their scorer, and the strongest measurement this
-  organisation has is that the same procedure was *interface compensation* on one
-  model and *persistent gain* on another. **[read]**
-- **`w₂` is only meaningful while the target is frontier-grade.** After
-  withdrawal it measures agreement with a peer and must be re-weighted or dropped.
-- **Offline, always.** A tournament that runs inline changes the thing it
-  measures.
+**The proxy** (`openai_proxy.py`) **[ran]**. It speaks the OpenAI API. For a member it
+prunes the offered tools to the member's declared surface (`--prune`), replaces the
+runtime's system prompt with the one the corpus taught (`--member-prompt`), and runs the
+corpus-mode loop — generation stops at a closing tag, the tool's result is injected, it
+continues — bounded at six round-trips and 256 tokens a step, the bounds the corpus itself
+has. It refuses rather than serving wrong: a request it cannot route is a 503, not a guess.
 
-Promotion, retirement and crossing are commits: `agentvcs` versions the adapter
-alongside the traces and the goal that produced it, so a regression is diffable
-and revertible.
+**The router** reads the subject of the conversation and nothing else: every user turn,
+with the runtime's internal-context envelope cut out — a runtime's own system prompt
+out-scored the email in the user turn the first time a live agent called **[ran]** P63.
+Two decisions are kept apart on purpose:
 
-## 6. What is not neural, and why that is not aesthetics
+- *whose distribution is this* — the router's, learned from the corpora;
+- *is that region served locally* — a measured table, `serve: local | out`. Fluids is a
+  perfect topical match and is measured to fail; it is served out.
 
-**Memory is markdown under git.** A weight delta cannot be read, diffed, cited or
-corrected by a person, and it cannot be pointed at in an audit. Every measurement
-this organisation has on memory says the durable asset is the part a human can
-read.
+**The default is the frontier.** A model asked to choose always chooses, so abstention is
+designed in and measured first (milestone 2).
 
-**Execution is a sandbox.** Tools run as processes.
+## 3. The pair
 
-**Verification is a verifier**, never the model's opinion of itself, and its
-strength — exact, deterministic, statistical, human, judge — is recorded with
-every result.
+**Why the large half is trained, not borrowed.** An untrained large model is not a better
+expert in a narrow region: 0.967 against the small expert's 1.000 on the desk, 0.746
+against 0.989 on triage **[ran]** P55, P55b. Verification by a model that disagrees with a
+*correct* draft rejects good tokens. Training the large model on the same corpus is what
+makes it a verifier of this subdomain rather than a generalist second opinion.
 
-## 7. Order of work
+**What is already known about the halves.** vLLM applies a LoRA over a 4-bit large model
+**[ran]** P60 §3b. Qwen 3.5 adapters are servable once their tensors are named for the class
+vLLM serves **[ran]** D2. The small and large models of the family share one id space, so a
+drafted token *can* be verified **[ran]** D0 — between families, or against a frontier API,
+it cannot **[ran]** P48.
 
-~~E0 headroom · E1 the α surface against a frontier target · E2 withdrawal · E3
-`harness.lora` · E4 the tournament~~
+**What is not available.** vLLM's speculative decoding does not take a LoRA-adapted drafter;
+that is an RFC **[read]**. Until it ships, acceptance is measured by teacher forcing — the
+large model scores the small one's finished draft in one prefill (`accept_rank.py`,
+[`FOUNDATIONS.md`](FOUNDATIONS.md) §5.3, §6) — which gives α exactly and the speed-up not at
+all. The pair is first a **quality** device (does large + LoRA beat small + LoRA where the
+small one has headroom) and then a **speculative** one (does the matched LoRA raise α).
 
-**Restructured 2026-09-16.** E1 assumed a frontier target, which cannot verify tokens;
-E3's adapter lost to twenty lines of `re`. What replaces them is four sessions, each
-able to end what follows it.
+**Where it runs.** The small pool is served from one L4. A 27B is A100 work in 4-bit.
 
-| | | ends the line if |
-|---|---|---|
-| **S1** | **profile** the base and the target over the region × depth grid; the band where the base is neither on the floor nor at the ceiling is chosen **once** | the base is above 0.70 everywhere, below 0.15 everywhere, or the target fails most cells |
-| **S2** | **train the experts** — each on conversations **the target generated for its own region**, not on an oracle's | — |
-| **S3** | **the ranking**: acceptance per expert per region, with the verified score beside it | acceptance does not order the experts the way the verifier does |
-| **S4** | **reserve** — three of the last runs died or were void | — |
+## 4. The release contract
 
-**Two rules the order depends on.** The band is chosen once and never revisited,
-whatever a later treatment scores — choosing it twice is the instrument looking for a
-result. And **no arm scores anything before a preflight proves it can reach its
-tools**: P51's first attempt returned HTTP 400 on all 240 cases and printed
-`correct 0 calls 0 refused 0`, which is what a floor looks like **[ran]**.
+A region enters through one door **[ran]**: a suite with a verifier the training loop never
+sees; the bare base as the headroom arm; the exact sign test on discordant pairs. The
+manifest that comes out (`releases/*.json`) holds base, recipe, corpus hash, adapter hash,
+prompt hash, the score and the paired comparisons. Re-serving it and re-training from it
+both tie the recorded run **[ran]** P57. `training/harness/train_pool.py` holds each member
+as a record read off its corpus — band, surface, keys, order, system prompt — and tests
+re-read every corpus and fail if a declaration drifts.
 
-**Before any of it, the suite passes `training/suite_gates.py`** or its numbers are
-not evidence. All four suites this project previously measured on fail at least one
-**[ran]** `results/P50-suite-audit-20260916/`.
+## 5. The family
 
-## 8. Deliberately not built yet
+Qwen 3.x: `Qwen3.5-4B` (or `2B`) small, `Qwen3.8-27B` large. The 3.x line is hybrid — three
+linear-attention layers to one full-attention layer — and D2's renamed adapter landed
+weights on both kinds. Its `<think>` channel stays off for members. Released members are
+still on `Qwen2.5-3B-Instruct`; milestone 1 moves them, with the 2.5 releases as the
+control.
 
-- **Tree attention across adapters.** The KV-cache problem is the expensive part
-  and it is only worth solving once S3 says the branches are worth comparing.
-- **Ten verticals, adapter marketplace, control plane.** Downstream of a pool with
-  two useful members **close enough to meet in one problem** — which is the thing
-  nine days of work has not produced, and the reason the suite was regenerated.
-- **An EAGLE or Medusa head of our own.** Qwen 2.5 is in Model-Optimizer's support
-  matrix and the online path fits a 3B on the A100 this project rents **[read]** — so
-  it is possible, and it is still a **latency** purchase. It cannot rank experts,
-  which is the only thing we need speculative decoding for.
-- **A new inference runtime.** vLLM is the substrate. Needing our own would be a
-  finding, not a plan.
+Nothing in §1–§4 names a family. A pair needs one id space and a base PEFT can attach to;
+`Gemma 4 2B / 12B` meets the first and not yet the second **[ran]** P29.
 
-## The mathematics of each layer
+## 6. What is not neural, on purpose
 
-Every layer above is a formula with a run under it; the derivations are in
-[`FOUNDATIONS.md`](FOUNDATIONS.md) and only the statement is repeated here.
+- **Memory** is markdown and git.
+- **Execution** is a sandbox; tools are an MCP server (`training/mcp/inbox_server.py`).
+- **Arithmetic** is a calculator: distillation transferred a procedure and not the
+  arithmetic **[ran]** P5–P7.
+- **Whether a region is served locally** is a table of measurements, not a model's opinion.
 
-| layer | what it is, as mathematics | the number under it |
-|---|---|---|
-| **1 · HOST** | one resident $\theta$; a request with adapter $i$ computes $y = xW + s\,(xA_i)B_i$ per projection, batched across requests by adapter id (§5.2) | C18 identity gate: `applied` on `Qwen2.5-3B`, identical on `Qwen3.5-4B` **[ran]** P33; `applied` 6/8 probes **[ran]** P55 A |
-| **2 · TARGET** | verifies a draft in one teacher-forced pass; at $T=0$ accept $\tilde x_i$ iff $\tilde x_i = \arg\max p_T(\cdot\mid\text{prefix},\tilde x_{<i})$ (§6.3); a verify pass costs one weight read for $k+1$ positions (§2.3) | same id space as the base: byte-identical tokenizer **[ran]** P48; `prompt_logprobs` returns rank per token **[ran]** P55 A |
-| **3 · FALLBACK** | outside the mathematics of acceptance on purpose: no logprobs for a forced continuation (C2), no shared ids (C3) — it answers, it never verifies | routing by region 0.546 → 0.775 **[ran]** P41 |
-| **4 · USER SPACE** | each member is $\Delta_i = \tfrac{\alpha}{r}A_iB_i$ over the seven projections of every block (§4.1); 29,933,568 parameters each (§4.2) | 119,801,528 bytes per adapter **[ran]** `STACK.md` §3 |
-| **5 · SELECTION** | coarse: a lookup; fine: $\arg\max_i \alpha_T(E_i, c)$ — valid only when $Q(T)\ge\max_i Q(E_i)$ (§7.2) | the precondition failed on triage, $0.746 < 0.989$ **[ran]** P55 A; unmeasured elsewhere |
-| **6 · MEMORY** | not neural; no formula, by design | — |
-| **7 · DREAM** | the tournament's fitness is a paired sign test on discordant cases (§9.2), never two totals | 84/81/82 were three ties **[ran]** P36/P38/P40 |
+## 7. Deliberately not built
 
-**The withdrawal condition, formally.** Layer 2 is withdrawable in a region $R$ when
-the expert alone matches the verified score it reaches with the target's verification:
-$Q_R(E) \ge Q_R(E \mid T) - \varepsilon$ on a paired test. Measured once, in-region,
-with a calculator standing in for the target: gap **0.000** **[ran]** S5 — never yet
-with acceptance, because acceptance has never been measured (§11 of FOUNDATIONS).
+A bespoke inference runtime, KV-cache sharing across adapters, tree attention across
+adapters, composition of adapters, a tournament that breeds them, the control plane, vertical
+packs. And, by scope rather than by order: the customisation service and its tooling are not
+part of this runtime nor of the open-source version.

@@ -1,29 +1,18 @@
 # Agents
 
-Versioned with the code, and expected to change as the project learns. The
-lifecycle rule is in [`../../CLAUDE.md`](../../CLAUDE.md) §5 and the ledger of
-every creation, edit and retirement is
-[`docs/EXPERIMENT_PLAN.md`](../../docs/EXPERIMENT_PLAN.md) §9.
+Versioned with the code, and expected to change as the project learns. The lifecycle rule
+is in [`../../CLAUDE.md`](../../CLAUDE.md) §5 and the ledger of every creation, edit and
+retirement is [`docs/PLAN.md`](../../docs/PLAN.md) §4.
 
-| agent | exists because | first used at |
+| agent | exists because | its step in the plan |
 |---|---|---|
-| [`headroom-auditor`](headroom-auditor.md) | a baseline at the ceiling makes every arm tie, and a tie reads as success | S1 |
-| [`instrument-skeptic`](instrument-skeptic.md) | four instruments produced clean, wrong numbers in one day | S0 |
-| [`alpha-runner`](alpha-runner.md) | α runs have to stream, persist per case, and be abortable | S0 |
+| [`headroom-auditor`](headroom-auditor.md) | a baseline at the ceiling makes every arm tie, and a tie reads as success — and the floor does the mirror | before every milestone; milestone 2's test set and milestone 3's band depend on it |
+| [`instrument-skeptic`](instrument-skeptic.md) | twelve instruments produced clean, wrong numbers ([`docs/RECORD.md`](../../docs/RECORD.md) §4) | after anything that produces a metric changes |
+| [`colab-runner`](colab-runner.md) | this machine cannot train an adapter, and that limit must not shrink the experiment | milestones 1, 3, 4 |
 | [`mirror-keeper`](mirror-keeper.md) | a stale Spanish mirror is worse than an absent one | every document commit |
-| [`colab-runner`](colab-runner.md) | this machine cannot train an adapter, and that limit must not shrink the experiment | S4 |
 
-These load for a session rooted at this repository. A session rooted at the
-workspace above sees them through symlinks in `../../../.claude/agents/` **[ran]**
-— created 2026-09-07, when `instrument-skeptic` could not be addressed from
-there.
+These load for a session rooted at this repository. A session rooted at the workspace above
+sees them through symlinks in `../../../.claude/agents/` **[ran]**.
 
-Retired agents move to [`deprecated/`](deprecated/README.md) with the reason at
-the top. Deleting one loses why it existed.
-
-## Declared, not built
-
-Justified by a step that does not exist yet, and therefore not written:
-`kernel-bench` (S6), `tournament-referee` (S7). `adapter-trainer` was never
-written: the Colab CLI made it `colab-runner` instead, which runs the training
-rather than describing it.
+Retired agents move to [`deprecated/`](deprecated/README.md) with the reason at the top.
+Deleting one loses why it existed.

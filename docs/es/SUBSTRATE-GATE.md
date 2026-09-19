@@ -5,7 +5,7 @@
 Compañera de `training/harness/verify_substrate.py`. El sustrato de serving — una
 base residente, un pool de LoRAs que vLLM **realmente aplica**, herramientas
 alcanzables a través del proxy, stop strings honrados — es la capa sobre la que se
-apoya todo en [`EXPERIMENT_PLAN.md`](EXPERIMENT_PLAN.md) §0b. Se verificaba por
+apoya todo en [`PLAN.md`](PLAN.md). Se verificaba por
 ritual. Esta es la compuerta, y cada fila existe porque un número ya la pagó.
 
 ## La matemática que protege
@@ -70,5 +70,6 @@ superficie podada no le ofrece herramienta de inbox, que es la forma correcta; G
 - **Si cambia vLLM o la base, la Fase 0 se re-corre antes que cualquier otra cosa** —
   la única forma permitida de re-validar. Si se rompe, el plan se detiene hasta que
   vuelva a pasar.
-- **G1 es la misma compuerta que la Fase 6 correrá sobre `Qwen3.5-4B` (D2)** antes de
-  D4 — el mismo script con otra base y otros miembros, no otro script.
+- **G1 es la compuerta que el hito 1 corre sobre `Qwen3.5-4B`** — sobre un adaptador de miembro
+  con la receta completa, ya que el de D2 era un juguete de 60 pasos ([`PLAN.md`](PLAN.md)). Misma
+  compuerta, mismo control al lado.

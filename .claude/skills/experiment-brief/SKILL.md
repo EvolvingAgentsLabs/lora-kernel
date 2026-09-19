@@ -46,5 +46,5 @@ the stopping condition.
 
 Append the outcome to the same `BRIEF.md` — including "flat", "aborted at case
 14", or "the falsification condition fired". Then update the step's row in
-[`docs/EXPERIMENT_PLAN.md`](../../../docs/EXPERIMENT_PLAN.md), marked **[ran]**
+[`docs/PLAN.md`](../../../docs/PLAN.md), marked **[ran]**
 with the run directory named.

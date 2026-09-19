@@ -4,8 +4,9 @@
 
 Este documento dice, paso a paso y en matemática, qué son los modelos, por qué generar
 con ellos es lento, qué es un LoRA, qué hace el motor, qué calcula la decodificación
-especulativa, por qué la aceptación puede rankear expertos, qué son las tareas como
-funciones, y por qué la familia Qwen 3 y `Qwen3.8-27B` pueden ser el modelo grande.
+especulativa, qué mide la aceptación entre un experto chico y el modelo grande de su
+subdominio, qué son las tareas y el router como funciones, y por qué la familia Qwen 3
+provee las dos mitades de un par.
 **Cada fórmula que tiene un número debajo nombra la corrida que produjo el número.**
 
 ## 0. Cómo leer esto, y la regla permanente
@@ -93,7 +94,7 @@ $W_{out} \in \mathbb{R}^{d\times |V_{emb}|}$. En `Qwen2.5-3B` el unembedding est
 embedding de entrada (`tie_word_embeddings: true`) y tiene $|V_{emb}| = 151{.}936$
 columnas — **más ancho que el tokenizer de 151.643 entradas más sus 22 tokens agregados
 = 151.665 ids** **[read]**/**[ran]** P48. Las columnas extra son relleno; una máscara
-sobre ellas no enmascara nada, y `STACK.md` §1 lo registra porque una cabeza tipada
+sobre ellas no enmascara nada, y `STACK.md` §1 (el tag `v0.1-foundations`) lo registra porque una cabeza tipada
 alguna vez supuso lo contrario.
 
 ### 1.4 Las dos familias que servimos
@@ -285,7 +286,7 @@ parámetros LoRA son $r\,(d_{in} + d_{out})$ por matriz:
 | × 36 bloques | | **29.933.568** |
 
 A 4 bytes (fp32, el default de PEFT para adaptadores guardados) son **119.734.272
-bytes**; el archivo en disco tiene **119.801.528 bytes** **[ran]** `STACK.md` §3 — la
+bytes**; el archivo en disco tiene **119.801.528 bytes** **[ran]** `STACK.md` §3 (el tag `v0.1-foundations`) — la
 diferencia de 67.256 bytes es el encabezado de safetensors. **La derivación y el
 artefacto coinciden**, y el adaptador es ~1 % de los 3,09 B parámetros de la base.
 
@@ -347,7 +348,7 @@ $$
 como un GEMM compartido para $xW$ más un par de GEMMs delgados *batcheados y
 recolectados* (los kernels `bgmv` / Punica **[read]**, Chen et al. 2023; S-LoRA, Sheng
 et al. 2023). Flags acá: `--enable-lora --max-lora-rank 16 --max-loras k --lora-modules
-name=path` **[ran]** `STACK.md` §5. El adaptador lo elige el campo `model` del pedido,
+name=path` **[ran]** `STACK.md` §5 (el tag `v0.1-foundations`). El adaptador lo elige el campo `model` del pedido,
 que es cómo se direcciona el pool sin ningún router.
 
 **C18 es un test de esa ecuación.** Un motor puede cargar $(A_i, B_i)$, loguear
@@ -465,12 +466,12 @@ un modelo chico separado no puede. Existe un `Qwen2.5-32B-Instruct_EAGLE3` de la
 comunidad **[read]**. Así que **la decodificación especulativa como dispositivo de
 latencia está resuelta, y no por nosotros.** Lo que una cabeza atada no puede hacer es
 comparar $k$ drafters *distintos* — hay una sola. **La aceptación como orden sin juez
-sobre $k$ expertos** es la afirmación que esta arquitectura conserva (`REPORT.md` §6),
+sobre $k$ expertos** es la afirmación que esta arquitectura conserva ([`RECORD.md`](RECORD.md) §5),
 y es lo que el §7 formaliza.
 
 ---
 
-## 7. La aceptación como ranking — la tesis, formalmente
+## 7. La aceptación — entre un experto chico y el modelo grande de su subdominio
 
 ### 7.1 Definiciones y la afirmación
 
@@ -486,12 +487,21 @@ $$
 la fracción de los $n_c$ *tokens de decisión* de $E$ en ese caso que el target habría
 escrito él mismo (§6.3), y $\alpha_T(E) = \tfrac1{|\mathcal C|}\sum_c \alpha_T(E,c)$.
 
-**La afirmación (P55):** para expertos $E_1,\dots,E_m$ sobre una suite,
-$Q(E_a) > Q(E_b) \;\Rightarrow\; \alpha_T(E_a) > \alpha_T(E_b)$ — la aceptación ordena
-expertos como los ordena la calidad verificada, **sin juez y sin verificador en tiempo
-de serving**. Si vale, un pool selecciona entre expertos cercanos dejando que el target
-puntúe sus drafts; si falla, el "router gratis" desaparece y la arquitectura sobrevive
-sin él.
+**La afirmación que este proyecto hizo primero (P55), y qué fue de ella.** *La aceptación
+ordena a los expertos como los ordena la calidad verificada* — $Q(E_a) > Q(E_b) \Rightarrow
+\alpha_T(E_a) > \alpha_T(E_b)$, un router gratis. Su precondición (§7.2) falló dos veces para
+un target sin entrenar y la pregunta se cerró sin veredicto ([`RECORD.md`](RECORD.md) §2).
+
+**La afirmación ahora (2026-09-19, [`PLAN.md`](PLAN.md) hito 4).** Sea $S_\theta$ el modelo
+chico con el LoRA de un subdominio, $T$ el modelo grande pelado y $T_\phi$ el modelo grande
+con un LoRA entrenado sobre el *mismo corpus*. El par es especulativo sii
+
+$$\alpha_{T_\phi}(S_\theta) > \alpha_{T}(S_\theta),$$
+
+pareado sobre casos — entrenar la mitad grande en el subdominio la hace coincidir con los
+borradores correctos del experto chico más que el generalista. Se lee al lado de
+$Q(T_\phi) > Q(S_\theta)$ (hito 3): un verificador que no es mejor que su drafter no tiene
+nada que verificar. **Todavía sin medir.**
 
 ### 7.2 La precondición, y P55 A como su instancia
 
@@ -529,16 +539,20 @@ y **las líneas `= {resultado}` que aporta el harness están en el prefijo del t
 ningún span** — puntuarlas sería puntuar la herramienta. Un resultado de "α no rankea"
 dice entonces *dónde* vivió el acuerdo y no sólo que falló.
 
-### 7.4 La prueba de orden
+### 7.4 La prueba, para un orden y para un par
 
-Para cada par $(E_a, E_b)$ que el verificador resuelve (§9.2), tomar los casos en que
-ambos fueron puntuados y contar $u = \#\{c: \alpha(E_a,c) > \alpha(E_b,c)\}$,
-$d = \#\{c: \alpha(E_a,c) < \alpha(E_b,c)\}$; los empates se excluyen; el binomial
-exacto bilateral sobre $(u,d)$ decide. Escrito antes de cualquier corrida:
-**SUPPORTED** si cada par resuelto concuerda; **FALSIFIED** si algún par se ordena al
-revés con $p\le0,05$; **UNRESOLVED** si el verificador vio una diferencia y $\alpha$ no —
-*un fracaso de la afirmación tal como está, no un empate* **[ran]**
-`results/P55-graded-ranking-20260916/BRIEF.md`.
+**Como se escribió para la afirmación de orden (P55).** Para cada par $(E_a, E_b)$ que el
+verificador resuelve (§9.2), tomar los casos en que ambos fueron puntuados y contar
+$u = \#\{c: \alpha(E_a,c) > \alpha(E_b,c)\}$, $d = \#\{c: \alpha(E_a,c) < \alpha(E_b,c)\}$;
+los empates se excluyen; decide el binomial exacto a dos colas sobre $(u,d)$.
+**SUPPORTED** si todo par resuelto coincide; **FALSIFIED** si algún par queda ordenado al
+revés con $p\le0.05$; **UNRESOLVED** si el verificador vio una diferencia y $\alpha$ no
+**[ran]** `results/P55-graded-ranking-20260916/BRIEF.md`.
+
+**Para un par (hito 4)** la misma cuenta se hace sobre *targets* en vez de expertos:
+$u = \#\{c: \alpha_{T_\phi}(S_\theta,c) > \alpha_{T}(S_\theta,c)\}$ y $d$ su espejo, mismo
+binomial. El borrador es el mismo texto bajo ambos targets, así que la comparación es
+pareada por construcción y cuesta un prefill extra por caso (§5.3).
 
 ---
 
@@ -602,6 +616,23 @@ vez de menos confundiría cantidad con contenido. Misma base, mismos $r, \alpha$
 épocas — así que si $Q$ los ordena, hay, por primera vez, un orden con el que $\alpha$
 puede concordar o no.
 
+### 8.5 El router: un clasificador sobre distribuciones de corpus, con abstención
+
+Cada miembro liberado $m$ tiene un corpus $K_m$; sus turnos de usuario son muestras de la
+distribución $P_m$ bajo la que el miembro fue entrenado. Un router es una función
+$r(x) \in \{m_1,\dots,m_M,\ \mathrm{out}\}$ construida con un puntaje $s_m(x)$ por miembro y
+un umbral:
+
+$$r(x) = \begin{cases} \arg\max_m s_m(x) & \text{si } \max_m s_m(x) \ge \tau \ \text{y el margen al segundo} \ge \delta,\\ \mathrm{out} & \text{si no.}\end{cases}$$
+
+El diccionario de P62 es el caso particular $s_m(x) = \#\{\text{claves de } m \text{ en } x\}$,
+$\tau = 1$, $\delta = 1$. En la suma de §8.4 el único término que un router puede cambiar es
+el tercero — un pedido mandado a un miembro a cuyo corpus no pertenece cuenta como mal —
+así que un router se puntúa por **mal-ruteados-a-local** y por la fracción que sale, no por
+exactitud, y $\tau$ se fija sobre texto fuera de distribución antes de medir nada más: un
+modelo al que se le pide elegir siempre elige. **[ran]** para el diccionario: P62, P64. El
+$s_m$ aprendido es el hito 2 de [`PLAN.md`](PLAN.md).
+
 ---
 
 ### 8.4 Exactitud entregada bajo una política de ruteo
@@ -662,16 +693,22 @@ al target.
 
 ---
 
-## 10. Por qué la familia Qwen 3, y `Qwen3.8-27B` como modelo grande
+## 10. La familia Qwen 3: chico y grande de un mismo espacio de ids
 
-### 10.1 El target no necesita LoRA
+### 10.1 Las dos mitades llevan un LoRA
 
-La decodificación especulativa tiene dos modelos y dos trabajos. El **drafter** es el
-pool — el multi-LoRA es requisito *suyo*. El **target** verifica en una pasada (§6.1
-paso 2) y es un modelo denso, sin modificar. C18 — *vLLM carga un LoRA sobre una base
-3.x y sirve la base igual* **[ran]** P33 — es una afirmación sobre servir un LoRA, así
-que **restringe al drafter y no dice nada del target**. El 32B de acá se sirve AWQ sin
-adaptador (§4.3) y esa es exactamente la forma del target.
+La decodificación especulativa tiene dos modelos y dos trabajos. El **drafter** es el pool
+— multi-LoRA es requisito *suyo*. El **target** verifica en una pasada (§6.1 paso 2).
+
+~~El target es un modelo denso, sin modificar, y no necesita LoRA.~~ **Reformulado el
+2026-09-19.** Un modelo grande sin modificar sacó *menos* que el experto chico en las dos
+regiones probadas — $Q(T) < \max Q(E)$, 0,746 < 0,989 y 0,967 < 1,000 **[ran]** P55, P55b
+(§7.2) — así que el target de un par es $T_\phi$: el modelo grande con un LoRA del mismo
+subdominio. Eso vuelve servir un LoRA un requisito de **las dos** mitades, y las dos están
+medidas: sobre un modelo grande en 4 bits el adaptador se aplica, $|\Delta\ell|$ medio
+0,22–0,49 nats contra un base-vs-base de 0,000 **[ran]** P60 §3b (§4.3); sobre el modelo
+chico 3.x se aplica una vez que sus tensores llevan los nombres de la clase que vLLM sirve
+**[ran]** D2 (§10.4).
 
 ### 10.2 El espacio de ids
 
@@ -699,37 +736,51 @@ suite tiene que ser **0** — D3, una compuerta dentro de D4.
 | restringir `target_modules` a la MLP para desbloquearlo | "el adaptador tocaba sólo los MLP" fue un diagnóstico que P33 **retiró** — el árbol cargado lleva `q_proj` | **sin respaldo** |
 | un RFC cierra el LoRA por pedido en el worker especulativo; SGLang maneja híbridos | no verificado desde acá | **[unverified]** |
 
-Lo que se sabe: el adaptador es real (G1: `lora_B` se movió, la salida cambió en
-proceso), el motor dice que lo cargó, el texto servido es igual al de la base. **La
-falla está medida; su mecanismo no**, y la regla de este proyecto después de dos
-diagnósticos retirados es leer el mecanismo con el log en la mano (D2), no adoptar uno.
+Lo que se sabía el 2026-09-17: el adaptador es real (G1: `lora_B` se movió, la salida
+cambió en proceso), el motor dice que lo cargó, el texto servido es igual al de la base.
+
+**El mecanismo, leído y después corrido — D2 [ran] 2026-09-19.** Con $K$ los nombres de
+tensores del adaptador, $m$ el mapper de nombres de vLLM para la clase servida y $M$ los
+módulos del modelo servido,
+
+$$\text{applied}(K) = \{\,k \in K : m(k) \in M\,\}.$$
+
+Entrenado por `AutoModelForCausalLM`, PEFT nombra los tensores `model.layers.N…`; vLLM sirve
+`Qwen3_5ForConditionalGeneration` y activa por `language_model.model.layers.N…`. La carga
+valida sólo el último componente de cada nombre y loguea *Loaded*; la activación busca el
+nombre completo y resetea el slot. Tal como se entrenó $|\text{applied}(K)| = 0$ de 496 y
+la activación real fija 0 de 178 módulos; renombrado por `training/harness/rekey.py`, 496
+de 496 y 152 de 178, y la compuerta de identidad pasa de `not applied` a `applied`. Los 26
+módulos que quedan vacíos son `lm_head`, `embed_tokens` y 24 `conv1d`, ninguno apuntado;
+las proyecciones de atención lineal están entre los 152.
 
 ### 10.5 La ruta, como mecanismos
 
 | # | mecanismo | estado |
 |---|---|---|
-| D0 | un drafter 3.x que comparta espacio de ids con 3.8-27B | **[ran]** ✓ |
-| D1 | C18 bajo un vLLM más nuevo | vacío — la cadena instala el último y es **0.29.0**, la versión de P33 **[ran]** |
-| D2 | el mecanismo de C18: G3 merge-and-serve; mapeo clave PEFT ↔ módulo vLLM, con el log | siguiente |
-| D3 | pensamiento apagado, verificado por conteo | dentro de D4 |
-| D4 | el instrumento de P55, `--base Qwen/Qwen3.5-4B --target Qwen/Qwen3.8-27B`, pool graduado reentrenado sobre 3.5-4B | bloqueado por D2 |
+| D0 | un modelo chico 3.x que comparte espacio de ids con 3.8-27B | **[ran]** ✓ |
+| D1 | C18 bajo un vLLM más nuevo | void — el chain instala el último y es **0.29.0**, la versión de P33 **[ran]** |
+| D2 | el mecanismo de C18: mapeo clave PEFT ↔ módulo vLLM, con el log | **[ran]** ✓ 2026-09-19 — un desajuste de nombres (§10.4) |
+| D3 | pensamiento apagado, verificado por conteo | dentro de los hitos 3–4 |
+| ~~D4~~ | ~~el instrumento de ranking apuntado a 3.5-4B → 3.8-27B~~ | retirado junto con la afirmación de ranking; lo reemplazan los hitos 1, 3 y 4 de [`PLAN.md`](PLAN.md) |
 
-**Por qué el orden.** Todo en §6–§7 es independiente del target dado el §3.2; el
-instrumento construido sobre Qwen 2.5 es el que corre D4. Si el §7 falla sobre 2.5, D4
-habría comprado una versión más rápida de un mecanismo que no rankea. Nada de lo de
-arriba depende de D; D4 depende de todo.
+**Por qué el orden.** Todo en §6–§7 es agnóstico al target dado §3.2. El hito 1 mueve los
+miembros liberados al modelo chico 3.x con sus releases de Qwen 2.5 como control; el hito 3
+entrena la mitad grande; el hito 4 mide la desigualdad de §7.1.
 
 ---
 
 ## 11. Mapa: sección → corrida
 
+**Las corridas nombradas acá que no tienen directorio en `main` viven en el tag `v0.1-foundations`.**
+
 | sección | fórmula / afirmación | corrida que la instancia |
 |---|---|---|
-| §1.3 | ancho de embedding > vocabulario | `STACK.md` §1, P48 |
+| §1.3 | ancho de embedding > vocabulario | `STACK.md` §1 (el tag `v0.1-foundations`), P48 |
 | §1.4–1.5 | dimensiones, `layer_types` híbridos | `config.json` **[read]** 2026-09-17; log de P33 |
 | §2.4 | batching: 475 cadenas, 31 s / 230 s | P55 A `session_a.json` |
 | §3.3 | tabla de mapas de ids | P48; P55 `D0-tokenizers.txt` |
-| §4.2 | 29.933.568 parámetros ↔ 119.801.528 bytes | `STACK.md` §3 |
+| §4.2 | 29.933.568 parámetros ↔ 119.801.528 bytes | `STACK.md` §3 (el tag `v0.1-foundations`) |
 | §4.4, §8.1 | deriva: 0,741 → 0,989 | P43 `arm_email_475.json`; P55 A |
 | §4.4, §9.2 | **un release reproduce**: re-servido 0 : 0 contra su registro; reentrenado 1 : 0 — varianza de entrenamiento un caso en 475 | P57 `release.json`, `releases/email-full@v1.json` |
 | §5.2 | compuerta de identidad C18 | P33 `lora_matrix.json`; P55 A `applied`; **Fase 0 P56: los dos miembros 3/3 `applied`, herramientas alcanzables, stop honrado** |
@@ -746,9 +797,11 @@ arriba depende de D; D4 depende de todo.
 | §10.5 D1 | vLLM resuelve a 0.29.0 | log de boot de P55 A |
 | §4.4 | **una superficie desconocida es extrapolación**: sin podar (54 herramientas) el experto copia etiquetas del bloque, 225 de 227 llamadas rechazadas; podado, 8 de 1160; el bloque son ~7.956 contra ~77 tokens | P59 `attribution.json` |
 | §6.4 | **α, $\mathbb{E}[\tau]$, aceleración** | **todavía no medido** |
-| §7.4 | **el veredicto de orden** | **no medido**: el §7.2 falla para un target *sin entrenar* en dos regiones fáciles (P55 A, P55b); reabierto como un brazo — un target entrenado sobre una banda más profunda (P60) |
+| §7.4 | **el veredicto de orden** | **cerrado sin veredicto el 2026-09-19**: el §7.2 falla para un target *sin entrenar* en dos regiones fáciles (P55 A, P55b). Lo que sobrevivió es el target entrenado — ahora la mitad grande de un par (§7.1, §10.1) |
 | §10.5 D2 / §3.4 | **un LoRA aplica sobre el 32B AWQ**: media de $|\Delta\ell|$ 0,22–0,49 nats contra base-vs-base 0,000, 3/3; compuerta de texto 2/3 | P60 §3b `awq_gate.json` |
 | §10.5 D2 | **C18 es un desajuste de nombres**: $\text{applied}(K)=\{k\in K: m(k)\in M\}$ — tal como se entrenó 0 de 496 tensores caen sobre el stack de texto servido y la activación real fija 0 de 178 módulos (`not applied`); renombrado, 496 de 496 y 152 de 178 (`applied`); control `applied` | D2 `lora_matrix.json`, `vllm.log` |
+| §7.1, §7.4 | **la desigualdad del par** $\alpha_{T_\phi}(S_\theta) > \alpha_T(S_\theta)$ | **todavía sin medir** — hito 4 de [`PLAN.md`](PLAN.md) |
+| §8.5 | **el router como clasificador con abstención**; el diccionario es su caso particular | diccionario: P62, P64; el puntaje aprendido: **todavía sin medir** — hito 2 |
 | §7.3, §8.2 | **pesos o harness — pesos**: base 0,345, base + procedimiento de 914 tokens 0,601 (las dos con 0 llamadas, debajo de la barra de mayoría 0,655), experto 0,989; experto contra base+kb **137 : 1**; el test de signos solo leyó el default dado vuelta como pagando (164 : 74) — la barra de mayoría lo guarda | P61 `session.json` |
 | §8.4 | **el ruteo por request empata al por región**: 0,775 = 0,775, 0 mal ruteados, 37,5 % afuera sobre los 240 casos de P41 | P62 `replay.json` (cero GPU) |
 | §4.4, §8.1 | **el turno en vivo es modo corpus o no es nada**: bajo el prompt del runtime 2/32 turnos humanos llaman una herramienta (0,281); bajo el prompt liberado del miembro con cortes en `</tag>`, tope de idas y vueltas y 256 tokens/paso, 19/32 llaman y 0,688 contra barra 0,655 ($p=0,43$), 40/40 local | P63 `live.json`, intentos 4 y 7 |
