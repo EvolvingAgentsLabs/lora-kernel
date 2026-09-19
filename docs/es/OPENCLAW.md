@@ -226,6 +226,14 @@ gateway viejo de un turno matado. El libro está en
 **Así que un miembro es lo que su corpus enseñó — el bloque *y* el prompt.** `--prune`,
 `--member-prompt` y `--auto` son con lo que arranca el comando de arriba.
 
+**Dos miembros sobre un inbox, P64 [ran] 2026-09-18.** `desk-commitment@v1` se sirve junto a
+`email-full@v1` desde el mismo vLLM, y los dos leen `From: / Subject: / Preview:`. Con claves
+sobre esos marcadores, `--auto` mandó prompts de desk al miembro de triage 15 de 60 veces; con
+claves sobre lo que se *pregunta* — "is this important" contra "did you commit" — los separa, y
+en vivo sirvió cada sonda con el miembro correcto. **Una región es su pregunta, no su
+listado**: cuando el perfil de una tarea suma un miembro, se agrega a `route.REGIONS` la
+pregunta que responde, nunca un marcador que también llevan los prompts de otro miembro.
+
 ### El streaming, y por qué está buffereado
 
 **OpenClaw hace streaming por defecto**, y poner

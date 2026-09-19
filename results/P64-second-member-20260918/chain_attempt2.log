@@ -1,0 +1,65 @@
+=== session 1 of 1 · srv180332 · L4
+    boot clone: rc=0 976f205 P64 attempt 1 [ran]: released on 60 cases with the weights left on the card — the suite's eval_n by default, and the chain brings adapters_out.tgz hom
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 976f205 P64 attempt 1 [ran]: released on 60 cases with the weights left on the card — the suite's eval_n by default, and the chain brings adapters_out.tgz hom
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.29.0
+    976f205 P64 attempt 1 [ran]: released on 60 cases with the weights left on the card — the suite's eval_n by default, and the chain brings adapters_out.tgz home | 0.29.0
+    carried the adapters in (3 chunks)
+    [pool] training desk-commitment from training/harness/data_desk/train.jsonl
+    [train] adapters/desk-commitment from 600 examples
+    W0918 21:11:25.781000 16732 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0918 21:11:25.821000 16732 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [precision] torch.bfloat16 on NVIDIA L4
+    W0918 21:11:25.781000 16732 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0918 21:11:25.821000 16732 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [precision] torch.bfloat16 on NVIDIA L4
+    W0918 21:11:25.781000 16732 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0918 21:11:25.821000 16732 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [precision] torch.bfloat16 on NVIDIA L4
+    W0918 21:11:25.781000 16732 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0918 21:11:25.821000 16732 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [precision] torch.bfloat16 on NVIDIA L4
+    W0918 21:11:25.781000 16732 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0918 21:11:25.821000 16732 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [precision] torch.bfloat16 on NVIDIA L4
+    W0918 21:11:25.781000 16732 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0918 21:11:25.821000 16732 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [precision] torch.bfloat16 on NVIDIA L4
+    W0918 21:11:25.781000 16732 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0918 21:11:25.821000 16732 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [precision] torch.bfloat16 on NVIDIA L4
+    W0918 21:11:25.781000 16732 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0918 21:11:25.821000 16732 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [precision] torch.bfloat16 on NVIDIA L4
+    W0918 21:11:25.781000 16732 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0918 21:11:25.821000 16732 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [precision] torch.bfloat16 on NVIDIA L4
+    W0918 21:11:25.781000 16732 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0918 21:11:25.821000 16732 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [precision] torch.bfloat16 on NVIDIA L4
+    [train] done
+    [pool] 240 cases from 960 desks (seed 424242)
+    [rank] vllm serve Qwen/Qwen2.5-3B-Instruct --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules email-full=adapters/email-full desk-commitment=adapters/desk-commitment
+    [train] done
+    [pool] 240 cases from 960 desks (seed 424242)
+    [rank] vllm serve Qwen/Qwen2.5-3B-Instruct --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules email-full=adapters/email-full desk-commitment=adapters/desk-commitment
+    [train] done
+    [pool] 240 cases from 960 desks (seed 424242)
+    [rank] vllm serve Qwen/Qwen2.5-3B-Instruct --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules email-full=adapters/email-full desk-commitment=adapters/desk-commitment
+    [train] done
+    [pool] 240 cases from 960 desks (seed 424242)
+    [rank] vllm serve Qwen/Qwen2.5-3B-Instruct --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules email-full=adapters/email-full desk-commitment=adapters/desk-commitment
+    [train] done
+    [pool] 240 cases from 960 desks (seed 424242)
+    [rank] vllm serve Qwen/Qwen2.5-3B-Instruct --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules email-full=adapters/email-full desk-commitment=adapters/desk-commitment
+    [rank] arm Qwen/Qwen2.5-3B-Instruct 50/240 correct 9 6s
+    [rank] arm Qwen/Qwen2.5-3B-Instruct 75/240 correct 12 10s
+    [rank] arm Qwen/Qwen2.5-3B-Instruct 100/240 correct 15 13s
+    [pool] new vs base: improvement (202:0, p=0.0)
+    [pool] RELEASED: a second useful member, co-resident and routed by its question
+    [pool] manifest written: releases/desk-commitment@v1.json
+    the runner wrote its result — done

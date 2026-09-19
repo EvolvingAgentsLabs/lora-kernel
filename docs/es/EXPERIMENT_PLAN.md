@@ -64,7 +64,7 @@ lleva la regla; esto es el estado.
 | **2** | ruteo por request | 1 | el clasificador de región ≥ el 0,775 por región de P41 sobre el mismo tráfico | ✅ **[ran]** P62 2026-09-18, cero GPU: replay sobre los 240 casos de P41, por request **0,775 = por región**, **0 mal ruteados**, 37,5 % afuera; lo entrega `openai_proxy --auto` |
 | **3** | OpenClaw en vivo con `--prune`; una plantilla de perfil por tarea | Fase 5 | cero llamadas a herramientas no ofrecidas; nada sale para la región del miembro | ✅ **[ran]** P63 2026-09-18: **EN VIVO** al intento 7 — 40/40 local, 0 inventadas, 19/32 turnos humanos llaman una herramienta, 0,688 contra barra 0,655 (descriptivo); el brazo con prompt del runtime 2/32, 0,281; seis fallas del camino en vivo corregidas con tests |
 | **4** | la primera región real, personalizada a mano | 1–3, sandbox, claves rotadas | la compuerta de release de la Fase 1 | — |
-| **5** | segunda y tercera región | 4 | cada una supera su propia barra contra la base | — |
+| **5** | segunda y tercera región | 4 | cada una supera su propia barra contra la base | **mitad sintética ✅ [ran]** P64 2026-09-18: `desk-commitment@v1` LIBERADO — G1/G2 en ambos miembros, `auto` rutea a cada uno por su pregunta, empata el g600 grabado 240/240 (0 discordantes), le gana a la base **202 : 0**; las regiones reales esperan al 4 |
 | **6** | trazas → corpus → compuerta → release sin manos | 4, 5 | el release automático empata al hecho a mano, pareado | — |
 | **7** | `Qwen3.8-27B` (Fase 6) | 5, y la cuenta de frontera | D2 | — |
 
@@ -715,6 +715,22 @@ insertado porque la brecha no cerraba sin herramienta — y `P8` es
 `harness.lora`, al que esta tabla llama P7. El torneo, el P8 de esta tabla,
 no se compró.
 
+
+#### P64 — hito 5, sintético: el segundo miembro útil **[ran]** 2026-09-18 · LIBERADO al segundo intento
+
+Una incógnita: ¿el experto `commitment` del desk entra por la puerta de la Fase 1 y co-reside con `email-full@v1` sobre una base, ruteado por su pregunta? Pre-registrado en [`results/P64-second-member-20260918/BRIEF.md`](../../results/P64-second-member-20260918/BRIEF.md). Una sesión de L4, 16 minutos: `desk-commitment` re-entrenado desde `data_desk/train.jsonl` (600 ejemplos, `release_gate.RECIPE`) en un subproceso, y después servido junto a `email-full` en un vLLM detrás del proxy con `--prune --member-prompt --auto`; suite desk, 240 casos, semilla 424242 — los casos de P55b.
+
+**Resultado [ran].** Pasan todas las compuertas pre-registradas, leídas de `pool_second.json`: G1 identidad `applied` 3/3 en ambos miembros; G2 herramientas alcanzables en ambos; G2′ `auto` sirve un prompt de desk con `desk-commitment` y un listado con `email-full`; el brazo nuevo **empata el g600 grabado, 240/240 contra 240/240 con 0 pares discordantes**; y le gana a la base **240 a 38, discordantes 202 : 0**. Con $b$ y $c$ las cuentas discordantes el test de signos exacto es
+
+$$p = 2\sum_{k=0}^{\min(b,c)} \binom{b+c}{k} 2^{-(b+c)} = 2\cdot 2^{-202} \approx 3\times10^{-61}.$$
+
+La base no está ociosa en esta región — **331 llamadas, 13 rechazadas, 3 malformadas, 19 sin decidir** — estira la mano hacia las herramientas y no sabe qué hacer con lo que vuelve; el miembro hace **240 llamadas en 240 casos, 0 rechazadas**. Esta vez el adaptador volvió a casa: `adapter_model.safetensors` da el hash `05022bec…` del manifiesto **[ran]**. Manifiesto: `releases/desk-commitment@v1.json`.
+
+**Chequeado antes de creerlo, cero GPU:** 0 de 240 ids evaluados y 0 de 240 prompts evaluados aparecen en el corpus de 600 ejemplos (la falla de P53); la respuesta es una fecha leída del resultado de una herramienta, y la base con la misma herramienta está en 0,158, así que el 1,000 es el protocolo y no memoria.
+
+**Lo que no dice.** Un techo no ordena: `g75` ya satura esta banda (P55b), así que nada acá rankea expertos, y la banda `commitment_deep` (P60 §3c/3d) está sin medir. El router se ejercitó con una sonda por miembro en vivo y con prompts generados offline (60/60, 60/60, 150/150, 140/140) — su prueba real es el tráfico del hito 4. Y estos dos miembros *sí* se encuentran en un problema — leen el mismo inbox, por eso las claves sobre el listado mal-rutearon 15 de 60 y las claves sobre la pregunta no — pero la selección entre ellos la sigue haciendo un diccionario, no la aceptación.
+
+**El intento 1** liberó sobre 60 casos — el `eval_n` por defecto de la suite — y dejó los pesos en la tarjeta; queda en `attempt1_60_cases_weights_lost/`. Un arreglo del runner, no un rediseño del instrumento: las compuertas y el brief no se movieron.
 
 #### P63 — hito 3: el turno en vivo de OpenClaw **[ran]** 2026-09-18 · EN VIVO al séptimo intento
 

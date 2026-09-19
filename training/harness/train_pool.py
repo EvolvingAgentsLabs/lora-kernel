@@ -21,6 +21,7 @@ from pathlib import Path
 
 from training.harness import contract
 from training.harness.agent_sim import SYSTEM as EMAIL_SYSTEM
+from training.harness.desk_sim import SYSTEM as DESK_SYSTEM
 
 # EACH MEMBER IS A RECORD, NOT A PATH. A corpus is everything the trainer needs and
 # nothing a caller needs; see `contract.py` for why a band and an output kind are
@@ -68,6 +69,19 @@ POOL = {
     # is the corpus teaching that some messages need no lookup. An expert whose floor
     # is 1 would have to invent a call for those, which is P45's failure mode in the
     # other direction.
+    # P64: the second useful member — the desk's `commitment` region, the same inbox
+    # and the same three tools plus `inbox`, a different question. Its grades saturated
+    # at 240/240 from 75 examples (P55b); the weights were never brought back, so the
+    # release is the retrain (releases/desk-commitment@v1.json).
+    "adapters/desk-commitment": contract.text(
+        "training/harness/data_desk/train.jsonl", contract.band(1, 1),
+        note="every one of its 600 examples calls `message` exactly once — the shallow band",
+        tags=["inbox", "thread_history", "sender_stats", "message"],
+        # ONLY THE KEYS THE CORPUS WRITES: it calls `<message>id=…</message>` and nothing
+        # else, so `thread_history` and `sender_stats` declare no keys (tests/test_prune.py
+        # reads the corpus and refuses a key it never wrote).
+        args={"message": ["id"]},
+        system=DESK_SYSTEM),
     "adapters/email-full": contract.text(
         "training/harness/data_ef/train.jsonl", contract.band(0, 3),
         tags=["thread_history", "sender_stats", "message"],

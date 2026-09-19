@@ -64,7 +64,7 @@ serves, routes, prunes, releases and measures; the customisations are what runs 
 | 2 | **routing per request** — the proxy decides local or frontier without the client naming a model | any client uses the API | **[ran]** P62, zero GPU: `--auto` routes by text; replay on P41's 240 cases **ties by region at 0.775, 0 misroutes**, 37.5 % out |
 | 3 | **OpenClaw live** with `--prune`, a profile template per task | the high-level interface over the API | **[ran]** P63: **LIVE** on the 7th attempt — 40/40 local, 0 invented calls, 19/32 human turns call a tool, 0.688 vs bar 0.655; the member served under its released prompt (`--member-prompt`); under the runtime's prompt 2/32 and 0.281 |
 | 4 | **the first real region** of a customer, customised by hand, released through Phase 1's door | the service with real traffic | 1–3, a real sandbox for code, keys rotated |
-| 5 | second and third regions — the region table per client | a pool in fact, not in name | 4 |
+| 5 | second and third regions — the region table per client | a pool in fact, not in name | 4 — **synthetic half [ran]** P64: `desk-commitment@v1` released beside `email-full@v1` on one vLLM, **240/240** tying the recorded run (0 discordant), **202 : 0** against the base, `--auto` routing each by its question; a customer's regions wait on 4 |
 | 6 | **traces → corpus → gate → release without hands** | the automation promised | 4, 5 |
 | 7 | a large local model — `Qwen3.8-27B` (D2 → D4) | moving part of "general" from the frontier to local | 5, and only if the frontier bill justifies it |
 

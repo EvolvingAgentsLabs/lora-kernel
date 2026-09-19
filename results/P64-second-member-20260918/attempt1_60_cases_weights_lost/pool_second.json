@@ -1,0 +1,3265 @@
+{
+ "name": "desk-commitment",
+ "base": "Qwen/Qwen2.5-3B-Instruct",
+ "recipe": {
+  "r": 16,
+  "lora_alpha": 32,
+  "epochs": 3,
+  "lr": 0.0002,
+  "batch": 2,
+  "accum": 8,
+  "max_seq": 1536,
+  "seed": 0,
+  "targets": "q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"
+ },
+ "corpus": "training/harness/data_desk/train.jsonl",
+ "corpus_sha256": "adc58b90daa49e65c4bd9e8a00c8c30878dce31312386805982eb6a5ab594c07",
+ "started": "2026-09-18T15:43:22",
+ "arms": {
+  "base": {
+   "model": "Qwen/Qwen2.5-3B-Instruct",
+   "records": {
+    "dk-0017": {
+     "id": "dk-0017",
+     "human": true,
+     "truth": "January 7",
+     "correct": false,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "36363b6b11965da7",
+     "text": "<thread_history thread=\"thr-019\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-019\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-019\"/>",
+     "ran_out": false
+    },
+    "dk-0001": {
+     "id": "dk-0001",
+     "human": true,
+     "truth": "November 22",
+     "correct": false,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "a3d552268547fb17",
+     "text": "<thread_history thread=\"thr-012\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-012\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-012\"/>",
+     "ran_out": false
+    },
+    "dk-0003": {
+     "id": "dk-0003",
+     "human": true,
+     "truth": "September 6",
+     "correct": false,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "e0b97eff1964fa4c",
+     "text": "<thread_history thread=\"thr-002\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-002\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-002\"/>",
+     "ran_out": false
+    },
+    "dk-0019": {
+     "id": "dk-0019",
+     "human": true,
+     "truth": "April 23",
+     "correct": false,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "a678e786c159ef0a",
+     "text": "<thread_history thread=\"thr-014\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-014\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-014\"/>",
+     "ran_out": false
+    },
+    "dk-0018": {
+     "id": "dk-0018",
+     "human": true,
+     "truth": "April 23",
+     "correct": false,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "a75d9fad52c6eaea",
+     "text": "<thread_history thread=\"thr-011\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-011\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-011\"/>",
+     "ran_out": false
+    },
+    "dk-0034": {
+     "id": "dk-0034",
+     "human": true,
+     "truth": "September 6",
+     "correct": false,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "a917f27fc1e0a958",
+     "text": "<thread_history...thr-002>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history...thr-002>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history...thr-002>",
+     "ran_out": false
+    },
+    "dk-0035": {
+     "id": "dk-0035",
+     "human": true,
+     "truth": "April 23",
+     "correct": false,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "a678e786c159ef0a",
+     "text": "<thread_history thread=\"thr-014\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-014\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-014\"/>",
+     "ran_out": false
+    },
+    "dk-0016": {
+     "id": "dk-0016",
+     "human": true,
+     "truth": "November 18",
+     "correct": true,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "6de60bdec4118f36",
+     "text": "<thread_history>thr-000</thread_history>= {\"turns\": 2, \"i_wrote_in_thread\": true, \"participants\": [\"irene.duarte@arrayworks.com\", \"me@ownmail.com\"], \"messages\": [{\"from\": \"irene.duarte@arrayworks.com\", \"preview\": \"Could you confirm this?\"}, {\"from\": \"me@ownmail.com\", \"preview\": \"I will have it to you by November 18.\"}]}\n<message>msg-000</message>= {\"from\": \"irene.duarte@arrayworks.com\", \"subject\": \"status\", \"to\": [\"irene.duarte@arrayworks.com\"], \"cc\": [], \"body\": \"I will have it to you by November 18.\", \"addressed_directly\": false}\nNov 18",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history>thr-000</thread_history>"
+      },
+      {
+       "at": 322,
+       "text": "<message>msg-000</message>"
+      },
+      {
+       "at": 538,
+       "text": "Nov 18"
+      }
+     ],
+     "calls": 2,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "Nov 18",
+     "ran_out": false
+    },
+    "dk-0002": {
+     "id": "dk-0002",
+     "human": true,
+     "truth": "April 12",
+     "correct": false,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "4c3a9fa2bc80b289",
+     "text": "<thread_history>thr-007</thread_history>= {\"turns\": 2, \"i_wrote_in_thread\": true, \"participants\": [\"lucas.esposito@nordwind.com\", \"me@ownmail.com\"], \"messages\": [{\"from\": \"lucas.esposito@nordwind.com\", \"preview\": \"Could you confirm this?\"}, {\"from\": \"me@ownmail.com\", \"preview\": \"I will have it to you by April 12.\"}]}\n<message>msg-007</message>= {\"from\": \"lucas.esposito@nordwind.com\", \"subject\": \"the handoff\", \"to\": [\"lucas.esposito@nordwind.com\"], \"cc\": [], \"body\": \"I will have it to you by April 12.\", \"addressed_directly\": false}\nApr 10",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history>thr-007</thread_history>"
+      },
+      {
+       "at": 319,
+       "text": "<message>msg-007</message>"
+      },
+      {
+       "at": 537,
+       "text": "Apr 10"
+      }
+     ],
+     "calls": 2,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "Apr 10",
+     "ran_out": false
+    },
+    "dk-0000": {
+     "id": "dk-0000",
+     "human": true,
+     "truth": "November 18",
+     "correct": true,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "6de60bdec4118f36",
+     "text": "<thread_history>thr-000</thread_history>= {\"turns\": 2, \"i_wrote_in_thread\": true, \"participants\": [\"irene.duarte@arrayworks.com\", \"me@ownmail.com\"], \"messages\": [{\"from\": \"irene.duarte@arrayworks.com\", \"preview\": \"Could you confirm this?\"}, {\"from\": \"me@ownmail.com\", \"preview\": \"I will have it to you by November 18.\"}]}\n<message>msg-000</message>= {\"from\": \"irene.duarte@arrayworks.com\", \"subject\": \"status\", \"to\": [\"irene.duarte@arrayworks.com\"], \"cc\": [], \"body\": \"I will have it to you by November 18.\", \"addressed_directly\": false}\nNov 18",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history>thr-000</thread_history>"
+      },
+      {
+       "at": 322,
+       "text": "<message>msg-000</message>"
+      },
+      {
+       "at": 538,
+       "text": "Nov 18"
+      }
+     ],
+     "calls": 2,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "Nov 18",
+     "ran_out": false
+    },
+    "dk-0048": {
+     "id": "dk-0048",
+     "human": true,
+     "truth": "March 18",
+     "correct": false,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "9fe0b3fbd29bf4c2",
+     "text": "<thread_history>thr-005</thread_history>= {\"turns\": 3, \"i_wrote_in_thread\": true, \"participants\": [\"diego.herrera@kelvinlab.com\", \"me@ownmail.com\"], \"messages\": [{\"from\": \"me@ownmail.com\", \"preview\": \"(my earlier message in this thread)\"}, {\"from\": \"diego.herrera@kelvinlab.com\", \"preview\": \"Could you confirm this?\"}, {\"from\": \"me@ownmail.com\", \"preview\": \"I will have it to you by March 18.\"}]}\n<inbox>=[]",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history>thr-005</thread_history>"
+      },
+      {
+       "at": 397,
+       "text": "<inbox>=[]"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<inbox>=[]",
+     "ran_out": false
+    },
+    "dk-0033": {
+     "id": "dk-0033",
+     "human": true,
+     "truth": "January 5",
+     "correct": false,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "4a379a7c3540741b",
+     "text": "<thread_history>thr-006</thread_history>= {\"turns\": 3, \"i_wrote_in_thread\": true, \"participants\": [\"clara.costa@arrayworks.com\", \"me@ownmail.com\"], \"messages\": [{\"from\": \"me@ownmail.com\", \"preview\": \"(my earlier message in this thread)\"}, {\"from\": \"clara.costa@arrayworks.com\", \"preview\": \"Sharing for your records.\"}, {\"from\": \"me@ownmail.com\", \"preview\": \"I will have it to you by January 5.\"}]}\n<inbox>=[]",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history>thr-006</thread_history>"
+      },
+      {
+       "at": 398,
+       "text": "<inbox>=[]"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<inbox>=[]",
+     "ran_out": false
+    },
+    "dk-0065": {
+     "id": "dk-0065",
+     "human": true,
+     "truth": "September 26",
+     "correct": false,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "8921fea917545787",
+     "text": "<thread_history thread=\"thr-016\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-016\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-016\"/>",
+     "ran_out": false
+    },
+    "dk-0032": {
+     "id": "dk-0032",
+     "human": true,
+     "truth": "April 23",
+     "correct": true,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "859105746ebfd746",
+     "text": "<thread_history>thr-014</thread_history>= {\"turns\": 3, \"i_wrote_in_thread\": true, \"participants\": [\"marina.medina@nordwind.com\", \"me@ownmail.com\"], \"messages\": [{\"from\": \"me@ownmail.com\", \"preview\": \"(my earlier message in this thread)\"}, {\"from\": \"marina.medina@nordwind.com\", \"preview\": \"Sharing for your records.\"}, {\"from\": \"me@ownmail.com\", \"preview\": \"I will have it to you by April 23.\"}]}\n<message>msg-014</message>= {\"from\": \"marina.medina@nordwind.com\", \"subject\": \"following up\", \"to\": [\"marina.medina@nordwind.com\"], \"cc\": [], \"body\": \"I will have it to you by April 23.\", \"addressed_directly\": false}\nApril 23",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history>thr-014</thread_history>"
+      },
+      {
+       "at": 397,
+       "text": "<message>msg-014</message>"
+      },
+      {
+       "at": 614,
+       "text": "April 23"
+      }
+     ],
+     "calls": 2,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "April 23",
+     "ran_out": false
+    },
+    "dk-0049": {
+     "id": "dk-0049",
+     "human": true,
+     "truth": "January 16",
+     "correct": false,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "53bfcf6fa3e4bdf3",
+     "text": "<thread_history>thr-000</thread_history>= {\"turns\": 3, \"i_wrote_in_thread\": true, \"participants\": [\"karina.herrera@pine-and-co.com\", \"me@ownmail.com\"], \"messages\": [{\"from\": \"me@ownmail.com\", \"preview\": \"(my earlier message in this thread)\"}, {\"from\": \"karina.herrera@pine-and-co.com\", \"preview\": \"Sharing for your records.\"}, {\"from\": \"me@ownmail.com\", \"preview\": \"I will have it to you by January 16.\"}]}\n<inbox>=[]",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history>thr-000</thread_history>"
+      },
+      {
+       "at": 407,
+       "text": "<inbox>=[]"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<inbox>=[]",
+     "ran_out": false
+    },
+    "dk-0066": {
+     "id": "dk-0066",
+     "human": true,
+     "truth": "April 12",
+     "correct": false,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "2a9575d27ac4cb9e",
+     "text": "<thread_history thread=\"thr-001\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-001\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-001\"/>",
+     "ran_out": false
+    },
+    "dk-0067": {
+     "id": "dk-0067",
+     "human": true,
+     "truth": "April 23",
+     "correct": false,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "412f497b41106484",
+     "text": "<thread_history thread=\"thr-023\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-023\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-023\"/>",
+     "ran_out": false
+    },
+    "dk-0064": {
+     "id": "dk-0064",
+     "human": true,
+     "truth": "January 16",
+     "correct": false,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "f25f6cbebae691d5",
+     "text": "<thread_history>thr-000</thread_history>= {\"turns\": 3, \"i_wrote_in_thread\": true, \"participants\": [\"karina.herrera@pine-and-co.com\", \"me@ownmail.com\"], \"messages\": [{\"from\": \"me@ownmail.com\", \"preview\": \"(my earlier message in this thread)\"}, {\"from\": \"karina.herrera@pine-and-co.com\", \"preview\": \"Sharing for your records.\"}, {\"from\": \"me@ownmail.com\", \"preview\": \"I will have it to you by January 16.\"}]}\n<inbox>=[]",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history>thr-000</thread_history>"
+      },
+      {
+       "at": 407,
+       "text": "<inbox>=[]"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<inbox>=[]",
+     "ran_out": false
+    },
+    "dk-0050": {
+     "id": "dk-0050",
+     "human": true,
+     "truth": "March 18",
+     "correct": true,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "655f9a5a4e790a05",
+     "text": "<thread_history>thr-005</thread_history>= {\"turns\": 3, \"i_wrote_in_thread\": true, \"participants\": [\"diego.herrera@kelvinlab.com\", \"me@ownmail.com\"], \"messages\": [{\"from\": \"me@ownmail.com\", \"preview\": \"(my earlier message in this thread)\"}, {\"from\": \"diego.herrera@kelvinlab.com\", \"preview\": \"Could you confirm this?\"}, {\"from\": \"me@ownmail.com\", \"preview\": \"I will have it to you by March 18.\"}]}\n<message>msg-005</message>= {\"from\": \"diego.herrera@kelvinlab.com\", \"subject\": \"following up\", \"to\": [\"diego.herrera@kelvinlab.com\"], \"cc\": [], \"body\": \"I will have it to you by March 18.\", \"addressed_directly\": false}\nMarch 18",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history>thr-005</thread_history>"
+      },
+      {
+       "at": 397,
+       "text": "<message>msg-005</message>"
+      },
+      {
+       "at": 616,
+       "text": "March 18"
+      }
+     ],
+     "calls": 2,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "March 18",
+     "ran_out": false
+    },
+    "dk-0081": {
+     "id": "dk-0081",
+     "human": true,
+     "truth": "March 1",
+     "correct": false,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "43a47e78b6ec55cd",
+     "text": "<thread_history thread=\"thr-010\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-010\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-010\"/>",
+     "ran_out": false
+    },
+    "dk-0083": {
+     "id": "dk-0083",
+     "human": true,
+     "truth": "November 6",
+     "correct": false,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "1f5cb0188ea1a457",
+     "text": "<thread_history...thr-003>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history...thr-003>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history...thr-003>",
+     "ran_out": false
+    },
+    "dk-0082": {
+     "id": "dk-0082",
+     "human": true,
+     "truth": "November 4",
+     "correct": false,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "6aac1517c7a21cac",
+     "text": "<thread_history thread=\"thr-021\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-021\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-021\"/>",
+     "ran_out": false
+    },
+    "dk-0097": {
+     "id": "dk-0097",
+     "human": true,
+     "truth": "April 18",
+     "correct": false,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "a0af37a71a0c7f94",
+     "text": "<thread_history thread=\"thr-023\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-023\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-023\"/>",
+     "ran_out": false
+    },
+    "dk-0099": {
+     "id": "dk-0099",
+     "human": true,
+     "truth": "April 18",
+     "correct": false,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "a5c9b0ec969affd2",
+     "text": "<thread_history thread=\"thr-023\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-023\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-023\"/>",
+     "ran_out": false
+    },
+    "dk-0113": {
+     "id": "dk-0113",
+     "human": true,
+     "truth": "April 18",
+     "correct": false,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "a0af37a71a0c7f94",
+     "text": "<thread_history thread=\"thr-023\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-023\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-023\"/>",
+     "ran_out": false
+    },
+    "dk-0080": {
+     "id": "dk-0080",
+     "human": true,
+     "truth": "September 21",
+     "correct": true,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "f3f2186440efa9fb",
+     "text": "<thread_history>thr-020</thread_history>= {\"turns\": 2, \"i_wrote_in_thread\": true, \"participants\": [\"karina.navarro@pine-and-co.com\", \"me@ownmail.com\"], \"messages\": [{\"from\": \"karina.navarro@pine-and-co.com\", \"preview\": \"Sharing for your records.\"}, {\"from\": \"me@ownmail.com\", \"preview\": \"I will have it to you by September 21.\"}]}\n<message>msg-020</message>= {\"from\": \"karina.navarro@pine-and-co.com\", \"subject\": \"status\", \"to\": [\"karina.navarro@pine-and-co.com\"], \"cc\": [], \"body\": \"I will have it to you by September 21.\", \"addressed_directly\": false}\nSeptember 21",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history>thr-020</thread_history>"
+      },
+      {
+       "at": 331,
+       "text": "<message>msg-020</message>"
+      },
+      {
+       "at": 554,
+       "text": "September 21"
+      }
+     ],
+     "calls": 2,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "September 21",
+     "ran_out": false
+    },
+    "dk-0114": {
+     "id": "dk-0114",
+     "human": true,
+     "truth": "November 4",
+     "correct": false,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "6aac1517c7a21cac",
+     "text": "<thread_history thread=\"thr-021\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-021\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-021\"/>",
+     "ran_out": false
+    },
+    "dk-0112": {
+     "id": "dk-0112",
+     "human": true,
+     "truth": "April 13",
+     "correct": false,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "e846b1cd6705605e",
+     "text": "<thread_history>thr-001</thread_history>= {\"turns\": 3, \"i_wrote_in_thread\": true, \"participants\": [\"ana.benitez@arrayworks.com\", \"me@ownmail.com\"], \"messages\": [{\"from\": \"me@ownmail.com\", \"preview\": \"(my earlier message in this thread)\"}, {\"from\": \"ana.benitez@arrayworks.com\", \"preview\": \"Could you confirm this?\"}, {\"from\": \"me@ownmail.com\", \"preview\": \"I will have it to you by April 13.\"}]}\n<inbox>=[]",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history>thr-001</thread_history>"
+      },
+      {
+       "at": 395,
+       "text": "<inbox>=[]"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<inbox>=[]",
+     "ran_out": false
+    },
+    "dk-0115": {
+     "id": "dk-0115",
+     "human": true,
+     "truth": "January 3",
+     "correct": false,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "20196d8a164c56f9",
+     "text": "<thread_history thread=\"thr-013\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-013\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-013\"/>",
+     "ran_out": false
+    },
+    "dk-0096": {
+     "id": "dk-0096",
+     "human": true,
+     "truth": "January 3",
+     "correct": true,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "a402bf12a998c8d0",
+     "text": "<thread_history>thr-013</thread_history>= {\"turns\": 3, \"i_wrote_in_thread\": true, \"participants\": [\"facundo.alvarez@nordwind.com\", \"me@ownmail.com\"], \"messages\": [{\"from\": \"me@ownmail.com\", \"preview\": \"(my earlier message in this thread)\"}, {\"from\": \"facundo.alvarez@nordwind.com\", \"preview\": \"Sharing for your records.\"}, {\"from\": \"me@ownmail.com\", \"preview\": \"I will have it to you by January 3.\"}]}\n<message>msg-013</message>= {\"from\": \"facundo.alvarez@nordwind.com\", \"subject\": \"next steps\", \"to\": [\"facundo.alvarez@nordwind.com\"], \"cc\": [], \"body\": \"I will have it to you by January 3.\", \"addressed_directly\": false}\nJan 03, 2024",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history>thr-013</thread_history>"
+      },
+      {
+       "at": 402,
+       "text": "<message>msg-013</message>"
+      },
+      {
+       "at": 622,
+       "text": "Jan 03, 2024"
+      }
+     ],
+     "calls": 2,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "Jan 03, 2024",
+     "ran_out": false
+    },
+    "dk-0128": {
+     "id": "dk-0128",
+     "human": true,
+     "truth": "November 2",
+     "correct": false,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "59d68e33b6959b29",
+     "text": "<thread_history thread=\"thr-010\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-010\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-010\"/>",
+     "ran_out": false
+    },
+    "dk-0129": {
+     "id": "dk-0129",
+     "human": true,
+     "truth": "June 11",
+     "correct": false,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "f964f3aacb3ff03b",
+     "text": "<thread_history thread=\"thr-018\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-018\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-018\"/>",
+     "ran_out": false
+    },
+    "dk-0098": {
+     "id": "dk-0098",
+     "human": true,
+     "truth": "January 15",
+     "correct": true,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "0f446a2b916c3167",
+     "text": "<thread_history>thr-005</thread_history>= {\"turns\": 2, \"i_wrote_in_thread\": true, \"participants\": [\"joaquin.costa@kelvinlab.com\", \"me@ownmail.com\"], \"messages\": [{\"from\": \"joaquin.costa@kelvinlab.com\", \"preview\": \"Could you confirm this?\"}, {\"from\": \"me@ownmail.com\", \"preview\": \"I will have it to you by January 15.\"}]}\n<message>msg-005</message>= {\"from\": \"joaquin.costa@kelvinlab.com\", \"subject\": \"next steps\", \"to\": [\"joaquin.costa@kelvinlab.com\"], \"cc\": [], \"body\": \"I will have it to you by January 15.\", \"addressed_directly\": false}\nJan 15",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history>thr-005</thread_history>"
+      },
+      {
+       "at": 321,
+       "text": "<message>msg-005</message>"
+      },
+      {
+       "at": 540,
+       "text": "Jan 15"
+      }
+     ],
+     "calls": 2,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "Jan 15",
+     "ran_out": false
+    },
+    "dk-0130": {
+     "id": "dk-0130",
+     "human": true,
+     "truth": "November 18",
+     "correct": false,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "2e8d319dd6116d12",
+     "text": "<thread_history thread=\"thr-016\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-016\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-016\"/>",
+     "ran_out": false
+    },
+    "dk-0131": {
+     "id": "dk-0131",
+     "human": true,
+     "truth": "November 2",
+     "correct": false,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "a1b2bd5efe34c8dd",
+     "text": "<thread_history thread=\"thr-010\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-010\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-010\"/>",
+     "ran_out": false
+    },
+    "dk-0051": {
+     "id": "dk-0051",
+     "human": true,
+     "truth": "January 16",
+     "correct": false,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "814fca87ef3bdf10",
+     "text": "<thread_history>thr-000</thread_history>= {\"turns\": 3, \"i_wrote_in_thread\": true, \"participants\": [\"karina.herrera@pine-and-co.com\", \"me@ownmail.com\"], \"messages\": [{\"from\": \"me@ownmail.com\", \"preview\": \"(my earlier message in this thread)\"}, {\"from\": \"karina.herrera@pine-and-co.com\", \"preview\": \"Sharing for your records.\"}, {\"from\": \"me@ownmail.com\", \"preview\": \"I will have it to you by January 16.\"}]}\n<inbox>...</inbox>= [{\"id\": \"msg-000\", \"thread_id\": \"thr-000\", \"from\": \"karina.herrera@pine-and-co.com\", \"from_name\": \"Karina Herrera\", \"subject\": \"the numbers\"}, {\"id\": \"msg-001\", \"thread_id\": \"thr-001\", \"from\": \"facundo.ibarra@arrayworks.com\", \"from_name\": \"Facundo Ibarra\", \"subject\": \"this week\"}, {\"id\": \"msg-002\", \"thread_id\": \"thr-002\", \"from\": \"facundo.esposito@tallgrass.com\", \"from_name\": \"Facundo Esposito\", \"subject\": \"the draft\"}, {\"id\": \"msg-003\", \"thread_id\": \"thr-003\", \"from\": \"lucas.ortiz@pine-and-co.com\", \"from_name\": \"Lucas Ortiz\", \"subject\": \"following up\"}, {\"id\": \"msg-004\", \"thread_id\": \"thr-004\", \"from\": \"facundo.ferreyra@kelvinlab.com\", \"from_name\": \"Facundo Ferreyra\", \"subject\": \"status\"}, {\"id\": \"msg-005\", \"thread_id\": \"thr-005\", \"from\": \"diego.herrera@kelvinlab.com\", \"from_name\": \"Diego Herrera\", \"subject\": \"following up\"}, {\"id\": \"msg-006\", \"thread_id\": \"thr-006\", \"from\": \"marina.ibarra@arrayworks.com\", \"from_name\": \"Marina Ibarra\", \"subject\": \"next steps\"}, {\"id\": \"msg-007\", \"thread_id\": \"thr-007\", \"from\": \"paula.ferreyra@arrayworks.com\", \"from_name\": \"Paula Ferreyra\", \"subject\": \"status\"}, {\"id\": \"msg-008\", \"thread_id\": \"thr-008\", \"from\": \"clara.esposito@arrayworks.com\", \"from_name\": \"Clara Esposito\", \"subject\": \"the handoff\"}, {\"id\": \"msg-009\", \"thread_id\": \"thr-009\", \"from\": \"facundo.benitez@arrayworks.com\", \"from_name\": \"Facundo Benitez\", \"subject\": \"a question\"}, {\"id\": \"msg-010\", \"thread_id\": \"thr-010\", \"from\": \"diego.gimenez@kelvinlab.com\", \"from_name\": \"Diego Gimenez\", \"subject\": \"the handoff\"}, {\"id\": \"msg-011\", \"thread_id\": \"thr-011\", \"from\": \"ana.alvarez@pine-and-co.com\", \"from_name\": \"Ana Alvarez\", \"subject\": \"the handoff\"}, {\"id\": \"msg-012\", \"thread_id\": \"thr-012\", \"from\": \"facundo.medina@nordwind.com\", \"from_name\": \"Facundo Medina\", \"subject\": \"the handoff\"}, {\"id\": \"msg-013\", \"thread_id\": \"thr-013\", \"from\": \"marina.esposito@pine-and-co.com\", \"from_name\": \"Marina Esposito\", \"subject\": \"next steps\"}, {\"id\": \"msg-014\", \"thread_id\": \"thr-014\", \"from\": \"joaquin.ortiz@kelvinlab.com\", \"from_name\": \"Joaquin Ortiz\", \"subject\": \"the handoff\"}, {\"id\": \"msg-015\", \"thread_id\": \"thr-015\", \"from\": \"clara.esposito@pine-and-co.com\", \"from_name\": \"Clara Esposito\", \"subject\": \"status\"}, {\"id\": \"msg-016\", \"thread_id\": \"thr-016\", \"from\": \"nicolas.ferreyra@kelvinlab.com\", \"from_name\": \"Nicolas Ferreyra\", \"subject\": \"the handoff\"}, {\"id\": \"msg-017\", \"thread_id\": \"thr-017\", \"from\": \"joaquin.alvarez@tallgrass.com\", \"from_name\": \"Joaquin Alvarez\", \"subject\": \"this week\"}, {\"id\": \"msg-018\", \"thread_id\": \"thr-018\", \"from\": \"bruno.duarte@pine-and-co.com\", \"from_name\": \"Bruno Duarte\", \"subject\": \"status\"}, {\"id\": \"msg-019\", \"thread_id\": \"thr-019\", \"from\": \"diego.esposito@pine-and-co.com\", \"from_name\": \"Diego Esposito\", \"subject\": \"the handoff\"}, {\"id\": \"msg-020\", \"thread_id\": \"thr-020\", \"from\": \"ana.juarez@nordwind.com\", \"from_name\": \"Ana Juarez\", \"subject\": \"next steps\"}, {\"id\": \"msg-021\", \"thread_id\": \"thr-021\", \"from\": \"paula.navarro@arrayworks.com\", \"from_name\": \"Paula Navarro\", \"subject\": \"the numbers\"}, {\"id\": \"msg-022\", \"thread_id\": \"thr-022\", \"from\": \"nicolas.ortiz@tallgrass.com\", \"from_name\": \"Nicolas Ortiz\", \"subject\": \"your note\"}, {\"id\": \"msg-023\", \"thread_id\": \"thr-023\", \"from\": \"karina.esposito@arrayworks.com\", \"from_name\": \"Karina Esposito\", \"subject\": \"this week\"}]\n<inbox>...</inbox>= [{\"id\": \"msg-000\", \"thread_id\": \"thr-000\", \"from\": \"karina.herrera@pine-and-co.com\", \"from_name\": \"Karina Herrera\", \"subject\": \"the numbers\"}, {\"id\": \"msg-001\", \"thread_id\": \"thr-001\", \"from\": \"facundo.ibarra@arrayworks.com\", \"from_name\": \"Facundo Ibarra\", \"subject\": \"this week\"}, {\"id\": \"msg-002\", \"thread_id\": \"thr-002\", \"from\": \"facundo.esposito@tallgrass.com\", \"from_name\": \"Facundo Esposito\", \"subject\": \"the draft\"}, {\"id\": \"msg-003\", \"thread_id\": \"thr-003\", \"from\": \"lucas.ortiz@pine-and-co.com\", \"from_name\": \"Lucas Ortiz\", \"subject\": \"following up\"}, {\"id\": \"msg-004\", \"thread_id\": \"thr-004\", \"from\": \"facundo.ferreyra@kelvinlab.com\", \"from_name\": \"Facundo Ferreyra\", \"subject\": \"status\"}, {\"id\": \"msg-005\", \"thread_id\": \"thr-005\", \"from\": \"diego.herrera@kelvinlab.com\", \"from_name\": \"Diego Herrera\", \"subject\": \"following up\"}, {\"id\": \"msg-006\", \"thread_id\": \"thr-006\", \"from\": \"marina.ibarra@arrayworks.com\", \"from_name\": \"Marina Ibarra\", \"subject\": \"next steps\"}, {\"id\": \"msg-007\", \"thread_id\": \"thr-007\", \"from\": \"paula.ferreyra@arrayworks.com\", \"from_name\": \"Paula Ferreyra\", \"subject\": \"status\"}, {\"id\": \"msg-008\", \"thread_id\": \"thr-008\", \"from\": \"clara.esposito@arrayworks.com\", \"from_name\": \"Clara Esposito\", \"subject\": \"the handoff\"}, {\"id\": \"msg-009\", \"thread_id\": \"thr-009\", \"from\": \"facundo.benitez@arrayworks.com\", \"from_name\": \"Facundo Benitez\", \"subject\": \"a question\"}, {\"id\": \"msg-010\", \"thread_id\": \"thr-010\", \"from\": \"diego.gimenez@kelvinlab.com\", \"from_name\": \"Diego Gimenez\", \"subject\": \"the handoff\"}, {\"id\": \"msg-011\", \"thread_id\": \"thr-011\", \"from\": \"ana.alvarez@pine-and-co.com\", \"from_name\": \"Ana Alvarez\", \"subject\": \"the handoff\"}, {\"id\": \"msg-012\", \"thread_id\": \"thr-012\", \"from\": \"facundo.medina@nordwind.com\", \"from_name\": \"Facundo Medina\", \"subject\": \"the handoff\"}, {\"id\": \"msg-013\", \"thread_id\": \"thr-013\", \"from\": \"marina.esposito@pine-and-co.com\", \"from_name\": \"Marina Esposito\", \"subject\": \"next steps\"}, {\"id\": \"msg-014\", \"thread_id\": \"thr-014\", \"from\": \"joaquin.ortiz@kelvinlab.com\", \"from_name\": \"Joaquin Ortiz\", \"subject\": \"the handoff\"}, {\"id\": \"msg-015\", \"thread_id\": \"thr-015\", \"from\": \"clara.esposito@pine-and-co.com\", \"from_name\": \"Clara Esposito\", \"subject\": \"status\"}, {\"id\": \"msg-016\", \"thread_id\": \"thr-016\", \"from\": \"nicolas.ferreyra@kelvinlab.com\", \"from_name\": \"Nicolas Ferreyra\", \"subject\": \"the handoff\"}, {\"id\": \"msg-017\", \"thread_id\": \"thr-017\", \"from\": \"joaquin.alvarez@tallgrass.com\", \"from_name\": \"Joaquin Alvarez\", \"subject\": \"this week\"}, {\"id\": \"msg-018\", \"thread_id\": \"thr-018\", \"from\": \"bruno.duarte@pine-and-co.com\", \"from_name\": \"Bruno Duarte\", \"subject\": \"status\"}, {\"id\": \"msg-019\", \"thread_id\": \"thr-019\", \"from\": \"diego.esposito@pine-and-co.com\", \"from_name\": \"Diego Esposito\", \"subject\": \"the handoff\"}, {\"id\": \"msg-020\", \"thread_id\": \"thr-020\", \"from\": \"ana.juarez@nordwind.com\", \"from_name\": \"Ana Juarez\", \"subject\": \"next steps\"}, {\"id\": \"msg-021\", \"thread_id\": \"thr-021\", \"from\": \"paula.navarro@arrayworks.com\", \"from_name\": \"Paula Navarro\", \"subject\": \"the numbers\"}, {\"id\": \"msg-022\", \"thread_id\": \"thr-022\", \"from\": \"nicolas.ortiz@tallgrass.com\", \"from_name\": \"Nicolas Ortiz\", \"subject\": \"your note\"}, {\"id\": \"msg-023\", \"thread_id\": \"thr-023\", \"from\": \"karina.esposito@arrayworks.com\", \"from_name\": \"Karina Esposito\", \"subject\": \"this week\"}]\n<thread_history>thr-000</thread_history>= {\"turns\": 3, \"i_wrote_in_thread\": true, \"participants\": [\"karina.herrera@pine-and-co.com\", \"me@ownmail.com\"], \"messages\": [{\"from\": \"me@ownmail.com\", \"preview\": \"(my earlier message in this thread)\"}, {\"from\": \"karina.herrera@pine-and-co.com\", \"preview\": \"Sharing for your records.\"}, {\"from\": \"me@ownmail.com\", \"preview\": \"I will have it to you by January 16.\"}]}\n<message>msg-000</message>= {\"from\": \"karina.herrera@pine-and-co.com\", \"subject\": \"the numbers\", \"to\": [\"karina.herrera@pine-and-co.com\"], \"cc\": [], \"body\": \"I will have it to you by January 16.\", \"addressed_directly\": false}\nmessage=msg-000",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history>thr-000</thread_history>"
+      },
+      {
+       "at": 407,
+       "text": "<inbox>...</inbox>"
+      },
+      {
+       "at": 3759,
+       "text": "<inbox>...</inbox>"
+      },
+      {
+       "at": 7111,
+       "text": "<thread_history>thr-000</thread_history>"
+      },
+      {
+       "at": 7518,
+       "text": "<message>msg-000</message>"
+      },
+      {
+       "at": 7744,
+       "text": "message=msg-000"
+      }
+     ],
+     "calls": 5,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "message=msg-000",
+     "ran_out": false
+    },
+    "dk-0145": {
+     "id": "dk-0145",
+     "human": true,
+     "truth": "April 8",
+     "correct": false,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "2b8cd696a2cdfff8",
+     "text": "<thread_history thread=\"thr-017\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-017\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-017\"/>",
+     "ran_out": false
+    },
+    "dk-0160": {
+     "id": "dk-0160",
+     "human": true,
+     "truth": "April 3",
+     "correct": false,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "f7d10eb8ecf8ec3b",
+     "text": "<thread_history thread=\"thr-010\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-010\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-010\"/>",
+     "ran_out": false
+    },
+    "dk-0161": {
+     "id": "dk-0161",
+     "human": true,
+     "truth": "April 14",
+     "correct": false,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "e3d51280d613b497",
+     "text": "<thread_history thread=\"thr-023\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-023\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-023\"/>",
+     "ran_out": false
+    },
+    "dk-0163": {
+     "id": "dk-0163",
+     "human": true,
+     "truth": "September 27",
+     "correct": false,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "79cd036a8bac0d0a",
+     "text": "<thread_history thread=\"thr-016\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-016\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-016\"/>",
+     "ran_out": false
+    },
+    "dk-0144": {
+     "id": "dk-0144",
+     "human": true,
+     "truth": "September 2",
+     "correct": true,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "e405261ee40ba056",
+     "text": "<thread_history>thr-003</thread_history>= {\"turns\": 3, \"i_wrote_in_thread\": true, \"participants\": [\"karina.lombardi@tallgrass.com\", \"me@ownmail.com\"], \"messages\": [{\"from\": \"me@ownmail.com\", \"preview\": \"(my earlier message in this thread)\"}, {\"from\": \"karina.lombardi@tallgrass.com\", \"preview\": \"Could you confirm this?\"}, {\"from\": \"me@ownmail.com\", \"preview\": \"I will have it to you by September 2.\"}]}\n<message>msg-003</message>= {\"from\": \"karina.lombardi@tallgrass.com\", \"subject\": \"the handoff\", \"to\": [\"karina.lombardi@tallgrass.com\"], \"cc\": [], \"body\": \"I will have it to you by September 2.\", \"addressed_directly\": false}\nSeptember 2",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history>thr-003</thread_history>"
+      },
+      {
+       "at": 404,
+       "text": "<message>msg-003</message>"
+      },
+      {
+       "at": 629,
+       "text": "September 2"
+      }
+     ],
+     "calls": 2,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "September 2",
+     "ran_out": false
+    },
+    "dk-0177": {
+     "id": "dk-0177",
+     "human": true,
+     "truth": "January 10",
+     "correct": false,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "23273d2c0ff05882",
+     "text": "<thread_history thread=\"thr-017\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-017\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-017\"/>",
+     "ran_out": false
+    },
+    "dk-0146": {
+     "id": "dk-0146",
+     "human": true,
+     "truth": "September 19",
+     "correct": true,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "b475072a64074ea7",
+     "text": "<thread_history>thr-000</thread_history>= {\"turns\": 3, \"i_wrote_in_thread\": true, \"participants\": [\"hugo.lombardi@tallgrass.com\", \"me@ownmail.com\"], \"messages\": [{\"from\": \"me@ownmail.com\", \"preview\": \"(my earlier message in this thread)\"}, {\"from\": \"hugo.lombardi@tallgrass.com\", \"preview\": \"Sharing for your records.\"}, {\"from\": \"me@ownmail.com\", \"preview\": \"I will have it to you by September 19.\"}]}\n<message>msg-000</message>= {\"from\": \"hugo.lombardi@tallgrass.com\", \"subject\": \"quick one\", \"to\": [\"hugo.lombardi@tallgrass.com\"], \"cc\": [], \"body\": \"I will have it to you by September 19.\", \"addressed_directly\": false}\nSeptember 19",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history>thr-000</thread_history>"
+      },
+      {
+       "at": 403,
+       "text": "<message>msg-000</message>"
+      },
+      {
+       "at": 623,
+       "text": "September 19"
+      }
+     ],
+     "calls": 2,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "September 19",
+     "ran_out": false
+    },
+    "dk-0178": {
+     "id": "dk-0178",
+     "human": true,
+     "truth": "September 27",
+     "correct": false,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "154591b53547e59a",
+     "text": "<thread_history thread=\"thr-016\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-016\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-016\"/>",
+     "ran_out": false
+    },
+    "dk-0176": {
+     "id": "dk-0176",
+     "human": true,
+     "truth": "September 27",
+     "correct": false,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "33252ad68d3ee03b",
+     "text": "<thread_history>thr-016</thread_history>= {\"turns\": 3, \"i_wrote_in_thread\": true, \"participants\": [\"ana.costa@pine-and-co.com\", \"me@ownmail.com\"], \"messages\": [{\"from\": \"me@ownmail.com\", \"preview\": \"(my earlier message in this thread)\"}, {\"from\": \"ana.costa@pine-and-co.com\", \"preview\": \"Could you confirm this?\"}, {\"from\": \"me@ownmail.com\", \"preview\": \"I will have it to you by September 27.\"}]}\n<inbox>=[]",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history>thr-016</thread_history>"
+      },
+      {
+       "at": 397,
+       "text": "<inbox>=[]"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<inbox>=[]",
+     "ran_out": false
+    },
+    "dk-0194": {
+     "id": "dk-0194",
+     "human": true,
+     "truth": "November 16",
+     "correct": false,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "c90dea4f861954aa",
+     "text": "<thread_history...thr-008>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history...thr-008>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history...thr-008>",
+     "ran_out": false
+    },
+    "dk-0195": {
+     "id": "dk-0195",
+     "human": true,
+     "truth": "April 14",
+     "correct": false,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "ae91112bb65ece8f",
+     "text": "<thread_history thread=\"thr-023\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-023\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-023\"/>",
+     "ran_out": false
+    },
+    "dk-0208": {
+     "id": "dk-0208",
+     "human": true,
+     "truth": "June 11",
+     "correct": false,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "26663d43b720214d",
+     "text": "<thread_history thread=\"thr-022\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-022\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-022\"/>",
+     "ran_out": false
+    },
+    "dk-0192": {
+     "id": "dk-0192",
+     "human": true,
+     "truth": "January 19",
+     "correct": false,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "64be1361f0a049c3",
+     "text": "<thread_history>thr-005</thread_history>= {\"turns\": 2, \"i_wrote_in_thread\": true, \"participants\": [\"facundo.juarez@pine-and-co.com\", \"me@ownmail.com\"], \"messages\": [{\"from\": \"facundo.juarez@pine-and-co.com\", \"preview\": \"Sharing for your records.\"}, {\"from\": \"me@ownmail.com\", \"preview\": \"I will have it to you by January 19.\"}]}\n<inbox>=[]",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history>thr-005</thread_history>"
+      },
+      {
+       "at": 329,
+       "text": "<inbox>=[]"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<inbox>=[]",
+     "ran_out": false
+    },
+    "dk-0162": {
+     "id": "dk-0162",
+     "human": true,
+     "truth": "January 24",
+     "correct": false,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "a29ce566de3f6fe0",
+     "text": "<thread_history>thr-009</thread_history>= {\"turns\": 3, \"i_wrote_in_thread\": true, \"participants\": [\"lucas.duarte@arrayworks.com\", \"me@ownmail.com\"], \"messages\": [{\"from\": \"me@ownmail.com\", \"preview\": \"(my earlier message in this thread)\"}, {\"from\": \"lucas.duarte@arrayworks.com\", \"preview\": \"Could you confirm this?\"}, {\"from\": \"me@ownmail.com\", \"preview\": \"I will have it to you by January 24.\"}]}\n<inbox>...</inbox>= [{\"id\": \"msg-000\", \"thread_id\": \"thr-000\", \"from\": \"facundo.gimenez@tallgrass.com\", \"from_name\": \"Facundo Gimenez\", \"subject\": \"the handoff\"}, {\"id\": \"msg-001\", \"thread_id\": \"thr-001\", \"from\": \"lucas.ibarra@tallgrass.com\", \"from_name\": \"Lucas Ibarra\", \"subject\": \"following up\"}, {\"id\": \"msg-002\", \"thread_id\": \"thr-002\", \"from\": \"diego.benitez@arrayworks.com\", \"from_name\": \"Diego Benitez\", \"subject\": \"the numbers\"}, {\"id\": \"msg-003\", \"thread_id\": \"thr-003\", \"from\": \"elena.costa@tallgrass.com\", \"from_name\": \"Elena Costa\", \"subject\": \"following up\"}, {\"id\": \"msg-004\", \"thread_id\": \"thr-004\", \"from\": \"clara.alvarez@kelvinlab.com\", \"from_name\": \"Clara Alvarez\", \"subject\": \"quick one\"}, {\"id\": \"msg-005\", \"thread_id\": \"thr-005\", \"from\": \"facundo.juarez@pine-and-co.com\", \"from_name\": \"Facundo Juarez\", \"subject\": \"quick one\"}, {\"id\": \"msg-006\", \"thread_id\": \"thr-006\", \"from\": \"marina.ibarra@arrayworks.com\", \"from_name\": \"Marina Ibarra\", \"subject\": \"following up\"}, {\"id\": \"msg-007\", \"thread_id\": \"thr-007\", \"from\": \"lucas.gimenez@pine-and-co.com\", \"from_name\": \"Lucas Gimenez\", \"subject\": \"next steps\"}, {\"id\": \"msg-008\", \"thread_id\": \"thr-008\", \"from\": \"irene.duarte@pine-and-co.com\", \"from_name\": \"Irene Duarte\", \"subject\": \"this week\"}, {\"id\": \"msg-009\", \"thread_id\": \"thr-009\", \"from\": \"lucas.duarte@arrayworks.com\", \"from_name\": \"Lucas Duarte\", \"subject\": \"the draft\"}, {\"id\": \"msg-010\", \"thread_id\": \"thr-010\", \"from\": \"bruno.navarro@kelvinlab.com\", \"from_name\": \"Bruno Navarro\", \"subject\": \"the numbers\"}, {\"id\": \"msg-011\", \"thread_id\": \"thr-011\", \"from\": \"lucas.duarte@pine-and-co.com\", \"from_name\": \"Lucas Duarte\", \"subject\": \"the numbers\"}, {\"id\": \"msg-012\", \"thread_id\": \"thr-012\", \"from\": \"marina.alvarez@kelvinlab.com\", \"from_name\": \"Marina Alvarez\", \"subject\": \"next steps\"}, {\"id\": \"msg-013\", \"thread_id\": \"thr-013\", \"from\": \"marina.herrera@arrayworks.com\", \"from_name\": \"Marina Herrera\", \"subject\": \"this week\"}, {\"id\": \"msg-014\", \"thread_id\": \"thr-014\", \"from\": \"paula.alvarez@pine-and-co.com\", \"from_name\": \"Paula Alvarez\", \"subject\": \"the numbers\"}, {\"id\": \"msg-015\", \"thread_id\": \"thr-015\", \"from\": \"karina.gimenez@tallgrass.com\", \"from_name\": \"Karina Gimenez\", \"subject\": \"the numbers\"}, {\"id\": \"msg-016\", \"thread_id\": \"thr-016\", \"from\": \"ana.costa@pine-and-co.com\", \"from_name\": \"Ana Costa\", \"subject\": \"the draft\"}, {\"id\": \"msg-017\", \"thread_id\": \"thr-017\", \"from\": \"marina.duarte@arrayworks.com\", \"from_name\": \"Marina Duarte\", \"subject\": \"quick one\"}, {\"id\": \"msg-018\", \"thread_id\": \"thr-018\", \"from\": \"hugo.ferreyra@kelvinlab.com\", \"from_name\": \"Hugo Ferreyra\", \"subject\": \"the numbers\"}, {\"id\": \"msg-019\", \"thread_id\": \"thr-019\", \"from\": \"facundo.ferreyra@kelvinlab.com\", \"from_name\": \"Facundo Ferreyra\", \"subject\": \"the handoff\"}, {\"id\": \"msg-020\", \"thread_id\": \"thr-020\", \"from\": \"elena.herrera@tallgrass.com\", \"from_name\": \"Elena Herrera\", \"subject\": \"the draft\"}, {\"id\": \"msg-021\", \"thread_id\": \"thr-021\", \"from\": \"karina.benitez@kelvinlab.com\", \"from_name\": \"Karina Benitez\", \"subject\": \"quick one\"}, {\"id\": \"msg-022\", \"thread_id\": \"thr-022\", \"from\": \"hugo.herrera@arrayworks.com\", \"from_name\": \"Hugo Herrera\", \"subject\": \"your note\"}, {\"id\": \"msg-023\", \"thread_id\": \"thr-023\", \"from\": \"irene.medina@arrayworks.com\", \"from_name\": \"Irene Medina\", \"subject\": \"quick one\"}]\n<sender_stats>lucas.duarte@arrayworks.com= {\"sent\": 2, \"received\": 1}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history>thr-009</thread_history>"
+      },
+      {
+       "at": 399,
+       "text": "<inbox>...</inbox>"
+      },
+      {
+       "at": 3726,
+       "text": "<sender_stats>lucas.duarte@arrayworks.com= {\"sent\": 2, \"received\": 1}"
+      }
+     ],
+     "calls": 2,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<sender_stats>lucas.duarte@arrayworks.com= {\"sent\": 2, \"received\": 1}",
+     "ran_out": false
+    },
+    "dk-0209": {
+     "id": "dk-0209",
+     "human": true,
+     "truth": "November 4",
+     "correct": false,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "9e7cc7713e78464b",
+     "text": "<thread_history thread=\"thr-018\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-018\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-018\"/>",
+     "ran_out": false
+    },
+    "dk-0210": {
+     "id": "dk-0210",
+     "human": true,
+     "truth": "March 1",
+     "correct": false,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "fac616edc853e121",
+     "text": "<thread_history thread=\"thr-015\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-015\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-015\"/>",
+     "ran_out": false
+    },
+    "dk-0211": {
+     "id": "dk-0211",
+     "human": true,
+     "truth": "January 9",
+     "correct": false,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "96cbec1ed0b6d753",
+     "text": "<thread_history thread=\"thr-001\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-001\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-001\"/>",
+     "ran_out": false
+    },
+    "dk-0226": {
+     "id": "dk-0226",
+     "human": true,
+     "truth": "June 20",
+     "correct": false,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "ddf200778f45fd41",
+     "text": "<thread_history thread=\"thr-019\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-019\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-019\"/>",
+     "ran_out": false
+    },
+    "dk-0227": {
+     "id": "dk-0227",
+     "human": true,
+     "truth": "November 11",
+     "correct": false,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "87162d8be90022cc",
+     "text": "<thread_history thread=\"thr-020\"/>",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history thread=\"thr-020\"/>"
+      }
+     ],
+     "calls": 0,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "<thread_history thread=\"thr-020\"/>",
+     "ran_out": false
+    },
+    "dk-0224": {
+     "id": "dk-0224",
+     "human": true,
+     "truth": "November 4",
+     "correct": false,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "a36d0eaf1f8b3702",
+     "text": "<thread_history>thr-018</thread_history>= {\"turns\": 2, \"i_wrote_in_thread\": true, \"participants\": [\"me@ownmail.com\", \"nicolas.ortiz@pine-and-co.com\"], \"messages\": [{\"from\": \"nicolas.ortiz@pine-and-co.com\", \"preview\": \"Sharing for your records.\"}, {\"from\": \"me@ownmail.com\", \"preview\": \"I will have it to you by November 4.\"}]}\n<message>msg-018</message>= {\"from\": \"nicolas.ortiz@pine-and-co.com\", \"subject\": \"this week\", \"to\": [\"nicolas.ortiz@pine-and-co.com\"], \"cc\": [], \"body\": \"I will have it to you by November 4.\", \"addressed_directly\": false}\nNov 3, 2023",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history>thr-018</thread_history>"
+      },
+      {
+       "at": 327,
+       "text": "<message>msg-018</message>"
+      },
+      {
+       "at": 549,
+       "text": "Nov 3, 2023"
+      }
+     ],
+     "calls": 2,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "Nov 3, 2023",
+     "ran_out": false
+    },
+    "dk-0225": {
+     "id": "dk-0225",
+     "human": true,
+     "truth": "June 24",
+     "correct": true,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "28e25da6f0e63029",
+     "text": "<thread_history>thr-007</thread_history>= {\"turns\": 2, \"i_wrote_in_thread\": true, \"participants\": [\"bruno.herrera@nordwind.com\", \"me@ownmail.com\"], \"messages\": [{\"from\": \"bruno.herrera@nordwind.com\", \"preview\": \"Sharing for your records.\"}, {\"from\": \"me@ownmail.com\", \"preview\": \"I will have it to you by June 24.\"}]}\n<message>msg-007</message>= {\"from\": \"bruno.herrera@nordwind.com\", \"subject\": \"a question\", \"to\": [\"bruno.herrera@nordwind.com\"], \"cc\": [], \"body\": \"I will have it to you by June 24.\", \"addressed_directly\": false}\nJune 24",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history>thr-007</thread_history>"
+      },
+      {
+       "at": 318,
+       "text": "<message>msg-007</message>"
+      },
+      {
+       "at": 532,
+       "text": "June 24"
+      }
+     ],
+     "calls": 2,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "June 24",
+     "ran_out": false
+    },
+    "dk-0179": {
+     "id": "dk-0179",
+     "human": true,
+     "truth": "November 16",
+     "correct": false,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "dbc29d3f322471ab",
+     "text": "<thread_history>thr-008</thread_history>= {\"turns\": 3, \"i_wrote_in_thread\": true, \"participants\": [\"irene.duarte@pine-and-co.com\", \"me@ownmail.com\"], \"messages\": [{\"from\": \"me@ownmail.com\", \"preview\": \"(my earlier message in this thread)\"}, {\"from\": \"irene.duarte@pine-and-co.com\", \"preview\": \"Sharing for your records.\"}, {\"from\": \"me@ownmail.com\", \"preview\": \"I will have it to you by November 16.\"}]}\n<message>msg-008</message>= {\"from\": \"irene.duarte@pine-and-co.com\", \"subject\": \"this week\", \"to\": [\"irene.duarte@pine-and-co.com\"], \"cc\": [], \"body\": \"I will have it to you by November 16.\", \"addressed_directly\": false}\n<inbox></inbox>= [{\"id\": \"msg-000\", \"thread_id\": \"thr-000\", \"from\": \"facundo.gimenez@tallgrass.com\", \"from_name\": \"Facundo Gimenez\", \"subject\": \"the handoff\"}, {\"id\": \"msg-001\", \"thread_id\": \"thr-001\", \"from\": \"lucas.ibarra@tallgrass.com\", \"from_name\": \"Lucas Ibarra\", \"subject\": \"following up\"}, {\"id\": \"msg-002\", \"thread_id\": \"thr-002\", \"from\": \"diego.benitez@arrayworks.com\", \"from_name\": \"Diego Benitez\", \"subject\": \"the numbers\"}, {\"id\": \"msg-003\", \"thread_id\": \"thr-003\", \"from\": \"elena.costa@tallgrass.com\", \"from_name\": \"Elena Costa\", \"subject\": \"following up\"}, {\"id\": \"msg-004\", \"thread_id\": \"thr-004\", \"from\": \"clara.alvarez@kelvinlab.com\", \"from_name\": \"Clara Alvarez\", \"subject\": \"quick one\"}, {\"id\": \"msg-005\", \"thread_id\": \"thr-005\", \"from\": \"facundo.juarez@pine-and-co.com\", \"from_name\": \"Facundo Juarez\", \"subject\": \"quick one\"}, {\"id\": \"msg-006\", \"thread_id\": \"thr-006\", \"from\": \"marina.ibarra@arrayworks.com\", \"from_name\": \"Marina Ibarra\", \"subject\": \"following up\"}, {\"id\": \"msg-007\", \"thread_id\": \"thr-007\", \"from\": \"lucas.gimenez@pine-and-co.com\", \"from_name\": \"Lucas Gimenez\", \"subject\": \"next steps\"}, {\"id\": \"msg-008\", \"thread_id\": \"thr-008\", \"from\": \"irene.duarte@pine-and-co.com\", \"from_name\": \"Irene Duarte\", \"subject\": \"this week\"}, {\"id\": \"msg-009\", \"thread_id\": \"thr-009\", \"from\": \"lucas.duarte@arrayworks.com\", \"from_name\": \"Lucas Duarte\", \"subject\": \"the draft\"}, {\"id\": \"msg-010\", \"thread_id\": \"thr-010\", \"from\": \"bruno.navarro@kelvinlab.com\", \"from_name\": \"Bruno Navarro\", \"subject\": \"the numbers\"}, {\"id\": \"msg-011\", \"thread_id\": \"thr-011\", \"from\": \"lucas.duarte@pine-and-co.com\", \"from_name\": \"Lucas Duarte\", \"subject\": \"the numbers\"}, {\"id\": \"msg-012\", \"thread_id\": \"thr-012\", \"from\": \"marina.alvarez@kelvinlab.com\", \"from_name\": \"Marina Alvarez\", \"subject\": \"next steps\"}, {\"id\": \"msg-013\", \"thread_id\": \"thr-013\", \"from\": \"marina.herrera@arrayworks.com\", \"from_name\": \"Marina Herrera\", \"subject\": \"this week\"}, {\"id\": \"msg-014\", \"thread_id\": \"thr-014\", \"from\": \"paula.alvarez@pine-and-co.com\", \"from_name\": \"Paula Alvarez\", \"subject\": \"the numbers\"}, {\"id\": \"msg-015\", \"thread_id\": \"thr-015\", \"from\": \"karina.gimenez@tallgrass.com\", \"from_name\": \"Karina Gimenez\", \"subject\": \"the numbers\"}, {\"id\": \"msg-016\", \"thread_id\": \"thr-016\", \"from\": \"ana.costa@pine-and-co.com\", \"from_name\": \"Ana Costa\", \"subject\": \"the draft\"}, {\"id\": \"msg-017\", \"thread_id\": \"thr-017\", \"from\": \"marina.duarte@arrayworks.com\", \"from_name\": \"Marina Duarte\", \"subject\": \"quick one\"}, {\"id\": \"msg-018\", \"thread_id\": \"thr-018\", \"from\": \"hugo.ferreyra@kelvinlab.com\", \"from_name\": \"Hugo Ferreyra\", \"subject\": \"the numbers\"}, {\"id\": \"msg-019\", \"thread_id\": \"thr-019\", \"from\": \"facundo.ferreyra@kelvinlab.com\", \"from_name\": \"Facundo Ferreyra\", \"subject\": \"the handoff\"}, {\"id\": \"msg-020\", \"thread_id\": \"thr-020\", \"from\": \"elena.herrera@tallgrass.com\", \"from_name\": \"Elena Herrera\", \"subject\": \"the draft\"}, {\"id\": \"msg-021\", \"thread_id\": \"thr-021\", \"from\": \"karina.benitez@kelvinlab.com\", \"from_name\": \"Karina Benitez\", \"subject\": \"quick one\"}, {\"id\": \"msg-022\", \"thread_id\": \"thr-022\", \"from\": \"hugo.herrera@arrayworks.com\", \"from_name\": \"Hugo Herrera\", \"subject\": \"your note\"}, {\"id\": \"msg-023\", \"thread_id\": \"thr-023\", \"from\": \"irene.medina@arrayworks.com\", \"from_name\": \"Irene Medina\", \"subject\": \"quick one\"}]\n<thread_history>thr-008</thread_history>= {\"turns\": 3, \"i_wrote_in_thread\": true, \"participants\": [\"irene.duarte@pine-and-co.com\", \"me@ownmail.com\"], \"messages\": [{\"from\": \"me@ownmail.com\", \"preview\": \"(my earlier message in this thread)\"}, {\"from\": \"irene.duarte@pine-and-co.com\", \"preview\": \"Sharing for your records.\"}, {\"from\": \"me@ownmail.com\", \"preview\": \"I will have it to you by November 16.\"}]}\n<message>msg-008</message>= {\"from\": \"irene.duarte@pine-and-co.com\", \"subject\": \"this week\", \"to\": [\"irene.duarte@pine-and-co.com\"], \"cc\": [], \"body\": \"I will have it to you by November 16.\", \"addressed_directly\": false}\n<inbox></inbox>= [{\"id\": \"msg-000\", \"thread_id\": \"thr-000\", \"from\": \"facundo.gimenez@tallgrass.com\", \"from_name\": \"Facundo Gimenez\", \"subject\": \"the handoff\"}, {\"id\": \"msg-001\", \"thread_id\": \"thr-001\", \"from\": \"lucas.ibarra@tallgrass.com\", \"from_name\": \"Lucas Ibarra\", \"subject\": \"following up\"}, {\"id\": \"msg-002\", \"thread_id\": \"thr-002\", \"from\": \"diego.benitez@arrayworks.com\", \"from_name\": \"Diego Benitez\", \"subject\": \"the numbers\"}, {\"id\": \"msg-003\", \"thread_id\": \"thr-003\", \"from\": \"elena.costa@tallgrass.com\", \"from_name\": \"Elena Costa\", \"subject\": \"following up\"}, {\"id\": \"msg-004\", \"thread_id\": \"thr-004\", \"from\": \"clara.alvarez@kelvinlab.com\", \"from_name\": \"Clara Alvarez\", \"subject\": \"quick one\"}, {\"id\": \"msg-005\", \"thread_id\": \"thr-005\", \"from\": \"facundo.juarez@pine-and-co.com\", \"from_name\": \"Facundo Juarez\", \"subject\": \"quick one\"}, {\"id\": \"msg-006\", \"thread_id\": \"thr-006\", \"from\": \"marina.ibarra@arrayworks.com\", \"from_name\": \"Marina Ibarra\", \"subject\": \"following up\"}, {\"id\": \"msg-007\", \"thread_id\": \"thr-007\", \"from\": \"lucas.gimenez@pine-and-co.com\", \"from_name\": \"Lucas Gimenez\", \"subject\": \"next steps\"}, {\"id\": \"msg-008\", \"thread_id\": \"thr-008\", \"from\": \"irene.duarte@pine-and-co.com\", \"from_name\": \"Irene Duarte\", \"subject\": \"this week\"}, {\"id\": \"msg-009\", \"thread_id\": \"thr-009\", \"from\": \"lucas.duarte@arrayworks.com\", \"from_name\": \"Lucas Duarte\", \"subject\": \"the draft\"}, {\"id\": \"msg-010\", \"thread_id\": \"thr-010\", \"from\": \"bruno.navarro@kelvinlab.com\", \"from_name\": \"Bruno Navarro\", \"subject\": \"the numbers\"}, {\"id\": \"msg-011\", \"thread_id\": \"thr-011\", \"from\": \"lucas.duarte@pine-and-co.com\", \"from_name\": \"Lucas Duarte\", \"subject\": \"the numbers\"}, {\"id\": \"msg-012\", \"thread_id\": \"thr-012\", \"from\": \"marina.alvarez@kelvinlab.com\", \"from_name\": \"Marina Alvarez\", \"subject\": \"next steps\"}, {\"id\": \"msg-013\", \"thread_id\": \"thr-013\", \"from\": \"marina.herrera@arrayworks.com\", \"from_name\": \"Marina Herrera\", \"subject\": \"this week\"}, {\"id\": \"msg-014\", \"thread_id\": \"thr-014\", \"from\": \"paula.alvarez@pine-and-co.com\", \"from_name\": \"Paula Alvarez\", \"subject\": \"the numbers\"}, {\"id\": \"msg-015\", \"thread_id\": \"thr-015\", \"from\": \"karina.gimenez@tallgrass.com\", \"from_name\": \"Karina Gimenez\", \"subject\": \"the numbers\"}, {\"id\": \"msg-016\", \"thread_id\": \"thr-016\", \"from\": \"ana.costa@pine-and-co.com\", \"from_name\": \"Ana Costa\", \"subject\": \"the draft\"}, {\"id\": \"msg-017\", \"thread_id\": \"thr-017\", \"from\": \"marina.duarte@arrayworks.com\", \"from_name\": \"Marina Duarte\", \"subject\": \"quick one\"}, {\"id\": \"msg-018\", \"thread_id\": \"thr-018\", \"from\": \"hugo.ferreyra@kelvinlab.com\", \"from_name\": \"Hugo Ferreyra\", \"subject\": \"the numbers\"}, {\"id\": \"msg-019\", \"thread_id\": \"thr-019\", \"from\": \"facundo.ferreyra@kelvinlab.com\", \"from_name\": \"Facundo Ferreyra\", \"subject\": \"the handoff\"}, {\"id\": \"msg-020\", \"thread_id\": \"thr-020\", \"from\": \"elena.herrera@tallgrass.com\", \"from_name\": \"Elena Herrera\", \"subject\": \"the draft\"}, {\"id\": \"msg-021\", \"thread_id\": \"thr-021\", \"from\": \"karina.benitez@kelvinlab.com\", \"from_name\": \"Karina Benitez\", \"subject\": \"quick one\"}, {\"id\": \"msg-022\", \"thread_id\": \"thr-022\", \"from\": \"hugo.herrera@arrayworks.com\", \"from_name\": \"Hugo Herrera\", \"subject\": \"your note\"}, {\"id\": \"msg-023\", \"thread_id\": \"thr-023\", \"from\": \"irene.medina@arrayworks.com\", \"from_name\": \"Irene Medina\", \"subject\": \"quick one\"}]\n<thread_history>thr-008</thread_history>= {\"turns\": 3, \"i_wrote_in_thread\": true, \"participants\": [\"irene.duarte@pine-and-co.com\", \"me@ownmail.com\"], \"messages\": [{\"from\": \"me@ownmail.com\", \"preview\": \"(my earlier message in this thread)\"}, {\"from\": \"irene.duarte@pine-and-co.com\", \"preview\": \"Sharing for your records.\"}, {\"from\": \"me@ownmail.com\", \"preview\": \"I will have it to you by November 16.\"}]}\n",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history>thr-008</thread_history>"
+      },
+      {
+       "at": 404,
+       "text": "<message>msg-008</message>"
+      },
+      {
+       "at": 625,
+       "text": "<inbox></inbox>"
+      },
+      {
+       "at": 3949,
+       "text": "<thread_history>thr-008</thread_history>"
+      },
+      {
+       "at": 4353,
+       "text": "<message>msg-008</message>"
+      },
+      {
+       "at": 4574,
+       "text": "<inbox></inbox>"
+      },
+      {
+       "at": 7898,
+       "text": "<thread_history>thr-008</thread_history>"
+      }
+     ],
+     "calls": 7,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": null,
+     "ran_out": true
+    },
+    "dk-0147": {
+     "id": "dk-0147",
+     "human": true,
+     "truth": "September 19",
+     "correct": false,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "da392cd303d56e38",
+     "text": "<thread_history>thr-000</thread_history>= {\"turns\": 3, \"i_wrote_in_thread\": true, \"participants\": [\"hugo.lombardi@tallgrass.com\", \"me@ownmail.com\"], \"messages\": [{\"from\": \"me@ownmail.com\", \"preview\": \"(my earlier message in this thread)\"}, {\"from\": \"hugo.lombardi@tallgrass.com\", \"preview\": \"Sharing for your records.\"}, {\"from\": \"me@ownmail.com\", \"preview\": \"I will have it to you by September 19.\"}]}\n<inbox>...</inbox>= [{\"id\": \"msg-000\", \"thread_id\": \"thr-000\", \"from\": \"hugo.lombardi@tallgrass.com\", \"from_name\": \"Hugo Lombardi\", \"subject\": \"quick one\"}, {\"id\": \"msg-001\", \"thread_id\": \"thr-001\", \"from\": \"marina.alvarez@nordwind.com\", \"from_name\": \"Marina Alvarez\", \"subject\": \"the numbers\"}, {\"id\": \"msg-002\", \"thread_id\": \"thr-002\", \"from\": \"hugo.herrera@tallgrass.com\", \"from_name\": \"Hugo Herrera\", \"subject\": \"quick one\"}, {\"id\": \"msg-003\", \"thread_id\": \"thr-003\", \"from\": \"karina.lombardi@tallgrass.com\", \"from_name\": \"Karina Lombardi\", \"subject\": \"the handoff\"}, {\"id\": \"msg-004\", \"thread_id\": \"thr-004\", \"from\": \"diego.navarro@kelvinlab.com\", \"from_name\": \"Diego Navarro\", \"subject\": \"status\"}, {\"id\": \"msg-005\", \"thread_id\": \"thr-005\", \"from\": \"nicolas.costa@nordwind.com\", \"from_name\": \"Nicolas Costa\", \"subject\": \"the numbers\"}, {\"id\": \"msg-006\", \"thread_id\": \"thr-006\", \"from\": \"karina.lombardi@tallgrass.com\", \"from_name\": \"Karina Lombardi\", \"subject\": \"the draft\"}, {\"id\": \"msg-007\", \"thread_id\": \"thr-007\", \"from\": \"clara.gimenez@tallgrass.com\", \"from_name\": \"Clara Gimenez\", \"subject\": \"the handoff\"}, {\"id\": \"msg-008\", \"thread_id\": \"thr-008\", \"from\": \"karina.gimenez@nordwind.com\", \"from_name\": \"Karina Gimenez\", \"subject\": \"status\"}, {\"id\": \"msg-009\", \"thread_id\": \"thr-009\", \"from\": \"marina.costa@arrayworks.com\", \"from_name\": \"Marina Costa\", \"subject\": \"next steps\"}, {\"id\": \"msg-010\", \"thread_id\": \"thr-010\", \"from\": \"marina.esposito@tallgrass.com\", \"from_name\": \"Marina Esposito\", \"subject\": \"next steps\"}, {\"id\": \"msg-011\", \"thread_id\": \"thr-011\", \"from\": \"joaquin.duarte@tallgrass.com\", \"from_name\": \"Joaquin Duarte\", \"subject\": \"following up\"}, {\"id\": \"msg-012\", \"thread_id\": \"thr-012\", \"from\": \"diego.alvarez@tallgrass.com\", \"from_name\": \"Diego Alvarez\", \"subject\": \"this week\"}, {\"id\": \"msg-013\", \"thread_id\": \"thr-013\", \"from\": \"facundo.esposito@kelvinlab.com\", \"from_name\": \"Facundo Esposito\", \"subject\": \"following up\"}, {\"id\": \"msg-014\", \"thread_id\": \"thr-014\", \"from\": \"ana.herrera@pine-and-co.com\", \"from_name\": \"Ana Herrera\", \"subject\": \"the handoff\"}, {\"id\": \"msg-015\", \"thread_id\": \"thr-015\", \"from\": \"gabriela.ferreyra@arrayworks.com\", \"from_name\": \"Gabriela Ferreyra\", \"subject\": \"the draft\"}, {\"id\": \"msg-016\", \"thread_id\": \"thr-016\", \"from\": \"ana.medina@nordwind.com\", \"from_name\": \"Ana Medina\", \"subject\": \"following up\"}, {\"id\": \"msg-017\", \"thread_id\": \"thr-017\", \"from\": \"irene.ortiz@kelvinlab.com\", \"from_name\": \"Irene Ortiz\", \"subject\": \"next steps\"}, {\"id\": \"msg-018\", \"thread_id\": \"thr-018\", \"from\": \"facundo.ibarra@arrayworks.com\", \"from_name\": \"Facundo Ibarra\", \"subject\": \"the draft\"}, {\"id\": \"msg-019\", \"thread_id\": \"thr-019\", \"from\": \"joaquin.benitez@nordwind.com\", \"from_name\": \"Joaquin Benitez\", \"subject\": \"your note\"}, {\"id\": \"msg-020\", \"thread_id\": \"thr-020\", \"from\": \"lucas.esposito@pine-and-co.com\", \"from_name\": \"Lucas Esposito\", \"subject\": \"a question\"}, {\"id\": \"msg-021\", \"thread_id\": \"thr-021\", \"from\": \"joaquin.costa@nordwind.com\", \"from_name\": \"Joaquin Costa\", \"subject\": \"this week\"}, {\"id\": \"msg-022\", \"thread_id\": \"thr-022\", \"from\": \"paula.gimenez@pine-and-co.com\", \"from_name\": \"Paula Gimenez\", \"subject\": \"quick one\"}, {\"id\": \"msg-023\", \"thread_id\": \"thr-023\", \"from\": \"lucas.ibarra@kelvinlab.com\", \"from_name\": \"Lucas Ibarra\", \"subject\": \"quick one\"}]\n<message>msg-000 thr-000</message>= ERROR: no message 'msg-000 thr-000'; ids look like msg-000\n<sender_stats>hugo.lombardi@tallgrass.com</sender_stats>= {\"messages_i_sent_them\": 1, \"frequent\": false}\n<inbox>...</inbox>= [{\"id\": \"msg-000\", \"thread_id\": \"thr-000\", \"from\": \"hugo.lombardi@tallgrass.com\", \"from_name\": \"Hugo Lombardi\", \"subject\": \"quick one\"}, {\"id\": \"msg-001\", \"thread_id\": \"thr-001\", \"from\": \"marina.alvarez@nordwind.com\", \"from_name\": \"Marina Alvarez\", \"subject\": \"the numbers\"}, {\"id\": \"msg-002\", \"thread_id\": \"thr-002\", \"from\": \"hugo.herrera@tallgrass.com\", \"from_name\": \"Hugo Herrera\", \"subject\": \"quick one\"}, {\"id\": \"msg-003\", \"thread_id\": \"thr-003\", \"from\": \"karina.lombardi@tallgrass.com\", \"from_name\": \"Karina Lombardi\", \"subject\": \"the handoff\"}, {\"id\": \"msg-004\", \"thread_id\": \"thr-004\", \"from\": \"diego.navarro@kelvinlab.com\", \"from_name\": \"Diego Navarro\", \"subject\": \"status\"}, {\"id\": \"msg-005\", \"thread_id\": \"thr-005\", \"from\": \"nicolas.costa@nordwind.com\", \"from_name\": \"Nicolas Costa\", \"subject\": \"the numbers\"}, {\"id\": \"msg-006\", \"thread_id\": \"thr-006\", \"from\": \"karina.lombardi@tallgrass.com\", \"from_name\": \"Karina Lombardi\", \"subject\": \"the draft\"}, {\"id\": \"msg-007\", \"thread_id\": \"thr-007\", \"from\": \"clara.gimenez@tallgrass.com\", \"from_name\": \"Clara Gimenez\", \"subject\": \"the handoff\"}, {\"id\": \"msg-008\", \"thread_id\": \"thr-008\", \"from\": \"karina.gimenez@nordwind.com\", \"from_name\": \"Karina Gimenez\", \"subject\": \"status\"}, {\"id\": \"msg-009\", \"thread_id\": \"thr-009\", \"from\": \"marina.costa@arrayworks.com\", \"from_name\": \"Marina Costa\", \"subject\": \"next steps\"}, {\"id\": \"msg-010\", \"thread_id\": \"thr-010\", \"from\": \"marina.esposito@tallgrass.com\", \"from_name\": \"Marina Esposito\", \"subject\": \"next steps\"}, {\"id\": \"msg-011\", \"thread_id\": \"thr-011\", \"from\": \"joaquin.duarte@tallgrass.com\", \"from_name\": \"Joaquin Duarte\", \"subject\": \"following up\"}, {\"id\": \"msg-012\", \"thread_id\": \"thr-012\", \"from\": \"diego.alvarez@tallgrass.com\", \"from_name\": \"Diego Alvarez\", \"subject\": \"this week\"}, {\"id\": \"msg-013\", \"thread_id\": \"thr-013\", \"from\": \"facundo.esposito@kelvinlab.com\", \"from_name\": \"Facundo Esposito\", \"subject\": \"following up\"}, {\"id\": \"msg-014\", \"thread_id\": \"thr-014\", \"from\": \"ana.herrera@pine-and-co.com\", \"from_name\": \"Ana Herrera\", \"subject\": \"the handoff\"}, {\"id\": \"msg-015\", \"thread_id\": \"thr-015\", \"from\": \"gabriela.ferreyra@arrayworks.com\", \"from_name\": \"Gabriela Ferreyra\", \"subject\": \"the draft\"}, {\"id\": \"msg-016\", \"thread_id\": \"thr-016\", \"from\": \"ana.medina@nordwind.com\", \"from_name\": \"Ana Medina\", \"subject\": \"following up\"}, {\"id\": \"msg-017\", \"thread_id\": \"thr-017\", \"from\": \"irene.ortiz@kelvinlab.com\", \"from_name\": \"Irene Ortiz\", \"subject\": \"next steps\"}, {\"id\": \"msg-018\", \"thread_id\": \"thr-018\", \"from\": \"facundo.ibarra@arrayworks.com\", \"from_name\": \"Facundo Ibarra\", \"subject\": \"the draft\"}, {\"id\": \"msg-019\", \"thread_id\": \"thr-019\", \"from\": \"joaquin.benitez@nordwind.com\", \"from_name\": \"Joaquin Benitez\", \"subject\": \"your note\"}, {\"id\": \"msg-020\", \"thread_id\": \"thr-020\", \"from\": \"lucas.esposito@pine-and-co.com\", \"from_name\": \"Lucas Esposito\", \"subject\": \"a question\"}, {\"id\": \"msg-021\", \"thread_id\": \"thr-021\", \"from\": \"joaquin.costa@nordwind.com\", \"from_name\": \"Joaquin Costa\", \"subject\": \"this week\"}, {\"id\": \"msg-022\", \"thread_id\": \"thr-022\", \"from\": \"paula.gimenez@pine-and-co.com\", \"from_name\": \"Paula Gimenez\", \"subject\": \"quick one\"}, {\"id\": \"msg-023\", \"thread_id\": \"thr-023\", \"from\": \"lucas.ibarra@kelvinlab.com\", \"from_name\": \"Lucas Ibarra\", \"subject\": \"quick one\"}]\nmessage=msg-000 in thread thr-000\nERROR: no message 'msg-000 in thread thr-000'; ids look like msg-000",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history>thr-000</thread_history>"
+      },
+      {
+       "at": 403,
+       "text": "<inbox>...</inbox>"
+      },
+      {
+       "at": 3728,
+       "text": "<message>msg-000 thr-000</message>"
+      },
+      {
+       "at": 3823,
+       "text": "<sender_stats>hugo.lombardi@tallgrass.com</sender_stats>"
+      },
+      {
+       "at": 3928,
+       "text": "<inbox>...</inbox>"
+      },
+      {
+       "at": 7253,
+       "text": "message=msg-000 in thread thr-000\nERROR: no message 'msg-000 in thread thr-000'; ids look like msg-000"
+      }
+     ],
+     "calls": 5,
+     "refused": 1,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "message=msg-000 in thread thr-000\nERROR: no message 'msg-000 in thread thr-000'; ids look like msg-000",
+     "ran_out": false
+    },
+    "dk-0193": {
+     "id": "dk-0193",
+     "human": true,
+     "truth": "January 19",
+     "correct": false,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "005356ef3992a257",
+     "text": "<thread_history>thr-005</thread_history>= {\"turns\": 2, \"i_wrote_in_thread\": true, \"participants\": [\"facundo.juarez@pine-and-co.com\", \"me@ownmail.com\"], \"messages\": [{\"from\": \"facundo.juarez@pine-and-co.com\", \"preview\": \"Sharing for your records.\"}, {\"from\": \"me@ownmail.com\", \"preview\": \"I will have it to you by January 19.\"}]}\n<inbox>...</inbox>= [{\"id\": \"msg-000\", \"thread_id\": \"thr-000\", \"from\": \"facundo.gimenez@tallgrass.com\", \"from_name\": \"Facundo Gimenez\", \"subject\": \"the handoff\"}, {\"id\": \"msg-001\", \"thread_id\": \"thr-001\", \"from\": \"lucas.ibarra@tallgrass.com\", \"from_name\": \"Lucas Ibarra\", \"subject\": \"following up\"}, {\"id\": \"msg-002\", \"thread_id\": \"thr-002\", \"from\": \"diego.benitez@arrayworks.com\", \"from_name\": \"Diego Benitez\", \"subject\": \"the numbers\"}, {\"id\": \"msg-003\", \"thread_id\": \"thr-003\", \"from\": \"elena.costa@tallgrass.com\", \"from_name\": \"Elena Costa\", \"subject\": \"following up\"}, {\"id\": \"msg-004\", \"thread_id\": \"thr-004\", \"from\": \"clara.alvarez@kelvinlab.com\", \"from_name\": \"Clara Alvarez\", \"subject\": \"quick one\"}, {\"id\": \"msg-005\", \"thread_id\": \"thr-005\", \"from\": \"facundo.juarez@pine-and-co.com\", \"from_name\": \"Facundo Juarez\", \"subject\": \"quick one\"}, {\"id\": \"msg-006\", \"thread_id\": \"thr-006\", \"from\": \"marina.ibarra@arrayworks.com\", \"from_name\": \"Marina Ibarra\", \"subject\": \"following up\"}, {\"id\": \"msg-007\", \"thread_id\": \"thr-007\", \"from\": \"lucas.gimenez@pine-and-co.com\", \"from_name\": \"Lucas Gimenez\", \"subject\": \"next steps\"}, {\"id\": \"msg-008\", \"thread_id\": \"thr-008\", \"from\": \"irene.duarte@pine-and-co.com\", \"from_name\": \"Irene Duarte\", \"subject\": \"this week\"}, {\"id\": \"msg-009\", \"thread_id\": \"thr-009\", \"from\": \"lucas.duarte@arrayworks.com\", \"from_name\": \"Lucas Duarte\", \"subject\": \"the draft\"}, {\"id\": \"msg-010\", \"thread_id\": \"thr-010\", \"from\": \"bruno.navarro@kelvinlab.com\", \"from_name\": \"Bruno Navarro\", \"subject\": \"the numbers\"}, {\"id\": \"msg-011\", \"thread_id\": \"thr-011\", \"from\": \"lucas.duarte@pine-and-co.com\", \"from_name\": \"Lucas Duarte\", \"subject\": \"the numbers\"}, {\"id\": \"msg-012\", \"thread_id\": \"thr-012\", \"from\": \"marina.alvarez@kelvinlab.com\", \"from_name\": \"Marina Alvarez\", \"subject\": \"next steps\"}, {\"id\": \"msg-013\", \"thread_id\": \"thr-013\", \"from\": \"marina.herrera@arrayworks.com\", \"from_name\": \"Marina Herrera\", \"subject\": \"this week\"}, {\"id\": \"msg-014\", \"thread_id\": \"thr-014\", \"from\": \"paula.alvarez@pine-and-co.com\", \"from_name\": \"Paula Alvarez\", \"subject\": \"the numbers\"}, {\"id\": \"msg-015\", \"thread_id\": \"thr-015\", \"from\": \"karina.gimenez@tallgrass.com\", \"from_name\": \"Karina Gimenez\", \"subject\": \"the numbers\"}, {\"id\": \"msg-016\", \"thread_id\": \"thr-016\", \"from\": \"ana.costa@pine-and-co.com\", \"from_name\": \"Ana Costa\", \"subject\": \"the draft\"}, {\"id\": \"msg-017\", \"thread_id\": \"thr-017\", \"from\": \"marina.duarte@arrayworks.com\", \"from_name\": \"Marina Duarte\", \"subject\": \"quick one\"}, {\"id\": \"msg-018\", \"thread_id\": \"thr-018\", \"from\": \"hugo.ferreyra@kelvinlab.com\", \"from_name\": \"Hugo Ferreyra\", \"subject\": \"the numbers\"}, {\"id\": \"msg-019\", \"thread_id\": \"thr-019\", \"from\": \"facundo.ferreyra@kelvinlab.com\", \"from_name\": \"Facundo Ferreyra\", \"subject\": \"the handoff\"}, {\"id\": \"msg-020\", \"thread_id\": \"thr-020\", \"from\": \"elena.herrera@tallgrass.com\", \"from_name\": \"Elena Herrera\", \"subject\": \"the draft\"}, {\"id\": \"msg-021\", \"thread_id\": \"thr-021\", \"from\": \"karina.benitez@kelvinlab.com\", \"from_name\": \"Karina Benitez\", \"subject\": \"quick one\"}, {\"id\": \"msg-022\", \"thread_id\": \"thr-022\", \"from\": \"hugo.herrera@arrayworks.com\", \"from_name\": \"Hugo Herrera\", \"subject\": \"your note\"}, {\"id\": \"msg-023\", \"thread_id\": \"thr-023\", \"from\": \"irene.medina@arrayworks.com\", \"from_name\": \"Irene Medina\", \"subject\": \"quick one\"}]\n<inbox>thr-005</inbox>= [{\"id\": \"msg-000\", \"thread_id\": \"thr-000\", \"from\": \"facundo.gimenez@tallgrass.com\", \"from_name\": \"Facundo Gimenez\", \"subject\": \"the handoff\"}, {\"id\": \"msg-001\", \"thread_id\": \"thr-001\", \"from\": \"lucas.ibarra@tallgrass.com\", \"from_name\": \"Lucas Ibarra\", \"subject\": \"following up\"}, {\"id\": \"msg-002\", \"thread_id\": \"thr-002\", \"from\": \"diego.benitez@arrayworks.com\", \"from_name\": \"Diego Benitez\", \"subject\": \"the numbers\"}, {\"id\": \"msg-003\", \"thread_id\": \"thr-003\", \"from\": \"elena.costa@tallgrass.com\", \"from_name\": \"Elena Costa\", \"subject\": \"following up\"}, {\"id\": \"msg-004\", \"thread_id\": \"thr-004\", \"from\": \"clara.alvarez@kelvinlab.com\", \"from_name\": \"Clara Alvarez\", \"subject\": \"quick one\"}, {\"id\": \"msg-005\", \"thread_id\": \"thr-005\", \"from\": \"facundo.juarez@pine-and-co.com\", \"from_name\": \"Facundo Juarez\", \"subject\": \"quick one\"}, {\"id\": \"msg-006\", \"thread_id\": \"thr-006\", \"from\": \"marina.ibarra@arrayworks.com\", \"from_name\": \"Marina Ibarra\", \"subject\": \"following up\"}, {\"id\": \"msg-007\", \"thread_id\": \"thr-007\", \"from\": \"lucas.gimenez@pine-and-co.com\", \"from_name\": \"Lucas Gimenez\", \"subject\": \"next steps\"}, {\"id\": \"msg-008\", \"thread_id\": \"thr-008\", \"from\": \"irene.duarte@pine-and-co.com\", \"from_name\": \"Irene Duarte\", \"subject\": \"this week\"}, {\"id\": \"msg-009\", \"thread_id\": \"thr-009\", \"from\": \"lucas.duarte@arrayworks.com\", \"from_name\": \"Lucas Duarte\", \"subject\": \"the draft\"}, {\"id\": \"msg-010\", \"thread_id\": \"thr-010\", \"from\": \"bruno.navarro@kelvinlab.com\", \"from_name\": \"Bruno Navarro\", \"subject\": \"the numbers\"}, {\"id\": \"msg-011\", \"thread_id\": \"thr-011\", \"from\": \"lucas.duarte@pine-and-co.com\", \"from_name\": \"Lucas Duarte\", \"subject\": \"the numbers\"}, {\"id\": \"msg-012\", \"thread_id\": \"thr-012\", \"from\": \"marina.alvarez@kelvinlab.com\", \"from_name\": \"Marina Alvarez\", \"subject\": \"next steps\"}, {\"id\": \"msg-013\", \"thread_id\": \"thr-013\", \"from\": \"marina.herrera@arrayworks.com\", \"from_name\": \"Marina Herrera\", \"subject\": \"this week\"}, {\"id\": \"msg-014\", \"thread_id\": \"thr-014\", \"from\": \"paula.alvarez@pine-and-co.com\", \"from_name\": \"Paula Alvarez\", \"subject\": \"the numbers\"}, {\"id\": \"msg-015\", \"thread_id\": \"thr-015\", \"from\": \"karina.gimenez@tallgrass.com\", \"from_name\": \"Karina Gimenez\", \"subject\": \"the numbers\"}, {\"id\": \"msg-016\", \"thread_id\": \"thr-016\", \"from\": \"ana.costa@pine-and-co.com\", \"from_name\": \"Ana Costa\", \"subject\": \"the draft\"}, {\"id\": \"msg-017\", \"thread_id\": \"thr-017\", \"from\": \"marina.duarte@arrayworks.com\", \"from_name\": \"Marina Duarte\", \"subject\": \"quick one\"}, {\"id\": \"msg-018\", \"thread_id\": \"thr-018\", \"from\": \"hugo.ferreyra@kelvinlab.com\", \"from_name\": \"Hugo Ferreyra\", \"subject\": \"the numbers\"}, {\"id\": \"msg-019\", \"thread_id\": \"thr-019\", \"from\": \"facundo.ferreyra@kelvinlab.com\", \"from_name\": \"Facundo Ferreyra\", \"subject\": \"the handoff\"}, {\"id\": \"msg-020\", \"thread_id\": \"thr-020\", \"from\": \"elena.herrera@tallgrass.com\", \"from_name\": \"Elena Herrera\", \"subject\": \"the draft\"}, {\"id\": \"msg-021\", \"thread_id\": \"thr-021\", \"from\": \"karina.benitez@kelvinlab.com\", \"from_name\": \"Karina Benitez\", \"subject\": \"quick one\"}, {\"id\": \"msg-022\", \"thread_id\": \"thr-022\", \"from\": \"hugo.herrera@arrayworks.com\", \"from_name\": \"Hugo Herrera\", \"subject\": \"your note\"}, {\"id\": \"msg-023\", \"thread_id\": \"thr-023\", \"from\": \"irene.medina@arrayworks.com\", \"from_name\": \"Irene Medina\", \"subject\": \"quick one\"}]\n<message>msg-005</message>= {\"from\": \"facundo.juarez@pine-and-co.com\", \"subject\": \"quick one\", \"to\": [\"facundo.juarez@pine-and-co.com\"], \"cc\": [], \"body\": \"I will have it to you by January 19.\", \"addressed_directly\": false}\n:message>msg-005</message>= ERROR: malformed call \u2014 write <tag>key=value</tag>\n:message>msg-005</message>= ERROR: malformed call \u2014 write <tag>key=value</tag>\n:message>msg-005</message>= ERROR: malformed call \u2014 write <tag>key=value</tag>\n",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<thread_history>thr-005</thread_history>"
+      },
+      {
+       "at": 329,
+       "text": "<inbox>...</inbox>"
+      },
+      {
+       "at": 3656,
+       "text": "<inbox>thr-005</inbox>"
+      },
+      {
+       "at": 6987,
+       "text": "<message>msg-005</message>"
+      },
+      {
+       "at": 7211,
+       "text": ":message>msg-005</message>"
+      },
+      {
+       "at": 7290,
+       "text": ":message>msg-005</message>"
+      },
+      {
+       "at": 7369,
+       "text": ":message>msg-005</message>"
+      }
+     ],
+     "calls": 7,
+     "refused": 3,
+     "malformed": 3,
+     "stray_results": 0,
+     "verdict": null,
+     "ran_out": true
+    }
+   },
+   "n": 60,
+   "errors": 0,
+   "correct": 10,
+   "accuracy": 0.1667,
+   "human_n": 60,
+   "human_correct": 10,
+   "human_accuracy": 0.1667,
+   "undecided": 2,
+   "calls": 57,
+   "refused": 4,
+   "stray_results": 0,
+   "malformed": 3,
+   "partial": false
+  },
+  "desk-commitment": {
+   "model": "desk-commitment",
+   "records": {
+    "dk-0017": {
+     "id": "dk-0017",
+     "human": true,
+     "truth": "January 7",
+     "correct": true,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "36363b6b11965da7",
+     "text": "<message>id=msg-019</message>= {\"from\": \"lucas.gimenez@pine-and-co.com\", \"subject\": \"next steps\", \"to\": [\"lucas.gimenez@pine-and-co.com\"], \"cc\": [], \"body\": \"I will have it to you by January 7.\", \"addressed_directly\": false}\nJanuary 7",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-019</message>"
+      },
+      {
+       "at": 225,
+       "text": "January 7"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "January 7",
+     "ran_out": false
+    },
+    "dk-0003": {
+     "id": "dk-0003",
+     "human": true,
+     "truth": "September 6",
+     "correct": true,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "e0b97eff1964fa4c",
+     "text": "<message>id=msg-002</message>= {\"from\": \"irene.gimenez@nordwind.com\", \"subject\": \"following up\", \"to\": [\"irene.gimenez@nordwind.com\"], \"cc\": [], \"body\": \"I will have it to you by September 6.\", \"addressed_directly\": false}\nSeptember 6",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-002</message>"
+      },
+      {
+       "at": 223,
+       "text": "September 6"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "September 6",
+     "ran_out": false
+    },
+    "dk-0002": {
+     "id": "dk-0002",
+     "human": true,
+     "truth": "April 12",
+     "correct": true,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "4c3a9fa2bc80b289",
+     "text": "<message>id=msg-007</message>= {\"from\": \"lucas.esposito@nordwind.com\", \"subject\": \"the handoff\", \"to\": [\"lucas.esposito@nordwind.com\"], \"cc\": [], \"body\": \"I will have it to you by April 12.\", \"addressed_directly\": false}\nApril 12",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-007</message>"
+      },
+      {
+       "at": 221,
+       "text": "April 12"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "April 12",
+     "ran_out": false
+    },
+    "dk-0018": {
+     "id": "dk-0018",
+     "human": true,
+     "truth": "April 23",
+     "correct": true,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "a75d9fad52c6eaea",
+     "text": "<message>id=msg-011</message>= {\"from\": \"elena.ibarra@tallgrass.com\", \"subject\": \"quick one\", \"to\": [\"elena.ibarra@tallgrass.com\"], \"cc\": [], \"body\": \"I will have it to you by April 23.\", \"addressed_directly\": false}\nApril 23",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-011</message>"
+      },
+      {
+       "at": 217,
+       "text": "April 23"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "April 23",
+     "ran_out": false
+    },
+    "dk-0016": {
+     "id": "dk-0016",
+     "human": true,
+     "truth": "November 18",
+     "correct": true,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "6de60bdec4118f36",
+     "text": "<message>id=msg-000</message>= {\"from\": \"irene.duarte@arrayworks.com\", \"subject\": \"status\", \"to\": [\"irene.duarte@arrayworks.com\"], \"cc\": [], \"body\": \"I will have it to you by November 18.\", \"addressed_directly\": false}\nNovember 18",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-000</message>"
+      },
+      {
+       "at": 219,
+       "text": "November 18"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "November 18",
+     "ran_out": false
+    },
+    "dk-0000": {
+     "id": "dk-0000",
+     "human": true,
+     "truth": "November 18",
+     "correct": true,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "6de60bdec4118f36",
+     "text": "<message>id=msg-000</message>= {\"from\": \"irene.duarte@arrayworks.com\", \"subject\": \"status\", \"to\": [\"irene.duarte@arrayworks.com\"], \"cc\": [], \"body\": \"I will have it to you by November 18.\", \"addressed_directly\": false}\nNovember 18",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-000</message>"
+      },
+      {
+       "at": 219,
+       "text": "November 18"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "November 18",
+     "ran_out": false
+    },
+    "dk-0001": {
+     "id": "dk-0001",
+     "human": true,
+     "truth": "November 22",
+     "correct": true,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "a3d552268547fb17",
+     "text": "<message>id=msg-012</message>= {\"from\": \"hugo.medina@tallgrass.com\", \"subject\": \"your note\", \"to\": [\"hugo.medina@tallgrass.com\"], \"cc\": [], \"body\": \"I will have it to you by November 22.\", \"addressed_directly\": false}\nNovember 22",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-012</message>"
+      },
+      {
+       "at": 218,
+       "text": "November 22"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "November 22",
+     "ran_out": false
+    },
+    "dk-0019": {
+     "id": "dk-0019",
+     "human": true,
+     "truth": "April 23",
+     "correct": true,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "a678e786c159ef0a",
+     "text": "<message>id=msg-014</message>= {\"from\": \"marina.medina@nordwind.com\", \"subject\": \"following up\", \"to\": [\"marina.medina@nordwind.com\"], \"cc\": [], \"body\": \"I will have it to you by April 23.\", \"addressed_directly\": false}\nApril 23",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-014</message>"
+      },
+      {
+       "at": 220,
+       "text": "April 23"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "April 23",
+     "ran_out": false
+    },
+    "dk-0033": {
+     "id": "dk-0033",
+     "human": true,
+     "truth": "January 5",
+     "correct": true,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "4a379a7c3540741b",
+     "text": "<message>id=msg-006</message>= {\"from\": \"clara.costa@arrayworks.com\", \"subject\": \"the draft\", \"to\": [\"clara.costa@arrayworks.com\"], \"cc\": [], \"body\": \"I will have it to you by January 5.\", \"addressed_directly\": false}\nJanuary 5",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-006</message>"
+      },
+      {
+       "at": 218,
+       "text": "January 5"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "January 5",
+     "ran_out": false
+    },
+    "dk-0034": {
+     "id": "dk-0034",
+     "human": true,
+     "truth": "September 6",
+     "correct": true,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "a917f27fc1e0a958",
+     "text": "<message>id=msg-002</message>= {\"from\": \"irene.gimenez@nordwind.com\", \"subject\": \"following up\", \"to\": [\"irene.gimenez@nordwind.com\"], \"cc\": [], \"body\": \"I will have it to you by September 6.\", \"addressed_directly\": false}\nSeptember 6",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-002</message>"
+      },
+      {
+       "at": 223,
+       "text": "September 6"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "September 6",
+     "ran_out": false
+    },
+    "dk-0032": {
+     "id": "dk-0032",
+     "human": true,
+     "truth": "April 23",
+     "correct": true,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "859105746ebfd746",
+     "text": "<message>id=msg-014</message>= {\"from\": \"marina.medina@nordwind.com\", \"subject\": \"following up\", \"to\": [\"marina.medina@nordwind.com\"], \"cc\": [], \"body\": \"I will have it to you by April 23.\", \"addressed_directly\": false}\nApril 23",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-014</message>"
+      },
+      {
+       "at": 220,
+       "text": "April 23"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "April 23",
+     "ran_out": false
+    },
+    "dk-0049": {
+     "id": "dk-0049",
+     "human": true,
+     "truth": "January 16",
+     "correct": true,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "53bfcf6fa3e4bdf3",
+     "text": "<message>id=msg-000</message>= {\"from\": \"karina.herrera@pine-and-co.com\", \"subject\": \"the numbers\", \"to\": [\"karina.herrera@pine-and-co.com\"], \"cc\": [], \"body\": \"I will have it to you by January 16.\", \"addressed_directly\": false}\nJanuary 16",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-000</message>"
+      },
+      {
+       "at": 229,
+       "text": "January 16"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "January 16",
+     "ran_out": false
+    },
+    "dk-0035": {
+     "id": "dk-0035",
+     "human": true,
+     "truth": "April 23",
+     "correct": true,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "a678e786c159ef0a",
+     "text": "<message>id=msg-014</message>= {\"from\": \"marina.medina@nordwind.com\", \"subject\": \"following up\", \"to\": [\"marina.medina@nordwind.com\"], \"cc\": [], \"body\": \"I will have it to you by April 23.\", \"addressed_directly\": false}\nApril 23",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-014</message>"
+      },
+      {
+       "at": 220,
+       "text": "April 23"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "April 23",
+     "ran_out": false
+    },
+    "dk-0050": {
+     "id": "dk-0050",
+     "human": true,
+     "truth": "March 18",
+     "correct": true,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "655f9a5a4e790a05",
+     "text": "<message>id=msg-005</message>= {\"from\": \"diego.herrera@kelvinlab.com\", \"subject\": \"following up\", \"to\": [\"diego.herrera@kelvinlab.com\"], \"cc\": [], \"body\": \"I will have it to you by March 18.\", \"addressed_directly\": false}\nMarch 18",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-005</message>"
+      },
+      {
+       "at": 222,
+       "text": "March 18"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "March 18",
+     "ran_out": false
+    },
+    "dk-0048": {
+     "id": "dk-0048",
+     "human": true,
+     "truth": "March 18",
+     "correct": true,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "9fe0b3fbd29bf4c2",
+     "text": "<message>id=msg-005</message>= {\"from\": \"diego.herrera@kelvinlab.com\", \"subject\": \"following up\", \"to\": [\"diego.herrera@kelvinlab.com\"], \"cc\": [], \"body\": \"I will have it to you by March 18.\", \"addressed_directly\": false}\nMarch 18",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-005</message>"
+      },
+      {
+       "at": 222,
+       "text": "March 18"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "March 18",
+     "ran_out": false
+    },
+    "dk-0051": {
+     "id": "dk-0051",
+     "human": true,
+     "truth": "January 16",
+     "correct": true,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "814fca87ef3bdf10",
+     "text": "<message>id=msg-000</message>= {\"from\": \"karina.herrera@pine-and-co.com\", \"subject\": \"the numbers\", \"to\": [\"karina.herrera@pine-and-co.com\"], \"cc\": [], \"body\": \"I will have it to you by January 16.\", \"addressed_directly\": false}\nJanuary 16",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-000</message>"
+      },
+      {
+       "at": 229,
+       "text": "January 16"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "January 16",
+     "ran_out": false
+    },
+    "dk-0064": {
+     "id": "dk-0064",
+     "human": true,
+     "truth": "January 16",
+     "correct": true,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "f25f6cbebae691d5",
+     "text": "<message>id=msg-000</message>= {\"from\": \"karina.herrera@pine-and-co.com\", \"subject\": \"the numbers\", \"to\": [\"karina.herrera@pine-and-co.com\"], \"cc\": [], \"body\": \"I will have it to you by January 16.\", \"addressed_directly\": false}\nJanuary 16",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-000</message>"
+      },
+      {
+       "at": 229,
+       "text": "January 16"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "January 16",
+     "ran_out": false
+    },
+    "dk-0066": {
+     "id": "dk-0066",
+     "human": true,
+     "truth": "April 12",
+     "correct": true,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "2a9575d27ac4cb9e",
+     "text": "<message>id=msg-001</message>= {\"from\": \"facundo.ibarra@arrayworks.com\", \"subject\": \"this week\", \"to\": [\"facundo.ibarra@arrayworks.com\"], \"cc\": [], \"body\": \"I will have it to you by April 12.\", \"addressed_directly\": false}\nApril 12",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-001</message>"
+      },
+      {
+       "at": 223,
+       "text": "April 12"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "April 12",
+     "ran_out": false
+    },
+    "dk-0083": {
+     "id": "dk-0083",
+     "human": true,
+     "truth": "November 6",
+     "correct": true,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "1f5cb0188ea1a457",
+     "text": "<message>id=msg-003</message>= {\"from\": \"ana.esposito@nordwind.com\", \"subject\": \"the draft\", \"to\": [\"ana.esposito@nordwind.com\"], \"cc\": [], \"body\": \"I will have it to you by November 6.\", \"addressed_directly\": false}\nNovember 6",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-003</message>"
+      },
+      {
+       "at": 217,
+       "text": "November 6"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "November 6",
+     "ran_out": false
+    },
+    "dk-0065": {
+     "id": "dk-0065",
+     "human": true,
+     "truth": "September 26",
+     "correct": true,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "8921fea917545787",
+     "text": "<message>id=msg-016</message>= {\"from\": \"nicolas.ferreyra@kelvinlab.com\", \"subject\": \"the handoff\", \"to\": [\"nicolas.ferreyra@kelvinlab.com\"], \"cc\": [], \"body\": \"I will have it to you by September 26.\", \"addressed_directly\": false}\nSeptember 26",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-016</message>"
+      },
+      {
+       "at": 231,
+       "text": "September 26"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "September 26",
+     "ran_out": false
+    },
+    "dk-0081": {
+     "id": "dk-0081",
+     "human": true,
+     "truth": "March 1",
+     "correct": true,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "43a47e78b6ec55cd",
+     "text": "<message>id=msg-010</message>= {\"from\": \"ana.ortiz@tallgrass.com\", \"subject\": \"status\", \"to\": [\"ana.ortiz@tallgrass.com\"], \"cc\": [], \"body\": \"I will have it to you by March 1.\", \"addressed_directly\": false}\nMarch 1",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-010</message>"
+      },
+      {
+       "at": 207,
+       "text": "March 1"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "March 1",
+     "ran_out": false
+    },
+    "dk-0082": {
+     "id": "dk-0082",
+     "human": true,
+     "truth": "November 4",
+     "correct": true,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "6aac1517c7a21cac",
+     "text": "<message>id=msg-021</message>= {\"from\": \"gabriela.esposito@tallgrass.com\", \"subject\": \"this week\", \"to\": [\"gabriela.esposito@tallgrass.com\"], \"cc\": [], \"body\": \"I will have it to you by November 4.\", \"addressed_directly\": false}\nNovember 4",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-021</message>"
+      },
+      {
+       "at": 229,
+       "text": "November 4"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "November 4",
+     "ran_out": false
+    },
+    "dk-0067": {
+     "id": "dk-0067",
+     "human": true,
+     "truth": "April 23",
+     "correct": true,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "412f497b41106484",
+     "text": "<message>id=msg-023</message>= {\"from\": \"karina.esposito@arrayworks.com\", \"subject\": \"this week\", \"to\": [\"karina.esposito@arrayworks.com\"], \"cc\": [], \"body\": \"I will have it to you by April 23.\", \"addressed_directly\": false}\nApril 23",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-023</message>"
+      },
+      {
+       "at": 225,
+       "text": "April 23"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "April 23",
+     "ran_out": false
+    },
+    "dk-0080": {
+     "id": "dk-0080",
+     "human": true,
+     "truth": "September 21",
+     "correct": true,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "f3f2186440efa9fb",
+     "text": "<message>id=msg-020</message>= {\"from\": \"karina.navarro@pine-and-co.com\", \"subject\": \"status\", \"to\": [\"karina.navarro@pine-and-co.com\"], \"cc\": [], \"body\": \"I will have it to you by September 21.\", \"addressed_directly\": false}\nSeptember 21",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-020</message>"
+      },
+      {
+       "at": 226,
+       "text": "September 21"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "September 21",
+     "ran_out": false
+    },
+    "dk-0096": {
+     "id": "dk-0096",
+     "human": true,
+     "truth": "January 3",
+     "correct": true,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "a402bf12a998c8d0",
+     "text": "<message>id=msg-013</message>= {\"from\": \"facundo.alvarez@nordwind.com\", \"subject\": \"next steps\", \"to\": [\"facundo.alvarez@nordwind.com\"], \"cc\": [], \"body\": \"I will have it to you by January 3.\", \"addressed_directly\": false}\nJanuary 3",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-013</message>"
+      },
+      {
+       "at": 223,
+       "text": "January 3"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "January 3",
+     "ran_out": false
+    },
+    "dk-0099": {
+     "id": "dk-0099",
+     "human": true,
+     "truth": "April 18",
+     "correct": true,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "a5c9b0ec969affd2",
+     "text": "<message>id=msg-023</message>= {\"from\": \"diego.ibarra@kelvinlab.com\", \"subject\": \"next steps\", \"to\": [\"diego.ibarra@kelvinlab.com\"], \"cc\": [], \"body\": \"I will have it to you by April 18.\", \"addressed_directly\": false}\nApril 18",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-023</message>"
+      },
+      {
+       "at": 218,
+       "text": "April 18"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "April 18",
+     "ran_out": false
+    },
+    "dk-0098": {
+     "id": "dk-0098",
+     "human": true,
+     "truth": "January 15",
+     "correct": true,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "0f446a2b916c3167",
+     "text": "<message>id=msg-005</message>= {\"from\": \"joaquin.costa@kelvinlab.com\", \"subject\": \"next steps\", \"to\": [\"joaquin.costa@kelvinlab.com\"], \"cc\": [], \"body\": \"I will have it to you by January 15.\", \"addressed_directly\": false}\nJanuary 15",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-005</message>"
+      },
+      {
+       "at": 222,
+       "text": "January 15"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "January 15",
+     "ran_out": false
+    },
+    "dk-0113": {
+     "id": "dk-0113",
+     "human": true,
+     "truth": "April 18",
+     "correct": true,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "a0af37a71a0c7f94",
+     "text": "<message>id=msg-023</message>= {\"from\": \"diego.ibarra@kelvinlab.com\", \"subject\": \"next steps\", \"to\": [\"diego.ibarra@kelvinlab.com\"], \"cc\": [], \"body\": \"I will have it to you by April 18.\", \"addressed_directly\": false}\nApril 18",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-023</message>"
+      },
+      {
+       "at": 218,
+       "text": "April 18"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "April 18",
+     "ran_out": false
+    },
+    "dk-0097": {
+     "id": "dk-0097",
+     "human": true,
+     "truth": "April 18",
+     "correct": true,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "a0af37a71a0c7f94",
+     "text": "<message>id=msg-023</message>= {\"from\": \"diego.ibarra@kelvinlab.com\", \"subject\": \"next steps\", \"to\": [\"diego.ibarra@kelvinlab.com\"], \"cc\": [], \"body\": \"I will have it to you by April 18.\", \"addressed_directly\": false}\nApril 18",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-023</message>"
+      },
+      {
+       "at": 218,
+       "text": "April 18"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "April 18",
+     "ran_out": false
+    },
+    "dk-0114": {
+     "id": "dk-0114",
+     "human": true,
+     "truth": "November 4",
+     "correct": true,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "6aac1517c7a21cac",
+     "text": "<message>id=msg-021</message>= {\"from\": \"gabriela.esposito@tallgrass.com\", \"subject\": \"this week\", \"to\": [\"gabriela.esposito@tallgrass.com\"], \"cc\": [], \"body\": \"I will have it to you by November 4.\", \"addressed_directly\": false}\nNovember 4",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-021</message>"
+      },
+      {
+       "at": 229,
+       "text": "November 4"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "November 4",
+     "ran_out": false
+    },
+    "dk-0115": {
+     "id": "dk-0115",
+     "human": true,
+     "truth": "January 3",
+     "correct": true,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "20196d8a164c56f9",
+     "text": "<message>id=msg-013</message>= {\"from\": \"facundo.alvarez@nordwind.com\", \"subject\": \"next steps\", \"to\": [\"facundo.alvarez@nordwind.com\"], \"cc\": [], \"body\": \"I will have it to you by January 3.\", \"addressed_directly\": false}\nJanuary 3",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-013</message>"
+      },
+      {
+       "at": 223,
+       "text": "January 3"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "January 3",
+     "ran_out": false
+    },
+    "dk-0112": {
+     "id": "dk-0112",
+     "human": true,
+     "truth": "April 13",
+     "correct": true,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "e846b1cd6705605e",
+     "text": "<message>id=msg-001</message>= {\"from\": \"ana.benitez@arrayworks.com\", \"subject\": \"next steps\", \"to\": [\"ana.benitez@arrayworks.com\"], \"cc\": [], \"body\": \"I will have it to you by April 13.\", \"addressed_directly\": false}\nApril 13",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-001</message>"
+      },
+      {
+       "at": 218,
+       "text": "April 13"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "April 13",
+     "ran_out": false
+    },
+    "dk-0128": {
+     "id": "dk-0128",
+     "human": true,
+     "truth": "November 2",
+     "correct": true,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "59d68e33b6959b29",
+     "text": "<message>id=msg-010</message>= {\"from\": \"marina.esposito@tallgrass.com\", \"subject\": \"next steps\", \"to\": [\"marina.esposito@tallgrass.com\"], \"cc\": [], \"body\": \"I will have it to you by November 2.\", \"addressed_directly\": false}\nNovember 2",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-010</message>"
+      },
+      {
+       "at": 226,
+       "text": "November 2"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "November 2",
+     "ran_out": false
+    },
+    "dk-0145": {
+     "id": "dk-0145",
+     "human": true,
+     "truth": "April 8",
+     "correct": true,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "2b8cd696a2cdfff8",
+     "text": "<message>id=msg-017</message>= {\"from\": \"irene.ortiz@kelvinlab.com\", \"subject\": \"next steps\", \"to\": [\"irene.ortiz@kelvinlab.com\"], \"cc\": [], \"body\": \"I will have it to you by April 8.\", \"addressed_directly\": false}\nApril 8",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-017</message>"
+      },
+      {
+       "at": 215,
+       "text": "April 8"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "April 8",
+     "ran_out": false
+    },
+    "dk-0144": {
+     "id": "dk-0144",
+     "human": true,
+     "truth": "September 2",
+     "correct": true,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "e405261ee40ba056",
+     "text": "<message>id=msg-003</message>= {\"from\": \"karina.lombardi@tallgrass.com\", \"subject\": \"the handoff\", \"to\": [\"karina.lombardi@tallgrass.com\"], \"cc\": [], \"body\": \"I will have it to you by September 2.\", \"addressed_directly\": false}\nSeptember 2",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-003</message>"
+      },
+      {
+       "at": 228,
+       "text": "September 2"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "September 2",
+     "ran_out": false
+    },
+    "dk-0131": {
+     "id": "dk-0131",
+     "human": true,
+     "truth": "November 2",
+     "correct": true,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "a1b2bd5efe34c8dd",
+     "text": "<message>id=msg-010</message>= {\"from\": \"marina.esposito@tallgrass.com\", \"subject\": \"next steps\", \"to\": [\"marina.esposito@tallgrass.com\"], \"cc\": [], \"body\": \"I will have it to you by November 2.\", \"addressed_directly\": false}\nNovember 2",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-010</message>"
+      },
+      {
+       "at": 226,
+       "text": "November 2"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "November 2",
+     "ran_out": false
+    },
+    "dk-0146": {
+     "id": "dk-0146",
+     "human": true,
+     "truth": "September 19",
+     "correct": true,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "b475072a64074ea7",
+     "text": "<message>id=msg-000</message>= {\"from\": \"hugo.lombardi@tallgrass.com\", \"subject\": \"quick one\", \"to\": [\"hugo.lombardi@tallgrass.com\"], \"cc\": [], \"body\": \"I will have it to you by September 19.\", \"addressed_directly\": false}\nSeptember 19",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-000</message>"
+      },
+      {
+       "at": 223,
+       "text": "September 19"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "September 19",
+     "ran_out": false
+    },
+    "dk-0147": {
+     "id": "dk-0147",
+     "human": true,
+     "truth": "September 19",
+     "correct": true,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "da392cd303d56e38",
+     "text": "<message>id=msg-000</message>= {\"from\": \"hugo.lombardi@tallgrass.com\", \"subject\": \"quick one\", \"to\": [\"hugo.lombardi@tallgrass.com\"], \"cc\": [], \"body\": \"I will have it to you by September 19.\", \"addressed_directly\": false}\nSeptember 19",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-000</message>"
+      },
+      {
+       "at": 223,
+       "text": "September 19"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "September 19",
+     "ran_out": false
+    },
+    "dk-0129": {
+     "id": "dk-0129",
+     "human": true,
+     "truth": "June 11",
+     "correct": true,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "f964f3aacb3ff03b",
+     "text": "<message>id=msg-018</message>= {\"from\": \"facundo.ibarra@arrayworks.com\", \"subject\": \"the draft\", \"to\": [\"facundo.ibarra@arrayworks.com\"], \"cc\": [], \"body\": \"I will have it to you by June 11.\", \"addressed_directly\": false}\nJune 11",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-018</message>"
+      },
+      {
+       "at": 222,
+       "text": "June 11"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "June 11",
+     "ran_out": false
+    },
+    "dk-0130": {
+     "id": "dk-0130",
+     "human": true,
+     "truth": "November 18",
+     "correct": true,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "2e8d319dd6116d12",
+     "text": "<message>id=msg-016</message>= {\"from\": \"ana.medina@nordwind.com\", \"subject\": \"following up\", \"to\": [\"ana.medina@nordwind.com\"], \"cc\": [], \"body\": \"I will have it to you by November 18.\", \"addressed_directly\": false}\nNovember 18",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-016</message>"
+      },
+      {
+       "at": 217,
+       "text": "November 18"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "November 18",
+     "ran_out": false
+    },
+    "dk-0160": {
+     "id": "dk-0160",
+     "human": true,
+     "truth": "April 3",
+     "correct": true,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "f7d10eb8ecf8ec3b",
+     "text": "<message>id=msg-010</message>= {\"from\": \"bruno.navarro@kelvinlab.com\", \"subject\": \"the numbers\", \"to\": [\"bruno.navarro@kelvinlab.com\"], \"cc\": [], \"body\": \"I will have it to you by April 3.\", \"addressed_directly\": false}\nApril 3",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-010</message>"
+      },
+      {
+       "at": 220,
+       "text": "April 3"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "April 3",
+     "ran_out": false
+    },
+    "dk-0161": {
+     "id": "dk-0161",
+     "human": true,
+     "truth": "April 14",
+     "correct": true,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "e3d51280d613b497",
+     "text": "<message>id=msg-023</message>= {\"from\": \"irene.medina@arrayworks.com\", \"subject\": \"quick one\", \"to\": [\"irene.medina@arrayworks.com\"], \"cc\": [], \"body\": \"I will have it to you by April 14.\", \"addressed_directly\": false}\nApril 14",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-023</message>"
+      },
+      {
+       "at": 219,
+       "text": "April 14"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "April 14",
+     "ran_out": false
+    },
+    "dk-0163": {
+     "id": "dk-0163",
+     "human": true,
+     "truth": "September 27",
+     "correct": true,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "79cd036a8bac0d0a",
+     "text": "<message>id=msg-016</message>= {\"from\": \"ana.costa@pine-and-co.com\", \"subject\": \"the draft\", \"to\": [\"ana.costa@pine-and-co.com\"], \"cc\": [], \"body\": \"I will have it to you by September 27.\", \"addressed_directly\": false}\nSeptember 27",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-016</message>"
+      },
+      {
+       "at": 219,
+       "text": "September 27"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "September 27",
+     "ran_out": false
+    },
+    "dk-0162": {
+     "id": "dk-0162",
+     "human": true,
+     "truth": "January 24",
+     "correct": true,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "a29ce566de3f6fe0",
+     "text": "<message>id=msg-009</message>= {\"from\": \"lucas.duarte@arrayworks.com\", \"subject\": \"the draft\", \"to\": [\"lucas.duarte@arrayworks.com\"], \"cc\": [], \"body\": \"I will have it to you by January 24.\", \"addressed_directly\": false}\nJanuary 24",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-009</message>"
+      },
+      {
+       "at": 221,
+       "text": "January 24"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "January 24",
+     "ran_out": false
+    },
+    "dk-0179": {
+     "id": "dk-0179",
+     "human": true,
+     "truth": "November 16",
+     "correct": true,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "dbc29d3f322471ab",
+     "text": "<message>id=msg-008</message>= {\"from\": \"irene.duarte@pine-and-co.com\", \"subject\": \"this week\", \"to\": [\"irene.duarte@pine-and-co.com\"], \"cc\": [], \"body\": \"I will have it to you by November 16.\", \"addressed_directly\": false}\nNovember 16",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-008</message>"
+      },
+      {
+       "at": 224,
+       "text": "November 16"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "November 16",
+     "ran_out": false
+    },
+    "dk-0178": {
+     "id": "dk-0178",
+     "human": true,
+     "truth": "September 27",
+     "correct": true,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "154591b53547e59a",
+     "text": "<message>id=msg-016</message>= {\"from\": \"ana.costa@pine-and-co.com\", \"subject\": \"the draft\", \"to\": [\"ana.costa@pine-and-co.com\"], \"cc\": [], \"body\": \"I will have it to you by September 27.\", \"addressed_directly\": false}\nSeptember 27",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-016</message>"
+      },
+      {
+       "at": 219,
+       "text": "September 27"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "September 27",
+     "ran_out": false
+    },
+    "dk-0177": {
+     "id": "dk-0177",
+     "human": true,
+     "truth": "January 10",
+     "correct": true,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "23273d2c0ff05882",
+     "text": "<message>id=msg-017</message>= {\"from\": \"marina.duarte@arrayworks.com\", \"subject\": \"quick one\", \"to\": [\"marina.duarte@arrayworks.com\"], \"cc\": [], \"body\": \"I will have it to you by January 10.\", \"addressed_directly\": false}\nJanuary 10",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-017</message>"
+      },
+      {
+       "at": 223,
+       "text": "January 10"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "January 10",
+     "ran_out": false
+    },
+    "dk-0176": {
+     "id": "dk-0176",
+     "human": true,
+     "truth": "September 27",
+     "correct": true,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "33252ad68d3ee03b",
+     "text": "<message>id=msg-016</message>= {\"from\": \"ana.costa@pine-and-co.com\", \"subject\": \"the draft\", \"to\": [\"ana.costa@pine-and-co.com\"], \"cc\": [], \"body\": \"I will have it to you by September 27.\", \"addressed_directly\": false}\nSeptember 27",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-016</message>"
+      },
+      {
+       "at": 219,
+       "text": "September 27"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "September 27",
+     "ran_out": false
+    },
+    "dk-0192": {
+     "id": "dk-0192",
+     "human": true,
+     "truth": "January 19",
+     "correct": true,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "64be1361f0a049c3",
+     "text": "<message>id=msg-005</message>= {\"from\": \"facundo.juarez@pine-and-co.com\", \"subject\": \"quick one\", \"to\": [\"facundo.juarez@pine-and-co.com\"], \"cc\": [], \"body\": \"I will have it to you by January 19.\", \"addressed_directly\": false}\nJanuary 19",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-005</message>"
+      },
+      {
+       "at": 227,
+       "text": "January 19"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "January 19",
+     "ran_out": false
+    },
+    "dk-0211": {
+     "id": "dk-0211",
+     "human": true,
+     "truth": "January 9",
+     "correct": true,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "96cbec1ed0b6d753",
+     "text": "<message>id=msg-001</message>= {\"from\": \"clara.esposito@pine-and-co.com\", \"subject\": \"this week\", \"to\": [\"clara.esposito@pine-and-co.com\"], \"cc\": [], \"body\": \"I will have it to you by January 9.\", \"addressed_directly\": false}\nJanuary 9",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-001</message>"
+      },
+      {
+       "at": 226,
+       "text": "January 9"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "January 9",
+     "ran_out": false
+    },
+    "dk-0193": {
+     "id": "dk-0193",
+     "human": true,
+     "truth": "January 19",
+     "correct": true,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "005356ef3992a257",
+     "text": "<message>id=msg-005</message>= {\"from\": \"facundo.juarez@pine-and-co.com\", \"subject\": \"quick one\", \"to\": [\"facundo.juarez@pine-and-co.com\"], \"cc\": [], \"body\": \"I will have it to you by January 19.\", \"addressed_directly\": false}\nJanuary 19",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-005</message>"
+      },
+      {
+       "at": 227,
+       "text": "January 19"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "January 19",
+     "ran_out": false
+    },
+    "dk-0194": {
+     "id": "dk-0194",
+     "human": true,
+     "truth": "November 16",
+     "correct": true,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "c90dea4f861954aa",
+     "text": "<message>id=msg-008</message>= {\"from\": \"irene.duarte@pine-and-co.com\", \"subject\": \"this week\", \"to\": [\"irene.duarte@pine-and-co.com\"], \"cc\": [], \"body\": \"I will have it to you by November 16.\", \"addressed_directly\": false}\nNovember 16",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-008</message>"
+      },
+      {
+       "at": 224,
+       "text": "November 16"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "November 16",
+     "ran_out": false
+    },
+    "dk-0195": {
+     "id": "dk-0195",
+     "human": true,
+     "truth": "April 14",
+     "correct": true,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "ae91112bb65ece8f",
+     "text": "<message>id=msg-023</message>= {\"from\": \"irene.medina@arrayworks.com\", \"subject\": \"quick one\", \"to\": [\"irene.medina@arrayworks.com\"], \"cc\": [], \"body\": \"I will have it to you by April 14.\", \"addressed_directly\": false}\nApril 14",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-023</message>"
+      },
+      {
+       "at": 219,
+       "text": "April 14"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "April 14",
+     "ran_out": false
+    },
+    "dk-0210": {
+     "id": "dk-0210",
+     "human": true,
+     "truth": "March 1",
+     "correct": true,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "fac616edc853e121",
+     "text": "<message>id=msg-015</message>= {\"from\": \"irene.navarro@pine-and-co.com\", \"subject\": \"next steps\", \"to\": [\"irene.navarro@pine-and-co.com\"], \"cc\": [], \"body\": \"I will have it to you by March 1.\", \"addressed_directly\": false}\nMarch 1",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-015</message>"
+      },
+      {
+       "at": 223,
+       "text": "March 1"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "March 1",
+     "ran_out": false
+    },
+    "dk-0209": {
+     "id": "dk-0209",
+     "human": true,
+     "truth": "November 4",
+     "correct": true,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "9e7cc7713e78464b",
+     "text": "<message>id=msg-018</message>= {\"from\": \"nicolas.ortiz@pine-and-co.com\", \"subject\": \"this week\", \"to\": [\"nicolas.ortiz@pine-and-co.com\"], \"cc\": [], \"body\": \"I will have it to you by November 4.\", \"addressed_directly\": false}\nNovember 4",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-018</message>"
+      },
+      {
+       "at": 225,
+       "text": "November 4"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "November 4",
+     "ran_out": false
+    },
+    "dk-0208": {
+     "id": "dk-0208",
+     "human": true,
+     "truth": "June 11",
+     "correct": true,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "26663d43b720214d",
+     "text": "<message>id=msg-022</message>= {\"from\": \"diego.navarro@tallgrass.com\", \"subject\": \"the handoff\", \"to\": [\"diego.navarro@tallgrass.com\"], \"cc\": [], \"body\": \"I will have it to you by June 11.\", \"addressed_directly\": false}\nJune 11",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-022</message>"
+      },
+      {
+       "at": 220,
+       "text": "June 11"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "June 11",
+     "ran_out": false
+    },
+    "dk-0224": {
+     "id": "dk-0224",
+     "human": true,
+     "truth": "November 4",
+     "correct": true,
+     "region": "commitment",
+     "depth": 1,
+     "prompt_sha": "a36d0eaf1f8b3702",
+     "text": "<message>id=msg-018</message>= {\"from\": \"nicolas.ortiz@pine-and-co.com\", \"subject\": \"this week\", \"to\": [\"nicolas.ortiz@pine-and-co.com\"], \"cc\": [], \"body\": \"I will have it to you by November 4.\", \"addressed_directly\": false}\nNovember 4",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-018</message>"
+      },
+      {
+       "at": 225,
+       "text": "November 4"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "November 4",
+     "ran_out": false
+    },
+    "dk-0226": {
+     "id": "dk-0226",
+     "human": true,
+     "truth": "June 20",
+     "correct": true,
+     "region": "commitment",
+     "depth": 3,
+     "prompt_sha": "ddf200778f45fd41",
+     "text": "<message>id=msg-019</message>= {\"from\": \"clara.lombardi@tallgrass.com\", \"subject\": \"the handoff\", \"to\": [\"clara.lombardi@tallgrass.com\"], \"cc\": [], \"body\": \"I will have it to you by June 20.\", \"addressed_directly\": false}\nJune 20",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-019</message>"
+      },
+      {
+       "at": 222,
+       "text": "June 20"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "June 20",
+     "ran_out": false
+    },
+    "dk-0227": {
+     "id": "dk-0227",
+     "human": true,
+     "truth": "November 11",
+     "correct": true,
+     "region": "commitment",
+     "depth": 4,
+     "prompt_sha": "87162d8be90022cc",
+     "text": "<message>id=msg-020</message>= {\"from\": \"clara.medina@nordwind.com\", \"subject\": \"next steps\", \"to\": [\"clara.medina@nordwind.com\"], \"cc\": [], \"body\": \"I will have it to you by November 11.\", \"addressed_directly\": false}\nNovember 11",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-020</message>"
+      },
+      {
+       "at": 219,
+       "text": "November 11"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "November 11",
+     "ran_out": false
+    },
+    "dk-0225": {
+     "id": "dk-0225",
+     "human": true,
+     "truth": "June 24",
+     "correct": true,
+     "region": "commitment",
+     "depth": 2,
+     "prompt_sha": "28e25da6f0e63029",
+     "text": "<message>id=msg-007</message>= {\"from\": \"bruno.herrera@nordwind.com\", \"subject\": \"a question\", \"to\": [\"bruno.herrera@nordwind.com\"], \"cc\": [], \"body\": \"I will have it to you by June 24.\", \"addressed_directly\": false}\nJune 24",
+     "spans": [
+      {
+       "at": 0,
+       "text": "<message>id=msg-007</message>"
+      },
+      {
+       "at": 217,
+       "text": "June 24"
+      }
+     ],
+     "calls": 1,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": "June 24",
+     "ran_out": false
+    }
+   },
+   "n": 60,
+   "errors": 0,
+   "correct": 60,
+   "accuracy": 1.0,
+   "human_n": 60,
+   "human_correct": 60,
+   "human_accuracy": 1.0,
+   "undecided": 0,
+   "calls": 60,
+   "refused": 0,
+   "stray_results": 0,
+   "malformed": 0,
+   "partial": false
+  }
+ },
+ "G1": {
+  "email-full": {
+   "probed": 3,
+   "empty": 0,
+   "differs": 3,
+   "applied": true,
+   "samples": [
+    {
+     "base": "The sky appears blue because of Rayleigh scattering, which i",
+     "member": "The sky appears blue because during the day, when sunlight e"
+    },
+    {
+     "base": "When answering an email, a careful reader should ensure they",
+     "member": "When reading an important message in an inbox, a careful rea"
+    },
+    {
+     "base": "A pressure drop in a pipe primarily depends on the fluid's v",
+     "member": "A pressure drop in a pipe depends on the fluid's viscosity, "
+    }
+   ]
+  },
+  "desk-commitment": {
+   "probed": 3,
+   "empty": 0,
+   "differs": 3,
+   "applied": true,
+   "samples": [
+    {
+     "base": "The sky appears blue because of Rayleigh scattering, which i",
+     "member": "The sky appears blue because sunlight, after traveling throu"
+    },
+    {
+     "base": "When answering an email, a careful reader should ensure they",
+     "member": "When answering an email, a careful reader should check the f"
+    },
+    {
+     "base": "A pressure drop in a pipe primarily depends on the fluid's v",
+     "member": "A pressure drop in a pipe depends on the fluid's viscosity, "
+    }
+   ]
+  }
+ },
+ "G2": {
+  "email-full": {
+   "reachable": true,
+   "tool_calls": 0,
+   "answered": true
+  },
+  "desk-commitment": {
+   "reachable": true,
+   "tool_calls": 0,
+   "answered": true
+  }
+ },
+ "adapter_sha256": "5da1229c720f009d560c4b7387c2a9e5cccd23ece46d9aec146eef6ea301cd58",
+ "recorded": {
+  "path": "results/P55b-desk-ranking-20260917/p55b.json",
+  "arm": "g600",
+  "n": 240,
+  "correct": 240
+ },
+ "G2_auto": {
+  "desk": {
+   "served": "desk-commitment",
+   "ok": true
+  },
+  "email": {
+   "served": "email-full",
+   "ok": true
+  }
+ },
+ "pairs": [
+  {
+   "pair": "new vs recorded",
+   "n_paired": 60,
+   "a_total": 60,
+   "b_total": 60,
+   "only_a": 0,
+   "only_b": 0,
+   "discordant": 0,
+   "p_value": 1.0,
+   "different": false,
+   "reading": "a tie: the totals differ but the cases behind them do not",
+   "state": "tie"
+  },
+  {
+   "pair": "new vs base",
+   "n_paired": 60,
+   "a_total": 60,
+   "b_total": 10,
+   "only_a": 50,
+   "only_b": 0,
+   "discordant": 50,
+   "p_value": 0.0,
+   "different": true,
+   "reading": "the arms differ",
+   "state": "improvement"
+  }
+ ],
+ "verdict": {
+  "G1": true,
+  "G2": true,
+  "auto_routes": true,
+  "ties_recorded": true,
+  "beats_base": true,
+  "released": true,
+  "reading": "RELEASED: a second useful member, co-resident and routed by its question"
+ },
+ "finished": "2026-09-18T15:59:37"
+}

@@ -218,6 +218,14 @@ ledger is `results/P63-openclaw-live-20260918/BRIEF.md`.
 **So a member is what its corpus taught — the block *and* the prompt.** `--prune`,
 `--member-prompt` and `--auto` are what the command above starts with.
 
+**Two members on one inbox, P64 [ran] 2026-09-18.** `desk-commitment@v1` is served beside
+`email-full@v1` from the same vLLM, and both read `From: / Subject: / Preview:`. Keyed on
+those markers, `--auto` sent desk prompts to the triage member 15 of 60 times; keyed on
+what is *asked* — "is this important" against "did you commit" — it separates them, and
+live it served each probe with the right member. **A region is its question, not its
+listing**: when a task's profile adds a member, add the question it answers to
+`route.REGIONS`, never a marker another member's prompts also carry.
+
 ### Streaming, and why it is buffered
 
 **OpenClaw streams by default**, and setting `agents.defaults.models.<model>.streaming`
