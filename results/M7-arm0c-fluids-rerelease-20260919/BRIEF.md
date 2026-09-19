@@ -51,3 +51,47 @@ ends the step as *not released*.
 **What follows a RELEASED verdict (not in this run):** `releases/fluids-full@v2.json`; the member
 back in `train_pool.POOL` with its contract; the proxy's per-member call cap read from the contract
 (a fluids chain is 6–9 calls, the cap is 6); the region marked `local`; then the routing replay.
+
+## Result **[ran]** 2026-09-19 · NOT RELEASED — 80 of 90, and every one of the ten is the last line
+
+Two Colab sessions. A (A100): training only, 114 steps in 45 min, adapter sha256 `567e4978…`, 256
+tensors renamed for serving. B (L4): served, scored. Read off `region_release.json`.
+
+| arm | correct | calls · refused |
+|---|--:|--:|
+| bare `Qwen3.5-4B`, corpus mode | **0 / 90** | 5 · 0 |
+| **`fluids-full-q35`** | **80 / 90** | 632 · 0 |
+| recorded: the 3B member, arm 0b | 90 / 90 | 628 · 0 |
+| recorded: the frontier, P41 | 66 / 90 | — |
+
+G1 `applied` 3/3. Pairs: **new vs recorded 0 : 10, $p = 0.00195$ — REGRESSION**; new vs base 80 : 0;
+new vs frontier 21 : 7, $p = 0.0125$. The falsification condition written above fired, and the
+verdict stands as written: **the region stays `out`**, the 3B adapter stays the only fluids member.
+
+**Read where it happens (zero GPU, `result_use.read_chain` + the chains).** All ten failures are
+venturi cases (10 of that family's 22), and in all ten the chain is *token for token the 3B's passing
+chain* — six results, six used, none ignored, none invented, 0 tool errors — up to the last line.
+There the 3B wrote `{"answer": 0.019272}` and the 4B wrote `<answer>0.019272</answer>`. **The number
+verifies in 10 of 10.** The corpus never shows that tag: 0 of 600 rows, against 600 of 600 with the
+JSON line. After six `<tag>…</tag>= x` steps the 4B carries the pattern one line too far, on the
+longest chains only (seven calls).
+
+So: **numerically 90/90, by the contract 80/90 — and the contract is what a client receives.** This
+is not the reasoning failing and it is not the verifier being wrong; it is a member that leaves its
+corpus's format on one family. The check is not loosened. What it says about the base move: a tie in
+M1 on two *deciding* members did not carry to the member with the longest inline chains.
+
+**The base arm's 0/90 is a floor of format, not of physics.** The bare 4B writes markdown derivations
+and is cut at 200 tokens a step with 5 calls in 90 chains. It shows there was headroom; it does not
+show the base "cannot do fluids", and must not be quoted that way.
+
+**The abort rule was wrong, and was not applied.** "No `loss` line within 15 minutes" cannot fire
+correctly: this harness's trainer prints no loss line at all (0 in M1's logs, 0 here). The run was
+watched by its step bar instead and finished healthy. The chain's peek now shows the step bar, with a
+test. Counted as one correction to the instrument's watch, not to its verdict. **Redesign count of
+the verdict: 0.**
+
+**What follows (not run).** One arm, one unknown: the final line. Either the memory's runtime serves
+this member too — its guard already treats an unknown tag as a violation and says so inline, which is
+the `recover` arm the memory has to measure anyway — or the corpus gains rows for the long chains.
+The first costs no training and is the one to buy.

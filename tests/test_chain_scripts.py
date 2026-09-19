@@ -401,3 +401,19 @@ def test_the_partial_results_carried_into_a_new_session_are_valid_json_without_t
     cmd = line.replace('"$LOCAL"', str(local)).replace("/tmp/_resume.json", str(out))
     assert subprocess.run(["bash", "-c", cmd]).returncode == 0
     assert json.loads(out.read_text()) == {"arms": {"a": 1}, "packed": 1}
+
+
+def test_the_peek_sees_a_training_step_bar_that_tqdm_redraws_in_place(tmp_path):
+    """The trainer prints no loss line, so the step bar is the only sign of life — and tqdm
+    redraws it with a carriage return, which makes a whole training one line to `grep`.
+    An abort rule keyed to `loss` fired on a healthy 114-step run [ran] M7 arm 0c."""
+    import subprocess
+    src = pathlib.Path("training/harness/chain_serve.sh").read_text()
+    assert "tr '\\\\r' '\\\\n'" in src, "the peek must split tqdm's carriage returns before it greps"
+    assert " [0-9]+/[0-9]+ \\\\[[0-9:]+<" in src
+    pat = r" [0-9]+/[0-9]+ \[[0-9:]+<"          # what the shell receives once Python has read the line above
+    log = tmp_path / "run.log"
+    log.write_bytes(b"noise\n" + b"\r".join(f" {i}/114 [0{i % 10}:00<40:00, 23.1s/it]".encode() for i in (1, 2, 48)) + b"\n")
+    out = subprocess.run(["bash", "-c", f"grep -E '{pat}' <(tr '\\r' '\\n' < {log}) | tail -1"],
+                         capture_output=True, text=True).stdout
+    assert "48/114" in out
