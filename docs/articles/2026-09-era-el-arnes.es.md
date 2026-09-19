@@ -4,13 +4,9 @@
 [`2026-09-it-was-the-harness.md`](2026-09-it-was-the-harness.md). Cada número de este texto sale del
 registro del repositorio ([`../es/RECORD.md`](../es/RECORD.md)) y nombra su corrida.*
 
-> **[MARCADOR DE IMAGEN DE PORTADA — `docs/img/article-harness.png`, 1200 × 627]**
-> *Dos paneles lado a lado, mismo estilo plano e ilustrado del repositorio. Izquierda: un
-> especialista en su escritorio escribe una consulta en una ficha y la mete por una ranura; la
-> respuesta le vuelve por OTRA ventanilla, a su espalda, y él no la ve — sigue escribiendo un número
-> de memoria. Abajo, un marcador: "11 / 90". Derecha: la misma escena, pero la respuesta vuelve
-> escrita en la misma ficha, justo debajo de la consulta; él la lee y sigue. Marcador: "90 / 90".
-> Título sobre la imagen: "Mismo modelo. Mismos problemas. Otro camino."*
+![Dos paneles. Izquierda: un especialista mete una consulta por una ranura y la respuesta le vuelve por otra ventanilla, a su espalda, sin que la vea — 11 / 90. Derecha: la respuesta vuelve en la misma ficha, debajo de la consulta — 90 / 90.](../img/article-harness.png)
+
+*Mismo modelo. Mismos problemas. Otro camino.*
 
 ---
 
@@ -113,17 +109,9 @@ los agentes desde su mensajería. Hay varios agentes. Hay decenas de sesiones ab
 conversaciones viven en **grupos estables por área**: desarrollo, marketing, interno, operaciones,
 más los mensajes directos de cada uno y algún bot que cada tanto muestra "la corrida falló".
 
-> **[MARCADOR DE ILUSTRACIÓN — `docs/img/article-team.png`]**
-> *Un diagrama horizontal en el mismo estilo plano. A la izquierda, cuatro burbujas de chat grupal
-> etiquetadas "Dev", "Marketing", "Internal", "Ops", cada una con varias siluetas pequeñas y sin
-> rostro, y una quinta pila de burbujas individuales, "direct messages". Todas desembocan en una caja
-> central "agent runtime — dozens of sessions". De ahí sale una sola línea a "proxy", y de ahí a UNA
-> tarjeta gráfica dibujada como una estantería: un lomo grueso "one small resident model" y, apoyados
-> en él, cuatro lomos finos de colores, uno por grupo — "dev adapter", "marketing adapter"… Debajo de
-> cada lomo fino, un pequeño fichero de dos cajones: "how this team does it" y "what this team
-> knows". Una línea punteada sale del proxy hacia un edificio lejano, "frontier — everything else".
-> La idea visual: muchos grupos, una sola máquina, y cada grupo con su propio especialista y su
-> propia biblioteca.*
+![Cuatro chats grupales y una pila de mensajes directos desembocan en un runtime de agentes, después un proxy, después una tarjeta gráfica dibujada como estantería: un lomo grueso para el modelo residente y un lomo fino de color por grupo, cada uno con su fichero de dos cajones. Una línea punteada sale hacia la frontera.](../img/article-team.png)
+
+*Muchos grupos, una sola máquina — y cada grupo con su especialista y su biblioteca.*
 
 **Primero lo que esto NO arregla**, porque es lo que más duele a esa escala: una barra lateral que
 se llena de sesiones, un gateway que cada tanto queda inalcanzable detrás de un proxy de acceso, un

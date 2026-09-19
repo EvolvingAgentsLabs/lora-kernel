@@ -365,15 +365,9 @@ con formas como default.
 
 ## 6. En operación — una tarea, de punta a punta
 
-> **[MARCADOR DE ILUSTRACIÓN — `docs/img/memory-walkthrough.png`]**
-> *Un storyboard vertical de siete paneles numerados unidos por una sola línea, como un mapa de subte, en el
-> mismo estilo plano. 1: una ficha de pedido "500 mL over 4 h, gravity, 20 gtt/mL". 2: el experto escribe
-> `search`; el radar ilumina tres fichas en el estante del arnés. 3: una ficha, "Primary infusion",
-> se abre. 4: la línea recorre el estante del arnés paso a paso. 5: en el paso "set the rate" la
-> línea baja al estante de la wiki, a una ficha "gravity drip rate", y vuelve a subir — este desvío
-> es el punto visual de la imagen. 6: una calculadora chica muestra 500 × 20 ÷ 240 = 41,67. 7: la
-> respuesta "42 drops per minute". Abajo del todo, la banda del árbitro muestra un tilde verde en el panel
-> 4, "requires: safety steps — opened".*
+![Siete paneles numerados unidos por una línea, como un mapa de subte: un pedido, una búsqueda que ilumina tres fichas, un procedimiento que se abre, la línea que recorre el estante del arnés, un desvío hacia el estante de la wiki y de vuelta, una calculadora, la respuesta.](../img/memory-walkthrough.png)
+
+*Una tarea, de punta a punta. El desvío del arnés a la wiki y de vuelta es el punto.*
 
 1. **Llega la tarea:** *"Infuse 500 mL over 4 hours by gravity; drop factor 20 gtt/mL."*
 2. **El experto consulta su radar:** `<search shelf=harness>start a primary infusion</search>`.

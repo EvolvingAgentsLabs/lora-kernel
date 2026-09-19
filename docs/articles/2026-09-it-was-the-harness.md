@@ -4,13 +4,9 @@
 [`2026-09-era-el-arnes.es.md`](2026-09-era-el-arnes.es.md). Every number here comes from the
 repository's record ([`../RECORD.md`](../RECORD.md)) and names its run.*
 
-> **[COVER IMAGE PLACEHOLDER — `docs/img/article-harness.png`, 1200 × 627]**
-> *Two panels side by side, in the repository's flat illustrated style. Left: a specialist at a desk
-> writes a query on a card and posts it through a slot; the answer comes back through ANOTHER window,
-> behind their back, unseen — and they keep writing a number from memory. Below, a counter: "11 / 90".
-> Right: the same scene, but the answer comes back written on the same card, right under the query;
-> they read it and carry on. Counter: "90 / 90". Title over the image: "Same model. Same problems.
-> A different path."*
+![Two panels. Left: a specialist posts a query through a slot and the answer comes back through another window, behind their back, unseen — 11 / 90. Right: the answer comes back on the same card, under the query — 90 / 90.](../img/article-harness.png)
+
+*Same model. Same problems. A different path.*
 
 ---
 
@@ -112,16 +108,9 @@ sessions open at once. And the conversations live in **standing groups per area*
 marketing, internal, operations — plus everyone's direct messages, and a bot that now and then
 shows "run failed".
 
-> **[ILLUSTRATION PLACEHOLDER — `docs/img/article-team.png`]**
-> *One horizontal diagram in the same flat style. On the left, four group-chat bubbles labelled "Dev",
-> "Marketing", "Internal", "Ops", each with a few small faceless silhouettes, and a fifth stack of
-> single bubbles, "direct messages". All flow into a central box, "agent runtime — dozens of
-> sessions". One line leaves it to "proxy", and from there to ONE graphics card drawn as a bookshelf:
-> a thick spine "one small resident model" and, leaning on it, four thin coloured spines, one per
-> group — "dev adapter", "marketing adapter"… Under each thin spine, a small two-drawer card file:
-> "how this team does it" and "what this team knows". A dashed line leaves the proxy for a distant
-> building, "frontier — everything else". The visual idea: many groups, one machine, and each group
-> with its own specialist and its own library.*
+![Four group chats and a stack of direct messages flow into one agent runtime, then one proxy, then one graphics card drawn as a bookshelf: a thick spine for the resident model and a thin coloured spine per group, each with its own two-drawer card file. A dashed line leaves for the frontier.](../img/article-team.png)
+
+*Many groups, one machine — and each group with its own specialist and its own library.*
 
 **First, what this does NOT fix**, because it is what hurts most at that scale: a sidebar that fills
 up with sessions, a gateway that now and then becomes unreachable behind an access proxy, a websocket
