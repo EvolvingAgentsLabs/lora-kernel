@@ -139,7 +139,10 @@ them: 11 of 90 became 90 of 90 (M7 arm 0b). The memory is built on exactly that 
 - **The router is still a keyword dictionary.** Its first learned replacement, an n-gram model of
   each corpus, is safer on foreign text (0 of 128 served locally against the dictionary's 59) and
   loses **every** legitimate request from a sender the generator never drew, 120 of 120 **[ran]** M2.
-  The embedding arm — the same encoder the radar uses — is pre-registered.
+  An embedding model does the same, and not for want of a better threshold: a request from an unseen
+  sender and *a member's own listing followed by another task* sit at the same distance from the
+  corpus **[ran]** M2 arm 2. What is left is a representation that separates the task from its content
+  — the radar's learned projection, reached from the router's side.
 - **Nothing released is on Qwen 3.x yet.** `email-full` trains on `Qwen3.5-4B` and its adapter is
   home; the gates have not run. A Colab session lives sixty minutes and one member takes ~45 to
   train on the hybrid stack, so the move runs as three sessions **[ran]** M1.
@@ -188,7 +191,7 @@ Each milestone has a gate and the arm that can kill it, written before it runs
 | # | milestone | state · the arm that kills it first |
 |---|---|---|
 | **1** | the pool on Qwen 3.x small (`Qwen3.5-4B`) | in progress, three sessions · the identity gate on a *real* adapter; then: loses, paired, to its Qwen 2.5 release |
-| **2** | the router as a small model of the corpora | arm 1 **[ran]**, does not pass; arm 2 (embeddings) pre-registered · loses requests from unseen senders, or serves a member's own listing followed by another task |
+| **2** | the router as a small model of the corpora | arms 1 and 2 **[ran]**, neither passes: both lose every request from an unseen sender · next, a projection that factors task from content, on new sets |
 | **7** | **the memory** — the core of 1.0 | arm 0 and 0b **[ran]**: the channel works · under an **oracle** walk — exactly the right notes open — the expert still scores ~1/20 on a sibling procedure it never trained on |
 | **5** | the first real region: nursing procedures | headroom **[ran]**: 29/48 closed-book → 45/48 with the note open, 0/12 → 12/12 on a site's value · next: the same content as *walks*, against the untrained base reading the same notes |
 | **3–4** | the large half of a pair, and acceptance between the halves | not started · large + LoRA does not beat small + LoRA; then: acceptance no higher than under the bare large model |

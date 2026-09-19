@@ -163,6 +163,19 @@ la línea de embeddings de la familia), con las cuatro filas de arriba como sus 
 matan. El diccionario se queda como default del proxy; `corpus_router.py` se queda como el
 brazo medido. El tercer rediseño no se gastó.
 
+**Brazo 2 [ran] 2026-09-19 — un modelo de embeddings; tampoco pasa**
+([`BRIEF`](../../results/M2b-embed-router-20260919/BRIEF.md)). `Qwen3-Embedding-0.6B`, coseno medio a los
+cinco pedidos más cercanos del corpus, todo texto embebido como *la tarea que se pide*: texto ajeno
+15/338 servidos localmente (diccionario 119, n-gramas 0), paráfrasis 99/240 recuperadas — y **120/120
+pedidos de remitentes no vistos perdidos**, como el brazo 1. Con los puntajes por caso guardados, **no
+es calibración**: los remitentes no vistos (mediana 0,89, máx 0,964) y *el listado propio de un
+miembro seguido de otra tarea* (0,87–0,91, máx 0,966) ocupan el mismo rango, así que ningún umbral
+separa lo que debería quedarse de lo que debería salir. En este espacio, cambiar quién escribe mueve
+un pedido tanto como cambiar qué se pide. **Lo que queda es una representación que factorice la tarea
+del contenido** — una proyección chica entrenada por contraste (misma tarea / otro contenido contra
+mismo contenido / otra tarea), que es la etapa R1 del radar ([`MEMORY.md`](MEMORY.md) §2.2) alcanzada
+desde el lado del router. Necesita conjuntos de evaluación nuevos; el diccionario sigue siendo el default.
+
 ### Hito 3 — la mitad grande de un par
 
 **Objetivo.** Un LoRA en `Qwen/Qwen3.8-27B`, QLoRA NF4, a partir del *mismo corpus* que

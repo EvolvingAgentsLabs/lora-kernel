@@ -65,3 +65,18 @@ def test_a_module_run_by_name_exists():
                      and not Path(m.replace(".", "/")).is_dir()
                      and not m.endswith("<runner>"))
     assert not missing, f"named and absent: {missing}"
+
+
+def test_only_without_stop_after_training_is_refused(monkeypatch):
+    """A session lives sixty minutes and a member takes ~45 to train, so the pool is trained a
+    member a session. A partly trained pool must never reach the gates: it would score a member
+    that is not there."""
+    import sys
+    monkeypatch.setattr(sys, "argv", ["p", "--only", "desk-commitment", "--out", "/tmp/_pb_refused.json"])
+    assert pool_base.main() == 2
+
+
+def test_only_refuses_a_name_that_is_no_member(monkeypatch):
+    import sys
+    monkeypatch.setattr(sys, "argv", ["p", "--only", "nobody", "--stop-after-training", "--out", "/tmp/_pb_unknown.json"])
+    assert pool_base.main() == 2

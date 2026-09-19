@@ -153,8 +153,11 @@ exactamente sobre ese canal.
 - **El router sigue siendo un diccionario de palabras clave.** Su primer reemplazo aprendido,
   un modelo de n-gramas de cada corpus, es más seguro sobre texto ajeno (0 de 128 servidos
   localmente contra el 59 del diccionario) y pierde **todos** los pedidos legítimos de un
-  remitente que el generador nunca sacó, 120 de 120 **[ran]** M2. El brazo de embeddings — el
-  mismo encoder que usa el radar — está pre-registrado.
+  remitente que el generador nunca sacó, 120 de 120 **[ran]** M2.
+  Un modelo de embeddings hace lo mismo, y no por falta de un umbral mejor: un pedido de un remitente
+  no visto y *el listado propio de un miembro seguido de otra tarea* quedan a la misma distancia del
+  corpus **[ran]** M2 brazo 2. Lo que queda es una representación que separe la tarea de su
+  contenido — la proyección aprendida del radar, alcanzada desde el lado del router.
 - **Nada de lo liberado está todavía sobre Qwen 3.x.** `email-full` entrena sobre
   `Qwen3.5-4B` y su adaptador ya está en casa; las compuertas todavía no corrieron. Una sesión
   de Colab dura sesenta minutos y un miembro tarda ~45 en entrenar sobre el stack híbrido, así
@@ -205,7 +208,7 @@ Cada hito tiene una compuerta y el brazo que puede matarlo, escritos antes de co
 | # | hito | estado · el brazo que lo mata primero |
 |---|---|---|
 | **1** | el pool sobre Qwen 3.x chico (`Qwen3.5-4B`) | en curso, tres sesiones · la compuerta de identidad sobre un adaptador *real*; después: pierde, pareado, contra su release de Qwen 2.5 |
-| **2** | el router como un modelo chico de los corpus | brazo 1 **[ran]**, no pasa; brazo 2 (embeddings) pre-registrado · pierde pedidos de remitentes no vistos, o sirve el propio listado de un miembro seguido de otra tarea |
+| **2** | el router como un modelo chico de los corpus | brazos 1 y 2 **[ran]**, ninguno pasa: los dos pierden todo pedido de un remitente no visto · sigue una proyección que factorice la tarea del contenido, sobre conjuntos nuevos |
 | **7** | **la memoria** — el núcleo de la 1.0 | brazo 0 y 0b **[ran]**: el canal funciona · bajo una trayectoria **oráculo** — exactamente las notas correctas abiertas — el experto igual saca ~1/20 en un procedimiento de una familia hermana que nunca entrenó |
 | **5** | la primera región real: procedimientos de enfermería | margen **[ran]**: 29/48 a libro cerrado → 45/48 con la nota abierta, 0/12 → 12/12 en un valor del sitio · sigue: el mismo contenido como *recorridos*, contra la base sin entrenar leyendo las mismas notas |
 | **3–4** | la mitad grande de un par, y la aceptación entre las mitades | no empezado · grande + LoRA no le gana a chico + LoRA; después: aceptación no mayor que bajo el modelo grande pelado |

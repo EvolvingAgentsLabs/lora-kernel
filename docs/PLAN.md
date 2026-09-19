@@ -145,6 +145,19 @@ embedding model** (the smallest of the family's embedding line), with the four r
 kill sets. The dictionary stays the proxy's default; `corpus_router.py` stays as the measured
 arm. The third redesign was not spent.
 
+**Arm 2 [ran] 2026-09-19 — an embedding model; does not pass either**
+([`BRIEF`](../results/M2b-embed-router-20260919/BRIEF.md)). `Qwen3-Embedding-0.6B`, mean cosine to the five
+nearest corpus requests, every text embedded as *the task being asked*: foreign text 15/338 served
+locally (dictionary 119, n-grams 0), paraphrases 99/240 recovered — and **120/120 requests from unseen
+senders lost**, like arm 1. With the per-case scores kept, it is **not calibration**: unseen senders
+(median 0.89, max 0.964) and *a member's own listing followed by another task* (0.87–0.91, max 0.966)
+occupy the same range, so no threshold separates what should stay from what should leave. In this
+space, changing who writes moves a request as far as changing what is asked. **What is left is a
+representation that factors task from content** — a small projection trained contrastively (same
+task / other content against same content / other task), which is the radar's stage R1
+([`MEMORY.md`](MEMORY.md) §2.2) reached from the router's side. It needs new evaluation sets; the
+dictionary stays the default.
+
 ### Milestone 3 — the large half of one pair
 
 **Objective.** One LoRA on `Qwen/Qwen3.8-27B`, QLoRA NF4, from the *same corpus* as one

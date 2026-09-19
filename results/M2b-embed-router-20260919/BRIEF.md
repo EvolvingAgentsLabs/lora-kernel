@@ -68,3 +68,36 @@ is set — or far below — a representation problem. *Keep the chain, not the l
 rule here. **Run 2 changes only what is written down** — per-case scores and the held-out
 distribution; rule, parameters, sets and verdict untouched, so it is not a redesign and the verdict
 above stands whatever it shows.
+
+## Run 2 **[ran]** — the same rule, with the scores kept: it is representation, not calibration
+
+Summary identical to run 1, row for row. What the per-case scores add (cosine to the member a request
+belongs to; for foreign text, to the nearest member):
+
+| set | median | max | should be |
+|---|--:|--:|---|
+| A in distribution | 0.984 | 0.998 | local |
+| **F** legitimate, unseen sender and subject | **0.890** | **0.964** | **local** |
+| **E, E₂** a member's own listing + another task | **0.87 – 0.91** | **0.966** | **out** |
+| C, C₂ keyed foreign text | 0.48 – 0.49 | 0.77 | out |
+| D foreign text | 0.25 | 0.54 | out |
+
+τ = 0.977 / 0.944; held-out in-corpus scores run 0.93–0.997.
+
+**F and E occupy the same range.** No threshold separates them: one that keeps 95 % of F (0.814 for
+desk, 0.738 for email) serves **90 of 118** and **129 of 220** foreign texts locally. So moving τ is
+not a fix, and the first reading — *the generated corpus is too uniform to calibrate against* — was
+only half of it. The other half: **in this space, changing who writes moves a request as far as
+changing what is asked.** Whole-request similarity, even under a "represent the task" instruction,
+does not factor task from content. Truly foreign text is far away and easy; the hard negatives are
+the ones that share the member's content.
+
+**What this asks for — named, not bought.** A representation that *keeps the task dimensions and
+discards the content dimensions*: a small learned projection trained contrastively with positives
+that share a task and differ in content, and negatives that share content and differ in task. That
+is the radar's stage R1 (`docs/MEMORY.md` §2.2) — the user's *compression by domain* — arriving from
+the router's side, and it is one encoder either way. Its evaluation sets have to be **new**: E, E₂
+and F have now been read at the level of individual scores, and are training data in all but name.
+
+**Decision.** The dictionary stays the proxy's default. Arm 2 is closed as *safe, and does not keep
+real-looking traffic*; redesign counter for arm 2: 0 — run 2 changed only what was written down.
