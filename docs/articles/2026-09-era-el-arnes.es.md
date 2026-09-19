@@ -1,22 +1,117 @@
-# Creíamos que un modelo chico no podía razonar. Era nuestro arnés.
+# Una organización que funciona con agentes, sobre una sola GPU: la arquitectura
 
 *Artículo para LinkedIn — septiembre de 2026. Versión en inglés:
 [`2026-09-it-was-the-harness.md`](2026-09-it-was-the-harness.md). Cada número de este texto sale del
 registro del repositorio ([`../es/RECORD.md`](../es/RECORD.md)) y nombra su corrida.*
 
+![Una arquitectura de solución en cinco capas: personas en cuatro roles; un runtime de agentes con un agente por rol; aplicaciones de agenda y administración; canales de app y mensajería; una sola base de datos con identidad, pagos y monitoreo. Debajo de los agentes, una placa gráfica dibujada como estantería: un lomo grueso, el modelo residente, y un lomo fino por rol, cada uno con dos cajones de notas. Un cartel rutea por rol; líneas punteadas salen hacia la frontera y hacia una persona.](../img/solution-architecture.png)
+
+*Los registros quedan en la base; los hábitos van en el adaptador; el conocimiento queda en notas que una persona puede leer.*
+
+---
+
+Cada vez más organizaciones chicas se dibujan igual: personas en unos pocos roles, **un agente por
+rol** sobre un runtime como OpenClaw, las aplicaciones que esos agentes operan, los canales que la
+gente ya usa, y abajo una sola base de datos. Funciona. Y tiene una propiedad de la que se habla
+poco: **cada mensaje de cada persona a cada agente sale entero hacia una API de frontera.** La
+factura y los datos que salen crecen con la cantidad de gente, no con la dificultad del trabajo.
+
+Este artículo es sobre la capa que falta en ese dibujo — la que va *debajo* de la columna de agentes
+— y sobre qué se puede construir con ella. Primero la arquitectura. Después, qué parte ya está medida
+y qué parte no, con números.
+
+## La arquitectura, capa por capa
+
+El ejemplo del dibujo es una clínica. Se lee de arriba hacia abajo.
+
+**1. Personas, en roles.** Pacientes, familias y visitantes, profesionales, personal. No son
+"usuarios": cada rol pregunta cosas distintas, por canales distintos, con permisos distintos.
+
+**2. Un runtime de agentes, con un agente por rol.** Recepción, procedimientos de enfermería,
+facturación y codificación, compras y stock, turnos y sueldos, IT. Esto ya existe y no lo
+reemplazamos: es OpenClaw, o el runtime que uses.
+
+**3. Las aplicaciones y los canales.** Agenda (turnos, admisiones, salas) y administración
+(comunicaciones, operaciones, compras, sueldos, reportes); una app y la mensajería, separada en
+pacientes e interno. Tampoco los tocamos.
+
+**4. Los sistemas de registro.** Una sola base de datos, con identidad y permisos, pagos y monitoreo
+al lado. **Se quedan donde están.** Ningún dato de un paciente entra a un modelo por entrenamiento.
+
+**5. Y la capa nueva: debajo de los agentes, una sola GPU como estantería.** Un modelo chico
+residente —4 mil millones de parámetros— y, apoyado en él, **un adaptador LoRA por rol**, de unos
+120 MB cada uno. Donde hoy cada agente es un *prompt* sobre el mismo modelo remoto, acá cada rol es
+un **experto**: entrenado en cómo *esta* organización hace *ese* trabajo. Y cada experto tiene un
+fichero de dos cajones:
+
+- **"cómo lo hacemos acá"** — el arnés operativo: procedimientos paso a paso, con enlaces *requiere*,
+  *siguiente*, *usa*;
+- **"lo que sabemos"** — la wiki: qué es cada cosa, qué fórmula aplica, qué dice el vademécum.
+
+Son notas en markdown de menos de media página. **El modelo no las memoriza: aprende a navegarlas**,
+con tres verbos — buscar, abrir, calcular. *El LoRA no es el libro de texto; es el especialista que
+sabe usar la biblioteca.*
+
+Tres piezas más cierran el dibujo:
+
+- **El router: el rol del que llega un mensaje es la ruta.** No hay que adivinar a qué experto va un
+  pedido — el runtime ya sabe de qué agente, grupo o canal viene.
+- **Dos salidas para lo que no está medido.** Lo que un experto no está *medido* para resolver se va
+  a un modelo de frontera — o **a una persona, donde la política dice que nada sale del edificio.**
+  Abstenerse es parte del diseño, no una falla.
+- **Un árbitro que no es IA.** Un programa chico pasa las páginas, **aplica las reglas de este lugar
+  antes de mostrar la nota** ("acá se limpia 8 segundos, no 5") y corta si el modelo se saltea un paso
+  obligatorio.
+
+La regla que ordena todo: **los registros quedan en la base, los hábitos van en el adaptador, el
+conocimiento queda en notas que una persona puede leer y corregir.** Si mañana cambia un protocolo,
+se edita un archivo en git. No se reentrena nada.
+
+## Qué se puede construir con esto
+
+La clínica es un ejemplo. La forma se repite donde haya **pocos procedimientos, repetidos a diario,
+con reglas locales que difieren del manual, sobre datos que no deberían salir:**
+
+| organización | roles que pasan a ser expertos | qué va en los dos cajones |
+|---|---|---|
+| **una clínica** | recepción, procedimientos de enfermería, facturación y codificación, compras, turnos | los protocolos del servicio por encima del manual · vademécum, aranceles, reglas de cada financiador |
+| **un estudio contable o jurídico** | ingreso de casos, revisión de documentos, vencimientos, facturación | las listas de control y plantillas del estudio · las reglas de su jurisdicción |
+| **un depósito o distribuidora** | recepción, despacho, compras, reclamos | los procedimientos de manejo del lugar · catálogo, transportistas, niveles de servicio |
+| **una escuela o centro de formación** | inscripciones, apoyo docente, comunicaciones, compras | cómo resuelve esta escuela cada caso · programa, calendario, reglamento |
+| **una administración de propiedades** | pedidos de inquilinos, mantenimiento, cobranzas, proveedores | el escalamiento por edificio · contratos, reglamentos, condiciones de proveedores |
+
+Ninguna de esas filas está medida: es hacia donde apunta el diseño. Lo que sí está medido viene
+abajo.
+
+**Si quisieras armarlo, el orden sería éste:**
+
+1. **Elegí un rol, no la organización.** El de trabajo más repetitivo y con respuesta verificable.
+2. **Mirá las formas, no los textos.** Tenemos una herramienta que lee del propio registro del
+   runtime qué *forma* tiene el tráfico —cuántos turnos, qué herramientas, qué largo— sin guardar
+   nunca un prompt.
+3. **Medí si la frontera realmente va adelante en el trabajo de ESE rol.** Por rol, no en promedio.
+   Nos pasó: en nuestra primera suite, pagar 100 veces más puntuó peor. Un rol sin brecha no tiene
+   nada que destilar, y conviene saberlo antes de entrenar nada.
+4. **Escribí la biblioteca antes que el adaptador.** Las notas son útiles desde el primer día, para
+   las personas también — y son lo que el equipo va a mantener.
+5. Recién ahí: un adaptador para ese rol, con su compuerta de liberación.
+
+---
+
+## Lo que ya tenemos
+
+Se llama **lora-kernel** y es código abierto: una API compatible con OpenAI —con OpenClaw encima—
+que resuelve localmente lo que cae en una región medida y manda el resto afuera. Esto es lo que hay
+detrás de cada pieza del dibujo, con su número.
+
+## El hallazgo que ordenó el proyecto: era nuestro arnés
+
 ![Dos paneles. Izquierda: un especialista mete una consulta por una ranura y la respuesta le vuelve por otra ventanilla, a su espalda, sin que la vea — 11 / 90. Derecha: la respuesta vuelve en la misma ficha, debajo de la consulta — 90 / 90.](../img/article-harness.png)
 
 *Mismo modelo. Mismos problemas. Otro camino.*
 
----
-
-Durante cuatro días, la frase más repetida de nuestro proyecto fue ésta: **"el experto que decide
-funciona; el experto que razona falla."**
-
-Era falsa. Y la forma en que descubrimos que era falsa le sirve a cualquiera que ponga un modelo
-afinado detrás de un runtime de agentes como OpenClaw.
-
-## El hallazgo
+Durante cuatro días, la frase más repetida de nuestro proyecto fue: **"el experto que decide
+funciona; el experto que razona falla."** Era falsa.
 
 Entrenamos un modelo chico —3 mil millones de parámetros, con un adaptador LoRA— para resolver
 problemas de mecánica de fluidos: cadenas de 6 a 9 pasos, cada paso con una herramienta (buscar una
@@ -76,35 +171,28 @@ de otra manera es otro modelo, y peor. Antes de concluir que "el modelo no sirve
 2. Sírvanlo una vez exactamente como se entrenó. Es una corrida de diez minutos.
 3. Saquen la aritmética de la cabeza del modelo. Con calculadora, 40 de 40; sin ella, 4 de 40.
 
-## El panorama: qué estamos construyendo
+## Las piezas del dibujo, una por una
 
-Se llama **lora-kernel**, es código abierto, y es el runtime de un servicio: una API compatible con
-OpenAI —e instancias de OpenClaw por tarea encima— que resuelve localmente lo que cae en una región
-medida y manda el resto a un modelo de frontera.
+- **Varios expertos sobre un solo modelo residente, en una GPU.** Medido: un servidor, una base,
+  varios adaptadores, cada pedido atendido por el suyo; que convivan no le cuesta nada al que sirve.
+- **Dos expertos liberados**, ahora sobre la familia Qwen 3.x (4B): triage de correo **471/475** y
+  compromisos de escritorio **240/240** — cada uno empata, caso por caso, con su versión anterior
+  sobre otra base. Nada se libera sin esa compuerta.
+- **La API rutea por pedido; el cliente no nombra ningún modelo.** En un replay de 240 casos, 0,546 →
+  0,775, con 0 mal ruteados.
+- **OpenClaw en vivo contra el sistema:** 40 de 40 turnos resueltos localmente, 0 llamadas inventadas.
+- **La biblioteca existe.** La primera es el segundo rol de la clínica: procedimientos de enfermería
+  de terapia IV, de un manual abierto (CC BY 4.0) — 94 notas enlazadas que pasan un *lint*, con una
+  capa de reglas locales de ejemplo.
+- **El árbitro existe.** Los 72 recorridos de referencia pasan por él sin un solo rechazo; los tres
+  recorridos tramposos —saltearse un paso requerido, abrir una nota que nadie le mostró, ir fuera de
+  orden— se cortan.
+- **Y una señal alentadora sobre leer notas:** un 4B sin entrenar pasa de 29/48 a 45/48 con la nota
+  correcta delante, y de 0/12 a 12/12 cuando la nota trae la regla local de una unidad.
 
-Tres ideas lo sostienen:
+## Cuando el rol es un grupo: un equipo en modo multijugador
 
-**Un experto es su corpus.** Cada región es un LoRA chico sobre un modelo residente, y se sirve
-exactamente bajo lo que su corpus le enseñó. Lo de arriba es por qué.
-
-**Un router que sabe abstenerse.** Decide a qué experto se parece un pedido, y cuando no se parece a
-ninguno, lo manda a la frontera. Abstenerse es parte del diseño, no una falla.
-
-**El LoRA no es el libro de texto; es el especialista que sabe usar la biblioteca.** Ésta es la pieza
-central de la versión 1.0. Cada experto tiene una biblioteca de notas en markdown, en dos estantes:
-un **arnés operativo** (*¿cómo se hace?* — pasos con enlaces: *requiere*, *siguiente*, *usa*) y una
-**wiki enciclopédica** (*¿qué es, qué fórmula aplica?*). El modelo no memoriza las notas: aprende a
-navegarlas con tres verbos —buscar, abrir, calcular—. Un programa chico, sin IA, hace de árbitro:
-pasa las páginas, aplica las reglas locales de cada sitio antes de mostrar la nota, y corta si el
-modelo se saltea un paso obligatorio.
-
-La ganancia: si mañana cambia un protocolo, **se edita un archivo markdown en git. No se reentrena
-nada.**
-
-## El cuadro completo: cuando es todo un equipo
-
-Hasta acá hablé de un experto y un usuario. El caso donde esto rinde de verdad es otro, y cada vez
-lo veo más: **un equipo entero corriendo OpenClaw en modo multijugador.** Cada persona le escribe a
+La misma arquitectura, vista desde la mensajería. El caso que cada vez veo más: **un equipo entero corriendo OpenClaw en modo multijugador.** Cada persona le escribe a
 los agentes desde su mensajería. Hay varios agentes. Hay decenas de sesiones abiertas a la vez. Y las
 conversaciones viven en **grupos estables por área**: desarrollo, marketing, interno, operaciones,
 más los mensajes directos de cada uno y algún bot que cada tanto muestra "la corrida falló".
@@ -146,62 +234,47 @@ Lo que eso ataca es concreto: **hoy, cada mensaje de cada persona a cada agente 
 una API de frontera.** La factura y los datos que salen de la empresa crecen con la cantidad de
 gente, no con la dificultad del trabajo.
 
-**Si tu equipo trabaja así, el orden sería éste:**
-
-1. **Elegí un grupo, no la empresa.** El de trabajo más repetitivo y con respuesta verificable.
-2. **Mirá las formas, no los textos.** Tenemos una herramienta que lee del propio registro del
-   runtime qué *forma* tiene el tráfico —cuántos turnos, qué herramientas, qué largo— sin guardar
-   nunca un prompt. A escala de equipo eso importa más, no menos.
-3. **Medí si la frontera realmente va adelante en el trabajo de ESE grupo.** Por grupo, no en
-   promedio: un promedio de empresa esconde al grupo donde hay mucho que ganar y al grupo donde no
-   hay nada. Nos pasó: en nuestra primera suite, pagar 100 veces más puntuó peor. Un grupo sin
-   brecha no tiene nada que destilar, y conviene saberlo antes de entrenar nada.
-4. Recién ahí: un adaptador y una biblioteca para ese grupo, con su compuerta.
-
-**Y lo que todavía no tenemos a escala de equipo**, para que nadie lo descubra tarde: aislamiento
-entre usuarios (hoy es una clave y un solo destino), streaming (lo bufferizamos a propósito: una
-llamada a herramienta sólo es una llamada cuando se cierra), el ciclo de vida de los adaptadores por
-grupo, y la medición que más nos interesa —qué cuesta servir un lote mixto con decenas de sesiones
-alternando entre grupos—, que nunca pudimos hacer bien porque no tuvimos tráfico real. Un equipo así
-es exactamente donde esa medición deja de ser un argumento y pasa a ser un número.
-
 ## Lo que todavía no es
 
 Prefiero decirlo yo:
 
 - **Todo lo medido es sobre datos que generamos nosotros.** Ningún tráfico real pasó por el sistema.
 - **No es instalable todavía.** Hoy corre con una GPU alquilada, un túnel y nuestro proxy.
-- **La biblioteca está especificada, no construida.** Su afirmación central —que extiende a un
-  experto a un procedimiento que nunca entrenó— está sin probar.
-- **El router aprendido falló dos veces.** Las dos versiones eran seguras frente a texto ajeno y las
-  dos mandaban afuera el 100 % de los pedidos legítimos de remitentes nuevos. Sigue siendo un
-  diccionario de palabras clave.
+- **La afirmación central de la biblioteca está sin probar:** que extiende a un experto a un
+  procedimiento que nunca entrenó. Es la próxima medición, y puede salir mal.
+- **El buscador de notas todavía no alcanza.** Un modelo de embeddings estándar encuentra la nota
+  correcta entre las 3 primeras en el 64 % de consultas parafraseadas — contra 6 % de una búsqueda por
+  palabras, pero debajo del 80 % que nos habíamos fijado antes de medir. No movimos la vara.
+- **Mudar de base no es gratis.** El experto de fluidos, reentrenado sobre el modelo nuevo, sacó
+  80/90 contra su propio 90/90: en los diez casos la cuenta estaba bien y la *última línea* salió en
+  un formato que su corpus nunca le enseñó. No quedó liberado. Otra vez el arnés.
+- **El router aprendido falló dos veces:** seguro frente a texto ajeno, pero mandaba afuera el 100 %
+  de los pedidos legítimos de remitentes nuevos. Por eso en esta arquitectura la ruta es el rol.
+- **A escala de equipo falta:** aislamiento entre usuarios, streaming, el ciclo de vida de los
+  adaptadores, y el costo de servir decenas de sesiones alternando entre roles.
 - **Nunca medimos el ahorro en plata.**
-
-Una señal alentadora, en el primer texto real que tocamos —procedimientos de enfermería de un manual
-abierto—: un modelo de 4B sin entrenar pasa de 29/48 a 45/48 cuando tiene la nota correcta delante,
-y de 0/12 a 12/12 cuando la nota trae la regla local de una unidad ("acá se limpia 8 segundos, no
-5"). Lee bien. Lo que le falta —y lo que hay que entrenar— es *actuar* siguiendo un procedimiento.
 
 ## Hoja de ruta
 
-1. **El pool sobre una base más nueva** (Qwen 3.5, 4B). En curso.
-2. **La biblioteca, pieza por pieza**, con una prueba que puede matarla temprano: que el experto
-   resuelva un procedimiento hermano que nunca vio, sólo porque sus notas están en la biblioteca.
-3. **La primera región real:** procedimientos de enfermería, como material de formación —no consejo
-   a pacientes—, con las adaptaciones locales de cada sitio como notas editables. Y, si aparece, **el
-   grupo de un equipo que ya trabaje en modo multijugador**: ahí la región viene dada.
-4. **Un router que separe la tarea del contenido**, que es lo que les faltó a los dos que fallaron.
+1. ~~El pool sobre una base más nueva~~ — hecho.
+2. **La prueba que puede matar la biblioteca:** que el experto resuelva un procedimiento hermano que
+   nunca vio, sólo porque sus notas están en la biblioteca — contra el mismo modelo sin entrenar
+   leyendo las mismas notas.
+3. **Un buscador que separe la tarea del contenido**, para las notas y para el router.
+4. **La primera región real:** procedimientos de enfermería como material de formación —no consejo a
+   pacientes—, con las adaptaciones de cada sitio como notas editables. Y, si aparece, **un rol de una
+   organización que ya trabaje así**: ahí la región viene dada.
 5. **La política del servicio, con la factura medida.**
 
 Cada paso tiene escrita, antes de correr, la condición que lo daría por falso. Así fue como
 encontramos lo del arnés.
 
-## Si usás OpenClaw para trabajo repetitivo
+## Si tu organización ya se dibuja así
 
-Buscamos dos o tres equipos —idealmente uno que ya trabaje en modo multijugador, con grupos por área— con una tarea que cumpla tres condiciones: se repite mucho, tiene una
-respuesta verificable, y hoy se la mandan entera a un modelo de frontera. No tenemos un producto
-para venderles. Tenemos un método para medir si una parte de ese trabajo puede resolverse localmente
-— y la costumbre de publicar el número salga como salga.
+Buscamos dos o tres equipos —idealmente uno que ya tenga un agente por rol— con una tarea que cumpla
+tres condiciones: se repite mucho, tiene una respuesta verificable, y hoy se la mandan entera a un
+modelo de frontera. No tenemos un producto para venderles. Tenemos una arquitectura, un método para
+medir si una parte de ese trabajo puede resolverse en su propia máquina — y la costumbre de publicar
+el número salga como salga.
 
 Repositorio: github.com/EvolvingAgentsLabs/lora-kernel
