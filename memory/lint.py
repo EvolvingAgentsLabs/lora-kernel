@@ -20,7 +20,7 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-from memory.notes import BODY_TOKENS, SHELVES, Library, NoteError, count_tokens
+from memory.notes import BODY_TOKENS, SHELVES, SLOT, Library, NoteError, count_tokens
 
 Finding = tuple[str, str, str]
 
@@ -135,6 +135,24 @@ def lint(root: str | Path) -> list[Finding]:
             for slot in slots or {}:
                 if slot not in notes[target].slots:
                     out.append(("site", s.name, f"`{target}` has no slot `{slot}`"))
+        # a site ADDS one sentence, with every slot it names valued, none of them the note's own,
+        # and the note it lands in still under the limit
+        for target, add in s.adds.items():
+            if target not in notes:
+                out.append(("site", s.name, f"adds to `{target}`, which does not exist"))
+                continue
+            text, values = s.add_for(target)
+            named = set(SLOT.findall(text))
+            if not text:
+                out.append(("site", s.name, f"adds nothing to `{target}`: no `text`"))
+            for slot in sorted(named - set(values)):
+                out.append(("site", s.name, f"`{target}`: the added sentence names `{slot}` and gives it no value"))
+            for slot in sorted(set(values) - named):
+                out.append(("site", s.name, f"`{target}`: `{slot}` is valued and the added sentence never names it"))
+            for slot in sorted(named & set(notes[target].slots)):
+                out.append(("site", s.name, f"`{target}`: the added sentence reuses the note's own slot `{slot}`"))
+            if count_tokens(f"{notes[target].body} {text}") > BODY_TOKENS:
+                out.append(("site", s.name, f"`{target}` with its added sentence is over {BODY_TOKENS} tokens"))
     return sorted(set(out))
 
 

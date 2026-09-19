@@ -64,6 +64,19 @@ SETS = {"heldout": gw.FILES["eval_heldout"], "control": gw.FILES["eval_control"]
 MAX_TRAINED_DEPTH = 9
 MAX_MODEL_LEN = 8192
 NO_HEADROOM = 51 / 56       # at ≥ 51 of 56 the control leaves ≤ 5 discordant pairs: 5:0 is p = 0.0625, unbeatable
+UNBEATABLE_MARGIN = 5       # the same rule for any n: credit ≥ n − 5 leaves at most 5 discordant pairs (W5c)
+
+
+def configure(data: str | None = None, tag: str | None = None) -> None:
+    """Point the runner at another corpus and other adapters — the W5c arm, and whatever comes after.
+    `data` is a directory with the four files `generate_walks` names; `tag` goes into the adapter
+    directories so two arms' weights never share a path. No argument, no change: W5 as it ran."""
+    global TRAINED, SETS
+    d = Path(data) if data else gw.OUT
+    t = f"-{tag}" if tag else ""
+    TRAINED = {"withlib": {"corpus": str(d / "train.jsonl"), "adapter": f"adapters/nursing-walks{t}-q35"},
+               "nolib": {"corpus": str(d / "train_nolib.jsonl"), "adapter": f"adapters/nursing-walks-nolib{t}-q35"}}
+    SETS = {"heldout": d / "eval_heldout.jsonl", "control": d / "eval_control.jsonl"}
 SYSTEM_READS = ("You are a specialist. The notes you need are open below, in the order a careful walk "
                 "through the library would open them. Work only from them. Answer in one line, in the form "
                 "the question asks for. If the notes hold nothing for the situation, say so: "
@@ -179,6 +192,14 @@ def floor(lib: Library, sets: dict) -> dict:
 
 
 # ------------------------------------------------------------------ slices, pairs, verdict
+QUANTITY = ("quantity", "conditional")
+
+
+def asked(r: dict) -> str:
+    """plain | conditional. A W5 (v1) row says it by the quantity it names; a W5c row says it outright."""
+    return r["meta"].get("asked") or ("conditional" if r["meta"].get("quantity") == "anticoagulant_minutes" else "plain")
+
+
 def slices(sets: dict) -> dict[str, list[str]]:
     h, c = sets["heldout"], sets["control"]
     shared = lambda r: bool(r["meta"].get("final_is_a_shared_line"))
@@ -188,8 +209,11 @@ def slices(sets: dict) -> dict[str, list[str]]:
         "heldout_deeper_than_trained": ids(r for r in h if r["depth"] > MAX_TRAINED_DEPTH),
         "heldout_shared_line": ids(r for r in h if shared(r) and r["depth"] <= MAX_TRAINED_DEPTH),
         "heldout_carry": ids(r for r in h if r["family"] == "carry" and r["depth"] <= MAX_TRAINED_DEPTH and not shared(r)),
-        "heldout_quantity_site_or_case": ids(r for r in h if r["family"] == "quantity" and r["meta"].get("layer") in ("site", "case")),
-        "heldout_quantity_textbook": ids(r for r in h if r["family"] == "quantity" and r["meta"].get("layer") == "textbook"),
+        "heldout_quantity_site_or_case": ids(r for r in h if r["family"] in QUANTITY and r["meta"].get("layer") in ("site", "case")),
+        "heldout_quantity_textbook": ids(r for r in h if r["family"] in QUANTITY and r["meta"].get("layer") == "textbook"),
+        # which of a two-valued note's values was asked — W5 failed 0/11 on the conditional one
+        "heldout_quantity_conditional": ids(r for r in h if r["family"] in QUANTITY and asked(r) == "conditional"),
+        "heldout_quantity_plain": ids(r for r in h if r["family"] in QUANTITY and asked(r) == "plain"),
         "control": ids(c),
         "control_without_rate": ids(r for r in c if r["family"] != "rate"),
         "control_rate": ids(r for r in c if r["family"] == "rate"),
@@ -231,6 +255,22 @@ def analyse(rec: dict, sets: dict) -> dict:
     return out
 
 
+V1_CONDITIONAL = (0, 11)    # W5 [ran]: the first corpus's adapter, asked the conditional value of a held-out note
+
+
+def conditional_reading(credit: int, n: int, ref: tuple[int, int] = V1_CONDITIONAL) -> dict:
+    """W5c's falsifier, decided before the run. Is `credit`/`n` on the conditional slice distinguishable
+    from the first corpus's 0 of 11? One-sided Fisher exact test: with K = credit + ref successes in all,
+    p = Σ_{k ≥ credit} C(n,k)·C(n₀,K−k) / C(n+n₀,K). At n = 15 against 0/11: 4 → p = 0.091 (not
+    distinguishable: FALSIFIED), 5 → p = 0.046. RECOVERS is the absolute standard fixed beside it: ≥ 80 %."""
+    from math import comb
+    x0, n0 = ref
+    K = credit + x0
+    p = sum(comb(n, k) * comb(n0, K - k) for k in range(credit, min(n, K) + 1) if 0 <= K - k <= n0) / comb(n + n0, K)
+    state = ("FALSIFIED" if p >= 0.05 else "RECOVERS" if n and credit / n >= 0.8 else "PARTIAL")
+    return {"credit": credit, "n": n, "against": f"{x0}/{n0}", "p_fisher_one_sided": round(p, 5), "state": state}
+
+
 def verdict(rec: dict) -> dict:
     a = rec.get("analysis", {})
     head = {p["pair"]: p["state"] for p in a.get("pairs", {}).get("headline", [])}
@@ -240,7 +280,11 @@ def verdict(rec: dict) -> dict:
     base = a.get("summary", {}).get("base-reads", {}).get("headline")
     out = {"G1": applied, "headline_pairs": head, "headline_errors_or_missing": errors,
            "base_reads_headline": base and f"{base['credit']}/{base['scored']}"}
-    out["no_headroom"] = bool(base and base["scored"] and base["credit"] / base["scored"] >= NO_HEADROOM)
+    # credit ≥ n − 5: at n = 56 this is W5's 51/56, byte for byte the same decision
+    out["no_headroom"] = bool(base and base["scored"] and base["credit"] >= base["scored"] - UNBEATABLE_MARGIN)
+    cond = a.get("summary", {}).get("withlib", {}).get("heldout_quantity_conditional")
+    if cond and cond["scored"]:
+        out["conditional_value"] = conditional_reading(cond["credit"], cond["scored"])
     if "withlib vs nolib" not in head:
         out["passed"] = False
         if not base:
@@ -278,6 +322,8 @@ def main() -> int:
     ap.add_argument("--base", default=BASE)
     ap.add_argument("--adapter", action="append", default=[], help="pool adapters (ignored)")
     ap.add_argument("--train", choices=sorted(TRAINED), help="train this adapter in this session")
+    ap.add_argument("--data", default=None, help="corpus directory (default: W5's, training/nursing/data_walks)")
+    ap.add_argument("--tag", default=None, help="suffix of the adapter directories, e.g. v2")
     ap.add_argument("--stop-after-training", dest="train_only", action="store_true")
     ap.add_argument("--arms", default=",".join(ARMS))
     ap.add_argument("--floor", action="store_true", help="zero GPU: the trivial policy through the runtime")
@@ -286,6 +332,7 @@ def main() -> int:
     ap.add_argument("--concurrency", type=int, default=8)
     ap.add_argument("--out", default="walks_arm.json")
     a = ap.parse_args()
+    configure(a.data, a.tag)
     out = Path(a.out); out.parent.mkdir(parents=True, exist_ok=True)
     rec = json.loads(out.read_text()) if out.exists() else {}
     rec.pop("trained_only", None)

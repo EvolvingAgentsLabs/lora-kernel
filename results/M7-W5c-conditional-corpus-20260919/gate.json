@@ -1,0 +1,241 @@
+{
+  "library": "knowledge/nursing-iv",
+  "held_out": "nursing-iv/harness/discontinue-iv",
+  "held_out_only_notes": 17,
+  "rows": {
+    "train": 600,
+    "train_nolib": 600,
+    "eval_heldout": 88,
+    "eval_control": 80
+  },
+  "G1_value_in_statement": {},
+  "G2_evaluated_walk_in_corpus": {},
+  "G3_held_out_opened": {},
+  "G4_not_accepted_by_the_referee": {},
+  "no_library_arm_is_the_same_cases": true,
+  "suite_gates": [
+    {
+      "gate": "region_not_in_the_prompt",
+      "passed": true,
+      "waived_for": null,
+      "detail": "a keyword rule recovers the region 0.337 of the time against 0.200 chance over 5 regions (limit 0.600)"
+    },
+    {
+      "gate": "has_a_difficulty_axis",
+      "passed": true,
+      "waived_for": null,
+      "detail": "11 distinct depths {0: 56, 1: 255, 2: 139, 3: 42, 4: 21, 5: 14, 6: 19, 7: 4, 8: 26, 9: 23, 10: 1}"
+    },
+    {
+      "gate": "depth_is_not_the_region",
+      "passed": false,
+      "waived_for": "`none` is the family whose right walk opens nothing: depth 0 is its definition, not a shortcut to it — the other three span 1 to 10 opens",
+      "detail": "1 of 5 regions sit at one depth: ['none']"
+    },
+    {
+      "gate": "asking_is_a_decision",
+      "passed": true,
+      "waived_for": null,
+      "detail": "3 tools in the suite; 0.522 of cases need two or more"
+    },
+    {
+      "gate": "base_not_at_the_ceiling",
+      "passed": null,
+      "waived_for": null,
+      "detail": "P42: the base scored 0.815 where the adapter scored 0.825. Run the base first; a suite it already passes cannot show a treatment anything."
+    },
+    {
+      "gate": "base_not_on_the_floor",
+      "passed": null,
+      "waived_for": null,
+      "detail": "P45's mirror: if every case is above the treatment's floor every arm fails and the failure reads as 'the approach does not work'."
+    },
+    {
+      "gate": "no_region_is_saturated",
+      "passed": null,
+      "waived_for": null,
+      "detail": "P49: `team` scored 1.000 against the base's 0.967 while the other two had room. A saturated region dilutes every average it enters."
+    },
+    {
+      "gate": "the_input_can_support_ranking",
+      "passed": null,
+      "waived_for": null,
+      "detail": "P46: group the cases by what a predictor can see; if one group holds them all, the best possible confidence is a constant and orders nothing."
+    }
+  ],
+  "variants": {
+    "conditional/step": 97,
+    "none/1-search": 27,
+    "carry/middle-find": 62,
+    "none/2-search": 29,
+    "carry/start": 46,
+    "quantity/step": 20,
+    "rate/pump-wiki": 31,
+    "conditional/wiki": 39,
+    "carry/middle": 71,
+    "quantity/wiki-parent": 9,
+    "rate/pump-wiki-parent": 11,
+    "rate/gravity-step": 18,
+    "carry/middle-page-fallback": 43,
+    "rate/pump-step": 21,
+    "rate/gravity-wiki": 30,
+    "rate/gravity-wiki-parent": 14,
+    "quantity/wiki": 15,
+    "conditional/wiki-parent": 17
+  },
+  "eval_variants": {
+    "eval_heldout: carry/start": 11,
+    "eval_heldout: carry/middle": 24,
+    "eval_heldout: carry/middle-find": 22,
+    "eval_heldout: conditional/step": 16,
+    "eval_heldout: conditional/wiki": 7,
+    "eval_heldout: conditional/wiki-parent": 8,
+    "eval_control: carry/middle": 18,
+    "eval_control: carry/middle-find": 6,
+    "eval_control: conditional/step": 24,
+    "eval_control: conditional/wiki": 6,
+    "eval_control: conditional/wiki-parent": 6,
+    "eval_control: rate/gravity-step": 3,
+    "eval_control: rate/gravity-wiki": 2,
+    "eval_control: rate/gravity-wiki-parent": 2,
+    "eval_control: rate/pump-step": 3,
+    "eval_control: rate/pump-wiki": 1,
+    "eval_control: rate/pump-wiki-parent": 1,
+    "eval_control: none/2-search": 4,
+    "eval_control: none/1-search": 4
+  },
+  "families": {
+    "conditional": 153,
+    "none": 56,
+    "carry": 222,
+    "quantity": 44,
+    "rate": 125
+  },
+  "depth_mix_opens": {
+    "0": 56,
+    "1": 255,
+    "2": 139,
+    "3": 42,
+    "4": 21,
+    "5": 14,
+    "6": 19,
+    "7": 4,
+    "8": 26,
+    "9": 23,
+    "10": 1
+  },
+  "dead_ends": 30,
+  "rows_with_more_than_one_search": 68,
+  "not_in_my_library": 56,
+  "held_out_note_shown_in_a_result": 67,
+  "layers": {
+    "site": 108,
+    "case": 71,
+    "textbook": 18
+  },
+  "dropped": {
+    "unreachable": 0,
+    "duplicate": 63,
+    "walk_cap": 48,
+    "too_long": 0,
+    "value_clash": 1,
+    "drawn": 732,
+    "eval_heldout_was_a_v1_case": 0,
+    "eval_control_was_a_v1_case": 4
+  },
+  "unreachable_share": 0.0,
+  "tokens_proxy": {
+    "min": 251,
+    "median": 453,
+    "max": 1130,
+    "limit": 1150,
+    "max_seq": 1536,
+    "over": []
+  },
+  "redesign_count": 2,
+  "grader": "training.nursing.grade_walks — final line only; value = the number attached to the unit; body = attribution among step notes + the numbers the note supplies; walk read off the referee's log",
+  "passed": true,
+  "G5_is_a_v1_evaluation_case": {},
+  "G6_copying_the_first_number_is_not_worth_half": {},
+  "G7_the_shape_is_met_in_several_notes_of_both_procedures": {
+    "ok": true,
+    "notes": [
+      "harness/primary-infusion/20-cleanse-cap",
+      "harness/primary-infusion/21-assess-patency",
+      "harness/primary-infusion/23-cleanse-cap-again",
+      "harness/secondary-infusion/16-back-prime",
+      "harness/secondary-infusion/20-assess-site-after",
+      "wiki/iv-therapy/asepsis/scrub-the-hub",
+      "wiki/iv-therapy/rates/drop-factor",
+      "wiki/iv-therapy/site-assessment/patency-flush"
+    ]
+  },
+  "conditional_balance": {
+    "train": {
+      "n": 153,
+      "asked_conditional": 75,
+      "first_number_is_the_answer": 78,
+      "share_first_number": 0.51,
+      "implicit": 76,
+      "notes": [
+        "harness/primary-infusion/20-cleanse-cap",
+        "harness/primary-infusion/21-assess-patency",
+        "harness/primary-infusion/23-cleanse-cap-again",
+        "harness/secondary-infusion/16-back-prime",
+        "harness/secondary-infusion/20-assess-site-after",
+        "wiki/iv-therapy/asepsis/scrub-the-hub",
+        "wiki/iv-therapy/rates/drop-factor",
+        "wiki/iv-therapy/site-assessment/patency-flush"
+      ],
+      "by_quantity": {
+        "cap_seconds": 31,
+        "drop_factor": 30,
+        "flush_ml": 31,
+        "recheck_minutes": 30,
+        "yport_seconds": 31
+      }
+    },
+    "eval_heldout": {
+      "n": 31,
+      "asked_conditional": 15,
+      "first_number_is_the_answer": 16,
+      "share_first_number": 0.516,
+      "implicit": 16,
+      "notes": [
+        "harness/discontinue-iv/07-hold-pressure",
+        "wiki/iv-therapy/removal/pressure-after-removal"
+      ],
+      "by_quantity": {
+        "hold_pressure": 31
+      }
+    },
+    "eval_control": {
+      "n": 36,
+      "asked_conditional": 18,
+      "first_number_is_the_answer": 18,
+      "share_first_number": 0.5,
+      "implicit": 18,
+      "notes": [
+        "harness/primary-infusion/20-cleanse-cap",
+        "harness/primary-infusion/21-assess-patency",
+        "harness/primary-infusion/23-cleanse-cap-again",
+        "harness/secondary-infusion/16-back-prime",
+        "harness/secondary-infusion/20-assess-site-after",
+        "wiki/iv-therapy/asepsis/scrub-the-hub",
+        "wiki/iv-therapy/rates/drop-factor",
+        "wiki/iv-therapy/site-assessment/patency-flush"
+      ],
+      "by_quantity": {
+        "cap_seconds": 8,
+        "drop_factor": 4,
+        "flush_ml": 8,
+        "recheck_minutes": 8,
+        "yport_seconds": 8
+      }
+    }
+  },
+  "conditional_rows_on_the_real_note": 30,
+  "conditional_rows_on_invented_site_rules": 123,
+  "rows_in_a_unit_with_no_added_rule": 192,
+  "redesign_note": "carried from W4/W5 unchanged: v2 is a new ARM of the experiment (a corpus and a held-out set), not a redesign of the grader, the verdict or the instrument"
+}

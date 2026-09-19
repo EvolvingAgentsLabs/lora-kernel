@@ -1,0 +1,35 @@
+{
+  "tokenizer": "Qwen/Qwen3.5-4B",
+  "max_seq": 1536,
+  "per_message_overhead": 8,
+  "sets": {
+    "train": {
+      "min": 276,
+      "median": 510,
+      "p95": 1025,
+      "max": 1373,
+      "over_max_seq": 0
+    },
+    "train_nolib": {
+      "min": 93,
+      "median": 142,
+      "p95": 169,
+      "max": 219,
+      "over_max_seq": 0
+    },
+    "eval_heldout": {
+      "min": 394,
+      "median": 491,
+      "p95": 878,
+      "max": 936,
+      "over_max_seq": 0
+    },
+    "eval_control": {
+      "min": 287,
+      "median": 510,
+      "p95": 973,
+      "max": 1263,
+      "over_max_seq": 0
+    }
+  }
+}

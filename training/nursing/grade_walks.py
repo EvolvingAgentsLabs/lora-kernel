@@ -113,7 +113,8 @@ def _content_words(text: str) -> set[str]:
 def step_bodies(lib: Library, row: dict) -> dict[str, str]:
     """Every step note of the library as this case's conversation would show it."""
     p = row.get("replay") or {}
-    site = Site(name="case-site", overrides=p["site"]) if p.get("site") else None
+    site = (Site(name="case-site", overrides=p.get("site") or {}, adds=p.get("adds") or {})
+            if (p.get("site") or p.get("adds")) else None)
     case = p.get("case") or {}
     return {n.id: clean(render(n, site, case.get(n.id))) for n in lib.notes.values() if n.kind == "step"}
 

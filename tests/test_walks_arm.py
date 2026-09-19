@@ -106,8 +106,11 @@ def test_the_floor_the_brief_quotes_is_the_floor_the_code_computes_today():
     stored = json.loads(pathlib.Path("results/M7-W5-kill-arm-20260919/floor.json").read_text())["floor"]
     f = wa.floor(LIB, SETS)
     both = {**f["heldout"]["records"], **f["control"]["records"]}
+    new_since = {"heldout_quantity_conditional", "heldout_quantity_plain"}     # slices W5c added; W5's file predates them
+    assert set(wa.slices(SETS)) - set(stored) == new_since
     for k, ids in wa.slices(SETS).items():
-        assert wa.summarise(both, ids)["credit"] == stored[k]["credit"], k
+        if k not in new_since:
+            assert wa.summarise(both, ids)["credit"] == stored[k]["credit"], k
     brief = pathlib.Path("results/M7-W5-kill-arm-20260919/BRIEF.md").read_text()
     assert f"headline {stored['headline']['credit']} / 56" in brief and f"control {stored['control']['credit']} / 60" in brief
 
