@@ -419,6 +419,17 @@ search — it is lexical here and the oracle queries a note by its own `when`, s
 no evidence about ranking. §3's 24-open budget was below the library's 32-step procedure: now 48. Next is
 **W3** — the radar R0 beside this lexical baseline.
 
+**W3 — built; headroom [ran] 2026-09-19, zero GPU; the R0 session is pending.** `memory/index.py`: per note
+$e_{\text{when}}, e_{\text{what}}$, $s(n\mid q)=\langle e(q),e_{\text{when}}(n)\rangle+\beta\langle e(q),e_{\text{what}}(n)\rangle$,
+top 3, a `Searcher` the runtime takes unchanged, the encoder injected (no model here, ever). The queries
+that count were written **after** the design was frozen: **P**, one bedside paraphrase per note (94
+targets, mean word overlap with the target 0.039, 56 queries at zero) — the gate; **E**, the 72 question
+stems → the first note of the oracle walk (4 targets) — beside it. The word-matcher's recall@3 is
+**0.064 on P** and 0.125 on E: headroom, and on P a floor *by construction*, so "beats lexical" alone
+would be a formality and the verdict also requires recall@3 ≥ 0.80. Falsified if R0 only ties the
+word-matcher — then the radar has no job at this library size and W5 runs on lexical search
+([`BRIEF`](../results/M7-W3-radar-r0-20260919/BRIEF.md)).
+
 ## 2. The family, and the alternative
 
 **Adopted: Qwen 3.x.** `Qwen3.5-2B/4B` and `Qwen3.8-27B` share one id space — 248,044 ids,
@@ -454,6 +465,8 @@ that decide the shape of a step:
 
 - **2026-09-19** — memory **W2 [ran]: PASSED.** The runtime, layers and guard on the unchanged corpus-mode loop;
   72/72 oracle walks, 0 refused, three violating walks cut in `strict`. No model yet.
+- **2026-09-19** — memory **W3 built, headroom [ran]:** the index, a query set written after the freeze (P 94, E 72),
+  lexical recall@3 0.064 / 0.125. The R0 session on Colab is pending; the verdict and its 0.80 standard are in the brief.
 - **2026-09-19** — memory **W1 [ran]: PASSED.** The first library (`knowledge/nursing-iv/`, 94 notes from
   three Open RN checklists, CC BY 4.0), `memory/notes.py` and the lint; 0 findings, 72/72 oracle walks.
 - **2026-09-19** — milestone 1 **[ran]: MOVED.** Both released members retrained on `Qwen3.5-4B` tie

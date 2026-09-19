@@ -73,7 +73,10 @@ class HashingEncoder:
 class TransformerEncoder:
     """Last-token pooling over an instruction-following embedding model, on the GPU it is given."""
 
-    def __init__(self, model: str, batch: int = 32, max_len: int = 512):
+    def __init__(self, model: str, batch: int = 32, max_len: int = 512, instruction: str | None = None):
+        # ONE INSTRUCTION PER SPACE. The router's is the default; the memory's radar passes its own
+        # (training/nursing/radar_r0.py) — same encoder, another question asked of the text.
+        self.instruction = INSTRUCTION if instruction is None else instruction
         import torch
         from transformers import AutoModel, AutoTokenizer
         self.torch, self.batch, self.max_len = torch, batch, max_len
@@ -83,7 +86,7 @@ class TransformerEncoder:
     def encode(self, texts: list[str]) -> list[list[float]]:
         torch, out = self.torch, []
         for i in range(0, len(texts), self.batch):
-            enc = self.tok([INSTRUCTION + t for t in texts[i:i + self.batch]], padding=True, truncation=True,
+            enc = self.tok([self.instruction + t for t in texts[i:i + self.batch]], padding=True, truncation=True,
                            max_length=self.max_len, return_tensors="pt").to("cuda")
             with torch.no_grad():
                 h = self.model(**enc).last_hidden_state[:, -1]          # left-padded: last is the end
