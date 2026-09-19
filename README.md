@@ -22,7 +22,7 @@ to know about the numbers.
 
 ---
 
-## The idea, in three decisions
+## The idea, in four decisions
 
 Twelve days of measurement reduced the design to one observation: **what makes an expert
 work, and what makes routing work, is the distribution of the expert's corpus.** An expert
@@ -41,12 +41,19 @@ keyed on what two experts' inputs share, and none when keyed on what their corpo
    on the same corpus.** The small one drafts, the large one verifies — speculative
    decoding inside the subdomain. The pair is the local answer to "this region is too hard
    for the small expert", before anything leaves the machine.
+4. **Each subdomain has a knowledge base of its own, and what the expert learns is the
+   trajectory through it.** Notes of two kinds — encyclopedic (what holds, and when) and
+   operational (how this kind of task is done, in order) — embedded in the same space the
+   router reads. The weights hold the navigation; the base holds the content, where it can be
+   read, versioned and edited without training. A trajectory through operational notes *is* a
+   harness — per subdomain, and outside the weights.
 
 ```mermaid
 flowchart LR
     C["client<br>OpenAI API · OpenClaw"] --> P["proxy<br>prune · member prompt"]
     P --> R["router<br>tiny model of the experts' corpora"]
     R -- "falls in a corpus" --> S["small model + expert LoRA<br>drafts"]
+    S <--> K["knowledge base of the subdomain<br>notes · embeddings · trajectories"]
     S --> L["large model + LoRA of the same subdomain<br>verifies"]
     R -- "falls in none · or region measured to fail" --> F["frontier model"]
     L --> A["answer"]
@@ -55,6 +62,8 @@ flowchart LR
     classDef out fill:#f4e6d4,stroke:#9a6a2a,color:#3d2a0e
     class P,R,S,L local
     class F out
+    classDef art fill:#eef0f6,stroke:#4a5a8a,color:#1d2240
+    class K art
 ```
 
 **The family is Qwen 3.x, small and large**: `Qwen3.5-4B` (or `2B`) and `Qwen3.8-27B`,
@@ -91,12 +100,18 @@ served by the frontier, and the router's table says so.
   contain a difficulty its author did not think of **[ran]** P50.
 - **The saving in money has never been measured.** "37.5 % leave" is a share of generated
   cases, not a bill.
-- **The router is a keyword dictionary.** It is at 1.000 on generated prompts, which means
-  nothing can beat it there; it already cracked once with two close members.
+- **The router is still a keyword dictionary.** Its first learned replacement — an n-gram model
+  of each corpus — is safer on foreign text (**0 of 128** served locally against the
+  dictionary's **59**) and loses **every** legitimate request from a sender the generator never
+  drew, 120 of 120 **[ran]** M2. It learned the generator's uniformity. The next arm is an
+  embedding model.
 - **No large-model half exists yet.** No LoRA has been trained on a 27B, and an *untrained*
   large model scored **below** the small expert in its own region — 0.967 against 1.000 on
   the desk, 0.746 against 0.989 on triage **[ran]** P55, P55b. That result is the reason
   the large model gets a LoRA of the same subdomain rather than being used bare.
+- **No knowledge base exists yet**, and two results say how not to build one: a small model does
+  not follow a procedure it merely reads **[ran]** P61, and knowledge that sits fixed in a corpus
+  is memorised and then measures nothing **[ran]** P21.
 - **No signal sees "coherent and wrong".** Hand-written rules missed it; agreement with a
   frontier sees it but buys quality, not saving **[ran]** P41.
 - **Nothing released is on Qwen 3.x yet.** D2 removed the obstacle; the retraining is
@@ -114,11 +129,12 @@ Each has a gate and the arm that can kill it, written before it runs
 | # | milestone | the arm that kills it first |
 |---|---|---|
 | **1** | **The pool on Qwen 3.x small.** Retrain `email-full` and `desk-commitment` on `Qwen3.5-4B`, tensors named for the class vLLM serves | the identity gate on a *real* adapter (D2's was a 60-step toy); then: loses, paired, to its Qwen 2.5 release |
-| **2** | **The router as a tiny model of the corpora**, abstaining to the frontier | a zero-GPU classifier on the corpora's prompts misroutes to a local member more than the dictionary does, on prompts the dictionary was *not* written for |
+| **2** | **The router as a tiny model of the corpora**, abstaining to the frontier | arm 1 **[ran]**, does not pass: safe on foreign text, loses every request from an unseen sender. Arm 2 — an embedding model — dies on the same four sets |
 | **3** | **The large half**: a LoRA on `Qwen3.8-27B` from the same corpus, on the deep band where the small expert has headroom | vLLM does not apply it (logprob gate); then: large + LoRA does not beat small + LoRA, paired |
 | **4** | **The speculative pair**: acceptance of small-LoRA drafts under large-LoRA verification | acceptance no higher than against the bare large model — the matched LoRA buys nothing |
-| **5** | **The first real region**, by hand, through the same release gate | the release gate |
+| **5** | **The first real region: nursing procedures and health-education material** (named by the user; Open RN *Nursing Skills*, CC BY 4.0, first — WHO texts are CC BY-NC-SA and only measure). By hand, through the same release gate | the bare base already orders the steps of a procedure it was never shown — no headroom, as with the clinical suite |
 | **6** | **The service policy**: router → small → pair → frontier, with the bill measured | the local share costs more than it saves |
+| **7** | **A knowledge base per subdomain, the trajectory through it as the harness** — on fluid mechanics, split into subdomains. *Runs next.* | under an **oracle** trajectory — exactly the right notes open — the expert still scores ~1/20 on a sibling family it never trained on |
 
 **Engineering constraints these carry** — facts, not objections:
 
@@ -177,6 +193,8 @@ artefact defines the expert and its region.
 | `training/harness/train_pool.py`, `contract.py` | the pool registry — each member a record read off its corpus |
 | `training/harness/release_gate.py`, `pool_second.py`, `verify_substrate.py` | the door a member enters through |
 | `training/harness/accept_rank.py`, `awq_lora_gate.py` | acceptance, and a LoRA over a large quantised model — the two halves of milestone 3–4 |
+| `training/harness/pool_base.py`, `train_one.py` | every released member retrained and re-released on another base (milestone 1) |
+| `training/harness/corpus_router.py`, `router_sets.py` | milestone 2's measured arm, and the five + three sets any router is scored on |
 | `training/harness/lora_matrix.py`, `rekey.py` | does this base serve a LoRA at all — with a control, and D2's renaming |
 | `training/harness/knowledge_arm.py`, `null_arm.py`, `training/suite_gates.py` | headroom before anything is trained |
 | `training/email/`, `training/mcp/` | the inbox and desk suites, and the inbox tools as an MCP server |

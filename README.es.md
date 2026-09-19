@@ -22,7 +22,7 @@ por acá. Eso es lo primero que hay que saber de los números.
 
 ---
 
-## La idea, en tres decisiones
+## La idea, en cuatro decisiones
 
 Doce días de medición redujeron el diseño a una observación: **lo que hace funcionar a un
 experto, y lo que hace funcionar al ruteo, es la distribución del corpus del experto.** Un
@@ -44,12 +44,19 @@ dos veces. El diseño sale de ahí.
    decodificación especulativa dentro del subdominio. El par es la respuesta local a "esta
    región es demasiado difícil para el experto chico", antes de que nada salga de la
    máquina.
+4. **Cada subdominio tiene su propia base de conocimiento, y lo que el experto aprende es la
+   trayectoria por ella.** Notas de dos tipos — enciclopédicas (qué vale, y cuándo) y
+   operacionales (cómo se hace este tipo de tarea, en orden) — embebidas en el mismo espacio que
+   lee el router. Los pesos llevan la navegación; la base lleva el contenido, donde se puede
+   leer, versionar y editar sin entrenar. Una trayectoria por notas operacionales *es* un
+   harness — por subdominio, y fuera de los pesos.
 
 ```mermaid
 flowchart LR
     C["cliente<br>API OpenAI · OpenClaw"] --> P["proxy<br>poda · prompt del miembro"]
     P --> R["router<br>modelo mínimo de los corpus de los expertos"]
     R -- "cae en un corpus" --> S["modelo chico + LoRA experto<br>borradorea"]
+    S <--> K["base de conocimiento del subdominio<br>notas · embeddings · trayectorias"]
     S --> L["modelo grande + LoRA del mismo subdominio<br>verifica"]
     R -- "no cae en ninguno · o región medida a fallar" --> F["modelo de frontera"]
     L --> A["respuesta"]
@@ -58,6 +65,8 @@ flowchart LR
     classDef out fill:#f4e6d4,stroke:#9a6a2a,color:#3d2a0e
     class P,R,S,L local
     class F out
+    classDef art fill:#eef0f6,stroke:#4a5a8a,color:#1d2240
+    class K art
 ```
 
 **La familia es Qwen 3.x, chico y grande**: `Qwen3.5-4B` (o `2B`) y `Qwen3.8-27B`, que
@@ -95,14 +104,19 @@ la frontera, y la tabla del router lo dice.
   puede contener una dificultad que su autor no pensó **[ran]** P50.
 - **El ahorro en plata nunca se midió.** "37,5 % sale" es una fracción de casos generados,
   no una factura.
-- **El router es un diccionario de palabras clave.** Está en 1,000 sobre prompts generados,
-  lo que significa que ahí nada puede ganarle; ya se agrietó una vez con dos miembros
-  cercanos.
+- **El router sigue siendo un diccionario de palabras clave.** Su primer reemplazo aprendido —
+  un modelo de n-gramas de cada corpus — es más seguro sobre texto ajeno (**0 de 128** servidos
+  localmente contra **59** del diccionario) y pierde **todos** los pedidos legítimos de un
+  remitente que el generador nunca sacó, 120 de 120 **[ran]** M2. Aprendió la uniformidad del
+  generador. El brazo siguiente es un modelo de embeddings.
 - **Todavía no existe ninguna mitad grande.** Ningún LoRA se entrenó sobre un 27B, y un
   modelo grande *sin entrenar* sacó **menos** que el experto chico en su propia región —
   0,967 contra 1,000 en el desk, 0,746 contra 0,989 en triage **[ran]** P55, P55b. Ese
   resultado es la razón por la que el modelo grande lleva un LoRA del mismo subdominio en
   vez de usarse pelado.
+- **Todavía no existe ninguna base de conocimiento**, y dos resultados dicen cómo no construirla:
+  un modelo chico no sigue un procedimiento que sólo lee **[ran]** P61, y el conocimiento que
+  queda fijo en un corpus se memoriza y después no mide nada **[ran]** P21.
 - **Ninguna señal ve "coherente y equivocado".** Las reglas escritas a mano no lo vieron; el
   acuerdo con una frontera lo ve pero compra calidad, no ahorro **[ran]** P41.
 - **Nada de lo liberado está todavía sobre Qwen 3.x.** D2 sacó el obstáculo; el
@@ -120,11 +134,12 @@ Cada uno tiene una compuerta y el brazo que puede matarlo, escritos antes de cor
 | # | hito | el brazo que lo mata primero |
 |---|---|---|
 | **1** | **El pool sobre Qwen 3.x chico.** Reentrenar `email-full` y `desk-commitment` sobre `Qwen3.5-4B`, con los tensores nombrados para la clase que vLLM sirve | la compuerta de identidad sobre un adaptador *real* (el de D2 era un juguete de 60 pasos); después: pierde, pareado, contra su release de Qwen 2.5 |
-| **2** | **El router como un modelo mínimo de los corpus**, absteniéndose hacia la frontera | un clasificador cero-GPU sobre los prompts de los corpus mal-rutea a un miembro local más que el diccionario, sobre prompts para los que el diccionario *no* fue escrito |
+| **2** | **El router como un modelo mínimo de los corpus**, absteniéndose hacia la frontera | brazo 1 **[ran]**, no pasa: seguro sobre texto ajeno, pierde todo pedido de un remitente no visto. El brazo 2 — un modelo de embeddings — muere sobre los mismos cuatro conjuntos |
 | **3** | **La mitad grande**: un LoRA sobre `Qwen3.8-27B` desde el mismo corpus, en la banda profunda donde el experto chico tiene margen | vLLM no lo aplica (compuerta de logprobs); después: grande + LoRA no le gana a chico + LoRA, pareado |
 | **4** | **El par especulativo**: aceptación de los borradores del LoRA chico bajo la verificación del LoRA grande | aceptación no mayor que contra el modelo grande pelado — el LoRA emparejado no compra nada |
-| **5** | **La primera región real**, a mano, por la misma compuerta de release | la compuerta de release |
+| **5** | **La primera región real: procedimientos de enfermería y material de educación en salud** (nombrada por el usuario; *Nursing Skills* de Open RN, CC BY 4.0, primero — los textos de la OMS son CC BY-NC-SA y sólo sirven para medir). A mano, por la misma compuerta de release | la base pelada ya ordena los pasos de un procedimiento que nunca se le mostró — sin margen, como la suite clínica |
 | **6** | **La política del servicio**: router → chico → par → frontera, con la factura medida | la parte local cuesta más de lo que ahorra |
+| **7** | **Una base de conocimiento por subdominio, la trayectoria por ella como harness** — sobre mecánica de fluidos, partida en subdominios. *Corre a continuación.* | bajo una trayectoria **oráculo** — exactamente las notas correctas abiertas — el experto sigue sacando ~1/20 en una familia hermana que nunca entrenó |
 
 **Restricciones de ingeniería que esto carga** — hechos, no objeciones:
 
@@ -184,6 +199,8 @@ router.** Un solo artefacto define al experto y a su región.
 | `training/harness/train_pool.py`, `contract.py` | el registro del pool — cada miembro un registro leído de su corpus |
 | `training/harness/release_gate.py`, `pool_second.py`, `verify_substrate.py` | la puerta por la que entra un miembro |
 | `training/harness/accept_rank.py`, `awq_lora_gate.py` | la aceptación, y un LoRA sobre un modelo grande cuantizado — las dos mitades de los hitos 3–4 |
+| `training/harness/pool_base.py`, `train_one.py` | cada miembro liberado reentrenado y re-liberado sobre otra base (hito 1) |
+| `training/harness/corpus_router.py`, `router_sets.py` | el brazo medido del hito 2, y los cinco + tres conjuntos sobre los que se puntúa cualquier router |
 | `training/harness/lora_matrix.py`, `rekey.py` | si esta base sirve un LoRA o no — con control, y el renombrado de D2 |
 | `training/harness/knowledge_arm.py`, `null_arm.py`, `training/suite_gates.py` | margen antes de entrenar nada |
 | `training/email/`, `training/mcp/` | las suites de inbox y desk, y las herramientas del inbox como servidor MCP |

@@ -101,6 +101,22 @@ experto local; pedí **cualquier otro nombre de modelo** y el request se reenví
 upstream — mejor que una lista escrita a mano, que se desactualiza apenas se agrega un
 adaptador. Se puede fijar con `--local a,b` cuando querés ser explícito.
 
+**Qué decide la ruta hoy, y qué se probó en su lugar [ran] M2 2026-09-19.** `--auto` usa el
+diccionario de palabras clave de `route.py`. Un modelo del corpus de cada miembro — el router
+del diseño — se midió primero como modelo de n-gramas: sobre texto ajeno es más seguro (0 de
+128 servidos por un miembro local contra el 59 del diccionario), y manda afuera **todos** los
+pedidos legítimos cuyo remitente el generador nunca sorteó, 120 de 120. Así que el diccionario
+se queda como default, y el costo conocido de eso queda registrado: un pedido que sólo
+*contiene* la pregunta de un miembro — "…¿esto es importante para mergear antes del viernes?" —
+lo sirve ese miembro. El brazo de embeddings es lo próximo
+(hito 2 de [`PLAN.md`](PLAN.md)), y va a compartir su espacio con la base de conocimiento de
+cada subdominio (hito 7): **esta página todavía no sirve ninguna base de conocimiento.**
+
+**Sobre una base 3.x el canal de pensamiento está apagado para los miembros.** El proxy manda
+`chat_template_kwargs: {"enable_thinking": false}` en cada request de un miembro, así que el
+prompt servido es un prefijo exacto del texto con el que se entrenó al miembro; una plantilla
+sin ese switch lo ignora.
+
 ### El número que esto vale
 
 | | entrega | sale de la máquina |

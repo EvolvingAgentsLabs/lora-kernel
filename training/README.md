@@ -16,6 +16,8 @@ machine is a 16 GB laptop and cannot hold vLLM, let alone a 27B.
 | `harness/openai_proxy.py`, `route.py`, `serve_tunnel.py` | the API: prune, member prompt, route per request; the tunnel for a live agent |
 | `harness/release_gate.py`, `pool_second.py`, `verify_substrate.py`, `serve_openai.py` | the door a member enters through, and the identity gate |
 | `harness/accept_rank.py`, `awq_lora_gate.py` | acceptance by teacher forcing; a LoRA over a large quantised model |
+| `harness/pool_base.py`, `train_one.py` | milestone 1: every released member retrained on another base; `train_one` names the adapter for the class that will serve it |
+| `harness/corpus_router.py`, `router_sets.py` | milestone 2's measured arm — an n-gram model of each corpus's frame — and the sets every router is scored on, including the three written after the freeze |
 | `harness/lora_matrix.py`, `tiny_adapter.py`, `rekey.py`, `tokenizer_compat.py` | is this base — and this pair — usable at all |
 | `harness/knowledge_arm.py`, `null_arm.py`, `ceiling.py`, `bar.py`, `suite_gates.py` | headroom, ceilings and the statistics, before and after |
 | `harness/openclaw_live.py`, `openclaw_traffic.py`, `tunnel.sh` | the live OpenClaw turn, and shapes read from its own log |

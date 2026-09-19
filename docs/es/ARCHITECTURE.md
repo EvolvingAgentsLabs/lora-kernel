@@ -5,7 +5,7 @@ marca **[ran]**; lo que está diseñado y no construido, lo dice. Las mediciones
 cada elección están en [`RECORD.md`](RECORD.md); el orden de trabajo está en
 [`PLAN.md`](PLAN.md).
 
-## 1. Un hecho, tres componentes
+## 1. Un hecho, cuatro componentes
 
 **Un experto es la distribución de su corpus.** No sólo los pesos: el bloque de
 herramientas, las claves del argumento y su orden, el system prompt, la profundidad de los
@@ -14,13 +14,14 @@ turnos en vivo llaman a una herramienta bajo un prompt ajeno, 19 de 32 bajo el p
 **[ran]** P63; por debajo de su profundidad de entrenamiento un experto de razonamiento
 sobre-resuelve 18 de 18 **[ran]** P45.
 
-Todo lo demás es ese hecho aplicado tres veces:
+Todo lo demás es ese hecho aplicado cuatro veces:
 
 | componente | qué es | estado |
 |---|---|---|
 | **el experto** | un QLoRA sobre el modelo chico, entrenado por SFT sobre un corpus, liberado con un contrato que registra la distribución | **[ran]** dos liberados, sobre Qwen 2.5 |
 | **el router** | un modelo muy chico *de los mismos corpus*: a la distribución de qué experto cae este pedido — o de ninguno | un diccionario de palabras clave **[ran]**; el modelo es el hito 2 |
 | **el par** | un segundo LoRA, sobre el modelo grande, entrenado sobre el *mismo corpus*; el chico borradorea, el grande verifica | diseñado; hitos 3–4 |
+| **la base de conocimiento** | las notas propias del subdominio — enciclopédicas y operacionales — embebidas; el LoRA aprende la **trayectoria** que las recorre, no su contenido | diseñado; hito 7 |
 
 ```mermaid
 flowchart TB
@@ -30,20 +31,22 @@ flowchart TB
     K --> E["LoRA experto sobre el modelo chico"]
     K --> T["LoRA sobre el modelo grande<br>mismo subdominio"]
     K --> R["router<br>una clase por corpus + abstención"]
+    K --> B["base de conocimiento del subdominio<br>notas · links · embeddings"]
+    E -- "navega · lee · sigue" --> B
     R -- "este corpus" --> E
     E -- "borradorea" --> T
     R -- "ningún corpus" --> F["modelo de frontera"]
     classDef art fill:#eef0f6,stroke:#4a5a8a,color:#1a2240
     classDef local fill:#e8f1e4,stroke:#4a7a3a,color:#1d3314
     classDef out fill:#f4e6d4,stroke:#9a6a2a,color:#3d2a0e
-    class K art
+    class K,B art
     class E,T,R local
     class F out
 ```
 
 Un solo artefacto — el corpus nombrado en el manifiesto de la liberación — define al
 experto, entrena su mitad grande, y entrena la clase del router para él. Agregar una región
-agrega un corpus.
+agrega un corpus, y la base de conocimiento que las trayectorias de ese corpus recorren.
 
 ## 2. El camino del pedido
 
@@ -82,7 +85,10 @@ envoltorio de contexto interno del runtime recortado — el propio system prompt
 runtime superó en puntaje al email del turno de usuario la primera vez que un agente en vivo
 llamó **[ran]** P63. Dos decisiones se mantienen separadas a propósito:
 
-- *a qué distribución pertenece esto* — la del router, aprendida de los corpus;
+- *a qué distribución pertenece esto* — la del router, aprendida de los corpus. Su primer
+  brazo aprendido, un modelo de n-gramas del marco de cada corpus, fue seguro sobre texto
+  ajeno y perdió todos los pedidos de un remitente nunca visto **[ran]** M2; el diccionario
+  se mantiene hasta que se mida el brazo de embeddings;
 - *esa región se sirve localmente* — una tabla medida, `serve: local | out`. Fluids es una
   coincidencia temática perfecta y se midió que falla; se sirve afuera.
 
@@ -115,7 +121,58 @@ grande + LoRA le gana al chico + LoRA donde el chico tiene margen?) y después u
 **Dónde corre.** El pool chico se sirve desde una sola L4. Un 27B es trabajo de A100 en 4
 bits.
 
-## 4. El contrato de liberación
+## 4. La base de conocimiento, y por qué la trayectoria es el harness
+
+**Dos tipos de conocimiento, una base por subdominio.** *Enciclopédico* — jerárquico: qué es
+una cantidad, qué correlación vale en qué régimen, las propiedades de un material.
+*Operacional* — secuencial: cómo se resuelve este tipo de problema, en qué orden, qué chequear
+antes de contestar. Los dos son notas en markdown con links, embebidas en el mismo espacio que
+usa el segundo brazo del router.
+
+**Los pesos guardan la navegación; la base guarda el contenido.** Tres mediciones fuerzan esa
+separación en vez de sólo sugerirla:
+
+- Un modelo chico no sigue un procedimiento que sólo lee: base + documento, 0 llamadas a
+  herramientas sobre 351/351 **[ran]** P61. Así que *seguir lo que lee* es lo que se entrena en
+  el adaptador — su corpus son trayectorias: preguntar, abrir una nota, seguir su link,
+  calcular.
+- El conocimiento fijo dentro de un corpus se memoriza y después no cuesta nada: un control sin
+  herramienta de búsqueda puntuó 27/30 porque catorce valores entran en 600 ejemplos **[ran]**
+  P15, P21. Así que lo que un caso necesita tiene que ser **inmemorizable por construcción** —
+  valores, y coeficientes del propio procedimiento, sorteados por caso. El experto puede
+  aprender *qué* nota necesita un paso, nunca *qué dice*.
+- Un especialista se equivoca con confianza un paso fuera de su región — 30/30 adentro, 1/20 en
+  familias hermanas **[ran]** P14. Para eso está la base: las notas de la familia hermana
+  extienden la región sin reentrenar, *si* la política de trayectoria transfiere. El hito 7 mide
+  exactamente eso, primero bajo una trayectoria oráculo.
+
+```mermaid
+flowchart LR
+    Q["pedido en el subdominio"] --> E["LoRA experto<br>política de trayectoria"]
+    E -- "kb: consulta" --> I["índice de embeddings<br>sólo de este subdominio"]
+    I -- "títulos de nota" --> E
+    E -- "abrir: nota" --> N["nota<br>enciclopédica u operacional"]
+    N -- "contenido · links al próximo paso" --> E
+    E -- "calc" --> C["calculadora"]
+    E --> A["respuesta"]
+    classDef local fill:#e8f1e4,stroke:#4a7a3a,color:#1d3314
+    classDef art fill:#eef0f6,stroke:#4a5a8a,color:#1d2240
+    class E,C local
+    class I,N art
+```
+
+**Esto es lo que `harness.lora` buscaba.** Ese diseño ponía un protocolo de ejecución
+compartido en un adaptador y lo componía con adaptadores de dominio; la composición nunca se
+midió limpiamente y quedó parada. Acá el harness es por subdominio, aprendido como una política
+de trayectoria, y su *contenido* vive afuera de los pesos — donde se puede leer, versionar en
+git, y editar sin entrenar (hito 7, brazo 5).
+
+**Lo que no se asume.** Que una jerarquía le gane a una búsqueda plana — en la memoria de este
+workspace le perdió a la búsqueda léxica en un benchmark anterior — o que los embeddings le
+ganen a la recuperación léxica adentro de una base de unas pocas decenas de notas. Los dos son
+brazos.
+
+## 5. El contrato de liberación
 
 Una región entra por una sola puerta **[ran]**: una suite con un verificador que el bucle de
 entrenamiento nunca ve; la base pelada como brazo de headroom; el test de signos exacto
@@ -124,9 +181,10 @@ hash del corpus, hash del adaptador, hash del prompt, el score y las comparacion
 Volver a servirlo y volver a entrenar desde él empatan con la corrida registrada **[ran]**
 P57. `training/harness/train_pool.py` guarda cada miembro como un registro leído de su
 corpus — banda, superficie, claves, orden, system prompt — y los tests vuelven a leer cada
-corpus y fallan si una declaración se desvía.
+corpus y fallan si una declaración se desvía. Con el hito 7 el manifiesto gana el hash de la
+base de conocimiento y el hash de su índice: un miembro es su corpus *y* su base.
 
-## 5. La familia
+## 6. La familia
 
 Qwen 3.x: `Qwen3.5-4B` (o `2B`) chico, `Qwen3.8-27B` grande. La línea 3.x es híbrida — tres
 capas de atención lineal por cada capa de atención completa — y el adaptador renombrado de
@@ -134,13 +192,14 @@ D2 aterrizó pesos en los dos tipos. Su canal `<think>` queda apagado para los m
 miembros liberados siguen sobre `Qwen2.5-3B-Instruct`; el hito 1 los muda, con las
 liberaciones 2.5 como control.
 
-Nada en §1–§4 nombra una familia. Un par necesita un espacio de ids y una base a la que PEFT
+Nada en §1–§5 nombra una familia. Un par necesita un espacio de ids y una base a la que PEFT
 pueda engancharse; `Gemma 4 2B / 12B` cumple lo primero y todavía no lo segundo **[ran]**
 P29.
 
-## 6. Lo que no es neuronal, a propósito
+## 7. Lo que no es neuronal, a propósito
 
-- **La memoria** es markdown y git.
+- **La memoria y el conocimiento** son markdown y git; un índice de embeddings se deriva de
+  ellos, nunca es la fuente.
 - **La ejecución** es un sandbox; las herramientas son un servidor MCP
   (`training/mcp/inbox_server.py`).
 - **La aritmética** es una calculadora: la destilación transfirió un procedimiento y no la
@@ -148,7 +207,7 @@ P29.
 - **Si una región se sirve localmente** es una tabla de mediciones, no la opinión de un
   modelo.
 
-## 7. Deliberadamente sin construir
+## 8. Deliberadamente sin construir
 
 Un runtime de inferencia a medida, compartir la caché KV entre adaptadores, tree attention
 entre adaptadores, composición de adaptadores, un torneo que los cría, el control plane, los

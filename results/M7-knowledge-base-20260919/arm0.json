@@ -1,0 +1,17 @@
+{
+ "source": "results/P41-routing-20260915/pool_results.json",
+ "arm": "fluids-full",
+ "n": 90,
+ "failed": 79,
+ "failed_with_a_result_never_used": 74,
+ "failed_with_a_number_from_nowhere": 74,
+ "results_used": 239,
+ "results_ignored": 132,
+ "passed": 11,
+ "by_family_number_from_nowhere": {
+  "hydrostatic_force": 22,
+  "manning_channel": 11,
+  "pipe_head_loss": 22,
+  "venturi_flow": 19
+ }
+}

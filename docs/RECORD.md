@@ -26,6 +26,7 @@ Do not re-derive what is here. Do not cite a number from it without the caveat b
 | Corpus mode — stop at the closing tag, inject the result, continue — is how an expert is served | `email-full` 0.992 that way, 0.808 through `tool_calls` | P55 |
 | vLLM applies a LoRA over a quantised large model | `Qwen2.5-32B-AWQ`: logprob gate 3/3, mean \|Δℓ\| 0.22–0.49 nats vs base-vs-base 0.000; the text gate alone read a 60-step toy as *not applied* | P60 §3b |
 | `Qwen3.5-2B/4B` and `Qwen3.8-27B` share one id space | 248,044 ids, 7 large-only (audio/TTS); `<think>` shared | D0 |
+| On foreign text a model of the corpora is safer than the keyword dictionary | fresh sets, written after the design was frozen: keyed foreign text and a listing followed by another task, 128 — dictionary serves **59** locally, the n-gram corpus router **0** | M2 |
 | Qwen 3.5 adapters are servable: C18 was a naming mismatch | same weights, 496 tensors renamed: `not applied` → `applied`; real activation 0 → 152 of 178 modules | D2 |
 
 ## 2. What failed, and what each failure taught
@@ -33,6 +34,7 @@ Do not re-derive what is here. Do not cite a number from it without the caveat b
 | what was tried | what happened | run |
 |---|---|---|
 | **The expert that reasons.** A fluid-mechanics member, 600 supervised chains | follows the protocol perfectly — 0 refusals, 6–8 calls against the 7 taught — and gets the physics wrong on 78 of 90; loses, paired, to a hand-written rule ($p = 0.022$). 600 examples taught the protocol and not the physics | P37–P40 |
+| …read where it happens, four days later | of those failures, **74 of 79** hold a computation with a number that came from nowhere and leave a tool result unused (132 of 371 results ignored): it looks up 882.3 and multiplies by 1359.7. **Not mainly wrong physics — it does not use what the tool returned.** And that run served it through `tool_calls`, not the inline form its corpus taught; fluids was never re-served in corpus mode. *"The expert that reasons fails" stands as a score and is open as an explanation* | M7 arm 0 |
 | …and below its training depth it over-solves | trained on 6-to-9-step chains only: 18 of 18 over-solved below that band; on three-step problems the bare base beats it, 0.167 to 0.000. **A corpus with one difficulty teaches a floor** | P45 |
 | **Distillation from a frontier teacher** | transfers the procedure, not the arithmetic: π/4·0.22² comes out 0.037006 for 0.038013. Adapter + calculator 40/40; base + calculator 0/40 with 53 calls; adapter alone 4/40 | P5–P7 |
 | **Acceptance as a ranking of experts** against one larger target | the precondition failed twice: an *untrained* target scores below the best expert, 0.746 < 0.989 and 0.967 < 1.000; where the target is strong the grades saturate (`g75` ≡ `g600` = 1.000). Closed without a verdict | P55, P55b, P58 |
@@ -43,6 +45,9 @@ Do not re-derive what is here. Do not cite a number from it without the caveat b
 | …agreement with the frontier as the per-case signal | it works — agree: 8 of 8 right; disagree: 60 of 61 wrong — but it calls the frontier every time, so it buys quality and **no saving** | P41 |
 | **Composition** of a protocol adapter with a domain adapter | never measured cleanly: the two corpora taught different notations and every arm was scored under one prompt. Stacked 0/30 and mixed 0/30 are real and say nothing causal. Parked | P8, P9, P13 |
 | **Tool use as one capability** | it is two: the *disposition* to ask transfers broadly (a physics kernel makes the base reach for email tools in 123 of 150 cases — with the wrong names, 127 refused); the *vocabulary* transfers narrowly (the email kernel is never refused and asks in 22). All three arms tie on accuracy | P31, P34, P35 |
+| **The router as an n-gram model of each member's corpus** (milestone 2, arm 1) | safe (row in §1) and unusable: **120 of 120** legitimate requests from senders outside the generator's pools are sent out, where the dictionary loses none — every generated address ends `.com`, so `. com >` became *frame*. **It learned the generator's uniformity.** And 0 of 240 paraphrases of a member's question recovered: to a lexical model a paraphrase and a different task are the same thing. Arm 2 is an embedding model | M2 |
+| **A lookup tool priced on a fixed table** | a control with **no tool layer at all** scored 27/30: seven fluids × two properties is fourteen numbers and 600 examples memorise them. *A suite whose tool calls can be recalled cannot price a tool layer.* Fixed by a handbook drawn per case — and it is the rule every knowledge base here inherits | P15, P21 |
+| **A specialist outside its region** | 30/30 on its formulas inside, **1/20** on two sibling families it never saw, prose equally fluent; the tool layer's refusals do not mark the edge (0.18 outside, 0.15 inside; a guard at 0.62 where chance was 0.60). An invented relation does fail dimensional analysis — a guard that consults no model | P14, P18, P22 |
 | **A grammar mask** over tool calls | buys cleanliness, not accuracy: refusals 23 → 10, final answers 5/30 → 4/30. Of 30 failures 19 had every call clean | P8, P24 |
 | **A generated code suite** | an adapter memorises shapes: one tail per family (180/180 held-out completions verbatim in training), then one skeleton per (family, cut), then ~60 shapes covered twelve times over by 720 examples. Stopped at three | P52–P54 |
 | **A third party's expert** from a model hub | none exists at this size with tools and a mechanical verifier; on GSM8K the base is already at 87.6 | P42 |
@@ -77,6 +82,8 @@ Each produced a clean number that was wrong, and each is now a rule in
 | A pre-registered `kb_pays` fired 164 : 74 because a default had flipped | the majority bar guards it — P61 |
 | A released member on 60 cases with the weights left on the card | the suite's `eval_n`; the chain brings the adapters home — P64 attempt 1 |
 | `modules_with_weights: 531` for an adapter that landed on 0 of 178 modules | vLLM activates three dummy LoRAs while profiling; 531 = 3 × 177. The brief's consistency check caught it — D2 |
+| Three looks at the same test sets said the router was perfect; one set written **after** the design was frozen found it loses every real-looking request | freeze, *then* write the set that counts — M2 |
+| An acceptance rule that asked *who is nearest* before *who claims* lost 60 of 240 requests to a member that claimed nothing | the code does what the brief says, and a test holds it — M2 |
 | Guards that read source fired on prose describing the absence they check for — four times | a guard reads the code, not the file |
 | `grep -c` prints its zero and exits 1; a weights rescue skipped itself and cost an adapter | `weights_in()` |
 

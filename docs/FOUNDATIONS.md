@@ -620,6 +620,33 @@ set on out-of-distribution text before anything else is measured: a model asked 
 always chooses. **[ran]** for the dictionary: P62, P64. The learned $s_m$ is
 [`PLAN.md`](PLAN.md) milestone 2.
 
+### 8.6 A knowledge base, and a trajectory through it
+
+A subdomain's base is a set of notes $\mathcal N = \mathcal N_{\text{enc}} \cup \mathcal N_{\text{op}}$
+— encyclopedic and operational — with links $\mathcal L \subseteq \mathcal N \times \mathcal N$
+and an embedding $e:\text{text}\to\mathbb R^d$. A **trajectory** on case $x$ is the sequence of
+notes the expert opens, $\pi(x) = (n_1,\dots,n_T)$, each chosen from what the last step exposed:
+
+$$n_{t+1} \in \underbrace{\operatorname{top-}k_{\,n \in \mathcal N}\ \langle e(q_t), e(n)\rangle}_{\text{a query the expert wrote}} \ \cup\ \underbrace{\{n : (n_t, n) \in \mathcal L\}}_{\text{a link the last note offered}} .$$
+
+The adapter's parameters are the **policy** — which $q_t$ to write, which candidate to open, when
+to stop; the base is the **content**. Two conditions make that split measurable rather than
+nominal. *Unmemorisable content:* what a note says is drawn per case, $n = n(x)$, so
+$I(\text{answer}; \text{weights} \mid \text{policy}) = 0$ for the looked-up part — P21's handbook,
+extended to procedures. *A needed channel:* no looked-up value occurs in the statement.
+
+With $\pi^{\star}(x)$ the oracle's trajectory and $Q_{\pi}(F)$ verified quality on family $F$ under
+trajectory $\pi$, milestone 7 reads three differences, in this order:
+
+$$\underbrace{Q_{\pi^{\star}}(F') - Q_{\varnothing}(F')}_{\text{what reading can buy on a sibling family } F'} \qquad
+\underbrace{Q_{\pi^{\star}}(F') - Q_{\hat\pi}(F')}_{\text{what navigation loses}} \qquad
+\underbrace{Q_{\hat\pi}^{\text{op}} \ \text{vs}\ Q_{\hat\pi}^{\text{enc}}}_{\text{which kind of knowledge carries it}}$$
+
+each paired (§9.2). $Q_{\varnothing}(F') \approx 1/20$ is measured **[ran]** P14; the rest is
+**not yet measured** — [`PLAN.md`](PLAN.md) milestone 7. Navigation is scored where it happens —
+retrieved, opened, followed — not only at the answer: a reader that got lucky over an empty note
+is a case the final score cannot see.
+
 ---
 
 ### 8.4 Delivered accuracy under a routing policy
@@ -783,7 +810,8 @@ milestone 3 trains the large half; milestone 4 measures §7.1's inequality.
 | §10.5 D2 / §3.4 | **a LoRA applies over the AWQ 32B**: mean $|\Delta\ell|$ 0.22–0.49 nats vs base-vs-base 0.000, 3/3; text gate 2/3 | P60 §3b `awq_gate.json` |
 | §10.5 D2 | **C18 is a naming mismatch**: $\text{applied}(K)=\{k\in K: m(k)\in M\}$ — as trained 0 of 496 tensors land on the served text stack and the real activation sets 0 of 178 modules (`not applied`); renamed, 496 of 496 and 152 of 178 (`applied`); control `applied` | D2 `lora_matrix.json`, `vllm.log` |
 | §7.1, §7.4 | **the pair inequality** $\alpha_{T_\phi}(S_\theta) > \alpha_T(S_\theta)$ | **not yet measured** — [`PLAN.md`](PLAN.md) milestone 4 |
-| §8.5 | **the router as a classifier with abstention**; the dictionary is its special case | dictionary: P62, P64; the learned score: **not yet measured** — milestone 2 |
+| §8.5 | **the router as a classifier with abstention**; the dictionary is its special case | dictionary: P62, P64. **An n-gram model of each corpus's frame [ran] M2**: foreign text 0/128 served locally against the dictionary's 59/128; legitimate requests from unseen senders 120/120 lost against 0/120 — does not pass; the embedding arm: **not yet measured** |
+| §8.6 | **a trajectory through a subdomain's knowledge base**; the policy in the weights, the content outside | $Q_\varnothing(F') \approx 1/20$: P14. Everything else **not yet measured** — milestone 7 |
 | §7.3, §8.2 | **weights or harness — weights**: base 0.345, base + 914-token procedure 0.601 (both 0 tool calls, under the 0.655 majority bar), expert 0.989; expert vs base+kb **137 : 1**; the sign test alone read the flipped default as paying (164 : 74) — the majority bar guards it | P61 `session.json` |
 | §8.4 | **routing per request ties by region**: 0.775 = 0.775, 0 misroutes, 37.5 % out on P41's 240 cases | P62 `replay.json` (zero GPU) |
 | §4.4, §8.1 | **the live turn is corpus mode or it is nothing**: under the runtime's prompt 2/32 human turns call a tool (0.281); under the member's released prompt with `</tag>` stops, the round-trip cap and 256 tokens/step, 19/32 call and 0.688 vs bar 0.655 ($p=0.43$), 40/40 local | P63 `live.json`, attempts 4 and 7 |

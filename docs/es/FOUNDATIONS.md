@@ -633,6 +633,35 @@ exactitud, y $\tau$ se fija sobre texto fuera de distribución antes de medir na
 modelo al que se le pide elegir siempre elige. **[ran]** para el diccionario: P62, P64. El
 $s_m$ aprendido es el hito 2 de [`PLAN.md`](PLAN.md).
 
+### 8.6 Una base de conocimiento, y una trayectoria por ella
+
+La base de un subdominio es un conjunto de notas $\mathcal N = \mathcal N_{\text{enc}} \cup \mathcal N_{\text{op}}$
+— enciclopédicas y operacionales — con links $\mathcal L \subseteq \mathcal N \times \mathcal N$
+y un embedding $e:\text{texto}\to\mathbb R^d$. Una **trayectoria** sobre el caso $x$ es la
+secuencia de notas que el experto abre, $\pi(x) = (n_1,\dots,n_T)$, cada una elegida a partir de
+lo que expuso el último paso:
+
+$$n_{t+1} \in \underbrace{\operatorname{top-}k_{\,n \in \mathcal N}\ \langle e(q_t), e(n)\rangle}_{\text{una consulta que escribió el experto}} \ \cup\ \underbrace{\{n : (n_t, n) \in \mathcal L\}}_{\text{un link que ofreció la última nota}} .$$
+
+Los parámetros del adaptador son la **política** — qué $q_t$ escribir, qué candidato abrir,
+cuándo parar; la base es el **contenido**. Dos condiciones hacen que esa separación sea medible
+y no sólo nominal. *Contenido inmemorizable:* lo que dice una nota se sortea por caso,
+$n = n(x)$, así que $I(\text{respuesta}; \text{pesos} \mid \text{política}) = 0$ para la parte
+consultada — el manual de P21, extendido a procedimientos. *Un canal necesario:* ningún valor
+consultado aparece en el enunciado.
+
+Con $\pi^{\star}(x)$ la trayectoria del oráculo y $Q_{\pi}(F)$ la calidad verificada sobre la
+familia $F$ bajo la trayectoria $\pi$, el hito 7 lee tres diferencias, en este orden:
+
+$$\underbrace{Q_{\pi^{\star}}(F') - Q_{\varnothing}(F')}_{\text{lo que compra leer sobre una familia hermana } F'} \qquad
+\underbrace{Q_{\pi^{\star}}(F') - Q_{\hat\pi}(F')}_{\text{lo que pierde la navegación}} \qquad
+\underbrace{Q_{\hat\pi}^{\text{op}} \ \text{contra}\ Q_{\hat\pi}^{\text{enc}}}_{\text{qué tipo de conocimiento lo carga}}$$
+
+cada una pareada (§9.2). $Q_{\varnothing}(F') \approx 1/20$ está medido **[ran]** P14; el resto
+está **todavía sin medir** — hito 7 de [`PLAN.md`](PLAN.md). La navegación se puntúa donde
+sucede — recuperada, abierta, seguida — no sólo en la respuesta: un lector que tuvo suerte sobre
+una nota vacía es un caso que el score final no puede ver.
+
 ---
 
 ### 8.4 Exactitud entregada bajo una política de ruteo
@@ -801,7 +830,8 @@ entrena la mitad grande; el hito 4 mide la desigualdad de §7.1.
 | §10.5 D2 / §3.4 | **un LoRA aplica sobre el 32B AWQ**: media de $|\Delta\ell|$ 0,22–0,49 nats contra base-vs-base 0,000, 3/3; compuerta de texto 2/3 | P60 §3b `awq_gate.json` |
 | §10.5 D2 | **C18 es un desajuste de nombres**: $\text{applied}(K)=\{k\in K: m(k)\in M\}$ — tal como se entrenó 0 de 496 tensores caen sobre el stack de texto servido y la activación real fija 0 de 178 módulos (`not applied`); renombrado, 496 de 496 y 152 de 178 (`applied`); control `applied` | D2 `lora_matrix.json`, `vllm.log` |
 | §7.1, §7.4 | **la desigualdad del par** $\alpha_{T_\phi}(S_\theta) > \alpha_T(S_\theta)$ | **todavía sin medir** — hito 4 de [`PLAN.md`](PLAN.md) |
-| §8.5 | **el router como clasificador con abstención**; el diccionario es su caso particular | diccionario: P62, P64; el puntaje aprendido: **todavía sin medir** — hito 2 |
+| §8.5 | **el router como clasificador con abstención**; el diccionario es su caso particular | diccionario: P62, P64. **Un modelo de n-gramas del marco de cada corpus [ran] M2**: texto ajeno 0/128 servido localmente contra 59/128 del diccionario; pedidos legítimos de remitentes nunca vistos 120/120 perdidos contra 0/120 — no pasa; el brazo de embeddings: **todavía sin medir** |
+| §8.6 | **una trayectoria por la base de conocimiento de un subdominio**; la política en los pesos, el contenido afuera | $Q_\varnothing(F') \approx 1/20$: P14. Todo lo demás **todavía sin medir** — hito 7 |
 | §7.3, §8.2 | **pesos o harness — pesos**: base 0,345, base + procedimiento de 914 tokens 0,601 (las dos con 0 llamadas, debajo de la barra de mayoría 0,655), experto 0,989; experto contra base+kb **137 : 1**; el test de signos solo leyó el default dado vuelta como pagando (164 : 74) — la barra de mayoría lo guarda | P61 `session.json` |
 | §8.4 | **el ruteo por request empata al por región**: 0,775 = 0,775, 0 mal ruteados, 37,5 % afuera sobre los 240 casos de P41 | P62 `replay.json` (cero GPU) |
 | §4.4, §8.1 | **el turno en vivo es modo corpus o no es nada**: bajo el prompt del runtime 2/32 turnos humanos llaman una herramienta (0,281); bajo el prompt liberado del miembro con cortes en `</tag>`, tope de idas y vueltas y 256 tokens/paso, 19/32 llaman y 0,688 contra barra 0,655 ($p=0,43$), 40/40 local | P63 `live.json`, intentos 4 y 7 |
