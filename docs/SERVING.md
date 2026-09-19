@@ -100,6 +100,20 @@ expert answers; ask for **any other model name** and the request is forwarded.
 better than a hand-kept list, which drifts the moment an adapter is added. Override
 it with `--local a,b` when you want to be explicit.
 
+**What decides the route today, and what was tried instead [ran] M2 2026-09-19.** `--auto` uses
+the keyword dictionary in `route.py`. A model of each member's corpus — the design's router — was
+measured as an n-gram model first: on foreign text it is safer (0 of 128 served by a local member
+against the dictionary's 59), and it sends out **every** legitimate request whose sender the
+generator never drew, 120 of 120. So the dictionary stays the default, and the known cost of that
+is on record: a request that merely *contains* a member's question — "…is this important to merge
+before Friday?" — is served by that member. The embedding arm is next
+([`PLAN.md`](PLAN.md) milestone 2), and it will share its space with each subdomain's knowledge
+base (milestone 7): **nothing in this page serves a knowledge base yet.**
+
+**On a 3.x base the thinking channel is off for members.** The proxy sends
+`chat_template_kwargs: {"enable_thinking": false}` on every member request, so the served prompt is
+an exact prefix of the text the member was trained on; a template without that switch ignores it.
+
 ### The number this is worth
 
 | | delivered | leaves the machine |

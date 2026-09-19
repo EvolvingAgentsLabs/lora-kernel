@@ -6,6 +6,11 @@ This repository has one job, restated by the user on 2026-09-19:
 > which expert's corpus a request falls in and abstains to a frontier model when it falls in
 > none; and, per subdomain, a speculative pair — a LoRA on a small model and a LoRA on a
 > large one, trained on the same corpus. Family: Qwen 3.x, small and large.**
+>
+> **And each expert gets a knowledge base of its own subdomain — encyclopedic and operational
+> notes, embedded — where what the LoRA learns is the *trajectory* through it. The weights hold
+> the navigation, the base holds the content; a trajectory through operational notes is the
+> harness. Measured on fluid mechanics, split into subdomains.**
 
 The service is an OpenAI-compatible API that resolves locally what falls in a measured
 region and forwards the rest, with OpenClaw instances per task on top. Read
@@ -19,7 +24,8 @@ repository adds.
 ## 0. Do not drift off the project
 
 A session that produces neither an adapter, nor a router measured against the dictionary,
-nor a measurement of a pair, nor a region released through the gate, has not advanced the
+nor a measurement of a pair, nor a knowledge base measured against the same expert without it,
+nor a region released through the gate, has not advanced the
 project however good its numbers are. The drift already happened once: two sessions of
 instrument findings and not one adapter, and the user's words were *"¿me estás saboteando
 el proyecto?"* **When in doubt, the next step is the one that puts a weight delta on disk.**
@@ -75,6 +81,13 @@ These are not style. Each was paid for; [`docs/RECORD.md`](docs/RECORD.md) §4 h
   suite cannot contain a difficulty nobody thought of, and an adapter memorises shapes:
   deduplicate on what gets *written*, not on what gets asked.
 - **A corpus with one difficulty teaches a floor.** Train on the band you intend to serve.
+- **Knowledge that sits fixed in a corpus is memorised, and then it prices nothing.** A control
+  with no lookup tool scored 27/30 over a fourteen-value table (P15, P21). Whatever a knowledge
+  base is meant to supply is drawn **per case** — values *and* the coefficients of a procedure —
+  and the run asserts that no looked-up value occurs in the statement.
+- **A small model does not follow what it merely reads** (P61). If notes are to be followed,
+  following is what the adapter is trained on; never measure a base of knowledge by pasting it
+  into the prompt of a model that was not.
 - **A corpus must teach the prompt the model will be served.** Generators *call*
   `render_tools`; the copy is what drifted. **A member is its corpus — block and prompt:**
   serve with `--prune --member-prompt`, and measure a member under any other prompt as a
@@ -122,6 +135,17 @@ These are not style. Each was paid for; [`docs/RECORD.md`](docs/RECORD.md) §4 h
 - **Colab:** T4 has no bf16 whatever the flag says; an expired `colab exec` is not a failed
   command; install vLLM first; one chain at a time — they share `/tmp/_v*.py`; use a
   worktree for documents while a chain is fetching.
+- **Freeze the design, *then* write the set that counts.** Three looks at the same sets said
+  milestone 2's router was perfect; one set written after the freeze found it loses every
+  real-looking request. A set the designer has iterated against is a training set.
+- **A model of a generated corpus learns the generator.** Every generated address ended `.com`,
+  so `. com >` became part of what a request *is* (M2).
+- **Clean the tree by what is *named*, not only by what is imported.** An import closure removed
+  a trainer three runners start by name in a subprocess; `tests/test_pool_base.py` resolves every
+  `training.*` module named in a string, a chain or a document.
+- **On the 3.x line, thinking is off for members, in every render.** A trained turn sits behind an
+  empty `<think>` block and the default generation prompt leaves it open: a bare base thinks its
+  tokens away and scores as a floor.
 - **Count the redesigns.** Once is fine, twice is suspicious, the third is looking for the
   result. The stopping condition goes in the brief.
 

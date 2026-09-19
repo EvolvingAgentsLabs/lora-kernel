@@ -12,6 +12,11 @@ Superseded text is struck, not deleted. What was measured before 2026-09-19 is i
 > decides which expert's corpus a request falls in and abstains to a frontier model when
 > it falls in none; and, per subdomain, a speculative pair — a LoRA on a small model and a
 > LoRA on a large one, trained on the same corpus. Family: Qwen 3.x, small and large.**
+>
+> **Extended the same day: each expert also gets a knowledge base of its own subdomain —
+> markdown notes, embedded, encyclopedic and operational — and what the LoRA learns is the
+> *trajectory* through it: what to look up, in what order, and how to follow what it reads.
+> The weights hold the navigation; the base holds the content. That is the harness.**
 
 The restatement was the user's, and it is the reading the record supports. Three measured
 facts carry it:
@@ -23,6 +28,13 @@ facts carry it:
 - **A bare large model is not a better expert.** Untrained, the 32B scored below the 3B
   expert in both regions tried — 0.967 < 1.000, 0.746 < 0.989 **[ran]** P55, P55b. So the
   large half of a pair is *trained on the same subdomain*, not borrowed as it ships.
+
+- **Knowledge in the context is not followed by a small model unless following is what it was
+  trained to do**, and **a fixed body of knowledge in a corpus is memorised, after which it
+  measures nothing**: base + a procedure document made 0 tool calls on 351/351 **[ran]** P61;
+  a control with no lookup tool at all scored 27/30 because fourteen table values fit in 600
+  examples **[ran]** P15, P21. Both are why the knowledge base is *navigated by a trained
+  policy* and its content is *unmemorisable by construction* (milestone 7).
 
 What stays from before: the frontier is a permanent component, used where no expert's
 corpus covers the request or where a region is measured to fail (0.546 → 0.775 **[ran]**
@@ -42,11 +54,12 @@ arms are bought only once there is an effect to attribute.
 | # | milestone | depends on | gate | state |
 |---|---|---|---|---|
 | **1** | the pool on Qwen 3.x small | D2 ✅ | both members released on `Qwen3.5-4B`, each tying or beating its Qwen 2.5 release, paired | — |
-| **2** | the router as a tiny model of the corpora | the members' corpora | misrouted-to-local no higher than the dictionary's on prompts the dictionary was not written for; abstains on out-of-distribution text | — |
+| **2** | the router as a tiny model of the corpora | the members' corpora | misrouted-to-local no higher than the dictionary's on prompts the dictionary was not written for; abstains on out-of-distribution text | **arm 1 [ran] 2026-09-19 — does not pass.** Foreign text, fresh sets: dictionary 59/128 served locally, n-gram router **0/128**; legitimate requests from unseen senders: dictionary loses 0/120, router loses **120/120**. The dictionary stays; **arm 2 is an embedding model**, shared with milestone 7 |
 | **3** | the large half of one pair | 1 | a LoRA on `Qwen3.8-27B` is applied when served; large + LoRA beats small + LoRA on the deep band, paired | — |
 | **4** | the speculative pair | 3 | acceptance of small-LoRA drafts under large-LoRA verification exceeds acceptance under the bare large model | — |
 | **5** | the first real region, by hand | 1, 2, a sandbox, keys rotated | the release gate, on a suite with a verifier nobody here generated | blocked: the user names the region |
 | **6** | the service policy, with the bill | 2, 4, 5 | the local share saves more than it costs, on real traffic | — |
+| **7** | **a knowledge base per subdomain, and the trajectory through it as the harness** — on fluid mechanics, split into subdomains | 1; shares its embedding model with 2's arm 2; independent of 3–6, **runs next** | an expert trained to navigate and follow notes answers families it never trained on, where the same expert without the base is at 1/20 | — |
 
 ### Milestone 1 — the pool on Qwen 3.x small
 
@@ -101,6 +114,29 @@ so it is scored on **misrouted-to-local** and on the out share, not on routing a
 **Falsified by** more requests misrouted to a local member than the dictionary, or no
 abstention on out-of-distribution text. A model asked to choose always chooses; the
 abstention arm is bought first.
+
+**Result [ran] 2026-09-19 — arm 1 does not pass**
+([`results/M2-corpus-router-20260919/BRIEF.md`](../results/M2-corpus-router-20260919/BRIEF.md)).
+One smoothed uni+bigram model per member over the corpus's *frame* — tokens in at least half
+its documents; everything else one `<slot>` symbol — accepting a request iff its least likely
+frame transition and its frame coverage are typical of the corpus. Three attempts, two counted
+redesigns, each written into the brief first; the design was then frozen and **fresh sets were
+written afterwards and scored once**:
+
+| set | dictionary | n-gram router |
+|---|---|---|
+| in distribution, 715 | 0 misrouted · 0 lost | 0 misrouted · 0 lost |
+| foreign text, fresh — keyed texts and a listing followed by another task, 128 | **59 served by a local member** | **0** |
+| legitimate requests from senders outside the generator's pools, 120 | 0 lost | **120 lost** |
+| the member's question paraphrased, 240 | 131 lost | 240 lost |
+
+It learned the generator's uniformity: every generated address ends `.com`, so `. com >` is
+*frame*, and a real sender leaves the distribution. Real traffic is all of the third row. And to
+a lexical model a paraphrase of the member's question and a different task are one thing — a
+familiar listing, then an unfamiliar sentence. **Telling them apart is semantics, so arm 2 is an
+embedding model** (the smallest of the family's embedding line), with the four rows above as its
+kill sets. The dictionary stays the proxy's default; `corpus_router.py` stays as the measured
+arm. The third redesign was not spent.
 
 ### Milestone 3 — the large half of one pair
 
@@ -162,6 +198,75 @@ Router → small member → pair where the region is measured to need it → fro
 number that has never been measured is money: the frontier bill with and without the local
 share, on real traffic. **Falsified by** a local share that costs more to run than it saves.
 
+### Milestone 7 — a knowledge base per subdomain, and the trajectory through it as the harness
+
+**The idea, the user's.** An expert's subdomain has a body of knowledge of two kinds:
+**encyclopedic** — hierarchical: what a quantity is, which correlation holds in which regime,
+what a material's properties are — and **operational** — sequences: how this kind of problem is
+solved, step by step, and what to check. Put both in a knowledge base that belongs to the
+subdomain (markdown notes, linked, embedded; memory is markdown and git — `ARCHITECTURE.md` §7).
+What the LoRA then learns is not the content but the **trajectory**: which note to open first,
+which link to follow, when to stop reading and compute. *A trajectory through operational notes
+is a harness* — the thing `harness.lora` was reaching for, now per subdomain and outside the
+weights, where it can be edited.
+
+**Why fluid mechanics, and why split.** It is the one domain here with real headroom — the
+frontier 66/90, the expert 12/90 **[ran]** P40, P41 — and its failure is the kind a base of
+knowledge addresses: the protocol perfect, the physics wrong, 19 of 30 failures with every call
+clean **[ran]** P8. One adapter over all of it was trained at one depth and over-solved below it
+**[ran]** P45. So: subdomains of two sibling families each — internal flow (`pipe_head_loss`,
+`pump_power`), metering (`venturi_flow`, `orifice_discharge`), external flow
+(`terminal_velocity`, `drag_force`), channels and statics (`manning_channel`,
+`hydrostatic_force`) — each across the difficulty ladder (`training/physics/ladder.py`), so
+region and depth are two variables.
+
+**Three measured facts shape the design — constraints, not objections.**
+
+1. **A small model does not follow what it reads unless following is what it was trained on**
+   **[ran]** P61. → Navigation and note-following are *the content of the adapter*: the corpus is
+   trajectories — `<kb>query</kb>`, `<open>note</open>`, then `<calc>` — written by the oracle.
+2. **Fixed knowledge in a corpus is memorised, and then the base measures nothing** **[ran]** P15,
+   P21. → The notes a case needs are **unmemorisable by construction**, P21's per-case handbook
+   extended from values to procedures: properties of a fluid that exists only in this case, and a
+   correlation variant whose coefficients are drawn per case. The expert can learn *which* note
+   a step needs; it cannot learn *what the note says*.
+3. **A specialist is confidently wrong just outside its region** — 30/30 on its formulas inside,
+   **1/20 on families it never saw**, prose equally fluent **[ran]** P14. → That is the headroom
+   and the claim: *with the sibling family's notes in the base and no retraining, the
+   navigation-trained expert answers the sibling family.*
+
+And one from the workspace: a memory hierarchy lost to flat lexical search in its first benchmark,
+and an exact-answer physics suite was the wrong instrument for memory because everything in it
+was derivable. → The channel must be *needed* (fact 2 guarantees it; the run asserts the leak's
+absence: no looked-up value appears in the statement), and hierarchy is an arm, not an assumption.
+
+**Arms, in order — the one that can kill it first.**
+
+| # | arm | what it decides |
+|---|---|---|
+| **0** | headroom, zero GPU: P14's and P40's records re-read — what share of failures is a wrong relation, a wrong regime, a missing property, arithmetic | whether a base of knowledge addresses what actually fails |
+| **1** | **oracle trajectory.** Two adapters on one subdomain, same cases: trained *with* the notes the oracle would open, injected through the `<kb>`/`<open>` protocol, and *without*. Scored on the trained family and on its **held-out sibling**, paired | the upper bound: if reading exactly the right notes does not lift the sibling off ~1/20, no navigation will — **stop** |
+| **2** | learned navigation: the expert issues its own queries; retrieval by embedding inside the subdomain's base. Measured **where it happens** — was the needed note retrieved, was it opened, was it followed — not only at the final answer | what navigation loses against the oracle trajectory |
+| **3** | attribution: encyclopedic notes only · operational notes only · both | which kind of knowledge carries the gain — the two kinds, priced separately |
+| **4** | retrieval: flat lexical · embedding · embedding restricted to the trajectory so far (links and neighbours of the last note opened) | whether a trajectory strategy beats a flat search; the workspace's earlier result says do not assume it |
+| **5** | edit without retraining: change one note's coefficient after training; the answer must follow the base, not the weights | that the knowledge lives where it can be edited |
+
+**Gate.** Arm 1: with-base beats without-base on the held-out sibling family, paired, exact sign
+test, $p \le 0.05$ — and the without-base arm reproduces P14's collapse there, or the sibling was
+not outside the region and the run says nothing.
+
+**Falsified by** a tie on the sibling under the oracle trajectory: at this size, reading does not
+extend a region even when the right page is open. One arm then remains and it is cheap: the same
+on the 4B of milestone 1. After that the question belongs to the large half of a pair.
+
+**The release contract grows one field.** A member is its corpus *and its base*: the manifest
+records the knowledge base's path and hash and the embedding index's hash beside the corpus hash.
+The router's arm 2 and the base share one embedding model, so a subdomain is one region of one
+space — what falls in it is routed to the member, and what the member looks up is found in it.
+
+**Not claimed until measured:** that a hierarchy helps; that embeddings beat lexical search inside
+a small base; that any of it transfers from a generated suite to a real one.
+
 ## 2. The family, and the alternative
 
 **Adopted: Qwen 3.x.** `Qwen3.5-2B/4B` and `Qwen3.8-27B` share one id space — 248,044 ids,
@@ -195,6 +300,10 @@ that decide the shape of a step:
 
 ## 5. History
 
+- **2026-09-19** — milestone 2 arm 1 **[ran]**: safe on foreign text, loses every request from an
+  unseen sender; the dictionary stays, arm 2 is an embedding model. Milestone 7 added: a knowledge
+  base per subdomain with the trajectory through it as the harness, on fluid mechanics split into
+  subdomains — shaped by P61, P21 and P14.
 - **2026-09-19** — objective restated around corpus-distribution routing and the
   speculative pair; the tree cleaned to what works; the previous plan and its seventy-four
   runs kept at `v0.1-foundations`.
