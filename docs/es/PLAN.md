@@ -176,6 +176,20 @@ del contenido** — una proyección chica entrenada por contraste (misma tarea /
 mismo contenido / otra tarea), que es la etapa R1 del radar ([`MEMORY.md`](MEMORY.md) §2.2) alcanzada
 desde el lado del router. Necesita conjuntos de evaluación nuevos; el diccionario sigue siendo el default.
 
+**Dónde el problema del router no aparece — restituido el 2026-09-19** (el análisis es `docs/CASE-TEAM.md`
+en el tag `v0.1-foundations`; la reescritura lo sacó y no debió). Un equipo que corre el runtime de
+agentes en modo multijugador — cada persona en el chat, varios agentes, decenas de sesiones
+concurrentes, conversaciones en **grupos estables por área** — tiene sus regiones por construcción: un
+grupo se repite, tiene su propio vocabulario y una membresía estable. **El id del grupo es la ruta**;
+no se infiere nada, porque el cliente ya sabe en qué sala está. Los dos brazos aprendidos de arriba
+fallan en *quién escribe*; en un despliegue de equipo ésa no es una señal que alguien tenga que leer.
+Es también el primer escenario que ejercita el pool como pool — lotes mixtos entre decenas de
+sesiones, **sin medir** acá — y vuelve el margen una pregunta por grupo: un promedio de empresa
+esconde al grupo con brecha y al grupo sin ella. Lo que **no** aborda es la mitad de infraestructura
+de un despliegue así — una lista de sesiones que se llena, un gateway inalcanzable detrás de un proxy
+de acceso, un websocket que se cae. No construido para eso: aislamiento entre usuarios, streaming,
+ciclo de vida de adaptadores por grupo.
+
 ### Hito 3 — la mitad grande de un par
 
 **Objetivo.** Un LoRA en `Qwen/Qwen3.8-27B`, QLoRA NF4, a partir del *mismo corpus* que
