@@ -113,7 +113,7 @@ def main() -> int:
     new = f"adapters/{NAME}"
     if not Path(new, "adapter_model.safetensors").exists():
         print(f"[pool] training {NAME} from {args.corpus}", flush=True)
-        rc = subprocess.call([sys.executable, "-m", "training.code.train_one", "--base", args.base,
+        rc = subprocess.call([sys.executable, "-m", "training.harness.train_one", "--base", args.base,
                               "--train", args.corpus, "--out-dir", new,
                               "--epochs", str(RECIPE["epochs"]), "--r", str(RECIPE["r"]),
                               "--alpha", str(RECIPE["lora_alpha"]), "--lr", str(RECIPE["lr"])])

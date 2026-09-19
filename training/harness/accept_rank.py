@@ -253,7 +253,7 @@ def preflight(model: str, tok, kind: str) -> dict:
     prompt = tok.apply_chat_template(
         [{"role": "system", "content": "You count."},
          {"role": "user", "content": "Count from 1 to 6, comma separated."}],
-        tokenize=False, add_generation_prompt=True)
+        tokenize=False, add_generation_prompt=True, enable_thinking=False)
     out = {"kind": kind}
     if kind in ("draft", "both"):
         chk = stop_check(model, prompt)
@@ -288,7 +288,7 @@ def draft_arm(model: str, tok, suite, cases: list, max_tokens: int, concurrency:
         base_prompt = tok.apply_chat_template(
             [{"role": "system", "content": suite.system},
              {"role": "user", "content": suite.user_text(case)}],
-            tokenize=False, add_generation_prompt=True)
+            tokenize=False, add_generation_prompt=True, enable_thinking=False)
         try:
             chain = run_chain(lambda prefix: completion(model, base_prompt + prefix,
                                                         max_tokens, suite.close),
@@ -356,7 +356,7 @@ def accept_arm(model: str, tok, suite, cases: list, drafts: list[dict], concurre
         base_prompt = tok.apply_chat_template(
             [{"role": "system", "content": suite.system},
              {"role": "user", "content": suite.user_text(case)}],
-            tokenize=False, add_generation_prompt=True)
+            tokenize=False, add_generation_prompt=True, enable_thinking=False)
         if hashlib.sha256(base_prompt.encode()).hexdigest()[:16] != d.get("prompt_sha"):
             return {"id": d["id"], "error": "the prompt is not the one the draft saw"}
         scored = []
@@ -576,7 +576,7 @@ def main() -> int:
         out_dir = f"adapters/{name}"
         if not Path(out_dir, "adapter_model.safetensors").exists():
             print(f"[rank] training {name} from {corpus}", flush=True)
-            rc = subprocess.call([sys.executable, "-m", "training.code.train_one",
+            rc = subprocess.call([sys.executable, "-m", "training.harness.train_one",
                                   "--base", args.base, "--train", corpus,
                                   "--out-dir", out_dir, "--epochs", str(args.epochs)])
             if rc != 0:

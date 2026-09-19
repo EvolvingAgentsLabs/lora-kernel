@@ -62,7 +62,7 @@ def members(host: str = HOST) -> list[str]:
 
 def _say(model: str, prompt: str, tok, max_tokens: int = 48) -> str:
     text = tok.apply_chat_template([{"role": "user", "content": prompt}],
-                                   tokenize=False, add_generation_prompt=True)
+                                   tokenize=False, add_generation_prompt=True, enable_thinking=False)
     r = post("/v1/completions", {"model": model, "prompt": text,
                                  "temperature": 0, "max_tokens": max_tokens})
     return r["choices"][0].get("text") or ""
@@ -197,7 +197,7 @@ def main() -> int:
 
     record["G3"] = stop_check(args.base, tok.apply_chat_template(
         [{"role": "user", "content": "Count from 1 to 6, comma separated."}],
-        tokenize=False, add_generation_prompt=True))
+        tokenize=False, add_generation_prompt=True, enable_thinking=False))
     print(f"[substrate] G3 stop: {record['G3']}", flush=True)
     save()
 

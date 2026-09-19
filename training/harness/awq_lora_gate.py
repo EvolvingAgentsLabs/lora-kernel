@@ -86,7 +86,8 @@ def logprob_gate(base: str, member: str, tok, probes=PROBES) -> dict:
     rows = []
     for p in probes:
         prefix = tok.apply_chat_template([{"role": "user", "content": p}],
-                                         tokenize=False, add_generation_prompt=True)
+                                         tokenize=False, add_generation_prompt=True,
+                                         enable_thinking=False)
         text = prefix + CONTINUATION
         ids = tok(text)["input_ids"]
         start = len(tok(prefix)["input_ids"]) - 1          # the BPE seam is scored too

@@ -117,8 +117,7 @@ def make_generate(model, tok, max_new_tokens: int = 64):
         msgs = [{"role": "system", "content": system},
                 {"role": "user", "content": user}]
         try:
-            text = tok.apply_chat_template(msgs, tokenize=False,
-                                           add_generation_prompt=True)
+            text = tok.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True, enable_thinking=False)
         except Exception:          # a base model with no chat template
             text = f"{system}\n\n{user}\n\n"
         ids = tok(text, return_tensors="pt").to(model.device)

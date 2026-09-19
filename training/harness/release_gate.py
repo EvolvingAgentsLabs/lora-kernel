@@ -120,7 +120,7 @@ def main() -> int:
         retrained = f"adapters/{args.name}-retrained"
         if not Path(retrained, "adapter_model.safetensors").exists():
             print(f"[release] retraining {args.name} from {args.corpus}", flush=True)
-            rc = subprocess.call([sys.executable, "-m", "training.code.train_one",
+            rc = subprocess.call([sys.executable, "-m", "training.harness.train_one",
                                   "--base", args.base, "--train", args.corpus,
                                   "--out-dir", retrained, "--epochs", str(RECIPE["epochs"]),
                                   "--r", str(RECIPE["r"]), "--alpha", str(RECIPE["lora_alpha"]),
