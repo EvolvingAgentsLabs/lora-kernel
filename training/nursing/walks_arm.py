@@ -136,7 +136,11 @@ def run_case(lib: Library, row: dict, arm: str, gen_for, max_calls: int = gw.MAX
         rec.update(calls=chain["calls"], refused=chain["refused"], malformed=chain["malformed"],
                    ran_out=chain["ran_out"], ended=conv.ended, errors=dict(conv.errors),
                    opened=len(walk["opened"]), violations=walk["violations"], retrieval=retrieval(conv, row),
-                   text=chain["text"][-1500:])
+                   # THE WHOLE WALK, AND WHICH NOTES. This kept a count and the last 1500 characters, and
+                   # the composition arm then could not prove what 6 of 140 walks had opened: they were
+                   # excluded, and the exclusion was not neutral [ran] M7-W5b. A record is what a later
+                   # arm replays; `text_full` tells a reader this one has its head. Changes no score.
+                   opened_ids=list(walk["opened"]), text=chain["text"], text_full=True)
     return rec
 
 

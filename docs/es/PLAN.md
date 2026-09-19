@@ -514,9 +514,11 @@ cantidad entrenada leyó una nota así (0 de 108), y el adaptador responde el pr
 se pide el primero, 0/11 cuando se pide el segundo, el base que lee acierta las 12. Ocho son
 `carry/middle-find`, donde el base también falla 5. La navegación sí se transfirió: 0 fallos de
 recuperación en el titular, 3 verbos rechazados en 140 recorridos contra 368, control 58/60 contra 41/60.
-Rediseños: 0; el corrector no se toca. **Sigue, a decisión del usuario:** composición — el adaptador
-recorre, el base pelado escribe la línea final — una sesión L4, sin entrenar; después, si se compra, un
-corpus que muestre notas de dos valores, medido sobre un conjunto retenido nuevo
+Rediseños: 0; el corrector no se toca. **La composición — el adaptador recorre, el base pelado escribe la línea final — [ran] W5b: quedan 0 de
+las 12 fallas de cantidad, y en todo lo que al adaptador se le enseñó el base lee peor (control 39 contra 58), así
+que es atribución, no un diseño de servicio. Sigue, a decisión del usuario:** una biblioteca y un corpus que
+muestren notas de dos valores dentro de procedimientos entrenados, los dos adaptadores reentrenados, medido sobre
+un conjunto retenido nuevo
 ([`BRIEF`](../../results/M7-W5-kill-arm-20260919/BRIEF.md)).
 
 **W5, tal como se construyó y pre-registró.** `training/nursing/walks_arm.py`: `base-reads` (base
@@ -568,6 +570,13 @@ Las cuatro que deciden la forma de un paso:
 - **2026-09-19** — memoria **W5 [ran]: no pasa tal como está escrito.** Titular 35/56 contra el base sin entrenar que
   lee, 45/56 (6 : 16, $p=0{,}052$); 35 : 2 sobre sin-biblioteca, 35 : 0 sobre el base navegando solo. 12 de 21 fallas
   son el segundo de dos valores en un tipo de nota que el corpus nunca mostró. La navegación se transfirió; esa lectura no.
+- **2026-09-19** — memoria **W5b [ran]: el diagnóstico se sostiene, y la composición no es un diseño de servicio.**
+  Los recorridos grabados de `withlib` reproducidos, el base pelado escribe la línea final: quedan **0 de las 12**
+  fallas de cantidad con recorrido limpio; `composed` 41/54, exactamente su techo sin GPU; 12 : 4 contra `withlib`
+  ($p=0{,}077$, empate), 1 : 5 contra `base-reads`; `carry/middle-find` quedan 8 de 8. Pero en lo que al adaptador
+  se le enseñó, lee mucho mejor que el base — control 58 contra 39 (0 : 19), línea compartida 15 contra 8.
+  El lector falla en una forma que su corpus nunca mostró; las dos notas de dos valores de la biblioteca están en
+  el procedimiento retenido. El veredicto de W5 queda ([`BRIEF`](../../results/M7-W5b-composition-20260919/BRIEF.md)).
 - **2026-09-19** — el evaluador de W4 reemplazado tras una revisión adversarial (rediseño 2: fallaba con una paráfrasis y
   aprobaba con un número señuelo); **W5 construido y pre-registrado**, primero la sesión de margen, titular n = 56, piso 3/56. Sin correr.
 - **2026-09-19** — memoria **W2 [ran]: PASÓ.** El runtime, las capas y la guarda sobre el loop de modo corpus sin tocarlo;
