@@ -1,0 +1,144 @@
+{
+ "attempt": 2,
+ "redesign": "1 of 3: frame/slot by document frequency + frame coverage",
+ "params": {
+  "alpha": 0.1,
+  "window": 8,
+  "percentile": 1.0,
+  "held_out": 0.2,
+  "frame_df": 0.5
+ },
+ "built_seconds": 0.063,
+ "members": {
+  "desk-commitment": {
+   "frame_tokens": 39,
+   "frame_bigrams": 44,
+   "tau": -2.53849574268448,
+   "kappa": 0.75
+  },
+  "email-full": {
+   "frame_tokens": 21,
+   "frame_bigrams": 19,
+   "tau": -2.607554202638488,
+   "kappa": 1.0
+  }
+ },
+ "sets": {
+  "A": 715,
+  "B": 240,
+  "C": 14,
+  "D": 76,
+  "E": 120
+ },
+ "dictionary": {
+  "A": {
+   "n": 715,
+   "local_right_member": 715,
+   "misrouted_to_local": 0,
+   "lost_local": 0,
+   "abstained": 0
+  },
+  "B": {
+   "n": 240,
+   "local_right_member": 109,
+   "misrouted_to_local": 0,
+   "lost_local": 131,
+   "abstained": 0
+  },
+  "C": {
+   "n": 14,
+   "local_right_member": 0,
+   "misrouted_to_local": 13,
+   "lost_local": 0,
+   "abstained": 1
+  },
+  "D": {
+   "n": 76,
+   "local_right_member": 0,
+   "misrouted_to_local": 0,
+   "lost_local": 0,
+   "abstained": 76
+  },
+  "E": {
+   "n": 120,
+   "local_right_member": 0,
+   "misrouted_to_local": 47,
+   "lost_local": 0,
+   "abstained": 73
+  }
+ },
+ "corpus_router": {
+  "A": {
+   "n": 715,
+   "local_right_member": 715,
+   "misrouted_to_local": 0,
+   "lost_local": 0,
+   "abstained": 0
+  },
+  "B": {
+   "n": 240,
+   "local_right_member": 15,
+   "misrouted_to_local": 0,
+   "lost_local": 225,
+   "abstained": 0
+  },
+  "C": {
+   "n": 14,
+   "local_right_member": 0,
+   "misrouted_to_local": 0,
+   "lost_local": 0,
+   "abstained": 14
+  },
+  "D": {
+   "n": 76,
+   "local_right_member": 0,
+   "misrouted_to_local": 0,
+   "lost_local": 0,
+   "abstained": 76
+  },
+  "E": {
+   "n": 120,
+   "local_right_member": 0,
+   "misrouted_to_local": 16,
+   "lost_local": 0,
+   "abstained": 104
+  }
+ },
+ "corpus_router_first_with_tie_bug": {
+  "A": {
+   "n": 715,
+   "local_right_member": 655,
+   "misrouted_to_local": 0,
+   "lost_local": 60,
+   "abstained": 0
+  },
+  "B": {
+   "n": 240,
+   "local_right_member": 15,
+   "misrouted_to_local": 0,
+   "lost_local": 225,
+   "abstained": 0
+  },
+  "C": {
+   "n": 14,
+   "local_right_member": 0,
+   "misrouted_to_local": 0,
+   "lost_local": 0,
+   "abstained": 14
+  },
+  "D": {
+   "n": 76,
+   "local_right_member": 0,
+   "misrouted_to_local": 0,
+   "lost_local": 0,
+   "abstained": 76
+  },
+  "E": {
+   "n": 120,
+   "local_right_member": 0,
+   "misrouted_to_local": 16,
+   "lost_local": 0,
+   "abstained": 104
+  }
+ }
+}

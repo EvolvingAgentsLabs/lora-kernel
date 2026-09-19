@@ -1,0 +1,95 @@
+{
+ "params": {
+  "alpha": 0.1,
+  "window": 8,
+  "percentile": 1.0,
+  "held_out": 0.2
+ },
+ "built_seconds": 0.063,
+ "vocab": 133,
+ "tau": {
+  "desk-commitment": -3.212205284900927,
+  "email-full": -3.1353433646495543
+ },
+ "sets": {
+  "A": 715,
+  "B": 240,
+  "C": 14,
+  "D": 76,
+  "E": 120
+ },
+ "dictionary": {
+  "A": {
+   "n": 715,
+   "local_right_member": 715,
+   "misrouted_to_local": 0,
+   "lost_local": 0,
+   "abstained": 0
+  },
+  "B": {
+   "n": 240,
+   "local_right_member": 109,
+   "misrouted_to_local": 0,
+   "lost_local": 131,
+   "abstained": 0
+  },
+  "C": {
+   "n": 14,
+   "local_right_member": 0,
+   "misrouted_to_local": 13,
+   "lost_local": 0,
+   "abstained": 1
+  },
+  "D": {
+   "n": 76,
+   "local_right_member": 0,
+   "misrouted_to_local": 0,
+   "lost_local": 0,
+   "abstained": 76
+  },
+  "E": {
+   "n": 120,
+   "local_right_member": 0,
+   "misrouted_to_local": 47,
+   "lost_local": 0,
+   "abstained": 73
+  }
+ },
+ "corpus_router": {
+  "A": {
+   "n": 715,
+   "local_right_member": 698,
+   "misrouted_to_local": 0,
+   "lost_local": 17,
+   "abstained": 0
+  },
+  "B": {
+   "n": 240,
+   "local_right_member": 0,
+   "misrouted_to_local": 0,
+   "lost_local": 240,
+   "abstained": 0
+  },
+  "C": {
+   "n": 14,
+   "local_right_member": 0,
+   "misrouted_to_local": 0,
+   "lost_local": 0,
+   "abstained": 14
+  },
+  "D": {
+   "n": 76,
+   "local_right_member": 0,
+   "misrouted_to_local": 0,
+   "lost_local": 0,
+   "abstained": 76
+  },
+  "E": {
+   "n": 120,
+   "local_right_member": 0,
+   "misrouted_to_local": 0,
+   "lost_local": 0,
+   "abstained": 120
+  }
+ }
+}
