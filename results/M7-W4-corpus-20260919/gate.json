@@ -1,0 +1,149 @@
+{
+  "library": "knowledge/nursing-iv",
+  "held_out": "nursing-iv/harness/discontinue-iv",
+  "held_out_only_notes": 17,
+  "rows": {
+    "train": 600,
+    "train_nolib": 600,
+    "eval_heldout": 80,
+    "eval_control": 60
+  },
+  "G1_value_in_statement": {},
+  "G2_evaluated_walk_in_corpus": {},
+  "G3_held_out_opened": {},
+  "G4_not_accepted_by_the_referee": {},
+  "no_library_arm_is_the_same_cases": true,
+  "suite_gates": [
+    {
+      "gate": "region_not_in_the_prompt",
+      "passed": true,
+      "waived_for": null,
+      "detail": "a keyword rule recovers the region 0.575 of the time against 0.250 chance over 4 regions (limit 0.625)"
+    },
+    {
+      "gate": "has_a_difficulty_axis",
+      "passed": true,
+      "waived_for": null,
+      "detail": "10 distinct depths {0: 62, 1: 154, 2: 190, 3: 52, 4: 29, 5: 38, 6: 23, 7: 4, 8: 24, 9: 24}"
+    },
+    {
+      "gate": "depth_is_not_the_region",
+      "passed": false,
+      "waived_for": "`none` is the family whose right walk opens nothing: depth 0 is its definition, not a shortcut to it — the other three span 1 to 10 opens",
+      "detail": "1 of 4 regions sit at one depth: ['none']"
+    },
+    {
+      "gate": "asking_is_a_decision",
+      "passed": true,
+      "waived_for": null,
+      "detail": "3 tools in the suite; 0.552 of cases need two or more"
+    },
+    {
+      "gate": "base_not_at_the_ceiling",
+      "passed": null,
+      "waived_for": null,
+      "detail": "P42: the base scored 0.815 where the adapter scored 0.825. Run the base first; a suite it already passes cannot show a treatment anything."
+    },
+    {
+      "gate": "base_not_on_the_floor",
+      "passed": null,
+      "waived_for": null,
+      "detail": "P45's mirror: if every case is above the treatment's floor every arm fails and the failure reads as 'the approach does not work'."
+    },
+    {
+      "gate": "no_region_is_saturated",
+      "passed": null,
+      "waived_for": null,
+      "detail": "P49: `team` scored 1.000 against the base's 0.967 while the other two had room. A saturated region dilutes every average it enters."
+    },
+    {
+      "gate": "the_input_can_support_ranking",
+      "passed": null,
+      "waived_for": null,
+      "detail": "P46: group the cases by what a predictor can see; if one group holds them all, the best possible confidence is a constant and orders nothing."
+    }
+  ],
+  "variants": {
+    "quantity/step": 53,
+    "rate/pump-step": 34,
+    "carry/middle-page-fallback": 54,
+    "rate/gravity-wiki-parent": 17,
+    "none/2-search": 35,
+    "rate/pump-wiki": 13,
+    "carry/start": 42,
+    "carry/middle": 100,
+    "none/1-search": 27,
+    "quantity/wiki": 30,
+    "rate/gravity-step": 43,
+    "rate/pump-wiki-parent": 11,
+    "carry/middle-find": 90,
+    "quantity/wiki-parent": 25,
+    "rate/gravity-wiki": 26
+  },
+  "eval_variants": {
+    "eval_heldout: carry/start": 12,
+    "eval_heldout: carry/middle": 25,
+    "eval_heldout: carry/middle-find": 20,
+    "eval_heldout: quantity/step": 12,
+    "eval_heldout: quantity/wiki": 6,
+    "eval_heldout: quantity/wiki-parent": 5,
+    "eval_control: carry/middle": 18,
+    "eval_control: carry/middle-find": 5,
+    "eval_control: carry/start": 1,
+    "eval_control: quantity/step": 6,
+    "eval_control: quantity/wiki": 4,
+    "eval_control: quantity/wiki-parent": 3,
+    "eval_control: rate/gravity-step": 3,
+    "eval_control: rate/gravity-wiki": 3,
+    "eval_control: rate/gravity-wiki-parent": 2,
+    "eval_control: rate/pump-step": 3,
+    "eval_control: rate/pump-wiki": 2,
+    "eval_control: rate/pump-wiki-parent": 2,
+    "eval_control: none/2-search": 4,
+    "eval_control: none/1-search": 4
+  },
+  "families": {
+    "quantity": 108,
+    "rate": 144,
+    "carry": 286,
+    "none": 62
+  },
+  "depth_mix_opens": {
+    "0": 62,
+    "1": 154,
+    "2": 190,
+    "3": 52,
+    "4": 29,
+    "5": 38,
+    "6": 23,
+    "7": 4,
+    "8": 24,
+    "9": 24
+  },
+  "dead_ends": 24,
+  "rows_with_more_than_one_search": 94,
+  "not_in_my_library": 62,
+  "held_out_note_shown_in_a_result": 89,
+  "layers": {
+    "site": 66,
+    "case": 26,
+    "textbook": 16
+  },
+  "dropped": {
+    "unreachable": 0,
+    "duplicate": 393,
+    "walk_cap": 0,
+    "too_long": 0,
+    "drawn": 1042
+  },
+  "unreachable_share": 0.0,
+  "tokens_proxy": {
+    "min": 252,
+    "median": 464,
+    "max": 1085,
+    "limit": 1150,
+    "max_seq": 1536,
+    "over": []
+  },
+  "passed": true
+}

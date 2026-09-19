@@ -363,6 +363,11 @@ layer, guard verdict, tokens. It is what every measurement in §9 is computed fr
 material of the episodic memory of the design document (§7) — logged in 1.0, consolidated later.
 Whether a customer's log may keep note *content* or only *shapes* is a setting, default shapes.
 
+**Carried over, W4 [ran].** A walk longer than a context is served in windows, and a window entered in
+the middle needs what `strict` needs — the steps already done — and an id to go on from. The referee
+resumes from this record: `Conversation.resume(done)` counts those steps as opened and renders the **last
+page** again, ids re-drawn, to stand in the turn that continues. The corpus calls it; nothing imitates it.
+
 ---
 
 ## 6. In operation — one task, end to end

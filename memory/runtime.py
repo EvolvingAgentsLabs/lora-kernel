@@ -127,6 +127,29 @@ class Conversation:
             self.opaque[note_id], self.shown[o] = o, note_id
         return self.opaque[note_id]
 
+    # ---- a walk carried over from an earlier turn ------------------------------------------
+    def resume(self, done: list[str]) -> str:
+        """Carry a walk over: `done` were opened before this conversation, in that order.
+
+        A WINDOW ENTERED IN THE MIDDLE NEEDS WHAT `strict` NEEDS — the steps already done — and an
+        id to go on from, which exists only once a result has shown it. So the referee resumes from
+        its own record (§5.4): the steps count as opened, and the LAST PAGE is rendered again, ids
+        re-drawn for this conversation, to stand in the turn that continues the walk. Returned
+        exactly as the loop would have written it, `<open>id</open>= page`, so a corpus that shows a
+        carried page calls this and imitates nothing **[spec]** W4. Nothing is carried: `""`.
+        """
+        if self.opened or self.log:
+            raise RuntimeError("resume() starts a conversation; this one has already begun")
+        for i in done:
+            self.lib[i]                                    # a record naming no note is a bug: raise
+        self.opened = list(done)
+        if not done:
+            return ""
+        last = self.lib[done[-1]]
+        page = self._render(last, (self.case or {}).get(last.id))
+        self._log("resume", "", note=last.id, guard="ok", carried=len(done), tokens=count_tokens(page))
+        return f"<open>{self._id(last.id)}</open>= {page}"
+
     # ---- the verbs -------------------------------------------------------------------------
     def answer(self, verb: str, raw: str) -> str:
         """The text written after `= `. Never raises for something the expert did."""

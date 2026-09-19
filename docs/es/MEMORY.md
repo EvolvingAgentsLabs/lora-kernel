@@ -363,6 +363,12 @@ prima de la memoria episódica del documento de diseño (§7) — registrada en 
 Si el registro de un cliente puede guardar el *contenido* de una nota o sólo sus *formas* es una configuración,
 con formas como default.
 
+**Llevado de un turno a otro, W4 [ran].** Un recorrido más largo que un contexto se sirve en ventanas, y una
+ventana que entra por el medio necesita lo que necesita `strict` — los pasos ya hechos — y un id desde el
+cual seguir. El árbitro retoma desde este registro: `Conversation.resume(done)` cuenta esos pasos como
+abiertos y vuelve a renderizar la **última página**, con los ids sorteados de nuevo, para que esté en el
+turno que continúa. El corpus lo llama; nada lo imita.
+
 ---
 
 ## 6. En operación — una tarea, de punta a punta

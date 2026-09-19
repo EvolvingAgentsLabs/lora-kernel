@@ -438,6 +438,24 @@ recall@10 0.830), 16 past rank 10, four of which collapse inside their own shelf
 is not reshaped (redesigns: 0). Two consequences: **W5 counts a retrieval miss apart from the expert's score** — or
 runs on the oracle's search results — and the gap belongs to **W6 (R1)**, measured on new query sets, never on P again.
 
+**W4 [ran] 2026-09-19 — the corpus of the habit: PASSED.** `training/nursing/generate_walks.py` writes no
+observation itself: every row is a plan *driven through* `memory/runtime.py` inside `run_chain`, the verb
+block by `render_tools` (`memory/prompt.py`, the one place a member's prompt is written), the carried page by
+`Conversation.resume`. Gate, per row, with $V$ the values read off a slot or a `<calc>` and $N$ the numbers a
+statement states: $V(r)\cap N(r)=\varnothing$ — **0** of 740; no evaluated walk or case in the corpus — **0**
+of 140; no open of the 17 notes that are `discontinue-iv`'s alone — **0** of 600; every row reproduced byte
+for byte by the referee in `strict` — **0** failures; each clause broken once by a test. 600 rows over four
+families (carry 286 · rate 144 · quantity 108 · *not in my library* 62), 0 to 9 notes opened, 24 deliberate
+dead ends, and the same 600 cases with no verbs as W5's second arm. **Held out: `discontinue-iv`** — the two
+infusions share 11 source lines nearly word for word, so either would score a memorised sibling; removal
+shares 4 and 6 generic lines, and the 24 of its 80 evaluation walks that end on one are marked. **A 32-step
+walk does not fit `max_seq` 1536 and is not truncated:** a task is a window of 1–8 steps, and one entered in
+the middle carries its state — by the referee's last page, or by finding its place through the skeleton and
+a search (two verbs; following a page is one, and one tool is copying **[ran]** P13). Longest row 1 298
+tokens under the base's tokenizer. One redesign, of G2's statement clause, recorded in the brief. Next is
+**W5**, the arm that can kill the memory; if R0 wins W3 the corpus is regenerated with the index first
+([`BRIEF`](../results/M7-W4-corpus-20260919/BRIEF.md)).
+
 ## 2. The family, and the alternative
 
 **Adopted: Qwen 3.x.** `Qwen3.5-2B/4B` and `Qwen3.8-27B` share one id space — 248,044 ids,
@@ -471,6 +489,9 @@ that decide the shape of a step:
 
 ## 5. History
 
+- **2026-09-19** — memory **W4 [ran]: PASSED.** The corpus generator drives the runtime: 600 walks, 0 values in a
+  statement, 0 evaluated cases in the corpus, 0 held-out opens, 0 rows the referee does not reproduce; `discontinue-iv`
+  held out; long walks are windows with the state carried. No model yet.
 - **2026-09-19** — memory **W2 [ran]: PASSED.** The runtime, layers and guard on the unchanged corpus-mode loop;
   72/72 oracle walks, 0 refused, three violating walks cut in `strict`. No model yet.
 - **2026-09-19** — memory **W3 built, headroom [ran]:** the index, a query set written after the freeze (P 94, E 72),
