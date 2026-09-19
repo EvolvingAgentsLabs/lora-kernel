@@ -2848,6 +2848,20 @@ Quedan registradas tres cosas y no se compra ninguna:
 - **A 27B el documento de procedimiento tampoco ayuda [read]** — no asumir que el hito
   7 rescata el brazo de sólo-harness; `knowledge_arm` sobre el 32B lo mide.
 
+### Pre-registrado 2026-09-18: D2 — C18 leído como un desajuste de nombres, y el brazo que lo prueba
+
+Brief: [`results/D2-rekey-20260918/BRIEF.md`](../../results/D2-rekey-20260918/BRIEF.md).
+Leído sin GPU en vLLM v0.29.0 y en el log de P33 **[read]**: el adaptador, entrenado por
+`AutoModelForCausalLM`, nombra sus tensores `model.layers.N…`; vLLM sirve
+`Qwen3_5ForConditionalGeneration` y su mapper sólo reescribe `model.language_model.`.
+La carga valida el último componente de cada nombre y loguea *Loaded*; la activación
+busca el nombre completo, no encuentra nada y resetea el slot detrás de un `logger.debug`.
+Con $\text{applied}(K)=\{k\in K: m(k)\in M\}$, tal como se entrenó $|\text{applied}|=0$;
+renombrado, predicho $|K|$. `lora_matrix --rekey` compra el brazo renombrado **sólo si
+falla el G2 del sujeto**, con el control al lado y las líneas de activación contadas en
+DEBUG. Lo falsifica un G2r `not applied`. Esto reemplaza al brazo de sólo
+`q_proj,v_proj` registrado arriba. Contador de rediseños de D2: 0.
+
 ## 12. Historia
 
 | fecha | cambio a este plan | por qué |
