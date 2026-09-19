@@ -1,0 +1,13 @@
+=== session 1 of 1 · srv085143 · A100
+    boot clone: rc=0 1b6e71d M1 attempt 1 [ran]: no verdict — the chain gave up a live session on one silent probe; three harness fixes, the question unchanged
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 1b6e71d M1 attempt 1 [ran]: no verdict — the chain gave up a live session on one silent probe; three harness fixes, the question unchanged
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.29.0
+    1b6e71d M1 attempt 1 [ran]: no verdict — the chain gave up a live session on one silent probe; three harness fixes, the question unchanged | 0.29.0
+    this module trains its own adapter — nothing to carry in
+    [pool] training email-full on Qwen/Qwen3.5-4B from training/harness/data_ef/train.jsonl
+    [train] adapters/email-full-q35 from 598 examples

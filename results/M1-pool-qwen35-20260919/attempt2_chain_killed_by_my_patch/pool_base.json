@@ -1,0 +1,21 @@
+{
+ "base": "Qwen/Qwen3.5-4B",
+ "recipe": {
+  "r": 16,
+  "lora_alpha": 32,
+  "epochs": 3,
+  "lr": 0.0002,
+  "batch": 2,
+  "accum": 8,
+  "max_seq": 1536,
+  "seed": 0,
+  "targets": "q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"
+ },
+ "started": "2026-09-19T11:58:16",
+ "arms": {},
+ "G1": {},
+ "G2": {},
+ "G2_auto": {},
+ "pairs": {},
+ "members": {}
+}

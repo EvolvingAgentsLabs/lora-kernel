@@ -439,6 +439,15 @@ class Handler(BaseHTTPRequestHandler):
             req["stop"] = stop + [s_ for s_ in stop_for(tools, kept_names) if s_ not in stop]
             req["include_stop_str_in_output"] = True
 
+        # THE THINKING CHANNEL IS OFF FOR A MEMBER. The 3.x line's template renders a
+        # training example's assistant turn behind an *empty* `<think>` block, and its
+        # default generation prompt leaves the block open: a member trained on the first
+        # and served the second starts somewhere its corpus never was, and a bare base
+        # thinks until its tokens run out — which scores as a floor [read] 2026-09-19,
+        # rendered from the published template. With this the served prompt is an exact
+        # prefix of the trained text. A template with no such switch (Qwen 2.5) ignores it.
+        req.setdefault("chat_template_kwargs", {}).setdefault("enable_thinking", False)
+
         try:
             up = _fetch("/v1/chat/completions", req)
         except urllib.error.HTTPError as e:

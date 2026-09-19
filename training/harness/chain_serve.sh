@@ -160,6 +160,15 @@ PY
     echo "      RUN_DIR=$RUN_DIR ARGS= training/harness/chain_separate.sh 2"
     exit 1
   fi
+  # THE PARTIAL RESULTS GO IN WITH THE WEIGHTS. A session lives sixty minutes [ran] 2026-09-19, so
+  # a run longer than that is several sessions, and a runner resumes from its own results file —
+  # which a new VM does not have unless it is put there. `"trained_only"` is a marker of the LAST
+  # session's end, not of this one's, and is taken out on the way in.
+  if [ -f "$LOCAL" ] && ! grep -q '"finished"' "$LOCAL" 2>/dev/null; then
+    python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); d.pop("trained_only",None); json.dump(d,open(sys.argv[2],"w"),indent=1)' "$LOCAL" /tmp/_resume.json
+    tmo 300 colab upload -s "$S" /tmp/_resume.json "/content/lora-kernel/$RESULTS_NAME" >/dev/null 2>&1 \
+      && echo "    carried the partial results in" || echo "    could not carry the partial results in"
+  fi
   if [ -z "${SKIP_ADAPTERS:-}" ]; then
     upload_big "$S" "$ADAPTERS" /content/lora-kernel/adapters.tgz \
         || { echo "    adapters did not upload"; exit 1; }
@@ -184,31 +193,58 @@ print(subprocess.run(
     # showed as silence for its whole length and could not have been stopped
     # early [ran] 2026-09-14. Fifth time a log held the answer and a filter
     # kept it out, so tests/test_chain_scripts.py now checks the two agree.
-    "grep -E '(serve|gate|tiny|native|matrix|run|arm|resume|cost|domain|P24|sweep|depth|fluids|sim|pool|judge|conf|shim|tunnel|3p|read|skip|train|corpora|draft|desk|zero|code|rank|substrate|release|attr|sim|awq|tiny|precision|kb|route|live)\\]|"
+    "grep -E '(serve|gate|tiny|native|matrix|run|arm|resume|cost|domain|P24|sweep|depth|fluids|sim|pool|judge|conf|shim|tunnel|3p|read|skip|train|loss|corpora|draft|desk|zero|code|rank|substrate|release|attr|sim|awq|tiny|precision|kb|route|live)\\]|"
     "passed [0-9]+|clears the gate|prompts/s|Traceback|[Ee]rror|OutOfMemory|Killed' "
     "/content/lora-kernel/run.log | tail -3", shell=True,
     capture_output=True, text=True).stdout)
 PY
   printf 'print("ALIVE")\n' > /tmp/_valive.py
   QUIET=0
+  DEAF=0
+  HOME_PACKS=0
   for _ in $(seq 1 120); do
     out=$(tmo 300 colab exec -s "$S" -f /tmp/_vpeek.py 2>/dev/null | grep -vE "^\[colab\]|^$" || true)
     if [ -n "$out" ]; then echo "$out" | sed "s/^/    /" | tail -3; QUIET=0; else
       QUIET=$((QUIET + 1))
       if [ "$QUIET" -ge 6 ]; then
         A=$(tmo 300 colab exec -s "$S" -f /tmp/_valive.py 2>/dev/null | grep -c ALIVE || true)
-        [ "$A" = "0" ] && { echo "    $S is not answering — giving up on it"; break; }
+        # ONE SILENT PROBE IS NOT A DEAD SESSION. An expired `colab exec` is not a failed
+        # command (CLAUDE.md §3), and giving up here *stops the session*: M1's first
+        # attempt trained a member for fifty minutes in silence, one probe went
+        # unanswered, and the chain ended a run whose second training had just begun
+        # [ran] 2026-09-19. Three in a row, a minute apart, before a card is given up.
+        if [ "$A" = "0" ]; then
+          DEAF=$((DEAF + 1))
+          echo "    $S did not answer a probe ($DEAF of 3)"
+          [ "$DEAF" -ge 3 ] && { echo "    $S is not answering — giving up on it"; break; }
+          sleep 60; continue
+        fi
+        DEAF=0
         QUIET=0
       fi
     fi
     tmo 300 colab download -s "$S" /content/lora-kernel/$RESULTS_NAME "$LOCAL" >/dev/null 2>&1 || true
+    # WEIGHTS COME HOME WHEN THEY EXIST, NOT WHEN THE RUN ENDS. A runner that trains more
+    # than one adapter says so in its results file (`"packed": n`) each time it repacks
+    # `adapters_out.tgz`; fetched only at the end, fifty minutes of training died with
+    # the session that held it [ran] 2026-09-19. A checkpoint nobody downloads is a
+    # checkpoint nobody has — and a dead session gives nothing back.
+    # `|| true` IS THE LINE. Under `set -euo pipefail` a grep that finds nothing exits 1 and
+    # takes the chain with it — and the EXIT trap then stops the card. Attempt 2 of M1 died
+    # on its first poll exactly so, before the key this looks for could exist [ran]
+    # 2026-09-19. `bash -n` cannot see it; tests/test_chain_scripts.py runs this line.
+    PACKS=$(grep -o '"packed": *[0-9]*' "$LOCAL" 2>/dev/null | grep -o '[0-9]*$' | tail -1 || true)
+    if [ -n "${PACKS:-}" ] && [ "$PACKS" -gt "$HOME_PACKS" ]; then
+      tmo 900 colab download -s "$S" /content/lora-kernel/adapters_out.tgz "$RUN_DIR/adapters_out.tgz" >/dev/null 2>&1 \
+        && { HOME_PACKS=$PACKS; echo "    adapters home: $PACKS packed"; } || true
+    fi
     # THE WATCH LOOP HAS TO KNOW EVERY WAY A RUN ENDS, not the ways the first
     # runner ended. triage_run finishes by printing its arm table and nothing here
     # matched it, so a completed 150-case run held an L4 for the loop's full 120
     # iterations — ninety minutes of a card for a result already on disk
     # [ran] 2026-09-14. The results file is the authority: if the runner wrote its
     # completion marker, the run is over whatever the log looks like.
-    if [ -f "$LOCAL" ] && grep -q '"finished"\|"decision"\|stopped_at_gate' "$LOCAL" 2>/dev/null; then
+    if [ -f "$LOCAL" ] && grep -q '"finished"\|"decision"\|stopped_at_gate\|"trained_only"' "$LOCAL" 2>/dev/null; then
       echo "    the runner wrote its result — done"; break
     fi
     echo "$out" | grep -qE "prompts/s|decision:|clears the gate|STOPPED|Traceback|OutOfMemory|Killed|never came up" && break
