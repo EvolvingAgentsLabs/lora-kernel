@@ -68,7 +68,7 @@ like a floor.
 **Abort rule.** No `[radar] probe` line within 12 minutes of boot → stop the session. A probe whose
 paraphrase cosine does not exceed its unrelated cosine → stop: the encoder or the pooling is broken.
 
-**Launch (not run yet — one chain at a time, and another run holds it):**
+**Launch (as run, 2026-09-19):**
 
 ```bash
 GPU=L4 BRANCH=main RUN_DIR=results/M7-W3-radar-r0-20260919 MODULE=training.nursing.radar_r0 \
@@ -81,3 +81,41 @@ not. A second reshaping of the set or the standard after an R0 number is seen en
 
 **Not measured:** whether an *expert* writes a query like P's (W5); retrieval mid-walk, where `next`
 links do the work; any other library; R1.
+
+## Result **[ran]** 2026-09-19 · NOT PASSED — R0 beats a word-matcher and is not enough
+
+One Colab L4 session, ~8 minutes (the first boot attempt did not take and the chain retried; the
+scoring itself took 30 seconds). Encoder `Qwen/Qwen3-Embedding-0.6B`. Probe: paraphrase cosine
+**0.4019** against unrelated **0.2326** — the encoder and the pooling are alive. Read off
+`radar_r0.json`. $\text{recall@}k = \lvert\{q : \operatorname{rank}_q \le k\}\rvert / \lvert Q\rvert$.
+
+| arm | set | n | recall@1 | **recall@3** | MRR | unranked |
+|---|---|--:|--:|--:|--:|--:|
+| lexical | P | 94 | 0.043 | 0.064 | 0.090 | 56 |
+| **R0, β = 0.5** | **P** | 94 | 0.255 | **0.638** | 0.463 | 0 |
+| R0, β = 0 (`when:` only) | P | 94 | 0.223 | 0.362 | 0.352 | 0 |
+| R0, β = 0.5, inside the target's shelf | P | 94 | 0.319 | 0.702 | 0.530 | 0 |
+| lexical | E | 72 | 0.014 | 0.125 | 0.210 | 3 |
+| R0, β = 0.5 | E | 72 | 0.125 | 0.125 | 0.218 | 0 |
+
+Paired on P, needed note in the top 3, exact two-sided sign test on discordant pairs,
+$p = 2\sum_{k\le\min(b,c)}\binom{b+c}{k}2^{-(b+c)}$: **R0 against lexical 56 : 2** ($p \approx 0$);
+β = 0.5 against β = 0, **30 : 4** ($p \approx 10^{-5}$) — the `what:` term earns its place. On E
+(4 targets, not gated) 1 : 1, a tie.
+
+**The verdict, as written before the run:** R0 wins the pair and **0.638 < 0.80**. W3 is not passed.
+The standard is not loosened and the set is not reshaped. **Redesign count: 0.**
+
+**Where the 34 misses sit (zero GPU, the per-query ranks).** Rank 1–3: 60 · 4–6: **13** · 7–10: 5 ·
+11–20: 7 · 21+: 9. So recall@6 = 0.777 and recall@10 = 0.830: about half the misses are *near* — a
+wider $k$ or a re-rank reaches them — and half are *far*, which is representation and is what R1's
+learned projection is for. Four of the far ones collapse inside their own shelf (P-73 26 → 5, P-84
+42 → 4, P-91 9 → 1, P-92 16 → 1): cross-shelf confusion, which the `shelf=` argument the verb
+already takes removes.
+
+**What follows.** (1) **W5 must not blame the expert for a note it was never shown:** its arms either
+run on the oracle's search results or report retrieval misses as their own count, beside the score.
+(2) The gap is W6's — R1, the projection trained on the oracle walks' (query, note) pairs — and it is
+measured on **new** query sets, never on P, which has now been looked at. (3) On E every searcher is
+at 0.125: four near-identical "first notes" are not separable by the question's stem, by words or
+by vectors; that set says nothing about the radar and stays beside the gate.

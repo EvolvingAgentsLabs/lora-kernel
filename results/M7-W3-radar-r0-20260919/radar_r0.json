@@ -1,0 +1,3731 @@
+{
+ "library": "knowledge/nursing-iv",
+ "notes": 94,
+ "k": 3,
+ "beta": 0.5,
+ "sets": {
+  "P": {
+   "n": 94,
+   "targets": 94,
+   "overlap": {
+    "n": 94,
+    "mean": 0.0392,
+    "median": 0.0,
+    "max": 0.2857,
+    "zero": 56
+   }
+  },
+  "E": {
+   "n": 72,
+   "targets": 4,
+   "overlap": {
+    "n": 72,
+    "mean": 0.1919,
+    "median": 0.1818,
+    "max": 0.3636,
+    "zero": 3
+   }
+  }
+ },
+ "queries": {
+  "P": [
+   {
+    "id": "P-00",
+    "query": "The doctor says the cannula in her forearm can come out today. How do I go about it?",
+    "target": "nursing-iv/harness/discontinue-iv",
+    "overlap": 0.0769
+   },
+   {
+    "id": "P-01",
+    "query": "What do I need to collect from the store room before I take a cannula out?",
+    "target": "nursing-iv/harness/discontinue-iv/01-gather-supplies",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-02",
+    "query": "I've walked in with everything for taking the cannula out. What comes before I touch anything?",
+    "target": "nursing-iv/harness/discontinue-iv/02-safety-steps",
+    "overlap": 0.0833
+   },
+   {
+    "id": "P-03",
+    "query": "I know it's the right person, the cannula is still in. What do I lay out within reach?",
+    "target": "nursing-iv/harness/discontinue-iv/03-prepare-gauze",
+    "overlap": 0.0769
+   },
+   {
+    "id": "P-04",
+    "query": "Swabs and sticky strips are laid out. Fluid could still run through the cannula \u2014 what now?",
+    "target": "nursing-iv/harness/discontinue-iv/04-clamp-iv",
+    "overlap": 0.0769
+   },
+   {
+    "id": "P-05",
+    "query": "Flow is shut off. Which way do I lift the clear film covering the cannula?",
+    "target": "nursing-iv/harness/discontinue-iv/05-loosen-dressing",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-06",
+    "query": "The film is lifted. At what angle do I slide the cannula out, and what do I cover it with?",
+    "target": "nursing-iv/harness/discontinue-iv/06-withdraw-catheter",
+    "overlap": 0.1
+   },
+   {
+    "id": "P-07",
+    "query": "It's out and oozing. How many minutes do I press, and what if he takes warfarin?",
+    "target": "nursing-iv/harness/discontinue-iv/07-hold-pressure",
+    "overlap": 0.1429
+   },
+   {
+    "id": "P-08",
+    "query": "Could the tip have snapped off inside? What do I look at once I'm done pressing?",
+    "target": "nursing-iv/harness/discontinue-iv/08-inspect-catheter",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-09",
+    "query": "The oozing has settled. Redness, warmth, pus \u2014 when do I look for those where the cannula was?",
+    "target": "nursing-iv/harness/discontinue-iv/09-assess-site",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-10",
+    "query": "The skin looks clean and healthy where the cannula was. What do I cover it with?",
+    "target": "nursing-iv/harness/discontinue-iv/10-dress-site",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-11",
+    "query": "The plaster is on after taking the cannula out. What do I do for the person before tidying up?",
+    "target": "nursing-iv/harness/discontinue-iv/11-comfort",
+    "overlap": 0.0833
+   },
+   {
+    "id": "P-12",
+    "query": "Before I walk out after taking a cannula out \u2014 buzzer, height of the mattress, side bars: what is the list?",
+    "target": "nursing-iv/harness/discontinue-iv/12-leave-safely",
+    "overlap": 0.0714
+   },
+   {
+    "id": "P-13",
+    "query": "I'm in the corridor after taking a cannula out. Do I wash again?",
+    "target": "nursing-iv/harness/discontinue-iv/13-hand-hygiene",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-14",
+    "query": "What goes in the notes after a cannula is taken out, and whom do I tell if something looked off?",
+    "target": "nursing-iv/harness/discontinue-iv/14-document",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-15",
+    "query": "New prescription: a litre of saline running all day through the cannula she already has. Where do I begin?",
+    "target": "nursing-iv/harness/primary-infusion",
+    "overlap": 0.0667
+   },
+   {
+    "id": "P-16",
+    "query": "What kit do I collect before hanging a litre of maintenance fluids?",
+    "target": "nursing-iv/harness/primary-infusion/01-gather-supplies",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-17",
+    "query": "I've got the kit for the maintenance fluids. Which two documents must agree before I go on?",
+    "target": "nursing-iv/harness/primary-infusion/02-verify-order",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-18",
+    "query": "I'm at the automated cabinet taking out the litre of saline. What do I verify right there \u2014 dates, reactions?",
+    "target": "nursing-iv/harness/primary-infusion/03-first-check",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-19",
+    "query": "I've torn the outer wrap off the litre of saline. How do I find a pinhole?",
+    "target": "nursing-iv/harness/primary-infusion/04-inspect-bag",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-20",
+    "query": "The litre of saline holds when squeezed. Cloudy, discoloured, floating specks \u2014 when do I look for that?",
+    "target": "nursing-iv/harness/primary-infusion/05-check-solution",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-21",
+    "query": "The saline looks fine and I'm still at the med station with the maintenance fluids. What verification is due now?",
+    "target": "nursing-iv/harness/primary-infusion/06-second-check",
+    "overlap": 0.0714
+   },
+   {
+    "id": "P-22",
+    "query": "Maintenance fluids verified twice, I'm in the hallway. Knock, introduce myself \u2014 what does the sheet say?",
+    "target": "nursing-iv/harness/primary-infusion/07-enter-room",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-23",
+    "query": "I've said hello and I'm carrying the maintenance fluids. Wash, wristband, date of birth \u2014 in which order?",
+    "target": "nursing-iv/harness/primary-infusion/08-safety-steps",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-24",
+    "query": "Wristband matches for the maintenance fluids. What last verification happens right next to her?",
+    "target": "nursing-iv/harness/primary-infusion/09-third-check",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-25",
+    "query": "Where do I find how many drops make a millilitre for this giving set for the maintenance fluids?",
+    "target": "nursing-iv/harness/primary-infusion/10-unpack-tubing",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-26",
+    "query": "The giving set for the maintenance fluids is unwrapped. Where does the little wheel go and should it be shut?",
+    "target": "nursing-iv/harness/primary-infusion/11-clamp-roller",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-27",
+    "query": "The wheel on the maintenance giving set is shut. What do I pull off the litre of saline next?",
+    "target": "nursing-iv/harness/primary-infusion/12-uncover-port",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-28",
+    "query": "How do I push the sharp end of the giving set into the litre of saline without contaminating it?",
+    "target": "nursing-iv/harness/primary-infusion/13-spike-bag",
+    "overlap": 0.0769
+   },
+   {
+    "id": "P-29",
+    "query": "The sharp end is in the litre of saline. How full should the little reservoir under it be, and how do I get it there?",
+    "target": "nursing-iv/harness/primary-infusion/14-fill-drip-chamber",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-30",
+    "query": "The reservoir is at the right level on the maintenance set. How do I run fluid through to push the bubbles out, and where?",
+    "target": "nursing-iv/harness/primary-infusion/15-prime-tubing",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-31",
+    "query": "I've run saline through the maintenance giving set. What do I inspect before it goes anywhere near her?",
+    "target": "nursing-iv/harness/primary-infusion/16-check-air",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-32",
+    "query": "The maintenance giving set has no bubbles. What do I do with its free tip so it stays clean?",
+    "target": "nursing-iv/harness/primary-infusion/17-cap-tubing",
+    "overlap": 0.0769
+   },
+   {
+    "id": "P-33",
+    "query": "What do I write on the litre of saline and stick on its giving set so the next shift knows when to replace them?",
+    "target": "nursing-iv/harness/primary-infusion/18-label",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-34",
+    "query": "Maintenance fluids are all set up. Before hooking up, what do I examine on her forearm \u2014 swelling, redness along the vessel?",
+    "target": "nursing-iv/harness/primary-infusion/19-assess-site-before",
+    "overlap": 0.1176
+   },
+   {
+    "id": "P-35",
+    "query": "I'm going to screw a flush onto her cannula's needleless connector for the maintenance fluids. How do I wipe it first?",
+    "target": "nursing-iv/harness/primary-infusion/20-cleanse-cap",
+    "overlap": 0.0588
+   },
+   {
+    "id": "P-36",
+    "query": "The connector is wiped and I've got the 10 mL flush in hand. How do I push it to prove the cannula still works?",
+    "target": "nursing-iv/harness/primary-infusion/21-assess-patency",
+    "overlap": 0.0625
+   },
+   {
+    "id": "P-37",
+    "query": "The flush went through easily. What do I do with it and with the short pigtail line?",
+    "target": "nursing-iv/harness/primary-infusion/22-remove-syringe",
+    "overlap": 0.2
+   },
+   {
+    "id": "P-38",
+    "query": "Flush is unscrewed, I'm going to hook up the maintenance giving set. Do I wipe the connector once more?",
+    "target": "nursing-iv/harness/primary-infusion/23-cleanse-cap-again",
+    "overlap": 0.0667
+   },
+   {
+    "id": "P-39",
+    "query": "The connector has been wiped twice and aired. How do I hook the maintenance giving set onto it?",
+    "target": "nursing-iv/harness/primary-infusion/24-attach-tubing",
+    "overlap": 0.0769
+   },
+   {
+    "id": "P-40",
+    "query": "The maintenance set is hooked up but nothing can flow: the pigtail is still pinched shut. What do I release?",
+    "target": "nursing-iv/harness/primary-infusion/25-open-slide-clamp",
+    "overlap": 0.0625
+   },
+   {
+    "id": "P-41",
+    "query": "Maintenance fluids hooked up and unpinched. How do I get it running at what was prescribed \u2014 machine or counting?",
+    "target": "nursing-iv/harness/primary-infusion/26-set-rate",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-42",
+    "query": "Maintenance fluids began dripping a moment ago. What do I watch for at her forearm?",
+    "target": "nursing-iv/harness/primary-infusion/27-assess-site-after",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-43",
+    "query": "Maintenance fluids are going and the giving set dangles. How do I stop it getting tugged?",
+    "target": "nursing-iv/harness/primary-infusion/28-secure-tubing",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-44",
+    "query": "Maintenance fluids are going and taped down. What do I do for her before I tidy up?",
+    "target": "nursing-iv/harness/primary-infusion/29-comfort",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-45",
+    "query": "Before I walk out with maintenance fluids going \u2014 buzzer, height of the mattress, side bars: what is the list?",
+    "target": "nursing-iv/harness/primary-infusion/30-leave-safely",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-46",
+    "query": "I'm in the corridor after getting maintenance fluids going. Do I wash again?",
+    "target": "nursing-iv/harness/primary-infusion/31-hand-hygiene",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-47",
+    "query": "What goes in the notes once maintenance fluids are going \u2014 and does the litre count toward her fluid balance?",
+    "target": "nursing-iv/harness/primary-infusion/32-document",
+    "overlap": 0.0714
+   },
+   {
+    "id": "P-48",
+    "query": "He has saline going already and is due a small bag of antibiotic every eight hours. How is a piggyback hung?",
+    "target": "nursing-iv/harness/secondary-infusion",
+    "overlap": 0.0714
+   },
+   {
+    "id": "P-49",
+    "query": "What kit do I collect before hanging a piggyback antibiotic?",
+    "target": "nursing-iv/harness/secondary-infusion/01-gather-supplies",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-50",
+    "query": "I've got the kit for the piggyback antibiotic. Which two documents must agree before I go on?",
+    "target": "nursing-iv/harness/secondary-infusion/02-verify-order",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-51",
+    "query": "I'm at the automated cabinet taking out the piggyback antibiotic and its short set. What do I verify right there?",
+    "target": "nursing-iv/harness/secondary-infusion/03-first-check",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-52",
+    "query": "Can this antibiotic be mixed into the same line as the saline he already has going? When do I look that up?",
+    "target": "nursing-iv/harness/secondary-infusion/04-verify-compatibility",
+    "overlap": 0.0667
+   },
+   {
+    "id": "P-53",
+    "query": "I've torn the wrap off the piggyback antibiotic. What do I look at \u2014 drips, cloudiness, tint?",
+    "target": "nursing-iv/harness/secondary-infusion/05-inspect-bag",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-54",
+    "query": "The piggyback antibiotic looks fine and I'm still at the med station. What verification is due now?",
+    "target": "nursing-iv/harness/secondary-infusion/06-second-check",
+    "overlap": 0.0769
+   },
+   {
+    "id": "P-55",
+    "query": "Piggyback antibiotic verified twice, I'm in the hallway. Knock, introduce myself \u2014 what does the sheet say?",
+    "target": "nursing-iv/harness/secondary-infusion/07-enter-room",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-56",
+    "query": "I've said hello and I'm carrying the piggyback antibiotic. Wash, wristband, date of birth \u2014 in which order?",
+    "target": "nursing-iv/harness/secondary-infusion/08-safety-steps",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-57",
+    "query": "Wristband matches for the piggyback antibiotic. What last verification happens right next to him?",
+    "target": "nursing-iv/harness/secondary-infusion/09-third-check",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-58",
+    "query": "He has never had this antibiotic before. What do I tell him and his wife about side effects, and when?",
+    "target": "nursing-iv/harness/secondary-infusion/10-teach-first-dose",
+    "overlap": 0.0667
+   },
+   {
+    "id": "P-59",
+    "query": "I'm next to him with the short piggyback set still wrapped. What now?",
+    "target": "nursing-iv/harness/secondary-infusion/11-unpack-tubing",
+    "overlap": 0.0909
+   },
+   {
+    "id": "P-60",
+    "query": "The short piggyback set is unwrapped. Should its little wheel be shut before I pierce the antibiotic?",
+    "target": "nursing-iv/harness/secondary-infusion/12-clamp-roller",
+    "overlap": 0.0833
+   },
+   {
+    "id": "P-61",
+    "query": "The wheel on the piggyback set is shut. Which two protective caps come off now?",
+    "target": "nursing-iv/harness/secondary-infusion/13-uncover-spike-and-port",
+    "overlap": 0.0909
+   },
+   {
+    "id": "P-62",
+    "query": "Both caps are off. How do I pierce the antibiotic with the piggyback set without contaminating it?",
+    "target": "nursing-iv/harness/secondary-infusion/14-spike-bag",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-63",
+    "query": "The antibiotic is pierced. How full should the piggyback's little reservoir be, and how do I get it there?",
+    "target": "nursing-iv/harness/secondary-infusion/15-fill-drip-chamber",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-64",
+    "query": "How do I clear bubbles from the piggyback set without spilling a drop of antibiotic \u2014 using the saline line and the top Y-site?",
+    "target": "nursing-iv/harness/secondary-infusion/16-back-prime",
+    "overlap": 0.1667
+   },
+   {
+    "id": "P-65",
+    "query": "Which should sit higher on the stand, the antibiotic or the saline?",
+    "target": "nursing-iv/harness/secondary-infusion/17-hang-bags",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-66",
+    "query": "The antibiotic is up on the stand, bubbles cleared. Where on the piggyback set do I stick the dated sticker?",
+    "target": "nursing-iv/harness/secondary-infusion/18-label",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-67",
+    "query": "Antibiotic is up, stickered and ready. How do I get the piggyback running at what was prescribed \u2014 machine or counting?",
+    "target": "nursing-iv/harness/secondary-infusion/19-set-rate",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-68",
+    "query": "The piggyback antibiotic began dripping a moment ago. What do I watch for at his forearm?",
+    "target": "nursing-iv/harness/secondary-infusion/20-assess-site-after",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-69",
+    "query": "The piggyback antibiotic is going. What do I do for him before I tidy up?",
+    "target": "nursing-iv/harness/secondary-infusion/21-comfort",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-70",
+    "query": "Before I walk out with a piggyback antibiotic going \u2014 buzzer, height of the mattress, side bars: what is the list?",
+    "target": "nursing-iv/harness/secondary-infusion/22-leave-safely",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-71",
+    "query": "I'm in the corridor after getting a piggyback antibiotic going. Do I wash again?",
+    "target": "nursing-iv/harness/secondary-infusion/23-hand-hygiene",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-72",
+    "query": "What goes in the notes once a piggyback antibiotic is going, and whom do I tell if something looked off?",
+    "target": "nursing-iv/harness/secondary-infusion/24-document",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-73",
+    "query": "I have a general doubt about drips and don't know which topic it belongs under. Where's the table of contents?",
+    "target": "nursing-iv/wiki/iv-therapy",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-74",
+    "query": "Why does everyone fuss about not letting connectors and sharp ends brush against anything?",
+    "target": "nursing-iv/wiki/iv-therapy/asepsis",
+    "overlap": 0.0833
+   },
+   {
+    "id": "P-75",
+    "query": "At which moments around a bedside task am I supposed to wash or use gel?",
+    "target": "nursing-iv/wiki/iv-therapy/asepsis/hand-hygiene",
+    "overlap": 0.0909
+   },
+   {
+    "id": "P-76",
+    "query": "Fifteen seconds of wiping the needleless connector, or more? And do I wait for it to air?",
+    "target": "nursing-iv/wiki/iv-therapy/asepsis/scrub-the-hub",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-77",
+    "query": "Is a plain litre of saline really treated like a drug, with all the same verifications?",
+    "target": "nursing-iv/wiki/iv-therapy/medication-safety",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-78",
+    "query": "Two drugs down one lumen \u2014 what is the worry, and at what point is it looked up?",
+    "target": "nursing-iv/wiki/iv-therapy/medication-safety/compatibility",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-79",
+    "query": "Right person, right drug, right dose\u2026 what are the rest of that list?",
+    "target": "nursing-iv/wiki/iv-therapy/medication-safety/six-rights",
+    "overlap": 0.2857
+   },
+   {
+    "id": "P-80",
+    "query": "Cabinet, med station, bedside \u2014 which verification is done at which place?",
+    "target": "nursing-iv/wiki/iv-therapy/medication-safety/three-checks",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-81",
+    "query": "Is the name alone enough to be sure I've got the right person? What else do I ask for?",
+    "target": "nursing-iv/wiki/iv-therapy/medication-safety/two-identifiers",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-82",
+    "query": "A fresh giving set is empty. What is the general idea of getting fluid through it before hooking it up?",
+    "target": "nursing-iv/wiki/iv-therapy/priming",
+    "overlap": 0.0769
+   },
+   {
+    "id": "P-83",
+    "query": "There are little pockets of gas stuck along the set after I ran fluid through. How do I get rid of them?",
+    "target": "nursing-iv/wiki/iv-therapy/priming/air-in-line",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-84",
+    "query": "What is that trick where you lower the piggyback below the main bag so saline runs up into it?",
+    "target": "nursing-iv/wiki/iv-therapy/priming/back-priming",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-85",
+    "query": "The prescription says 1 L over 8 h. How do I know which calculation to use to get a setting?",
+    "target": "nursing-iv/wiki/iv-therapy/rates",
+    "overlap": 0.0625
+   },
+   {
+    "id": "P-86",
+    "query": "Is it 10, 15, 20 or 60 gtt/mL for this set, and where is that printed?",
+    "target": "nursing-iv/wiki/iv-therapy/rates/drop-factor",
+    "overlap": 0.2222
+   },
+   {
+    "id": "P-87",
+    "query": "No machine available: how many gtt/min for 500 mL in 4 h with a 20 gtt/mL set?",
+    "target": "nursing-iv/wiki/iv-therapy/rates/gravity-drip-rate",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-88",
+    "query": "The machine wants a number for 100 mL in 30 min. What do I key in?",
+    "target": "nursing-iv/wiki/iv-therapy/rates/pump-rate",
+    "overlap": 0.0909
+   },
+   {
+    "id": "P-89",
+    "query": "Not the checklist \u2014 just the reasoning behind taking a cannula out: angle, whether it's whole, stopping the ooze.",
+    "target": "nursing-iv/wiki/iv-therapy/removal",
+    "overlap": 0.1429
+   },
+   {
+    "id": "P-90",
+    "query": "Two minutes or five with the swab held down afterwards? He's on blood thinners.",
+    "target": "nursing-iv/wiki/iv-therapy/removal/pressure-after-removal",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-91",
+    "query": "What am I looking at on the forearm around the cannula, and at which moments?",
+    "target": "nursing-iv/wiki/iv-therapy/site-assessment",
+    "overlap": 0.1111
+   },
+   {
+    "id": "P-92",
+    "query": "Her forearm is puffy, cool and tender around the cannula. Do I carry on running fluid?",
+    "target": "nursing-iv/wiki/iv-therapy/site-assessment/infiltration-and-irritation",
+    "overlap": 0.0
+   },
+   {
+    "id": "P-93",
+    "query": "How much saline, and with what push-pause motion, to be sure a cannula isn't blocked?",
+    "target": "nursing-iv/wiki/iv-therapy/site-assessment/patency-flush",
+    "overlap": 0.0833
+   }
+  ],
+  "E": [
+   {
+    "id": "E-order-00",
+    "query": "In the checklist for discontinuing an IV, which of these two steps comes FIRST?",
+    "target": "nursing-iv/harness/discontinue-iv",
+    "overlap": 0.2222
+   },
+   {
+    "id": "E-order-01",
+    "query": "In the checklist for primary IV solution administration, which of these two steps comes FIRST?",
+    "target": "nursing-iv/harness/primary-infusion",
+    "overlap": 0.3636
+   },
+   {
+    "id": "E-order-02",
+    "query": "In the checklist for secondary IV solution administration, which of these two steps comes FIRST?",
+    "target": "nursing-iv/harness/secondary-infusion",
+    "overlap": 0.3636
+   },
+   {
+    "id": "E-order-03",
+    "query": "In the checklist for discontinuing an IV, which of these two steps comes FIRST?",
+    "target": "nursing-iv/harness/discontinue-iv",
+    "overlap": 0.2222
+   },
+   {
+    "id": "E-order-04",
+    "query": "In the checklist for primary IV solution administration, which of these two steps comes FIRST?",
+    "target": "nursing-iv/harness/primary-infusion",
+    "overlap": 0.3636
+   },
+   {
+    "id": "E-order-05",
+    "query": "In the checklist for secondary IV solution administration, which of these two steps comes FIRST?",
+    "target": "nursing-iv/harness/secondary-infusion",
+    "overlap": 0.3636
+   },
+   {
+    "id": "E-order-06",
+    "query": "In the checklist for discontinuing an IV, which of these two steps comes FIRST?",
+    "target": "nursing-iv/harness/discontinue-iv",
+    "overlap": 0.2222
+   },
+   {
+    "id": "E-order-07",
+    "query": "In the checklist for primary IV solution administration, which of these two steps comes FIRST?",
+    "target": "nursing-iv/harness/primary-infusion",
+    "overlap": 0.3636
+   },
+   {
+    "id": "E-order-08",
+    "query": "In the checklist for secondary IV solution administration, which of these two steps comes FIRST?",
+    "target": "nursing-iv/harness/secondary-infusion",
+    "overlap": 0.3636
+   },
+   {
+    "id": "E-order-09",
+    "query": "In the checklist for discontinuing an IV, which of these two steps comes FIRST?",
+    "target": "nursing-iv/harness/discontinue-iv",
+    "overlap": 0.2222
+   },
+   {
+    "id": "E-order-10",
+    "query": "In the checklist for primary IV solution administration, which of these two steps comes FIRST?",
+    "target": "nursing-iv/harness/primary-infusion",
+    "overlap": 0.3636
+   },
+   {
+    "id": "E-order-11",
+    "query": "In the checklist for secondary IV solution administration, which of these two steps comes FIRST?",
+    "target": "nursing-iv/harness/secondary-infusion",
+    "overlap": 0.3636
+   },
+   {
+    "id": "E-order-12",
+    "query": "In the checklist for discontinuing an IV, which of these two steps comes FIRST?",
+    "target": "nursing-iv/harness/discontinue-iv",
+    "overlap": 0.2222
+   },
+   {
+    "id": "E-order-13",
+    "query": "In the checklist for primary IV solution administration, which of these two steps comes FIRST?",
+    "target": "nursing-iv/harness/primary-infusion",
+    "overlap": 0.3636
+   },
+   {
+    "id": "E-order-14",
+    "query": "In the checklist for secondary IV solution administration, which of these two steps comes FIRST?",
+    "target": "nursing-iv/harness/secondary-infusion",
+    "overlap": 0.3636
+   },
+   {
+    "id": "E-order-15",
+    "query": "In the checklist for discontinuing an IV, which of these two steps comes FIRST?",
+    "target": "nursing-iv/harness/discontinue-iv",
+    "overlap": 0.2222
+   },
+   {
+    "id": "E-order-16",
+    "query": "In the checklist for primary IV solution administration, which of these two steps comes FIRST?",
+    "target": "nursing-iv/harness/primary-infusion",
+    "overlap": 0.3636
+   },
+   {
+    "id": "E-order-17",
+    "query": "In the checklist for secondary IV solution administration, which of these two steps comes FIRST?",
+    "target": "nursing-iv/harness/secondary-infusion",
+    "overlap": 0.3636
+   },
+   {
+    "id": "E-order-18",
+    "query": "In the checklist for discontinuing an IV, which of these two steps comes FIRST?",
+    "target": "nursing-iv/harness/discontinue-iv",
+    "overlap": 0.2222
+   },
+   {
+    "id": "E-order-19",
+    "query": "In the checklist for primary IV solution administration, which of these two steps comes FIRST?",
+    "target": "nursing-iv/harness/primary-infusion",
+    "overlap": 0.3636
+   },
+   {
+    "id": "E-order-20",
+    "query": "In the checklist for secondary IV solution administration, which of these two steps comes FIRST?",
+    "target": "nursing-iv/harness/secondary-infusion",
+    "overlap": 0.3636
+   },
+   {
+    "id": "E-order-21",
+    "query": "In the checklist for discontinuing an IV, which of these two steps comes FIRST?",
+    "target": "nursing-iv/harness/discontinue-iv",
+    "overlap": 0.2222
+   },
+   {
+    "id": "E-order-22",
+    "query": "In the checklist for primary IV solution administration, which of these two steps comes FIRST?",
+    "target": "nursing-iv/harness/primary-infusion",
+    "overlap": 0.3636
+   },
+   {
+    "id": "E-order-23",
+    "query": "In the checklist for secondary IV solution administration, which of these two steps comes FIRST?",
+    "target": "nursing-iv/harness/secondary-infusion",
+    "overlap": 0.3636
+   },
+   {
+    "id": "E-next-00",
+    "query": "You are following the checklist for discontinuing an IV and have just completed this step: \"Loosen the edges of the transparent dressing and tape in the direction of the IV site.\" Which step comes NEXT?",
+    "target": "nursing-iv/harness/discontinue-iv",
+    "overlap": 0.0588
+   },
+   {
+    "id": "E-next-01",
+    "query": "You are following the checklist for primary IV solution administration and have just completed this step: \"Perform the first check of the six rights of medication administration while withdrawing the IV fluids from the medication dispensing unit. Check expiration date and verify patient allergies.\" Which step comes NEXT?",
+    "target": "nursing-iv/harness/primary-infusion",
+    "overlap": 0.1724
+   },
+   {
+    "id": "E-next-02",
+    "query": "You are following the checklist for secondary IV solution administration and have just completed this step: \"If the patient is receiving the medication for the first time, teach the patient and family about the potential adverse reactions and other concerns related to the medication.\" Which step comes NEXT?",
+    "target": "nursing-iv/harness/secondary-infusion",
+    "overlap": 0.1923
+   },
+   {
+    "id": "E-next-03",
+    "query": "You are following the checklist for discontinuing an IV and have just completed this step: \"Hold pressure on the IV site for 2-3 minutes. If the patient is on anticoagulant medication, you may need to hold for 5-10 minutes.\" Which step comes NEXT?",
+    "target": "nursing-iv/harness/discontinue-iv",
+    "overlap": 0.0833
+   },
+   {
+    "id": "E-next-04",
+    "query": "You are following the checklist for primary IV solution administration and have just completed this step: \"Vigorously cleanse the catheter cap on the patient's IV port with an alcohol pad/scrub hub for at least five seconds and allow it to dry.\" Which step comes NEXT?",
+    "target": "nursing-iv/harness/primary-infusion",
+    "overlap": 0.1429
+   },
+   {
+    "id": "E-next-05",
+    "query": "You are following the checklist for secondary IV solution administration and have just completed this step: \"Remove the secondary IV tubing from the packaging.\" Which step comes NEXT?",
+    "target": "nursing-iv/harness/secondary-infusion",
+    "overlap": 0.1875
+   },
+   {
+    "id": "E-next-06",
+    "query": "You are following the checklist for discontinuing an IV and have just completed this step: \"Place the IV clamp to the \"off\" position (clamped).\" Which step comes NEXT?",
+    "target": "nursing-iv/harness/discontinue-iv",
+    "overlap": 0.0667
+   },
+   {
+    "id": "E-next-07",
+    "query": "You are following the checklist for primary IV solution administration and have just completed this step: \"Assess IV site patency: attach a prefilled normal saline syringe purged of air, undo the clamp, and inject 3 to 5 mL of normal saline using a turbulent stop-start technique. If resistance is felt, do not force the flush.\" Which step comes NEXT?",
+    "target": "nursing-iv/harness/primary-infusion",
+    "overlap": 0.1
+   },
+   {
+    "id": "E-next-08",
+    "query": "You are following the checklist for secondary IV solution administration and have just completed this step: \"Verify compatibility of the secondary IV solution with the other IV fluids the patient is currently receiving.\" Which step comes NEXT?",
+    "target": "nursing-iv/harness/secondary-infusion",
+    "overlap": 0.2105
+   },
+   {
+    "id": "E-next-09",
+    "query": "You are following the checklist for discontinuing an IV and have just completed this step: \"Prepare the gauze and tape.\" Which step comes NEXT?",
+    "target": "nursing-iv/harness/discontinue-iv",
+    "overlap": 0.0769
+   },
+   {
+    "id": "E-next-10",
+    "query": "You are following the checklist for primary IV solution administration and have just completed this step: \"Perform hand hygiene.\" Which step comes NEXT?",
+    "target": "nursing-iv/harness/primary-infusion",
+    "overlap": 0.2
+   },
+   {
+    "id": "E-next-11",
+    "query": "You are following the checklist for secondary IV solution administration and have just completed this step: \"Verify the provider order with the medication administration record (eMAR/MAR).\" Which step comes NEXT?",
+    "target": "nursing-iv/harness/secondary-infusion",
+    "overlap": 0.2632
+   },
+   {
+    "id": "E-next-12",
+    "query": "You are following the checklist for discontinuing an IV and have just completed this step: \"Place the IV clamp to the \"off\" position (clamped).\" Which step comes NEXT?",
+    "target": "nursing-iv/harness/discontinue-iv",
+    "overlap": 0.0667
+   },
+   {
+    "id": "E-next-13",
+    "query": "You are following the checklist for primary IV solution administration and have just completed this step: \"Once primed, clamp the IV tubing and check the entire length of the tubing for air bubbles. Tap the tubing gently to remove any air.\" Which step comes NEXT?",
+    "target": "nursing-iv/harness/primary-infusion",
+    "overlap": 0.12
+   },
+   {
+    "id": "E-next-14",
+    "query": "You are following the checklist for secondary IV solution administration and have just completed this step: \"Perform the second check of the six rights of medication administration.\" Which step comes NEXT?",
+    "target": "nursing-iv/harness/secondary-infusion",
+    "overlap": 0.2222
+   },
+   {
+    "id": "E-next-15",
+    "query": "You are following the checklist for discontinuing an IV and have just completed this step: \"Hold pressure on the IV site for 2-3 minutes. If the patient is on anticoagulant medication, you may need to hold for 5-10 minutes.\" Which step comes NEXT?",
+    "target": "nursing-iv/harness/discontinue-iv",
+    "overlap": 0.0833
+   },
+   {
+    "id": "E-next-16",
+    "query": "You are following the checklist for primary IV solution administration and have just completed this step: \"Remove the primary IV tubing from the packaging. If administering IV fluid by gravity, note the drip factor on the package and calculate drops/min.\" Which step comes NEXT?",
+    "target": "nursing-iv/harness/primary-infusion",
+    "overlap": 0.1111
+   },
+   {
+    "id": "E-next-17",
+    "query": "You are following the checklist for secondary IV solution administration and have just completed this step: \"Remove the secondary IV tubing from the packaging.\" Which step comes NEXT?",
+    "target": "nursing-iv/harness/secondary-infusion",
+    "overlap": 0.1875
+   },
+   {
+    "id": "E-next-18",
+    "query": "You are following the checklist for discontinuing an IV and have just completed this step: \"Ensure safety measures when leaving the room (call light, bed low and locked, side rails, table, room risk-free for falls).\" Which step comes NEXT?",
+    "target": "nursing-iv/harness/discontinue-iv",
+    "overlap": 0.037
+   },
+   {
+    "id": "E-next-19",
+    "query": "You are following the checklist for primary IV solution administration and have just completed this step: \"Enter the patient room and greet the patient.\" Which step comes NEXT?",
+    "target": "nursing-iv/harness/primary-infusion",
+    "overlap": 0.25
+   },
+   {
+    "id": "E-next-20",
+    "query": "You are following the checklist for secondary IV solution administration and have just completed this step: \"Compress and release the drip chamber, filling halfway.\" Which step comes NEXT?",
+    "target": "nursing-iv/harness/secondary-infusion",
+    "overlap": 0.1667
+   },
+   {
+    "id": "E-next-21",
+    "query": "You are following the checklist for discontinuing an IV and have just completed this step: \"Ensure safety measures when leaving the room (call light, bed low and locked, side rails, table, room risk-free for falls).\" Which step comes NEXT?",
+    "target": "nursing-iv/harness/discontinue-iv",
+    "overlap": 0.037
+   },
+   {
+    "id": "E-next-22",
+    "query": "You are following the checklist for primary IV solution administration and have just completed this step: \"Check the color and clarity of the solution.\" Which step comes NEXT?",
+    "target": "nursing-iv/harness/primary-infusion",
+    "overlap": 0.2
+   },
+   {
+    "id": "E-next-23",
+    "query": "You are following the checklist for secondary IV solution administration and have just completed this step: \"Perform the first check of the six rights of medication administration while withdrawing the IV solution and tubing from the medication dispensing unit. Check expiration dates and verify allergies.\" Which step comes NEXT?",
+    "target": "nursing-iv/harness/secondary-infusion",
+    "overlap": 0.1429
+   },
+   {
+    "id": "E-rate-00",
+    "query": "A provider orders 1000 mL of IV fluid to infuse over 6 hours by gravity. The tubing's drop factor is 10 gtt/mL. How many drops per minute? Round to the nearest whole number. Answer with the number only.",
+    "target": "nursing-iv/wiki/iv-therapy/rates",
+    "overlap": 0.0714
+   },
+   {
+    "id": "E-rate-01",
+    "query": "A secondary IV medication of 50 mL is to infuse over 20 minutes on an infusion pump. What rate in mL/hr should be set? Round to the nearest whole number. Answer with the number only.",
+    "target": "nursing-iv/wiki/iv-therapy/rates",
+    "overlap": 0.1818
+   },
+   {
+    "id": "E-rate-02",
+    "query": "A provider orders 1000 mL of IV fluid to infuse over 2 hours by gravity. The tubing's drop factor is 60 gtt/mL. How many drops per minute? Round to the nearest whole number. Answer with the number only.",
+    "target": "nursing-iv/wiki/iv-therapy/rates",
+    "overlap": 0.0714
+   },
+   {
+    "id": "E-rate-03",
+    "query": "A secondary IV medication of 250 mL is to infuse over 30 minutes on an infusion pump. What rate in mL/hr should be set? Round to the nearest whole number. Answer with the number only.",
+    "target": "nursing-iv/wiki/iv-therapy/rates",
+    "overlap": 0.1818
+   },
+   {
+    "id": "E-rate-04",
+    "query": "A provider orders 1000 mL of IV fluid to infuse over 8 hours by gravity. The tubing's drop factor is 15 gtt/mL. How many drops per minute? Round to the nearest whole number. Answer with the number only.",
+    "target": "nursing-iv/wiki/iv-therapy/rates",
+    "overlap": 0.0714
+   },
+   {
+    "id": "E-rate-05",
+    "query": "A secondary IV medication of 50 mL is to infuse over 20 minutes on an infusion pump. What rate in mL/hr should be set? Round to the nearest whole number. Answer with the number only.",
+    "target": "nursing-iv/wiki/iv-therapy/rates",
+    "overlap": 0.1818
+   },
+   {
+    "id": "E-rate-06",
+    "query": "A provider orders 250 mL of IV fluid to infuse over 8 hours by gravity. The tubing's drop factor is 20 gtt/mL. How many drops per minute? Round to the nearest whole number. Answer with the number only.",
+    "target": "nursing-iv/wiki/iv-therapy/rates",
+    "overlap": 0.0714
+   },
+   {
+    "id": "E-rate-07",
+    "query": "A secondary IV medication of 50 mL is to infuse over 90 minutes on an infusion pump. What rate in mL/hr should be set? Round to the nearest whole number. Answer with the number only.",
+    "target": "nursing-iv/wiki/iv-therapy/rates",
+    "overlap": 0.1818
+   },
+   {
+    "id": "E-rate-08",
+    "query": "A provider orders 250 mL of IV fluid to infuse over 4 hours by gravity. The tubing's drop factor is 15 gtt/mL. How many drops per minute? Round to the nearest whole number. Answer with the number only.",
+    "target": "nursing-iv/wiki/iv-therapy/rates",
+    "overlap": 0.0714
+   },
+   {
+    "id": "E-rate-09",
+    "query": "A secondary IV medication of 100 mL is to infuse over 20 minutes on an infusion pump. What rate in mL/hr should be set? Round to the nearest whole number. Answer with the number only.",
+    "target": "nursing-iv/wiki/iv-therapy/rates",
+    "overlap": 0.1818
+   },
+   {
+    "id": "E-rate-10",
+    "query": "A provider orders 1000 mL of IV fluid to infuse over 8 hours by gravity. The tubing's drop factor is 15 gtt/mL. How many drops per minute? Round to the nearest whole number. Answer with the number only.",
+    "target": "nursing-iv/wiki/iv-therapy/rates",
+    "overlap": 0.0714
+   },
+   {
+    "id": "E-rate-11",
+    "query": "A secondary IV medication of 50 mL is to infuse over 20 minutes on an infusion pump. What rate in mL/hr should be set? Round to the nearest whole number. Answer with the number only.",
+    "target": "nursing-iv/wiki/iv-therapy/rates",
+    "overlap": 0.1818
+   },
+   {
+    "id": "E-site-00",
+    "query": "According to THIS unit's protocol, for how many seconds should you cleanse the catheter cap on the patient's IV port? Answer with the number only.",
+    "target": "nursing-iv/harness/primary-infusion",
+    "overlap": 0.1176
+   },
+   {
+    "id": "E-site-01",
+    "query": "According to THIS unit's protocol, for how many mL should you flush the saline lock with normal saline to assess patency? Answer with the number only.",
+    "target": "nursing-iv/harness/primary-infusion",
+    "overlap": 0.0
+   },
+   {
+    "id": "E-site-02",
+    "query": "According to THIS unit's protocol, for how many minutes should you hold pressure on the IV site for a patient who is not on anticoagulants? Answer with the number only.",
+    "target": "nursing-iv/harness/discontinue-iv",
+    "overlap": 0.1579
+   },
+   {
+    "id": "E-site-03",
+    "query": "According to THIS unit's protocol, for how many minutes should you hold pressure on the IV site for a patient on anticoagulant medication? Answer with the number only.",
+    "target": "nursing-iv/harness/discontinue-iv",
+    "overlap": 0.1667
+   },
+   {
+    "id": "E-site-04",
+    "query": "According to THIS unit's protocol, for how many seconds should you cleanse the catheter cap on the patient's IV port? Answer with the number only.",
+    "target": "nursing-iv/harness/primary-infusion",
+    "overlap": 0.1176
+   },
+   {
+    "id": "E-site-05",
+    "query": "According to THIS unit's protocol, for how many mL should you flush the saline lock with normal saline to assess patency? Answer with the number only.",
+    "target": "nursing-iv/harness/primary-infusion",
+    "overlap": 0.0
+   },
+   {
+    "id": "E-site-06",
+    "query": "According to THIS unit's protocol, for how many minutes should you hold pressure on the IV site for a patient who is not on anticoagulants? Answer with the number only.",
+    "target": "nursing-iv/harness/discontinue-iv",
+    "overlap": 0.1579
+   },
+   {
+    "id": "E-site-07",
+    "query": "According to THIS unit's protocol, for how many minutes should you hold pressure on the IV site for a patient on anticoagulant medication? Answer with the number only.",
+    "target": "nursing-iv/harness/discontinue-iv",
+    "overlap": 0.1667
+   },
+   {
+    "id": "E-site-08",
+    "query": "According to THIS unit's protocol, for how many seconds should you cleanse the catheter cap on the patient's IV port? Answer with the number only.",
+    "target": "nursing-iv/harness/primary-infusion",
+    "overlap": 0.1176
+   },
+   {
+    "id": "E-site-09",
+    "query": "According to THIS unit's protocol, for how many mL should you flush the saline lock with normal saline to assess patency? Answer with the number only.",
+    "target": "nursing-iv/harness/primary-infusion",
+    "overlap": 0.0
+   },
+   {
+    "id": "E-site-10",
+    "query": "According to THIS unit's protocol, for how many minutes should you hold pressure on the IV site for a patient who is not on anticoagulants? Answer with the number only.",
+    "target": "nursing-iv/harness/discontinue-iv",
+    "overlap": 0.1579
+   },
+   {
+    "id": "E-site-11",
+    "query": "According to THIS unit's protocol, for how many minutes should you hold pressure on the IV site for a patient on anticoagulant medication? Answer with the number only.",
+    "target": "nursing-iv/harness/discontinue-iv",
+    "overlap": 0.1667
+   }
+  ]
+ },
+ "started": "2026-09-19T19:30:05",
+ "ranks": {
+  "lexical": {
+   "P": [
+    {
+     "id": "P-00",
+     "rank": 10,
+     "rank_in_shelf": 7
+    },
+    {
+     "id": "P-01",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-02",
+     "rank": 15,
+     "rank_in_shelf": 8
+    },
+    {
+     "id": "P-03",
+     "rank": 9,
+     "rank_in_shelf": 6
+    },
+    {
+     "id": "P-04",
+     "rank": 3,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "P-05",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-06",
+     "rank": 11,
+     "rank_in_shelf": 8
+    },
+    {
+     "id": "P-07",
+     "rank": 4,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-08",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-09",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-10",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-11",
+     "rank": 18,
+     "rank_in_shelf": 12
+    },
+    {
+     "id": "P-12",
+     "rank": 19,
+     "rank_in_shelf": 13
+    },
+    {
+     "id": "P-13",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-14",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-15",
+     "rank": 6,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "P-16",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-17",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-18",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-19",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-20",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-21",
+     "rank": 10,
+     "rank_in_shelf": 9
+    },
+    {
+     "id": "P-22",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-23",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-24",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-25",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-26",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-27",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-28",
+     "rank": 15,
+     "rank_in_shelf": 9
+    },
+    {
+     "id": "P-29",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-30",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-31",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-32",
+     "rank": 5,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "P-33",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-34",
+     "rank": 5,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "P-35",
+     "rank": 6,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "P-36",
+     "rank": 23,
+     "rank_in_shelf": 20
+    },
+    {
+     "id": "P-37",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-38",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-39",
+     "rank": 9,
+     "rank_in_shelf": 9
+    },
+    {
+     "id": "P-40",
+     "rank": 10,
+     "rank_in_shelf": 10
+    },
+    {
+     "id": "P-41",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-42",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-43",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-44",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-45",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-46",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-47",
+     "rank": 10,
+     "rank_in_shelf": 7
+    },
+    {
+     "id": "P-48",
+     "rank": 21,
+     "rank_in_shelf": 18
+    },
+    {
+     "id": "P-49",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-50",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-51",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-52",
+     "rank": 14,
+     "rank_in_shelf": 11
+    },
+    {
+     "id": "P-53",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-54",
+     "rank": 9,
+     "rank_in_shelf": 8
+    },
+    {
+     "id": "P-55",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-56",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-57",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-58",
+     "rank": 16,
+     "rank_in_shelf": 11
+    },
+    {
+     "id": "P-59",
+     "rank": 10,
+     "rank_in_shelf": 10
+    },
+    {
+     "id": "P-60",
+     "rank": 20,
+     "rank_in_shelf": 15
+    },
+    {
+     "id": "P-61",
+     "rank": 16,
+     "rank_in_shelf": 14
+    },
+    {
+     "id": "P-62",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-63",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-64",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-65",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-66",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-67",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-68",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-69",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-70",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-71",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-72",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-73",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-74",
+     "rank": 8,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "P-75",
+     "rank": 10,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "P-76",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-77",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-78",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-79",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-80",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-81",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-82",
+     "rank": 10,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "P-83",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-84",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-85",
+     "rank": 13,
+     "rank_in_shelf": 6
+    },
+    {
+     "id": "P-86",
+     "rank": 4,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-87",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-88",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-89",
+     "rank": 4,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-90",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-91",
+     "rank": 7,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "P-92",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "P-93",
+     "rank": 12,
+     "rank_in_shelf": 7
+    }
+   ],
+   "E": [
+    {
+     "id": "E-order-00",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "E-order-01",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-order-02",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-order-03",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "E-order-04",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-order-05",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-order-06",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "E-order-07",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-order-08",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-order-09",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "E-order-10",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-order-11",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-order-12",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "E-order-13",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-order-14",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-order-15",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "E-order-16",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-order-17",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-order-18",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "E-order-19",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-order-20",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-order-21",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "E-order-22",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-order-23",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-next-00",
+     "rank": 13,
+     "rank_in_shelf": 10
+    },
+    {
+     "id": "E-next-01",
+     "rank": 6,
+     "rank_in_shelf": 6
+    },
+    {
+     "id": "E-next-02",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-next-03",
+     "rank": 11,
+     "rank_in_shelf": 8
+    },
+    {
+     "id": "E-next-04",
+     "rank": 12,
+     "rank_in_shelf": 10
+    },
+    {
+     "id": "E-next-05",
+     "rank": 16,
+     "rank_in_shelf": 15
+    },
+    {
+     "id": "E-next-06",
+     "rank": 7,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-next-07",
+     "rank": 8,
+     "rank_in_shelf": 8
+    },
+    {
+     "id": "E-next-08",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-next-09",
+     "rank": 6,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-next-10",
+     "rank": 10,
+     "rank_in_shelf": 10
+    },
+    {
+     "id": "E-next-11",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "E-next-12",
+     "rank": 7,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-next-13",
+     "rank": 20,
+     "rank_in_shelf": 19
+    },
+    {
+     "id": "E-next-14",
+     "rank": 6,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "E-next-15",
+     "rank": 11,
+     "rank_in_shelf": 8
+    },
+    {
+     "id": "E-next-16",
+     "rank": 23,
+     "rank_in_shelf": 22
+    },
+    {
+     "id": "E-next-17",
+     "rank": 16,
+     "rank_in_shelf": 15
+    },
+    {
+     "id": "E-next-18",
+     "rank": 8,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "E-next-19",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-next-20",
+     "rank": 10,
+     "rank_in_shelf": 10
+    },
+    {
+     "id": "E-next-21",
+     "rank": 8,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "E-next-22",
+     "rank": 8,
+     "rank_in_shelf": 8
+    },
+    {
+     "id": "E-next-23",
+     "rank": 9,
+     "rank_in_shelf": 7
+    },
+    {
+     "id": "E-rate-00",
+     "rank": 43,
+     "rank_in_shelf": 9
+    },
+    {
+     "id": "E-rate-01",
+     "rank": 4,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "E-rate-02",
+     "rank": 43,
+     "rank_in_shelf": 9
+    },
+    {
+     "id": "E-rate-03",
+     "rank": 4,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "E-rate-04",
+     "rank": 43,
+     "rank_in_shelf": 9
+    },
+    {
+     "id": "E-rate-05",
+     "rank": 4,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "E-rate-06",
+     "rank": 43,
+     "rank_in_shelf": 9
+    },
+    {
+     "id": "E-rate-07",
+     "rank": 4,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "E-rate-08",
+     "rank": 43,
+     "rank_in_shelf": 9
+    },
+    {
+     "id": "E-rate-09",
+     "rank": 4,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "E-rate-10",
+     "rank": 43,
+     "rank_in_shelf": 9
+    },
+    {
+     "id": "E-rate-11",
+     "rank": 4,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "E-site-00",
+     "rank": 15,
+     "rank_in_shelf": 13
+    },
+    {
+     "id": "E-site-01",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "E-site-02",
+     "rank": 5,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "E-site-03",
+     "rank": 4,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "E-site-04",
+     "rank": 15,
+     "rank_in_shelf": 13
+    },
+    {
+     "id": "E-site-05",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "E-site-06",
+     "rank": 5,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "E-site-07",
+     "rank": 4,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "E-site-08",
+     "rank": 15,
+     "rank_in_shelf": 13
+    },
+    {
+     "id": "E-site-09",
+     "rank": null,
+     "rank_in_shelf": null
+    },
+    {
+     "id": "E-site-10",
+     "rank": 5,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "E-site-11",
+     "rank": 4,
+     "rank_in_shelf": 3
+    }
+   ]
+  },
+  "r0": {
+   "P": [
+    {
+     "id": "P-00",
+     "rank": 3,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "P-01",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-02",
+     "rank": 3,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-03",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-04",
+     "rank": 5,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "P-05",
+     "rank": 34,
+     "rank_in_shelf": 31
+    },
+    {
+     "id": "P-06",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-07",
+     "rank": 3,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-08",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-09",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-10",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-11",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-12",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-13",
+     "rank": 5,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "P-14",
+     "rank": 3,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "P-15",
+     "rank": 3,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "P-16",
+     "rank": 15,
+     "rank_in_shelf": 14
+    },
+    {
+     "id": "P-17",
+     "rank": 4,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-18",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-19",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "P-20",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-21",
+     "rank": 3,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "P-22",
+     "rank": 3,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-23",
+     "rank": 3,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-24",
+     "rank": 25,
+     "rank_in_shelf": 22
+    },
+    {
+     "id": "P-25",
+     "rank": 8,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "P-26",
+     "rank": 21,
+     "rank_in_shelf": 19
+    },
+    {
+     "id": "P-27",
+     "rank": 35,
+     "rank_in_shelf": 33
+    },
+    {
+     "id": "P-28",
+     "rank": 6,
+     "rank_in_shelf": 6
+    },
+    {
+     "id": "P-29",
+     "rank": 3,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "P-30",
+     "rank": 7,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "P-31",
+     "rank": 14,
+     "rank_in_shelf": 12
+    },
+    {
+     "id": "P-32",
+     "rank": 2,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-33",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-34",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-35",
+     "rank": 6,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "P-36",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-37",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-38",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-39",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-40",
+     "rank": 16,
+     "rank_in_shelf": 15
+    },
+    {
+     "id": "P-41",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-42",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "P-43",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-44",
+     "rank": 47,
+     "rank_in_shelf": 45
+    },
+    {
+     "id": "P-45",
+     "rank": 5,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "P-46",
+     "rank": 5,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "P-47",
+     "rank": 3,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-48",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-49",
+     "rank": 3,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "P-50",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-51",
+     "rank": 3,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "P-52",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-53",
+     "rank": 3,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "P-54",
+     "rank": 10,
+     "rank_in_shelf": 9
+    },
+    {
+     "id": "P-55",
+     "rank": 3,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "P-56",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-57",
+     "rank": 2,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-58",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-59",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-60",
+     "rank": 15,
+     "rank_in_shelf": 14
+    },
+    {
+     "id": "P-61",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-62",
+     "rank": 13,
+     "rank_in_shelf": 12
+    },
+    {
+     "id": "P-63",
+     "rank": 3,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "P-64",
+     "rank": 12,
+     "rank_in_shelf": 12
+    },
+    {
+     "id": "P-65",
+     "rank": 73,
+     "rank_in_shelf": 61
+    },
+    {
+     "id": "P-66",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-67",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-68",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-69",
+     "rank": 48,
+     "rank_in_shelf": 45
+    },
+    {
+     "id": "P-70",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "P-71",
+     "rank": 3,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "P-72",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-73",
+     "rank": 26,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "P-74",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-75",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-76",
+     "rank": 5,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "P-77",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-78",
+     "rank": 4,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-79",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-80",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-81",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-82",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-83",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-84",
+     "rank": 42,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "P-85",
+     "rank": 7,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "P-86",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-87",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-88",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-89",
+     "rank": 2,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-90",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-91",
+     "rank": 9,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-92",
+     "rank": 16,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-93",
+     "rank": 4,
+     "rank_in_shelf": 1
+    }
+   ],
+   "E": [
+    {
+     "id": "E-order-00",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "E-order-01",
+     "rank": 5,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "E-order-02",
+     "rank": 10,
+     "rank_in_shelf": 10
+    },
+    {
+     "id": "E-order-03",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "E-order-04",
+     "rank": 5,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "E-order-05",
+     "rank": 10,
+     "rank_in_shelf": 10
+    },
+    {
+     "id": "E-order-06",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "E-order-07",
+     "rank": 5,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "E-order-08",
+     "rank": 10,
+     "rank_in_shelf": 10
+    },
+    {
+     "id": "E-order-09",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "E-order-10",
+     "rank": 5,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "E-order-11",
+     "rank": 10,
+     "rank_in_shelf": 10
+    },
+    {
+     "id": "E-order-12",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "E-order-13",
+     "rank": 5,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "E-order-14",
+     "rank": 10,
+     "rank_in_shelf": 10
+    },
+    {
+     "id": "E-order-15",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "E-order-16",
+     "rank": 5,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "E-order-17",
+     "rank": 10,
+     "rank_in_shelf": 10
+    },
+    {
+     "id": "E-order-18",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "E-order-19",
+     "rank": 5,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "E-order-20",
+     "rank": 10,
+     "rank_in_shelf": 10
+    },
+    {
+     "id": "E-order-21",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "E-order-22",
+     "rank": 5,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "E-order-23",
+     "rank": 10,
+     "rank_in_shelf": 10
+    },
+    {
+     "id": "E-next-00",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-next-01",
+     "rank": 13,
+     "rank_in_shelf": 12
+    },
+    {
+     "id": "E-next-02",
+     "rank": 18,
+     "rank_in_shelf": 17
+    },
+    {
+     "id": "E-next-03",
+     "rank": 5,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-next-04",
+     "rank": 15,
+     "rank_in_shelf": 14
+    },
+    {
+     "id": "E-next-05",
+     "rank": 15,
+     "rank_in_shelf": 15
+    },
+    {
+     "id": "E-next-06",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-next-07",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "E-next-08",
+     "rank": 15,
+     "rank_in_shelf": 13
+    },
+    {
+     "id": "E-next-09",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-next-10",
+     "rank": 12,
+     "rank_in_shelf": 12
+    },
+    {
+     "id": "E-next-11",
+     "rank": 11,
+     "rank_in_shelf": 11
+    },
+    {
+     "id": "E-next-12",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-next-13",
+     "rank": 16,
+     "rank_in_shelf": 16
+    },
+    {
+     "id": "E-next-14",
+     "rank": 15,
+     "rank_in_shelf": 14
+    },
+    {
+     "id": "E-next-15",
+     "rank": 5,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-next-16",
+     "rank": 6,
+     "rank_in_shelf": 6
+    },
+    {
+     "id": "E-next-17",
+     "rank": 15,
+     "rank_in_shelf": 15
+    },
+    {
+     "id": "E-next-18",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-next-19",
+     "rank": 6,
+     "rank_in_shelf": 6
+    },
+    {
+     "id": "E-next-20",
+     "rank": 19,
+     "rank_in_shelf": 19
+    },
+    {
+     "id": "E-next-21",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-next-22",
+     "rank": 8,
+     "rank_in_shelf": 8
+    },
+    {
+     "id": "E-next-23",
+     "rank": 18,
+     "rank_in_shelf": 17
+    },
+    {
+     "id": "E-rate-00",
+     "rank": 24,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "E-rate-01",
+     "rank": 21,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "E-rate-02",
+     "rank": 24,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "E-rate-03",
+     "rank": 20,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "E-rate-04",
+     "rank": 25,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "E-rate-05",
+     "rank": 21,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "E-rate-06",
+     "rank": 25,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "E-rate-07",
+     "rank": 21,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "E-rate-08",
+     "rank": 25,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "E-rate-09",
+     "rank": 21,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "E-rate-10",
+     "rank": 25,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "E-rate-11",
+     "rank": 21,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "E-site-00",
+     "rank": 39,
+     "rank_in_shelf": 32
+    },
+    {
+     "id": "E-site-01",
+     "rank": 35,
+     "rank_in_shelf": 31
+    },
+    {
+     "id": "E-site-02",
+     "rank": 15,
+     "rank_in_shelf": 12
+    },
+    {
+     "id": "E-site-03",
+     "rank": 13,
+     "rank_in_shelf": 9
+    },
+    {
+     "id": "E-site-04",
+     "rank": 39,
+     "rank_in_shelf": 32
+    },
+    {
+     "id": "E-site-05",
+     "rank": 35,
+     "rank_in_shelf": 31
+    },
+    {
+     "id": "E-site-06",
+     "rank": 15,
+     "rank_in_shelf": 12
+    },
+    {
+     "id": "E-site-07",
+     "rank": 13,
+     "rank_in_shelf": 9
+    },
+    {
+     "id": "E-site-08",
+     "rank": 39,
+     "rank_in_shelf": 32
+    },
+    {
+     "id": "E-site-09",
+     "rank": 35,
+     "rank_in_shelf": 31
+    },
+    {
+     "id": "E-site-10",
+     "rank": 15,
+     "rank_in_shelf": 12
+    },
+    {
+     "id": "E-site-11",
+     "rank": 13,
+     "rank_in_shelf": 9
+    }
+   ]
+  },
+  "r0_when_only": {
+   "P": [
+    {
+     "id": "P-00",
+     "rank": 7,
+     "rank_in_shelf": 6
+    },
+    {
+     "id": "P-01",
+     "rank": 5,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "P-02",
+     "rank": 6,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "P-03",
+     "rank": 10,
+     "rank_in_shelf": 10
+    },
+    {
+     "id": "P-04",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-05",
+     "rank": 29,
+     "rank_in_shelf": 27
+    },
+    {
+     "id": "P-06",
+     "rank": 8,
+     "rank_in_shelf": 7
+    },
+    {
+     "id": "P-07",
+     "rank": 41,
+     "rank_in_shelf": 35
+    },
+    {
+     "id": "P-08",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-09",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-10",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-11",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-12",
+     "rank": 3,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "P-13",
+     "rank": 11,
+     "rank_in_shelf": 10
+    },
+    {
+     "id": "P-14",
+     "rank": 6,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "P-15",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "P-16",
+     "rank": 27,
+     "rank_in_shelf": 24
+    },
+    {
+     "id": "P-17",
+     "rank": 3,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-18",
+     "rank": 6,
+     "rank_in_shelf": 6
+    },
+    {
+     "id": "P-19",
+     "rank": 10,
+     "rank_in_shelf": 10
+    },
+    {
+     "id": "P-20",
+     "rank": 3,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "P-21",
+     "rank": 3,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "P-22",
+     "rank": 9,
+     "rank_in_shelf": 7
+    },
+    {
+     "id": "P-23",
+     "rank": 4,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "P-24",
+     "rank": 67,
+     "rank_in_shelf": 57
+    },
+    {
+     "id": "P-25",
+     "rank": 23,
+     "rank_in_shelf": 17
+    },
+    {
+     "id": "P-26",
+     "rank": 10,
+     "rank_in_shelf": 10
+    },
+    {
+     "id": "P-27",
+     "rank": 48,
+     "rank_in_shelf": 46
+    },
+    {
+     "id": "P-28",
+     "rank": 17,
+     "rank_in_shelf": 14
+    },
+    {
+     "id": "P-29",
+     "rank": 5,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "P-30",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-31",
+     "rank": 17,
+     "rank_in_shelf": 16
+    },
+    {
+     "id": "P-32",
+     "rank": 4,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "P-33",
+     "rank": 10,
+     "rank_in_shelf": 8
+    },
+    {
+     "id": "P-34",
+     "rank": 17,
+     "rank_in_shelf": 15
+    },
+    {
+     "id": "P-35",
+     "rank": 6,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "P-36",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-37",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-38",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-39",
+     "rank": 7,
+     "rank_in_shelf": 6
+    },
+    {
+     "id": "P-40",
+     "rank": 9,
+     "rank_in_shelf": 8
+    },
+    {
+     "id": "P-41",
+     "rank": 5,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "P-42",
+     "rank": 16,
+     "rank_in_shelf": 14
+    },
+    {
+     "id": "P-43",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-44",
+     "rank": 55,
+     "rank_in_shelf": 50
+    },
+    {
+     "id": "P-45",
+     "rank": 17,
+     "rank_in_shelf": 15
+    },
+    {
+     "id": "P-46",
+     "rank": 14,
+     "rank_in_shelf": 13
+    },
+    {
+     "id": "P-47",
+     "rank": 13,
+     "rank_in_shelf": 9
+    },
+    {
+     "id": "P-48",
+     "rank": 28,
+     "rank_in_shelf": 26
+    },
+    {
+     "id": "P-49",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-50",
+     "rank": 3,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "P-51",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-52",
+     "rank": 2,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-53",
+     "rank": 12,
+     "rank_in_shelf": 12
+    },
+    {
+     "id": "P-54",
+     "rank": 21,
+     "rank_in_shelf": 20
+    },
+    {
+     "id": "P-55",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-56",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-57",
+     "rank": 4,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "P-58",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-59",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-60",
+     "rank": 12,
+     "rank_in_shelf": 10
+    },
+    {
+     "id": "P-61",
+     "rank": 9,
+     "rank_in_shelf": 9
+    },
+    {
+     "id": "P-62",
+     "rank": 39,
+     "rank_in_shelf": 34
+    },
+    {
+     "id": "P-63",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "P-64",
+     "rank": 24,
+     "rank_in_shelf": 22
+    },
+    {
+     "id": "P-65",
+     "rank": 63,
+     "rank_in_shelf": 54
+    },
+    {
+     "id": "P-66",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-67",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-68",
+     "rank": 9,
+     "rank_in_shelf": 8
+    },
+    {
+     "id": "P-69",
+     "rank": 56,
+     "rank_in_shelf": 50
+    },
+    {
+     "id": "P-70",
+     "rank": 14,
+     "rank_in_shelf": 10
+    },
+    {
+     "id": "P-71",
+     "rank": 9,
+     "rank_in_shelf": 6
+    },
+    {
+     "id": "P-72",
+     "rank": 6,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "P-73",
+     "rank": 20,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "P-74",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-75",
+     "rank": 10,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-76",
+     "rank": 13,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "P-77",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-78",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-79",
+     "rank": 12,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "P-80",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-81",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-82",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-83",
+     "rank": 5,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "P-84",
+     "rank": 30,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "P-85",
+     "rank": 24,
+     "rank_in_shelf": 7
+    },
+    {
+     "id": "P-86",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-87",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-88",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-89",
+     "rank": 1,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-90",
+     "rank": 4,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-91",
+     "rank": 11,
+     "rank_in_shelf": 3
+    },
+    {
+     "id": "P-92",
+     "rank": 10,
+     "rank_in_shelf": 1
+    },
+    {
+     "id": "P-93",
+     "rank": 5,
+     "rank_in_shelf": 1
+    }
+   ],
+   "E": [
+    {
+     "id": "E-order-00",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "E-order-01",
+     "rank": 27,
+     "rank_in_shelf": 24
+    },
+    {
+     "id": "E-order-02",
+     "rank": 31,
+     "rank_in_shelf": 28
+    },
+    {
+     "id": "E-order-03",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "E-order-04",
+     "rank": 27,
+     "rank_in_shelf": 24
+    },
+    {
+     "id": "E-order-05",
+     "rank": 31,
+     "rank_in_shelf": 28
+    },
+    {
+     "id": "E-order-06",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "E-order-07",
+     "rank": 27,
+     "rank_in_shelf": 24
+    },
+    {
+     "id": "E-order-08",
+     "rank": 31,
+     "rank_in_shelf": 28
+    },
+    {
+     "id": "E-order-09",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "E-order-10",
+     "rank": 27,
+     "rank_in_shelf": 24
+    },
+    {
+     "id": "E-order-11",
+     "rank": 31,
+     "rank_in_shelf": 28
+    },
+    {
+     "id": "E-order-12",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "E-order-13",
+     "rank": 27,
+     "rank_in_shelf": 24
+    },
+    {
+     "id": "E-order-14",
+     "rank": 31,
+     "rank_in_shelf": 28
+    },
+    {
+     "id": "E-order-15",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "E-order-16",
+     "rank": 27,
+     "rank_in_shelf": 24
+    },
+    {
+     "id": "E-order-17",
+     "rank": 31,
+     "rank_in_shelf": 28
+    },
+    {
+     "id": "E-order-18",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "E-order-19",
+     "rank": 27,
+     "rank_in_shelf": 24
+    },
+    {
+     "id": "E-order-20",
+     "rank": 31,
+     "rank_in_shelf": 28
+    },
+    {
+     "id": "E-order-21",
+     "rank": 2,
+     "rank_in_shelf": 2
+    },
+    {
+     "id": "E-order-22",
+     "rank": 27,
+     "rank_in_shelf": 24
+    },
+    {
+     "id": "E-order-23",
+     "rank": 31,
+     "rank_in_shelf": 28
+    },
+    {
+     "id": "E-next-00",
+     "rank": 5,
+     "rank_in_shelf": 5
+    },
+    {
+     "id": "E-next-01",
+     "rank": 26,
+     "rank_in_shelf": 24
+    },
+    {
+     "id": "E-next-02",
+     "rank": 28,
+     "rank_in_shelf": 25
+    },
+    {
+     "id": "E-next-03",
+     "rank": 6,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-next-04",
+     "rank": 29,
+     "rank_in_shelf": 26
+    },
+    {
+     "id": "E-next-05",
+     "rank": 51,
+     "rank_in_shelf": 48
+    },
+    {
+     "id": "E-next-06",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-next-07",
+     "rank": 7,
+     "rank_in_shelf": 7
+    },
+    {
+     "id": "E-next-08",
+     "rank": 42,
+     "rank_in_shelf": 37
+    },
+    {
+     "id": "E-next-09",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-next-10",
+     "rank": 32,
+     "rank_in_shelf": 30
+    },
+    {
+     "id": "E-next-11",
+     "rank": 20,
+     "rank_in_shelf": 19
+    },
+    {
+     "id": "E-next-12",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-next-13",
+     "rank": 55,
+     "rank_in_shelf": 48
+    },
+    {
+     "id": "E-next-14",
+     "rank": 34,
+     "rank_in_shelf": 30
+    },
+    {
+     "id": "E-next-15",
+     "rank": 6,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-next-16",
+     "rank": 32,
+     "rank_in_shelf": 30
+    },
+    {
+     "id": "E-next-17",
+     "rank": 51,
+     "rank_in_shelf": 48
+    },
+    {
+     "id": "E-next-18",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-next-19",
+     "rank": 30,
+     "rank_in_shelf": 27
+    },
+    {
+     "id": "E-next-20",
+     "rank": 55,
+     "rank_in_shelf": 50
+    },
+    {
+     "id": "E-next-21",
+     "rank": 4,
+     "rank_in_shelf": 4
+    },
+    {
+     "id": "E-next-22",
+     "rank": 24,
+     "rank_in_shelf": 22
+    },
+    {
+     "id": "E-next-23",
+     "rank": 37,
+     "rank_in_shelf": 34
+    },
+    {
+     "id": "E-rate-00",
+     "rank": 64,
+     "rank_in_shelf": 13
+    },
+    {
+     "id": "E-rate-01",
+     "rank": 46,
+     "rank_in_shelf": 8
+    },
+    {
+     "id": "E-rate-02",
+     "rank": 64,
+     "rank_in_shelf": 13
+    },
+    {
+     "id": "E-rate-03",
+     "rank": 43,
+     "rank_in_shelf": 8
+    },
+    {
+     "id": "E-rate-04",
+     "rank": 64,
+     "rank_in_shelf": 13
+    },
+    {
+     "id": "E-rate-05",
+     "rank": 46,
+     "rank_in_shelf": 8
+    },
+    {
+     "id": "E-rate-06",
+     "rank": 64,
+     "rank_in_shelf": 13
+    },
+    {
+     "id": "E-rate-07",
+     "rank": 47,
+     "rank_in_shelf": 9
+    },
+    {
+     "id": "E-rate-08",
+     "rank": 64,
+     "rank_in_shelf": 13
+    },
+    {
+     "id": "E-rate-09",
+     "rank": 46,
+     "rank_in_shelf": 8
+    },
+    {
+     "id": "E-rate-10",
+     "rank": 64,
+     "rank_in_shelf": 13
+    },
+    {
+     "id": "E-rate-11",
+     "rank": 46,
+     "rank_in_shelf": 8
+    },
+    {
+     "id": "E-site-00",
+     "rank": 39,
+     "rank_in_shelf": 31
+    },
+    {
+     "id": "E-site-01",
+     "rank": 30,
+     "rank_in_shelf": 26
+    },
+    {
+     "id": "E-site-02",
+     "rank": 20,
+     "rank_in_shelf": 14
+    },
+    {
+     "id": "E-site-03",
+     "rank": 18,
+     "rank_in_shelf": 12
+    },
+    {
+     "id": "E-site-04",
+     "rank": 39,
+     "rank_in_shelf": 31
+    },
+    {
+     "id": "E-site-05",
+     "rank": 30,
+     "rank_in_shelf": 26
+    },
+    {
+     "id": "E-site-06",
+     "rank": 20,
+     "rank_in_shelf": 14
+    },
+    {
+     "id": "E-site-07",
+     "rank": 18,
+     "rank_in_shelf": 12
+    },
+    {
+     "id": "E-site-08",
+     "rank": 39,
+     "rank_in_shelf": 31
+    },
+    {
+     "id": "E-site-09",
+     "rank": 30,
+     "rank_in_shelf": 26
+    },
+    {
+     "id": "E-site-10",
+     "rank": 20,
+     "rank_in_shelf": 14
+    },
+    {
+     "id": "E-site-11",
+     "rank": 18,
+     "rank_in_shelf": 12
+    }
+   ]
+  }
+ },
+ "summary": {
+  "lexical": {
+   "P": {
+    "n": 94,
+    "recall@1": 0.0426,
+    "recall@3": 0.0638,
+    "hits@3": 6,
+    "unranked": 56,
+    "mrr": 0.0899
+   },
+   "E": {
+    "n": 72,
+    "recall@1": 0.0139,
+    "recall@3": 0.125,
+    "hits@3": 9,
+    "unranked": 3,
+    "mrr": 0.2097
+   }
+  },
+  "lexical_in_shelf": {
+   "P": {
+    "n": 94,
+    "recall@1": 0.0532,
+    "recall@3": 0.117,
+    "hits@3": 11,
+    "unranked": 56,
+    "mrr": 0.1181
+   },
+   "E": {
+    "n": 72,
+    "recall@1": 0.0972,
+    "recall@3": 0.2917,
+    "hits@3": 21,
+    "unranked": 3,
+    "mrr": 0.2978
+   }
+  },
+  "r0": {
+   "P": {
+    "n": 94,
+    "recall@1": 0.2553,
+    "recall@3": 0.6383,
+    "hits@3": 60,
+    "unranked": 0,
+    "mrr": 0.4632
+   },
+   "E": {
+    "n": 72,
+    "recall@1": 0.125,
+    "recall@3": 0.125,
+    "hits@3": 9,
+    "unranked": 0,
+    "mrr": 0.218
+   }
+  },
+  "r0_in_shelf": {
+   "P": {
+    "n": 94,
+    "recall@1": 0.3191,
+    "recall@3": 0.7021,
+    "hits@3": 66,
+    "unranked": 0,
+    "mrr": 0.5304
+   },
+   "E": {
+    "n": 72,
+    "recall@1": 0.125,
+    "recall@3": 0.125,
+    "hits@3": 9,
+    "unranked": 0,
+    "mrr": 0.2483
+   }
+  },
+  "r0_when_only": {
+   "P": {
+    "n": 94,
+    "recall@1": 0.2234,
+    "recall@3": 0.3617,
+    "hits@3": 34,
+    "unranked": 0,
+    "mrr": 0.3521
+   },
+   "E": {
+    "n": 72,
+    "recall@1": 0.0,
+    "recall@3": 0.1111,
+    "hits@3": 8,
+    "unranked": 0,
+    "mrr": 0.1063
+   }
+  },
+  "r0_when_only_in_shelf": {
+   "P": {
+    "n": 94,
+    "recall@1": 0.266,
+    "recall@3": 0.4681,
+    "hits@3": 44,
+    "unranked": 0,
+    "mrr": 0.413
+   },
+   "E": {
+    "n": 72,
+    "recall@1": 0.0,
+    "recall@3": 0.1111,
+    "hits@3": 8,
+    "unranked": 0,
+    "mrr": 0.1261
+   }
+  }
+ },
+ "headroom": {
+  "set": "P",
+  "lexical_recall@3": 0.0638,
+  "ceiling": 0.95,
+  "go": true,
+  "reading": "GO: the word-matcher finds 0.064 of the needed notes in its top 3 \u2014 there is room above it"
+ },
+ "encoder": {
+  "model": "Qwen/Qwen3-Embedding-0.6B",
+  "instruction": "Instruct: Given a note or a question from one clinical subdomain, represent the situation it is for, so that a question retrieves the note written for that situation\nQuery: "
+ },
+ "probe": {
+  "paraphrase": 0.4019,
+  "unrelated": 0.2326
+ },
+ "index": {
+  "path": "radar_r0.index.json",
+  "dim": 1024,
+  "fingerprint": "7d8f6389133010b25b4c1da53a2cc12cc301d02f078f3a43ebb1350fa9d994b5"
+ },
+ "pairs": {
+  "P": {
+   "n_paired": 94,
+   "a_total": 60,
+   "b_total": 6,
+   "only_a": 56,
+   "only_b": 2,
+   "discordant": 58,
+   "p_value": 0.0,
+   "different": true,
+   "reading": "the arms differ"
+  },
+  "E": {
+   "n_paired": 72,
+   "a_total": 9,
+   "b_total": 9,
+   "only_a": 1,
+   "only_b": 1,
+   "discordant": 2,
+   "p_value": 1.0,
+   "different": false,
+   "reading": "a tie: the totals differ but the cases behind them do not"
+  }
+ },
+ "pairs_when_only_vs_r0": {
+  "P": {
+   "n_paired": 94,
+   "a_total": 34,
+   "b_total": 60,
+   "only_a": 4,
+   "only_b": 30,
+   "discordant": 34,
+   "p_value": 1e-05,
+   "different": true,
+   "reading": "the arms differ"
+  },
+  "E": {
+   "n_paired": 72,
+   "a_total": 8,
+   "b_total": 9,
+   "only_a": 0,
+   "only_b": 1,
+   "discordant": 1,
+   "p_value": 1.0,
+   "different": false,
+   "reading": "a tie: the totals differ but the cases behind them do not"
+  }
+ },
+ "verdict": {
+  "passed": false,
+  "state": "R0",
+  "sufficient": false,
+  "r0_recall@3": 0.6383,
+  "lexical_recall@3": 0.0638,
+  "standard": 0.8,
+  "reading": "R0 BEATS A WORD-MATCHER AND IS NOT ENOUGH: recall@3 0.6383 under the standard 0.8 (lexical 0.0638, paired 56:2) \u2014 read the misses' ranks; this is the gap R1 is for"
+ },
+ "finished": "2026-09-19T19:30:35"
+}
