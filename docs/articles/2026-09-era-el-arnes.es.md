@@ -270,12 +270,17 @@ Prefiero decirlo yo:
 Cada paso tiene escrita, antes de correr, la condición que lo daría por falso. Así fue como
 encontramos lo del arnés.
 
-## Si tu organización ya se dibuja así
+## ¿Querés probarlo? ¿Tenés un caso real?
 
-Buscamos dos o tres equipos —idealmente uno que ya tenga un agente por rol— con una tarea que cumpla
-tres condiciones: se repite mucho, tiene una respuesta verificable, y hoy se la mandan entera a un
-modelo de frontera. No tenemos un producto para venderles. Tenemos una arquitectura, un método para
-medir si una parte de ese trabajo puede resolverse en su propia máquina — y la costumbre de publicar
-el número salga como salga.
+Si tu organización ya se dibuja así, nos encantaría tu ayuda para evaluarlo. Buscamos dos o tres
+equipos que lo prueben y nos den su devolución — idealmente un equipo que ya tenga un agente por rol,
+con una tarea que cumpla tres condiciones: se repite mucho, tiene una respuesta verificable, y hoy se
+la mandan entera a un modelo de frontera.
+
+No tenemos un producto para venderles. Tenemos una arquitectura, un método para medir si una parte de
+ese trabajo puede resolverse en su propia máquina — y la costumbre de publicar el número salga como
+salga.
 
 Repositorio: github.com/EvolvingAgentsLabs/lora-kernel
+
+Apache 2.0. La idea empezó en una conversación con Ismael Faro.
