@@ -1,0 +1,181 @@
+{
+ "base": "Qwen/Qwen3.5-4B",
+ "started": "2026-09-19T20:46:14",
+ "grader": "training.nursing.grade_walks",
+ "searcher": "lexical (memory.runtime.Lexical) — R0 did not pass W3",
+ "arms": {},
+ "G1": {},
+ "members": {},
+ "floor": {
+  "headline": {
+   "n": 66,
+   "scored": 66,
+   "errors": 0,
+   "missing": 0,
+   "credit": 6,
+   "right": 6,
+   "states": {
+    "right": 6,
+    "wrong": 60
+   },
+   "verbatim": 6,
+   "retrieval_misses": 15,
+   "credit_where_retrieval_hit": 6,
+   "n_where_retrieval_hit": 51
+  },
+  "heldout_deeper_than_trained": {
+   "n": 0,
+   "scored": 0,
+   "errors": 0,
+   "missing": 0,
+   "credit": 0,
+   "right": 0,
+   "states": {},
+   "verbatim": 0,
+   "retrieval_misses": 0,
+   "credit_where_retrieval_hit": 0,
+   "n_where_retrieval_hit": 0
+  },
+  "heldout_shared_line": {
+   "n": 22,
+   "scored": 22,
+   "errors": 0,
+   "missing": 0,
+   "credit": 5,
+   "right": 5,
+   "states": {
+    "wrong": 17,
+    "right": 5
+   },
+   "verbatim": 5,
+   "retrieval_misses": 0,
+   "credit_where_retrieval_hit": 5,
+   "n_where_retrieval_hit": 22
+  },
+  "heldout_carry": {
+   "n": 35,
+   "scored": 35,
+   "errors": 0,
+   "missing": 0,
+   "credit": 6,
+   "right": 6,
+   "states": {
+    "right": 6,
+    "wrong": 29
+   },
+   "verbatim": 6,
+   "retrieval_misses": 0,
+   "credit_where_retrieval_hit": 6,
+   "n_where_retrieval_hit": 35
+  },
+  "heldout_quantity_site_or_case": {
+   "n": 25,
+   "scored": 25,
+   "errors": 0,
+   "missing": 0,
+   "credit": 0,
+   "right": 0,
+   "states": {
+    "wrong": 25
+   },
+   "verbatim": 0,
+   "retrieval_misses": 14,
+   "credit_where_retrieval_hit": 0,
+   "n_where_retrieval_hit": 11
+  },
+  "heldout_quantity_textbook": {
+   "n": 6,
+   "scored": 6,
+   "errors": 0,
+   "missing": 0,
+   "credit": 0,
+   "right": 0,
+   "states": {
+    "wrong": 6
+   },
+   "verbatim": 0,
+   "retrieval_misses": 1,
+   "credit_where_retrieval_hit": 0,
+   "n_where_retrieval_hit": 5
+  },
+  "heldout_quantity_conditional": {
+   "n": 15,
+   "scored": 15,
+   "errors": 0,
+   "missing": 0,
+   "credit": 0,
+   "right": 0,
+   "states": {
+    "wrong": 15
+   },
+   "verbatim": 0,
+   "retrieval_misses": 7,
+   "credit_where_retrieval_hit": 0,
+   "n_where_retrieval_hit": 8
+  },
+  "heldout_quantity_plain": {
+   "n": 16,
+   "scored": 16,
+   "errors": 0,
+   "missing": 0,
+   "credit": 0,
+   "right": 0,
+   "states": {
+    "wrong": 16
+   },
+   "verbatim": 0,
+   "retrieval_misses": 8,
+   "credit_where_retrieval_hit": 0,
+   "n_where_retrieval_hit": 8
+  },
+  "control": {
+   "n": 80,
+   "scored": 80,
+   "errors": 0,
+   "missing": 0,
+   "credit": 6,
+   "right": 4,
+   "states": {
+    "wrong": 74,
+    "right": 4,
+    "format": 2
+   },
+   "verbatim": 4,
+   "retrieval_misses": 18,
+   "credit_where_retrieval_hit": 6,
+   "n_where_retrieval_hit": 62
+  },
+  "control_without_rate": {
+   "n": 68,
+   "scored": 68,
+   "errors": 0,
+   "missing": 0,
+   "credit": 6,
+   "right": 4,
+   "states": {
+    "wrong": 62,
+    "right": 4,
+    "format": 2
+   },
+   "verbatim": 4,
+   "retrieval_misses": 12,
+   "credit_where_retrieval_hit": 6,
+   "n_where_retrieval_hit": 56
+  },
+  "control_rate": {
+   "n": 12,
+   "scored": 12,
+   "errors": 0,
+   "missing": 0,
+   "credit": 0,
+   "right": 0,
+   "states": {
+    "wrong": 12
+   },
+   "verbatim": 0,
+   "retrieval_misses": 6,
+   "credit_where_retrieval_hit": 0,
+   "n_where_retrieval_hit": 6
+  }
+ }
+}

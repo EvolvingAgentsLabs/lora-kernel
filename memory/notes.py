@@ -132,12 +132,16 @@ def parse_frontmatter(text: str) -> tuple[dict, str]:
     return fields, body.strip("\n")
 
 
-def _dump(value) -> str:
+def _dump(value, inside: bool = False) -> str:
     if isinstance(value, list):
-        return "[" + ", ".join(_dump(v) for v in value) + "]"
+        return "[" + ", ".join(_dump(v, True) for v in value) + "]"
     if isinstance(value, dict):
-        return "{" + ", ".join(f"{k}: {_dump(v)}" for k, v in value.items()) + "}"
-    return "null" if value is None else str(value)
+        return "{" + ", ".join(f"{k}: {_dump(v, True)}" for k, v in value.items()) + "}"
+    if value is None:
+        return "null"
+    # inside a list or a map a comma or a brace would split the value ("10, 15, or 20"): quote it
+    text = str(value)
+    return f'"{text}"' if inside and re.search(r"[,:{}\[\]]", text) else text
 
 
 # ---------------------------------------------------------------- the note
@@ -217,9 +221,15 @@ class Note:
 
 @dataclass
 class Site:
-    """A ward's adaptations — overrides only (§5.2). `overrides[note id] = {slot: value}`."""
+    """A ward's adaptations (§5.2). `overrides[note id] = {slot: value}` changes a value the
+    textbook states. `adds[note id] = {text: "…{{slot}}…", slot: value, …}` appends ONE sentence of
+    the site's own — a rule the textbook does not have, typically a second value of a quantity under
+    a condition ("…, or {{n}} seconds when …"). The textbook's line is never rewritten: a site that
+    could edit the source's words could make the library say what its source does not **[spec]** W5c.
+    """
     name: str
     overrides: dict[str, dict]
+    adds: dict[str, dict] = field(default_factory=dict)
     path: Path | None = None
 
     @classmethod
@@ -227,7 +237,16 @@ class Site:
         f, _ = parse_frontmatter(text)
         if not f.get("site"):
             raise NoteError(f"{path}: a site file needs `site:`")
-        return cls(name=str(f["site"]), overrides=dict(f.get("overrides") or {}), path=path)
+        extra = set(f) - {"site", "overrides", "adds"}
+        if extra:
+            raise NoteError(f"{path}: unknown field(s) {sorted(extra)}")
+        return cls(name=str(f["site"]), overrides=dict(f.get("overrides") or {}),
+                   adds=dict(f.get("adds") or {}), path=path)
+
+    def add_for(self, note_id: str) -> tuple[str, dict]:
+        """(the sentence this site appends to the note, its slots' values) — ("", {}) if none."""
+        a = dict(self.adds.get(note_id) or {})
+        return str(a.pop("text", "") or ""), a
 
 
 # `resolve` and `render` — the layers — live in memory/layers.py (§5.1's module list).

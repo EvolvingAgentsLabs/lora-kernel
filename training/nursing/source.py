@@ -99,6 +99,21 @@ CHECKLISTS = {
     ],
 }
 
+# PROSE the checklists do not carry. **BYTE-CHECKED** 2026-09-19, unlike the checklists above: the
+# chapter page was fetched with `curl` (https://www.ncbi.nlm.nih.gov/books/NBK596734/, 102 091 bytes,
+# sha256 e600a131853d9248…) and each sentence below is one contiguous run of its HTML, §23.2 "IV
+# Therapy Basics" › "IV Administration Equipment". Same work, same licence, same attribution.
+# WHY IT IS HERE: it is the only place outside the discontinuation checklist where this chapter
+# states TWO VALUES OF ONE QUANTITY UNDER A CONDITION — the shape W5 found the corpus never showed.
+PROSE = {
+    "drop factor": [
+        "A macro-drip infusion set delivers 10, 15, or 20 drops per milliliter, whereas a micro-drip "
+        "infusion set delivers 60 drops per milliliter.",
+        "The drop factor is located on the packaging of the IV tubing and is important to verify when "
+        "calculating medication administration rates.",
+    ],
+}
+
 
 def note(name: str) -> str:
     """One checklist as the note a knowledge base would hold."""

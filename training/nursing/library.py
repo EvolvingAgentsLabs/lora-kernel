@@ -144,6 +144,22 @@ PROCEDURES = {
 }
 
 # id (relative to wiki/), kind, title, when, what, body, slots — parent is the path above it
+# THE ONE REAL TWO-VALUED NOTE OUTSIDE THE HELD-OUT PROCEDURE. Its body is the source's own two
+# sentences (`source.PROSE`, byte-checked), location first, with the two drop factors turned into
+# slots: ONE quantity — a set's drop factor — TWO values, ONE condition — which kind of set. The
+# macro-drip value is a list in the textbook ("10, 15, or 20"); a unit stocks one macro-drip set, so
+# a site or a case names the one it stocks and the textbook keeps the source's list.
+def _drop_factor_body() -> str:
+    from training.nursing.source import PROSE
+    values, where = PROSE["drop factor"]
+    for phrase, slot in (("10, 15, or 20", "{{macrodrip_gtt}}"), ("60", "{{microdrip_gtt}}")):
+        assert phrase in values, phrase
+        values = values.replace(phrase, slot, 1)
+    return f"{where} {values}"
+
+
+DROP_FACTOR_BODY = _drop_factor_body()
+
 WIKI = [
     ("iv-therapy", "concept", "IV therapy management", "You need to place an IV therapy question before looking anything up.",
      "The branches of this wiki: asepsis, medication safety, rates, site assessment, priming, removal.",
@@ -183,7 +199,7 @@ WIKI = [
      "mL/hr = volume_mL × {{minutes_per_hour}} / minutes. Enter the volume to be infused alongside the rate.", {"minutes_per_hour": 60}),
     ("iv-therapy/rates/drop-factor", "table", "Drop factors", "You need the drop factor of a tubing set.",
      "Where the drop factor is read and its usual values.",
-     "The drop factor is printed on the tubing package. Macrodrip sets: 10, 15 or 20 gtt/mL. Microdrip sets: 60 gtt/mL.", {}),
+     DROP_FACTOR_BODY, {"macrodrip_gtt": "10, 15, or 20", "microdrip_gtt": 60}),
     ("iv-therapy/site-assessment", "concept", "Assessing an IV site", "You are about to use, or have just used, a patient's IV site.",
      "What is assessed at a site and when.",
      "A site is assessed before fluids are connected, again once flow begins, and after a catheter is removed. Patency is shown by a flush; trouble is shown by the tissue.", {}),
@@ -210,6 +226,52 @@ WIKI = [
      "Hold pressure for {{minutes}} minutes. For a patient on anticoagulant medication, {{anticoagulant_minutes}} minutes may be needed.", {"minutes": "2-3", "anticoagulant_minutes": "5-10"}),
 ]
 
+# SITE RULES THE SOURCE DOES NOT HAVE — **INVENTED EXAMPLE CONTENT**, approved as such by the user on
+# 2026-09-19 (W5c). Each is one sentence a site ADDS to a note (`Site.adds`), stating a quantity under
+# a condition; the textbook's line is never rewritten. They exist so that a corpus can show the SHAPE
+# W5 found missing — two values of one quantity, one condition — in several notes of both trained
+# procedures. The numbers here are placeholders: every case draws its own. Nothing here is a real
+# unit's protocol and nothing here is clinical guidance.
+SITE_RULES = {
+    # quantity → (notes it lands in, the sentence, {slot: placeholder})
+    "cap_soiled_seconds": (
+        ["harness/primary-infusion/20-cleanse-cap", "harness/primary-infusion/23-cleanse-cap-again",
+         "wiki/iv-therapy/asepsis/scrub-the-hub"],
+        "On this unit, a cap that is visibly soiled is cleansed for {{soiled_seconds}} seconds.",
+        {"soiled_seconds": 30}),
+    "flush_idle_ml": (
+        ["harness/primary-infusion/21-assess-patency", "wiki/iv-therapy/site-assessment/patency-flush"],
+        "On this unit, a catheter that has not been used since the previous shift is flushed with {{idle_ml}} mL.",
+        {"idle_ml": 12}),
+    "yport_seconds": (
+        ["harness/secondary-infusion/16-back-prime"],
+        "On this unit the y-port is cleansed for {{yport_seconds}} seconds, or for {{yport_shared_seconds}} "
+        "seconds when the line is shared with another infusion.",
+        {"yport_seconds": 15, "yport_shared_seconds": 30}),
+    "recheck_minutes": (
+        ["harness/secondary-infusion/20-assess-site-after"],
+        "On this unit the site is assessed again {{recheck_minutes}} minutes after the infusion begins, or "
+        "{{recheck_irritant_minutes}} minutes after for a medication the pharmacy labels an irritant.",
+        {"recheck_minutes": 30, "recheck_irritant_minutes": 10}),
+}
+
+
+def _site_rules_file() -> str:
+    lines = ["---", "site: unit-4c", "overrides:",
+             f"  {SUB}/wiki/iv-therapy/rates/drop-factor: {{macrodrip_gtt: 15}}", "adds:"]
+    for notes, text, values in SITE_RULES.values():
+        assert '"' not in text
+        vals = ", ".join(f"{k}: {v}" for k, v in values.items())
+        lines += [f'  {SUB}/{n}: {{text: "{text}", {vals}}}' for n in notes]
+    return "\n".join(lines) + """
+---
+Unit 4C — an EXAMPLE site layer, **invented for this repository**. Every sentence it adds to a note
+is a made-up rule in the shape "a quantity, and another value of it under a condition" (docs/MEMORY.md
+§5.2, W5c); the numbers are placeholders and each training or evaluation case draws its own. No real
+unit's protocol is represented here, and nothing here is clinical guidance.
+"""
+
+
 SITE = """---
 site: ward-7b
 overrides:
@@ -226,12 +288,18 @@ runtime substitutes them before a note reaches the expert and marks them `[site]
 README = f"""# nursing-iv — the first library
 
 IV therapy management as a library of notes: three procedures on the `harness/` shelf, each a
-skeleton plus one note per step; a small `wiki/` tree; one example `site/` layer. Format and rules:
+skeleton plus one note per step; a small `wiki/` tree; two example `site/` layers. Format and rules:
 [`docs/MEMORY.md`](../../docs/MEMORY.md) §1. Built by `python3 -m training.nursing.library`; checked
 by `python3 -m memory.lint knowledge/nursing-iv`.
 
 **Attribution.** {ATTRIBUTION} The step bodies are that text, with adaptable quantities turned into
 slots. Titles, `when:` / `what:` lines, links and the wiki notes were written for this repository.
+
+**The `site/` layers are invented.** `ward-7b` changes values the textbook states; `unit-4c` ADDS
+sentences the source does not have — made-up unit rules of the form "a quantity, and another value of
+it under a condition", there so a corpus can show that shape. Their numbers are placeholders. No real
+unit's protocol is represented. One wiki note, `rates/drop-factor`, carries the chapter's own
+two-valued sentence (macro-drip against micro-drip sets), byte-checked against the page.
 
 **This is training material for a language model. It is not clinical guidance.**
 """
@@ -252,7 +320,8 @@ def _body(text: str, subs: dict) -> tuple[str, dict]:
 
 def build() -> dict[str, str]:
     """path (relative to the repository) → file content."""
-    files: dict[str, str] = {f"{ROOT}/README.md": README, f"{ROOT}/site/ward-7b.md": SITE}
+    files: dict[str, str] = {f"{ROOT}/README.md": README, f"{ROOT}/site/ward-7b.md": SITE,
+                             f"{ROOT}/site/unit-4c.md": _site_rules_file()}
     for pslug, p in PROCEDURES.items():
         lines = CHECKLISTS[p["checklist"]]
         assert len(lines) == len(p["steps"]), (pslug, len(lines), len(p["steps"]))
@@ -280,7 +349,8 @@ def build() -> dict[str, str]:
         parent = nid.rsplit("/", 1)[0]
         n = Note(id=nid, shelf="wiki", kind=kind, title=title, when=when, what=what, body=body,
                  parent=parent if parent in wiki_ids else None,
-                 children=[c for c in wiki_ids if c.rsplit("/", 1)[0] == nid], slots=slots, source=OWN)
+                 children=[c for c in wiki_ids if c.rsplit("/", 1)[0] == nid], slots=slots,
+                 source=SOURCE if body == DROP_FACTOR_BODY else OWN)   # the one wiki body that IS the source's text
         files[f"knowledge/{nid}.md"] = n.serialise()
     return files
 

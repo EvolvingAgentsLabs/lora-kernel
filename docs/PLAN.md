@@ -479,6 +479,16 @@ failures remain, and on everything the adapter was taught the base reads worse (
 attribution, not a serving design. Next, the user's decision:** a library and a corpus that show two-valued
 notes inside trained procedures, both adapters retrained, scored on a new held-out set ([`BRIEF`](../results/M7-W5-kill-arm-20260919/BRIEF.md)).
 
+**W5c — the corpus-shape arm, built and pre-registered, not run.** The source has no two-valued statement
+inside the trained procedures (checked line by line), so the shape comes from **A** the chapter's one real
+sentence (macro- against micro-drip sets, byte-checked, now the body of `rates/drop-factor`) and **B**
+sentences a site ADDS to seven trained notes (`Site.adds`; **invented example content, approved by the user
+and marked as invented**). Corpus v2 (`data_walks_v2/`, generator by import, v1 untouched): 153 of 600 rows ask
+one of a note's two values, half each, the condition explicit or implicit; "copy the first number" is worth
+0.51. New held-out set (88; headline 66) and control (80); v2 gate PASSED, floor 6/66, headroom stop 61/66.
+Falsifier, exact and coded: conditional-slice credit ≤ 4/15 is indistinguishable from W5's 0/11 (Fisher).
+W5's pairs are asked again on the new headline; a tie is a tie ([`BRIEF`](../results/M7-W5c-conditional-corpus-20260919/BRIEF.md)).
+
 **W5, as built and pre-registered.** `training/nursing/walks_arm.py`: `base-reads` (untrained
 base, the oracle's notes open), `base-walks`, `nolib`, `withlib`. Headroom session first: `base-reads`
 at ≥ 51/56 on the headline stops the step before training. Headline n = 56 (held-out, depth ≤ 9, final
@@ -525,6 +535,10 @@ that decide the shape of a step:
 - **2026-09-19** — memory **W5 [ran]: does not pass as written.** Headline 35/56 against the untrained base that
   reads at 45/56 (6 : 16, $p=0.052$); 35 : 2 over no-library, 35 : 0 over the base navigating alone. 12 of 21 failures
   are the second of two values on a kind of note the corpus never showed. Navigation transferred; that reading did not.
+- **2026-09-19** — memory **W5c built and pre-registered, not run.** The source has no conditional value in the
+  trained procedures; the user chose one real sentence (drop factors, byte-checked) plus site-added sentences
+  declared as invented. A site may now ADD a sentence, never rewrite one. Corpus v2, new held-out and control
+  sets, v2 gate PASSED, exact falsifier coded ([`BRIEF`](../results/M7-W5c-conditional-corpus-20260919/BRIEF.md)).
 - **2026-09-19** — memory **W5b [ran]: the diagnosis holds, and composition is not a serving design.**
   `withlib`'s recorded walks replayed, the bare base writes the final line: **0 of the 12** clean-walk
   quantity failures remain; `composed` 41/54, exactly its zero-GPU ceiling; 12 : 4 against `withlib`

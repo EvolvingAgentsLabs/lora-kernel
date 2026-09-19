@@ -40,7 +40,7 @@ from dataclasses import dataclass, field
 from typing import Protocol
 
 from memory.guard import Guard
-from memory.layers import render, resolve
+from memory.layers import render, resolve, shown_slots
 from memory.notes import Library, Note, Site, count_tokens
 
 VERBS = ("search", "open", "calc")
@@ -197,7 +197,7 @@ class Conversation:
         text = self._render(note, case)
         self._log("open", shown, note=note.id, guard="ok", tokens=count_tokens(text),
                   slots={k: [val, layer] for k, (val, layer) in resolve(note, self.site, case).items()
-                         if k in note.used_slots()})
+                         if k in shown_slots(note, self.site)})
         return text
 
     def _render(self, note: Note, case: dict | None) -> str:

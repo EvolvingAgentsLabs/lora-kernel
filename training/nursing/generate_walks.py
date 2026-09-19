@@ -240,6 +240,7 @@ class Case:
     dead_end: bool = False
     page: bool = True                    # is the carried page shown? If not, the expert finds its place itself
     meta: dict = field(default_factory=dict)
+    adds: dict | None = None             # note id → {text, slot: value}: a sentence this case's site ADDS (W5c)
 
     @property
     def walk(self) -> list[str]:
@@ -266,9 +267,14 @@ def _pick(rng: random.Random, weighted) -> str:
 
 
 # ------------------------------------------------------------------ driving the runtime
+def site_of(overrides: dict | None, adds: dict | None = None) -> Site | None:
+    """A case's site layer: the values it changes and, since W5c, the sentences it adds."""
+    return Site(name="case-site", overrides=overrides or {}, adds=adds or {}) if (overrides or adds) else None
+
+
 def conversation(lib: Library, c: Case, searcher=None) -> tuple[Conversation, str]:
     """The conversation a case is served in, and the carried page the runtime wrote for it."""
-    site = Site(name="case-site", overrides=c.site) if c.site else None
+    site = site_of(c.site, c.adds)
     conv = Conversation(lib, site=site, case=c.case, mode="strict", seed=c.seed, searcher=searcher,
                         log_content=True)
     return conv, conv.resume(c.carried)
@@ -372,9 +378,9 @@ def _draw_quantities(rng: random.Random, which: str, avoid: set[str], eval_set: 
     return site or None, case or None, drawn
 
 
-def carry_case(lib, rng, cid, proc, k, m, eval_set=None, searcher=None, dead_rate=DEAD_END_RATE) -> Case:
+def carry_case(lib, rng, cid, proc, k, m, eval_set=None, searcher=None, dead_rate=DEAD_END_RATE, openings=None) -> Case:
     steps = lib.walk(proc)
-    opening, query = rng.choice(OPENINGS[proc])
+    opening, query = rng.choice((openings or OPENINGS)[proc])
     window = steps[k:k + m]
     ask = (f"Carry out the {'first step of the procedure' if m == 1 else f'first {m} steps of the procedure, in order'}"
            if k == 0 else
@@ -528,6 +534,8 @@ def signature(c: Case) -> str:
     order, the values those notes showed, the order's givens. Ids and wording are not part of it."""
     shown = sorted((n, s, str(v)) for layer in (c.site, c.case) for n, slots in (layer or {}).items()
                    for s, v in slots.items() if n in c.walk)
+    if c.adds:          # a sentence the site added is part of what the page says (absent from every v1 case)
+        shown += sorted((n, k, str(v)) for n, a in c.adds.items() for k, v in a.items() if n in c.walk and k != "text")
     core = [c.family, c.walk, shown, sorted(c.givens) if c.family == "rate" else [],
             c.meta.get("topic"), c.statement if c.family == "none" else None,
             sum(a[0] == "search" for a in c.plan) if c.family == "none" else None]
@@ -661,6 +669,7 @@ def row(lib: Library, c: Case, searcher=None) -> dict:
             "givens": c.givens, "values_read": values, "walk": c.walk,
             "held_out_shown": sum(1 for l in conv.log for i in (l.get("returned") or []) if i in held_out_only(lib)),
             "replay": {"seed": c.seed, "carried": c.carried, "page": c.page, "site": c.site, "case": c.case,
+                       **({"adds": c.adds} if c.adds else {}),      # absent from a v1 row, byte for byte
                        "plan": [list(a) for a in c.plan]},
             "meta": c.meta,
             "messages": [{"role": "system", "content": prompt.SYSTEM},
@@ -709,7 +718,7 @@ def case_of(r: dict) -> Case:
     return Case(id=r["case_id"], family=r["family"], variant=r["variant"], procedure=r["procedure"],
                 statement=r["statement"], carried=p["carried"], plan=[tuple(a) for a in p["plan"]],
                 answer=r["answer"], check=r["check"], givens=r["givens"], site=p["site"], case=p["case"],
-                seed=p["seed"], page=p.get("page", True), meta=r.get("meta", {}))
+                seed=p["seed"], page=p.get("page", True), meta=r.get("meta", {}), adds=p.get("adds"))
 
 
 def replay(lib: Library, r: dict, searcher=None) -> list[str]:

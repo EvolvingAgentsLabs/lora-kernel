@@ -521,6 +521,17 @@ muestren notas de dos valores dentro de procedimientos entrenados, los dos adapt
 un conjunto retenido nuevo
 ([`BRIEF`](../../results/M7-W5-kill-arm-20260919/BRIEF.md)).
 
+**W5c — el brazo de la forma del corpus, construido y pre-registrado, sin correr.** La fuente no tiene ninguna
+afirmación de dos valores dentro de los procedimientos entrenados (revisado línea por línea), así que la forma
+sale de **A** la única oración real del capítulo (equipos de macrogoteo contra microgoteo, verificada byte a
+byte, ahora el cuerpo de `rates/drop-factor`) y **B** oraciones que un sitio AGREGA a siete notas entrenadas
+(`Site.adds`; **contenido de ejemplo inventado, aprobado por el usuario y marcado como inventado**). Corpus v2
+(`data_walks_v2/`, generador por importación, v1 intacto): 153 de 600 filas piden uno de los dos valores de una
+nota, mitad cada uno, la condición explícita o implícita; "copiar el primer número" vale 0,51. Conjunto retenido
+nuevo (88; titular 66) y control (80); compuerta v2 PASÓ, piso 6/66, corte de margen 61/66. Falsador, exacto y
+en código: crédito ≤ 4/15 en el corte condicional es indistinguible del 0/11 de W5 (Fisher). Los pares de W5 se
+vuelven a preguntar sobre el titular nuevo; un empate es un empate ([`BRIEF`](../../results/M7-W5c-conditional-corpus-20260919/BRIEF.md)).
+
 **W5, tal como se construyó y pre-registró.** `training/nursing/walks_arm.py`: `base-reads` (base
 sin entrenar, las notas del oráculo abiertas), `base-walks`, `nolib`, `withlib`. Primero la sesión de
 margen: `base-reads` con ≥ 51/56 en el titular detiene el paso antes de entrenar. Titular n = 56
@@ -570,6 +581,11 @@ Las cuatro que deciden la forma de un paso:
 - **2026-09-19** — memoria **W5 [ran]: no pasa tal como está escrito.** Titular 35/56 contra el base sin entrenar que
   lee, 45/56 (6 : 16, $p=0{,}052$); 35 : 2 sobre sin-biblioteca, 35 : 0 sobre el base navegando solo. 12 de 21 fallas
   son el segundo de dos valores en un tipo de nota que el corpus nunca mostró. La navegación se transfirió; esa lectura no.
+- **2026-09-19** — memoria **W5c construido y pre-registrado, sin correr.** La fuente no tiene ningún valor
+  condicional en los procedimientos entrenados; el usuario eligió una oración real (factores de goteo, verificada
+  byte a byte) más oraciones agregadas por el sitio, declaradas como inventadas. Un sitio ahora puede AGREGAR una
+  oración, nunca reescribir una. Corpus v2, conjuntos retenido y de control nuevos, compuerta v2 PASÓ, falsador
+  exacto en código ([`BRIEF`](../../results/M7-W5c-conditional-corpus-20260919/BRIEF.md)).
 - **2026-09-19** — memoria **W5b [ran]: el diagnóstico se sostiene, y la composición no es un diseño de servicio.**
   Los recorridos grabados de `withlib` reproducidos, el base pelado escribe la línea final: quedan **0 de las 12**
   fallas de cantidad con recorrido limpio; `composed` 41/54, exactamente su techo sin GPU; 12 : 4 contra `withlib`
