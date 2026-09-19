@@ -125,6 +125,14 @@ def main() -> int:
         rec["members"][m]["adapter_sha256"] = sha256(Path(path, "adapter_model.safetensors"))
         note = Path(path, "rekey.json")
         rec["members"][m]["named_for_serving"] = json.loads(note.read_text()) if note.exists() else None
+        # EVERY ADAPTER IS PACKED THE MOMENT IT EXISTS, and the results file says so, so the
+        # chain can bring it home while the session still answers. On a hybrid 3.x base a
+        # member takes ~50 minutes to train on an L4 against ~6 on the 3B, and attempt 1
+        # lost one to a session that ended with the weights on the card [ran] 2026-09-19.
+        # Carried back in as `adapters.tgz`, the loop above skips what is already trained.
+        done = [v["adapter"] for v in rec["members"].values() if Path(v["adapter"], "adapter_model.safetensors").exists()]
+        subprocess.call(["tar", "czf", "adapters_out.tgz", *done])
+        rec["packed"] = len(done)
         save()
 
     from transformers import AutoTokenizer

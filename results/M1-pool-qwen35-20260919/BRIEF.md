@@ -52,3 +52,27 @@ email (471/475) has a little room below and a lot above the base.
 written procedure) — one arm, after this; anything about the 27B.
 
 **Redesign counter: 0.**
+
+## Attempt 1 **[ran]** 2026-09-19 — no verdict; the harness ended it (`attempt1_session_given_up/`)
+
+What it did establish, read off the partial file: `email-full` **trains** on `Qwen3.5-4B` under the
+unchanged recipe, and `train_one` renamed **256 tensors** for `Qwen3_5ForConditionalGeneration`
+(8 full-attention layers × 4 projections + 32 MLPs × 3, × A and B). No gate was reached.
+
+What ended it: **training one member took ~50 minutes on an L4** (≈6 on the 3B — the hybrid stack
+trains through the slow path), all of it silent to the chain's progress filter; after six silent
+polls the chain sent one liveness probe, it went unanswered, and the chain gave up **and stopped
+the session** as the second training began. *An expired `colab exec` is not a failed command* was
+already a rule; the chain did not follow it. The trained adapter was on the card.
+
+Three fixes, all to the harness, none to the question — gates, recipe, cases and verdict table are
+unchanged, so the redesign counter stays at 0:
+
+- three unanswered probes a minute apart, not one, before a card is given up;
+- the trainer's `loss` lines pass the progress filter, so fifty minutes of training show a position;
+- `pool_base` packs `adapters_out.tgz` the moment each adapter exists and says so in the results
+  file (`"packed": n`); the chain fetches it **while the session still answers**, and a relaunch
+  that carries it in skips what is already trained.
+
+Attempt 2 runs on an **A100** for the same reason: two fifty-minute trainings should not need one
+two-hour session to survive.
