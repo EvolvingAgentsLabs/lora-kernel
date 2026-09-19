@@ -76,3 +76,14 @@ unchanged, so the redesign counter stays at 0:
 
 Attempt 2 runs on an **A100** for the same reason: two fifty-minute trainings should not need one
 two-hour session to survive.
+
+## Attempt 2 **[ran]** 2026-09-19 — no verdict; killed by the fix (`attempt2_chain_killed_by_my_patch/`)
+
+The line added to fetch adapters early — `PACKS=$(grep … | grep … | tail -1)` — exits 1 under the
+chain's `set -euo pipefail` whenever the results file has no `"packed"` key yet, which is the first
+poll of every run. The chain died there and its EXIT trap stopped an A100 that had just begun to
+train. About fifteen minutes of boot, nothing measured. `grep` printing nothing and exiting 1 is a
+rule this repository already had written down; `bash -n` cannot see an exit status. Fixed with
+`|| true`, and `tests/test_chain_scripts.py` now lifts that line out of the script and runs it
+under the script's own shell options against a missing file, a file without the key and a file
+with it. Redesign counter still 0: nothing about the question moved.

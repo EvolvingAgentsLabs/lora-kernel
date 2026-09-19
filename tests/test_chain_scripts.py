@@ -359,3 +359,27 @@ def test_the_chain_brings_a_runner_s_adapters_home():
     assert "adapters_out.tgz" in chain
     assert "adapters_out.tgz" in Path("training/harness/pool_second.py").read_text()
     assert "results/*/adapters_out.tgz" in Path(".gitignore").read_text()
+
+
+def test_the_pack_counter_survives_a_results_file_with_nothing_packed(tmp_path):
+    """M1 attempt 2 [ran] 2026-09-19: `PACKS=$(grep … | grep … | tail -1)` under
+    `set -euo pipefail` exits 1 when the key is not there yet — on the first poll of every
+    run — and the chain's EXIT trap stopped an A100 that had just begun to train. The line
+    is lifted from the script and run under the script's own shell options, because a syntax
+    check cannot see an exit status."""
+    import re
+    import subprocess
+    from pathlib import Path
+
+    src = Path("training/harness/chain_serve.sh").read_text()
+    opts = re.search(r"^set -[a-z]+ ?[a-z]*$", src, re.M).group(0)
+    line = next(l.strip() for l in src.splitlines() if l.strip().startswith("PACKS=$("))
+    for body, want in ((None, ""), ('{"arms": {}}', ""), ('{\n "packed": 2,\n "x": 1}', "2")):
+        f = tmp_path / "r.json"
+        if body is None:
+            f.unlink(missing_ok=True) if hasattr(f, "unlink") and f.exists() else None
+        else:
+            f.write_text(body.replace("\\n", "\n"))
+        r = subprocess.run(["bash", "-c", f'{opts}\nLOCAL="{f}"\n{line}\necho "[$PACKS]"'],
+                           capture_output=True, text=True)
+        assert r.returncode == 0 and r.stdout.strip() == f"[{want}]", (body, r.returncode, r.stdout, r.stderr)

@@ -220,7 +220,11 @@ PY
     # `adapters_out.tgz`; fetched only at the end, fifty minutes of training died with
     # the session that held it [ran] 2026-09-19. A checkpoint nobody downloads is a
     # checkpoint nobody has — and a dead session gives nothing back.
-    PACKS=$(grep -o '"packed": *[0-9]*' "$LOCAL" 2>/dev/null | grep -o '[0-9]*$' | tail -1)
+    # `|| true` IS THE LINE. Under `set -euo pipefail` a grep that finds nothing exits 1 and
+    # takes the chain with it — and the EXIT trap then stops the card. Attempt 2 of M1 died
+    # on its first poll exactly so, before the key this looks for could exist [ran]
+    # 2026-09-19. `bash -n` cannot see it; tests/test_chain_scripts.py runs this line.
+    PACKS=$(grep -o '"packed": *[0-9]*' "$LOCAL" 2>/dev/null | grep -o '[0-9]*$' | tail -1 || true)
     if [ -n "${PACKS:-}" ] && [ "$PACKS" -gt "$HOME_PACKS" ]; then
       tmo 900 colab download -s "$S" /content/lora-kernel/adapters_out.tgz "$RUN_DIR/adapters_out.tgz" >/dev/null 2>&1 \
         && { HOME_PACKS=$PACKS; echo "    adapters home: $PACKS packed"; } || true
