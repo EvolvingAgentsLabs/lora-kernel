@@ -76,7 +76,7 @@ brazos de atribución se compran sólo una vez que hay un efecto que atribuir.
 | **4** | el par especulativo | 3 | la aceptación de borradores del LoRA chico bajo verificación del LoRA grande supera la aceptación bajo el modelo grande pelado | — |
 | **5** | la primera región real, a mano | 1, 2, un sandbox, claves rotadas | la compuerta de release, sobre una suite con un verificador que nadie acá generó | **región nombrada el 2026-09-19: procedimientos de enfermería y material de educación en salud** (*Nursing Skills* de Open RN, CC BY 4.0, primero); sigue el brazo de margen, cero GPU |
 | **6** | la política de servicio, con la factura | 2, 4, 5 | la porción local ahorra más de lo que cuesta, sobre tráfico real | — |
-| **7** | **una base de conocimiento por subdominio, y la trayectoria por ella como harness** — sobre mecánica de fluidos, partida en subdominios | 1; comparte su modelo de embeddings con el brazo 2 del hito 2; independiente de 3–6, **corre a continuación** | un experto entrenado para navegar y seguir notas contesta familias sobre las que nunca entrenó, donde el mismo experto sin la base está en 1/20 | — |
+| **7** | **una base de conocimiento por subdominio, y la trayectoria por ella como harness** — sobre mecánica de fluidos, partida en subdominios | 1; comparte su modelo de embeddings con el brazo 2 del hito 2; independiente de 3–6, **corre a continuación** | un experto entrenado para navegar y seguir notas contesta familias sobre las que nunca entrenó, donde el mismo experto sin la base está en 1/20 | 🔶 **W1–W4 construidos [ran]; el radar de W3 y el brazo que mata de W5 [ran] y no pasan.** W5: el brazo con biblioteca 35/56 contra el base sin entrenar que lee, 45/56 (6 : 16, $p=0{,}052$), 35 : 2 sobre sin-biblioteca — la navegación se transfirió, leer una nota de dos valores no. Sigue a decisión del usuario: composición, sin entrenar |
 
 ### Hito 1 — el pool en Qwen 3.x chico
 
@@ -505,7 +505,21 @@ notas de paso, $s(n)=|W(\text{línea})\cap W(n)|/|W(n)|\ge 0{,}5$, con los núme
 aporta; el recorrido se lee del registro del árbitro. `right` · `format` · `unread` · `wrong`. Las 740
 filas del oráculo son `right` bajo él; no se regeneró ninguna fila. Un tercer rediseño termina el paso.
 
-**W5, construido y pre-registrado — sin correr.** `training/nursing/walks_arm.py`: `base-reads` (base
+**W5 [ran] 2026-09-19 — NO PASA TAL COMO ESTÁ ESCRITO.** En el titular (n = 56) el brazo con biblioteca
+saca **35**, el base sin entrenar leyendo las notas del oráculo **45**, el brazo sin biblioteca 2, el base
+sin entrenar navegando solo 0. `withlib` vs `nolib` 35 : 2 y vs `base-walks` 35 : 0 — pero **vs
+`base-reads` 6 : 16, $p = 0{,}052$**: un empate que se inclina a derrota, y el veredicto pide *ganar*.
+Doce de las 21 fallas son una sola: la nota retenida da dos valores para una cantidad, ninguna fila de
+cantidad entrenada leyó una nota así (0 de 108), y el adaptador responde el primer valor — 11/12 cuando
+se pide el primero, 0/11 cuando se pide el segundo, el base que lee acierta las 12. Ocho son
+`carry/middle-find`, donde el base también falla 5. La navegación sí se transfirió: 0 fallos de
+recuperación en el titular, 3 verbos rechazados en 140 recorridos contra 368, control 58/60 contra 41/60.
+Rediseños: 0; el corrector no se toca. **Sigue, a decisión del usuario:** composición — el adaptador
+recorre, el base pelado escribe la línea final — una sesión L4, sin entrenar; después, si se compra, un
+corpus que muestre notas de dos valores, medido sobre un conjunto retenido nuevo
+([`BRIEF`](../../results/M7-W5-kill-arm-20260919/BRIEF.md)).
+
+**W5, tal como se construyó y pre-registró.** `training/nursing/walks_arm.py`: `base-reads` (base
 sin entrenar, las notas del oráculo abiertas), `base-walks`, `nolib`, `withlib`. Primero la sesión de
 margen: `base-reads` con ≥ 51/56 en el titular detiene el paso antes de entrenar. Titular n = 56
 (apartado, profundidad ≤ 9, línea final no compartida); al lado las 2 filas de profundidad 15, las 22
@@ -551,6 +565,9 @@ Las cuatro que deciden la forma de un paso:
 - **2026-09-19** — memoria **W4 [ran]: PASÓ.** El generador de corpus maneja el runtime: 600 recorridos, 0 valores en un
   enunciado, 0 casos evaluados en el corpus, 0 aperturas del apartado, 0 filas que el árbitro no reproduzca; `discontinue-iv`
   apartado; los recorridos largos son ventanas con el estado llevado. Todavía sin modelo.
+- **2026-09-19** — memoria **W5 [ran]: no pasa tal como está escrito.** Titular 35/56 contra el base sin entrenar que
+  lee, 45/56 (6 : 16, $p=0{,}052$); 35 : 2 sobre sin-biblioteca, 35 : 0 sobre el base navegando solo. 12 de 21 fallas
+  son el segundo de dos valores en un tipo de nota que el corpus nunca mostró. La navegación se transfirió; esa lectura no.
 - **2026-09-19** — el evaluador de W4 reemplazado tras una revisión adversarial (rediseño 2: fallaba con una paráfrasis y
   aprobaba con un número señuelo); **W5 construido y pre-registrado**, primero la sesión de margen, titular n = 56, piso 3/56. Sin correr.
 - **2026-09-19** — memoria **W2 [ran]: PASÓ.** El runtime, las capas y la guarda sobre el loop de modo corpus sin tocarlo;
