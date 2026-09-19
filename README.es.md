@@ -30,17 +30,9 @@ núcleo de la 1.0 está *especificado*, no shippeado.
 
 ## El núcleo de la versión 1.0
 
-> **[MARCADOR DE ILUSTRACIÓN — `docs/img/core-1-0.png`]**
-> *Un diagrama horizontal en el estilo del hero. Un pedido entra por la izquierda y se
-> encuentra con un pequeño cartel indicador con la etiqueta "router — whose corpus does this
-> look like?". Salen de ahí tres carriles. Los dos carriles superiores llevan cada uno a un
-> pequeño escritorio con un especialista y su propia bibliotequita (etiquetar uno "inbox
-> triage", el otro "IV therapy"); cada bibliotequita muestra los dos estantes, el arnés arriba
-> y la wiki abajo. El carril inferior, punteado, sale por el borde derecho hacia un edificio
-> grande y distante, "frontier — when it looks like none". Debajo de los dos escritorios corre
-> una banda continua con la etiqueta "runtime — referee: turns the pages · applies the site's
-> rules · enforces the order". Encima de cada escritorio una pequeña etiqueta: "LoRA — trained
-> to navigate, not to remember".*
+![Un pedido llega a un cartel indicador, el router. Dos carriles llevan a dos especialistas, cada uno en su escritorio con su estantería de dos estantes; un tercer carril, punteado, se va hacia un edificio lejano, la frontera. Una banda corre debajo de los dos escritorios: el runtime, el árbitro.](docs/img/core-1-0.png)
+
+*El núcleo de la 1.0: un router que puede abstenerse, un especialista y una biblioteca por subdominio, un árbitro debajo de todos.*
 
 Cinco cosas, y cómo cambia cada una:
 
@@ -86,15 +78,9 @@ Especificación completa: [`docs/es/MEMORY.md`](docs/es/MEMORY.md) **[spec]**.
    experto nunca abrió el paso 1, el runtime corta la ejecución — sin necesitar saber si la
    respuesta final estaba bien.
 
-> **[MARCADOR DE ILUSTRACIÓN — `docs/img/memory-walkthrough.png`]**
-> *Un storyboard vertical de siete paneles numerados unidos por una línea, como un mapa de
-> subte. 1: una tarjeta de pedido "500 mL over 4 h, gravity, 20 gtt/mL". 2: el experto escribe
-> `search`; el radar ilumina tres tarjetas en el estante del arnés. 3: se abre la tarjeta
-> "Primary infusion". 4: la línea recorre el estante del arnés, paso a paso. 5: en "set the
-> rate" la línea baja al estante de la wiki, a una tarjeta "gravity drip rate", y vuelve a
-> subir — este desvío es el punto de la imagen. 6: una pequeña calculadora muestra 500 × 20 ÷
-> 240 = 41.67. 7: la respuesta, "42 drops per minute". Al pie, la banda del árbitro muestra un
-> check verde debajo del panel 4: "requires: safety steps — opened".*
+![Siete paneles numerados unidos por una línea, como un mapa de subte: un pedido, una búsqueda que ilumina tres fichas, un procedimiento que se abre, la línea que recorre el estante del arnés, un desvío hacia el estante de la wiki y de vuelta, una calculadora, la respuesta.](docs/img/memory-walkthrough.png)
+
+*Una tarea, de punta a punta. El desvío del arnés a la wiki y de vuelta es el punto.*
 
 **La ganancia.** Si el protocolo cambia mañana, se edita un archivo markdown en git. El LoRA
 no se reentrena, porque lo que aprendió fue a obedecer los enlaces y leer las notas.
@@ -164,13 +150,9 @@ El registro completo, con todo lo que falló y los instrumentos que mintieron, e
 
 ## El camino del pedido
 
-> **[MARCADOR DE ILUSTRACIÓN — `docs/img/request-path.png`]**
-> *Un flujo limpio de izquierda a derecha en el mismo estilo, cinco estaciones en una línea:
-> "client (OpenAI API · OpenClaw)" → "proxy — prunes the tools to the member's own, swaps in
-> the member's prompt" → "router — abstains when it looks like no corpus" → "expert + its
-> library" → "answer". Desde el router, una rama punteada baja y corre por abajo hasta
-> "frontier", y se reúne de nuevo en "answer". Debajo de la estación del experto, un recuadro
-> chico muestra los tres verbos como tres teclas de un teclado: `search`, `open`, `calc`.*
+![Cinco estaciones sobre una línea: cliente, proxy, router, experto con su biblioteca, respuesta. Del router sale una rama punteada que corre por abajo hasta la frontera y se reúne en la respuesta. Debajo del experto, tres teclas: search, open, calc.](docs/img/request-path.png)
+
+*El camino de un pedido. Abstenerse hacia la frontera es un carril, no un error.*
 
 ```mermaid
 flowchart LR

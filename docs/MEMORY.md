@@ -365,15 +365,9 @@ Whether a customer's log may keep note *content* or only *shapes* is a setting, 
 
 ## 6. In operation — one task, end to end
 
-> **[ILLUSTRATION PLACEHOLDER — `docs/img/memory-walkthrough.png`]**
-> *A vertical storyboard of seven numbered panels joined by a single line, like a subway map, in the
-> same flat style. 1: a request card "500 mL over 4 h, gravity, 20 gtt/mL". 2: the expert writes
-> `search`; the radar lights three cards on the harness shelf. 3: one card, "Primary infusion",
-> opens. 4: the line runs along the harness shelf step by step. 5: at the step "set the rate" the
-> line drops down to the wiki shelf, to a card "gravity drip rate", and comes back up — this detour
-> is the visual point of the picture. 6: a small calculator shows 500 × 20 ÷ 240 = 41.67. 7: the
-> answer "42 drops per minute". Along the bottom, the referee band shows one green check at panel
-> 4, "requires: safety steps — opened".*
+![Seven numbered panels joined by one line, like a subway map: a request, a search that lights three cards, a procedure opening, the line running along the harness shelf, a detour down to the wiki shelf and back, a calculator, the answer.](img/memory-walkthrough.png)
+
+*One task, end to end. The detour from the harness to the wiki and back is the point.*
 
 1. **The task comes in:** *"Infuse 500 mL over 4 hours by gravity; drop factor 20 gtt/mL."*
 2. **The expert consults its radar:** `<search shelf=harness>start a primary infusion</search>`.

@@ -29,15 +29,9 @@ the numbers, and the core of 1.0 is *specified*, not shipped.
 
 ## The core of version 1.0
 
-> **[ILLUSTRATION PLACEHOLDER — `docs/img/core-1-0.png`]**
-> *One horizontal diagram in the hero's style. A request enters from the left and meets a small
-> signpost labelled "router — whose corpus does this look like?". Three lanes leave it. The top two
-> lanes each lead to a small desk with a specialist and its own little bookcase (label one
-> "inbox triage", the other "IV therapy"); each bookcase shows the two shelves, harness above and
-> wiki below. The bottom lane, dashed, leads off the right edge to a distant large building,
-> "frontier — when it looks like none". Under the two desks runs one continuous band labelled
-> "runtime — referee: turns the pages · applies the site's rules · enforces the order". Above each
-> desk a small tag: "LoRA — trained to navigate, not to remember".*
+![A request meets a signpost, the router. Two lanes lead to two specialists, each at a desk with its own two-shelf bookcase; a dashed third lane leads off to a distant building, the frontier. One band runs under both desks: the runtime, the referee.](docs/img/core-1-0.png)
+
+*The core of 1.0: a router that may abstain, a specialist and a library per subdomain, one referee under all of them.*
 
 Five things, and how each one changes:
 
@@ -80,14 +74,9 @@ Full specification: [`docs/MEMORY.md`](docs/MEMORY.md) **[spec]**.
    watches for cheating: if step 4 `requires` step 1 and the expert never opened step 1, the runtime
    cuts the execution — without needing to know whether the final answer was right.
 
-> **[ILLUSTRATION PLACEHOLDER — `docs/img/memory-walkthrough.png`]**
-> *A vertical storyboard of seven numbered panels joined by one line, like a subway map. 1: a request
-> card "500 mL over 4 h, gravity, 20 gtt/mL". 2: the expert writes `search`; the radar lights three
-> cards on the harness shelf. 3: the card "Primary infusion" opens. 4: the line runs along the
-> harness shelf, step to step. 5: at "set the rate" the line drops to the wiki shelf, to a card
-> "gravity drip rate", and climbs back — this detour is the point of the picture. 6: a small
-> calculator shows 500 × 20 ÷ 240 = 41.67. 7: the answer, "42 drops per minute". Along the bottom the
-> referee band shows one green check under panel 4: "requires: safety steps — opened".*
+![Seven numbered panels joined by one line, like a subway map: a request, a search that lights three cards, a procedure opening, the line running along the harness shelf, a detour down to the wiki shelf and back, a calculator, the answer.](docs/img/memory-walkthrough.png)
+
+*One task, end to end. The detour from the harness to the wiki and back is the point.*
 
 **The gain.** If the protocol changes tomorrow you edit one markdown file in git. The LoRA is not
 retrained, because what it learned was to obey the links and read the notes.
@@ -151,13 +140,9 @@ The full ledger, including everything that failed and the instruments that lied,
 
 ## The request path
 
-> **[ILLUSTRATION PLACEHOLDER — `docs/img/request-path.png`]**
-> *A clean left-to-right flow in the same style, five stations on one line: "client (OpenAI API ·
-> OpenClaw)" → "proxy — prunes the tools to the member's own, swaps in the member's prompt" →
-> "router — abstains when it looks like no corpus" → "expert + its library" → "answer". From the
-> router a dashed branch drops down and runs along the bottom to "frontier", rejoining at "answer".
-> Under the expert station, a small inset shows the three verbs as three keys on a keyboard:
-> `search`, `open`, `calc`.*
+![Five stations on one line: client, proxy, router, expert with its library, answer. From the router a dashed branch runs along the bottom to the frontier and rejoins at the answer. Under the expert, three keys: search, open, calc.](docs/img/request-path.png)
+
+*The path of a request. Abstaining to the frontier is a lane, not an error.*
 
 ```mermaid
 flowchart LR

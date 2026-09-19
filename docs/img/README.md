@@ -2,7 +2,11 @@
 
 Every picture the documents ask for, in one place. A document shows a described placeholder until
 its file exists here; when a file arrives, the placeholder in **both languages** is replaced by the
-image. File names are fixed — the documents already point at them.
+image. File names are fixed — the documents already point at them. `python3 scripts/place-images.py`
+does the replacing; `--check` lists what is still wanted.
+
+**Known, in a delivered image:** `request-path.png` spells a book spine "Harenss" — cosmetic, to fix in
+the next export.
 
 **House style** (from the hero): flat, warm technical illustration — ink lines, two or three muted
 colours, no gradients, no glow. **No robots, no brains, no glowing neural nets**: four of the five
@@ -12,12 +16,12 @@ English in both language versions.
 | file | size | status | used in |
 |---|---|---|---|
 | `hero.png` | 1600 × 640 asked · 1983 × 793 delivered | ✅ **in** | `README.md`, `README.es.md` |
-| `article-harness.png` | 1200 × 627 | ⬜ wanted | `docs/articles/2026-09-it-was-the-harness.md`, `docs/articles/2026-09-era-el-arnes.es.md` |
-| `article-team.png` | wide, ~1600 px | ⬜ wanted | `docs/articles/2026-09-it-was-the-harness.md`, `docs/articles/2026-09-era-el-arnes.es.md` |
-| `core-1-0.png` | wide, ~1600 px | ⬜ wanted | `README.md`, `README.es.md` |
+| `article-harness.png` | 1200 × 627 | ✅ **in** | `docs/articles/2026-09-it-was-the-harness.md`, `docs/articles/2026-09-era-el-arnes.es.md` |
+| `article-team.png` | wide, ~1600 px | ✅ **in** | `docs/articles/2026-09-it-was-the-harness.md`, `docs/articles/2026-09-era-el-arnes.es.md` |
+| `core-1-0.png` | wide, ~1600 px | ✅ **in** | `README.md`, `README.es.md` |
 | `memory-five-pieces.png` | wide, ~1600 px | ⬜ wanted | `docs/MEMORY.md`, `docs/es/MEMORY.md`, `docs/ARCHITECTURE.md`, `docs/es/ARCHITECTURE.md` |
-| `memory-walkthrough.png` | wide, ~1600 px | ⬜ wanted | `README.md`, `README.es.md`, `docs/MEMORY.md`, `docs/es/MEMORY.md` |
-| `request-path.png` | wide, ~1600 px | ⬜ wanted | `README.md`, `README.es.md` |
+| `memory-walkthrough.png` | wide, ~1600 px | ✅ **in** | `README.md`, `README.es.md`, `docs/MEMORY.md`, `docs/es/MEMORY.md` |
+| `request-path.png` | wide, ~1600 px | ✅ **in** | `README.md`, `README.es.md` |
 
 ## Briefs
 
