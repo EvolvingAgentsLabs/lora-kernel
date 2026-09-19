@@ -264,12 +264,17 @@ I would rather say it myself:
 Every step has, written before it runs, the condition that would prove it false. That is how we found
 the harness.
 
-## If your organisation already draws itself this way
+## Want to test it? Do you have a real case?
 
-We are looking for two or three teams — ideally one that already has an agent per role — with a task
-that meets three conditions: it repeats a lot, it has a verifiable answer, and today it is sent whole
-to a frontier model. We have no product to sell you. We have an architecture, a method to measure
-whether part of that work can be resolved on your own machine — and the habit of publishing the
-number whichever way it comes out.
+If your organisation already draws itself this way, we would love your help evaluating it. We are
+looking for two or three teams to test this and share feedback — ideally a team that already runs an
+agent per role, with a task that meets three conditions: it repeats a lot, it has a verifiable answer,
+and today it is sent whole to a frontier model.
+
+We have no product to sell you. We have an architecture, a method to measure whether part of that
+work can be resolved on your own machine — and the habit of publishing the number whichever way it
+comes out.
 
 Repository: github.com/EvolvingAgentsLabs/lora-kernel
+
+Apache 2.0. The idea began in a conversation with Ismael Faro.
