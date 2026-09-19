@@ -1,19 +1,8 @@
 # lora-kernel
 
-> **[MARCADOR DE IMAGEN HERO — `docs/img/hero.png`, 1600 × 640]**
-> *Una sala de lectura vista levemente desde arriba, dibujada en un estilo plano, cálido y
-> técnico-ilustrativo — líneas de tinta, dos o tres colores apagados, sin degradés, sin
-> resplandor. En el centro un pequeño escritorio con una lámpara de lectura; en el escritorio
-> una única figura (neutra, no un robot) con una ficha abierta en la mano. Detrás del
-> escritorio una pared de cajones de fichero, claramente dividida en dos: la mitad superior
-> tiene cajones unidos por una línea fina que corre de cajón en cajón como una ruta (los
-> procedimientos), la mitad inferior se ramifica como un árbol (la enciclopedia). Un pequeño
-> radar sobre el escritorio proyecta un cono suave que ilumina exactamente tres cajones. A
-> través de una puerta a la derecha lejana, tenue y distante, un edificio mucho más grande con
-> un cartel que dice "frontier" — adonde va una pregunta cuando ningún cajón encaja. El clima:
-> un especialista trabajando en una biblioteca pequeña y bien ordenada, no una máquina que lo
-> sabe todo. Dejar el tercio izquierdo lo bastante calmo para que el título se asiente sobre
-> él.*
+![Un especialista en su escritorio, en una sala de lectura chica. Detrás, una pared de cajones de fichero en dos mitades — PROCEDURES, con los cajones unidos por una línea de ruta, y ENCYCLOPEDIA, ramificada como un árbol. Un radar pequeño sobre el escritorio ilumina exactamente tres cajones. Por una puerta, a lo lejos, un edificio grande con el cartel 'frontier'.](docs/img/hero.png)
+
+*El especialista, la biblioteca, el radar — y, por la puerta, la frontera, para cuando ningún cajón sirve.*
 
 **El LoRA no es el libro de texto; es el especialista que sabe usar la biblioteca.**
 

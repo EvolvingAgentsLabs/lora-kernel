@@ -1,16 +1,8 @@
 # lora-kernel
 
-> **[HERO IMAGE PLACEHOLDER — `docs/img/hero.png`, 1600 × 640]**
-> *A reading room seen from slightly above, drawn in a flat, warm, technical-illustration style —
-> ink lines, two or three muted colours, no gradients, no glow. In the centre a small desk with one
-> reading lamp; at the desk a single figure (neutral, not a robot) with an open card in hand. Behind
-> the desk a wall of card-catalogue drawers, clearly split in two: the upper half has drawers joined
-> by a thin line that runs from drawer to drawer like a route (the procedures), the lower half
-> branches like a tree (the encyclopedia). A small radar dish on the desk casts a soft cone that
-> lights exactly three drawers. Through a doorway on the far right, faint and distant, a much larger
-> building with a sign "frontier" — where a question goes when no drawer fits. The mood: a specialist
-> at work in a small, well-ordered library, not a machine that knows everything. Leave the left third
-> calm enough for the title to sit over it.*
+![A specialist at a desk in a small reading room. Behind them a wall of card-catalogue drawers in two halves — PROCEDURES, its drawers joined by a route line, and ENCYCLOPEDIA, branching like a tree. A small radar dish on the desk lights exactly three drawers. Through a doorway, far off, a large building marked 'frontier'.](docs/img/hero.png)
+
+*The specialist, the library, the radar — and, through the door, the frontier, for when no drawer fits.*
 
 **The LoRA is not the textbook. It is the specialist who knows how to use the library.**
 
