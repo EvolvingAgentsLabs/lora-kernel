@@ -476,6 +476,43 @@ recall@10 0,830), 16 más allá del 10, cuatro de los cuales se resuelven dentro
 conjunto no se retoca (rediseños: 0). Dos consecuencias: **W5 cuenta un fallo de recuperación aparte del puntaje del experto** — o
 corre sobre los resultados de búsqueda del oráculo — y la brecha es de **W6 (R1)**, medida sobre conjuntos nuevos, nunca más sobre P.
 
+**W4 [ran] 2026-09-19 — el corpus del hábito: PASÓ.** `training/nursing/generate_walks.py` no escribe ninguna
+observación: cada fila es un plan *pasado por* `memory/runtime.py` dentro de `run_chain`, el bloque de verbos
+por `render_tools` (`memory/prompt.py`, el único lugar donde se escribe el prompt de un miembro), la página
+llevada por `Conversation.resume`. Compuerta, por fila, con $V$ los valores leídos de un hueco o de un `<calc>`
+y $N$ los números que el enunciado dice: $V(r)\cap N(r)=\varnothing$ — **0** de 740; ningún recorrido ni caso
+evaluado en el corpus — **0** de 140; ninguna apertura de las 17 notas que son solo de `discontinue-iv` —
+**0** de 600; cada fila reproducida byte por byte por el árbitro en `strict` — **0** fallas; cada cláusula
+rota una vez por un test. 600 filas en cuatro familias (avanzar 286 · dosis 144 · cantidad 108 · *no está en
+mi biblioteca* 62), de 0 a 9 notas abiertas, 24 callejones sin salida deliberados, y los mismos 600 casos sin
+verbos como segundo brazo de W5. **Apartado: `discontinue-iv`** — las dos infusiones comparten 11 líneas de la
+fuente casi palabra por palabra, así que apartar cualquiera mediría un hermano memorizado; el retiro comparte
+4 y 6 líneas genéricas, y los 24 de sus 80 recorridos de evaluación que terminan en una están marcados. **Un
+recorrido de 32 pasos no entra en `max_seq` 1536 y no se trunca:** una tarea es una ventana de 1 a 8 pasos, y
+la que entra por el medio lleva su estado — por la última página del árbitro, o encontrando su lugar por el
+esqueleto y una búsqueda (dos verbos; seguir una página es uno, y una sola herramienta es copiar **[ran]**
+P13). La fila más larga mide 1 298 tokens con el tokenizador de la base. Un rediseño, de la cláusula de
+enunciados de G2, anotado en el brief. Sigue **W5**, el brazo que puede matar la memoria; si R0 gana W3 el
+corpus se regenera antes con el índice
+([`BRIEF`](../../results/M7-W4-corpus-20260919/BRIEF.md)).
+
+**El evaluador de W4, reemplazado antes de que nada se leyera a través de él (rediseño 2) [ran]
+2026-09-19.** Una revisión adversarial lo encontró mal en los dos sentidos: una paráfrasis del paso
+correcto fallaba (subcadena exacta, con marcador `[site]` y todo — 57 de las 80 filas apartadas), y
+*"15 años … espera 8 segundos"* aprobaba un chequeo de 15 segundos. `training/nursing/grade_walks.py`
+lee sólo la línea final; un número cuenta sólo pegado a su unidad; un paso se *atribuye* entre las 70
+notas de paso, $s(n)=|W(\text{línea})\cap W(n)|/|W(n)|\ge 0{,}5$, con los números que la nota
+aporta; el recorrido se lee del registro del árbitro. `right` · `format` · `unread` · `wrong`. Las 740
+filas del oráculo son `right` bajo él; no se regeneró ninguna fila. Un tercer rediseño termina el paso.
+
+**W5, construido y pre-registrado — sin correr.** `training/nursing/walks_arm.py`: `base-reads` (base
+sin entrenar, las notas del oráculo abiertas), `base-walks`, `nolib`, `withlib`. Primero la sesión de
+margen: `base-reads` con ≥ 51/56 en el titular detiene el paso antes de entrenar. Titular n = 56
+(apartado, profundidad ≤ 9, línea final no compartida); al lado las 2 filas de profundidad 15, las 22
+de línea compartida, cantidad por capa, control sin `rate`, fallos de recuperación, `context`,
+`format`. Piso de la política trivial **3/56** [ran]; el oráculo es 140/140 por la misma función
+([`BRIEF`](../../results/M7-W5-kill-arm-20260919/BRIEF.md)).
+
 ## 2. La familia, y la alternativa
 
 **Adoptada: Qwen 3.x.** `Qwen3.5-2B/4B` y `Qwen3.8-27B` comparten un espacio de ids —
@@ -511,6 +548,11 @@ Las cuatro que deciden la forma de un paso:
 
 ## 5. Historia
 
+- **2026-09-19** — memoria **W4 [ran]: PASÓ.** El generador de corpus maneja el runtime: 600 recorridos, 0 valores en un
+  enunciado, 0 casos evaluados en el corpus, 0 aperturas del apartado, 0 filas que el árbitro no reproduzca; `discontinue-iv`
+  apartado; los recorridos largos son ventanas con el estado llevado. Todavía sin modelo.
+- **2026-09-19** — el evaluador de W4 reemplazado tras una revisión adversarial (rediseño 2: fallaba con una paráfrasis y
+  aprobaba con un número señuelo); **W5 construido y pre-registrado**, primero la sesión de margen, titular n = 56, piso 3/56. Sin correr.
 - **2026-09-19** — memoria **W2 [ran]: PASÓ.** El runtime, las capas y la guarda sobre el loop de modo corpus sin tocarlo;
   72/72 recorridos del oráculo, 0 rechazados, tres recorridos que violan cortados en `strict`. Todavía sin modelo.
 - **2026-09-19** — memoria **W3 construido, margen [ran]:** el índice, un conjunto de consultas escrito después de congelar (P 94, E 72),
