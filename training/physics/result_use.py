@@ -7,7 +7,7 @@ whether the value the tool returned is **used** by any later step, and whether a
 number that **came from nowhere** — not the statement, not a constant, not an earlier result.
 
 WHAT IT FOUND (zero GPU, `results/M7-knowledge-base-20260919/arm0.json`): of 79 failures, **74**
-contain a number from nowhere and **74** leave at least one tool result unused; 132 of 371
+contain a number from nowhere and **75** leave at least one tool result unused; 217 of 456
 non-final results are ignored. The expert looks the density up — 882.3 — and multiplies by
 1359.7. It does not mainly get the physics wrong: **it calls the tool and then writes a number
 of its own.**
@@ -42,7 +42,7 @@ def read_chain(chain: str, statement: str, handbook, answer) -> dict:
     """One chain: results used, results ignored, steps with a number from nowhere."""
     calls = TAG.findall(chain or "")
     given = [float(x) for x in NUM.findall(statement)] + CONST
-    results, used, ignored, invented = [], 0, 0, 0
+    results, used, ignored, invented, errors = [], 0, 0, 0, 0
     for i, (name, body) in enumerate(calls):
         if name == "calc":
             lits = [float(x) for x in NUM.findall(body)]
@@ -50,6 +50,11 @@ def read_chain(chain: str, statement: str, handbook, answer) -> dict:
         try:
             val = float(answer(name, body, handbook))
         except Exception:
+            # COUNTED, NEVER SWALLOWED. The first version of this file passed the handbook
+            # in its JSON shape, every `<lookup>` raised inside this `except`, and a chain
+            # that used the looked-up density CORRECTLY was scored as holding "a number
+            # from nowhere" — 74 of 79, published, and wrong [ran] 2026-09-19.
+            errors += 1
             continue
         if i < len(calls) - 1:
             later = [float(x) for _, b in calls[i + 1:] for x in NUM.findall(b)]
@@ -58,7 +63,8 @@ def read_chain(chain: str, statement: str, handbook, answer) -> dict:
             else:
                 ignored += 1
         results.append(val)
-    return {"calls": len(calls), "used": used, "ignored": ignored, "invented_steps": invented}
+    return {"calls": len(calls), "used": used, "ignored": ignored, "invented_steps": invented,
+            "tool_errors": errors}
 
 
 def main(records: str = "results/P41-routing-20260915/pool_results.json", arm: str = "fluids-full",
@@ -76,7 +82,9 @@ def main(records: str = "results/P41-routing-20260915/pool_results.json", arm: s
         if r["passed"]:
             s["passed"] += 1
             continue
-        got = read_chain(r["chain"], c["prompt"].split("Solve the problem")[0], c["handbook"], tools.answer)
+        book = {tuple(k): v for k, v in c["handbook"]}      # JSON shape -> what `lookup` reads
+        got = read_chain(r["chain"], c["prompt"].split("Solve the problem")[0], book, tools.answer)
+        s["tool_errors_while_replaying"] += got["tool_errors"]
         s["failed"] += 1
         s["failed_with_a_result_never_used"] += got["ignored"] > 0
         s["failed_with_a_number_from_nowhere"] += got["invented_steps"] > 0

@@ -292,7 +292,7 @@ def draft_arm(model: str, tok, suite, cases: list, max_tokens: int, concurrency:
         try:
             chain = run_chain(lambda prefix: completion(model, base_prompt + prefix,
                                                         max_tokens, suite.close),
-                              case.ctx, suite=suite)
+                              case.ctx, max_calls=getattr(suite, "max_calls", 6), suite=suite)
         except Exception as e:                      # transport, never folded into a score
             return {"id": case.id, "error": repr(e)[:160]}
         return {"id": case.id, "human": case.human, "truth": case.truth,
