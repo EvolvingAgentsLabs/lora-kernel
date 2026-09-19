@@ -43,6 +43,13 @@ medidos la sostienen:
   Las dos cosas son por qué la base de conocimiento se *navega con una política entrenada*
   y su contenido es *inmemorizable por construcción* (hito 7).
 
+**Qué es la versión 1.0 [spec].** Cinco cosas: los expertos definidos por sus corpus; el
+router con su abstención; **la memoria** (hito 7, [`MEMORY.md`](MEMORY.md)); el runtime que la
+arbitra; el contrato de liberación que la hashea toda. El par especulativo (hitos 3–4) se
+acopla por subdominio donde se mide que paga y **no es requerido por 1.0** — cada pieza de 1.0
+tiene una compuerta que puede pasar en una L4, dentro de una sesión de sesenta minutos, y un
+27B no.
+
 Lo que queda de antes: la frontera es un componente permanente, usada donde el corpus de
 ningún experto cubre el pedido o donde se mide que una región falla (0,546 → 0,775 **[ran]**
 P41); los expertos se entrenan por SFT ordinario; toda región entra por la compuerta de
@@ -52,7 +59,9 @@ open source.
 Lo que se retira: la aceptación como forma de *rankear* expertos no relacionados contra un
 mismo target (cerrado sin veredicto después de dos precondiciones fallidas; un rediseño de
 tres sin gastar, y no se va a gastar); la composición de adaptadores; el instrumento de
-aceptación a nivel de carácter; el experto de mecánica de fluidos.
+aceptación a nivel de carácter; ~~el experto de mecánica de fluidos~~ — **desretirado
+2026-09-19 [ran] hito 7 brazo 0b**: se retiró con un 11/90, y ese era el camino de servido.
+Como le enseñó su corpus, es 90/90.
 
 ## 1. Los hitos
 
@@ -154,6 +163,19 @@ la línea de embeddings de la familia), con las cuatro filas de arriba como sus 
 matan. El diccionario se queda como default del proxy; `corpus_router.py` se queda como el
 brazo medido. El tercer rediseño no se gastó.
 
+**Brazo 2 [ran] 2026-09-19 — un modelo de embeddings; tampoco pasa**
+([`BRIEF`](../../results/M2b-embed-router-20260919/BRIEF.md)). `Qwen3-Embedding-0.6B`, coseno medio a los
+cinco pedidos más cercanos del corpus, todo texto embebido como *la tarea que se pide*: texto ajeno
+15/338 servidos localmente (diccionario 119, n-gramas 0), paráfrasis 99/240 recuperadas — y **120/120
+pedidos de remitentes no vistos perdidos**, como el brazo 1. Con los puntajes por caso guardados, **no
+es calibración**: los remitentes no vistos (mediana 0,89, máx 0,964) y *el listado propio de un
+miembro seguido de otra tarea* (0,87–0,91, máx 0,966) ocupan el mismo rango, así que ningún umbral
+separa lo que debería quedarse de lo que debería salir. En este espacio, cambiar quién escribe mueve
+un pedido tanto como cambiar qué se pide. **Lo que queda es una representación que factorice la tarea
+del contenido** — una proyección chica entrenada por contraste (misma tarea / otro contenido contra
+mismo contenido / otra tarea), que es la etapa R1 del radar ([`MEMORY.md`](MEMORY.md) §2.2) alcanzada
+desde el lado del router. Necesita conjuntos de evaluación nuevos; el diccionario sigue siendo el default.
+
 ### Hito 3 — la mitad grande de un par
 
 **Objetivo.** Un LoRA en `Qwen/Qwen3.8-27B`, QLoRA NF4, a partir del *mismo corpus* que
@@ -248,7 +270,13 @@ registro:
 
 1. **Margen primero:** tres listas de verificación, 72 preguntas verificables de los cuatro tipos de
    arriba, la base pelada contra ellas a libro cerrado y a libro abierto — en Colab, diez minutos
-   de una L4 (`training/nursing/headroom.py`, pre-registrado). Si la base ya ordena los pasos de un procedimiento que
+   de una L4 (`training/nursing/headroom.py`). **[ran] 2026-09-19 — hay margen, y leer cierra casi
+   todo:** orden de pasos y paso siguiente 29/48 a libro cerrado → **45/48 con la nota abierta**; una
+   cantidad que cambió el protocolo de la unidad **0/12 → 12/12**; goteos 7/12 → 6/12 — aritmética, no
+   conocimiento ([`BRIEF`](../../results/M5-nursing-headroom-20260919/BRIEF.md)). **Consecuencia:** una
+   base chica *responde sobre* una nota que sólo lee, aunque no *actúa bajo* una (P61). La trayectoria
+   entrenada se tiene que medir sobre **recorridos**, nunca sobre preguntas y respuestas, y todo brazo
+   de acá en adelante lleva la línea de base *base pelada + la nota del oráculo abierta*. Si la base ya ordena los pasos de un procedimiento que
    nunca se le mostró, no hay nada que comprar — así murió la suite clínica (S1: ningún modelo
    adelante de un 12B local gratis). Margen primero, otra vez.
 2. Después el diseño del hito 7, sin cambios, sobre este contenido: trayectorias sobre las notas del
@@ -269,8 +297,10 @@ de lo que ahorra.
 
 ### Hito 7 — una base de conocimiento por subdominio, y la trayectoria por ella como harness
 
-**El diseño, al nivel de formatos de nota, acciones, estrategias y corpus, es un documento propio,
-escrito para que lo discutan: [`KNOWLEDGE-TRAJECTORIES.md`](KNOWLEDGE-TRAJECTORIES.md).**
+**Esto es el núcleo de la versión 1.0. Lo que se construye, pieza por pieza y en qué orden, es
+[`MEMORY.md`](MEMORY.md)** — los dos estantes de la biblioteca, el radar, tres verbos, el
+hábito de navegar del LoRA, el árbitro de software. El *por qué*, escrito para que lo discutan
+otros modelos, es [`KNOWLEDGE-TRAJECTORIES.md`](KNOWLEDGE-TRAJECTORIES.md).
 
 **La idea, del usuario.** El subdominio de un experto tiene un cuerpo de conocimiento de dos
 clases: **enciclopédico** — jerárquico: qué es una magnitud, qué correlación vale en qué
@@ -283,9 +313,11 @@ calcular. *Una trayectoria por notas operacionales es un harness* — lo que `ha
 estaba buscando, ahora por subdominio y afuera de los pesos, donde se puede editar.
 
 **Por qué mecánica de fluidos, y por qué partirla.** Es el único dominio acá con headroom
-real — la frontera 66/90, el experto 12/90 **[ran]** P40, P41 — y su falla es del tipo que una
-base de conocimiento ataca: el protocolo perfecto, la física equivocada, 19 de 30 fallas con
-cada llamada limpia **[ran]** P8. Un solo adaptador sobre todo eso se entrenó a una sola
+real — la frontera 66/90, el experto ~~12/90~~ **[ran]** P40, P41. *(Corregido el mismo día por
+el brazo 0b: 12/90 era el camino de servido; en su región, como le enseñaron, el experto está
+en 90/90. Mecánica de fluidos se queda como el banco de pruebas de lo que eso **no** cubre —
+una familia hermana sobre la que nunca entrenó, 1/20 **[ran]** P14 — y porque su contenido es
+inmemorizable por construcción.)* Un solo adaptador sobre todo eso se entrenó a una sola
 profundidad y se pasó de rosca por debajo de ella **[ran]** P45. Entonces: subdominios de dos
 familias hermanas cada uno — flujo interno (`pipe_head_loss`, `pump_power`), medición
 (`venturi_flow`, `orifice_discharge`), flujo externo (`terminal_velocity`, `drag_force`),
@@ -296,7 +328,7 @@ de dificultad (`training/physics/ladder.py`), así que región y profundidad son
 
 1. **Un modelo chico no sigue lo que lee a menos que seguir sea lo que se entrenó** **[ran]**
    P61. → La navegación y el seguimiento de notas son *el contenido del adaptador*: el corpus
-   son trayectorias — `<kb>consulta</kb>`, `<open>nota</open>`, después `<calc>` — escritas por
+   son trayectorias — `<search>…</search>`, `<open>id</open>`, después `<calc>` — escritas por
    el oráculo.
 2. **El conocimiento fijo en un corpus se memoriza, y entonces la base no mide nada** **[ran]**
    P15, P21. → Las notas que necesita un caso son **inmemorizables por construcción**, el manual
@@ -319,8 +351,8 @@ enunciado), y la jerarquía es un brazo, no un supuesto.
 | # | brazo | qué decide |
 |---|---|---|
 | **0** | margen, cero GPU: las 90 cadenas grabadas de P41 reproducidas contra el handbook propio de cada caso (`training/physics/result_use.py`) | **[ran] 2026-09-19.** De 79 fallas, **74** tienen un `<calc>` con un número que no salió de ningún lado y **75** dejan un resultado de herramienta sin usar; 217 de 456 resultados no finales se ignoran — el experto busca la densidad, 882,3, y multiplica por 1359,7. **La falla dominante no es una relación equivocada: es no usar lo que se le devolvió.** *(Corregido el mismo día: la primera reproducción pasó el handbook en su forma JSON, cada `<lookup>` levantó una excepción dentro de un `except` amplio, y los 74 sin usar / 132 de 371 ignorados publicados estaban mal. Con los lookups evaluados — 0 errores de herramienta — son 75 y 217 de 456; los 74 con un número que no salió de ningún lado se sostuvieron.)* |
-| **0b** | **el mismo adaptador, los mismos 90 casos, servido en modo corpus** — el resultado inline después del tag de cierre, como enseñó su corpus — en vez de por `tool_calls`, que a `email-full` le cuesta 0,992 → 0,808 **[ran]** P55. Diez minutos de L4, el adaptador está en disco | separa *un 3B no usa lo que lee* de *el harness no se lo mostró como se lo enseñaron*. **Se compra antes del brazo 1**: cualquiera de las dos respuestas decide cómo una base tiene que entregar lo que recupera, y la segunda significaría que "el experto que razona falla" fue en parte un instrumento |
-| **1** | **trayectoria oráculo.** Dos adaptadores sobre un subdominio, mismos casos: entrenados *con* las notas que el oráculo abriría, inyectadas por el protocolo `<kb>`/`<open>`, y *sin* ellas. Puntuados sobre la familia entrenada y sobre su **hermana dejada afuera**, pareado | la cota superior: si leer exactamente las notas correctas no levanta a la hermana de ~1/20, ninguna navegación lo hará — **parar** |
+| **0b** | **el mismo adaptador, los mismos 90 casos, servido en modo corpus** — el resultado inline después del tag de cierre, como enseñó su corpus | **[ran] 2026-09-19 — EL CAMINO ERA PARTE: 90/90** contra 11/90 por `tool_calls`, 79 : 0 pareado; 24 : 0 contra el 66/90 de la frontera; ningún caso evaluado en el corpus ([`BRIEF`](../../results/M7-arm0b-corpus-mode-20260919/BRIEF.md)). **Un 3B sí usa lo que lee, cuando lo lee como se lo enseñaron — la memoria tiene un canal que funciona.** Abre dos cosas: `fluids-full` vuelve a pasar por la compuerta de release antes de que su región deje de mandarse afuera; y P45 (por debajo de la profundidad de entrenamiento), medido por el mismo camino, vuelve a estar abierto |
+| **1** | **trayectoria oráculo.** Dos adaptadores sobre un subdominio, mismos casos: entrenados *con* las notas que el oráculo abriría, inyectadas por el protocolo `<search>`/`<open>`, y *sin* ellas. Puntuados sobre la familia entrenada y sobre su **hermana dejada afuera**, pareado | la cota superior: si leer exactamente las notas correctas no levanta a la hermana de ~1/20, ninguna navegación lo hará — **parar** |
 | **2** | navegación aprendida: el experto emite sus propias consultas; recuperación por embeddings adentro de la base del subdominio. Medido **donde pasa** — se recuperó la nota necesaria, se abrió, se siguió — no sólo en la respuesta final | qué pierde la navegación contra la trayectoria oráculo |
 | **3** | atribución: sólo notas enciclopédicas · sólo notas operacionales · las dos | qué clase de conocimiento lleva la ganancia — las dos clases, tasadas por separado |
 | **4** | recuperación: léxica plana · embeddings · embeddings restringida a la trayectoria hasta ahora (enlaces y vecinos de la última nota abierta) | si una estrategia de trayectoria le gana a una búsqueda plana; el resultado previo del workspace dice no asumirlo |
@@ -421,6 +453,11 @@ Las cuatro que deciden la forma de un paso:
 
 ## 5. Historia
 
+- **2026-09-19** — la memoria especificada como el núcleo de 1.0 ([`MEMORY.md`](MEMORY.md)), a
+  partir de la explicación en cinco piezas del usuario: biblioteca, radar, tres verbos, un LoRA
+  entrenado sobre el hábito de navegar, un árbitro de software. Hito 7 brazo 0b **[ran]**: el
+  experto de fluidos, servido como le enseñó su corpus, está en 90/90 donde había estado en
+  11/90 — *"el experto que razona falla"* queda retirado.
 - **2026-09-19** — hito 2 brazo 1 **[ran]**: seguro ante texto extranjero, pierde todo pedido
   de un remitente no visto; el diccionario se queda, el brazo 2 es un modelo de embeddings.
   Se agregó el hito 7: una base de conocimiento por subdominio con la trayectoria por ella

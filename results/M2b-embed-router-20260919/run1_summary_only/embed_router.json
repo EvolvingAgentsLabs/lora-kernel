@@ -1,0 +1,98 @@
+{
+ "encoder": "Qwen/Qwen3-Embedding-0.6B",
+ "params": {
+  "k": 5,
+  "percentile": 1.0,
+  "held_out": 0.2,
+  "instruction": "Instruct: Given a request sent to an assistant, represent the task the user is asking to be performed, not the content it is about\nQuery: "
+ },
+ "started": "2026-09-19T13:54:39",
+ "probe": {
+  "paraphrase": 0.739,
+  "unrelated": 0.3453
+ },
+ "tau": {
+  "desk-commitment": 0.9771818521182812,
+  "email-full": 0.9443460509354555
+ },
+ "sets": {
+  "A": 715,
+  "B": 240,
+  "C": 14,
+  "D": 76,
+  "E": 120,
+  "C2": 8,
+  "E2": 120,
+  "F": 120
+ },
+ "embed_router": {
+  "A": {
+   "n": 715,
+   "local_right_member": 702,
+   "misrouted_to_local": 0,
+   "lost_local": 13,
+   "abstained": 0
+  },
+  "B": {
+   "n": 240,
+   "local_right_member": 99,
+   "misrouted_to_local": 0,
+   "lost_local": 141,
+   "abstained": 0
+  },
+  "C": {
+   "n": 14,
+   "local_right_member": 0,
+   "misrouted_to_local": 0,
+   "lost_local": 0,
+   "abstained": 14
+  },
+  "D": {
+   "n": 76,
+   "local_right_member": 0,
+   "misrouted_to_local": 0,
+   "lost_local": 0,
+   "abstained": 76
+  },
+  "E": {
+   "n": 120,
+   "local_right_member": 0,
+   "misrouted_to_local": 5,
+   "lost_local": 0,
+   "abstained": 115
+  },
+  "C2": {
+   "n": 8,
+   "local_right_member": 0,
+   "misrouted_to_local": 0,
+   "lost_local": 0,
+   "abstained": 8
+  },
+  "E2": {
+   "n": 120,
+   "local_right_member": 0,
+   "misrouted_to_local": 10,
+   "lost_local": 0,
+   "abstained": 110
+  },
+  "F": {
+   "n": 120,
+   "local_right_member": 0,
+   "misrouted_to_local": 0,
+   "lost_local": 120,
+   "abstained": 0
+  }
+ },
+ "verdict": {
+  "misrouted_foreign": 15,
+  "of": 338,
+  "lost_A": 13,
+  "lost_F": 120,
+  "recovered_B": 99,
+  "safe": true,
+  "keeps_real_looking_traffic": false,
+  "passes": false,
+  "reading": "SAFE AND LOSES REAL-LOOKING TRAFFIC: the same wall arm 1 hit"
+ },
+ "finished": "2026-09-19T13:56:33"
+}

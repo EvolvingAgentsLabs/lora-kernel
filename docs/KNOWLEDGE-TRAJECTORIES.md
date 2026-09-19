@@ -8,6 +8,10 @@ does not know the answer to. **Nothing described here is built.** The measuremen
 are real, and §2 lists them with their numbers, because a design review that does not know them
 will re-propose what already failed.
 
+**The implementation decided from this design — the library's two shelves, the radar, three verbs,
+the referee, and the build order for version 1.0 — is [`MEMORY.md`](MEMORY.md).** This document stays
+as the argument and its open questions.
+
 Status: proposal, 2026-09-19. Owner of the idea: the user. Plan entry:
 [`PLAN.md`](PLAN.md) milestone 7. Formalism: [`FOUNDATIONS.md`](FOUNDATIONS.md) §8.6.
 
@@ -38,7 +42,7 @@ editable control flow, and a learned way of walking them.
 | F4 | **A corpus with one difficulty teaches a floor** | trained on 6-to-9-step chains only, the expert over-solves 18/18 shorter problems; the bare base beats it on 3-step ones | **[ran]** P45 |
 | F5 | **An expert is what its corpus taught — the tool block, the argument order, the system prompt.** Served under another prompt it is another model | 2/32 live turns call a tool under the runtime's prompt; 19/32 under its own | **[ran]** P63 |
 | F6 | **The way a tool's result reaches the expert matters.** Result inline after the closing tag (as trained) vs. through `tool_calls` messages | `email-full` 0.992 vs 0.808 | **[ran]** P55 |
-| F7 | **The fluids expert's failure is mostly not using what its tools returned** | of 79 failures, 74 hold a number that came from nowhere and 75 leave a result unused (217 of 456 results ignored): it looks the density up, 882.3, and multiplies by 1359.7. *Confound:* that run used the `tool_calls` path of F6; the inline re-serve is pending | **[ran]** M7 arm 0; arm 0b pending |
+| F7 | **An expert uses what it reads when it reads it the way it was taught — and not otherwise.** The fluids expert through `tool_calls` messages | 11/90: of 79 failures, 74 hold a number that came from nowhere and 75 leave a result unused — it looks the density up, 882.3, and multiplies by 1359.7. **Re-served with results written inline, as its corpus taught: 90/90**, 79 : 0 paired, no evaluated case in its corpus | **[ran]** M7 arm 0, 0b |
 | F8 | **A lexical model of a generated corpus learns the generator.** An n-gram router trained on the experts' corpora | safe on foreign text (0/128 served locally vs 59/128 for a keyword dictionary) and loses **120/120** legitimate requests from unseen senders — every generated address ended `.com` | **[ran]** M2 |
 | F9 | **Structure has lost to flat retrieval twice in this author's work.** A memory hierarchy vs lexical search; and indexing *what a thing is for* beside *what it is* | the hierarchy lost; the dual index changed nothing — acc@1 80 % at every mixing weight, n = 10, errors all **within-topic** | workspace benchmark; `evolving-memory` `benchmarks/RESULTS.md` **[read]** |
 | F10 | **Distillation transfers a procedure and not the arithmetic** | adapter + calculator 40/40; adapter alone 4/40 (π/4·0.22² written as 0.037006) | **[ran]** P5–P7 |
@@ -53,7 +57,8 @@ Consequences, each of which the design below obeys:
   extend its region with no retraining.
 - F5, F6 ⇒ the action vocabulary, its rendering and the inline result format are part of the
   corpus and frozen with the release.
-- F7 ⇒ measure **where it happens**: was the note retrieved, opened, *used* — not only the answer.
+- F7 ⇒ every note reaches the expert **inline, in the form its corpus taught**, and the design is
+  measured **where it happens**: was the note retrieved, opened, *used* — not only the answer.
 - F9 ⇒ hierarchy and trajectory-aware retrieval are **arms with a flat baseline**, never assumptions.
 - F10 ⇒ arithmetic stays in a calculator.
 
@@ -157,7 +162,7 @@ Three verbs, written as tags in the expert's own text, the result injected **inl
 closing tag (F6), generation stopped at each closing tag:
 
 ```
-<kb>what is asked, in the expert's words</kb>= 3 notes
+<search>what is asked, in the expert's words</search>= 3 notes
   [a3f] step · Cleanse the catheter cap before attaching tubing — when: about to connect to an IV port
   [9c1] check · Assess IV site patency — when: before starting any infusion
   [77e] concept · Scrub the hub — when: any access of a needleless connector
@@ -166,15 +171,15 @@ closing tag (F6), generation stopped at each closing tag:
 <calc>500 * 20 / (4 * 60)</calc>= 41.6667
 ```
 
-- `<kb>` returns **titles and `when` lines only**, never bodies: retrieval and reading are two
+- `<search>` returns **titles and `when` lines only**, never bodies: retrieval and reading are two
   decisions, measured separately (§6).
 - `<open>` returns the resolved body and the note's outgoing links **with their types**. Following
   a link is just `<open>` on its id — no fourth verb.
 - **Ids are opaque and re-drawn per case during training [proposed].** If ids were stable the
   adapter would learn "for step 20 open `a3f`" — navigation by rote, which works until the base
-  changes and fails silently on a sibling family (F3). Opaque ids force it to read what `<kb>`
+  changes and fails silently on a sibling family (F3). Opaque ids force it to read what `<search>`
   returned. **[open]:** the cost is that the policy can never learn a legitimate shortcut.
-- Budgets are the runtime's: at most *k* notes per `<kb>` (3–5), a token cap per note, a cap on
+- Budgets are the runtime's: at most *k* notes per `<search>` (3–5), a token cap per note, a cap on
   opens per task. A walk that hits a cap ends as *not answered* and goes out to the frontier.
 
 ### 3.5 The runtime — what stays non-neural **[proposed]**
@@ -196,9 +201,9 @@ of the subdomain's tasks — of the **distribution of its corpus** — and that 
 | # | strategy | the walk | expected to fit |
 |---|---|---|---|
 | S0 | none | answer from weights | the control; F3 says 1/20 outside the region |
-| S1 | flat | one `<kb>` on the task text → open top-1 → answer | the RAG baseline every other strategy must beat |
-| S2 | **procedure-first** | `<kb>` restricted to `procedure` → open the skeleton → walk `next`, descending `uses` only where a step needs a fact | nursing; any task that *is* a procedure |
-| S3 | concept-first | `<kb>` over concepts → descend `child` to a leaf formula or table → compute | diagnosis-like tasks; "which regime am I in" |
+| S1 | flat | one `<search>` on the task text → open top-1 → answer | the RAG baseline every other strategy must beat |
+| S2 | **procedure-first** | `<search>` restricted to `procedure` → open the skeleton → walk `next`, descending `uses` only where a step needs a fact | nursing; any task that *is* a procedure |
+| S3 | concept-first | `<search>` over concepts → descend `child` to a leaf formula or table → compute | diagnosis-like tasks; "which regime am I in" |
 | S4 | **trajectory-conditioned retrieval** | every query is scored inside the neighbourhood of the last note opened | where flat retrieval confuses items *within* a topic — which is exactly where F9's errors were |
 
 S4's score, with $q$ the query, $n$ a candidate, $\ell$ the last note opened, $N(\ell)$ its linked
@@ -227,7 +232,7 @@ together, exactly as it will be served (F5, F6). Four rules, each from a measure
    correlation variant, a site's dwell time. The adapter can learn *which* note a step needs. It
    cannot learn *what the note says*. The run asserts the channel is needed: no slot value may
    appear in the task statement.
-2. **Opaque ids, distractors, and dead ends.** `<kb>` results in the corpus contain wrong-but-near
+2. **Opaque ids, distractors, and dead ends.** `<search>` results in the corpus contain wrong-but-near
    notes; some cases have **no applicable note**, and the taught walk ends in *not in my base* —
    which the proxy turns into the frontier. An expert that cannot abstain from its own base is F3
    with extra steps.
@@ -255,7 +260,7 @@ Milestone 7's arms, in the order that can kill it soonest ([`PLAN.md`](PLAN.md))
 | 4 | S1 flat lexical · S1 flat embedding · S4 | whether a trajectory strategy beats a flat search (F9 says do not assume it) |
 | 5 | edit one note after training | that the answer follows the base, not the weights |
 
-Measured **per step, not only at the answer**: *retrieved* (the needed note in `<kb>`'s list),
+Measured **per step, not only at the answer**: *retrieved* (the needed note in `<search>`'s list),
 *opened*, *used* (its value reaches a later step — the instrument of F7), *conformant* (§3.5),
 *correct*; plus tokens per task, because a walk is not free. A reader that got lucky over an empty
 note is a case a final score cannot see.
@@ -293,8 +298,9 @@ customer's.
 ## 9. What this design does not claim
 
 That a hierarchy helps. That embeddings beat lexical search inside a base of a few hundred notes.
-That a 4B can learn to follow what it reads at all — arm 1 exists to find out, and F1 and F7 are
-both reasons to doubt it. That anything measured on a generated suite transfers to a real one. That
+That a 4B can learn to follow a *note it never trained on* — arm 1 exists to find out. F1 is a
+reason to doubt it; F7 says only that the channel works: an expert does use what it reads, in
+its own region, when it reads it as taught. That anything measured on a generated suite transfers to a real one. That
 this is cheaper than putting the procedure in the weights when the procedure never changes — for a
 frozen procedure, F1 says weights win, and the base earns its place only where content **varies**:
 by site, by case, by date, or by family.
@@ -320,9 +326,10 @@ by site, by case, by date, or by family.
    the conformance guard?
 8. **Abstention inside the region.** How is "no applicable note" taught without teaching the policy
    to give up early?
-9. **The failure in F7.** If the inline re-serve shows a small model still ignores what it just
-   read, is the right response a larger small model, a constrained decoder that *copies* the
-   observed value, or a runtime that substitutes values so the model never has to?
+9. **What F7 leaves open.** Inline, in its own region, a 3B uses what it reads (90/90). Does that
+   carry to a note whose *content it has never seen used* — a sibling procedure — or is "uses what it
+   reads" itself something it learned per family? What is the cheapest experiment that separates
+   *reading* from *having practised this particular reading*?
 10. **Where is this wrong?** In particular: is "trajectory = harness" a real decomposition, or a
     relabelling of retrieval-augmented tool use — and if the latter, what would the difference have
     had to predict to be real?

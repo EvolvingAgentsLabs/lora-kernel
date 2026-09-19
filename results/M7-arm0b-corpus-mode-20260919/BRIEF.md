@@ -43,3 +43,42 @@ mean the score moved for another reason — say so.
 base; the 4B.
 
 **Redesign counter: 0.**
+
+## Result **[ran]** 2026-09-19 · THE PATH WAS PART OF IT — 90 of 90
+
+Colab L4, one session, 7 minutes of run. Read off `corpus_mode.json`.
+
+| | through `tool_calls` (P41, recorded) | **corpus mode — result inline, as the corpus taught** |
+|---|--:|--:|
+| correct | 11 / 90 | **90 / 90** |
+| calls · refused | 603 · 0 | 628 · 0 |
+| by family | — | 23/23 · 23/23 · 22/22 · 22/22 |
+
+G1 identity `applied` 3/3. Paired by case id: **79 : 0**, $p = 2\cdot2^{-79}$. The recorded run
+rescored under this suite's rule gives 11, the stored total, so both arms were scored by one rule.
+
+**Checked before it was believed, zero GPU** — a number this clean is the kind this repository
+learned to distrust (P53): **0 of 90** evaluated statements occur in the 600-example corpus; **0 of
+90** oracle answers occur as a training answer; of the made-up fluid names only **1 of 90** recurs,
+with a different density; the final answer equals the model's **own last `<calc>` result in 89 of
+90**; calls per case 6–9, the oracle's depth. The runtime evaluates only what the model writes — it
+never sees the oracle's expressions.
+
+**And against the frontier, on the same 90 cases, paired (zero GPU):** local in corpus mode 90,
+`google/gemini-3.8-flash` 66 (P41) — **24 : 0**. The region was marked *serve out* on a measurement
+of the serving path.
+
+**What this overturns.** *"The expert that decides works, the expert that reasons fails"* — the most
+quoted line of the record — was read off a harness that never showed the expert its results the way
+it was taught to read them. In its region, served as taught, the expert that reasons is at the
+ceiling.
+
+**What it does not say.** Anything **outside** the region: P45's over-solving below the training
+depth was measured through the same `tool_calls` path and is **open again**; P14's 1/20 on sibling
+families was under an earlier in-process harness and is not re-checked. The **bare base in corpus
+mode** was not run in this session — the attribution arm. And 90/90 is a ceiling: it ranks nothing.
+
+**What follows.** A knowledge base has a channel that works: a 3B *does* use an inline result.
+`fluids-full` goes back through the release gate, in corpus mode, before `route.REGIONS` stops
+sending its region out. The proxy's member loop is capped at six round-trips — below a fluids chain's
+6–9 — so the cap has to come from the member's contract.

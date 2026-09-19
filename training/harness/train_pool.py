@@ -34,8 +34,9 @@ from training.harness.desk_sim import SYSTEM as DESK_SYSTEM
 #
 # THE POOL IS THE RELEASED MEMBERS, AND ONLY THEM. The retired ones — the two `-mt`
 # kernels, `kernel-email`, `fluids-full` — live at the tag `v0.1-foundations` with the
-# runs that measured them; fluids remains in `route.REGIONS` as the region measured to
-# fail and served out.
+# runs that measured them. Fluids remains in `route.REGIONS` marked `out` — on a measurement
+# that turned out to be the serving path (90/90 as taught, [ran] M7 arm 0b); it comes back here
+# when it has been through the release gate in corpus mode.
 POOL = {
     # P64: the desk's `commitment` region — the same inbox and tools as the triage
     # member, a different question. Saturates at 240/240 from 75 examples (P55b).

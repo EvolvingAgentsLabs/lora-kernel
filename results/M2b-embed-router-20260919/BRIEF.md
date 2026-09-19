@@ -40,3 +40,64 @@ cosine("Is this important?", "Write a haiku about rain.") — if the first is no
 second, the encoder or its pooling is wrong and nothing after it means anything.
 
 **Redesign counter for arm 2: 0.** (Milestone 2 overall: arm 1 spent two of three.)
+
+## Run 1 **[ran]** 2026-09-19 — does not pass: the same wall arm 1 hit (`run1_summary_only/`)
+
+`Qwen/Qwen3-Embedding-0.6B`, fp16, Colab L4. Probe sound: paraphrase 0.739 against unrelated 0.345.
+
+| set | n | dictionary · misrouted / lost | n-grams (arm 1) | **embeddings (arm 2)** |
+|---|--:|---|---|---|
+| A in distribution | 715 | 0 / 0 | 0 / 0 | 0 / **13** (1.8 %) |
+| B paraphrased question | 240 | 0 / 131 | 0 / 240 | 0 / **141** — 99 recovered |
+| C, D, E, C₂, E₂ foreign | 338 | **119** / — | 0 / — | **15** / — (5 on E, 10 on E₂; 95.6 % abstained) |
+| **F** unseen senders | 120 | 0 / 0 | 0 / 120 | 0 / **120** |
+
+By the table written first: **SAFE AND LOSES REAL-LOOKING TRAFFIC.** It is safe enough (15 ≤ 60,
+95.6 % ≥ 95 %), it fails A by a little (1.8 % lost against ≤ 1 %), and it fails F completely. The
+predicted failure — a member's own listing followed by another task — did happen, 15 times of 240,
+far less than feared: the *task* instruction did most of its job.
+
+**What the thresholds say:** τ = **0.977** (desk) and **0.944** (email). A generated corpus is so
+uniform that *looking like the corpus* means a cosine of 0.98 to five neighbours; a sender the
+generator never drew cannot reach it. Arm 1 learned the generator's `.com`; arm 2 learned the
+generator's *sameness*. One cause, two forms.
+
+**And an instrument fault of mine:** this run stored one summary row per set and no per-case score,
+so nothing on disk can say whether F sits a hair under τ — a calibration problem, fixable by where τ
+is set — or far below — a representation problem. *Keep the chain, not the last line* was already a
+rule here. **Run 2 changes only what is written down** — per-case scores and the held-out
+distribution; rule, parameters, sets and verdict untouched, so it is not a redesign and the verdict
+above stands whatever it shows.
+
+## Run 2 **[ran]** — the same rule, with the scores kept: it is representation, not calibration
+
+Summary identical to run 1, row for row. What the per-case scores add (cosine to the member a request
+belongs to; for foreign text, to the nearest member):
+
+| set | median | max | should be |
+|---|--:|--:|---|
+| A in distribution | 0.984 | 0.998 | local |
+| **F** legitimate, unseen sender and subject | **0.890** | **0.964** | **local** |
+| **E, E₂** a member's own listing + another task | **0.87 – 0.91** | **0.966** | **out** |
+| C, C₂ keyed foreign text | 0.48 – 0.49 | 0.77 | out |
+| D foreign text | 0.25 | 0.54 | out |
+
+τ = 0.977 / 0.944; held-out in-corpus scores run 0.93–0.997.
+
+**F and E occupy the same range.** No threshold separates them: one that keeps 95 % of F (0.814 for
+desk, 0.738 for email) serves **90 of 118** and **129 of 220** foreign texts locally. So moving τ is
+not a fix, and the first reading — *the generated corpus is too uniform to calibrate against* — was
+only half of it. The other half: **in this space, changing who writes moves a request as far as
+changing what is asked.** Whole-request similarity, even under a "represent the task" instruction,
+does not factor task from content. Truly foreign text is far away and easy; the hard negatives are
+the ones that share the member's content.
+
+**What this asks for — named, not bought.** A representation that *keeps the task dimensions and
+discards the content dimensions*: a small learned projection trained contrastively with positives
+that share a task and differ in content, and negatives that share content and differ in task. That
+is the radar's stage R1 (`docs/MEMORY.md` §2.2) — the user's *compression by domain* — arriving from
+the router's side, and it is one encoder either way. Its evaluation sets have to be **new**: E, E₂
+and F have now been read at the level of individual scores, and are training data in all but name.
+
+**Decision.** The dictionary stays the proxy's default. Arm 2 is closed as *safe, and does not keep
+real-looking traffic*; redesign counter for arm 2: 0 — run 2 changed only what was written down.

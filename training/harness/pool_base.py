@@ -85,6 +85,10 @@ def main() -> int:
     ap.add_argument("--max-tokens", type=int, default=160)
     ap.add_argument("--concurrency", type=int, default=8)
     ap.add_argument("--max-model-len", type=int, default=8192)
+    ap.add_argument("--only", action="append", default=[],
+                    help="train only this member in this session (repeatable). One member takes ~45 "
+                         "minutes and a session lives sixty, so the pool is trained a member a session; "
+                         "adapters carried in are never retrained")
     ap.add_argument("--stop-after-training", dest="train_only", action="store_true",
                     help="end the session once every adapter is trained, packed and said so: a Colab "
                          "session lives sixty minutes [ran] 2026-09-19 and one member takes ~45 to train")
@@ -113,7 +117,16 @@ def main() -> int:
         return 0 if rec["verdict"]["moved"] else 1
 
     save()
+    unknown = [m for m in args.only if m not in MEMBERS]
+    if unknown:
+        print(f"[pool] --only {unknown} names no member of {sorted(MEMBERS)}", flush=True)
+        return 2
+    if args.only and not args.train_only:
+        print("[pool] --only trains part of the pool, so it cannot be scored: add --stop-after-training", flush=True)
+        return 2
     for m, spec in MEMBERS.items():
+        if args.only and m not in args.only:
+            continue
         path = f"adapters/{m}-{args.tag}"
         rec["members"][m] = {"adapter": path, "corpus": spec["corpus"],
                              "corpus_sha256": sha256(Path(spec["corpus"]))}

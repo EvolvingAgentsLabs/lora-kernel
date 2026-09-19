@@ -1,0 +1,31 @@
+=== session 1 of 1 · srv100811 · L4
+    boot clone: rc=0 a6799e4 The per-expert memory as its own design document; M5 headroom on Colab; what milestone 7 reuses from evolving-memory (#228)
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 4d22875 M1: the pool on Qwen3.5-4B — three attempts, no verdict yet; a Colab session lives sixty minutes; the chain becomes resumable (#230)
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.29.0
+    4d22875 M1: the pool on Qwen3.5-4B — three attempts, no verdict yet; a Colab session lives sixty minutes; the chain becomes resumable (#230) | 0.29.0
+    carried the adapters in (3 chunks)
+    [arm] recorded 11/90 under this rule (stored: 11)
+    [rank] vllm serve Qwen/Qwen2.5-3B-Instruct --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --lora-modules fluids-full=adapters/fluids-full
+    [arm] recorded 11/90 under this rule (stored: 11)
+    [rank] vllm serve Qwen/Qwen2.5-3B-Instruct --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --lora-modules fluids-full=adapters/fluids-full
+    [arm] recorded 11/90 under this rule (stored: 11)
+    [rank] vllm serve Qwen/Qwen2.5-3B-Instruct --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --lora-modules fluids-full=adapters/fluids-full
+    [arm] recorded 11/90 under this rule (stored: 11)
+    [rank] vllm serve Qwen/Qwen2.5-3B-Instruct --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --lora-modules fluids-full=adapters/fluids-full
+    [arm] recorded 11/90 under this rule (stored: 11)
+    [rank] vllm serve Qwen/Qwen2.5-3B-Instruct --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --lora-modules fluids-full=adapters/fluids-full
+    [arm] G1 fluids-full: applied
+    [rank] arm fluids-full: 90 to draft, 0 resumed
+    [rank] arm fluids-full 25/90 correct 25 27s
+    [rank] arm fluids-full 25/90 correct 25 27s
+    [rank] arm fluids-full 50/90 correct 50 52s
+    [rank] arm fluids-full 75/90 correct 75 77s
+    [rank] arm fluids-full 90/90 correct 90 91s
+    [arm] fluids-full corpus mode: 90/90 errors 0 calls 628 refused 0
+    [arm] THE PATH WAS PART OF IT: 90 in corpus mode against 11 through tool_calls, paired. Read `reading` for how much of the unused-result failure went with it
+    the runner wrote its result — done

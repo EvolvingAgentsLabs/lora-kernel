@@ -1,0 +1,4574 @@
+{
+ "base": "Qwen/Qwen2.5-3B-Instruct",
+ "member": "fluids-full",
+ "started": "2026-09-19T13:16:27",
+ "arms": {
+  "fluids-full": {
+   "model": "fluids-full",
+   "records": {
+    "mt-0004": {
+     "id": "mt-0004",
+     "human": true,
+     "truth": 12862.134049724958,
+     "correct": true,
+     "family": "hydrostatic_force",
+     "depth": 6,
+     "prompt_sha": "3ac41cc233a70e1d",
+     "text": "1. Gate width: <convert>value=39.5; from=cm; to=m</convert>= 0.395\n2. Gate height: <convert>value=146.0; from=cm; to=m</convert>= 1.46\n3. Density of the fluid: <lookup>fluid=XB-55; property=density; T=10</lookup>= 624.8\n4. Depth of the centroid: <calc>2.91 + 1.46/2</calc>= 3.64\n5. Area of the gate: <calc>0.395 * 1.46</calc>= 0.5767\n6. Resultant force F = rho g h_c A: <calc>624.8 * 9.80665 * 3.64 * 0.5767</calc>= 12862.1\n{\"answer\": 12862.1}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Gate width: <convert>value=39.5; from=cm; to=m</convert>"
+      },
+      {
+       "at": 67,
+       "text": "2. Gate height: <convert>value=146.0; from=cm; to=m</convert>"
+      },
+      {
+       "at": 135,
+       "text": "3. Density of the fluid: <lookup>fluid=XB-55; property=density; T=10</lookup>"
+      },
+      {
+       "at": 220,
+       "text": "4. Depth of the centroid: <calc>2.91 + 1.46/2</calc>"
+      },
+      {
+       "at": 279,
+       "text": "5. Area of the gate: <calc>0.395 * 1.46</calc>"
+      },
+      {
+       "at": 334,
+       "text": "6. Resultant force F = rho g h_c A: <calc>624.8 * 9.80665 * 3.64 * 0.5767</calc>"
+      },
+      {
+       "at": 424,
+       "text": "{\"answer\": 12862.1}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 12862.1,
+     "ran_out": false
+    },
+    "mt-0000": {
+     "id": "mt-0000",
+     "human": true,
+     "truth": 24498.978454102406,
+     "correct": true,
+     "family": "hydrostatic_force",
+     "depth": 6,
+     "prompt_sha": "1bb7bd780a052fe4",
+     "text": "1. Gate width: <convert>value=1844.2; from=mm; to=m</convert>= 1.8442\n2. Gate height: <convert>value=723.6; from=mm; to=m</convert>= 0.7236\n3. Density of the fluid: <lookup>fluid=TD-78; property=density; T=20</lookup>= 882.3\n4. Depth of the centroid: <calc>1.76 + 0.7236/2</calc>= 2.1218\n5. Area of the gate: <calc>1.8442 * 0.7236</calc>= 1.33446\n6. Resultant force F = rho g h_c A: <calc>882.3 * 9.80665 * 2.1218 * 1.33446</calc>= 24498.9\n{\"answer\": 24498.9}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Gate width: <convert>value=1844.2; from=mm; to=m</convert>"
+      },
+      {
+       "at": 70,
+       "text": "2. Gate height: <convert>value=723.6; from=mm; to=m</convert>"
+      },
+      {
+       "at": 140,
+       "text": "3. Density of the fluid: <lookup>fluid=TD-78; property=density; T=20</lookup>"
+      },
+      {
+       "at": 225,
+       "text": "4. Depth of the centroid: <calc>1.76 + 0.7236/2</calc>"
+      },
+      {
+       "at": 288,
+       "text": "5. Area of the gate: <calc>1.8442 * 0.7236</calc>"
+      },
+      {
+       "at": 347,
+       "text": "6. Resultant force F = rho g h_c A: <calc>882.3 * 9.80665 * 2.1218 * 1.33446</calc>"
+      },
+      {
+       "at": 440,
+       "text": "{\"answer\": 24498.9}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 24498.9,
+     "ran_out": false
+    },
+    "mt-0005": {
+     "id": "mt-0005",
+     "human": true,
+     "truth": 1.175760028304468,
+     "correct": true,
+     "family": "manning_channel",
+     "depth": 6,
+     "prompt_sha": "013c9309218a0e92",
+     "text": "1. Channel width: <convert>value=230.0; from=cm; to=m</convert>= 2.3\n2. Flow depth: <convert>value=37.1; from=cm; to=m</convert>= 0.371\n3. Flow area: <calc>2.3 * 0.371</calc>= 0.8533\n4. Wetted perimeter: <calc>2.3 + 2*0.371</calc>= 3.042\n5. Hydraulic radius R = A/P: <calc>0.8533 / 3.042</calc>= 0.280506\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.033) * 0.8533 * 0.280506**(2/3) * sqrt(0.01126)</calc>= 1.17576\n{\"answer\": 1.17576}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Channel width: <convert>value=230.0; from=cm; to=m</convert>"
+      },
+      {
+       "at": 69,
+       "text": "2. Flow depth: <convert>value=37.1; from=cm; to=m</convert>"
+      },
+      {
+       "at": 136,
+       "text": "3. Flow area: <calc>2.3 * 0.371</calc>"
+      },
+      {
+       "at": 183,
+       "text": "4. Wetted perimeter: <calc>2.3 + 2*0.371</calc>"
+      },
+      {
+       "at": 238,
+       "text": "5. Hydraulic radius R = A/P: <calc>0.8533 / 3.042</calc>"
+      },
+      {
+       "at": 305,
+       "text": "6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.033) * 0.8533 * 0.280506**(2/3) * sqrt(0.01126)</calc>"
+      },
+      {
+       "at": 422,
+       "text": "{\"answer\": 1.17576}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 1.17576,
+     "ran_out": false
+    },
+    "mt-0001": {
+     "id": "mt-0001",
+     "human": true,
+     "truth": 3.4218930157693417,
+     "correct": true,
+     "family": "manning_channel",
+     "depth": 6,
+     "prompt_sha": "d951b09e68fdc6b5",
+     "text": "1. Channel width: <convert>value=1701.6; from=mm; to=m</convert>= 1.7016\n2. Flow depth: <convert>value=1377.8; from=mm; to=m</convert>= 1.3778\n3. Flow area: <calc>1.7016 * 1.3778</calc>= 2.34446\n4. Wetted perimeter: <calc>1.7016 + 2*1.3778</calc>= 4.4572\n5. Hydraulic radius R = A/P: <calc>2.34446 / 4.4572</calc>= 0.525994\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.017) * 2.34446 * 0.525994**(2/3) * sqrt(0.00145)</calc>= 3.42188\n{\"answer\": 3.42188}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Channel width: <convert>value=1701.6; from=mm; to=m</convert>"
+      },
+      {
+       "at": 73,
+       "text": "2. Flow depth: <convert>value=1377.8; from=mm; to=m</convert>"
+      },
+      {
+       "at": 143,
+       "text": "3. Flow area: <calc>1.7016 * 1.3778</calc>"
+      },
+      {
+       "at": 195,
+       "text": "4. Wetted perimeter: <calc>1.7016 + 2*1.3778</calc>"
+      },
+      {
+       "at": 255,
+       "text": "5. Hydraulic radius R = A/P: <calc>2.34446 / 4.4572</calc>"
+      },
+      {
+       "at": 324,
+       "text": "6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.017) * 2.34446 * 0.525994**(2/3) * sqrt(0.00145)</calc>"
+      },
+      {
+       "at": 442,
+       "text": "{\"answer\": 3.42188}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 3.42188,
+     "ran_out": false
+    },
+    "mt-0007": {
+     "id": "mt-0007",
+     "human": true,
+     "truth": 0.01927202760614697,
+     "correct": true,
+     "family": "venturi_flow",
+     "depth": 7,
+     "prompt_sha": "bc1cfd75fbcb8e2f",
+     "text": "1. Inlet diameter: <convert>value=18.9; from=cm; to=m</convert>= 0.189\n2. Throat diameter: <convert>value=8.7; from=cm; to=m</convert>= 0.087\n3. Pressure drop: <convert>value=64.7; from=mbar; to=Pa</convert>= 6470\n4. Density of the fluid: <lookup>fluid=VK-16; property=density; T=20</lookup>= 1289.1\n5. Inlet area: <calc>pi/4 * 0.189**2</calc>= 0.0280552\n6. Throat area: <calc>pi/4 * 0.087**2</calc>= 0.00594468\n7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00594468 * sqrt(2*6470 / (1289.1 * (1 - (0.00594468/0.0280552)**2)))</calc>= 0.019272\n{\"answer\": 0.019272}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Inlet diameter: <convert>value=18.9; from=cm; to=m</convert>"
+      },
+      {
+       "at": 71,
+       "text": "2. Throat diameter: <convert>value=8.7; from=cm; to=m</convert>"
+      },
+      {
+       "at": 142,
+       "text": "3. Pressure drop: <convert>value=64.7; from=mbar; to=Pa</convert>"
+      },
+      {
+       "at": 214,
+       "text": "4. Density of the fluid: <lookup>fluid=VK-16; property=density; T=20</lookup>"
+      },
+      {
+       "at": 300,
+       "text": "5. Inlet area: <calc>pi/4 * 0.189**2</calc>"
+      },
+      {
+       "at": 355,
+       "text": "6. Throat area: <calc>pi/4 * 0.087**2</calc>"
+      },
+      {
+       "at": 412,
+       "text": "7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00594468 * sqrt(2*6470 / (1289.1 * (1 - (0.00594468/0.0280552)**2)))</calc>"
+      },
+      {
+       "at": 557,
+       "text": "{\"answer\": 0.019272}"
+      }
+     ],
+     "calls": 7,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.019272,
+     "ran_out": false
+    },
+    "mt-0003": {
+     "id": "mt-0003",
+     "human": true,
+     "truth": 0.1658616163944242,
+     "correct": true,
+     "family": "venturi_flow",
+     "depth": 7,
+     "prompt_sha": "c6272859bd32e9bb",
+     "text": "1. Inlet diameter: <convert>value=23.1; from=cm; to=m</convert>= 0.231\n2. Throat diameter: <convert>value=15.1; from=cm; to=m</convert>= 0.151\n3. Pressure drop: <convert>value=42.02; from=kPa; to=Pa</convert>= 42020\n4. Density of the fluid: <lookup>fluid=TA-31; property=density; T=25</lookup>= 1198.5\n5. Inlet area: <calc>pi/4 * 0.231**2</calc>= 0.0419096\n6. Throat area: <calc>pi/4 * 0.151**2</calc>= 0.0179079\n7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.0179079 * sqrt(2*42020 / (1198.5 * (1 - (0.0179079/0.0419096)**2)))</calc>= 0.165862\n{\"answer\": 0.165862}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Inlet diameter: <convert>value=23.1; from=cm; to=m</convert>"
+      },
+      {
+       "at": 71,
+       "text": "2. Throat diameter: <convert>value=15.1; from=cm; to=m</convert>"
+      },
+      {
+       "at": 143,
+       "text": "3. Pressure drop: <convert>value=42.02; from=kPa; to=Pa</convert>"
+      },
+      {
+       "at": 216,
+       "text": "4. Density of the fluid: <lookup>fluid=TA-31; property=density; T=25</lookup>"
+      },
+      {
+       "at": 302,
+       "text": "5. Inlet area: <calc>pi/4 * 0.231**2</calc>"
+      },
+      {
+       "at": 357,
+       "text": "6. Throat area: <calc>pi/4 * 0.151**2</calc>"
+      },
+      {
+       "at": 413,
+       "text": "7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.0179079 * sqrt(2*42020 / (1198.5 * (1 - (0.0179079/0.0419096)**2)))</calc>"
+      },
+      {
+       "at": 557,
+       "text": "{\"answer\": 0.165862}"
+      }
+     ],
+     "calls": 7,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.165862,
+     "ran_out": false
+    },
+    "mt-0006": {
+     "id": "mt-0006",
+     "human": true,
+     "truth": 10.731178455276352,
+     "correct": true,
+     "family": "pipe_head_loss",
+     "depth": 9,
+     "prompt_sha": "c8a6aa34cb8a7bb9",
+     "text": "1. Flow rate: <convert>value=33.8; from=m^3/h; to=m^3/s</convert>= 0.00938889\n2. Pipe diameter: <convert>value=15.6; from=cm; to=m</convert>= 0.156\n3. Density of the fluid: <lookup>fluid=SR-18; property=density; T=20</lookup>= 1234.2\n4. Dynamic viscosity: <lookup>fluid=SR-18; property=viscosity; T=20</lookup>= 0.581\n5. Cross-sectional area: <calc>pi/4 * 0.156**2</calc>= 0.0191134\n6. Velocity v = Q/A: <calc>0.00938889 / 0.0191134</calc>= 0.49122\n7. Reynolds number: <calc>1234.2 * 0.491221 * 0.156 / 0.581</calc>= 162.784\n8. Friction factor: <calc>64 / 162.784</calc>= 0.393159\n9. Head loss h = f (L/D) v^2 / (2g): <calc>0.393159 * (346.1/0.156) * 0.491221**2 / (2*9.80665)</calc>= 10.7312\n{\"answer\": 10.7312}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Flow rate: <convert>value=33.8; from=m^3/h; to=m^3/s</convert>"
+      },
+      {
+       "at": 78,
+       "text": "2. Pipe diameter: <convert>value=15.6; from=cm; to=m</convert>"
+      },
+      {
+       "at": 148,
+       "text": "3. Density of the fluid: <lookup>fluid=SR-18; property=density; T=20</lookup>"
+      },
+      {
+       "at": 234,
+       "text": "4. Dynamic viscosity: <lookup>fluid=SR-18; property=viscosity; T=20</lookup>"
+      },
+      {
+       "at": 318,
+       "text": "5. Cross-sectional area: <calc>pi/4 * 0.156**2</calc>"
+      },
+      {
+       "at": 383,
+       "text": "6. Velocity v = Q/A: <calc>0.00938889 / 0.0191134</calc>"
+      },
+      {
+       "at": 449,
+       "text": "7. Reynolds number: <calc>1234.2 * 0.491221 * 0.156 / 0.581</calc>"
+      },
+      {
+       "at": 525,
+       "text": "8. Friction factor: <calc>64 / 162.784</calc>"
+      },
+      {
+       "at": 581,
+       "text": "9. Head loss h = f (L/D) v^2 / (2g): <calc>0.393159 * (346.1/0.156) * 0.491221**2 / (2*9.80665)</calc>"
+      },
+      {
+       "at": 693,
+       "text": "{\"answer\": 10.7312}"
+      }
+     ],
+     "calls": 9,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 10.7312,
+     "ran_out": false
+    },
+    "mt-0002": {
+     "id": "mt-0002",
+     "human": true,
+     "truth": 0.24219236092172494,
+     "correct": true,
+     "family": "pipe_head_loss",
+     "depth": 9,
+     "prompt_sha": "58ff29c50202fc5c",
+     "text": "1. Flow rate: <convert>value=25.6; from=m^3/h; to=m^3/s</convert>= 0.00711111\n2. Pipe diameter: <convert>value=23.9; from=cm; to=m</convert>= 0.239\n3. Density of the fluid: <lookup>fluid=ZV-76; property=density; T=10</lookup>= 1343.9\n4. Dynamic viscosity: <lookup>fluid=ZV-76; property=viscosity; T=10</lookup>= 0.113\n5. Cross-sectional area: <calc>pi/4 * 0.239**2</calc>= 0.0448627\n6. Velocity v = Q/A: <calc>0.00711111 / 0.0448627</calc>= 0.158508\n7. Reynolds number: <calc>1343.9 * 0.158508 * 0.239 / 0.113</calc>= 450.544\n8. Friction factor: <calc>64 / 450.544</calc>= 0.14205\n9. Head loss h = f (L/D) v^2 / (2g): <calc>0.14205 * (318.1/0.239) * 0.158508**2 / (2*9.80665)</calc>= 0.242191\n{\"answer\": 0.242191}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Flow rate: <convert>value=25.6; from=m^3/h; to=m^3/s</convert>"
+      },
+      {
+       "at": 78,
+       "text": "2. Pipe diameter: <convert>value=23.9; from=cm; to=m</convert>"
+      },
+      {
+       "at": 148,
+       "text": "3. Density of the fluid: <lookup>fluid=ZV-76; property=density; T=10</lookup>"
+      },
+      {
+       "at": 234,
+       "text": "4. Dynamic viscosity: <lookup>fluid=ZV-76; property=viscosity; T=10</lookup>"
+      },
+      {
+       "at": 318,
+       "text": "5. Cross-sectional area: <calc>pi/4 * 0.239**2</calc>"
+      },
+      {
+       "at": 383,
+       "text": "6. Velocity v = Q/A: <calc>0.00711111 / 0.0448627</calc>"
+      },
+      {
+       "at": 450,
+       "text": "7. Reynolds number: <calc>1343.9 * 0.158508 * 0.239 / 0.113</calc>"
+      },
+      {
+       "at": 526,
+       "text": "8. Friction factor: <calc>64 / 450.544</calc>"
+      },
+      {
+       "at": 581,
+       "text": "9. Head loss h = f (L/D) v^2 / (2g): <calc>0.14205 * (318.1/0.239) * 0.158508**2 / (2*9.80665)</calc>"
+      },
+      {
+       "at": 693,
+       "text": "{\"answer\": 0.242191}"
+      }
+     ],
+     "calls": 9,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.242191,
+     "ran_out": false
+    },
+    "mt-0008": {
+     "id": "mt-0008",
+     "human": true,
+     "truth": 10779.39976705438,
+     "correct": true,
+     "family": "hydrostatic_force",
+     "depth": 6,
+     "prompt_sha": "8e971c3643979936",
+     "text": "1. Gate width: <convert>value=736.4; from=mm; to=m</convert>= 0.7364\n2. Gate height: <convert>value=424.9; from=mm; to=m</convert>= 0.4249\n3. Density of the fluid: <lookup>fluid=PX-3; property=density; T=25</lookup>= 1344.7\n4. Depth of the centroid: <calc>2.4 + 0.4249/2</calc>= 2.61245\n5. Area of the gate: <calc>0.7364 * 0.4249</calc>= 0.312896\n6. Resultant force F = rho g h_c A: <calc>1344.7 * 9.80665 * 2.61245 * 0.312896</calc>= 10779.4\n{\"answer\": 10779.4}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Gate width: <convert>value=736.4; from=mm; to=m</convert>"
+      },
+      {
+       "at": 69,
+       "text": "2. Gate height: <convert>value=424.9; from=mm; to=m</convert>"
+      },
+      {
+       "at": 139,
+       "text": "3. Density of the fluid: <lookup>fluid=PX-3; property=density; T=25</lookup>"
+      },
+      {
+       "at": 224,
+       "text": "4. Depth of the centroid: <calc>2.4 + 0.4249/2</calc>"
+      },
+      {
+       "at": 287,
+       "text": "5. Area of the gate: <calc>0.7364 * 0.4249</calc>"
+      },
+      {
+       "at": 347,
+       "text": "6. Resultant force F = rho g h_c A: <calc>1344.7 * 9.80665 * 2.61245 * 0.312896</calc>"
+      },
+      {
+       "at": 443,
+       "text": "{\"answer\": 10779.4}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 10779.4,
+     "ran_out": false
+    },
+    "mt-0009": {
+     "id": "mt-0009",
+     "human": true,
+     "truth": 7.658461554516061,
+     "correct": true,
+     "family": "manning_channel",
+     "depth": 6,
+     "prompt_sha": "b32ede6c029171cc",
+     "text": "1. Channel width: <convert>value=3266.7; from=mm; to=m</convert>= 3.2667\n2. Flow depth: <convert>value=1017.0; from=mm; to=m</convert>= 1.017\n3. Flow area: <calc>3.2667 * 1.017</calc>= 3.32223\n4. Wetted perimeter: <calc>3.2667 + 2*1.017</calc>= 5.3007\n5. Hydraulic radius R = A/P: <calc>3.32223 / 5.3007</calc>= 0.626753\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.018) * 3.32223 * 0.626753**(2/3) * sqrt(0.00321)</calc>= 7.65845\n{\"answer\": 7.65845}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Channel width: <convert>value=3266.7; from=mm; to=m</convert>"
+      },
+      {
+       "at": 73,
+       "text": "2. Flow depth: <convert>value=1017.0; from=mm; to=m</convert>"
+      },
+      {
+       "at": 142,
+       "text": "3. Flow area: <calc>3.2667 * 1.017</calc>"
+      },
+      {
+       "at": 193,
+       "text": "4. Wetted perimeter: <calc>3.2667 + 2*1.017</calc>"
+      },
+      {
+       "at": 252,
+       "text": "5. Hydraulic radius R = A/P: <calc>3.32223 / 5.3007</calc>"
+      },
+      {
+       "at": 321,
+       "text": "6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.018) * 3.32223 * 0.626753**(2/3) * sqrt(0.00321)</calc>"
+      },
+      {
+       "at": 439,
+       "text": "{\"answer\": 7.65845}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 7.65845,
+     "ran_out": false
+    },
+    "mt-0012": {
+     "id": "mt-0012",
+     "human": true,
+     "truth": 32261.403504895607,
+     "correct": true,
+     "family": "hydrostatic_force",
+     "depth": 6,
+     "prompt_sha": "a5c53640a65bbcbd",
+     "text": "1. Gate width: <convert>value=226.3; from=cm; to=m</convert>= 2.263\n2. Gate height: <convert>value=80.7; from=cm; to=m</convert>= 0.807\n3. Density of the fluid: <lookup>fluid=KH-87; property=density; T=25</lookup>= 659\n4. Depth of the centroid: <calc>2.33 + 0.807/2</calc>= 2.7335\n5. Area of the gate: <calc>2.263 * 0.807</calc>= 1.82624\n6. Resultant force F = rho g h_c A: <calc>659.0 * 9.80665 * 2.7335 * 1.82624</calc>= 32261.4\n{\"answer\": 32261.4}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Gate width: <convert>value=226.3; from=cm; to=m</convert>"
+      },
+      {
+       "at": 68,
+       "text": "2. Gate height: <convert>value=80.7; from=cm; to=m</convert>"
+      },
+      {
+       "at": 136,
+       "text": "3. Density of the fluid: <lookup>fluid=KH-87; property=density; T=25</lookup>"
+      },
+      {
+       "at": 219,
+       "text": "4. Depth of the centroid: <calc>2.33 + 0.807/2</calc>"
+      },
+      {
+       "at": 281,
+       "text": "5. Area of the gate: <calc>2.263 * 0.807</calc>"
+      },
+      {
+       "at": 338,
+       "text": "6. Resultant force F = rho g h_c A: <calc>659.0 * 9.80665 * 2.7335 * 1.82624</calc>"
+      },
+      {
+       "at": 431,
+       "text": "{\"answer\": 32261.4}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 32261.4,
+     "ran_out": false
+    },
+    "mt-0013": {
+     "id": "mt-0013",
+     "human": true,
+     "truth": 5.241948576732019,
+     "correct": true,
+     "family": "manning_channel",
+     "depth": 6,
+     "prompt_sha": "c18fddbe547049d4",
+     "text": "1. Channel width: <convert>value=221.1; from=cm; to=m</convert>= 2.211\n2. Flow depth: <convert>value=84.4; from=cm; to=m</convert>= 0.844\n3. Flow area: <calc>2.211 * 0.844</calc>= 1.86608\n4. Wetted perimeter: <calc>2.211 + 2*0.844</calc>= 3.899\n5. Hydraulic radius R = A/P: <calc>1.86608 / 3.899</calc>= 0.478605\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.023) * 1.86608 * 0.478605**(2/3) * sqrt(0.01115)</calc>= 5.24193\n{\"answer\": 5.24193}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Channel width: <convert>value=221.1; from=cm; to=m</convert>"
+      },
+      {
+       "at": 71,
+       "text": "2. Flow depth: <convert>value=84.4; from=cm; to=m</convert>"
+      },
+      {
+       "at": 138,
+       "text": "3. Flow area: <calc>2.211 * 0.844</calc>"
+      },
+      {
+       "at": 188,
+       "text": "4. Wetted perimeter: <calc>2.211 + 2*0.844</calc>"
+      },
+      {
+       "at": 245,
+       "text": "5. Hydraulic radius R = A/P: <calc>1.86608 / 3.899</calc>"
+      },
+      {
+       "at": 313,
+       "text": "6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.023) * 1.86608 * 0.478605**(2/3) * sqrt(0.01115)</calc>"
+      },
+      {
+       "at": 431,
+       "text": "{\"answer\": 5.24193}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 5.24193,
+     "ran_out": false
+    },
+    "mt-0011": {
+     "id": "mt-0011",
+     "human": true,
+     "truth": 0.018175858933269746,
+     "correct": true,
+     "family": "venturi_flow",
+     "depth": 7,
+     "prompt_sha": "e1b1b02d09a8b613",
+     "text": "1. Inlet diameter: <convert>value=176.6; from=mm; to=m</convert>= 0.1766\n2. Throat diameter: <convert>value=62.6; from=mm; to=m</convert>= 0.0626\n3. Pressure drop: <convert>value=175.5; from=mbar; to=Pa</convert>= 17550\n4. Density of the fluid: <lookup>fluid=EH-2; property=density; T=10</lookup>= 1022.6\n5. Inlet area: <calc>pi/4 * 0.1766**2</calc>= 0.0244947\n6. Throat area: <calc>pi/4 * 0.0626**2</calc>= 0.00307779\n7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00307779 * sqrt(2*17550 / (1022.6 * (1 - (0.00307779/0.0244947)**2)))</calc>= 0.0181759\n{\"answer\": 0.0181759}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Inlet diameter: <convert>value=176.6; from=mm; to=m</convert>"
+      },
+      {
+       "at": 73,
+       "text": "2. Throat diameter: <convert>value=62.6; from=mm; to=m</convert>"
+      },
+      {
+       "at": 146,
+       "text": "3. Pressure drop: <convert>value=175.5; from=mbar; to=Pa</convert>"
+      },
+      {
+       "at": 220,
+       "text": "4. Density of the fluid: <lookup>fluid=EH-2; property=density; T=10</lookup>"
+      },
+      {
+       "at": 305,
+       "text": "5. Inlet area: <calc>pi/4 * 0.1766**2</calc>"
+      },
+      {
+       "at": 361,
+       "text": "6. Throat area: <calc>pi/4 * 0.0626**2</calc>"
+      },
+      {
+       "at": 419,
+       "text": "7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00307779 * sqrt(2*17550 / (1022.6 * (1 - (0.00307779/0.0244947)**2)))</calc>"
+      },
+      {
+       "at": 566,
+       "text": "{\"answer\": 0.0181759}"
+      }
+     ],
+     "calls": 7,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.0181759,
+     "ran_out": false
+    },
+    "mt-0010": {
+     "id": "mt-0010",
+     "human": true,
+     "truth": 83.2205388654148,
+     "correct": true,
+     "family": "pipe_head_loss",
+     "depth": 9,
+     "prompt_sha": "8385a94e0b191907",
+     "text": "1. Flow rate: <convert>value=54.8; from=L/s; to=m^3/s</convert>= 0.0548\n2. Pipe diameter: <convert>value=140.5; from=mm; to=m</convert>= 0.1405\n3. Density of the fluid: <lookup>fluid=BW-97; property=density; T=25</lookup>= 1470.4\n4. Dynamic viscosity: <lookup>fluid=BW-97; property=viscosity; T=25</lookup>= 1.86\n5. Cross-sectional area: <calc>pi/4 * 0.1405**2</calc>= 0.015504\n6. Velocity v = Q/A: <calc>0.0548 / 0.015504</calc>= 3.53457\n7. Reynolds number: <calc>1470.4 * 3.53457 * 0.1405 / 1.86</calc>= 392.587\n8. Friction factor: <calc>64 / 392.587</calc>= 0.163021\n9. Head loss h = f (L/D) v^2 / (2g): <calc>0.163021 * (112.6/0.1405) * 3.53457**2 / (2*9.80665)</calc>= 83.2201\n{\"answer\": 83.2201}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Flow rate: <convert>value=54.8; from=L/s; to=m^3/s</convert>"
+      },
+      {
+       "at": 72,
+       "text": "2. Pipe diameter: <convert>value=140.5; from=mm; to=m</convert>"
+      },
+      {
+       "at": 144,
+       "text": "3. Density of the fluid: <lookup>fluid=BW-97; property=density; T=25</lookup>"
+      },
+      {
+       "at": 230,
+       "text": "4. Dynamic viscosity: <lookup>fluid=BW-97; property=viscosity; T=25</lookup>"
+      },
+      {
+       "at": 313,
+       "text": "5. Cross-sectional area: <calc>pi/4 * 0.1405**2</calc>"
+      },
+      {
+       "at": 378,
+       "text": "6. Velocity v = Q/A: <calc>0.0548 / 0.015504</calc>"
+      },
+      {
+       "at": 439,
+       "text": "7. Reynolds number: <calc>1470.4 * 3.53457 * 0.1405 / 1.86</calc>"
+      },
+      {
+       "at": 514,
+       "text": "8. Friction factor: <calc>64 / 392.587</calc>"
+      },
+      {
+       "at": 570,
+       "text": "9. Head loss h = f (L/D) v^2 / (2g): <calc>0.163021 * (112.6/0.1405) * 3.53457**2 / (2*9.80665)</calc>"
+      },
+      {
+       "at": 682,
+       "text": "{\"answer\": 83.2201}"
+      }
+     ],
+     "calls": 9,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 83.2201,
+     "ran_out": false
+    },
+    "mt-0015": {
+     "id": "mt-0015",
+     "human": true,
+     "truth": 0.04096021353948243,
+     "correct": true,
+     "family": "venturi_flow",
+     "depth": 7,
+     "prompt_sha": "7cabe62a16194b31",
+     "text": "1. Inlet diameter: <convert>value=134.2; from=mm; to=m</convert>= 0.1342\n2. Throat diameter: <convert>value=71.8; from=mm; to=m</convert>= 0.0718\n3. Pressure drop: <convert>value=454.6; from=mbar; to=Pa</convert>= 45460\n4. Density of the fluid: <lookup>fluid=TS-69; property=density; T=10</lookup>= 967.7\n5. Inlet area: <calc>pi/4 * 0.1342**2</calc>= 0.0141447\n6. Throat area: <calc>pi/4 * 0.0718**2</calc>= 0.00404892\n7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00404892 * sqrt(2*45460 / (967.7 * (1 - (0.00404892/0.0141447)**2)))</calc>= 0.0409603\n{\"answer\": 0.0409603}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Inlet diameter: <convert>value=134.2; from=mm; to=m</convert>"
+      },
+      {
+       "at": 73,
+       "text": "2. Throat diameter: <convert>value=71.8; from=mm; to=m</convert>"
+      },
+      {
+       "at": 146,
+       "text": "3. Pressure drop: <convert>value=454.6; from=mbar; to=Pa</convert>"
+      },
+      {
+       "at": 220,
+       "text": "4. Density of the fluid: <lookup>fluid=TS-69; property=density; T=10</lookup>"
+      },
+      {
+       "at": 305,
+       "text": "5. Inlet area: <calc>pi/4 * 0.1342**2</calc>"
+      },
+      {
+       "at": 361,
+       "text": "6. Throat area: <calc>pi/4 * 0.0718**2</calc>"
+      },
+      {
+       "at": 419,
+       "text": "7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00404892 * sqrt(2*45460 / (967.7 * (1 - (0.00404892/0.0141447)**2)))</calc>"
+      },
+      {
+       "at": 565,
+       "text": "{\"answer\": 0.0409603}"
+      }
+     ],
+     "calls": 7,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.0409603,
+     "ran_out": false
+    },
+    "mt-0016": {
+     "id": "mt-0016",
+     "human": true,
+     "truth": 20304.349928432643,
+     "correct": true,
+     "family": "hydrostatic_force",
+     "depth": 6,
+     "prompt_sha": "360813788ea037f4",
+     "text": "1. Gate width: <convert>value=108.8; from=cm; to=m</convert>= 1.088\n2. Gate height: <convert>value=74.4; from=cm; to=m</convert>= 0.744\n3. Density of the fluid: <lookup>fluid=FE-31; property=density; T=40</lookup>= 900\n4. Depth of the centroid: <calc>2.47 + 0.744/2</calc>= 2.842\n5. Area of the gate: <calc>1.088 * 0.744</calc>= 0.809472\n6. Resultant force F = rho g h_c A: <calc>900.0 * 9.80665 * 2.842 * 0.809472</calc>= 20304.3\n{\"answer\": 20304.3}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Gate width: <convert>value=108.8; from=cm; to=m</convert>"
+      },
+      {
+       "at": 68,
+       "text": "2. Gate height: <convert>value=74.4; from=cm; to=m</convert>"
+      },
+      {
+       "at": 136,
+       "text": "3. Density of the fluid: <lookup>fluid=FE-31; property=density; T=40</lookup>"
+      },
+      {
+       "at": 219,
+       "text": "4. Depth of the centroid: <calc>2.47 + 0.744/2</calc>"
+      },
+      {
+       "at": 280,
+       "text": "5. Area of the gate: <calc>1.088 * 0.744</calc>"
+      },
+      {
+       "at": 338,
+       "text": "6. Resultant force F = rho g h_c A: <calc>900.0 * 9.80665 * 2.842 * 0.809472</calc>"
+      },
+      {
+       "at": 431,
+       "text": "{\"answer\": 20304.3}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 20304.3,
+     "ran_out": false
+    },
+    "mt-0017": {
+     "id": "mt-0017",
+     "human": true,
+     "truth": 10.117577417971926,
+     "correct": true,
+     "family": "manning_channel",
+     "depth": 6,
+     "prompt_sha": "43dc19c45e90c4bd",
+     "text": "1. Channel width: <convert>value=255.0; from=cm; to=m</convert>= 2.55\n2. Flow depth: <convert>value=127.6; from=cm; to=m</convert>= 1.276\n3. Flow area: <calc>2.55 * 1.276</calc>= 3.2538\n4. Wetted perimeter: <calc>2.55 + 2*1.276</calc>= 5.102\n5. Hydraulic radius R = A/P: <calc>3.2538 / 5.102</calc>= 0.63775\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.027) * 3.2538 * 0.63775**(2/3) * sqrt(0.01284)</calc>= 10.1176\n{\"answer\": 10.1176}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Channel width: <convert>value=255.0; from=cm; to=m</convert>"
+      },
+      {
+       "at": 70,
+       "text": "2. Flow depth: <convert>value=127.6; from=cm; to=m</convert>"
+      },
+      {
+       "at": 138,
+       "text": "3. Flow area: <calc>2.55 * 1.276</calc>"
+      },
+      {
+       "at": 186,
+       "text": "4. Wetted perimeter: <calc>2.55 + 2*1.276</calc>"
+      },
+      {
+       "at": 242,
+       "text": "5. Hydraulic radius R = A/P: <calc>3.2538 / 5.102</calc>"
+      },
+      {
+       "at": 308,
+       "text": "6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.027) * 3.2538 * 0.63775**(2/3) * sqrt(0.01284)</calc>"
+      },
+      {
+       "at": 424,
+       "text": "{\"answer\": 10.1176}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 10.1176,
+     "ran_out": false
+    },
+    "mt-0014": {
+     "id": "mt-0014",
+     "human": true,
+     "truth": 0.37349854365547824,
+     "correct": true,
+     "family": "pipe_head_loss",
+     "depth": 9,
+     "prompt_sha": "5090f6dd7e23e12b",
+     "text": "1. Flow rate: <convert>value=43.7; from=m^3/h; to=m^3/s</convert>= 0.0121389\n2. Pipe diameter: <convert>value=39.2; from=cm; to=m</convert>= 0.392\n3. Density of the fluid: <lookup>fluid=ZW-65; property=density; T=25</lookup>= 1056.1\n4. Dynamic viscosity: <lookup>fluid=ZW-65; property=viscosity; T=25</lookup>= 0.72\n5. Cross-sectional area: <calc>pi/4 * 0.392**2</calc>= 0.120687\n6. Velocity v = Q/A: <calc>0.0121389 / 0.120687</calc>= 0.100582\n7. Reynolds number: <calc>1056.1 * 0.100582 * 0.392 / 0.72</calc>= 57.8334\n8. Friction factor: <calc>64 / 57.8334</calc>= 1.10663\n9. Head loss h = f (L/D) v^2 / (2g): <calc>1.10663 * (256.5/0.392) * 0.100582**2 / (2*9.80665)</calc>= 0.373503\n{\"answer\": 0.373503}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Flow rate: <convert>value=43.7; from=m^3/h; to=m^3/s</convert>"
+      },
+      {
+       "at": 77,
+       "text": "2. Pipe diameter: <convert>value=39.2; from=cm; to=m</convert>"
+      },
+      {
+       "at": 147,
+       "text": "3. Density of the fluid: <lookup>fluid=ZW-65; property=density; T=25</lookup>"
+      },
+      {
+       "at": 233,
+       "text": "4. Dynamic viscosity: <lookup>fluid=ZW-65; property=viscosity; T=25</lookup>"
+      },
+      {
+       "at": 316,
+       "text": "5. Cross-sectional area: <calc>pi/4 * 0.392**2</calc>"
+      },
+      {
+       "at": 380,
+       "text": "6. Velocity v = Q/A: <calc>0.0121389 / 0.120687</calc>"
+      },
+      {
+       "at": 445,
+       "text": "7. Reynolds number: <calc>1056.1 * 0.100582 * 0.392 / 0.72</calc>"
+      },
+      {
+       "at": 520,
+       "text": "8. Friction factor: <calc>64 / 57.8334</calc>"
+      },
+      {
+       "at": 575,
+       "text": "9. Head loss h = f (L/D) v^2 / (2g): <calc>1.10663 * (256.5/0.392) * 0.100582**2 / (2*9.80665)</calc>"
+      },
+      {
+       "at": 687,
+       "text": "{\"answer\": 0.373503}"
+      }
+     ],
+     "calls": 9,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.373503,
+     "ran_out": false
+    },
+    "mt-0020": {
+     "id": "mt-0020",
+     "human": true,
+     "truth": 53991.33354496216,
+     "correct": true,
+     "family": "hydrostatic_force",
+     "depth": 6,
+     "prompt_sha": "aaf800f413c96669",
+     "text": "1. Gate width: <convert>value=113.8; from=cm; to=m</convert>= 1.138\n2. Gate height: <convert>value=196.1; from=cm; to=m</convert>= 1.961\n3. Density of the fluid: <lookup>fluid=ZL-39; property=density; T=10</lookup>= 927.3\n4. Depth of the centroid: <calc>1.68 + 1.961/2</calc>= 2.6605\n5. Area of the gate: <calc>1.138 * 1.961</calc>= 2.23162\n6. Resultant force F = rho g h_c A: <calc>927.3 * 9.80665 * 2.6605 * 2.23162</calc>= 53991.4\n{\"answer\": 53991.4}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Gate width: <convert>value=113.8; from=cm; to=m</convert>"
+      },
+      {
+       "at": 68,
+       "text": "2. Gate height: <convert>value=196.1; from=cm; to=m</convert>"
+      },
+      {
+       "at": 137,
+       "text": "3. Density of the fluid: <lookup>fluid=ZL-39; property=density; T=10</lookup>"
+      },
+      {
+       "at": 222,
+       "text": "4. Depth of the centroid: <calc>1.68 + 1.961/2</calc>"
+      },
+      {
+       "at": 284,
+       "text": "5. Area of the gate: <calc>1.138 * 1.961</calc>"
+      },
+      {
+       "at": 341,
+       "text": "6. Resultant force F = rho g h_c A: <calc>927.3 * 9.80665 * 2.6605 * 2.23162</calc>"
+      },
+      {
+       "at": 434,
+       "text": "{\"answer\": 53991.4}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 53991.4,
+     "ran_out": false
+    },
+    "mt-0019": {
+     "id": "mt-0019",
+     "human": true,
+     "truth": 0.06623423586302991,
+     "correct": true,
+     "family": "venturi_flow",
+     "depth": 7,
+     "prompt_sha": "0490e9f905b81f90",
+     "text": "1. Inlet diameter: <convert>value=227.3; from=mm; to=m</convert>= 0.2273\n2. Throat diameter: <convert>value=112.7; from=mm; to=m</convert>= 0.1127\n3. Pressure drop: <convert>value=0.284; from=bar; to=Pa</convert>= 28400\n4. Density of the fluid: <lookup>fluid=PW-81; property=density; T=25</lookup>= 1371.3\n5. Inlet area: <calc>pi/4 * 0.2273**2</calc>= 0.0405778\n6. Throat area: <calc>pi/4 * 0.1127**2</calc>= 0.00997557\n7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00997557 * sqrt(2*28400 / (1371.3 * (1 - (0.00997557/0.0405778)**2)))</calc>= 0.0662342\n{\"answer\": 0.0662342}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Inlet diameter: <convert>value=227.3; from=mm; to=m</convert>"
+      },
+      {
+       "at": 73,
+       "text": "2. Throat diameter: <convert>value=112.7; from=mm; to=m</convert>"
+      },
+      {
+       "at": 147,
+       "text": "3. Pressure drop: <convert>value=0.284; from=bar; to=Pa</convert>"
+      },
+      {
+       "at": 220,
+       "text": "4. Density of the fluid: <lookup>fluid=PW-81; property=density; T=25</lookup>"
+      },
+      {
+       "at": 306,
+       "text": "5. Inlet area: <calc>pi/4 * 0.2273**2</calc>"
+      },
+      {
+       "at": 362,
+       "text": "6. Throat area: <calc>pi/4 * 0.1127**2</calc>"
+      },
+      {
+       "at": 420,
+       "text": "7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00997557 * sqrt(2*28400 / (1371.3 * (1 - (0.00997557/0.0405778)**2)))</calc>"
+      },
+      {
+       "at": 567,
+       "text": "{\"answer\": 0.0662342}"
+      }
+     ],
+     "calls": 7,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.0662342,
+     "ran_out": false
+    },
+    "mt-0021": {
+     "id": "mt-0021",
+     "human": true,
+     "truth": 11.49081703861255,
+     "correct": true,
+     "family": "manning_channel",
+     "depth": 6,
+     "prompt_sha": "656f2fe9c63997e0",
+     "text": "1. Channel width: <convert>value=249.2; from=cm; to=m</convert>= 2.492\n2. Flow depth: <convert>value=113.7; from=cm; to=m</convert>= 1.137\n3. Flow area: <calc>2.492 * 1.137</calc>= 2.8334\n4. Wetted perimeter: <calc>2.492 + 2*1.137</calc>= 4.766\n5. Hydraulic radius R = A/P: <calc>2.8334 / 4.766</calc>= 0.594503\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.018) * 2.8334 * 0.594503**(2/3) * sqrt(0.01066)</calc>= 11.4908\n{\"answer\": 11.4908}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Channel width: <convert>value=249.2; from=cm; to=m</convert>"
+      },
+      {
+       "at": 71,
+       "text": "2. Flow depth: <convert>value=113.7; from=cm; to=m</convert>"
+      },
+      {
+       "at": 139,
+       "text": "3. Flow area: <calc>2.492 * 1.137</calc>"
+      },
+      {
+       "at": 188,
+       "text": "4. Wetted perimeter: <calc>2.492 + 2*1.137</calc>"
+      },
+      {
+       "at": 245,
+       "text": "5. Hydraulic radius R = A/P: <calc>2.8334 / 4.766</calc>"
+      },
+      {
+       "at": 312,
+       "text": "6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.018) * 2.8334 * 0.594503**(2/3) * sqrt(0.01066)</calc>"
+      },
+      {
+       "at": 429,
+       "text": "{\"answer\": 11.4908}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 11.4908,
+     "ran_out": false
+    },
+    "mt-0018": {
+     "id": "mt-0018",
+     "human": true,
+     "truth": 1.3540031768877645,
+     "correct": true,
+     "family": "pipe_head_loss",
+     "depth": 9,
+     "prompt_sha": "d3b575ea76f4d275",
+     "text": "1. Flow rate: <convert>value=39.1; from=L/s; to=m^3/s</convert>= 0.0391\n2. Pipe diameter: <convert>value=38.7; from=cm; to=m</convert>= 0.387\n3. Density of the fluid: <lookup>fluid=QN-58; property=density; T=80</lookup>= 793.6\n4. Dynamic viscosity: <lookup>fluid=QN-58; property=viscosity; T=80</lookup>= 0.822\n5. Cross-sectional area: <calc>pi/4 * 0.387**2</calc>= 0.117628\n6. Velocity v = Q/A: <calc>0.0391 / 0.117628</calc>= 0.332404\n7. Reynolds number: <calc>793.6 * 0.332404 * 0.387 / 0.822</calc>= 124.196\n8. Friction factor: <calc>64 / 124.196</calc>= 0.515315\n9. Head loss h = f (L/D) v^2 / (2g): <calc>0.515315 * (180.5/0.387) * 0.332404**2 / (2*9.80665)</calc>= 1.35401\n{\"answer\": 1.35401}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Flow rate: <convert>value=39.1; from=L/s; to=m^3/s</convert>"
+      },
+      {
+       "at": 72,
+       "text": "2. Pipe diameter: <convert>value=38.7; from=cm; to=m</convert>"
+      },
+      {
+       "at": 142,
+       "text": "3. Density of the fluid: <lookup>fluid=QN-58; property=density; T=80</lookup>"
+      },
+      {
+       "at": 227,
+       "text": "4. Dynamic viscosity: <lookup>fluid=QN-58; property=viscosity; T=80</lookup>"
+      },
+      {
+       "at": 311,
+       "text": "5. Cross-sectional area: <calc>pi/4 * 0.387**2</calc>"
+      },
+      {
+       "at": 375,
+       "text": "6. Velocity v = Q/A: <calc>0.0391 / 0.117628</calc>"
+      },
+      {
+       "at": 437,
+       "text": "7. Reynolds number: <calc>793.6 * 0.332404 * 0.387 / 0.822</calc>"
+      },
+      {
+       "at": 512,
+       "text": "8. Friction factor: <calc>64 / 124.196</calc>"
+      },
+      {
+       "at": 568,
+       "text": "9. Head loss h = f (L/D) v^2 / (2g): <calc>0.515315 * (180.5/0.387) * 0.332404**2 / (2*9.80665)</calc>"
+      },
+      {
+       "at": 680,
+       "text": "{\"answer\": 1.35401}"
+      }
+     ],
+     "calls": 9,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 1.35401,
+     "ran_out": false
+    },
+    "mt-0024": {
+     "id": "mt-0024",
+     "human": true,
+     "truth": 30038.312716830867,
+     "correct": true,
+     "family": "hydrostatic_force",
+     "depth": 6,
+     "prompt_sha": "c05ea70ecc00f4cf",
+     "text": "1. Gate width: <convert>value=1003.1; from=mm; to=m</convert>= 1.0031\n2. Gate height: <convert>value=1008.5; from=mm; to=m</convert>= 1.0085\n3. Density of the fluid: <lookup>fluid=RX-2; property=density; T=40</lookup>= 1031.9\n4. Depth of the centroid: <calc>2.43 + 1.0085/2</calc>= 2.93425\n5. Area of the gate: <calc>1.0031 * 1.0085</calc>= 1.01163\n6. Resultant force F = rho g h_c A: <calc>1031.9 * 9.80665 * 2.93425 * 1.01163</calc>= 30038.4\n{\"answer\": 30038.4}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Gate width: <convert>value=1003.1; from=mm; to=m</convert>"
+      },
+      {
+       "at": 70,
+       "text": "2. Gate height: <convert>value=1008.5; from=mm; to=m</convert>"
+      },
+      {
+       "at": 141,
+       "text": "3. Density of the fluid: <lookup>fluid=RX-2; property=density; T=40</lookup>"
+      },
+      {
+       "at": 226,
+       "text": "4. Depth of the centroid: <calc>2.43 + 1.0085/2</calc>"
+      },
+      {
+       "at": 290,
+       "text": "5. Area of the gate: <calc>1.0031 * 1.0085</calc>"
+      },
+      {
+       "at": 349,
+       "text": "6. Resultant force F = rho g h_c A: <calc>1031.9 * 9.80665 * 2.93425 * 1.01163</calc>"
+      },
+      {
+       "at": 444,
+       "text": "{\"answer\": 30038.4}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 30038.4,
+     "ran_out": false
+    },
+    "mt-0023": {
+     "id": "mt-0023",
+     "human": true,
+     "truth": 0.4010873830012109,
+     "correct": true,
+     "family": "venturi_flow",
+     "depth": 7,
+     "prompt_sha": "975cdc5ad05d93ee",
+     "text": "1. Inlet diameter: <convert>value=327.6; from=mm; to=m</convert>= 0.3276\n2. Throat diameter: <convert>value=182.3; from=mm; to=m</convert>= 0.1823\n3. Pressure drop: <convert>value=87.53; from=kPa; to=Pa</convert>= 87530\n4. Density of the fluid: <lookup>fluid=WE-74; property=density; T=40</lookup>= 820\n5. Inlet area: <calc>pi/4 * 0.3276**2</calc>= 0.0842903\n6. Throat area: <calc>pi/4 * 0.1823**2</calc>= 0.0261014\n7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.0261014 * sqrt(2*87530 / (820.0 * (1 - (0.0261014/0.0842903)**2)))</calc>= 0.401088\n{\"answer\": 0.401088}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Inlet diameter: <convert>value=327.6; from=mm; to=m</convert>"
+      },
+      {
+       "at": 73,
+       "text": "2. Throat diameter: <convert>value=182.3; from=mm; to=m</convert>"
+      },
+      {
+       "at": 147,
+       "text": "3. Pressure drop: <convert>value=87.53; from=kPa; to=Pa</convert>"
+      },
+      {
+       "at": 220,
+       "text": "4. Density of the fluid: <lookup>fluid=WE-74; property=density; T=40</lookup>"
+      },
+      {
+       "at": 303,
+       "text": "5. Inlet area: <calc>pi/4 * 0.3276**2</calc>"
+      },
+      {
+       "at": 359,
+       "text": "6. Throat area: <calc>pi/4 * 0.1823**2</calc>"
+      },
+      {
+       "at": 416,
+       "text": "7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.0261014 * sqrt(2*87530 / (820.0 * (1 - (0.0261014/0.0842903)**2)))</calc>"
+      },
+      {
+       "at": 559,
+       "text": "{\"answer\": 0.401088}"
+      }
+     ],
+     "calls": 7,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.401088,
+     "ran_out": false
+    },
+    "mt-0025": {
+     "id": "mt-0025",
+     "human": true,
+     "truth": 13.551781863874421,
+     "correct": true,
+     "family": "manning_channel",
+     "depth": 6,
+     "prompt_sha": "b465d6a721f39afd",
+     "text": "1. Channel width: <convert>value=3164.0; from=mm; to=m</convert>= 3.164\n2. Flow depth: <convert>value=1398.3; from=mm; to=m</convert>= 1.3983\n3. Flow area: <calc>3.164 * 1.3983</calc>= 4.42422\n4. Wetted perimeter: <calc>3.164 + 2*1.3983</calc>= 5.9606\n5. Hydraulic radius R = A/P: <calc>4.42422 / 5.9606</calc>= 0.742244\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.019) * 4.42422 * 0.742244**(2/3) * sqrt(0.00504)</calc>= 13.5518\n{\"answer\": 13.5518}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Channel width: <convert>value=3164.0; from=mm; to=m</convert>"
+      },
+      {
+       "at": 72,
+       "text": "2. Flow depth: <convert>value=1398.3; from=mm; to=m</convert>"
+      },
+      {
+       "at": 142,
+       "text": "3. Flow area: <calc>3.164 * 1.3983</calc>"
+      },
+      {
+       "at": 193,
+       "text": "4. Wetted perimeter: <calc>3.164 + 2*1.3983</calc>"
+      },
+      {
+       "at": 252,
+       "text": "5. Hydraulic radius R = A/P: <calc>4.42422 / 5.9606</calc>"
+      },
+      {
+       "at": 321,
+       "text": "6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.019) * 4.42422 * 0.742244**(2/3) * sqrt(0.00504)</calc>"
+      },
+      {
+       "at": 439,
+       "text": "{\"answer\": 13.5518}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 13.5518,
+     "ran_out": false
+    },
+    "mt-0022": {
+     "id": "mt-0022",
+     "human": true,
+     "truth": 1.586425943536138,
+     "correct": true,
+     "family": "pipe_head_loss",
+     "depth": 9,
+     "prompt_sha": "2d514e44d89595c5",
+     "text": "1. Flow rate: <convert>value=21.8; from=L/min; to=m^3/s</convert>= 0.000363333\n2. Pipe diameter: <convert>value=8.3; from=cm; to=m</convert>= 0.083\n3. Density of the fluid: <lookup>fluid=VN-36; property=density; T=20</lookup>= 1301.5\n4. Dynamic viscosity: <lookup>fluid=VN-36; property=viscosity; T=20</lookup>= 1.39\n5. Cross-sectional area: <calc>pi/4 * 0.083**2</calc>= 0.00541061\n6. Velocity v = Q/A: <calc>0.000363333 / 0.00541061</calc>= 0.0671519\n7. Reynolds number: <calc>1301.5 * 0.0671519 * 0.083 / 1.39</calc>= 5.21874\n8. Friction factor: <calc>64 / 5.21874</calc>= 12.2635\n9. Head loss h = f (L/D) v^2 / (2g): <calc>12.2635 * (46.7/0.083) * 0.0671519**2 / (2*9.80665)</calc>= 1.58642\n{\"answer\": 1.58642}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Flow rate: <convert>value=21.8; from=L/min; to=m^3/s</convert>"
+      },
+      {
+       "at": 79,
+       "text": "2. Pipe diameter: <convert>value=8.3; from=cm; to=m</convert>"
+      },
+      {
+       "at": 148,
+       "text": "3. Density of the fluid: <lookup>fluid=VN-36; property=density; T=20</lookup>"
+      },
+      {
+       "at": 234,
+       "text": "4. Dynamic viscosity: <lookup>fluid=VN-36; property=viscosity; T=20</lookup>"
+      },
+      {
+       "at": 317,
+       "text": "5. Cross-sectional area: <calc>pi/4 * 0.083**2</calc>"
+      },
+      {
+       "at": 383,
+       "text": "6. Velocity v = Q/A: <calc>0.000363333 / 0.00541061</calc>"
+      },
+      {
+       "at": 453,
+       "text": "7. Reynolds number: <calc>1301.5 * 0.0671519 * 0.083 / 1.39</calc>"
+      },
+      {
+       "at": 529,
+       "text": "8. Friction factor: <calc>64 / 5.21874</calc>"
+      },
+      {
+       "at": 584,
+       "text": "9. Head loss h = f (L/D) v^2 / (2g): <calc>12.2635 * (46.7/0.083) * 0.0671519**2 / (2*9.80665)</calc>"
+      },
+      {
+       "at": 695,
+       "text": "{\"answer\": 1.58642}"
+      }
+     ],
+     "calls": 9,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 1.58642,
+     "ran_out": false
+    },
+    "mt-0028": {
+     "id": "mt-0028",
+     "human": true,
+     "truth": 66007.34542954099,
+     "correct": true,
+     "family": "hydrostatic_force",
+     "depth": 6,
+     "prompt_sha": "eee01bad2601d9c8",
+     "text": "1. Gate width: <convert>value=189.7; from=cm; to=m</convert>= 1.897\n2. Gate height: <convert>value=190.5; from=cm; to=m</convert>= 1.905\n3. Density of the fluid: <lookup>fluid=LK-16; property=density; T=10</lookup>= 898.7\n4. Depth of the centroid: <calc>1.12 + 1.905/2</calc>= 2.0725\n5. Area of the gate: <calc>1.897 * 1.905</calc>= 3.61379\n6. Resultant force F = rho g h_c A: <calc>898.7 * 9.80665 * 2.0725 * 3.61379</calc>= 66007.4\n{\"answer\": 66007.4}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Gate width: <convert>value=189.7; from=cm; to=m</convert>"
+      },
+      {
+       "at": 68,
+       "text": "2. Gate height: <convert>value=190.5; from=cm; to=m</convert>"
+      },
+      {
+       "at": 137,
+       "text": "3. Density of the fluid: <lookup>fluid=LK-16; property=density; T=10</lookup>"
+      },
+      {
+       "at": 222,
+       "text": "4. Depth of the centroid: <calc>1.12 + 1.905/2</calc>"
+      },
+      {
+       "at": 284,
+       "text": "5. Area of the gate: <calc>1.897 * 1.905</calc>"
+      },
+      {
+       "at": 341,
+       "text": "6. Resultant force F = rho g h_c A: <calc>898.7 * 9.80665 * 2.0725 * 3.61379</calc>"
+      },
+      {
+       "at": 434,
+       "text": "{\"answer\": 66007.4}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 66007.4,
+     "ran_out": false
+    },
+    "mt-0029": {
+     "id": "mt-0029",
+     "human": true,
+     "truth": 1.4225608651293704,
+     "correct": true,
+     "family": "manning_channel",
+     "depth": 6,
+     "prompt_sha": "151be7dab4f5da2e",
+     "text": "1. Channel width: <convert>value=1396.1; from=mm; to=m</convert>= 1.3961\n2. Flow depth: <convert>value=506.3; from=mm; to=m</convert>= 0.5063\n3. Flow area: <calc>1.3961 * 0.5063</calc>= 0.706845\n4. Wetted perimeter: <calc>1.3961 + 2*0.5063</calc>= 2.4087\n5. Hydraulic radius R = A/P: <calc>0.706845 / 2.4087</calc>= 0.293455\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.031) * 0.706845 * 0.293455**(2/3) * sqrt(0.01996)</calc>= 1.42256\n{\"answer\": 1.42256}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Channel width: <convert>value=1396.1; from=mm; to=m</convert>"
+      },
+      {
+       "at": 73,
+       "text": "2. Flow depth: <convert>value=506.3; from=mm; to=m</convert>"
+      },
+      {
+       "at": 142,
+       "text": "3. Flow area: <calc>1.3961 * 0.5063</calc>"
+      },
+      {
+       "at": 195,
+       "text": "4. Wetted perimeter: <calc>1.3961 + 2*0.5063</calc>"
+      },
+      {
+       "at": 255,
+       "text": "5. Hydraulic radius R = A/P: <calc>0.706845 / 2.4087</calc>"
+      },
+      {
+       "at": 325,
+       "text": "6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.031) * 0.706845 * 0.293455**(2/3) * sqrt(0.01996)</calc>"
+      },
+      {
+       "at": 444,
+       "text": "{\"answer\": 1.42256}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 1.42256,
+     "ran_out": false
+    },
+    "mt-0027": {
+     "id": "mt-0027",
+     "human": true,
+     "truth": 0.027907828199976503,
+     "correct": true,
+     "family": "venturi_flow",
+     "depth": 7,
+     "prompt_sha": "d267003d82c8d275",
+     "text": "1. Inlet diameter: <convert>value=234.0; from=mm; to=m</convert>= 0.234\n2. Throat diameter: <convert>value=90.2; from=mm; to=m</convert>= 0.0902\n3. Pressure drop: <convert>value=8.78; from=kPa; to=Pa</convert>= 8780\n4. Density of the fluid: <lookup>fluid=DT-39; property=density; T=40</lookup>= 941.4\n5. Inlet area: <calc>pi/4 * 0.234**2</calc>= 0.0430053\n6. Throat area: <calc>pi/4 * 0.0902**2</calc>= 0.00639003\n7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00639003 * sqrt(2*8780 / (941.4 * (1 - (0.00639003/0.043)**2)))</calc>= 0.0279079\n{\"answer\": 0.0279079}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Inlet diameter: <convert>value=234.0; from=mm; to=m</convert>"
+      },
+      {
+       "at": 72,
+       "text": "2. Throat diameter: <convert>value=90.2; from=mm; to=m</convert>"
+      },
+      {
+       "at": 145,
+       "text": "3. Pressure drop: <convert>value=8.78; from=kPa; to=Pa</convert>"
+      },
+      {
+       "at": 216,
+       "text": "4. Density of the fluid: <lookup>fluid=DT-39; property=density; T=40</lookup>"
+      },
+      {
+       "at": 301,
+       "text": "5. Inlet area: <calc>pi/4 * 0.234**2</calc>"
+      },
+      {
+       "at": 356,
+       "text": "6. Throat area: <calc>pi/4 * 0.0902**2</calc>"
+      },
+      {
+       "at": 414,
+       "text": "7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00639003 * sqrt(2*8780 / (941.4 * (1 - (0.00639003/0.043)**2)))</calc>"
+      },
+      {
+       "at": 555,
+       "text": "{\"answer\": 0.0279079}"
+      }
+     ],
+     "calls": 7,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.0279079,
+     "ran_out": false
+    },
+    "mt-0026": {
+     "id": "mt-0026",
+     "human": true,
+     "truth": 1.999988690659031,
+     "correct": true,
+     "family": "pipe_head_loss",
+     "depth": 9,
+     "prompt_sha": "eac2f90213877be1",
+     "text": "1. Flow rate: <convert>value=48.2; from=m^3/h; to=m^3/s</convert>= 0.0133889\n2. Pipe diameter: <convert>value=26.3; from=cm; to=m</convert>= 0.263\n3. Density of the fluid: <lookup>fluid=YN-34; property=density; T=60</lookup>= 1231.7\n4. Dynamic viscosity: <lookup>fluid=YN-34; property=viscosity; T=60</lookup>= 1.87\n5. Cross-sectional area: <calc>pi/4 * 0.263**2</calc>= 0.0543252\n6. Velocity v = Q/A: <calc>0.0133889 / 0.0543252</calc>= 0.246458\n7. Reynolds number: <calc>1231.7 * 0.246458 * 0.263 / 1.87</calc>= 42.6935\n8. Friction factor: <calc>64 / 42.6935</calc>= 1.49906\n9. Head loss h = f (L/D) v^2 / (2g): <calc>1.49906 * (113.3/0.263) * 0.246458**2 / (2*9.80665)</calc>= 1.99999\n{\"answer\": 2.0}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Flow rate: <convert>value=48.2; from=m^3/h; to=m^3/s</convert>"
+      },
+      {
+       "at": 77,
+       "text": "2. Pipe diameter: <convert>value=26.3; from=cm; to=m</convert>"
+      },
+      {
+       "at": 147,
+       "text": "3. Density of the fluid: <lookup>fluid=YN-34; property=density; T=60</lookup>"
+      },
+      {
+       "at": 233,
+       "text": "4. Dynamic viscosity: <lookup>fluid=YN-34; property=viscosity; T=60</lookup>"
+      },
+      {
+       "at": 316,
+       "text": "5. Cross-sectional area: <calc>pi/4 * 0.263**2</calc>"
+      },
+      {
+       "at": 381,
+       "text": "6. Velocity v = Q/A: <calc>0.0133889 / 0.0543252</calc>"
+      },
+      {
+       "at": 447,
+       "text": "7. Reynolds number: <calc>1231.7 * 0.246458 * 0.263 / 1.87</calc>"
+      },
+      {
+       "at": 522,
+       "text": "8. Friction factor: <calc>64 / 42.6935</calc>"
+      },
+      {
+       "at": 577,
+       "text": "9. Head loss h = f (L/D) v^2 / (2g): <calc>1.49906 * (113.3/0.263) * 0.246458**2 / (2*9.80665)</calc>"
+      },
+      {
+       "at": 688,
+       "text": "{\"answer\": 2.0}"
+      }
+     ],
+     "calls": 9,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 2.0,
+     "ran_out": false
+    },
+    "mt-0032": {
+     "id": "mt-0032",
+     "human": true,
+     "truth": 114261.07524232277,
+     "correct": true,
+     "family": "hydrostatic_force",
+     "depth": 6,
+     "prompt_sha": "1863c4bbea2400b6",
+     "text": "1. Gate width: <convert>value=1750.6; from=mm; to=m</convert>= 1.7506\n2. Gate height: <convert>value=1325.0; from=mm; to=m</convert>= 1.325\n3. Density of the fluid: <lookup>fluid=KQ-23; property=density; T=60</lookup>= 1130.7\n4. Depth of the centroid: <calc>3.78 + 1.325/2</calc>= 4.4425\n5. Area of the gate: <calc>1.7506 * 1.325</calc>= 2.31954\n6. Resultant force F = rho g h_c A: <calc>1130.7 * 9.80665 * 4.4425 * 2.31954</calc>= 114261\n{\"answer\": 114261}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Gate width: <convert>value=1750.6; from=mm; to=m</convert>"
+      },
+      {
+       "at": 70,
+       "text": "2. Gate height: <convert>value=1325.0; from=mm; to=m</convert>"
+      },
+      {
+       "at": 140,
+       "text": "3. Density of the fluid: <lookup>fluid=KQ-23; property=density; T=60</lookup>"
+      },
+      {
+       "at": 226,
+       "text": "4. Depth of the centroid: <calc>3.78 + 1.325/2</calc>"
+      },
+      {
+       "at": 288,
+       "text": "5. Area of the gate: <calc>1.7506 * 1.325</calc>"
+      },
+      {
+       "at": 346,
+       "text": "6. Resultant force F = rho g h_c A: <calc>1130.7 * 9.80665 * 4.4425 * 2.31954</calc>"
+      },
+      {
+       "at": 439,
+       "text": "{\"answer\": 114261}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 114261.0,
+     "ran_out": false
+    },
+    "mt-0031": {
+     "id": "mt-0031",
+     "human": true,
+     "truth": 0.02220466774858377,
+     "correct": true,
+     "family": "venturi_flow",
+     "depth": 7,
+     "prompt_sha": "d3d54b844f6086e6",
+     "text": "1. Inlet diameter: <convert>value=14.1; from=cm; to=m</convert>= 0.141\n2. Throat diameter: <convert>value=6.4; from=cm; to=m</convert>= 0.064\n3. Pressure drop: <convert>value=0.314; from=bar; to=Pa</convert>= 31400\n4. Density of the fluid: <lookup>fluid=FE-11; property=density; T=80</lookup>= 1376.6\n5. Inlet area: <calc>pi/4 * 0.141**2</calc>= 0.0156145\n6. Throat area: <calc>pi/4 * 0.064**2</calc>= 0.00321699\n7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00321699 * sqrt(2*31400 / (1376.6 * (1 - (0.00321699/0.0156145)**2)))</calc>= 0.0222047\n{\"answer\": 0.0222047}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Inlet diameter: <convert>value=14.1; from=cm; to=m</convert>"
+      },
+      {
+       "at": 71,
+       "text": "2. Throat diameter: <convert>value=6.4; from=cm; to=m</convert>"
+      },
+      {
+       "at": 142,
+       "text": "3. Pressure drop: <convert>value=0.314; from=bar; to=Pa</convert>"
+      },
+      {
+       "at": 215,
+       "text": "4. Density of the fluid: <lookup>fluid=FE-11; property=density; T=80</lookup>"
+      },
+      {
+       "at": 301,
+       "text": "5. Inlet area: <calc>pi/4 * 0.141**2</calc>"
+      },
+      {
+       "at": 356,
+       "text": "6. Throat area: <calc>pi/4 * 0.064**2</calc>"
+      },
+      {
+       "at": 413,
+       "text": "7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00321699 * sqrt(2*31400 / (1376.6 * (1 - (0.00321699/0.0156145)**2)))</calc>"
+      },
+      {
+       "at": 560,
+       "text": "{\"answer\": 0.0222047}"
+      }
+     ],
+     "calls": 7,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.0222047,
+     "ran_out": false
+    },
+    "mt-0033": {
+     "id": "mt-0033",
+     "human": true,
+     "truth": 1.521640347893562,
+     "correct": true,
+     "family": "manning_channel",
+     "depth": 6,
+     "prompt_sha": "b4e7e022b6e22813",
+     "text": "1. Channel width: <convert>value=2571.6; from=mm; to=m</convert>= 2.5716\n2. Flow depth: <convert>value=323.9; from=mm; to=m</convert>= 0.3239\n3. Flow area: <calc>2.5716 * 0.3239</calc>= 0.832941\n4. Wetted perimeter: <calc>2.5716 + 2*0.3239</calc>= 3.2194\n5. Hydraulic radius R = A/P: <calc>0.832941 / 3.2194</calc>= 0.258726\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.024) * 0.832941 * 0.258726**(2/3) * sqrt(0.01166)</calc>= 1.52164\n{\"answer\": 1.52164}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Channel width: <convert>value=2571.6; from=mm; to=m</convert>"
+      },
+      {
+       "at": 73,
+       "text": "2. Flow depth: <convert>value=323.9; from=mm; to=m</convert>"
+      },
+      {
+       "at": 142,
+       "text": "3. Flow area: <calc>2.5716 * 0.3239</calc>"
+      },
+      {
+       "at": 195,
+       "text": "4. Wetted perimeter: <calc>2.5716 + 2*0.3239</calc>"
+      },
+      {
+       "at": 255,
+       "text": "5. Hydraulic radius R = A/P: <calc>0.832941 / 3.2194</calc>"
+      },
+      {
+       "at": 325,
+       "text": "6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.024) * 0.832941 * 0.258726**(2/3) * sqrt(0.01166)</calc>"
+      },
+      {
+       "at": 444,
+       "text": "{\"answer\": 1.52164}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 1.52164,
+     "ran_out": false
+    },
+    "mt-0030": {
+     "id": "mt-0030",
+     "human": true,
+     "truth": 0.24648410101123375,
+     "correct": true,
+     "family": "pipe_head_loss",
+     "depth": 9,
+     "prompt_sha": "01ccfcb1eb1a0457",
+     "text": "1. Flow rate: <convert>value=20.6; from=L/min; to=m^3/s</convert>= 0.000343333\n2. Pipe diameter: <convert>value=245.5; from=mm; to=m</convert>= 0.2455\n3. Density of the fluid: <lookup>fluid=YN-79; property=density; T=25</lookup>= 801.9\n4. Dynamic viscosity: <lookup>fluid=YN-79; property=viscosity; T=25</lookup>= 1.67\n5. Cross-sectional area: <calc>pi/4 * 0.2455**2</calc>= 0.0473361\n6. Velocity v = Q/A: <calc>0.000343333 / 0.0473361</calc>= 0.00725309\n7. Reynolds number: <calc>801.9 * 0.00725309 * 0.2455 / 1.67</calc>= 0.855024\n8. Friction factor: <calc>64 / 0.855024</calc>= 74.8517\n9. Head loss h = f (L/D) v^2 / (2g): <calc>74.8517 * (301.4/0.2455) * 0.00725309**2 / (2*9.80665)</calc>= 0.246484\n{\"answer\": 0.246484}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Flow rate: <convert>value=20.6; from=L/min; to=m^3/s</convert>"
+      },
+      {
+       "at": 79,
+       "text": "2. Pipe diameter: <convert>value=245.5; from=mm; to=m</convert>"
+      },
+      {
+       "at": 151,
+       "text": "3. Density of the fluid: <lookup>fluid=YN-79; property=density; T=25</lookup>"
+      },
+      {
+       "at": 236,
+       "text": "4. Dynamic viscosity: <lookup>fluid=YN-79; property=viscosity; T=25</lookup>"
+      },
+      {
+       "at": 319,
+       "text": "5. Cross-sectional area: <calc>pi/4 * 0.2455**2</calc>"
+      },
+      {
+       "at": 385,
+       "text": "6. Velocity v = Q/A: <calc>0.000343333 / 0.0473361</calc>"
+      },
+      {
+       "at": 455,
+       "text": "7. Reynolds number: <calc>801.9 * 0.00725309 * 0.2455 / 1.67</calc>"
+      },
+      {
+       "at": 533,
+       "text": "8. Friction factor: <calc>64 / 0.855024</calc>"
+      },
+      {
+       "at": 589,
+       "text": "9. Head loss h = f (L/D) v^2 / (2g): <calc>74.8517 * (301.4/0.2455) * 0.00725309**2 / (2*9.80665)</calc>"
+      },
+      {
+       "at": 704,
+       "text": "{\"answer\": 0.246484}"
+      }
+     ],
+     "calls": 9,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.246484,
+     "ran_out": false
+    },
+    "mt-0036": {
+     "id": "mt-0036",
+     "human": true,
+     "truth": 93363.41656983117,
+     "correct": true,
+     "family": "hydrostatic_force",
+     "depth": 6,
+     "prompt_sha": "8952a8ff3b2a713a",
+     "text": "1. Gate width: <convert>value=210.9; from=cm; to=m</convert>= 2.109\n2. Gate height: <convert>value=191.9; from=cm; to=m</convert>= 1.919\n3. Density of the fluid: <lookup>fluid=PZ-75; property=density; T=80</lookup>= 672.2\n4. Depth of the centroid: <calc>2.54 + 1.919/2</calc>= 3.4995\n5. Area of the gate: <calc>2.109 * 1.919</calc>= 4.04717\n6. Resultant force F = rho g h_c A: <calc>672.2 * 9.80665 * 3.4995 * 4.04717</calc>= 93363.4\n{\"answer\": 93363.4}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Gate width: <convert>value=210.9; from=cm; to=m</convert>"
+      },
+      {
+       "at": 68,
+       "text": "2. Gate height: <convert>value=191.9; from=cm; to=m</convert>"
+      },
+      {
+       "at": 137,
+       "text": "3. Density of the fluid: <lookup>fluid=PZ-75; property=density; T=80</lookup>"
+      },
+      {
+       "at": 222,
+       "text": "4. Depth of the centroid: <calc>2.54 + 1.919/2</calc>"
+      },
+      {
+       "at": 284,
+       "text": "5. Area of the gate: <calc>2.109 * 1.919</calc>"
+      },
+      {
+       "at": 341,
+       "text": "6. Resultant force F = rho g h_c A: <calc>672.2 * 9.80665 * 3.4995 * 4.04717</calc>"
+      },
+      {
+       "at": 434,
+       "text": "{\"answer\": 93363.4}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 93363.4,
+     "ran_out": false
+    },
+    "mt-0037": {
+     "id": "mt-0037",
+     "human": true,
+     "truth": 3.6394731468910932,
+     "correct": true,
+     "family": "manning_channel",
+     "depth": 6,
+     "prompt_sha": "93dffed6d35fdeed",
+     "text": "1. Channel width: <convert>value=2577.5; from=mm; to=m</convert>= 2.5775\n2. Flow depth: <convert>value=455.9; from=mm; to=m</convert>= 0.4559\n3. Flow area: <calc>2.5775 * 0.4559</calc>= 1.17508\n4. Wetted perimeter: <calc>2.5775 + 2*0.4559</calc>= 3.4893\n5. Hydraulic radius R = A/P: <calc>1.17508 / 3.4893</calc>= 0.336767\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.019) * 1.17508 * 0.336767**(2/3) * sqrt(0.01478)</calc>= 3.63946\n{\"answer\": 3.63946}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Channel width: <convert>value=2577.5; from=mm; to=m</convert>"
+      },
+      {
+       "at": 73,
+       "text": "2. Flow depth: <convert>value=455.9; from=mm; to=m</convert>"
+      },
+      {
+       "at": 142,
+       "text": "3. Flow area: <calc>2.5775 * 0.4559</calc>"
+      },
+      {
+       "at": 194,
+       "text": "4. Wetted perimeter: <calc>2.5775 + 2*0.4559</calc>"
+      },
+      {
+       "at": 254,
+       "text": "5. Hydraulic radius R = A/P: <calc>1.17508 / 3.4893</calc>"
+      },
+      {
+       "at": 323,
+       "text": "6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.019) * 1.17508 * 0.336767**(2/3) * sqrt(0.01478)</calc>"
+      },
+      {
+       "at": 441,
+       "text": "{\"answer\": 3.63946}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 3.63946,
+     "ran_out": false
+    },
+    "mt-0034": {
+     "id": "mt-0034",
+     "human": true,
+     "truth": 1.9809697781272357,
+     "correct": true,
+     "family": "pipe_head_loss",
+     "depth": 9,
+     "prompt_sha": "85e33799fa5d1397",
+     "text": "1. Flow rate: <convert>value=25.2; from=L/s; to=m^3/s</convert>= 0.0252\n2. Pipe diameter: <convert>value=23.5; from=cm; to=m</convert>= 0.235\n3. Density of the fluid: <lookup>fluid=SW-83; property=density; T=20</lookup>= 1219.1\n4. Dynamic viscosity: <lookup>fluid=SW-83; property=viscosity; T=20</lookup>= 0.475\n5. Cross-sectional area: <calc>pi/4 * 0.235**2</calc>= 0.0433736\n6. Velocity v = Q/A: <calc>0.0252 / 0.0433736</calc>= 0.580999\n7. Reynolds number: <calc>1219.1 * 0.580999 * 0.235 / 0.475</calc>= 350.42\n8. Friction factor: <calc>64 / 350.42</calc>= 0.182638\n9. Head loss h = f (L/D) v^2 / (2g): <calc>0.182638 * (148.1/0.235) * 0.580999**2 / (2*9.80665)</calc>= 1.98097\n{\"answer\": 1.98097}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Flow rate: <convert>value=25.2; from=L/s; to=m^3/s</convert>"
+      },
+      {
+       "at": 72,
+       "text": "2. Pipe diameter: <convert>value=23.5; from=cm; to=m</convert>"
+      },
+      {
+       "at": 142,
+       "text": "3. Density of the fluid: <lookup>fluid=SW-83; property=density; T=20</lookup>"
+      },
+      {
+       "at": 228,
+       "text": "4. Dynamic viscosity: <lookup>fluid=SW-83; property=viscosity; T=20</lookup>"
+      },
+      {
+       "at": 312,
+       "text": "5. Cross-sectional area: <calc>pi/4 * 0.235**2</calc>"
+      },
+      {
+       "at": 377,
+       "text": "6. Velocity v = Q/A: <calc>0.0252 / 0.0433736</calc>"
+      },
+      {
+       "at": 440,
+       "text": "7. Reynolds number: <calc>1219.1 * 0.580999 * 0.235 / 0.475</calc>"
+      },
+      {
+       "at": 515,
+       "text": "8. Friction factor: <calc>64 / 350.42</calc>"
+      },
+      {
+       "at": 570,
+       "text": "9. Head loss h = f (L/D) v^2 / (2g): <calc>0.182638 * (148.1/0.235) * 0.580999**2 / (2*9.80665)</calc>"
+      },
+      {
+       "at": 682,
+       "text": "{\"answer\": 1.98097}"
+      }
+     ],
+     "calls": 9,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 1.98097,
+     "ran_out": false
+    },
+    "mt-0035": {
+     "id": "mt-0035",
+     "human": true,
+     "truth": 0.010469012903703436,
+     "correct": true,
+     "family": "venturi_flow",
+     "depth": 7,
+     "prompt_sha": "42c1172f7e7cad34",
+     "text": "1. Inlet diameter: <convert>value=9.0; from=cm; to=m</convert>= 0.09\n2. Throat diameter: <convert>value=4.7; from=cm; to=m</convert>= 0.047\n3. Pressure drop: <convert>value=0.176; from=bar; to=Pa</convert>= 17600\n4. Density of the fluid: <lookup>fluid=KK-33; property=density; T=10</lookup>= 1044.4\n5. Inlet area: <calc>pi/4 * 0.09**2</calc>= 0.00636173\n6. Throat area: <calc>pi/4 * 0.047**2</calc>= 0.00173494\n7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00173494 * sqrt(2*17600 / (1044.4 * (1 - (0.00173494/0.00636173)**2)))</calc>= 0.010469\n8. The answer: {\"answer\": 0.010469}\n\n{\"answer\": 0.010469}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Inlet diameter: <convert>value=9.0; from=cm; to=m</convert>"
+      },
+      {
+       "at": 69,
+       "text": "2. Throat diameter: <convert>value=4.7; from=cm; to=m</convert>"
+      },
+      {
+       "at": 140,
+       "text": "3. Pressure drop: <convert>value=0.176; from=bar; to=Pa</convert>"
+      },
+      {
+       "at": 213,
+       "text": "4. Density of the fluid: <lookup>fluid=KK-33; property=density; T=10</lookup>"
+      },
+      {
+       "at": 299,
+       "text": "5. Inlet area: <calc>pi/4 * 0.09**2</calc>"
+      },
+      {
+       "at": 354,
+       "text": "6. Throat area: <calc>pi/4 * 0.047**2</calc>"
+      },
+      {
+       "at": 411,
+       "text": "7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00173494 * sqrt(2*17600 / (1044.4 * (1 - (0.00173494/0.00636173)**2)))</calc>"
+      },
+      {
+       "at": 558,
+       "text": "8. The answer: {\"answer\": 0.010469}\n\n{\"answer\": 0.010469}"
+      }
+     ],
+     "calls": 7,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.010469,
+     "ran_out": false
+    },
+    "mt-0040": {
+     "id": "mt-0040",
+     "human": true,
+     "truth": 18630.01201480541,
+     "correct": true,
+     "family": "hydrostatic_force",
+     "depth": 6,
+     "prompt_sha": "c57e468bd39d9e4e",
+     "text": "1. Gate width: <convert>value=1125.6; from=mm; to=m</convert>= 1.1256\n2. Gate height: <convert>value=584.1; from=mm; to=m</convert>= 0.5841\n3. Density of the fluid: <lookup>fluid=CG-78; property=density; T=25</lookup>= 820.4\n4. Depth of the centroid: <calc>3.23 + 0.5841/2</calc>= 3.52205\n5. Area of the gate: <calc>1.1256 * 0.5841</calc>= 0.657463\n6. Resultant force F = rho g h_c A: <calc>820.4 * 9.80665 * 3.52205 * 0.657463</calc>= 18630\n{\"answer\": 18630}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Gate width: <convert>value=1125.6; from=mm; to=m</convert>"
+      },
+      {
+       "at": 70,
+       "text": "2. Gate height: <convert>value=584.1; from=mm; to=m</convert>"
+      },
+      {
+       "at": 140,
+       "text": "3. Density of the fluid: <lookup>fluid=CG-78; property=density; T=25</lookup>"
+      },
+      {
+       "at": 225,
+       "text": "4. Depth of the centroid: <calc>3.23 + 0.5841/2</calc>"
+      },
+      {
+       "at": 289,
+       "text": "5. Area of the gate: <calc>1.1256 * 0.5841</calc>"
+      },
+      {
+       "at": 349,
+       "text": "6. Resultant force F = rho g h_c A: <calc>820.4 * 9.80665 * 3.52205 * 0.657463</calc>"
+      },
+      {
+       "at": 442,
+       "text": "{\"answer\": 18630}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 18630.0,
+     "ran_out": false
+    },
+    "mt-0039": {
+     "id": "mt-0039",
+     "human": true,
+     "truth": 0.24482020857609216,
+     "correct": true,
+     "family": "venturi_flow",
+     "depth": 7,
+     "prompt_sha": "6dc9c6027f6e9507",
+     "text": "1. Inlet diameter: <convert>value=311.1; from=mm; to=m</convert>= 0.3111\n2. Throat diameter: <convert>value=190.7; from=mm; to=m</convert>= 0.1907\n3. Pressure drop: <convert>value=447.8; from=mbar; to=Pa</convert>= 44780\n4. Density of the fluid: <lookup>fluid=CN-87; property=density; T=80</lookup>= 1419.4\n5. Inlet area: <calc>pi/4 * 0.3111**2</calc>= 0.0760134\n6. Throat area: <calc>pi/4 * 0.1907**2</calc>= 0.0285622\n7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.0285622 * sqrt(2*44780 / (1419.4 * (1 - (0.0285622/0.0760134)**2)))</calc>= 0.24482\n{\"answer\": 0.24482}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Inlet diameter: <convert>value=311.1; from=mm; to=m</convert>"
+      },
+      {
+       "at": 73,
+       "text": "2. Throat diameter: <convert>value=190.7; from=mm; to=m</convert>"
+      },
+      {
+       "at": 147,
+       "text": "3. Pressure drop: <convert>value=447.8; from=mbar; to=Pa</convert>"
+      },
+      {
+       "at": 221,
+       "text": "4. Density of the fluid: <lookup>fluid=CN-87; property=density; T=80</lookup>"
+      },
+      {
+       "at": 307,
+       "text": "5. Inlet area: <calc>pi/4 * 0.3111**2</calc>"
+      },
+      {
+       "at": 363,
+       "text": "6. Throat area: <calc>pi/4 * 0.1907**2</calc>"
+      },
+      {
+       "at": 420,
+       "text": "7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.0285622 * sqrt(2*44780 / (1419.4 * (1 - (0.0285622/0.0760134)**2)))</calc>"
+      },
+      {
+       "at": 563,
+       "text": "{\"answer\": 0.24482}"
+      }
+     ],
+     "calls": 7,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.24482,
+     "ran_out": false
+    },
+    "mt-0038": {
+     "id": "mt-0038",
+     "human": true,
+     "truth": 0.04405343223066672,
+     "correct": true,
+     "family": "pipe_head_loss",
+     "depth": 9,
+     "prompt_sha": "cbd28b8f144d3ade",
+     "text": "1. Flow rate: <convert>value=15.3; from=L/min; to=m^3/s</convert>= 0.000255\n2. Pipe diameter: <convert>value=23.4; from=cm; to=m</convert>= 0.234\n3. Density of the fluid: <lookup>fluid=RL-35; property=density; T=20</lookup>= 1351.6\n4. Dynamic viscosity: <lookup>fluid=RL-35; property=viscosity; T=20</lookup>= 0.422\n5. Cross-sectional area: <calc>pi/4 * 0.234**2</calc>= 0.0430053\n6. Velocity v = Q/A: <calc>0.000255 / 0.0430053</calc>= 0.0059295\n7. Reynolds number: <calc>1351.6 * 0.0059295 * 0.234 / 0.422</calc>= 4.44396\n8. Friction factor: <calc>64 / 4.44396</calc>= 14.4016\n9. Head loss h = f (L/D) v^2 / (2g): <calc>14.4016 * (399.3/0.234) * 0.0059295**2 / (2*9.80665)</calc>= 0.0440534\n{\"answer\": 0.0440534}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Flow rate: <convert>value=15.3; from=L/min; to=m^3/s</convert>"
+      },
+      {
+       "at": 76,
+       "text": "2. Pipe diameter: <convert>value=23.4; from=cm; to=m</convert>"
+      },
+      {
+       "at": 146,
+       "text": "3. Density of the fluid: <lookup>fluid=RL-35; property=density; T=20</lookup>"
+      },
+      {
+       "at": 232,
+       "text": "4. Dynamic viscosity: <lookup>fluid=RL-35; property=viscosity; T=20</lookup>"
+      },
+      {
+       "at": 316,
+       "text": "5. Cross-sectional area: <calc>pi/4 * 0.234**2</calc>"
+      },
+      {
+       "at": 381,
+       "text": "6. Velocity v = Q/A: <calc>0.000255 / 0.0430053</calc>"
+      },
+      {
+       "at": 447,
+       "text": "7. Reynolds number: <calc>1351.6 * 0.0059295 * 0.234 / 0.422</calc>"
+      },
+      {
+       "at": 524,
+       "text": "8. Friction factor: <calc>64 / 4.44396</calc>"
+      },
+      {
+       "at": 579,
+       "text": "9. Head loss h = f (L/D) v^2 / (2g): <calc>14.4016 * (399.3/0.234) * 0.0059295**2 / (2*9.80665)</calc>"
+      },
+      {
+       "at": 693,
+       "text": "{\"answer\": 0.0440534}"
+      }
+     ],
+     "calls": 9,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.0440534,
+     "ran_out": false
+    },
+    "mt-0041": {
+     "id": "mt-0041",
+     "human": true,
+     "truth": 1.6787101414020142,
+     "correct": true,
+     "family": "manning_channel",
+     "depth": 6,
+     "prompt_sha": "de32c8b0ba026b00",
+     "text": "1. Channel width: <convert>value=2782.6; from=mm; to=m</convert>= 2.7826\n2. Flow depth: <convert>value=374.5; from=mm; to=m</convert>= 0.3745\n3. Flow area: <calc>2.7826 * 0.3745</calc>= 1.04208\n4. Wetted perimeter: <calc>2.7826 + 2*0.3745</calc>= 3.5316\n5. Hydraulic radius R = A/P: <calc>1.04208 / 3.5316</calc>= 0.295073\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.026) * 1.04208 * 0.295073**(2/3) * sqrt(0.00893)</calc>= 1.6787\n{\"answer\": 1.6787}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Channel width: <convert>value=2782.6; from=mm; to=m</convert>"
+      },
+      {
+       "at": 73,
+       "text": "2. Flow depth: <convert>value=374.5; from=mm; to=m</convert>"
+      },
+      {
+       "at": 142,
+       "text": "3. Flow area: <calc>2.7826 * 0.3745</calc>"
+      },
+      {
+       "at": 194,
+       "text": "4. Wetted perimeter: <calc>2.7826 + 2*0.3745</calc>"
+      },
+      {
+       "at": 254,
+       "text": "5. Hydraulic radius R = A/P: <calc>1.04208 / 3.5316</calc>"
+      },
+      {
+       "at": 323,
+       "text": "6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.026) * 1.04208 * 0.295073**(2/3) * sqrt(0.00893)</calc>"
+      },
+      {
+       "at": 440,
+       "text": "{\"answer\": 1.6787}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 1.6787,
+     "ran_out": false
+    },
+    "mt-0044": {
+     "id": "mt-0044",
+     "human": true,
+     "truth": 13383.415765250165,
+     "correct": true,
+     "family": "hydrostatic_force",
+     "depth": 6,
+     "prompt_sha": "86ebd031756b1649",
+     "text": "1. Gate width: <convert>value=75.6; from=cm; to=m</convert>= 0.756\n2. Gate height: <convert>value=171.5; from=cm; to=m</convert>= 1.715\n3. Density of the fluid: <lookup>fluid=MJ-56; property=density; T=60</lookup>= 702.9\n4. Depth of the centroid: <calc>0.64 + 1.715/2</calc>= 1.4975\n5. Area of the gate: <calc>0.756 * 1.715</calc>= 1.29654\n6. Resultant force F = rho g h_c A: <calc>702.9 * 9.80665 * 1.4975 * 1.29654</calc>= 13383.4\n{\"answer\": 13383.4}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Gate width: <convert>value=75.6; from=cm; to=m</convert>"
+      },
+      {
+       "at": 67,
+       "text": "2. Gate height: <convert>value=171.5; from=cm; to=m</convert>"
+      },
+      {
+       "at": 136,
+       "text": "3. Density of the fluid: <lookup>fluid=MJ-56; property=density; T=60</lookup>"
+      },
+      {
+       "at": 221,
+       "text": "4. Depth of the centroid: <calc>0.64 + 1.715/2</calc>"
+      },
+      {
+       "at": 283,
+       "text": "5. Area of the gate: <calc>0.756 * 1.715</calc>"
+      },
+      {
+       "at": 340,
+       "text": "6. Resultant force F = rho g h_c A: <calc>702.9 * 9.80665 * 1.4975 * 1.29654</calc>"
+      },
+      {
+       "at": 433,
+       "text": "{\"answer\": 13383.4}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 13383.4,
+     "ran_out": false
+    },
+    "mt-0043": {
+     "id": "mt-0043",
+     "human": true,
+     "truth": 0.01925732067771837,
+     "correct": true,
+     "family": "venturi_flow",
+     "depth": 7,
+     "prompt_sha": "a37add47300579e0",
+     "text": "1. Inlet diameter: <convert>value=17.8; from=cm; to=m</convert>= 0.178\n2. Throat diameter: <convert>value=7.9; from=cm; to=m</convert>= 0.079\n3. Pressure drop: <convert>value=85.5; from=mbar; to=Pa</convert>= 8550\n4. Density of the fluid: <lookup>fluid=YH-13; property=density; T=25</lookup>= 1152.6\n5. Inlet area: <calc>pi/4 * 0.178**2</calc>= 0.0248846\n6. Throat area: <calc>pi/4 * 0.079**2</calc>= 0.00490167\n7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00490167 * sqrt(2*8550 / (1152.6 * (1 - (0.00490167/0.0248846)**2)))</calc>= 0.0192573\n{\"answer\": 0.0192573}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Inlet diameter: <convert>value=17.8; from=cm; to=m</convert>"
+      },
+      {
+       "at": 71,
+       "text": "2. Throat diameter: <convert>value=7.9; from=cm; to=m</convert>"
+      },
+      {
+       "at": 142,
+       "text": "3. Pressure drop: <convert>value=85.5; from=mbar; to=Pa</convert>"
+      },
+      {
+       "at": 214,
+       "text": "4. Density of the fluid: <lookup>fluid=YH-13; property=density; T=25</lookup>"
+      },
+      {
+       "at": 300,
+       "text": "5. Inlet area: <calc>pi/4 * 0.178**2</calc>"
+      },
+      {
+       "at": 355,
+       "text": "6. Throat area: <calc>pi/4 * 0.079**2</calc>"
+      },
+      {
+       "at": 412,
+       "text": "7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00490167 * sqrt(2*8550 / (1152.6 * (1 - (0.00490167/0.0248846)**2)))</calc>"
+      },
+      {
+       "at": 558,
+       "text": "{\"answer\": 0.0192573}"
+      }
+     ],
+     "calls": 7,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.0192573,
+     "ran_out": false
+    },
+    "mt-0045": {
+     "id": "mt-0045",
+     "human": true,
+     "truth": 9.555529159639494,
+     "correct": true,
+     "family": "manning_channel",
+     "depth": 6,
+     "prompt_sha": "4bc3ed2f28d937bc",
+     "text": "1. Channel width: <convert>value=301.9; from=cm; to=m</convert>= 3.019\n2. Flow depth: <convert>value=61.9; from=cm; to=m</convert>= 0.619\n3. Flow area: <calc>3.019 * 0.619</calc>= 1.86876\n4. Wetted perimeter: <calc>3.019 + 2*0.619</calc>= 4.257\n5. Hydraulic radius R = A/P: <calc>1.86876 / 4.257</calc>= 0.438985\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.014) * 1.86876 * 0.438985**(2/3) * sqrt(0.01536)</calc>= 9.55552\n{\"answer\": 9.55552}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Channel width: <convert>value=301.9; from=cm; to=m</convert>"
+      },
+      {
+       "at": 71,
+       "text": "2. Flow depth: <convert>value=61.9; from=cm; to=m</convert>"
+      },
+      {
+       "at": 138,
+       "text": "3. Flow area: <calc>3.019 * 0.619</calc>"
+      },
+      {
+       "at": 188,
+       "text": "4. Wetted perimeter: <calc>3.019 + 2*0.619</calc>"
+      },
+      {
+       "at": 245,
+       "text": "5. Hydraulic radius R = A/P: <calc>1.86876 / 4.257</calc>"
+      },
+      {
+       "at": 313,
+       "text": "6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.014) * 1.86876 * 0.438985**(2/3) * sqrt(0.01536)</calc>"
+      },
+      {
+       "at": 431,
+       "text": "{\"answer\": 9.55552}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 9.55552,
+     "ran_out": false
+    },
+    "mt-0042": {
+     "id": "mt-0042",
+     "human": true,
+     "truth": 0.042850966271764344,
+     "correct": true,
+     "family": "pipe_head_loss",
+     "depth": 9,
+     "prompt_sha": "c4f6d42e00f10b77",
+     "text": "1. Flow rate: <convert>value=30.4; from=m^3/h; to=m^3/s</convert>= 0.00844444\n2. Pipe diameter: <convert>value=343.7; from=mm; to=m</convert>= 0.3437\n3. Density of the fluid: <lookup>fluid=TD-26; property=density; T=20</lookup>= 1062.2\n4. Dynamic viscosity: <lookup>fluid=TD-26; property=viscosity; T=20</lookup>= 0.584\n5. Cross-sectional area: <calc>pi/4 * 0.3437**2</calc>= 0.0927788\n6. Velocity v = Q/A: <calc>0.00844444 / 0.0927788</calc>= 0.0910169\n7. Reynolds number: <calc>1062.2 * 0.0910169 * 0.3437 / 0.584</calc>= 56.8977\n8. Friction factor: <calc>64 / 56.8977</calc>= 1.12483\n9. Head loss h = f (L/D) v^2 / (2g): <calc>1.12483 * (31.0/0.3437) * 0.0910169**2 / (2*9.80665)</calc>= 0.0428511\n{\"answer\": 0.0428511}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Flow rate: <convert>value=30.4; from=m^3/h; to=m^3/s</convert>"
+      },
+      {
+       "at": 78,
+       "text": "2. Pipe diameter: <convert>value=343.7; from=mm; to=m</convert>"
+      },
+      {
+       "at": 150,
+       "text": "3. Density of the fluid: <lookup>fluid=TD-26; property=density; T=20</lookup>"
+      },
+      {
+       "at": 236,
+       "text": "4. Dynamic viscosity: <lookup>fluid=TD-26; property=viscosity; T=20</lookup>"
+      },
+      {
+       "at": 320,
+       "text": "5. Cross-sectional area: <calc>pi/4 * 0.3437**2</calc>"
+      },
+      {
+       "at": 386,
+       "text": "6. Velocity v = Q/A: <calc>0.00844444 / 0.0927788</calc>"
+      },
+      {
+       "at": 454,
+       "text": "7. Reynolds number: <calc>1062.2 * 0.0910169 * 0.3437 / 0.584</calc>"
+      },
+      {
+       "at": 532,
+       "text": "8. Friction factor: <calc>64 / 56.8977</calc>"
+      },
+      {
+       "at": 587,
+       "text": "9. Head loss h = f (L/D) v^2 / (2g): <calc>1.12483 * (31.0/0.3437) * 0.0910169**2 / (2*9.80665)</calc>"
+      },
+      {
+       "at": 701,
+       "text": "{\"answer\": 0.0428511}"
+      }
+     ],
+     "calls": 9,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.0428511,
+     "ran_out": false
+    },
+    "mt-0048": {
+     "id": "mt-0048",
+     "human": true,
+     "truth": 23850.104006099995,
+     "correct": true,
+     "family": "hydrostatic_force",
+     "depth": 6,
+     "prompt_sha": "aaec108f3525528a",
+     "text": "1. Gate width: <convert>value=238.5; from=cm; to=m</convert>= 2.385\n2. Gate height: <convert>value=36.2; from=cm; to=m</convert>= 0.362\n3. Density of the fluid: <lookup>fluid=WJ-86; property=density; T=40</lookup>= 813.9\n4. Depth of the centroid: <calc>3.28 + 0.362/2</calc>= 3.461\n5. Area of the gate: <calc>2.385 * 0.362</calc>= 0.86337\n6. Resultant force F = rho g h_c A: <calc>813.9 * 9.80665 * 3.461 * 0.86337</calc>= 23850.1\n{\"answer\": 23850.1}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Gate width: <convert>value=238.5; from=cm; to=m</convert>"
+      },
+      {
+       "at": 68,
+       "text": "2. Gate height: <convert>value=36.2; from=cm; to=m</convert>"
+      },
+      {
+       "at": 136,
+       "text": "3. Density of the fluid: <lookup>fluid=WJ-86; property=density; T=40</lookup>"
+      },
+      {
+       "at": 221,
+       "text": "4. Depth of the centroid: <calc>3.28 + 0.362/2</calc>"
+      },
+      {
+       "at": 282,
+       "text": "5. Area of the gate: <calc>2.385 * 0.362</calc>"
+      },
+      {
+       "at": 339,
+       "text": "6. Resultant force F = rho g h_c A: <calc>813.9 * 9.80665 * 3.461 * 0.86337</calc>"
+      },
+      {
+       "at": 431,
+       "text": "{\"answer\": 23850.1}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 23850.1,
+     "ran_out": false
+    },
+    "mt-0049": {
+     "id": "mt-0049",
+     "human": true,
+     "truth": 3.9486478007179153,
+     "correct": true,
+     "family": "manning_channel",
+     "depth": 6,
+     "prompt_sha": "554e85fbe7f22647",
+     "text": "1. Channel width: <convert>value=2658.8; from=mm; to=m</convert>= 2.6588\n2. Flow depth: <convert>value=694.9; from=mm; to=m</convert>= 0.6949\n3. Flow area: <calc>2.6588 * 0.6949</calc>= 1.8476\n4. Wetted perimeter: <calc>2.6588 + 2*0.6949</calc>= 4.0486\n5. Hydraulic radius R = A/P: <calc>1.8476 / 4.0486</calc>= 0.456355\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.03) * 1.8476 * 0.456355**(2/3) * sqrt(0.0117)</calc>= 3.94865\n{\"answer\": 3.94865}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Channel width: <convert>value=2658.8; from=mm; to=m</convert>"
+      },
+      {
+       "at": 73,
+       "text": "2. Flow depth: <convert>value=694.9; from=mm; to=m</convert>"
+      },
+      {
+       "at": 142,
+       "text": "3. Flow area: <calc>2.6588 * 0.6949</calc>"
+      },
+      {
+       "at": 193,
+       "text": "4. Wetted perimeter: <calc>2.6588 + 2*0.6949</calc>"
+      },
+      {
+       "at": 253,
+       "text": "5. Hydraulic radius R = A/P: <calc>1.8476 / 4.0486</calc>"
+      },
+      {
+       "at": 321,
+       "text": "6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.03) * 1.8476 * 0.456355**(2/3) * sqrt(0.0117)</calc>"
+      },
+      {
+       "at": 436,
+       "text": "{\"answer\": 3.94865}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 3.94865,
+     "ran_out": false
+    },
+    "mt-0047": {
+     "id": "mt-0047",
+     "human": true,
+     "truth": 0.18930982499282262,
+     "correct": true,
+     "family": "venturi_flow",
+     "depth": 7,
+     "prompt_sha": "013640bde5175f67",
+     "text": "1. Inlet diameter: <convert>value=336.1; from=mm; to=m</convert>= 0.3361\n2. Throat diameter: <convert>value=164.9; from=mm; to=m</convert>= 0.1649\n3. Pressure drop: <convert>value=384.1; from=mbar; to=Pa</convert>= 38410\n4. Density of the fluid: <lookup>fluid=SR-76; property=density; T=60</lookup>= 1037.8\n5. Inlet area: <calc>pi/4 * 0.3361**2</calc>= 0.0887211\n6. Throat area: <calc>pi/4 * 0.1649**2</calc>= 0.0213566\n7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.0213566 * sqrt(2*38410 / (1037.8 * (1 - (0.0213566/0.0887211)**2)))</calc>= 0.18931\n{\"answer\": 0.18931}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Inlet diameter: <convert>value=336.1; from=mm; to=m</convert>"
+      },
+      {
+       "at": 73,
+       "text": "2. Throat diameter: <convert>value=164.9; from=mm; to=m</convert>"
+      },
+      {
+       "at": 147,
+       "text": "3. Pressure drop: <convert>value=384.1; from=mbar; to=Pa</convert>"
+      },
+      {
+       "at": 221,
+       "text": "4. Density of the fluid: <lookup>fluid=SR-76; property=density; T=60</lookup>"
+      },
+      {
+       "at": 307,
+       "text": "5. Inlet area: <calc>pi/4 * 0.3361**2</calc>"
+      },
+      {
+       "at": 363,
+       "text": "6. Throat area: <calc>pi/4 * 0.1649**2</calc>"
+      },
+      {
+       "at": 420,
+       "text": "7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.0213566 * sqrt(2*38410 / (1037.8 * (1 - (0.0213566/0.0887211)**2)))</calc>"
+      },
+      {
+       "at": 563,
+       "text": "{\"answer\": 0.18931}"
+      }
+     ],
+     "calls": 7,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.18931,
+     "ran_out": false
+    },
+    "mt-0046": {
+     "id": "mt-0046",
+     "human": true,
+     "truth": 0.04156804226421371,
+     "correct": true,
+     "family": "pipe_head_loss",
+     "depth": 9,
+     "prompt_sha": "a95dec8663fc6b13",
+     "text": "1. Flow rate: <convert>value=7.6; from=L/s; to=m^3/s</convert>= 0.0076\n2. Pipe diameter: <convert>value=26.3; from=cm; to=m</convert>= 0.263\n3. Density of the fluid: <lookup>fluid=WR-79; property=density; T=10</lookup>= 1372.7\n4. Dynamic viscosity: <lookup>fluid=WR-79; property=viscosity; T=10</lookup>= 0.0278\n5. Cross-sectional area: <calc>pi/4 * 0.263**2</calc>= 0.0543252\n6. Velocity v = Q/A: <calc>0.0076 / 0.0543252</calc>= 0.139898\n7. Reynolds number: <calc>1372.7 * 0.139898 * 0.263 / 0.0278</calc>= 1816.76\n8. Friction factor: <calc>64 / 1816.76</calc>= 0.0352275\n9. Head loss h = f (L/D) v^2 / (2g): <calc>0.0352275 * (311.0/0.263) * 0.139898**2 / (2*9.80665)</calc>= 0.041568\n{\"answer\": 0.041568}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Flow rate: <convert>value=7.6; from=L/s; to=m^3/s</convert>"
+      },
+      {
+       "at": 71,
+       "text": "2. Pipe diameter: <convert>value=26.3; from=cm; to=m</convert>"
+      },
+      {
+       "at": 141,
+       "text": "3. Density of the fluid: <lookup>fluid=WR-79; property=density; T=10</lookup>"
+      },
+      {
+       "at": 227,
+       "text": "4. Dynamic viscosity: <lookup>fluid=WR-79; property=viscosity; T=10</lookup>"
+      },
+      {
+       "at": 312,
+       "text": "5. Cross-sectional area: <calc>pi/4 * 0.263**2</calc>"
+      },
+      {
+       "at": 377,
+       "text": "6. Velocity v = Q/A: <calc>0.0076 / 0.0543252</calc>"
+      },
+      {
+       "at": 440,
+       "text": "7. Reynolds number: <calc>1372.7 * 0.139898 * 0.263 / 0.0278</calc>"
+      },
+      {
+       "at": 517,
+       "text": "8. Friction factor: <calc>64 / 1816.76</calc>"
+      },
+      {
+       "at": 574,
+       "text": "9. Head loss h = f (L/D) v^2 / (2g): <calc>0.0352275 * (311.0/0.263) * 0.139898**2 / (2*9.80665)</calc>"
+      },
+      {
+       "at": 688,
+       "text": "{\"answer\": 0.041568}"
+      }
+     ],
+     "calls": 9,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.041568,
+     "ran_out": false
+    },
+    "mt-0052": {
+     "id": "mt-0052",
+     "human": true,
+     "truth": 14190.604470725631,
+     "correct": true,
+     "family": "hydrostatic_force",
+     "depth": 6,
+     "prompt_sha": "1f9b3c62f2e359e2",
+     "text": "1. Gate width: <convert>value=31.8; from=cm; to=m</convert>= 0.318\n2. Gate height: <convert>value=162.6; from=cm; to=m</convert>= 1.626\n3. Density of the fluid: <lookup>fluid=TQ-31; property=density; T=80</lookup>= 798.9\n4. Depth of the centroid: <calc>2.69 + 1.626/2</calc>= 3.503\n5. Area of the gate: <calc>0.318 * 1.626</calc>= 0.517068\n6. Resultant force F = rho g h_c A: <calc>798.9 * 9.80665 * 3.503 * 0.517068</calc>= 14190.6\n{\"answer\": 14190.6}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Gate width: <convert>value=31.8; from=cm; to=m</convert>"
+      },
+      {
+       "at": 67,
+       "text": "2. Gate height: <convert>value=162.6; from=cm; to=m</convert>"
+      },
+      {
+       "at": 136,
+       "text": "3. Density of the fluid: <lookup>fluid=TQ-31; property=density; T=80</lookup>"
+      },
+      {
+       "at": 221,
+       "text": "4. Depth of the centroid: <calc>2.69 + 1.626/2</calc>"
+      },
+      {
+       "at": 282,
+       "text": "5. Area of the gate: <calc>0.318 * 1.626</calc>"
+      },
+      {
+       "at": 340,
+       "text": "6. Resultant force F = rho g h_c A: <calc>798.9 * 9.80665 * 3.503 * 0.517068</calc>"
+      },
+      {
+       "at": 433,
+       "text": "{\"answer\": 14190.6}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 14190.6,
+     "ran_out": false
+    },
+    "mt-0051": {
+     "id": "mt-0051",
+     "human": true,
+     "truth": 0.10079413841402743,
+     "correct": true,
+     "family": "venturi_flow",
+     "depth": 7,
+     "prompt_sha": "2d151ec02622259e",
+     "text": "1. Inlet diameter: <convert>value=289.4; from=mm; to=m</convert>= 0.2894\n2. Throat diameter: <convert>value=121.9; from=mm; to=m</convert>= 0.1219\n3. Pressure drop: <convert>value=29.59; from=kPa; to=Pa</convert>= 29590\n4. Density of the fluid: <lookup>fluid=WP-6; property=density; T=80</lookup>= 819.2\n5. Inlet area: <calc>pi/4 * 0.2894**2</calc>= 0.0657789\n6. Throat area: <calc>pi/4 * 0.1219**2</calc>= 0.0116707\n7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.0116707 * sqrt(2*29590 / (819.2 * (1 - (0.0116707/0.0657789)**2)))</calc>= 0.100794\n{\"answer\": 0.100794}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Inlet diameter: <convert>value=289.4; from=mm; to=m</convert>"
+      },
+      {
+       "at": 73,
+       "text": "2. Throat diameter: <convert>value=121.9; from=mm; to=m</convert>"
+      },
+      {
+       "at": 147,
+       "text": "3. Pressure drop: <convert>value=29.59; from=kPa; to=Pa</convert>"
+      },
+      {
+       "at": 220,
+       "text": "4. Density of the fluid: <lookup>fluid=WP-6; property=density; T=80</lookup>"
+      },
+      {
+       "at": 304,
+       "text": "5. Inlet area: <calc>pi/4 * 0.2894**2</calc>"
+      },
+      {
+       "at": 360,
+       "text": "6. Throat area: <calc>pi/4 * 0.1219**2</calc>"
+      },
+      {
+       "at": 417,
+       "text": "7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.0116707 * sqrt(2*29590 / (819.2 * (1 - (0.0116707/0.0657789)**2)))</calc>"
+      },
+      {
+       "at": 560,
+       "text": "{\"answer\": 0.100794}"
+      }
+     ],
+     "calls": 7,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.100794,
+     "ran_out": false
+    },
+    "mt-0053": {
+     "id": "mt-0053",
+     "human": true,
+     "truth": 0.24440415069488564,
+     "correct": true,
+     "family": "manning_channel",
+     "depth": 6,
+     "prompt_sha": "2a318e1ea8d8d7e5",
+     "text": "1. Channel width: <convert>value=2200.6; from=mm; to=m</convert>= 2.2006\n2. Flow depth: <convert>value=350.8; from=mm; to=m</convert>= 0.3508\n3. Flow area: <calc>2.2006 * 0.3508</calc>= 0.77197\n4. Wetted perimeter: <calc>2.2006 + 2*0.3508</calc>= 2.9022\n5. Hydraulic radius R = A/P: <calc>0.77197 / 2.9022</calc>= 0.265995\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.032) * 0.77197 * 0.265995**(2/3) * sqrt(0.0006)</calc>= 0.244404\n7. Answer: {\"answer\": 0.244404}\n\n{\"answer\": 0.244404}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Channel width: <convert>value=2200.6; from=mm; to=m</convert>"
+      },
+      {
+       "at": 73,
+       "text": "2. Flow depth: <convert>value=350.8; from=mm; to=m</convert>"
+      },
+      {
+       "at": 142,
+       "text": "3. Flow area: <calc>2.2006 * 0.3508</calc>"
+      },
+      {
+       "at": 194,
+       "text": "4. Wetted perimeter: <calc>2.2006 + 2*0.3508</calc>"
+      },
+      {
+       "at": 254,
+       "text": "5. Hydraulic radius R = A/P: <calc>0.77197 / 2.9022</calc>"
+      },
+      {
+       "at": 323,
+       "text": "6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.032) * 0.77197 * 0.265995**(2/3) * sqrt(0.0006)</calc>"
+      },
+      {
+       "at": 441,
+       "text": "7. Answer: {\"answer\": 0.244404}\n\n{\"answer\": 0.244404}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.244404,
+     "ran_out": false
+    },
+    "mt-0050": {
+     "id": "mt-0050",
+     "human": true,
+     "truth": 0.10462697582511878,
+     "correct": true,
+     "family": "pipe_head_loss",
+     "depth": 9,
+     "prompt_sha": "6015ba27a77ea489",
+     "text": "1. Flow rate: <convert>value=61.3; from=m^3/h; to=m^3/s</convert>= 0.0170278\n2. Pipe diameter: <convert>value=365.6; from=mm; to=m</convert>= 0.3656\n3. Density of the fluid: <lookup>fluid=CE-60; property=density; T=20</lookup>= 1084\n4. Dynamic viscosity: <lookup>fluid=CE-60; property=viscosity; T=20</lookup>= 0.554\n5. Cross-sectional area: <calc>pi/4 * 0.3656**2</calc>= 0.104979\n6. Velocity v = Q/A: <calc>0.0170278 / 0.104979</calc>= 0.162202\n7. Reynolds number: <calc>1084.0 * 0.162202 * 0.3656 / 0.554</calc>= 116.033\n8. Friction factor: <calc>64 / 116.033</calc>= 0.551567\n9. Head loss h = f (L/D) v^2 / (2g): <calc>0.551567 * (51.7/0.3656) * 0.162202**2 / (2*9.80665)</calc>= 0.104627\n{\"answer\": 0.104627}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Flow rate: <convert>value=61.3; from=m^3/h; to=m^3/s</convert>"
+      },
+      {
+       "at": 77,
+       "text": "2. Pipe diameter: <convert>value=365.6; from=mm; to=m</convert>"
+      },
+      {
+       "at": 149,
+       "text": "3. Density of the fluid: <lookup>fluid=CE-60; property=density; T=20</lookup>"
+      },
+      {
+       "at": 233,
+       "text": "4. Dynamic viscosity: <lookup>fluid=CE-60; property=viscosity; T=20</lookup>"
+      },
+      {
+       "at": 317,
+       "text": "5. Cross-sectional area: <calc>pi/4 * 0.3656**2</calc>"
+      },
+      {
+       "at": 382,
+       "text": "6. Velocity v = Q/A: <calc>0.0170278 / 0.104979</calc>"
+      },
+      {
+       "at": 447,
+       "text": "7. Reynolds number: <calc>1084.0 * 0.162202 * 0.3656 / 0.554</calc>"
+      },
+      {
+       "at": 524,
+       "text": "8. Friction factor: <calc>64 / 116.033</calc>"
+      },
+      {
+       "at": 580,
+       "text": "9. Head loss h = f (L/D) v^2 / (2g): <calc>0.551567 * (51.7/0.3656) * 0.162202**2 / (2*9.80665)</calc>"
+      },
+      {
+       "at": 693,
+       "text": "{\"answer\": 0.104627}"
+      }
+     ],
+     "calls": 9,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.104627,
+     "ran_out": false
+    },
+    "mt-0056": {
+     "id": "mt-0056",
+     "human": true,
+     "truth": 14183.025985933838,
+     "correct": true,
+     "family": "hydrostatic_force",
+     "depth": 6,
+     "prompt_sha": "0c6a685fe32b86b6",
+     "text": "1. Gate width: <convert>value=189.8; from=cm; to=m</convert>= 1.898\n2. Gate height: <convert>value=79.4; from=cm; to=m</convert>= 0.794\n3. Density of the fluid: <lookup>fluid=JY-59; property=density; T=80</lookup>= 769.6\n4. Depth of the centroid: <calc>0.85 + 0.794/2</calc>= 1.247\n5. Area of the gate: <calc>1.898 * 0.794</calc>= 1.50701\n6. Resultant force F = rho g h_c A: <calc>769.6 * 9.80665 * 1.247 * 1.50701</calc>= 14183\n{\"answer\": 14183}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Gate width: <convert>value=189.8; from=cm; to=m</convert>"
+      },
+      {
+       "at": 68,
+       "text": "2. Gate height: <convert>value=79.4; from=cm; to=m</convert>"
+      },
+      {
+       "at": 136,
+       "text": "3. Density of the fluid: <lookup>fluid=JY-59; property=density; T=80</lookup>"
+      },
+      {
+       "at": 221,
+       "text": "4. Depth of the centroid: <calc>0.85 + 0.794/2</calc>"
+      },
+      {
+       "at": 282,
+       "text": "5. Area of the gate: <calc>1.898 * 0.794</calc>"
+      },
+      {
+       "at": 339,
+       "text": "6. Resultant force F = rho g h_c A: <calc>769.6 * 9.80665 * 1.247 * 1.50701</calc>"
+      },
+      {
+       "at": 429,
+       "text": "{\"answer\": 14183}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 14183.0,
+     "ran_out": false
+    },
+    "mt-0055": {
+     "id": "mt-0055",
+     "human": true,
+     "truth": 0.06270183546731734,
+     "correct": true,
+     "family": "venturi_flow",
+     "depth": 7,
+     "prompt_sha": "40ce59ca03a83c08",
+     "text": "1. Inlet diameter: <convert>value=181.7; from=mm; to=m</convert>= 0.1817\n2. Throat diameter: <convert>value=81.2; from=mm; to=m</convert>= 0.0812\n3. Pressure drop: <convert>value=640.6; from=mbar; to=Pa</convert>= 64060\n4. Density of the fluid: <lookup>fluid=XV-5; property=density; T=80</lookup>= 910.2\n5. Inlet area: <calc>pi/4 * 0.1817**2</calc>= 0.0259298\n6. Throat area: <calc>pi/4 * 0.0812**2</calc>= 0.00517848\n7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00517848 * sqrt(2*64060 / (910.2 * (1 - (0.00517848/0.0259298)**2)))</calc>= 0.0627019\n{\"answer\": 0.0627019}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Inlet diameter: <convert>value=181.7; from=mm; to=m</convert>"
+      },
+      {
+       "at": 73,
+       "text": "2. Throat diameter: <convert>value=81.2; from=mm; to=m</convert>"
+      },
+      {
+       "at": 146,
+       "text": "3. Pressure drop: <convert>value=640.6; from=mbar; to=Pa</convert>"
+      },
+      {
+       "at": 220,
+       "text": "4. Density of the fluid: <lookup>fluid=XV-5; property=density; T=80</lookup>"
+      },
+      {
+       "at": 304,
+       "text": "5. Inlet area: <calc>pi/4 * 0.1817**2</calc>"
+      },
+      {
+       "at": 360,
+       "text": "6. Throat area: <calc>pi/4 * 0.0812**2</calc>"
+      },
+      {
+       "at": 418,
+       "text": "7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00517848 * sqrt(2*64060 / (910.2 * (1 - (0.00517848/0.0259298)**2)))</calc>"
+      },
+      {
+       "at": 564,
+       "text": "{\"answer\": 0.0627019}"
+      }
+     ],
+     "calls": 7,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.0627019,
+     "ran_out": false
+    },
+    "mt-0057": {
+     "id": "mt-0057",
+     "human": true,
+     "truth": 9.53434915470272,
+     "correct": true,
+     "family": "manning_channel",
+     "depth": 6,
+     "prompt_sha": "0bb89eaaee911be7",
+     "text": "1. Channel width: <convert>value=374.7; from=cm; to=m</convert>= 3.747\n2. Flow depth: <convert>value=118.4; from=cm; to=m</convert>= 1.184\n3. Flow area: <calc>3.747 * 1.184</calc>= 4.43645\n4. Wetted perimeter: <calc>3.747 + 2*1.184</calc>= 6.115\n5. Hydraulic radius R = A/P: <calc>4.43645 / 6.115</calc>= 0.725503\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.034) * 4.43645 * 0.725503**(2/3) * sqrt(0.00819)</calc>= 9.53436\n{\"answer\": 9.53436}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Channel width: <convert>value=374.7; from=cm; to=m</convert>"
+      },
+      {
+       "at": 71,
+       "text": "2. Flow depth: <convert>value=118.4; from=cm; to=m</convert>"
+      },
+      {
+       "at": 139,
+       "text": "3. Flow area: <calc>3.747 * 1.184</calc>"
+      },
+      {
+       "at": 189,
+       "text": "4. Wetted perimeter: <calc>3.747 + 2*1.184</calc>"
+      },
+      {
+       "at": 246,
+       "text": "5. Hydraulic radius R = A/P: <calc>4.43645 / 6.115</calc>"
+      },
+      {
+       "at": 314,
+       "text": "6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.034) * 4.43645 * 0.725503**(2/3) * sqrt(0.00819)</calc>"
+      },
+      {
+       "at": 432,
+       "text": "{\"answer\": 9.53436}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 9.53436,
+     "ran_out": false
+    },
+    "mt-0054": {
+     "id": "mt-0054",
+     "human": true,
+     "truth": 0.8398262030710436,
+     "correct": true,
+     "family": "pipe_head_loss",
+     "depth": 9,
+     "prompt_sha": "592a6685dd047746",
+     "text": "1. Flow rate: <convert>value=11.5; from=L/min; to=m^3/s</convert>= 0.000191667\n2. Pipe diameter: <convert>value=9.6; from=cm; to=m</convert>= 0.096\n3. Density of the fluid: <lookup>fluid=FF-43; property=density; T=25</lookup>= 930.1\n4. Dynamic viscosity: <lookup>fluid=FF-43; property=viscosity; T=25</lookup>= 1.54\n5. Cross-sectional area: <calc>pi/4 * 0.096**2</calc>= 0.00723823\n6. Velocity v = Q/A: <calc>0.000191667 / 0.00723823</calc>= 0.0264798\n7. Reynolds number: <calc>930.1 * 0.0264798 * 0.096 / 1.54</calc>= 1.53531\n8. Friction factor: <calc>64 / 1.53531</calc>= 41.6854\n9. Head loss h = f (L/D) v^2 / (2g): <calc>41.6854 * (54.1/0.096) * 0.0264798**2 / (2*9.80665)</calc>= 0.839825\n{\"answer\": 0.839825}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Flow rate: <convert>value=11.5; from=L/min; to=m^3/s</convert>"
+      },
+      {
+       "at": 79,
+       "text": "2. Pipe diameter: <convert>value=9.6; from=cm; to=m</convert>"
+      },
+      {
+       "at": 148,
+       "text": "3. Density of the fluid: <lookup>fluid=FF-43; property=density; T=25</lookup>"
+      },
+      {
+       "at": 233,
+       "text": "4. Dynamic viscosity: <lookup>fluid=FF-43; property=viscosity; T=25</lookup>"
+      },
+      {
+       "at": 316,
+       "text": "5. Cross-sectional area: <calc>pi/4 * 0.096**2</calc>"
+      },
+      {
+       "at": 382,
+       "text": "6. Velocity v = Q/A: <calc>0.000191667 / 0.00723823</calc>"
+      },
+      {
+       "at": 452,
+       "text": "7. Reynolds number: <calc>930.1 * 0.0264798 * 0.096 / 1.54</calc>"
+      },
+      {
+       "at": 527,
+       "text": "8. Friction factor: <calc>64 / 1.53531</calc>"
+      },
+      {
+       "at": 582,
+       "text": "9. Head loss h = f (L/D) v^2 / (2g): <calc>41.6854 * (54.1/0.096) * 0.0264798**2 / (2*9.80665)</calc>"
+      },
+      {
+       "at": 694,
+       "text": "{\"answer\": 0.839825}"
+      }
+     ],
+     "calls": 9,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.839825,
+     "ran_out": false
+    },
+    "mt-0060": {
+     "id": "mt-0060",
+     "human": true,
+     "truth": 94677.12121293464,
+     "correct": true,
+     "family": "hydrostatic_force",
+     "depth": 6,
+     "prompt_sha": "04186f1e02ef39c5",
+     "text": "1. Gate width: <convert>value=235.9; from=cm; to=m</convert>= 2.359\n2. Gate height: <convert>value=160.7; from=cm; to=m</convert>= 1.607\n3. Density of the fluid: <lookup>fluid=TN-9; property=density; T=10</lookup>= 1009.2\n4. Depth of the centroid: <calc>1.72 + 1.607/2</calc>= 2.5235\n5. Area of the gate: <calc>2.359 * 1.607</calc>= 3.79091\n6. Resultant force F = rho g h_c A: <calc>1009.2 * 9.80665 * 2.5235 * 3.79091</calc>= 94677\n{\"answer\": 94677}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Gate width: <convert>value=235.9; from=cm; to=m</convert>"
+      },
+      {
+       "at": 68,
+       "text": "2. Gate height: <convert>value=160.7; from=cm; to=m</convert>"
+      },
+      {
+       "at": 137,
+       "text": "3. Density of the fluid: <lookup>fluid=TN-9; property=density; T=10</lookup>"
+      },
+      {
+       "at": 222,
+       "text": "4. Depth of the centroid: <calc>1.72 + 1.607/2</calc>"
+      },
+      {
+       "at": 284,
+       "text": "5. Area of the gate: <calc>2.359 * 1.607</calc>"
+      },
+      {
+       "at": 341,
+       "text": "6. Resultant force F = rho g h_c A: <calc>1009.2 * 9.80665 * 2.5235 * 3.79091</calc>"
+      },
+      {
+       "at": 433,
+       "text": "{\"answer\": 94677}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 94677.0,
+     "ran_out": false
+    },
+    "mt-0061": {
+     "id": "mt-0061",
+     "human": true,
+     "truth": 6.343922527284604,
+     "correct": true,
+     "family": "manning_channel",
+     "depth": 6,
+     "prompt_sha": "af12f41c3d0fc43b",
+     "text": "1. Channel width: <convert>value=260.5; from=cm; to=m</convert>= 2.605\n2. Flow depth: <convert>value=83.3; from=cm; to=m</convert>= 0.833\n3. Flow area: <calc>2.605 * 0.833</calc>= 2.16996\n4. Wetted perimeter: <calc>2.605 + 2*0.833</calc>= 4.271\n5. Hydraulic radius R = A/P: <calc>2.16996 / 4.271</calc>= 0.508068\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.029) * 2.16996 * 0.508068**(2/3) * sqrt(0.01773)</calc>= 6.3439\n{\"answer\": 6.3439}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Channel width: <convert>value=260.5; from=cm; to=m</convert>"
+      },
+      {
+       "at": 71,
+       "text": "2. Flow depth: <convert>value=83.3; from=cm; to=m</convert>"
+      },
+      {
+       "at": 138,
+       "text": "3. Flow area: <calc>2.605 * 0.833</calc>"
+      },
+      {
+       "at": 188,
+       "text": "4. Wetted perimeter: <calc>2.605 + 2*0.833</calc>"
+      },
+      {
+       "at": 245,
+       "text": "5. Hydraulic radius R = A/P: <calc>2.16996 / 4.271</calc>"
+      },
+      {
+       "at": 313,
+       "text": "6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.029) * 2.16996 * 0.508068**(2/3) * sqrt(0.01773)</calc>"
+      },
+      {
+       "at": 430,
+       "text": "{\"answer\": 6.3439}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 6.3439,
+     "ran_out": false
+    },
+    "mt-0058": {
+     "id": "mt-0058",
+     "human": true,
+     "truth": 0.1511782773674475,
+     "correct": true,
+     "family": "pipe_head_loss",
+     "depth": 9,
+     "prompt_sha": "9d5667d48332dbd7",
+     "text": "1. Flow rate: <convert>value=44.4; from=L/min; to=m^3/s</convert>= 0.00074\n2. Pipe diameter: <convert>value=31.9; from=cm; to=m</convert>= 0.319\n3. Density of the fluid: <lookup>fluid=SK-96; property=density; T=60</lookup>= 879.2\n4. Dynamic viscosity: <lookup>fluid=SK-96; property=viscosity; T=60</lookup>= 1.69\n5. Cross-sectional area: <calc>pi/4 * 0.319**2</calc>= 0.0799229\n6. Velocity v = Q/A: <calc>0.00074 / 0.0799229</calc>= 0.00925892\n7. Reynolds number: <calc>879.2 * 0.00925892 * 0.319 / 1.69</calc>= 1.53657\n8. Friction factor: <calc>64 / 1.53657</calc>= 41.6512\n9. Head loss h = f (L/D) v^2 / (2g): <calc>41.6512 * (264.9/0.319) * 0.00925892**2 / (2*9.80665)</calc>= 0.151178\n{\"answer\": 0.151178}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Flow rate: <convert>value=44.4; from=L/min; to=m^3/s</convert>"
+      },
+      {
+       "at": 75,
+       "text": "2. Pipe diameter: <convert>value=31.9; from=cm; to=m</convert>"
+      },
+      {
+       "at": 145,
+       "text": "3. Density of the fluid: <lookup>fluid=SK-96; property=density; T=60</lookup>"
+      },
+      {
+       "at": 230,
+       "text": "4. Dynamic viscosity: <lookup>fluid=SK-96; property=viscosity; T=60</lookup>"
+      },
+      {
+       "at": 313,
+       "text": "5. Cross-sectional area: <calc>pi/4 * 0.319**2</calc>"
+      },
+      {
+       "at": 378,
+       "text": "6. Velocity v = Q/A: <calc>0.00074 / 0.0799229</calc>"
+      },
+      {
+       "at": 444,
+       "text": "7. Reynolds number: <calc>879.2 * 0.00925892 * 0.319 / 1.69</calc>"
+      },
+      {
+       "at": 520,
+       "text": "8. Friction factor: <calc>64 / 1.53657</calc>"
+      },
+      {
+       "at": 575,
+       "text": "9. Head loss h = f (L/D) v^2 / (2g): <calc>41.6512 * (264.9/0.319) * 0.00925892**2 / (2*9.80665)</calc>"
+      },
+      {
+       "at": 689,
+       "text": "{\"answer\": 0.151178}"
+      }
+     ],
+     "calls": 9,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.151178,
+     "ran_out": false
+    },
+    "mt-0059": {
+     "id": "mt-0059",
+     "human": true,
+     "truth": 0.01819981748647803,
+     "correct": true,
+     "family": "venturi_flow",
+     "depth": 7,
+     "prompt_sha": "24caeec038875c05",
+     "text": "1. Inlet diameter: <convert>value=113.4; from=mm; to=m</convert>= 0.1134\n2. Throat diameter: <convert>value=47.0; from=mm; to=m</convert>= 0.047\n3. Pressure drop: <convert>value=688.3; from=mbar; to=Pa</convert>= 68830\n4. Density of the fluid: <lookup>fluid=MA-48; property=density; T=20</lookup>= 1289\n5. Inlet area: <calc>pi/4 * 0.1134**2</calc>= 0.0100999\n6. Throat area: <calc>pi/4 * 0.047**2</calc>= 0.00173494\n7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00173494 * sqrt(2*68830 / (1289.0 * (1 - (0.00173494/0.0100999)**2)))</calc>= 0.0181998\n{\"answer\": 0.0181998}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Inlet diameter: <convert>value=113.4; from=mm; to=m</convert>"
+      },
+      {
+       "at": 73,
+       "text": "2. Throat diameter: <convert>value=47.0; from=mm; to=m</convert>"
+      },
+      {
+       "at": 145,
+       "text": "3. Pressure drop: <convert>value=688.3; from=mbar; to=Pa</convert>"
+      },
+      {
+       "at": 219,
+       "text": "4. Density of the fluid: <lookup>fluid=MA-48; property=density; T=20</lookup>"
+      },
+      {
+       "at": 303,
+       "text": "5. Inlet area: <calc>pi/4 * 0.1134**2</calc>"
+      },
+      {
+       "at": 359,
+       "text": "6. Throat area: <calc>pi/4 * 0.047**2</calc>"
+      },
+      {
+       "at": 416,
+       "text": "7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00173494 * sqrt(2*68830 / (1289.0 * (1 - (0.00173494/0.0100999)**2)))</calc>"
+      },
+      {
+       "at": 563,
+       "text": "{\"answer\": 0.0181998}"
+      }
+     ],
+     "calls": 7,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.0181998,
+     "ran_out": false
+    },
+    "mt-0064": {
+     "id": "mt-0064",
+     "human": true,
+     "truth": 4757.7900804933,
+     "correct": true,
+     "family": "hydrostatic_force",
+     "depth": 6,
+     "prompt_sha": "79d494d9e3dc8dad",
+     "text": "1. Gate width: <convert>value=1352.8; from=mm; to=m</convert>= 1.3528\n2. Gate height: <convert>value=415.1; from=mm; to=m</convert>= 0.4151\n3. Density of the fluid: <lookup>fluid=ZL-72; property=density; T=25</lookup>= 759.5\n4. Depth of the centroid: <calc>0.93 + 0.4151/2</calc>= 1.13755\n5. Area of the gate: <calc>1.3528 * 0.4151</calc>= 0.561547\n6. Resultant force F = rho g h_c A: <calc>759.5 * 9.80665 * 1.13755 * 0.561547</calc>= 4757.79\n{\"answer\": 4757.79}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Gate width: <convert>value=1352.8; from=mm; to=m</convert>"
+      },
+      {
+       "at": 70,
+       "text": "2. Gate height: <convert>value=415.1; from=mm; to=m</convert>"
+      },
+      {
+       "at": 140,
+       "text": "3. Density of the fluid: <lookup>fluid=ZL-72; property=density; T=25</lookup>"
+      },
+      {
+       "at": 225,
+       "text": "4. Depth of the centroid: <calc>0.93 + 0.4151/2</calc>"
+      },
+      {
+       "at": 289,
+       "text": "5. Area of the gate: <calc>1.3528 * 0.4151</calc>"
+      },
+      {
+       "at": 349,
+       "text": "6. Resultant force F = rho g h_c A: <calc>759.5 * 9.80665 * 1.13755 * 0.561547</calc>"
+      },
+      {
+       "at": 444,
+       "text": "{\"answer\": 4757.79}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 4757.79,
+     "ran_out": false
+    },
+    "mt-0065": {
+     "id": "mt-0065",
+     "human": true,
+     "truth": 0.36905621867889016,
+     "correct": true,
+     "family": "manning_channel",
+     "depth": 6,
+     "prompt_sha": "fb56cc9f93dd2766",
+     "text": "1. Channel width: <convert>value=206.6; from=cm; to=m</convert>= 2.066\n2. Flow depth: <convert>value=27.1; from=cm; to=m</convert>= 0.271\n3. Flow area: <calc>2.066 * 0.271</calc>= 0.559886\n4. Wetted perimeter: <calc>2.066 + 2*0.271</calc>= 2.608\n5. Hydraulic radius R = A/P: <calc>0.559886 / 2.608</calc>= 0.21468\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.028) * 0.559886 * 0.21468**(2/3) * sqrt(0.00265)</calc>= 0.369056\n{\"answer\": 0.369056}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Channel width: <convert>value=206.6; from=cm; to=m</convert>"
+      },
+      {
+       "at": 71,
+       "text": "2. Flow depth: <convert>value=27.1; from=cm; to=m</convert>"
+      },
+      {
+       "at": 138,
+       "text": "3. Flow area: <calc>2.066 * 0.271</calc>"
+      },
+      {
+       "at": 189,
+       "text": "4. Wetted perimeter: <calc>2.066 + 2*0.271</calc>"
+      },
+      {
+       "at": 246,
+       "text": "5. Hydraulic radius R = A/P: <calc>0.559886 / 2.608</calc>"
+      },
+      {
+       "at": 314,
+       "text": "6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.028) * 0.559886 * 0.21468**(2/3) * sqrt(0.00265)</calc>"
+      },
+      {
+       "at": 433,
+       "text": "{\"answer\": 0.369056}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.369056,
+     "ran_out": false
+    },
+    "mt-0063": {
+     "id": "mt-0063",
+     "human": true,
+     "truth": 0.08341290761253367,
+     "correct": true,
+     "family": "venturi_flow",
+     "depth": 7,
+     "prompt_sha": "0fa619a3a9e59066",
+     "text": "1. Inlet diameter: <convert>value=22.2; from=cm; to=m</convert>= 0.222\n2. Throat diameter: <convert>value=9.1; from=cm; to=m</convert>= 0.091\n3. Pressure drop: <convert>value=59.66; from=kPa; to=Pa</convert>= 59660\n4. Density of the fluid: <lookup>fluid=HH-36; property=density; T=10</lookup>= 746.5\n5. Inlet area: <calc>pi/4 * 0.222**2</calc>= 0.0387076\n6. Throat area: <calc>pi/4 * 0.091**2</calc>= 0.00650388\n7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00650388 * sqrt(2*59660 / (746.5 * (1 - (0.00650388/0.0387076)**2)))</calc>= 0.0834129\n{\"answer\": 0.0834129}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Inlet diameter: <convert>value=22.2; from=cm; to=m</convert>"
+      },
+      {
+       "at": 71,
+       "text": "2. Throat diameter: <convert>value=9.1; from=cm; to=m</convert>"
+      },
+      {
+       "at": 142,
+       "text": "3. Pressure drop: <convert>value=59.66; from=kPa; to=Pa</convert>"
+      },
+      {
+       "at": 215,
+       "text": "4. Density of the fluid: <lookup>fluid=HH-36; property=density; T=10</lookup>"
+      },
+      {
+       "at": 300,
+       "text": "5. Inlet area: <calc>pi/4 * 0.222**2</calc>"
+      },
+      {
+       "at": 355,
+       "text": "6. Throat area: <calc>pi/4 * 0.091**2</calc>"
+      },
+      {
+       "at": 412,
+       "text": "7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00650388 * sqrt(2*59660 / (746.5 * (1 - (0.00650388/0.0387076)**2)))</calc>"
+      },
+      {
+       "at": 558,
+       "text": "{\"answer\": 0.0834129}"
+      }
+     ],
+     "calls": 7,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.0834129,
+     "ran_out": false
+    },
+    "mt-0062": {
+     "id": "mt-0062",
+     "human": true,
+     "truth": 0.9838392442420584,
+     "correct": true,
+     "family": "pipe_head_loss",
+     "depth": 9,
+     "prompt_sha": "982b9ad19fb4d082",
+     "text": "1. Flow rate: <convert>value=24.8; from=L/min; to=m^3/s</convert>= 0.000413333\n2. Pipe diameter: <convert>value=142.9; from=mm; to=m</convert>= 0.1429\n3. Density of the fluid: <lookup>fluid=NC-45; property=density; T=40</lookup>= 1463.3\n4. Dynamic viscosity: <lookup>fluid=NC-45; property=viscosity; T=40</lookup>= 1.54\n5. Cross-sectional area: <calc>pi/4 * 0.1429**2</calc>= 0.0160382\n6. Velocity v = Q/A: <calc>0.000413333 / 0.0160382</calc>= 0.0257718\n7. Reynolds number: <calc>1463.3 * 0.0257718 * 0.1429 / 1.54</calc>= 3.49937\n8. Friction factor: <calc>64 / 3.49937</calc>= 18.289\n9. Head loss h = f (L/D) v^2 / (2g): <calc>18.289 * (227.0/0.1429) * 0.0257718**2 / (2*9.80665)</calc>= 0.983835\n{\"answer\": 0.983835}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Flow rate: <convert>value=24.8; from=L/min; to=m^3/s</convert>"
+      },
+      {
+       "at": 79,
+       "text": "2. Pipe diameter: <convert>value=142.9; from=mm; to=m</convert>"
+      },
+      {
+       "at": 151,
+       "text": "3. Density of the fluid: <lookup>fluid=NC-45; property=density; T=40</lookup>"
+      },
+      {
+       "at": 237,
+       "text": "4. Dynamic viscosity: <lookup>fluid=NC-45; property=viscosity; T=40</lookup>"
+      },
+      {
+       "at": 320,
+       "text": "5. Cross-sectional area: <calc>pi/4 * 0.1429**2</calc>"
+      },
+      {
+       "at": 386,
+       "text": "6. Velocity v = Q/A: <calc>0.000413333 / 0.0160382</calc>"
+      },
+      {
+       "at": 455,
+       "text": "7. Reynolds number: <calc>1463.3 * 0.0257718 * 0.1429 / 1.54</calc>"
+      },
+      {
+       "at": 532,
+       "text": "8. Friction factor: <calc>64 / 3.49937</calc>"
+      },
+      {
+       "at": 586,
+       "text": "9. Head loss h = f (L/D) v^2 / (2g): <calc>18.289 * (227.0/0.1429) * 0.0257718**2 / (2*9.80665)</calc>"
+      },
+      {
+       "at": 699,
+       "text": "{\"answer\": 0.983835}"
+      }
+     ],
+     "calls": 9,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.983835,
+     "ran_out": false
+    },
+    "mt-0068": {
+     "id": "mt-0068",
+     "human": true,
+     "truth": 8045.789564373225,
+     "correct": true,
+     "family": "hydrostatic_force",
+     "depth": 6,
+     "prompt_sha": "1f10d184f3d12556",
+     "text": "1. Gate width: <convert>value=121.1; from=cm; to=m</convert>= 1.211\n2. Gate height: <convert>value=42.0; from=cm; to=m</convert>= 0.42\n3. Density of the fluid: <lookup>fluid=CF-4; property=density; T=80</lookup>= 1427.5\n4. Depth of the centroid: <calc>0.92 + 0.42/2</calc>= 1.13\n5. Area of the gate: <calc>1.211 * 0.42</calc>= 0.50862\n6. Resultant force F = rho g h_c A: <calc>1427.5 * 9.80665 * 1.13 * 0.50862</calc>= 8045.79\n{\"answer\": 8045.79}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Gate width: <convert>value=121.1; from=cm; to=m</convert>"
+      },
+      {
+       "at": 68,
+       "text": "2. Gate height: <convert>value=42.0; from=cm; to=m</convert>"
+      },
+      {
+       "at": 135,
+       "text": "3. Density of the fluid: <lookup>fluid=CF-4; property=density; T=80</lookup>"
+      },
+      {
+       "at": 220,
+       "text": "4. Depth of the centroid: <calc>0.92 + 0.42/2</calc>"
+      },
+      {
+       "at": 279,
+       "text": "5. Area of the gate: <calc>1.211 * 0.42</calc>"
+      },
+      {
+       "at": 335,
+       "text": "6. Resultant force F = rho g h_c A: <calc>1427.5 * 9.80665 * 1.13 * 0.50862</calc>"
+      },
+      {
+       "at": 427,
+       "text": "{\"answer\": 8045.79}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 8045.79,
+     "ran_out": false
+    },
+    "mt-0069": {
+     "id": "mt-0069",
+     "human": true,
+     "truth": 12.180952687662614,
+     "correct": true,
+     "family": "manning_channel",
+     "depth": 6,
+     "prompt_sha": "c2437f71cb53728c",
+     "text": "1. Channel width: <convert>value=296.8; from=cm; to=m</convert>= 2.968\n2. Flow depth: <convert>value=125.2; from=cm; to=m</convert>= 1.252\n3. Flow area: <calc>2.968 * 1.252</calc>= 3.71594\n4. Wetted perimeter: <calc>2.968 + 2*1.252</calc>= 5.472\n5. Hydraulic radius R = A/P: <calc>3.71594 / 5.472</calc>= 0.679083\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.029) * 3.71594 * 0.679083**(2/3) * sqrt(0.01514)</calc>= 12.181\n{\"answer\": 12.181}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Channel width: <convert>value=296.8; from=cm; to=m</convert>"
+      },
+      {
+       "at": 71,
+       "text": "2. Flow depth: <convert>value=125.2; from=cm; to=m</convert>"
+      },
+      {
+       "at": 139,
+       "text": "3. Flow area: <calc>2.968 * 1.252</calc>"
+      },
+      {
+       "at": 189,
+       "text": "4. Wetted perimeter: <calc>2.968 + 2*1.252</calc>"
+      },
+      {
+       "at": 246,
+       "text": "5. Hydraulic radius R = A/P: <calc>3.71594 / 5.472</calc>"
+      },
+      {
+       "at": 314,
+       "text": "6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.029) * 3.71594 * 0.679083**(2/3) * sqrt(0.01514)</calc>"
+      },
+      {
+       "at": 431,
+       "text": "{\"answer\": 12.181}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 12.181,
+     "ran_out": false
+    },
+    "mt-0067": {
+     "id": "mt-0067",
+     "human": true,
+     "truth": 0.1768301176568911,
+     "correct": true,
+     "family": "venturi_flow",
+     "depth": 7,
+     "prompt_sha": "d663629078b0a1c9",
+     "text": "1. Inlet diameter: <convert>value=23.6; from=cm; to=m</convert>= 0.236\n2. Throat diameter: <convert>value=16.0; from=cm; to=m</convert>= 0.16\n3. Pressure drop: <convert>value=336.7; from=mbar; to=Pa</convert>= 33670\n4. Density of the fluid: <lookup>fluid=SP-28; property=density; T=25</lookup>= 1103.8\n5. Inlet area: <calc>pi/4 * 0.236**2</calc>= 0.0437435\n6. Throat area: <calc>pi/4 * 0.16**2</calc>= 0.0201062\n7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.0201062 * sqrt(2*33670 / (1103.8 * (1 - (0.0201062/0.0437435)**2)))</calc>= 0.17683\n{\"answer\": 0.17683}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Inlet diameter: <convert>value=23.6; from=cm; to=m</convert>"
+      },
+      {
+       "at": 71,
+       "text": "2. Throat diameter: <convert>value=16.0; from=cm; to=m</convert>"
+      },
+      {
+       "at": 142,
+       "text": "3. Pressure drop: <convert>value=336.7; from=mbar; to=Pa</convert>"
+      },
+      {
+       "at": 216,
+       "text": "4. Density of the fluid: <lookup>fluid=SP-28; property=density; T=25</lookup>"
+      },
+      {
+       "at": 302,
+       "text": "5. Inlet area: <calc>pi/4 * 0.236**2</calc>"
+      },
+      {
+       "at": 357,
+       "text": "6. Throat area: <calc>pi/4 * 0.16**2</calc>"
+      },
+      {
+       "at": 412,
+       "text": "7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.0201062 * sqrt(2*33670 / (1103.8 * (1 - (0.0201062/0.0437435)**2)))</calc>"
+      },
+      {
+       "at": 555,
+       "text": "{\"answer\": 0.17683}"
+      }
+     ],
+     "calls": 7,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.17683,
+     "ran_out": false
+    },
+    "mt-0066": {
+     "id": "mt-0066",
+     "human": true,
+     "truth": 17.833350603704815,
+     "correct": true,
+     "family": "pipe_head_loss",
+     "depth": 9,
+     "prompt_sha": "0116ab5f89a2c40f",
+     "text": "1. Flow rate: <convert>value=68.3; from=L/min; to=m^3/s</convert>= 0.00113833\n2. Pipe diameter: <convert>value=96.0; from=mm; to=m</convert>= 0.096\n3. Density of the fluid: <lookup>fluid=FR-88; property=density; T=25</lookup>= 1110.9\n4. Dynamic viscosity: <lookup>fluid=FR-88; property=viscosity; T=25</lookup>= 1.29\n5. Cross-sectional area: <calc>pi/4 * 0.096**2</calc>= 0.00723823\n6. Velocity v = Q/A: <calc>0.00113833 / 0.00723823</calc>= 0.157266\n7. Reynolds number: <calc>1110.9 * 0.157266 * 0.096 / 1.29</calc>= 13.0014\n8. Friction factor: <calc>64 / 13.0014</calc>= 4.92255\n9. Head loss h = f (L/D) v^2 / (2g): <calc>4.92255 * (275.8/0.096) * 0.157266**2 / (2*9.80665)</calc>= 17.8333\n{\"answer\": 17.8333}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Flow rate: <convert>value=68.3; from=L/min; to=m^3/s</convert>"
+      },
+      {
+       "at": 78,
+       "text": "2. Pipe diameter: <convert>value=96.0; from=mm; to=m</convert>"
+      },
+      {
+       "at": 148,
+       "text": "3. Density of the fluid: <lookup>fluid=FR-88; property=density; T=25</lookup>"
+      },
+      {
+       "at": 234,
+       "text": "4. Dynamic viscosity: <lookup>fluid=FR-88; property=viscosity; T=25</lookup>"
+      },
+      {
+       "at": 317,
+       "text": "5. Cross-sectional area: <calc>pi/4 * 0.096**2</calc>"
+      },
+      {
+       "at": 383,
+       "text": "6. Velocity v = Q/A: <calc>0.00113833 / 0.00723823</calc>"
+      },
+      {
+       "at": 451,
+       "text": "7. Reynolds number: <calc>1110.9 * 0.157266 * 0.096 / 1.29</calc>"
+      },
+      {
+       "at": 526,
+       "text": "8. Friction factor: <calc>64 / 13.0014</calc>"
+      },
+      {
+       "at": 581,
+       "text": "9. Head loss h = f (L/D) v^2 / (2g): <calc>4.92255 * (275.8/0.096) * 0.157266**2 / (2*9.80665)</calc>"
+      },
+      {
+       "at": 692,
+       "text": "{\"answer\": 17.8333}"
+      }
+     ],
+     "calls": 9,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 17.8333,
+     "ran_out": false
+    },
+    "mt-0072": {
+     "id": "mt-0072",
+     "human": true,
+     "truth": 70807.29007217383,
+     "correct": true,
+     "family": "hydrostatic_force",
+     "depth": 6,
+     "prompt_sha": "aadc3e7e9731654a",
+     "text": "1. Gate width: <convert>value=1784.8; from=mm; to=m</convert>= 1.7848\n2. Gate height: <convert>value=1472.1; from=mm; to=m</convert>= 1.4721\n3. Density of the fluid: <lookup>fluid=ZD-97; property=density; T=40</lookup>= 729.7\n4. Depth of the centroid: <calc>3.03 + 1.4721/2</calc>= 3.76605\n5. Area of the gate: <calc>1.7848 * 1.4721</calc>= 2.6274\n6. Resultant force F = rho g h_c A: <calc>729.7 * 9.80665 * 3.76605 * 2.6274</calc>= 70807.2\n{\"answer\": 70807.2}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Gate width: <convert>value=1784.8; from=mm; to=m</convert>"
+      },
+      {
+       "at": 70,
+       "text": "2. Gate height: <convert>value=1472.1; from=mm; to=m</convert>"
+      },
+      {
+       "at": 141,
+       "text": "3. Density of the fluid: <lookup>fluid=ZD-97; property=density; T=40</lookup>"
+      },
+      {
+       "at": 226,
+       "text": "4. Depth of the centroid: <calc>3.03 + 1.4721/2</calc>"
+      },
+      {
+       "at": 290,
+       "text": "5. Area of the gate: <calc>1.7848 * 1.4721</calc>"
+      },
+      {
+       "at": 348,
+       "text": "6. Resultant force F = rho g h_c A: <calc>729.7 * 9.80665 * 3.76605 * 2.6274</calc>"
+      },
+      {
+       "at": 441,
+       "text": "{\"answer\": 70807.2}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 70807.2,
+     "ran_out": false
+    },
+    "mt-0073": {
+     "id": "mt-0073",
+     "human": true,
+     "truth": 11.14617744880668,
+     "correct": true,
+     "family": "manning_channel",
+     "depth": 6,
+     "prompt_sha": "2a12b5cb14bf7294",
+     "text": "1. Channel width: <convert>value=3454.0; from=mm; to=m</convert>= 3.454\n2. Flow depth: <convert>value=569.8; from=mm; to=m</convert>= 0.5698\n3. Flow area: <calc>3.454 * 0.5698</calc>= 1.96809\n4. Wetted perimeter: <calc>3.454 + 2*0.5698</calc>= 4.5936\n5. Hydraulic radius R = A/P: <calc>1.96809 / 4.5936</calc>= 0.428442\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.012) * 1.96809 * 0.428442**(2/3) * sqrt(0.0143)</calc>= 11.1462\n{\"answer\": 11.1462}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Channel width: <convert>value=3454.0; from=mm; to=m</convert>"
+      },
+      {
+       "at": 72,
+       "text": "2. Flow depth: <convert>value=569.8; from=mm; to=m</convert>"
+      },
+      {
+       "at": 141,
+       "text": "3. Flow area: <calc>3.454 * 0.5698</calc>"
+      },
+      {
+       "at": 192,
+       "text": "4. Wetted perimeter: <calc>3.454 + 2*0.5698</calc>"
+      },
+      {
+       "at": 251,
+       "text": "5. Hydraulic radius R = A/P: <calc>1.96809 / 4.5936</calc>"
+      },
+      {
+       "at": 320,
+       "text": "6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.012) * 1.96809 * 0.428442**(2/3) * sqrt(0.0143)</calc>"
+      },
+      {
+       "at": 437,
+       "text": "{\"answer\": 11.1462}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 11.1462,
+     "ran_out": false
+    },
+    "mt-0071": {
+     "id": "mt-0071",
+     "human": true,
+     "truth": 0.03284970876124265,
+     "correct": true,
+     "family": "venturi_flow",
+     "depth": 7,
+     "prompt_sha": "6591539da62858c1",
+     "text": "1. Inlet diameter: <convert>value=163.6; from=mm; to=m</convert>= 0.1636\n2. Throat diameter: <convert>value=70.2; from=mm; to=m</convert>= 0.0702\n3. Pressure drop: <convert>value=0.345; from=bar; to=Pa</convert>= 34500\n4. Density of the fluid: <lookup>fluid=HD-22; property=density; T=60</lookup>= 991.5\n5. Inlet area: <calc>pi/4 * 0.1636**2</calc>= 0.0210212\n6. Throat area: <calc>pi/4 * 0.0702**2</calc>= 0.00387047\n7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00387047 * sqrt(2*34500 / (991.5 * (1 - (0.00387047/0.0210212)**2)))</calc>= 0.0328497\n{\"answer\": 0.0328497}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Inlet diameter: <convert>value=163.6; from=mm; to=m</convert>"
+      },
+      {
+       "at": 73,
+       "text": "2. Throat diameter: <convert>value=70.2; from=mm; to=m</convert>"
+      },
+      {
+       "at": 146,
+       "text": "3. Pressure drop: <convert>value=0.345; from=bar; to=Pa</convert>"
+      },
+      {
+       "at": 219,
+       "text": "4. Density of the fluid: <lookup>fluid=HD-22; property=density; T=60</lookup>"
+      },
+      {
+       "at": 304,
+       "text": "5. Inlet area: <calc>pi/4 * 0.1636**2</calc>"
+      },
+      {
+       "at": 360,
+       "text": "6. Throat area: <calc>pi/4 * 0.0702**2</calc>"
+      },
+      {
+       "at": 418,
+       "text": "7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00387047 * sqrt(2*34500 / (991.5 * (1 - (0.00387047/0.0210212)**2)))</calc>"
+      },
+      {
+       "at": 564,
+       "text": "{\"answer\": 0.0328497}"
+      }
+     ],
+     "calls": 7,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.0328497,
+     "ran_out": false
+    },
+    "mt-0070": {
+     "id": "mt-0070",
+     "human": true,
+     "truth": 0.4210277424860343,
+     "correct": true,
+     "family": "pipe_head_loss",
+     "depth": 9,
+     "prompt_sha": "bafa9991d08a7f4e",
+     "text": "1. Flow rate: <convert>value=19.4; from=m^3/h; to=m^3/s</convert>= 0.00538889\n2. Pipe diameter: <convert>value=389.4; from=mm; to=m</convert>= 0.3894\n3. Density of the fluid: <lookup>fluid=CA-70; property=density; T=60</lookup>= 1220.1\n4. Dynamic viscosity: <lookup>fluid=CA-70; property=viscosity; T=60</lookup>= 1.71\n5. Cross-sectional area: <calc>pi/4 * 0.3894**2</calc>= 0.119092\n6. Velocity v = Q/A: <calc>0.00538889 / 0.119092</calc>= 0.0452498\n7. Reynolds number: <calc>1220.1 * 0.0452498 * 0.3894 / 1.71</calc>= 12.5722\n8. Friction factor: <calc>64 / 12.5722</calc>= 5.0906\n9. Head loss h = f (L/D) v^2 / (2g): <calc>5.0906 * (308.5/0.3894) * 0.0452498**2 / (2*9.80665)</calc>= 0.421028\n{\"answer\": 0.421028}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Flow rate: <convert>value=19.4; from=m^3/h; to=m^3/s</convert>"
+      },
+      {
+       "at": 78,
+       "text": "2. Pipe diameter: <convert>value=389.4; from=mm; to=m</convert>"
+      },
+      {
+       "at": 150,
+       "text": "3. Density of the fluid: <lookup>fluid=CA-70; property=density; T=60</lookup>"
+      },
+      {
+       "at": 236,
+       "text": "4. Dynamic viscosity: <lookup>fluid=CA-70; property=viscosity; T=60</lookup>"
+      },
+      {
+       "at": 319,
+       "text": "5. Cross-sectional area: <calc>pi/4 * 0.3894**2</calc>"
+      },
+      {
+       "at": 384,
+       "text": "6. Velocity v = Q/A: <calc>0.00538889 / 0.119092</calc>"
+      },
+      {
+       "at": 451,
+       "text": "7. Reynolds number: <calc>1220.1 * 0.0452498 * 0.3894 / 1.71</calc>"
+      },
+      {
+       "at": 528,
+       "text": "8. Friction factor: <calc>64 / 12.5722</calc>"
+      },
+      {
+       "at": 582,
+       "text": "9. Head loss h = f (L/D) v^2 / (2g): <calc>5.0906 * (308.5/0.3894) * 0.0452498**2 / (2*9.80665)</calc>"
+      },
+      {
+       "at": 695,
+       "text": "{\"answer\": 0.421028}"
+      }
+     ],
+     "calls": 9,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.421028,
+     "ran_out": false
+    },
+    "mt-0076": {
+     "id": "mt-0076",
+     "human": true,
+     "truth": 4942.457446495253,
+     "correct": true,
+     "family": "hydrostatic_force",
+     "depth": 6,
+     "prompt_sha": "962e9f51727440b4",
+     "text": "1. Gate width: <convert>value=1827.4; from=mm; to=m</convert>= 1.8274\n2. Gate height: <convert>value=449.0; from=mm; to=m</convert>= 0.449\n3. Density of the fluid: <lookup>fluid=JX-45; property=density; T=20</lookup>= 679.1\n4. Depth of the centroid: <calc>0.68 + 0.449/2</calc>= 0.9045\n5. Area of the gate: <calc>1.8274 * 0.449</calc>= 0.820503\n6. Resultant force F = rho g h_c A: <calc>679.1 * 9.80665 * 0.9045 * 0.820503</calc>= 4942.46\n{\"answer\": 4942.46}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Gate width: <convert>value=1827.4; from=mm; to=m</convert>"
+      },
+      {
+       "at": 70,
+       "text": "2. Gate height: <convert>value=449.0; from=mm; to=m</convert>"
+      },
+      {
+       "at": 139,
+       "text": "3. Density of the fluid: <lookup>fluid=JX-45; property=density; T=20</lookup>"
+      },
+      {
+       "at": 224,
+       "text": "4. Depth of the centroid: <calc>0.68 + 0.449/2</calc>"
+      },
+      {
+       "at": 286,
+       "text": "5. Area of the gate: <calc>1.8274 * 0.449</calc>"
+      },
+      {
+       "at": 345,
+       "text": "6. Resultant force F = rho g h_c A: <calc>679.1 * 9.80665 * 0.9045 * 0.820503</calc>"
+      },
+      {
+       "at": 439,
+       "text": "{\"answer\": 4942.46}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 4942.46,
+     "ran_out": false
+    },
+    "mt-0075": {
+     "id": "mt-0075",
+     "human": true,
+     "truth": 0.042092750509295444,
+     "correct": true,
+     "family": "venturi_flow",
+     "depth": 7,
+     "prompt_sha": "7a54b9e138243236",
+     "text": "1. Inlet diameter: <convert>value=253.7; from=mm; to=m</convert>= 0.2537\n2. Throat diameter: <convert>value=92.1; from=mm; to=m</convert>= 0.0921\n3. Pressure drop: <convert>value=147.2; from=mbar; to=Pa</convert>= 14720\n4. Density of the fluid: <lookup>fluid=RN-12; property=density; T=40</lookup>= 750.5\n5. Inlet area: <calc>pi/4 * 0.2537**2</calc>= 0.0505511\n6. Throat area: <calc>pi/4 * 0.0921**2</calc>= 0.00666207\n7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00666207 * sqrt(2*14720 / (750.5 * (1 - (0.00666207/0.0505511)**2)))</calc>= 0.0420928\n{\"answer\": 0.0420928}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Inlet diameter: <convert>value=253.7; from=mm; to=m</convert>"
+      },
+      {
+       "at": 73,
+       "text": "2. Throat diameter: <convert>value=92.1; from=mm; to=m</convert>"
+      },
+      {
+       "at": 146,
+       "text": "3. Pressure drop: <convert>value=147.2; from=mbar; to=Pa</convert>"
+      },
+      {
+       "at": 220,
+       "text": "4. Density of the fluid: <lookup>fluid=RN-12; property=density; T=40</lookup>"
+      },
+      {
+       "at": 305,
+       "text": "5. Inlet area: <calc>pi/4 * 0.2537**2</calc>"
+      },
+      {
+       "at": 361,
+       "text": "6. Throat area: <calc>pi/4 * 0.0921**2</calc>"
+      },
+      {
+       "at": 419,
+       "text": "7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00666207 * sqrt(2*14720 / (750.5 * (1 - (0.00666207/0.0505511)**2)))</calc>"
+      },
+      {
+       "at": 565,
+       "text": "{\"answer\": 0.0420928}"
+      }
+     ],
+     "calls": 7,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.0420928,
+     "ran_out": false
+    },
+    "mt-0077": {
+     "id": "mt-0077",
+     "human": true,
+     "truth": 3.055867672132965,
+     "correct": true,
+     "family": "manning_channel",
+     "depth": 6,
+     "prompt_sha": "19cacf7de35df046",
+     "text": "1. Channel width: <convert>value=3729.1; from=mm; to=m</convert>= 3.7291\n2. Flow depth: <convert>value=297.9; from=mm; to=m</convert>= 0.2979\n3. Flow area: <calc>3.7291 * 0.2979</calc>= 1.1109\n4. Wetted perimeter: <calc>3.7291 + 2*0.2979</calc>= 4.3249\n5. Hydraulic radius R = A/P: <calc>1.1109 / 4.3249</calc>= 0.256861\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.019) * 1.1109 * 0.256861**(2/3) * sqrt(0.01673)</calc>= 3.05587\n{\"answer\": 3.05587}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Channel width: <convert>value=3729.1; from=mm; to=m</convert>"
+      },
+      {
+       "at": 73,
+       "text": "2. Flow depth: <convert>value=297.9; from=mm; to=m</convert>"
+      },
+      {
+       "at": 142,
+       "text": "3. Flow area: <calc>3.7291 * 0.2979</calc>"
+      },
+      {
+       "at": 193,
+       "text": "4. Wetted perimeter: <calc>3.7291 + 2*0.2979</calc>"
+      },
+      {
+       "at": 253,
+       "text": "5. Hydraulic radius R = A/P: <calc>1.1109 / 4.3249</calc>"
+      },
+      {
+       "at": 321,
+       "text": "6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.019) * 1.1109 * 0.256861**(2/3) * sqrt(0.01673)</calc>"
+      },
+      {
+       "at": 438,
+       "text": "{\"answer\": 3.05587}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 3.05587,
+     "ran_out": false
+    },
+    "mt-0074": {
+     "id": "mt-0074",
+     "human": true,
+     "truth": 1.4642814922394423,
+     "correct": true,
+     "family": "pipe_head_loss",
+     "depth": 9,
+     "prompt_sha": "3f8fcd537794559b",
+     "text": "1. Flow rate: <convert>value=24.1; from=m^3/h; to=m^3/s</convert>= 0.00669444\n2. Pipe diameter: <convert>value=29.2; from=cm; to=m</convert>= 0.292\n3. Density of the fluid: <lookup>fluid=HB-36; property=density; T=25</lookup>= 1456.7\n4. Dynamic viscosity: <lookup>fluid=HB-36; property=viscosity; T=25</lookup>= 1.65\n5. Cross-sectional area: <calc>pi/4 * 0.292**2</calc>= 0.0669662\n6. Velocity v = Q/A: <calc>0.00669444 / 0.0669662</calc>= 0.0999674\n7. Reynolds number: <calc>1456.7 * 0.0999674 * 0.292 / 1.65</calc>= 25.7708\n8. Friction factor: <calc>64 / 25.7708</calc>= 2.48343\n9. Head loss h = f (L/D) v^2 / (2g): <calc>2.48343 * (337.9/0.292) * 0.0999674**2 / (2*9.80665)</calc>= 1.46428\n{\"answer\": 1.46428}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Flow rate: <convert>value=24.1; from=m^3/h; to=m^3/s</convert>"
+      },
+      {
+       "at": 78,
+       "text": "2. Pipe diameter: <convert>value=29.2; from=cm; to=m</convert>"
+      },
+      {
+       "at": 148,
+       "text": "3. Density of the fluid: <lookup>fluid=HB-36; property=density; T=25</lookup>"
+      },
+      {
+       "at": 234,
+       "text": "4. Dynamic viscosity: <lookup>fluid=HB-36; property=viscosity; T=25</lookup>"
+      },
+      {
+       "at": 317,
+       "text": "5. Cross-sectional area: <calc>pi/4 * 0.292**2</calc>"
+      },
+      {
+       "at": 382,
+       "text": "6. Velocity v = Q/A: <calc>0.00669444 / 0.0669662</calc>"
+      },
+      {
+       "at": 450,
+       "text": "7. Reynolds number: <calc>1456.7 * 0.0999674 * 0.292 / 1.65</calc>"
+      },
+      {
+       "at": 526,
+       "text": "8. Friction factor: <calc>64 / 25.7708</calc>"
+      },
+      {
+       "at": 581,
+       "text": "9. Head loss h = f (L/D) v^2 / (2g): <calc>2.48343 * (337.9/0.292) * 0.0999674**2 / (2*9.80665)</calc>"
+      },
+      {
+       "at": 693,
+       "text": "{\"answer\": 1.46428}"
+      }
+     ],
+     "calls": 9,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 1.46428,
+     "ran_out": false
+    },
+    "mt-0080": {
+     "id": "mt-0080",
+     "human": true,
+     "truth": 2500.074461261097,
+     "correct": true,
+     "family": "hydrostatic_force",
+     "depth": 6,
+     "prompt_sha": "0b7d63bbed4c5500",
+     "text": "1. Gate width: <convert>value=58.9; from=cm; to=m</convert>= 0.589\n2. Gate height: <convert>value=41.0; from=cm; to=m</convert>= 0.41\n3. Density of the fluid: <lookup>fluid=MN-22; property=density; T=20</lookup>= 802.8\n4. Depth of the centroid: <calc>1.11 + 0.41/2</calc>= 1.315\n5. Area of the gate: <calc>0.589 * 0.41</calc>= 0.24149\n6. Resultant force F = rho g h_c A: <calc>802.8 * 9.80665 * 1.315 * 0.24149</calc>= 2500.07\n{\"answer\": 2500.07}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Gate width: <convert>value=58.9; from=cm; to=m</convert>"
+      },
+      {
+       "at": 67,
+       "text": "2. Gate height: <convert>value=41.0; from=cm; to=m</convert>"
+      },
+      {
+       "at": 134,
+       "text": "3. Density of the fluid: <lookup>fluid=MN-22; property=density; T=20</lookup>"
+      },
+      {
+       "at": 219,
+       "text": "4. Depth of the centroid: <calc>1.11 + 0.41/2</calc>"
+      },
+      {
+       "at": 279,
+       "text": "5. Area of the gate: <calc>0.589 * 0.41</calc>"
+      },
+      {
+       "at": 335,
+       "text": "6. Resultant force F = rho g h_c A: <calc>802.8 * 9.80665 * 1.315 * 0.24149</calc>"
+      },
+      {
+       "at": 427,
+       "text": "{\"answer\": 2500.07}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 2500.07,
+     "ran_out": false
+    },
+    "mt-0081": {
+     "id": "mt-0081",
+     "human": true,
+     "truth": 2.802514839201507,
+     "correct": true,
+     "family": "manning_channel",
+     "depth": 6,
+     "prompt_sha": "a5fc48ecaad5a42e",
+     "text": "1. Channel width: <convert>value=94.9; from=cm; to=m</convert>= 0.949\n2. Flow depth: <convert>value=138.7; from=cm; to=m</convert>= 1.387\n3. Flow area: <calc>0.949 * 1.387</calc>= 1.31626\n4. Wetted perimeter: <calc>0.949 + 2*1.387</calc>= 3.723\n5. Hydraulic radius R = A/P: <calc>1.31626 / 3.723</calc>= 0.353548\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.015) * 1.31626 * 0.353548**(2/3) * sqrt(0.00408)</calc>= 2.8025\n{\"answer\": 2.8025}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Channel width: <convert>value=94.9; from=cm; to=m</convert>"
+      },
+      {
+       "at": 70,
+       "text": "2. Flow depth: <convert>value=138.7; from=cm; to=m</convert>"
+      },
+      {
+       "at": 138,
+       "text": "3. Flow area: <calc>0.949 * 1.387</calc>"
+      },
+      {
+       "at": 188,
+       "text": "4. Wetted perimeter: <calc>0.949 + 2*1.387</calc>"
+      },
+      {
+       "at": 245,
+       "text": "5. Hydraulic radius R = A/P: <calc>1.31626 / 3.723</calc>"
+      },
+      {
+       "at": 313,
+       "text": "6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.015) * 1.31626 * 0.353548**(2/3) * sqrt(0.00408)</calc>"
+      },
+      {
+       "at": 430,
+       "text": "{\"answer\": 2.8025}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 2.8025,
+     "ran_out": false
+    },
+    "mt-0079": {
+     "id": "mt-0079",
+     "human": true,
+     "truth": 0.07231593869331175,
+     "correct": true,
+     "family": "venturi_flow",
+     "depth": 7,
+     "prompt_sha": "311fa2d14c1209f6",
+     "text": "1. Inlet diameter: <convert>value=228.6; from=mm; to=m</convert>= 0.2286\n2. Throat diameter: <convert>value=108.1; from=mm; to=m</convert>= 0.1081\n3. Pressure drop: <convert>value=188.0; from=mbar; to=Pa</convert>= 18800\n4. Density of the fluid: <lookup>fluid=AS-4; property=density; T=80</lookup>= 637.5\n5. Inlet area: <calc>pi/4 * 0.2286**2</calc>= 0.0410433\n6. Throat area: <calc>pi/4 * 0.1081**2</calc>= 0.00917786\n7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00917786 * sqrt(2*18800 / (637.5 * (1 - (0.00917786/0.0410433)**2)))</calc>= 0.072316\n{\"answer\": 0.072316}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Inlet diameter: <convert>value=228.6; from=mm; to=m</convert>"
+      },
+      {
+       "at": 73,
+       "text": "2. Throat diameter: <convert>value=108.1; from=mm; to=m</convert>"
+      },
+      {
+       "at": 147,
+       "text": "3. Pressure drop: <convert>value=188.0; from=mbar; to=Pa</convert>"
+      },
+      {
+       "at": 221,
+       "text": "4. Density of the fluid: <lookup>fluid=AS-4; property=density; T=80</lookup>"
+      },
+      {
+       "at": 305,
+       "text": "5. Inlet area: <calc>pi/4 * 0.2286**2</calc>"
+      },
+      {
+       "at": 361,
+       "text": "6. Throat area: <calc>pi/4 * 0.1081**2</calc>"
+      },
+      {
+       "at": 419,
+       "text": "7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.00917786 * sqrt(2*18800 / (637.5 * (1 - (0.00917786/0.0410433)**2)))</calc>"
+      },
+      {
+       "at": 564,
+       "text": "{\"answer\": 0.072316}"
+      }
+     ],
+     "calls": 7,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.072316,
+     "ran_out": false
+    },
+    "mt-0078": {
+     "id": "mt-0078",
+     "human": true,
+     "truth": 3.639016035534067,
+     "correct": true,
+     "family": "pipe_head_loss",
+     "depth": 9,
+     "prompt_sha": "da0b55e625e8f7f4",
+     "text": "1. Flow rate: <convert>value=35.6; from=L/s; to=m^3/s</convert>= 0.0356\n2. Pipe diameter: <convert>value=25.6; from=cm; to=m</convert>= 0.256\n3. Density of the fluid: <lookup>fluid=SF-79; property=density; T=10</lookup>= 743.3\n4. Dynamic viscosity: <lookup>fluid=SF-79; property=viscosity; T=10</lookup>= 1.15\n5. Cross-sectional area: <calc>pi/4 * 0.256**2</calc>= 0.0514719\n6. Velocity v = Q/A: <calc>0.0356 / 0.0514719</calc>= 0.69164\n7. Reynolds number: <calc>743.3 * 0.69164 * 0.256 / 1.15</calc>= 114.442\n8. Friction factor: <calc>64 / 114.442</calc>= 0.559235\n9. Head loss h = f (L/D) v^2 / (2g): <calc>0.559235 * (68.3/0.256) * 0.69164**2 / (2*9.80665)</calc>= 3.63902\n{\"answer\": 3.63902}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Flow rate: <convert>value=35.6; from=L/s; to=m^3/s</convert>"
+      },
+      {
+       "at": 72,
+       "text": "2. Pipe diameter: <convert>value=25.6; from=cm; to=m</convert>"
+      },
+      {
+       "at": 142,
+       "text": "3. Density of the fluid: <lookup>fluid=SF-79; property=density; T=10</lookup>"
+      },
+      {
+       "at": 227,
+       "text": "4. Dynamic viscosity: <lookup>fluid=SF-79; property=viscosity; T=10</lookup>"
+      },
+      {
+       "at": 310,
+       "text": "5. Cross-sectional area: <calc>pi/4 * 0.256**2</calc>"
+      },
+      {
+       "at": 375,
+       "text": "6. Velocity v = Q/A: <calc>0.0356 / 0.0514719</calc>"
+      },
+      {
+       "at": 437,
+       "text": "7. Reynolds number: <calc>743.3 * 0.69164 * 0.256 / 1.15</calc>"
+      },
+      {
+       "at": 510,
+       "text": "8. Friction factor: <calc>64 / 114.442</calc>"
+      },
+      {
+       "at": 566,
+       "text": "9. Head loss h = f (L/D) v^2 / (2g): <calc>0.559235 * (68.3/0.256) * 0.69164**2 / (2*9.80665)</calc>"
+      },
+      {
+       "at": 676,
+       "text": "{\"answer\": 3.63902}"
+      }
+     ],
+     "calls": 9,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 3.63902,
+     "ran_out": false
+    },
+    "mt-0084": {
+     "id": "mt-0084",
+     "human": true,
+     "truth": 22653.245877409125,
+     "correct": true,
+     "family": "hydrostatic_force",
+     "depth": 6,
+     "prompt_sha": "14dfda12c3d01531",
+     "text": "1. Gate width: <convert>value=71.7; from=cm; to=m</convert>= 0.717\n2. Gate height: <convert>value=106.3; from=cm; to=m</convert>= 1.063\n3. Density of the fluid: <lookup>fluid=BW-33; property=density; T=20</lookup>= 1226.3\n4. Depth of the centroid: <calc>1.94 + 1.063/2</calc>= 2.4715\n5. Area of the gate: <calc>0.717 * 1.063</calc>= 0.762171\n6. Resultant force F = rho g h_c A: <calc>1226.3 * 9.80665 * 2.4715 * 0.762171</calc>= 22653.2\n{\"answer\": 22653.2}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Gate width: <convert>value=71.7; from=cm; to=m</convert>"
+      },
+      {
+       "at": 67,
+       "text": "2. Gate height: <convert>value=106.3; from=cm; to=m</convert>"
+      },
+      {
+       "at": 136,
+       "text": "3. Density of the fluid: <lookup>fluid=BW-33; property=density; T=20</lookup>"
+      },
+      {
+       "at": 222,
+       "text": "4. Depth of the centroid: <calc>1.94 + 1.063/2</calc>"
+      },
+      {
+       "at": 284,
+       "text": "5. Area of the gate: <calc>0.717 * 1.063</calc>"
+      },
+      {
+       "at": 342,
+       "text": "6. Resultant force F = rho g h_c A: <calc>1226.3 * 9.80665 * 2.4715 * 0.762171</calc>"
+      },
+      {
+       "at": 437,
+       "text": "{\"answer\": 22653.2}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 22653.2,
+     "ran_out": false
+    },
+    "mt-0085": {
+     "id": "mt-0085",
+     "human": true,
+     "truth": 0.3778404311518294,
+     "correct": true,
+     "family": "manning_channel",
+     "depth": 6,
+     "prompt_sha": "c3e231f84a0ee278",
+     "text": "1. Channel width: <convert>value=164.4; from=cm; to=m</convert>= 1.644\n2. Flow depth: <convert>value=23.0; from=cm; to=m</convert>= 0.23\n3. Flow area: <calc>1.644 * 0.23</calc>= 0.37812\n4. Wetted perimeter: <calc>1.644 + 2*0.23</calc>= 2.104\n5. Hydraulic radius R = A/P: <calc>0.37812 / 2.104</calc>= 0.179715\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.018) * 0.37812 * 0.179715**(2/3) * sqrt(0.00319)</calc>= 0.377841\n{\"answer\": 0.377841}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Channel width: <convert>value=164.4; from=cm; to=m</convert>"
+      },
+      {
+       "at": 71,
+       "text": "2. Flow depth: <convert>value=23.0; from=cm; to=m</convert>"
+      },
+      {
+       "at": 137,
+       "text": "3. Flow area: <calc>1.644 * 0.23</calc>"
+      },
+      {
+       "at": 186,
+       "text": "4. Wetted perimeter: <calc>1.644 + 2*0.23</calc>"
+      },
+      {
+       "at": 242,
+       "text": "5. Hydraulic radius R = A/P: <calc>0.37812 / 2.104</calc>"
+      },
+      {
+       "at": 310,
+       "text": "6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.018) * 0.37812 * 0.179715**(2/3) * sqrt(0.00319)</calc>"
+      },
+      {
+       "at": 429,
+       "text": "{\"answer\": 0.377841}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.377841,
+     "ran_out": false
+    },
+    "mt-0083": {
+     "id": "mt-0083",
+     "human": true,
+     "truth": 0.5802288671430983,
+     "correct": true,
+     "family": "venturi_flow",
+     "depth": 7,
+     "prompt_sha": "1228715dc4b0edaa",
+     "text": "1. Inlet diameter: <convert>value=378.3; from=mm; to=m</convert>= 0.3783\n2. Throat diameter: <convert>value=222.4; from=mm; to=m</convert>= 0.2224\n3. Pressure drop: <convert>value=0.69; from=bar; to=Pa</convert>= 69000\n4. Density of the fluid: <lookup>fluid=VV-79; property=density; T=40</lookup>= 702.5\n5. Inlet area: <calc>pi/4 * 0.3783**2</calc>= 0.112399\n6. Throat area: <calc>pi/4 * 0.2224**2</calc>= 0.0388472\n7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.0388472 * sqrt(2*69000 / (702.5 * (1 - (0.0388472/0.112399)**2)))</calc>= 0.580229\n{\"answer\": 0.580229}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Inlet diameter: <convert>value=378.3; from=mm; to=m</convert>"
+      },
+      {
+       "at": 73,
+       "text": "2. Throat diameter: <convert>value=222.4; from=mm; to=m</convert>"
+      },
+      {
+       "at": 147,
+       "text": "3. Pressure drop: <convert>value=0.69; from=bar; to=Pa</convert>"
+      },
+      {
+       "at": 219,
+       "text": "4. Density of the fluid: <lookup>fluid=VV-79; property=density; T=40</lookup>"
+      },
+      {
+       "at": 304,
+       "text": "5. Inlet area: <calc>pi/4 * 0.3783**2</calc>"
+      },
+      {
+       "at": 359,
+       "text": "6. Throat area: <calc>pi/4 * 0.2224**2</calc>"
+      },
+      {
+       "at": 416,
+       "text": "7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.0388472 * sqrt(2*69000 / (702.5 * (1 - (0.0388472/0.112399)**2)))</calc>"
+      },
+      {
+       "at": 558,
+       "text": "{\"answer\": 0.580229}"
+      }
+     ],
+     "calls": 7,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.580229,
+     "ran_out": false
+    },
+    "mt-0082": {
+     "id": "mt-0082",
+     "human": true,
+     "truth": 15.731773832532225,
+     "correct": true,
+     "family": "pipe_head_loss",
+     "depth": 9,
+     "prompt_sha": "5a4f96cb054f6c9c",
+     "text": "1. Flow rate: <convert>value=88.5; from=m^3/h; to=m^3/s</convert>= 0.0245833\n2. Pipe diameter: <convert>value=17.8; from=cm; to=m</convert>= 0.178\n3. Density of the fluid: <lookup>fluid=CP-84; property=density; T=40</lookup>= 702\n4. Dynamic viscosity: <lookup>fluid=CP-84; property=viscosity; T=40</lookup>= 0.322\n5. Cross-sectional area: <calc>pi/4 * 0.178**2</calc>= 0.0248846\n6. Velocity v = Q/A: <calc>0.0245833 / 0.0248846</calc>= 0.987892\n7. Reynolds number: <calc>702.0 * 0.987892 * 0.178 / 0.322</calc>= 383.363\n8. Friction factor: <calc>64 / 383.363</calc>= 0.166944\n9. Head loss h = f (L/D) v^2 / (2g): <calc>0.166944 * (337.1/0.178) * 0.987892**2 / (2*9.80665)</calc>= 15.7318\n{\"answer\": 15.7318}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Flow rate: <convert>value=88.5; from=m^3/h; to=m^3/s</convert>"
+      },
+      {
+       "at": 77,
+       "text": "2. Pipe diameter: <convert>value=17.8; from=cm; to=m</convert>"
+      },
+      {
+       "at": 147,
+       "text": "3. Density of the fluid: <lookup>fluid=CP-84; property=density; T=40</lookup>"
+      },
+      {
+       "at": 230,
+       "text": "4. Dynamic viscosity: <lookup>fluid=CP-84; property=viscosity; T=40</lookup>"
+      },
+      {
+       "at": 314,
+       "text": "5. Cross-sectional area: <calc>pi/4 * 0.178**2</calc>"
+      },
+      {
+       "at": 379,
+       "text": "6. Velocity v = Q/A: <calc>0.0245833 / 0.0248846</calc>"
+      },
+      {
+       "at": 445,
+       "text": "7. Reynolds number: <calc>702.0 * 0.987892 * 0.178 / 0.322</calc>"
+      },
+      {
+       "at": 520,
+       "text": "8. Friction factor: <calc>64 / 383.363</calc>"
+      },
+      {
+       "at": 576,
+       "text": "9. Head loss h = f (L/D) v^2 / (2g): <calc>0.166944 * (337.1/0.178) * 0.987892**2 / (2*9.80665)</calc>"
+      },
+      {
+       "at": 688,
+       "text": "{\"answer\": 15.7318}"
+      }
+     ],
+     "calls": 9,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 15.7318,
+     "ran_out": false
+    },
+    "mt-0088": {
+     "id": "mt-0088",
+     "human": true,
+     "truth": 26777.54609888803,
+     "correct": true,
+     "family": "hydrostatic_force",
+     "depth": 6,
+     "prompt_sha": "7371e755b7ec09a4",
+     "text": "1. Gate width: <convert>value=52.5; from=cm; to=m</convert>= 0.525\n2. Gate height: <convert>value=148.4; from=cm; to=m</convert>= 1.484\n3. Density of the fluid: <lookup>fluid=GF-20; property=density; T=10</lookup>= 854.4\n4. Depth of the centroid: <calc>3.36 + 1.484/2</calc>= 4.102\n5. Area of the gate: <calc>0.525 * 1.484</calc>= 0.7791\n6. Resultant force F = rho g h_c A: <calc>854.4 * 9.80665 * 4.102 * 0.7791</calc>= 26777.5\n{\"answer\": 26777.5}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Gate width: <convert>value=52.5; from=cm; to=m</convert>"
+      },
+      {
+       "at": 67,
+       "text": "2. Gate height: <convert>value=148.4; from=cm; to=m</convert>"
+      },
+      {
+       "at": 136,
+       "text": "3. Density of the fluid: <lookup>fluid=GF-20; property=density; T=10</lookup>"
+      },
+      {
+       "at": 221,
+       "text": "4. Depth of the centroid: <calc>3.36 + 1.484/2</calc>"
+      },
+      {
+       "at": 282,
+       "text": "5. Area of the gate: <calc>0.525 * 1.484</calc>"
+      },
+      {
+       "at": 338,
+       "text": "6. Resultant force F = rho g h_c A: <calc>854.4 * 9.80665 * 4.102 * 0.7791</calc>"
+      },
+      {
+       "at": 429,
+       "text": "{\"answer\": 26777.5}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 26777.5,
+     "ran_out": false
+    },
+    "mt-0089": {
+     "id": "mt-0089",
+     "human": true,
+     "truth": 3.1380676897722375,
+     "correct": true,
+     "family": "manning_channel",
+     "depth": 6,
+     "prompt_sha": "991f7e06523e39de",
+     "text": "1. Channel width: <convert>value=170.5; from=cm; to=m</convert>= 1.705\n2. Flow depth: <convert>value=79.4; from=cm; to=m</convert>= 0.794\n3. Flow area: <calc>1.705 * 0.794</calc>= 1.35377\n4. Wetted perimeter: <calc>1.705 + 2*0.794</calc>= 3.293\n5. Hydraulic radius R = A/P: <calc>1.35377 / 3.293</calc>= 0.411105\n6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.03) * 1.35377 * 0.411105**(2/3) * sqrt(0.01582)</calc>= 3.13807\n{\"answer\": 3.13807}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Channel width: <convert>value=170.5; from=cm; to=m</convert>"
+      },
+      {
+       "at": 71,
+       "text": "2. Flow depth: <convert>value=79.4; from=cm; to=m</convert>"
+      },
+      {
+       "at": 138,
+       "text": "3. Flow area: <calc>1.705 * 0.794</calc>"
+      },
+      {
+       "at": 188,
+       "text": "4. Wetted perimeter: <calc>1.705 + 2*0.794</calc>"
+      },
+      {
+       "at": 245,
+       "text": "5. Hydraulic radius R = A/P: <calc>1.35377 / 3.293</calc>"
+      },
+      {
+       "at": 313,
+       "text": "6. Discharge Q = (1/n) A R^(2/3) sqrt(S): <calc>(1/0.03) * 1.35377 * 0.411105**(2/3) * sqrt(0.01582)</calc>"
+      },
+      {
+       "at": 430,
+       "text": "{\"answer\": 3.13807}"
+      }
+     ],
+     "calls": 6,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 3.13807,
+     "ran_out": false
+    },
+    "mt-0087": {
+     "id": "mt-0087",
+     "human": true,
+     "truth": 0.08288162287166703,
+     "correct": true,
+     "family": "venturi_flow",
+     "depth": 7,
+     "prompt_sha": "809976e897dd8367",
+     "text": "1. Inlet diameter: <convert>value=286.3; from=mm; to=m</convert>= 0.2863\n2. Throat diameter: <convert>value=108.9; from=mm; to=m</convert>= 0.1089\n3. Pressure drop: <convert>value=50.29; from=kPa; to=Pa</convert>= 50290\n4. Density of the fluid: <lookup>fluid=WQ-50; property=density; T=10</lookup>= 1297.4\n5. Inlet area: <calc>pi/4 * 0.2863**2</calc>= 0.0643773\n6. Throat area: <calc>pi/4 * 0.1089**2</calc>= 0.0093142\n7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.0093142 * sqrt(2*50290 / (1297.4 * (1 - (0.0093142/0.0643773)**2)))</calc>= 0.0828816\n{\"answer\": 0.0828816}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Inlet diameter: <convert>value=286.3; from=mm; to=m</convert>"
+      },
+      {
+       "at": 73,
+       "text": "2. Throat diameter: <convert>value=108.9; from=mm; to=m</convert>"
+      },
+      {
+       "at": 147,
+       "text": "3. Pressure drop: <convert>value=50.29; from=kPa; to=Pa</convert>"
+      },
+      {
+       "at": 220,
+       "text": "4. Density of the fluid: <lookup>fluid=WQ-50; property=density; T=10</lookup>"
+      },
+      {
+       "at": 306,
+       "text": "5. Inlet area: <calc>pi/4 * 0.2863**2</calc>"
+      },
+      {
+       "at": 362,
+       "text": "6. Throat area: <calc>pi/4 * 0.1089**2</calc>"
+      },
+      {
+       "at": 419,
+       "text": "7. Flow Q = A2 sqrt(2 dp / (rho (1 - (A2/A1)^2))): <calc>0.0093142 * sqrt(2*50290 / (1297.4 * (1 - (0.0093142/0.0643773)**2)))</calc>"
+      },
+      {
+       "at": 564,
+       "text": "{\"answer\": 0.0828816}"
+      }
+     ],
+     "calls": 7,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 0.0828816,
+     "ran_out": false
+    },
+    "mt-0086": {
+     "id": "mt-0086",
+     "human": true,
+     "truth": 1.7139526915500127,
+     "correct": true,
+     "family": "pipe_head_loss",
+     "depth": 9,
+     "prompt_sha": "64f8737300f04599",
+     "text": "1. Flow rate: <convert>value=78.5; from=m^3/h; to=m^3/s</convert>= 0.0218056\n2. Pipe diameter: <convert>value=35.0; from=cm; to=m</convert>= 0.35\n3. Density of the fluid: <lookup>fluid=WT-44; property=density; T=40</lookup>= 1415.1\n4. Dynamic viscosity: <lookup>fluid=WT-44; property=viscosity; T=40</lookup>= 1.78\n5. Cross-sectional area: <calc>pi/4 * 0.35**2</calc>= 0.0962113\n6. Velocity v = Q/A: <calc>0.0218056 / 0.0962113</calc>= 0.226643\n7. Reynolds number: <calc>1415.1 * 0.226643 * 0.35 / 1.78</calc>= 63.0634\n8. Friction factor: <calc>64 / 63.0634</calc>= 1.01485\n9. Head loss h = f (L/D) v^2 / (2g): <calc>1.01485 * (225.7/0.35) * 0.226643**2 / (2*9.80665)</calc>= 1.71395\n{\"answer\": 1.71395}",
+     "spans": [
+      {
+       "at": 0,
+       "text": "1. Flow rate: <convert>value=78.5; from=m^3/h; to=m^3/s</convert>"
+      },
+      {
+       "at": 77,
+       "text": "2. Pipe diameter: <convert>value=35.0; from=cm; to=m</convert>"
+      },
+      {
+       "at": 146,
+       "text": "3. Density of the fluid: <lookup>fluid=WT-44; property=density; T=40</lookup>"
+      },
+      {
+       "at": 232,
+       "text": "4. Dynamic viscosity: <lookup>fluid=WT-44; property=viscosity; T=40</lookup>"
+      },
+      {
+       "at": 315,
+       "text": "5. Cross-sectional area: <calc>pi/4 * 0.35**2</calc>"
+      },
+      {
+       "at": 379,
+       "text": "6. Velocity v = Q/A: <calc>0.0218056 / 0.0962113</calc>"
+      },
+      {
+       "at": 445,
+       "text": "7. Reynolds number: <calc>1415.1 * 0.226643 * 0.35 / 1.78</calc>"
+      },
+      {
+       "at": 519,
+       "text": "8. Friction factor: <calc>64 / 63.0634</calc>"
+      },
+      {
+       "at": 574,
+       "text": "9. Head loss h = f (L/D) v^2 / (2g): <calc>1.01485 * (225.7/0.35) * 0.226643**2 / (2*9.80665)</calc>"
+      },
+      {
+       "at": 684,
+       "text": "{\"answer\": 1.71395}"
+      }
+     ],
+     "calls": 9,
+     "refused": 0,
+     "malformed": 0,
+     "stray_results": 0,
+     "verdict": 1.71395,
+     "ran_out": false
+    }
+   },
+   "n": 90,
+   "errors": 0,
+   "correct": 90,
+   "accuracy": 1.0,
+   "human_n": 90,
+   "human_correct": 90,
+   "human_accuracy": 1.0,
+   "undecided": 0,
+   "calls": 628,
+   "refused": 0,
+   "stray_results": 0,
+   "malformed": 0,
+   "partial": false
+  }
+ },
+ "recorded": {
+  "path": "results/P41-routing-20260915/pool_results.json",
+  "n": 90,
+  "correct": 11,
+  "as_stored": 11
+ },
+ "G1": {
+  "probed": 3,
+  "empty": 0,
+  "differs": 3,
+  "applied": true,
+  "samples": [
+   {
+    "base": "The sky appears blue because of Rayleigh scattering, which i",
+    "member": "The sky appears blue because sunlight, after traveling throu"
+   },
+   {
+    "base": "When answering an email, a careful reader should ensure they",
+    "member": "A careful reader checking an email before answering it typic"
+   },
+   {
+    "base": "A pressure drop in a pipe primarily depends on the fluid's v",
+    "member": "A pressure drop in a pipe depends on the pipe's diameter, le"
+   }
+  ]
+ },
+ "reading": {
+  "failed": 0,
+  "failed_with_a_result_never_used": 0,
+  "failed_with_a_number_from_nowhere": 0,
+  "results_used": 0,
+  "results_ignored": 0,
+  "tool_errors_while_replaying": 0
+ },
+ "pairs": [
+  {
+   "pair": "corpus mode vs tool_calls",
+   "n_paired": 90,
+   "a_total": 90,
+   "b_total": 11,
+   "only_a": 79,
+   "only_b": 0,
+   "discordant": 79,
+   "p_value": 0.0,
+   "different": true,
+   "reading": "the arms differ",
+   "state": "improvement"
+  }
+ ],
+ "verdict": {
+  "G1": true,
+  "state": "improvement",
+  "corpus_mode": 90,
+  "tool_calls": 11,
+  "reading": "THE PATH WAS PART OF IT: 90 in corpus mode against 11 through tool_calls, paired. Read `reading` for how much of the unused-result failure went with it"
+ },
+ "finished": "2026-09-19T13:23:09"
+}

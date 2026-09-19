@@ -1,0 +1,17 @@
+=== session 1 of 1 · srv104734 · L4
+    boot clone: rc=0 4d22875 M1: the pool on Qwen3.5-4B — three attempts, no verdict yet; a Colab session lives sixty minutes; the chain becomes resumable (#230)
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 4d22875 M1: the pool on Qwen3.5-4B — three attempts, no verdict yet; a Colab session lives sixty minutes; the chain becomes resumable (#230)
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.29.0
+    4d22875 M1: the pool on Qwen3.5-4B — three attempts, no verdict yet; a Colab session lives sixty minutes; the chain becomes resumable (#230) | 0.29.0
+    this module trains its own adapter — nothing to carry in
+    [route] probe {'paraphrase': 0.739, 'unrelated': 0.3453}
+    [route] probe {'paraphrase': 0.739, 'unrelated': 0.3453}
+    [route] E2 n 120 misrouted 10 lost 0 abstained 110 right 0
+    [route] F n 120 misrouted 0 lost 120 abstained 0 right 0
+    [route] SAFE AND LOSES REAL-LOOKING TRAFFIC: the same wall arm 1 hit
+    the runner wrote its result — done

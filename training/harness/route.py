@@ -48,6 +48,10 @@ class Region:
     member: str
     keys: tuple[str, ...]
     serve: str              # "local" | "out" — out = measured to fail (P40 / P41)
+    # THE MARK IS ONLY AS GOOD AS ITS MEASUREMENT. `fluids-full` is `out` on 11/90, and that was
+    # the serving path: through `tool_calls` messages it never saw its results where it had learned
+    # to read them. Inline, as its corpus taught, it is 90/90 against the frontier's 66 [ran] M7
+    # arm 0b. The mark changes when the member is back through the release gate, not before.
 
 
 # The keys are the router baseline's, moved next to the decision they inform. Written

@@ -1,0 +1,933 @@
+{
+ "model": "Qwen/Qwen3.5-4B",
+ "served_by": "vllm",
+ "started": "2026-09-19T13:39:35",
+ "arms": {
+  "closed": {
+   "order-00": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "order-01": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": false
+   },
+   "order-02": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": false
+   },
+   "order-03": {
+    "kind": "order",
+    "reply": "A",
+    "truncated": false,
+    "correct": true
+   },
+   "order-04": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "order-05": {
+    "kind": "order",
+    "reply": "A",
+    "truncated": false,
+    "correct": true
+   },
+   "order-06": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "order-07": {
+    "kind": "order",
+    "reply": "A",
+    "truncated": false,
+    "correct": true
+   },
+   "order-08": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "order-09": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": false
+   },
+   "order-10": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "order-11": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "order-12": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": false
+   },
+   "order-13": {
+    "kind": "order",
+    "reply": "A",
+    "truncated": false,
+    "correct": true
+   },
+   "order-14": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "order-15": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "order-16": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "order-17": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "order-18": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "order-19": {
+    "kind": "order",
+    "reply": "A",
+    "truncated": false,
+    "correct": true
+   },
+   "order-20": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": false
+   },
+   "order-21": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": false
+   },
+   "order-22": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": false
+   },
+   "order-23": {
+    "kind": "order",
+    "reply": "A",
+    "truncated": false,
+    "correct": true
+   },
+   "next-00": {
+    "kind": "next",
+    "reply": "C",
+    "truncated": false,
+    "correct": true
+   },
+   "next-01": {
+    "kind": "next",
+    "reply": "B",
+    "truncated": false,
+    "correct": false
+   },
+   "next-02": {
+    "kind": "next",
+    "reply": "D",
+    "truncated": false,
+    "correct": false
+   },
+   "next-03": {
+    "kind": "next",
+    "reply": "A",
+    "truncated": false,
+    "correct": false
+   },
+   "next-04": {
+    "kind": "next",
+    "reply": "D",
+    "truncated": false,
+    "correct": true
+   },
+   "next-05": {
+    "kind": "next",
+    "reply": "C",
+    "truncated": false,
+    "correct": false
+   },
+   "next-06": {
+    "kind": "next",
+    "reply": "A",
+    "truncated": false,
+    "correct": false
+   },
+   "next-07": {
+    "kind": "next",
+    "reply": "A",
+    "truncated": false,
+    "correct": true
+   },
+   "next-08": {
+    "kind": "next",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "next-09": {
+    "kind": "next",
+    "reply": "A",
+    "truncated": false,
+    "correct": false
+   },
+   "next-10": {
+    "kind": "next",
+    "reply": "A",
+    "truncated": false,
+    "correct": false
+   },
+   "next-11": {
+    "kind": "next",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "next-12": {
+    "kind": "next",
+    "reply": "D",
+    "truncated": false,
+    "correct": true
+   },
+   "next-13": {
+    "kind": "next",
+    "reply": "D",
+    "truncated": false,
+    "correct": true
+   },
+   "next-14": {
+    "kind": "next",
+    "reply": "D",
+    "truncated": false,
+    "correct": false
+   },
+   "next-15": {
+    "kind": "next",
+    "reply": "C",
+    "truncated": false,
+    "correct": true
+   },
+   "next-16": {
+    "kind": "next",
+    "reply": "A",
+    "truncated": false,
+    "correct": false
+   },
+   "next-17": {
+    "kind": "next",
+    "reply": "C",
+    "truncated": false,
+    "correct": true
+   },
+   "next-18": {
+    "kind": "next",
+    "reply": "D",
+    "truncated": false,
+    "correct": false
+   },
+   "next-19": {
+    "kind": "next",
+    "reply": "C",
+    "truncated": false,
+    "correct": true
+   },
+   "next-20": {
+    "kind": "next",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "next-21": {
+    "kind": "next",
+    "reply": "D",
+    "truncated": false,
+    "correct": false
+   },
+   "next-22": {
+    "kind": "next",
+    "reply": "D",
+    "truncated": false,
+    "correct": false
+   },
+   "next-23": {
+    "kind": "next",
+    "reply": "C",
+    "truncated": false,
+    "correct": true
+   },
+   "rate-00": {
+    "kind": "rate",
+    "reply": "28",
+    "truncated": false,
+    "correct": true
+   },
+   "rate-01": {
+    "kind": "rate",
+    "reply": "150",
+    "truncated": false,
+    "correct": true
+   },
+   "rate-02": {
+    "kind": "rate",
+    "reply": "50",
+    "truncated": false,
+    "correct": false
+   },
+   "rate-03": {
+    "kind": "rate",
+    "reply": "500",
+    "truncated": false,
+    "correct": true
+   },
+   "rate-04": {
+    "kind": "rate",
+    "reply": "104",
+    "truncated": false,
+    "correct": false
+   },
+   "rate-05": {
+    "kind": "rate",
+    "reply": "150",
+    "truncated": false,
+    "correct": true
+   },
+   "rate-06": {
+    "kind": "rate",
+    "reply": "104",
+    "truncated": false,
+    "correct": false
+   },
+   "rate-07": {
+    "kind": "rate",
+    "reply": "33",
+    "truncated": false,
+    "correct": true
+   },
+   "rate-08": {
+    "kind": "rate",
+    "reply": "63",
+    "truncated": false,
+    "correct": false
+   },
+   "rate-09": {
+    "kind": "rate",
+    "reply": "300",
+    "truncated": false,
+    "correct": true
+   },
+   "rate-10": {
+    "kind": "rate",
+    "reply": "104",
+    "truncated": false,
+    "correct": false
+   },
+   "rate-11": {
+    "kind": "rate",
+    "reply": "150",
+    "truncated": false,
+    "correct": true
+   },
+   "site-00": {
+    "kind": "site",
+    "reply": "10",
+    "truncated": false,
+    "correct": false
+   },
+   "site-01": {
+    "kind": "site",
+    "reply": "3",
+    "truncated": false,
+    "correct": false
+   },
+   "site-02": {
+    "kind": "site",
+    "reply": "5",
+    "truncated": false,
+    "correct": false
+   },
+   "site-03": {
+    "kind": "site",
+    "reply": "15",
+    "truncated": false,
+    "correct": false
+   },
+   "site-04": {
+    "kind": "site",
+    "reply": "10",
+    "truncated": false,
+    "correct": false
+   },
+   "site-05": {
+    "kind": "site",
+    "reply": "3",
+    "truncated": false,
+    "correct": false
+   },
+   "site-06": {
+    "kind": "site",
+    "reply": "5",
+    "truncated": false,
+    "correct": false
+   },
+   "site-07": {
+    "kind": "site",
+    "reply": "15",
+    "truncated": false,
+    "correct": false
+   },
+   "site-08": {
+    "kind": "site",
+    "reply": "10",
+    "truncated": false,
+    "correct": false
+   },
+   "site-09": {
+    "kind": "site",
+    "reply": "3",
+    "truncated": false,
+    "correct": false
+   },
+   "site-10": {
+    "kind": "site",
+    "reply": "5",
+    "truncated": false,
+    "correct": false
+   },
+   "site-11": {
+    "kind": "site",
+    "reply": "15",
+    "truncated": false,
+    "correct": false
+   }
+  },
+  "open": {
+   "order-00": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "order-01": {
+    "kind": "order",
+    "reply": "A",
+    "truncated": false,
+    "correct": true
+   },
+   "order-02": {
+    "kind": "order",
+    "reply": "A",
+    "truncated": false,
+    "correct": true
+   },
+   "order-03": {
+    "kind": "order",
+    "reply": "A",
+    "truncated": false,
+    "correct": true
+   },
+   "order-04": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "order-05": {
+    "kind": "order",
+    "reply": "A",
+    "truncated": false,
+    "correct": true
+   },
+   "order-06": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "order-07": {
+    "kind": "order",
+    "reply": "A",
+    "truncated": false,
+    "correct": true
+   },
+   "order-08": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "order-09": {
+    "kind": "order",
+    "reply": "A",
+    "truncated": false,
+    "correct": true
+   },
+   "order-10": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "order-11": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "order-12": {
+    "kind": "order",
+    "reply": "A",
+    "truncated": false,
+    "correct": true
+   },
+   "order-13": {
+    "kind": "order",
+    "reply": "A",
+    "truncated": false,
+    "correct": true
+   },
+   "order-14": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "order-15": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "order-16": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "order-17": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "order-18": {
+    "kind": "order",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "order-19": {
+    "kind": "order",
+    "reply": "A",
+    "truncated": false,
+    "correct": true
+   },
+   "order-20": {
+    "kind": "order",
+    "reply": "A",
+    "truncated": false,
+    "correct": true
+   },
+   "order-21": {
+    "kind": "order",
+    "reply": "A",
+    "truncated": false,
+    "correct": true
+   },
+   "order-22": {
+    "kind": "order",
+    "reply": "A",
+    "truncated": false,
+    "correct": true
+   },
+   "order-23": {
+    "kind": "order",
+    "reply": "A",
+    "truncated": false,
+    "correct": true
+   },
+   "next-00": {
+    "kind": "next",
+    "reply": "C",
+    "truncated": false,
+    "correct": true
+   },
+   "next-01": {
+    "kind": "next",
+    "reply": "D",
+    "truncated": false,
+    "correct": true
+   },
+   "next-02": {
+    "kind": "next",
+    "reply": "A",
+    "truncated": false,
+    "correct": true
+   },
+   "next-03": {
+    "kind": "next",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "next-04": {
+    "kind": "next",
+    "reply": "D",
+    "truncated": false,
+    "correct": true
+   },
+   "next-05": {
+    "kind": "next",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "next-06": {
+    "kind": "next",
+    "reply": "C",
+    "truncated": false,
+    "correct": true
+   },
+   "next-07": {
+    "kind": "next",
+    "reply": "A",
+    "truncated": false,
+    "correct": true
+   },
+   "next-08": {
+    "kind": "next",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "next-09": {
+    "kind": "next",
+    "reply": "A",
+    "truncated": false,
+    "correct": false
+   },
+   "next-10": {
+    "kind": "next",
+    "reply": "D",
+    "truncated": false,
+    "correct": true
+   },
+   "next-11": {
+    "kind": "next",
+    "reply": "C",
+    "truncated": false,
+    "correct": false
+   },
+   "next-12": {
+    "kind": "next",
+    "reply": "D",
+    "truncated": false,
+    "correct": true
+   },
+   "next-13": {
+    "kind": "next",
+    "reply": "D",
+    "truncated": false,
+    "correct": true
+   },
+   "next-14": {
+    "kind": "next",
+    "reply": "B",
+    "truncated": false,
+    "correct": false
+   },
+   "next-15": {
+    "kind": "next",
+    "reply": "C",
+    "truncated": false,
+    "correct": true
+   },
+   "next-16": {
+    "kind": "next",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "next-17": {
+    "kind": "next",
+    "reply": "C",
+    "truncated": false,
+    "correct": true
+   },
+   "next-18": {
+    "kind": "next",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "next-19": {
+    "kind": "next",
+    "reply": "C",
+    "truncated": false,
+    "correct": true
+   },
+   "next-20": {
+    "kind": "next",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "next-21": {
+    "kind": "next",
+    "reply": "B",
+    "truncated": false,
+    "correct": true
+   },
+   "next-22": {
+    "kind": "next",
+    "reply": "A",
+    "truncated": false,
+    "correct": true
+   },
+   "next-23": {
+    "kind": "next",
+    "reply": "C",
+    "truncated": false,
+    "correct": true
+   },
+   "rate-00": {
+    "kind": "rate",
+    "reply": "138",
+    "truncated": false,
+    "correct": false
+   },
+   "rate-01": {
+    "kind": "rate",
+    "reply": "150",
+    "truncated": false,
+    "correct": true
+   },
+   "rate-02": {
+    "kind": "rate",
+    "reply": "50",
+    "truncated": false,
+    "correct": false
+   },
+   "rate-03": {
+    "kind": "rate",
+    "reply": "500",
+    "truncated": false,
+    "correct": true
+   },
+   "rate-04": {
+    "kind": "rate",
+    "reply": "13",
+    "truncated": false,
+    "correct": false
+   },
+   "rate-05": {
+    "kind": "rate",
+    "reply": "150",
+    "truncated": false,
+    "correct": true
+   },
+   "rate-06": {
+    "kind": "rate",
+    "reply": "21",
+    "truncated": false,
+    "correct": false
+   },
+   "rate-07": {
+    "kind": "rate",
+    "reply": "33",
+    "truncated": false,
+    "correct": true
+   },
+   "rate-08": {
+    "kind": "rate",
+    "reply": "63",
+    "truncated": false,
+    "correct": false
+   },
+   "rate-09": {
+    "kind": "rate",
+    "reply": "300",
+    "truncated": false,
+    "correct": true
+   },
+   "rate-10": {
+    "kind": "rate",
+    "reply": "13",
+    "truncated": false,
+    "correct": false
+   },
+   "rate-11": {
+    "kind": "rate",
+    "reply": "150",
+    "truncated": false,
+    "correct": true
+   },
+   "site-00": {
+    "kind": "site",
+    "reply": "8",
+    "truncated": false,
+    "correct": true
+   },
+   "site-01": {
+    "kind": "site",
+    "reply": "30",
+    "truncated": false,
+    "correct": true
+   },
+   "site-02": {
+    "kind": "site",
+    "reply": "7",
+    "truncated": false,
+    "correct": true
+   },
+   "site-03": {
+    "kind": "site",
+    "reply": "7",
+    "truncated": false,
+    "correct": true
+   },
+   "site-04": {
+    "kind": "site",
+    "reply": "8",
+    "truncated": false,
+    "correct": true
+   },
+   "site-05": {
+    "kind": "site",
+    "reply": "15",
+    "truncated": false,
+    "correct": true
+   },
+   "site-06": {
+    "kind": "site",
+    "reply": "8",
+    "truncated": false,
+    "correct": true
+   },
+   "site-07": {
+    "kind": "site",
+    "reply": "12",
+    "truncated": false,
+    "correct": true
+   },
+   "site-08": {
+    "kind": "site",
+    "reply": "30",
+    "truncated": false,
+    "correct": true
+   },
+   "site-09": {
+    "kind": "site",
+    "reply": "20",
+    "truncated": false,
+    "correct": true
+   },
+   "site-10": {
+    "kind": "site",
+    "reply": "25",
+    "truncated": false,
+    "correct": true
+   },
+   "site-11": {
+    "kind": "site",
+    "reply": "30",
+    "truncated": false,
+    "correct": true
+   }
+  }
+ },
+ "probe": {
+  "reply": "A",
+  "truncated": false
+ },
+ "summary": {
+  "closed": {
+   "order": {
+    "n": 24,
+    "correct": 17
+   },
+   "next": {
+    "n": 24,
+    "correct": 12
+   },
+   "rate": {
+    "n": 12,
+    "correct": 7
+   },
+   "site": {
+    "n": 12,
+    "correct": 0
+   },
+   "errors": 0,
+   "truncated": 0
+  },
+  "open": {
+   "order": {
+    "n": 24,
+    "correct": 24
+   },
+   "next": {
+    "n": 24,
+    "correct": 21
+   },
+   "rate": {
+    "n": 12,
+    "correct": 6
+   },
+   "site": {
+    "n": 12,
+    "correct": 12
+   },
+   "errors": 0,
+   "truncated": 0
+  }
+ },
+ "pair_open_vs_closed": {
+  "n_paired": 72,
+  "a_total": 63,
+  "b_total": 36,
+  "only_a": 29,
+  "only_b": 2,
+  "discordant": 31,
+  "p_value": 0.0,
+  "different": true,
+  "reading": "the arms differ"
+ },
+ "finished": "2026-09-19T13:46:44"
+}
