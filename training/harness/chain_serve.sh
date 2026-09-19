@@ -194,8 +194,13 @@ print(subprocess.run(
     # early [ran] 2026-09-14. Fifth time a log held the answer and a filter
     # kept it out, so tests/test_chain_scripts.py now checks the two agree.
     "grep -E '(serve|gate|tiny|native|matrix|run|arm|resume|cost|domain|P24|sweep|depth|fluids|sim|pool|judge|conf|shim|tunnel|3p|read|skip|train|loss|corpora|draft|desk|zero|code|rank|substrate|release|attr|sim|awq|tiny|precision|kb|route|live|radar)\\]|"
-    "passed [0-9]+|clears the gate|prompts/s|Traceback|[Ee]rror|OutOfMemory|Killed' "
-    "/content/lora-kernel/run.log | tail -3", shell=True,
+    "passed [0-9]+|clears the gate|prompts/s|Traceback|[Ee]rror|OutOfMemory|Killed|"
+    # THE TRAINER'S ONLY SIGN OF LIFE IS ITS STEP BAR. `loss]` above has never matched: this
+    # harness's Trainer prints no loss line at all — zero in M1's logs, zero in arm 0c's 114 steps
+    # [ran] 2026-09-19 — so an abort rule keyed to it fires on a healthy run. tqdm redraws with a
+    # carriage return, which makes 45 minutes of training ONE line to grep: split it first.
+    " [0-9]+/[0-9]+ \\[[0-9:]+<' "
+    "<(tr '\\r' '\\n' < /content/lora-kernel/run.log) | tail -3", shell=True, executable='/bin/bash',
     capture_output=True, text=True).stdout)
 PY
   printf 'print("ALIVE")\n' > /tmp/_valive.py

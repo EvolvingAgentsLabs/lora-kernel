@@ -1,0 +1,39 @@
+{
+ "member": "fluids-full",
+ "base": "Qwen/Qwen3.5-4B",
+ "recipe": {
+  "r": 16,
+  "lora_alpha": 32,
+  "epochs": 3,
+  "lr": 0.0002,
+  "batch": 2,
+  "accum": 8,
+  "max_seq": 1536,
+  "seed": 0,
+  "targets": "q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"
+ },
+ "corpus": "training/physics/data_ff/train.jsonl",
+ "corpus_sha256": "a16883e00f9868d8758506fe56de88caae4fdcd28a8b0e92258c52c70eebfe1f",
+ "started": "2026-09-19T18:06:17",
+ "arms": {},
+ "adapter": "adapters/fluids-full-q35",
+ "adapter_sha256": "567e4978331ad2e3645a344cad7d0dd1c70fc104621286a0c0c06b6284a4dda3",
+ "named_for_serving": {
+  "base": "Qwen/Qwen3.5-4B",
+  "architecture": "Qwen3_5ForConditionalGeneration",
+  "renamed": true,
+  "src": "adapters/fluids-full-q35",
+  "dst": "adapters/fluids-full-q35.renamed",
+  "moved": 256,
+  "before": {
+   "tensors": 256,
+   "land_on_text_stack": 0
+  },
+  "after": {
+   "tensors": 256,
+   "land_on_text_stack": 256
+  }
+ },
+ "packed": 1,
+ "trained_only": "2026-09-19T18:52:24"
+}

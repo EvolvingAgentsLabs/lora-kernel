@@ -1,0 +1,39 @@
+=== session 1 of 1 · srv155441 · L4
+    boot clone: rc=0 f37ab99 M7 arm 0c, pre-registered: fluids-full back through the gate on Qwen3.5-4B, corpus mode
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 f37ab99 M7 arm 0c, pre-registered: fluids-full back through the gate on Qwen3.5-4B, corpus mode
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.29.0
+    f37ab99 M7 arm 0c, pre-registered: fluids-full back through the gate on Qwen3.5-4B, corpus mode | 0.29.0
+    carried the partial results in
+    carried the adapters in (2 chunks)
+    adapters home: 1 packed
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --lora-modules fluids-full=adapters/fluids-full-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --lora-modules fluids-full=adapters/fluids-full-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --lora-modules fluids-full=adapters/fluids-full-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --lora-modules fluids-full=adapters/fluids-full-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --lora-modules fluids-full=adapters/fluids-full-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --lora-modules fluids-full=adapters/fluids-full-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --lora-modules fluids-full=adapters/fluids-full-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --lora-modules fluids-full=adapters/fluids-full-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --lora-modules fluids-full=adapters/fluids-full-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --lora-modules fluids-full=adapters/fluids-full-q35
+    [pool] G1 fluids-full: applied
+    [rank] arm Qwen/Qwen3.5-4B: 90 to draft, 0 resumed
+    [rank] arm Qwen/Qwen3.5-4B 25/90 correct 0 33s
+    [rank] arm Qwen/Qwen3.5-4B 90/90 correct 0 99s
+    [pool] arm base: 0/90 errors 0 calls 5 refused 0
+    [rank] arm fluids-full: 90 to draft, 0 resumed
+    [pool] arm base: 0/90 errors 0 calls 5 refused 0
+    [rank] arm fluids-full: 90 to draft, 0 resumed
+    [rank] arm fluids-full 25/90 correct 21 54s
+    [rank] arm fluids-full: 90 to draft, 0 resumed
+    [rank] arm fluids-full 25/90 correct 21 54s
+    [rank] arm fluids-full 50/90 correct 44 99s
+    [pool] fluids-full · new vs base: improvement (80:0, p=0.0)
+    [pool] fluids-full · new vs frontier: improvement (21:7, p=0.01254)
+    [pool] NOT RELEASED: new vs recorded is REGRESSION
+    the runner wrote its result — done

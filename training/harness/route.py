@@ -52,6 +52,9 @@ class Region:
     # the serving path: through `tool_calls` messages it never saw its results where it had learned
     # to read them. Inline, as its corpus taught, it is 90/90 against the frontier's 66 [ran] M7
     # arm 0b. The mark changes when the member is back through the release gate, not before.
+    # IT WENT BACK THROUGH, ON THE POOL'S BASE, AND DID NOT PASS: retrained on Qwen3.5-4B it is 80/90
+    # against its own 90/90 (0:10 paired) [ran] M7 arm 0c — ten venturi chains right to the number
+    # that end in an `<answer>` tag the corpus never taught. The mark stays `out`.
 
 
 # The keys are the router baseline's, moved next to the decision they inform. Written
