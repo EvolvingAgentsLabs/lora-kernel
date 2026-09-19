@@ -25,81 +25,38 @@ from training.harness.desk_sim import SYSTEM as DESK_SYSTEM
 
 # EACH MEMBER IS A RECORD, NOT A PATH. A corpus is everything the trainer needs and
 # nothing a caller needs; see `contract.py` for why a band and an output kind are
-# now declared, and what P44 and P45 measured to make each of them a field.
+# declared. A MEMBER IS WHAT ITS CORPUS TAUGHT — the tool block, the argument keys,
+# their order, the system prompt and the depth band are all read off the corpus, and
+# `tests/test_prune.py` / `tests/test_contract.py` re-read every corpus and fail if a
+# declaration drifts from what was trained. The same corpora are what the router is
+# trained on: a request belongs to the member whose corpus distribution it falls in,
+# and to the frontier when it falls in none.
 #
-# THE SURFACES ARE READ THE SAME WAY, and for the same reason: P43's OpenClaw turn
-# made zero tool calls because the agent offered its own toolbox to an expert trained
-# on three tags [ran]. `tests/test_prune.py` re-reads every corpus for both fields.
-#
-# ORDER IS DECLARED WHERE IT WAS TAUGHT AND NOWHERE ELSE. The email corpora carry an
-# offered block, and every one of their prompts lists it `thread_history,
-# sender_stats, message` — so that order is a fact about what the adapter read, and
-# rendering it any other way ships a prompt it never saw. `fluids-full` has a block
-# too, reading `calc, lookup, convert`. The two `-mt` corpora carry **no listing at
-# all**: their call order varies row to row, so there is nothing to preserve and
-# `kernel-mt`'s tags are written alphabetically to say so.
-#
-# THE BANDS BELOW ARE READ OFF THE CORPORA, NOT CHOSEN — and doing that rather than
-# asserting it caught three of five wrong on the first pass: `kernel-mt` is 2-4 and
-# not 6-9, `kernel-email` is 1-1 exactly, and `domain-mt` calls nothing at all in
-# 600 of 600 examples **[ran]** 2026-09-15. `tests/test_contract.py` re-reads every
-# corpus and fails if a declaration drifts from what was trained.
+# THE POOL IS THE RELEASED MEMBERS, AND ONLY THEM. The retired ones — the two `-mt`
+# kernels, `kernel-email`, `fluids-full` — live at the tag `v0.1-foundations` with the
+# runs that measured them; fluids remains in `route.REGIONS` as the region measured to
+# fail and served out.
 POOL = {
-    "adapters/kernel-mt": contract.text(
-        "training/harness/data_mt/train.jsonl", contract.band(2, 4),
-        tags=["calc", "convert", "lookup"]),
-    # Zero throughout: this is the physics corpus with the protocol removed and the
-    # reasoning kept, so it never calls a tool. Declaring that is what stops a
-    # router handing it a task whose answer has to come from a handbook.
-    # Its surface is empty for the same reason its band is (0, 0) — not an omission,
-    # the true statement about a corpus that calls nothing in 600 of 600 examples.
-    "adapters/domain-mt": contract.text(
-        "training/physics/data_mt/train.jsonl", contract.band(0, 0), tags=[]),
-    # P35: the same protocol, in the email suite's vocabulary. P34 measured the
-    # physics kernel taking this base from 0 tool calls to 127 and every one
-    # refused — the disposition travels, the names do not [ran].
-    "adapters/kernel-email": contract.text(
-        "training/harness/data_ep/train.jsonl", contract.band(1, 1),
-        note="every one of its 600 examples calls exactly once",
-        tags=["thread_history", "sender_stats", "message"],
-        args={"thread_history": ["thread_id"], "sender_stats": ["address"], "message": ["id"]}),
-    # P36: the ceiling. Tools and judgement in one adapter — the reference point a
-    # pool has to match, not the architecture itself.
-    # 0 is not an error here: 154 of 598 examples answer with no call at all, which
-    # is the corpus teaching that some messages need no lookup. An expert whose floor
-    # is 1 would have to invent a call for those, which is P45's failure mode in the
-    # other direction.
-    # P64: the second useful member — the desk's `commitment` region, the same inbox
-    # and the same three tools plus `inbox`, a different question. Its grades saturated
-    # at 240/240 from 75 examples (P55b); the weights were never brought back, so the
-    # release is the retrain (releases/desk-commitment@v1.json).
+    # P64: the desk's `commitment` region — the same inbox and tools as the triage
+    # member, a different question. Saturates at 240/240 from 75 examples (P55b).
     "adapters/desk-commitment": contract.text(
         "training/harness/data_desk/train.jsonl", contract.band(1, 1),
         note="every one of its 600 examples calls `message` exactly once — the shallow band",
         tags=["inbox", "thread_history", "sender_stats", "message"],
         # ONLY THE KEYS THE CORPUS WRITES: it calls `<message>id=…</message>` and nothing
-        # else, so `thread_history` and `sender_stats` declare no keys (tests/test_prune.py
-        # reads the corpus and refuses a key it never wrote).
+        # else, so `thread_history` and `sender_stats` declare no keys.
         args={"message": ["id"]},
         system=DESK_SYSTEM),
+    # P36: tools and judgement in one adapter. 0 is not an error in its band: 154 of
+    # 598 examples answer with no call at all — the corpus teaching that some messages
+    # need no lookup.
     "adapters/email-full": contract.text(
         "training/harness/data_ef/train.jsonl", contract.band(0, 3),
         tags=["thread_history", "sender_stats", "message"],
         system=EMAIL_SYSTEM,
-        # THE KEYS THE CORPUS WRITES, and why they are declared: P59 recorded OpenClaw
-        # offering its own `message` tool (action, channel, target, …) beside
-        # `lora-inbox__message` (id). Only the key tells them apart.
+        # THE KEYS THE CORPUS WRITES: OpenClaw offers its own `message` tool beside
+        # `lora-inbox__message` (id). Only the key tells them apart (P59).
         args={"thread_history": ["thread_id"], "sender_stats": ["address"], "message": ["id"]}),
-    # P37: the second pool member. A genuinely different subdomain on the same
-    # resident base — one member is not a pool.
-    #
-    # ITS BAND IS THE WHOLE P45 RESULT. Trained on 6-to-9-step chains only, it
-    # over-solves on 18 of 18 cases below that and the bare base beats it at three
-    # steps, 0.167 to 0.000 [ran]. Declaring (6, 9) is what lets a router refuse it
-    # a two-step problem instead of receiving fluent nonsense.
-    "adapters/fluids-full": contract.text(
-        "training/physics/data_ff/train.jsonl", contract.band(6, 9),
-        tags=["calc", "lookup", "convert"]),
 }
 
 # Checked at import, so a member that a caller could not act on never reaches a

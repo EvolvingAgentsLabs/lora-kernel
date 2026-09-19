@@ -95,9 +95,10 @@ def test_where_an_order_was_taught_it_is_not_alphabetised(path, record):
 
 
 def test_an_empty_surface_is_declared_and_not_omitted():
-    """`domain-mt` calls nothing in 600 of 600; `[]` is the true statement."""
-    assert POOL["adapters/domain-mt"]["surface"] == []
-    assert contract.offers(POOL["adapters/domain-mt"], "calc") is False
+    """A corpus that calls nothing declares `[]`, and `[]` is a denial, not an omission."""
+    silent = contract.text("c.jsonl", contract.band(0, 0), tags=[])
+    assert silent["surface"] == []
+    assert contract.offers(silent, "calc") is False
 
 
 def test_a_member_that_says_nothing_is_not_read_as_a_denial():

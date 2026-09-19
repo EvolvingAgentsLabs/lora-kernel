@@ -1,3 +1,5 @@
+> **Deprecated 2026-09-19.** Killed by the rewrite around corpus-distribution routing: the character-level acceptance instrument in `alpha/measure.py` it drove measured format rather than agreement (S0) and was removed; acceptance is now measured by `training/harness/accept_rank.py` through the chain, which `colab-runner` runs. Kept for the reason, not for use.
+
 ---
 name: alpha-runner
 description: Executes acceptance-surface runs with the alpha/ instrument — picks the arm, streams position, persists every case as it lands, and writes the run report. Use whenever a step in docs/EXPERIMENT_PLAN.md calls for an α measurement or a verified-score arm.

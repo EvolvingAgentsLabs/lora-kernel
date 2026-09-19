@@ -1,7 +1,0 @@
-{
-  "base": "Qwen/Qwen2.5-3B-Instruct",
-  "adapters": {
-    "adapters/kernel-email": 119801528
-  },
-  "finished": true
-}
