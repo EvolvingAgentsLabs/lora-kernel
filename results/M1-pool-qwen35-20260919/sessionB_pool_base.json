@@ -1,0 +1,46 @@
+{
+ "base": "Qwen/Qwen3.5-4B",
+ "recipe": {
+  "r": 16,
+  "lora_alpha": 32,
+  "epochs": 3,
+  "lr": 0.0002,
+  "batch": 2,
+  "accum": 8,
+  "max_seq": 1536,
+  "seed": 0,
+  "targets": "q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"
+ },
+ "started": "2026-09-19T14:18:01",
+ "arms": {},
+ "G1": {},
+ "G2": {},
+ "G2_auto": {},
+ "pairs": {},
+ "members": {
+  "desk-commitment": {
+   "adapter": "adapters/desk-commitment-q35",
+   "corpus": "training/harness/data_desk/train.jsonl",
+   "corpus_sha256": "adc58b90daa49e65c4bd9e8a00c8c30878dce31312386805982eb6a5ab594c07",
+   "adapter_sha256": "9eb3b836d72abf2ac21e532cf675445d009f32e27907393b1d5e9216d3f210ef",
+   "named_for_serving": {
+    "base": "Qwen/Qwen3.5-4B",
+    "architecture": "Qwen3_5ForConditionalGeneration",
+    "renamed": true,
+    "src": "adapters/desk-commitment-q35",
+    "dst": "adapters/desk-commitment-q35.renamed",
+    "moved": 256,
+    "before": {
+     "tensors": 256,
+     "land_on_text_stack": 0
+    },
+    "after": {
+     "tensors": 256,
+     "land_on_text_stack": 256
+    }
+   }
+  }
+ },
+ "packed": 1,
+ "trained_only": "2026-09-19T14:58:17"
+}

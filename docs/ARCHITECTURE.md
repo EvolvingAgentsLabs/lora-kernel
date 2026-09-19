@@ -199,9 +199,9 @@ knowledge base's hash and its index's hash: a member is its corpus *and* its bas
 
 Qwen 3.x: `Qwen3.5-4B` (or `2B`) small, `Qwen3.8-27B` large. The 3.x line is hybrid — three
 linear-attention layers to one full-attention layer — and D2's renamed adapter landed
-weights on both kinds. Its `<think>` channel stays off for members. Released members are
-still on `Qwen2.5-3B-Instruct`; milestone 1 moves them, with the 2.5 releases as the
-control.
+weights on both kinds. Its `<think>` channel stays off for members. **The released members are on
+`Qwen3.5-4B` since milestone 1 [ran]** — retrained from the same corpora, each tying its Qwen 2.5
+release (471/475, 240/240); the `@v1` releases on 2.5 stay as the control.
 
 Nothing in §1–§5 names a family. A pair needs one id space and a base PEFT can attach to;
 `Gemma 4 2B / 12B` meets the first and not yet the second **[ran]** P29.

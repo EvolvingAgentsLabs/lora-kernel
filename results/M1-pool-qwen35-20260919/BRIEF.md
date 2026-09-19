@@ -116,3 +116,49 @@ cases, verdict table — and the redesign counter stays 0. What changes is the h
 - the chain uploads the partial results file into a new session, so arms resume instead of restart;
 - M1 runs as **three sessions under an hour each**: `email-full` trained (done, home) · `desk-commitment`
   trained · both carried in, gates and the four arms.
+
+## Result **[ran]** 2026-09-19 · MOVED — both members hold their recorded runs on `Qwen3.5-4B`
+
+Four sessions in all, each under the hour: **A** trained `email-full` (adapter home, the session
+ended at its sixty minutes) · **B** trained `desk-commitment` with `--only … --stop-after-training`,
+52 minutes · **C** carried both in, passed every gate, scored the base on email and **450 of 475** of
+`email-full`, and then the VM stopped answering at ~22 minutes — not the lifetime limit; nothing on
+disk says why · **D** carried in the adapters *and the partial results*, resumed at case 450, and
+finished. Read off `pool_base.json`.
+
+| gate | outcome |
+|---|---|
+| G1 identity on a **full-recipe** adapter | `applied`, 3/3, **both** members — the arm that could kill this first; D2's had been a 60-step toy |
+| G2 tools reachable · G2′ `auto` | both · each probe served by its own member |
+
+| member | on `Qwen3.5-4B` | recorded on `Qwen2.5-3B` | paired | the new base alone |
+|---|--:|--:|---|--:|
+| `email-full` | **471 / 475** · human 347/351 = 0.989 · 1053 calls, 0 refused | 471 / 475 | **tie**, 1 : 1, $p = 1$ | 346 / 475 · human 222/351 = 0.632 · 15 calls |
+| `desk-commitment` | **240 / 240** · 240 calls, 0 refused | 240 / 240 | **tie**, 0 : 0 | 0 / 240 |
+
+`moved` = every gate, each member `tie` or better against its recorded run and `improvement` against
+the new base: **true**. Manifests: `releases/email-full@v2.json`, `releases/desk-commitment@v2.json`;
+the `@v1` releases on Qwen 2.5 stay as the control arm.
+
+**What each number is worth — said, because two of them look better than they are.**
+
+- **The ties are the result.** Same corpora, unchanged recipe, another base and another family: both
+  members land where they were. The recipe's seven projection names reach only 8 of the 32 attention
+  layers of the hybrid stack (the other 24 are linear attention) and all 32 MLPs — and that was enough.
+- **`desk-commitment` beats the base "240 : 0" and that says almost nothing.** Read where it happens:
+  in 236 of 240 cases the bare 4B writes `<thread_history>...</thread_history>` — *the tool block's
+  own placeholder, dots included* — seven times, is refused seven times, and runs out of turns. It is
+  P59's behaviour again: an untrained model copies tags off the block. That arm measures whether a
+  base understands this tag protocol, not what it knows about the task. The gate is passed; the
+  margin is not a finding.
+- **On email the new base is far stronger than the old one: human 0.632 against 0.345**, asking for a
+  tool only 15 times. The adapter still adds 125 : 0 — but the headroom an adapter has to fill is
+  smaller on this base, and that is worth knowing before the next region is trained on it.
+- **Both bands are at the ceiling**, as they were on 2.5. Nothing here ranks anything.
+
+**Not measured:** `knowledge_arm` on the 4B — whether a base this size follows a written procedure
+(P61 was a fact about a 3B; M5 since showed the 4B *answers about* a note it reads); the deep desk
+band; why session C's VM stopped answering.
+
+**Redesign counter: 0.** Five relaunches, every one a fix to the harness — a session's lifetime, a
+pipeline's exit status, one member a session, resuming arms — and none to the question.

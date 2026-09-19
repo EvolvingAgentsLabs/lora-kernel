@@ -114,13 +114,14 @@ no se reentrena, porque lo que aprendió fue a obedecer los enlaces y leer las n
 
 ## Qué se mide
 
-Sobre `Qwen2.5-3B-Instruct`, la base sobre la que se entrenó todo lo liberado hasta ahora.
+Sobre `Qwen2.5-3B-Instruct`, la base sobre la que se construyó el pool — y, desde el hito 1, sobre `Qwen3.5-4B`, donde los dos miembros liberados sostienen sus números.
 
 | qué | el número | corrida |
 |---|---|---|
 | **Un vLLM, una base, varios adaptadores**, cada pedido servido por el suyo | identidad `applied` en cada miembro, herramientas alcanzables, stop honrado | **[ran]** P56 |
 | **`email-full@v1`** — triage de inbox, herramientas y juicio en un solo adaptador | **0,989** en mensajes humanos contra **0,345** de la base; re-servido y re-entrenado, ambos empatan la corrida grabada | **[ran]** P36, P57 |
 | **`desk-commitment@v1`** — un segundo miembro sobre el *mismo inbox*, otra pregunta | **240/240** contra **38/240** de la base, discordantes **202 : 0** | **[ran]** P64 |
+| **El pool sobre la familia Qwen 3.x** — los dos miembros reentrenados sobre `Qwen3.5-4B`, mismos corpus, misma receta (`@v2`) | `email-full` **471/475**, exactamente su release de Qwen 2.5 (empate, 1 : 1); `desk-commitment` **240/240** (empate); identidad `applied` en los dos adaptadores de receta completa | **[ran]** M1 |
 | **Un experto que razona, servido como le enseñó su corpus** — mecánica de fluidos, cadenas de 6 a 9 pasos con una calculadora y un manual por caso | **90/90**, donde el mismo adaptador sobre los mismos casos sacó **11/90** a través de mensajes `tool_calls` (79 : 0, pareado) — y **24 : 0** contra el 66/90 de la frontera. Ningún caso evaluado está en su corpus | **[ran]** M7 arm 0b |
 | **En un 3B, un procedimiento simplemente pegado en el prompt no se sigue** | base + un procedimiento de 914 tokens: **0 llamadas a herramientas en 351/351**, debajo de la barra de mayoría; el experto entrenado le gana **137 : 1** | **[ran]** P61 |
 | **La API rutea por pedido**; el cliente no nombra modelo | replay sobre 240 casos: 0,546 → 0,775, 0 mal-ruteados | **[ran]** P41, P62 |
@@ -158,10 +159,9 @@ exactamente sobre ese canal.
   no visto y *el listado propio de un miembro seguido de otra tarea* quedan a la misma distancia del
   corpus **[ran]** M2 brazo 2. Lo que queda es una representación que separe la tarea de su
   contenido — la proyección aprendida del radar, alcanzada desde el lado del router.
-- **Nada de lo liberado está todavía sobre Qwen 3.x.** `email-full` entrena sobre
-  `Qwen3.5-4B` y su adaptador ya está en casa; las compuertas todavía no corrieron. Una sesión
-  de Colab dura sesenta minutos y un miembro tarda ~45 en entrenar sobre el stack híbrido, así
-  que la mudanza corre como tres sesiones **[ran]** M1.
+- **Sobre la base nueva un adaptador tiene menos que agregar.** El `Qwen3.5-4B` pelado saca 0,632 en
+  email humano donde el 3B sacaba 0,345 **[ran]** M1. Los miembros igual empatan a sus releases
+  viejos; cuánto margen deja un 4B es una pregunta que toda región nueva ahora tiene que hacerse primero.
 - **Fuera de su profundidad de entrenamiento, el experto que razona está de nuevo sin medir.**
   El resultado de que resuelve de más los problemas más cortos (P45) llegó por el camino de
   `tool_calls`, y sigue abierto.
@@ -207,7 +207,7 @@ Cada hito tiene una compuerta y el brazo que puede matarlo, escritos antes de co
 
 | # | hito | estado · el brazo que lo mata primero |
 |---|---|---|
-| **1** | el pool sobre Qwen 3.x chico (`Qwen3.5-4B`) | en curso, tres sesiones · la compuerta de identidad sobre un adaptador *real*; después: pierde, pareado, contra su release de Qwen 2.5 |
+| **1** | el pool sobre Qwen 3.x chico (`Qwen3.5-4B`) | ✅ **[ran] — movido.** Los dos miembros empatan a sus releases de Qwen 2.5; manifiestos `@v2` |
 | **2** | el router como un modelo chico de los corpus | brazos 1 y 2 **[ran]**, ninguno pasa: los dos pierden todo pedido de un remitente no visto · sigue una proyección que factorice la tarea del contenido, sobre conjuntos nuevos |
 | **7** | **la memoria** — el núcleo de la 1.0 | brazo 0 y 0b **[ran]**: el canal funciona · bajo una trayectoria **oráculo** — exactamente las notas correctas abiertas — el experto igual saca ~1/20 en un procedimiento de una familia hermana que nunca entrenó |
 | **5** | la primera región real: procedimientos de enfermería | margen **[ran]**: 29/48 a libro cerrado → 45/48 con la nota abierta, 0/12 → 12/12 en un valor del sitio · sigue: el mismo contenido como *recorridos*, contra la base sin entrenar leyendo las mismas notas |

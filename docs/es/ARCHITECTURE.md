@@ -214,9 +214,10 @@ base de conocimiento y el hash de su índice: un miembro es su corpus *y* su bas
 
 Qwen 3.x: `Qwen3.5-4B` (o `2B`) chico, `Qwen3.8-27B` grande. La línea 3.x es híbrida — tres
 capas de atención lineal por cada capa de atención completa — y el adaptador renombrado de
-D2 aterrizó pesos en los dos tipos. Su canal `<think>` queda apagado para los miembros. Los
-miembros liberados siguen sobre `Qwen2.5-3B-Instruct`; el hito 1 los muda, con las
-liberaciones 2.5 como control.
+D2 aterrizó pesos en los dos tipos. Su canal `<think>` queda apagado para los miembros. **Los miembros
+liberados están sobre `Qwen3.5-4B` desde el hito 1 [ran]** — reentrenados desde los mismos corpus,
+cada uno empatando a su release de Qwen 2.5 (471/475, 240/240); los releases `@v1` sobre 2.5 quedan
+como control.
 
 Nada en §1–§5 nombra una familia. Un par necesita un espacio de ids y una base a la que PEFT
 pueda engancharse; `Gemma 4 2B / 12B` cumple lo primero y todavía no lo segundo **[ran]**

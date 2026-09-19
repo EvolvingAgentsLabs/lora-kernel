@@ -70,7 +70,7 @@ brazos de atribución se compran sólo una vez que hay un efecto que atribuir.
 
 | # | hito | depende de | compuerta | estado |
 |---|---|---|---|---|
-| **1** | el pool en Qwen 3.x chico | D2 ✅ | los dos miembros liberados en `Qwen3.5-4B`, cada uno empatando o ganándole a su release de Qwen 2.5, pareado | — |
+| **1** | el pool en Qwen 3.x chico | D2 ✅ | los dos miembros liberados sobre `Qwen3.5-4B`, cada uno empatando o ganándole a su release de Qwen 2.5, pareado | ✅ **[ran] 2026-09-19 — MOVIDO.** G1 `applied` en los dos adaptadores de receta completa; `email-full` **471/475 = sus 471 grabados**, empate 1 : 1; `desk-commitment` **240/240**, empate; `releases/*@v2.json`. Cuatro sesiones de menos de una hora ([`BRIEF`](../../results/M1-pool-qwen35-20260919/BRIEF.md)) |
 | **2** | el router como un modelo chico de los corpus | los corpus de los miembros | mal-ruteados-a-local no mayor que el del diccionario en prompts para los que el diccionario no fue escrito; abstiene ante texto fuera de distribución | **brazo 1 [ran] 2026-09-19 — no pasa.** Texto extranjero, conjuntos frescos: el diccionario sirve 59/128 localmente, el router de n-gramas **0/128**; pedidos legítimos de remitentes no vistos: el diccionario pierde 0/120, el router pierde **120/120**. El diccionario se queda; **el brazo 2 es un modelo de embeddings**, compartido con el hito 7 |
 | **3** | la mitad grande de un par | 1 | un LoRA en `Qwen3.8-27B` está `applied` al servirse; grande + LoRA le gana a chico + LoRA en la banda profunda, pareado | — |
 | **4** | el par especulativo | 3 | la aceptación de borradores del LoRA chico bajo verificación del LoRA grande supera la aceptación bajo el modelo grande pelado | — |
@@ -467,6 +467,9 @@ Las cuatro que deciden la forma de un paso:
 
 ## 5. Historia
 
+- **2026-09-19** — hito 1 **[ran]: MOVIDO.** Los dos miembros liberados, reentrenados sobre `Qwen3.5-4B`,
+  empatan a sus releases de Qwen 2.5 (471/475, 240/240); manifiestos `@v2`; el pool está sobre la
+  familia 3.x. Cuatro sesiones de menos de una hora, cinco relanzamientos, cada uno un arreglo del arnés.
 - **2026-09-19** — la memoria especificada como el núcleo de 1.0 ([`MEMORY.md`](MEMORY.md)), a
   partir de la explicación en cinco piezas del usuario: biblioteca, radar, tres verbos, un LoRA
   entrenado sobre el hábito de navegar, un árbitro de software. Hito 7 brazo 0b **[ran]**: el

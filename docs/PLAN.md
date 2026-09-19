@@ -60,7 +60,7 @@ arms are bought only once there is an effect to attribute.
 
 | # | milestone | depends on | gate | state |
 |---|---|---|---|---|
-| **1** | the pool on Qwen 3.x small | D2 ✅ | both members released on `Qwen3.5-4B`, each tying or beating its Qwen 2.5 release, paired | — |
+| **1** | the pool on Qwen 3.x small | D2 ✅ | both members released on `Qwen3.5-4B`, each tying or beating its Qwen 2.5 release, paired | ✅ **[ran] 2026-09-19 — MOVED.** G1 `applied` on both full-recipe adapters; `email-full` **471/475 = its recorded 471**, tie 1 : 1; `desk-commitment` **240/240**, tie; `releases/*@v2.json`. Four sessions under an hour each ([`BRIEF`](../results/M1-pool-qwen35-20260919/BRIEF.md)) |
 | **2** | the router as a tiny model of the corpora | the members' corpora | misrouted-to-local no higher than the dictionary's on prompts the dictionary was not written for; abstains on out-of-distribution text | **arm 1 [ran] 2026-09-19 — does not pass.** Foreign text, fresh sets: dictionary 59/128 served locally, n-gram router **0/128**; legitimate requests from unseen senders: dictionary loses 0/120, router loses **120/120**. The dictionary stays; **arm 2 is an embedding model**, shared with milestone 7 |
 | **3** | the large half of one pair | 1 | a LoRA on `Qwen3.8-27B` is applied when served; large + LoRA beats small + LoRA on the deep band, paired | — |
 | **4** | the speculative pair | 3 | acceptance of small-LoRA drafts under large-LoRA verification exceeds acceptance under the bare large model | — |
@@ -430,6 +430,9 @@ that decide the shape of a step:
 
 ## 5. History
 
+- **2026-09-19** — milestone 1 **[ran]: MOVED.** Both released members retrained on `Qwen3.5-4B` tie
+  their Qwen 2.5 releases (471/475, 240/240); `@v2` manifests; the pool is on the 3.x family. Four
+  sessions under an hour each, five relaunches, every one a harness fix.
 - **2026-09-19** — the memory specified as the core of 1.0 ([`MEMORY.md`](MEMORY.md)), from the
   user's five-piece explanation: library, radar, three verbs, a LoRA trained on the habit of
   navigating, a software referee. Milestone 7 arm 0b **[ran]**: the fluids expert, served as its

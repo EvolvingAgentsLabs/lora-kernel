@@ -1,0 +1,79 @@
+{
+  "name": "desk-commitment",
+  "version": 2,
+  "base": "Qwen/Qwen3.5-4B",
+  "recipe": {
+    "r": 16,
+    "lora_alpha": 32,
+    "epochs": 3,
+    "lr": 0.0002,
+    "batch": 2,
+    "accum": 8,
+    "max_seq": 1536,
+    "seed": 0,
+    "targets": "q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"
+  },
+  "corpus": "training/harness/data_desk/train.jsonl",
+  "corpus_sha256": "adc58b90daa49e65c4bd9e8a00c8c30878dce31312386805982eb6a5ab594c07",
+  "adapter_sha256": "9eb3b836d72abf2ac21e532cf675445d009f32e27907393b1d5e9216d3f210ef",
+  "adapter_tarball": "results/M1-pool-qwen35-20260919/adapters_out.tgz",
+  "named_for_serving": {
+    "base": "Qwen/Qwen3.5-4B",
+    "architecture": "Qwen3_5ForConditionalGeneration",
+    "renamed": true,
+    "src": "adapters/desk-commitment-q35",
+    "dst": "adapters/desk-commitment-q35.renamed",
+    "moved": 256,
+    "before": {
+      "tensors": 256,
+      "land_on_text_stack": 0
+    },
+    "after": {
+      "tensors": 256,
+      "land_on_text_stack": 256
+    }
+  },
+  "thinking": "off \u2014 chat_template_kwargs enable_thinking=false in every render",
+  "prompt_sha": "760238bf87d5457c",
+  "suite": "desk:commitment",
+  "n": 240,
+  "score": {
+    "correct": 240,
+    "human_correct": 240
+  },
+  "supersedes": "releases/desk-commitment@v1.json \u2014 Qwen/Qwen2.5-3B-Instruct, kept as the control arm",
+  "pairs": [
+    {
+      "pair": "new vs recorded",
+      "n_paired": 240,
+      "a_total": 240,
+      "b_total": 240,
+      "only_a": 0,
+      "only_b": 0,
+      "discordant": 0,
+      "p_value": 1.0,
+      "different": false,
+      "reading": "a tie: the totals differ but the cases behind them do not",
+      "state": "tie"
+    },
+    {
+      "pair": "new vs base",
+      "n_paired": 240,
+      "a_total": 240,
+      "b_total": 0,
+      "only_a": 240,
+      "only_b": 0,
+      "discordant": 240,
+      "p_value": 0.0,
+      "different": true,
+      "reading": "the arms differ",
+      "state": "improvement"
+    }
+  ],
+  "gates": {
+    "G1": true,
+    "G2": true,
+    "auto": "desk-commitment"
+  },
+  "run": "results/M1-pool-qwen35-20260919/pool_base.json"
+}
