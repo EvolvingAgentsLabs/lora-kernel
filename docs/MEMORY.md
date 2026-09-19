@@ -197,7 +197,7 @@ every expert in this pool is already trained and served in (0.992 that way again
 | verb | the expert writes | the runtime answers |
 |---|---|---|
 | **search** | `<search>situation or doubt</search>` | `= 3 notes` and, per note, `[id] kind · title — when: …`. **Titles and `when` lines only — never bodies** |
-| **open** | `<open>id</open>` | the note's body, slots filled and local rules applied, then its links: `next …` · `requires …` · `uses …` |
+| **open** | `<open>id</open>` | the note's body, slots filled and local rules applied, then its links: `next …` · `requires …` · `uses …` (on the wiki shelf `parent …` · `children …`; every link but `next` carries the note's title beside its id — W2 **[ran]**) |
 | **calc** | `<calc>500 * 20 / (4 * 60)</calc>` | `= 41.6667` — so the model **never does arithmetic in its head**, where it always fails (adapter alone 4/40, adapter + calculator 40/40 **[ran]** P5–P7) |
 
 ```
@@ -220,9 +220,11 @@ Rules of the grammar:
 - **The verbs are taught, so they are frozen with the release** — tag names, attribute order,
   rendering of results. A member trained in another language is taught that language's verbs
   (`<buscar>`, `<abrir>`, `<calcular>`); the release manifest records the grammar's version.
-- **Budgets belong to the runtime:** $k = 3$ notes per search, the token cap per note, at most 24
+- **Budgets belong to the runtime:** $k = 3$ notes per search, the token cap per note, at most ~~24~~ **48**
   opens and 12 searches per task. A walk that reaches a cap ends as *not answered* and the request
   goes to the frontier.
+  *Amended by W2 **[ran]**: the first library's longest procedure is 32 steps, and a cap below the
+  corpus's own depth scores the cap.*
 
 ---
 
@@ -429,7 +431,7 @@ Each package ends in a gate, fits a sixty-minute Colab session where it needs a 
 | # | package | needs a model? | gate |
 |---|---|---|---|
 | W1 | `memory/notes.py`, the lint, and the first library: IV therapy, three procedures as skeleton + steps, a small wiki | no | the lint passes; every walk the oracle needs exists — ✅ **[ran] 2026-09-19**: 94 notes, 0 findings, 72/72 walks ([`BRIEF`](../results/M7-W1-library-20260919/BRIEF.md)) |
-| W2 | `memory/runtime.py`, `layers.py`, `guard.py` on the existing corpus-mode loop | no | **every oracle walk passes through the runtime**, 0 refusals, guard silent; a violating walk is cut |
+| W2 | `memory/runtime.py`, `layers.py`, `guard.py` on the existing corpus-mode loop | no | **every oracle walk passes through the runtime**, 0 refusals, guard silent; a violating walk is cut — ✅ **[ran] 2026-09-19**: 72/72 walks, 949 commands (72 searches, 865 opens, 12 calcs), 0 refused, 0 malformed, guard silent; three violating walks cut in `strict`, continued in `recover`; `<search>` is lexical until W3 ([`BRIEF`](../results/M7-W2-runtime-20260919/BRIEF.md)) |
 | W3 | `memory/index.py`, radar **R0**, beside a lexical baseline | Colab, minutes | recall@3 of the needed note on oracle queries; the baseline reported beside it |
 | W4 | the corpus generator: unmemorisable slots, opaque ids, distractors, dead ends, depth mix | no | no slot value in any statement; no evaluated walk in the corpus |
 | W5 | **the kill arm** — two adapters on one subdomain, with and without the library, scored on a held-out sibling procedure, **as walks, not as questions**; beside them the *bare base with the oracle's notes open* | Colab, two sessions | with-library beats without, paired — **and beats the untrained base reading the same notes**, which on question-answering is already at 45/48 **[ran]** M5 — or the memory stops here at this model size |

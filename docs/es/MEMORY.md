@@ -196,7 +196,7 @@ mensajes `tool_calls` **[ran]** P55).
 | verbo | lo que escribe el experto | lo que responde el runtime |
 |---|---|---|
 | **search** | `<search>situation or doubt</search>` | `= 3 notes` y, por nota, `[id] kind · title — when: …`. **Sólo títulos y líneas `when` — nunca cuerpos** |
-| **open** | `<open>id</open>` | el cuerpo de la nota, con los huecos completados y las reglas locales aplicadas, y después sus enlaces: `next …` · `requires …` · `uses …` |
+| **open** | `<open>id</open>` | el cuerpo de la nota, con los huecos completados y las reglas locales aplicadas, y después sus enlaces: `next …` · `requires …` · `uses …` (en el estante wiki `parent …` · `children …`; todo enlace salvo `next` lleva el título de la nota junto a su id — W2 **[ran]**) |
 | **calc** | `<calc>500 * 20 / (4 * 60)</calc>` | `= 41.6667` — así el modelo **nunca hace aritmética de memoria**, donde siempre falla (adaptador solo 4/40, adaptador + calculadora 40/40 **[ran]** P5–P7) |
 
 ```
@@ -219,9 +219,11 @@ Reglas de la gramática:
 - **Los verbos se enseñan, así que quedan congelados con el release** — nombres de los tags, orden de los atributos,
   renderizado de los resultados. A un miembro entrenado en otro idioma se le enseñan los verbos de ese idioma
   (`<buscar>`, `<abrir>`, `<calcular>`); el manifiesto del release registra la versión de la gramática.
-- **Los presupuestos son del runtime:** $k = 3$ notas por búsqueda, el tope de tokens por nota, como mucho 24
+- **Los presupuestos son del runtime:** $k = 3$ notas por búsqueda, el tope de tokens por nota, como mucho ~~24~~ **48**
   aperturas y 12 búsquedas por tarea. Un recorrido que llega a un tope termina como *no contestado* y el pedido
   va hacia la frontera.
+  *Enmendado por W2 **[ran]**: el procedimiento más largo de la primera biblioteca tiene 32 pasos, y un
+  tope por debajo de la profundidad del propio corpus mide el tope.*
 
 ---
 
@@ -429,7 +431,7 @@ Cada paquete termina en una compuerta, entra en una sesión de Colab de sesenta 
 | # | paquete | ¿necesita un modelo? | compuerta |
 |---|---|---|---|
 | W1 | `memory/notes.py`, el lint, y la primera biblioteca: IV therapy, tres procedimientos como esqueleto + pasos, una wiki chica | no | el lint pasa; existe cada recorrido que necesita el oráculo — ✅ **[ran] 2026-09-19**: 94 notas, 0 hallazgos, 72/72 recorridos ([`BRIEF`](../../results/M7-W1-library-20260919/BRIEF.md)) |
-| W2 | `memory/runtime.py`, `layers.py`, `guard.py` sobre el loop de modo corpus existente | no | **cada recorrido oráculo pasa por el runtime**, 0 rechazos, la guarda en silencio; un recorrido que viola se corta |
+| W2 | `memory/runtime.py`, `layers.py`, `guard.py` sobre el loop de modo corpus existente | no | **cada recorrido oráculo pasa por el runtime**, 0 rechazos, la guarda en silencio; un recorrido que viola se corta — ✅ **[ran] 2026-09-19**: 72/72 recorridos, 949 comandos (72 búsquedas, 865 aperturas, 12 cálculos), 0 rechazados, 0 mal formados, la guarda en silencio; tres recorridos que violan se cortan en `strict` y siguen en `recover`; `<search>` es léxico hasta W3 ([`BRIEF`](../../results/M7-W2-runtime-20260919/BRIEF.md)) |
 | W3 | `memory/index.py`, radar **R0**, al lado de una línea de base léxica | Colab, minutos | recall@3 de la nota necesaria sobre las consultas del oráculo; la línea de base reportada al lado |
 | W4 | el generador de corpus: huecos inmemorizables, ids opacos, distractores, callejones sin salida, mezcla de profundidades | no | ningún valor de hueco en ningún enunciado; ningún recorrido evaluado en el corpus |
 | W5 | **el brazo que mata** — dos adaptadores sobre un subdominio, con y sin la biblioteca, puntuados sobre un procedimiento hermano retenido, **como recorridos, no como preguntas**; al lado, la *base pelada con las notas del oráculo abiertas* | Colab, dos sesiones | con-biblioteca le gana a sin-biblioteca, pareado — **y le gana a la base sin entrenar leyendo las mismas notas**, que en preguntas y respuestas ya está en 45/48 **[ran]** M5 — o la memoria se detiene acá a este tamaño de modelo |
