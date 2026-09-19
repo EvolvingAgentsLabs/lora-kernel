@@ -223,8 +223,9 @@ local experts.** It is the right first region for reasons the record supplies:
 
 **Order — the cheapest thing that can kill it first.**
 
-1. **Headroom, zero GPU where possible:** one chapter, ~40 verifiable questions of the four kinds
-   above, the bare base against them. If the base already orders the steps of a procedure it has
+1. **Headroom first:** three checklists, 72 verifiable questions of the four kinds above, the bare
+   base against them closed book and open book — on Colab, ten minutes of an L4
+   (`training/nursing/headroom.py`, pre-registered). If the base already orders the steps of a procedure it has
    never been shown, there is nothing to buy — that is how the clinical suite died (S1: no model
    ahead of a free local 12B). Headroom first, again.
 2. Then milestone 7's design, unchanged, on this content: trajectories over the chapter's notes,
@@ -243,6 +244,9 @@ number that has never been measured is money: the frontier bill with and without
 share, on real traffic. **Falsified by** a local share that costs more to run than it saves.
 
 ### Milestone 7 — a knowledge base per subdomain, and the trajectory through it as the harness
+
+**The design, at the level of note formats, actions, strategies and corpus, is its own document,
+written to be argued with: [`KNOWLEDGE-TRAJECTORIES.md`](KNOWLEDGE-TRAJECTORIES.md).**
 
 **The idea, the user's.** An expert's subdomain has a body of knowledge of two kinds:
 **encyclopedic** — hierarchical: what a quantity is, which correlation holds in which regime,
@@ -323,7 +327,8 @@ to decide what to retrieve next**: the typed graph is written and never walked; 
 
 Left behind: the FastAPI server, the Gemini-only embedder imported at package root, the three
 API-bound LLM providers, the LLM consolidation pipeline (notes here are authored), faiss, and a
-declared-and-unused `networkx`. The embedder is local instead — `embeddinggemma` is on this machine.
+declared-and-unused `networkx`. The embedder is a small open model **served on Colab** like every
+other model here — nothing runs on the user's machine (instruction of 2026-09-19).
 
 **And its one honest benchmark is a negative result, which arm 4 inherits as its prior.** Indexing
 *what a thing is for* beside *what it is* changed nothing: acc@1 80 % at every mixing weight, n = 10,

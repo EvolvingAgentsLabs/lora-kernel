@@ -8,8 +8,14 @@ no model was ahead of a free local 12B — so headroom is bought first.
 **Source.** Three IV-therapy checklists from *Nursing Skills* (Open RN, CC BY 4.0), 32 + 24 + 14
 top-level steps — text nobody in this repository generated (`training/nursing/source.py`).
 
-**Model, provider, cost.** `qwen3.5:4b` through **Ollama on this laptop**, thinking off,
-temperature 0. No GPU rented, no API, no money. It is the base milestone 1 is moving the pool to.
+**Model, provider, cost.** `Qwen/Qwen3.5-4B` in bf16, served by **vLLM on a Colab L4** through
+`training/harness/chain_serve.sh`, thinking off, temperature 0 — the base milestone 1 is moving the
+pool to, as the pool serves it. No API, no training; about ten minutes of an L4, most of it boot.
+
+*Corrected before any number was used, 2026-09-19.* This brief first named a local Ollama build on
+the user's laptop. The user's instruction is that **no model runs on local resources — Colab for
+everything**; the local run was stopped at 70 of 72 closed-book answers and its file discarded. It
+would not have been comparable anyway: a quantised local build is not the model vLLM serves.
 
 **72 questions, four kinds, fixed seed** (`training/nursing/questions.py`):
 
@@ -22,7 +28,7 @@ temperature 0. No GPU rented, no API, no money. It is the base milestone 1 is mo
 
 **Two arms, in order.** 1. **Closed book** — the question alone: the headroom arm. 2. **Open book**
 — the same question with the one relevant note above it (the checklist; the rate formula; the
-site's protocol line). Arm 2 is free and local, so it is bought even if arm 1 is surprising; it is
+site's protocol line). Arm 2 shares arm 1's session — the boot is the cost, the second pass is minutes — so it is bought even if arm 1 is surprising; it is
 **not** a trained expert and says nothing about one.
 
 **Verdict, written first.**
@@ -40,7 +46,7 @@ site's protocol line). Arm 2 is free and local, so it is bought even if arm 1 is
 
 **Known limits, before the run.** 72 questions by the person who wrote the runner; the checklists'
 wording is as returned by a summarising fetch, not byte-checked; option order is seeded, letters
-are near-balanced (`order` 13 A / 11 B); one model, one run, temperature 0 on a local runtime.
+are near-balanced (`order` 13 A / 11 B); one model, one run, temperature 0.
 Training material only — nothing here advises a patient.
 
 **Redesign counter: 0.**

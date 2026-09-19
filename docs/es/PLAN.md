@@ -246,8 +246,9 @@ registro:
 
 **Orden — lo más barato que puede matarlo, primero.**
 
-1. **Margen, cero GPU donde se pueda:** un capítulo, ~40 preguntas verificables de los cuatro tipos
-   de arriba, la base pelada contra ellas. Si la base ya ordena los pasos de un procedimiento que
+1. **Margen primero:** tres listas de verificación, 72 preguntas verificables de los cuatro tipos de
+   arriba, la base pelada contra ellas a libro cerrado y a libro abierto — en Colab, diez minutos
+   de una L4 (`training/nursing/headroom.py`, pre-registrado). Si la base ya ordena los pasos de un procedimiento que
    nunca se le mostró, no hay nada que comprar — así murió la suite clínica (S1: ningún modelo
    adelante de un 12B local gratis). Margen primero, otra vez.
 2. Después el diseño del hito 7, sin cambios, sobre este contenido: trayectorias sobre las notas del
@@ -267,6 +268,9 @@ local, sobre tráfico real. **Falsificado por** una porción local que cuesta m�
 de lo que ahorra.
 
 ### Hito 7 — una base de conocimiento por subdominio, y la trayectoria por ella como harness
+
+**El diseño, al nivel de formatos de nota, acciones, estrategias y corpus, es un documento propio,
+escrito para que lo discutan: [`KNOWLEDGE-TRAJECTORIES.md`](KNOWLEDGE-TRAJECTORIES.md).**
 
 **La idea, del usuario.** El subdominio de un experto tiene un cuerpo de conocimiento de dos
 clases: **enciclopédico** — jerárquico: qué es una magnitud, qué correlación vale en qué
@@ -351,8 +355,9 @@ y nunca se recorre; el orden de los pasos es `ORDER BY step_index`. Así que el 
 
 Se deja atrás: el servidor FastAPI, el embedder sólo-Gemini importado en la raíz del paquete, los
 tres proveedores de LLM atados a una API, el pipeline de consolidación por LLM (las notas acá se
-escriben), faiss, y un `networkx` declarado y sin usar. El embedder es local en cambio —
-`embeddinggemma` está en esta máquina.
+escriben), faiss, y un `networkx` declarado y sin usar. El embedder es un modelo abierto chico
+**servido en Colab** como todo otro modelo acá — nada corre en la máquina del usuario (instrucción
+del 2026-09-19).
 
 **Y su único benchmark honesto es un resultado negativo, que el brazo 4 hereda como prior.** Indexar
 *para qué sirve* una cosa al lado de *qué es* no cambió nada: acc@1 80 % con cualquier peso de
