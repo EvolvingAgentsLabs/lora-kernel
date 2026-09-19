@@ -1,0 +1,18 @@
+=== session 1 of 1 · srv162322 · L4
+    boot clone: rc=0 87959a9 Where it sits in an organisation: one expert per role, under the agent column — README en/es, with the picture's brief (#240)
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 1fe39e8 M7 arm 0c [ran]: fluids-full on Qwen3.5-4B is not released — 80/90, and all ten are the last line (#241)
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.29.0
+    1fe39e8 M7 arm 0c [ran]: fluids-full on Qwen3.5-4B is not released — 80/90, and all ten are the last line (#241) | 0.29.0
+    this module trains its own adapter — nothing to carry in
+    [radar] lexical P: recall@1 0.0426 recall@3 0.0638 mrr 0.0899 unranked 56/94 · overlap mean 0.0392
+    [radar] lexical E: recall@1 0.0139 recall@3 0.125 mrr 0.2097 unranked 3/72 · overlap mean 0.1919
+    [radar] headroom — GO: the word-matcher finds 0.064 of the needed notes in its top 3 — there is room above it
+    [radar] P · R0 vs lexical, needed note in the top 3: 56:2 p=0.0
+    [radar] E · R0 vs lexical, needed note in the top 3: 1:1 p=1.0
+    [radar] R0 BEATS A WORD-MATCHER AND IS NOT ENOUGH: recall@3 0.6383 under the standard 0.8 (lexical 0.0638, paired 56:2) — read the misses' ranks; this is the gap R1 is for
+    the runner wrote its result — done

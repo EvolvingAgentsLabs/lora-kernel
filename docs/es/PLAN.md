@@ -457,7 +457,7 @@ ni la búsqueda — acá es léxica y el oráculo consulta una nota por su propi
 rango 1 no dice nada sobre el ranking. El presupuesto de 24 aperturas de §3 quedaba por debajo del
 procedimiento de 32 pasos de la biblioteca: ahora 48. Sigue **W3** — el radar R0 junto a esta base léxica.
 
-**W3 — construido; margen [ran] 2026-09-19, cero GPU; la sesión de R0 está pendiente.** `memory/index.py`: por nota
+**W3 — [ran] 2026-09-19: no pasa.** `memory/index.py`: por nota
 $e_{\text{when}}, e_{\text{what}}$, $s(n\mid q)=\langle e(q),e_{\text{when}}(n)\rangle+\beta\langle e(q),e_{\text{what}}(n)\rangle$,
 los 3 primeros, un `Searcher` que el runtime toma sin cambios, el codificador inyectado (acá no corre ningún
 modelo, nunca). Las consultas que cuentan se escribieron **después** de congelar el diseño: **P**, una
@@ -468,6 +468,13 @@ en P un piso *por construcción*, así que "le gana al léxico" solo sería un t
 recall@3 ≥ 0,80. Falsado si R0 apenas empata con el buscador por palabras — entonces el radar no tiene trabajo
 a este tamaño de biblioteca y W5 corre sobre búsqueda léxica
 ([`BRIEF`](../../results/M7-W3-radar-r0-20260919/BRIEF.md)).
+
+**R0 [ran] 2026-09-19 — le gana a un buscador por palabras y no alcanza.** `Qwen3-Embedding-0.6B`, una sesión de L4: en P
+recall@3 **0,638** contra 0,064 del léxico, pareado **56 : 2** — y por debajo del 0,80 escrito antes de correr, así que W3
+**no pasa**; β = 0,5 le gana a sólo-`when:` 30 : 4. Dónde están los 34 fallos: 13 en rango 4–6 (recall@6 0,777,
+recall@10 0,830), 16 más allá del 10, cuatro de los cuales se resuelven dentro de su propio estante. No se afloja nada y el
+conjunto no se retoca (rediseños: 0). Dos consecuencias: **W5 cuenta un fallo de recuperación aparte del puntaje del experto** — o
+corre sobre los resultados de búsqueda del oráculo — y la brecha es de **W6 (R1)**, medida sobre conjuntos nuevos, nunca más sobre P.
 
 ## 2. La familia, y la alternativa
 
@@ -508,6 +515,8 @@ Las cuatro que deciden la forma de un paso:
   72/72 recorridos del oráculo, 0 rechazados, tres recorridos que violan cortados en `strict`. Todavía sin modelo.
 - **2026-09-19** — memoria **W3 construido, margen [ran]:** el índice, un conjunto de consultas escrito después de congelar (P 94, E 72),
   recall@3 léxico 0,064 / 0,125. La sesión de R0 en Colab está pendiente; el veredicto y su estándar de 0,80 están en el brief.
+- **2026-09-19** — memoria **W3 R0 [ran]: no pasa.** recall@3 0,638 en P, 56 : 2 contra el léxico, por debajo del 0,80
+  fijado antes de correr; la mitad de los fallos está en rango 4–10, la otra mitad lejos. La brecha es de W6; W5 cuenta los fallos de recuperación aparte.
 - **2026-09-19** — memoria **W1 [ran]: PASÓ.** La primera biblioteca (`knowledge/nursing-iv/`, 94 notas de
   tres checklists de Open RN, CC BY 4.0), `memory/notes.py` y el lint; 0 hallazgos, 72/72 recorridos del oráculo.
 - **2026-09-19** — hito 1 **[ran]: MOVIDO.** Los dos miembros liberados, reentrenados sobre `Qwen3.5-4B`,
