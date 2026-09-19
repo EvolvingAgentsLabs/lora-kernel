@@ -1,0 +1,44 @@
+=== session 1 of 1 · srv170535 · L4
+    boot clone: rc=0 7128e36 Memory W4 [ran]: the corpus of the navigation habit — walks the runtime rendered, the sibling never walked, gate PASSED (#244)
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 59338c1 The worked example becomes a distributor: article, README and the picture's brief (en/es) (#246)
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.29.0
+    59338c1 The worked example becomes a distributor: article, README and the picture's brief (en/es) (#246) | 0.29.0
+    this module trains its own adapter — nothing to carry in
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [arm] base-reads · control 40/60 credit 26 errors 0 5s
+    [arm] base-reads · control 60/60 credit 41 errors 0 6s
+    [arm] base-walks · heldout: 80 to run, 0 resumed
+    [arm] base-reads · control 60/60 credit 41 errors 0 6s
+    [arm] base-walks · heldout: 80 to run, 0 resumed
+    [arm] base-walks · heldout 20/80 credit 0 errors 0 52s
+    [arm] base-walks · heldout: 80 to run, 0 resumed
+    [arm] base-walks · heldout 20/80 credit 0 errors 0 52s
+    [arm] base-walks · heldout 40/80 credit 0 errors 0 101s
+    [arm] base-walks · heldout: 80 to run, 0 resumed
+    [arm] base-walks · heldout 20/80 credit 0 errors 0 52s
+    [arm] base-walks · heldout 40/80 credit 0 errors 0 101s
+    [arm] base-walks · heldout 20/80 credit 0 errors 0 52s
+    [arm] base-walks · heldout 40/80 credit 0 errors 0 101s
+    [arm] base-walks · heldout 60/80 credit 0 errors 0 178s
+    [arm] base-walks · heldout 60/80 credit 0 errors 0 178s
+    [arm] base-walks · heldout 80/80 credit 0 errors 0 272s
+    [arm] base-walks · control: 60 to run, 0 resumed
+    [arm] base-walks · control: 60 to run, 0 resumed
+    [arm] base-walks · control 20/60 credit 1 errors 0 75s
+    [arm] base-walks · control 40/60 credit 1 errors 0 96s
+    [arm] base-walks · control 40/60 credit 1 errors 0 96s
+    [arm] base-walks · control 60/60 credit 2 errors 0 132s
+    [arm] HEADROOM: the untrained base reads its way to 45/56 on the headline — there is room; buy the trained arms
+    the runner wrote its result — done

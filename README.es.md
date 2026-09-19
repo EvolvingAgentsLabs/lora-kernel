@@ -122,8 +122,13 @@ exactamente sobre ese canal.
   medido su margen: un 4B sin entrenar pasa de 29/48 a libro cerrado a 45/48 con la nota correcta
   abierta, y de 0/12 a 12/12 en un valor que cambió el protocolo de una unidad **[ran]** M5. Todavía
   no hay nada entrenado sobre ella, y la recuperación no está probada.
-- **La memoria está especificada, no construida.** Su afirmación central no está probada: que
-  una biblioteca extiende a un experto a un *procedimiento sobre el que nunca entrenó*. Sin
+- **La afirmación central de la memoria se midió una vez y no pasó.** Que una biblioteca extiende a un
+  experto a un *procedimiento sobre el que nunca entrenó*: en 56 recorridos retenidos el brazo con
+  biblioteca saca 35, el mismo experto sin la biblioteca 2, el base sin entrenar navegando solo 0 — y el
+  base sin entrenar *con las notas correctas delante* 45 (6 : 16 pareado, $p=0{,}052$) **[ran]** M7-W5.
+  La navegación se transfirió; leer una nota que da dos valores, una forma que el corpus nunca mostró, no
+  (0 de 11). La biblioteca, el árbitro y el corpus están construidos (W1–W4); el radar llega a recall@3
+  0,64 contra una vara de 0,80 (W3). Sin
   ella, un especialista apenas fuera de su región está confiadamente equivocado — 30/30
   adentro, 1/20 en familias hermanas **[ran]** P14.
 - **El router sigue siendo un diccionario de palabras clave.** Su primer reemplazo aprendido,
@@ -218,7 +223,7 @@ Cada hito tiene una compuerta y el brazo que puede matarlo, escritos antes de co
 |---|---|---|
 | **1** | el pool sobre Qwen 3.x chico (`Qwen3.5-4B`) | ✅ **[ran] — movido.** Los dos miembros empatan a sus releases de Qwen 2.5; manifiestos `@v2` |
 | **2** | el router como un modelo chico de los corpus | brazos 1 y 2 **[ran]**, ninguno pasa: los dos pierden todo pedido de un remitente no visto · sigue una proyección que factorice la tarea del contenido, sobre conjuntos nuevos |
-| **7** | **la memoria** — el núcleo de la 1.0 | brazo 0 y 0b **[ran]**: el canal funciona · bajo una trayectoria **oráculo** — exactamente las notas correctas abiertas — el experto igual saca ~1/20 en un procedimiento de una familia hermana que nunca entrenó |
+| **7** | **la memoria** — el núcleo de la 1.0 | brazo 0 y 0b **[ran]**: el canal funciona · bajo una trayectoria **oráculo** — exactamente las notas correctas abiertas — el experto igual saca ~1/20 en un procedimiento de una familia hermana que nunca entrenó · **W1–W4 construidos; W5 [ran], no pasa:** 35/56 contra el base sin entrenar que lee, 45/56 — la navegación se transfirió, una nota de dos valores no se leyó |
 | **5** | la primera región real: procedimientos de enfermería | margen **[ran]**: 29/48 a libro cerrado → 45/48 con la nota abierta, 0/12 → 12/12 en un valor del sitio · sigue: el mismo contenido como *recorridos*, contra la base sin entrenar leyendo las mismas notas |
 | **3–4** | la mitad grande de un par, y la aceptación entre las mitades | no empezado · grande + LoRA no le gana a chico + LoRA; después: aceptación no mayor que bajo el modelo grande pelado |
 | **6** | la política del servicio, con la factura | no empezado · la parte local cuesta más de lo que ahorra |

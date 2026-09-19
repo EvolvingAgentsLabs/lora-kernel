@@ -105,3 +105,86 @@ GPU=L4 BRANCH=main RUN_DIR=$R MODULE=training.nursing.walks_arm MARGS="--arms ba
 A session that ends with the run undecided writes `"trained_only"` — the chain's marker for *this
 session is over, the run is not* — and the next session carries the results file in; only a decided
 run writes `"finished"`, which the chain reads as *no further sessions*.
+
+## Result **[ran]** 2026-09-19 · DOES NOT PASS W5 AS WRITTEN — the library arm ties the untrained base that reads, and the tie leans to a loss
+
+Four Colab sessions of the ceiling of six: S0 (L4, headroom, 15 min), SA and SB (A100, one training
+each, 114 steps, ~45 min; both adapters `named for serving`, 256 tensors), SC (L4, scoring, 21 min; S0's
+280 records resumed, nothing re-run, nothing retrained). G1 `applied` 3/3 on both adapters. 0 transport
+errors, 0 missing records, 0 `context` in any arm on any slice. Read off `walks_arm.json`.
+
+**Headline — held-out procedure, depth ≤ 9, final line the procedure's own, n = 56.**
+
+| arm | right | format | unread | wrong | **credit** |
+|---|--:|--:|--:|--:|--:|
+| `base-reads` — untrained base, the oracle's notes open | 23 | 22 | 0 | 11 | **45** |
+| `base-walks` — untrained base, navigating by itself | 0 | 0 | 0 | 56 | **0** |
+| `nolib` — trained, no verbs, no notes | 2 | 0 | 0 | 54 | **2** |
+| **`withlib`** — trained on the habit of navigating | 30 | 5 | 1 | 20 | **35** |
+| trivial policy (floor, zero GPU) | | | | | 3 |
+
+**The pairs**, by case id, exact two-sided sign test on discordant pairs,
+$p = 2\sum_{k\le\min(b,c)}\binom{b+c}{k}2^{-(b+c)}$:
+
+| pair | only a : only b | $p$ | state |
+|---|--:|--:|---|
+| `withlib` vs `nolib` | 35 : 2 | ≈ 0 | **improvement** — the library is what the trained expert answers from |
+| **`withlib` vs `base-reads`** | **6 : 16** | **0.052** | **tie** — and 16 of the 22 discordant cases are the base's. The verdict asks for *beats*: **not passed** |
+| `withlib` vs `base-walks` | 35 : 0 | ≈ 0 | improvement — the price of navigation, untrained, is everything |
+
+As the brief said before the run: this pair ties, the verdict is not softened, the decision is the
+user's. **Redesign count of W5: 0. The grader is not touched.**
+
+**Beside the headline, never folded in** (credit):
+
+| slice | n | `base-reads` | `base-walks` | `nolib` | `withlib` |
+|---|--:|--:|--:|--:|--:|
+| held-out, final line shared with another procedure | 22 | 9 | 0 | 0 | **18** |
+| held-out, depth 15 (deeper than any trained walk) | 2 | 2 | 0 | 0 | 0 |
+| held-out quantity, site / case layer | 17 | 17 | 0 | 2 | 9 |
+| held-out quantity, textbook layer | 6 | 6 | 0 | 0 | 2 |
+| control (trained procedures) | 60 | 41 | 2 | 20 | **58** |
+| control without `rate` | 45 | 34 | 2 | 8 | 43 |
+| control `rate` | 15 | 7 | 0 | 12 | 15 |
+
+Walking mechanics over all 140 walks: `withlib` 3 refused verbs, 0 malformed, 0 ran out, 4 retrieval
+misses (0 on the headline); `base-walks` 368 refused, 6 ran out, 30 retrieval misses.
+
+**Where the 21 headline failures are — read from the records, zero GPU.**
+
+- **12 are `quantity`, and they are one failure.** In all 12 the walk is clean — the right note opened,
+  the guard silent, no retrieval miss — and `base-reads` is `right` on all 12. The held-out procedure
+  is the only one whose note states **two values for one quantity**: pressure for *n* minutes, *m* for a
+  patient on anticoagulants. Asked the first value the adapter is right **11 of 12**; asked the second
+  it is right **0 of 11** — it answers the first (`12 minutes` where 20 was asked) or recites both
+  (`12 minutes (15 minutes for a patient on anticoagulant medication)`). The twelfth is a range cut
+  short (`2 minutes` for `2-3 minutes`). **Of the 108 trained quantity rows, 0 read a note with more
+  than one value** (cap seconds, flush mL). A corpus with one difficulty teaches a floor: the adapter
+  learned *copy the number on the note*; the untrained base reads the condition.
+- **8 are `carry/middle-find`** (8 of that variant's 14): entering a procedure in the middle with the
+  page hidden, the place is found one step off or the walk stays on one step. `base-reads`, handed the
+  right notes, is also wrong on 5 of these 8 — this is the hard variant for everyone.
+- **1 is `unread`**: the right line, from a walk that never opened the note that states it. No credit,
+  by the rule written before the run.
+
+**What did transfer.** Navigation of a procedure never walked in training: 0 retrieval misses on the
+headline, 3 refused verbs in 140 walks against the untrained base's 368, 35 : 0 against that base
+navigating by itself. And where the base that reads is weakest — the shared-line rows, 18/22 against
+9/22; control, 58/60 against 41/60 — the adapter is ahead. What did not transfer is *reading a kind of
+note the corpus never showed*.
+
+**The live peek clipped a verdict line.** The chain shows the last three matching lines; four were
+printed in a burst and `withlib vs nolib` never reached `SC_chain.log`. The pairs are read from the
+JSON, as every verdict is.
+
+**What follows — not run, the user's decision.** Two arms, each with its prediction and what kills it:
+
+1. **Composition — no training, one L4 session. Bought first; it is the cheap one.** The adapter walks;
+   the *bare base* writes the final line from the notes the walk opened (same vLLM, the LoRA simply not
+   named for the last call). *Prediction:* the 12 quantity failures fall to ≤ 2 and the pair with
+   `base-reads` becomes a tie in totals or better. *Falsified if* quantity stays wrong — then the
+   failure is not the reading, and this section's account is wrong.
+2. **Corpus shape — two A100 sessions.** Two-valued and conditional notes added to the *trained*
+   procedures' rows, retrain, score on a **new** held-out set written after the freeze — never again
+   on these 80. *Prediction:* quantity recovers, `carry/middle-find` does not. *Falsified if* the
+   second value is still missed after the corpus shows the shape.

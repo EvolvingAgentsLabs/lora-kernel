@@ -66,7 +66,7 @@ arms are bought only once there is an effect to attribute.
 | **4** | the speculative pair | 3 | acceptance of small-LoRA drafts under large-LoRA verification exceeds acceptance under the bare large model | — |
 | **5** | the first real region, by hand | 1, 2, a sandbox, keys rotated | the release gate, on a suite with a verifier nobody here generated | **region named 2026-09-19: nursing procedures and health-education material** (Open RN *Nursing Skills*, CC BY 4.0, first); headroom arm next, zero GPU |
 | **6** | the service policy, with the bill | 2, 4, 5 | the local share saves more than it costs, on real traffic | — |
-| **7** | **a knowledge base per subdomain, and the trajectory through it as the harness** — on fluid mechanics, split into subdomains | 1; shares its embedding model with 2's arm 2; independent of 3–6, **runs next** | an expert trained to navigate and follow notes answers families it never trained on, where the same expert without the base is at 1/20 | — |
+| **7** | **a knowledge base per subdomain, and the trajectory through it as the harness** — on fluid mechanics, split into subdomains | 1; shares its embedding model with 2's arm 2; independent of 3–6, **runs next** | an expert trained to navigate and follow notes answers families it never trained on, where the same expert without the base is at 1/20 | 🔶 **W1–W4 built [ran]; W3's radar and W5's kill arm [ran] and not passed.** W5: the library arm 35/56 against the untrained base that reads at 45/56 (6 : 16, $p=0.052$), 35 : 2 over no-library — navigation transferred, reading a two-valued note did not. Next is the user's call: composition, no training |
 
 ### Milestone 1 — the pool on Qwen 3.x small
 
@@ -465,7 +465,20 @@ W(n)|/|W(n)|\ge 0.5$, with the numbers the note supplies; the walk is read off t
 `right` · `format` · `unread` · `wrong`. All 740 oracle rows are `right` under it; no row was
 regenerated. A third redesign ends the step.
 
-**W5, built and pre-registered — not run.** `training/nursing/walks_arm.py`: `base-reads` (untrained
+**W5 [ran] 2026-09-19 — DOES NOT PASS AS WRITTEN.** On the headline (n = 56) the library arm scores
+**35**, the untrained base reading the oracle's notes **45**, the no-library arm 2, the untrained base
+navigating by itself 0. `withlib` vs `nolib` 35 : 2 and vs `base-walks` 35 : 0 — but **vs `base-reads`
+6 : 16, $p = 0.052$**: a tie that leans to a loss, and the verdict asks for *beats*. Twelve of the 21
+failures are one failure: the held-out note states two values for one quantity, no trained quantity row
+ever read such a note (0 of 108), and the adapter answers the first value — 11/12 when the first is
+asked, 0/11 when the second is, the base that reads right on all 12. Eight are `carry/middle-find`, where
+the base is also wrong on 5. Navigation itself transferred: 0 retrieval misses on the headline, 3 refused
+verbs in 140 walks against 368, control 58/60 against 41/60. Redesigns: 0; the grader is not touched.
+**Next, the user's decision:** composition — the adapter walks, the bare base writes the final line — one
+L4 session, no training; then, if bought, a corpus that shows two-valued notes, scored on a new held-out
+set ([`BRIEF`](../results/M7-W5-kill-arm-20260919/BRIEF.md)).
+
+**W5, as built and pre-registered.** `training/nursing/walks_arm.py`: `base-reads` (untrained
 base, the oracle's notes open), `base-walks`, `nolib`, `withlib`. Headroom session first: `base-reads`
 at ≥ 51/56 on the headline stops the step before training. Headline n = 56 (held-out, depth ≤ 9, final
 line not shared); beside it the 2 depth-15 rows, the 22 shared-line rows, quantity by layer, control
@@ -508,6 +521,9 @@ that decide the shape of a step:
 - **2026-09-19** — memory **W4 [ran]: PASSED.** The corpus generator drives the runtime: 600 walks, 0 values in a
   statement, 0 evaluated cases in the corpus, 0 held-out opens, 0 rows the referee does not reproduce; `discontinue-iv`
   held out; long walks are windows with the state carried. No model yet.
+- **2026-09-19** — memory **W5 [ran]: does not pass as written.** Headline 35/56 against the untrained base that
+  reads at 45/56 (6 : 16, $p=0.052$); 35 : 2 over no-library, 35 : 0 over the base navigating alone. 12 of 21 failures
+  are the second of two values on a kind of note the corpus never showed. Navigation transferred; that reading did not.
 - **2026-09-19** — W4's grader replaced after an adversarial review (redesign 2: it failed on a paraphrase and passed
   on a decoy number); **W5 built and pre-registered**, headroom session first, headline n = 56, floor 3/56. Not run.
 - **2026-09-19** — memory **W2 [ran]: PASSED.** The runtime, layers and guard on the unchanged corpus-mode loop;

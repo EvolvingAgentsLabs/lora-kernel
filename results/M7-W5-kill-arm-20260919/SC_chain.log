@@ -1,0 +1,31 @@
+=== session 1 of 1 · srv191436 · L4
+    boot clone: rc=0 431b06e The article's closing: an invitation to test it, with the licence and where the idea began (en/es) (#248)
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 431b06e The article's closing: an invitation to test it, with the licence and where the idea began (en/es) (#248)
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.29.0
+    431b06e The article's closing: an invitation to test it, with the licence and where the idea began (en/es) (#248) | 0.29.0
+    carried the partial results in
+    carried the adapters in (4 chunks)
+    adapters home: 2 packed
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules nolib=adapters/nursing-walks-nolib-q35 withlib=adapters/nursing-walks-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules nolib=adapters/nursing-walks-nolib-q35 withlib=adapters/nursing-walks-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules nolib=adapters/nursing-walks-nolib-q35 withlib=adapters/nursing-walks-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules nolib=adapters/nursing-walks-nolib-q35 withlib=adapters/nursing-walks-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules nolib=adapters/nursing-walks-nolib-q35 withlib=adapters/nursing-walks-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules nolib=adapters/nursing-walks-nolib-q35 withlib=adapters/nursing-walks-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules nolib=adapters/nursing-walks-nolib-q35 withlib=adapters/nursing-walks-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules nolib=adapters/nursing-walks-nolib-q35 withlib=adapters/nursing-walks-q35
+    [arm] nolib · control 40/60 credit 5 errors 0 5s
+    [arm] nolib · control 60/60 credit 20 errors 0 7s
+    [arm] withlib · heldout: 80 to run, 0 resumed
+    [arm] withlib · heldout 60/80 credit 45 errors 0 43s
+    [arm] withlib · heldout 80/80 credit 53 errors 0 50s
+    [arm] withlib · control: 60 to run, 0 resumed
+    [arm] headline · withlib vs base-reads: tie (6:16, p=0.05248)
+    [arm] headline · withlib vs base-walks: improvement (35:0, p=0.0)
+    [arm] DOES NOT PASS W5 AS WRITTEN: withlib vs base-reads is tie
+    the runner wrote its result — done
