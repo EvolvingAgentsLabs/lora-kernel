@@ -1,0 +1,40 @@
+{
+ "walks_from": "results/M7-W5-kill-arm-20260919/walks_arm.json",
+ "ceiling": {
+  "headline": 56,
+  "replayable": 54,
+  "unreplayable": [
+   "w5h-012",
+   "w5h-033"
+  ],
+  "rebuilt_heads": [
+   "w5h-011",
+   "w5h-013",
+   "w5h-014",
+   "w5h-024",
+   "w5h-035",
+   "w5h-039",
+   "w5h-050"
+  ],
+  "walk_clean": 45,
+  "ceiling_clean_walk_and_base_reads_has_credit": 41,
+  "withlib_credit": 35,
+  "base_reads_credit": 45,
+  "opened_set_equals_oracle_walk": 37,
+  "prompt_identical_to_base_reads": 30,
+  "withlib_clean_walk_quantity_failures": [
+   "w5h-069",
+   "w5h-075",
+   "w5h-076",
+   "w5h-077",
+   "w5h-078",
+   "w5h-079",
+   "w5h-080",
+   "w5h-081",
+   "w5h-082",
+   "w5h-083",
+   "w5h-084",
+   "w5h-086"
+  ]
+ }
+}

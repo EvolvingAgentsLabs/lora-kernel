@@ -568,6 +568,12 @@ Las cuatro que deciden la forma de un paso:
 - **2026-09-19** — memoria **W5 [ran]: no pasa tal como está escrito.** Titular 35/56 contra el base sin entrenar que
   lee, 45/56 (6 : 16, $p=0{,}052$); 35 : 2 sobre sin-biblioteca, 35 : 0 sobre el base navegando solo. 12 de 21 fallas
   son el segundo de dos valores en un tipo de nota que el corpus nunca mostró. La navegación se transfirió; esa lectura no.
+- **2026-09-19** — memoria **W5b, pre-registrado, pendiente**: composición — los recorridos grabados de
+  `withlib` reproducidos (115/140 exactos, 19 más probados o leídos del registro, 6 irreproducibles y
+  excluidos), y el base pelado escribe la línea final. Es atribución de la falla de W5, no un segundo intento:
+  sin GPU ya se sabe que su techo es 41/54 contra los 45 de `base-reads`, así que no puede pasar la vara de
+  W5; la predicción es que quedan ≤ 2 de las 12 fallas de cantidad con recorrido limpio
+  ([`BRIEF`](../../results/M7-W5b-composition-20260919/BRIEF.md)).
 - **2026-09-19** — el evaluador de W4 reemplazado tras una revisión adversarial (rediseño 2: fallaba con una paráfrasis y
   aprobaba con un número señuelo); **W5 construido y pre-registrado**, primero la sesión de margen, titular n = 56, piso 3/56. Sin correr.
 - **2026-09-19** — memoria **W2 [ran]: PASÓ.** El runtime, las capas y la guarda sobre el loop de modo corpus sin tocarlo;

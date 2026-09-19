@@ -524,6 +524,11 @@ that decide the shape of a step:
 - **2026-09-19** — memory **W5 [ran]: does not pass as written.** Headline 35/56 against the untrained base that
   reads at 45/56 (6 : 16, $p=0.052$); 35 : 2 over no-library, 35 : 0 over the base navigating alone. 12 of 21 failures
   are the second of two values on a kind of note the corpus never showed. Navigation transferred; that reading did not.
+- **2026-09-19** — memory **W5b, pre-registered, pending**: composition — `withlib`'s recorded walks
+  replayed (115/140 exactly, 19 more proven or read off the record, 6 unreplayable and excluded), the bare
+  base writes the final line. Attribution of W5's failure, not a second attempt: zero GPU already says its
+  ceiling is 41/54 against `base-reads`' 45, so it cannot clear W5's bar; the prediction is that ≤ 2 of the
+  12 clean-walk quantity failures remain ([`BRIEF`](../results/M7-W5b-composition-20260919/BRIEF.md)).
 - **2026-09-19** — W4's grader replaced after an adversarial review (redesign 2: it failed on a paraphrase and passed
   on a decoy number); **W5 built and pre-registered**, headroom session first, headline n = 56, floor 3/56. Not run.
 - **2026-09-19** — memory **W2 [ran]: PASSED.** The runtime, layers and guard on the unchanged corpus-mode loop;
