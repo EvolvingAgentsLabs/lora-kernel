@@ -252,6 +252,7 @@ reason: `--prune` (its own tool surface), `--member-prompt` (the prompt its corp
 | [`docs/RECORD.md`](docs/RECORD.md) | everything measured, including what failed; each line names its run |
 | [`docs/FOUNDATIONS.md`](docs/FOUNDATIONS.md) | the mathematics, tied to the runs that instantiate it |
 | [`docs/SERVING.md`](docs/SERVING.md) · [`docs/OPENCLAW.md`](docs/OPENCLAW.md) · [`docs/SUBSTRATE-GATE.md`](docs/SUBSTRATE-GATE.md) | running it |
+| [`docs/articles/`](docs/articles/2026-09-it-was-the-harness.md) | *We thought a small model couldn't reason. It was our harness* — the finding, the big picture, the roadmap |
 | [`CLAUDE.md`](CLAUDE.md) | instructions for coding agents, and the measurement rules that were paid for |
 
 **The record before the rewrite of 2026-09-19** — seventy-four run directories, the retired experts,

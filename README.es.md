@@ -271,6 +271,7 @@ modelo).
 | [`docs/es/RECORD.md`](docs/es/RECORD.md) | todo lo medido, incluido lo que falló; cada línea nombra su corrida |
 | [`docs/es/FOUNDATIONS.md`](docs/es/FOUNDATIONS.md) | la matemática, atada a las corridas que la instancian |
 | [`docs/es/SERVING.md`](docs/es/SERVING.md) · [`docs/es/OPENCLAW.md`](docs/es/OPENCLAW.md) · [`docs/es/SUBSTRATE-GATE.md`](docs/es/SUBSTRATE-GATE.md) | correrlo |
+| [`docs/articles/`](docs/articles/2026-09-era-el-arnes.es.md) | *Creíamos que un modelo chico no podía razonar. Era nuestro arnés* — el hallazgo, el panorama, la hoja de ruta |
 | [`CLAUDE.md`](CLAUDE.md) | instrucciones para agentes de código, y las reglas de medición que ya se pagaron |
 
 **El registro anterior a la reescritura de 2026-09-19** — setenta y cuatro directorios de
