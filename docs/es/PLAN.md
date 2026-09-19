@@ -322,6 +322,47 @@ enunciado), y la jerarquía es un brazo, no un supuesto.
 | **4** | recuperación: léxica plana · embeddings · embeddings restringida a la trayectoria hasta ahora (enlaces y vecinos de la última nota abierta) | si una estrategia de trayectoria le gana a una búsqueda plana; el resultado previo del workspace dice no asumirlo |
 | **5** | editar sin reentrenar: cambiar el coeficiente de una nota después de entrenar; la respuesta tiene que seguir a la base, no a los pesos | que el conocimiento vive donde se puede editar |
 
+**Qué se reutiliza de `evolving-memory`, y qué dice su única medición — auditado [read]/[ran]
+2026-09-19** (sugerencia del usuario; `EvolvingAgentsLabs/evolving-memory` en `a635898`, Apache-2.0,
+su suite corrida acá: 184 pasan, 12 se saltean por falta de una API key). Es un motor de
+*consolidación de trazas* — trazas de un agente comprimidas por un LLM en una estrategia con pasos
+ordenados, embebida, recuperada por top-k plano. **No** es una base de notas escritas y editables, y
+**ningún código suyo lee una arista para decidir qué recuperar después**: el grafo tipado se escribe
+y nunca se recorre; el orden de los pasos es `ORDER BY step_index`. Así que el brazo de trayectoria
+(brazo 4) es trabajo nuevo, no un port. Lo que se toma:
+
+- **`resolver/` (~370 líneas) — el índice dual.** Cada ítem embebido dos veces, *qué es* y *para qué
+  sirve*, se busca en la **unión** de ambos, y cada sub-puntaje se conserva en el match en vez de
+  colapsarse — que es lo que hace falta para comparar tres brazos de recuperación. Las notas
+  enciclopédicas y operacionales son esa misma división. Su boost de historial con tope
+  (`MAX_BOOST = 0.05`: la popularidad desempata, nunca da vuelta la relevancia) se copia como regla.
+- **Los dobles de prueba offline** — un encoder de bolsa de palabras hasheada y un índice de coseno
+  exhaustivo, ~40 líneas — para que la base sea testeable en CI sin GPU y sin clave. Al tamaño de la
+  base de un subdominio el índice exhaustivo *es* el índice de producción: un producto de matrices,
+  sin librería ANN. **Con su bug arreglado primero:** agrupa por el `hash()` de Python, aleatorizado
+  por proceso, y el test que sostiene la afirmación central de ese repositorio falla en 6 de 30
+  semillas **[ran]**.
+- **`storage/migrations.py` (95 líneas)** y la forma `nodes / children / edges(source, target, type,
+  weight)`, con el vocabulario de aristas — contención, `NEXT_STEP`/`PREVIOUS_STEP`, enlaces
+  cruzados — esta vez *leído* al recuperar.
+- **`isa/parser.py` + el loop acumular-y-después-commitear de la VM**, si una trayectoria se emite
+  como acciones: un parser de texto que nunca lanza, con los errores como datos, un loop de despacho
+  acotado, y un registro del recorrido con el que puntuarlo.
+
+Se deja atrás: el servidor FastAPI, el embedder sólo-Gemini importado en la raíz del paquete, los
+tres proveedores de LLM atados a una API, el pipeline de consolidación por LLM (las notas acá se
+escriben), faiss, y un `networkx` declarado y sin usar. El embedder es local en cambio —
+`embeddinggemma` está en esta máquina.
+
+**Y su único benchmark honesto es un resultado negativo, que el brazo 4 hereda como prior.** Indexar
+*para qué sirve* una cosa al lado de *qué es* no cambió nada: acc@1 80 % con cualquier peso de
+mezcla, n = 10, el segundo embedding genuinamente distinto (coseno 0,753) — commiteado como *"medir
+que no ayuda"*. Los errores son **dentro del tema**: el área correcta, el ítem equivocado adentro.
+Ahí es donde una restricción de vecindario debería pagar, si algo paga, y también es una advertencia
+de esperar un delta chico sobre la similitud plana. Con el resultado anterior de este mismo workspace
+— una jerarquía perdió contra búsqueda léxica — son dos priors contra la estructura. El arnés viene
+antes que el recuperador ingenioso, y un nulo se reporta como nulo.
+
 **Compuerta.** Brazo 1: con-base le gana a sin-base en la familia hermana dejada afuera,
 pareado, test de signos exacto, $p \le 0.05$ — y el brazo sin-base reproduce el colapso de P14
 ahí, o la hermana no estaba fuera de la región y la corrida no dice nada.
