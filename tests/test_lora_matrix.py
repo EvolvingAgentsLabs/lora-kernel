@@ -111,3 +111,68 @@ def test_the_brief_was_written_before_the_run():
     assert brief.exists()
     text = brief.read_text()
     assert "positive control" in text and "void" in text.lower()
+
+
+# --- D2: the renaming arm (results/D2-rekey-20260918/BRIEF.md) -----------------------
+
+def _rekey_run(monkeypatch, tmp_path, subject_g2, renamed_g2):
+    """main() with `--rekey`, every GPU step faked; returns the file and what was asked."""
+    asked = []
+    monkeypatch.setattr(lora_matrix, "g1",
+                        lambda base, tag, steps: {"passed": True, "adapter": f"adapters/tiny-{tag}"})
+
+    def fake_g2(base, adapter, tag, debug=False):
+        asked.append((tag, adapter, debug))
+        ok = {"control": True, "subject": subject_g2, "rekeyed": renamed_g2}[tag]
+        return {"passed": ok, "verdict": "applied" if ok else "not applied"}
+
+    import training.harness.rekey as rekey
+    monkeypatch.setattr(lora_matrix, "g2", fake_g2)
+    monkeypatch.setattr(rekey, "rekey_adapter", lambda src, dst: {"src": src, "dst": dst, "moved": 4})
+    out = tmp_path / "m.json"
+    monkeypatch.setattr(sys, "argv", ["m", "--rekey", "--out", str(out)])
+    lora_matrix.main()
+    return json.loads(out.read_text()), asked
+
+
+def test_the_renaming_arm_is_bought_only_when_the_subject_fails(monkeypatch, tmp_path):
+    """Arms in sequence: a subject that already serves its adapter has no C18 to explain."""
+    res, asked = _rekey_run(monkeypatch, tmp_path, subject_g2=True, renamed_g2=True)
+    assert [a[0] for a in asked] == ["control", "subject"]
+    assert "G2r" not in res["arms"]["subject"]
+
+
+def test_renamed_and_applied_reads_as_a_naming_mismatch(monkeypatch, tmp_path):
+    res, asked = _rekey_run(monkeypatch, tmp_path, subject_g2=False, renamed_g2=True)
+    assert asked[-1] == ("rekeyed", "adapters/tiny-rekeyed", True)
+    assert res["reading"].startswith("C18 is a naming mismatch")
+
+
+def test_renamed_and_still_the_base_does_not_close_d2(monkeypatch, tmp_path):
+    res, _ = _rekey_run(monkeypatch, tmp_path, subject_g2=False, renamed_g2=False)
+    assert res["reading"].startswith("renaming was not enough")
+    assert "Qwen2.5 stays" in res["decision"]
+
+
+def test_the_control_is_never_served_at_debug(monkeypatch, tmp_path):
+    """The control is the arm whose answer is known; it is asked exactly as P33 asked it."""
+    _, asked = _rekey_run(monkeypatch, tmp_path, subject_g2=False, renamed_g2=True)
+    assert asked[0] == ("control", "adapters/tiny-control", False)
+
+
+def test_nothing_renamed_is_void_not_falsified(monkeypatch, tmp_path):
+    """If PEFT did not write the names the brief assumed, G2r would repeat G2."""
+    import training.harness.rekey as rekey
+    asked = []
+    monkeypatch.setattr(lora_matrix, "g1",
+                        lambda base, tag, steps: {"passed": True, "adapter": "a"})
+    def fake_g2(base, adapter, tag, debug=False):
+        asked.append(tag)
+        return {"passed": tag == "control", "verdict": "applied" if tag == "control" else "not applied"}
+    monkeypatch.setattr(lora_matrix, "g2", fake_g2)
+    monkeypatch.setattr(rekey, "rekey_adapter", lambda src, dst: {"moved": 0})
+    out = tmp_path / "m.json"
+    monkeypatch.setattr(sys, "argv", ["m", "--rekey", "--out", str(out)])
+    lora_matrix.main()
+    assert asked == ["control", "subject"]
+    assert json.loads(out.read_text())["reading"].startswith("VOID for D2")

@@ -2739,6 +2739,20 @@ Three things are recorded and none is bought:
 - **At 27B the procedure document still does not help [read]** — do not assume
   milestone 7 rescues the harness-only arm; `knowledge_arm` over the 32B measures it.
 
+### Pre-registered 2026-09-18: D2 — C18 read as a naming mismatch, and the arm that tests it
+
+Brief: [`results/D2-rekey-20260918/BRIEF.md`](../results/D2-rekey-20260918/BRIEF.md).
+Read zero-GPU in vLLM v0.29.0 and P33's log **[read]**: the adapter, trained through
+`AutoModelForCausalLM`, names its tensors `model.layers.N…`; vLLM serves
+`Qwen3_5ForConditionalGeneration` and its mapper rewrites only `model.language_model.`.
+Loading validates the last component of each name and logs *Loaded*; activation looks
+up the full name, finds nothing and resets the slot behind a `logger.debug`. With
+$\text{applied}(K)=\{k\in K: m(k)\in M\}$, as trained $|\text{applied}|=0$; renamed,
+predicted $|K|$. `lora_matrix --rekey` buys the renamed arm **only if the subject's G2
+fails**, with the control beside it and the activation lines counted at DEBUG.
+Falsified by G2r `not applied`. This supersedes the `q_proj,v_proj`-only arm recorded
+above. Redesign counter for D2: 0.
+
 ## 12. History
 
 | date | change to this plan | why |
