@@ -22,7 +22,7 @@ English in both language versions.
 | `memory-five-pieces.png` | wide, ~1600 px | ⬜ wanted | `docs/MEMORY.md`, `docs/es/MEMORY.md`, `docs/ARCHITECTURE.md`, `docs/es/ARCHITECTURE.md` |
 | `memory-walkthrough.png` | wide, ~1600 px | ✅ **in** | `README.md`, `README.es.md`, `docs/MEMORY.md`, `docs/es/MEMORY.md` |
 | `request-path.png` | wide, ~1600 px | ✅ **in** | `README.md`, `README.es.md` |
-| `solution-architecture.png` | wide, ~1600 px | ⬜ wanted | `README.md`, `README.es.md` |
+| `solution-architecture.png` | wide, ~1600 px | ✅ **in** | `README.md`, `README.es.md` |
 
 ## Briefs
 

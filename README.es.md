@@ -186,27 +186,9 @@ el resto va a la frontera, o a una persona donde la política dice que nada sale
 sistemas de registro quedan donde están: **los registros quedan en la base, los hábitos van en el
 adaptador, el conocimiento queda en notas que una persona puede leer y corregir.**
 
-> **[MARCADOR DE ILUSTRACIÓN — `docs/img/solution-architecture.png`]**
-> *Un único diagrama ancho de arquitectura de solución, en el estilo plano y cálido del repositorio,
-> cinco capas de arriba abajo. ARRIBA, una banda larga "personas": cuatro grupos con siluetas chicas
-> sin rostro — "pacientes", "familias y visitantes", "profesionales", "personal". COLUMNA IZQUIERDA,
-> una caja alta "runtime de agentes — un agente por rol", con seis fichas: "recepción",
-> "procedimientos de enfermería", "facturación y codificación", "compras y stock", "turnos y sueldos",
-> "IT". CENTRO, dos cajas con flechas de ida y vuelta hacia los agentes: "agenda" (turnos · admisiones
-> · salas · eventos) y "administración" (comunicaciones · operaciones · compras · sueldos · reportes).
-> COLUMNA DERECHA, los canales: "app", y "mensajería" que se abre en "pacientes" e "interno". ABAJO,
-> los sistemas de registro: un tambor "una sola base de datos" y tres cajas chicas, "identidad y
-> permisos", "pagos", "monitoreo" — genéricos, sin marcas ni logos. Y EL PUNTO DE LA IMAGEN: debajo de
-> la columna de agentes, donde normalmente iría una API en la nube, dibujar UNA placa gráfica como
-> estantería — un lomo grueso "un modelo chico residente" y seis lomos finos de colores, uno por cada
-> ficha de rol de arriba, unido a su ficha por una línea fina. Bajo cada lomo fino, un fichero de dos
-> cajones: "cómo lo hacemos acá" y "lo que sabemos". Entre el runtime y la estantería, un cartel
-> indicador: "router — el rol del que llega un mensaje es la ruta". Del cartel sale una línea punteada
-> hacia un edificio lejano, "frontera — todo lo no medido", y una segunda línea punteada termina en
-> una persona: "o un humano, donde la política dice que nada sale del edificio". Una banda fina bajo
-> la estantería: "runtime — árbitro: aplica las reglas de este lugar antes de mostrar una nota". Un
-> epígrafe dentro de la imagen, abajo a la derecha: "los registros quedan en la base; los hábitos van
-> en el adaptador; el conocimiento queda en notas que una persona puede leer".*
+![Una arquitectura de solución en cinco capas: personas en cuatro roles; un runtime de agentes con un agente por rol; aplicaciones de agenda y administración; canales de app y mensajería; una sola base de datos con identidad, pagos y monitoreo. Debajo de los agentes, una placa gráfica dibujada como estantería: un lomo grueso, el modelo residente, y un lomo fino por rol, cada uno con dos cajones de notas. Un cartel rutea por rol; líneas punteadas salen hacia la frontera y hacia una persona.](docs/img/solution-architecture.png)
+
+*Dónde se ubica en una organización: los registros quedan en la base, los hábitos van en el adaptador, el conocimiento queda en notas que una persona puede leer.*
 
 La misma forma, en otros ámbitos — ninguno está medido, es hacia donde apunta el diseño:
 

@@ -176,26 +176,9 @@ frontier, or to a person where policy says nothing leaves the building. The syst
 where they are: **records stay in the database, habits go in the adapter, knowledge stays in notes a
 person can read and correct.**
 
-> **[ILLUSTRATION PLACEHOLDER — `docs/img/solution-architecture.png`]**
-> *One wide solution-architecture diagram in the repository's warm flat style, five layers top to
-> bottom. TOP, one long band "people": four groups with small faceless silhouettes — "patients",
-> "families and visitors", "clinicians", "staff". LEFT COLUMN, a tall box "agent runtime — one agent
-> per role", holding six cards: "front desk", "nursing procedures", "billing and coding", "purchasing
-> and stock", "staffing and payroll", "IT". CENTRE, two boxes the agents exchange arrows with:
-> "scheduling" (appointments · admissions · rooms · events) and "back office" (communications ·
-> operations · purchasing · payroll · reporting). RIGHT COLUMN, the channels: "app", and "messaging"
-> splitting into "patients" and "internal". BOTTOM, the systems of record: one drum "one database" and
-> three small boxes, "identity and permissions", "payments", "monitoring" — generic, no brand names,
-> no logos. NOW THE POINT OF THE PICTURE: under the agent-runtime column, where a cloud API would
-> normally be, draw ONE graphics card as a bookshelf — a thick spine "one small resident model" and
-> six thin coloured spines, one per role card above, each joined to its card by a thin line. Under
-> each thin spine a two-drawer card file: "how we do it here" and "what we know". A small signpost
-> sits between the runtime and the shelf: "router — the role a message comes from is the route". A
-> dashed line leaves the signpost for a distant building, "frontier — everything unmeasured", and a
-> second dashed line ends at a person: "or a human, where policy says nothing leaves the building". A
-> thin band under the shelf: "runtime — referee: applies this site's rules before a note is shown".
-> One caption inside the image, bottom right: "records stay in the database; habits go in the adapter;
-> knowledge stays in notes a person can read".*
+![A solution architecture in five layers: people in four roles; an agent runtime with one agent per role; scheduling and back-office applications; app and messaging channels; one database with identity, payments and monitoring. Under the agents, one graphics card drawn as a bookshelf: one thick spine, the resident model, and a thin spine per role, each with two drawers of notes. A signpost routes by role; dashed lines leave for the frontier and for a person.](docs/img/solution-architecture.png)
+
+*Where it sits in an organisation: records stay in the database, habits go in the adapter, knowledge stays in notes a person can read.*
 
 The same shape, in other rooms — none of these is measured, they are where the design points:
 
