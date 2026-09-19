@@ -987,7 +987,9 @@ y además tiene que *buscar* los valores. El salto de dificultad entre esas dos 
 ahora tiene número.
 
 **"Pool" sigue sin estar ganado**, y falta exactamente una cosa: un segundo miembro
-*útil*. Si eso pide más corpus, otro subdominio, o admitir que 600 ejemplos no compran
+*útil*. (**Respondido sobre una región sintética el 2026-09-18 [ran] P64** — el segundo
+miembro útil es `desk-commitment@v1`, otro subdominio y no más corpus; el párrafo queda
+como lo que era cierto el 2026-09-15.) Si eso pide más corpus, otro subdominio, o admitir que 600 ejemplos no compran
 razonamiento compuesto queda abierto — y es la primera pregunta que el mecanismo de
 aceptación estacionado podría estar en posición de contestar.
 

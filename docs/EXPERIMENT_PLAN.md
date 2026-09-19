@@ -961,7 +961,9 @@ has a calculator and must also *find* the values. The difficulty between those t
 suites now has a number on it.
 
 **"Pool" is still not earned**, and what is missing is exactly one thing: a second
-*useful* member. Whether that needs more corpus, another subdomain, or an admission
+*useful* member. (**Answered on a synthetic region 2026-09-18 [ran] P64** — the second
+useful member is `desk-commitment@v1`, another subdomain rather than more corpus; the
+paragraph stands as what was true on 2026-09-15.) Whether that needs more corpus, another subdomain, or an admission
 that 600 examples do not buy composed reasoning is open — and it is the first
 question the parked acceptance mechanism might be in a position to answer.
 

@@ -25,7 +25,13 @@ kept because the change was earned rather than chosen:
   email tools — stands and waits.
 
 Everything else — the tournament, the verticals, a router that picks the member —
-is downstream of a pool with **two useful members**, which it does not yet have.
+is downstream of a pool with **two useful members**, ~~which it does not yet have~~
+**which it has on a synthetic region since 2026-09-18 [ran] P64**: `desk-commitment@v1`
+released beside `email-full@v1` on one vLLM — 240/240 tying its recorded run, 202 : 0
+against the base, each routed by its question. Both read the same inbox, so they *do*
+meet in one problem; what selects between them is still a dictionary. What is not yet
+had is a second member on a **real** region (milestone 4), and the band saturates at
+`g75`, so nothing in P64 ranks experts.
 
 **The buildable form of the original question, restated 2026-09-16** (plan §1):
 
@@ -331,8 +337,9 @@ Cross-adapter KV cache work, tree attention across adapters, a bespoke inference
 runtime, vertical packs, the control plane. ~~All of it is downstream of the
 withdrawal gap in §S5.~~ **Restated 2026-09-15**: the withdrawal gap is closed and
 the frontier is staying, so all of it is now downstream of **a pool with two useful
-members** — which needs a second expert that clears its own bar, and a routing
-signal that can see a chain which is coherent and wrong.
+members** — which needs a second expert that clears its own bar (**cleared on a
+synthetic region [ran] P64 2026-09-18**; a real one is milestone 4), and a routing
+signal that can see a chain which is coherent and wrong (**still open**).
 
 **Composition and `harness.lora` are parked, not out of scope**: they return if
 producing self-contained experts turns out expensive at scale, with P34's result
