@@ -383,3 +383,21 @@ def test_the_pack_counter_survives_a_results_file_with_nothing_packed(tmp_path):
         r = subprocess.run(["bash", "-c", f'{opts}\nLOCAL="{f}"\n{line}\necho "[$PACKS]"'],
                            capture_output=True, text=True)
         assert r.returncode == 0 and r.stdout.strip() == f"[{want}]", (body, r.returncode, r.stdout, r.stderr)
+
+
+def test_the_partial_results_carried_into_a_new_session_are_valid_json_without_the_marker(tmp_path):
+    """A session lives sixty minutes [ran] 2026-09-19, so a long run is several sessions and the
+    runner resumes from its results file. The marker of the LAST session's end has to come out on
+    the way in — and a `sed` that deletes the last key of a JSON object leaves a trailing comma."""
+    import json
+    import re
+    import subprocess
+    from pathlib import Path
+
+    src = Path("training/harness/chain_serve.sh").read_text()
+    line = next(l.strip() for l in src.splitlines() if "d.pop(\"trained_only\"" in l)
+    local, out = tmp_path / "r.json", tmp_path / "o.json"
+    local.write_text(json.dumps({"arms": {"a": 1}, "packed": 1, "trained_only": "2026-09-19T12:50:00"}, indent=1))
+    cmd = line.replace('"$LOCAL"', str(local)).replace("/tmp/_resume.json", str(out))
+    assert subprocess.run(["bash", "-c", cmd]).returncode == 0
+    assert json.loads(out.read_text()) == {"arms": {"a": 1}, "packed": 1}

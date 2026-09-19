@@ -160,6 +160,15 @@ PY
     echo "      RUN_DIR=$RUN_DIR ARGS= training/harness/chain_separate.sh 2"
     exit 1
   fi
+  # THE PARTIAL RESULTS GO IN WITH THE WEIGHTS. A session lives sixty minutes [ran] 2026-09-19, so
+  # a run longer than that is several sessions, and a runner resumes from its own results file —
+  # which a new VM does not have unless it is put there. `"trained_only"` is a marker of the LAST
+  # session's end, not of this one's, and is taken out on the way in.
+  if [ -f "$LOCAL" ] && ! grep -q '"finished"' "$LOCAL" 2>/dev/null; then
+    python3 -c 'import json,sys; d=json.load(open(sys.argv[1])); d.pop("trained_only",None); json.dump(d,open(sys.argv[2],"w"),indent=1)' "$LOCAL" /tmp/_resume.json
+    tmo 300 colab upload -s "$S" /tmp/_resume.json "/content/lora-kernel/$RESULTS_NAME" >/dev/null 2>&1 \
+      && echo "    carried the partial results in" || echo "    could not carry the partial results in"
+  fi
   if [ -z "${SKIP_ADAPTERS:-}" ]; then
     upload_big "$S" "$ADAPTERS" /content/lora-kernel/adapters.tgz \
         || { echo "    adapters did not upload"; exit 1; }
@@ -235,7 +244,7 @@ PY
     # iterations — ninety minutes of a card for a result already on disk
     # [ran] 2026-09-14. The results file is the authority: if the runner wrote its
     # completion marker, the run is over whatever the log looks like.
-    if [ -f "$LOCAL" ] && grep -q '"finished"\|"decision"\|stopped_at_gate' "$LOCAL" 2>/dev/null; then
+    if [ -f "$LOCAL" ] && grep -q '"finished"\|"decision"\|stopped_at_gate\|"trained_only"' "$LOCAL" 2>/dev/null; then
       echo "    the runner wrote its result — done"; break
     fi
     echo "$out" | grep -qE "prompts/s|decision:|clears the gate|STOPPED|Traceback|OutOfMemory|Killed|never came up" && break

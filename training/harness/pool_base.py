@@ -85,6 +85,9 @@ def main() -> int:
     ap.add_argument("--max-tokens", type=int, default=160)
     ap.add_argument("--concurrency", type=int, default=8)
     ap.add_argument("--max-model-len", type=int, default=8192)
+    ap.add_argument("--stop-after-training", dest="train_only", action="store_true",
+                    help="end the session once every adapter is trained, packed and said so: a Colab "
+                         "session lives sixty minutes [ran] 2026-09-19 and one member takes ~45 to train")
     ap.add_argument("--out", default="pool_base.json")
     args = ap.parse_args()
     out = Path(args.out); out.parent.mkdir(parents=True, exist_ok=True)
@@ -134,6 +137,14 @@ def main() -> int:
         subprocess.call(["tar", "czf", "adapters_out.tgz", *done])
         rec["packed"] = len(done)
         save()
+
+    if args.train_only:
+        # NOT A VERDICT, AND THE FILE MUST NOT LOOK LIKE ONE: no `finished`, no `verdict` — the chain
+        # reads `"trained_only"` as the end of THIS session and the next one carries the weights in.
+        rec["trained_only"] = time.strftime("%Y-%m-%dT%H:%M:%S")
+        save()
+        print(f"[pool] trained and packed {rec.get('packed')} — stopping before serving, as asked", flush=True)
+        return 0
 
     from transformers import AutoTokenizer
     tok = AutoTokenizer.from_pretrained(args.base)

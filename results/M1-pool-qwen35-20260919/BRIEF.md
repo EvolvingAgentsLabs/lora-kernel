@@ -87,3 +87,32 @@ rule this repository already had written down; `bash -n` cannot see an exit stat
 `|| true`, and `tests/test_chain_scripts.py` now lifts that line out of the script and runs it
 under the script's own shell options against a missing file, a file without the key and a file
 with it. Redesign counter still 0: nothing about the question moved.
+
+## Attempt 3 **[ran]** 2026-09-19 — no verdict, and the cause of attempt 1 corrected (`attempt3_session_ttl_60min/`)
+
+`email-full` trained on `Qwen3.5-4B` (A100, ~45 min — no faster than the L4: the hybrid stack's
+slow path is the bottleneck, not the card), 256 tensors renamed, **and the adapter came home while
+the session was alive** (`adapters home: 1 packed`, sha `9e83817a…`) — the early fetch did its job.
+Then, during the second training, three probes a minute apart went unanswered and the chain gave up,
+correctly this time.
+
+**What actually ends these runs — read off `colab log`, not inferred:**
+
+| session | created | terminated |
+|---|---|---|
+| `srv074513` (attempt 1, L4) | 10:45:28 | 11:45:43 |
+| `srv085922` (attempt 3, A100) | 11:59:34 | 12:59:34 |
+
+**A session lives sixty minutes.** Every earlier run here finished inside that (P64 25 min, D2 25
+min), so it had never been met. **My diagnosis of attempt 1 was wrong**: I wrote that one unanswered
+probe made the chain stop a healthy session. The session had been terminated by Colab at its hour;
+the probe was unanswered because nothing was there. The three-probe rule is still the right rule and
+was not the cause. `colab new` has no lifetime option and already runs its own keep-alive.
+
+**So the unit of work is a session, not a run.** Nothing about the question changes — gates, recipe,
+cases, verdict table — and the redesign counter stays 0. What changes is the harness:
+
+- `pool_base --stop-after-training` ends a session cleanly once the adapters are packed and home;
+- the chain uploads the partial results file into a new session, so arms resume instead of restart;
+- M1 runs as **three sessions under an hour each**: `email-full` trained (done, home) · `desk-commitment`
+  trained · both carried in, gates and the four arms.
