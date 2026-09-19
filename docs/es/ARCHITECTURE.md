@@ -5,14 +5,20 @@ marca **[ran]**; lo que está diseñado y no construido, lo dice. Las mediciones
 cada elección están en [`RECORD.md`](RECORD.md); el orden de trabajo está en
 [`PLAN.md`](PLAN.md).
 
-## 1. Un hecho, cuatro componentes
+## 1. Un hecho, cuatro componentes — y qué es la versión 1.0
 
 **Un experto es la distribución de su corpus.** No sólo los pesos: el bloque de
 herramientas, las claves del argumento y su orden, el system prompt, la profundidad de los
 problemas que vio. Servido fuera de esa distribución es un modelo distinto, peor — 2 de 32
 turnos en vivo llaman a una herramienta bajo un prompt ajeno, 19 de 32 bajo el propio
-**[ran]** P63; por debajo de su profundidad de entrenamiento un experto de razonamiento
-sobre-resuelve 18 de 18 **[ran]** P45.
+**[ran]** P63; un experto que razona en cadenas de 6 a 9 pasos puntúa 11 de 90 cuando los
+resultados de sus herramientas le llegan como mensajes `tool_calls` y **90 de 90** cuando se
+escriben en línea, como le enseñó su corpus **[ran]** M7 brazo 0b.
+
+**La versión 1.0 es cinco cosas [spec]:** los expertos definidos por sus corpus, el router
+con su abstención, la memoria (§4), el runtime que la arbitra, y el contrato de liberación
+que la hashea toda. El par del §3 se acopla por subdominio donde se mide que paga y no es
+requerido por 1.0.
 
 Todo lo demás es ese hecho aplicado cuatro veces:
 
@@ -21,7 +27,7 @@ Todo lo demás es ese hecho aplicado cuatro veces:
 | **el experto** | un QLoRA sobre el modelo chico, entrenado por SFT sobre un corpus, liberado con un contrato que registra la distribución | **[ran]** dos liberados, sobre Qwen 2.5 |
 | **el router** | un modelo muy chico *de los mismos corpus*: a la distribución de qué experto cae este pedido — o de ninguno | un diccionario de palabras clave **[ran]**; el modelo es el hito 2 |
 | **el par** | un segundo LoRA, sobre el modelo grande, entrenado sobre el *mismo corpus*; el chico borradorea, el grande verifica | diseñado; hitos 3–4 |
-| **la base de conocimiento** | las notas propias del subdominio — enciclopédicas y operacionales — embebidas; el LoRA aprende la **trayectoria** que las recorre, no su contenido | diseñado; hito 7 |
+| **la memoria** | la biblioteca propia del subdominio — un arnés operativo y una wiki enciclopédica — un radar sobre ella, tres verbos, y un árbitro; el LoRA aprende el **hábito de navegar**, no el contenido | especificado ([`MEMORY.md`](MEMORY.md)); el canal que usa está medido; hito 7 |
 
 ```mermaid
 flowchart TB
@@ -89,8 +95,11 @@ llamó **[ran]** P63. Dos decisiones se mantienen separadas a propósito:
   brazo aprendido, un modelo de n-gramas del marco de cada corpus, fue seguro sobre texto
   ajeno y perdió todos los pedidos de un remitente nunca visto **[ran]** M2; el diccionario
   se mantiene hasta que se mida el brazo de embeddings;
-- *esa región se sirve localmente* — una tabla medida, `serve: local | out`. Fluids es una
-  coincidencia temática perfecta y se midió que falla; se sirve afuera.
+- *esa región se sirve localmente* — una tabla medida, `serve: local | out`. La tabla vale lo
+  que valga la medición detrás: fluids estaba marcada *afuera* con un 11 de 90, que resultó
+  ser el camino de servido — localmente, como le enseñaron, es 90 de 90 contra el 66 de la
+  frontera **[ran]** M7 brazo 0b — y vuelve a pasar por la puerta de liberación antes de que
+  la marca cambie.
 
 **El default es la frontera.** Un modelo al que se le pide elegir siempre elige, así que la
 abstención está diseñada de entrada y se mide primero (hito 2).
@@ -121,56 +130,73 @@ grande + LoRA le gana al chico + LoRA donde el chico tiene margen?) y después u
 **Dónde corre.** El pool chico se sirve desde una sola L4. Un 27B es trabajo de A100 en 4
 bits.
 
-## 4. La base de conocimiento, y por qué la trayectoria es el harness
+## 4. La memoria — el núcleo de 1.0
 
-**Dos tipos de conocimiento, una base por subdominio.** *Enciclopédico* — jerárquico: qué es
-una cantidad, qué correlación vale en qué régimen, las propiedades de un material.
-*Operacional* — secuencial: cómo se resuelve este tipo de problema, en qué orden, qué chequear
-antes de contestar. Los dos son notas en markdown con links, embebidas en el mismo espacio que
-usa el segundo brazo del router.
+> **El LoRA no es el libro de texto. Es el especialista que sabe usar la biblioteca.**
 
-**Los pesos guardan la navegación; la base guarda el contenido.** Tres mediciones fuerzan esa
-separación en vez de sólo sugerirla:
+Especificada pieza por pieza en [`MEMORY.md`](MEMORY.md) **[spec]**; argumentada, con sus
+preguntas abiertas, en [`KNOWLEDGE-TRAJECTORIES.md`](KNOWLEDGE-TRAJECTORIES.md). Cinco piezas,
+cuatro de ellas no neuronales:
 
-- Un modelo chico no sigue un procedimiento que sólo lee: base + documento, 0 llamadas a
-  herramientas sobre 351/351 **[ran]** P61. Así que *seguir lo que lee* es lo que se entrena en
-  el adaptador — su corpus son trayectorias: preguntar, abrir una nota, seguir su link,
-  calcular.
-- El conocimiento fijo dentro de un corpus se memoriza y después no cuesta nada: un control sin
-  herramienta de búsqueda puntuó 27/30 porque catorce valores entran en 600 ejemplos **[ran]**
-  P15, P21. Así que lo que un caso necesita tiene que ser **inmemorizable por construcción** —
-  valores, y coeficientes del propio procedimiento, sorteados por caso. El experto puede
-  aprender *qué* nota necesita un paso, nunca *qué dice*.
-- Un especialista se equivoca con confianza un paso fuera de su región — 30/30 adentro, 1/20 en
-  familias hermanas **[ran]** P14. Para eso está la base: las notas de la familia hermana
-  extienden la región sin reentrenar, *si* la política de trayectoria transfiere. El hito 7 mide
-  exactamente eso, primero bajo una trayectoria oráculo.
+| pieza | qué es | dónde vive |
+|---|---|---|
+| **la biblioteca** | notas en markdown de menos de media página, en dos estantes. **Arnés operativo** — *cómo se hace*: notas tipo receta cuyos links son control de flujo (`requires`, `next`, `uses`). **Wiki enciclopédica** — *qué es, qué fórmula aplica*: un árbol, de lo general a lo específico (`parent` → `children`) | `knowledge/<subdominio>/`, en git |
+| **el radar** | embeddings comprimidos a un subdominio; por nota dos vectores, *para qué sirve* y *qué define*; devuelve las dos o tres notas exactas del subdominio en juego | un índice chico por subdominio |
+| **el lenguaje** | tres verbos que el experto puede escribir — `<search>`, `<open>`, `<calc>` — cada uno respondido en línea después de su etiqueta de cierre | una gramática, versionada con la liberación |
+| **el LoRA** | entrenado sobre el **hábito de navegar**: casos cuyas constantes cambian cada vez, así que el número hay que leerlo de la nota | el adaptador — la única pieza entrenada |
+| **el runtime** | un pequeño árbitro en Python dentro del proxy: da vuelta las páginas, sustituye las reglas de un sitio antes de que el experto vea la nota, corta un recorrido que se salta un `requires` | `memory/` **[spec]**, sobre el mismo bucle de modo corpus que ya sirve a cada miembro |
 
 ```mermaid
 flowchart LR
-    Q["pedido en el subdominio"] --> E["LoRA experto<br>política de trayectoria"]
-    E -- "kb: consulta" --> I["índice de embeddings<br>sólo de este subdominio"]
-    I -- "títulos de nota" --> E
-    E -- "abrir: nota" --> N["nota<br>enciclopédica u operacional"]
-    N -- "contenido · links al próximo paso" --> E
+    Q["pedido en el subdominio"] --> E["LoRA experto<br>el hábito de navegar"]
+    E -- "search: una situación o una duda" --> I["radar<br>sólo este subdominio"]
+    I -- "títulos e ids" --> E
+    E -- "open: id" --> RT["runtime — árbitro<br>completa slots · reglas del sitio · guarda de requires"]
+    RT --> H["estante del arnés<br>requires · next · uses"]
+    RT --> K["estante de la wiki<br>parent · children"]
+    RT -- "la nota, ya resuelta" --> E
     E -- "calc" --> C["calculadora"]
     E --> A["respuesta"]
     classDef local fill:#e8f1e4,stroke:#4a7a3a,color:#1d3314
     classDef art fill:#eef0f6,stroke:#4a5a8a,color:#1d2240
-    class E,C local
-    class I,N art
+    class E,RT,C local
+    class I,H,K art
 ```
 
-**Esto es lo que `harness.lora` buscaba.** Ese diseño ponía un protocolo de ejecución
-compartido en un adaptador y lo componía con adaptadores de dominio; la composición nunca se
-midió limpiamente y quedó parada. Acá el harness es por subdominio, aprendido como una política
-de trayectoria, y su *contenido* vive afuera de los pesos — donde se puede leer, versionar en
-git, y editar sin entrenar (hito 7, brazo 5).
+> **[MARCADOR DE ILUSTRACIÓN — `docs/img/memory-five-pieces.png`]**
+> *La misma imagen que en `MEMORY.md`: una biblioteca con dos estantes rotulados (una ruta de
+> fichas arriba, un árbol de fichas abajo), un radar chico iluminando tres fichas, un
+> especialista sosteniendo tres herramientas rotuladas `search`, `open`, `calc`, y debajo de
+> ellas una banda rotulada "runtime — árbitro" con una página siendo dada vuelta, un sello
+> "regla del sitio aplicada" y una barrera que dice "requires paso 1".*
+
+**Por qué es un harness.** Un harness de agente clásico mantiene tres cosas fundidas: el
+procedimiento en el system prompt, el bucle en código escrito a mano, y la esperanza de que el
+modelo obedezca. Acá están separadas. El procedimiento es el estante del arnés — *texto
+editable*. El bucle son los links — *frontmatter editable*, reforzado por el árbitro donde
+importa. Y ya no se espera la obediencia: es lo único que entrena el adaptador. Esto es lo que
+`harness.lora` buscaba — un adaptador de protocolo compartido compuesto con adaptadores de
+dominio, parado cuando la composición no se pudo medir limpiamente — ahora por subdominio, y
+con su contenido afuera de los pesos.
+
+**Tres mediciones fuerzan la separación en vez de sólo sugerirla.** Un modelo chico no sigue un
+procedimiento que sólo lee — base + documento, 0 llamadas a herramientas sobre 351/351 **[ran]**
+P61 — así que seguir es lo que se entrena. El conocimiento fijo en un corpus se memoriza y
+después no cuesta nada — un control sin herramienta de búsqueda puntuó 27/30 sobre catorce
+valores **[ran]** P15, P21 — así que lo que un caso necesita se sortea por caso y se entrega
+sólo a través de los slots de una nota. Y un especialista se equivoca con confianza un paso
+fuera de su región — 30/30 adentro, 1/20 en familias hermanas **[ran]** P14 — que es el
+headroom y la apuesta: *las notas de la hermana extienden la región sin reentrenar.* Esa apuesta
+está sin probar.
+
+**Lo que ya se sabe que funciona** es el canal: un experto sí usa un resultado escrito en línea
+después de su etiqueta — 90 de 90 en cadenas de seis a nueve llamadas a herramientas **[ran]**
+M7 brazo 0b — y la memoria entrega cada nota exactamente por ese canal.
 
 **Lo que no se asume.** Que una jerarquía le gane a una búsqueda plana — en la memoria de este
-workspace le perdió a la búsqueda léxica en un benchmark anterior — o que los embeddings le
-ganen a la recuperación léxica adentro de una base de unas pocas decenas de notas. Los dos son
-brazos.
+workspace le perdió a la búsqueda léxica en un benchmark anterior, y el índice dual de
+`evolving-memory` no cambió nada **[read]** — o que comprimir el radar a una dimensión chica no
+cueste nada. Los dos son brazos con una línea base plana.
 
 ## 5. El contrato de liberación
 

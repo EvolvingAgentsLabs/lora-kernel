@@ -8,6 +8,10 @@ no sabe responder. **Nada de lo descrito acá está construido.** Las mediciones
 son reales, y el §2 las lista con sus números, porque una revisión de diseño que no las conoce
 va a volver a proponer lo que ya falló.
 
+**La implementación decidida a partir de este diseño — los dos estantes de la biblioteca, el radar,
+tres verbos, el árbitro, y el orden de construcción para la versión 1.0 — es [`MEMORY.md`](MEMORY.md).**
+Este documento se queda como el argumento y sus preguntas abiertas.
+
 Estado: propuesta, 2026-09-19. Dueño de la idea: el usuario. Entrada en el plan:
 [`PLAN.md`](PLAN.md) hito 7. Formalismo: [`FOUNDATIONS.md`](FOUNDATIONS.md) §8.6.
 
@@ -38,7 +42,7 @@ flujo de control editable, y una forma aprendida de recorrerlos.
 | F4 | **Un corpus con una sola dificultad enseña un piso** | entrenado sólo con cadenas de 6 a 9 pasos, el experto sobre-resuelve 18/18 problemas más cortos; la base pelada le gana en los de 3 pasos | **[ran]** P45 |
 | F5 | **Un experto es lo que su corpus le enseñó — el bloque de herramientas, el orden de los argumentos, el system prompt.** Servido bajo otro prompt es otro modelo | 2/32 turnos en vivo llaman a una herramienta bajo el prompt del runtime; 19/32 bajo el suyo propio | **[ran]** P63 |
 | F6 | **Importa cómo le llega al experto el resultado de una herramienta.** Resultado inline después del tag de cierre (como se entrenó) contra a través de mensajes `tool_calls` | `email-full` 0,992 contra 0,808 | **[ran]** P55 |
-| F7 | **La falla del experto de fluidos es sobre todo no usar lo que le devolvieron sus herramientas** | de 79 fallas, 74 tienen un número que salió de ningún lado y 75 dejan un resultado sin usar (217 de 456 resultados ignorados): busca la densidad, 882,3, y multiplica por 1359,7. *Factor de confusión:* esa corrida usó el camino `tool_calls` de F6; el reservido inline está pendiente | **[ran]** M7 brazo 0; brazo 0b pendiente |
+| F7 | **Un experto usa lo que lee cuando lo lee de la forma en que se lo enseñaron — y no de otra.** El experto de fluidos por mensajes `tool_calls` | 11/90: de 79 fallas, 74 tienen un número que salió de ningún lado y 75 dejan un resultado sin usar — busca la densidad, 882,3, y multiplica por 1359,7. **Re-servido con resultados escritos inline, como enseñó su corpus: 90/90**, 79 : 0 pareado, ningún caso evaluado en su corpus | **[ran]** M7 brazo 0, 0b |
 | F8 | **Un modelo léxico de un corpus generado aprende al generador.** Un router de n-gramas entrenado sobre los corpus de los expertos | seguro con texto extranjero (0/128 servido localmente contra 59/128 del diccionario de palabras clave) y pierde **120/120** pedidos legítimos de remitentes nunca vistos — toda dirección generada terminaba en `.com` | **[ran]** M2 |
 | F9 | **La estructura le perdió a la recuperación plana dos veces en el trabajo de este autor.** Una jerarquía de memoria contra búsqueda léxica; e indexar *para qué sirve algo* al lado de *qué es* | la jerarquía perdió; el índice dual no cambió nada — acc@1 80 % con cualquier peso de mezcla, n = 10, errores todos **dentro del mismo tema** | benchmark del workspace; `evolving-memory` `benchmarks/RESULTS.md` **[read]** |
 | F10 | **La destilación transfiere un procedimiento y no la aritmética** | adaptador + calculadora 40/40; adaptador solo 4/40 (π/4·0,22² escrito como 0,037006) | **[ran]** P5–P7 |
@@ -53,7 +57,8 @@ Consecuencias, cada una de las cuales el diseño de abajo obedece:
   extienden su región sin reentrenar.
 - F5, F6 ⇒ el vocabulario de acciones, su renderizado y el formato del resultado inline son parte del
   corpus y quedan congelados con el release.
-- F7 ⇒ medir **dónde pasa**: si la nota se recuperó, se abrió, se *usó* — no sólo la respuesta.
+- F7 ⇒ cada nota le llega al experto **inline, en la forma que enseñó su corpus**, y el diseño se
+  mide **dónde pasa**: si la nota se recuperó, se abrió, se *usó* — no sólo la respuesta.
 - F9 ⇒ la jerarquía y la recuperación consciente de la trayectoria son **brazos con una línea de base plana**, nunca supuestos.
 - F10 ⇒ la aritmética se queda en una calculadora.
 
@@ -157,7 +162,7 @@ Tres verbos, escritos como tags en el propio texto del experto, el resultado iny
 tag de cierre (F6), la generación se para en cada tag de cierre:
 
 ```
-<kb>what is asked, in the expert's words</kb>= 3 notes
+<search>what is asked, in the expert's words</search>= 3 notes
   [a3f] step · Cleanse the catheter cap before attaching tubing — when: about to connect to an IV port
   [9c1] check · Assess IV site patency — when: before starting any infusion
   [77e] concept · Scrub the hub — when: any access of a needleless connector
@@ -166,15 +171,15 @@ tag de cierre (F6), la generación se para en cada tag de cierre:
 <calc>500 * 20 / (4 * 60)</calc>= 41.6667
 ```
 
-- `<kb>` devuelve **sólo títulos y líneas `when`**, nunca cuerpos: recuperar y leer son dos
+- `<search>` devuelve **sólo títulos y líneas `when`**, nunca cuerpos: recuperar y leer son dos
   decisiones, medidas por separado (§6).
 - `<open>` devuelve el cuerpo resuelto y los enlaces salientes de la nota **con su tipo**. Seguir
   un enlace es sólo `<open>` sobre su id — no hay un cuarto verbo.
 - **Los ids son opacos y se sortean de nuevo por caso durante el entrenamiento [proposed].** Si los ids fueran estables
   el adaptador aprendería "para el paso 20 abrir `a3f`" — navegación de memoria, que funciona hasta que la base
   cambia y falla en silencio en una familia hermana (F3). Los ids opacos lo obligan a leer lo que devolvió
-  `<kb>`. **[open]:** el costo es que la política nunca puede aprender un atajo legítimo.
-- Los presupuestos son del runtime: como mucho *k* notas por `<kb>` (3–5), un tope de tokens por nota, un tope de
+  `<search>`. **[open]:** el costo es que la política nunca puede aprender un atajo legítimo.
+- Los presupuestos son del runtime: como mucho *k* notas por `<search>` (3–5), un tope de tokens por nota, un tope de
   aperturas por tarea. Un recorrido que choca con un tope termina como *no contestado* y sale hacia la frontera.
 
 ### 3.5 El runtime — lo que se queda no neuronal **[proposed]**
@@ -196,9 +201,9 @@ de las tareas del subdominio — de la **distribución de su corpus** — y esa 
 | # | estrategia | el recorrido | se espera que encaje en |
 |---|---|---|---|
 | S0 | ninguna | responder desde los pesos | el control; F3 dice 1/20 afuera de la región |
-| S1 | plana | un `<kb>` sobre el texto de la tarea → abrir el top-1 → responder | la línea de base RAG que toda otra estrategia tiene que superar |
-| S2 | **procedimiento primero** | `<kb>` restringido a `procedure` → abrir el esqueleto → recorrer `next`, descendiendo por `uses` sólo donde un paso necesita un hecho | enfermería; cualquier tarea que *sea* un procedimiento |
-| S3 | concepto primero | `<kb>` sobre conceptos → descender por `child` hasta una fórmula o tabla hoja → calcular | tareas tipo diagnóstico; "en qué régimen estoy" |
+| S1 | plana | un `<search>` sobre el texto de la tarea → abrir el top-1 → responder | la línea de base RAG que toda otra estrategia tiene que superar |
+| S2 | **procedimiento primero** | `<search>` restringido a `procedure` → abrir el esqueleto → recorrer `next`, descendiendo por `uses` sólo donde un paso necesita un hecho | enfermería; cualquier tarea que *sea* un procedimiento |
+| S3 | concepto primero | `<search>` sobre conceptos → descender por `child` hasta una fórmula o tabla hoja → calcular | tareas tipo diagnóstico; "en qué régimen estoy" |
 | S4 | **recuperación condicionada por la trayectoria** | cada consulta se puntúa adentro de la vecindad de la última nota abierta | donde la recuperación plana confunde ítems *dentro* de un tema — que es exactamente donde estaban los errores de F9 |
 
 El puntaje de S4, con $q$ la consulta, $n$ un candidato, $\ell$ la última nota abierta, $N(\ell)$ sus vecinos
@@ -227,7 +232,7 @@ juntas, exactamente como se va a servir (F5, F6). Cuatro reglas, cada una de una
    variante de correlación, el tiempo de permanencia de un sitio. El adaptador puede aprender *qué* nota necesita un paso. No
    puede aprender *qué dice la nota*. La corrida afirma que el canal es necesario: ningún valor de slot puede
    aparecer en el enunciado de la tarea.
-2. **Ids opacos, distractores y callejones sin salida.** Los resultados de `<kb>` en el corpus contienen notas
+2. **Ids opacos, distractores y callejones sin salida.** Los resultados de `<search>` en el corpus contienen notas
    parecidas pero equivocadas; algunos casos **no tienen ninguna nota aplicable**, y el recorrido enseñado termina en *no está en mi base* —
    que el proxy convierte en la frontera. Un experto que no puede abstenerse de su propia base es F3
    con pasos de más.
@@ -255,7 +260,7 @@ Los brazos del hito 7, en el orden que puede matarlo más rápido ([`PLAN.md`](P
 | 4 | S1 léxico plano · S1 embedding plano · S4 | si una estrategia de trayectoria le gana a una búsqueda plana (F9 dice no asumirlo) |
 | 5 | editar una nota después de entrenar | que la respuesta sigue a la base, no a los pesos |
 
-Medido **por paso, no sólo en la respuesta**: *recuperada* (la nota necesaria en la lista de `<kb>`),
+Medido **por paso, no sólo en la respuesta**: *recuperada* (la nota necesaria en la lista de `<search>`),
 *abierta*, *usada* (su valor llega a un paso posterior — el instrumento de F7), *conforme* (§3.5),
 *correcta*; más tokens por tarea, porque un recorrido no es gratis. Un lector que tuvo suerte sobre una nota
 vacía es un caso que un puntaje final no puede ver.
@@ -293,8 +298,9 @@ de un cliente.
 ## 9. Lo que este diseño no afirma
 
 Que una jerarquía ayude. Que los embeddings le ganen a la búsqueda léxica adentro de una base de unos cientos de notas.
-Que un 4B pueda aprender a seguir lo que lee, siquiera — el brazo 1 existe para averiguarlo, y F1 y F7 son
-las dos razones para dudarlo. Que algo medido en una suite generada se transfiera a una real. Que
+Que un 4B pueda aprender a seguir *una nota sobre la que nunca entrenó* — el brazo 1 existe para averiguarlo.
+F1 es una razón para dudarlo; F7 sólo dice que el canal funciona: un experto sí usa lo que lee, dentro de
+su propia región, cuando lo lee como se lo enseñaron. Que algo medido en una suite generada se transfiera a una real. Que
 esto sea más barato que poner el procedimiento en los pesos cuando el procedimiento nunca cambia — para un
 procedimiento congelado, F1 dice que ganan los pesos, y la base se gana su lugar sólo donde el contenido **varía**:
 por sitio, por caso, por fecha, o por familia.
@@ -319,9 +325,10 @@ por sitio, por caso, por fecha, o por familia.
    la guarda de conformidad?
 8. **Abstención adentro de la región.** ¿Cómo se enseña "sin nota aplicable" sin enseñarle a la política
    a rendirse temprano?
-9. **La falla en F7.** Si el re-servido inline muestra que un modelo chico igual ignora lo que acaba de
-   leer, ¿la respuesta correcta es un modelo chico más grande, un decoder restringido que *copia* el
-   valor observado, o un runtime que sustituye valores para que el modelo nunca tenga que hacerlo?
+9. **Lo que F7 deja abierto.** Inline, dentro de su propia región, un 3B usa lo que lee (90/90). ¿Eso
+   se transfiere a una nota cuyo *contenido nunca vio usado* — un procedimiento hermano — o "usar lo
+   que lee" es en sí algo que aprendió por familia? ¿Cuál es el experimento más barato que separa
+   *leer* de *haber practicado esta lectura en particular*?
 10. **¿Dónde está mal esto?** En particular: ¿es "trayectoria = harness" una descomposición real, o un
     reetiquetado del uso de herramientas aumentado por recuperación — y si es lo segundo, ¿qué habría tenido
     que predecir la diferencia para ser real?
