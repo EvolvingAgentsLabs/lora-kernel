@@ -25,7 +25,13 @@ kept because the change was earned rather than chosen:
   email tools — stands and waits.
 
 Everything else — the tournament, the verticals, a router that picks the member —
-is downstream of a pool with **two useful members**, which it does not yet have.
+is downstream of a pool with **two useful members**, ~~which it does not yet have~~
+**which it has on a synthetic region since 2026-09-18 [ran] P64**: `desk-commitment@v1`
+released beside `email-full@v1` on one vLLM — 240/240 tying its recorded run, 202 : 0
+against the base, each routed by its question. Both read the same inbox, so they *do*
+meet in one problem; what selects between them is still a dictionary. What is not yet
+had is a second member on a **real** region (milestone 4), and the band saturates at
+`g75`, so nothing in P64 ranks experts.
 
 **The buildable form of the original question, restated 2026-09-16** (plan §1):
 
@@ -101,6 +107,14 @@ So, the rules that keep a session on the project:
   `Qwen3.5-4B`, logs that it did, and **serves the base anyway** **[ran]**. Gemma 4
   is not a peft base (`Gemma4ClippableLinear` is not `nn.Linear`). Do not
   re-litigate this; run `serve_openai --gate-only` against any new base instead.
+  **Corrected 2026-09-19, D2 [ran]: P33's observation stands and its reading does not.**
+  It was read as a serving-stack limit; it is a **naming mismatch** — the adapter trained
+  through `AutoModelForCausalLM` names tensors `model.layers.N…`, vLLM serves the
+  `ConditionalGeneration` class and activates by `language_model.model.layers.N…`, loading
+  validates only the last name component and says *Loaded*. The same weights renamed
+  (`training/harness/rekey.py`) come back `applied`. **The base is still Qwen 2.5 — because
+  every released member is trained on it, no longer because 3.5 cannot be served.** Moving
+  is now a cost decision (retrain the pool), and D4 stays blocked on M2.
 - **Do not spend a session shopping for a target — the two that matter are
   already decided by measurement.** The **fallback** is `google/gemini-3.8-flash`,
   **66/90** on the fluids suite through the same client the local expert uses
@@ -283,6 +297,12 @@ These are not style. Each one was paid for.
   author as the generator: **a generated suite cannot contain a difficulty nobody
   thought of.** The answer to that one is to let the base model choose where the
   difficulty is.
+- **A log-line counter counts the warm-up too.** vLLM activates dummy LoRAs while it
+  profiles — three before the first request on 0.29.0 — and each logs a line per module
+  exactly as a real adapter does. D2's first counter summed all four activations and read
+  an adapter that landed on **0 of 178** modules as `modules_with_weights: 531`, against a
+  brief that predicted 0 **[ran]** 2026-09-19; 531 is 3 × 177. Split a log into the events
+  it records before counting lines in it (`lora_matrix.split_activations`).
 - **Count instrument redesigns.** Once is fine, twice is suspicious, three times
   is looking for the result. The stopping condition goes into the plan before the
   run.
@@ -331,8 +351,9 @@ Cross-adapter KV cache work, tree attention across adapters, a bespoke inference
 runtime, vertical packs, the control plane. ~~All of it is downstream of the
 withdrawal gap in §S5.~~ **Restated 2026-09-15**: the withdrawal gap is closed and
 the frontier is staying, so all of it is now downstream of **a pool with two useful
-members** — which needs a second expert that clears its own bar, and a routing
-signal that can see a chain which is coherent and wrong.
+members** — which needs a second expert that clears its own bar (**cleared on a
+synthetic region [ran] P64 2026-09-18**; a real one is milestone 4), and a routing
+signal that can see a chain which is coherent and wrong (**still open**).
 
 **Composition and `harness.lora` are parked, not out of scope**: they return if
 producing self-contained experts turns out expensive at scale, with P34's result

@@ -37,7 +37,7 @@ sesión y (d) una condición de falla escrita antes de correr.
 | **3** | expertos que el verificador ordena (M1): `g25 ⊂ g75 ⊂ 600`; **el grado más chico se entrena y puntúa primero** — si `g25` ya satura, se para | 2 | ≥ 1 par adyacente resuelto, $p \le 0,05$ | **P58 intento 1** **[ran]** 2026-09-17: dos fallas de instrumento, mías — el loop de modo corpus reventó en un tag de cierre sin apertura canónica (`g25` escribe `<message id="msg-006" from=…>`, *fabrica* el email en XML en vez de pedirlo — 209 de 240 cadenas perdidas) y la compuerta C18 leyó un registro con error como diferencia (`applied` 8/8 sobre nada). Ambas arregladas con tests; `--max-model-len` 8192 para el desk (7 pedidos de la base dieron 400 a 4096). Base en modo corpus **41/240 = 0,171** (se pierde en XML auto-cerrado). **Intento 3 limpio [ran]: `g25` = 0/240** — 1152 de 1194 llamadas malformadas, *fabrica* el email en XML en 240 de 240 casos; C18 `applied`, 0 errores. **La condición de muerte no disparó** ($Q(g25) = 0,000 \ll 0,95$): el grado bajo existe. **P55b [ran]** 2026-09-17: `g75` **240/240**, `g600` **240/240**, `g25` 0 — M1 pasa por **un bit**: los dos pares resueltos son *roto contra perfecto*, y `g75` ≡ `g600` (0 : 0). **El riesgo de saturación era real: 75 ejemplos alcanzan para un protocolo de una llamada; no existe grado intermedio en esta suite** |
 | **4** | el veredicto de orden por aceptación (M-α, M2): tres α por caso, SUPPORTED / FALSIFIED / UNRESOLVED-como-fracaso escritos antes (§7.4) | 3 | la tesis misma **P60 §3b [ran] 2026-09-18: el brazo del target entrenado se puede servir** — un LoRA aplica sobre el 32B AWQ (compuerta de logprobs 3/3 contra un control base-vs-base, texto 2/3); 3c/3d programados después del hito 5 (§0c) | **P55b se detuvo en M-target [ran]**: el 32B en modo corpus **227/240**, **232/240** una vez que el verificador dejó de rechazar `2023-01-05` por `January 5` (5 de sus 13 pérdidas eran formato; el check se borró); las 8 restantes son reales — se pierde `thread_history → inbox` y dice *no date*. Contra `g600` en 240/240: **0 : 8, $p = 0,008$** — el target sin entrenar queda resolublemente por debajo del experto entrenado, **por segunda vez** (triage: 0,746 contra 0,989). **No medido.** Contador de rediseños: 2 de 3. ~~Cerrado 2026-09-17 (decisión D): M2 no es comprable en ninguna suite que este proyecto pueda generar~~ — **corregido el mismo día por revisión: lo medido es que la ventana no existe en dos regiones fáciles con un target *sin entrenar*.** El orden entre grados lo decide la dificultad del material, y un target entrenado habilita $Q(T) \ge \max Q(E)$. **Reabierta como un brazo (P60, siguiente): un 32B entrenado sobre el desk + una banda de `commitment` más profunda donde los grados entrenados no saturen + M-target bajo el `≥` del §7.2.** Un brazo, no el último rediseño; si la ventana sigue sin aparecer, el cierre se firma con el brazo correcto corrido |
 | **5** | el producto con grupos reales (CASE-TEAM), `--prune` apagado como brazo de atribución; cada miembro nuevo entra por la puerta de la Fase 1 | 1 | 0,546 → 0,775 reproducido sobre tráfico nuevo, con la fracción que sale medida | **P59 [ran]** 2026-09-17, la superficie que OpenClaw manda de verdad (54 herramientas, grabada): `--prune off` humanos **0,664**, 227 llamadas de las que **225 rechazadas** — copia `agents_list`, `apply_patch`, `browser`… del bloque; `--prune on` **0,729**, 1160 llamadas, 8 rechazadas. Pareado 87 : 64, $p = 0,073$ — **empate en exactitud a $n = 475$, no empate en conducta**: sin podar, el experto busca las herramientas del runtime. Bloque **~7.956 → ~77 tokens** por turno. `--prune` es el default recomendado. Intento 1 anulado (contexto 4096) |
-| **6** | la ruta a `Qwen3.8-27B`: D2 (el mecanismo de C18, con el log) → D3 → D4 | **4 = SUPPORTED** | D2: `applied` en la compuerta de identidad | **bloqueada por diseño** — la 4 cerró sin veredicto; no por el tokenizer, no por C18 |
+| **6** | la ruta a `Qwen3.8-27B`: D2 (el mecanismo de C18, con el log) → D3 → D4 | **4 = SUPPORTED** | D2: `applied` en la compuerta de identidad | **bloqueada por diseño** — la 4 cerró sin veredicto; no por el tokenizer, no por C18 — **y C18 mismo quedó explicado: D2 ✅ [ran] 2026-09-19, un desajuste de nombres, el adaptador renombrado da `applied`** |
 
 **Los tres desenlaces de la Fase 4 quedan comprometidos ahora.** SUPPORTED abre la
 Fase 6 y el torneo. FALSIFIED cierra la aceptación-como-ranking para siempre y el
@@ -987,7 +987,9 @@ y además tiene que *buscar* los valores. El salto de dificultad entre esas dos 
 ahora tiene número.
 
 **"Pool" sigue sin estar ganado**, y falta exactamente una cosa: un segundo miembro
-*útil*. Si eso pide más corpus, otro subdominio, o admitir que 600 ejemplos no compran
+*útil*. (**Respondido sobre una región sintética el 2026-09-18 [ran] P64** — el segundo
+miembro útil es `desk-commitment@v1`, otro subdominio y no más corpus; el párrafo queda
+como lo que era cierto el 2026-09-15.) Si eso pide más corpus, otro subdominio, o admitir que 600 ejemplos no compran
 razonamiento compuesto queda abierto — y es la primera pregunta que el mecanismo de
 aceptación estacionado podría estar en posición de contestar.
 
@@ -2861,6 +2863,24 @@ renombrado, predicho $|K|$. `lora_matrix --rekey` compra el brazo renombrado **s
 falla el G2 del sujeto**, con el control al lado y las líneas de activación contadas en
 DEBUG. Lo falsifica un G2r `not applied`. Esto reemplaza al brazo de sólo
 `q_proj,v_proj` registrado arriba. Contador de rediseños de D2: 0.
+
+### D2 — 2026-09-19 **[ran]** · C18 ES UN DESAJUSTE DE NOMBRES: los mismos pesos, renombrados, se aplican
+
+Una sesión de L4, `lora_matrix --rekey`, [`results/D2-rekey-20260918/`](../../results/D2-rekey-20260918/BRIEF.md); la tabla de veredictos se escribió antes de correr.
+
+| brazo | G1 en proceso | servido | activación real |
+|---|---|---|---|
+| control `Qwen2.5-3B-Instruct` | pasó | **applied** | — (preguntado exactamente como lo preguntó P33) |
+| sujeto `Qwen3.5-4B`, tal como se entrenó | pasó (`lora_B` 17.937) | **not applied** — idéntico a la base | **0 de 178** módulos |
+| sujeto, 496 tensores renombrados, **sin reentrenar** | — | **applied** | **152 de 178** módulos |
+
+$$\text{applied}(K)=\{k\in K: m(k)\in M\}:\qquad |\text{applied}(K)| = 0 \ \text{de } 496,\qquad |\text{applied}(\rho(K))| = 496 \ \text{de } 496 .$$
+
+La observación de P33 se reproduce y su lectura se retira: no es *un límite del stack de serving*, son nombres de tensores. Los 26 módulos que el adaptador renombrado deja vacíos son `lm_head`, `embed_tokens` y 24 `conv1d` — ninguno apuntado. Las proyecciones de atención lineal (`in_proj_qkv`, `in_proj_z`, `in_proj_a/b`, `out_proj`) están entre los 152 que recibieron pesos.
+
+**El instrumento mintió una vez, y el brief lo atrapó.** El chequeo de consistencia del brief predecía `modules_with_weights = 0` para el sujeto tal como se entrenó; la corrida reportó **531**. vLLM activa tres LoRA dummy mientras hace profiling y cada uno loguea por módulo como uno real: 531 = 3 × 177 y los 181 faltantes son 3 + **178** — la activación real no cayó en ningún lado. El log del renombrado, que sí volvió, se parte como `(177, 1) × 3 + (152, 26)` **[ran]**; **el log propio del sujeto quedó en la tarjeta, así que su 0 de 178 es aritmética sobre sus totales, no una lectura directa.** El contador ahora reporta la última activación (`split_activations`, testeado contra el log grabado), y el chain debería traer el log de cada brazo, no el último.
+
+**Lo que no dice.** Que un experto Qwen3.5 sea *bueno* — el adaptador es un juguete de 60 pasos y la compuerta sólo pregunta si el texto servido difiere de la base. Que cada familia de proyecciones aporte. Nada sobre el 27B. Y no mueve ninguna base: todo miembro liberado está entrenado sobre Qwen 2.5, D4 sigue bloqueado en M2. Lo que cambió es la razón — pasar a un drafter 3.x es un costo de reentrenamiento, ya no una imposibilidad. Contador de rediseños de D2: 0 de la hipótesis; 1 arreglo del contador.
 
 ## 12. Historia
 

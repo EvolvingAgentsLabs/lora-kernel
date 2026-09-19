@@ -1,0 +1,63 @@
+{
+  "control_base": "Qwen/Qwen2.5-3B-Instruct",
+  "subject_base": "Qwen/Qwen3.5-4B",
+  "arms": {
+    "control": {
+      "base": "Qwen/Qwen2.5-3B-Instruct",
+      "G1": {
+        "passed": true,
+        "adapter": "adapters/tiny-control"
+      },
+      "G2": {
+        "passed": true,
+        "verdict": "applied",
+        "exit": 0
+      },
+      "seconds": 332
+    },
+    "subject": {
+      "base": "Qwen/Qwen3.5-4B",
+      "G1": {
+        "passed": true,
+        "adapter": "adapters/tiny-subject"
+      },
+      "G2": {
+        "passed": false,
+        "verdict": "not applied: served text is identical to the base",
+        "exit": 0,
+        "activation": {
+          "log": "vllm-subject.log",
+          "modules_with_weights": 531,
+          "modules_without": 181
+        }
+      },
+      "rekey": {
+        "src": "adapters/tiny-subject",
+        "dst": "adapters/tiny-rekeyed",
+        "moved": 496,
+        "before": {
+          "tensors": 496,
+          "land_on_text_stack": 0
+        },
+        "after": {
+          "tensors": 496,
+          "land_on_text_stack": 496
+        }
+      },
+      "G2r": {
+        "passed": true,
+        "verdict": "applied",
+        "exit": 0,
+        "activation": {
+          "log": "vllm-rekeyed.log",
+          "modules_with_weights": 683,
+          "modules_without": 29
+        }
+      },
+      "seconds": 733
+    }
+  },
+  "control_valid": true,
+  "reading": "C18 is a naming mismatch: the same weights, renamed to where vLLM looks, are applied. Not a serving-stack limit and not a model one",
+  "decision": "a Qwen3.5 adapter is servable as a pool member once its tensors carry `language_model.`; train through the class vLLM serves, or rekey at release"
+}

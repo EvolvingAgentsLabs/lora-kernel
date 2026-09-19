@@ -53,6 +53,28 @@ FOUND = "Successfully loaded LoRA weights for module"
 MISSING = "No LoRA weights found for module"
 
 
+def split_activations(text: str) -> list[dict]:
+    """One entry per activation. vLLM ACTIVATES DUMMY LoRAs WHILE IT PROFILES AND WARMS
+    UP — three of them before the first request on 0.29.0 — and each logs a line per
+    module exactly as a real adapter does. D2's first count summed all four and read
+    the as-trained subject as `modules_with_weights: 531`, against a brief that
+    predicted 0 **[ran]** 2026-09-19: 531 is 3 x 177, the dummies. A new activation
+    starts where a module name repeats; the real adapter's is the last."""
+    acts, cur, seen = [], {"with": 0, "without": 0}, set()
+    for line in text.split("\n"):
+        for marker, key in ((FOUND, "with"), (MISSING, "without")):
+            if marker in line:
+                name = line.split(marker, 1)[1].split()[0].rstrip(".,")
+                if name in seen:
+                    acts.append(cur)
+                    cur, seen = {"with": 0, "without": 0}, set()
+                seen.add(name)
+                cur[key] += 1
+    if seen:
+        acts.append(cur)
+    return acts
+
+
 def activation(tag: str) -> dict:
     """THE FAILURE, COUNTED WHERE IT HAPPENS. The served text is where C18 surfaces;
     where it happens is vLLM's activation loop, which says per module whether the
@@ -65,8 +87,12 @@ def activation(tag: str) -> dict:
     text = src.read_text(errors="replace")
     kept = Path(f"vllm-{tag}.log")
     kept.write_text(text)
-    return {"log": kept.name, "modules_with_weights": text.count(FOUND),
-            "modules_without": text.count(MISSING)}
+    acts = split_activations(text)
+    last = acts[-1] if acts else {"with": 0, "without": 0}
+    return {"log": kept.name, "activations": len(acts),
+            "modules_with_weights": last["with"], "modules_without": last["without"],
+            "all_activations_with_weights": text.count(FOUND),
+            "all_activations_without": text.count(MISSING)}
 
 
 def g1(base: str, tag: str, steps: int) -> dict:

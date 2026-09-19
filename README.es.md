@@ -218,14 +218,15 @@ base `Qwen2.5-3B` a una base `Qwen3.5-4B`. **El target no necesita LoRA** — ve
 nunca lleva un adaptador — así que nada sobre servir adaptadores lo restringe. Lo que
 restringe al *drafter* es un hecho medido, C18: vLLM 0.29.0 carga un LoRA sobre
 `Qwen3.5-4B`, loguea que lo hizo, y sirve la base igual, mientras el mismo
-procedimiento sobre `Qwen2.5-3B` vuelve `applied` **[ran]** P33. La ruta, como
-mecanismos:
+procedimiento sobre `Qwen2.5-3B` vuelve `applied` **[ran]** P33 — **y D2 [ran] 2026-09-19
+encontró por qué: los nombres de los tensores del adaptador, no el stack de serving.**
+Renombrado, el mismo adaptador se aplica. La ruta, como mecanismos:
 
 | # | mecanismo | estado | compuerta |
 |---|---|---|---|
 | **D0** | un drafter 3.x que comparta espacio de ids con el 27B | ✅ **[ran]** | mapa de ids idéntico, sin colisiones |
 | **D1** | C18 bajo un vLLM más nuevo | vacío — la cadena instala el último y es **0.29.0**, la versión de P33 **[ran]** | — |
-| **D2** | **el mecanismo de C18**, leído con el log en la mano: G3 merge-and-serve; el mapeo clave PEFT ↔ módulo vLLM | **siguiente** | `applied` en la compuerta de identidad |
+| **D2** | **el mecanismo de C18**, leído con el log en la mano: ~~G3 merge-and-serve;~~ el mapeo clave PEFT ↔ módulo vLLM | ✅ **[ran]** D2 2026-09-19: **un desajuste de nombres.** El adaptador entrenado por `AutoModelForCausalLM` nombra sus tensores `model.layers.N…`; vLLM sirve `Qwen3_5ForConditionalGeneration` y activa por `language_model.model.layers.N…`. Mismos pesos, 496 tensores renombrados, sin reentrenar: `not applied` → **`applied`**, la activación real pasando de 0 a 152 de 178 módulos | `applied` en la compuerta de identidad |
 | **D3** | pensamiento apagado en el 27B | dentro de D4 | ids `<think>` emitidos sobre la suite: **0** |
 | **D4** | el instrumento de P55, `--base Qwen/Qwen3.5-4B --target Qwen/Qwen3.8-27B`, pool graduado reentrenado sobre el 3.5-4B | bloqueado por D2 | la misma tabla de veredictos que M2 |
 
