@@ -1,207 +1,26 @@
-=== session 1 of 1 · srv085922 · A100
-    boot clone: rc=0 187f5e7 M1 attempt 2 [ran]: no verdict — my own early-fetch line exits 1 under pipefail and the trap stopped the card; fixed, and the line is now run by a tes
+=== session 1 of 1 · srv130738 · L4
+    boot clone: rc=0 cc851bc The core of 1.0: the memory specified, README rewritten — and M7 arm 0b: the expert that reasons is 90/90 served as its corpus taught (#231)
     boot clear: rc=0 cleared
     boot attempt 1 did not take: silence
-    boot clone: rc=0 187f5e7 M1 attempt 2 [ran]: no verdict — my own early-fetch line exits 1 under pipefail and the trap stopped the card; fixed, and the line is now run by a tes
+    boot clone: rc=0 7864bbf An article: we thought a small model couldn't reason — it was our harness (en/es) (#232)
     boot clear: rc=0 cleared
     boot vllm: rc=0 
     boot train deps: rc=0 ok
     boot check: rc=0 0.29.0
-    187f5e7 M1 attempt 2 [ran]: no verdict — my own early-fetch line exits 1 under pipefail and the trap stopped the card; fixed, and the line is now run by a test | 0.29.0
-    this module trains its own adapter — nothing to carry in
-    [pool] training email-full on Qwen/Qwen3.5-4B from training/harness/data_ef/train.jsonl
-    [train] adapters/email-full-q35 from 598 examples
-    [train] adapters/email-full-q35 from 598 examples
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [train] adapters/email-full-q35 from 598 examples
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:05:48.946000 7663 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:05:48.987000 7663 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:46:21.586000 17915 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:46:21.627000 17915 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    adapters home: 1 packed
-    W0919 12:46:21.586000 17915 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:46:21.627000 17915 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:46:21.586000 17915 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:46:21.627000 17915 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:46:21.586000 17915 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:46:21.627000 17915 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:46:21.586000 17915 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:46:21.627000 17915 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:46:21.586000 17915 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:46:21.627000 17915 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:46:21.586000 17915 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:46:21.627000 17915 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:46:21.586000 17915 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:46:21.627000 17915 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:46:21.586000 17915 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:46:21.627000 17915 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:46:21.586000 17915 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:46:21.627000 17915 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:46:21.586000 17915 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:46:21.627000 17915 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:46:21.586000 17915 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:46:21.627000 17915 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:46:21.586000 17915 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:46:21.627000 17915 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:46:21.586000 17915 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:46:21.627000 17915 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:46:21.586000 17915 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:46:21.627000 17915 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    W0919 12:46:21.586000 17915 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    W0919 12:46:21.627000 17915 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
-    srv085922 did not answer a probe (1 of 3)
-    srv085922 did not answer a probe (2 of 3)
-    srv085922 did not answer a probe (3 of 3)
-    srv085922 is not answering — giving up on it
+    7864bbf An article: we thought a small model couldn't reason — it was our harness (en/es) (#232) | 0.29.0
+    carried the partial results in
+    carried the adapters in (4 chunks)
+    adapters home: 2 packed
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules email-full=adapters/email-full-q35 desk-commitment=adapters/desk-commitment-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules email-full=adapters/email-full-q35 desk-commitment=adapters/desk-commitment-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules email-full=adapters/email-full-q35 desk-commitment=adapters/desk-commitment-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules email-full=adapters/email-full-q35 desk-commitment=adapters/desk-commitment-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules email-full=adapters/email-full-q35 desk-commitment=adapters/desk-commitment-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules email-full=adapters/email-full-q35 desk-commitment=adapters/desk-commitment-q35
+    [rank] arm desk-commitment 125/240 correct 125 26s
+    [rank] arm desk-commitment 150/240 correct 150 31s
+    [rank] arm desk-commitment 175/240 correct 175 36s
+    [pool] desk-commitment · new vs base: improvement (240:0, p=0.0)
+    [pool] MOVED: both members released on the new base, each holding its recorded run
+    [pool] adapters packed: adapters_out.tgz
+    the runner wrote its result — done

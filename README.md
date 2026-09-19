@@ -96,13 +96,14 @@ retrained, because what it learned was to obey the links and read the notes.
 
 ## What is measured
 
-On `Qwen2.5-3B-Instruct`, the base everything released so far was trained on.
+On `Qwen2.5-3B-Instruct`, the base the pool was built on — and, since milestone 1, on `Qwen3.5-4B`, where both released members hold their numbers.
 
 | what | the number | run |
 |---|---|---|
 | **One vLLM, one base, several adapters**, each request served by its own | identity `applied` on every member, tools reachable, stop honoured | **[ran]** P56 |
 | **`email-full@v1`** — inbox triage, tools and judgement in one adapter | **0.989** on human messages against the base's **0.345**; re-served and re-trained, both tie the recorded run | **[ran]** P36, P57 |
 | **`desk-commitment@v1`** — a second member on the *same inbox*, a different question | **240/240** against the base's **38/240**, discordant **202 : 0** | **[ran]** P64 |
+| **The pool on the Qwen 3.x family** — both members retrained on `Qwen3.5-4B`, same corpora, same recipe (`@v2`) | `email-full` **471/475**, exactly its Qwen 2.5 release (tie, 1 : 1); `desk-commitment` **240/240** (tie); identity `applied` on both full-recipe adapters | **[ran]** M1 |
 | **An expert that reasons, served the way its corpus taught** — fluid mechanics, 6-to-9-step chains with a calculator and a per-case handbook | **90/90**, where the same adapter on the same cases scored **11/90** through `tool_calls` messages (79 : 0, paired) — and **24 : 0** against the frontier's 66/90. No evaluated case is in its corpus | **[ran]** M7 arm 0b |
 | **On a 3B, a procedure merely pasted into the prompt is not followed** | base + a 914-token procedure: **0 tool calls on 351/351**, under the majority bar; the trained expert beats it **137 : 1** | **[ran]** P61 |
 | **The API routes per request**; the client names no model | replay on 240 cases: 0.546 → 0.775, 0 misrouted | **[ran]** P41, P62 |
@@ -135,9 +136,9 @@ them: 11 of 90 became 90 of 90 (M7 arm 0b). The memory is built on exactly that 
   sender and *a member's own listing followed by another task* sit at the same distance from the
   corpus **[ran]** M2 arm 2. What is left is a representation that separates the task from its content
   — the radar's learned projection, reached from the router's side.
-- **Nothing released is on Qwen 3.x yet.** `email-full` trains on `Qwen3.5-4B` and its adapter is
-  home; the gates have not run. A Colab session lives sixty minutes and one member takes ~45 to
-  train on the hybrid stack, so the move runs as three sessions **[ran]** M1.
+- **On the new base an adapter has less to add.** The bare `Qwen3.5-4B` scores 0.632 on human email
+  where the 3B scored 0.345 **[ran]** M1. The members still tie their old releases; how much headroom
+  a 4B leaves is a question every new region now has to ask first.
 - **Outside its training depth the reasoning expert is unmeasured again.** The result that it
   over-solves shorter problems (P45) came through the `tool_calls` path, and is open.
 - **The saving in money has never been measured**, and no signal yet sees an answer that is coherent
@@ -182,7 +183,7 @@ Each milestone has a gate and the arm that can kill it, written before it runs
 
 | # | milestone | state · the arm that kills it first |
 |---|---|---|
-| **1** | the pool on Qwen 3.x small (`Qwen3.5-4B`) | in progress, three sessions · the identity gate on a *real* adapter; then: loses, paired, to its Qwen 2.5 release |
+| **1** | the pool on Qwen 3.x small (`Qwen3.5-4B`) | ✅ **[ran] — moved.** Both members tie their Qwen 2.5 releases; `@v2` manifests |
 | **2** | the router as a small model of the corpora | arms 1 and 2 **[ran]**, neither passes: both lose every request from an unseen sender · next, a projection that factors task from content, on new sets |
 | **7** | **the memory** — the core of 1.0 | arm 0 and 0b **[ran]**: the channel works · under an **oracle** walk — exactly the right notes open — the expert still scores ~1/20 on a sibling procedure it never trained on |
 | **5** | the first real region: nursing procedures | headroom **[ran]**: 29/48 closed-book → 45/48 with the note open, 0/12 → 12/12 on a site's value · next: the same content as *walks*, against the untrained base reading the same notes |

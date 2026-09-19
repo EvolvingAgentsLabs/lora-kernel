@@ -40,8 +40,10 @@ el proyecto?"* **When in doubt, the next step is the one that puts a weight delt
 - **Anything needing a GPU runs on Colab through `training/harness/chain_serve.sh`.** This
   machine is a 16 GB arm64 Mac. Do not shrink an experiment to fit it. A 27B is A100 work.
 - **The family is Qwen 3.x and that is decided.** Small `Qwen3.5-4B` (or `2B`), large
-  `Qwen3.8-27B`; one id space **[ran]** D0. Released members are still on
-  `Qwen2.5-3B-Instruct`, which stays the control arm until milestone 1 lands. Gemma 4 is the
+  `Qwen3.8-27B`; one id space **[ran]** D0. **The released members are on
+  `Qwen3.5-4B` since milestone 1 [ran]** (`releases/*@v2.json`, each tying its Qwen 2.5 release);
+  the `@v1` releases on `Qwen2.5-3B-Instruct` stay as the control arm. New regions are trained on the
+  4B — after checking how much headroom its bare base leaves, which is a lot less than the 3B's. Gemma 4 is the
   named alternative and is blocked at PEFT **[ran]** P29. Do not shop for other bases; run
   `lora_matrix` against a candidate instead.
 - **The frontier is a permanent component**, `google/gemini-3.8-flash` through the same

@@ -1,0 +1,39 @@
+=== session 1 of 1 · srv120404 · L4
+    boot clone: rc=0 c7febd2 M2 arm 2, run 2 [ran]: it is representation, not calibration — unseen senders and a member's own listing with another task sit at the same distance; p
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 c7febd2 M2 arm 2, run 2 [ran]: it is representation, not calibration — unseen senders and a member's own listing with another task sit at the same distance; p
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.29.0
+    c7febd2 M2 arm 2, run 2 [ran]: it is representation, not calibration — unseen senders and a member's own listing with another task sit at the same distance; pool_base --only, a member a session | 0.29.0
+    carried the adapters in (4 chunks)
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules email-full=adapters/email-full-q35 desk-commitment=adapters/desk-commitment-q35
+    adapters home: 2 packed
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules email-full=adapters/email-full-q35 desk-commitment=adapters/desk-commitment-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules email-full=adapters/email-full-q35 desk-commitment=adapters/desk-commitment-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules email-full=adapters/email-full-q35 desk-commitment=adapters/desk-commitment-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules email-full=adapters/email-full-q35 desk-commitment=adapters/desk-commitment-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules email-full=adapters/email-full-q35 desk-commitment=adapters/desk-commitment-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules email-full=adapters/email-full-q35 desk-commitment=adapters/desk-commitment-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules email-full=adapters/email-full-q35 desk-commitment=adapters/desk-commitment-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules email-full=adapters/email-full-q35 desk-commitment=adapters/desk-commitment-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules email-full=adapters/email-full-q35 desk-commitment=adapters/desk-commitment-q35
+    [pool] G1 email-full: 3/3 differ → applied
+    [rank] arm Qwen/Qwen3.5-4B 475/475 correct 346 27s
+    [pool] arm base:email: 346/475 errors 0
+    [rank] arm email-full: 475 to draft, 0 resumed
+    [rank] arm email-full 100/475 correct 100 41s
+    [rank] arm email-full 125/475 correct 124 50s
+    [rank] arm email-full 150/475 correct 149 60s
+    [rank] arm email-full 225/475 correct 223 86s
+    [rank] arm email-full 250/475 correct 248 95s
+    [rank] arm email-full 275/475 correct 273 104s
+    [rank] arm email-full 400/475 correct 397 153s
+    [rank] arm email-full 425/475 correct 422 163s
+    [rank] arm email-full 450/475 correct 446 172s
+    srv120404 did not answer a probe (1 of 3)
+    srv120404 did not answer a probe (2 of 3)
+    srv120404 did not answer a probe (3 of 3)
+    srv120404 is not answering — giving up on it

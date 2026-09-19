@@ -1,0 +1,79 @@
+{
+  "name": "email-full",
+  "version": 2,
+  "base": "Qwen/Qwen3.5-4B",
+  "recipe": {
+    "r": 16,
+    "lora_alpha": 32,
+    "epochs": 3,
+    "lr": 0.0002,
+    "batch": 2,
+    "accum": 8,
+    "max_seq": 1536,
+    "seed": 0,
+    "targets": "q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"
+  },
+  "corpus": "training/harness/data_ef/train.jsonl",
+  "corpus_sha256": "382c67d2d16b355b9b4aa1093d9452e05087ede4913e2fdfb21d5ea1a1c0948f",
+  "adapter_sha256": "9e83817a3f51264b1dbe6a03d2e32b722c8410498873883f881844c98fb87c51",
+  "adapter_tarball": "results/M1-pool-qwen35-20260919/adapters_out.tgz",
+  "named_for_serving": {
+    "base": "Qwen/Qwen3.5-4B",
+    "architecture": "Qwen3_5ForConditionalGeneration",
+    "renamed": true,
+    "src": "adapters/email-full-q35",
+    "dst": "adapters/email-full-q35.renamed",
+    "moved": 256,
+    "before": {
+      "tensors": 256,
+      "land_on_text_stack": 0
+    },
+    "after": {
+      "tensors": 256,
+      "land_on_text_stack": 256
+    }
+  },
+  "thinking": "off \u2014 chat_template_kwargs enable_thinking=false in every render",
+  "prompt_sha": "d38fe1bce1255014",
+  "suite": "email",
+  "n": 475,
+  "score": {
+    "correct": 471,
+    "human_correct": 347
+  },
+  "supersedes": "releases/email-full@v1.json \u2014 Qwen/Qwen2.5-3B-Instruct, kept as the control arm",
+  "pairs": [
+    {
+      "pair": "new vs recorded",
+      "n_paired": 475,
+      "a_total": 471,
+      "b_total": 471,
+      "only_a": 1,
+      "only_b": 1,
+      "discordant": 2,
+      "p_value": 1.0,
+      "different": false,
+      "reading": "a tie: the totals differ but the cases behind them do not",
+      "state": "tie"
+    },
+    {
+      "pair": "new vs base",
+      "n_paired": 475,
+      "a_total": 471,
+      "b_total": 346,
+      "only_a": 125,
+      "only_b": 0,
+      "discordant": 125,
+      "p_value": 0.0,
+      "different": true,
+      "reading": "the arms differ",
+      "state": "improvement"
+    }
+  ],
+  "gates": {
+    "G1": true,
+    "G2": true,
+    "auto": "email-full"
+  },
+  "run": "results/M1-pool-qwen35-20260919/pool_base.json"
+}
