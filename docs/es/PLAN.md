@@ -456,6 +456,18 @@ ni la búsqueda — acá es léxica y el oráculo consulta una nota por su propi
 rango 1 no dice nada sobre el ranking. El presupuesto de 24 aperturas de §3 quedaba por debajo del
 procedimiento de 32 pasos de la biblioteca: ahora 48. Sigue **W3** — el radar R0 junto a esta base léxica.
 
+**W3 — construido; margen [ran] 2026-09-19, cero GPU; la sesión de R0 está pendiente.** `memory/index.py`: por nota
+$e_{\text{when}}, e_{\text{what}}$, $s(n\mid q)=\langle e(q),e_{\text{when}}(n)\rangle+\beta\langle e(q),e_{\text{what}}(n)\rangle$,
+los 3 primeros, un `Searcher` que el runtime toma sin cambios, el codificador inyectado (acá no corre ningún
+modelo, nunca). Las consultas que cuentan se escribieron **después** de congelar el diseño: **P**, una
+paráfrasis de cabecera por nota (94 objetivos, solapamiento medio de palabras con el objetivo 0,039, 56
+consultas en cero) — la compuerta; **E**, los 72 enunciados → la primera nota del recorrido del oráculo
+(4 objetivos) — al lado. El recall@3 del buscador por palabras es **0,064 en P** y 0,125 en E: hay margen, y
+en P un piso *por construcción*, así que "le gana al léxico" solo sería un trámite y el veredicto exige además
+recall@3 ≥ 0,80. Falsado si R0 apenas empata con el buscador por palabras — entonces el radar no tiene trabajo
+a este tamaño de biblioteca y W5 corre sobre búsqueda léxica
+([`BRIEF`](../../results/M7-W3-radar-r0-20260919/BRIEF.md)).
+
 ## 2. La familia, y la alternativa
 
 **Adoptada: Qwen 3.x.** `Qwen3.5-2B/4B` y `Qwen3.8-27B` comparten un espacio de ids —
@@ -493,6 +505,8 @@ Las cuatro que deciden la forma de un paso:
 
 - **2026-09-19** — memoria **W2 [ran]: PASÓ.** El runtime, las capas y la guarda sobre el loop de modo corpus sin tocarlo;
   72/72 recorridos del oráculo, 0 rechazados, tres recorridos que violan cortados en `strict`. Todavía sin modelo.
+- **2026-09-19** — memoria **W3 construido, margen [ran]:** el índice, un conjunto de consultas escrito después de congelar (P 94, E 72),
+  recall@3 léxico 0,064 / 0,125. La sesión de R0 en Colab está pendiente; el veredicto y su estándar de 0,80 están en el brief.
 - **2026-09-19** — memoria **W1 [ran]: PASÓ.** La primera biblioteca (`knowledge/nursing-iv/`, 94 notas de
   tres checklists de Open RN, CC BY 4.0), `memory/notes.py` y el lint; 0 hallazgos, 72/72 recorridos del oráculo.
 - **2026-09-19** — hito 1 **[ran]: MOVIDO.** Los dos miembros liberados, reentrenados sobre `Qwen3.5-4B`,
