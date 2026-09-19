@@ -65,7 +65,7 @@ brazos de atribución se compran sólo una vez que hay un efecto que atribuir.
 | **2** | el router como un modelo chico de los corpus | los corpus de los miembros | mal-ruteados-a-local no mayor que el del diccionario en prompts para los que el diccionario no fue escrito; abstiene ante texto fuera de distribución | **brazo 1 [ran] 2026-09-19 — no pasa.** Texto extranjero, conjuntos frescos: el diccionario sirve 59/128 localmente, el router de n-gramas **0/128**; pedidos legítimos de remitentes no vistos: el diccionario pierde 0/120, el router pierde **120/120**. El diccionario se queda; **el brazo 2 es un modelo de embeddings**, compartido con el hito 7 |
 | **3** | la mitad grande de un par | 1 | un LoRA en `Qwen3.8-27B` está `applied` al servirse; grande + LoRA le gana a chico + LoRA en la banda profunda, pareado | — |
 | **4** | el par especulativo | 3 | la aceptación de borradores del LoRA chico bajo verificación del LoRA grande supera la aceptación bajo el modelo grande pelado | — |
-| **5** | la primera región real, a mano | 1, 2, un sandbox, claves rotadas | la compuerta de release, sobre una suite con un verificador que nadie acá generó | bloqueado: el usuario nombra la región |
+| **5** | la primera región real, a mano | 1, 2, un sandbox, claves rotadas | la compuerta de release, sobre una suite con un verificador que nadie acá generó | **región nombrada el 2026-09-19: procedimientos de enfermería y material de educación en salud** (*Nursing Skills* de Open RN, CC BY 4.0, primero); sigue el brazo de margen, cero GPU |
 | **6** | la política de servicio, con la factura | 2, 4, 5 | la porción local ahorra más de lo que cuesta, sobre tráfico real | — |
 | **7** | **una base de conocimiento por subdominio, y la trayectoria por ella como harness** — sobre mecánica de fluidos, partida en subdominios | 1; comparte su modelo de embeddings con el brazo 2 del hito 2; independiente de 3–6, **corre a continuación** | un experto entrenado para navegar y seguir notas contesta familias sobre las que nunca entrenó, donde el mismo experto sin la base está en 1/20 | — |
 
@@ -205,11 +205,59 @@ medición aparte.
 
 ### Hito 5 — la primera región real
 
-Personalizada a mano, liberada por la misma puerta: una suite con un verificador, la base
-como brazo de headroom, el test de signos. Setenta y cinco a cien ejemplos escritos a mano
-es el primer tamaño correcto — ahí saturó la banda superficial del desk. **Bloqueado en
-una decisión que es del usuario: qué región, de quién son los datos.** Necesita un sandbox
-para todo lo que ejecute y claves rotadas.
+**Nombrada por el usuario, 2026-09-19: procedimientos de enfermería, y material de educación en
+salud para la formación de expertos locales.** Es la primera región correcta por razones que da el
+registro:
+
+- **Es conocimiento que nadie acá generó.** Toda suite hasta ahora la escribió este repositorio, y
+  una suite generada no puede contener una dificultad que su autor no pensó (`RECORD.md` §3); el
+  router de n-gramas aprendió el `.com` de un generador (M2). Un manual de procedimientos es texto
+  de otro.
+- **Es conocimiento operacional en su forma más pura** — pasos ordenados, chequeos antes de actuar,
+  qué hacer cuando un chequeo falla — al lado de conocimiento enciclopédico (indicaciones, rangos,
+  tablas). Los dos tipos de la base del hito 7, en una sola fuente real.
+- **Tiene verificadores mecánicos**, y lo que le faltó a la suite clínica de S0–S1 fue margen, no
+  verificadores: el paso siguiente de un procedimiento, el orden de uno desordenado, un chequeo que
+  debe preceder a una acción, y la aritmética — goteos, diluciones, dosis por peso desde una tabla
+  — que es la forma `lookup` + `calc` de fluidos sobre contenido real. La calculadora se queda: un
+  experto destilado escribe π/4·0,22² como 0,037006 (P5–P7), y acá eso es una dosis.
+- **"Expertos locales" es la base inmemorizable, de verdad.** La adaptación que hace una sala o un
+  ministerio de una guía — otra dilución, un chequeo extra — es exactamente una nota cuyo contenido
+  los pesos no pueden guardar porque cambia por sitio. El brazo 5 del hito 7 (editar una nota, la
+  respuesta sigue a la base, sin reentrenar) deja de ser un truco de instrumento y pasa a ser el
+  producto.
+
+**Restricciones, como hechos.**
+
+- **La licencia decide la fuente, antes que la calidad [read] 2026-09-19.** Las publicaciones de la
+  OMS salen por defecto bajo **CC BY-NC-SA 3.0 IGO**: sin uso comercial, y las adaptaciones heredan
+  la licencia — sirve para medir, no para entregar en un servicio, y no se puede commitear a este
+  repositorio Apache-2.0. ***Nursing Skills* de Open RN** (Chippewa Valley Technical College, en
+  NCBI Bookshelf) es **CC BY 4.0**: uso comercial y adaptación con atribución. Así que el libro
+  abierto es la primera fuente; un texto de la OMS es un segundo brazo, no comercial; los
+  procedimientos propios de un cliente son el caso real y viven del lado de la personalización,
+  fuera de este repositorio (§0). Verificar la licencia de cada documento que se use.
+- **Es material de formación, no consejo a un paciente.** Las preguntas de la región son las de un
+  estudiante o un formador local. Nada acá es un dispositivo médico, y la compuerta de release de
+  esta región es más estricta, no más laxa: lo que el experto no está medido para responder, sale.
+- **Sin datos de pacientes**, por construcción: sólo procedimientos y texto de enseñanza.
+- **El idioma es una incógnita más.** Arrancar en el idioma de la fuente; una edición en español es
+  un segundo brazo, no una suposición gratis sobre un 4B.
+
+**Orden — lo más barato que puede matarlo, primero.**
+
+1. **Margen, cero GPU donde se pueda:** un capítulo, ~40 preguntas verificables de los cuatro tipos
+   de arriba, la base pelada contra ellas. Si la base ya ordena los pasos de un procedimiento que
+   nunca se le mostró, no hay nada que comprar — así murió la suite clínica (S1: ningún modelo
+   adelante de un 12B local gratis). Margen primero, otra vez.
+2. Después el diseño del hito 7, sin cambios, sobre este contenido: trayectorias sobre las notas del
+   capítulo, **un procedimiento retenido que existe sólo en la base**, la trayectoria oráculo primero.
+3. La mecánica de fluidos conserva su trabajo al lado: es el **instrumento** — un oráculo exacto y
+   contenido inmemorizable por construcción. Enfermería es la **región**. Un resultado que aparece
+   en una y no en la otra es un hallazgo sobre las suites generadas.
+
+Setenta y cinco a cien ejemplos escritos a mano es el primer tamaño correcto — la banda llana del
+desk saturó ahí. Necesita un sandbox para todo lo que ejecute y claves rotadas.
 
 ### Hito 6 — la política de servicio, con la factura
 

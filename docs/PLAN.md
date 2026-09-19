@@ -57,7 +57,7 @@ arms are bought only once there is an effect to attribute.
 | **2** | the router as a tiny model of the corpora | the members' corpora | misrouted-to-local no higher than the dictionary's on prompts the dictionary was not written for; abstains on out-of-distribution text | **arm 1 [ran] 2026-09-19 — does not pass.** Foreign text, fresh sets: dictionary 59/128 served locally, n-gram router **0/128**; legitimate requests from unseen senders: dictionary loses 0/120, router loses **120/120**. The dictionary stays; **arm 2 is an embedding model**, shared with milestone 7 |
 | **3** | the large half of one pair | 1 | a LoRA on `Qwen3.8-27B` is applied when served; large + LoRA beats small + LoRA on the deep band, paired | — |
 | **4** | the speculative pair | 3 | acceptance of small-LoRA drafts under large-LoRA verification exceeds acceptance under the bare large model | — |
-| **5** | the first real region, by hand | 1, 2, a sandbox, keys rotated | the release gate, on a suite with a verifier nobody here generated | blocked: the user names the region |
+| **5** | the first real region, by hand | 1, 2, a sandbox, keys rotated | the release gate, on a suite with a verifier nobody here generated | **region named 2026-09-19: nursing procedures and health-education material** (Open RN *Nursing Skills*, CC BY 4.0, first); headroom arm next, zero GPU |
 | **6** | the service policy, with the bill | 2, 4, 5 | the local share saves more than it costs, on real traffic | — |
 | **7** | **a knowledge base per subdomain, and the trajectory through it as the harness** — on fluid mechanics, split into subdomains | 1; shares its embedding model with 2's arm 2; independent of 3–6, **runs next** | an expert trained to navigate and follow notes answers families it never trained on, where the same expert without the base is at 1/20 | — |
 
@@ -186,11 +186,55 @@ measurement.
 
 ### Milestone 5 — the first real region
 
-Customised by hand, released through the same door: a suite with a verifier, the base as
-the headroom arm, the sign test. Seventy-five to a hundred hand-written examples is the
-right first size — the shallow desk band saturated there. **Blocked on a decision that is
-the user's: which region, whose data.** It needs a sandbox for anything that executes and
-rotated keys.
+**Named by the user, 2026-09-19: nursing procedures, and health-education material for training
+local experts.** It is the right first region for reasons the record supplies:
+
+- **It is knowledge nobody here generated.** Every suite so far was written by this repository, and
+  a generated suite cannot contain a difficulty its author did not think of (`RECORD.md` §3); the
+  n-gram router learned a generator's `.com` (M2). A procedure manual is someone else's text.
+- **It is operational knowledge in its purest form** — ordered steps, checks before acting, what
+  to do when a check fails — beside encyclopedic knowledge (indications, ranges, tables). Both
+  kinds of milestone 7's base, in one real source.
+- **It has mechanical verifiers**, which is what the clinical suite of S0–S1 lacked the headroom
+  for, not the verifiers: the next step of a procedure, the order of a shuffled one, a check that
+  must precede an action, and the arithmetic — drip rates, dilutions, weight-based doses from a
+  table — which is fluids' `lookup` + `calc` shape over real content. The calculator stays: a
+  distilled expert writes π/4·0.22² as 0.037006 (P5–P7), and here that is a dose.
+- **"Local experts" is the unmemorisable base, for real.** A ward's or a ministry's adaptation of a
+  guideline — a different dilution, an extra check — is exactly a note whose content the weights
+  cannot hold because it changes by site. Milestone 7's arm 5 (edit a note, the answer follows the
+  base, no retraining) stops being an instrument trick and becomes the product.
+
+**Constraints, as facts.**
+
+- **Licence decides the source, before quality does [read] 2026-09-19.** WHO publications default
+  to **CC BY-NC-SA 3.0 IGO**: no commercial use, and adaptations inherit the licence — usable to
+  measure, not to ship in a service, and not committable to this Apache-2.0 repository. **Open RN's
+  *Nursing Skills*** (Chippewa Valley Technical College, on NCBI Bookshelf) is **CC BY 4.0**:
+  commercial use and adaptation with attribution. So the open textbook is the first source; a WHO
+  text is a second, non-commercial arm; a customer's own procedures are the real case and live on
+  the customisation side, outside this repository (§0). Verify the licence of each document used.
+- **It is training material, not advice to a patient.** The region's questions are a student's or a
+  local trainer's. Nothing here is a medical device, and the release gate for this region is
+  stricter, not looser: what the expert is not measured to answer goes out.
+- **No patient data**, by construction: procedures and teaching text only.
+- **Language is one more unknown.** Start in the source's language; a Spanish edition is a second
+  arm, not a free assumption about a 4B.
+
+**Order — the cheapest thing that can kill it first.**
+
+1. **Headroom, zero GPU where possible:** one chapter, ~40 verifiable questions of the four kinds
+   above, the bare base against them. If the base already orders the steps of a procedure it has
+   never been shown, there is nothing to buy — that is how the clinical suite died (S1: no model
+   ahead of a free local 12B). Headroom first, again.
+2. Then milestone 7's design, unchanged, on this content: trajectories over the chapter's notes,
+   **a held-out procedure that exists only in the base**, the oracle trajectory first.
+3. Fluid mechanics keeps its job beside it: it is the **instrument** — an exact oracle and content
+   unmemorisable by construction. Nursing is the **region**. A result that appears in one and not
+   the other is a finding about generated suites.
+
+Seventy-five to a hundred hand-written examples is the right first size — the shallow desk band
+saturated there. It needs a sandbox for anything that executes and rotated keys.
 
 ### Milestone 6 — the service policy, with the bill
 

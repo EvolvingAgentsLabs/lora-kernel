@@ -132,7 +132,7 @@ Each has a gate and the arm that can kill it, written before it runs
 | **2** | **The router as a tiny model of the corpora**, abstaining to the frontier | arm 1 **[ran]**, does not pass: safe on foreign text, loses every request from an unseen sender. Arm 2 — an embedding model — dies on the same four sets |
 | **3** | **The large half**: a LoRA on `Qwen3.8-27B` from the same corpus, on the deep band where the small expert has headroom | vLLM does not apply it (logprob gate); then: large + LoRA does not beat small + LoRA, paired |
 | **4** | **The speculative pair**: acceptance of small-LoRA drafts under large-LoRA verification | acceptance no higher than against the bare large model — the matched LoRA buys nothing |
-| **5** | **The first real region**, by hand, through the same release gate | the release gate |
+| **5** | **The first real region: nursing procedures and health-education material** (named by the user; Open RN *Nursing Skills*, CC BY 4.0, first — WHO texts are CC BY-NC-SA and only measure). By hand, through the same release gate | the bare base already orders the steps of a procedure it was never shown — no headroom, as with the clinical suite |
 | **6** | **The service policy**: router → small → pair → frontier, with the bill measured | the local share costs more than it saves |
 | **7** | **A knowledge base per subdomain, the trajectory through it as the harness** — on fluid mechanics, split into subdomains. *Runs next.* | under an **oracle** trajectory — exactly the right notes open — the expert still scores ~1/20 on a sibling family it never trained on |
 
