@@ -176,3 +176,22 @@ def test_nothing_renamed_is_void_not_falsified(monkeypatch, tmp_path):
     lora_matrix.main()
     assert asked == ["control", "subject"]
     assert json.loads(out.read_text())["reading"].startswith("VOID for D2")
+
+
+def test_warmup_dummies_are_not_the_adapter():
+    """D2 [ran] 2026-09-19: vLLM activates dummy LoRAs while profiling; summed with the
+    real activation they read an adapter that landed nowhere as 531 modules with weights."""
+    ok, miss = lora_matrix.FOUND, lora_matrix.MISSING
+    dummy = [f"DEBUG {ok} m.layers.{i}.q_proj." for i in range(3)] + [f"DEBUG {miss} m.lm_head, skipping."]
+    real = [f"DEBUG {miss} m.layers.{i}.q_proj, skipping." for i in range(3)] + [f"DEBUG {miss} m.lm_head, skipping."]
+    acts = lora_matrix.split_activations("\n".join(dummy * 3 + real))
+    assert len(acts) == 4
+    assert acts[-1] == {"with": 0, "without": 4}
+    assert sum(a["with"] for a in acts) == 9          # what the first counter reported
+
+
+def test_the_recorded_rekeyed_log_splits_as_the_record_says():
+    from pathlib import Path
+    log = Path("results/D2-rekey-20260918/vllm.log")
+    acts = lora_matrix.split_activations(log.read_text(errors="replace"))
+    assert [(a["with"], a["without"]) for a in acts] == [(177, 1)] * 3 + [(152, 26)]

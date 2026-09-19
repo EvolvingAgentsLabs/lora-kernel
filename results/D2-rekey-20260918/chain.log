@@ -1,0 +1,82 @@
+=== session 1 of 1 · srv235225 · L4
+    boot clone: rc=0 9cc5365 D2 pre-registered: C18 read as a naming mismatch [read], and lora_matrix --rekey, the arm that tests it
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 9cc5365 D2 pre-registered: C18 read as a naming mismatch [read], and lora_matrix --rekey, the arm that tests it
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.29.0
+    9cc5365 D2 pre-registered: C18 read as a naming mismatch [read], and lora_matrix --rekey, the arm that tests it | 0.29.0
+    this module trains its own adapter — nothing to carry in
+    [matrix] ===== control: Qwen/Qwen2.5-3B-Instruct =====
+    [tiny] Linear modules: ['down_proj', 'gate_proj', 'k_proj', 'o_proj', 'q_proj', 'up_proj', 'v_proj']
+    [tiny] of those, attention-shaped: ['k_proj', 'o_proj', 'q_proj', 'v_proj']
+    [tiny] target modules found: ['down_proj', 'gate_proj', 'k_proj', 'o_proj', 'q_proj', 'up_proj', 'v_proj']
+    [tiny] lora_B_abs_sum=18082.3796 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen2.5-3B-Instruct --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [tiny] lora_B_abs_sum=18082.3796 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen2.5-3B-Instruct --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [tiny] lora_B_abs_sum=18082.3796 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen2.5-3B-Instruct --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [tiny] lora_B_abs_sum=18082.3796 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen2.5-3B-Instruct --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [tiny] lora_B_abs_sum=18082.3796 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen2.5-3B-Instruct --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [gate] tiny: applied
+    [matrix] control G2 served: applied 
+    [matrix] ===== subject: Qwen/Qwen3.5-4B =====
+    [tiny] Linear modules: ['down_proj', 'gate_proj', 'in_proj_a', 'in_proj_b', 'in_proj_qkv', 'in_proj_z', 'k_proj', 'o_proj', 'out_proj', 'q_proj', 'up_proj', 'v_proj']
+    [tiny] of those, attention-shaped: ['in_proj_qkv', 'k_proj', 'o_proj', 'out_proj', 'q_proj', 'v_proj']
+    [tiny] target modules found: ['down_proj', 'gate_proj', 'in_proj_a', 'in_proj_b', 'in_proj_qkv', 'in_proj_z', 'k_proj', 'o_proj', 'out_proj', 'q_proj', 'up_proj', 'v_proj']
+    [tiny] Linear modules: ['down_proj', 'gate_proj', 'in_proj_a', 'in_proj_b', 'in_proj_qkv', 'in_proj_z', 'k_proj', 'o_proj', 'out_proj', 'q_proj', 'up_proj', 'v_proj']
+    [tiny] of those, attention-shaped: ['in_proj_qkv', 'k_proj', 'o_proj', 'out_proj', 'q_proj', 'v_proj']
+    [tiny] target modules found: ['down_proj', 'gate_proj', 'in_proj_a', 'in_proj_b', 'in_proj_qkv', 'in_proj_z', 'k_proj', 'o_proj', 'out_proj', 'q_proj', 'up_proj', 'v_proj']
+    [tiny] lora_B_abs_sum=17937.1852 changes_output=True
+    [matrix] subject G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen3.5-4B --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-subject
+    [tiny] lora_B_abs_sum=17937.1852 changes_output=True
+    [matrix] subject G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen3.5-4B --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-subject
+    [tiny] lora_B_abs_sum=17937.1852 changes_output=True
+    [matrix] subject G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen3.5-4B --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-subject
+    [tiny] lora_B_abs_sum=17937.1852 changes_output=True
+    [matrix] subject G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen3.5-4B --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-subject
+    [tiny] lora_B_abs_sum=17937.1852 changes_output=True
+    [matrix] subject G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen3.5-4B --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-subject
+    [tiny] lora_B_abs_sum=17937.1852 changes_output=True
+    [matrix] subject G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen3.5-4B --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-subject
+    [tiny] lora_B_abs_sum=17937.1852 changes_output=True
+    [matrix] subject G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen3.5-4B --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-subject
+    [tiny] lora_B_abs_sum=17937.1852 changes_output=True
+    [matrix] subject G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen3.5-4B --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-subject
+    [matrix] subject G2 served: not applied: served text is identical to the base {'log': 'vllm-subject.log', 'modules_with_weights': 531, 'modules_without': 181}
+    [matrix] subject rekey: {'src': 'adapters/tiny-subject', 'dst': 'adapters/tiny-rekeyed', 'moved': 496, 'before': {'tensors': 496, 'land_on_text_stack': 0}, 'after': {'tensors': 496, 'land_on_text_stack': 496}}
+    [serve] vllm serve Qwen/Qwen3.5-4B --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-rekeyed
+    [matrix] subject G2 served: not applied: served text is identical to the base {'log': 'vllm-subject.log', 'modules_with_weights': 531, 'modules_without': 181}
+    [matrix] subject rekey: {'src': 'adapters/tiny-subject', 'dst': 'adapters/tiny-rekeyed', 'moved': 496, 'before': {'tensors': 496, 'land_on_text_stack': 0}, 'after': {'tensors': 496, 'land_on_text_stack': 496}}
+    [serve] vllm serve Qwen/Qwen3.5-4B --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-rekeyed
+    [matrix] subject G2 served: not applied: served text is identical to the base {'log': 'vllm-subject.log', 'modules_with_weights': 531, 'modules_without': 181}
+    [matrix] subject rekey: {'src': 'adapters/tiny-subject', 'dst': 'adapters/tiny-rekeyed', 'moved': 496, 'before': {'tensors': 496, 'land_on_text_stack': 0}, 'after': {'tensors': 496, 'land_on_text_stack': 496}}
+    [serve] vllm serve Qwen/Qwen3.5-4B --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-rekeyed
+    [matrix] subject G2 served: not applied: served text is identical to the base {'log': 'vllm-subject.log', 'modules_with_weights': 531, 'modules_without': 181}
+    [matrix] subject rekey: {'src': 'adapters/tiny-subject', 'dst': 'adapters/tiny-rekeyed', 'moved': 496, 'before': {'tensors': 496, 'land_on_text_stack': 0}, 'after': {'tensors': 496, 'land_on_text_stack': 496}}
+    [serve] vllm serve Qwen/Qwen3.5-4B --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-rekeyed
+    [matrix] subject G2 served: not applied: served text is identical to the base {'log': 'vllm-subject.log', 'modules_with_weights': 531, 'modules_without': 181}
+    [matrix] subject rekey: {'src': 'adapters/tiny-subject', 'dst': 'adapters/tiny-rekeyed', 'moved': 496, 'before': {'tensors': 496, 'land_on_text_stack': 0}, 'after': {'tensors': 496, 'land_on_text_stack': 496}}
+    [serve] vllm serve Qwen/Qwen3.5-4B --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-rekeyed
+    [matrix] control valid: True
+    [matrix] reading: C18 is a naming mismatch: the same weights, renamed to where vLLM looks, are applied. Not a serving-stack limit and not a model one
+    [matrix] decision: a Qwen3.5 adapter is servable as a pool member once its tensors carry `language_model.`; train through the class vLLM serves, or rekey at release
+    the runner wrote its result — done

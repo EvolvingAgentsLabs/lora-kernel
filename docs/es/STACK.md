@@ -25,6 +25,9 @@ vLLM 0.29.0 carga un LoRA sobre `Qwen3.5-4B`, loguea `Loaded new LoRA adapter` y
 **sirve la base igual** **[ran]** — la compuerta de identidad C18. Gemma 4 no es una
 base peft (`Gemma4ClippableLinear` no es `nn.Linear`). Correr
 `serve_openai --gate-only` contra cualquier candidata antes de proponerla.
+**D2 [ran] 2026-09-19 corrigió la lectura de C18:** son los nombres de los tensores del
+adaptador, no el stack de serving — renombrado a `language_model.`, el mismo adaptador de
+Qwen3.5 da `applied`. Qwen 2.5 se queda porque los miembros liberados están entrenados sobre él.
 
 **bf16 se chequea, no se asume.** `torch.cuda.is_bf16_supported()` devuelve `True` en
 una T4 porque cuenta *emulación*, y la bf16 emulada no tiene kernel — toda generación

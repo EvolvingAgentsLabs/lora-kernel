@@ -209,13 +209,15 @@ So the 27B is reachable, and the drafter is what moves: the pool migrates from a
 verifies, it never holds an adapter — so nothing about serving adapters constrains it.
 What constrains the *drafter* is one measured fact, C18: vLLM 0.29.0 loads a LoRA on
 `Qwen3.5-4B`, logs that it did, and serves the base anyway, while the same procedure
-on `Qwen2.5-3B` comes back `applied` **[ran]** P33. The route, as mechanisms:
+on `Qwen2.5-3B` comes back `applied` **[ran]** P33 — **and D2 [ran] 2026-09-19 found why: the
+adapter's tensor names, not the serving stack.** Renamed, the same adapter is applied. The
+route, as mechanisms:
 
 | # | mechanism | state | gate |
 |---|---|---|---|
 | **D0** | a 3.x drafter sharing an id space with the 27B | ✅ **[ran]** | id map identical, no collisions |
 | **D1** | C18 under a newer vLLM | void — the chain installs the latest and it is **0.29.0**, P33's version **[ran]** | — |
-| **D2** | **the C18 mechanism**, read with the log in hand: G3 merge-and-serve; the PEFT-key ↔ vLLM-module mapping | **next** | `applied` on the identity gate |
+| **D2** | **the C18 mechanism**, read with the log in hand: ~~G3 merge-and-serve;~~ the PEFT-key ↔ vLLM-module mapping | ✅ **[ran]** D2 2026-09-19: **a naming mismatch.** The adapter trained through `AutoModelForCausalLM` names its tensors `model.layers.N…`; vLLM serves `Qwen3_5ForConditionalGeneration` and activates by `language_model.model.layers.N…`. Same weights, 496 tensors renamed, not retrained: `not applied` → **`applied`**, the real activation going from 0 to 152 of 178 modules | `applied` on the identity gate |
 | **D3** | thinking off on the 27B | inside D4 | `<think>` ids emitted on the suite: **0** |
 | **D4** | the P55 instrument, `--base Qwen/Qwen3.5-4B --target Qwen/Qwen3.8-27B`, graded pool retrained on the 3.5-4B | blocked on D2 | the same verdict table as M2 |
 

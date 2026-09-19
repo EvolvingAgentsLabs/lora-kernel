@@ -53,3 +53,23 @@ one: the reading explains P33 without reference to which modules were targeted.
 **Guard added before launch.** If the renaming moves no tensor (`rekey.moved = 0`), PEFT did
 not write the names this brief assumed; G2r is **not asked** and the run reads **VOID for
 D2**, not falsified.
+
+## Result **[ran]** 2026-09-19 · row 3 of the table: C18 is a naming mismatch
+
+Colab L4, session `srv235225`, read off `lora_matrix.json`.
+
+| arm | served | real activation |
+|---|---|---|
+| control `Qwen2.5-3B-Instruct` | **applied** | — |
+| subject as trained (`lora_B` 17,937, changes output in process) | **not applied** | 0 of 178 modules |
+| subject renamed — 496 tensors moved, 0 → 496 landing on the text stack, not retrained | **applied** | 152 of 178 modules |
+
+**The consistency check fired, and the fault was the counter.** Predicted `modules_with_weights
+= 0` for the as-trained subject; reported 531. vLLM activates three dummy LoRAs while profiling:
+531 = 3 × 177, and the 181 misses = 3 + 178. The rekeyed log (`vllm.log`, here) splits as
+`(177, 1) × 3 + (152, 26)`; the 26 are `lm_head`, `embed_tokens`, 24 `conv1d` — never targeted.
+**The subject's own log stayed on the card: its 0 of 178 is arithmetic on its totals, not a
+direct reading.** `lora_matrix.json` here is as the run wrote it, with the summed counts; the
+counter was fixed afterwards (`split_activations`) and is tested against this `vllm.log`.
+
+Not measured, as the brief said: quality of a Qwen3.5 expert, each projection family alone, the 27B.

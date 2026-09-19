@@ -107,6 +107,14 @@ So, the rules that keep a session on the project:
   `Qwen3.5-4B`, logs that it did, and **serves the base anyway** **[ran]**. Gemma 4
   is not a peft base (`Gemma4ClippableLinear` is not `nn.Linear`). Do not
   re-litigate this; run `serve_openai --gate-only` against any new base instead.
+  **Corrected 2026-09-19, D2 [ran]: P33's observation stands and its reading does not.**
+  It was read as a serving-stack limit; it is a **naming mismatch** — the adapter trained
+  through `AutoModelForCausalLM` names tensors `model.layers.N…`, vLLM serves the
+  `ConditionalGeneration` class and activates by `language_model.model.layers.N…`, loading
+  validates only the last name component and says *Loaded*. The same weights renamed
+  (`training/harness/rekey.py`) come back `applied`. **The base is still Qwen 2.5 — because
+  every released member is trained on it, no longer because 3.5 cannot be served.** Moving
+  is now a cost decision (retrain the pool), and D4 stays blocked on M2.
 - **Do not spend a session shopping for a target — the two that matter are
   already decided by measurement.** The **fallback** is `google/gemini-3.8-flash`,
   **66/90** on the fluids suite through the same client the local expert uses
@@ -289,6 +297,12 @@ These are not style. Each one was paid for.
   author as the generator: **a generated suite cannot contain a difficulty nobody
   thought of.** The answer to that one is to let the base model choose where the
   difficulty is.
+- **A log-line counter counts the warm-up too.** vLLM activates dummy LoRAs while it
+  profiles — three before the first request on 0.29.0 — and each logs a line per module
+  exactly as a real adapter does. D2's first counter summed all four activations and read
+  an adapter that landed on **0 of 178** modules as `modules_with_weights: 531`, against a
+  brief that predicted 0 **[ran]** 2026-09-19; 531 is 3 × 177. Split a log into the events
+  it records before counting lines in it (`lora_matrix.split_activations`).
 - **Count instrument redesigns.** Once is fine, twice is suspicious, three times
   is looking for the result. The stopping condition goes into the plan before the
   run.
