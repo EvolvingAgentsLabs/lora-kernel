@@ -1,0 +1,109 @@
+{
+  "library": "knowledge/nursing-iv",
+  "walks": 72,
+  "passed_walks": 72,
+  "failures": {},
+  "per_kind": {
+    "order": {
+      "n": 24,
+      "passed": 24
+    },
+    "next": {
+      "n": 24,
+      "passed": 24
+    },
+    "rate": {
+      "n": 12,
+      "passed": 12
+    },
+    "site": {
+      "n": 12,
+      "passed": 12
+    }
+  },
+  "totals": {
+    "calls": 949,
+    "refused": 0,
+    "malformed": 0,
+    "opens": 865,
+    "searches": 72,
+    "calcs": 12,
+    "log_lines": 949
+  },
+  "search": {
+    "what": "lexical (W2); the procedure or concept the walk starts at, by its own `when`",
+    "rank_1": 72,
+    "rank_le_3": 72,
+    "n": 72
+  },
+  "violating_walks": {
+    "skipped_requires": {
+      "strict": {
+        "cut": true,
+        "ended": "guard: requires",
+        "verdict": null,
+        "calls_made": 4,
+        "calls_planned": 11,
+        "reported": [
+          "ERROR: requires gsj first"
+        ]
+      },
+      "recover": {
+        "continued": true,
+        "violations": 1,
+        "answered": true,
+        "reported": [
+          "ERROR: requires gsj first"
+        ]
+      }
+    },
+    "unknown_id": {
+      "strict": {
+        "cut": true,
+        "ended": "guard: unknown_id",
+        "verdict": null,
+        "calls_made": 3,
+        "calls_planned": 5,
+        "reported": [
+          "ERROR: no note zz9 in this conversation"
+        ]
+      },
+      "recover": {
+        "continued": true,
+        "violations": 1,
+        "answered": true,
+        "reported": [
+          "ERROR: no note zz9 in this conversation"
+        ]
+      }
+    },
+    "out_of_order": {
+      "strict": {
+        "cut": true,
+        "ended": "guard: requires",
+        "verdict": null,
+        "calls_made": 5,
+        "calls_planned": 7,
+        "reported": [
+          "ERROR: requires iui first"
+        ]
+      },
+      "recover": {
+        "continued": true,
+        "violations": 1,
+        "answered": true,
+        "reported": [
+          "ERROR: requires iui first"
+        ]
+      }
+    }
+  },
+  "violating_walks_ok": true,
+  "budgets": {
+    "max_opens": 48,
+    "max_searches": 12,
+    "k": 3,
+    "loop_max_calls": 64
+  },
+  "passed": true
+}

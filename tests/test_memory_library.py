@@ -9,7 +9,8 @@ import shutil
 from pathlib import Path
 
 from memory.lint import lint
-from memory.notes import Library, render
+from memory.layers import render
+from memory.notes import Library
 from training.nursing import library as lib_mod
 from training.nursing.source import CHECKLISTS
 

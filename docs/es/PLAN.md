@@ -442,6 +442,20 @@ esqueleto de la propia especificación por encima de su propio límite (230 toke
 lista *etiquetas* de paso, no títulos. Sigue **W2** — el runtime, las capas y la guarda sobre el loop de
 modo corpus, todavía sin modelo.
 
+**W2 [ran] 2026-09-19 — el runtime: PASÓ.** `memory/runtime.py` (tres verbos, ids opacos re-sorteados por
+conversación, presupuestos, la bitácora del recorrido), `memory/layers.py`, `memory/guard.py` — una función
+de respuesta con estado, sobre `accept_rank.run_chain` **sin tocarlo**. Compuerta, escrita antes: cada
+recorrido del oráculo reproducido como una generación guionada que lee sus ids de la propia salida del
+runtime. **72/72** recorridos, 949 comandos, 0 rechazados, 0 mal formados, la guarda en silencio; los
+valores de sitio llegan marcados (`8 [site]`), el `<calc>` de los 12 recorridos de caudal da la respuesta;
+ningún id de la biblioteca en ningún texto mostrado. La regla de la guarda es
+$\text{violation}(n) \iff \text{requires}(n) \setminus \text{opened} \ne \emptyset$: tres recorridos que
+violan se cortan en `strict` y siguen en `recover`, y la compuerta falla sobre una biblioteca con un enlace
+roto ([`BRIEF`](../../results/M7-W2-runtime-20260919/BRIEF.md)). **No medido:** si un *modelo* se recupera,
+ni la búsqueda — acá es léxica y el oráculo consulta una nota por su propio `when`, así que su 72/72 en
+rango 1 no dice nada sobre el ranking. El presupuesto de 24 aperturas de §3 quedaba por debajo del
+procedimiento de 32 pasos de la biblioteca: ahora 48. Sigue **W3** — el radar R0 junto a esta base léxica.
+
 ## 2. La familia, y la alternativa
 
 **Adoptada: Qwen 3.x.** `Qwen3.5-2B/4B` y `Qwen3.8-27B` comparten un espacio de ids —
@@ -477,6 +491,8 @@ Las cuatro que deciden la forma de un paso:
 
 ## 5. Historia
 
+- **2026-09-19** — memoria **W2 [ran]: PASÓ.** El runtime, las capas y la guarda sobre el loop de modo corpus sin tocarlo;
+  72/72 recorridos del oráculo, 0 rechazados, tres recorridos que violan cortados en `strict`. Todavía sin modelo.
 - **2026-09-19** — memoria **W1 [ran]: PASÓ.** La primera biblioteca (`knowledge/nursing-iv/`, 94 notas de
   tres checklists de Open RN, CC BY 4.0), `memory/notes.py` y el lint; 0 hallazgos, 72/72 recorridos del oráculo.
 - **2026-09-19** — hito 1 **[ran]: MOVIDO.** Los dos miembros liberados, reentrenados sobre `Qwen3.5-4B`,
