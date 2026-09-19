@@ -57,6 +57,10 @@ class Suite:
     bar: Callable[[list[Case]], float]     # the floor a target must clear on its own
     eval_seed: int
     eval_n: int
+    # HOW MANY CALLS A CHAIN MAY MAKE. Six is what triage and the desk need; a fluids chain
+    # is six to nine, and a loop capped below the corpus's own depth would cut every long
+    # case off and score the cap.
+    max_calls: int = 6
 
     @property
     def close(self) -> tuple[str, ...]:
@@ -139,7 +143,61 @@ def _desk(region: str = "commitment") -> Suite:
                  eval_n=240 if region == "commitment_deep" else 960)
 
 
+# --- fluids: the region measured to fail — served, for once, the way its corpus taught ---
+
+def _fluids() -> Suite:
+    """The multitool fluids suite in CORPUS MODE.
+
+    WHY IT EXISTS (milestone 7, arm 0b). `fluids-full` scored 11 of 90 **[ran]** P41 and
+    became "the expert that reasons fails". Read where it happens, 74 of its 79 failures
+    hold a number that came from nowhere and leave a tool result unused
+    (`training/physics/result_use.py`) — and that run reached the expert through
+    `tool_calls` / `role: "tool"`, while its corpus taught the result inline,
+    `<calc>…</calc>= 4.2305`. Here everything is what `generate_fluids_full` wrote at the
+    tag `v0.1-foundations`: the system prompt, the served turn built by *calling*
+    `render_tools` over the same schema, the `:.6g` results, the `{"answer": x}` last line.
+    """
+    import json as _json
+
+    from training.harness.openai_proxy import render_tools
+    from training.physics import multitool
+    from training.physics.headroom import correct
+    from training.physics.tools import SCHEMA, ToolError as PhysicsToolError, answer as phys_answer
+    from training.protocol import SYSTEM
+
+    probe = "PROBE"
+    served = render_tools([{"role": "user", "content": probe}], SCHEMA)[-1]["content"]
+    assert served.startswith(probe + "\n\n"), "render_tools no longer appends the block after a blank line"
+    block = served[len(probe) + 2:]
+
+    def answer(handbook, tool: str, body: str) -> str:
+        from training.email.tools import ToolError          # the loop catches this one
+        try:
+            return f"{phys_answer(tool, body, handbook):.6g}"
+        except PhysicsToolError as e:
+            raise ToolError(str(e)) from e
+
+    def parse(text: str):
+        m = re.search(r'\{\s*"answer"\s*:\s*(-?[\d.]+(?:[eE][-+]?\d+)?)\s*\}', text or "")
+        return float(m.group(1)) if m else None
+
+    def cases(n: int, seed: int) -> list[Case]:
+        # THE HANDBOOK IN THE SHAPE `lookup` READS. `generate` writes it JSON-shaped — a list
+        # of [[fluid, T], row] — and handed over as it comes every lookup raises.
+        return [Case(id=c["case_id"], user=c["prompt"],
+                     ctx={tuple(k): v for k, v in c["handbook"]}, truth=c["answer"],
+                     verify=(lambda said, w=c["answer"]: correct(said, w, 0.02)), human=True,
+                     meta={"family": c["family"], "depth": len(c["chain"])})
+                for c in multitool.generate(n, seed)]
+
+    return Suite(name="fluids", system=SYSTEM, block=block, tags=("calc", "lookup", "convert"),
+                 answer=answer, positional={}, parse=parse, cases=cases, bar=lambda cs: 0.0,
+                 eval_seed=616161, eval_n=90, max_calls=12)
+
+
 def load(name: str) -> Suite:
+    if name == "fluids":
+        return _fluids()
     if name == "email":
         return _email()
     if name.startswith("desk"):
