@@ -176,7 +176,7 @@ frontier, or to a person where policy says nothing leaves the building. The syst
 where they are: **records stay in the database, habits go in the adapter, knowledge stays in notes a
 person can read and correct.**
 
-![A solution architecture in five layers: people in four roles; an agent runtime with one agent per role; scheduling and back-office applications; app and messaging channels; one database with identity, payments and monitoring. Under the agents, one graphics card drawn as a bookshelf: one thick spine, the resident model, and a thin spine per role, each with two drawers of notes. A signpost routes by role; dashed lines leave for the frontier and for a person.](docs/img/solution-architecture.png)
+![A solution architecture in five layers: people in four roles; an agent runtime with one agent per role; order and back-office applications; app and messaging channels; one database with identity, payments and monitoring. Under the agents, one graphics card drawn as a bookshelf: one thick spine, the resident model, and a thin spine per role, each with two drawers of notes. A signpost routes by role; dashed lines leave for the frontier and for a person.](docs/img/solution-architecture.png)
 
 *Where it sits in an organisation: records stay in the database, habits go in the adapter, knowledge stays in notes a person can read.*
 
@@ -184,15 +184,16 @@ The same shape, in other rooms — none of these is measured, they are where the
 
 | organisation | roles that become experts | what goes in the two drawers |
 |---|---|---|
-| **a clinic** | front desk, nursing procedures, billing and coding, purchasing, staffing | the unit's protocols over the textbook's · formulary, tariffs, payer rules |
+| **a distributor** | customer service, receiving, dispatch, purchasing, claims | the site's handling procedures · catalogue, carriers, service levels |
 | **an accounting or law office** | intake, document review, deadlines, billing | the firm's checklists and templates · the rules of its jurisdiction, client by client |
-| **a warehouse or distributor** | receiving, dispatch, purchasing, claims | the site's handling procedures · catalogue, carriers, service levels |
 | **a school or training centre** | enrolment, teaching support, communications, purchasing | how this school handles each case · programme, calendar, regulations |
+| **a repair or field-service company** | equipment intake, diagnosis, spare parts, warranties | the procedure for each kind of repair · manuals, parts lists, warranty terms |
+| **a club or community centre** | memberships, activity sign-ups, facilities, collections | how this club handles each case · activities, fees, house rules |
 | **a property manager** | tenant requests, maintenance, collections, suppliers | the escalation procedure per building · contracts, by-laws, supplier terms |
 
 What they share is what makes a region worth an expert: **the same few procedures, repeated daily,
 with local rules that differ from the textbook, over data that should not leave.** The first library
-in this repository is the clinic's second role — IV-therapy nursing procedures
+in this repository is built from an open textbook's step-by-step procedures
 ([`knowledge/nursing-iv/`](knowledge/nursing-iv/)). What is *not* established is in the section
 above, and it applies here in full: no real data yet, and the claim that a library extends an expert
 to a procedure it never trained on is untested.

@@ -23,13 +23,13 @@ IMG = ROOT / "docs" / "img"
 TEXT = {
     "solution-architecture.png": {
         "en": ("A solution architecture in five layers: people in four roles; an agent runtime with one agent per "
-               "role; scheduling and back-office applications; app and messaging channels; one database with "
+               "role; order and back-office applications; app and messaging channels; one database with "
                "identity, payments and monitoring. Under the agents, one graphics card drawn as a bookshelf: one "
                "thick spine, the resident model, and a thin spine per role, each with two drawers of notes. A "
                "signpost routes by role; dashed lines leave for the frontier and for a person.",
                "*Where it sits in an organisation: records stay in the database, habits go in the adapter, knowledge stays in notes a person can read.*"),
         "es": ("Una arquitectura de solución en cinco capas: personas en cuatro roles; un runtime de agentes con un "
-               "agente por rol; aplicaciones de agenda y administración; canales de app y mensajería; una sola base "
+               "agente por rol; aplicaciones de pedidos y administración; canales de app y mensajería; una sola base "
                "de datos con identidad, pagos y monitoreo. Debajo de los agentes, una placa gráfica dibujada como "
                "estantería: un lomo grueso, el modelo residente, y un lomo fino por rol, cada uno con dos cajones de "
                "notas. Un cartel rutea por rol; líneas punteadas salen hacia la frontera y hacia una persona.",
