@@ -397,6 +397,15 @@ space — what falls in it is routed to the member, and what the member looks up
 **Not claimed until measured:** that a hierarchy helps; that embeddings beat lexical search inside
 a small base; that any of it transfers from a generated suite to a real one.
 
+**W1 [ran] 2026-09-19 — the first library and its lint: PASSED.** `memory/notes.py`, `memory/lint.py`,
+`knowledge/nursing-iv/`: three Open RN procedures as skeleton + 70 step notes, a 21-note wiki, one
+example site layer; no model involved. Gate, written first —
+$\text{passed} \iff |\text{findings}| = 0 \wedge \forall q: \text{walk}(q)$ exists — lint **0 findings**,
+oracle walks **72/72**, and the gate fails when a step is removed
+([`BRIEF`](../results/M7-W1-library-20260919/BRIEF.md)). The lint's first run found the spec's own
+skeleton over its own limit (230 tokens > 150): a skeleton lists step *labels*, not titles. Next is
+**W2** — the runtime, the layers and the guard on the corpus-mode loop, still no model.
+
 ## 2. The family, and the alternative
 
 **Adopted: Qwen 3.x.** `Qwen3.5-2B/4B` and `Qwen3.8-27B` share one id space — 248,044 ids,
@@ -430,6 +439,8 @@ that decide the shape of a step:
 
 ## 5. History
 
+- **2026-09-19** — memory **W1 [ran]: PASSED.** The first library (`knowledge/nursing-iv/`, 94 notes from
+  three Open RN checklists, CC BY 4.0), `memory/notes.py` and the lint; 0 findings, 72/72 oracle walks.
 - **2026-09-19** — milestone 1 **[ran]: MOVED.** Both released members retrained on `Qwen3.5-4B` tie
   their Qwen 2.5 releases (471/475, 240/240); `@v2` manifests; the pool is on the 3.x family. Four
   sessions under an hour each, five relaunches, every one a harness fix.
