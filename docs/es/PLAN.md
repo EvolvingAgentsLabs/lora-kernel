@@ -14,6 +14,12 @@ los dos lados. El texto superado se tacha, no se borra. Lo que se midió antes d
 > cuando no cae en ninguno; y, por subdominio, un par especulativo — un LoRA en un modelo
 > chico y un LoRA en uno grande, entrenados sobre el mismo corpus. Familia: Qwen 3.x, chico
 > y grande.**
+>
+> **Extendido el mismo día: cada experto también recibe una base de conocimiento de su
+> propio subdominio — notas en markdown, embebidas, enciclopédicas y operacionales — y lo
+> que el LoRA aprende es la *trayectoria* a través de ella: qué buscar, en qué orden, y
+> cómo seguir lo que lee. Los pesos sostienen la navegación; la base sostiene el
+> contenido. Eso es el harness.**
 
 La reformulación fue del usuario, y es la lectura que sostiene el registro. Tres hechos
 medidos la sostienen:
@@ -28,6 +34,14 @@ medidos la sostienen:
   debajo del experto 3B en las dos regiones probadas — 0,967 < 1,000, 0,746 < 0,989 **[ran]**
   P55, P55b. Así que la mitad grande de un par se *entrena sobre el mismo subdominio*, no
   se toma prestada tal como sale.
+
+- **El conocimiento en el contexto no lo sigue un modelo chico a menos que seguirlo sea lo
+  que se entrenó para hacer**, y **un cuerpo fijo de conocimiento en un corpus se
+  memoriza, y después no mide nada**: base + documento de procedimiento hizo 0 llamadas a
+  herramientas en 351/351 **[ran]** P61; un control sin ninguna herramienta de búsqueda
+  puntuó 27/30 porque catorce valores de tabla entran en 600 ejemplos **[ran]** P15, P21.
+  Las dos cosas son por qué la base de conocimiento se *navega con una política entrenada*
+  y su contenido es *inmemorizable por construcción* (hito 7).
 
 Lo que queda de antes: la frontera es un componente permanente, usada donde el corpus de
 ningún experto cubre el pedido o donde se mide que una región falla (0,546 → 0,775 **[ran]**
@@ -48,11 +62,12 @@ brazos de atribución se compran sólo una vez que hay un efecto que atribuir.
 | # | hito | depende de | compuerta | estado |
 |---|---|---|---|---|
 | **1** | el pool en Qwen 3.x chico | D2 ✅ | los dos miembros liberados en `Qwen3.5-4B`, cada uno empatando o ganándole a su release de Qwen 2.5, pareado | — |
-| **2** | el router como un modelo chico de los corpus | los corpus de los miembros | mal-ruteados-a-local no mayor que el del diccionario en prompts para los que el diccionario no fue escrito; abstiene ante texto fuera de distribución | — |
+| **2** | el router como un modelo chico de los corpus | los corpus de los miembros | mal-ruteados-a-local no mayor que el del diccionario en prompts para los que el diccionario no fue escrito; abstiene ante texto fuera de distribución | **brazo 1 [ran] 2026-09-19 — no pasa.** Texto extranjero, conjuntos frescos: el diccionario sirve 59/128 localmente, el router de n-gramas **0/128**; pedidos legítimos de remitentes no vistos: el diccionario pierde 0/120, el router pierde **120/120**. El diccionario se queda; **el brazo 2 es un modelo de embeddings**, compartido con el hito 7 |
 | **3** | la mitad grande de un par | 1 | un LoRA en `Qwen3.8-27B` está `applied` al servirse; grande + LoRA le gana a chico + LoRA en la banda profunda, pareado | — |
 | **4** | el par especulativo | 3 | la aceptación de borradores del LoRA chico bajo verificación del LoRA grande supera la aceptación bajo el modelo grande pelado | — |
 | **5** | la primera región real, a mano | 1, 2, un sandbox, claves rotadas | la compuerta de release, sobre una suite con un verificador que nadie acá generó | bloqueado: el usuario nombra la región |
 | **6** | la política de servicio, con la factura | 2, 4, 5 | la porción local ahorra más de lo que cuesta, sobre tráfico real | — |
+| **7** | **una base de conocimiento por subdominio, y la trayectoria por ella como harness** — sobre mecánica de fluidos, partida en subdominios | 1; comparte su modelo de embeddings con el brazo 2 del hito 2; independiente de 3–6, **corre a continuación** | un experto entrenado para navegar y seguir notas contesta familias sobre las que nunca entrenó, donde el mismo experto sin la base está en 1/20 | — |
 
 ### Hito 1 — el pool en Qwen 3.x chico
 
@@ -114,6 +129,30 @@ exactitud de ruteo.
 **Falsificado por** más pedidos mal-ruteados a un miembro local que el diccionario, o
 ninguna abstención ante texto fuera de distribución. Un modelo al que se le pide elegir
 siempre elige; el brazo de abstención se compra primero.
+
+**Resultado [ran] 2026-09-19 — el brazo 1 no pasa**
+([`results/M2-corpus-router-20260919/BRIEF.md`](../../results/M2-corpus-router-20260919/BRIEF.md)).
+Un modelo uni+bigrama suavizado por miembro sobre el *frame* del corpus — tokens en al menos
+la mitad de sus documentos; todo lo demás, un único símbolo `<slot>` — que acepta un pedido si
+su transición de frame menos probable y su cobertura de frame son típicas del corpus. Tres
+intentos, dos rediseños contados, cada uno escrito primero en el brief; el diseño se congeló
+después y **los conjuntos frescos se escribieron después y se puntuaron una sola vez**:
+
+| conjunto | diccionario | router de n-gramas |
+|---|---|---|
+| en distribución, 715 | 0 mal-ruteados · 0 perdidos | 0 mal-ruteados · 0 perdidos |
+| texto extranjero, fresco — textos con clave y un listado seguido de otra tarea, 128 | **59 servidos por un miembro local** | **0** |
+| pedidos legítimos de remitentes fuera de los pools del generador, 120 | 0 perdidos | **120 perdidos** |
+| la pregunta del miembro parafraseada, 240 | 131 perdidos | 240 perdidos |
+
+Aprendió la uniformidad del generador: toda dirección generada termina en `.com`, así que
+`. com >` es *frame*, y un remitente real sale de la distribución. El tráfico real es toda la
+tercera fila. Y para un modelo léxico una paráfrasis de la pregunta del miembro y una tarea
+distinta son una sola cosa — un listado familiar, después una oración desconocida.
+**Distinguirlas es semántica, así que el brazo 2 es un modelo de embeddings** (el más chico de
+la línea de embeddings de la familia), con las cuatro filas de arriba como sus conjuntos que
+matan. El diccionario se queda como default del proxy; `corpus_router.py` se queda como el
+brazo medido. El tercer rediseño no se gastó.
 
 ### Hito 3 — la mitad grande de un par
 
@@ -179,6 +218,80 @@ número que nunca se midió es la plata: la factura de la frontera con y sin la 
 local, sobre tráfico real. **Falsificado por** una porción local que cuesta más correrla
 de lo que ahorra.
 
+### Hito 7 — una base de conocimiento por subdominio, y la trayectoria por ella como harness
+
+**La idea, del usuario.** El subdominio de un experto tiene un cuerpo de conocimiento de dos
+clases: **enciclopédico** — jerárquico: qué es una magnitud, qué correlación vale en qué
+régimen, cuáles son las propiedades de un material — y **operacional** — secuencial: cómo se
+resuelve este tipo de problema, paso a paso, y qué chequear. Poner las dos en una base de
+conocimiento que pertenece al subdominio (notas en markdown, enlazadas, embebidas; la memoria
+es markdown y git — `ARCHITECTURE.md` §7). Lo que el LoRA aprende entonces no es el contenido
+sino la **trayectoria**: qué nota abrir primero, qué enlace seguir, cuándo dejar de leer y
+calcular. *Una trayectoria por notas operacionales es un harness* — lo que `harness.lora`
+estaba buscando, ahora por subdominio y afuera de los pesos, donde se puede editar.
+
+**Por qué mecánica de fluidos, y por qué partirla.** Es el único dominio acá con headroom
+real — la frontera 66/90, el experto 12/90 **[ran]** P40, P41 — y su falla es del tipo que una
+base de conocimiento ataca: el protocolo perfecto, la física equivocada, 19 de 30 fallas con
+cada llamada limpia **[ran]** P8. Un solo adaptador sobre todo eso se entrenó a una sola
+profundidad y se pasó de rosca por debajo de ella **[ran]** P45. Entonces: subdominios de dos
+familias hermanas cada uno — flujo interno (`pipe_head_loss`, `pump_power`), medición
+(`venturi_flow`, `orifice_discharge`), flujo externo (`terminal_velocity`, `drag_force`),
+canales y estática (`manning_channel`, `hydrostatic_force`) — cada uno a través de la escalera
+de dificultad (`training/physics/ladder.py`), así que región y profundidad son dos variables.
+
+**Tres hechos medidos dan forma al diseño — restricciones, no objeciones.**
+
+1. **Un modelo chico no sigue lo que lee a menos que seguir sea lo que se entrenó** **[ran]**
+   P61. → La navegación y el seguimiento de notas son *el contenido del adaptador*: el corpus
+   son trayectorias — `<kb>consulta</kb>`, `<open>nota</open>`, después `<calc>` — escritas por
+   el oráculo.
+2. **El conocimiento fijo en un corpus se memoriza, y entonces la base no mide nada** **[ran]**
+   P15, P21. → Las notas que necesita un caso son **inmemorizables por construcción**, el manual
+   por caso de P21 extendido de valores a procedimientos: propiedades de un fluido que existe
+   sólo en este caso, y una variante de correlación cuyos coeficientes se sortean por caso. El
+   experto puede aprender *cuál* nota necesita un paso; no puede aprender *qué dice* la nota.
+3. **Un especialista se equivoca con confianza apenas fuera de su región** — 30/30 en sus
+   fórmulas adentro, **1/20 en familias que nunca vio**, la prosa igual de fluida **[ran]** P14.
+   → Ese es el headroom y la afirmación: *con las notas de la familia hermana en la base y sin
+   reentrenar, el experto entrenado para navegar contesta a la familia hermana.*
+
+Y uno del workspace: una jerarquía de memoria perdió contra búsqueda léxica plana en su primer
+benchmark, y una suite de física de respuesta exacta fue el instrumento equivocado para memoria
+porque todo en ella era derivable. → El canal tiene que ser *necesario* (el hecho 2 lo
+garantiza; la corrida afirma la ausencia de la fuga: ningún valor buscado aparece en el
+enunciado), y la jerarquía es un brazo, no un supuesto.
+
+**Brazos, en orden — el que puede matarlo primero.**
+
+| # | brazo | qué decide |
+|---|---|---|
+| **0** | margen, cero GPU: las 90 cadenas grabadas de P41 reproducidas contra el handbook propio de cada caso (`training/physics/result_use.py`) | **[ran] 2026-09-19.** De 79 fallas, **74** tienen un `<calc>` con un número que no salió de ningún lado y **74** dejan un resultado de herramienta sin usar; 132 de 371 resultados no finales se ignoran — el experto busca la densidad, 882,3, y multiplica por 1359,7. **La falla dominante no es una relación equivocada: es no usar lo que se le devolvió** |
+| **0b** | **el mismo adaptador, los mismos 90 casos, servido en modo corpus** — el resultado inline después del tag de cierre, como enseñó su corpus — en vez de por `tool_calls`, que a `email-full` le cuesta 0,992 → 0,808 **[ran]** P55. Diez minutos de L4, el adaptador está en disco | separa *un 3B no usa lo que lee* de *el harness no se lo mostró como se lo enseñaron*. **Se compra antes del brazo 1**: cualquiera de las dos respuestas decide cómo una base tiene que entregar lo que recupera, y la segunda significaría que "el experto que razona falla" fue en parte un instrumento |
+| **1** | **trayectoria oráculo.** Dos adaptadores sobre un subdominio, mismos casos: entrenados *con* las notas que el oráculo abriría, inyectadas por el protocolo `<kb>`/`<open>`, y *sin* ellas. Puntuados sobre la familia entrenada y sobre su **hermana dejada afuera**, pareado | la cota superior: si leer exactamente las notas correctas no levanta a la hermana de ~1/20, ninguna navegación lo hará — **parar** |
+| **2** | navegación aprendida: el experto emite sus propias consultas; recuperación por embeddings adentro de la base del subdominio. Medido **donde pasa** — se recuperó la nota necesaria, se abrió, se siguió — no sólo en la respuesta final | qué pierde la navegación contra la trayectoria oráculo |
+| **3** | atribución: sólo notas enciclopédicas · sólo notas operacionales · las dos | qué clase de conocimiento lleva la ganancia — las dos clases, tasadas por separado |
+| **4** | recuperación: léxica plana · embeddings · embeddings restringida a la trayectoria hasta ahora (enlaces y vecinos de la última nota abierta) | si una estrategia de trayectoria le gana a una búsqueda plana; el resultado previo del workspace dice no asumirlo |
+| **5** | editar sin reentrenar: cambiar el coeficiente de una nota después de entrenar; la respuesta tiene que seguir a la base, no a los pesos | que el conocimiento vive donde se puede editar |
+
+**Compuerta.** Brazo 1: con-base le gana a sin-base en la familia hermana dejada afuera,
+pareado, test de signos exacto, $p \le 0.05$ — y el brazo sin-base reproduce el colapso de P14
+ahí, o la hermana no estaba fuera de la región y la corrida no dice nada.
+
+**Falsificado por** un empate en la hermana bajo la trayectoria oráculo: a este tamaño, leer no
+extiende una región ni siquiera con la página correcta abierta. Queda entonces un brazo barato:
+lo mismo sobre el 4B del hito 1. Después de eso la pregunta es de la mitad grande de un par.
+
+**El contrato de release crece un campo.** Un miembro es su corpus *y su base*: el manifiesto
+registra la ruta y el hash de la base de conocimiento y el hash del índice de embeddings junto
+al hash del corpus. El brazo 2 del router y la base comparten un modelo de embeddings, así que
+un subdominio es una región de un solo espacio — lo que cae adentro se rutea al miembro, y lo
+que el miembro busca se encuentra ahí.
+
+**No se afirma hasta medirlo:** que una jerarquía ayude; que los embeddings le ganen a la
+búsqueda léxica adentro de una base chica; que algo de esto transfiera de una suite generada a
+una real.
+
 ## 2. La familia, y la alternativa
 
 **Adoptada: Qwen 3.x.** `Qwen3.5-2B/4B` y `Qwen3.8-27B` comparten un espacio de ids —
@@ -214,6 +327,11 @@ Las cuatro que deciden la forma de un paso:
 
 ## 5. Historia
 
+- **2026-09-19** — hito 2 brazo 1 **[ran]**: seguro ante texto extranjero, pierde todo pedido
+  de un remitente no visto; el diccionario se queda, el brazo 2 es un modelo de embeddings.
+  Se agregó el hito 7: una base de conocimiento por subdominio con la trayectoria por ella
+  como harness, sobre mecánica de fluidos partida en subdominios — dado forma por P61, P21 y
+  P14.
 - **2026-09-19** — objetivo reformulado alrededor del ruteo por distribución de corpus y
   el par especulativo; el árbol limpiado a lo que funciona; el plan anterior y sus
   setenta y cuatro corridas se conservan en `v0.1-foundations`.
