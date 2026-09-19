@@ -306,7 +306,8 @@ def oracle_walk(q: dict, lib) -> list[str]:
     Raises if a note is missing, a step's textbook rendering is not the source line, or the site
     layer does not put the answer in the text. W1's gate is that this never raises.
     """
-    from memory.notes import Site, render
+    from memory.layers import render
+    from memory.notes import Site
     from training.nursing.questions import SITE_FACTS
 
     if q["kind"] == "rate":

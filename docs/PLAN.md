@@ -406,6 +406,19 @@ oracle walks **72/72**, and the gate fails when a step is removed
 skeleton over its own limit (230 tokens > 150): a skeleton lists step *labels*, not titles. Next is
 **W2** — the runtime, the layers and the guard on the corpus-mode loop, still no model.
 
+**W2 [ran] 2026-09-19 — the runtime: PASSED.** `memory/runtime.py` (three verbs, opaque ids re-drawn per
+conversation, budgets, the walk log), `memory/layers.py`, `memory/guard.py` — an answer function with
+state, on `accept_rank.run_chain` **unchanged**. Gate, written first: every oracle walk replayed as a
+scripted generation that reads its ids off the runtime's own output. **72/72** walks, 949 commands, 0
+refused, 0 malformed, guard silent; site values arrive marked (`8 [site]`), the 12 rate walks' `<calc>`
+gives the answer; no library id in any text shown. The guard's rule is
+$\text{violation}(n) \iff \text{requires}(n) \setminus \text{opened} \ne \emptyset$: three violating walks
+are cut in `strict` and continue in `recover`, and the gate fails on a library with a broken link
+([`BRIEF`](../results/M7-W2-runtime-20260919/BRIEF.md)). **Not measured:** whether a *model* recovers, and
+search — it is lexical here and the oracle queries a note by its own `when`, so its 72/72 at rank 1 is
+no evidence about ranking. §3's 24-open budget was below the library's 32-step procedure: now 48. Next is
+**W3** — the radar R0 beside this lexical baseline.
+
 ## 2. The family, and the alternative
 
 **Adopted: Qwen 3.x.** `Qwen3.5-2B/4B` and `Qwen3.8-27B` share one id space — 248,044 ids,
@@ -439,6 +452,8 @@ that decide the shape of a step:
 
 ## 5. History
 
+- **2026-09-19** — memory **W2 [ran]: PASSED.** The runtime, layers and guard on the unchanged corpus-mode loop;
+  72/72 oracle walks, 0 refused, three violating walks cut in `strict`. No model yet.
 - **2026-09-19** — memory **W1 [ran]: PASSED.** The first library (`knowledge/nursing-iv/`, 94 notes from
   three Open RN checklists, CC BY 4.0), `memory/notes.py` and the lint; 0 findings, 72/72 oracle walks.
 - **2026-09-19** — milestone 1 **[ran]: MOVED.** Both released members retrained on `Qwen3.5-4B` tie
