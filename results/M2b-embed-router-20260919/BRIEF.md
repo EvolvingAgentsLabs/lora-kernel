@@ -40,3 +40,31 @@ cosine("Is this important?", "Write a haiku about rain.") — if the first is no
 second, the encoder or its pooling is wrong and nothing after it means anything.
 
 **Redesign counter for arm 2: 0.** (Milestone 2 overall: arm 1 spent two of three.)
+
+## Run 1 **[ran]** 2026-09-19 — does not pass: the same wall arm 1 hit (`run1_summary_only/`)
+
+`Qwen/Qwen3-Embedding-0.6B`, fp16, Colab L4. Probe sound: paraphrase 0.739 against unrelated 0.345.
+
+| set | n | dictionary · misrouted / lost | n-grams (arm 1) | **embeddings (arm 2)** |
+|---|--:|---|---|---|
+| A in distribution | 715 | 0 / 0 | 0 / 0 | 0 / **13** (1.8 %) |
+| B paraphrased question | 240 | 0 / 131 | 0 / 240 | 0 / **141** — 99 recovered |
+| C, D, E, C₂, E₂ foreign | 338 | **119** / — | 0 / — | **15** / — (5 on E, 10 on E₂; 95.6 % abstained) |
+| **F** unseen senders | 120 | 0 / 0 | 0 / 120 | 0 / **120** |
+
+By the table written first: **SAFE AND LOSES REAL-LOOKING TRAFFIC.** It is safe enough (15 ≤ 60,
+95.6 % ≥ 95 %), it fails A by a little (1.8 % lost against ≤ 1 %), and it fails F completely. The
+predicted failure — a member's own listing followed by another task — did happen, 15 times of 240,
+far less than feared: the *task* instruction did most of its job.
+
+**What the thresholds say:** τ = **0.977** (desk) and **0.944** (email). A generated corpus is so
+uniform that *looking like the corpus* means a cosine of 0.98 to five neighbours; a sender the
+generator never drew cannot reach it. Arm 1 learned the generator's `.com`; arm 2 learned the
+generator's *sameness*. One cause, two forms.
+
+**And an instrument fault of mine:** this run stored one summary row per set and no per-case score,
+so nothing on disk can say whether F sits a hair under τ — a calibration problem, fixable by where τ
+is set — or far below — a representation problem. *Keep the chain, not the last line* was already a
+rule here. **Run 2 changes only what is written down** — per-case scores and the held-out
+distribution; rule, parameters, sets and verdict untouched, so it is not a redesign and the verdict
+above stands whatever it shows.

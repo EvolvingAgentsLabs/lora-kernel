@@ -45,3 +45,12 @@ def test_the_verdict_names_the_wall_arm_1_hit():
     assert er.verdict(wall)["reading"].startswith("SAFE AND LOSES")
     leaky = {**ok, "E2": {"n": 120, "misrouted_to_local": 90, "lost_local": 0, "abstained": 30, "local_right_member": 0}}
     assert er.verdict(leaky)["reading"].startswith("NOT SAFE")
+
+
+def test_the_summary_is_computed_from_the_stored_cases():
+    cases = {"A": [{"truth": "alpha", "member": "alpha"}, {"truth": "alpha", "member": None},
+                   {"truth": "alpha", "member": "beta"}],
+             "D": [{"truth": "out", "member": None}, {"truth": "out", "member": "beta"}]}
+    got = er.score_cases(cases)
+    assert got["A"] == {"n": 3, "local_right_member": 1, "misrouted_to_local": 1, "lost_local": 1, "abstained": 0}
+    assert got["D"] == {"n": 2, "local_right_member": 0, "misrouted_to_local": 1, "lost_local": 0, "abstained": 1}

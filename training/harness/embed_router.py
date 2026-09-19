@@ -102,6 +102,8 @@ class EmbedRouter:
             self.index[name] = encoder.encode(kept)
             scores = sorted(self._score(name, v) for v in encoder.encode(held))
             self.tau[name] = scores[min(len(scores) - 1, int(len(scores) * PERCENTILE / 100))]
+            self.held_scores = getattr(self, "held_scores", {})
+            self.held_scores[name] = scores
 
     def _score(self, name: str, v) -> float:
         sims = sorted((_dot(v, c) for c in self.index[name]), reverse=True)[:K]
@@ -114,6 +116,9 @@ class EmbedRouter:
 
     def decide_many(self, texts: list[str]) -> list[str]:
         return [self.explain_vec(v)["member"] or "out" for v in self.encoder.encode(texts)]
+
+    def explain_many(self, texts: list[str]) -> list[dict]:
+        return [self.explain_vec(v) for v in self.encoder.encode(texts)]
 
 
 def corpora_from_pool() -> dict[str, list[str]]:
@@ -135,6 +140,23 @@ def score_sets(decide_many, sets: dict) -> dict:
         got = decide_many([t for t, _ in rows])
         right = wrong = lost = kept = 0
         for (_, truth), g in zip(rows, got):
+            if truth == "out":
+                wrong += g != "out"; kept += g == "out"
+            else:
+                right += g == truth; lost += g == "out"; wrong += g not in (truth, "out")
+        out[name] = {"n": len(rows), "local_right_member": right, "misrouted_to_local": wrong,
+                     "lost_local": lost, "abstained": kept}
+    return out
+
+
+def score_cases(cases: dict) -> dict:
+    """The same table as `score_sets`, computed from the stored per-case decisions — so the summary
+    can never disagree with the records it sits beside."""
+    out = {}
+    for name, rows in cases.items():
+        right = wrong = lost = kept = 0
+        for c in rows:
+            g, truth = c["member"] or "out", c["truth"]
             if truth == "out":
                 wrong += g != "out"; kept += g == "out"
             else:
@@ -180,8 +202,25 @@ def main() -> int:
     out.write_text(json.dumps(rec, indent=1))
     sets = {**router_sets.build(), **router_sets.build_fresh()}
     rec["sets"] = {k: len(v) for k, v in sets.items() if not k.startswith("_")}
-    rec["embed_router"] = score_sets(router.decide_many, sets)
+    # KEEP THE SCORES, NOT THE VERDICTS. The first run of this arm stored one summary row per set;
+    # it lost 120 of 120 on F and nothing on disk could say whether F sits a hair under τ (a
+    # calibration problem) or far below it (a representation problem) [ran] 2026-09-19. A decision
+    # is made per case and the record has to hold what it was made from.
+    cases = {}
+    for name, rows in sets.items():
+        if name.startswith("_"):
+            continue
+        ex = router.explain_many([t for t, _ in rows])
+        cases[name] = [{"truth": truth, "member": e["member"], "nearest": e["nearest"],
+                        "scores": {m: round(s["score"], 4) for m, s in e["scores"].items()}}
+                       for (_, truth), e in zip(rows, ex)]
+    rec["cases"] = cases
+    q = lambda v, f: round(v[min(len(v) - 1, int(len(v) * f))], 4)
+    rec["held_out_scores"] = {m: {"n": len(v), "min": round(v[0], 4), "p01": q(v, .01), "p05": q(v, .05),
+                                  "p50": q(v, .5), "max": round(v[-1], 4)} for m, v in router.held_scores.items()}
     out.write_text(json.dumps(rec, indent=1))                       # records before the summary
+    rec["embed_router"] = score_cases(cases)
+    out.write_text(json.dumps(rec, indent=1))
     for k, v in rec["embed_router"].items():
         print(f"[route] {k} n {v['n']} misrouted {v['misrouted_to_local']} lost {v['lost_local']} "
               f"abstained {v['abstained']} right {v['local_right_member']}", flush=True)
