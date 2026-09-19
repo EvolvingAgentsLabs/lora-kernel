@@ -208,6 +208,7 @@ artefact defines the expert and its region.
 | [`docs/PLAN.md`](docs/PLAN.md) | the living plan — milestones, gates, kill arms |
 | [`docs/RECORD.md`](docs/RECORD.md) | everything measured, including what failed; each line names its run |
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | the system: experts, router, the pair, the frontier |
+| [`docs/KNOWLEDGE-TRAJECTORIES.md`](docs/KNOWLEDGE-TRAJECTORIES.md) | the design of the per-expert memory — notes, links, a learned trajectory, and why that is a harness. Self-contained, written to be reviewed by other models |
 | [`docs/FOUNDATIONS.md`](docs/FOUNDATIONS.md) | the mathematics, tied to the runs that instantiate it |
 | [`docs/SERVING.md`](docs/SERVING.md) · [`docs/OPENCLAW.md`](docs/OPENCLAW.md) · [`docs/SUBSTRATE-GATE.md`](docs/SUBSTRATE-GATE.md) | running it |
 | [`CLAUDE.md`](CLAUDE.md) | instructions for coding agents, and the measurement rules that were paid for |

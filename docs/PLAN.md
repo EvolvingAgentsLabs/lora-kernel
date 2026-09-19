@@ -223,8 +223,9 @@ local experts.** It is the right first region for reasons the record supplies:
 
 **Order — the cheapest thing that can kill it first.**
 
-1. **Headroom, zero GPU where possible:** one chapter, ~40 verifiable questions of the four kinds
-   above, the bare base against them. If the base already orders the steps of a procedure it has
+1. **Headroom first:** three checklists, 72 verifiable questions of the four kinds above, the bare
+   base against them closed book and open book — on Colab, ten minutes of an L4
+   (`training/nursing/headroom.py`, pre-registered). If the base already orders the steps of a procedure it has
    never been shown, there is nothing to buy — that is how the clinical suite died (S1: no model
    ahead of a free local 12B). Headroom first, again.
 2. Then milestone 7's design, unchanged, on this content: trajectories over the chapter's notes,
@@ -243,6 +244,9 @@ number that has never been measured is money: the frontier bill with and without
 share, on real traffic. **Falsified by** a local share that costs more to run than it saves.
 
 ### Milestone 7 — a knowledge base per subdomain, and the trajectory through it as the harness
+
+**The design, at the level of note formats, actions, strategies and corpus, is its own document,
+written to be argued with: [`KNOWLEDGE-TRAJECTORIES.md`](KNOWLEDGE-TRAJECTORIES.md).**
 
 **The idea, the user's.** An expert's subdomain has a body of knowledge of two kinds:
 **encyclopedic** — hierarchical: what a quantity is, which correlation holds in which regime,
@@ -295,6 +299,45 @@ absence: no looked-up value appears in the statement), and hierarchy is an arm, 
 | **3** | attribution: encyclopedic notes only · operational notes only · both | which kind of knowledge carries the gain — the two kinds, priced separately |
 | **4** | retrieval: flat lexical · embedding · embedding restricted to the trajectory so far (links and neighbours of the last note opened) | whether a trajectory strategy beats a flat search; the workspace's earlier result says do not assume it |
 | **5** | edit without retraining: change one note's coefficient after training; the answer must follow the base, not the weights | that the knowledge lives where it can be edited |
+
+**What is reused from `evolving-memory`, and what its one measurement says — audited [read]/[ran]
+2026-09-19** (the user's suggestion; `EvolvingAgentsLabs/evolving-memory` at `a635898`, Apache-2.0,
+its suite run here: 184 pass, 12 skip for want of an API key). It is a *trace-consolidation*
+engine — agent traces compressed by an LLM into a strategy with ordered steps, embedded, retrieved
+by flat top-k. It is **not** a base of authored, editable notes, and **no code in it reads an edge
+to decide what to retrieve next**: the typed graph is written and never walked; step order is
+`ORDER BY step_index`. So the trajectory arm (arm 4) is new work, not a port. What is taken:
+
+- **`resolver/` (~370 lines) — the dual index.** Each item embedded twice, *what it is* and *what
+  it is for*, the **union** of both searched, every sub-score kept on the match rather than
+  collapsed — which is what comparing three retrieval arms needs. Encyclopedic and operational
+  notes are that same split. Its capped track-record boost (`MAX_BOOST = 0.05`: popularity breaks a
+  tie, never overturns relevance) is copied as a rule.
+- **The offline test doubles** — a hashed bag-of-words encoder and an exhaustive cosine index, ~40
+  lines — so the base is testable in CI with no GPU and no key. At the size of a subdomain's base
+  the exhaustive index *is* the production index: a matrix product, no ANN library. **With its bug
+  fixed first:** it buckets by Python's `hash()`, randomised per process, and the test carrying that
+  repository's central claim fails on 6 of 30 seeds **[ran]**.
+- **`storage/migrations.py` (95 lines)** and the `nodes / children / edges(source, target, type,
+  weight)` shape, with the edge vocabulary — containment, `NEXT_STEP`/`PREVIOUS_STEP`, cross-links —
+  this time *read* at retrieval.
+- **`isa/parser.py` + the VM's accumulate-then-commit loop**, if a trajectory is emitted as actions:
+  a never-raises text parser with errors as data, a bounded dispatch loop, and a log of the walk to
+  score it by.
+
+Left behind: the FastAPI server, the Gemini-only embedder imported at package root, the three
+API-bound LLM providers, the LLM consolidation pipeline (notes here are authored), faiss, and a
+declared-and-unused `networkx`. The embedder is a small open model **served on Colab** like every
+other model here — nothing runs on the user's machine (instruction of 2026-09-19).
+
+**And its one honest benchmark is a negative result, which arm 4 inherits as its prior.** Indexing
+*what a thing is for* beside *what it is* changed nothing: acc@1 80 % at every mixing weight, n = 10,
+the second embedding genuinely distinct (cosine 0.753) — committed as *"measure that it does not
+help"*. The misses are **within-topic**: the right area, the wrong item inside it. That is where a
+neighbourhood restriction should pay if anything does, and it is also a warning to expect a small
+delta over flat similarity. With this workspace's own earlier result — a hierarchy lost to lexical
+search — that makes two priors against structure. The harness comes before the clever retriever,
+and a null is reported as a null.
 
 **Gate.** Arm 1: with-base beats without-base on the held-out sibling family, paired, exact sign
 test, $p \le 0.05$ — and the without-base arm reproduces P14's collapse there, or the sibling was
