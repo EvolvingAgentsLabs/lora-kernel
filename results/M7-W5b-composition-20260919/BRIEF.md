@@ -98,3 +98,72 @@ GPU=L4 BRANCH=w5-composition RUN_DIR=results/M7-W5b-composition-20260919 MODULE=
   MARGS="--concurrency 8" RESULTS_NAME=walks_composed.json BASE=Qwen/Qwen3.5-4B SKIP_ADAPTERS=1 SESSIONS=1 \
   training/harness/chain_serve.sh
 ```
+
+## Result **[ran]** 2026-09-19 · THE DIAGNOSIS HOLDS — 0 of 12 — and composition is not a serving design
+
+One Colab L4 session, 7.9 minutes of scoring (16 of wall clock), 1 of this arm's 2 sessions. Read off
+`walks_composed.json`; pairs from the JSON, not from the clipped log. 0 transport errors, 0 context
+overflows, the 54 replayed as `ceiling.json` said.
+
+| arm, headline n = 54 | right | format | unread | wrong | **credit** |
+|---|--:|--:|--:|--:|--:|
+| **`composed`** — `withlib`'s walk, the bare base's final line | 23 | 18 | 1 | 12 | **41** |
+| `withlib` | 28 | 5 | 1 | 20 | 33 |
+| `base-reads` — the oracle's pages | 23 | 22 | 0 | 9 | 45 |
+| `nolib` | 2 | 0 | 0 | 52 | 2 |
+
+`composed` lands **exactly on the zero-GPU ceiling, 41/54**. Pairs, exact two-sided sign test on discordant
+pairs, $p = 2\sum_{k\le\min(b,c)}\binom{b+c}{k}2^{-(b+c)}$:
+
+| pair | a : b | p | state |
+|---|--:|--:|---|
+| `composed` vs `withlib` | 12 : 4 | 0.077 | tie — the power line written above, verbatim |
+| `composed` vs `base-reads` | 1 : 5 | 0.219 | tie |
+| `composed` vs `nolib` | 39 : 0 | 0.0 | improvement |
+
+**The prediction.** Of `withlib`'s 12 clean-walk quantity failures, **0 remain** (≤ 2 was the bar; ≥ 6 would
+have falsified it). All 12 are `right`: the 10 whose served turn was byte-identical to one `base-reads`
+had already answered (w5h-069, -075 … -083) **and the 2 that were not** (w5h-084, -086). Over the 95 walks
+with a byte-identical turn, 92 land on the same credit as `base-reads` — vLLM at temperature 0 is that
+repeatable here, and no more.
+
+**What it lost, by id.** Four cases `withlib` had and `composed` does not: **w5h-006** (`carry/start`),
+**w5h-030**, **w5h-035** (`carry/middle-find`) — three of the four named at-risk above, where the base is
+wrong on the oracle's pages too — and **w5h-031** (`carry/middle-find`), where the base had credit on the
+oracle's pages and loses it on the walk's. The fourth at-risk case, w5h-019, kept its credit (`format`).
+**`carry/middle-find`: 8 of `withlib`'s 8 failures remain**, as said before the run — no reader repairs a
+place found wrong.
+
+**And the part that decides what follows: composition is NOT a serving design.** Wherever the adapter was
+taught, it reads far better than the base it would be swapped for:
+
+| slice | `composed` | `withlib` | pair (composed : withlib) |
+|---|--:|--:|---|
+| control, n = 60 | 39 | **58** | 0 : 19, $p\approx0$ — REGRESSION |
+| control without `rate`, n = 45 | 32 | **43** | 0 : 11, $p=0.001$ — REGRESSION |
+| control `rate`, n = 15 | 7 | **15** | 0 : 8, $p=0.008$ — REGRESSION |
+| held-out, shared line, n = 19 | 8 | **15** | 0 : 7, $p=0.016$ — REGRESSION |
+| held-out quantity, site/case | +8 : 0 over `withlib` | | improvement, $p=0.008$ |
+
+So the trained reader is not worse everywhere. It is worse on **one shape its corpus never showed** — a
+note that states two values under a condition — and better everywhere it was taught. In the library today
+exactly two notes have that shape, `harness/discontinue-iv/07-hold-pressure` and
+`wiki/iv-therapy/removal/pressure-after-removal`, and **both belong to the held-out procedure**: 0 of the
+108 quantity rows in the corpus read more than one value. *A corpus with one difficulty teaches a floor*
+(CLAUDE.md §3) — now attributed with a run rather than read off the failures.
+
+**W5's verdict stands and is not re-read.** On these 54 the W5 pair itself is 4 : 16; nothing here changes
+what W5 said, and an arm that cannot clear W5's bar by construction was never going to.
+
+**What follows — not run, the user's decision: arm 2, the corpus shape.** The library must first GAIN
+conditional, two-valued notes inside the *trained* procedures (none exists there today), the generator must
+ask for either value, both adapters are retrained (two A100 sessions), and the score is read on a **new
+held-out set written after that freeze** — never again on these 80. Prediction, as W5's brief fixed it:
+the quantity failures recover; `carry/middle-find` does not. Falsified if the second-of-two value is still
+missed after the corpus shows the shape — then it is not the corpus.
+
+**Instrument, fixed in this PR.** `walks_arm.run_case` kept an opened *count* and the last 1500 characters
+of a walk, which is why 6 of 140 walks could not be replayed and were excluded — not neutrally. It now
+records `opened_ids` and the whole walk (`text_full`); W5's file still reads. No score changes.
+
+**Redesign count: 0.**

@@ -122,3 +122,29 @@ def test_every_prefix_the_runner_prints_reaches_the_watching_terminal():
     watched = peek_patterns(pathlib.Path("training/harness/chain_serve.sh"))
     printed = set(re.findall(r'print\(f?"\[(\w+)\]', pathlib.Path("training/nursing/walks_composed.py").read_text()))
     assert printed and printed <= watched, printed - watched
+
+
+def test_a_whole_walk_longer_than_the_old_tail_is_not_read_as_truncated():
+    """Records written since the fix carry `text_full`; W5's own file does not and still replays."""
+    import json as _json
+    from memory.notes import Library as _L
+    from training.nursing import generate_walks as _gw, walks_arm as _wa
+    lib = _L.load(_gw.ROOT)
+    rows = [_json.loads(l) for l in _wa.SETS["heldout"].read_text().splitlines()]
+    row = max(rows, key=lambda r: r["depth"])
+
+    def gen_for(system, user, conv=None):
+        steps = iter(row["replay"]["plan"])
+
+        def gen(prefix):
+            st = next(steps, None)
+            if st is None:
+                return row["answer"]
+            if st[0] == "search":
+                return f"<search shelf={st[1]}>{st[2]}</search>"
+            return f"<calc>{st[1]}</calc>" if st[0] == "calc" else f"<open>{conv.opaque[st[1]]}</open>"
+        return gen
+    rec = _wa.run_case(lib, row, "withlib", gen_for)
+    assert len(rec["text"]) >= wc.KEPT
+    pages, walk, how = wc.replay(lib, row, rec)
+    assert pages is not None and list(walk["opened"]) == rec["opened_ids"], how

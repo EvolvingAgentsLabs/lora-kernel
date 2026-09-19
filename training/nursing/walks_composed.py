@@ -153,7 +153,8 @@ def replay(lib: Library, row: dict, rec: dict):
     text = rec.get("text")
     if text is None or "error" in rec:
         return None, None, "no recorded walk"
-    truncated = len(text) >= KEPT
+    # A record written since the fix carries its whole walk and says so; W5's own file does not.
+    truncated = not rec.get("text_full") and len(text) >= KEPT
     try:
         calls = visible_calls(text, truncated)
     except ValueError as e:
@@ -190,7 +191,7 @@ def run_case(lib: Library, row: dict, rec: dict, gen_for) -> dict:
     g = gr.grade(lib, row, final, walk)
     same_as_oracle = (system, user) == wa.served(lib, row, "base-reads")[:2]
     out.update(g, correct=g["credit"], final=final[-400:], replayed=how, pages=len(pages),
-               opened=len(walk["opened"]), violations=walk["violations"],
+               opened=len(walk["opened"]), opened_ids=list(walk["opened"]), violations=walk["violations"],
                opened_the_oracles_notes=set(walk["opened"]) == set(row["walk"]),
                prompt_is_base_reads=same_as_oracle)
     return out

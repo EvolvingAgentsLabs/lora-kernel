@@ -1,0 +1,32 @@
+=== session 1 of 1 · srv195832 · L4
+    boot clone: rc=0 eae3534 Memory W5b, pre-registered: composition — the adapter's recorded walk, the bare base's final line
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 eae3534 Memory W5b, pre-registered: composition — the adapter's recorded walk, the bare base's final line
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.29.0
+    eae3534 Memory W5b, pre-registered: composition — the adapter's recorded walk, the bare base's final line | 0.29.0
+    this module trains its own adapter — nothing to carry in
+    [arm] composed, zero GPU: 54/56 headline walks replay · ceiling 41/56 (withlib 35, base-reads 45) · prompt identical to base-reads on 30
+    [arm] composed, zero GPU: 54/56 headline walks replay · ceiling 41/56 (withlib 35, base-reads 45) · prompt identical to base-reads on 30
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [arm] composed, zero GPU: 54/56 headline walks replay · ceiling 41/56 (withlib 35, base-reads 45) · prompt identical to base-reads on 30
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [arm] composed, zero GPU: 54/56 headline walks replay · ceiling 41/56 (withlib 35, base-reads 45) · prompt identical to base-reads on 30
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [arm] composed, zero GPU: 54/56 headline walks replay · ceiling 41/56 (withlib 35, base-reads 45) · prompt identical to base-reads on 30
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [arm] composed, zero GPU: 54/56 headline walks replay · ceiling 41/56 (withlib 35, base-reads 45) · prompt identical to base-reads on 30
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [arm] composed, zero GPU: 54/56 headline walks replay · ceiling 41/56 (withlib 35, base-reads 45) · prompt identical to base-reads on 30
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [arm] composed, zero GPU: 54/56 headline walks replay · ceiling 41/56 (withlib 35, base-reads 45) · prompt identical to base-reads on 30
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [arm] composed, zero GPU: 54/56 headline walks replay · ceiling 41/56 (withlib 35, base-reads 45) · prompt identical to base-reads on 30
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [arm] headline · composed vs base-reads: tie (1:5, p=0.21875)
+    [arm] headline · composed vs nolib: improvement (39:0, p=0.0)
+    [arm] diagnosis HOLDS: 0 of withlib's 12 clean-walk quantity failures remain when the base writes the line · composed 41/54 · vs withlib tie · vs base-reads tie · vs nolib improvement — W5's verdict stands; this is attribution
+    the runner wrote its result — done

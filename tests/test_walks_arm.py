@@ -110,3 +110,14 @@ def test_the_floor_the_brief_quotes_is_the_floor_the_code_computes_today():
         assert wa.summarise(both, ids)["credit"] == stored[k]["credit"], k
     brief = pathlib.Path("results/M7-W5-kill-arm-20260919/BRIEF.md").read_text()
     assert f"headline {stored['headline']['credit']} / 56" in brief and f"control {stored['control']['credit']} / 60" in brief
+
+
+def test_a_record_keeps_the_whole_walk_and_the_ids_of_the_notes_it_opened():
+    """A record is what a later arm replays. It kept a count and a 1500-character tail, and the
+    composition arm could not prove what 6 of 140 walks had opened [ran] M7-W5b — excluded, and not
+    neutrally. The longest evaluated walk must come back whole, with its notes by canonical id."""
+    row = max(SETS["heldout"], key=lambda r: r["depth"])
+    rec = wa.run_case(LIB, row, "withlib", oracle(row))
+    assert rec["text_full"] is True and len(rec["text"]) > 1500
+    assert rec["opened"] == len(rec["opened_ids"]) and all(i in LIB.notes for i in rec["opened_ids"])
+    assert [i for i in row["walk"] if i in rec["opened_ids"]] == [i for i in rec["opened_ids"] if i in row["walk"]]

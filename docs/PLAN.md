@@ -474,9 +474,10 @@ ever read such a note (0 of 108), and the adapter answers the first value — 11
 asked, 0/11 when the second is, the base that reads right on all 12. Eight are `carry/middle-find`, where
 the base is also wrong on 5. Navigation itself transferred: 0 retrieval misses on the headline, 3 refused
 verbs in 140 walks against 368, control 58/60 against 41/60. Redesigns: 0; the grader is not touched.
-**Next, the user's decision:** composition — the adapter walks, the bare base writes the final line — one
-L4 session, no training; then, if bought, a corpus that shows two-valued notes, scored on a new held-out
-set ([`BRIEF`](../results/M7-W5-kill-arm-20260919/BRIEF.md)).
+**Composition — the adapter walks, the bare base writes the final line — [ran] W5b: 0 of the 12 quantity
+failures remain, and on everything the adapter was taught the base reads worse (control 39 against 58), so it is
+attribution, not a serving design. Next, the user's decision:** a library and a corpus that show two-valued
+notes inside trained procedures, both adapters retrained, scored on a new held-out set ([`BRIEF`](../results/M7-W5-kill-arm-20260919/BRIEF.md)).
 
 **W5, as built and pre-registered.** `training/nursing/walks_arm.py`: `base-reads` (untrained
 base, the oracle's notes open), `base-walks`, `nolib`, `withlib`. Headroom session first: `base-reads`
@@ -524,11 +525,13 @@ that decide the shape of a step:
 - **2026-09-19** — memory **W5 [ran]: does not pass as written.** Headline 35/56 against the untrained base that
   reads at 45/56 (6 : 16, $p=0.052$); 35 : 2 over no-library, 35 : 0 over the base navigating alone. 12 of 21 failures
   are the second of two values on a kind of note the corpus never showed. Navigation transferred; that reading did not.
-- **2026-09-19** — memory **W5b, pre-registered, pending**: composition — `withlib`'s recorded walks
-  replayed (115/140 exactly, 19 more proven or read off the record, 6 unreplayable and excluded), the bare
-  base writes the final line. Attribution of W5's failure, not a second attempt: zero GPU already says its
-  ceiling is 41/54 against `base-reads`' 45, so it cannot clear W5's bar; the prediction is that ≤ 2 of the
-  12 clean-walk quantity failures remain ([`BRIEF`](../results/M7-W5b-composition-20260919/BRIEF.md)).
+- **2026-09-19** — memory **W5b [ran]: the diagnosis holds, and composition is not a serving design.**
+  `withlib`'s recorded walks replayed, the bare base writes the final line: **0 of the 12** clean-walk
+  quantity failures remain; `composed` 41/54, exactly its zero-GPU ceiling; 12 : 4 against `withlib`
+  ($p=0.077$, a tie), 1 : 5 against `base-reads`; `carry/middle-find` 8 of 8 remain. But on what the adapter
+  was taught it reads far better than the base — control 58 against 39 (0 : 19), shared line 15 against 8.
+  The reader fails on one shape its corpus never showed; both two-valued notes in the library sit in the
+  held-out procedure. W5's verdict stands ([`BRIEF`](../results/M7-W5b-composition-20260919/BRIEF.md)).
 - **2026-09-19** — W4's grader replaced after an adversarial review (redesign 2: it failed on a paraphrase and passed
   on a decoy number); **W5 built and pre-registered**, headroom session first, headline n = 56, floor 3/56. Not run.
 - **2026-09-19** — memory **W2 [ran]: PASSED.** The runtime, layers and guard on the unchanged corpus-mode loop;
