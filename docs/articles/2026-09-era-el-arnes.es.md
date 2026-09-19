@@ -4,7 +4,7 @@
 [`2026-09-it-was-the-harness.md`](2026-09-it-was-the-harness.md). Cada número de este texto sale del
 registro del repositorio ([`../es/RECORD.md`](../es/RECORD.md)) y nombra su corrida.*
 
-![Una arquitectura de solución en cinco capas: personas en cuatro roles; un runtime de agentes con un agente por rol; aplicaciones de agenda y administración; canales de app y mensajería; una sola base de datos con identidad, pagos y monitoreo. Debajo de los agentes, una placa gráfica dibujada como estantería: un lomo grueso, el modelo residente, y un lomo fino por rol, cada uno con dos cajones de notas. Un cartel rutea por rol; líneas punteadas salen hacia la frontera y hacia una persona.](../img/solution-architecture.png)
+![Una arquitectura de solución en cinco capas: personas en cuatro roles; un runtime de agentes con un agente por rol; aplicaciones de pedidos y administración; canales de app y mensajería; una sola base de datos con identidad, pagos y monitoreo. Debajo de los agentes, una placa gráfica dibujada como estantería: un lomo grueso, el modelo residente, y un lomo fino por rol, cada uno con dos cajones de notas. Un cartel rutea por rol; líneas punteadas salen hacia la frontera y hacia una persona.](../img/solution-architecture.png)
 
 *Los registros quedan en la base; los hábitos van en el adaptador; el conocimiento queda en notas que una persona puede leer.*
 
@@ -22,21 +22,22 @@ y qué parte no, con números.
 
 ## La arquitectura, capa por capa
 
-El ejemplo del dibujo es una clínica. Se lee de arriba hacia abajo.
+El ejemplo del dibujo es una distribuidora. Se lee de arriba hacia abajo.
 
-**1. Personas, en roles.** Pacientes, familias y visitantes, profesionales, personal. No son
-"usuarios": cada rol pregunta cosas distintas, por canales distintos, con permisos distintos.
+**1. Personas, en roles.** Clientes, proveedores y transportistas, el equipo del depósito, el
+personal de oficina. No son "usuarios": cada rol pregunta cosas distintas, por canales distintos, con
+permisos distintos.
 
-**2. Un runtime de agentes, con un agente por rol.** Recepción, procedimientos de enfermería,
-facturación y codificación, compras y stock, turnos y sueldos, IT. Esto ya existe y no lo
-reemplazamos: es OpenClaw, o el runtime que uses.
+**2. Un runtime de agentes, con un agente por rol.** Atención al cliente, recepción, despacho,
+compras y stock, reclamos y devoluciones, IT. Esto ya existe y no lo reemplazamos: es OpenClaw, o el
+runtime que uses.
 
-**3. Las aplicaciones y los canales.** Agenda (turnos, admisiones, salas) y administración
-(comunicaciones, operaciones, compras, sueldos, reportes); una app y la mensajería, separada en
-pacientes e interno. Tampoco los tocamos.
+**3. Las aplicaciones y los canales.** Pedidos (pedidos, entregas, muelles, devoluciones) y
+administración (comunicaciones, operaciones, compras, sueldos, reportes); una app y la mensajería,
+separada en clientes e interno. Tampoco los tocamos.
 
 **4. Los sistemas de registro.** Una sola base de datos, con identidad y permisos, pagos y monitoreo
-al lado. **Se quedan donde están.** Ningún dato de un paciente entra a un modelo por entrenamiento.
+al lado. **Se quedan donde están.** Ningún dato de un cliente entra a un modelo por entrenamiento.
 
 **5. Y la capa nueva: debajo de los agentes, una sola GPU como estantería.** Un modelo chico
 residente —4 mil millones de parámetros— y, apoyado en él, **un adaptador LoRA por rol**, de unos
@@ -46,7 +47,7 @@ fichero de dos cajones:
 
 - **"cómo lo hacemos acá"** — el arnés operativo: procedimientos paso a paso, con enlaces *requiere*,
   *siguiente*, *usa*;
-- **"lo que sabemos"** — la wiki: qué es cada cosa, qué fórmula aplica, qué dice el vademécum.
+- **"lo que sabemos"** — la wiki: qué es cada cosa, qué fórmula aplica, qué dice el catálogo.
 
 Son notas en markdown de menos de media página. **El modelo no las memoriza: aprende a navegarlas**,
 con tres verbos — buscar, abrir, calcular. *El LoRA no es el libro de texto; es el especialista que
@@ -60,7 +61,7 @@ Tres piezas más cierran el dibujo:
   a un modelo de frontera — o **a una persona, donde la política dice que nada sale del edificio.**
   Abstenerse es parte del diseño, no una falla.
 - **Un árbitro que no es IA.** Un programa chico pasa las páginas, **aplica las reglas de este lugar
-  antes de mostrar la nota** ("acá se limpia 8 segundos, no 5") y corta si el modelo se saltea un paso
+  antes de mostrar la nota** ("acá un pallet de más de 1,60 m se rearma antes de despachar") y corta si el modelo se saltea un paso
   obligatorio.
 
 La regla que ordena todo: **los registros quedan en la base, los hábitos van en el adaptador, el
@@ -69,15 +70,16 @@ se edita un archivo en git. No se reentrena nada.
 
 ## Qué se puede construir con esto
 
-La clínica es un ejemplo. La forma se repite donde haya **pocos procedimientos, repetidos a diario,
+La distribuidora es un ejemplo. La forma se repite donde haya **pocos procedimientos, repetidos a diario,
 con reglas locales que difieren del manual, sobre datos que no deberían salir:**
 
 | organización | roles que pasan a ser expertos | qué va en los dos cajones |
 |---|---|---|
-| **una clínica** | recepción, procedimientos de enfermería, facturación y codificación, compras, turnos | los protocolos del servicio por encima del manual · vademécum, aranceles, reglas de cada financiador |
+| **una distribuidora** | atención al cliente, recepción, despacho, compras, reclamos | los procedimientos de manejo del lugar · catálogo, transportistas, niveles de servicio |
 | **un estudio contable o jurídico** | ingreso de casos, revisión de documentos, vencimientos, facturación | las listas de control y plantillas del estudio · las reglas de su jurisdicción |
-| **un depósito o distribuidora** | recepción, despacho, compras, reclamos | los procedimientos de manejo del lugar · catálogo, transportistas, niveles de servicio |
 | **una escuela o centro de formación** | inscripciones, apoyo docente, comunicaciones, compras | cómo resuelve esta escuela cada caso · programa, calendario, reglamento |
+| **un taller o servicio técnico** | recepción de equipos, diagnóstico, repuestos, garantías | el procedimiento de cada tipo de reparación · manuales, listas de repuestos, condiciones de garantía |
+| **un club o centro comunitario** | socios, inscripciones a actividades, instalaciones, cobranzas | cómo resuelve este club cada caso · actividades, cuotas, reglamento interno |
 | **una administración de propiedades** | pedidos de inquilinos, mantenimiento, cobranzas, proveedores | el escalamiento por edificio · contratos, reglamentos, condiciones de proveedores |
 
 Ninguna de esas filas está medida: es hacia donde apunta el diseño. Lo que sí está medido viene
@@ -181,14 +183,14 @@ de otra manera es otro modelo, y peor. Antes de concluir que "el modelo no sirve
 - **La API rutea por pedido; el cliente no nombra ningún modelo.** En un replay de 240 casos, 0,546 →
   0,775, con 0 mal ruteados.
 - **OpenClaw en vivo contra el sistema:** 40 de 40 turnos resueltos localmente, 0 llamadas inventadas.
-- **La biblioteca existe.** La primera es el segundo rol de la clínica: procedimientos de enfermería
-  de terapia IV, de un manual abierto (CC BY 4.0) — 94 notas enlazadas que pasan un *lint*, con una
+- **La biblioteca existe.** La primera está armada con procedimientos paso a paso de un manual
+  abierto (CC BY 4.0) — 94 notas enlazadas que pasan un *lint*, con una
   capa de reglas locales de ejemplo.
 - **El árbitro existe.** Los 72 recorridos de referencia pasan por él sin un solo rechazo; los tres
   recorridos tramposos —saltearse un paso requerido, abrir una nota que nadie le mostró, ir fuera de
   orden— se cortan.
 - **Y una señal alentadora sobre leer notas:** un 4B sin entrenar pasa de 29/48 a 45/48 con la nota
-  correcta delante, y de 0/12 a 12/12 cuando la nota trae la regla local de una unidad.
+  correcta delante, y de 0/12 a 12/12 cuando la nota trae la regla local de un sitio.
 
 ## Cuando el rol es un grupo: un equipo en modo multijugador
 
@@ -261,9 +263,8 @@ Prefiero decirlo yo:
    nunca vio, sólo porque sus notas están en la biblioteca — contra el mismo modelo sin entrenar
    leyendo las mismas notas.
 3. **Un buscador que separe la tarea del contenido**, para las notas y para el router.
-4. **La primera región real:** procedimientos de enfermería como material de formación —no consejo a
-   pacientes—, con las adaptaciones de cada sitio como notas editables. Y, si aparece, **un rol de una
-   organización que ya trabaje así**: ahí la región viene dada.
+4. **La primera región real: un rol de una organización que ya trabaje así** — ahí la región viene
+   dada, con las adaptaciones de cada sitio como notas editables.
 5. **La política del servicio, con la factura medida.**
 
 Cada paso tiene escrita, antes de correr, la condición que lo daría por falso. Así fue como

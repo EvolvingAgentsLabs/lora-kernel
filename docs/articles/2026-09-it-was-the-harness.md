@@ -4,7 +4,7 @@
 [`2026-09-era-el-arnes.es.md`](2026-09-era-el-arnes.es.md). Every number here comes from the
 repository's record ([`../RECORD.md`](../RECORD.md)) and names its run.*
 
-![A solution architecture in five layers: people in four roles; an agent runtime with one agent per role; scheduling and back-office applications; app and messaging channels; one database with identity, payments and monitoring. Under the agents, one graphics card drawn as a bookshelf: one thick spine, the resident model, and a thin spine per role, each with two drawers of notes. A signpost routes by role; dashed lines leave for the frontier and for a person.](../img/solution-architecture.png)
+![A solution architecture in five layers: people in four roles; an agent runtime with one agent per role; order and back-office applications; app and messaging channels; one database with identity, payments and monitoring. Under the agents, one graphics card drawn as a bookshelf: one thick spine, the resident model, and a thin spine per role, each with two drawers of notes. A signpost routes by role; dashed lines leave for the frontier and for a person.](../img/solution-architecture.png)
 
 *Records stay in the database; habits go in the adapter; knowledge stays in notes a person can read.*
 
@@ -22,21 +22,22 @@ measured and which is not, with numbers.
 
 ## The architecture, layer by layer
 
-The drawing's example is a clinic. Read it top to bottom.
+The drawing's example is a distributor. Read it top to bottom.
 
-**1. People, in roles.** Patients, families and visitors, clinicians, staff. They are not "users":
-each role asks different things, over different channels, with different permissions.
+**1. People, in roles.** Customers, suppliers and carriers, the warehouse crew, the office staff.
+They are not "users": each role asks different things, over different channels, with different
+permissions.
 
-**2. An agent runtime, with one agent per role.** Front desk, nursing procedures, billing and
-coding, purchasing and stock, staffing and payroll, IT. This exists already and we do not replace it:
-it is OpenClaw, or whichever runtime you use.
+**2. An agent runtime, with one agent per role.** Customer service, receiving, dispatch, purchasing
+and stock, claims and returns, IT. This exists already and we do not replace it: it is OpenClaw, or
+whichever runtime you use.
 
-**3. The applications and the channels.** Scheduling (appointments, admissions, rooms) and back
-office (communications, operations, purchasing, payroll, reporting); an app, and messaging split into
-patients and internal. We do not touch these either.
+**3. The applications and the channels.** Orders (orders, deliveries, docks, returns) and back office
+(communications, operations, purchasing, payroll, reporting); an app, and messaging split into
+customers and internal. We do not touch these either.
 
 **4. The systems of record.** One database, with identity and permissions, payments and monitoring
-beside it. **They stay where they are.** No patient's data enters a model through training.
+beside it. **They stay where they are.** No customer's data enters a model through training.
 
 **5. And the new layer: under the agents, a single GPU as a bookshelf.** One small resident model —
 4 billion parameters — and, leaning on it, **one LoRA adapter per role**, about 120 MB each. Where
@@ -45,7 +46,7 @@ on how *this* organisation does *that* job. And every expert has a two-drawer ca
 
 - **"how we do it here"** — the operational harness: step-by-step procedures, linked by *requires*,
   *next*, *uses*;
-- **"what we know"** — the wiki: what each thing is, which formula applies, what the formulary says.
+- **"what we know"** — the wiki: what each thing is, which formula applies, what the catalogue says.
 
 They are markdown notes under half a page. **The model does not memorise them: it learns to navigate
 them**, with three verbs — search, open, calc. *The LoRA is not the textbook; it is the specialist who
@@ -59,7 +60,7 @@ Three more pieces close the drawing:
   frontier model — or **to a person, where policy says nothing leaves the building.** Abstaining is
   part of the design, not a failure.
 - **A referee that is not AI.** A small program turns the pages, **applies this site's rules before a
-  note is shown** ("here we scrub for 8 seconds, not 5") and cuts the walk if the model skips a
+  note is shown** ("here a pallet over 1.6 m is re-stacked before dispatch") and cuts the walk if the model skips a
   required step.
 
 The rule that orders everything: **records stay in the database, habits go in the adapter, knowledge
@@ -68,15 +69,16 @@ in git. Nothing is retrained.
 
 ## What you can build with it
 
-The clinic is one example. The shape repeats wherever there are **a few procedures, repeated daily,
+The distributor is one example. The shape repeats wherever there are **a few procedures, repeated daily,
 with local rules that differ from the textbook, over data that should not leave:**
 
 | organisation | roles that become experts | what goes in the two drawers |
 |---|---|---|
-| **a clinic** | front desk, nursing procedures, billing and coding, purchasing, staffing | the unit's protocols over the textbook's · formulary, tariffs, payer rules |
+| **a distributor** | customer service, receiving, dispatch, purchasing, claims | the site's handling procedures · catalogue, carriers, service levels |
 | **an accounting or law office** | intake, document review, deadlines, billing | the firm's checklists and templates · the rules of its jurisdiction |
-| **a warehouse or distributor** | receiving, dispatch, purchasing, claims | the site's handling procedures · catalogue, carriers, service levels |
 | **a school or training centre** | enrolment, teaching support, communications, purchasing | how this school handles each case · programme, calendar, regulations |
+| **a repair or field-service company** | equipment intake, diagnosis, spare parts, warranties | the procedure for each kind of repair · manuals, parts lists, warranty terms |
+| **a club or community centre** | memberships, activity sign-ups, facilities, collections | how this club handles each case · activities, fees, house rules |
 | **a property manager** | tenant requests, maintenance, collections, suppliers | escalation per building · contracts, by-laws, supplier terms |
 
 None of those rows is measured: they are where the design points. What is measured comes below.
@@ -177,14 +179,13 @@ different model, and a worse one. Before concluding that "the model can't do thi
 - **The API routes per request; the client names no model.** On a 240-case replay, 0.546 → 0.775,
   with 0 misrouted.
 - **OpenClaw, live, against the system:** 40 of 40 turns resolved locally, 0 invented calls.
-- **The library exists.** The first one is the clinic's second role: IV-therapy nursing procedures
-  from an open textbook (CC BY 4.0) — 94 linked notes that pass a lint, with an example layer of
-  local rules.
+- **The library exists.** The first one is built from the step-by-step procedures of an open
+  textbook (CC BY 4.0) — 94 linked notes that pass a lint, with an example layer of local rules.
 - **The referee exists.** All 72 reference walks pass through it without one refusal; the three
   cheating walks — skipping a required step, opening a note nobody showed it, going out of order —
   are cut.
 - **And an encouraging sign about reading notes:** an untrained 4B goes from 29/48 to 45/48 with the
-  right note open, and from 0/12 to 12/12 when the note carries a unit's local rule.
+  right note open, and from 0/12 to 12/12 when the note carries a site's local rule.
 
 ## When the role is a group: a team in multiplayer mode
 
@@ -256,9 +257,8 @@ I would rather say it myself:
 2. **The test that can kill the library:** the expert solves a sibling procedure it never saw, only
    because its notes are in the library — against the same untrained model reading the same notes.
 3. **A search that separates the task from its content**, for the notes and for the router.
-4. **The first real region:** nursing procedures as training material — not advice to patients —
-   with each site's adaptations as editable notes. And, if one appears, **a role in an organisation
-   that already works this way**: there the region is given.
+4. **The first real region: a role in an organisation that already works this way** — there the
+   region is given, with each site's adaptations as editable notes.
 5. **The service policy, with the bill measured.**
 
 Every step has, written before it runs, the condition that would prove it false. That is how we found

@@ -186,7 +186,7 @@ el resto va a la frontera, o a una persona donde la política dice que nada sale
 sistemas de registro quedan donde están: **los registros quedan en la base, los hábitos van en el
 adaptador, el conocimiento queda en notas que una persona puede leer y corregir.**
 
-![Una arquitectura de solución en cinco capas: personas en cuatro roles; un runtime de agentes con un agente por rol; aplicaciones de agenda y administración; canales de app y mensajería; una sola base de datos con identidad, pagos y monitoreo. Debajo de los agentes, una placa gráfica dibujada como estantería: un lomo grueso, el modelo residente, y un lomo fino por rol, cada uno con dos cajones de notas. Un cartel rutea por rol; líneas punteadas salen hacia la frontera y hacia una persona.](docs/img/solution-architecture.png)
+![Una arquitectura de solución en cinco capas: personas en cuatro roles; un runtime de agentes con un agente por rol; aplicaciones de pedidos y administración; canales de app y mensajería; una sola base de datos con identidad, pagos y monitoreo. Debajo de los agentes, una placa gráfica dibujada como estantería: un lomo grueso, el modelo residente, y un lomo fino por rol, cada uno con dos cajones de notas. Un cartel rutea por rol; líneas punteadas salen hacia la frontera y hacia una persona.](docs/img/solution-architecture.png)
 
 *Dónde se ubica en una organización: los registros quedan en la base, los hábitos van en el adaptador, el conocimiento queda en notas que una persona puede leer.*
 
@@ -194,16 +194,17 @@ La misma forma, en otros ámbitos — ninguno está medido, es hacia donde apunt
 
 | organización | roles que pasan a ser expertos | qué va en los dos cajones |
 |---|---|---|
-| **una clínica** | recepción, procedimientos de enfermería, facturación y codificación, compras, turnos del personal | los protocolos del servicio por encima del manual · vademécum, aranceles, reglas de cada financiador |
+| **una distribuidora** | atención al cliente, recepción, despacho, compras, reclamos | los procedimientos de manejo del lugar · catálogo, transportistas, niveles de servicio |
 | **un estudio contable o jurídico** | ingreso de casos, revisión de documentos, vencimientos, facturación | las listas de control y plantillas del estudio · las reglas de su jurisdicción, cliente por cliente |
-| **un depósito o distribuidora** | recepción, despacho, compras, reclamos | los procedimientos de manejo del lugar · catálogo, transportistas, niveles de servicio |
 | **una escuela o centro de formación** | inscripciones, apoyo docente, comunicaciones, compras | cómo resuelve esta escuela cada caso · programa, calendario, reglamento |
+| **un taller o servicio técnico** | recepción de equipos, diagnóstico, repuestos, garantías | el procedimiento de cada tipo de reparación · manuales, listas de repuestos, condiciones de garantía |
+| **un club o centro comunitario** | socios, inscripciones a actividades, instalaciones, cobranzas | cómo resuelve este club cada caso · actividades, cuotas, reglamento interno |
 | **una administración de propiedades** | pedidos de inquilinos, mantenimiento, cobranzas, proveedores | el procedimiento de escalamiento por edificio · contratos, reglamentos, condiciones de proveedores |
 
 Lo que comparten es lo que hace que una región merezca un experto: **los mismos pocos procedimientos,
 repetidos a diario, con reglas locales que difieren del manual, sobre datos que no deberían salir.**
-La primera biblioteca de este repositorio es el segundo rol de la clínica — procedimientos de
-enfermería de terapia IV ([`knowledge/nursing-iv/`](knowledge/nursing-iv/)). Lo que *no* está
+La primera biblioteca de este repositorio está armada con los procedimientos paso a paso de un manual
+abierto ([`knowledge/nursing-iv/`](knowledge/nursing-iv/)). Lo que *no* está
 establecido está en la sección de arriba, y vale acá entero: todavía no hay datos reales, y la
 afirmación de que una biblioteca extiende a un experto a un procedimiento que nunca entrenó no está
 probada.
