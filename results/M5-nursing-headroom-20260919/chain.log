@@ -1,0 +1,24 @@
+=== session 1 of 1 · srv103318 · L4
+    boot clone: rc=0 4d22875 M1: the pool on Qwen3.5-4B — three attempts, no verdict yet; a Colab session lives sixty minutes; the chain becomes resumable (#230)
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 4d22875 M1: the pool on Qwen3.5-4B — three attempts, no verdict yet; a Colab session lives sixty minutes; the chain becomes resumable (#230)
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.29.0
+    4d22875 M1: the pool on Qwen3.5-4B — three attempts, no verdict yet; a Colab session lives sixty minutes; the chain becomes resumable (#230) | 0.29.0
+    this module trains its own adapter — nothing to carry in
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [arm] open 60/72 correct 51 errors 0
+    [arm] open 72/72 correct 63 errors 0
+    [arm] {"closed": {"order": {"n": 24, "correct": 17}, "next": {"n": 24, "correct": 12}, "rate": {"n": 12, "correct": 7}, "site": {"n": 12, "correct": 0}, "errors": 0, "truncated": 0}, "open": {"order": {"n": 24, "correct": 24}, "next": {"n": 24, "correct": 21}, "rate": {"n": 12, "correct": 6}, "site": {"n": 12, "correct": 12}, "errors": 0, "truncated": 0}}
+    the runner wrote its result — done

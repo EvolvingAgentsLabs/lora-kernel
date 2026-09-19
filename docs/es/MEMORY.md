@@ -288,6 +288,15 @@ diseño tiene que sobrevivir: un modelo chico no sigue un procedimiento que sól
 documento de procedimiento hizo 0 llamadas a herramientas en 351/351 mensajes **[ran]** P61 — que es exactamente por qué
 *seguir lo que lee* es lo que entrena el adaptador, y lo único.
 
+**Y la otra mitad de ese hallazgo, medida sobre texto real [ran] M5:** el mismo tipo de base chica
+*responde preguntas sobre* una nota que sólo lee, y muy bien — el orden de pasos y el paso siguiente
+en tres listas de verificación IV pasan de 29/48 a libro cerrado a **45/48 con la nota abierta**, y
+una cantidad que cambió el protocolo de una unidad de **0/12 a 12/12**, sin entrenar nada. La
+comprensión está; lo que falta es *actuar bajo un procedimiento*. Así que la parte entrenada de esta
+memoria se gana su lugar sólo en **recorridos** — varios pasos, herramientas, un chequeo que habilita
+una acción — y nunca en preguntas y respuestas sobre una nota. Todo brazo desde W5 lleva la línea de
+base que lo dice: *la base pelada con la nota del oráculo abierta.*
+
 ---
 
 ## 5. El runtime — el árbitro de software
@@ -429,7 +438,7 @@ Cada paquete termina en una compuerta, entra en una sesión de Colab de sesenta 
 | W2 | `memory/runtime.py`, `layers.py`, `guard.py` sobre el loop de modo corpus existente | no | **cada recorrido oráculo pasa por el runtime**, 0 rechazos, la guarda en silencio; un recorrido que viola se corta |
 | W3 | `memory/index.py`, radar **R0**, al lado de una línea de base léxica | Colab, minutos | recall@3 de la nota necesaria sobre las consultas del oráculo; la línea de base reportada al lado |
 | W4 | el generador de corpus: huecos inmemorizables, ids opacos, distractores, callejones sin salida, mezcla de profundidades | no | ningún valor de hueco en ningún enunciado; ningún recorrido evaluado en el corpus |
-| W5 | **el brazo que mata** — dos adaptadores sobre un subdominio, con y sin la biblioteca, puntuados sobre un procedimiento hermano retenido | Colab, dos sesiones | con-biblioteca le gana a sin-biblioteca, pareado — o la memoria se detiene acá a este tamaño de modelo |
+| W5 | **el brazo que mata** — dos adaptadores sobre un subdominio, con y sin la biblioteca, puntuados sobre un procedimiento hermano retenido, **como recorridos, no como preguntas**; al lado, la *base pelada con las notas del oráculo abiertas* | Colab, dos sesiones | con-biblioteca le gana a sin-biblioteca, pareado — **y le gana a la base sin entrenar leyendo las mismas notas**, que en preguntas y respuestas ya está en 45/48 **[ran]** M5 — o la memoria se detiene acá a este tamaño de modelo |
 | W6 | radar **R1**, la afirmación de compresión | Colab, minutos | recall@3 plano a medida que $d$ baja a 64 |
 | W7 | editar una nota después de entrenar; la respuesta tiene que seguir a la biblioteca | Colab, minutos | la sigue |
 

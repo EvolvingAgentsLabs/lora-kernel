@@ -257,7 +257,13 @@ registro:
 
 1. **Margen primero:** tres listas de verificación, 72 preguntas verificables de los cuatro tipos de
    arriba, la base pelada contra ellas a libro cerrado y a libro abierto — en Colab, diez minutos
-   de una L4 (`training/nursing/headroom.py`, pre-registrado). Si la base ya ordena los pasos de un procedimiento que
+   de una L4 (`training/nursing/headroom.py`). **[ran] 2026-09-19 — hay margen, y leer cierra casi
+   todo:** orden de pasos y paso siguiente 29/48 a libro cerrado → **45/48 con la nota abierta**; una
+   cantidad que cambió el protocolo de la unidad **0/12 → 12/12**; goteos 7/12 → 6/12 — aritmética, no
+   conocimiento ([`BRIEF`](../../results/M5-nursing-headroom-20260919/BRIEF.md)). **Consecuencia:** una
+   base chica *responde sobre* una nota que sólo lee, aunque no *actúa bajo* una (P61). La trayectoria
+   entrenada se tiene que medir sobre **recorridos**, nunca sobre preguntas y respuestas, y todo brazo
+   de acá en adelante lleva la línea de base *base pelada + la nota del oráculo abierta*. Si la base ya ordena los pasos de un procedimiento que
    nunca se le mostró, no hay nada que comprar — así murió la suite clínica (S1: ningún modelo
    adelante de un 12B local gratis). Margen primero, otra vez.
 2. Después el diseño del hito 7, sin cambios, sobre este contenido: trayectorias sobre las notas del

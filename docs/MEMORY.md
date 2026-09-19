@@ -289,6 +289,15 @@ design has to survive: a small model does not follow a procedure it merely reads
 procedure document made 0 tool calls on 351/351 messages **[ran]** P61 — which is exactly why
 *following what it reads* is the thing the adapter is trained on, and the only thing.
 
+**And the other half of that finding, measured on real text [ran] M5:** the same kind of small base
+*answers questions about* a note it merely reads very well — step order and next step in three IV
+checklists go from 29/48 closed-book to **45/48 with the note open**, and a quantity a unit's
+protocol changed from **0/12 to 12/12**, with no training at all. Comprehension is there; *acting
+under a procedure* is what is missing. So the trained part of this memory earns its place only on
+**walks** — several steps, tools, a check that gates an action — and never on question-answering over
+a note. Every arm from W5 on carries the baseline that says so: *the bare base with the oracle's note
+open.*
+
 ---
 
 ## 5. The runtime — the software referee
@@ -429,7 +438,7 @@ Each package ends in a gate, fits a sixty-minute Colab session where it needs a 
 | W2 | `memory/runtime.py`, `layers.py`, `guard.py` on the existing corpus-mode loop | no | **every oracle walk passes through the runtime**, 0 refusals, guard silent; a violating walk is cut |
 | W3 | `memory/index.py`, radar **R0**, beside a lexical baseline | Colab, minutes | recall@3 of the needed note on oracle queries; the baseline reported beside it |
 | W4 | the corpus generator: unmemorisable slots, opaque ids, distractors, dead ends, depth mix | no | no slot value in any statement; no evaluated walk in the corpus |
-| W5 | **the kill arm** — two adapters on one subdomain, with and without the library, scored on a held-out sibling procedure | Colab, two sessions | with-library beats without, paired — or the memory stops here at this model size |
+| W5 | **the kill arm** — two adapters on one subdomain, with and without the library, scored on a held-out sibling procedure, **as walks, not as questions**; beside them the *bare base with the oracle's notes open* | Colab, two sessions | with-library beats without, paired — **and beats the untrained base reading the same notes**, which on question-answering is already at 45/48 **[ran]** M5 — or the memory stops here at this model size |
 | W6 | radar **R1**, the compression claim | Colab, minutes | recall@3 flat as $d$ falls to 64 |
 | W7 | edit one note after training; the answer must follow the library | Colab, minutes | it does |
 

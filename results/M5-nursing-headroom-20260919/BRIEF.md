@@ -50,3 +50,45 @@ are near-balanced (`order` 13 A / 11 B); one model, one run, temperature 0.
 Training material only — nothing here advises a patient.
 
 **Redesign counter: 0.**
+
+## Result **[ran]** 2026-09-19 · the region has headroom, and reading closes most of it
+
+`Qwen/Qwen3.5-4B`, bf16, vLLM on a Colab L4, thinking off, temperature 0; 7 minutes; probe answered;
+0 errors, 0 truncated. Read off `headroom.json`.
+
+| kind | closed book | open book — the one relevant note above the question |
+|---|--:|--:|
+| `order` — which of two steps comes first (chance 12) | 17 / 24 | **24 / 24** |
+| `next` — which of four comes next (chance 6) | 12 / 24 | **21 / 24** |
+| `rate` — gtt/min, mL/hr | 7 / 12 | 6 / 12 |
+| `site` — a quantity this unit's protocol changed | **0 / 12** | **12 / 12** |
+| all | 36 / 72 | **63 / 72** |
+
+Paired, open against closed: **29 : 2**, $p \approx 2\times10^{-7}$.
+
+**Reading, by the table written first.**
+
+- **There is headroom.** Closed-book on `order` + `next` is 29/48 = 0.60, well under the 0.90 that
+  would have ended this as the clinical suite ended. The 4B knows the procedure partly — above
+  chance on both — and not reliably.
+- **Reading closes it: 45/48 = 0.94 open-book.** *For answering about a procedure, the right note in
+  the context is nearly enough, with no LoRA at all.* That is the baseline any trained trajectory has
+  to beat, and on this kind of task there is almost nothing left to beat.
+- **The unmemorisable layer works as designed on real content: 0/12 → 12/12.** Closed-book the model
+  answers a plausible textbook number or guesses; with the unit's one-line protocol above the
+  question it follows the note over its prior, every time.
+- **`rate` does not move (7 → 6) with the formula in front of it.** The failure is the arithmetic,
+  not the knowledge: the record's rule stands, arithmetic goes to a calculator.
+
+**What this changes in the design — not expected, and written down because of that.** P61 found a
+small base does not *follow a procedure* it merely reads (0 tool calls on 351/351). This run finds a
+small base *answers questions about* a note it merely reads, very well. Both are true and they are
+different capabilities: **comprehension is there; acting under a procedure is what is missing.** So
+the memory's trained part earns its place only on tasks that are *walks* — several steps, tools, a
+check that gates an action — and **never on question-answering over a note, where an untrained base
+with the right note open is already at 0.94.** Every comparison from here on carries that arm: *bare
+base + the oracle's note open*.
+
+**Known limits.** The open-book arm was handed the right note — retrieval was not tested at all.
+72 questions by the runner's author; wording of the checklists as returned by a summarising fetch;
+one model, one run. Training material only.

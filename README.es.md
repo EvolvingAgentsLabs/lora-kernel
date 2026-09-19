@@ -142,8 +142,10 @@ exactamente sobre ese canal.
 
 - **No hay datos reales.** Cada suite hasta ahora se genera acá, y una suite generada no puede
   contener una dificultad que su autor no pensó **[ran]** P50. La primera región real ya tiene
-  nombre — **procedimientos de enfermería** (*Nursing Skills* de Open RN, CC BY 4.0) — y su
-  brazo de margen está pre-registrado, no corrido.
+  nombre — **procedimientos de enfermería** (*Nursing Skills* de Open RN, CC BY 4.0) — y sólo está
+  medido su margen: un 4B sin entrenar pasa de 29/48 a libro cerrado a 45/48 con la nota correcta
+  abierta, y de 0/12 a 12/12 en un valor que cambió el protocolo de una unidad **[ran]** M5. Todavía
+  no hay nada entrenado sobre ella, y la recuperación no está probada.
 - **La memoria está especificada, no construida.** Su afirmación central no está probada: que
   una biblioteca extiende a un experto a un *procedimiento sobre el que nunca entrenó*. Sin
   ella, un especialista apenas fuera de su región está confiadamente equivocado — 30/30
@@ -205,7 +207,7 @@ Cada hito tiene una compuerta y el brazo que puede matarlo, escritos antes de co
 | **1** | el pool sobre Qwen 3.x chico (`Qwen3.5-4B`) | en curso, tres sesiones · la compuerta de identidad sobre un adaptador *real*; después: pierde, pareado, contra su release de Qwen 2.5 |
 | **2** | el router como un modelo chico de los corpus | brazo 1 **[ran]**, no pasa; brazo 2 (embeddings) pre-registrado · pierde pedidos de remitentes no vistos, o sirve el propio listado de un miembro seguido de otra tarea |
 | **7** | **la memoria** — el núcleo de la 1.0 | brazo 0 y 0b **[ran]**: el canal funciona · bajo una trayectoria **oráculo** — exactamente las notas correctas abiertas — el experto igual saca ~1/20 en un procedimiento de una familia hermana que nunca entrenó |
-| **5** | la primera región real: procedimientos de enfermería | margen pre-registrado · la base pelada ya ordena los pasos de un procedimiento que nunca se le mostró |
+| **5** | la primera región real: procedimientos de enfermería | margen **[ran]**: 29/48 a libro cerrado → 45/48 con la nota abierta, 0/12 → 12/12 en un valor del sitio · sigue: el mismo contenido como *recorridos*, contra la base sin entrenar leyendo las mismas notas |
 | **3–4** | la mitad grande de un par, y la aceptación entre las mitades | no empezado · grande + LoRA no le gana a chico + LoRA; después: aceptación no mayor que bajo el modelo grande pelado |
 | **6** | la política del servicio, con la factura | no empezado · la parte local cuesta más de lo que ahorra |
 

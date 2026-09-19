@@ -130,7 +130,9 @@ them: 11 of 90 became 90 of 90 (M7 arm 0b). The memory is built on exactly that 
 
 - **No real data.** Every suite so far is generated here, and a generated suite cannot contain a
   difficulty its author did not think of **[ran]** P50. The first real region is named — **nursing
-  procedures** (Open RN *Nursing Skills*, CC BY 4.0) — and its headroom arm is pre-registered, not run.
+  procedures** (Open RN *Nursing Skills*, CC BY 4.0) — and only its headroom is measured: an untrained
+  4B goes from 29/48 closed-book to 45/48 with the right note open, and from 0/12 to 12/12 on a value
+  a unit's protocol changed **[ran]** M5. Nothing is trained on it yet, and retrieval is untested.
 - **The memory is specified, not built.** Its central claim is untested: that a library extends an
   expert to a *procedure it never trained on*. Without one, a specialist just outside its region is
   confidently wrong — 30/30 inside, 1/20 on sibling families **[ran]** P14.
@@ -188,7 +190,7 @@ Each milestone has a gate and the arm that can kill it, written before it runs
 | **1** | the pool on Qwen 3.x small (`Qwen3.5-4B`) | in progress, three sessions · the identity gate on a *real* adapter; then: loses, paired, to its Qwen 2.5 release |
 | **2** | the router as a small model of the corpora | arm 1 **[ran]**, does not pass; arm 2 (embeddings) pre-registered · loses requests from unseen senders, or serves a member's own listing followed by another task |
 | **7** | **the memory** — the core of 1.0 | arm 0 and 0b **[ran]**: the channel works · under an **oracle** walk — exactly the right notes open — the expert still scores ~1/20 on a sibling procedure it never trained on |
-| **5** | the first real region: nursing procedures | headroom pre-registered · the bare base already orders the steps of a procedure it was never shown |
+| **5** | the first real region: nursing procedures | headroom **[ran]**: 29/48 closed-book → 45/48 with the note open, 0/12 → 12/12 on a site's value · next: the same content as *walks*, against the untrained base reading the same notes |
 | **3–4** | the large half of a pair, and acceptance between the halves | not started · large + LoRA does not beat small + LoRA; then: acceptance no higher than under the bare large model |
 | **6** | the service policy, with the bill | not started · the local share costs more than it saves |
 

@@ -232,7 +232,13 @@ local experts.** It is the right first region for reasons the record supplies:
 
 1. **Headroom first:** three checklists, 72 verifiable questions of the four kinds above, the bare
    base against them closed book and open book — on Colab, ten minutes of an L4
-   (`training/nursing/headroom.py`, pre-registered). If the base already orders the steps of a procedure it has
+   (`training/nursing/headroom.py`). **[ran] 2026-09-19 — headroom exists, and reading closes most of
+   it:** step order and next step 29/48 closed-book → **45/48 with the note open**; a quantity the
+   unit's protocol changed **0/12 → 12/12**; drip rates 7/12 → 6/12 — arithmetic, not knowledge
+   ([`BRIEF`](../results/M5-nursing-headroom-20260919/BRIEF.md)). **Consequence:** a small base
+   *answers about* a note it merely reads, though it does not *act under* one (P61). The trained
+   trajectory has to be measured on **walks**, never on question-answering, and every arm from here
+   carries the baseline *bare base + the oracle's note open*. If the base already orders the steps of a procedure it has
    never been shown, there is nothing to buy — that is how the clinical suite died (S1: no model
    ahead of a free local 12B). Headroom first, again.
 2. Then milestone 7's design, unchanged, on this content: trajectories over the chapter's notes,
