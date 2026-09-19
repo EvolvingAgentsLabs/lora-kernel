@@ -158,6 +158,19 @@ task / other content against same content / other task), which is the radar's st
 ([`MEMORY.md`](MEMORY.md) §2.2) reached from the router's side. It needs new evaluation sets; the
 dictionary stays the default.
 
+**Where the router's problem does not arise — restored 2026-09-19** (the analysis is `docs/CASE-TEAM.md`
+at the tag `v0.1-foundations`; the rewrite dropped it and should not have). A team running the agent
+runtime in multiplayer mode — every person in chat, several agents, dozens of concurrent sessions,
+conversations in **standing groups per area** — has its regions by construction: a group repeats, has
+its own vocabulary and a stable membership. **The group's id is the route**; nothing is inferred,
+because the client already knows which room it is in. Both learned arms above fail on *who writes*;
+in a team deployment that is not a signal anyone has to read. It is also the first setting that
+exercises the pool as a pool — mixed batches across dozens of sessions, **unmeasured** here — and it
+makes headroom a per-group question: a company-wide average hides the group with a gap and the group
+without one. What it does **not** address is the infrastructure half of such a deployment — a
+session list that fills up, a gateway unreachable behind an access proxy, a websocket that drops.
+Not built for it: isolation between users, streaming, a per-group adapter lifecycle.
+
 ### Milestone 3 — the large half of one pair
 
 **Objective.** One LoRA on `Qwen/Qwen3.8-27B`, QLoRA NF4, from the *same corpus* as one

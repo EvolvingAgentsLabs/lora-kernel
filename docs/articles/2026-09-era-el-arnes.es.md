@@ -105,6 +105,78 @@ modelo se saltea un paso obligatorio.
 La ganancia: si mañana cambia un protocolo, **se edita un archivo markdown en git. No se reentrena
 nada.**
 
+## El cuadro completo: cuando es todo un equipo
+
+Hasta acá hablé de un experto y un usuario. El caso donde esto rinde de verdad es otro, y cada vez
+lo veo más: **un equipo entero corriendo OpenClaw en modo multijugador.** Cada persona le escribe a
+los agentes desde su mensajería. Hay varios agentes. Hay decenas de sesiones abiertas a la vez. Y las
+conversaciones viven en **grupos estables por área**: desarrollo, marketing, interno, operaciones,
+más los mensajes directos de cada uno y algún bot que cada tanto muestra "la corrida falló".
+
+> **[MARCADOR DE ILUSTRACIÓN — `docs/img/article-team.png`]**
+> *Un diagrama horizontal en el mismo estilo plano. A la izquierda, cuatro burbujas de chat grupal
+> etiquetadas "Dev", "Marketing", "Internal", "Ops", cada una con varias siluetas pequeñas y sin
+> rostro, y una quinta pila de burbujas individuales, "direct messages". Todas desembocan en una caja
+> central "agent runtime — dozens of sessions". De ahí sale una sola línea a "proxy", y de ahí a UNA
+> tarjeta gráfica dibujada como una estantería: un lomo grueso "one small resident model" y, apoyados
+> en él, cuatro lomos finos de colores, uno por grupo — "dev adapter", "marketing adapter"… Debajo de
+> cada lomo fino, un pequeño fichero de dos cajones: "how this team does it" y "what this team
+> knows". Una línea punteada sale del proxy hacia un edificio lejano, "frontier — everything else".
+> La idea visual: muchos grupos, una sola máquina, y cada grupo con su propio especialista y su
+> propia biblioteca.*
+
+**Primero lo que esto NO arregla**, porque es lo que más duele a esa escala: una barra lateral que
+se llena de sesiones, un gateway que cada tanto queda inalcanzable detrás de un proxy de acceso, un
+websocket que se cae. Eso es la mitad de *infraestructura* de un despliegue así, y nada de lo que
+hacemos la toca. Lo nuestro es la otra mitad: **la mitad del modelo.**
+
+Y en esa mitad, un equipo cambia tres cosas respecto de un usuario solo.
+
+**1. El grupo es la región — y el problema en el que fallamos dos veces desaparece.** Nuestra
+arquitectura sólo afirma una cosa: un experto chico le gana a un generalista *dentro* de una región
+— y fuera de ella cae de 30/30 a 1/20. Una persona haciendo trabajo variado no tiene región; hay que
+descubrir si existe, y después hay que *adivinar* a cuál pertenece cada mensaje. Ahí es donde
+fallamos: nuestros dos routers aprendidos mandaban afuera el 100 % de los pedidos de remitentes
+nuevos. **Un grupo estable es una región por construcción**: se repite, tiene su vocabulario, sus
+personas y sus convenciones. Y la ruta no hay que inferirla: *el identificador del grupo ES la ruta.*
+El cliente ya sabe en qué sala está. Un contexto que elimina un problema abierto vale más que uno
+que mejora un número.
+
+**2. Una sola GPU, un modelo residente, un adaptador por grupo.** Esto sí está medido: un servidor,
+un modelo base, varios adaptadores, y cada pedido atendido por el suyo; que convivan no le cuesta
+nada al que está sirviendo. Un adaptador pesa unos 120 MB. El de marketing no sabe nada de
+desarrollo, y no tiene por qué.
+
+**3. La biblioteca de cada grupo es donde vive "cómo lo hacemos nosotros".** El arnés operativo de
+marketing —cómo se arma un brief, qué se revisa antes de publicar— y el de desarrollo —cómo se hace
+el triage de un bug, qué pide una revisión— son archivos markdown que **el propio equipo edita**.
+Cambia el proceso, se edita la nota, y el agente de ese grupo lo sigue al día siguiente sin
+reentrenar nada. Es la diferencia entre "el agente de marketing debería saber cómo habla marketing"
+y tener que repetírselo en cada prompt.
+
+Lo que eso ataca es concreto: **hoy, cada mensaje de cada persona a cada agente sale entero hacia
+una API de frontera.** La factura y los datos que salen de la empresa crecen con la cantidad de
+gente, no con la dificultad del trabajo.
+
+**Si tu equipo trabaja así, el orden sería éste:**
+
+1. **Elegí un grupo, no la empresa.** El de trabajo más repetitivo y con respuesta verificable.
+2. **Mirá las formas, no los textos.** Tenemos una herramienta que lee del propio registro del
+   runtime qué *forma* tiene el tráfico —cuántos turnos, qué herramientas, qué largo— sin guardar
+   nunca un prompt. A escala de equipo eso importa más, no menos.
+3. **Medí si la frontera realmente va adelante en el trabajo de ESE grupo.** Por grupo, no en
+   promedio: un promedio de empresa esconde al grupo donde hay mucho que ganar y al grupo donde no
+   hay nada. Nos pasó: en nuestra primera suite, pagar 100 veces más puntuó peor. Un grupo sin
+   brecha no tiene nada que destilar, y conviene saberlo antes de entrenar nada.
+4. Recién ahí: un adaptador y una biblioteca para ese grupo, con su compuerta.
+
+**Y lo que todavía no tenemos a escala de equipo**, para que nadie lo descubra tarde: aislamiento
+entre usuarios (hoy es una clave y un solo destino), streaming (lo bufferizamos a propósito: una
+llamada a herramienta sólo es una llamada cuando se cierra), el ciclo de vida de los adaptadores por
+grupo, y la medición que más nos interesa —qué cuesta servir un lote mixto con decenas de sesiones
+alternando entre grupos—, que nunca pudimos hacer bien porque no tuvimos tráfico real. Un equipo así
+es exactamente donde esa medición deja de ser un argumento y pasa a ser un número.
+
 ## Lo que todavía no es
 
 Prefiero decirlo yo:
@@ -129,7 +201,8 @@ y de 0/12 a 12/12 cuando la nota trae la regla local de una unidad ("acá se lim
 2. **La biblioteca, pieza por pieza**, con una prueba que puede matarla temprano: que el experto
    resuelva un procedimiento hermano que nunca vio, sólo porque sus notas están en la biblioteca.
 3. **La primera región real:** procedimientos de enfermería, como material de formación —no consejo
-   a pacientes—, con las adaptaciones locales de cada sitio como notas editables.
+   a pacientes—, con las adaptaciones locales de cada sitio como notas editables. Y, si aparece, **el
+   grupo de un equipo que ya trabaje en modo multijugador**: ahí la región viene dada.
 4. **Un router que separe la tarea del contenido**, que es lo que les faltó a los dos que fallaron.
 5. **La política del servicio, con la factura medida.**
 
@@ -138,7 +211,7 @@ encontramos lo del arnés.
 
 ## Si usás OpenClaw para trabajo repetitivo
 
-Buscamos dos o tres equipos con una tarea que cumpla tres condiciones: se repite mucho, tiene una
+Buscamos dos o tres equipos —idealmente uno que ya trabaje en modo multijugador, con grupos por área— con una tarea que cumpla tres condiciones: se repite mucho, tiene una
 respuesta verificable, y hoy se la mandan entera a un modelo de frontera. No tenemos un producto
 para venderles. Tenemos un método para medir si una parte de ese trabajo puede resolverse localmente
 — y la costumbre de publicar el número salga como salga.
