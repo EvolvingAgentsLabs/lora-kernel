@@ -12,6 +12,11 @@ This repository has one job, restated by the user on 2026-09-19:
 > the navigation, the base holds the content; a trajectory through operational notes is the
 > harness. Measured on fluid mechanics, split into subdomains.**
 
+**The LoRA is not the textbook; it is the specialist who knows how to use the library.** The memory —
+library, radar, three verbs, a LoRA trained on the habit of navigating, a software referee — is the
+core of version 1.0 and is specified in [`docs/MEMORY.md`](docs/MEMORY.md). Build it in that
+document's order (W1–W7); do not start a piece whose gate the piece before it has not passed.
+
 The service is an OpenAI-compatible API that resolves locally what falls in a measured
 region and forwards the rest, with OpenClaw instances per task on top. Read
 [`README.md`](README.md) for the shape, [`docs/PLAN.md`](docs/PLAN.md) for the position,
@@ -143,6 +148,14 @@ These are not style. Each was paid for; [`docs/RECORD.md`](docs/RECORD.md) §4 h
 - **Clean the tree by what is *named*, not only by what is imported.** An import closure removed
   a trainer three runners start by name in a subprocess; `tests/test_pool_base.py` resolves every
   `training.*` module named in a string, a chain or a document.
+- **Serve an expert the way its corpus taught it, and suspect the path before the model.** A
+  fluids expert scored 11/90 through `tool_calls` messages and **90/90** with results written inline
+  as trained; for four days that was *small models cannot reason*. Before a capability is declared
+  absent, read the failure where it happens (*was the result used?*) and re-serve once in corpus mode.
+- **A Colab session lives sixty minutes** (`colab log -s <name> | grep EVENT`). The unit of work is a
+  session: one training per session, adapters fetched while it lives, runs resumable across sessions.
+- **No model runs on the user's machine.** Anything that calls a model goes through the chain; local
+  is for tests, generators and replays over records.
 - **On the 3.x line, thinking is off for members, in every render.** A trained turn sits behind an
   empty `<think>` block and the default generation prompt leaves it open: a bare base thinks its
   tokens away and scores as a floor.

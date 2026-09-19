@@ -22,7 +22,7 @@ machine is a 16 GB laptop and cannot hold vLLM, let alone a 27B.
 | `harness/knowledge_arm.py`, `null_arm.py`, `ceiling.py`, `bar.py`, `suite_gates.py` | headroom, ceilings and the statistics, before and after |
 | `harness/openclaw_live.py`, `openclaw_traffic.py`, `tunnel.sh` | the live OpenClaw turn, and shapes read from its own log |
 | `harness/chain_serve.sh`, `chain_separate.sh` | the Colab chains |
-| `physics/` | what the routing replay and the identity gate still read from the fluids suite — the region measured to fail and served out |
+| `physics/` | the fluids suite — an exact oracle and a handbook drawn per case — and `result_use.py`, which reads a failure where it happens. The region was marked *out* on a measurement of the serving path; served as taught it is 90/90 **[ran]** M7 arm 0b |
 
 ## Running on Colab, from a terminal
 

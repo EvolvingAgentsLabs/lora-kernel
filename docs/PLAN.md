@@ -36,6 +36,12 @@ facts carry it:
   examples **[ran]** P15, P21. Both are why the knowledge base is *navigated by a trained
   policy* and its content is *unmemorisable by construction* (milestone 7).
 
+**What version 1.0 is [spec].** Five things: experts defined by their corpora; the router with its
+abstention; **the memory** (milestone 7, [`MEMORY.md`](MEMORY.md)); the runtime that referees it; the
+release contract that hashes all of it. The speculative pair (milestones 3–4) attaches per subdomain
+where it is measured to pay and is **not required by 1.0** — every piece of 1.0 has a gate that can
+pass on one L4 inside a sixty-minute session, and a 27B cannot.
+
 What stays from before: the frontier is a permanent component, used where no expert's
 corpus covers the request or where a region is measured to fail (0.546 → 0.775 **[ran]**
 P41); experts are trained by ordinary SFT; every region enters through the release gate;
@@ -44,7 +50,8 @@ the customisation service and its tooling are outside this runtime and the open 
 What is retired: acceptance as a way to *rank* unrelated experts against one target
 (closed without a verdict after two failed preconditions; one redesign of three unspent,
 and it is not going to be spent); composition of adapters; the character-level acceptance
-instrument; the fluid-mechanics expert.
+instrument; ~~the fluid-mechanics expert~~ — **un-retired 2026-09-19 [ran] M7 arm 0b**: it was
+retired on 11/90, and that was the serving path. As its corpus taught, it is 90/90.
 
 ## 1. The milestones
 
@@ -245,8 +252,10 @@ share, on real traffic. **Falsified by** a local share that costs more to run th
 
 ### Milestone 7 — a knowledge base per subdomain, and the trajectory through it as the harness
 
-**The design, at the level of note formats, actions, strategies and corpus, is its own document,
-written to be argued with: [`KNOWLEDGE-TRAJECTORIES.md`](KNOWLEDGE-TRAJECTORIES.md).**
+**This is the core of version 1.0. What is built, piece by piece and in what order, is
+[`MEMORY.md`](MEMORY.md)** — the library's two shelves, the radar, three verbs, the LoRA's habit of
+navigating, the software referee. The *why*, written to be argued with by other models, is
+[`KNOWLEDGE-TRAJECTORIES.md`](KNOWLEDGE-TRAJECTORIES.md).
 
 **The idea, the user's.** An expert's subdomain has a body of knowledge of two kinds:
 **encyclopedic** — hierarchical: what a quantity is, which correlation holds in which regime,
@@ -259,9 +268,10 @@ is a harness* — the thing `harness.lora` was reaching for, now per subdomain a
 weights, where it can be edited.
 
 **Why fluid mechanics, and why split.** It is the one domain here with real headroom — the
-frontier 66/90, the expert 12/90 **[ran]** P40, P41 — and its failure is the kind a base of
-knowledge addresses: the protocol perfect, the physics wrong, 19 of 30 failures with every call
-clean **[ran]** P8. One adapter over all of it was trained at one depth and over-solved below it
+frontier 66/90, the expert ~~12/90~~ **[ran]** P40, P41. *(Corrected the same day by arm 0b: 12/90
+was the serving path; in its region, as taught, the expert is 90/90. Fluid mechanics stays the test
+bed for what that does **not** cover — a sibling family it never trained on, 1/20 **[ran]** P14 —
+and because its content is unmemorisable by construction.)* One adapter over all of it was trained at one depth and over-solved below it
 **[ran]** P45. So: subdomains of two sibling families each — internal flow (`pipe_head_loss`,
 `pump_power`), metering (`venturi_flow`, `orifice_discharge`), external flow
 (`terminal_velocity`, `drag_force`), channels and statics (`manning_channel`,
@@ -272,7 +282,7 @@ region and depth are two variables.
 
 1. **A small model does not follow what it reads unless following is what it was trained on**
    **[ran]** P61. → Navigation and note-following are *the content of the adapter*: the corpus is
-   trajectories — `<kb>query</kb>`, `<open>note</open>`, then `<calc>` — written by the oracle.
+   trajectories — `<search>…</search>`, `<open>id</open>`, then `<calc>` — written by the oracle.
 2. **Fixed knowledge in a corpus is memorised, and then the base measures nothing** **[ran]** P15,
    P21. → The notes a case needs are **unmemorisable by construction**, P21's per-case handbook
    extended from values to procedures: properties of a fluid that exists only in this case, and a
@@ -293,8 +303,8 @@ absence: no looked-up value appears in the statement), and hierarchy is an arm, 
 | # | arm | what it decides |
 |---|---|---|
 | **0** | headroom, zero GPU: P41's 90 recorded chains replayed against each case's own handbook (`training/physics/result_use.py`) | **[ran] 2026-09-19.** Of 79 failures, **74** hold a `<calc>` with a number that came from nowhere and **75** leave a tool result unused; 217 of 456 non-final results are ignored — the expert looks the density up, 882.3, and multiplies by 1359.7. **The dominant failure is not a wrong relation: it is not using what was returned.** *(Corrected the same day: the first replay passed the handbook in its JSON shape, every `<lookup>` raised inside a broad `except`, and the published 74 unused / 132 of 371 ignored were wrong. With lookups evaluated — 0 tool errors — it is 75 and 217 of 456; the 74 with a number from nowhere stood.)* |
-| **0b** | **the same adapter, the same 90 cases, served in corpus mode** — result inline after the closing tag, as its corpus taught — instead of through `tool_calls`, which costs `email-full` 0.992 → 0.808 **[ran]** P55. Ten minutes of L4, the adapter is on disk | separates *a 3B does not use what it reads* from *the harness did not show it the way it was taught*. **Bought before arm 1**: either answer decides how a base has to deliver what it retrieves, and the second would mean "the expert that reasons fails" was partly an instrument |
-| **1** | **oracle trajectory.** Two adapters on one subdomain, same cases: trained *with* the notes the oracle would open, injected through the `<kb>`/`<open>` protocol, and *without*. Scored on the trained family and on its **held-out sibling**, paired | the upper bound: if reading exactly the right notes does not lift the sibling off ~1/20, no navigation will — **stop** |
+| **0b** | **the same adapter, the same 90 cases, served in corpus mode** — result inline after the closing tag, as its corpus taught | **[ran] 2026-09-19 — THE PATH WAS PART OF IT: 90/90** against 11/90 through `tool_calls`, 79 : 0 paired; 24 : 0 against the frontier's 66/90; no evaluated case in the corpus ([`BRIEF`](../results/M7-arm0b-corpus-mode-20260919/BRIEF.md)). **A 3B does use what it reads, when it reads it as taught — the memory has a channel that works.** Opens two things: `fluids-full` back through the release gate before its region stops being sent out; and P45 (below training depth), measured through the same path, is open again |
+| **1** | **oracle trajectory.** Two adapters on one subdomain, same cases: trained *with* the notes the oracle would open, injected through the `<search>`/`<open>` protocol, and *without*. Scored on the trained family and on its **held-out sibling**, paired | the upper bound: if reading exactly the right notes does not lift the sibling off ~1/20, no navigation will — **stop** |
 | **2** | learned navigation: the expert issues its own queries; retrieval by embedding inside the subdomain's base. Measured **where it happens** — was the needed note retrieved, was it opened, was it followed — not only at the final answer | what navigation loses against the oracle trajectory |
 | **3** | attribution: encyclopedic notes only · operational notes only · both | which kind of knowledge carries the gain — the two kinds, priced separately |
 | **4** | retrieval: flat lexical · embedding · embedding restricted to the trajectory so far (links and neighbours of the last note opened) | whether a trajectory strategy beats a flat search; the workspace's earlier result says do not assume it |
@@ -388,6 +398,10 @@ that decide the shape of a step:
 
 ## 5. History
 
+- **2026-09-19** — the memory specified as the core of 1.0 ([`MEMORY.md`](MEMORY.md)), from the
+  user's five-piece explanation: library, radar, three verbs, a LoRA trained on the habit of
+  navigating, a software referee. Milestone 7 arm 0b **[ran]**: the fluids expert, served as its
+  corpus taught, is 90/90 where it had been 11/90 — *"the expert that reasons fails"* is withdrawn.
 - **2026-09-19** — milestone 2 arm 1 **[ran]**: safe on foreign text, loses every request from an
   unseen sender; the dictionary stays, arm 2 is an embedding model. Milestone 7 added: a knowledge
   base per subdomain with the trajectory through it as the harness, on fluid mechanics split into
