@@ -171,6 +171,61 @@ flowchart LR
     class F out
 ```
 
+## Dónde se ubica en una organización
+
+Una organización que funciona con agentes suele dibujar el mismo esquema: arriba, personas en unos
+pocos roles; un runtime de agentes con **un agente por rol**; las aplicaciones que esos agentes operan;
+los canales que la gente ya usa; y abajo, una sola base de datos con identidad, pagos y monitoreo al
+lado. En ese esquema cada agente es un system prompt sobre el mismo modelo remoto.
+
+lora-kernel es la capa debajo de la columna de agentes. **Cada rol pasa a ser un experto** — un
+adaptador entrenado en cómo *esta* organización hace ese trabajo — **con dos cajones de notas**: cómo
+lo hacemos acá, y lo que sabemos. El rol del que llega un mensaje es la ruta, así que rutear bien no
+cuesta nada. Lo que un experto está medido para resolver se responde en la máquina de la organización;
+el resto va a la frontera, o a una persona donde la política dice que nada sale del edificio. Los
+sistemas de registro quedan donde están: **los registros quedan en la base, los hábitos van en el
+adaptador, el conocimiento queda en notas que una persona puede leer y corregir.**
+
+> **[MARCADOR DE ILUSTRACIÓN — `docs/img/solution-architecture.png`]**
+> *Un único diagrama ancho de arquitectura de solución, en el estilo plano y cálido del repositorio,
+> cinco capas de arriba abajo. ARRIBA, una banda larga "personas": cuatro grupos con siluetas chicas
+> sin rostro — "pacientes", "familias y visitantes", "profesionales", "personal". COLUMNA IZQUIERDA,
+> una caja alta "runtime de agentes — un agente por rol", con seis fichas: "recepción",
+> "procedimientos de enfermería", "facturación y codificación", "compras y stock", "turnos y sueldos",
+> "IT". CENTRO, dos cajas con flechas de ida y vuelta hacia los agentes: "agenda" (turnos · admisiones
+> · salas · eventos) y "administración" (comunicaciones · operaciones · compras · sueldos · reportes).
+> COLUMNA DERECHA, los canales: "app", y "mensajería" que se abre en "pacientes" e "interno". ABAJO,
+> los sistemas de registro: un tambor "una sola base de datos" y tres cajas chicas, "identidad y
+> permisos", "pagos", "monitoreo" — genéricos, sin marcas ni logos. Y EL PUNTO DE LA IMAGEN: debajo de
+> la columna de agentes, donde normalmente iría una API en la nube, dibujar UNA placa gráfica como
+> estantería — un lomo grueso "un modelo chico residente" y seis lomos finos de colores, uno por cada
+> ficha de rol de arriba, unido a su ficha por una línea fina. Bajo cada lomo fino, un fichero de dos
+> cajones: "cómo lo hacemos acá" y "lo que sabemos". Entre el runtime y la estantería, un cartel
+> indicador: "router — el rol del que llega un mensaje es la ruta". Del cartel sale una línea punteada
+> hacia un edificio lejano, "frontera — todo lo no medido", y una segunda línea punteada termina en
+> una persona: "o un humano, donde la política dice que nada sale del edificio". Una banda fina bajo
+> la estantería: "runtime — árbitro: aplica las reglas de este lugar antes de mostrar una nota". Un
+> epígrafe dentro de la imagen, abajo a la derecha: "los registros quedan en la base; los hábitos van
+> en el adaptador; el conocimiento queda en notas que una persona puede leer".*
+
+La misma forma, en otros ámbitos — ninguno está medido, es hacia donde apunta el diseño:
+
+| organización | roles que pasan a ser expertos | qué va en los dos cajones |
+|---|---|---|
+| **una clínica** | recepción, procedimientos de enfermería, facturación y codificación, compras, turnos del personal | los protocolos del servicio por encima del manual · vademécum, aranceles, reglas de cada financiador |
+| **un estudio contable o jurídico** | ingreso de casos, revisión de documentos, vencimientos, facturación | las listas de control y plantillas del estudio · las reglas de su jurisdicción, cliente por cliente |
+| **un depósito o distribuidora** | recepción, despacho, compras, reclamos | los procedimientos de manejo del lugar · catálogo, transportistas, niveles de servicio |
+| **una escuela o centro de formación** | inscripciones, apoyo docente, comunicaciones, compras | cómo resuelve esta escuela cada caso · programa, calendario, reglamento |
+| **una administración de propiedades** | pedidos de inquilinos, mantenimiento, cobranzas, proveedores | el procedimiento de escalamiento por edificio · contratos, reglamentos, condiciones de proveedores |
+
+Lo que comparten es lo que hace que una región merezca un experto: **los mismos pocos procedimientos,
+repetidos a diario, con reglas locales que difieren del manual, sobre datos que no deberían salir.**
+La primera biblioteca de este repositorio es el segundo rol de la clínica — procedimientos de
+enfermería de terapia IV ([`knowledge/nursing-iv/`](knowledge/nursing-iv/)). Lo que *no* está
+establecido está en la sección de arriba, y vale acá entero: todavía no hay datos reales, y la
+afirmación de que una biblioteca extiende a un experto a un procedimiento que nunca entrenó no está
+probada.
+
 ## Adónde va
 
 Cada hito tiene una compuerta y el brazo que puede matarlo, escritos antes de correr

@@ -161,6 +161,59 @@ flowchart LR
     class F out
 ```
 
+## Where it sits in an organisation
+
+An organisation that runs on agents tends to draw the same picture: people in a few roles on top; an
+agent runtime with **one agent per role**; the applications those agents operate; the channels people
+already use; and, at the bottom, one database with identity, payments and monitoring beside it. In
+that picture every agent is a system prompt over the same remote model.
+
+lora-kernel is the layer under the agent column. **Each role becomes an expert** — an adapter trained
+on how *this* organisation does that job — **with two drawers of notes**: how we do it here, and what
+we know. The role a message arrives from is the route, so routing costs nothing to get right. What an
+expert is measured to handle is answered on the organisation's own machine; the rest goes to the
+frontier, or to a person where policy says nothing leaves the building. The systems of record stay
+where they are: **records stay in the database, habits go in the adapter, knowledge stays in notes a
+person can read and correct.**
+
+> **[ILLUSTRATION PLACEHOLDER — `docs/img/solution-architecture.png`]**
+> *One wide solution-architecture diagram in the repository's warm flat style, five layers top to
+> bottom. TOP, one long band "people": four groups with small faceless silhouettes — "patients",
+> "families and visitors", "clinicians", "staff". LEFT COLUMN, a tall box "agent runtime — one agent
+> per role", holding six cards: "front desk", "nursing procedures", "billing and coding", "purchasing
+> and stock", "staffing and payroll", "IT". CENTRE, two boxes the agents exchange arrows with:
+> "scheduling" (appointments · admissions · rooms · events) and "back office" (communications ·
+> operations · purchasing · payroll · reporting). RIGHT COLUMN, the channels: "app", and "messaging"
+> splitting into "patients" and "internal". BOTTOM, the systems of record: one drum "one database" and
+> three small boxes, "identity and permissions", "payments", "monitoring" — generic, no brand names,
+> no logos. NOW THE POINT OF THE PICTURE: under the agent-runtime column, where a cloud API would
+> normally be, draw ONE graphics card as a bookshelf — a thick spine "one small resident model" and
+> six thin coloured spines, one per role card above, each joined to its card by a thin line. Under
+> each thin spine a two-drawer card file: "how we do it here" and "what we know". A small signpost
+> sits between the runtime and the shelf: "router — the role a message comes from is the route". A
+> dashed line leaves the signpost for a distant building, "frontier — everything unmeasured", and a
+> second dashed line ends at a person: "or a human, where policy says nothing leaves the building". A
+> thin band under the shelf: "runtime — referee: applies this site's rules before a note is shown".
+> One caption inside the image, bottom right: "records stay in the database; habits go in the adapter;
+> knowledge stays in notes a person can read".*
+
+The same shape, in other rooms — none of these is measured, they are where the design points:
+
+| organisation | roles that become experts | what goes in the two drawers |
+|---|---|---|
+| **a clinic** | front desk, nursing procedures, billing and coding, purchasing, staffing | the unit's protocols over the textbook's · formulary, tariffs, payer rules |
+| **an accounting or law office** | intake, document review, deadlines, billing | the firm's checklists and templates · the rules of its jurisdiction, client by client |
+| **a warehouse or distributor** | receiving, dispatch, purchasing, claims | the site's handling procedures · catalogue, carriers, service levels |
+| **a school or training centre** | enrolment, teaching support, communications, purchasing | how this school handles each case · programme, calendar, regulations |
+| **a property manager** | tenant requests, maintenance, collections, suppliers | the escalation procedure per building · contracts, by-laws, supplier terms |
+
+What they share is what makes a region worth an expert: **the same few procedures, repeated daily,
+with local rules that differ from the textbook, over data that should not leave.** The first library
+in this repository is the clinic's second role — IV-therapy nursing procedures
+([`knowledge/nursing-iv/`](knowledge/nursing-iv/)). What is *not* established is in the section
+above, and it applies here in full: no real data yet, and the claim that a library extends an expert
+to a procedure it never trained on is untested.
+
 ## Where it goes
 
 Each milestone has a gate and the arm that can kill it, written before it runs
