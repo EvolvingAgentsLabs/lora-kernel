@@ -11,8 +11,9 @@ from pathlib import Path
 import pytest
 
 from memory.lint import lint, main as lint_main
+from memory.layers import render, resolve
 from memory.notes import (BODY_TOKENS, Library, Note, NoteError, Site, count_tokens,
-                          parse_frontmatter, render, resolve)
+                          parse_frontmatter)
 
 SPEC_STEP = """---
 id: nursing-iv/harness/primary-infusion/03-cleanse-catheter-cap
