@@ -432,6 +432,16 @@ que el miembro busca se encuentra ahí.
 búsqueda léxica adentro de una base chica; que algo de esto transfiera de una suite generada a
 una real.
 
+**W1 [ran] 2026-09-19 — la primera biblioteca y su lint: PASÓ.** `memory/notes.py`, `memory/lint.py`,
+`knowledge/nursing-iv/`: tres procedimientos de Open RN como esqueleto + 70 notas de paso, una wiki de
+21 notas, una capa de sitio de ejemplo; ningún modelo involucrado. Compuerta, escrita antes —
+$\text{pasa} \iff |\text{hallazgos}| = 0 \wedge \forall q: \text{recorrido}(q)$ existe — lint **0 hallazgos**,
+recorridos del oráculo **72/72**, y la compuerta falla cuando se quita un paso
+([`BRIEF`](../../results/M7-W1-library-20260919/BRIEF.md)). La primera corrida del lint encontró al
+esqueleto de la propia especificación por encima de su propio límite (230 tokens > 150): un esqueleto
+lista *etiquetas* de paso, no títulos. Sigue **W2** — el runtime, las capas y la guarda sobre el loop de
+modo corpus, todavía sin modelo.
+
 ## 2. La familia, y la alternativa
 
 **Adoptada: Qwen 3.x.** `Qwen3.5-2B/4B` y `Qwen3.8-27B` comparten un espacio de ids —
@@ -467,6 +477,8 @@ Las cuatro que deciden la forma de un paso:
 
 ## 5. Historia
 
+- **2026-09-19** — memoria **W1 [ran]: PASÓ.** La primera biblioteca (`knowledge/nursing-iv/`, 94 notas de
+  tres checklists de Open RN, CC BY 4.0), `memory/notes.py` y el lint; 0 hallazgos, 72/72 recorridos del oráculo.
 - **2026-09-19** — hito 1 **[ran]: MOVIDO.** Los dos miembros liberados, reentrenados sobre `Qwen3.5-4B`,
   empatan a sus releases de Qwen 2.5 (471/475, 240/240); manifiestos `@v2`; el pool está sobre la
   familia 3.x. Cuatro sesiones de menos de una hora, cinco relanzamientos, cada uno un arreglo del arnés.

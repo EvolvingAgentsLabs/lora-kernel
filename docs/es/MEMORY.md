@@ -83,7 +83,7 @@ source: Nursing Skills (Open RN), ch. 23 — CC BY 4.0
 Vigorously cleanse the catheter cap for at least {{seconds}} seconds and allow it to dry.
 ```
 
-Una nota de **procedimiento** es sólo un esqueleto — sus títulos de pasos ordenados y el id del primer paso. El
+Una nota de **procedimiento** es sólo un esqueleto — ~~los títulos~~ las **etiquetas** de sus pasos, en orden (el slug del id de cada paso: `20 cleanse cap`), y el id del primer paso. *Enmendado por W1 **[ran]**: treinta y dos títulos numerados son 230 tokens contra el límite de 150 de este mismo documento; las etiquetas son 98.* El
 detalle vive en los pasos. Leer una checklist de 32 pasos de una sola vez y *recorrerla* son tareas
 distintas, y la segunda es la que se está construyendo.
 
@@ -428,7 +428,7 @@ Cada paquete termina en una compuerta, entra en una sesión de Colab de sesenta 
 
 | # | paquete | ¿necesita un modelo? | compuerta |
 |---|---|---|---|
-| W1 | `memory/notes.py`, el lint, y la primera biblioteca: IV therapy, tres procedimientos como esqueleto + pasos, una wiki chica | no | el lint pasa; existe cada recorrido que necesita el oráculo |
+| W1 | `memory/notes.py`, el lint, y la primera biblioteca: IV therapy, tres procedimientos como esqueleto + pasos, una wiki chica | no | el lint pasa; existe cada recorrido que necesita el oráculo — ✅ **[ran] 2026-09-19**: 94 notas, 0 hallazgos, 72/72 recorridos ([`BRIEF`](../../results/M7-W1-library-20260919/BRIEF.md)) |
 | W2 | `memory/runtime.py`, `layers.py`, `guard.py` sobre el loop de modo corpus existente | no | **cada recorrido oráculo pasa por el runtime**, 0 rechazos, la guarda en silencio; un recorrido que viola se corta |
 | W3 | `memory/index.py`, radar **R0**, al lado de una línea de base léxica | Colab, minutos | recall@3 de la nota necesaria sobre las consultas del oráculo; la línea de base reportada al lado |
 | W4 | el generador de corpus: huecos inmemorizables, ids opacos, distractores, callejones sin salida, mezcla de profundidades | no | ningún valor de hueco en ningún enunciado; ningún recorrido evaluado en el corpus |
