@@ -145,5 +145,7 @@
     "max_seq": 1536,
     "over": []
   },
+  "redesign_count": 2,
+  "grader": "training.nursing.grade_walks — final line only; value = the number attached to the unit; body = attribution among step notes + the numbers the note supplies; walk read off the referee's log",
   "passed": true
 }

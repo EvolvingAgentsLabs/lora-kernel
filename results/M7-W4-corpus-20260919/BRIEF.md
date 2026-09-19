@@ -115,21 +115,44 @@ the procedure's own. The no-library arm is asked for values it cannot know: that
 spec names, and the arm that prices the library honestly is W5's third — *the bare base with the
 oracle's notes open*.
 
+## Redesign 2 of this instrument — the grader [ran] 2026-09-19
+
+An adversarial review of this PR, before W5 read anything through it, found the grader wrong in both
+directions. **(a)** The `body` rule wanted the rendered line as an exact substring, `[site]` marker
+included: a check that fails while the capability works, and it graded 57 of the 80 held-out rows.
+**(b)** The number rule took any number anywhere in the reply: *"The patient is 15 years old and the
+nurse waits 8 seconds"* passed a check for 15 seconds — a check that passes while the capability is
+absent. Neither was loosened; both were replaced (`training/nursing/grade_walks.py`):
+
+- **where:** the final span's last non-empty line — every one of the 600 rows ends in one line, in one
+  of four forms (`6 mL` · `400 mL/hr` · `Last step carried out: …` · `Not in my library.`);
+- **value:** the numbers written *immediately before the unit* on that line — at least one, all right;
+- **body:** attribution, not string equality — among all 70 step notes rendered under the case's site
+  and case values, the target is (one of) the closest by content-word overlap,
+  $s(n)=|W(\text{line})\cap W(n)|/|W(n)|$ with $s(\text{target})\ge 0.5$, **and** every number the
+  target line carries is on the line (what the note *supplies*);
+- **the walk, where it happens:** from the referee's log — answered, guard silent, the asked steps
+  opened in order, not one short and not one past; for a quantity the supplying note opened; for a rate
+  the formula note opened and the calculator used;
+- **states:** `right` (content, taught form) · `format` (content, another form — its own bucket, the
+  fluids lesson of M7 arm 0c) · `unread` (content, but the walk never opened the supplying note) ·
+  `wrong`. Credit for a capability claim is `right` or `format`; the old rule survives as a reported
+  column named `verbatim`, never a verdict.
+
+**It cannot see:** whether anything was "carried out" beyond the walk; two procedures stating one line
+(those rows are flagged and read apart); a paraphrase sharing under half the target's content words.
+
+Under it, G4 re-ran over all 740 rows: **0 failures — every oracle answer is `right` with its walk
+read**; the decoys, a paraphrase, a wrong step, a wrong number, a walk one short and one past are
+tests. No corpus or evaluation row was regenerated or edited. `gate.json` now carries
+`redesign_count: 2` (1 was G2's clause). **Stopping condition: a third redesign ends the step.**
+
+The review's other findings are decided in W5's brief, not here: the headline subset (depth ≤ 9, final
+line not shared: n = 56), the two depth-15 rows, quantity by layer, `rate` sliced out of control,
+retrieval misses apart, a `context` bucket, and the trivial-policy floor.
+
 ## What W5 needs
 
-```bash
-# session A — the adapter WITH the library (train only; adapter fetched while the session lives)
-GPU=A100 BRANCH=main RUN_DIR=results/M7-W5-kill-arm-<date> MODULE=training.harness.pool_base \
-  MARGS="--only nursing-walks --stop-after-training" RESULTS_NAME=pool_base.json BASE=Qwen/Qwen3.5-4B \
-  TRAINDEPS=1 SKIP_ADAPTERS=1 SESSIONS=1 training/harness/chain_serve.sh
-# session B — the adapter WITHOUT it: the same, `--only nursing-walks-nolib`
-```
-
-Both need a W5 runner that does not exist yet and is W5's to write: the two corpora registered as
-members (`training/nursing/data_walks/train.jsonl`, `train_nolib.jsonl`), or — cheaper and with no
-change to `pool_base` — the trainer called directly, one per session:
-`python -m training.harness.train_one --base Qwen/Qwen3.5-4B --train training/nursing/data_walks/train.jsonl --out-dir adapters/nursing-walks-q35`
-(and `train_nolib.jsonl` → `adapters/nursing-walks-nolib-q35`), recipe `release_gate.RECIPE`. Scoring
-is a third session: `eval_heldout.jsonl` and `eval_control.jsonl` through `memory.runtime.ChainSuite`
-with `Conversation.resume(replay.carried)`, per-command metrics from the walk log (§9), answers by
-`generate_walks.verify`, the three arms paired.
+The runner and its brief exist: `training/nursing/walks_arm.py`,
+[`results/M7-W5-kill-arm-20260919/BRIEF.md`](../M7-W5-kill-arm-20260919/BRIEF.md) — four sessions, the
+untrained-base headroom session first.

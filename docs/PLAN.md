@@ -456,6 +456,22 @@ tokens under the base's tokenizer. One redesign, of G2's statement clause, recor
 **W5**, the arm that can kill the memory; if R0 wins W3 the corpus is regenerated with the index first
 ([`BRIEF`](../results/M7-W4-corpus-20260919/BRIEF.md)).
 
+**W4's grader, replaced before anything was read through it (redesign 2) [ran] 2026-09-19.** An
+adversarial review found it wrong both ways: a paraphrase of the right step failed (exact substring,
+`[site]` marker and all — 57 of the 80 held-out rows), and *"15 years old … waits 8 seconds"* passed a
+check for 15 seconds. `training/nursing/grade_walks.py` reads the final line only; a number counts only
+attached to its unit; a step is *attributed* among the 70 step notes, $s(n)=|W(\text{line})\cap
+W(n)|/|W(n)|\ge 0.5$, with the numbers the note supplies; the walk is read off the referee's log.
+`right` · `format` · `unread` · `wrong`. All 740 oracle rows are `right` under it; no row was
+regenerated. A third redesign ends the step.
+
+**W5, built and pre-registered — not run.** `training/nursing/walks_arm.py`: `base-reads` (untrained
+base, the oracle's notes open), `base-walks`, `nolib`, `withlib`. Headroom session first: `base-reads`
+at ≥ 51/56 on the headline stops the step before training. Headline n = 56 (held-out, depth ≤ 9, final
+line not shared); beside it the 2 depth-15 rows, the 22 shared-line rows, quantity by layer, control
+without `rate`, retrieval misses, `context`, `format`. Floor of the trivial policy **3/56** [ran]; the
+oracle is 140/140 through the same function ([`BRIEF`](../results/M7-W5-kill-arm-20260919/BRIEF.md)).
+
 ## 2. The family, and the alternative
 
 **Adopted: Qwen 3.x.** `Qwen3.5-2B/4B` and `Qwen3.8-27B` share one id space — 248,044 ids,
@@ -492,6 +508,8 @@ that decide the shape of a step:
 - **2026-09-19** — memory **W4 [ran]: PASSED.** The corpus generator drives the runtime: 600 walks, 0 values in a
   statement, 0 evaluated cases in the corpus, 0 held-out opens, 0 rows the referee does not reproduce; `discontinue-iv`
   held out; long walks are windows with the state carried. No model yet.
+- **2026-09-19** — W4's grader replaced after an adversarial review (redesign 2: it failed on a paraphrase and passed
+  on a decoy number); **W5 built and pre-registered**, headroom session first, headline n = 56, floor 3/56. Not run.
 - **2026-09-19** — memory **W2 [ran]: PASSED.** The runtime, layers and guard on the unchanged corpus-mode loop;
   72/72 oracle walks, 0 refused, three violating walks cut in `strict`. No model yet.
 - **2026-09-19** — memory **W3 built, headroom [ran]:** the index, a query set written after the freeze (P 94, E 72),

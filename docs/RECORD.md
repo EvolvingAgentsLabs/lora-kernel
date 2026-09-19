@@ -100,6 +100,7 @@ Each produced a clean number that was wrong, and each is now a rule in
 | A run that died "because one liveness probe went unanswered" — my diagnosis, written into a brief — had in fact been ended by Colab at **exactly sixty minutes**, twice (`10:45:28 → 11:45:43`, `11:59:34 → 12:59:34`). And the fix for it killed the next run: `$(grep … \| tail -1)` exits 1 under `pipefail` on the first poll, and the EXIT trap stopped an A100 | read `colab log -s <session>` before blaming the chain; the unit of work is a session; a test now runs that shell line under the script's own options — M1 |
 | Guards that read source fired on prose describing the absence they check for — four times | a guard reads the code, not the file |
 | `grep -c` prints its zero and exits 1; a weights rescue skipped itself and cost an adapter | `weights_in()` |
+| **A grader wrong in both directions, caught before anything was read through it.** W4's `verify` wanted a step's rendered line as an exact substring, `[site]` marker included — a paraphrase of the right step failed, on 57 of 80 held-out rows — and took any number anywhere: *"15 years old … waits 8 seconds"* passed a check for 15 seconds. Found by an adversarial review of the PR, not by a run | the final line only; a number only attached to its unit; a step by attribution among the step notes; the walk off the referee's log; `format` and `unread` as their own states — `grade_walks.py`, M7-W4 redesign 2 |
 
 ## 5. Related work, read and not run **[read]**
 

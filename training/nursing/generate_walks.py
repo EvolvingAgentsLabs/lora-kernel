@@ -692,28 +692,30 @@ def build(lib: Library | None = None, searcher=None) -> tuple[dict[str, list[dic
 
 
 # ------------------------------------------------------------------ verifying a reply (W5 reads this)
-def verify(check: dict, reply: str) -> bool:
-    text = " ".join((reply or "").split())
-    if check["kind"] == "none":
-        return "not in my library" in text.lower()
-    if check["kind"] == "body":
-        return " ".join(check["body"].split()).lower() in text.lower()
-    nums = re.findall(r"-?\d+(?:\.\d+)?(?:\s*(?:-|to)\s*\d+(?:\.\d+)?)?", text)
-    if "tolerance" in check:
-        return any(abs(float(re.match(r"-?\d+(?:\.\d+)?", n).group(0)) - float(check["value"])) <= check["tolerance"]
-                   for n in nums) and check["unit"].split()[0].lower() in text.lower()
-    want = re.sub(r"\s+", "", check["value"])
-    return any(re.sub(r"\s+", "", n) == want for n in nums) and check["unit"].lower() in text.lower()
+REDESIGN_COUNT = 2      # 1: G2 compares (statement, values read) · 2: the grader (grade_walks). A third ends the step.
+
+
+def verify(row: dict, reply: str, lib: Library | None = None, walk: dict | None = None) -> bool:
+    """Is `reply` — the FINAL SPAN — the right answer in the taught form? The rule, what it replaced
+    and what it cannot see are in `training/nursing/grade_walks.py`; W5 reads `grade`, not this."""
+    from training.nursing import grade_walks
+    return grade_walks.grade(lib or Library.load(ROOT), row, reply, walk)["state"] == "right"
 
 
 # ------------------------------------------------------------------ the gate
+def case_of(r: dict) -> Case:
+    """A stored row back as the case it was drawn as — what the gate replays and what W5 serves."""
+    p = r["replay"]
+    return Case(id=r["case_id"], family=r["family"], variant=r["variant"], procedure=r["procedure"],
+                statement=r["statement"], carried=p["carried"], plan=[tuple(a) for a in p["plan"]],
+                answer=r["answer"], check=r["check"], givens=r["givens"], site=p["site"], case=p["case"],
+                seed=p["seed"], page=p.get("page", True), meta=r.get("meta", {}))
+
+
 def replay(lib: Library, r: dict, searcher=None) -> list[str]:
     """Why a stored row is NOT a walk the referee accepts today. Empty = it is."""
     p = r["replay"]
-    c = Case(id=r["case_id"], family=r["family"], variant=r["variant"], procedure=r["procedure"],
-             statement=r["statement"], carried=p["carried"], plan=[tuple(a) for a in p["plan"]],
-             answer=r["answer"], check=r["check"], givens=r["givens"], site=p["site"], case=p["case"], seed=p["seed"],
-             page=p.get("page", True))
+    c = case_of(r)
     try:
         d = drive(lib, c, searcher)
     except Unreachable as e:
@@ -731,8 +733,10 @@ def replay(lib: Library, r: dict, searcher=None) -> list[str]:
         why.append("the assistant turn is not what the runtime renders today")
     if conv.opened[len(p["carried"]):] != r["walk"]:
         why.append("the notes opened are not the row's walk")
-    if not verify(r["check"], chain["spans"][-1]["text"]):
-        why.append("the row's own answer fails its own check")
+    from training.nursing import grade_walks
+    g = grade_walks.grade(lib, r, chain["spans"][-1]["text"], grade_walks.walk_evidence(conv, len(p["carried"]), chain))
+    if g["state"] != "right":
+        why.append(f"the row's own answer is graded {g['state']} by its own check")
     if f"{SUB}/" in d["user"] + chain["text"]:
         why.append("a library id reached the expert's text")
     return why
@@ -817,6 +821,10 @@ def gate(sets: dict[str, list[dict]] | None = None, lib: Library | None = None, 
             "dropped": dropped, "unreachable_share": round(unreachable / drawn, 4) if drawn else None,
             "tokens_proxy": {"min": tok[0], "median": tok[len(tok) // 2], "max": tok[-1],
                              "limit": PROXY_LIMIT, "max_seq": MAX_SEQ, "over": too_long},
+            "redesign_count": REDESIGN_COUNT,
+            "grader": "training.nursing.grade_walks — final line only; value = the number attached to the unit; "
+                      "body = attribution among step notes + the numbers the note supplies; walk read off the "
+                      "referee's log",
             "passed": passed}
 
 

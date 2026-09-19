@@ -496,6 +496,23 @@ enunciados de G2, anotado en el brief. Sigue **W5**, el brazo que puede matar la
 corpus se regenera antes con el índice
 ([`BRIEF`](../../results/M7-W4-corpus-20260919/BRIEF.md)).
 
+**El evaluador de W4, reemplazado antes de que nada se leyera a través de él (rediseño 2) [ran]
+2026-09-19.** Una revisión adversarial lo encontró mal en los dos sentidos: una paráfrasis del paso
+correcto fallaba (subcadena exacta, con marcador `[site]` y todo — 57 de las 80 filas apartadas), y
+*"15 años … espera 8 segundos"* aprobaba un chequeo de 15 segundos. `training/nursing/grade_walks.py`
+lee sólo la línea final; un número cuenta sólo pegado a su unidad; un paso se *atribuye* entre las 70
+notas de paso, $s(n)=|W(\text{línea})\cap W(n)|/|W(n)|\ge 0{,}5$, con los números que la nota
+aporta; el recorrido se lee del registro del árbitro. `right` · `format` · `unread` · `wrong`. Las 740
+filas del oráculo son `right` bajo él; no se regeneró ninguna fila. Un tercer rediseño termina el paso.
+
+**W5, construido y pre-registrado — sin correr.** `training/nursing/walks_arm.py`: `base-reads` (base
+sin entrenar, las notas del oráculo abiertas), `base-walks`, `nolib`, `withlib`. Primero la sesión de
+margen: `base-reads` con ≥ 51/56 en el titular detiene el paso antes de entrenar. Titular n = 56
+(apartado, profundidad ≤ 9, línea final no compartida); al lado las 2 filas de profundidad 15, las 22
+de línea compartida, cantidad por capa, control sin `rate`, fallos de recuperación, `context`,
+`format`. Piso de la política trivial **3/56** [ran]; el oráculo es 140/140 por la misma función
+([`BRIEF`](../../results/M7-W5-kill-arm-20260919/BRIEF.md)).
+
 ## 2. La familia, y la alternativa
 
 **Adoptada: Qwen 3.x.** `Qwen3.5-2B/4B` y `Qwen3.8-27B` comparten un espacio de ids —
@@ -534,6 +551,8 @@ Las cuatro que deciden la forma de un paso:
 - **2026-09-19** — memoria **W4 [ran]: PASÓ.** El generador de corpus maneja el runtime: 600 recorridos, 0 valores en un
   enunciado, 0 casos evaluados en el corpus, 0 aperturas del apartado, 0 filas que el árbitro no reproduzca; `discontinue-iv`
   apartado; los recorridos largos son ventanas con el estado llevado. Todavía sin modelo.
+- **2026-09-19** — el evaluador de W4 reemplazado tras una revisión adversarial (rediseño 2: fallaba con una paráfrasis y
+  aprobaba con un número señuelo); **W5 construido y pre-registrado**, primero la sesión de margen, titular n = 56, piso 3/56. Sin correr.
 - **2026-09-19** — memoria **W2 [ran]: PASÓ.** El runtime, las capas y la guarda sobre el loop de modo corpus sin tocarlo;
   72/72 recorridos del oráculo, 0 rechazados, tres recorridos que violan cortados en `strict`. Todavía sin modelo.
 - **2026-09-19** — memoria **W3 construido, margen [ran]:** el índice, un conjunto de consultas escrito después de congelar (P 94, E 72),

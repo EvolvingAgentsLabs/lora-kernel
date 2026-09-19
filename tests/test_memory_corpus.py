@@ -140,22 +140,99 @@ def test_the_evaluation_sets_are_walks_with_their_oracle_and_the_held_out_one_is
     only = gw.held_out_only(LIB)
     for r in SETS["eval_heldout"]:
         assert r["walk"] and set(r["walk"]) & only and not r["dead_end"]
-        assert gw.verify(r["check"], r["answer"]) and "final_is_a_shared_line" in r["meta"]
+        assert gw.verify(r, r["answer"], LIB) and "final_is_a_shared_line" in r["meta"]
     assert 0 < sum(r["meta"]["final_is_a_shared_line"] for r in SETS["eval_heldout"]) < len(SETS["eval_heldout"])
     for r in SETS["eval_control"]:
-        assert not (set(r["walk"]) & only) and gw.verify(r["check"], r["answer"])
+        assert not (set(r["walk"]) & only) and gw.verify(r, r["answer"], LIB)
     reserved = gw.reserved_windows(LIB)
     assert not any((r["procedure"], r["meta"]["k"], r["meta"]["m"]) in reserved
                    for r in SETS["train"] if r["family"] == "carry")
 
 
-def test_verify_reads_the_value_not_the_phrasing():
-    assert gw.verify({"kind": "value", "value": "15", "unit": "seconds"}, "Cleanse for 15 seconds.")
-    assert not gw.verify({"kind": "value", "value": "15", "unit": "seconds"}, "5 seconds")
-    assert gw.verify({"kind": "value", "value": "3 to 5", "unit": "mL"}, "3 to 5 mL")
-    assert gw.verify({"kind": "value", "value": "42", "unit": "drops per minute", "tolerance": 1}, "41 drops per minute")
-    assert not gw.verify({"kind": "value", "value": "42", "unit": "drops per minute", "tolerance": 1}, "50 drops per minute")
-    assert gw.verify({"kind": "none"}, "Not in my library.") and not gw.verify({"kind": "none"}, "Gather supplies.")
+# ---- the grader (redesign 2): where it looks, what passes, what cannot -------------------------
+from training.nursing import grade_walks as gr
+
+
+def _v(value, unit, **more):
+    return {"family": "quantity", "check": {"kind": "value", "value": value, "unit": unit, **more}}
+
+
+def _state(row, reply, walk=None):
+    return gr.grade(LIB, row, reply, walk)["state"]
+
+
+def test_a_number_that_is_not_attached_to_the_unit_is_not_an_answer():
+    """The first grader took any number anywhere: both of these passed [ran] the adversarial review."""
+    assert _state(_v("15", "seconds"), "The patient is 15 years old and the nurse waits 8 seconds before proceeding.") == "wrong"
+    assert _state(_v("42", "drops per minute", tolerance=1), "Room 42: run it at 20 drops per minute.") == "wrong"
+    assert _state(_v("15", "seconds"), "15 seconds") == "right"
+    assert _state(_v("6", "mL"), "400 mL/hr") == "wrong", "`mL` must not match inside `mL/hr`"
+
+
+def test_only_the_last_line_is_the_answer():
+    assert _state(_v("8", "seconds"), "The textbook says 15 seconds.\nHere it is 8 seconds.") == "format"
+    assert _state(_v("15", "seconds"), "The textbook says 15 seconds.\nHere it is 8 seconds.") == "wrong"
+    assert _state(_v("8", "seconds"), "8 seconds, or 15 seconds elsewhere") == "wrong", "two claims, one wrong"
+
+
+def test_a_right_answer_in_another_form_is_its_own_bucket():
+    """Fluids on the 4B: ten right numbers in an untaught final line [ran] M7 arm 0c."""
+    assert _state(_v("15", "seconds"), "Cleanse for 15 seconds.") == "format"
+    assert _state(_v("3 to 5", "mL"), "3 to 5 mL") == "right" and _state(_v("3 to 5", "mL"), "3-5 mL") == "right"
+    assert _state(_v("42", "drops per minute", tolerance=1), "41 drops per minute") == "right"
+    assert _state(_v("42", "drops per minute", tolerance=1), "50 drops per minute") == "wrong"
+    none = {"family": "none", "check": {"kind": "none"}}
+    assert _state(none, "Not in my library.") == "right"
+    assert _state(none, "I looked twice; this is not in my library.") == "format"
+    assert _state(none, "Gather supplies.") == "wrong"
+    g = gr.grade(LIB, _v("15", "seconds"), "Cleanse for 15 seconds.")
+    assert g["credit"] and not gw.verify(_v("15", "seconds"), "Cleanse for 15 seconds.", LIB)
+
+
+def _carry_with_a_slot():
+    for r in SETS["eval_heldout"]:
+        if r["family"] == "carry" and "[site]" in r["check"]["body"] and not r["meta"]["final_is_a_shared_line"]:
+            return r
+    raise AssertionError("no held-out carry row ends on a line with a site value")
+
+
+def test_a_paraphrase_of_the_right_step_is_credited_and_the_wrong_step_is_not():
+    """The first grader wanted the rendered line, `[site]` marker and all: it failed while the capability worked."""
+    r = _carry_with_a_slot()
+    body = gr.clean(r["check"]["body"])                       # the line without its `[site]` marker
+    assert _state(r, f"{gr.CARRY_PREFIX} {body}") == "right"
+    assert _state(r, f"I {body[0].lower()}{body[1:]}") == "format", "same content, not the taught form"
+    assert gr.grade(LIB, r, f"I {body[0].lower()}{body[1:]}")["verbatim"] is False
+    steps = LIB.walk(r["procedure"])
+    other = gr.step_bodies(LIB, r)[steps[0]]
+    assert _state(r, f"{gr.CARRY_PREFIX} {other}") == "wrong", "another step's line is another step"
+    import re
+    n = re.findall(gr.NUM, body)[0]
+    assert _state(r, f"{gr.CARRY_PREFIX} {body.replace(n, str(int(float(n)) + 7), 1)}") == "wrong", \
+        "the right step with the textbook's number instead of the site's is wrong"
+
+
+def test_the_walk_is_read_where_it_happens_and_a_right_answer_never_read_is_not_credited():
+    r = _carry_with_a_slot()
+    steps, k, m = LIB.walk(r["procedure"]), r["meta"]["k"], r["meta"]["m"]
+    ok = {"opened": steps[k:k + m], "answered": True, "violations": [], "calcs": 0}
+    assert _state(r, r["answer"], ok) == "right"
+    assert _state(r, r["answer"], {**ok, "opened": steps[k:k + m - 1]}) == "unread", "stopped one short"
+    assert _state(r, r["answer"], {**ok, "opened": steps[k:k + m + 1]}) == "unread", "went one past"
+    assert _state(r, r["answer"], {**ok, "violations": ["requires"]}) == "unread"
+    assert _state(r, r["answer"], {**ok, "answered": False}) == "unread"
+    assert not gr.grade(LIB, r, r["answer"], {**ok, "answered": False})["credit"]
+    rate = next(x for x in SETS["eval_control"] if x["family"] == "rate")
+    seen = {"opened": rate["walk"], "answered": True, "violations": [], "calcs": 1}
+    assert _state(rate, rate["answer"], seen) == "right"
+    assert _state(rate, rate["answer"], {**seen, "calcs": 0}) == "unread", "arithmetic in the head is not the calculator"
+
+
+def test_every_oracle_answer_is_right_under_the_grader_and_the_gate_says_which_redesign_this_is(committed):
+    for name in ("train", "eval_heldout", "eval_control"):
+        assert all(gw.verify(r, r["answer"], LIB) for r in SETS[name])
+    assert committed["redesign_count"] == gw.REDESIGN_COUNT == 2
+
 
 
 def test_resume_renders_the_last_page_as_an_open_would_and_lets_the_walk_go_on():
