@@ -215,6 +215,20 @@ establecido está en la sección de arriba, y vale acá entero: todavía no hay 
 afirmación de que una biblioteca extiende a un experto a un procedimiento que nunca entrenó no está
 probada.
 
+## Del runtime a un framework
+
+Lo que este repositorio es hoy es un **runtime medido**: un pool de expertos detrás de una API, una
+biblioteca con su árbitro, y las compuertas que deciden qué se libera. Lo que necesita el dibujo de
+arriba es un **framework** — algo que un tercero completa sin leer nuestro código. La distancia entre
+los dos está escrita en [`docs/es/FRAMEWORK.md`](docs/es/FRAMEWORK.md); en resumen:
+
+| | |
+|---|---|
+| **funciona [ran]** | varios adaptadores sobre un modelo residente · dos expertos liberados a través de una compuerta pareada · la API que poda, pone el prompt y rutea · OpenClaw en vivo · el formato de la biblioteca, el lint, el árbitro · **navegación que se transfiere a un procedimiento nunca entrenado** |
+| **todavía no** | la afirmación central de la memoria (tres corridas, no pasa: el adaptador navega, el base *sin entrenar* lee mejor) · la búsqueda de notas (0,64 contra 0,80) · un router aprendido · mover un experto que razona entre bases |
+| **no existe** | el **paquete de rol** (un directorio por rol: herramientas, prompt, corpus, biblioteca, suites, política de respuesta, política de salida) · la **capa de herramientas** hacia los sistemas de registro, actuando como la persona que pregunta · aislamiento por usuario · mediciones de concurrencia, latencia y costo · un instalador · cualquier idioma que no sea inglés · cualquier *escritura* medida |
+| **sigue, lo más barato primero** | decidir quién lee (una sesión, sin entrenar) · rol como ruta (cero GPU) · el paquete de rol (cero GPU) · una organización de referencia sobre un dominio neutral y generado — tres roles, una base de datos de juguete, una biblioteca con la forma condicional sobre muchas notas |
+
 ## Adónde va
 
 Cada hito tiene una compuerta y el brazo que puede matarlo, escritos antes de correr
@@ -281,7 +295,8 @@ modelo).
 |---|---|
 | [`docs/es/MEMORY.md`](docs/es/MEMORY.md) | **la memoria, tal como se va a construir** — biblioteca, radar, tres verbos, el hábito del LoRA, el árbitro; orden de construcción para la 1.0 |
 | [`docs/es/KNOWLEDGE-TRAJECTORIES.md`](docs/es/KNOWLEDGE-TRAJECTORIES.md) | el *por qué* detrás de todo esto, autocontenido, escrito para que lo revisen otros modelos: diez hallazgos, cinco estrategias, diez preguntas |
-| [`docs/es/ARCHITECTURE.md`](docs/es/ARCHITECTURE.md) | el sistema: expertos, router, memoria, runtime, el par, la frontera |
+| [`docs/es/FRAMEWORK.md`](docs/es/FRAMEWORK.md) | **estado y brechas, autocontenido, escrito para que lo revisen otros modelos** — qué funciona, qué no, y qué falta para que esto sea un framework genérico para una organización con un agente por rol: trece brechas, ocho interfaces, siete pasos |
+| [`docs/es/ARCHITECTURE.md`](docs/es/ARCHITECTURE.md) | el sistema: expertos, router, memoria, runtime, el par, la frontera — y dónde se ubica dentro de una organización (§9) |
 | [`docs/es/PLAN.md`](docs/es/PLAN.md) | el plan vivo — hitos, compuertas, brazos que matan |
 | [`docs/es/RECORD.md`](docs/es/RECORD.md) | todo lo medido, incluido lo que falló; cada línea nombra su corrida |
 | [`docs/es/FOUNDATIONS.md`](docs/es/FOUNDATIONS.md) | la matemática, atada a las corridas que la instancian |

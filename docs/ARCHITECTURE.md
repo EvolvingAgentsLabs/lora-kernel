@@ -1,7 +1,8 @@
 # Architecture
 
-The system as designed on 2026-09-19. What is built and measured is marked **[ran]**; what
-is designed and not built says so. The measurements behind every choice are in
+The system as designed on 2026-09-19, state as of 2026-09-20. What is built and measured is marked
+**[ran]**; what is designed and not built says so. Where it sits in a whole organisation, and what is
+missing for it to be a generic framework, is §9 and [`FRAMEWORK.md`](FRAMEWORK.md). The measurements behind every choice are in
 [`RECORD.md`](RECORD.md); the order of work is [`PLAN.md`](PLAN.md).
 
 ## 1. One fact, four components — and what version 1.0 is
@@ -21,10 +22,10 @@ Everything else is that fact applied four times:
 
 | component | what it is | state |
 |---|---|---|
-| **the expert** | a QLoRA on the small model, trained by SFT on one corpus, released with a contract that records the distribution | **[ran]** two released, on Qwen 2.5 |
-| **the router** | a very small model *of the same corpora*: which expert's distribution does this request fall in — or none | a keyword dictionary **[ran]**; the model is milestone 2 |
+| **the expert** | a QLoRA on the small model, trained by SFT on one corpus, released with a contract that records the distribution | **[ran]** two released; since M1 on `Qwen3.5-4B`, each tying its Qwen 2.5 release |
+| **the router** | a very small model *of the same corpora*: which expert's distribution does this request fall in — or none | a keyword dictionary **[ran]**; two learned arms **[ran]** M2, neither passes; in a deployment with one agent per role, *the role is the route* (§9) |
 | **the pair** | a second LoRA, on the large model, trained on the *same corpus*; the small one drafts, the large one verifies | designed; milestones 3–4 |
-| **the memory** | the subdomain's library — an operational harness and an encyclopedic wiki — a radar over it, three verbs, and a referee; the LoRA learns the **habit of navigating**, not the content | specified ([`MEMORY.md`](MEMORY.md)); the channel it uses is measured; milestone 7 |
+| **the memory** | the subdomain's library — an operational harness and an encyclopedic wiki — a radar over it, three verbs, and a referee; the LoRA learns the **habit of navigating**, not the content | library, referee, corpus built **[ran]** W1, W2, W4; search under its bar **[ran]** W3; **the central claim measured three times and not passed** **[ran]** W5, W5b, W5c — navigation transfers, reading a conditional value in an unseen note does not (§4) |
 
 ```mermaid
 flowchart TB
@@ -125,6 +126,21 @@ small one has headroom) and then a **speculative** one (does the matched LoRA ra
 
 > **The LoRA is not the textbook. It is the specialist who knows how to use the library.**
 
+**State, 2026-09-20 [ran].** The library format, the lint, the first library (W1), the referee (W2)
+and the corpus of walks (W4) are built and pass their gates. Search with an off-the-shelf encoder
+reaches recall@3 0.638 against a bar of 0.80 (W3). The kill arm (W5) has been run three times on a
+procedure the adapter never trained on, and **does not pass**: the adapter ties or trails the
+*untrained* base handed the right notes (35 vs 45 of 56; 42 vs 46 of 66). Read where it happens, the
+result has two halves. **Navigation transfers**: 42 : 0 against the untrained base made to navigate,
+22/22 on shared-line rows where the base reading the right notes gets 8/22, 0 retrieval misses.
+**A reading skill does not**: asked a value stated under a condition in a note it never saw, the
+adapter writes the first number — 0/11, and 4/15 after a corpus that showed the shape over eight
+notes (17/18 on those eight; the untrained base 15/15). Letting the base write every final line
+recovers those and loses 19 control cases (W5b), so it is not a serving design. What is open is a
+**split by kind of task** — the adapter carries procedures, the base reads values from what the
+adapter's walk opened — which is 47/56 on records already paid for and evidence of nothing until it
+is run on a set written after the policy is frozen.
+
 Specified piece by piece in [`MEMORY.md`](MEMORY.md) **[spec]**; argued for, with its open
 questions, in [`KNOWLEDGE-TRAJECTORIES.md`](KNOWLEDGE-TRAJECTORIES.md). Five pieces, four of them
 not neural:
@@ -220,3 +236,50 @@ A bespoke inference runtime, KV-cache sharing across adapters, tree attention ac
 adapters, composition of adapters, a tournament that breeds them, the control plane, vertical
 packs. And, by scope rather than by order: the customisation service and its tooling are not
 part of this runtime nor of the open-source version.
+
+## 9. Where it sits in an organisation — and the framework boundary
+
+The deployment this is aimed at is an organisation that runs on **one agent per role**: people in a
+few roles; an agent runtime with an agent per role; the applications those agents operate
+(scheduling, administration); the channels people already use (an app, messaging split into an
+outside and an internal audience); and one relational database with identity, payments and monitoring
+beside it. lora-kernel is **one layer under the agent column** and replaces nothing above or below it:
+
+```mermaid
+flowchart TB
+    P["people, in roles"] --> RT["agent runtime — one agent per role"]
+    RT <--> APPS["applications and channels"]
+    APPS <--> DB["systems of record<br>database · identity · payments · monitoring"]
+    RT -- "OpenAI-compatible API" --> PX["proxy — prune · member prompt"]
+    PX --> RO{"router<br>the role is the route"}
+    RO -- "a measured region" --> EX["the role's adapter<br>on one small resident model"]
+    EX <--> REF["referee — search · open · calc · site rules · guard"]
+    REF <--> LIB["the role's library<br>how we do it here · what we know"]
+    RO -- "unmeasured" --> FR["frontier model"]
+    RO -. "policy: nothing leaves" .-> HU["a person"]
+    classDef ours fill:#e8f1e4,stroke:#4a7a3a,color:#1d3314
+    classDef theirs fill:#eef0f6,stroke:#4a5a8a,color:#1a2240
+    classDef out fill:#f4e6d4,stroke:#9a6a2a,color:#3d2a0e
+    class PX,RO,EX,REF,LIB ours
+    class P,RT,APPS,DB theirs
+    class FR,HU out
+```
+
+**Records stay in the database, habits go in the adapter, knowledge stays in notes a person can read
+and correct.** Three consequences for the design:
+
+- **The role is the route.** The runtime already knows which agent, group or channel a message came
+  from; the router's open problem (two learned arms lose every request from an unseen sender **[ran]**
+  M2) is sidestepped rather than solved. **[spec]** — today the proxy routes by what is asked.
+- **The unit is a role pack, not an adapter.** Tool surface, prompt, corpus, library, suites, and two
+  policies: *who writes which kind of answer* (§4's split) and *what may leave* (frontier, a person,
+  or nothing). **[spec]** — today these are spread over `train_pool.POOL`, `route.REGIONS`, the
+  generators and the proxy's flags.
+- **The model never holds a credential.** Tools reach the systems of record *as the person asking*;
+  permission is checked by the tool, outside the model, and every action is logged. **[spec]** —
+  nothing of this layer exists, and no expert here has been measured performing a write.
+
+What exists, what is missing and the order to build it — thirteen gaps, eight interfaces, seven steps,
+each with the result that would stop it — is [`FRAMEWORK.md`](FRAMEWORK.md). The scope line of §8 does
+not move: the framework is the runtime, the formats, the gates and *reference* role packs on generated
+data; a customer's corpora and the pipeline from traces to a release are not in this repository.

@@ -1,9 +1,10 @@
 # Arquitectura
 
-El sistema tal como está diseñado el 2026-09-19. Lo que está construido y medido lleva la
-marca **[ran]**; lo que está diseñado y no construido, lo dice. Las mediciones detrás de
-cada elección están en [`RECORD.md`](RECORD.md); el orden de trabajo está en
-[`PLAN.md`](PLAN.md).
+El sistema tal como está diseñado el 2026-09-19, estado al 2026-09-20. Lo que está construido y
+medido lleva la marca **[ran]**; lo que está diseñado y no construido, lo dice. Dónde se ubica
+dentro de una organización entera, y qué falta para que sea un framework genérico, está en el §9 y
+en [`FRAMEWORK.md`](FRAMEWORK.md). Las mediciones detrás de cada elección están en
+[`RECORD.md`](RECORD.md); el orden de trabajo está en [`PLAN.md`](PLAN.md).
 
 ## 1. Un hecho, cuatro componentes — y qué es la versión 1.0
 
@@ -24,10 +25,10 @@ Todo lo demás es ese hecho aplicado cuatro veces:
 
 | componente | qué es | estado |
 |---|---|---|
-| **el experto** | un QLoRA sobre el modelo chico, entrenado por SFT sobre un corpus, liberado con un contrato que registra la distribución | **[ran]** dos liberados, sobre Qwen 2.5 |
-| **el router** | un modelo muy chico *de los mismos corpus*: a la distribución de qué experto cae este pedido — o de ninguno | un diccionario de palabras clave **[ran]**; el modelo es el hito 2 |
+| **el experto** | un QLoRA sobre el modelo chico, entrenado por SFT sobre un corpus, liberado con un contrato que registra la distribución | **[ran]** dos liberados; desde M1 sobre `Qwen3.5-4B`, cada uno empatando su liberación de Qwen 2.5 |
+| **el router** | un modelo muy chico *de los mismos corpus*: a la distribución de qué experto cae este pedido — o de ninguno | un diccionario de palabras clave **[ran]**; dos brazos aprendidos **[ran]** M2, ninguno pasa; en un despliegue con un agente por rol, *el rol es la ruta* (§9) |
 | **el par** | un segundo LoRA, sobre el modelo grande, entrenado sobre el *mismo corpus*; el chico borradorea, el grande verifica | diseñado; hitos 3–4 |
-| **la memoria** | la biblioteca propia del subdominio — un arnés operativo y una wiki enciclopédica — un radar sobre ella, tres verbos, y un árbitro; el LoRA aprende el **hábito de navegar**, no el contenido | especificado ([`MEMORY.md`](MEMORY.md)); el canal que usa está medido; hito 7 |
+| **la memoria** | la biblioteca propia del subdominio — un arnés operativo y una wiki enciclopédica — un radar sobre ella, tres verbos, y un árbitro; el LoRA aprende el **hábito de navegar**, no el contenido | biblioteca, árbitro, corpus construidos **[ran]** W1, W2, W4; búsqueda debajo de su vara **[ran]** W3; **la afirmación central medida tres veces y no pasa** **[ran]** W5, W5b, W5c — la navegación se transfiere, leer un valor condicional en una nota nunca vista no (§4) |
 
 ```mermaid
 flowchart TB
@@ -133,6 +134,23 @@ bits.
 ## 4. La memoria — el núcleo de 1.0
 
 > **El LoRA no es el libro de texto. Es el especialista que sabe usar la biblioteca.**
+
+**Estado, 2026-09-20 [ran].** El formato de la biblioteca, el lint, la primera biblioteca (W1), el
+árbitro (W2) y el corpus de recorridos (W4) están construidos y pasan sus compuertas. La búsqueda con
+un encoder estándar llega a recall@3 0,638 contra una vara de 0,80 (W3). El brazo que mata (W5) se
+corrió tres veces sobre un procedimiento que el adaptador nunca entrenó, y **no pasa**: el adaptador
+empata o pierde contra el base *sin entrenar* con las notas correctas delante (35 contra 45 de 56;
+42 contra 46 de 66). Leído donde ocurre, el resultado tiene dos mitades. **La navegación se
+transfiere**: 42 : 0 contra el base sin entrenar obligado a navegar, 22/22 en filas de línea
+compartida donde el base leyendo las notas correctas saca 8/22, 0 fallos de recuperación. **Una
+habilidad de lectura no se transfiere**: preguntado un valor dado bajo una condición en una nota
+nunca vista, el adaptador escribe el primer número — 0/11, y 4/15 tras un corpus que mostró la forma
+sobre ocho notas (17/18 sobre esas ocho; el base sin entrenar 15/15). Dejar que el base escriba cada
+línea final recupera esas y pierde 19 casos de control (W5b), así que no es un diseño de servido. Lo
+que queda abierto es una **partición por tipo de tarea** — el adaptador lleva los procedimientos, el
+base lee los valores de lo que abrió el recorrido del adaptador — que es 47/56 sobre registros ya
+pagados y evidencia de nada hasta que se corra sobre un conjunto escrito después de congelar la
+política.
 
 Especificada pieza por pieza en [`MEMORY.md`](MEMORY.md) **[spec]**; argumentada, con sus
 preguntas abiertas, en [`KNOWLEDGE-TRAJECTORIES.md`](KNOWLEDGE-TRAJECTORIES.md). Cinco piezas,
@@ -240,3 +258,54 @@ Un runtime de inferencia a medida, compartir la caché KV entre adaptadores, tre
 entre adaptadores, composición de adaptadores, un torneo que los cría, el control plane, los
 packs verticales. Y, por alcance más que por orden: el servicio de personalización y sus
 herramientas no son parte de este runtime ni de la versión open-source.
+
+## 9. Dónde se ubica dentro de una organización — y el límite del framework
+
+El despliegue al que apunta esto es una organización que funciona con **un agente por rol**:
+personas en unos pocos roles; un runtime de agentes con un agente por rol; las aplicaciones que esos
+agentes operan (agenda, administración); los canales que la gente ya usa (una app, mensajería
+dividida en una audiencia externa y una interna); y una base de datos relacional con identidad, pagos
+y monitoreo al lado. lora-kernel es **una sola capa debajo de la columna de agentes** y no reemplaza
+nada arriba ni abajo:
+
+```mermaid
+flowchart TB
+    P["personas, en roles"] --> RT["runtime de agentes — un agente por rol"]
+    RT <--> APPS["aplicaciones y canales"]
+    APPS <--> DB["sistemas de registro<br>base de datos · identidad · pagos · monitoreo"]
+    RT -- "API compatible con OpenAI" --> PX["proxy — poda · prompt del miembro"]
+    PX --> RO{"router<br>el rol es la ruta"}
+    RO -- "una región medida" --> EX["el adaptador del rol<br>sobre un modelo chico residente"]
+    EX <--> REF["árbitro — search · open · calc · reglas del sitio · guarda"]
+    REF <--> LIB["la biblioteca del rol<br>cómo lo hacemos acá · lo que sabemos"]
+    RO -- "sin medir" --> FR["modelo de frontera"]
+    RO -. "política: nada sale" .-> HU["una persona"]
+    classDef ours fill:#e8f1e4,stroke:#4a7a3a,color:#1d3314
+    classDef theirs fill:#eef0f6,stroke:#4a5a8a,color:#1a2240
+    classDef out fill:#f4e6d4,stroke:#9a6a2a,color:#3d2a0e
+    class PX,RO,EX,REF,LIB ours
+    class P,RT,APPS,DB theirs
+    class FR,HU out
+```
+
+**Los registros quedan en la base, los hábitos van en el adaptador, el conocimiento queda en notas
+que una persona puede leer y corregir.** Tres consecuencias para el diseño:
+
+- **El rol es la ruta.** El runtime ya sabe de qué agente, grupo o canal vino un mensaje; el
+  problema abierto del router (dos brazos aprendidos pierden todo pedido de un remitente no visto
+  **[ran]** M2) se esquiva en vez de resolverse. **[spec]** — hoy el proxy rutea según qué se
+  pregunta.
+- **La unidad es un paquete de rol, no un adaptador.** Superficie de herramientas, prompt, corpus,
+  biblioteca, suites, y dos políticas: *quién escribe qué tipo de respuesta* (la partición del §4) y
+  *qué puede salir* (frontera, una persona, o nada). **[spec]** — hoy esto está repartido entre
+  `train_pool.POOL`, `route.REGIONS`, los generadores y los flags del proxy.
+- **El modelo nunca tiene una credencial.** Las herramientas llegan a los sistemas de registro
+  *como la persona que pregunta*; el permiso lo chequea la herramienta, fuera del modelo, y cada
+  acción queda registrada. **[spec]** — nada de esta capa existe, y ningún experto acá fue medido
+  ejecutando una escritura.
+
+Qué existe, qué falta y el orden para construirlo — trece brechas, ocho interfaces, siete pasos,
+cada uno con el resultado que lo detendría — está en [`FRAMEWORK.md`](FRAMEWORK.md). La línea de
+alcance del §8 no se mueve: el framework es el runtime, los formatos, las compuertas y paquetes de
+rol *de referencia* sobre datos generados; los corpus de un cliente y la canalización de trazas a
+liberación no están en este repositorio.

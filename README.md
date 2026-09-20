@@ -204,6 +204,20 @@ in this repository is built from an open textbook's step-by-step procedures
 above, and it applies here in full: no real data yet, and the claim that a library extends an expert
 to a procedure it never trained on is untested.
 
+## From a runtime to a framework
+
+What this repository is today is a **measured runtime**: a pool of experts behind one API, a library
+with its referee, and the gates that decide what is released. What the drawing above needs is a
+**framework** — something a third party fills in without reading our code. The distance between the
+two is written down in [`docs/FRAMEWORK.md`](docs/FRAMEWORK.md); in short:
+
+| | |
+|---|---|
+| **works [ran]** | several adapters on one resident model · two released experts through a paired gate · the API that prunes, prompts and routes · OpenClaw live · the library format, the lint, the referee · **navigation that transfers to a procedure never trained on** |
+| **does not yet** | the memory's central claim (three runs, not passed: the adapter navigates, the *untrained* base reads better) · note search (0.64 against 0.80) · a learned router · moving a reasoning expert across bases |
+| **does not exist** | the **role pack** (one directory per role: tools, prompt, corpus, library, suites, answer policy, egress policy) · the **tool layer** to the systems of record, acting as the person asking · per-user isolation · concurrency, latency and cost measurements · an installer · any language but English · any measured *write* |
+| **next, cheapest first** | decide who reads (one session, no training) · role as route (zero GPU) · the role pack (zero GPU) · a reference organisation on a neutral, generated domain — three roles, a toy database, a library with the conditional shape over many notes |
+
 ## Where it goes
 
 Each milestone has a gate and the arm that can kill it, written before it runs
@@ -268,7 +282,8 @@ reason: `--prune` (its own tool surface), `--member-prompt` (the prompt its corp
 |---|---|
 | [`docs/MEMORY.md`](docs/MEMORY.md) | **the memory, as it will be built** — library, radar, three verbs, the LoRA's habit, the referee; build order for 1.0 |
 | [`docs/KNOWLEDGE-TRAJECTORIES.md`](docs/KNOWLEDGE-TRAJECTORIES.md) | the *why* behind it, self-contained, written to be reviewed by other models: ten findings, five strategies, ten questions |
-| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | the system: experts, router, memory, runtime, the pair, the frontier |
+| [`docs/FRAMEWORK.md`](docs/FRAMEWORK.md) | **state and gaps, self-contained, written to be reviewed by other models** — what works, what does not, and what is missing for this to be a generic framework for an organisation with one agent per role: thirteen gaps, eight interfaces, seven steps |
+| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | the system: experts, router, memory, runtime, the pair, the frontier — and where it sits in an organisation (§9) |
 | [`docs/PLAN.md`](docs/PLAN.md) | the living plan — milestones, gates, kill arms |
 | [`docs/RECORD.md`](docs/RECORD.md) | everything measured, including what failed; each line names its run |
 | [`docs/FOUNDATIONS.md`](docs/FOUNDATIONS.md) | the mathematics, tied to the runs that instantiate it |
