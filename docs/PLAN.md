@@ -549,6 +549,16 @@ that decide the shape of a step:
   trained procedures; the user chose one real sentence (drop factors, byte-checked) plus site-added sentences
   declared as invented. A site may now ADD a sentence, never rewrite one. Corpus v2, new held-out and control
   sets, v2 gate PASSED, exact falsifier coded ([`BRIEF`](../results/M7-W5c-conditional-corpus-20260919/BRIEF.md)).
+- **2026-09-20** — memory **W5d pre-registered, not run** — step 1 of [`FRAMEWORK.md`](FRAMEWORK.md) §7, *decide who
+  reads*. The answer policy: the adapter walks always; it writes the line when the task is to carry a procedure,
+  to say it is not in the library, or to compute a rate (rate decided on the trained band only: 15/15 and 12/12
+  against the base's 7/15 and 5/12); the bare base writes it when the task asks for a value, from the pages the
+  adapter's walk opened. The kind is read off the statement alone (600/600 with the generator's family — which
+  shows the rule is wired to the generator's wording, not that a live ask can be classified). Frozen in commit
+  `d3e5056`; THEN a new held-out set (89, headline 67) and control (78) were written, gate PASSED, floor 5/67.
+  Falsifier: `policy vs withlib` a tie or worse on the new headline; control must not regress; against
+  `base-reads` a tie is a tie. One L4 session, W5c's adapter carried in, no training
+  ([`BRIEF`](../results/M7-W5d-answer-policy-20260920/BRIEF.md)).
 - **2026-09-20** — memory **W5c [ran]: FALSIFIED.** Conditional value 4/15 (0/11 before, Fisher $p=0.091$); W5's
   pair on the new headline 12 : 16, a tie — not passed. The adapter reads the conditionals of the eight notes
   it saw (17/18) and on an unseen note writes the first number; navigation improved (shared line 22/22,

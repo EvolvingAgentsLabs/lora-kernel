@@ -230,8 +230,10 @@ def with_rules(lib: Library, c: Case, rng: random.Random, eval_set: str | None, 
 
 # ------------------------------------------------------------------ the new family
 def conditional_case(lib, rng, cid, name, asked, variant, phrasing, eval_set=None, searcher=None,
-                     dead_rate=g1.DEAD_END_RATE) -> Case:
-    spec = CONDITIONALS[name]
+                     dead_rate=g1.DEAD_END_RATE, specs=None, openings=None) -> Case:
+    """`specs` / `openings`: a later evaluation set asks the same quantities in NEW words, from NEW value
+    pools, under NEW openings (W5d). Left out, this is W5c's generator byte for byte."""
+    spec = (specs or CONDITIONALS)[name]
     fact, ask = spec["ask"][asked][phrasing]
     plan, dead, carried, proc = [], False, [], None
     if variant == "step":
@@ -239,7 +241,7 @@ def conditional_case(lib, rng, cid, name, asked, variant, phrasing, eval_set=Non
         proc = target.rsplit("/", 1)[0]
         steps = lib.walk(proc)
         k = steps.index(target)
-        opening = rng.choice(OPENINGS_V2[proc])[0]
+        opening = rng.choice((openings or OPENINGS_V2)[proc])[0]
         carried = steps[:k]
         statement = (f"{opening}. {fact + ' ' if fact else ''}The record shows steps 1 to {k} done — the last was "
                      f"'{_label(steps[k - 1])}'. On this unit and for this order, {ask}? Carry out the step and answer "

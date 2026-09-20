@@ -224,7 +224,11 @@ def main() -> int:
         walks = {**w5c["arms"]["withlib"]["heldout"]["records"], **w5c["arms"]["withlib"]["control"]["records"]}
         reads = {**w5c["arms"]["base-reads"]["heldout"]["records"], **w5c["arms"]["base-reads"]["control"]["records"]}
         rec["ceiling_attribution"] = ceiling(lib, sets["attribution"], walks, reads)
-        save()
+        # ONLY WHAT NO MODEL WAS NEEDED FOR, and never into the run's own results file: the chain carries
+        # that file into the session, and 1 MB of copied records is not a zero-GPU number.
+        small = {k: rec[k] for k in ("policy", "adapter", "kinds", "floor_claim", "ceiling_attribution")}
+        small["slices_claim"] = {k: len(v) for k, v in wa.slices(sets["claim"]).items()}
+        out.write_text(json.dumps(small, indent=1, ensure_ascii=False))
         c, fl = rec["ceiling_attribution"], rec["floor_claim"]
         print(f"[arm] policy, zero GPU · attribution ceiling: headline {c['headline']['ceiling']}/{c['headline']['n']} "
               f"(withlib {c['headline']['withlib']}, base-reads {c['headline']['base_reads']}) · control "

@@ -102,6 +102,73 @@ session the chain is polling. **Redesign count: 0** for this arm; the instrument
 (the grader is untouched; a third ends the step). Changing `WRITER` or `kind()` after the freeze
 commit is a redesign and is counted.
 
-## Sets and zero-GPU numbers
+## Sets and zero-GPU numbers — written AFTER the freeze
 
-*Written after the freeze commit — see the next commit on this branch.*
+**The freeze is commit `d3e5056`** on `w5d-answer-policy`: `answer_policy.py` (the table and `kind()`),
+the runner, its verdict and everything above this heading. The sets below did not exist at that commit.
+Changing `WRITER` or `kind()` from here on is a redesign, and is counted.
+Since the freeze `answer_policy.py` is byte-identical; `walks_policy.py` changed in one place — *where* the
+zero-GPU numbers are written (their own small file, so the chain does not carry 1 MB of copied records in) —
+and its arms, its analysis and its verdict are untouched (`git diff d3e5056 -- training/nursing/walks_policy.py`).
+
+**The new sets [ran, zero GPU]** — `training/nursing/generate_walks_w5d.py`, seed 20260921, gate
+PASSED (`gate.json`). Nothing is trained on them; the adapter that walks them is W5c's.
+
+| | held-out (`discontinue-iv`, never opened in training) | control (the trained band) |
+|---|--:|--:|
+| rows | **89** | **78** |
+| by the frozen rule | carry 57 · value 32 | carry 32 · value 36 · rate 10 |
+| **headline** (depth ≤ 9, final line not shared) | **67** = 35 carry + 32 value | — |
+| shared-line | 22 | — |
+| value asked: conditional / plain | 16 / 16, stated explicitly 16, implicitly 16 | 18 / 18 |
+| by layer | site or case 26 · textbook 6 | — |
+| *copy the first number on the page* is worth | 0.50 | 0.50 |
+
+What makes a case new: every opening sentence (all three procedures), every ask (the six conditional
+quantities, both values, both phrasings), the held-out note's value pools — (1, 2, 17, 19) and
+(21, 23, 24, 26, 27, 28, 35), in neither W5's pools nor W5c's — the not-in-library topics, the seed.
+Gate clauses, each shown able to fail (`tests/test_walks_w5d.py`): G1 no value in a statement 0 · G2 no
+evaluated walk or world in the v2 corpus 0 · G4 every row accepted by the referee in `strict` 0 · **G5
+no case W5 or W5c evaluated 0** (dropped while building, and counted: 0 held-out rows, 6 control rows — rate orders with no opening sentence, whose numbers an earlier set or corpus had already drawn) · G6 balance · G8 no opening an earlier set
+used 0 · **G9 `kind()` agrees with the generator's family on every row 0** · G10 no held-out value from
+an earlier pool. No depth-15 rows are drawn: walk length stays a separate unknown.
+
+**The floor on the new sets** — *open result #1, answer the last page*, through the real runtime and
+the real grader (`zero_gpu.json`): headline **5/67**, shared-line 5/22, every value slice **0**,
+control **8/78** (rate 0/10).
+
+**The attribution ceiling** (v2 sets, from W5c's recorded walks; all 168 replay exactly): if the base
+reads the walk's pages as well as it read the oracle's, the policy reaches **56/66** on that headline
+(`withlib` 42, `base-reads` 46) and **75/80** on control (`withlib` 78) — the base is sent 31 and 36
+rows, its prompt byte-identical to `base-reads`' on 23 and 27 of them. **So on control the policy is
+expected to give a few cases back** (the base misreads 3 of 36 trained-note values where the adapter
+misreads 1): a paired tie, not a regression — and if it *is* a regression, the verdict says NOT A
+SERVING DESIGN. No ceiling exists for the claim: `withlib` has not walked the new sets.
+
+**Power, said in advance.** The policy changes only the 32 value rows of the 67; the 35 carry rows are
+`withlib`'s own records and are concordant by construction. If `withlib` fails the conditional value at
+W5c's rate (11 of 15) and the base reads them, the first pair is about 12 : 0. Five gained and none
+lost is $p = 0.0625$ — a tie, and it would be reported as one.
+
+## Launch
+
+`adapters.tgz` is **on disk** (157 MB, both W5c adapters, `withlib` sha256 `0f7d872d…`) at
+`…/scratchpad/lk-w5c-run/results/M7-W5c-conditional-corpus-20260919/adapters.tgz`. It is git-ignored,
+so it reaches the new run directory by hand; the chain uploads `$RUN_DIR/adapters.tgz` in chunks and
+unpacks it on the VM. If it were gone, `withlib` would have to be retrained — one A100 session more.
+
+```bash
+R=results/M7-W5d-answer-policy-20260920
+cp <lk-w5c-run>/results/M7-W5c-conditional-corpus-20260919/adapters.tgz $R/adapters.tgz
+tar tzf $R/adapters.tgz | grep nursing-walks-v2-q35/adapter_model.safetensors     # must print one line
+
+GPU=L4 BRANCH=w5d-answer-policy RUN_DIR=$R MODULE=training.nursing.walks_policy \
+  MARGS="--concurrency 8" RESULTS_NAME=walks_policy.json BASE=Qwen/Qwen3.5-4B SESSIONS=1 \
+  training/harness/chain_serve.sh
+```
+
+`BRANCH=main` once this is merged. No `SKIP_ADAPTERS` (the adapter is carried in), no `TRAINDEPS`
+(nothing trains). If the log shows `cannot score: adapters/nursing-walks-v2-q35 is not on disk` the
+carry-in failed: stop, do not retrain inside this run. A second session resumes every record from
+`walks_policy.json`, which says `"finished"` only when the run is decided. Read the pairs from the
+JSON, not from the chain's clipped peek (W5 **[ran]**).

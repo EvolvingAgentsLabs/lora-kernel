@@ -165,6 +165,9 @@ Lo más barato y lo más capaz de matar un supuesto, primero. Cada paso nombra q
 1. **Decidir quién lee** (D). Una sesión de L4, sin entrenar: la partición por tipo de tarea sobre el
    segundo conjunto retenido. *Se detiene si* no le gana al adaptador solo, pareado. Después la misma
    política sobre un conjunto escrito después del congelamiento — la única versión que cuenta.
+   **Pre-registrado el 2026-09-20**, las dos etapas en una sesión, la política congelada en un commit
+   propio antes de escribir el conjunto nuevo:
+   [`BRIEF`](../../results/M7-W5d-answer-policy-20260920/BRIEF.md). Sin correr.
 2. **Rol como ruta** (A). Cero GPU. *Se detiene si* rutear por id de agente es peor que el
    diccionario sobre el replay — lo que significaría que los roles no particionan el trabajo como
    asume el dibujo.

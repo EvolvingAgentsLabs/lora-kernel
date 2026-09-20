@@ -158,7 +158,9 @@ Cheapest and most able to kill an assumption first. Each step names what would s
 
 1. **Decide who reads** (D). One L4 session, no training: the split by task kind on the second
    held-out set. *Stops if* it does not beat the adapter alone, paired. Then the same policy on a set
-   written after the freeze — the only version that counts.
+   written after the freeze — the only version that counts. **Pre-registered 2026-09-20**, both stages in
+   one session, the policy frozen in its own commit before the new set was written:
+   [`BRIEF`](../results/M7-W5d-answer-policy-20260920/BRIEF.md). Not run.
 2. **Role as route** (A). Zero GPU. *Stops if* routing by agent id is worse than the dictionary on
    the replay — which would mean roles do not partition the work the way the drawing assumes.
 3. **The role pack** (B, C). Zero GPU: manifest, linter, the two released members re-expressed in it
