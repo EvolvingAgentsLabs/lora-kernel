@@ -1,0 +1,47 @@
+# the desk's commitment region: the same inbox, a different question (P64)
+# Every line below is checked against the artefact it names: python -m rolepack.lint roles/
+id = "desk"
+
+[member]
+name = "desk-commitment"
+adapter = "adapters/desk-commitment"
+status = "released"
+release = "releases/desk-commitment@v2.json"
+
+[corpus]
+path = "training/harness/data_desk/train.jsonl"
+sha256 = "adc58b90daa49e65c4bd9e8a00c8c30878dce31312386805982eb6a5ab594c07"
+band = [1, 1]          # oracle solution steps the corpus covers
+note = "every one of its 600 examples calls `message` exactly once — the shallow band"
+
+[prompt]
+# a reference, never a copy: the object the corpus was generated with, and the hash it must have
+source = "training.harness.desk_sim:SYSTEM"
+sha256 = "c4c34b47ec8b155c8f720d5bf23e1ead5a80f00ac046f493d3afedff156ec688"
+
+[tools]
+schema = "training.email.desk_tools:SCHEMA"          # what the block is rendered from
+server = "lora-inbox"                          # the MCP server an agent runtime offers it under
+surface = ["inbox", "thread_history", "sender_stats", "message"]          # IN THE ORDER THE CORPUS TAUGHT — never sorted
+block_sha256 = "d753c48a50cc98e1a6a3ff39f863aaa2929f4e435be1e7da61d37c727551f343"
+
+[tools.args]                                   # the keys each tag is WRITTEN with, in order
+message = ["id"]
+
+[suites]
+release = "desk:commitment"
+
+[route]
+roles = ["desk"]                          # carried in the model id: auto:desk
+keys = ["did you commit", "already established", "promise"]
+serve = "local"                                # a table of measurements, not an opinion
+
+[answer_policy]
+default = "adapter"                            # this member writes every final line it is asked for
+
+[egress]
+unmeasured = "frontier"                        # frontier | person | refuse
+member_may_leave = false                       # the proxy's --local
+
+[loop]
+measured = "inline"                            # the path the release was scored on (results written inline)

@@ -186,8 +186,8 @@ lado. En ese esquema cada agente es un system prompt sobre el mismo modelo remot
 
 lora-kernel es la capa debajo de la columna de agentes. **Cada rol pasa a ser un experto** — un
 adaptador entrenado en cómo *esta* organización hace ese trabajo — **con dos cajones de notas**: cómo
-lo hacemos acá, y lo que sabemos. El rol del que llega un mensaje es la ruta, así que rutear bien no
-cuesta nada. Lo que un experto está medido para resolver se responde en la máquina de la organización;
+lo hacemos acá, y lo que sabemos. El rol del que llega un mensaje dice *cuál* experto — gratis, y medido como seguro **[ran]** F2; *si* el
+pedido está dentro de la región de ese experto sigue siendo trabajo del router. Lo que un experto está medido para resolver se responde en la máquina de la organización;
 el resto va a la frontera, o a una persona donde la política dice que nada sale del edificio. Los
 sistemas de registro quedan donde están: **los registros quedan en la base, los hábitos van en el
 adaptador, el conocimiento queda en notas que una persona puede leer y corregir.**
@@ -226,8 +226,9 @@ los dos está escrita en [`docs/es/FRAMEWORK.md`](docs/es/FRAMEWORK.md); en resu
 |---|---|
 | **funciona [ran]** | varios adaptadores sobre un modelo residente · dos expertos liberados a través de una compuerta pareada · la API que poda, pone el prompt y rutea · OpenClaw en vivo · el formato de la biblioteca, el lint, el árbitro · **navegación que se transfiere a un procedimiento nunca entrenado** |
 | **todavía no** | la afirmación central de la memoria (tres corridas, no pasa: el adaptador navega, el base *sin entrenar* lee mejor) · la búsqueda de notas (0,64 contra 0,80) · un router aprendido · mover un experto que razona entre bases |
-| **no existe** | el **paquete de rol** (un directorio por rol: herramientas, prompt, corpus, biblioteca, suites, política de respuesta, política de salida) · la **capa de herramientas** hacia los sistemas de registro, actuando como la persona que pregunta · aislamiento por usuario · mediciones de concurrencia, latencia y costo · un instalador · cualquier idioma que no sea inglés · cualquier *escritura* medida |
-| **sigue, lo más barato primero** | decidir quién lee (una sesión, sin entrenar) · rol como ruta (cero GPU) · el paquete de rol (cero GPU) · una organización de referencia sobre un dominio neutral y generado — tres roles, una base de datos de juguete, una biblioteca con la forma condicional sobre muchas notas |
+| **existe desde entonces, cero GPU [ran]** | **el rol como ruta** (`auto:<rol>`; dice *cuál* miembro, nunca *si corresponde*) · el **paquete de rol** — `roles/<rol>/role.toml`, cada línea chequeada contra su artefacto; tres miembros expresados; todavía no es la fuente que lee el código |
+| **no existe** | la **capa de herramientas** hacia los sistemas de registro, actuando como la persona que pregunta · aislamiento por usuario · mediciones de concurrencia, latencia y costo · un instalador · cualquier idioma que no sea inglés · cualquier *escritura* medida |
+| **sigue, lo más barato primero** | decidir quién lee (una sesión, sin entrenar; pre-registrado, esperando cuota de GPU) · hacer de los paquetes de rol la fuente de verdad · una organización de referencia sobre un dominio neutral y generado — tres roles, una base de datos de juguete, una biblioteca con la forma condicional sobre muchas notas |
 
 ## Adónde va
 
@@ -280,6 +281,7 @@ modelo).
 |---|---|
 | `training/harness/openai_proxy.py`, `route.py` | la API: poda, el prompt del miembro, ruteo por pedido |
 | `training/harness/train_pool.py`, `contract.py` | el registro del pool — cada miembro un registro leído de su corpus |
+| `roles/`, `rolepack/` | **un directorio declarado por rol** — miembro, corpus, prompt y bloque de herramientas por referencia y hash, ruta, política de respuesta, salida, loop, biblioteca — y el lint que chequea cada línea contra su artefacto (`python -m rolepack.lint roles/`) |
 | `training/harness/release_gate.py`, `pool_second.py`, `pool_base.py`, `verify_substrate.py` | la puerta por la que entra un miembro, sobre esta base o sobre otra |
 | `training/harness/accept_rank.py` | el loop en modo corpus — parar en el tag de cierre, escribir el resultado inline, continuar — sobre el que está construido el runtime de la memoria; y la aceptación por teacher forcing |
 | `training/harness/corpus_mode_arm.py`, `training/physics/result_use.py` | un experto re-servido como le enseñó su corpus; una falla leída donde ocurre — *¿se usó el resultado?* |

@@ -123,8 +123,8 @@ el paso más barato que podría mostrar si la brecha se puede cerrar — o no.
 
 | # | elemento | el framework tiene que dar | existe | brecha | primer paso falsable |
 |---|---|---|---|---|---|
-| **A** | **rol → experto** | la identidad del agente selecciona el adaptador; sin adivinar | ruteo por pedido según *qué se pregunta* (`route.REGIONS`, claves de palabras clave); `--local` por modelo | la ruta todavía no se toma del id de agente / sesión / grupo que el runtime ya conoce | cero GPU: llevar el id de agente en un header, repetir el conjunto de ruteo de 240 casos con rol-como-ruta; tiene que ser ≥ el diccionario, con 0 mal-ruteados |
-| **B** | **la superficie de herramientas de un rol** | un conjunto declarado de herramientas por rol, podado y renderizado tal como enseñó el corpus | poda, prompt del miembro, `contract.py` leyendo bloque/claves/orden del corpus; un servidor MCP (inbox) | sin declaración genérica: las herramientas de cada región viven en su propio generador | un manifiesto de **paquete de rol** (§6) validado por un linter; los dos miembros liberados re-expresados en él con prompts servidos idénticos byte a byte |
+| **A** | **rol → experto** | la identidad del agente selecciona el adaptador; sin adivinar | ruteo por pedido según *qué se pregunta* (`route.REGIONS`, claves de palabras clave); `--local` por modelo | **cerrada a medias [ran] F2.** El rol viaja en el id del modelo (`auto:<rol>`, lo único que el runtime fija por agente sin un parche) y responde ***cuál*** miembro: bajo `role_confirmed` nunca hay más mal ruteados que con las claves solas (menos en tres sets), nada se sirve bajo un rol equivocado, el replay de 240 casos empata en 0,775. **No** responde ***si*** un pedido está en la región del miembro — `role_first`, que asumía que sí, sirvió 120 de 120 tareas ajenas sobre el listado propio de un miembro y falló. 131 de 240 paráfrasis se siguen perdiendo | el trabajo que le queda al router, con una clase menos: *en región o no*, para un miembro por vez — sobre sets escritos después de congelar ese diseño |
+| **B** | **la superficie de herramientas de un rol** | un conjunto declarado de herramientas por rol, podado y renderizado tal como enseñó el corpus | poda, prompt del miembro, `contract.py` leyendo bloque/claves/orden del corpus; un servidor MCP (inbox) | **cerrada como declaración [ran] F3**: `roles/<rol>/role.toml` + `rolepack.lint`; los dos miembros liberados re-expresados con el prompt servido que *es* el del proxy y el bloque idéntico byte a byte en cada fila del corpus; `POOL`/`REGIONS`/`ROLES` derivables e iguales. Sigue abierto: los registros todavía no se *leen* de los paquetes, y `[egress]`, `[answer_policy]` y `[loop]` del paquete están declarados y nadie los lee | hacer de los paquetes la fuente de verdad (`results/F3-role-pack-20260920/BRIEF.md` lista los cinco cambios); darle al proxy el loop del árbitro, o un miembro de la memoria sigue sin poder servirse por la API |
 | **C** | **un corpus por rol** | una manera de ir de herramientas + procedimientos + casos a un corpus de entrenamiento que pase `suite_gates` | cuatro generadores escritos a mano (inbox, desk, fluids, walks); las compuertas; la regla de que un generador *llama* al renderer | sin esqueleto de generador compartido; *armar el corpus de un cliente a partir de sus trazas queda fuera del alcance de este repositorio, por decisión* — el framework envía el formato, las compuertas y paquetes de referencia | extraer el esqueleto que comparten los cuatro generadores; regenerar un corpus existente a través de él, idéntico byte a byte |
 | **D** | **una biblioteca por rol** | formato, lint, árbitro, búsqueda, y una división del trabajo que pase un test retenido | W1–W4 construidos; la búsqueda de W3 debajo de su vara; W5 no pasa | §4: quién lee; el recall de la búsqueda; una habilidad de lectura enseñada sobre muchas notas o dejada al base | una sesión de L4, sin entrenar: la partición por tipo de tarea sobre el segundo conjunto retenido; después un conjunto *nuevo* tras el congelamiento |
 | **E** | **acceso a los sistemas de registro** | herramientas que leen y escriben la base **como la persona que pregunta**, con permisos exigidos fuera del modelo y cada acción registrada | nada | toda la capa. La identidad tiene que fluir runtime → proxy → herramienta; el modelo nunca tiene una credencial; el permiso a nivel de fila lo chequea la herramienta, no se le pregunta al modelo | una base de datos relacional de juguete con dos roles y una fila prohibida; el experto tiene que ser incapaz de obtenerla a través de ninguna llamada a herramienta, medido como 0 filtraciones sobre una suite adversarial |
@@ -149,7 +149,7 @@ interfaces; cinco existen de alguna forma.
 | **formato de biblioteca** | frontmatter de nota, enlaces, slots, capas manual → sitio → caso, oraciones agregadas por el sitio, lint | **existe** `memory/notes.py`, `layers.py`, `lint.py` |
 | **verbos del runtime** | `search`, `open`, `calc`; resultados inline; ids opacos; modos de guarda | **existe** `memory/runtime.py`, `guard.py` |
 | **adaptador de servido** | entrada compatible con OpenAI, salida vLLM multi-LoRA; poda, prompt, ruteo, fallback | **existe** `openai_proxy.py`, `route.py` |
-| **paquete de rol** | un directorio por rol: id, superficie de herramientas, system prompt, referencia al corpus, referencia a la biblioteca, suites, **política de respuesta** (§4), **política de salida** (H) | **falta** — hoy esto está repartido entre `train_pool.POOL`, `route.REGIONS`, los generadores y los flags |
+| **paquete de rol** | un directorio por rol: id, superficie de herramientas, system prompt, referencia al corpus, referencia a la biblioteca, suites, **política de respuesta** (§4), **política de salida** (H) | **existe [ran] F3** — `rolepack/`, `roles/triage`, `roles/desk`, `roles/nursing-walks` (no liberado); cada línea chequeada contra su artefacto; todavía no es la fuente que lee el código |
 | **capa de herramientas** | cómo una herramienta llega a un sistema de registro como la persona que pregunta, con permiso y auditoría | **falta** |
 | **kit de medición** | log de formas → brazo nulo → margen → el brief | **parcial**: las piezas existen, no están empaquetadas |
 
@@ -171,9 +171,14 @@ Lo más barato y lo más capaz de matar un supuesto, primero. Cada paso nombra q
 2. **Rol como ruta** (A). Cero GPU. *Se detiene si* rutear por id de agente es peor que el
    diccionario sobre el replay — lo que significaría que los roles no particionan el trabajo como
    asume el dibujo.
+   **[ran] F2 — no se detuvo, y corrigió la afirmación:** el rol dice *cuál* miembro (seguro, es el
+   default del proxy para `auto:<rol>`), nunca *si* el pedido está en su región
+   ([`BRIEF`](../../results/F2-role-as-route-20260920/BRIEF.md)).
 3. **El paquete de rol** (B, C). Cero GPU: manifiesto, linter, los dos miembros liberados
    re-expresados en él con prompts servidos idénticos byte a byte. *Se detiene si* un miembro no se
-   puede expresar sin perder parte de lo que enseñó su corpus.
+   puede expresar sin perder parte de lo que enseñó su corpus. **[ran] F3 — compuerta pasada**, tres
+   miembros expresados, el de la memoria incluido; lo que declara y nada sirve todavía es su loop
+   ([`BRIEF`](../../results/F3-role-pack-20260920/BRIEF.md)).
 4. **Una organización de referencia sobre un dominio neutral** (B–F, H). Una distribuidora generada:
    tres roles, una base de datos relacional de juguete, una biblioteca por rol con la forma
    condicional sobre *muchas* notas, herramientas que leen como la persona que pregunta. Es el
@@ -199,6 +204,8 @@ Los pasos 1–3 no necesitan entrenar nada. El paso 4 es el primero que sí.
    muchas notas?
 3. ¿Es seguro *rol como ruta*? ¿Qué se rompe cuando el mensaje de una persona pertenece
    legítimamente a dos roles?
+   *(Medido después, F2: bajo `role_confirmed` sale en vez de ser servido por el miembro equivocado;
+   lo que sigue abierto es el pedido que no pertenece a **ningún** rol y llega a un agente igual.)*
 4. La capa de herramientas (E) pone los chequeos de permiso fuera del modelo. ¿Cuál es el diseño
    mínimo en el que una inyección de prompt dentro de una *nota* o un *registro* no pueda causar una
    lectura entre roles?

@@ -596,6 +596,13 @@ Las cuatro que deciden la forma de un paso:
   byte a byte) más oraciones agregadas por el sitio, declaradas como inventadas. Un sitio ahora puede AGREGAR una
   oración, nunca reescribir una. Corpus v2, conjuntos retenido y de control nuevos, compuerta v2 PASÓ, falsador
   exacto en código ([`BRIEF`](../../results/M7-W5c-conditional-corpus-20260919/BRIEF.md)).
+- **2026-09-20** — pasos 2 y 3 del framework **[ran]**, cero GPU. **F2, el rol como ruta:** el rol viaja en el id del
+  modelo (`auto:<rol>`) y dice *cuál* miembro, nunca *si corresponde*: `role_confirmed` pasa (nunca más mal ruteados
+  que las claves, nada servido bajo un rol equivocado, replay 0,775) y es el default del proxy; `role_first` falla
+  (120/120 tareas ajenas servidas). **F3, el paquete de rol:** `roles/` + `rolepack.lint`; compuerta pasada — prompt y
+  bloque servidos idénticos byte a byte para los dos miembros liberados, registros derivables e iguales; el miembro de
+  la memoria expresado como no liberado, su loop sin servir por la API. La cadena ahora se detiene cuando el backend
+  rechaza el acelerador ([`F2`](../../results/F2-role-as-route-20260920/BRIEF.md), [`F3`](../../results/F3-role-pack-20260920/BRIEF.md)).
 - **2026-09-20** — memoria **W5d pre-registrado, sin correr** — paso 1 de [`FRAMEWORK.md`](FRAMEWORK.md) §7, *decidir
   quién lee*. La política de respuesta: el adaptador camina siempre; escribe la línea cuando la tarea es llevar un
   procedimiento, decir que no está en la biblioteca, o calcular una tasa (la tasa se decidió sólo con la banda

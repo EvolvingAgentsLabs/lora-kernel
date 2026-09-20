@@ -1,0 +1,49 @@
+# inbox triage: is this message important — tools and judgement in one adapter (P36)
+# Every line below is checked against the artefact it names: python -m rolepack.lint roles/
+id = "triage"
+
+[member]
+name = "email-full"
+adapter = "adapters/email-full"
+status = "released"
+release = "releases/email-full@v2.json"
+
+[corpus]
+path = "training/harness/data_ef/train.jsonl"
+sha256 = "382c67d2d16b355b9b4aa1093d9452e05087ede4913e2fdfb21d5ea1a1c0948f"
+band = [0, 3]          # oracle solution steps the corpus covers
+note = ""
+
+[prompt]
+# a reference, never a copy: the object the corpus was generated with, and the hash it must have
+source = "training.harness.agent_sim:SYSTEM"
+sha256 = "f54744f5230fdd13e6db83250306d52a1c9d4fbfebdd82a5f3203275117ab688"
+
+[tools]
+schema = "training.email.tools:SCHEMA"          # what the block is rendered from
+server = "lora-inbox"                          # the MCP server an agent runtime offers it under
+surface = ["thread_history", "sender_stats", "message"]          # IN THE ORDER THE CORPUS TAUGHT — never sorted
+block_sha256 = "bc7ae369db858083a6e7492efe0036323188e573af526d4f2854127c5b7381c1"
+
+[tools.args]                                   # the keys each tag is WRITTEN with, in order
+thread_history = ["thread_id"]
+sender_stats = ["address"]
+message = ["id"]
+
+[suites]
+release = "email"
+
+[route]
+roles = ["triage"]                          # carried in the model id: auto:triage
+keys = ["is this important"]
+serve = "local"                                # a table of measurements, not an opinion
+
+[answer_policy]
+default = "adapter"                            # this member writes every final line it is asked for
+
+[egress]
+unmeasured = "frontier"                        # frontier | person | refuse
+member_may_leave = false                       # the proxy's --local
+
+[loop]
+measured = "inline"                            # the path the release was scored on (results written inline)

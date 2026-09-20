@@ -54,6 +54,22 @@ tmo () {
   return $rc
 }
 
+# A REJECTED ACCELERATOR IS NOT A FAILED COMMAND. When the account has no units left the backend
+# answers "Backend rejected accelerator 'L4'. You may not have quota or entitlement…" and
+# `colab new` still exits 0 — so the chain walked on with no session, polling nothing, and had to
+# be killed by hand [ran] 2026-09-20. Read what it said, not only how it exited, and stop before
+# the EXIT trap exists: there is no session to stop, and nothing may be left behind.
+open_session () {  # open_session SECONDS GPU NAME
+  local out rc=0
+  out=$(tmo "$1" colab new --gpu "$2" -s "$3" 2>&1) || rc=$?
+  if [ "$rc" -ne 0 ] || printf '%s' "$out" | grep -qiE 'rejected accelerator|quota or entitlement'; then
+    echo "NO SESSION: the backend gave no $2 (rc=$rc) — quota or entitlement, not an outage; nothing was started. A T4 is not a substitute."
+    printf '%s\n' "$out" | tail -2
+    return 3
+  fi
+}
+
+
 # COLAB'S UPLOAD ENDPOINT REFUSES A LARGE FILE WITH A 500, NOT A TIMEOUT. Measured
 # 2026-09-13 against a live session: 4, 16, 32, 48 and 64 MB all upload; 80 MB
 # fails in 1.5 seconds with `500 Internal Server Error`. The adapter tarball is
@@ -88,7 +104,7 @@ for i in $(seq 1 "$SESSIONS"); do
   fi
   S="srv$(date +%H%M%S)"
   echo "=== session $i of $SESSIONS · $S · $GPU"
-  tmo 900 colab new --gpu "$GPU" -s "$S" >/dev/null
+  open_session 900 "$GPU" "$S" || exit 3
   trap 'colab stop -s "$S" >/dev/null 2>&1 || true' EXIT
 
   cat > /tmp/_vboot.py <<PY

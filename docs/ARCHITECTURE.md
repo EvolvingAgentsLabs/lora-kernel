@@ -268,13 +268,18 @@ flowchart TB
 **Records stay in the database, habits go in the adapter, knowledge stays in notes a person can read
 and correct.** Three consequences for the design:
 
-- **The role is the route.** The runtime already knows which agent, group or channel a message came
-  from; the router's open problem (two learned arms lose every request from an unseen sender **[ran]**
-  M2) is sidestepped rather than solved. **[spec]** — today the proxy routes by what is asked.
+- **The role says which member — not whether.** The runtime already knows which agent a message came
+  from, and the role rides in the model id (`auto:<role>`). **[ran]** F2: with the role *confirmed by
+  the member's own keys* there are never more misroutes than with the keys alone, nothing is served
+  under a wrong role, and the 240-case replay ties at 0.775; it is the proxy's default. The policy
+  that let the role decide alone served 120 of 120 foreign tasks and failed. So half of the router's
+  open problem is gone — *which* — and half remains: *is this request in the region at all*.
 - **The unit is a role pack, not an adapter.** Tool surface, prompt, corpus, library, suites, and two
   policies: *who writes which kind of answer* (§4's split) and *what may leave* (frontier, a person,
-  or nothing). **[spec]** — today these are spread over `train_pool.POOL`, `route.REGIONS`, the
-  generators and the proxy's flags.
+  or nothing). **[ran]** F3: `roles/<role>/role.toml`, every line checked against its artefact by
+  `rolepack.lint`; the two released members re-expressed with the served prompt and tool block
+  byte-identical, the registries derivable and equal. The code does not read the packs yet, and the
+  memory's member declares a loop — the referee's — that the API cannot serve.
 - **The model never holds a credential.** Tools reach the systems of record *as the person asking*;
   permission is checked by the tool, outside the model, and every action is logged. **[spec]** —
   nothing of this layer exists, and no expert here has been measured performing a write.

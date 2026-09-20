@@ -176,7 +176,7 @@ that picture every agent is a system prompt over the same remote model.
 
 lora-kernel is the layer under the agent column. **Each role becomes an expert** — an adapter trained
 on how *this* organisation does that job — **with two drawers of notes**: how we do it here, and what
-we know. The role a message arrives from is the route, so routing costs nothing to get right. What an
+we know. The role a message arrives from says *which* expert — free, and measured safe **[ran]** F2; *whether* the request is inside that expert's region is still the router's job. What an
 expert is measured to handle is answered on the organisation's own machine; the rest goes to the
 frontier, or to a person where policy says nothing leaves the building. The systems of record stay
 where they are: **records stay in the database, habits go in the adapter, knowledge stays in notes a
@@ -215,8 +215,9 @@ two is written down in [`docs/FRAMEWORK.md`](docs/FRAMEWORK.md); in short:
 |---|---|
 | **works [ran]** | several adapters on one resident model · two released experts through a paired gate · the API that prunes, prompts and routes · OpenClaw live · the library format, the lint, the referee · **navigation that transfers to a procedure never trained on** |
 | **does not yet** | the memory's central claim (three runs, not passed: the adapter navigates, the *untrained* base reads better) · note search (0.64 against 0.80) · a learned router · moving a reasoning expert across bases |
-| **does not exist** | the **role pack** (one directory per role: tools, prompt, corpus, library, suites, answer policy, egress policy) · the **tool layer** to the systems of record, acting as the person asking · per-user isolation · concurrency, latency and cost measurements · an installer · any language but English · any measured *write* |
-| **next, cheapest first** | decide who reads (one session, no training) · role as route (zero GPU) · the role pack (zero GPU) · a reference organisation on a neutral, generated domain — three roles, a toy database, a library with the conditional shape over many notes |
+| **exists since, zero GPU [ran]** | **the role as the route** (`auto:<role>`; says *which* member, never *whether*) · the **role pack** — `roles/<role>/role.toml`, every line checked against its artefact; three members expressed; not yet the source the code reads |
+| **does not exist** | the **tool layer** to the systems of record, acting as the person asking · per-user isolation · concurrency, latency and cost measurements · an installer · any language but English · any measured *write* |
+| **next, cheapest first** | decide who reads (one session, no training; pre-registered, waiting for GPU quota) · make the role packs the source of truth · a reference organisation on a neutral, generated domain — three roles, a toy database, a library with the conditional shape over many notes |
 
 ## Where it goes
 
@@ -267,6 +268,7 @@ reason: `--prune` (its own tool surface), `--member-prompt` (the prompt its corp
 |---|---|
 | `training/harness/openai_proxy.py`, `route.py` | the API: pruning, the member prompt, routing per request |
 | `training/harness/train_pool.py`, `contract.py` | the pool registry — each member a record read off its corpus |
+| `roles/`, `rolepack/` | **one declared directory per role** — member, corpus, prompt and tool block by reference and hash, route, answer policy, egress, loop, library — and the linter that checks every line against its artefact (`python -m rolepack.lint roles/`) |
 | `training/harness/release_gate.py`, `pool_second.py`, `pool_base.py`, `verify_substrate.py` | the door a member enters through, on this base or another |
 | `training/harness/accept_rank.py` | the corpus-mode loop — stop at the closing tag, write the result inline, continue — that the memory's runtime is built on; and acceptance by teacher forcing |
 | `training/harness/corpus_mode_arm.py`, `training/physics/result_use.py` | an expert re-served as its corpus taught; a failure read where it happens — *was the result used?* |

@@ -417,3 +417,33 @@ def test_the_peek_sees_a_training_step_bar_that_tqdm_redraws_in_place(tmp_path):
     out = subprocess.run(["bash", "-c", f"grep -E '{pat}' <(tr '\\r' '\\n' < {log}) | tail -1"],
                          capture_output=True, text=True).stdout
     assert "48/114" in out
+
+
+def test_a_rejected_accelerator_stops_the_chain_before_anything_is_polled(tmp_path):
+    """`colab new` exits 0 when the backend rejects the accelerator for lack of quota, so the chain
+    walked on with no session and had to be killed by hand [ran] 2026-09-20. The function is lifted
+    from each script and run under the script's own shell options with a stub `colab`: a rejection
+    must stop it, non-zero, with one line that names the accelerator; a READY session must not."""
+    import re
+    import subprocess
+    from pathlib import Path
+
+    stub = tmp_path / "colab"
+    for path in CHAINS:
+        src = Path(path).read_text()
+        assert 'open_session' in src and re.search(r'open_session \d+ "\$GPU" "\$S" \|\| exit 3', src), path
+        assert not re.search(r"^\s*tmo \d+ colab new", src, re.M), f"{path}: an unchecked `colab new` is back"
+        opts = re.search(r"^set -[a-z]+ ?[a-z]*$", src, re.M).group(0)
+        tmo = re.search(r"^tmo \(\) \{.*?^\}\n", src, re.S | re.M).group(0)
+        fn = re.search(r"^open_session \(\) \{.*?^\}\n", src, re.S | re.M).group(0)
+        for said, rc, want in (("[colab] Backend rejected accelerator 'L4'. You may not have quota or entitlement "
+                                "for this accelerator on your account.", 0, 3),
+                               ("boom", 1, 3), ("Session READY", 0, 0)):
+            stub.write_text(f"#!/bin/bash\necho \"{said}\" >&2\nexit {rc}\n"); stub.chmod(0o755)
+            r = subprocess.run(["bash", "-c", f'{opts}\nPATH="{tmp_path}:$PATH"\n{tmo}\n{fn}\n'
+                                              'open_session 20 L4 srvtest || exit 3\necho POLLING'],
+                               capture_output=True, text=True)
+            assert r.returncode == want, (path, said, r.returncode, r.stdout, r.stderr)
+            assert ("POLLING" in r.stdout) == (want == 0)
+            if want:
+                assert "NO SESSION" in r.stdout and "L4" in r.stdout

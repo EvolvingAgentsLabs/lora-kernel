@@ -1,0 +1,58 @@
+{
+ "packs": [
+  "desk",
+  "nursing-walks",
+  "triage"
+ ],
+ "lint_findings": {},
+ "G1_served_prompt_is_the_proxys": {
+  "triage": true,
+  "desk": true
+ },
+ "G2_block_byte_identical_in_every_row": {
+  "triage": true,
+  "desk": true
+ },
+ "G2_rows": {
+  "triage": 598,
+  "desk": 600
+ },
+ "G3_surface_and_keys_are_the_corpus": {
+  "triage": true,
+  "desk": true
+ },
+ "G4_hashes_agree_with_the_manifest": {
+  "triage": true,
+  "desk": true
+ },
+ "G5_derivation": {
+  "POOL": true,
+  "REGIONS": true,
+  "ROLES": true
+ },
+ "G6_the_linter_can_fail": {
+  "tampered corpus hash": [
+   "hashes"
+  ],
+  "argument keys moved to another tag": [
+   "keys"
+  ],
+  "prompt hash drifted": [
+   "prompt"
+  ],
+  "surface re-sorted": [
+   "block",
+   "surface"
+  ],
+  "another member's prompt referenced": [
+   "prompt"
+  ]
+ },
+ "third_pack": {
+  "id": "nursing-walks",
+  "status": "unreleased",
+  "lint": true,
+  "block_byte_identical_in_every_row": true
+ },
+ "passed": true
+}
