@@ -1,0 +1,409 @@
+{
+ "roles": {
+  "triage": "email-full",
+  "desk": "desk-commitment",
+  "fluids": "fluids-full"
+ },
+ "sets": {
+  "A": 715,
+  "B": 240,
+  "C": 14,
+  "D": 76,
+  "E": 120,
+  "C2": 8,
+  "E2": 120,
+  "F": 120
+ },
+ "arms": {
+  "dictionary": {
+   "A": {
+    "n": 715,
+    "local_right_member": 715,
+    "misrouted_to_local": 0,
+    "lost_local": 0,
+    "abstained": 0
+   },
+   "B": {
+    "n": 240,
+    "local_right_member": 109,
+    "misrouted_to_local": 0,
+    "lost_local": 131,
+    "abstained": 0
+   },
+   "C": {
+    "n": 14,
+    "local_right_member": 0,
+    "misrouted_to_local": 13,
+    "lost_local": 0,
+    "abstained": 1
+   },
+   "D": {
+    "n": 76,
+    "local_right_member": 0,
+    "misrouted_to_local": 0,
+    "lost_local": 0,
+    "abstained": 76
+   },
+   "E": {
+    "n": 120,
+    "local_right_member": 0,
+    "misrouted_to_local": 47,
+    "lost_local": 0,
+    "abstained": 73
+   },
+   "C2": {
+    "n": 8,
+    "local_right_member": 0,
+    "misrouted_to_local": 8,
+    "lost_local": 0,
+    "abstained": 0
+   },
+   "E2": {
+    "n": 120,
+    "local_right_member": 0,
+    "misrouted_to_local": 51,
+    "lost_local": 0,
+    "abstained": 69
+   },
+   "F": {
+    "n": 120,
+    "local_right_member": 120,
+    "misrouted_to_local": 0,
+    "lost_local": 0,
+    "abstained": 0
+   }
+  },
+  "true_role:role_first": {
+   "A": {
+    "n": 715,
+    "local_right_member": 715,
+    "misrouted_to_local": 0,
+    "lost_local": 0,
+    "abstained": 0
+   },
+   "B": {
+    "n": 240,
+    "local_right_member": 240,
+    "misrouted_to_local": 0,
+    "lost_local": 0,
+    "abstained": 0
+   },
+   "C": {
+    "n": 14,
+    "local_right_member": 0,
+    "misrouted_to_local": 14,
+    "lost_local": 0,
+    "abstained": 0,
+    "under_role": "triage",
+    "per_role": {
+     "triage": {
+      "n": 14,
+      "local_right_member": 0,
+      "misrouted_to_local": 14,
+      "lost_local": 0,
+      "abstained": 0
+     },
+     "desk": {
+      "n": 14,
+      "local_right_member": 0,
+      "misrouted_to_local": 14,
+      "lost_local": 0,
+      "abstained": 0
+     }
+    }
+   },
+   "D": {
+    "n": 76,
+    "local_right_member": 0,
+    "misrouted_to_local": 25,
+    "lost_local": 0,
+    "abstained": 51,
+    "under_role": "triage",
+    "per_role": {
+     "triage": {
+      "n": 76,
+      "local_right_member": 0,
+      "misrouted_to_local": 25,
+      "lost_local": 0,
+      "abstained": 51
+     },
+     "desk": {
+      "n": 76,
+      "local_right_member": 0,
+      "misrouted_to_local": 25,
+      "lost_local": 0,
+      "abstained": 51
+     }
+    }
+   },
+   "E": {
+    "n": 120,
+    "local_right_member": 0,
+    "misrouted_to_local": 111,
+    "lost_local": 0,
+    "abstained": 9
+   },
+   "C2": {
+    "n": 8,
+    "local_right_member": 0,
+    "misrouted_to_local": 8,
+    "lost_local": 0,
+    "abstained": 0,
+    "under_role": "triage",
+    "per_role": {
+     "triage": {
+      "n": 8,
+      "local_right_member": 0,
+      "misrouted_to_local": 8,
+      "lost_local": 0,
+      "abstained": 0
+     },
+     "desk": {
+      "n": 8,
+      "local_right_member": 0,
+      "misrouted_to_local": 8,
+      "lost_local": 0,
+      "abstained": 0
+     }
+    }
+   },
+   "E2": {
+    "n": 120,
+    "local_right_member": 0,
+    "misrouted_to_local": 120,
+    "lost_local": 0,
+    "abstained": 0
+   },
+   "F": {
+    "n": 120,
+    "local_right_member": 120,
+    "misrouted_to_local": 0,
+    "lost_local": 0,
+    "abstained": 0
+   }
+  },
+  "wrong_role:role_first": {
+   "A": {
+    "n": 715,
+    "local_right_member": 715,
+    "lost_local": 0,
+    "abstained": 0,
+    "silently_served_by_the_wrong_member": 0,
+    "caught": 715
+   },
+   "B": {
+    "n": 240,
+    "local_right_member": 109,
+    "lost_local": 0,
+    "abstained": 0,
+    "silently_served_by_the_wrong_member": 131,
+    "caught": 109
+   },
+   "F": {
+    "n": 120,
+    "local_right_member": 120,
+    "lost_local": 0,
+    "abstained": 0,
+    "silently_served_by_the_wrong_member": 0,
+    "caught": 120
+   }
+  },
+  "true_role:role_confirmed": {
+   "A": {
+    "n": 715,
+    "local_right_member": 715,
+    "misrouted_to_local": 0,
+    "lost_local": 0,
+    "abstained": 0
+   },
+   "B": {
+    "n": 240,
+    "local_right_member": 109,
+    "misrouted_to_local": 0,
+    "lost_local": 131,
+    "abstained": 0
+   },
+   "C": {
+    "n": 14,
+    "local_right_member": 0,
+    "misrouted_to_local": 8,
+    "lost_local": 0,
+    "abstained": 6,
+    "under_role": "triage",
+    "per_role": {
+     "triage": {
+      "n": 14,
+      "local_right_member": 0,
+      "misrouted_to_local": 8,
+      "lost_local": 0,
+      "abstained": 6
+     },
+     "desk": {
+      "n": 14,
+      "local_right_member": 0,
+      "misrouted_to_local": 6,
+      "lost_local": 0,
+      "abstained": 8
+     }
+    }
+   },
+   "D": {
+    "n": 76,
+    "local_right_member": 0,
+    "misrouted_to_local": 0,
+    "lost_local": 0,
+    "abstained": 76,
+    "under_role": "triage",
+    "per_role": {
+     "triage": {
+      "n": 76,
+      "local_right_member": 0,
+      "misrouted_to_local": 0,
+      "lost_local": 0,
+      "abstained": 76
+     },
+     "desk": {
+      "n": 76,
+      "local_right_member": 0,
+      "misrouted_to_local": 0,
+      "lost_local": 0,
+      "abstained": 76
+     }
+    }
+   },
+   "E": {
+    "n": 120,
+    "local_right_member": 0,
+    "misrouted_to_local": 47,
+    "lost_local": 0,
+    "abstained": 73
+   },
+   "C2": {
+    "n": 8,
+    "local_right_member": 0,
+    "misrouted_to_local": 5,
+    "lost_local": 0,
+    "abstained": 3,
+    "under_role": "triage",
+    "per_role": {
+     "triage": {
+      "n": 8,
+      "local_right_member": 0,
+      "misrouted_to_local": 5,
+      "lost_local": 0,
+      "abstained": 3
+     },
+     "desk": {
+      "n": 8,
+      "local_right_member": 0,
+      "misrouted_to_local": 3,
+      "lost_local": 0,
+      "abstained": 5
+     }
+    }
+   },
+   "E2": {
+    "n": 120,
+    "local_right_member": 0,
+    "misrouted_to_local": 45,
+    "lost_local": 0,
+    "abstained": 75
+   },
+   "F": {
+    "n": 120,
+    "local_right_member": 120,
+    "misrouted_to_local": 0,
+    "lost_local": 0,
+    "abstained": 0
+   }
+  },
+  "wrong_role:role_confirmed": {
+   "A": {
+    "n": 715,
+    "local_right_member": 0,
+    "lost_local": 715,
+    "abstained": 0,
+    "silently_served_by_the_wrong_member": 0,
+    "caught": 715
+   },
+   "B": {
+    "n": 240,
+    "local_right_member": 0,
+    "lost_local": 240,
+    "abstained": 0,
+    "silently_served_by_the_wrong_member": 0,
+    "caught": 240
+   },
+   "F": {
+    "n": 120,
+    "local_right_member": 0,
+    "lost_local": 120,
+    "abstained": 0,
+    "silently_served_by_the_wrong_member": 0,
+    "caught": 120
+   }
+  }
+ },
+ "replay": {
+  "dictionary": {
+   "delivered": 186,
+   "accuracy": 0.775,
+   "misrouted": 0,
+   "out": 90,
+   "out_share": 0.375
+  },
+  "true_role:role_first": {
+   "delivered": 186,
+   "accuracy": 0.775,
+   "misrouted": 0,
+   "out": 90,
+   "out_share": 0.375
+  },
+  "true_role:role_confirmed": {
+   "delivered": 186,
+   "accuracy": 0.775,
+   "misrouted": 0,
+   "out": 90,
+   "out_share": 0.375
+  }
+ },
+ "verdict": {
+  "role_first": {
+   "a_replay_worse": false,
+   "b_more_misroutes_than_dictionary": {
+    "C": [
+     14,
+     13
+    ],
+    "D": [
+     25,
+     0
+    ],
+    "E": [
+     111,
+     47
+    ],
+    "E2": [
+     120,
+     51
+    ]
+   },
+   "c_silently_served_under_wrong_role": {
+    "B": 131
+   },
+   "right_member_gained": {
+    "B": 131
+   },
+   "fails": true
+  },
+  "role_confirmed": {
+   "a_replay_worse": false,
+   "b_more_misroutes_than_dictionary": {},
+   "c_silently_served_under_wrong_role": {},
+   "right_member_gained": {},
+   "fails": false
+  },
+  "default": "role_confirmed",
+  "reading": "DEFAULT: role_confirmed"
+ }
+}

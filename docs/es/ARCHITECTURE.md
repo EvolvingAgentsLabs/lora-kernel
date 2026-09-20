@@ -291,14 +291,19 @@ flowchart TB
 **Los registros quedan en la base, los hábitos van en el adaptador, el conocimiento queda en notas
 que una persona puede leer y corregir.** Tres consecuencias para el diseño:
 
-- **El rol es la ruta.** El runtime ya sabe de qué agente, grupo o canal vino un mensaje; el
-  problema abierto del router (dos brazos aprendidos pierden todo pedido de un remitente no visto
-  **[ran]** M2) se esquiva en vez de resolverse. **[spec]** — hoy el proxy rutea según qué se
-  pregunta.
+- **El rol dice cuál miembro — no si corresponde.** El runtime ya sabe de qué agente vino un mensaje,
+  y el rol viaja en el id del modelo (`auto:<rol>`). **[ran]** F2: con el rol *confirmado por las
+  claves propias del miembro* nunca hay más mal ruteados que con las claves solas, nada se sirve bajo
+  un rol equivocado, y el replay de 240 casos empata en 0,775; es el default del proxy. La política
+  que dejaba decidir al rol solo sirvió 120 de 120 tareas ajenas y falló. Así que la mitad del
+  problema abierto del router se fue — *cuál* — y la mitad queda: *si este pedido está en la región*.
 - **La unidad es un paquete de rol, no un adaptador.** Superficie de herramientas, prompt, corpus,
   biblioteca, suites, y dos políticas: *quién escribe qué tipo de respuesta* (la partición del §4) y
-  *qué puede salir* (frontera, una persona, o nada). **[spec]** — hoy esto está repartido entre
-  `train_pool.POOL`, `route.REGIONS`, los generadores y los flags del proxy.
+  *qué puede salir* (frontera, una persona, o nada). **[ran]** F3: `roles/<rol>/role.toml`, cada línea
+  chequeada contra su artefacto por `rolepack.lint`; los dos miembros liberados re-expresados con el
+  prompt y el bloque de herramientas servidos idénticos byte a byte, los registros derivables e
+  iguales. El código todavía no lee los paquetes, y el miembro de la memoria declara un loop — el del
+  árbitro — que la API no puede servir.
 - **El modelo nunca tiene una credencial.** Las herramientas llegan a los sistemas de registro
   *como la persona que pregunta*; el permiso lo chequea la herramienta, fuera del modelo, y cada
   acción queda registrada. **[spec]** — nada de esta capa existe, y ningún experto acá fue medido

@@ -146,7 +146,10 @@ These are not style. Each was paid for; [`docs/RECORD.md`](docs/RECORD.md) §4 h
 - **Colab:** T4 has no bf16 whatever the flag says; an expired `colab exec` is not a failed
   command; install vLLM first; one chain at a time — they share `/tmp/_v*.py`; use a
   worktree for documents while a chain is fetching; **never `colab exec` into a session a chain is
-  polling** — a hand probe beside the chain's own may have cost W5c a whole session **[ran]**.
+  polling** — a hand probe beside the chain's own may have cost W5c a whole session **[ran]**. **A rejected
+  accelerator is quota, not an outage** — `colab new` exits 0 on it, the chain now reads what it said and
+  stops; a T4 is not a substitute (no bf16: an adapter trained in bf16 and served in fp16 is a second
+  unknown) **[ran]** 2026-09-20.
 - **Freeze the design, *then* write the set that counts.** Three looks at the same sets said
   milestone 2's router was perfect; one set written after the freeze found it loses every
   real-looking request. A set the designer has iterated against is a training set.

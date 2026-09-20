@@ -130,13 +130,47 @@ def classify(text: str, regions: dict[str, Region] = REGIONS) -> str | None:
     return scores[0][1]
 
 
-def decide(req: dict, regions: dict[str, Region] = REGIONS) -> tuple[str, str]:
-    """('local', member) or ('out', why)."""
-    name = classify(text_of(req), regions)
-    if name is None:
-        return ("out", "no region")
-    r = regions[name]
-    return ("local", name) if r.serve == "local" else ("out", f"{name} is served out")
+# THE ROLE IS A ROUTE THE RUNTIME ALREADY HAS. In a deployment with one agent per role the caller
+# knows which agent it is; nothing has to be inferred (docs/FRAMEWORK.md §5 A). The role rides in the
+# model id — `auto:<role>` — because a per-agent model is the one thing OpenClaw sets without a patch
+# [read] docs/OPENCLAW.md §3–4. Two policies, measured in results/F2-role-as-route-20260920.
+ROLES: dict[str, str] = {
+    "triage": "email-full",
+    "desk": "desk-commitment",
+    "fluids": "fluids-full",
+}
+ROLE_POLICIES = ("role_first", "role_confirmed")
+
+
+def decide(req: dict, regions: dict[str, Region] = REGIONS, role: str | None = None,
+           policy: str | None = None, roles: dict[str, str] = ROLES) -> tuple[str, str]:
+    """('local', member) or ('out', why).
+
+    With no role, or a role nobody declared, or no policy: the keys decide, as before.
+    `role_first`: the role's member serves unless the keys name ANOTHER region — then the keys
+    decide. `role_confirmed`: the role narrows the keys to its own region — the member serves
+    only when its own keys fire; anything else leaves. A member measured `out` always leaves."""
+    text = text_of(req)
+    member = roles.get(role) if role and policy else None
+    if member is None or member not in regions:
+        name = classify(text, regions)
+        if name is None:
+            return ("out", "no region")
+        r = regions[name]
+        return ("local", name) if r.serve == "local" else ("out", f"{name} is served out")
+    if policy not in ROLE_POLICIES:
+        raise ValueError(f"unknown role policy {policy!r}; one of {ROLE_POLICIES}")
+    own = regions[member]
+    if policy == "role_confirmed":
+        t = text.lower()
+        if not any(k in t for k in own.keys):
+            return ("out", f"role {role}: its own keys are silent")
+        return ("local", member) if own.serve == "local" else ("out", f"{member} is served out")
+    named = classify(text, regions)
+    if named is not None and named != member:
+        r = regions[named]
+        return ("local", named) if r.serve == "local" else ("out", f"{named} is served out")
+    return ("local", member) if own.serve == "local" else ("out", f"{member} is served out")
 
 
 # --- the replay on P41's records (zero GPU) ----------------------------------------

@@ -549,6 +549,13 @@ that decide the shape of a step:
   trained procedures; the user chose one real sentence (drop factors, byte-checked) plus site-added sentences
   declared as invented. A site may now ADD a sentence, never rewrite one. Corpus v2, new held-out and control
   sets, v2 gate PASSED, exact falsifier coded ([`BRIEF`](../results/M7-W5c-conditional-corpus-20260919/BRIEF.md)).
+- **2026-09-20** — framework steps 2 and 3 **[ran]**, zero GPU. **F2, the role as the route:** the role rides in the
+  model id (`auto:<role>`) and says *which* member, never *whether*: `role_confirmed` passes (never more misroutes
+  than the keys, nothing served under a wrong role, replay 0.775) and is the proxy's default; `role_first` fails
+  (120/120 foreign tasks served). **F3, the role pack:** `roles/` + `rolepack.lint`; gate passed — served prompt and
+  block byte-identical for both released members, registries derivable and equal; the memory's member expressed as
+  unreleased, its loop unservable through the API. The chain now stops when the backend rejects the accelerator
+  ([`F2`](../results/F2-role-as-route-20260920/BRIEF.md), [`F3`](../results/F3-role-pack-20260920/BRIEF.md)).
 - **2026-09-20** — memory **W5d pre-registered, not run** — step 1 of [`FRAMEWORK.md`](FRAMEWORK.md) §7, *decide who
   reads*. The answer policy: the adapter walks always; it writes the line when the task is to carry a procedure,
   to say it is not in the library, or to compute a rate (rate decided on the trained band only: 15/15 and 12/12

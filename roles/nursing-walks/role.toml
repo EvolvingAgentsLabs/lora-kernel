@@ -1,0 +1,68 @@
+# The memory's member: an adapter trained on the HABIT OF NAVIGATING a library, not on its content.
+# UNRELEASED — W5 was run three times and did not pass (results/M7-W5*-…). It ships as a pack because
+# the format has to be able to say everything this member is; what the pack CAN say and the proxy
+# CANNOT yet serve is listed in results/F3-role-pack-20260920/BRIEF.md.
+id = "nursing-walks"
+
+[member]
+name = "nursing-walks-v2"
+adapter = "adapters/nursing-walks-v2-q35"
+status = "unreleased"                          # no release manifest: it never passed its gate
+adapter_sha256 = "0f7d872d19e263fea0eb5b6a681e34df00c3acc592e21d59146c559548807dcf"
+
+[member.evidence]                              # where the adapter's identity was recorded
+results = "results/M7-W5c-conditional-corpus-20260919/walks_arm.json"
+arm = "withlib"
+
+[corpus]
+path = "training/nursing/data_walks_v2/train.jsonl"
+sha256 = "0770bdacca02800aad904330d4a597094184f181367c691335cb54411e72a3a9"
+band = [0, 9]                                  # notes opened in one walk
+note = "walks the referee rendered; ids re-drawn per conversation; values drawn per case"
+
+[prompt]
+source = "memory.prompt:SYSTEM"
+sha256 = "4547b161e22d62963e7e3643821007af292ae8d39b29da3a010f813beafd0718"
+
+[tools]
+schema = "memory.prompt:SCHEMA"                # three verbs, executed by the referee, not by the caller
+server = "library"
+surface = ["search", "open", "calc"]
+block_sha256 = "845dad362ca7bd6865b5ba7a1dfa81a166ec8fbec0891d66d368925f5fd7320a"
+
+[tools.args]                                   # none: a verb's body is its argument
+
+[tools.attributes]                             # written ON the tag: <search shelf=wiki>
+search = ["shelf"]
+
+[suites]
+heldout = { path = "training/nursing/data_walks_w5d/eval_heldout.jsonl", sha256 = "c28112bec63efff7cb47f99b378c86c95ab49ebd9cbcc80faf6ac4226ffdbe7c" }
+control = { path = "training/nursing/data_walks_w5d/eval_control.jsonl", sha256 = "2fe1a62c665750580e3e5adcb393bc7821674230fe3fce5a0b5f5d7cdb8cd476" }
+
+[route]
+roles = ["nursing"]
+keys = []                                      # unreleased: nothing confirms a request is in its region
+serve = "out"                                  # not measured to pass, so everything leaves
+
+[answer_policy]
+# WHO WRITES THE FINAL LINE, BY KIND OF TASK — frozen at d3e5056, NOT YET RUN (W5d). [spec]
+marker = "[spec] W5d pre-registered, unscored"
+source = "training.nursing.answer_policy:WRITER"
+classifier = "training.nursing.answer_policy:kind"
+default = "adapter"
+carry = "adapter"
+rate = "adapter"
+value = "base"                                 # the bare base reads values from what the adapter's walk opened
+
+[egress]
+unmeasured = "person"                          # a clinical procedure nobody measured goes to a person
+member_may_leave = false
+
+[loop]
+measured = "inline"
+referee = "memory.runtime:Conversation"        # the loop is the referee's; the proxy has no path to it yet
+
+[library]
+root = "knowledge/nursing-iv"
+sha256 = "13b85a188d88cb09f80ba3230529575eb2dc28c8fbdcdf377fd151347b7039c7"
+sites = ["ward-7b", "unit-4c"]

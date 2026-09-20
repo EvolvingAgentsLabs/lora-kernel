@@ -131,19 +131,25 @@ AUTO_OUT = None       # --auto-out: the frontier model an `auto` request becomes
 FALLBACK = None       # --fallback: where anything not served locally goes
 FALLBACK_KEY = None   # read from an env var, never from the command line
 LOCAL: set[str] = set()   # --local: the model names that must never leave
+ROLE_POLICY = "role_confirmed"   # --role-policy: how `auto:<role>` uses the role. `role_confirmed` is the one
+#   that passed [ran] F2: never more misroutes than the keys alone, nothing served under a wrong role
 
 
 def resolve_auto(req: dict) -> tuple[str, str] | None:
     """Milestone 2: a request for the alias is routed by its text (`route.decide`).
     Returns the decision, and rewrites `model` in place — to the member if local, to
     `--auto-out` if it leaves. None when the request did not ask for the alias."""
-    if not AUTO or req.get("model") != AUTO:
+    model = req.get("model") or ""
+    if not AUTO or not (model == AUTO or model.startswith(AUTO + ":")):
         return None
+    # `auto:<role>` — THE ROLE RIDES IN THE MODEL ID, the one thing an agent runtime sets per agent
+    # without a patch. It is consulted only under --role-policy; `auto` alone is milestone 2's route.
+    role = model[len(AUTO) + 1:] or None
     from training.harness.route import decide
-    d = decide(req)
+    d = decide(req, role=role, policy=ROLE_POLICY)
     req["model"] = d[1] if d[0] == "local" else (AUTO_OUT or AUTO)
-    print(f"[route] auto -> {d[0]} ({d[1]}) · {len(req.get('messages') or [])} messages · "
-          f"{len(req.get('tools') or [])} tools", flush=True)
+    print(f"[route] auto{':' + role if role else ''} -> {d[0]} ({d[1]}) · "
+          f"{len(req.get('messages') or [])} messages · {len(req.get('tools') or [])} tools", flush=True)
     return d
 
 
@@ -521,7 +527,14 @@ def main() -> int:
     ap.add_argument("--local", default=None,
                     help="comma-separated model names that must never leave; "
                          "defaults to whatever the upstream lists at /v1/models")
+    ap.add_argument("--role-policy", dest="role_policy", default="role_confirmed",
+                    choices=["role_confirmed", "role_first", "off"],
+                    help="how a request for `<auto>:<role>` uses its role (route.decide). "
+                         "`role_confirmed` (default) passed F2; `role_first` FAILED it — it serves a "
+                         "foreign task under the role's member — and is kept only to be measured; "
+                         "`off` ignores the role. Plain `<auto>` is never affected")
     args = ap.parse_args()
+    globals()["ROLE_POLICY"] = None if args.role_policy == "off" else args.role_policy
     globals()["UPSTREAM"] = args.upstream
     globals()["FALLBACK"] = args.fallback
     globals()["AUTO"], globals()["AUTO_OUT"] = args.auto, args.auto_out

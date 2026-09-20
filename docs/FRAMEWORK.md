@@ -117,8 +117,8 @@ cheapest step that could show the gap is closable — or not.
 
 | # | element | the framework must provide | exists | gap | first falsifiable step |
 |---|---|---|---|---|---|
-| **A** | **role → expert** | the agent's identity selects the adapter; no guessing | routing per request by *what is asked* (`route.REGIONS`, keyword keys); per-model `--local` | the route is not yet taken from the agent / session / group id the runtime already knows | zero GPU: carry the agent id in a header, replay the 240-case routing set with role-as-route; it must be ≥ the dictionary, with 0 misrouted |
-| **B** | **a role's tool surface** | a declared set of tools per role, pruned and rendered the way the corpus taught | pruning, member prompt, `contract.py` reading block/keys/order off the corpus; one MCP server (inbox) | no generic declaration: each region's tools live in its own generator | a **role pack** manifest (§6) validated by a linter; the two released members re-expressed in it with byte-identical served prompts |
+| **A** | **role → expert** | the agent's identity selects the adapter; no guessing | routing per request by *what is asked* (`route.REGIONS`, keyword keys); per-model `--local` | **half closed [ran] F2.** The role rides in the model id (`auto:<role>`, the one thing the runtime sets per agent without a patch) and answers ***which*** member: under `role_confirmed` never more misroutes than the keys alone (fewer on three sets), nothing served under a wrong role, the 240-case replay a tie at 0.775. It does **not** answer ***whether*** a request is in the member's region — `role_first`, which assumed it did, served 120 of 120 foreign tasks over a member's own listing and failed. 131 of 240 paraphrases are still lost | the router's remaining job, one class smaller: *in region or not*, for one member at a time — on sets written after that design is frozen |
+| **B** | **a role's tool surface** | a declared set of tools per role, pruned and rendered the way the corpus taught | pruning, member prompt, `contract.py` reading block/keys/order off the corpus; one MCP server (inbox) | **closed as a declaration [ran] F3**: `roles/<role>/role.toml` + `rolepack.lint`; the two released members re-expressed with the served prompt *being* the proxy's and the block byte-identical in every corpus row; `POOL`/`REGIONS`/`ROLES` derivable and equal. Still open: the registries are not yet *read from* the packs, and the pack's `[egress]`, `[answer_policy]` and `[loop]` are declared and unread | make the packs the source of truth (`results/F3-role-pack-20260920/BRIEF.md` lists the five changes); give the proxy the referee loop, or a memory member stays unservable through the API |
 | **C** | **a corpus per role** | a way to go from tools + procedures + cases to a training corpus that passes `suite_gates` | four hand-written generators (inbox, desk, fluids, walks); the gates; the rule that a generator *calls* the renderer | no shared generator skeleton; *building a customer's corpus from its traces is out of scope of this repository by decision* — the framework ships the format, the gates and reference packs | extract the skeleton the four generators share; regenerate one existing corpus through it, byte-identical |
 | **D** | **a library per role** | format, lint, referee, search, and a division of labour that passes a held-out test | W1–W4 built; W3's search under its bar; W5 not passed | §4: who reads; search recall; a reading skill taught over many notes or left to the base | one L4 session, no training: the split by task kind on the second held-out set; then a *new* set after the freeze |
 | **E** | **access to the systems of record** | tools that read and write the database **as the person asking**, with permissions enforced outside the model and every action logged | nothing | the whole layer. Identity must flow runtime → proxy → tool; the model never holds a credential; row-level permission is checked by the tool, not asked of the model | a toy relational database with two roles and one forbidden row; the expert must be unable to obtain it through any tool call, measured as 0 leaks over an adversarial suite |
@@ -143,7 +143,7 @@ five exist in some form.
 | **library format** | note frontmatter, links, slots, layers textbook → site → case, site-added sentences, lint | **exists** `memory/notes.py`, `layers.py`, `lint.py` |
 | **runtime verbs** | `search`, `open`, `calc`; inline results; opaque ids; guard modes | **exists** `memory/runtime.py`, `guard.py` |
 | **serving adapter** | OpenAI-compatible in, vLLM multi-LoRA out; prune, prompt, route, fallback | **exists** `openai_proxy.py`, `route.py` |
-| **role pack** | one directory per role: id, tool surface, system prompt, corpus reference, library reference, suites, **answer policy** (§4), **egress policy** (H) | **missing** — today this is spread over `train_pool.POOL`, `route.REGIONS`, generators and flags |
+| **role pack** | one directory per role: id, tool surface, system prompt, corpus reference, library reference, suites, **answer policy** (§4), **egress policy** (H) | **exists [ran] F3** — `rolepack/`, `roles/triage`, `roles/desk`, `roles/nursing-walks` (unreleased); every line checked against its artefact; not yet the source the code reads |
 | **tool layer** | how a tool reaches a system of record as the asking person, with permission and audit | **missing** |
 | **measurement kit** | shapes log → null arm → headroom → the brief | **partial**: the pieces exist, not packaged |
 
@@ -163,9 +163,14 @@ Cheapest and most able to kill an assumption first. Each step names what would s
    [`BRIEF`](../results/M7-W5d-answer-policy-20260920/BRIEF.md). Not run.
 2. **Role as route** (A). Zero GPU. *Stops if* routing by agent id is worse than the dictionary on
    the replay — which would mean roles do not partition the work the way the drawing assumes.
+   **[ran] F2 — did not stop, and corrected the claim:** the role says *which* member (safe, the
+   proxy's default for `auto:<role>`), never *whether* the request is in its region
+   ([`BRIEF`](../results/F2-role-as-route-20260920/BRIEF.md)).
 3. **The role pack** (B, C). Zero GPU: manifest, linter, the two released members re-expressed in it
    with byte-identical served prompts. *Stops if* a member cannot be expressed without losing part of
-   what its corpus taught.
+   what its corpus taught. **[ran] F3 — gate passed**, three members expressed, the memory's member
+   included; what it declares and nothing serves yet is its loop
+   ([`BRIEF`](../results/F3-role-pack-20260920/BRIEF.md)).
 4. **A reference organisation on a neutral domain** (B–F, H). A generated distributor: three roles,
    a toy relational database, a library per role with the conditional shape over *many* notes, tools
    that read as the asking person. It is the end-to-end the target architecture needs and the many-note
@@ -186,6 +191,8 @@ Steps 1–3 need no training. Step 4 is the first that does.
    recipe (attention-only, one epoch, lower rank) keep navigation and spare reading — and is that a
    cheaper experiment than teaching the shape over many notes?
 3. Is *role as route* safe? What breaks when one person's message legitimately belongs to two roles?
+   *(Measured since, F2: under `role_confirmed` it leaves rather than being served by the wrong member;
+   what is still open is the request that belongs to **no** role and arrives at an agent anyway.)*
 4. The tool layer (E) puts permission checks outside the model. What is the minimal design in which a
    prompt injection inside a *note* or a *record* cannot cause a cross-role read?
 5. Should the router abstain on *requests* or on *steps*? Per-case escalation failed because wrong
