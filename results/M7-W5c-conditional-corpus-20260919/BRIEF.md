@@ -138,3 +138,81 @@ GPU=L4 BRANCH=main RUN_DIR=$R MODULE=training.nursing.walks_arm MARGS="$D --arms
 
 Read the pairs and `verdict.conditional_value` from `walks_arm.json`, never from the chain's peek: it
 shows the last three matching lines and clipped a verdict line in W5 **[ran]**.
+
+## Result **[ran]** 2026-09-19/20 · the corpus-shape diagnosis is FALSIFIED — 4 of 15
+
+Four arms bought in order, five Colab sessions of a ceiling of six (S0 twice — see *what went wrong*).
+Everything below is read off `walks_arm.json`, the pairs from `analysis.pairs`, never from a chain log.
+G1 `applied` 3/3 on both adapters (`withlib` sha256 `0f7d872d…`, `nolib` `31f8be26…`, 256 tensors renamed
+each); 0 transport errors, 0 missing records, 0 `context`. `base-reads` and `base-walks` were resumed
+from S0, not re-scored.
+
+**The prediction.** Credit on the conditional slice, $n=15$: **4** — against the first corpus's 0/11,
+one-sided Fisher $p = 0.091$. The band was fixed before the run: $\le 4/15$ is FALSIFIED. **Showing the
+shape in the corpus did not teach reading it on a note the adapter had not seen.**
+
+| slice (held-out) | `base-reads` | `base-walks` | `nolib` | **`withlib`** |
+|---|--:|--:|--:|--:|
+| **headline**, $n=66$ — right / format / unread / wrong | 31 / 15 / 0 / 20 → **46** | 0 / 0 / 1 / 65 → **0** | 3 / 0 / 0 / 63 → **3** | 37 / 5 / 0 / 24 → **42** |
+| quantity, conditional value asked, 15 | 15 | 0 | 0 | **4** |
+| quantity, plain value asked, 16 | 16 | 0 | 3 | 13 |
+| quantity by layer — site or case 25 · textbook 6 | 25 · 6 | 0 · 0 | 3 · 0 | 17 · **0** |
+| carry, 35 (of which `middle-find`, 19 on the headline) | 15 (4) | 0 | 0 | 25 (11) |
+| shared line, 22 | 8 | 0 | 0 | **22** |
+| control, 80 · without `rate` 68 · `rate` 12 | 56 · 51 · 5 | 1 · 1 · 0 | 21 · 12 · 9 | **78 · 66 · 12** |
+
+**W5's pairs on the new headline** — exact two-sided sign test on discordant pairs,
+$p = 2\sum_{k\le\min(b,c)}\binom{b+c}{k}2^{-(b+c)}$:
+
+| pair | only a : only b | $p$ | state |
+|---|--:|--:|---|
+| `withlib` vs `nolib` | 39 : 0 | 0.0 | improvement |
+| **`withlib` vs `base-reads`** | **12 : 16** | **0.572** | **tie → W5 NOT PASSED as written** |
+| `withlib` vs `base-walks` | 42 : 0 | 0.0 | improvement |
+
+On the quantity slices the pair is a REGRESSION each time: site/case 17 vs 25 ($p=0.008$), textbook 0 vs 6
+($p=0.031$), conditional 4 vs 15 ($p=0.001$).
+
+**Read where it happens (zero GPU).** All **14** quantity failures have a clean walk — the right note
+opened, the guard silent, 0 retrieval misses — and `base-reads` is `right` on all 14. Eleven asked the
+conditional value and got the **plain** one, a number that *is* on the page: wanted 22 → `7 minutes`, `3
+minutes`, `10 minutes`; 16 → `10`; 14 → `5`, `10`, `3`; 18 → `5`; and `5-10 minutes` → `5 minutes` three
+times. Three asked the plain textbook value and got the range cut to its first integer: `2-3 minutes` →
+`2 minutes`. Two habits, then: **the first number, as one integer.**
+
+**And on the notes it trained on, the same adapter reads the condition.** Control, conditional family:
+35/36 — conditional value asked 17/18, plain value 18/18 (`base-reads` 18 and 15). So the corpus did teach
+something: the conditionals of the eight notes it showed. *A model of a generated corpus learns the
+generator*, and here eight notes were the whole generator. The skill of reading a condition is what the
+untrained base already has (15/15, 16/16) and what this recipe, on this much variety, does not give — and
+partly takes away.
+
+**What did improve with v2 — navigation-shaped credit.** Shared line 22/22 (`base-reads` 8); carry
+`middle-find` 14/22 over the held-out set (`base-reads` 5; the first corpus reached 6 of 14); control
+78/80 (`base-reads` 56); 0 retrieval misses; 5 refused verbs and 0 malformed in 88 held-out walks (the
+untrained base walking: 336 refused). The headline pair moved from 6 : 16 to 12 : 16.
+
+**An exploratory number — post-hoc, on the FIRST held-out set, already seen. Evidence of nothing until it
+is run on a set written after the policy is frozen.** Zero GPU, from records already paid for
+(`results/M7-W5b-composition-20260919/walks_composed.json`): split by task kind — *the adapter carries
+procedures; the bare base reads values from the notes the adapter's walk opened.* Per headline case $i$
+of W5: `credit(i) = composed[i].credit if family(i) == "quantity" else withlib[i].credit`. That gives
+**47/56** (`withlib` 35, `composed` 41, `base-reads` 45; against `base-reads` 6 : 4) and, on W5's control,
+58/60 (`base-reads` 41).
+
+**What went wrong.** S0's first session was lost at boot: three probes answered *silence* and the chain
+gave up. The runner agent had been issuing manual `colab exec` calls into the session the chain was
+driving, and found one still alive beside the chain's own probe on the second attempt; it cannot rule
+itself out as the cause. The "first boot probe is silent" pattern recurred once in every later session
+untouched by hand and healed inside the chain's retry. Rule kept either way, now in `CLAUDE.md`: **never
+exec into a session a chain is polling.** SA ran 56 of its 60 minutes; the adapter was home before expiry.
+
+**Redesign count: 0** for this arm (the instrument's stays 2).
+
+### What follows — not run; the user's decision
+
+| # | candidate | cost | prediction | falsified if |
+|---|---|---|---|---|
+| **1** | **Split by task kind, as a serving policy:** values are read by the bare base from what the walk opened; procedures are carried by the adapter | one L4 session, no training (the `composed` arm on the v2 sets) — **the cheapest** | on v2's headline the split clears `withlib` and does not lose to `base-reads`; the 14 quantity failures go to ≤ 2 | quantity stays wrong, or the split loses the navigation credit. Claimable only on a set written **after** the policy is frozen |
+| **2** | **Gentler training** — r16 over every projection, 3 epochs at 2e-4 may be overwriting reading: one ablation (1 epoch, or attention-only targets) | one A100 session + one scoring | conditional credit rises while shared-line / control hold | conditional stays ≤ 4/15 |
+| **3** | **Many more notes** — the shape taught over dozens of notes, not eight | a W1-sized library — **this coincides with option E**, the neutral generated distributor library already queued | conditional reading transfers to an unseen note once the generator is wide | it does not, at several dozen notes: the skill is then left to the base (candidate 1) |

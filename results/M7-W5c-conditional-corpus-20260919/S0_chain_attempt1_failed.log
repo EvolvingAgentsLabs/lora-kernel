@@ -1,0 +1,17 @@
+=== session 1 of 1 · srv205639 · L4
+    boot clone: rc=0 3dc0f14 Memory W5c, built and pre-registered: a corpus that shows a conditional value — one real note, site-added sentences declared invented, new held-out an
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 3dc0f14 Memory W5c, built and pre-registered: a corpus that shows a conditional value — one real note, site-added sentences declared invented, new held-out an
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.29.0
+    boot attempt 2 did not take: silence
+    boot clone: rc=0 3dc0f14 Memory W5c, built and pre-registered: a corpus that shows a conditional value — one real note, site-added sentences declared invented, new held-out an
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.29.0
+    boot attempt 3 did not take: silence
+    GIVING UP: no vllm
