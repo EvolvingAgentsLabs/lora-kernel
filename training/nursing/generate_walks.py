@@ -457,7 +457,7 @@ def quantity_case(lib, rng, cid, name, variant, eval_set=None, searcher=None, de
                 seed=rng.randrange(10**9), dead_end=dead, meta={"quantity": name, "layer": layer, "drawn": drawn})
 
 
-def rate_case(lib, rng, cid, kind, variant, eval_set=None, searcher=None, dead_rate=DEAD_END_RATE) -> Case:
+def rate_case(lib, rng, cid, kind, variant, eval_set=None, searcher=None, dead_rate=DEAD_END_RATE, openings=None) -> Case:
     for _ in range(200):
         target = rng.choice(RATE_STEPS[kind])
         proc_of = target.rsplit("/", 1)[0]
@@ -492,7 +492,7 @@ def rate_case(lib, rng, cid, kind, variant, eval_set=None, searcher=None, dead_r
         proc = target.rsplit("/", 1)[0]
         steps = lib.walk(proc)
         carried = steps[:k]
-        statement = (f"{rng.choice(OPENINGS[proc])[0]}. {order}. The record shows steps 1 to {k} done — the last was "
+        statement = (f"{rng.choice((openings or OPENINGS)[proc])[0]}. {order}. The record shows steps 1 to {k} done — the last was "
                      f"'{_label(steps[k - 1])}'. Carry out the step that sets the rate: what is set, in {unit}? "
                      "Answer with a whole number and its unit.")
         plan = [("open", target), ("open", formula), ("calc", expr)]

@@ -596,6 +596,17 @@ Las cuatro que deciden la forma de un paso:
   byte a byte) más oraciones agregadas por el sitio, declaradas como inventadas. Un sitio ahora puede AGREGAR una
   oración, nunca reescribir una. Corpus v2, conjuntos retenido y de control nuevos, compuerta v2 PASÓ, falsador
   exacto en código ([`BRIEF`](../../results/M7-W5c-conditional-corpus-20260919/BRIEF.md)).
+- **2026-09-20** — memoria **W5d pre-registrado, sin correr** — paso 1 de [`FRAMEWORK.md`](FRAMEWORK.md) §7, *decidir
+  quién lee*. La política de respuesta: el adaptador camina siempre; escribe la línea cuando la tarea es llevar un
+  procedimiento, decir que no está en la biblioteca, o calcular una tasa (la tasa se decidió sólo con la banda
+  entrenada: 15/15 y 12/12 contra 7/15 y 5/12 del base); el base pelado la escribe cuando la tarea pide un valor,
+  desde las páginas que abrió el recorrido del adaptador. El tipo se lee sólo del enunciado (600/600 con la familia
+  del generador — lo que muestra que la regla está atada a la redacción del generador, no que un pedido real se
+  pueda clasificar). Congelada en el commit `d3e5056`; DESPUÉS se escribieron un conjunto retenido nuevo (89,
+  titular 67) y un control (78), compuerta PASADA, piso 5/67. Falsador: `policy vs withlib` empate o peor en el
+  titular nuevo; el control no debe retroceder; contra `base-reads` un empate es un empate. Una sesión de L4, el
+  adaptador de W5c llevado adentro, sin entrenar
+  ([`BRIEF`](../../results/M7-W5d-answer-policy-20260920/BRIEF.md)).
 - **2026-09-20** — memoria **W5c [ran]: FALSADO.** Valor condicional 4/15 (antes 0/11, Fisher $p=0{,}091$); el par de
   W5 sobre el titular nuevo 12 : 16, un empate — no pasa. El adaptador lee los condicionales de las ocho notas que
   vio (17/18) y en una nota nueva escribe el primer número; la navegación mejoró (línea compartida 22/22, control

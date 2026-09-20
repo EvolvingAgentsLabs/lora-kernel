@@ -1,0 +1,321 @@
+{
+ "policy": {
+  "writer": {
+   "carry": "adapter",
+   "rate": "adapter",
+   "value": "base"
+  },
+  "decided_by": "kind(statement) in training.nursing.answer_policy"
+ },
+ "adapter": "adapters/nursing-walks-v2-q35",
+ "kinds": {
+  "claim": {
+   "heldout": {
+    "carry": 57,
+    "value": 32
+   },
+   "control": {
+    "carry": 32,
+    "value": 36,
+    "rate": 10
+   }
+  },
+  "attribution": {
+   "heldout": {
+    "carry": 57,
+    "value": 31
+   },
+   "control": {
+    "carry": 32,
+    "value": 36,
+    "rate": 12
+   }
+  }
+ },
+ "floor_claim": {
+  "headline": {
+   "n": 67,
+   "scored": 67,
+   "errors": 0,
+   "missing": 0,
+   "credit": 5,
+   "right": 5,
+   "states": {
+    "right": 5,
+    "wrong": 62
+   },
+   "verbatim": 5,
+   "retrieval_misses": 16,
+   "credit_where_retrieval_hit": 5,
+   "n_where_retrieval_hit": 51
+  },
+  "heldout_deeper_than_trained": {
+   "n": 0,
+   "scored": 0,
+   "errors": 0,
+   "missing": 0,
+   "credit": 0,
+   "right": 0,
+   "states": {},
+   "verbatim": 0,
+   "retrieval_misses": 0,
+   "credit_where_retrieval_hit": 0,
+   "n_where_retrieval_hit": 0
+  },
+  "heldout_shared_line": {
+   "n": 22,
+   "scored": 22,
+   "errors": 0,
+   "missing": 0,
+   "credit": 5,
+   "right": 5,
+   "states": {
+    "wrong": 17,
+    "right": 5
+   },
+   "verbatim": 5,
+   "retrieval_misses": 0,
+   "credit_where_retrieval_hit": 5,
+   "n_where_retrieval_hit": 22
+  },
+  "heldout_carry": {
+   "n": 35,
+   "scored": 35,
+   "errors": 0,
+   "missing": 0,
+   "credit": 5,
+   "right": 5,
+   "states": {
+    "right": 5,
+    "wrong": 30
+   },
+   "verbatim": 5,
+   "retrieval_misses": 0,
+   "credit_where_retrieval_hit": 5,
+   "n_where_retrieval_hit": 35
+  },
+  "heldout_quantity_site_or_case": {
+   "n": 26,
+   "scored": 26,
+   "errors": 0,
+   "missing": 0,
+   "credit": 0,
+   "right": 0,
+   "states": {
+    "wrong": 26
+   },
+   "verbatim": 0,
+   "retrieval_misses": 14,
+   "credit_where_retrieval_hit": 0,
+   "n_where_retrieval_hit": 12
+  },
+  "heldout_quantity_textbook": {
+   "n": 6,
+   "scored": 6,
+   "errors": 0,
+   "missing": 0,
+   "credit": 0,
+   "right": 0,
+   "states": {
+    "wrong": 6
+   },
+   "verbatim": 0,
+   "retrieval_misses": 2,
+   "credit_where_retrieval_hit": 0,
+   "n_where_retrieval_hit": 4
+  },
+  "heldout_quantity_conditional": {
+   "n": 16,
+   "scored": 16,
+   "errors": 0,
+   "missing": 0,
+   "credit": 0,
+   "right": 0,
+   "states": {
+    "wrong": 16
+   },
+   "verbatim": 0,
+   "retrieval_misses": 8,
+   "credit_where_retrieval_hit": 0,
+   "n_where_retrieval_hit": 8
+  },
+  "heldout_quantity_plain": {
+   "n": 16,
+   "scored": 16,
+   "errors": 0,
+   "missing": 0,
+   "credit": 0,
+   "right": 0,
+   "states": {
+    "wrong": 16
+   },
+   "verbatim": 0,
+   "retrieval_misses": 8,
+   "credit_where_retrieval_hit": 0,
+   "n_where_retrieval_hit": 8
+  },
+  "control": {
+   "n": 78,
+   "scored": 78,
+   "errors": 0,
+   "missing": 0,
+   "credit": 8,
+   "right": 4,
+   "states": {
+    "wrong": 70,
+    "right": 4,
+    "format": 4
+   },
+   "verbatim": 4,
+   "retrieval_misses": 16,
+   "credit_where_retrieval_hit": 8,
+   "n_where_retrieval_hit": 62
+  },
+  "control_without_rate": {
+   "n": 68,
+   "scored": 68,
+   "errors": 0,
+   "missing": 0,
+   "credit": 8,
+   "right": 4,
+   "states": {
+    "wrong": 60,
+    "right": 4,
+    "format": 4
+   },
+   "verbatim": 4,
+   "retrieval_misses": 12,
+   "credit_where_retrieval_hit": 8,
+   "n_where_retrieval_hit": 56
+  },
+  "control_rate": {
+   "n": 10,
+   "scored": 10,
+   "errors": 0,
+   "missing": 0,
+   "credit": 0,
+   "right": 0,
+   "states": {
+    "wrong": 10
+   },
+   "verbatim": 0,
+   "retrieval_misses": 4,
+   "credit_where_retrieval_hit": 0,
+   "n_where_retrieval_hit": 6
+  }
+ },
+ "ceiling_attribution": {
+  "headline": {
+   "n": 66,
+   "written_by_base": 31,
+   "unreplayable": 0,
+   "ceiling": 56,
+   "withlib": 42,
+   "base_reads": 46,
+   "prompt_identical_to_base_reads": 23
+  },
+  "heldout_deeper_than_trained": {
+   "n": 0,
+   "written_by_base": 0,
+   "unreplayable": 0,
+   "ceiling": 0,
+   "withlib": 0,
+   "base_reads": 0,
+   "prompt_identical_to_base_reads": 0
+  },
+  "heldout_shared_line": {
+   "n": 22,
+   "written_by_base": 0,
+   "unreplayable": 0,
+   "ceiling": 22,
+   "withlib": 22,
+   "base_reads": 8,
+   "prompt_identical_to_base_reads": 0
+  },
+  "heldout_carry": {
+   "n": 35,
+   "written_by_base": 0,
+   "unreplayable": 0,
+   "ceiling": 25,
+   "withlib": 25,
+   "base_reads": 15,
+   "prompt_identical_to_base_reads": 0
+  },
+  "heldout_quantity_site_or_case": {
+   "n": 25,
+   "written_by_base": 25,
+   "unreplayable": 0,
+   "ceiling": 25,
+   "withlib": 17,
+   "base_reads": 25,
+   "prompt_identical_to_base_reads": 17
+  },
+  "heldout_quantity_textbook": {
+   "n": 6,
+   "written_by_base": 6,
+   "unreplayable": 0,
+   "ceiling": 6,
+   "withlib": 0,
+   "base_reads": 6,
+   "prompt_identical_to_base_reads": 6
+  },
+  "heldout_quantity_conditional": {
+   "n": 15,
+   "written_by_base": 15,
+   "unreplayable": 0,
+   "ceiling": 15,
+   "withlib": 4,
+   "base_reads": 15,
+   "prompt_identical_to_base_reads": 11
+  },
+  "heldout_quantity_plain": {
+   "n": 16,
+   "written_by_base": 16,
+   "unreplayable": 0,
+   "ceiling": 16,
+   "withlib": 13,
+   "base_reads": 16,
+   "prompt_identical_to_base_reads": 12
+  },
+  "control": {
+   "n": 80,
+   "written_by_base": 36,
+   "unreplayable": 0,
+   "ceiling": 75,
+   "withlib": 78,
+   "base_reads": 56,
+   "prompt_identical_to_base_reads": 27
+  },
+  "control_without_rate": {
+   "n": 68,
+   "written_by_base": 36,
+   "unreplayable": 0,
+   "ceiling": 63,
+   "withlib": 66,
+   "base_reads": 51,
+   "prompt_identical_to_base_reads": 27
+  },
+  "control_rate": {
+   "n": 12,
+   "written_by_base": 0,
+   "unreplayable": 0,
+   "ceiling": 12,
+   "withlib": 12,
+   "base_reads": 5,
+   "prompt_identical_to_base_reads": 0
+  }
+ },
+ "slices_claim": {
+  "headline": 67,
+  "heldout_deeper_than_trained": 0,
+  "heldout_shared_line": 22,
+  "heldout_carry": 35,
+  "heldout_quantity_site_or_case": 26,
+  "heldout_quantity_textbook": 6,
+  "heldout_quantity_conditional": 16,
+  "heldout_quantity_plain": 16,
+  "control": 78,
+  "control_without_rate": 68,
+  "control_rate": 10
+ }
+}
