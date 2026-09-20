@@ -1,0 +1,221 @@
+# De un runtime medido a un framework genérico — estado y brechas
+
+*Escrito el 2026-09-20 para leerse solo, y para que lo revisen otros modelos. Responde tres
+preguntas: qué funciona hoy, qué hay que hacer funcionar, y qué falta para que lora-kernel sea un
+**framework genérico** para un tipo de despliegue — una organización que funciona con un agente por
+rol. Cada afirmación lleva una marca: **[ran]** observada ejecutando algo en este repositorio, con la
+corrida nombrada; **[read]** inferida del código fuente o de la documentación; **[spec]** diseñada,
+no construida. Los números vienen de [`RECORD.md`](RECORD.md); nada acá es una medición nueva.*
+
+---
+
+## 1. El objetivo: una organización que funciona con un agente por rol
+
+El despliegue de referencia es la forma hacia la que convergen las organizaciones chicas **[read]**.
+Sus capas:
+
+| capa | qué contiene, en el despliegue de referencia |
+|---|---|
+| **personas** | cuatro tipos de usuario: socios (adultos y niños), visitantes, educadores, empleados |
+| **sistema de agentes** | un runtime de agentes (OpenClaw) con **un agente por rol**: dev, aprendiz, marketing, educador, compras, finanzas, IT |
+| **aplicaciones** | *agenda* — calendario, membresías, inscripciones, eventos; *administración* — comunicaciones, operaciones, compras, sueldos y RR.HH., marketing, tableros |
+| **canales** | una app nativa (calendario, mensajes) y un canal de mensajería dividido en dos audiencias: socios, interno |
+| **sistemas de registro** | **una** base de datos relacional; al lado un proveedor de identidad y permisos, un proveedor de pagos, monitoreo de errores |
+
+En ese dibujo, cada agente es un system prompt sobre el mismo modelo de frontera remoto, y cada
+mensaje de cada persona sale entero de la organización. La factura y los datos que salen crecen con
+el número de personas, no con la dificultad del trabajo.
+
+**Nuestro enfoque es una sola capa, puesta debajo de la columna de agentes — no reemplaza nada arriba
+ni abajo:**
+
+```mermaid
+flowchart TB
+    P["personas, en roles"] --> RT["runtime de agentes — un agente por rol<br>(sin cambios)"]
+    RT <--> APPS["aplicaciones y canales<br>(sin cambios)"]
+    APPS <--> DB["sistemas de registro<br>base de datos · identidad · pagos · monitoreo<br>(sin cambios)"]
+    RT -- "API compatible con OpenAI" --> PX["proxy — poda la superficie de herramientas,<br>reemplaza el prompt del miembro"]
+    PX --> RO{"router<br>el rol es la ruta"}
+    RO -- "una región medida" --> EX["experto = adaptador LoRA de ese rol<br>sobre un modelo chico residente"]
+    EX <--> REF["runtime — el árbitro<br>search · open · calc · reglas del sitio · guarda"]
+    REF <--> LIB["la biblioteca de ese rol<br>cómo lo hacemos acá · lo que sabemos"]
+    RO -- "sin medir" --> FR["modelo de frontera"]
+    RO -. "política: nada sale" .-> HU["una persona"]
+    classDef ours fill:#e8f1e4,stroke:#4a7a3a,color:#1d3314
+    classDef theirs fill:#eef0f6,stroke:#4a5a8a,color:#1a2240
+    classDef out fill:#f4e6d4,stroke:#9a6a2a,color:#3d2a0e
+    class PX,RO,EX,REF,LIB ours
+    class P,RT,APPS,DB theirs
+    class FR,HU out
+```
+
+La regla que ordena el diseño: **los registros quedan en la base, los hábitos van en el adaptador,
+el conocimiento queda en notas que una persona puede leer y corregir.** El adaptador de un rol se
+entrena en cómo *esta* organización hace *ese* trabajo; lo que necesita saber se busca, nunca se
+memoriza; lo que no está medido para manejar sale — hacia un modelo de frontera, o hacia una persona
+donde la política dice que nada sale.
+
+---
+
+## 2. Qué funciona hoy
+
+Todo sobre suites generadas; el §3 dice qué cuesta eso. Modelo base `Qwen/Qwen3.5-4B` salvo que se
+indique otro.
+
+| pieza del objetivo | qué está establecido | evidencia |
+|---|---|---|
+| **varios expertos, un modelo residente, una GPU** | un vLLM, una base, varios adaptadores, cada pedido servido por el suyo; compuerta de identidad `applied` en cada miembro | **[ran]** P56, M1 |
+| **un experto por tarea, liberado a través de una compuerta** | dos miembros liberados, cada uno empatando su liberación anterior caso por caso sobre una base nueva: triage de inbox 471/475, compromisos de escritorio 240/240; los manifiestos hashean corpus, adaptador, receta | **[ran]** M1, `releases/*@v2.json` |
+| **un experto que trabaja a través de cadenas de herramientas multi-paso** | fluidos, 6 a 9 pasos con calculadora y manual por caso: 90/90 cuando los resultados se escriben inline tal como le enseñó su corpus (11/90 a través de mensajes `tool_calls`) — sobre el 3B | **[ran]** M7 brazo 0b |
+| **la API entre el runtime de agentes y el pool** | proxy compatible con OpenAI; poda las 54 herramientas del runtime a las propias del miembro (225/227 llamadas rechazadas → 8/1160); reemplaza el prompt por el del miembro (2/32 → 19/32 turnos en vivo llaman a una herramienta); rutea por pedido (0,546 → 0,775 sobre un replay de 240 casos, 0 mal-ruteados); modelos nombrados que nunca deben salir (`--local`); reenvío a una frontera (`--fallback`) | **[ran]** P41, P59, P62, P63 |
+| **OpenClaw, en vivo** | 40/40 turnos locales, 0 llamadas inventadas | **[ran]** P63 |
+| **la biblioteca** | formato de nota, lint, primera biblioteca: 94 notas enlazadas, una capa de ejemplo de sitio; 72/72 recorridos oráculo | **[ran]** W1 |
+| **el árbitro** | tres verbos con resultados inline, ids opacos re-sorteados por conversación, reglas del sitio aplicadas antes de mostrar una nota, una guarda que corta un recorrido que se salta un paso requerido; 72/72 recorridos, 0 rechazos, tres recorridos con trampa cortados | **[ran]** W2 |
+| **la navegación se transfiere a un procedimiento nunca entrenado** | contra el base sin entrenar obligado a navegar: 42 : 0; filas de línea compartida 22/22 (el base con las notas correctas delante: 8/22); ubicarse a mitad de procedimiento 14/22 (5/22); 0 fallos de recuperación, 5 verbos rechazados en 88 recorridos | **[ran]** W5c |
+| **el kit de medición** | margen primero, tests de signos exactos pareados, briefs con falsadores escritos antes de correr, un calificador que separa *correcto*, *correcto en otro formato*, *correcto pero nunca leído*; **formas** del tráfico registradas en passthrough sin guardar los prompts | **[ran]** a lo largo de todo; `openai_proxy --passthrough --log` |
+| **el chain que lo corre** | sesiones de Colab de ≤ 60 min, reanudables, adaptadores traídos mientras la sesión vive | **[ran]** cada corrida de arriba |
+
+## 3. Qué no funciona, o no está medido
+
+| | estado | evidencia |
+|---|---|---|
+| **sin datos reales** | cada suite se genera acá; ningún tráfico real pasó todavía por el sistema | — |
+| **la afirmación central de la memoria** — una biblioteca extiende a un experto a un procedimiento sobre el que nunca entrenó | **medida tres veces, no pasa.** El adaptador empata o pierde contra el base *sin entrenar* con las notas correctas delante: 35 contra 45 de 56; sobre un segundo corpus 42 contra 46 de 66 | **[ran]** W5, W5c |
+| **leer un valor bajo una condición, en una nota nunca vista** | el adaptador escribe el primer número: 0/11, y después 4/15 tras un corpus que mostró la forma sobre ocho notas — donde lee las notas *entrenadas* 17/18 y el base sin entrenar lee 15/15. *Un corpus balanceado sobre ocho notas enseña ocho notas* | **[ran]** W5c |
+| **búsqueda de notas** | un encoder estándar: recall@3 0,638 contra una vara de 0,80 fijada de antemano (por palabras: 0,064) | **[ran]** W3 |
+| **un router aprendido** | dos brazos (n-gramas, embeddings) pierden todo pedido legítimo de un remitente no visto; el default es un diccionario de palabras clave | **[ran]** M2 |
+| **mover un experto que razona a una base nueva** | 80/90 contra su propio 90/90: diez cadenas correctas hasta el número cuya última línea se sale del formato del corpus; no liberado | **[ran]** M7 brazo 0c |
+| **escalamiento por caso** | las dos reglas disponibles entregan menos que rutear por región: las cadenas equivocadas del experto son *consistentes* | **[ran]** P41 |
+| **aislamiento por usuario y autenticación** | una API key, un único destino | **[read]** `openai_proxy.py` |
+| **concurrencia** | docenas de sesiones alternando entre adaptadores: nunca medido | — |
+| **streaming** | bufferizado a propósito: una llamada a herramienta es una llamada recién cuando se cierra | **[read]** `docs/OPENCLAW.md` |
+| **instalabilidad** | corre sobre una GPU alquilada a través de un túnel y un chain de Colab; sin paquete, sin contenedor | — |
+| **el ahorro en plata** | nunca medido | — |
+| **cualquier idioma que no sea inglés** | nunca medido; el despliegue de referencia habla español | — |
+| **escrituras** | cada herramienta medida *lee*, *decide* o *calcula*. Ningún experto fue medido ejecutando una acción que cambie un sistema de registro | — |
+
+## 4. El hallazgo que reordena el diseño: el adaptador navega, el base lee
+
+Tres corridas sobre la misma pregunta dan un solo cuadro **[ran]** W5, W5b, W5c:
+
+- **Lo que compra el entrenamiento es navegación y procedimiento.** Sin entrenar, el base no puede
+  recorrer una biblioteca en absoluto (0/56, 0/66; 336 verbos rechazados). Entrenado, recorre un
+  procedimiento que nunca vio casi tan bien como los que sí vio.
+- **Lo que el entrenamiento daña es una habilidad de lectura que el base ya tiene.** Con las notas
+  correctas delante, el base sin entrenar lee un valor condicional 15/15; el adaptador, 4/15. El daño
+  es angosto — en las notas sobre las que entrenó lee *mejor* que el base (control 78/80 contra
+  56/80).
+- **Dejar que el base escriba cada línea final no es la respuesta** (W5b): recupera las 12 fallas de
+  lectura y pierde 19 casos de control. **Partir por tipo de tarea podría serlo**: el adaptador lleva
+  los procedimientos, el base lee los valores de las notas que abrió el recorrido del adaptador —
+  47/56 y 58/60 sobre registros ya pagados. *Ese número es post-hoc sobre un conjunto ya visto y no es
+  evidencia de nada hasta que se corra sobre un conjunto escrito después de congelar la política.*
+
+Para el framework esto significa que la unidad **no** es "un adaptador responde todo en su rol". Es
+*un adaptador que se mueve a través de los procedimientos y herramientas del rol, más una política de
+quién escribe qué tipo de respuesta*. Esa política pertenece al contrato del rol, al lado de su
+superficie de herramientas y su prompt.
+
+## 5. Análisis de brechas, capa por capa
+
+Para cada elemento del objetivo: qué tiene que dar un framework genérico, qué existe, la brecha, y
+el paso más barato que podría mostrar si la brecha se puede cerrar — o no.
+
+| # | elemento | el framework tiene que dar | existe | brecha | primer paso falsable |
+|---|---|---|---|---|---|
+| **A** | **rol → experto** | la identidad del agente selecciona el adaptador; sin adivinar | ruteo por pedido según *qué se pregunta* (`route.REGIONS`, claves de palabras clave); `--local` por modelo | la ruta todavía no se toma del id de agente / sesión / grupo que el runtime ya conoce | cero GPU: llevar el id de agente en un header, repetir el conjunto de ruteo de 240 casos con rol-como-ruta; tiene que ser ≥ el diccionario, con 0 mal-ruteados |
+| **B** | **la superficie de herramientas de un rol** | un conjunto declarado de herramientas por rol, podado y renderizado tal como enseñó el corpus | poda, prompt del miembro, `contract.py` leyendo bloque/claves/orden del corpus; un servidor MCP (inbox) | sin declaración genérica: las herramientas de cada región viven en su propio generador | un manifiesto de **paquete de rol** (§6) validado por un linter; los dos miembros liberados re-expresados en él con prompts servidos idénticos byte a byte |
+| **C** | **un corpus por rol** | una manera de ir de herramientas + procedimientos + casos a un corpus de entrenamiento que pase `suite_gates` | cuatro generadores escritos a mano (inbox, desk, fluids, walks); las compuertas; la regla de que un generador *llama* al renderer | sin esqueleto de generador compartido; *armar el corpus de un cliente a partir de sus trazas queda fuera del alcance de este repositorio, por decisión* — el framework envía el formato, las compuertas y paquetes de referencia | extraer el esqueleto que comparten los cuatro generadores; regenerar un corpus existente a través de él, idéntico byte a byte |
+| **D** | **una biblioteca por rol** | formato, lint, árbitro, búsqueda, y una división del trabajo que pase un test retenido | W1–W4 construidos; la búsqueda de W3 debajo de su vara; W5 no pasa | §4: quién lee; el recall de la búsqueda; una habilidad de lectura enseñada sobre muchas notas o dejada al base | una sesión de L4, sin entrenar: la partición por tipo de tarea sobre el segundo conjunto retenido; después un conjunto *nuevo* tras el congelamiento |
+| **E** | **acceso a los sistemas de registro** | herramientas que leen y escriben la base **como la persona que pregunta**, con permisos exigidos fuera del modelo y cada acción registrada | nada | toda la capa. La identidad tiene que fluir runtime → proxy → herramienta; el modelo nunca tiene una credencial; el permiso a nivel de fila lo chequea la herramienta, no se le pregunta al modelo | una base de datos relacional de juguete con dos roles y una fila prohibida; el experto tiene que ser incapaz de obtenerla a través de ninguna llamada a herramienta, medido como 0 filtraciones sobre una suite adversarial |
+| **F** | **acciones de escritura** | confirmación, idempotencia y deshacer para cualquier cosa que cambie un registro | nada medido | ningún experto acá fue nunca puntuado sobre una escritura | un rol cuya tarea termina en una escritura; compuerta sobre *escrituras equivocadas = 0*, no sobre precisión |
+| **G** | **muchas personas a la vez** | aislamiento entre usuarios y entre roles; ciclo de vida de los adaptadores; throughput bajo carga mixta | servido multi-adaptador medido de a un pedido por vez; aplicación de LoRA por secuencia **[read]** vLLM | keys por usuario; si el prefix caching está indexado por adaptador **no lo auditamos nosotros**; costo del batch mixto desconocido | repetir las formas registradas con 8/32/64 sesiones concurrentes alternando adaptadores: latencia, throughput, y una cadena canario que nunca debe cruzar de rol |
+| **H** | **lo que sale** | una política de salida por rol: frontera, una persona, o rechazar | `--fallback`, `--local`, una tabla de regiones marcadas `local`/`out` por medición | sin traspaso a una persona; sin objeto de política; sin registro de lo que salió | política en el paquete de rol; un log de cada pedido que salió, por rol, sólo con formas |
+| **I** | **canales** | latencia de nivel chat; streaming | respuestas bufferizadas | el time-to-first-token y la latencia del turno completo nunca se midieron sobre el camino del miembro | medir las dos sobre una L4 para los dos miembros liberados bajo el proxy |
+| **J** | **operaciones** | métricas, reporte de errores, detección de drift, rollback a una liberación anterior | manifiestos con hashes; log de formas | sin endpoint de métricas; sin detección de que el tráfico se salió de la región sobre la que se liberó un experto | un chequeo estilo `ceiling.py` corrido sobre formas en vivo contra la banda registrada de la liberación |
+| **K** | **instalación** | un comando en una máquina con una GPU | el chain de Colab | contenedor, configuración, una tabla documentada de dimensionamiento de GPU | archivo compose: vLLM + proxy + árbitro; el walkthrough de OpenClaw reproducido sobre él |
+| **L** | **idioma** | el idioma del despliegue | sólo inglés | desconocido | la suite de inbox traducida: primero el margen del base, después un adaptador |
+| **M** | **la factura** | costo por pedido resuelto, local contra frontera, por rol | nada | la afirmación sobre la que descansa comercialmente toda la arquitectura está sin medir | el replay de 240 casos con precio de las dos formas, con horas de GPU a la tarifa de alquiler |
+
+## 6. Qué significa "framework genérico" acá: las interfaces para congelar
+
+Un framework es el conjunto de cosas que un tercero completa sin leer nuestro código. Ocho
+interfaces; cinco existen de alguna forma.
+
+| interfaz | qué fija | estado |
+|---|---|---|
+| **contrato de liberación** | hash del corpus, hash del adaptador, receta, base, el veredicto pareado con el que entró | **existe** `releases/*.json`, `release_gate.py` |
+| **protocolo de compuerta** | margen → brazos en secuencia → test de signos pareado → veredicto en el archivo | **existe**, en cada runner; todavía no en un módulo reusable |
+| **formato de biblioteca** | frontmatter de nota, enlaces, slots, capas manual → sitio → caso, oraciones agregadas por el sitio, lint | **existe** `memory/notes.py`, `layers.py`, `lint.py` |
+| **verbos del runtime** | `search`, `open`, `calc`; resultados inline; ids opacos; modos de guarda | **existe** `memory/runtime.py`, `guard.py` |
+| **adaptador de servido** | entrada compatible con OpenAI, salida vLLM multi-LoRA; poda, prompt, ruteo, fallback | **existe** `openai_proxy.py`, `route.py` |
+| **paquete de rol** | un directorio por rol: id, superficie de herramientas, system prompt, referencia al corpus, referencia a la biblioteca, suites, **política de respuesta** (§4), **política de salida** (H) | **falta** — hoy esto está repartido entre `train_pool.POOL`, `route.REGIONS`, los generadores y los flags |
+| **capa de herramientas** | cómo una herramienta llega a un sistema de registro como la persona que pregunta, con permiso y auditoría | **falta** |
+| **kit de medición** | log de formas → brazo nulo → margen → el brief | **parcial**: las piezas existen, no están empaquetadas |
+
+La línea de alcance no se mueve: **los corpus de un cliente, los adaptadores como servicio, y la
+canalización de trazas a liberación no son parte de este repositorio.** El framework es el runtime,
+los formatos, las compuertas y paquetes de rol *de referencia* construidos sobre datos generados — el
+instrumento que mide una personalización, no la personalización.
+
+## 7. El orden para hacerlo funcionar
+
+Lo más barato y lo más capaz de matar un supuesto, primero. Cada paso nombra qué lo detendría.
+
+1. **Decidir quién lee** (D). Una sesión de L4, sin entrenar: la partición por tipo de tarea sobre el
+   segundo conjunto retenido. *Se detiene si* no le gana al adaptador solo, pareado. Después la misma
+   política sobre un conjunto escrito después del congelamiento — la única versión que cuenta.
+2. **Rol como ruta** (A). Cero GPU. *Se detiene si* rutear por id de agente es peor que el
+   diccionario sobre el replay — lo que significaría que los roles no particionan el trabajo como
+   asume el dibujo.
+3. **El paquete de rol** (B, C). Cero GPU: manifiesto, linter, los dos miembros liberados
+   re-expresados en él con prompts servidos idénticos byte a byte. *Se detiene si* un miembro no se
+   puede expresar sin perder parte de lo que enseñó su corpus.
+4. **Una organización de referencia sobre un dominio neutral** (B–F, H). Una distribuidora generada:
+   tres roles, una base de datos relacional de juguete, una biblioteca por rol con la forma
+   condicional sobre *muchas* notas, herramientas que leen como la persona que pregunta. Es el
+   extremo a extremo que necesita la arquitectura objetivo y el test de muchas notas que pide el §4,
+   en una sola construcción. *Se detiene si* se puede lograr que un experto devuelva una fila
+   prohibida.
+5. **Muchas personas a la vez** (G, I). Concurrencia, latencia, el canario entre roles. *Se detiene
+   si* alternar adaptadores cuesta más que servirlos por separado.
+6. **La factura** (M). *Se detiene si* la parte local cuesta más de lo que ahorra — el propio
+   falsador del hito 6.
+7. **Instalación, idioma, operaciones** (K, L, J) — una vez que 1–6 dicen que hay algo que vale la
+   pena instalar.
+
+Los pasos 1–3 no necesitan entrenar nada. El paso 4 es el primero que sí.
+
+## 8. Preguntas para quien revise
+
+1. El §4 propone partir *quién escribe la respuesta final* por tipo de tarea. ¿Hay una división más
+   limpia — por ejemplo, que el adaptador emita un puntero al tramo que leyó, y el base lo copie?
+2. El adaptador pierde una habilidad de lectura después de 3 épocas en rank 16 sobre todas las
+   proyecciones. ¿Una receta más liviana (sólo atención, una época, rank más bajo) conservaría la
+   navegación y no dañaría la lectura — y es eso un experimento más barato que enseñar la forma sobre
+   muchas notas?
+3. ¿Es seguro *rol como ruta*? ¿Qué se rompe cuando el mensaje de una persona pertenece
+   legítimamente a dos roles?
+4. La capa de herramientas (E) pone los chequeos de permiso fuera del modelo. ¿Cuál es el diseño
+   mínimo en el que una inyección de prompt dentro de una *nota* o un *registro* no pueda causar una
+   lectura entre roles?
+5. ¿El router debería abstenerse sobre *pedidos* o sobre *pasos*? El escalamiento por caso falló
+   porque las cadenas equivocadas son consistentes (P41). ¿Hay alguna señal que vea una respuesta
+   coherente y equivocada?
+6. La búsqueda de notas llega a 0,64 de recall@3. Con rol como ruta y un argumento de estante, ¿sigue
+   haciendo falta una proyección aprendida, o la propia estructura de enlaces de la biblioteca hace
+   el trabajo?
+7. ¿Cuál es la demo extremo a extremo más chica y honesta de la arquitectura objetivo que no use
+   datos reales y aun así no se pueda confundir con un juguete?
+8. ¿Cuál de las interfaces faltantes del §6 debería congelarse primero, dado que congelar una
+   temprano restringe a las otras?
+9. Todo resultado está sobre suites generadas. ¿Qué único dataset real, con licencia permisiva y que
+   no sea de salud, reemplazaría más barato a uno de ellos?
+10. ¿Qué haría que *no* construyeras esto — cuál fila del §3 es la que debería detener el proyecto si
+    no se mueve?
+
+---
+
+*Punteros: [`ARCHITECTURE.md`](ARCHITECTURE.md) el sistema · [`MEMORY.md`](MEMORY.md) la
+especificación de la memoria · [`RECORD.md`](RECORD.md) cada medición · [`PLAN.md`](PLAN.md) el plan
+vivo · [`SERVING.md`](SERVING.md) y [`OPENCLAW.md`](OPENCLAW.md) para correrlo.*
