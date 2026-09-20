@@ -55,8 +55,11 @@ sabe usar la biblioteca.*
 
 Tres piezas más cierran el dibujo:
 
-- **El router: el rol del que llega un mensaje es la ruta.** No hay que adivinar a qué experto va un
-  pedido — el runtime ya sabe de qué agente, grupo o canal viene.
+- **El router: el rol del que llega un mensaje dice *cuál* experto — nunca *si* le corresponde.** El
+  runtime ya sabe de qué agente, grupo o canal viene un mensaje, así que el experto no hay que
+  adivinarlo. Lo que sigue habiendo que chequear es que el pedido caiga dentro de lo que ese experto
+  está medido para hacer: cuando dejamos que el rol decidiera solo, 131 de 240 pedidos enviados bajo el
+  rol equivocado los atendió el experto equivocado, sin ruido. Con el rol *y* ese chequeo, salieron todos.
 - **Dos salidas para lo que no está medido.** Lo que un experto no está *medido* para resolver se va
   a un modelo de frontera — o **a una persona, donde la política dice que nada sale del edificio.**
   Abstenerse es parte del diseño, no una falla.
@@ -210,13 +213,13 @@ hacemos la toca. Lo nuestro es la otra mitad: **la mitad del modelo.**
 
 Y en esa mitad, un equipo cambia tres cosas respecto de un usuario solo.
 
-**1. El grupo es la región — y el problema en el que fallamos dos veces desaparece.** Nuestra
+**1. El grupo es la región — y el problema en el que fallamos dos veces se achica mucho.** Nuestra
 arquitectura sólo afirma una cosa: un experto chico le gana a un generalista *dentro* de una región
 — y fuera de ella cae de 30/30 a 1/20. Una persona haciendo trabajo variado no tiene región; hay que
 descubrir si existe, y después hay que *adivinar* a cuál pertenece cada mensaje. Ahí es donde
 fallamos: nuestros dos routers aprendidos mandaban afuera el 100 % de los pedidos de remitentes
 nuevos. **Un grupo estable es una región por construcción**: se repite, tiene su vocabulario, sus
-personas y sus convenciones. Y la ruta no hay que inferirla: *el identificador del grupo ES la ruta.*
+personas y sus convenciones. Y la ruta no hay que inferirla: *el identificador del grupo dice cuál experto.* (Cuál, no si le corresponde: que el pedido caiga dentro de lo que el experto está medido para hacer sigue habiendo que chequearlo — arriba está lo que medimos cuando ese chequeo falta.)
 El cliente ya sabe en qué sala está. Un contexto que elimina un problema abierto vale más que uno
 que mejora un número.
 

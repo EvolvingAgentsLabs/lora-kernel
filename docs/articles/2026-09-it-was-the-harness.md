@@ -54,8 +54,11 @@ knows how to use the library.*
 
 Three more pieces close the drawing:
 
-- **The router: the role a message comes from is the route.** Nobody has to guess which expert a
-  request belongs to — the runtime already knows which agent, group or channel it came from.
+- **The router: the role a message comes from says *which* expert — never *whether*.** The runtime
+  already knows which agent, group or channel a message came from, so nobody has to guess the expert.
+  What still has to be checked is that the request falls inside what that expert is measured to do:
+  when we let the role decide alone, 131 of 240 requests sent under the wrong role were served by the
+  wrong expert without a sound. With the role *and* that check, all of them left.
 - **Two exits for what is not measured.** What an expert is not *measured* to handle goes to a
   frontier model — or **to a person, where policy says nothing leaves the building.** Abstaining is
   part of the design, not a failure.
@@ -206,13 +209,13 @@ Ours is the other half: **the model half.**
 
 And in that half, a team changes three things compared with a single user.
 
-**1. The group is the region — and the problem we failed at twice goes away.** Our architecture
+**1. The group is the region — and the problem we failed at twice gets much smaller.** Our architecture
 claims exactly one thing: a small expert beats a generalist *inside* a region — and outside it falls
 from 30/30 to 1/20. One person doing varied work has no region; you have to discover whether one
 exists, and then *guess* which one each message belongs to. That is where we failed: both of our
 learned routers sent away 100 % of requests from new senders. **A standing group is a region by
 construction**: it repeats, it has its own vocabulary, its people and its conventions. And the route
-does not have to be inferred: *the group's id IS the route.* The client already knows which room it
+does not have to be inferred: *the group's id says which expert.* (Which, not whether: that the request falls inside what the expert is measured to do still has to be checked — above is what we measured when that check is missing.) The client already knows which room it
 is in. A context that removes an open problem is worth more than one that improves a number.
 
 **2. One GPU, one resident model, one adapter per group.** This part is measured: one server, one
