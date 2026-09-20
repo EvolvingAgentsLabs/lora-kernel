@@ -92,6 +92,10 @@ These are not style. Each was paid for; [`docs/RECORD.md`](docs/RECORD.md) §4 h
   with no lookup tool scored 27/30 over a fourteen-value table (P15, P21). Whatever a knowledge
   base is meant to supply is drawn **per case** — values *and* the coefficients of a procedure —
   and the run asserts that no looked-up value occurs in the statement.
+- **A balanced corpus over eight notes teaches eight notes** — a reading skill needs the shape over many
+  notes, or is left to the base. Shown a conditional value in eight trained notes, the adapter reads it
+  there (17/18) and on an unseen note writes the first number (4/15) where the untrained base reads 15/15
+  **[ran]** W5c.
 - **A small model does not follow what it merely reads** (P61). If notes are to be followed,
   following is what the adapter is trained on; never measure a base of knowledge by pasting it
   into the prompt of a model that was not.
@@ -141,7 +145,8 @@ These are not style. Each was paid for; [`docs/RECORD.md`](docs/RECORD.md) §4 h
   default.
 - **Colab:** T4 has no bf16 whatever the flag says; an expired `colab exec` is not a failed
   command; install vLLM first; one chain at a time — they share `/tmp/_v*.py`; use a
-  worktree for documents while a chain is fetching.
+  worktree for documents while a chain is fetching; **never `colab exec` into a session a chain is
+  polling** — a hand probe beside the chain's own may have cost W5c a whole session **[ran]**.
 - **Freeze the design, *then* write the set that counts.** Three looks at the same sets said
   milestone 2's router was perfect; one set written after the freeze found it loses every
   real-looking request. A set the designer has iterated against is a training set.

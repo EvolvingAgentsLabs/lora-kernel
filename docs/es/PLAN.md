@@ -521,7 +521,7 @@ muestren notas de dos valores dentro de procedimientos entrenados, los dos adapt
 un conjunto retenido nuevo
 ([`BRIEF`](../../results/M7-W5-kill-arm-20260919/BRIEF.md)).
 
-**W5c — el brazo de la forma del corpus, construido y pre-registrado, sin correr.** La fuente no tiene ninguna
+**W5c — el brazo de la forma del corpus [ran]: FALSADO, ver el resultado abajo.** *(Como se pre-registró:)* La fuente no tiene ninguna
 afirmación de dos valores dentro de los procedimientos entrenados (revisado línea por línea), así que la forma
 sale de **A** la única oración real del capítulo (equipos de macrogoteo contra microgoteo, verificada byte a
 byte, ahora el cuerpo de `rates/drop-factor`) y **B** oraciones que un sitio AGREGA a siete notas entrenadas
@@ -531,6 +531,16 @@ nota, mitad cada uno, la condición explícita o implícita; "copiar el primer n
 nuevo (88; titular 66) y control (80); compuerta v2 PASÓ, piso 6/66, corte de margen 61/66. Falsador, exacto y
 en código: crédito ≤ 4/15 en el corte condicional es indistinguible del 0/11 de W5 (Fisher). Los pares de W5 se
 vuelven a preguntar sobre el titular nuevo; un empate es un empate ([`BRIEF`](../../results/M7-W5c-conditional-corpus-20260919/BRIEF.md)).
+
+**Resultado de W5c [ran] — el diagnóstico queda falsado: 4 de 15.** El crédito en el valor condicional sobre el
+set retenido nuevo es 4/15 contra el 0/11 del primer corpus (Fisher $p=0{,}091$; la banda ≤ 4 se fijó antes de
+correr). El par de W5 sobre el titular nuevo ($n=66$): `withlib` 42, `base-reads` 46 — **12 : 16, $p=0{,}57$, un
+empate: no pasa**; contra `nolib` 39 : 0, contra el base caminando 42 : 0. Las 14 fallas de cantidad tienen el
+recorrido limpio y `base-reads` las acierta; el adaptador escribe **el primer número, como un entero** (pedían 22
+→ `7 minutes`; `5-10` → `5`). En las ocho notas que entrenó sí lee la condición (17/18): aprendió esas notas, no
+la habilidad. Lo que v2 sí compró es navegación: línea compartida 22/22 (base 8), `middle-find` 14/22 (base 5),
+control 78/80 (base 56). Sigue, a decisión del usuario: partir por tipo de tarea (exploratorio, post-hoc sobre el
+set de W5: 47/56), entrenar más suave, o muchas más notas — que es la opción E.
 
 **W5, tal como se construyó y pre-registró.** `training/nursing/walks_arm.py`: `base-reads` (base
 sin entrenar, las notas del oráculo abiertas), `base-walks`, `nolib`, `withlib`. Primero la sesión de
@@ -586,6 +596,10 @@ Las cuatro que deciden la forma de un paso:
   byte a byte) más oraciones agregadas por el sitio, declaradas como inventadas. Un sitio ahora puede AGREGAR una
   oración, nunca reescribir una. Corpus v2, conjuntos retenido y de control nuevos, compuerta v2 PASÓ, falsador
   exacto en código ([`BRIEF`](../../results/M7-W5c-conditional-corpus-20260919/BRIEF.md)).
+- **2026-09-20** — memoria **W5c [ran]: FALSADO.** Valor condicional 4/15 (antes 0/11, Fisher $p=0{,}091$); el par de
+  W5 sobre el titular nuevo 12 : 16, un empate — no pasa. El adaptador lee los condicionales de las ocho notas que
+  vio (17/18) y en una nota nueva escribe el primer número; la navegación mejoró (línea compartida 22/22, control
+  78/80). Cinco sesiones de seis; una perdida en el arranque ([`BRIEF`](../../results/M7-W5c-conditional-corpus-20260919/BRIEF.md)).
 - **2026-09-19** — memoria **W5b [ran]: el diagnóstico se sostiene, y la composición no es un diseño de servicio.**
   Los recorridos grabados de `withlib` reproducidos, el base pelado escribe la línea final: quedan **0 de las 12**
   fallas de cantidad con recorrido limpio; `composed` 41/54, exactamente su techo sin GPU; 12 : 4 contra `withlib`

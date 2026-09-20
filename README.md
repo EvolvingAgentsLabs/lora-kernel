@@ -119,7 +119,9 @@ them: 11 of 90 became 90 of 90 (M7 arm 0b). The memory is built on exactly that 
   to a *procedure it never trained on*: on 56 held-out walks the library arm scores 35, the same expert
   without the library 2, the untrained base navigating by itself 0 — and the untrained base *handed the
   right notes* 45 (6 : 16 paired, $p=0.052$) **[ran]** M7-W5. Navigation transferred; reading a note
-  that states two values, a shape the corpus never showed, did not (0 of 11). The library, the referee
+  that states two values, a shape the corpus never showed, did not (0 of 11) — and a second corpus that
+  *did* show that shape, over eight notes, did not teach it either: 4 of 15 on an unseen note, 17 of 18
+  on the trained ones, the pair still a tie at 12 : 16 **[ran]** M7-W5c. The library, the referee
   and the corpus are built (W1–W4); the radar reaches recall@3 0.64 against a bar of 0.80 (W3). Without one, a specialist just outside its region is
   confidently wrong — 30/30 inside, 1/20 on sibling families **[ran]** P14.
 - **The router is still a keyword dictionary.** Its first learned replacement, an n-gram model of
@@ -211,7 +213,7 @@ Each milestone has a gate and the arm that can kill it, written before it runs
 |---|---|---|
 | **1** | the pool on Qwen 3.x small (`Qwen3.5-4B`) | ✅ **[ran] — moved.** Both members tie their Qwen 2.5 releases; `@v2` manifests |
 | **2** | the router as a small model of the corpora | arms 1 and 2 **[ran]**, neither passes: both lose every request from an unseen sender · next, a projection that factors task from content, on new sets |
-| **7** | **the memory** — the core of 1.0 | arm 0 and 0b **[ran]**: the channel works · under an **oracle** walk — exactly the right notes open — the expert still scores ~1/20 on a sibling procedure it never trained on · **W1–W4 built; W5 [ran], not passed:** 35/56 against the untrained base that reads at 45/56 — navigation transferred, a two-valued note was not read (attributed **[ran]** W5b: with the base writing the line, 0 of those 12 remain — a shape the corpus never showed) |
+| **7** | **the memory** — the core of 1.0 | arm 0 and 0b **[ran]**: the channel works · under an **oracle** walk — exactly the right notes open — the expert still scores ~1/20 on a sibling procedure it never trained on · **W1–W4 built; W5 [ran], not passed:** 35/56 against the untrained base that reads at 45/56 — navigation transferred, a two-valued note was not read (attributed **[ran]** W5b: with the base writing the line, 0 of those 12 remain — a shape the corpus never showed) · **W5c [ran], falsified:** shown the shape over eight notes, the adapter learns the notes, not the reading — 4/15 |
 | **5** | the first real region: nursing procedures | headroom **[ran]**: 29/48 closed-book → 45/48 with the note open, 0/12 → 12/12 on a site's value · next: the same content as *walks*, against the untrained base reading the same notes |
 | **3–4** | the large half of a pair, and acceptance between the halves | not started · large + LoRA does not beat small + LoRA; then: acceptance no higher than under the bare large model |
 | **6** | the service policy, with the bill | not started · the local share costs more than it saves |
