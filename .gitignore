@@ -4,6 +4,7 @@ __pycache__/
 *.tgz
 .venv-examples/
 .pytest_cache/
+.DS_Store
 # Trained adapters carried across Colab sessions — weights, not source.
 adapters/
 results/.answers/

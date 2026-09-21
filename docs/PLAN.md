@@ -197,6 +197,22 @@ without one. What it does **not** address is the infrastructure half of such a d
 session list that fills up, a gateway unreachable behind an access proxy, a websocket that drops.
 Not built for it: isolation between users, streaming, a per-group adapter lifecycle.
 
+**Arm 3, headroom only [ran] 2026-09-21 — `cactus-compute/needle`, stock weights; no real arm
+bought** ([`BRIEF`](../results/M2c-needle-router-20260921/BRIEF.md)). Read [read] as a
+candidate not for size but for the two pieces arm 2 lacked — a calibrated confidence head and
+local LoRA fine-tuning from a contrastive `query`/`answers` format — the same `EmbedRouter`,
+`score_cases` and `verdict` arm 2 used, only the encoder swapped. Subsampled (40 per
+bucket, up to 715 in a bucket) after the first attempt ran ~15 minutes with no progress line —
+fixed with per-call progress printing and a seeded `--limit`, not compared at arm 2's own
+resolution. **`NOT SAFE: serves foreign text locally`** — 62 of 142 out-of-region cases served
+locally (a same-content-different-task swap, E/E2: 29/40 and 33/40), against arm 2's 15/338
+(4.4%) — roughly **10×** the leak rate. It does recover real traffic arm 2 lost completely
+(unseen senders, F: 19/40 vs 0/120) but not reliably (52.5% still lost). Neither of the brief's
+two named outcomes: not "safe but loses F" and not "F improves without foreign text getting
+worse" — it trades away the property the router exists to guarantee. Stock weights and a
+borrowed τ do not exercise the two pieces this arm was chosen for; a real arm (its own BRIEF,
+the fine-tuned weights Needle's own README points at) is not justified by this look.
+
 ### Milestone 3 — the large half of one pair
 
 **Objective.** One LoRA on `Qwen/Qwen3.8-27B`, QLoRA NF4, from the *same corpus* as one
@@ -588,6 +604,12 @@ that decide the shape of a step:
 
 ## 5. History
 
+- **2026-09-21** — milestone 2 **arm 3 [ran]: no real arm bought.** `cactus-compute/needle`,
+  stock weights, same grader as arm 2 — `NOT SAFE: serves foreign text locally`, 62/142
+  out-of-region cases served locally (~10× arm 2's leak rate), against 19/40 unseen-sender
+  traffic recovered that arm 2 lost completely. Headroom on a subsample, not arm 2's own
+  resolution; the dictionary stays the default
+  ([`BRIEF`](../results/M2c-needle-router-20260921/BRIEF.md)).
 - **2026-09-20** — **re-plan from a pasted architecture, addendum in §0.** Read against
   [`FRAMEWORK.md`](FRAMEWORK.md) §9: mostly already built (role packs F3) or already sequenced later
   (concurrency, the bill, installation) or blocked (a LoRA drafter is a vLLM RFC, not a feature). One

@@ -216,6 +216,24 @@ de un despliegue así — una lista de sesiones que se llena, un gateway inalcan
 de acceso, un websocket que se cae. No construido para eso: aislamiento entre usuarios, streaming,
 ciclo de vida de adaptadores por grupo.
 
+**Brazo 3, solo margen [ran] 2026-09-21 — `cactus-compute/needle`, pesos de fábrica; no se
+compra un brazo real** ([`BRIEF`](../../results/M2c-needle-router-20260921/BRIEF.md)). Leído
+[read] como candidato no por tamaño sino por las dos piezas que le faltaban al brazo 2 — una
+cabeza de confianza calibrada y ajuste fino local por LoRA desde un formato de contraste
+`query`/`answers` — el mismo `EmbedRouter`, `score_cases` y `verdict` que usó el brazo 2, solo
+cambia el codificador. Submuestreado (40 por lote, hasta 715 en un lote) después de que el
+primer intento corrió ~15 minutos sin línea de progreso — arreglado con impresión de progreso
+por llamada y un `--limit` con semilla, no comparado a la resolución propia del brazo 2.
+**`NOT SAFE: serves foreign text locally`** — 62 de 142 casos fuera de región servidos
+localmente (mismo contenido, tarea distinta, E/E2: 29/40 y 33/40), contra 15/338 del brazo 2
+(4,4 %) — cerca de **10×** la tasa de fuga. Sí recupera tráfico real que el brazo 2 perdía por
+completo (remitentes no vistos, F: 19/40 contra 0/120) pero no de forma confiable (52,5 % se
+sigue perdiendo). Ninguno de los dos resultados nombrados en el brief: ni "seguro pero pierde
+F" ni "F mejora sin que el texto ajeno empeore" — sacrifica justo la propiedad para la que
+existe el router. Los pesos de fábrica y un τ prestado no ejercitan las dos piezas por las que
+se eligió este brazo; un brazo real (su propio brief, los pesos afinados a los que apunta el
+propio README de Needle) no queda justificado por esta mirada.
+
 ### Hito 3 — la mitad grande de un par
 
 **Objetivo.** Un LoRA en `Qwen/Qwen3.8-27B`, QLoRA NF4, a partir del *mismo corpus* que
@@ -636,6 +654,12 @@ Las cuatro que deciden la forma de un paso:
 
 ## 5. Historia
 
+- **2026-09-21** — hito 2 **brazo 3 [ran]: no se compra un brazo real.** `cactus-compute/needle`,
+  pesos de fábrica, mismo evaluador que el brazo 2 — `NOT SAFE: serves foreign text locally`,
+  62/142 casos fuera de región servidos localmente (~10× la tasa de fuga del brazo 2), contra
+  19/40 de tráfico de remitentes no vistos recuperado que el brazo 2 perdía por completo. Margen
+  sobre una submuestra, no la resolución propia del brazo 2; el diccionario sigue siendo el
+  default ([`BRIEF`](../../results/M2c-needle-router-20260921/BRIEF.md)).
 - **2026-09-20** — **replanificación a partir de una arquitectura pegada, anexo en el §0.** Leída
   contra [`FRAMEWORK.md`](FRAMEWORK.md) §9: en su mayoría ya construida (role packs F3) o ya
   secuenciada más adelante (concurrencia, la factura, instalación) o bloqueada (un drafter LoRA es un
