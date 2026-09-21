@@ -72,6 +72,12 @@ def main() -> int:
     # to accept the flag even when, as here, there is no vLLM base to name (`docs/FRAMEWORK.md`
     # §9: the chain's vLLM-install gate runs regardless of what a module needs).
     ap.add_argument("--base", default="none", help="unused — this module serves no vLLM base")
+    # `MARGS=""` FALLS TO chain_serve.sh's OWN DEFAULT (`../../CLAUDE.md` §3: bash's `${VAR:-x}`
+    # substitutes on empty, not only on unset) — `--adapter kernel=... --adapter domain=...`
+    # arrived here once already and crashed argparse four times before the first token was even
+    # embedded. Accepted and ignored, the same defence `embed_router.py`'s own `main()` uses,
+    # so a MARGS mistake here costs nothing rather than a session.
+    ap.add_argument("--adapter", action="append", default=[], help="pool adapters (ignored)")
     ap.add_argument("--out", default="needle_router.json")
     a = ap.parse_args()
     from training.harness import router_sets
