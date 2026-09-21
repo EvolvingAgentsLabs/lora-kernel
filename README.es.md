@@ -13,18 +13,33 @@
 
 *[English](README.md)*
 
-lora-kernel es el runtime de un servicio: una **API compatible con OpenAI** que resuelve
-localmente lo que cae dentro de una región medida y manda el resto a un modelo de frontera,
-con **instancias de OpenClaw por tarea** encima. Una región es un experto QLoRA chico sobre
-un modelo chico residente. Lo que un experto sabe *hacer* está en sus pesos; lo que necesita
-*saber* está en una biblioteca de notas markdown que fue entrenado para navegar — así que
-cuando un protocolo cambia se edita un archivo en git, y nada se reentrena.
+## El problema
 
-Cada afirmación de abajo está marcada **[ran]** (observada en este repositorio, con la
-corrida nombrada), **[read]** (de código fuente o de un paper) o **[spec]** (decidido,
-todavía no construido). **Todo lo medido hasta ahora es sobre suites generadas; ningún
-tráfico real pasó todavía por acá.** Eso es lo primero que hay que saber de los números, y el
-núcleo de la 1.0 está *especificado*, no shippeado.
+Una organización que funciona con agentes sigue mandando el mismo puñado de trabajos que se repiten
+— dar curso a un inbox, registrar un pedido de mantenimiento, responder desde una lista de control —
+a un modelo de frontera en la nube, a precio de frontera, sobre datos que muchas veces no deberían
+salir del edificio. La respuesta habitual, entrenar (fine-tuning) un modelo sobre los resultados,
+cambia eso por un problema peor: los hechos terminan **horneados en los pesos**, así que el día que
+un procedimiento cambia no hay un archivo para editar — sólo un reentrenamiento, y hasta que eso pasa
+el modelo responde con total confianza lo viejo.
+
+lora-kernel guarda los hechos en una biblioteca de notas markdown que una persona puede leer y
+corregir, y entrena a un modelo chico sólo para que encuentre el camino hasta la correcta. Lo que un
+experto sabe *hacer* — qué herramientas usar, en qué orden, bajo las reglas propias de esta
+organización — vive en los pesos de un adaptador chico, entrenado con SFT común. Lo que necesita
+*saber* — el valor vigente, el procedimiento vigente — queda afuera de los pesos, en un archivo. Un
+router muy chico decide en qué territorio de qué experto cae un pedido, y se abstiene hacia un
+modelo de frontera para todo lo demás, así que nada se responde fuera de su terreno entrenado.
+
+Se entrega como una **API compatible con OpenAI** — un modelo residente, varios adaptadores, cada
+pedido servido por el suyo — con **instancias de OpenClaw por tarea** encima.
+
+Cada afirmación de abajo está marcada **[ran]** (observada en este repositorio, con la corrida
+nombrada), **[read]** (de código fuente o de un paper) o **[spec]** (decidido, todavía no
+construido) — y todo lo medido hasta ahora es sobre suites generadas, todavía no sobre tráfico real.
+Los números vivos, incluido lo que no pasó, están en [`docs/es/PLAN.md`](docs/es/PLAN.md) y
+[`docs/es/RECORD.md`](docs/es/RECORD.md); lo que sigue es lo que no cambia cada vez que alguno de
+ellos se mueve.
 
 ---
 
@@ -87,73 +102,6 @@ no se reentrena, porque lo que aprendió fue a obedecer los enlaces y leer las n
 
 ---
 
-## Qué se mide
-
-Sobre `Qwen2.5-3B-Instruct`, la base sobre la que se construyó el pool — y, desde el hito 1, sobre `Qwen3.5-4B`, donde los dos miembros liberados sostienen sus números.
-
-| qué | el número | corrida |
-|---|---|---|
-| **Un vLLM, una base, varios adaptadores**, cada pedido servido por el suyo | identidad `applied` en cada miembro, herramientas alcanzables, stop honrado | **[ran]** P56 |
-| **`email-full@v1`** — triage de inbox, herramientas y juicio en un solo adaptador | **0,989** en mensajes humanos contra **0,345** de la base; re-servido y re-entrenado, ambos empatan la corrida grabada | **[ran]** P36, P57 |
-| **`desk-commitment@v1`** — un segundo miembro sobre el *mismo inbox*, otra pregunta | **240/240** contra **38/240** de la base, discordantes **202 : 0** | **[ran]** P64 |
-| **El pool sobre la familia Qwen 3.x** — los dos miembros reentrenados sobre `Qwen3.5-4B`, mismos corpus, misma receta (`@v2`) | `email-full` **471/475**, exactamente su release de Qwen 2.5 (empate, 1 : 1); `desk-commitment` **240/240** (empate); identidad `applied` en los dos adaptadores de receta completa | **[ran]** M1 |
-| **Un experto que razona, servido como le enseñó su corpus** — mecánica de fluidos, cadenas de 6 a 9 pasos con una calculadora y un manual por caso | **90/90**, donde el mismo adaptador sobre los mismos casos sacó **11/90** a través de mensajes `tool_calls` (79 : 0, pareado) — y **24 : 0** contra el 66/90 de la frontera. Ningún caso evaluado está en su corpus | **[ran]** M7 arm 0b |
-| **En un 3B, un procedimiento simplemente pegado en el prompt no se sigue** | base + un procedimiento de 914 tokens: **0 llamadas a herramientas en 351/351**, debajo de la barra de mayoría; el experto entrenado le gana **137 : 1** | **[ran]** P61 |
-| **La API rutea por pedido**; el cliente no nombra modelo | replay sobre 240 casos: 0,546 → 0,775, 0 mal-ruteados | **[ran]** P41, P62 |
-| **OpenClaw, en vivo, desde una laptop** | 40/40 turnos locales, 0 llamadas inventadas, 19/32 turnos humanos llaman a una herramienta | **[ran]** P63 |
-| **A un miembro hay que servirle su propia superficie de herramientas** | ofrecidas las 54 herramientas de OpenClaw copia tags del bloque: 225 de 227 llamadas rechazadas; podado, 8 de 1160 | **[ran]** P59 |
-| **vLLM aplica un LoRA sobre un modelo grande cuantizado** | compuerta de logprobs 3/3, \|Δℓ\| medio 0,22–0,49 nats contra un base-vs-base de 0,000 | **[ran]** P60 §3b |
-| **Los adaptadores de Qwen 3.5 son servibles** — "vLLM los ignora" era un desajuste de nombres | mismos pesos, 496 tensores renombrados, sin reentrenar: `not applied` → **`applied`** | **[ran]** D2 |
-
-**La única lección debajo de la mitad de esa tabla: servir a un experto tal como le enseñó su
-corpus.** Bajo un system prompt ajeno, 2 de 32 turnos en vivo llaman a una herramienta; bajo
-el suyo, 19 de 32 (P63). A través de mensajes `tool_calls` un experto de inbox saca 0,808, con
-los resultados escritos inline 0,992 (P55). Y la frase que más citó este repositorio —
-*"el experto que decide funciona, el experto que razona falla"* — se leyó de un harness que
-nunca le mostró al experto sus resultados de la forma en que había sido entrenado para
-leerlos: 11 de 90 se convirtieron en 90 de 90 (M7 arm 0b). La memoria está construida
-exactamente sobre ese canal.
-
-## Qué no está medido, o no funciona
-
-- **No hay datos reales.** Cada suite hasta ahora se genera acá, y una suite generada no puede
-  contener una dificultad que su autor no pensó **[ran]** P50. La primera región real ya tiene
-  nombre — **procedimientos de enfermería** (*Nursing Skills* de Open RN, CC BY 4.0) — y sólo está
-  medido su margen: un 4B sin entrenar pasa de 29/48 a libro cerrado a 45/48 con la nota correcta
-  abierta, y de 0/12 a 12/12 en un valor que cambió el protocolo de una unidad **[ran]** M5. Todavía
-  no hay nada entrenado sobre ella, y la recuperación no está probada.
-- **La afirmación central de la memoria se midió una vez y no pasó.** Que una biblioteca extiende a un
-  experto a un *procedimiento sobre el que nunca entrenó*: en 56 recorridos retenidos el brazo con
-  biblioteca saca 35, el mismo experto sin la biblioteca 2, el base sin entrenar navegando solo 0 — y el
-  base sin entrenar *con las notas correctas delante* 45 (6 : 16 pareado, $p=0{,}052$) **[ran]** M7-W5.
-  La navegación se transfirió; leer una nota que da dos valores, una forma que el corpus nunca mostró, no
-  (0 de 11) — y un segundo corpus que *sí* mostró esa forma, sobre ocho notas, tampoco la enseñó: 4 de 15 en
-  una nota nueva, 17 de 18 en las entrenadas, el par sigue en empate con 12 : 16 **[ran]** M7-W5c. La biblioteca, el árbitro y el corpus están construidos (W1–W4); el radar llega a recall@3
-  0,64 contra una vara de 0,80 (W3). Sin
-  ella, un especialista apenas fuera de su región está confiadamente equivocado — 30/30
-  adentro, 1/20 en familias hermanas **[ran]** P14.
-- **El router sigue siendo un diccionario de palabras clave.** Su primer reemplazo aprendido,
-  un modelo de n-gramas de cada corpus, es más seguro sobre texto ajeno (0 de 128 servidos
-  localmente contra el 59 del diccionario) y pierde **todos** los pedidos legítimos de un
-  remitente que el generador nunca sacó, 120 de 120 **[ran]** M2.
-  Un modelo de embeddings hace lo mismo, y no por falta de un umbral mejor: un pedido de un remitente
-  no visto y *el listado propio de un miembro seguido de otra tarea* quedan a la misma distancia del
-  corpus **[ran]** M2 brazo 2. Lo que queda es una representación que separe la tarea de su
-  contenido — la proyección aprendida del radar, alcanzada desde el lado del router.
-- **Sobre la base nueva un adaptador tiene menos que agregar.** El `Qwen3.5-4B` pelado saca 0,632 en
-  email humano donde el 3B sacaba 0,345 **[ran]** M1. Los miembros igual empatan a sus releases
-  viejos; cuánto margen deja un 4B es una pregunta que toda región nueva ahora tiene que hacerse primero.
-- **Fuera de su profundidad de entrenamiento, el experto que razona está de nuevo sin medir.**
-  El resultado de que resuelve de más los problemas más cortos (P45) llegó por el camino de
-  `tool_calls`, y sigue abierto.
-- **El ahorro en plata nunca se midió**, y ninguna señal ve todavía una respuesta que sea
-  coherente y equivocada.
-
-El registro completo, con todo lo que falló y los instrumentos que mintieron, es
-[`docs/es/RECORD.md`](docs/es/RECORD.md).
-
----
-
 ## El camino del pedido
 
 ![Cinco estaciones sobre una línea: cliente, proxy, router, experto con su biblioteca, respuesta. Del router sale una rama punteada que corre por abajo hasta la frontera y se reúne en la respuesta. Debajo del experto, tres teclas: search, open, calc.](docs/img/request-path.png)
@@ -211,52 +159,45 @@ Lo que comparten es lo que hace que una región merezca un experto: **los mismos
 repetidos a diario, con reglas locales que difieren del manual, sobre datos que no deberían salir.**
 La primera biblioteca de este repositorio está armada con los procedimientos paso a paso de un manual
 abierto ([`knowledge/nursing-iv/`](knowledge/nursing-iv/)). Lo que *no* está
-establecido está en la sección de arriba, y vale acá entero: todavía no hay datos reales, y la
+establecido está más abajo, y vale acá entero: todavía no hay datos reales, y la
 afirmación de que una biblioteca extiende a un experto a un procedimiento que nunca entrenó no está
 probada.
 
-## Del runtime a un framework
+## Cómo está parado
 
-Lo que este repositorio es hoy es un **runtime medido**: un pool de expertos detrás de una API, una
-biblioteca con su árbitro, y las compuertas que deciden qué se libera. Lo que necesita el dibujo de
-arriba es un **framework** — algo que un tercero completa sin leer nuestro código. La distancia entre
-los dos está escrita en [`docs/es/FRAMEWORK.md`](docs/es/FRAMEWORK.md); en resumen:
+**Ya corriendo.** Una instancia de vLLM sirve varios adaptadores LoRA sobre una sola base residente,
+cada pedido ruteado a su propio adaptador, en vivo a través de la API compatible con OpenAI y a
+través de OpenClaw **[ran]** — el mecanismo de arriba no es un diagrama, responde turnos reales hoy.
+Un experto entrenado, servido exactamente como le enseñó su corpus, llega a precisión de nivel
+humano en el trabajo para el que se entrenó (triage de inbox, 0,989 contra 0,345 de una base pelada)
+**[ran]**.
 
-| | |
-|---|---|
-| **funciona [ran]** | varios adaptadores sobre un modelo residente · dos expertos liberados a través de una compuerta pareada · la API que poda, pone el prompt y rutea · OpenClaw en vivo · el formato de la biblioteca, el lint, el árbitro · **navegación que se transfiere a un procedimiento nunca entrenado** |
-| **todavía no** | la afirmación central de la memoria (tres corridas, no pasa: el adaptador navega, el base *sin entrenar* lee mejor; una política de respuesta que deja al base leer los valores: un empate, 5 : 0, en un set escrito después del congelamiento — lee 21/21 donde se abrió una nota, y las 11 a las que nunca llegó son la *consulta memorizada* del adaptador **[ran]** W5d) · la búsqueda de notas (0,64 contra 0,80) · un router aprendido · mover un experto que razona entre bases |
-| **existe desde entonces, cero GPU [ran]** | **el rol como ruta** (`auto:<rol>`; dice *cuál* miembro, nunca *si corresponde*) · el **paquete de rol** — `roles/<rol>/role.toml`, cada línea chequeada contra su artefacto; tres miembros expresados; todavía no es la fuente que lee el código · **la mitad de sólo código de la capa de herramientas** — `examples/school/`, siete roles (el roster completo del diagrama de referencia), trece herramientas, una suite adversarial a **0 fugas** sobre dos inquilinos, los dos servidores MCP verificados con `mcp probe` contra una instancia real de OpenClaw; `examples/distributor/` con la misma forma, sin expandir · **un primer precio sobre el replay de P41/P62** (`training/harness/bill.py`) — la factura real de hoy de `gemini-3.8-flash` para el 37,5 % que sale, $0,18; el costo en dólares de la propia GPU sigue sin tasar, nombrado en vez de adivinado |
-| **no existe** | la mitad del lado del modelo de la capa de herramientas — si un *modelo* alguna vez intenta la llamada entre inquilinos — un turno de OpenClaw necesita una cuenta detrás, preparado, no corrido · aislamiento por usuario · mediciones de concurrencia y latencia · un instalador · cualquier idioma que no sea inglés · cualquier *escritura a un sistema de registro real* medida (las escrituras del almacén de juguete son reales; las de un cliente no) |
-| **sigue, lo más barato primero** | que el runtime emita la primera búsqueda desde el propio enunciado del pedido (una sesión, sin entrenar — la falla de W5d fue la consulta memorizada del adaptador, y cero GPU dice que la nota queda listada 16/16) · un turno real de OpenClaw contra `examples/` (con tu propia cuenta, `examples/README.md`) — la mitad del lado del modelo del falsificador de 0 fugas · después un segundo esqueleto de role pack, o el generador de corpus que convierte las herramientas de `examples/school/` en datos de entrenamiento para un primer LoRA sobre este dominio |
+**La pregunta abierta sobre la que gira todo el diseño.** ¿Una biblioteca realmente le permite a un
+experto manejar un procedimiento sobre el que nunca entrenó, como lo haría una persona buscándolo?
+La navegación se transfiere — el hábito entrenado de buscar, abrir y seguir enlaces funciona sobre
+notas que el adaptador nunca vio — pero *leer* una nota cuya forma el corpus nunca mostró todavía no
+se transfiere de manera confiable (35 de 56, contra un base sin entrenar al que se le entregó la
+nota correcta y sacó 45 de 56). Ese es el resultado de este README con más chances de seguir siendo
+cierto la semana que viene, porque el resto del plan está construido para responderlo a continuación
+**[ran]** `docs/PLAN.md` hito 7.
 
-Una arquitectura de cinco fases (dos dominios, Auth0, seguridad a nivel de fila de Postgres, Docker
-Compose, decodificación especulativa) llegó pegada a una sesión el 2026-09-20 y se leyó completa
-contra esta tabla — la mayor parte ya estaba construida, ya secuenciada más adelante, o bloqueada por
-un RFC de vLLM; la única brecha que nombró correctamente y este repositorio no había cerrado (permiso
-fuera del modelo) es el paso de arriba. La lectura, fase por fase, está en
-[`docs/FRAMEWORK.md`](docs/FRAMEWORK.md) §9; la replanificación en [`docs/PLAN.md`](docs/PLAN.md) §0.
+**Todavía sin resolver.** El router sigue siendo un diccionario de palabras clave — sus dos
+reemplazos aprendidos ya están medidos y ninguno pasa, por la misma razón: un pedido de un
+remitente no familiar y un listado familiar seguido de una tarea no familiar se parecen para los
+dos **[ran]** `docs/PLAN.md` hito 2. Todavía no se midió tráfico real en ningún lugar de este
+repositorio.
 
-## Adónde va
+**Todo lo demás — cada hito, cada brazo, cada corrida — se mueve con el proyecto y no se repite
+acá, a propósito.** [`docs/es/PLAN.md`](docs/es/PLAN.md) es el estado vivo, con una compuerta y una
+condición de falsificación escritas antes de que corra cada hito. [`docs/es/RECORD.md`](docs/es/RECORD.md)
+es el registro completo, incluido lo que falló y los instrumentos que mintieron.
+[`docs/es/FRAMEWORK.md`](docs/es/FRAMEWORK.md) es el análisis de brechas contra ser un framework
+genérico, autocontenido y escrito para que lo revise otro modelo.
 
-Cada hito tiene una compuerta y el brazo que puede matarlo, escritos antes de correr
-([`docs/es/PLAN.md`](docs/es/PLAN.md)). Los brazos se compran en secuencia, nunca como grilla.
-
-| # | hito | estado · el brazo que lo mata primero |
-|---|---|---|
-| **1** | el pool sobre Qwen 3.x chico (`Qwen3.5-4B`) | ✅ **[ran] — movido.** Los dos miembros empatan a sus releases de Qwen 2.5; manifiestos `@v2` |
-| **2** | el router como un modelo chico de los corpus | brazos 1 y 2 **[ran]**, ninguno pasa: los dos pierden todo pedido de un remitente no visto · sigue una proyección que factorice la tarea del contenido, sobre conjuntos nuevos |
-| **7** | **la memoria** — el núcleo de la 1.0 | brazo 0 y 0b **[ran]**: el canal funciona · bajo una trayectoria **oráculo** — exactamente las notas correctas abiertas — el experto igual saca ~1/20 en un procedimiento de una familia hermana que nunca entrenó · **W1–W4 construidos; W5 [ran], no pasa:** 35/56 contra el base sin entrenar que lee, 45/56 — la navegación se transfirió, una nota de dos valores no se leyó (atribuido **[ran]** W5b: con el base escribiendo la línea quedan 0 de esas 12 — una forma que el corpus nunca mostró) · **W5c [ran], falsado:** mostrada la forma sobre ocho notas, el adaptador aprende las notas, no la lectura — 4/15 |
-| **5** | la primera región real: procedimientos de enfermería | margen **[ran]**: 29/48 a libro cerrado → 45/48 con la nota abierta, 0/12 → 12/12 en un valor del sitio · sigue: el mismo contenido como *recorridos*, contra la base sin entrenar leyendo las mismas notas |
-| **3–4** | la mitad grande de un par, y la aceptación entre las mitades | no empezado · grande + LoRA no le gana a chico + LoRA; después: aceptación no mayor que bajo el modelo grande pelado |
-| **6** | la política del servicio, con la factura | primera pasada **[ran]** sobre el replay de P41/P62: la factura real de hoy a la frontera $0,18, evitada por la porción local $0,11 · una fracción de dólar a esta escala — lo que decide es el costo de la propia GPU, todavía sin tasar |
-
-**Restricciones de ingeniería que esto carga — hechos, no objeciones.** Todo lo que corre un
-modelo corre en Colab, en sesiones de menos de una hora; nada corre en la máquina del
-usuario. Un drafter adaptado con LoRA es un RFC de vLLM, no una feature **[read]**, así que
-la aceptación se mide por teacher forcing y no afirma ninguna aceleración. Un 27B es trabajo
-de A100 en 4 bits. El canal `<think>` de la línea 3.x está apagado para los miembros. Gemma 4
-(2B / 12B) es la familia alternativa nombrada y está bloqueada en PEFT **[ran]** P29.
+**Restricciones de ingeniería, decididas y no en discusión.** La familia es Qwen 3.x — chico
+`Qwen3.5-4B`, grande `Qwen3.8-27B` — entrenada y servida en Colab, en sesiones de menos de una hora,
+nunca en la máquina de un usuario. Un 27B es trabajo de A100 en 4 bits. Gemma 4 es la alternativa
+nombrada y por ahora está bloqueada en PEFT.
 
 ---
 
@@ -292,12 +233,12 @@ modelo).
 | `training/harness/release_gate.py`, `pool_second.py`, `pool_base.py`, `verify_substrate.py` | la puerta por la que entra un miembro, sobre esta base o sobre otra |
 | `training/harness/accept_rank.py` | el loop en modo corpus — parar en el tag de cierre, escribir el resultado inline, continuar — sobre el que está construido el runtime de la memoria; y la aceptación por teacher forcing |
 | `training/harness/corpus_mode_arm.py`, `training/physics/result_use.py` | un experto re-servido como le enseñó su corpus; una falla leída donde ocurre — *¿se usó el resultado?* |
-| `training/harness/corpus_router.py`, `embed_router.py`, `router_sets.py` | los dos brazos aprendidos del router, y los ocho conjuntos sobre los que se puntúa cualquier router |
+| `training/harness/corpus_router.py`, `embed_router.py`, `router_sets.py` | los brazos aprendidos del router, y los ocho conjuntos sobre los que se puntúa cualquier router |
 | `training/nursing/` | el primer texto acá que nadie generó: tres checklists de terapia IV, 72 preguntas verificables |
 | `training/harness/lora_matrix.py`, `rekey.py`, `awq_lora_gate.py` | si esta base — chica o grande — sirve un LoRA o no |
 | `training/harness/chain_serve.sh` | el chain de Colab: aprovisionar, correr desacoplado, streamear, traer los pesos a medida que aparecen, reanudar |
 | `training/harness/bill.py` | tasa un replay existente a tarifas reales de frontera — cero GPU, nada se re-corre (`results/M6-bill-20260921/`) |
-| `examples/` | **la organización de referencia, sólo código, antes de que exista ningún adaptador** — `school/` (7 roles, 13 herramientas) y `distributor/` (6 roles, 11 herramientas), los dos con dos inquilinos; un almacén de juguete, una capa de herramientas que refuerza el permiso fuera del modelo, un servidor MCP por dominio, una suite adversarial a 0 fugas; `examples/README.md` dice cómo apuntar tu propio OpenClaw |
+| `examples/` | **la organización de referencia, sólo código, antes de que exista ningún adaptador** — `school/` y `distributor/`, los dos con dos inquilinos; un almacén de juguete, una capa de herramientas que refuerza el permiso fuera del modelo, un servidor MCP por dominio, una suite adversarial a 0 fugas; `examples/README.md` dice cómo apuntar tu propio OpenClaw |
 | `releases/`, `results/` | los manifiestos, y las corridas que citan los documentos |
 
 ## Documentos
@@ -306,7 +247,7 @@ modelo).
 |---|---|
 | [`docs/es/MEMORY.md`](docs/es/MEMORY.md) | **la memoria, tal como se va a construir** — biblioteca, radar, tres verbos, el hábito del LoRA, el árbitro; orden de construcción para la 1.0 |
 | [`docs/es/KNOWLEDGE-TRAJECTORIES.md`](docs/es/KNOWLEDGE-TRAJECTORIES.md) | el *por qué* detrás de todo esto, autocontenido, escrito para que lo revisen otros modelos: diez hallazgos, cinco estrategias, diez preguntas |
-| [`docs/es/FRAMEWORK.md`](docs/es/FRAMEWORK.md) | **estado y brechas, autocontenido, escrito para que lo revisen otros modelos** — qué funciona, qué no, y qué falta para que esto sea un framework genérico para una organización con un agente por rol: trece brechas, ocho interfaces, siete pasos |
+| [`docs/es/FRAMEWORK.md`](docs/es/FRAMEWORK.md) | **estado y brechas, autocontenido, escrito para que lo revisen otros modelos** — qué funciona, qué no, y qué falta para que esto sea un framework genérico para una organización con un agente por rol |
 | [`docs/es/ARCHITECTURE.md`](docs/es/ARCHITECTURE.md) | el sistema: expertos, router, memoria, runtime, el par, la frontera — y dónde se ubica dentro de una organización (§9) |
 | [`docs/es/PLAN.md`](docs/es/PLAN.md) | el plan vivo — hitos, compuertas, brazos que matan |
 | [`docs/es/RECORD.md`](docs/es/RECORD.md) | todo lo medido, incluido lo que falló; cada línea nombra su corrida |
