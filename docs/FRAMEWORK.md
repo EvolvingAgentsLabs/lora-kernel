@@ -208,6 +208,60 @@ Steps 1–3 need no training. Step 4 is the first that does.
 10. What would make you *not* build this — which row of §3 is the one that should stop the project if
     it does not move?
 
+## 9. A pasted architecture, read against this order (2026-09-20)
+
+A five-phase plan arrived pasted into a session — an educational centre and a distributor unified
+under one kernel, speculative decoding, Postgres row-level security behind Auth0, a Docker Compose
+deployment. **A pasted brainstorm is not a fact** — none of its numbers (1.8–2.3× from speculation,
+40–65 % of tokens "structural", a 35 % acceleration bar) are marked here, because nothing in this
+repository produced them. What is done below is read it against §5–§7, which were written the same
+day from measurements that already exist, and answer one question: does it change what is next?
+
+**Mostly, it does not — it re-derives §7 from further away, and jumps ahead of it.** Row by row:
+
+| the pasted phase | reads here as |
+|---|---|
+| Fase 4, role packs per domain | **already built [ran] F3.** `roles/<role>/role.toml` + `rolepack.lint`; both released members re-expressed, served prompt and block byte-identical. The "two domains" ask is step 4 below, done once, not twice at once (§ below) |
+| Fase 3, tool layer with permission outside the model | **the one genuinely open gap (row E), correctly named.** But Auth0 and Postgres RLS are an *implementation*, not the falsifier: row E's gate is a toy store, two roles, one forbidden row, an adversarial suite at 0 leaks — a plain permission check in the tool layer clears that gate as cheaply as RLS does. Stand up Postgres and an IdP only if the toy version cannot be made to pass, which is not yet known |
+| Fase 2, who navigates vs. who reads | **already this document's own finding (§4), and already run twice more than the pasted plan knows.** Its own falsifier — "the hybrid scheme must beat the LoRA alone on blind data or stop" — is *already decided, twice, and reads as a stop*: W5's `withlib` 35/56 against `base-reads` 45/56 (6 : 16, $p=0.052$); W5c's retrained pair 42/66 against 46/66 (12 : 16, $p=0.57$, a tie). What is *not* decided is W5b's narrower question — a policy that splits by kind of task, not "compose everything" — and that is **W5d, pre-registered 2026-09-20, not yet run**: one L4 session, no training, cheaper than anything else on this list |
+| Fase 1, speculative decoding | **not required by 1.0** (`PLAN.md` §0 says so already) and half-blocked: a LoRA-adapted drafter is a vLLM RFC, not a shipped feature (#52038 **[read]**, `RECORD.md` §5) — Option B in the pasted plan does not run on a served LoRA member today. Option A (prompt-lookup / n-gram, zero VRAM, no drafter) *does* run today, on the pool as it already exists, and is the cheap version: a bonus arm measured on the 240-case replay already on disk (P57, P64) — reusing an existing instrument, not a new benchmark — never a phase-1 prerequisite |
+| Fase 5, concurrency, canary, Docker Compose | **already sequenced — steps 5 and 7 of §7, after step 4's gate, not before it.** Nothing here moves them earlier: a canary across two domains needs two domains, and installation is worth documenting only once 1–6 say there is something worth installing |
+
+**What changes: nothing in §7's order, one thing in its detail.** Step 4, *a reference organisation
+on a neutral domain*, was written as "a generated distributor" before this arrived; it now reads as
+*one* neutral domain — the pasted plan's second domain (whichever is not built first) is the cheap
+half, bought only after step 4's gate passes, by re-running the same role-pack skeleton (gap row C)
+on a different `db_schema` and a different set of notes, not by standing up new infrastructure. Two
+domains at once is the grid this project's own rule already forbids (`../CLAUDE.md` §3, "buy arms
+in sequence, never as a grid") — it doubles the cost of the same falsifier.
+
+**The operative close, in order, starting now:**
+
+1. **W5d** — pre-registered, zero new design, one L4 session, no training
+   ([`BRIEF`](../results/M7-W5d-answer-policy-20260920/BRIEF.md)). It decides the read/write split a
+   role's *answer policy* needs, which step 4's role packs declare and do not yet have a measured
+   value for.
+2. **Step 4, the code-only half — [ran] 2026-09-20, zero GPU, no model** (`examples/`). A toy
+   relational store and a tool layer that checks permission outside the model, for **both**
+   domains — `examples/school/`, `examples/distributor/`, one shared skeleton
+   (`examples/common/`), so the second domain cost re-running the first's shape on a different
+   schema, not new infrastructure, and building both did not double the falsifier's cost the
+   way training two would have. **Falsifier bought and passed:** an adversarial suite (prompt
+   injection inside a note, inside a record, and a direct ask) tries to make a role reach a row
+   outside its tenant — **30 cases, 0 leaks**, direct and through an MCP layer a real OpenClaw
+   instance can call today. **Not yet bought — the falsifier's model-side half:** whether a
+   *model* (a bare frontier one through OpenClaw, then a trained expert) ever *tries* the
+   cross-tenant call. OpenClaw itself is installed and an isolated profile with earlier live
+   state already exists (`~/.openclaw/bin/openclaw`, v2026.9.4, P63) — checked 2026-09-21, after
+   an earlier `PATH`-only check said otherwise; what blocks the arm is a model to drive it, not
+   the CLI: the profile's provider points at the Colab-served proxy, not running this session,
+   and no frontier key is in reach here. Role packs, a library per role with the
+   conditional shape over many notes, and any adapter remain unbought — nothing here trains.
+3. **Named, not bought, until the model-side half of step 2 passes:** Postgres RLS and Auth0
+   specifically (row E's principle, not its only implementation); concurrency and the cross-role
+   canary (step 5); the bill (step 6); Docker Compose and installation (step 7); prompt-lookup
+   speculative decoding, as a bonus arm on existing fixtures, never a prerequisite.
+
 ---
 
 *Pointers: [`ARCHITECTURE.md`](ARCHITECTURE.md) the system · [`MEMORY.md`](MEMORY.md) the memory's

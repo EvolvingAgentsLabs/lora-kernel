@@ -288,3 +288,26 @@ What exists, what is missing and the order to build it — thirteen gaps, eight 
 each with the result that would stop it — is [`FRAMEWORK.md`](FRAMEWORK.md). The scope line of §8 does
 not move: the framework is the runtime, the formats, the gates and *reference* role packs on generated
 data; a customer's corpora and the pipeline from traces to a release are not in this repository.
+
+**Read against a pasted architecture, 2026-09-20.** A five-phase plan — an educational centre and a
+distributor under one kernel, speculative decoding, Postgres row-level security behind Auth0, Docker
+Compose — arrived pasted into a session and was checked against the gap table above: most of it was
+already built (role packs, F3), already sequenced later (concurrency, the bill, installation), or
+blocked (a LoRA-adapted drafter is a vLLM RFC, not a feature). One gap it named correctly and this
+repository had not closed — permission enforced outside the model, not asked of it — becomes the
+next step, scoped to **one** neutral domain, not two, with a toy store standing in for Auth0/Postgres
+RLS until shown insufficient, gated at **0 leaks** on an adversarial suite. `W5d` — the read/write
+split a role's answer policy needs — runs first: it is cheaper and the next step's role packs already
+declare a policy they have no measured value for. Full reading, phase by phase: [`FRAMEWORK.md`](FRAMEWORK.md)
+§9; the plan entry: [`PLAN.md`](PLAN.md) §0.
+
+**The code-only half is built [ran] 2026-09-21** (`examples/`): `school/`, the user's own named main
+case, all seven roles the reference diagram draws — `dev`, `trainee`, `marketing`, `educador`,
+`compras`, `cfo`, `it` — thirteen tools, two tenants, an adversarial suite at **0 leaks**, both
+domains' MCP servers registered and `mcp probe`-verified against a real OpenClaw instance. What is
+still missing is the falsifier's model-side half (does a *model* ever try the cross-tenant call —
+needs an account behind an OpenClaw turn, not yet run) and any corpus or adapter — nothing here
+trains. Milestone 6's own first number also landed the same day: pricing the existing P41/P62 replay
+at real `google/gemini-3.8-flash` rates puts today's frontier bill for the 37.5 % sent out at **$0.18**
+— a fraction of a dollar at this scale, and the GPU's own cost is the one input still unpriced, named
+rather than guessed (`docs/PLAN.md` milestone 6, `results/M6-bill-20260921/`).

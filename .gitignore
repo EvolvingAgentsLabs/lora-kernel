@@ -2,6 +2,8 @@
 __pycache__/
 *.pyc
 *.tgz
+.venv-examples/
+.pytest_cache/
 # Trained adapters carried across Colab sessions — weights, not source.
 adapters/
 results/.answers/

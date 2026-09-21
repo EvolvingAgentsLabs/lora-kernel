@@ -314,3 +314,29 @@ cada uno con el resultado que lo detendría — está en [`FRAMEWORK.md`](FRAMEW
 alcance del §8 no se mueve: el framework es el runtime, los formatos, las compuertas y paquetes de
 rol *de referencia* sobre datos generados; los corpus de un cliente y la canalización de trazas a
 liberación no están en este repositorio.
+
+**Leído contra una arquitectura pegada, 2026-09-20.** Un plan de cinco fases — un centro educativo y
+una distribuidora bajo un solo kernel, decodificación especulativa, seguridad a nivel de fila de
+Postgres detrás de Auth0, Docker Compose — llegó pegado a una sesión y se chequeó contra la tabla de
+brechas de arriba: la mayor parte ya estaba construida (paquetes de rol, F3), ya secuenciada más
+adelante (concurrencia, la factura, instalación), o bloqueada (un drafter con LoRA es un RFC de
+vLLM, no una función). Una brecha que nombró correctamente y este repositorio no había cerrado —
+permiso reforzado fuera del modelo, no pedido al modelo — se vuelve el paso siguiente, acotado a
+**un** dominio neutral, no dos, con un almacén de juguete en lugar de Auth0/Postgres RLS hasta que se
+muestre insuficiente, con compuerta a **0 fugas** sobre una suite adversarial. `W5d` — la partición
+lectura/escritura que necesita la política de respuesta de un rol — corre primero: es más barato y el
+paso siguiente ya declara una política sin valor medido. Lectura completa, fase por fase:
+[`FRAMEWORK.md`](FRAMEWORK.md) §9; la entrada del plan: [`PLAN.md`](PLAN.md) §0.
+
+**La mitad de sólo código ya está construida [ran] 2026-09-21** (`examples/`): `school/`, el caso
+principal nombrado por el propio usuario, con los siete roles que dibuja el diagrama de referencia —
+`dev`, `trainee`, `marketing`, `educador`, `compras`, `cfo`, `it` — trece herramientas, dos
+inquilinos, una suite adversarial a **0 fugas**, los servidores MCP de los dos dominios registrados y
+verificados con `mcp probe` contra una instancia real de OpenClaw. Lo que todavía falta es la mitad
+del lado del modelo del falsificador — si un *modelo* alguna vez intenta la llamada entre inquilinos,
+necesita una cuenta detrás de un turno de OpenClaw, todavía no corrido — y cualquier corpus o
+adaptador — nada acá entrena. El primer número del hito 6 también aterrizó el mismo día: tasar el
+replay existente de P41/P62 a las tarifas reales de `google/gemini-3.8-flash` pone la factura real de
+hoy hacia la frontera, por el 37,5 % que sale, en **$0,18** — una fracción de dólar a esta escala, y el
+costo de la propia GPU es la única entrada que sigue sin tasar, nombrada en vez de adivinada
+(`docs/PLAN.md` hito 6, `results/M6-bill-20260921/`).
