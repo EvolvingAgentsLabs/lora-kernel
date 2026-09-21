@@ -172,3 +172,88 @@ GPU=L4 BRANCH=w5d-answer-policy RUN_DIR=$R MODULE=training.nursing.walks_policy 
 carry-in failed: stop, do not retrain inside this run. A second session resumes every record from
 `walks_policy.json`, which says `"finished"` only when the run is decided. Read the pairs from the
 JSON, not from the chain's clipped peek (W5 **[ran]**).
+
+## Result **[ran]** 2026-09-20 · FALSIFIED as written — 5 : 0 is a tie, and the eleven that are left are the adapter's own query
+
+One L4 session of the two allowed, ~21 min, scoring 11 min. The first attempt never started: the
+account had no premium quota (`chain_attempt0_no_quota.log`). Nothing frozen changed between the freeze
+and the run (`git diff bb694a7 origin/main` over the policy, the runner, the sets and this brief: empty).
+G1 `applied` 3/3. 0 transport errors, 0 `context`, 0 unreplayable. Read off `walks_policy.json`; the
+chain's clipped peek skipped two arms entirely, which is why.
+
+**The claim — the sets written after the freeze.** Headline n = 67 (35 carry + 32 value).
+
+| arm | right | format | unread | wrong | **credit** | value rows (32) | carry rows (35) |
+|---|--:|--:|--:|--:|--:|--:|--:|
+| `base-reads` — untrained, oracle's notes | 31 | 21 | 0 | 15 | **52** | 31 | 21 |
+| `withlib` — the adapter alone | 33 | 4 | 0 | 30 | **37** | 16 | 21 |
+| **`policy`** — adapter walks; base writes values | 38 | 4 | 0 | 25 | **42** | 21 | 21 |
+
+Paired, exact two-sided sign test on discordant pairs, $p = 2\sum_{k\le\min(b,c)}\binom{b+c}{k}2^{-(b+c)}$:
+
+| pair | credit | right-only |
+|---|---|---|
+| **`policy vs withlib`** — the pair that decides | **5 : 0, $p = 0.0625$ — tie** | 5 : 0, tie |
+| `policy vs base-reads` — W5's bar | 6 : 16, $p = 0.052$ — tie | 17 : 10, $p = 0.25$ — tie |
+| `withlib vs base-reads` | 6 : 21, $p = 0.006$ — REGRESSION | 17 : 15 — tie |
+| control (78): `policy vs withlib` — the no-regression gate | 75 vs 73, 2 : 0 — **holds** | |
+| control: `policy vs base-reads` | 75 vs 58, 17 : 0 | |
+
+`passed = false`, `policy_buys_something = false`. **The brief's own power line named this case before
+the run — five gained and none lost is $p = 0.0625$, a tie, and it is reported as one.** The verdict is
+not softened: on a set written after the freeze the policy does not beat the adapter alone.
+
+Slices: conditional value asked (16) — base-reads 16, withlib 7, **policy 12**; plain value asked (16) —
+15, 9, **9**; shared-line (22) — 7, 17, 17; control rate (10) — 3, 10, 10. The policy sent 32 of the 67
+headline tasks to the base and kept 35 on the adapter.
+
+**Read where it happens (zero GPU).** The policy changes only the 32 value rows. On the **21 where the
+walk opened the supplying note, the base reads it right 21 of 21** (the adapter alone: 16 of 21). The
+other **11 are all retrieval misses — and the searcher did what it was asked.** All 11 are `wiki` /
+`wiki-parent` rows (11 of the 16 that need a search; the 16 `step` rows need none). Faced with a new
+wording — *"how many minutes of pressure does the site get when…"* — the adapter did not search for
+that: in 9 of the 11 it wrote, word for word, **a query that occurs 68 times in its training corpus and
+belongs to another topic** — `turning an order into a number to set on a pump or a clamp` — walked the
+rates shelf, and computed a drip rate (`2 drops per minute`, `67 minutes`). The base, handed those
+notes, answered `Not in my library.` — correctly. Replayed with no model: **the same lexical searcher,
+given the request's own statement as the query on the wiki shelf, returns the needed note in the top 3
+on 16 of 16 of those rows — 11 of 11 of the missed ones** (without the shelf argument: 8 of 16). None of
+the 11 was reachable by a link from a note the walk had open (0 of 11): the wanted note is `uses`-linked
+only from the held-out step.
+
+So on this set **the reading problem is solved by the policy wherever there is a note to read, and the
+binding constraint is the query the adapter writes** — the same disease as the reading failure, one
+step earlier: *a model of a generated corpus learns the generator*; here it learned the generator's
+queries. The oracle's queries in W4/W5c's corpora were close to the notes' own wording, and the first
+two held-out sets kept that wording, which is why they showed 0 retrieval misses.
+
+**The attribution stage — W5c's sets, a first out-of-sample look, not the claim.** With 0 retrieval
+misses there, the policy lands exactly on its zero-GPU ceilings: headline **56/66** (withlib 42,
+base-reads 46) — `policy vs withlib` 14 : 0, $p = 0.0001$; `policy vs base-reads` 12 : 2, $p = 0.013$;
+conditional value 15/15 (withlib 4/15). Control **75/80** against withlib's 78 — 0 : 3, a tie. The
+asymmetry between the two stages is the point of writing a set after the freeze: the new wording is
+what exposed the query.
+
+**Redesign count of this arm: 0. The instrument's stays 2. W5's verdict stands.**
+
+**What follows — not run; the user's decision.** Each with its prediction and what would falsify it.
+
+1. **The query is the unknown — not the searcher.** Same adapter, same policy, same sets; the runtime
+   issues the *first* search of a conversation from the request's own statement (scoped to the shelf the
+   adapter names), and the adapter takes over from the listing. One L4 session, no training. *Prediction:*
+   retrieval misses on the value rows fall from 11 to ≤ 2 (the zero-GPU replay says the note is listed
+   in 16 of 16) and `policy vs withlib` becomes an improvement. *Falsified if* the adapter, shown the
+   right note in the listing, still opens another one on ≥ 6 of the 11 — then listing is not enough
+   and the walk itself is memorised. Caveat stated now: these sets are seen by us for the policy; a
+   pass is attribution, and the claim needs a fresh set. The adapter trained on listings produced by
+   *its oracle's* queries; a statement-query listing is a different distribution (the target less often
+   first) — report walk mechanics beside credit.
+2. **The radar (R0) behind the same interface** answers a different question than the one this run
+   raised — it cannot repair a query about the wrong topic — and is worth buying only after 1, on the
+   misses 1 leaves. The encoder (0.6B) would be hosted in the runner's process beside vLLM's 4B on one
+   24 GB card, not inside vLLM.
+3. **The library's own links** as the path to a wiki value: 0 of these 11 were reachable from what the
+   walk had open, so links alone would not have helped here; they help when the walk is on the right
+   procedure, which these walks were not.
+4. **Option E's many-note library regardless** — queries, like conditionals, have to be taught over many
+   notes and many phrasings, or left to something that is not the adapter.

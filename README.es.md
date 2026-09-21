@@ -225,10 +225,10 @@ los dos está escrita en [`docs/es/FRAMEWORK.md`](docs/es/FRAMEWORK.md); en resu
 | | |
 |---|---|
 | **funciona [ran]** | varios adaptadores sobre un modelo residente · dos expertos liberados a través de una compuerta pareada · la API que poda, pone el prompt y rutea · OpenClaw en vivo · el formato de la biblioteca, el lint, el árbitro · **navegación que se transfiere a un procedimiento nunca entrenado** |
-| **todavía no** | la afirmación central de la memoria (tres corridas, no pasa: el adaptador navega, el base *sin entrenar* lee mejor) · la búsqueda de notas (0,64 contra 0,80) · un router aprendido · mover un experto que razona entre bases |
+| **todavía no** | la afirmación central de la memoria (tres corridas, no pasa: el adaptador navega, el base *sin entrenar* lee mejor; una política de respuesta que deja al base leer los valores: un empate, 5 : 0, en un set escrito después del congelamiento — lee 21/21 donde se abrió una nota, y las 11 a las que nunca llegó son la *consulta memorizada* del adaptador **[ran]** W5d) · la búsqueda de notas (0,64 contra 0,80) · un router aprendido · mover un experto que razona entre bases |
 | **existe desde entonces, cero GPU [ran]** | **el rol como ruta** (`auto:<rol>`; dice *cuál* miembro, nunca *si corresponde*) · el **paquete de rol** — `roles/<rol>/role.toml`, cada línea chequeada contra su artefacto; tres miembros expresados; todavía no es la fuente que lee el código |
 | **no existe** | la **capa de herramientas** hacia los sistemas de registro, actuando como la persona que pregunta · aislamiento por usuario · mediciones de concurrencia, latencia y costo · un instalador · cualquier idioma que no sea inglés · cualquier *escritura* medida |
-| **sigue, lo más barato primero** | decidir quién lee (una sesión, sin entrenar; pre-registrado, esperando cuota de GPU) · hacer de los paquetes de rol la fuente de verdad · una organización de referencia sobre un dominio neutral y generado — tres roles, una base de datos de juguete, una biblioteca con la forma condicional sobre muchas notas |
+| **sigue, lo más barato primero** | que el runtime haga la primera búsqueda con el enunciado del pedido (una sesión, sin entrenar — lo que falló fue la consulta del adaptador; cero GPU dice que la nota queda entonces listada 16/16) · hacer de los paquetes de rol la fuente de verdad · una organización de referencia sobre un dominio neutral y generado — tres roles, una base de datos de juguete, una biblioteca con la forma condicional sobre muchas notas |
 
 ## Adónde va
 

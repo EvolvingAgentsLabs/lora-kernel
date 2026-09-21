@@ -603,6 +603,16 @@ Las cuatro que deciden la forma de un paso:
   bloque servidos idénticos byte a byte para los dos miembros liberados, registros derivables e iguales; el miembro de
   la memoria expresado como no liberado, su loop sin servir por la API. La cadena ahora se detiene cuando el backend
   rechaza el acelerador ([`F2`](../../results/F2-role-as-route-20260920/BRIEF.md), [`F3`](../../results/F3-role-pack-20260920/BRIEF.md)).
+- **2026-09-20** — memoria **W5d [ran]: FALSADO tal como estaba escrito.** En el set escrito después del
+  congelamiento, `policy vs withlib` es 5 : 0, $p=0{,}0625$ — un empate, como la línea de potencia del brief había
+  dicho que se leería ese caso (titular 67: política 42, withlib 37, base-reads 52; contra base-reads 6 : 16); el
+  control aguanta, 75 contra 73. Leído donde ocurre: donde el recorrido abrió la nota que da el valor, el base la
+  lee bien **21 de 21**; las otras 11 son fallas de búsqueda **causadas por la consulta del propio adaptador** —
+  ante una redacción nueva escribe una consulta de entrenamiento de otro tema, textual en 9 de 11, y calcula un
+  goteo — mientras el mismo buscador léxico, con el enunciado del pedido, lista la nota necesaria 16 de 16 (cero
+  GPU). Sobre los sets de W5c, 0 fallas, no es la afirmación: 56/66, 14 : 0 y 12 : 2 contra base-reads, control
+  75/80. Sigue, una sola incógnita: que el runtime haga la primera búsqueda con el enunciado
+  ([`BRIEF`](../../results/M7-W5d-answer-policy-20260920/BRIEF.md)).
 - **2026-09-20** — memoria **W5d pre-registrado, sin correr** — paso 1 de [`FRAMEWORK.md`](FRAMEWORK.md) §7, *decidir
   quién lee*. La política de respuesta: el adaptador camina siempre; escribe la línea cuando la tarea es llevar un
   procedimiento, decir que no está en la biblioteca, o calcular una tasa (la tasa se decidió sólo con la banda

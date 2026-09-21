@@ -214,10 +214,10 @@ two is written down in [`docs/FRAMEWORK.md`](docs/FRAMEWORK.md); in short:
 | | |
 |---|---|
 | **works [ran]** | several adapters on one resident model · two released experts through a paired gate · the API that prunes, prompts and routes · OpenClaw live · the library format, the lint, the referee · **navigation that transfers to a procedure never trained on** |
-| **does not yet** | the memory's central claim (three runs, not passed: the adapter navigates, the *untrained* base reads better) · note search (0.64 against 0.80) · a learned router · moving a reasoning expert across bases |
+| **does not yet** | the memory's central claim (three runs, not passed: the adapter navigates, the *untrained* base reads better; an answer policy that lets the base read values: a tie, 5 : 0, on a set written after the freeze — it reads 21/21 where a note was opened, and the 11 it never reached are the adapter's *memorised query* **[ran]** W5d) · note search (0.64 against 0.80) · a learned router · moving a reasoning expert across bases |
 | **exists since, zero GPU [ran]** | **the role as the route** (`auto:<role>`; says *which* member, never *whether*) · the **role pack** — `roles/<role>/role.toml`, every line checked against its artefact; three members expressed; not yet the source the code reads |
 | **does not exist** | the **tool layer** to the systems of record, acting as the person asking · per-user isolation · concurrency, latency and cost measurements · an installer · any language but English · any measured *write* |
-| **next, cheapest first** | decide who reads (one session, no training; pre-registered, waiting for GPU quota) · make the role packs the source of truth · a reference organisation on a neutral, generated domain — three roles, a toy database, a library with the conditional shape over many notes |
+| **next, cheapest first** | let the runtime issue the first search from the request's own statement (one session, no training — the adapter's query is what missed, zero GPU says the note is then listed 16/16) · make the role packs the source of truth · a reference organisation on a neutral, generated domain — three roles, a toy database, a library with the conditional shape over many notes |
 
 ## Where it goes
 

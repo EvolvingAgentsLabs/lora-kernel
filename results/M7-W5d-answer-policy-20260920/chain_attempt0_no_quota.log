@@ -1,0 +1,2 @@
+=== session 1 of 1 · srv195500 · L4
+[colab] Backend rejected accelerator 'L4'. You may not have quota or entitlement for this accelerator on your account. Try a different one (e.g. --gpu T4) or omit --gpu/--tpu for a CPU runtime.
