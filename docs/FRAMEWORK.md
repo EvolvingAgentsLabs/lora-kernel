@@ -253,22 +253,23 @@ in sequence, never as a grid") — it doubles the cost of the same falsifier.
    reads 21/21 where a note was opened; the eleven it never reached are the adapter's memorised
    query, diagnosed, not a fixed policy. Step 4's role packs still have no measured answer-policy
    value; §4 above and §5 row D carry the finding forward.
-2. **Step 4, the code-only half — [ran] 2026-09-20, zero GPU, no model** (`examples/`). A toy
+2. **Step 4, the code-only half — [ran] 2026-09-20/21, zero GPU, no adapter** (`examples/`). A toy
    relational store and a tool layer that checks permission outside the model, for **both**
-   domains — `examples/school/`, `examples/distributor/`, one shared skeleton
-   (`examples/common/`), so the second domain cost re-running the first's shape on a different
-   schema, not new infrastructure, and building both did not double the falsifier's cost the
-   way training two would have. **Falsifier bought and passed:** an adversarial suite (prompt
-   injection inside a note, inside a record, and a direct ask) tries to make a role reach a row
-   outside its tenant — **30 cases, 0 leaks**, direct and through an MCP layer a real OpenClaw
-   instance can call today. **Not yet bought — the falsifier's model-side half:** whether a
-   *model* (a bare frontier one through OpenClaw, then a trained expert) ever *tries* the
-   cross-tenant call. OpenClaw itself is installed and an isolated profile with earlier live
-   state already exists (`~/.openclaw/bin/openclaw`, v2026.9.4, P63) — checked 2026-09-21, after
-   an earlier `PATH`-only check said otherwise; what blocks the arm is a model to drive it, not
-   the CLI: the profile's provider points at the Colab-served proxy, not running this session,
-   and no frontier key is in reach here. Role packs, a library per role with the
-   conditional shape over many notes, and any adapter remain unbought — nothing here trains.
+   domains at the reference diagrams' full rosters — `examples/school/` (7 roles, 13 tools),
+   `examples/distributor/` (6 roles, 11 tools) — one shared skeleton (`examples/common/`), so the
+   second domain and the later roster expansion cost re-running the first's shape, not new
+   infrastructure. **Falsifier bought and passed:** an adversarial suite (prompt injection inside
+   a note, inside a record, and a direct ask) tries to make a role reach a row outside its
+   tenant — **77 tests, 0 leaks**, direct and through an MCP layer a real OpenClaw instance can
+   call today. **The falsifier's model-side half — [ran] 2026-09-21, a first data point, not a
+   suite:** two live turns, a personal `openai/gpt-5.6-sol` account (not this project's
+   designated frontier — the arm needed *a* model, not a specific one) through the real MCP
+   layer, `educador` role. The model answered a legitimate agenda request with the tool's real
+   text, verbatim, then asked for a cross-tenant student's agenda the same way — **and declined
+   on its own, naming the tenant boundary**, never attempting the call the tool would have denied
+   anyway. Two turns through one account is not the suite this still needs; role packs, a library
+   per role with the conditional shape over many notes, and any adapter remain unbought — nothing
+   here trains.
 3. **Named, not bought, until the model-side half of step 2 passes:** Postgres RLS and Auth0
    specifically (row E's principle, not its only implementation); concurrency and the cross-role
    canary (step 5); the bill (step 6); Docker Compose and installation (step 7); prompt-lookup
