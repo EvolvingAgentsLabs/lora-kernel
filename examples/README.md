@@ -141,17 +141,63 @@ which stands on the tool layer alone. Run through the **default** OpenClaw profi
 ongoing primary session; the MCP registration was added and removed around the two calls, per
 this file's own "bring your own account, leave nothing behind" rule.
 
+## A training corpus for `school/` — built [ran] 2026-09-21, zero GPU, no adapter yet
+
+`examples/school/generate_corpus.py` drives the real tool layer over a training-scale synthetic
+school (`build_training_db` — separate from, and ~40× larger than, `db.py`'s three-row
+adversarial fixture, so a corpus this size cannot just re-teach the rows `test_adversarial.py`
+already owns) and renders every row through `training.harness.tool_calls.tools_to_instruction`
+and each role's own `system_prompt` — the same functions a served member's block comes from, so
+the corpus cannot drift from what a trained adapter would actually be shown. Corpus mode: the
+call, then `=`, then the tool's own real return text, exactly as `accept_rank.py`'s loop injects
+it — never a `tool_calls` message.
+
+```bash
+python3 -m examples.school.generate_corpus --role all --n 300   # all 7 roles, one file each
+python3 -m pytest examples/school/test_generate_corpus.py -q    # 7 checks, zero GPU
+```
+
+**891 rows across the 7 roles** (`educador` 100, `compras` 161, `trainee` 300, `marketing` 300,
+`it` 25, `cfo` 3, `dev` 2), held out **by student, not by row** — an adapter that memorised one
+student's agenda cannot get credit for it phrased a different way at evaluation time.
+
+**Two real bugs, found by running it twice and reading the output, not by inspecting the code —
+both now regression-tested:**
+- **A write task leaked into what a later read task saw.** `order_draft` and `order_list` share
+  one connection so student ids stay stable across the corpus; the first version let that
+  connection carry `order_draft`'s inserts forward, so `order_list`'s completion grew from ~1 KB
+  to ~7 KB over one run — the model would have been taught that a list's length is a function of
+  how much of the corpus came before it, which no real query result is. Fixed: a write task's
+  insert is rolled back immediately after its own example is captured.
+- **The corpus was not reproducible from its own seed.** `ORDER BY random()` is SQLite's own
+  PRNG, not `random.Random(seed)`; Python's `hash()` is randomised per process — the exact bug
+  `../evolving-memory`'s central test already failed 6 of 30 seeds on, now caught here too.
+  Fixed: every draw goes through the seeded `rng`; `blake2b` replaces `hash()`.
+
+**A finding, not a bug: pure aggregate reads teach at most one example.** `cfo`'s `payroll_read`,
+`dashboard_summary` and `membership_status` take no arguments and return the *entire* current
+snapshot — there is exactly one correct answer per world state, so the corpus caps at one example
+per kind (three rows total for `cfo`) once the dedup gate (never write the same completion twice)
+is honoured. This is `../CLAUDE.md` §3's "knowledge that sits fixed in a corpus is memorised, and
+then it prices nothing" (P15, P21), observed again in a new shape: not a lookup table this time, a
+whole-organisation summary. Fixing it — if it is worth fixing — needs the underlying world
+redrawn between examples for those specific tools, not attempted here.
+
+**Not done: any LoRA trained on this corpus.** That is the next, GPU-requiring step, and it is
+the one this file does not take — `training/nursing/generate_walks.py`'s own pattern is generator
+first, training a separate step after.
+
 ## Reproduce it with expert models on Google Colab, through a tunnel — the other half, later
 
 The mechanism is already proven end to end, `docs/OPENCLAW.md` in full: your own OpenClaw talks
 to a proxy on your own Mac, which talks to `vLLM` on your own rented Colab card through a
 tunnel — `google/colab`, not this repository's, and `docs/SERVING.md` is the from-zero guide.
 **It is not wired to `school/`/`distributor/` yet** — that path serves a *trained* LoRA, and no
-adapter has been trained on either domain (`examples/README.md` above, and
-`docs/FRAMEWORK.md` §9 step 4). Once a corpus exists and a member is released for one of these
-domains, the same `--prune --member-prompt --auto` recipe `docs/OPENCLAW.md` §2 already uses
-points at it, with this domain's MCP server standing in for the inbox's — no change to either
-side's protocol, since both are the same MCP shape (`docs/OPENCLAW.md` §4b).
+adapter has been trained on either domain (the corpus above is the input to that, not the
+adapter itself; `docs/FRAMEWORK.md` §9 step 4). Once a member is trained and released for one of
+these domains, the same `--prune --member-prompt --auto` recipe `docs/OPENCLAW.md` §2 already
+uses points at it, with this domain's MCP server standing in for the inbox's — no change to
+either side's protocol, since both are the same MCP shape (`docs/OPENCLAW.md` §4b).
 
 ## Why two domains, and why now
 
