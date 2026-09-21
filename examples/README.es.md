@@ -152,15 +152,66 @@ metió los dos turnos en la sesión primaria real y en curso de ese perfil; el r
 agregó y se sacó alrededor de las dos llamadas, según la propia regla de este archivo: "traé tu
 propia cuenta, no dejes nada atrás."
 
+## Un corpus de entrenamiento para `school/` — construido [ran] 2026-09-21, cero GPU, sin adaptador todavía
+
+`examples/school/generate_corpus.py` maneja la capa de herramientas real sobre una escuela
+sintética a escala de entrenamiento (`build_training_db` — separada de, y ~40 veces más grande
+que, el fixture de tres filas de `db.py` para la suite adversarial, así que un corpus de este
+tamaño no puede simplemente re-enseñar las filas que `test_adversarial.py` ya tiene) y renderiza
+cada fila a través de `training.harness.tool_calls.tools_to_instruction` y el `system_prompt`
+propio de cada rol — las mismas funciones de las que sale el bloque de un miembro servido, así
+que el corpus no puede alejarse de lo que un adaptador entrenado vería de verdad. Modo corpus: la
+llamada, después `=`, después el texto real que devuelve la herramienta, exactamente como el loop
+de `accept_rank.py` lo inyecta — nunca un mensaje `tool_calls`.
+
+```bash
+python3 -m examples.school.generate_corpus --role all --n 300   # los 7 roles, un archivo cada uno
+python3 -m pytest examples/school/test_generate_corpus.py -q    # 7 chequeos, cero GPU
+```
+
+**891 filas entre los 7 roles** (`educador` 100, `compras` 161, `trainee` 300, `marketing` 300,
+`it` 25, `cfo` 3, `dev` 2), apartadas **por estudiante, no por fila** — un adaptador que
+memorizó la agenda de un estudiante no puede llevarse crédito por verla redactada distinto en la
+evaluación.
+
+**Dos bugs reales, encontrados corriéndolo dos veces y leyendo la salida, no inspeccionando el
+código — los dos con prueba de regresión ahora:**
+- **Una tarea de escritura se filtró en lo que veía una tarea de lectura después.**
+  `order_draft` y `order_list` comparten una conexión para que los ids de estudiante se mantengan
+  estables en todo el corpus; la primera versión dejaba que esa conexión llevara adelante los
+  inserts de `order_draft`, así que la respuesta de `order_list` creció de ~1 KB a ~7 KB en una
+  sola corrida — al modelo se le habría enseñado que el largo de una lista es función de cuánto
+  corpus vino antes, que no es lo que devuelve ninguna consulta real. Arreglado: el insert de una
+  tarea de escritura se revierte apenas se captura su propio ejemplo.
+- **El corpus no era reproducible desde su propia semilla.** `ORDER BY random()` es el propio
+  PRNG de SQLite, no `random.Random(seed)`; el `hash()` de Python está aleatorizado por proceso —
+  el mismo bug que ya hizo fallar el test central de `../evolving-memory` en 6 de 30 semillas,
+  ahora atrapado acá también. Arreglado: cada elección pasa por el `rng` con semilla; `blake2b`
+  reemplaza a `hash()`.
+
+**Un hallazgo, no un bug: las lecturas agregadas puras enseñan como máximo un ejemplo.**
+`payroll_read`, `dashboard_summary` y `membership_status` de `cfo` no toman argumentos y
+devuelven **toda** la foto actual — hay exactamente una respuesta correcta por estado del mundo,
+así que el corpus llega como máximo a un ejemplo por tipo (tres filas en total para `cfo`) una
+vez que se respeta la compuerta de deduplicación (nunca escribir la misma respuesta dos veces).
+Esto es "el conocimiento fijo en un corpus se memoriza, y después no mide nada" del §3 de
+`../CLAUDE.md` (P15, P21), visto de nuevo con otra forma: esta vez no es una tabla de consulta,
+es un resumen de toda la organización. Arreglarlo — si vale la pena — necesita redibujar el mundo
+entre ejemplos para esas herramientas específicas, no se intentó acá.
+
+**No hecho: ningún LoRA entrenado sobre este corpus.** Ese es el próximo paso, el que necesita
+GPU, y es el que este archivo no da — el propio patrón de
+`training/nursing/generate_walks.py` es primero el generador, entrenar es un paso aparte después.
+
 ## Reproducilo con modelos expertos en Google Colab, con un túnel — la otra mitad, más adelante
 
 El mecanismo ya está probado de punta a punta, `docs/OPENCLAW.md` completo: tu propio OpenClaw
 habla con un proxy en tu propia Mac, que habla con `vLLM` en tu propia tarjeta alquilada de
 Colab a través de un túnel — `google/colab`, no de este repositorio, y `docs/SERVING.md` es la
 guía desde cero. **Todavía no está conectado a `school/`/`distributor/`** — ese camino sirve un
-LoRA *entrenado*, y no se entrenó ningún adaptador sobre ninguno de los dos dominios
-(`examples/README.md` de arriba, y `docs/FRAMEWORK.md` §9 paso 4). Una vez que exista un corpus
-y se libere un miembro para alguno de estos dominios, la misma receta
+LoRA *entrenado*, y no se entrenó ningún adaptador sobre ninguno de los dos dominios (el corpus
+de arriba es la entrada para eso, no el adaptador en sí; `docs/FRAMEWORK.md` §9 paso 4). Una vez
+que se entrene y libere un miembro para alguno de estos dominios, la misma receta
 `--prune --member-prompt --auto` que ya usa `docs/OPENCLAW.md` §2 lo apunta ahí, con el servidor
 MCP de este dominio en el lugar del de la bandeja — sin cambiar el protocolo de ningún lado,
 porque los dos tienen la misma forma MCP (`docs/OPENCLAW.md` §4b).
