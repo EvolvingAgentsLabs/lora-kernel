@@ -67,9 +67,11 @@ had already named and not yet closed. **Two things change; nothing else does:**
   permission check standing in for Auth0/Postgres RLS until the toy version is shown insufficient.
   Falsifier fixed in §9: an adversarial suite at **0 leaks** across a forbidden row, direct ask and
   injected off a note or a record.
-- **The cheaper, already-pre-registered step runs first:** **W5d** — the answer-policy split
-  (`results/M7-W5d-answer-policy-20260920/BRIEF.md`), zero new design, one L4 session, no training —
-  because step 4's role packs declare an answer policy they do not yet have a measured value for.
+- **The cheaper step ran first, and falsified as written:** **W5d** — the answer-policy split
+  (`results/M7-W5d-answer-policy-20260920/BRIEF.md`), one L4 session, no training — `policy vs
+  withlib` ties (5 : 0, $p=0.0625$). It still answers step 4's missing value, diagnosed rather than
+  fixed: the base reads 21/21 where the walk opened a note; the eleven it never reached are the
+  adapter's own memorised query.
 
 Everything else in the pasted plan — a second domain, Postgres RLS and Auth0 by name, concurrency
 and the cross-role canary, the bill, Docker Compose, speculative decoding — is **named, not bought**:
@@ -611,6 +613,15 @@ that decide the shape of a step:
   block byte-identical for both released members, registries derivable and equal; the memory's member expressed as
   unreleased, its loop unservable through the API. The chain now stops when the backend rejects the accelerator
   ([`F2`](../results/F2-role-as-route-20260920/BRIEF.md), [`F3`](../results/F3-role-pack-20260920/BRIEF.md)).
+- **2026-09-20** — memory **W5d [ran]: FALSIFIED as written.** On the set written after the freeze,
+  `policy vs withlib` is 5 : 0, $p=0.0625$ — a tie, as the brief's power line had said that case would be read
+  (headline 67: policy 42, withlib 37, base-reads 52; vs base-reads 6 : 16); control holds, 75 vs 73. Read where
+  it happens: where the walk opened the supplying note the base reads it right **21 of 21**; the other 11 are
+  retrieval misses **the adapter's own query caused** — on a new wording it writes a training query for another
+  topic, verbatim in 9 of 11, and computes a drip rate — while the same lexical searcher, given the request's
+  statement, lists the needed note 16 of 16 (zero GPU). On W5c's sets, 0 misses, not the claim: 56/66, 14 : 0 and
+  12 : 2 vs base-reads, control 75/80. Next, one unknown: the runtime issues the first search from the statement
+  ([`BRIEF`](../results/M7-W5d-answer-policy-20260920/BRIEF.md)).
 - **2026-09-20** — memory **W5d pre-registered, not run** — step 1 of [`FRAMEWORK.md`](FRAMEWORK.md) §7, *decide who
   reads*. The answer policy: the adapter walks always; it writes the line when the task is to carry a procedure,
   to say it is not in the library, or to compute a rate (rate decided on the trained band only: 15/15 and 12/12

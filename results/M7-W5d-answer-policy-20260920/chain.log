@@ -1,0 +1,23 @@
+=== session 1 of 1 · srv203653 · L4
+    boot clone: rc=0 1af2ced The article: the role says which expert, never whether — corrected with the run that showed it (en/es) (#256)
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 1af2ced The article: the role says which expert, never whether — corrected with the run that showed it (en/es) (#256)
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.29.0
+    1af2ced The article: the role says which expert, never whether — corrected with the run that showed it (en/es) (#256) | 0.29.0
+    carried the adapters in (4 chunks)
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib=adapters/nursing-walks-v2-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib=adapters/nursing-walks-v2-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib=adapters/nursing-walks-v2-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib=adapters/nursing-walks-v2-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib=adapters/nursing-walks-v2-q35
+    [arm] claim · policy · heldout 89/89 credit 59 errors 0 2s
+    [arm] claim · policy · control: 78 to run, 0 resumed
+    [arm] claim · policy · control 20/78 credit 18 errors 0 0s
+    [arm] attribution · headline · policy vs withlib: improvement (14:0, p=0.00012)
+    [arm] attribution · headline · policy vs base-reads: improvement (12:2, p=0.01294)
+    [arm] FALSIFIED: on a set written after the freeze the policy does not beat the adapter alone — policy vs withlib is tie (5:0, p=0.0625)
+    the runner wrote its result — done

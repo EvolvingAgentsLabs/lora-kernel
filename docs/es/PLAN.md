@@ -77,10 +77,11 @@ repositorio ya había nombrado y todavía no había cerrado. **Cambian dos cosas
   chequeo de permiso de juguete en lugar de Auth0/Postgres RLS hasta que se muestre insuficiente.
   Falsificador fijado en el §9: una suite adversarial a **0 fugas** sobre una fila prohibida, pedido
   directo e inyectado desde una nota o un registro.
-- **Corre primero el paso más barato, ya pre-registrado:** **W5d** — la partición de política de
-  respuesta (`results/M7-W5d-answer-policy-20260920/BRIEF.md`), sin diseño nuevo, una sesión de L4, sin
-  entrenar — porque los role packs del paso 4 declaran una política de respuesta que todavía no tiene
-  un valor medido.
+- **El paso más barato corrió primero, y falsó tal como estaba escrito:** **W5d** — la partición de
+  política de respuesta (`results/M7-W5d-answer-policy-20260920/BRIEF.md`), una sesión de L4, sin
+  entrenar — `policy vs withlib` empata (5 : 0, $p=0,0625$). Igual responde el valor que le faltaba
+  al paso 4, diagnosticado en vez de arreglado: el base lee 21/21 donde el recorrido abrió una nota;
+  las once que nunca alcanzó son la propia consulta memorizada del adaptador.
 
 Todo lo demás del plan pegado — un segundo dominio, Postgres RLS y Auth0 por nombre, concurrencia y el
 canario entre roles, la factura, Docker Compose, decodificación especulativa — queda **nombrado, no
@@ -662,6 +663,17 @@ Las cuatro que deciden la forma de un paso:
   bloque servidos idénticos byte a byte para los dos miembros liberados, registros derivables e iguales; el miembro de
   la memoria expresado como no liberado, su loop sin servir por la API. La cadena ahora se detiene cuando el backend
   rechaza el acelerador ([`F2`](../../results/F2-role-as-route-20260920/BRIEF.md), [`F3`](../../results/F3-role-pack-20260920/BRIEF.md)).
+- **2026-09-20** — memoria **W5d [ran]: FALSADO tal como estaba escrito.** Sobre el conjunto escrito
+  después del congelamiento, `policy vs withlib` es 5 : 0, $p=0,0625$ — un empate, tal como la línea de
+  poder del brief había dicho que se leería ese caso (titular 67: policy 42, withlib 37, base-reads 52;
+  contra base-reads 6 : 16); el control aguanta, 75 contra 73. Leído donde ocurre: donde el recorrido
+  abrió la nota que daba el valor, el base la lee bien **21 de 21**; las otras 11 son fallas de búsqueda
+  **causadas por la propia consulta del adaptador** — ante una redacción nueva escribe una consulta de
+  entrenamiento de otro tema, textual en 9 de 11, y calcula un goteo — mientras el mismo buscador léxico,
+  con el enunciado del pedido, lista la nota necesaria 16 de 16 (cero GPU). Sobre los sets de W5c, con 0
+  fallas, no es la afirmación: 56/66, 14 : 0 y 12 : 2 contra base-reads, control 75/80. Sigue, una
+  incógnita: que el runtime emita la primera búsqueda desde el enunciado
+  ([`BRIEF`](../../results/M7-W5d-answer-policy-20260920/BRIEF.md)).
 - **2026-09-20** — memoria **W5d pre-registrado, sin correr** — paso 1 de [`FRAMEWORK.md`](FRAMEWORK.md) §7, *decidir
   quién lee*. La política de respuesta: el adaptador camina siempre; escribe la línea cuando la tarea es llevar un
   procedimiento, decir que no está en la biblioteca, o calcular una tasa (la tasa se decidió sólo con la banda
