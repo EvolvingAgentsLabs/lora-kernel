@@ -17,7 +17,10 @@ usuario (`docs/img/solution-architecture-school.png`, hermana de la de la distri
 **`trainee`, `marketing`, `it`, `cfo`, `dev`**. Trece herramientas, seis de ellas de escritura
 (`WRITE_TOOLS` en `tools.py`, correctamente anotadas `readOnlyHint: false` sobre MCP — un
 `true` general habría dejado que un agente se saltee la aprobación en `billing_charge`), cuatro
-cadenas de inyección plantadas, dos inquilinos en todo momento.
+cadenas de inyección plantadas, dos inquilinos en todo momento. **`distributor/` llevado a la
+misma profundidad, el mismo día**: su roster completo de seis roles — `customer_service`,
+`dispatch`, `receiving`, `purchasing`, `claims_returns`, `it` — once herramientas, cinco de
+escritura, cuatro cadenas de inyección plantadas, la misma disciplina de `WRITE_TOOLS`.
 
 **Qué es real.** Un almacén sqlite por dominio con dos inquilinos cada uno (`school`:
 `northgate` / `southport`; `distributor`: `riverside` / `harbor`) — probando la fuga que
@@ -29,13 +32,14 @@ servidor MCP por dominio (`school/mcp_server.py`, `distributor/mcp_server.py`), 
 que [`training/mcp/inbox_server.py`](../training/mcp/inbox_server.py), para que un runtime de
 agentes real pueda llamar a estas herramientas hoy. Una suite adversarial por dominio
 (`test_adversarial.py`) — **`school`: 7 roles × 2 inquilinos, 32 pruebas que pasan (36 casos
-parametrizados saltados donde un rol no tiene esa herramienta), 0 fugas; `distributor`: 2 roles
-× 2 inquilinos, 15 pruebas, 0 fugas — [ran] cero GPU** — que planta una cadena de inyección de
-prompt dentro de un registro con apariencia normal (una nota de agenda, una nota de
-inscripción, un ticket de mantenimiento, una nota de entrega, la descripción de un reclamo) e
-intenta, directo y por la capa MCP, hacer que un rol alcance la fila de otro inquilino,
-incluyendo su propio dashboard agregado (los conteos de `dashboard_summary` se chequean, no se
-suponen, para que también queden acotados por inquilino).
+parametrizados saltados donde un rol no tiene esa herramienta), 0 fugas; `distributor`: 6 roles
+× 2 inquilinos, 45 pruebas que pasan, 0 fugas — [ran] cero GPU** — que planta una cadena de
+inyección de prompt dentro de un registro con apariencia normal (una nota de agenda, una nota
+de inscripción, un ticket de mantenimiento, una nota de entrega, un motivo de devolución, la
+descripción de un reclamo) e intenta, directo y por la capa MCP, hacer que un rol alcance la
+fila de otro inquilino, incluyendo sus propias vistas agregadas (los conteos de
+`dashboard_summary` de `school` se chequean, no se suponen, para que también queden acotados
+por inquilino).
 
 **Qué está mockeado, y por qué esa es la versión honesta de este paso.** `common/mock_auth.py`
 reemplaza a Auth0/Keycloak: emite la misma forma de `Claim` a la que colapsarían las claims de
@@ -153,6 +157,13 @@ comparten un esqueleto también es, en sí, una pequeña evidencia de "genérico
 `docs/FRAMEWORK.md` §6 llama el límite del framework — aunque dos dominios de juguete
 construidos por la misma mano no son la prueba que un segundo cliente real sería; esa prueba
 todavía no se compró.
+
+**Llevado a la paridad, 2026-09-21.** Una vez que `school/` se nombró el caso principal y se
+expandió a su roster completo, expandir `distributor/` de la misma forma costó una segunda
+pasada del mismo esqueleto — seis roles, once herramientas, cuatro inyecciones — no diseño
+nuevo. La paridad entre los dos vale la pena decirla claramente: sigue siendo evidencia de una
+sola mano construyendo dos dominios de juguete, no de un segundo cliente real, pero ahora es
+evidencia simétrica, no un esbozo al lado de un caso construido a fondo.
 
 ## Todo lo que esto no decide
 

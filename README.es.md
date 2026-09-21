@@ -297,7 +297,7 @@ modelo).
 | `training/harness/lora_matrix.py`, `rekey.py`, `awq_lora_gate.py` | si esta base — chica o grande — sirve un LoRA o no |
 | `training/harness/chain_serve.sh` | el chain de Colab: aprovisionar, correr desacoplado, streamear, traer los pesos a medida que aparecen, reanudar |
 | `training/harness/bill.py` | tasa un replay existente a tarifas reales de frontera — cero GPU, nada se re-corre (`results/M6-bill-20260921/`) |
-| `examples/` | **la organización de referencia, sólo código, antes de que exista ningún adaptador** — `school/` (7 roles, 13 herramientas, dos inquilinos) y `distributor/` (2 roles); un almacén de juguete, una capa de herramientas que refuerza el permiso fuera del modelo, un servidor MCP por dominio, una suite adversarial a 0 fugas; `examples/README.md` dice cómo apuntar tu propio OpenClaw |
+| `examples/` | **la organización de referencia, sólo código, antes de que exista ningún adaptador** — `school/` (7 roles, 13 herramientas) y `distributor/` (6 roles, 11 herramientas), los dos con dos inquilinos; un almacén de juguete, una capa de herramientas que refuerza el permiso fuera del modelo, un servidor MCP por dominio, una suite adversarial a 0 fugas; `examples/README.md` dice cómo apuntar tu propio OpenClaw |
 | `releases/`, `results/` | los manifiestos, y las corridas que citan los documentos |
 
 ## Documentos

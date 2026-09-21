@@ -16,6 +16,9 @@ expanded to its full seven-role roster: `educador`, `compras`, **`trainee`, `mar
 `cfo`, `dev`**. Thirteen tools, six of them writes (`WRITE_TOOLS` in `tools.py`, correctly
 annotated `readOnlyHint: false` over MCP — a blanket `true` would have let an agent skip
 approval on `billing_charge`), four planted injection strings, two tenants throughout.
+**`distributor/` brought to the same depth, same day**: its full six-role roster —
+`customer_service`, `dispatch`, `receiving`, `purchasing`, `claims_returns`, `it` — eleven
+tools, five writes, four planted injection strings, the same `WRITE_TOOLS` discipline.
 
 **What is real.** A sqlite store per domain with two tenants each (`school`: `northgate` /
 `southport`; `distributor`: `riverside` / `harbor`) — testing the leak that matters commercially,
@@ -27,12 +30,12 @@ never from an argument or from text inside a record. An MCP server per domain
 [`training/mcp/inbox_server.py`](../training/mcp/inbox_server.py), so a real agent runtime can
 call these tools today. An adversarial suite per domain (`test_adversarial.py`) — **`school`: 7
 roles × 2 tenants, 32 passing tests (36 parametrized cases skipped where a role has no matching
-tool), 0 leaks; `distributor`: 2 roles × 2 tenants, 15 tests, 0 leaks — [ran] zero GPU** — that
-plants a prompt-injection string inside an ordinary-looking record (an agenda note, an
-enrolment note, a maintenance ticket, a delivery note, a claim description) and tries, directly
-and through the MCP layer, to make a role reach another tenant's row, including its own
-aggregate dashboard (`dashboard_summary`'s counts are checked, not assumed, to stay tenant-
-scoped too).
+tool), 0 leaks; `distributor`: 6 roles × 2 tenants, 45 passing tests, 0 leaks — [ran] zero GPU** —
+that plants a prompt-injection string inside an ordinary-looking record (an agenda note, an
+enrolment note, a maintenance ticket, a delivery note, a return reason, a claim description) and
+tries, directly and through the MCP layer, to make a role reach another tenant's row, including
+its own aggregate views (`school`'s `dashboard_summary` counts are checked, not assumed, to stay
+tenant-scoped too).
 
 **What is mocked, and why that is the honest version of this step.** `common/mock_auth.py`
 stands in for Auth0/Keycloak: it issues the same `Claim` shape a verified token's claims would
@@ -143,6 +146,12 @@ schema, built and passing in the same session. Two domains sharing one skeleton 
 a small piece of evidence for "generic" — the thing `docs/FRAMEWORK.md` §6 calls the framework
 boundary — though two toy domains built by the same hand are not the test a real second
 customer would be; that test is still unbought.
+
+**Brought to parity, 2026-09-21.** Once `school/` was named the main case and expanded to its
+full roster, expanding `distributor/` the same way cost a second pass of the same skeleton —
+six roles, eleven tools, four injections — not new design. Parity between the two is worth
+stating plainly: it is still evidence from one hand building two toy domains, not from a second
+real customer, but it is now symmetric evidence, not a stub next to a built-out case.
 
 ## Everything this does not decide
 
