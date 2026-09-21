@@ -78,7 +78,7 @@ All on generated suites; §3 says what that costs. Base model `Qwen/Qwen3.5-4B` 
 | **no real data** | every suite is generated here; no real traffic has passed through the system | — |
 | **the memory's central claim** — a library extends an expert to a procedure it never trained on | **measured three times, not passed.** The adapter ties or trails the *untrained* base handed the right notes: 35 vs 45 of 56; on a second corpus 42 vs 46 of 66 | **[ran]** W5, W5c |
 | **reading a value under a condition, in an unseen note** | the adapter writes the first number: 0/11, then 4/15 after a corpus that showed the shape over eight notes — where it reads the *trained* notes 17/18 and the untrained base reads 15/15. *A balanced corpus over eight notes teaches eight notes* | **[ran]** W5c |
-| **note search** | an off-the-shelf encoder: recall@3 0.638 against a bar of 0.80 fixed beforehand (word matching: 0.064) | **[ran]** W3 |
+| **note search** | an off-the-shelf encoder: recall@3 0.638 against a bar of 0.80 fixed beforehand (word matching: 0.064). **And the query is the adapter's:** on a new wording it writes a training query for another topic, verbatim in 9 of 11 misses, where the same word-matcher given the request's own statement lists the needed note 16 of 16 | **[ran]** W3, W5d |
 | **a learned router** | two arms (n-grams, embeddings) lose every legitimate request from an unseen sender; the default is a keyword dictionary | **[ran]** M2 |
 | **moving a reasoning expert to a new base** | 80/90 against its own 90/90: ten chains right to the number whose last line leaves the corpus's format; not released | **[ran]** M7 arm 0c |
 | **per-case escalation** | both available rules deliver less than routing by region: the expert's wrong chains are *consistent* | **[ran]** P41 |
@@ -105,6 +105,13 @@ Three runs on the same question give one picture **[ran]** W5, W5b, W5c:
   procedures, the base reads values from the notes the adapter's walk opened — 47/56 and 58/60 on
   records already paid for. *That number is post-hoc on a set already seen and is evidence of nothing
   until it is run on a set written after the policy is frozen.*
+- **Run on such a set, the split does not pass — and says where the next wall is [ran] W5d.** `policy vs
+  withlib` 5 : 0, $p=0.0625$: a tie. Where the adapter's walk opened the supplying note the base reads it
+  right 21 of 21 — *the reading problem is solved wherever there is a note to read*. The other 11 value
+  rows never reached a note, and not because search is weak: faced with a new wording the adapter emits a
+  **memorised query**, for another topic. What training damages, then, is not only a reading skill but
+  everything in the walk that has to be *composed from the request* rather than followed from the library:
+  the query first, the read last. What it buys is what lies between — moving through a procedure.
 
 For the framework this means the unit is **not** "one adapter answers everything in its role". It is
 *an adapter that moves through the role's procedures and tools, plus a policy for who writes which
@@ -120,7 +127,7 @@ cheapest step that could show the gap is closable — or not.
 | **A** | **role → expert** | the agent's identity selects the adapter; no guessing | routing per request by *what is asked* (`route.REGIONS`, keyword keys); per-model `--local` | **half closed [ran] F2.** The role rides in the model id (`auto:<role>`, the one thing the runtime sets per agent without a patch) and answers ***which*** member: under `role_confirmed` never more misroutes than the keys alone (fewer on three sets), nothing served under a wrong role, the 240-case replay a tie at 0.775. It does **not** answer ***whether*** a request is in the member's region — `role_first`, which assumed it did, served 120 of 120 foreign tasks over a member's own listing and failed. 131 of 240 paraphrases are still lost | the router's remaining job, one class smaller: *in region or not*, for one member at a time — on sets written after that design is frozen |
 | **B** | **a role's tool surface** | a declared set of tools per role, pruned and rendered the way the corpus taught | pruning, member prompt, `contract.py` reading block/keys/order off the corpus; one MCP server (inbox) | **closed as a declaration [ran] F3**: `roles/<role>/role.toml` + `rolepack.lint`; the two released members re-expressed with the served prompt *being* the proxy's and the block byte-identical in every corpus row; `POOL`/`REGIONS`/`ROLES` derivable and equal. Still open: the registries are not yet *read from* the packs, and the pack's `[egress]`, `[answer_policy]` and `[loop]` are declared and unread | make the packs the source of truth (`results/F3-role-pack-20260920/BRIEF.md` lists the five changes); give the proxy the referee loop, or a memory member stays unservable through the API |
 | **C** | **a corpus per role** | a way to go from tools + procedures + cases to a training corpus that passes `suite_gates` | four hand-written generators (inbox, desk, fluids, walks); the gates; the rule that a generator *calls* the renderer | no shared generator skeleton; *building a customer's corpus from its traces is out of scope of this repository by decision* — the framework ships the format, the gates and reference packs | extract the skeleton the four generators share; regenerate one existing corpus through it, byte-identical |
-| **D** | **a library per role** | format, lint, referee, search, and a division of labour that passes a held-out test | W1–W4 built; W3's search under its bar; W5 not passed | §4: who reads; search recall; a reading skill taught over many notes or left to the base | one L4 session, no training: the split by task kind on the second held-out set; then a *new* set after the freeze |
+| **D** | **a library per role** | format, lint, referee, search, and a division of labour that passes a held-out test | W1–W4 built; W3's search under its bar; W5 not passed; the answer policy **[ran]** W5d: reads 21/21 where a note was opened, a tie overall | §4: **who writes the query** — the adapter's is memorised; who reads — settled where there is a note; search recall; both skills taught over many notes or left to something that is not the adapter | one L4 session, no training: the runtime issues the first search from the request's statement (zero GPU says the note is then listed 16/16); *stops if* the adapter, shown the right note, still opens another on ≥ 6 of 11 |
 | **E** | **access to the systems of record** | tools that read and write the database **as the person asking**, with permissions enforced outside the model and every action logged | nothing | the whole layer. Identity must flow runtime → proxy → tool; the model never holds a credential; row-level permission is checked by the tool, not asked of the model | a toy relational database with two roles and one forbidden row; the expert must be unable to obtain it through any tool call, measured as 0 leaks over an adversarial suite |
 | **F** | **write actions** | confirmation, idempotency and undo for anything that changes a record | nothing measured | no expert here has ever been scored on a write | a role whose task ends in one write; gate on *wrong writes = 0*, not on accuracy |
 | **G** | **many people at once** | isolation between users and between roles; adapters' lifecycle; throughput under mixed load | multi-adapter serving measured one request at a time; per-sequence LoRA application **[read]** vLLM | per-user keys; whether prefix caching is keyed by adapter is **not audited by us**; mixed-batch cost unknown | replay logged shapes at 8/32/64 concurrent sessions alternating adapters: latency, throughput, and a canary string that must never cross roles |
@@ -160,7 +167,10 @@ Cheapest and most able to kill an assumption first. Each step names what would s
    held-out set. *Stops if* it does not beat the adapter alone, paired. Then the same policy on a set
    written after the freeze — the only version that counts. **Pre-registered 2026-09-20**, both stages in
    one session, the policy frozen in its own commit before the new set was written:
-   [`BRIEF`](../results/M7-W5d-answer-policy-20260920/BRIEF.md). Not run.
+   [`BRIEF`](../results/M7-W5d-answer-policy-20260920/BRIEF.md). **[ran] W5d — stopped as written:** 5 : 0,
+   $p=0.0625$, a tie; control holds. The base reads 21/21 where the walk opened a note; the 11 it never reached
+   are the adapter's memorised query, not the searcher. **Next, one unknown:** the first search comes from
+   the request's own statement.
 2. **Role as route** (A). Zero GPU. *Stops if* routing by agent id is worse than the dictionary on
    the replay — which would mean roles do not partition the work the way the drawing assumes.
    **[ran] F2 — did not stop, and corrected the claim:** the role says *which* member (safe, the
@@ -223,7 +233,7 @@ day from measurements that already exist, and answer one question: does it chang
 |---|---|
 | Fase 4, role packs per domain | **already built [ran] F3.** `roles/<role>/role.toml` + `rolepack.lint`; both released members re-expressed, served prompt and block byte-identical. The "two domains" ask is step 4 below, done once, not twice at once (§ below) |
 | Fase 3, tool layer with permission outside the model | **the one genuinely open gap (row E), correctly named.** But Auth0 and Postgres RLS are an *implementation*, not the falsifier: row E's gate is a toy store, two roles, one forbidden row, an adversarial suite at 0 leaks — a plain permission check in the tool layer clears that gate as cheaply as RLS does. Stand up Postgres and an IdP only if the toy version cannot be made to pass, which is not yet known |
-| Fase 2, who navigates vs. who reads | **already this document's own finding (§4), and already run twice more than the pasted plan knows.** Its own falsifier — "the hybrid scheme must beat the LoRA alone on blind data or stop" — is *already decided, twice, and reads as a stop*: W5's `withlib` 35/56 against `base-reads` 45/56 (6 : 16, $p=0.052$); W5c's retrained pair 42/66 against 46/66 (12 : 16, $p=0.57$, a tie). What is *not* decided is W5b's narrower question — a policy that splits by kind of task, not "compose everything" — and that is **W5d, pre-registered 2026-09-20, not yet run**: one L4 session, no training, cheaper than anything else on this list |
+| Fase 2, who navigates vs. who reads | **already this document's own finding (§4), and already run three times more than the pasted plan knew.** Its own falsifier — "the hybrid scheme must beat the LoRA alone on blind data or stop" — is *already decided, twice, and read as a stop*: W5's `withlib` 35/56 against `base-reads` 45/56 (6 : 16, $p=0.052$); W5c's retrained pair 42/66 against 46/66 (12 : 16, $p=0.57$, a tie). W5b's narrower question — a policy that splits by kind of task — **[ran] W5d, 2026-09-21: also a tie** (5 : 0, $p=0.0625$), and diagnosed further than either: the reading skill is fine wherever a note was opened (21/21); the eleven misses are the adapter's own memorised query, not a reading failure at all |
 | Fase 1, speculative decoding | **not required by 1.0** (`PLAN.md` §0 says so already) and half-blocked: a LoRA-adapted drafter is a vLLM RFC, not a shipped feature (#52038 **[read]**, `RECORD.md` §5) — Option B in the pasted plan does not run on a served LoRA member today. Option A (prompt-lookup / n-gram, zero VRAM, no drafter) *does* run today, on the pool as it already exists, and is the cheap version: a bonus arm measured on the 240-case replay already on disk (P57, P64) — reusing an existing instrument, not a new benchmark — never a phase-1 prerequisite |
 | Fase 5, concurrency, canary, Docker Compose | **already sequenced — steps 5 and 7 of §7, after step 4's gate, not before it.** Nothing here moves them earlier: a canary across two domains needs two domains, and installation is worth documenting only once 1–6 say there is something worth installing |
 
@@ -237,10 +247,12 @@ in sequence, never as a grid") — it doubles the cost of the same falsifier.
 
 **The operative close, in order, starting now:**
 
-1. **W5d** — pre-registered, zero new design, one L4 session, no training
-   ([`BRIEF`](../results/M7-W5d-answer-policy-20260920/BRIEF.md)). It decides the read/write split a
-   role's *answer policy* needs, which step 4's role packs declare and do not yet have a measured
-   value for.
+1. **W5d — [ran] 2026-09-21, FALSIFIED as written**
+   ([`BRIEF`](../results/M7-W5d-answer-policy-20260920/BRIEF.md)): 5 : 0, $p=0.0625$, a tie against
+   `withlib` alone. It still answers the read/write split a role's *answer policy* needs — the base
+   reads 21/21 where a note was opened; the eleven it never reached are the adapter's memorised
+   query, diagnosed, not a fixed policy. Step 4's role packs still have no measured answer-policy
+   value; §4 above and §5 row D carry the finding forward.
 2. **Step 4, the code-only half — [ran] 2026-09-20, zero GPU, no model** (`examples/`). A toy
    relational store and a tool layer that checks permission outside the model, for **both**
    domains — `examples/school/`, `examples/distributor/`, one shared skeleton

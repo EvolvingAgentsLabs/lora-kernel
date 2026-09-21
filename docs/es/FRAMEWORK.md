@@ -82,7 +82,7 @@ indique otro.
 | **sin datos reales** | cada suite se genera acá; ningún tráfico real pasó todavía por el sistema | — |
 | **la afirmación central de la memoria** — una biblioteca extiende a un experto a un procedimiento sobre el que nunca entrenó | **medida tres veces, no pasa.** El adaptador empata o pierde contra el base *sin entrenar* con las notas correctas delante: 35 contra 45 de 56; sobre un segundo corpus 42 contra 46 de 66 | **[ran]** W5, W5c |
 | **leer un valor bajo una condición, en una nota nunca vista** | el adaptador escribe el primer número: 0/11, y después 4/15 tras un corpus que mostró la forma sobre ocho notas — donde lee las notas *entrenadas* 17/18 y el base sin entrenar lee 15/15. *Un corpus balanceado sobre ocho notas enseña ocho notas* | **[ran]** W5c |
-| **búsqueda de notas** | un encoder estándar: recall@3 0,638 contra una vara de 0,80 fijada de antemano (por palabras: 0,064) | **[ran]** W3 |
+| **búsqueda de notas** | un encoder estándar: recall@3 0,638 contra una vara de 0,80 fijada de antemano (por palabras: 0,064). **Y la consulta es del adaptador:** ante una redacción nueva escribe una consulta de entrenamiento de otro tema, textual en 9 de 11 fallas, donde el mismo buscador de palabras, con el enunciado del pedido, lista la nota necesaria 16 de 16 | **[ran]** W3, W5d |
 | **un router aprendido** | dos brazos (n-gramas, embeddings) pierden todo pedido legítimo de un remitente no visto; el default es un diccionario de palabras clave | **[ran]** M2 |
 | **mover un experto que razona a una base nueva** | 80/90 contra su propio 90/90: diez cadenas correctas hasta el número cuya última línea se sale del formato del corpus; no liberado | **[ran]** M7 brazo 0c |
 | **escalamiento por caso** | las dos reglas disponibles entregan menos que rutear por región: las cadenas equivocadas del experto son *consistentes* | **[ran]** P41 |
@@ -110,6 +110,14 @@ Tres corridas sobre la misma pregunta dan un solo cuadro **[ran]** W5, W5b, W5c:
   los procedimientos, el base lee los valores de las notas que abrió el recorrido del adaptador —
   47/56 y 58/60 sobre registros ya pagados. *Ese número es post-hoc sobre un conjunto ya visto y no es
   evidencia de nada hasta que se corra sobre un conjunto escrito después de congelar la política.*
+- **Corrido sobre ese conjunto, la partición no pasa — y dice dónde está la próxima pared [ran] W5d.**
+  `policy vs withlib` 5 : 0, $p=0{,}0625$: un empate. Donde el recorrido del adaptador abrió la nota que
+  daba el valor, el base la lee bien 21 de 21 — *el problema de lectura está resuelto dondequiera que
+  haya una nota para leer*. Las otras 11 filas de valor nunca llegaron a una nota, y no porque la
+  búsqueda sea floja: ante una redacción nueva el adaptador emite una **consulta memorizada**, de otro
+  tema. Lo que el entrenamiento daña, entonces, no es sólo una habilidad de lectura sino todo lo que en
+  el recorrido hay que *componer a partir del pedido* en vez de seguir desde la biblioteca: la consulta
+  primero, la lectura al final. Lo que compra es lo que queda en el medio — moverse por un procedimiento.
 
 Para el framework esto significa que la unidad **no** es "un adaptador responde todo en su rol". Es
 *un adaptador que se mueve a través de los procedimientos y herramientas del rol, más una política de
@@ -126,7 +134,7 @@ el paso más barato que podría mostrar si la brecha se puede cerrar — o no.
 | **A** | **rol → experto** | la identidad del agente selecciona el adaptador; sin adivinar | ruteo por pedido según *qué se pregunta* (`route.REGIONS`, claves de palabras clave); `--local` por modelo | **cerrada a medias [ran] F2.** El rol viaja en el id del modelo (`auto:<rol>`, lo único que el runtime fija por agente sin un parche) y responde ***cuál*** miembro: bajo `role_confirmed` nunca hay más mal ruteados que con las claves solas (menos en tres sets), nada se sirve bajo un rol equivocado, el replay de 240 casos empata en 0,775. **No** responde ***si*** un pedido está en la región del miembro — `role_first`, que asumía que sí, sirvió 120 de 120 tareas ajenas sobre el listado propio de un miembro y falló. 131 de 240 paráfrasis se siguen perdiendo | el trabajo que le queda al router, con una clase menos: *en región o no*, para un miembro por vez — sobre sets escritos después de congelar ese diseño |
 | **B** | **la superficie de herramientas de un rol** | un conjunto declarado de herramientas por rol, podado y renderizado tal como enseñó el corpus | poda, prompt del miembro, `contract.py` leyendo bloque/claves/orden del corpus; un servidor MCP (inbox) | **cerrada como declaración [ran] F3**: `roles/<rol>/role.toml` + `rolepack.lint`; los dos miembros liberados re-expresados con el prompt servido que *es* el del proxy y el bloque idéntico byte a byte en cada fila del corpus; `POOL`/`REGIONS`/`ROLES` derivables e iguales. Sigue abierto: los registros todavía no se *leen* de los paquetes, y `[egress]`, `[answer_policy]` y `[loop]` del paquete están declarados y nadie los lee | hacer de los paquetes la fuente de verdad (`results/F3-role-pack-20260920/BRIEF.md` lista los cinco cambios); darle al proxy el loop del árbitro, o un miembro de la memoria sigue sin poder servirse por la API |
 | **C** | **un corpus por rol** | una manera de ir de herramientas + procedimientos + casos a un corpus de entrenamiento que pase `suite_gates` | cuatro generadores escritos a mano (inbox, desk, fluids, walks); las compuertas; la regla de que un generador *llama* al renderer | sin esqueleto de generador compartido; *armar el corpus de un cliente a partir de sus trazas queda fuera del alcance de este repositorio, por decisión* — el framework envía el formato, las compuertas y paquetes de referencia | extraer el esqueleto que comparten los cuatro generadores; regenerar un corpus existente a través de él, idéntico byte a byte |
-| **D** | **una biblioteca por rol** | formato, lint, árbitro, búsqueda, y una división del trabajo que pase un test retenido | W1–W4 construidos; la búsqueda de W3 debajo de su vara; W5 no pasa | §4: quién lee; el recall de la búsqueda; una habilidad de lectura enseñada sobre muchas notas o dejada al base | una sesión de L4, sin entrenar: la partición por tipo de tarea sobre el segundo conjunto retenido; después un conjunto *nuevo* tras el congelamiento |
+| **D** | **una biblioteca por rol** | formato, lint, árbitro, búsqueda, y una división del trabajo que pase un test retenido | W1–W4 construidos; la búsqueda de W3 debajo de su vara; W5 no pasa; la política de respuesta **[ran]** W5d: lee 21/21 donde se abrió una nota, empate en general | §4: **quién escribe la consulta** — la del adaptador está memorizada; quién lee — resuelto donde hay una nota; el recall de la búsqueda; las dos habilidades enseñadas sobre muchas notas o dejadas a algo que no sea el adaptador | una sesión de L4, sin entrenar: el runtime emite la primera búsqueda desde el enunciado del pedido (cero GPU dice que la nota queda listada 16/16 así); *para si* el adaptador, mostrada la nota correcta, igual abre otra en ≥ 6 de 11 |
 | **E** | **acceso a los sistemas de registro** | herramientas que leen y escriben la base **como la persona que pregunta**, con permisos exigidos fuera del modelo y cada acción registrada | nada | toda la capa. La identidad tiene que fluir runtime → proxy → herramienta; el modelo nunca tiene una credencial; el permiso a nivel de fila lo chequea la herramienta, no se le pregunta al modelo | una base de datos relacional de juguete con dos roles y una fila prohibida; el experto tiene que ser incapaz de obtenerla a través de ninguna llamada a herramienta, medido como 0 filtraciones sobre una suite adversarial |
 | **F** | **acciones de escritura** | confirmación, idempotencia y deshacer para cualquier cosa que cambie un registro | nada medido | ningún experto acá fue nunca puntuado sobre una escritura | un rol cuya tarea termina en una escritura; compuerta sobre *escrituras equivocadas = 0*, no sobre precisión |
 | **G** | **muchas personas a la vez** | aislamiento entre usuarios y entre roles; ciclo de vida de los adaptadores; throughput bajo carga mixta | servido multi-adaptador medido de a un pedido por vez; aplicación de LoRA por secuencia **[read]** vLLM | keys por usuario; si el prefix caching está indexado por adaptador **no lo auditamos nosotros**; costo del batch mixto desconocido | repetir las formas registradas con 8/32/64 sesiones concurrentes alternando adaptadores: latencia, throughput, y una cadena canario que nunca debe cruzar de rol |
@@ -167,7 +175,10 @@ Lo más barato y lo más capaz de matar un supuesto, primero. Cada paso nombra q
    política sobre un conjunto escrito después del congelamiento — la única versión que cuenta.
    **Pre-registrado el 2026-09-20**, las dos etapas en una sesión, la política congelada en un commit
    propio antes de escribir el conjunto nuevo:
-   [`BRIEF`](../../results/M7-W5d-answer-policy-20260920/BRIEF.md). Sin correr.
+   [`BRIEF`](../../results/M7-W5d-answer-policy-20260920/BRIEF.md). **[ran] W5d — parado tal como estaba
+   escrito:** 5 : 0, $p=0{,}0625$, un empate; el control aguanta. El base lee 21/21 donde el recorrido
+   abrió una nota; las 11 que nunca alcanzó son la consulta memorizada del adaptador, no el buscador.
+   **Sigue, una incógnita:** que la primera búsqueda salga del propio enunciado del pedido.
 2. **Rol como ruta** (A). Cero GPU. *Se detiene si* rutear por id de agente es peor que el
    diccionario sobre el replay — lo que significaría que los roles no particionan el trabajo como
    asume el dibujo.
@@ -239,7 +250,7 @@ sigue?
 |---|---|
 | Fase 4, role packs por dominio | **ya construida [ran] F3.** `roles/<rol>/role.toml` + `rolepack.lint`; los dos miembros liberados re-expresados, prompt servido y bloque idénticos byte a byte. El pedido de "dos dominios" es el paso 4 de abajo, hecho una vez, no dos a la vez (ver abajo) |
 | Fase 3, capa de herramientas con permiso fuera del modelo | **la única brecha genuinamente abierta (fila E), bien nombrada.** Pero Auth0 y Postgres RLS son una *implementación*, no el falsificador: la compuerta de la fila E es un almacén de juguete, dos roles, una fila prohibida, una suite adversarial a **0 fugas** — un chequeo de permiso liso en la capa de herramientas pasa esa compuerta tan barato como RLS. Levantar Postgres y un IdP sólo si la versión de juguete no alcanza, lo que todavía no se sabe |
-| Fase 2, quién navega vs. quién lee | **ya es el hallazgo propio de este documento (§4), y ya se corrió dos veces más de lo que el plan pegado sabe.** Su propio falsificador — "el esquema híbrido debe superar al LoRA solo en datos ciegos o parar" — **ya está decidido, dos veces, y se lee como un stop**: `withlib` de W5 35/56 contra `base-reads` 45/56 (6 : 16, $p=0,052$); el par reentrenado de W5c 42/66 contra 46/66 (12 : 16, $p=0,57$, un empate). Lo que **no** está decidido es la pregunta más angosta de W5b — una política que parte por tipo de tarea, no "componer todo" — y eso es **W5d, pre-registrado 2026-09-20, todavía no corrido**: una sesión de L4, sin entrenar, más barato que cualquier otra cosa de esta lista |
+| Fase 2, quién navega vs. quién lee | **ya es el hallazgo propio de este documento (§4), y ya se corrió tres veces más de lo que el plan pegado sabía.** Su propio falsificador — "el esquema híbrido debe superar al LoRA solo en datos ciegos o parar" — **ya está decidido, dos veces, y se leyó como un stop**: `withlib` de W5 35/56 contra `base-reads` 45/56 (6 : 16, $p=0,052$); el par reentrenado de W5c 42/66 contra 46/66 (12 : 16, $p=0,57$, un empate). La pregunta más angosta de W5b — una política que parte por tipo de tarea — **[ran] W5d, 2026-09-21: también un empate** (5 : 0, $p=0,0625$), y diagnosticado más lejos que cualquiera de los dos: la habilidad de lectura está bien dondequiera que se abrió una nota (21/21); las once fallas son la propia consulta memorizada del adaptador, no una falla de lectura en absoluto |
 | Fase 1, decodificación especulativa | **no la requiere 1.0** (`PLAN.md` §0 ya lo dice) y está medio bloqueada: un drafter LoRA es un RFC de vLLM, no una función que ya ship — (#52038 **[read]**, `RECORD.md` §5) — la Opción B del plan pegado no corre hoy sobre un miembro servido con LoRA. La Opción A (prompt-lookup / n-gramas, cero VRAM, sin drafter) **sí** corre hoy, sobre el pool tal como existe, y es la versión barata: un brazo de bonus medido sobre el replay de 240 casos que ya está en disco (P57, P64) — reusando un instrumento existente, no un benchmark nuevo — nunca un prerrequisito de fase 1 |
 | Fase 5, concurrencia, canario, Docker Compose | **ya secuenciada — pasos 5 y 7 del §7, después de la compuerta del paso 4, no antes.** Nada acá los adelanta: un canario entre dos dominios necesita dos dominios, e instalar vale la pena documentarlo sólo una vez que 1–6 digan que hay algo que instalar |
 
@@ -254,10 +265,13 @@ costo del mismo falsificador.
 
 **El cierre operativo, en orden, empezando ahora:**
 
-1. **W5d** — pre-registrado, sin diseño nuevo, una sesión de L4, sin entrenar
-   ([`BRIEF`](../../results/M7-W5d-answer-policy-20260920/BRIEF.md)). Decide la partición
-   lectura/escritura que la *política de respuesta* de un role pack necesita, que el paso 4 declara y
-   todavía no tiene un valor medido.
+1. **W5d — [ran] 2026-09-21, FALSADO tal como estaba escrito**
+   ([`BRIEF`](../../results/M7-W5d-answer-policy-20260920/BRIEF.md)): 5 : 0, $p=0,0625$, un empate
+   contra `withlib` solo. Igual responde la partición lectura/escritura que necesita la *política de
+   respuesta* de un rol — el base lee 21/21 donde se abrió una nota; las once que nunca alcanzó son
+   la consulta memorizada del adaptador, diagnosticada, no una política fija. Los role packs del
+   paso 4 todavía no tienen un valor medido de política de respuesta; el §4 de arriba y la fila D
+   del §5 llevan el hallazgo adelante.
 2. **Paso 4, la mitad de sólo código — [ran] 2026-09-20, cero GPU, sin modelo** (`examples/`). Un
    almacén relacional de juguete y una capa de herramientas que chequea el permiso fuera del
    modelo, para **los dos** dominios — `examples/school/`, `examples/distributor/`, un solo
