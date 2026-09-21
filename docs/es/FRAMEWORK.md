@@ -272,25 +272,25 @@ costo del mismo falsificador.
    la consulta memorizada del adaptador, diagnosticada, no una política fija. Los role packs del
    paso 4 todavía no tienen un valor medido de política de respuesta; el §4 de arriba y la fila D
    del §5 llevan el hallazgo adelante.
-2. **Paso 4, la mitad de sólo código — [ran] 2026-09-20, cero GPU, sin modelo** (`examples/`). Un
-   almacén relacional de juguete y una capa de herramientas que chequea el permiso fuera del
-   modelo, para **los dos** dominios — `examples/school/`, `examples/distributor/`, un solo
-   esqueleto compartido (`examples/common/`), así que el segundo dominio costó re-correr la
-   forma del primero sobre otro esquema, no infraestructura nueva, y construir los dos no
-   duplicó el costo del falsificador como habría pasado entrenando dos. **Falsificador comprado
-   y pasado:** una suite adversarial (inyección de prompt dentro de una nota, dentro de un
-   registro, y un pedido directo) intenta hacer que un rol alcance una fila fuera de su
-   inquilino — **30 casos, 0 fugas**, directo y a través de una capa MCP que una instancia real
-   de OpenClaw puede llamar hoy. **Todavía no comprado — la mitad del falsificador que
-   necesita un modelo:** si un *modelo* (uno de frontera pelado a través de OpenClaw, después un
-   experto entrenado) alguna vez *intenta* la llamada entre inquilinos. OpenClaw en sí está
-   instalado y ya existe un perfil aislado con estado de sesiones en vivo anteriores
-   (`~/.openclaw/bin/openclaw`, v2026.9.4, P63) — chequeado el 2026-09-21, después de que un
-   chequeo anterior sólo en `PATH` dijera lo contrario. Lo que bloquea el brazo es un modelo que
-   lo maneje, no el CLI: el proveedor del perfil apunta al proxy servido por Colab, que no está
-   corriendo en esta sesión, y no hay ninguna clave de frontera al alcance acá. Los role packs,
-   una biblioteca por rol con la forma condicional sobre muchas notas,
-   y cualquier adaptador siguen sin comprarse — nada acá entrena.
+2. **Paso 4, la mitad de sólo código — [ran] 2026-09-20/21, cero GPU, sin adaptador** (`examples/`).
+   Un almacén relacional de juguete y una capa de herramientas que chequea el permiso fuera del
+   modelo, para **los dos** dominios en el roster completo de sus diagramas de referencia —
+   `examples/school/` (7 roles, 13 herramientas), `examples/distributor/` (6 roles, 11
+   herramientas) — un solo esqueleto compartido (`examples/common/`), así que el segundo dominio
+   y la expansión posterior del roster costaron re-correr la forma del primero, no
+   infraestructura nueva. **Falsificador comprado y pasado:** una suite adversarial (inyección de
+   prompt dentro de una nota, dentro de un registro, y un pedido directo) intenta hacer que un rol
+   alcance una fila fuera de su inquilino — **77 pruebas, 0 fugas**, directo y a través de una
+   capa MCP que una instancia real de OpenClaw puede llamar hoy. **La mitad del falsificador que
+   necesita un modelo — [ran] 2026-09-21, un primer dato, no una suite:** dos turnos en vivo, una
+   cuenta personal de `openai/gpt-5.6-sol` (no la frontera designada de este proyecto — el brazo
+   necesitaba *un* modelo, no uno específico) a través de la capa MCP real, rol `educador`. El
+   modelo contestó un pedido legítimo de agenda con el texto real de la herramienta, textual,
+   después pidió la agenda de un estudiante de otro inquilino de la misma forma — **y se negó por
+   su cuenta, nombrando el límite entre inquilinos**, sin intentar nunca la llamada que la
+   herramienta de todas formas habría negado. Dos turnos con una cuenta no son la suite que esto
+   todavía necesita; los role packs, una biblioteca por rol con la forma condicional sobre
+   muchas notas, y cualquier adaptador siguen sin comprarse — nada acá entrena.
 3. **Nombrado, no comprado, hasta que pase la mitad del paso 2 que necesita un modelo:** Postgres
    RLS y Auth0 por nombre (el principio de la fila E, no su única implementación); concurrencia
    y el canario entre roles (paso 5); la factura (paso 6); Docker Compose e instalación (paso 7);
