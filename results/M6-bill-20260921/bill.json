@@ -1,0 +1,35 @@
+{
+ "started": "2026-09-21",
+ "rates_source": "https://ai.google.dev/gemini-api/docs/pricing",
+ "rates_fetched": "2026-09-21",
+ "model_priced": "google/gemini-3.8-flash",
+ "input_rate_per_token": 7.5e-07,
+ "output_rate_per_token": 3.75e-06,
+ "tokenizer": "tiktoken cl100k_base (approximation \u2014 not the pool's or Gemini's own tokenizer)",
+ "email_local_150": {
+  "n": 150,
+  "assistant_calls": 279,
+  "input_tokens": 72745,
+  "output_tokens": 15184,
+  "usd": 0.1115
+ },
+ "fluids_frontier_90_actual_bill": {
+  "n": 90,
+  "input_tokens": 8961,
+  "output_tokens": 47255,
+  "usd": 0.1839,
+  "note": "chain priced entirely at the output rate \u2014 overstates true cost, never understates"
+ },
+ "email_if_it_had_gone_to_frontier_too_usd": 0.1115,
+ "today_actual_frontier_bill_usd": 0.1839,
+ "ceiling_if_everything_had_gone_to_frontier_usd": 0.2954,
+ "frontier_dollars_avoided_by_keeping_email_local_usd": 0.1115,
+ "local_gpu_dollar_cost": null,
+ "local_gpu_dollar_cost_note": "not priced \u2014 the Colab rental rate could not be fetched live (BRIEF.md). local_token_volume_for_rate_substitution below is what a real $/hour or $/token rate multiplies against.",
+ "local_token_volume_for_rate_substitution": {
+  "input_tokens": 72745,
+  "output_tokens": 15184,
+  "assistant_calls": 279
+ },
+ "finished": "2026-09-21"
+}

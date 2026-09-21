@@ -209,7 +209,7 @@ print(subprocess.run(
     # showed as silence for its whole length and could not have been stopped
     # early [ran] 2026-09-14. Fifth time a log held the answer and a filter
     # kept it out, so tests/test_chain_scripts.py now checks the two agree.
-    "grep -E '(serve|gate|tiny|native|matrix|run|arm|resume|cost|domain|P24|sweep|depth|fluids|sim|pool|judge|conf|shim|tunnel|3p|read|skip|train|loss|corpora|draft|desk|zero|code|rank|substrate|release|attr|sim|awq|tiny|precision|kb|route|live|radar)\\]|"
+    "grep -E '(serve|gate|tiny|native|matrix|run|arm|resume|cost|domain|P24|sweep|depth|fluids|sim|pool|judge|conf|shim|tunnel|3p|read|skip|train|loss|corpora|draft|desk|zero|code|rank|substrate|release|attr|sim|awq|tiny|precision|kb|route|live|radar|bill)\\]|"
     "passed [0-9]+|clears the gate|prompts/s|Traceback|[Ee]rror|OutOfMemory|Killed|"
     # THE TRAINER'S ONLY SIGN OF LIFE IS ITS STEP BAR. `loss]` above has never matched: this
     # harness's Trainer prints no loss line at all — zero in M1's logs, zero in arm 0c's 114 steps

@@ -215,9 +215,16 @@ two is written down in [`docs/FRAMEWORK.md`](docs/FRAMEWORK.md); in short:
 |---|---|
 | **works [ran]** | several adapters on one resident model · two released experts through a paired gate · the API that prunes, prompts and routes · OpenClaw live · the library format, the lint, the referee · **navigation that transfers to a procedure never trained on** |
 | **does not yet** | the memory's central claim (three runs, not passed: the adapter navigates, the *untrained* base reads better) · note search (0.64 against 0.80) · a learned router · moving a reasoning expert across bases |
-| **exists since, zero GPU [ran]** | **the role as the route** (`auto:<role>`; says *which* member, never *whether*) · the **role pack** — `roles/<role>/role.toml`, every line checked against its artefact; three members expressed; not yet the source the code reads |
-| **does not exist** | the **tool layer** to the systems of record, acting as the person asking · per-user isolation · concurrency, latency and cost measurements · an installer · any language but English · any measured *write* |
-| **next, cheapest first** | decide who reads (one session, no training; pre-registered, waiting for GPU quota) · make the role packs the source of truth · a reference organisation on a neutral, generated domain — three roles, a toy database, a library with the conditional shape over many notes |
+| **exists since, zero GPU [ran]** | **the role as the route** (`auto:<role>`; says *which* member, never *whether*) · the **role pack** — `roles/<role>/role.toml`, every line checked against its artefact; three members expressed; not yet the source the code reads · **the tool layer's code-only half** — `examples/school/`, seven roles (the reference diagram's full roster), thirteen tools, an adversarial suite at **0 leaks** across two tenants, both MCP servers `mcp probe`-verified against a real OpenClaw instance; `examples/distributor/` the same shape, unexpanded · **a first price on the P41/P62 replay** (`training/harness/bill.py`) — today's real `gemini-3.8-flash` bill for the 37.5 % sent out, $0.18; the GPU's own dollar cost still unpriced, named rather than guessed |
+| **does not exist** | the tool layer's model-side half — whether a *model* ever tries the cross-tenant call — an OpenClaw turn needs an account behind it, prepared not run · per-user isolation · concurrency, latency measurements · an installer · any language but English · any measured *write to a real system of record* (the toy store's writes are real; a customer's are not) |
+| **next, cheapest first** | **W5d** — who reads (one session, no training; pre-registered) — first, because the memory needs its answer · then a live OpenClaw turn against `examples/` (bring-your-own account, `examples/README.md`) — the model-side half of the 0-leaks falsifier · then a second role pack skeleton, or the corpus generator that turns `examples/school/`'s tools into training data for a first LoRA on this domain |
+
+A five-phase architecture (two domains, Auth0, Postgres row-level security, Docker Compose, speculative
+decoding) arrived pasted into a session on 2026-09-20 and was read in full against this table — most of
+it was already built, already sequenced later, or blocked by a vLLM RFC; the one gap it named correctly
+and this repository had not closed (permission outside the model) is the step above. The reading, phase
+by phase, is [`docs/FRAMEWORK.md`](docs/FRAMEWORK.md) §9; the re-ordering is
+[`docs/PLAN.md`](docs/PLAN.md) §0.
 
 ## Where it goes
 
@@ -231,7 +238,7 @@ Each milestone has a gate and the arm that can kill it, written before it runs
 | **7** | **the memory** — the core of 1.0 | arm 0 and 0b **[ran]**: the channel works · under an **oracle** walk — exactly the right notes open — the expert still scores ~1/20 on a sibling procedure it never trained on · **W1–W4 built; W5 [ran], not passed:** 35/56 against the untrained base that reads at 45/56 — navigation transferred, a two-valued note was not read (attributed **[ran]** W5b: with the base writing the line, 0 of those 12 remain — a shape the corpus never showed) · **W5c [ran], falsified:** shown the shape over eight notes, the adapter learns the notes, not the reading — 4/15 |
 | **5** | the first real region: nursing procedures | headroom **[ran]**: 29/48 closed-book → 45/48 with the note open, 0/12 → 12/12 on a site's value · next: the same content as *walks*, against the untrained base reading the same notes |
 | **3–4** | the large half of a pair, and acceptance between the halves | not started · large + LoRA does not beat small + LoRA; then: acceptance no higher than under the bare large model |
-| **6** | the service policy, with the bill | not started · the local share costs more than it saves |
+| **6** | the service policy, with the bill | first pass **[ran]** on the P41/P62 replay: today's frontier bill $0.18, avoided by the local share $0.11 · fraction-of-a-dollar at this scale — the GPU's own cost, still unpriced, is what decides it |
 
 **Engineering constraints these carry — facts, not objections.** Everything that runs a model runs
 on Colab, in sessions of under an hour; nothing runs on the user's machine. A LoRA-adapted drafter is
@@ -276,6 +283,8 @@ reason: `--prune` (its own tool surface), `--member-prompt` (the prompt its corp
 | `training/nursing/` | the first text here nobody generated: three IV-therapy checklists, 72 checkable questions |
 | `training/harness/lora_matrix.py`, `rekey.py`, `awq_lora_gate.py` | does this base — small or large — serve a LoRA at all |
 | `training/harness/chain_serve.sh` | the Colab chain: provision, run detached, stream, fetch weights as they appear, resume |
+| `training/harness/bill.py` | prices an existing replay at real frontier rates — zero GPU, nothing re-run (`results/M6-bill-20260921/`) |
+| `examples/` | **the reference organisation, code-only, before any adapter** — `school/` (7 roles, 13 tools, two tenants) and `distributor/` (2 roles); a toy store, a tool layer that enforces permission outside the model, an MCP server per domain, an adversarial suite at 0 leaks; `examples/README.md` says how to point your own OpenClaw at it |
 | `releases/`, `results/` | the manifests, and the runs the documents cite |
 
 ## Documents

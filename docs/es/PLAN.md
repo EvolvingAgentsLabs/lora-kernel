@@ -63,6 +63,31 @@ aceptación a nivel de carácter; ~~el experto de mecánica de fluidos~~ — **d
 2026-09-19 [ran] hito 7 brazo 0b**: se retiró con un 11/90, y ese era el camino de servido.
 Como le enseñó su corpus, es 90/90.
 
+### Anexo, 2026-09-20 — una arquitectura pegada, y el cierre operativo que señala
+
+Llegó pegada a una sesión una arquitectura de cinco fases (centro educativo + distribuidora, un solo
+kernel genérico, decodificación especulativa, Postgres RLS detrás de Auth0, Docker Compose). **No
+entra acá como hecho** — ninguno de sus números lo produjo este repositorio. Leída completa contra
+[`FRAMEWORK.md`](FRAMEWORK.md) §9: en su mayoría vuelve a derivar los §5–§7 de ese documento desde más
+lejos, y lo que agrega se reduce a una brecha abierta (permiso reforzado fuera del modelo) que este
+repositorio ya había nombrado y todavía no había cerrado. **Cambian dos cosas; nada más:**
+
+- **Se nombra el próximo paso operativo:** `FRAMEWORK.md` §7 paso 4, *una organización de referencia
+  sobre un dominio neutral*, acotado a **un** dominio — no los dos que suponía el plan pegado — con un
+  chequeo de permiso de juguete en lugar de Auth0/Postgres RLS hasta que se muestre insuficiente.
+  Falsificador fijado en el §9: una suite adversarial a **0 fugas** sobre una fila prohibida, pedido
+  directo e inyectado desde una nota o un registro.
+- **Corre primero el paso más barato, ya pre-registrado:** **W5d** — la partición de política de
+  respuesta (`results/M7-W5d-answer-policy-20260920/BRIEF.md`), sin diseño nuevo, una sesión de L4, sin
+  entrenar — porque los role packs del paso 4 declaran una política de respuesta que todavía no tiene
+  un valor medido.
+
+Todo lo demás del plan pegado — un segundo dominio, Postgres RLS y Auth0 por nombre, concurrencia y el
+canario entre roles, la factura, Docker Compose, decodificación especulativa — queda **nombrado, no
+comprado**: ya secuenciado más adelante en `FRAMEWORK.md` §7 (pasos 5–7), y nada acá lo adelanta, por
+la regla contra comprar dos brazos como grilla (`../CLAUDE.md` §3). Los hitos 1–7 de abajo, sus
+compuertas y sus números, no cambian con este anexo; sólo ordena lo que sigue a F3.
+
 ## 1. Los hitos
 
 Los brazos se compran en secuencia. El brazo que puede matar un hito corre primero; los
@@ -75,7 +100,7 @@ brazos de atribución se compran sólo una vez que hay un efecto que atribuir.
 | **3** | la mitad grande de un par | 1 | un LoRA en `Qwen3.8-27B` está `applied` al servirse; grande + LoRA le gana a chico + LoRA en la banda profunda, pareado | — |
 | **4** | el par especulativo | 3 | la aceptación de borradores del LoRA chico bajo verificación del LoRA grande supera la aceptación bajo el modelo grande pelado | — |
 | **5** | la primera región real, a mano | 1, 2, un sandbox, claves rotadas | la compuerta de release, sobre una suite con un verificador que nadie acá generó | **región nombrada el 2026-09-19: procedimientos de enfermería y material de educación en salud** (*Nursing Skills* de Open RN, CC BY 4.0, primero); sigue el brazo de margen, cero GPU |
-| **6** | la política de servicio, con la factura | 2, 4, 5 | la porción local ahorra más de lo que cuesta, sobre tráfico real | — |
+| **6** | la política de servicio, con la factura | 2, 4, 5 | la porción local ahorra más de lo que cuesta, sobre tráfico real | 🔶 **primera pasada [ran] 2026-09-21, cero GPU:** el replay de P41/P62 tasado a las tarifas reales de `gemini-3.8-flash` — la factura real de hoy hacia la frontera (90 casos de fluidos) **$0,18**, evitada al mantener locales los 150 casos de email **$0,11**, techo si todo hubiera salido **$0,30**. **El costo en dólares de la propia GPU local no está tasado** — la tarifa de alquiler no se pudo obtener en vivo; no se adivinó |
 | **7** | **una base de conocimiento por subdominio, y la trayectoria por ella como harness** — sobre mecánica de fluidos, partida en subdominios | 1; comparte su modelo de embeddings con el brazo 2 del hito 2; independiente de 3–6, **corre a continuación** | un experto entrenado para navegar y seguir notas contesta familias sobre las que nunca entrenó, donde el mismo experto sin la base está en 1/20 | 🔶 **W1–W4 construidos [ran]; el radar de W3 y el brazo que mata de W5 [ran] y no pasan.** W5: el brazo con biblioteca 35/56 contra el base sin entrenar que lee, 45/56 (6 : 16, $p=0{,}052$), 35 : 2 sobre sin-biblioteca — la navegación se transfirió, leer una nota de dos valores no. Sigue a decisión del usuario: composición, sin entrenar |
 
 ### Hito 1 — el pool en Qwen 3.x chico
@@ -308,6 +333,31 @@ Router → miembro chico → par donde se mide que la región lo necesita → fr
 número que nunca se midió es la plata: la factura de la frontera con y sin la porción
 local, sobre tráfico real. **Falsificado por** una porción local que cuesta más correrla
 de lo que ahorra.
+
+**Primera pasada [ran] 2026-09-21, cero GPU** (`training/harness/bill.py`,
+[`BRIEF`](../../results/M6-bill-20260921/BRIEF.md)). No es tráfico real — lo más cercano en disco: el
+replay de P41/P62 (150 casos de email-full servidos localmente, 90 casos de fluidos enviados de
+verdad a `google/gemini-3.8-flash`, confirmado en el propio campo `model` de `frontier_fluids.json`),
+tasado a la tarifa real de ese modelo en el nivel pago ($0,75 / $3,75 por 1M de tokens de
+entrada/salida, fuente `ai.google.dev/gemini-api/docs/pricing`, obtenida el mismo día). El email se
+tasa exacto, turno por turno, como factura de verdad una API de chat una llamada multi-turno; los
+fluidos se tasan con una aproximación declarada (toda la cadena de llamadas a herramientas a la
+tarifa de salida) sesgada a **sobreestimar**, nunca subestimar, el costo de la frontera.
+
+| | tokens (entrada / salida) | USD |
+|---|---|--:|
+| factura real de hoy hacia la frontera (90 casos de fluidos) | 8.961 / 47.255 | **$0,1839** |
+| evitada al mantener locales los 150 casos de email | 72.745 / 15.184 | **$0,1115** |
+| techo si todo hubiera salido a la frontera | — | **$0,2954** |
+
+**Lo que esto no responde, nombrado en vez de adivinado:** el costo en dólares de la propia GPU
+local. La tarifa de alquiler de Colab se renderiza del lado del cliente y dos intentos en vivo no
+devolvieron un número utilizable — no se fabricó ninguno. `local_token_volume_for_rate_substitution`
+en `bill.json` es lo que una tarifa real de $/hora o $/token multiplica una vez que se provea. **A la
+escala de este replay (240 casos) cada número de arriba es una fracción de un dólar** — antes de leer
+un veredicto de "ahorra más de lo que cuesta" en estas cifras, la plata todavía no es la cantidad que
+decide a este volumen; lo que una primera pasada como esta puede mostrar es la forma de la respuesta,
+no su tamaño.
 
 ### Hito 7 — una base de conocimiento por subdominio, y la trayectoria por ella como harness
 
@@ -585,6 +635,15 @@ Las cuatro que deciden la forma de un paso:
 
 ## 5. Historia
 
+- **2026-09-20** — **replanificación a partir de una arquitectura pegada, anexo en el §0.** Leída
+  contra [`FRAMEWORK.md`](FRAMEWORK.md) §9: en su mayoría ya construida (role packs F3) o ya
+  secuenciada más adelante (concurrencia, la factura, instalación) o bloqueada (un drafter LoRA es un
+  RFC de vLLM, no una función). Una brecha que nombró correctamente y este repositorio no había
+  cerrado — permiso reforzado fuera del modelo — se vuelve el paso 4 de `FRAMEWORK.md` §7, acotado a
+  un dominio con un almacén de juguete y una compuerta adversarial a 0 fugas; Postgres/Auth0 quedan
+  como elección de implementación. **W5d corre primero** — más barato, ya pre-registrado, y los role
+  packs del paso 4 necesitan su respuesta antes de poder construirse. Ninguna compuerta de hito de
+  abajo se movió.
 - **2026-09-19** — memoria **W4 [ran]: PASÓ.** El generador de corpus maneja el runtime: 600 recorridos, 0 valores en un
   enunciado, 0 casos evaluados en el corpus, 0 aperturas del apartado, 0 filas que el árbitro no reproduzca; `discontinue-iv`
   apartado; los recorridos largos son ventanas con el estado llevado. Todavía sin modelo.

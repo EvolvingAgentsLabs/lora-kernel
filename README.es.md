@@ -226,9 +226,16 @@ los dos está escrita en [`docs/es/FRAMEWORK.md`](docs/es/FRAMEWORK.md); en resu
 |---|---|
 | **funciona [ran]** | varios adaptadores sobre un modelo residente · dos expertos liberados a través de una compuerta pareada · la API que poda, pone el prompt y rutea · OpenClaw en vivo · el formato de la biblioteca, el lint, el árbitro · **navegación que se transfiere a un procedimiento nunca entrenado** |
 | **todavía no** | la afirmación central de la memoria (tres corridas, no pasa: el adaptador navega, el base *sin entrenar* lee mejor) · la búsqueda de notas (0,64 contra 0,80) · un router aprendido · mover un experto que razona entre bases |
-| **existe desde entonces, cero GPU [ran]** | **el rol como ruta** (`auto:<rol>`; dice *cuál* miembro, nunca *si corresponde*) · el **paquete de rol** — `roles/<rol>/role.toml`, cada línea chequeada contra su artefacto; tres miembros expresados; todavía no es la fuente que lee el código |
-| **no existe** | la **capa de herramientas** hacia los sistemas de registro, actuando como la persona que pregunta · aislamiento por usuario · mediciones de concurrencia, latencia y costo · un instalador · cualquier idioma que no sea inglés · cualquier *escritura* medida |
-| **sigue, lo más barato primero** | decidir quién lee (una sesión, sin entrenar; pre-registrado, esperando cuota de GPU) · hacer de los paquetes de rol la fuente de verdad · una organización de referencia sobre un dominio neutral y generado — tres roles, una base de datos de juguete, una biblioteca con la forma condicional sobre muchas notas |
+| **existe desde entonces, cero GPU [ran]** | **el rol como ruta** (`auto:<rol>`; dice *cuál* miembro, nunca *si corresponde*) · el **paquete de rol** — `roles/<rol>/role.toml`, cada línea chequeada contra su artefacto; tres miembros expresados; todavía no es la fuente que lee el código · **la mitad de sólo código de la capa de herramientas** — `examples/school/`, siete roles (el roster completo del diagrama de referencia), trece herramientas, una suite adversarial a **0 fugas** sobre dos inquilinos, los dos servidores MCP verificados con `mcp probe` contra una instancia real de OpenClaw; `examples/distributor/` con la misma forma, sin expandir · **un primer precio sobre el replay de P41/P62** (`training/harness/bill.py`) — la factura real de hoy de `gemini-3.8-flash` para el 37,5 % que sale, $0,18; el costo en dólares de la propia GPU sigue sin tasar, nombrado en vez de adivinado |
+| **no existe** | la mitad del lado del modelo de la capa de herramientas — si un *modelo* alguna vez intenta la llamada entre inquilinos — un turno de OpenClaw necesita una cuenta detrás, preparado, no corrido · aislamiento por usuario · mediciones de concurrencia y latencia · un instalador · cualquier idioma que no sea inglés · cualquier *escritura a un sistema de registro real* medida (las escrituras del almacén de juguete son reales; las de un cliente no) |
+| **sigue, lo más barato primero** | **W5d** — quién lee (una sesión, sin entrenar; pre-registrado) — primero, porque la memoria necesita su respuesta · después un turno real de OpenClaw contra `examples/` (con tu propia cuenta, `examples/README.md`) — la mitad del lado del modelo del falsificador de 0 fugas · después un segundo esqueleto de role pack, o el generador de corpus que convierte las herramientas de `examples/school/` en datos de entrenamiento para un primer LoRA sobre este dominio |
+
+Una arquitectura de cinco fases (dos dominios, Auth0, seguridad a nivel de fila de Postgres, Docker
+Compose, decodificación especulativa) llegó pegada a una sesión el 2026-09-20 y se leyó completa
+contra esta tabla — la mayor parte ya estaba construida, ya secuenciada más adelante, o bloqueada por
+un RFC de vLLM; la única brecha que nombró correctamente y este repositorio no había cerrado (permiso
+fuera del modelo) es el paso de arriba. La lectura, fase por fase, está en
+[`docs/FRAMEWORK.md`](docs/FRAMEWORK.md) §9; la replanificación en [`docs/PLAN.md`](docs/PLAN.md) §0.
 
 ## Adónde va
 
@@ -242,7 +249,7 @@ Cada hito tiene una compuerta y el brazo que puede matarlo, escritos antes de co
 | **7** | **la memoria** — el núcleo de la 1.0 | brazo 0 y 0b **[ran]**: el canal funciona · bajo una trayectoria **oráculo** — exactamente las notas correctas abiertas — el experto igual saca ~1/20 en un procedimiento de una familia hermana que nunca entrenó · **W1–W4 construidos; W5 [ran], no pasa:** 35/56 contra el base sin entrenar que lee, 45/56 — la navegación se transfirió, una nota de dos valores no se leyó (atribuido **[ran]** W5b: con el base escribiendo la línea quedan 0 de esas 12 — una forma que el corpus nunca mostró) · **W5c [ran], falsado:** mostrada la forma sobre ocho notas, el adaptador aprende las notas, no la lectura — 4/15 |
 | **5** | la primera región real: procedimientos de enfermería | margen **[ran]**: 29/48 a libro cerrado → 45/48 con la nota abierta, 0/12 → 12/12 en un valor del sitio · sigue: el mismo contenido como *recorridos*, contra la base sin entrenar leyendo las mismas notas |
 | **3–4** | la mitad grande de un par, y la aceptación entre las mitades | no empezado · grande + LoRA no le gana a chico + LoRA; después: aceptación no mayor que bajo el modelo grande pelado |
-| **6** | la política del servicio, con la factura | no empezado · la parte local cuesta más de lo que ahorra |
+| **6** | la política del servicio, con la factura | primera pasada **[ran]** sobre el replay de P41/P62: la factura real de hoy a la frontera $0,18, evitada por la porción local $0,11 · una fracción de dólar a esta escala — lo que decide es el costo de la propia GPU, todavía sin tasar |
 
 **Restricciones de ingeniería que esto carga — hechos, no objeciones.** Todo lo que corre un
 modelo corre en Colab, en sesiones de menos de una hora; nada corre en la máquina del
@@ -289,6 +296,8 @@ modelo).
 | `training/nursing/` | el primer texto acá que nadie generó: tres checklists de terapia IV, 72 preguntas verificables |
 | `training/harness/lora_matrix.py`, `rekey.py`, `awq_lora_gate.py` | si esta base — chica o grande — sirve un LoRA o no |
 | `training/harness/chain_serve.sh` | el chain de Colab: aprovisionar, correr desacoplado, streamear, traer los pesos a medida que aparecen, reanudar |
+| `training/harness/bill.py` | tasa un replay existente a tarifas reales de frontera — cero GPU, nada se re-corre (`results/M6-bill-20260921/`) |
+| `examples/` | **la organización de referencia, sólo código, antes de que exista ningún adaptador** — `school/` (7 roles, 13 herramientas, dos inquilinos) y `distributor/` (2 roles); un almacén de juguete, una capa de herramientas que refuerza el permiso fuera del modelo, un servidor MCP por dominio, una suite adversarial a 0 fugas; `examples/README.md` dice cómo apuntar tu propio OpenClaw |
 | `releases/`, `results/` | los manifiestos, y las corridas que citan los documentos |
 
 ## Documentos

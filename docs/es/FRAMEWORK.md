@@ -224,6 +224,65 @@ Los pasos 1–3 no necesitan entrenar nada. El paso 4 es el primero que sí.
 10. ¿Qué haría que *no* construyeras esto — cuál fila del §3 es la que debería detener el proyecto si
     no se mueve?
 
+## 9. Una arquitectura pegada, leída contra este orden (2026-09-20)
+
+Llegó pegado a una sesión un plan de cinco fases — un centro educativo y una distribuidora
+unificados bajo un solo kernel, decodificación especulativa, Postgres con seguridad a nivel de fila
+detrás de Auth0, un despliegue con Docker Compose. **No entra acá como hecho** — ninguno de sus
+números lo produjo este repositorio. Lo que sigue es leerlo contra los §5–§7 de este documento,
+escritos el mismo día con mediciones que ya existen, y responder una sola pregunta: ¿cambia lo que
+sigue?
+
+**En su mayoría no — vuelve a derivar el §7 desde más lejos, y se adelanta.** Fase por fase:
+
+| la fase pegada | se lee acá como |
+|---|---|
+| Fase 4, role packs por dominio | **ya construida [ran] F3.** `roles/<rol>/role.toml` + `rolepack.lint`; los dos miembros liberados re-expresados, prompt servido y bloque idénticos byte a byte. El pedido de "dos dominios" es el paso 4 de abajo, hecho una vez, no dos a la vez (ver abajo) |
+| Fase 3, capa de herramientas con permiso fuera del modelo | **la única brecha genuinamente abierta (fila E), bien nombrada.** Pero Auth0 y Postgres RLS son una *implementación*, no el falsificador: la compuerta de la fila E es un almacén de juguete, dos roles, una fila prohibida, una suite adversarial a **0 fugas** — un chequeo de permiso liso en la capa de herramientas pasa esa compuerta tan barato como RLS. Levantar Postgres y un IdP sólo si la versión de juguete no alcanza, lo que todavía no se sabe |
+| Fase 2, quién navega vs. quién lee | **ya es el hallazgo propio de este documento (§4), y ya se corrió dos veces más de lo que el plan pegado sabe.** Su propio falsificador — "el esquema híbrido debe superar al LoRA solo en datos ciegos o parar" — **ya está decidido, dos veces, y se lee como un stop**: `withlib` de W5 35/56 contra `base-reads` 45/56 (6 : 16, $p=0,052$); el par reentrenado de W5c 42/66 contra 46/66 (12 : 16, $p=0,57$, un empate). Lo que **no** está decidido es la pregunta más angosta de W5b — una política que parte por tipo de tarea, no "componer todo" — y eso es **W5d, pre-registrado 2026-09-20, todavía no corrido**: una sesión de L4, sin entrenar, más barato que cualquier otra cosa de esta lista |
+| Fase 1, decodificación especulativa | **no la requiere 1.0** (`PLAN.md` §0 ya lo dice) y está medio bloqueada: un drafter LoRA es un RFC de vLLM, no una función que ya ship — (#52038 **[read]**, `RECORD.md` §5) — la Opción B del plan pegado no corre hoy sobre un miembro servido con LoRA. La Opción A (prompt-lookup / n-gramas, cero VRAM, sin drafter) **sí** corre hoy, sobre el pool tal como existe, y es la versión barata: un brazo de bonus medido sobre el replay de 240 casos que ya está en disco (P57, P64) — reusando un instrumento existente, no un benchmark nuevo — nunca un prerrequisito de fase 1 |
+| Fase 5, concurrencia, canario, Docker Compose | **ya secuenciada — pasos 5 y 7 del §7, después de la compuerta del paso 4, no antes.** Nada acá los adelanta: un canario entre dos dominios necesita dos dominios, e instalar vale la pena documentarlo sólo una vez que 1–6 digan que hay algo que instalar |
+
+**Qué cambia: nada del orden del §7, un detalle suyo.** El paso 4, *una organización de referencia
+sobre un dominio neutral*, estaba escrito como "una distribuidora generada" antes de que esto
+llegara; ahora se lee como **un** dominio neutral — el segundo dominio del plan pegado (el que no se
+construya primero) es la mitad barata, comprada sólo después de que pase la compuerta del paso 4,
+re-corriendo el mismo esqueleto de role pack (fila C) sobre otro `db_schema` y otro juego de notas, no
+levantando infraestructura nueva. Dos dominios a la vez es la grilla que la propia regla de este
+proyecto ya prohíbe (`../CLAUDE.md` §3, "comprar brazos en secuencia, nunca como grilla") — duplica el
+costo del mismo falsificador.
+
+**El cierre operativo, en orden, empezando ahora:**
+
+1. **W5d** — pre-registrado, sin diseño nuevo, una sesión de L4, sin entrenar
+   ([`BRIEF`](../../results/M7-W5d-answer-policy-20260920/BRIEF.md)). Decide la partición
+   lectura/escritura que la *política de respuesta* de un role pack necesita, que el paso 4 declara y
+   todavía no tiene un valor medido.
+2. **Paso 4, la mitad de sólo código — [ran] 2026-09-20, cero GPU, sin modelo** (`examples/`). Un
+   almacén relacional de juguete y una capa de herramientas que chequea el permiso fuera del
+   modelo, para **los dos** dominios — `examples/school/`, `examples/distributor/`, un solo
+   esqueleto compartido (`examples/common/`), así que el segundo dominio costó re-correr la
+   forma del primero sobre otro esquema, no infraestructura nueva, y construir los dos no
+   duplicó el costo del falsificador como habría pasado entrenando dos. **Falsificador comprado
+   y pasado:** una suite adversarial (inyección de prompt dentro de una nota, dentro de un
+   registro, y un pedido directo) intenta hacer que un rol alcance una fila fuera de su
+   inquilino — **30 casos, 0 fugas**, directo y a través de una capa MCP que una instancia real
+   de OpenClaw puede llamar hoy. **Todavía no comprado — la mitad del falsificador que
+   necesita un modelo:** si un *modelo* (uno de frontera pelado a través de OpenClaw, después un
+   experto entrenado) alguna vez *intenta* la llamada entre inquilinos. OpenClaw en sí está
+   instalado y ya existe un perfil aislado con estado de sesiones en vivo anteriores
+   (`~/.openclaw/bin/openclaw`, v2026.9.4, P63) — chequeado el 2026-09-21, después de que un
+   chequeo anterior sólo en `PATH` dijera lo contrario. Lo que bloquea el brazo es un modelo que
+   lo maneje, no el CLI: el proveedor del perfil apunta al proxy servido por Colab, que no está
+   corriendo en esta sesión, y no hay ninguna clave de frontera al alcance acá. Los role packs,
+   una biblioteca por rol con la forma condicional sobre muchas notas,
+   y cualquier adaptador siguen sin comprarse — nada acá entrena.
+3. **Nombrado, no comprado, hasta que pase la mitad del paso 2 que necesita un modelo:** Postgres
+   RLS y Auth0 por nombre (el principio de la fila E, no su única implementación); concurrencia
+   y el canario entre roles (paso 5); la factura (paso 6); Docker Compose e instalación (paso 7);
+   decodificación especulativa por prompt-lookup, como brazo de bonus sobre fixtures existentes,
+   nunca un prerrequisito.
+
 ---
 
 *Punteros: [`ARCHITECTURE.md`](ARCHITECTURE.md) el sistema · [`MEMORY.md`](MEMORY.md) la

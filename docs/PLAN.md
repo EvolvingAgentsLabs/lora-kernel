@@ -53,6 +53,30 @@ and it is not going to be spent); composition of adapters; the character-level a
 instrument; ~~the fluid-mechanics expert~~ — **un-retired 2026-09-19 [ran] M7 arm 0b**: it was
 retired on 11/90, and that was the serving path. As its corpus taught, it is 90/90.
 
+### Addendum, 2026-09-20 — a pasted architecture, and the operative close it points at
+
+A five-phase architecture arrived pasted into a session (educational centre + distributor, one
+generic kernel, speculative decoding, Postgres RLS behind Auth0, Docker Compose). **It is not
+entered here as fact** — none of its numbers were produced by this repository. Read in full against
+[`FRAMEWORK.md`](FRAMEWORK.md) §9: it mostly re-derives that document's §5–§7 from further away, and
+what it adds narrows to one open gap (permission enforced outside the model) that this repository
+had already named and not yet closed. **Two things change; nothing else does:**
+
+- **The next operative step is named:** `FRAMEWORK.md` §7 step 4, *a reference organisation on a
+  neutral domain*, scoped to **one** domain — not the two the pasted plan assumed — with a toy
+  permission check standing in for Auth0/Postgres RLS until the toy version is shown insufficient.
+  Falsifier fixed in §9: an adversarial suite at **0 leaks** across a forbidden row, direct ask and
+  injected off a note or a record.
+- **The cheaper, already-pre-registered step runs first:** **W5d** — the answer-policy split
+  (`results/M7-W5d-answer-policy-20260920/BRIEF.md`), zero new design, one L4 session, no training —
+  because step 4's role packs declare an answer policy they do not yet have a measured value for.
+
+Everything else in the pasted plan — a second domain, Postgres RLS and Auth0 by name, concurrency
+and the cross-role canary, the bill, Docker Compose, speculative decoding — is **named, not bought**:
+already sequenced later in `FRAMEWORK.md` §7 (steps 5–7), and moved earlier by nothing here, per the
+rule against buying two arms as a grid (`../CLAUDE.md` §3). Milestones 1–7 below, their gates and
+their numbers, are unchanged by this addendum; it only orders what follows F3.
+
 ## 1. The milestones
 
 Arms are bought in sequence. The arm that can kill a milestone runs first; attribution
@@ -65,7 +89,7 @@ arms are bought only once there is an effect to attribute.
 | **3** | the large half of one pair | 1 | a LoRA on `Qwen3.8-27B` is applied when served; large + LoRA beats small + LoRA on the deep band, paired | — |
 | **4** | the speculative pair | 3 | acceptance of small-LoRA drafts under large-LoRA verification exceeds acceptance under the bare large model | — |
 | **5** | the first real region, by hand | 1, 2, a sandbox, keys rotated | the release gate, on a suite with a verifier nobody here generated | **region named 2026-09-19: nursing procedures and health-education material** (Open RN *Nursing Skills*, CC BY 4.0, first); headroom arm next, zero GPU |
-| **6** | the service policy, with the bill | 2, 4, 5 | the local share saves more than it costs, on real traffic | — |
+| **6** | the service policy, with the bill | 2, 4, 5 | the local share saves more than it costs, on real traffic | 🔶 **first pass [ran] 2026-09-21, zero GPU:** the P41/P62 replay priced at real `gemini-3.8-flash` rates — today's actual frontier bill (90 fluids cases) **$0.18**, avoided by keeping 150 email cases local **$0.11**, ceiling if everything left **$0.30**. **The local GPU's own dollar cost is not priced** — the rental rate could not be fetched live; not guessed around |
 | **7** | **a knowledge base per subdomain, and the trajectory through it as the harness** — on fluid mechanics, split into subdomains | 1; shares its embedding model with 2's arm 2; independent of 3–6, **runs next** | an expert trained to navigate and follow notes answers families it never trained on, where the same expert without the base is at 1/20 | 🔶 **W1–W4 built [ran]; W3's radar and W5's kill arm [ran] and not passed.** W5: the library arm 35/56 against the untrained base that reads at 45/56 (6 : 16, $p=0.052$), 35 : 2 over no-library — navigation transferred, reading a two-valued note did not. Next is the user's call: composition, no training |
 
 ### Milestone 1 — the pool on Qwen 3.x small
@@ -281,6 +305,29 @@ saturated there. It needs a sandbox for anything that executes and rotated keys.
 Router → small member → pair where the region is measured to need it → frontier. The
 number that has never been measured is money: the frontier bill with and without the local
 share, on real traffic. **Falsified by** a local share that costs more to run than it saves.
+
+**First pass [ran] 2026-09-21, zero GPU** (`training/harness/bill.py`,
+[`BRIEF`](../results/M6-bill-20260921/BRIEF.md)). Not real traffic — the closest thing on disk: the
+P41/P62 replay (150 email-full cases served locally, 90 fluids cases actually sent to
+`google/gemini-3.8-flash`, confirmed in `frontier_fluids.json`'s own `model` field), priced at that
+model's real paid-tier rate ($0.75 / $3.75 per 1M input/output tokens, sourced
+`ai.google.dev/gemini-api/docs/pricing`, fetched the same day). Email priced exactly, turn by turn,
+the way a chat API bills a multi-turn call; fluids priced with a stated approximation (the whole
+tool-call chain at the output rate) biased to **overstate**, never understate, the frontier's cost.
+
+| | tokens (in / out) | USD |
+|---|---|--:|
+| today's actual frontier bill (90 fluids cases) | 8,961 / 47,255 | **$0.1839** |
+| avoided by keeping 150 email cases local | 72,745 / 15,184 | **$0.1115** |
+| ceiling if everything had gone to the frontier | — | **$0.2954** |
+
+**What this does not answer, named rather than guessed at:** the local GPU's own dollar cost. The
+Colab rental rate renders client-side and two live fetch attempts returned no usable number — not
+fabricated. `local_token_volume_for_rate_substitution` in `bill.json` is what a real $/hour or
+$/token rate multiplies against once supplied. **At this replay's scale (240 cases) every number
+above is a fraction of a dollar** — before any verdict on "saves more than it costs" is read off
+these figures, note that money is not yet the deciding quantity at this volume; the shape of the
+answer, not its size, is what a first pass like this can show.
 
 ### Milestone 7 — a knowledge base per subdomain, and the trajectory through it as the harness
 
@@ -539,6 +586,14 @@ that decide the shape of a step:
 
 ## 5. History
 
+- **2026-09-20** — **re-plan from a pasted architecture, addendum in §0.** Read against
+  [`FRAMEWORK.md`](FRAMEWORK.md) §9: mostly already built (role packs F3) or already sequenced later
+  (concurrency, the bill, installation) or blocked (a LoRA drafter is a vLLM RFC, not a feature). One
+  gap it named correctly and this repository had not closed — permission enforced outside the model
+  — becomes `FRAMEWORK.md` §7 step 4, scoped to one domain with a toy store and a 0-leaks adversarial
+  gate, Postgres/Auth0 deferred as an implementation choice. **W5d runs first** — cheaper, already
+  pre-registered, and step 4's role packs need its answer before they can be built. No milestone
+  gate below moved.
 - **2026-09-19** — memory **W4 [ran]: PASSED.** The corpus generator drives the runtime: 600 walks, 0 values in a
   statement, 0 evaluated cases in the corpus, 0 held-out opens, 0 rows the referee does not reproduce; `discontinue-iv`
   held out; long walks are windows with the state carried. No model yet.
