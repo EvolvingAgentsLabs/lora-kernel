@@ -1,0 +1,2498 @@
+{
+ "encoder": "cactus-compute/needle3",
+ "limit_per_bucket": 40,
+ "started": "2026-09-21T20:16:40",
+ "probe": {
+  "paraphrase": 0.9453,
+  "unrelated": 0.8966,
+  "dim": 3072
+ },
+ "tau": {
+  "desk-commitment": 0.9885137878911252,
+  "email-full": 0.988458285762636
+ },
+ "sets": {
+  "A": 40,
+  "B": 40,
+  "C": 14,
+  "D": 40,
+  "E": 40,
+  "C2": 8,
+  "E2": 40,
+  "F": 40
+ },
+ "sets_full_size": {
+  "A": 715,
+  "B": 240,
+  "C": 14,
+  "D": 76,
+  "E": 120,
+  "C2": 8,
+  "E2": 120,
+  "F": 120
+ },
+ "cases": {
+  "A": [
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9862,
+     "email-full": 0.9902
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9873,
+     "email-full": 0.9913
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9854,
+     "email-full": 0.9903
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9908,
+     "email-full": 0.9861
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9948,
+     "email-full": 0.9868
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9924,
+     "email-full": 0.9894
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9838,
+     "email-full": 0.9878
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9866,
+     "email-full": 0.9906
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9851,
+     "email-full": 0.9888
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9946,
+     "email-full": 0.9874
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9877,
+     "email-full": 0.9924
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9827,
+     "email-full": 0.9903
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9842,
+     "email-full": 0.9897
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9941,
+     "email-full": 0.9851
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9946,
+     "email-full": 0.9883
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.996,
+     "email-full": 0.9836
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.982,
+     "email-full": 0.9889
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9941,
+     "email-full": 0.9867
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9873,
+     "email-full": 0.9911
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9853,
+     "email-full": 0.9903
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9932,
+     "email-full": 0.9853
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9865,
+     "email-full": 0.9915
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9882,
+     "email-full": 0.9931
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9936,
+     "email-full": 0.9858
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9947,
+     "email-full": 0.9851
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9882,
+     "email-full": 0.9922
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9938,
+     "email-full": 0.9874
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9854,
+     "email-full": 0.9901
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9887,
+     "email-full": 0.9891
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9913,
+     "email-full": 0.9876
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9859,
+     "email-full": 0.9904
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9954,
+     "email-full": 0.9853
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9856,
+     "email-full": 0.993
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9826,
+     "email-full": 0.9863
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9951,
+     "email-full": 0.9853
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9872,
+     "email-full": 0.9927
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.981,
+     "email-full": 0.9883
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9951,
+     "email-full": 0.9844
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9872,
+     "email-full": 0.9919
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9857,
+     "email-full": 0.9893
+    }
+   }
+  ],
+  "B": [
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9819,
+     "email-full": 0.9879
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9932,
+     "email-full": 0.988
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9875,
+     "email-full": 0.9931
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9936,
+     "email-full": 0.9851
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9905,
+     "email-full": 0.9779
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9903,
+     "email-full": 0.9893
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9931,
+     "email-full": 0.9875
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9848,
+     "email-full": 0.9874
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9839,
+     "email-full": 0.985
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9935,
+     "email-full": 0.9846
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9929,
+     "email-full": 0.986
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9906,
+     "email-full": 0.9884
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9949,
+     "email-full": 0.9874
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9861,
+     "email-full": 0.991
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9919,
+     "email-full": 0.9844
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9902,
+     "email-full": 0.987
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.985,
+     "email-full": 0.9902
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9958,
+     "email-full": 0.9867
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.993,
+     "email-full": 0.9868
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9902,
+     "email-full": 0.987
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9936,
+     "email-full": 0.9881
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9802,
+     "email-full": 0.9883
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9894,
+     "email-full": 0.9855
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9944,
+     "email-full": 0.9881
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9933,
+     "email-full": 0.9864
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9862,
+     "email-full": 0.9899
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9851,
+     "email-full": 0.989
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9803,
+     "email-full": 0.9886
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9918,
+     "email-full": 0.985
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9953,
+     "email-full": 0.9857
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9949,
+     "email-full": 0.986
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9852,
+     "email-full": 0.9881
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9826,
+     "email-full": 0.9861
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9852,
+     "email-full": 0.9878
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9924,
+     "email-full": 0.9859
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9906,
+     "email-full": 0.9869
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9818,
+     "email-full": 0.9874
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.994,
+     "email-full": 0.9801
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9929,
+     "email-full": 0.9866
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9858,
+     "email-full": 0.9892
+    }
+   }
+  ],
+  "C": [
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9624,
+     "email-full": 0.9554
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9439,
+     "email-full": 0.942
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9592,
+     "email-full": 0.9551
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.952,
+     "email-full": 0.9492
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9618,
+     "email-full": 0.9569
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9538,
+     "email-full": 0.948
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9461,
+     "email-full": 0.9416
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9578,
+     "email-full": 0.952
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9542,
+     "email-full": 0.9475
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9524,
+     "email-full": 0.9546
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.949,
+     "email-full": 0.9417
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9494,
+     "email-full": 0.9457
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9493,
+     "email-full": 0.945
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9524,
+     "email-full": 0.949
+    }
+   }
+  ],
+  "D": [
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9456,
+     "email-full": 0.9483
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9496,
+     "email-full": 0.9508
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9455,
+     "email-full": 0.9459
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9445,
+     "email-full": 0.9452
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9452,
+     "email-full": 0.9471
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.947,
+     "email-full": 0.9473
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9436,
+     "email-full": 0.939
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9479,
+     "email-full": 0.95
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9463,
+     "email-full": 0.9487
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9466,
+     "email-full": 0.9478
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.945,
+     "email-full": 0.9457
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9401,
+     "email-full": 0.9389
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9456,
+     "email-full": 0.9478
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9454,
+     "email-full": 0.946
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9461,
+     "email-full": 0.9472
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9461,
+     "email-full": 0.9478
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9459,
+     "email-full": 0.945
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9277,
+     "email-full": 0.9284
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9465,
+     "email-full": 0.9491
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.945,
+     "email-full": 0.9458
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.945,
+     "email-full": 0.9465
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9474,
+     "email-full": 0.9496
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9435,
+     "email-full": 0.9425
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9468,
+     "email-full": 0.9483
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9448,
+     "email-full": 0.9441
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9444,
+     "email-full": 0.9467
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9312,
+     "email-full": 0.9279
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9383,
+     "email-full": 0.9393
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9448,
+     "email-full": 0.9469
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9467,
+     "email-full": 0.9461
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9424,
+     "email-full": 0.9423
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9459,
+     "email-full": 0.9458
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9457,
+     "email-full": 0.9484
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9501,
+     "email-full": 0.9514
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9455,
+     "email-full": 0.946
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9466,
+     "email-full": 0.9471
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9221,
+     "email-full": 0.9243
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9074,
+     "email-full": 0.9048
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.947,
+     "email-full": 0.9454
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.936,
+     "email-full": 0.9336
+    }
+   }
+  ],
+  "E": [
+   {
+    "truth": "out",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9867,
+     "email-full": 0.9904
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9888,
+     "email-full": 0.9857
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9868,
+     "email-full": 0.988
+    }
+   },
+   {
+    "truth": "out",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9886,
+     "email-full": 0.989
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9826,
+     "email-full": 0.9872
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9896,
+     "email-full": 0.9858
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9914,
+     "email-full": 0.9892
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9909,
+     "email-full": 0.9869
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9933,
+     "email-full": 0.9875
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.993,
+     "email-full": 0.9879
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9939,
+     "email-full": 0.9868
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9917,
+     "email-full": 0.9875
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9836,
+     "email-full": 0.9853
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9921,
+     "email-full": 0.9868
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.982,
+     "email-full": 0.9831
+    }
+   },
+   {
+    "truth": "out",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9893,
+     "email-full": 0.9911
+    }
+   },
+   {
+    "truth": "out",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9869,
+     "email-full": 0.9893
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9912,
+     "email-full": 0.985
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9935,
+     "email-full": 0.9898
+    }
+   },
+   {
+    "truth": "out",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9877,
+     "email-full": 0.9911
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.983,
+     "email-full": 0.9859
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9938,
+     "email-full": 0.9813
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9892,
+     "email-full": 0.9815
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9855,
+     "email-full": 0.9879
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9917,
+     "email-full": 0.9901
+    }
+   },
+   {
+    "truth": "out",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9862,
+     "email-full": 0.9901
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.987,
+     "email-full": 0.9882
+    }
+   },
+   {
+    "truth": "out",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9859,
+     "email-full": 0.9891
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9828,
+     "email-full": 0.9859
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9912,
+     "email-full": 0.9834
+    }
+   },
+   {
+    "truth": "out",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9877,
+     "email-full": 0.9896
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9936,
+     "email-full": 0.9881
+    }
+   },
+   {
+    "truth": "out",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.986,
+     "email-full": 0.9914
+    }
+   },
+   {
+    "truth": "out",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9866,
+     "email-full": 0.9906
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.984,
+     "email-full": 0.9877
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9915,
+     "email-full": 0.9859
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9831,
+     "email-full": 0.985
+    }
+   },
+   {
+    "truth": "out",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9866,
+     "email-full": 0.989
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9811,
+     "email-full": 0.9856
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9932,
+     "email-full": 0.985
+    }
+   }
+  ],
+  "C2": [
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.958,
+     "email-full": 0.9536
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9425,
+     "email-full": 0.9404
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9488,
+     "email-full": 0.9408
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9458,
+     "email-full": 0.9467
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9649,
+     "email-full": 0.9538
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9618,
+     "email-full": 0.9568
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9523,
+     "email-full": 0.9481
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9533,
+     "email-full": 0.9532
+    }
+   }
+  ],
+  "E2": [
+   {
+    "truth": "out",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9857,
+     "email-full": 0.9898
+    }
+   },
+   {
+    "truth": "out",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9861,
+     "email-full": 0.9894
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9928,
+     "email-full": 0.9869
+    }
+   },
+   {
+    "truth": "out",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9879,
+     "email-full": 0.9892
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9844,
+     "email-full": 0.9871
+    }
+   },
+   {
+    "truth": "out",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9875,
+     "email-full": 0.9912
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9941,
+     "email-full": 0.9868
+    }
+   },
+   {
+    "truth": "out",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9875,
+     "email-full": 0.9927
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9939,
+     "email-full": 0.987
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9929,
+     "email-full": 0.9875
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9945,
+     "email-full": 0.9882
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9923,
+     "email-full": 0.9883
+    }
+   },
+   {
+    "truth": "out",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9903,
+     "email-full": 0.9917
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9899,
+     "email-full": 0.9879
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9902,
+     "email-full": 0.9849
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9918,
+     "email-full": 0.9873
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9862,
+     "email-full": 0.9878
+    }
+   },
+   {
+    "truth": "out",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.991,
+     "email-full": 0.9911
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9938,
+     "email-full": 0.9868
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9827,
+     "email-full": 0.9864
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.99,
+     "email-full": 0.9892
+    }
+   },
+   {
+    "truth": "out",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9862,
+     "email-full": 0.9918
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9898,
+     "email-full": 0.9854
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9902,
+     "email-full": 0.9867
+    }
+   },
+   {
+    "truth": "out",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9854,
+     "email-full": 0.9902
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9856,
+     "email-full": 0.9868
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9918,
+     "email-full": 0.9864
+    }
+   },
+   {
+    "truth": "out",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.984,
+     "email-full": 0.9887
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9934,
+     "email-full": 0.9834
+    }
+   },
+   {
+    "truth": "out",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9867,
+     "email-full": 0.9888
+    }
+   },
+   {
+    "truth": "out",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9889,
+     "email-full": 0.9917
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9924,
+     "email-full": 0.9846
+    }
+   },
+   {
+    "truth": "out",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9863,
+     "email-full": 0.9898
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9896,
+     "email-full": 0.9852
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9877,
+     "email-full": 0.9871
+    }
+   },
+   {
+    "truth": "out",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9927,
+     "email-full": 0.9835
+    }
+   },
+   {
+    "truth": "out",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9875,
+     "email-full": 0.9897
+    }
+   },
+   {
+    "truth": "out",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9894,
+     "email-full": 0.9899
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9839,
+     "email-full": 0.9865
+    }
+   },
+   {
+    "truth": "out",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.984,
+     "email-full": 0.987
+    }
+   }
+  ],
+  "F": [
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9872,
+     "email-full": 0.9897
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.985,
+     "email-full": 0.988
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9921,
+     "email-full": 0.9809
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9886,
+     "email-full": 0.9828
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9873,
+     "email-full": 0.9878
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.983,
+     "email-full": 0.9841
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9918,
+     "email-full": 0.9821
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9929,
+     "email-full": 0.9837
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9926,
+     "email-full": 0.9804
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9838,
+     "email-full": 0.9857
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9942,
+     "email-full": 0.9834
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9933,
+     "email-full": 0.9846
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9803,
+     "email-full": 0.9841
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.981,
+     "email-full": 0.9842
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9852,
+     "email-full": 0.9879
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9922,
+     "email-full": 0.9819
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9882,
+     "email-full": 0.986
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.987,
+     "email-full": 0.9858
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9841,
+     "email-full": 0.9881
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": null,
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9879,
+     "email-full": 0.9808
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9895,
+     "email-full": 0.9847
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9842,
+     "email-full": 0.9859
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9923,
+     "email-full": 0.9821
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9817,
+     "email-full": 0.9838
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9872,
+     "email-full": 0.9913
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9832,
+     "email-full": 0.9875
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9821,
+     "email-full": 0.9852
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9907,
+     "email-full": 0.9834
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9819,
+     "email-full": 0.9855
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9831,
+     "email-full": 0.9877
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9913,
+     "email-full": 0.985
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9813,
+     "email-full": 0.9836
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": "email-full",
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.988,
+     "email-full": 0.99
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9818,
+     "email-full": 0.9857
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9916,
+     "email-full": 0.9821
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9924,
+     "email-full": 0.9833
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9928,
+     "email-full": 0.9841
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9853,
+     "email-full": 0.9872
+    }
+   },
+   {
+    "truth": "email-full",
+    "member": null,
+    "nearest": "email-full",
+    "scores": {
+     "desk-commitment": 0.9829,
+     "email-full": 0.9853
+    }
+   },
+   {
+    "truth": "desk-commitment",
+    "member": "desk-commitment",
+    "nearest": "desk-commitment",
+    "scores": {
+     "desk-commitment": 0.9915,
+     "email-full": 0.9841
+    }
+   }
+  ]
+ },
+ "held_out_scores": {
+  "desk-commitment": {
+   "n": 7,
+   "min": 0.9885,
+   "p01": 0.9885,
+   "p05": 0.9885,
+   "p50": 0.9917,
+   "max": 0.9948
+  },
+  "email-full": {
+   "n": 8,
+   "min": 0.9885,
+   "p01": 0.9885,
+   "p05": 0.9885,
+   "p50": 0.9913,
+   "max": 0.9934
+  }
+ },
+ "needle_router": {
+  "A": {
+   "n": 40,
+   "local_right_member": 36,
+   "misrouted_to_local": 1,
+   "lost_local": 3,
+   "abstained": 0
+  },
+  "B": {
+   "n": 40,
+   "local_right_member": 32,
+   "misrouted_to_local": 0,
+   "lost_local": 8,
+   "abstained": 0
+  },
+  "C": {
+   "n": 14,
+   "local_right_member": 0,
+   "misrouted_to_local": 0,
+   "lost_local": 0,
+   "abstained": 14
+  },
+  "D": {
+   "n": 40,
+   "local_right_member": 0,
+   "misrouted_to_local": 0,
+   "lost_local": 0,
+   "abstained": 40
+  },
+  "E": {
+   "n": 40,
+   "local_right_member": 0,
+   "misrouted_to_local": 29,
+   "lost_local": 0,
+   "abstained": 11
+  },
+  "C2": {
+   "n": 8,
+   "local_right_member": 0,
+   "misrouted_to_local": 0,
+   "lost_local": 0,
+   "abstained": 8
+  },
+  "E2": {
+   "n": 40,
+   "local_right_member": 0,
+   "misrouted_to_local": 33,
+   "lost_local": 0,
+   "abstained": 7
+  },
+  "F": {
+   "n": 40,
+   "local_right_member": 19,
+   "misrouted_to_local": 0,
+   "lost_local": 21,
+   "abstained": 0
+  }
+ },
+ "verdict": {
+  "misrouted_foreign": 62,
+  "of": 142,
+  "lost_A": 3,
+  "lost_F": 21,
+  "recovered_B": 32,
+  "safe": false,
+  "keeps_real_looking_traffic": false,
+  "passes": false,
+  "reading": "NOT SAFE: serves foreign text locally"
+ },
+ "finished": "2026-09-21T20:20:34"
+}

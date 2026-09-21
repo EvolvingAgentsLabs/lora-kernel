@@ -50,3 +50,40 @@ GPU=T4 BRANCH=main RUN_DIR=results/M2c-needle-router-20260921 MODULE=training.ha
 regardless (`docs/FRAMEWORK.md` §9), and this module never calls it.
 
 **Redesign count: 0.**
+
+## Result [ran] 2026-09-21
+
+`results/M2c-needle-router-20260921/needle_router.json`, session `srv171022`. Probe passed
+(paraphrase 0.9453 > unrelated 0.8966, dim 3072). Subsampled per the fix above — `sets` below
+is the drawn size, `sets_full_size` the true size:
+
+| set | what it is | n (of full) | local_right | misrouted_to_local | lost_local | abstained |
+|---|---|---|---|---|---|---|
+| A | in-distribution | 40 (715) | 36 | 1 | 3 | — |
+| B | member's question, paraphrased | 40 (240) | 32 | 0 | 8 | — |
+| C, C2 | keyed out-of-region text | 14+8 (22) | 0 | **0** | — | 22/22 |
+| D | plain out-of-region + fluids | 40 (76) | 0 | **0** | — | 40/40 |
+| E | same content, a different task | 40 (120) | 0 | **29** | — | 11 |
+| E2 | E, fresh set | 40 (120) | 0 | **33** | — | 7 |
+| F | legitimate, senders outside every pool | 40 (120) | 19 | 0 | 21 | — |
+
+**Verdict: `NOT SAFE: serves foreign text locally`** — `passes: false`, `safe: false`,
+`keeps_real_looking_traffic: false`. 62 of 142 out-of-region cases served locally (E: 29/40,
+E2: 33/40 — a same-content-different-task swap is exactly arm 2's own failure mode, worse
+here), against arm 2's 15/338 (4.4%). F recovers real traffic arm 2 lost completely (19/40 vs
+0/120) but not reliably (52.5% still needlessly abstained), and A gives back 3 of 40 it should
+have kept.
+
+**Reading, against the brief's own rule.** Neither of the two named outcomes: this is not
+"looks like arm 2, safe but loses F" (F improved, 0 → 47.5%), and it is not "F improves without
+foreign text getting worse" (foreign-text leakage roughly **10×** arm 2's rate) either — the
+uncalibrated default (`needle.Needle()`'s stock weights, the percentile-of-cosine τ arm 2 also
+used) trades the property that matters most, since a router that serves foreign text locally is
+the failure the whole design exists to prevent. **Read as: no real arm bought.** The two pieces
+this arm was chosen for — a calibrated confidence head, local LoRA fine-tuning from a
+`query`/`answers` format — are exactly what stock weights and a borrowed τ do not exercise;
+spending a real arm (its own BRIEF, its own falsifier, the fine-tuned weights Needle's own
+README points at) is not justified by this headroom alone. This is a subsampled look (40 per
+bucket against sets sized up to 715) and should not be read at arm 2's own resolution — but the
+direction (leak rate an order of magnitude higher, not lower) does not depend on the sample
+size to be a real signal.
