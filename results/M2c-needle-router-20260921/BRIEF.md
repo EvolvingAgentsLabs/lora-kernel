@@ -12,6 +12,15 @@ first look, on the same eight sets arms 1 and 2 already ran, nothing frozen or i
 `verdict` arm 2 used, unchanged — the only thing that changes is the encoder
 (`NeedleEncoder.encode`, over `needle.Needle().embed`). Same grader for every arm.
 
+**Subsampled, corrected mid-run [ran] 2026-09-21.** Needle's C engine embeds one string at a
+time; arm 2's full scale (~2,000+ texts across the corpora and eight sets) ran silently for ~15
+minutes with no progress line before this file's first launch attempt was stopped for that
+reason alone — an experiment whose position cannot be seen cannot be stopped early. Fixed two
+ways: `NeedleEncoder.encode` now prints every 25 embeddings, and `--limit` (default 40) caps
+each corpus and each set to a fixed-seed sample. **This means the numbers below are a headroom
+read on a smaller draw, not the same scale as arm 2's own verdict** — `sets_full_size` in the
+output records what each set's true size is, so the gap is visible, not hidden.
+
 **Provider.** Colab, through `training/harness/chain_serve.sh`, `SKIP_ADAPTERS=1` (nothing here
 trains or serves a pool member). `../../CLAUDE.md`: "no model runs on the user's machine" — Needle
 does not need a GPU to embed a few hundred short strings, but the rule is not "no model that needs

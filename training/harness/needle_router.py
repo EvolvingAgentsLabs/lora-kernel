@@ -62,7 +62,16 @@ class NeedleEncoder:
         self.model = model or "cactus-compute/needle3"
 
     def encode(self, texts: list[str]) -> list[list[float]]:
-        return [self._needle.embed(t) for t in texts]
+        # PROGRESS, NOT SILENCE. `../../CLAUDE.md`: "never let a long run hide its position."
+        # Needle's C engine takes one string at a time — no batch call — so a few thousand
+        # texts at real per-call latency is exactly the stretch that read as silence for ~15
+        # minutes the first time this ran, indistinguishable from a hang from outside.
+        out = []
+        for i, t in enumerate(texts):
+            out.append(self._needle.embed(t))
+            if (i + 1) % 25 == 0 or i + 1 == len(texts):
+                print(f"[route] embedded {i + 1}/{len(texts)}", flush=True)
+        return out
 
 
 def main() -> int:
@@ -78,12 +87,20 @@ def main() -> int:
     # embedded. Accepted and ignored, the same defence `embed_router.py`'s own `main()` uses,
     # so a MARGS mistake here costs nothing rather than a session.
     ap.add_argument("--adapter", action="append", default=[], help="pool adapters (ignored)")
+    # A CHEAP FIRST LOOK, KEPT CHEAP. Needle's C engine embeds one string at a time — arm 2's
+    # full scale (corpora + all eight router sets, ~2,000+ texts) read as silence for ~15
+    # minutes on the first attempt before this file printed progress per call. Subsampled here,
+    # per bucket, with a fixed seed — deliberately not arm 2's own numbers, so this is read as
+    # headroom (`docs/PLAN.md` §1 milestone 2: "buy arms in sequence") and not compared to arm
+    # 2's verdict directly; the brief says so.
+    ap.add_argument("--limit", type=int, default=40, help="cap per corpus/set, for a cheap look")
     ap.add_argument("--out", default="needle_router.json")
     a = ap.parse_args()
     from training.harness import router_sets
 
     out = Path(a.out); out.parent.mkdir(parents=True, exist_ok=True)
-    rec = {"encoder": "cactus-compute/needle3", "started": time.strftime("%Y-%m-%dT%H:%M:%S")}
+    rec = {"encoder": "cactus-compute/needle3", "limit_per_bucket": a.limit,
+          "started": time.strftime("%Y-%m-%dT%H:%M:%S")}
     out.write_text(json.dumps(rec, indent=1))
 
     enc = NeedleEncoder()
@@ -99,11 +116,19 @@ def main() -> int:
         print(f"[route] {rec['verdict']['reading']}", flush=True)
         return 1
 
-    router = EmbedRouter(corpora_from_pool(), enc)
+    import random
+    rng = random.Random(20260921)
+    corpora = {m: rng.sample(texts, min(a.limit, len(texts))) for m, texts in corpora_from_pool().items()}
+    print(f"[route] corpora capped to {a.limit} each: " +
+         ", ".join(f"{m}={len(t)}" for m, t in corpora.items()), flush=True)
+    router = EmbedRouter(corpora, enc)
     rec["tau"] = router.tau
     out.write_text(json.dumps(rec, indent=1))
-    sets = {**router_sets.build(), **router_sets.build_fresh()}
+    full_sets = {**router_sets.build(), **router_sets.build_fresh()}
+    sets = {k: (rng.sample(v, min(a.limit, len(v))) if not k.startswith("_") else v)
+           for k, v in full_sets.items()}
     rec["sets"] = {k: len(v) for k, v in sets.items() if not k.startswith("_")}
+    rec["sets_full_size"] = {k: len(v) for k, v in full_sets.items() if not k.startswith("_")}
 
     cases = {}
     for name, rows in sets.items():
