@@ -284,7 +284,7 @@ reason: `--prune` (its own tool surface), `--member-prompt` (the prompt its corp
 | `training/harness/lora_matrix.py`, `rekey.py`, `awq_lora_gate.py` | does this base — small or large — serve a LoRA at all |
 | `training/harness/chain_serve.sh` | the Colab chain: provision, run detached, stream, fetch weights as they appear, resume |
 | `training/harness/bill.py` | prices an existing replay at real frontier rates — zero GPU, nothing re-run (`results/M6-bill-20260921/`) |
-| `examples/` | **the reference organisation, code-only, before any adapter** — `school/` (7 roles, 13 tools, two tenants) and `distributor/` (2 roles); a toy store, a tool layer that enforces permission outside the model, an MCP server per domain, an adversarial suite at 0 leaks; `examples/README.md` says how to point your own OpenClaw at it |
+| `examples/` | **the reference organisation, code-only, before any adapter** — `school/` (7 roles, 13 tools) and `distributor/` (6 roles, 11 tools), both two tenants; a toy store, a tool layer that enforces permission outside the model, an MCP server per domain, an adversarial suite at 0 leaks; `examples/README.md` says how to point your own OpenClaw at it |
 | `releases/`, `results/` | the manifests, and the runs the documents cite |
 
 ## Documents
