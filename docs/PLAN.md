@@ -604,6 +604,12 @@ that decide the shape of a step:
 
 ## 5. History
 
+- **2026-09-22** — memory **W8 [ran]: the schema question only, passed.** Not fluid mechanics, not
+  gated on W1–W7 — from the user's own Mona Lisa → painter → drawings example: does the note format
+  express a reference that is not a tree edge? Added `refs`, one generic untyped field, either
+  shelf; proved on a three-note slice, `knowledge/wikipedia-arts/` (CC BY-SA 4.0, isolated), 0 lint
+  findings, the named trajectory resolves mechanically. Not radar-indexed, not walked, not trained
+  ([`MEMORY.md`](MEMORY.md) §1.2a, [`BRIEF`](../results/W8-wikipedia-refs-20260922/BRIEF.md)).
 - **2026-09-21** — milestone 2 **arm 3 [ran]: no real arm bought.** `cactus-compute/needle`,
   stock weights, same grader as arm 2 — `NOT SAFE: serves foreign text locally`, 62/142
   out-of-region cases served locally (~10× arm 2's leak rate), against 19/40 unseen-sender

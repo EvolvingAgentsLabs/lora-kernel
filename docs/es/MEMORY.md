@@ -107,6 +107,26 @@ slots: {a: 5.74, b: 3.7}
 f = 0.25 / ( log10( eps/({{b}}·D) + {{a}}/Re^0.9 ) )^2
 ```
 
+### 1.2a `refs` — una referencia, no un enlace de árbol **[ran]** W8
+
+`parent`/`children` clasifican (es-un, más general que); no todo hecho que necesita una nota tiene
+esa forma — *"la Mona Lisa la pintó Leonardo da Vinci"* no es *"la Mona Lisa es un tipo de Leonardo
+da Vinci."* `refs: [id de nota, …]` es una lista genérica, sin tipo, que cualquier nota de
+cualquiera de los dos estantes puede llevar, agregada después de que el ejemplo del usuario (Mona
+Lisa → su pintor → qué más hizo ese pintor → dibujos) nombrara una forma que el árbol no podía
+expresar. El esquema no nombra a propósito qué *significa* un enlace `refs`: qué referencia importa
+para un pedido dado, y cuándo seguirla en vez de parar, es un juicio específico por subdominio que
+queda a cargo de un LoRA entrenado en él, no de una regla del runtime que enumere tipos de relación.
+`lint` sólo chequea que un destino de `refs` resuelva — la misma regla genérica que ya comparten
+`requires`/`uses`/`parent`/`children`.
+
+Probado sólo al nivel del esquema, cero GPU, cero modelo
+([`results/W8-wikipedia-refs-20260922/BRIEF.md`](../../results/W8-wikipedia-refs-20260922/BRIEF.md)):
+`knowledge/wikipedia-arts/` — tres notas, CC BY-SA 4.0, aisladas a ese directorio — donde
+`mona-lisa.refs[0]` resuelve a `leonardo-da-vinci`, cuyo `children[0]` resuelve a `drawings`,
+mecánicamente. No está indexado por el radar, no lo recorre ningún runtime, no está entrenado ni
+medido contra una base — eso es una pregunta separada, más grande, que esta corrida no responde.
+
 ### 1.3 Dos campos que lleva cada nota, y por qué
 
 `when:` — *para qué situación es esta nota.* `what:` — *qué concepto define.* Estas dos
@@ -196,7 +216,7 @@ mensajes `tool_calls` **[ran]** P55).
 | verbo | lo que escribe el experto | lo que responde el runtime |
 |---|---|---|
 | **search** | `<search>situation or doubt</search>` | `= 3 notes` y, por nota, `[id] kind · title — when: …`. **Sólo títulos y líneas `when` — nunca cuerpos** |
-| **open** | `<open>id</open>` | el cuerpo de la nota, con los huecos completados y las reglas locales aplicadas, y después sus enlaces: `next …` · `requires …` · `uses …` (en el estante wiki `parent …` · `children …`; todo enlace salvo `next` lleva el título de la nota junto a su id — W2 **[ran]**) |
+| **open** | `<open>id</open>` | el cuerpo de la nota, con los huecos completados y las reglas locales aplicadas, y después sus enlaces: `next …` · `requires …` · `uses …` (en el estante wiki `parent …` · `children …`; cualquiera de los dos estantes puede llevar además `refs …` — §1.2a, todavía no ejercitado por este runtime **[ran]** W8; todo enlace salvo `next` lleva el título de la nota junto a su id — W2 **[ran]**) |
 | **calc** | `<calc>500 * 20 / (4 * 60)</calc>` | `= 41.6667` — así el modelo **nunca hace aritmética de memoria**, donde siempre falla (adaptador solo 4/40, adaptador + calculadora 40/40 **[ran]** P5–P7) |
 
 ```
@@ -460,6 +480,7 @@ Cada paquete termina en una compuerta, entra en una sesión de Colab de sesenta 
 | W5d | **la política de respuesta** — el adaptador camina; el base escribe la línea final cuando se pide un *valor*, el adaptador cuando se *lleva* un procedimiento o se calcula un goteo; la política y la regla del tipo de tarea congeladas en un commit antes de escribir el set de evaluación | Colab, una sesión L4, sin entrenar | ❌ **[ran] — falsado tal como estaba escrito.** En el set nuevo `policy vs withlib` 5 : 0, $p=0{,}0625$, un empate (42 contra 37 de 67; base-reads 52); el control aguanta (75 contra 73). Donde el recorrido abrió la nota que da el valor, el base la lee bien **21 de 21**; las otras 11 son fallas de búsqueda **causadas por la propia consulta del adaptador** — una consulta de entrenamiento de otro tema, textual, en 9 de 11 — donde el mismo buscador, con el enunciado del pedido, lista la nota 16 de 16. Sobre los sets de W5c (0 fallas; no es la afirmación): 56/66, 14 : 0 y 12 : 2 · `results/M7-W5d-answer-policy-20260920` |
 | W6 | radar **R1**, la afirmación de compresión | Colab, minutos | recall@3 plano a medida que $d$ baja a 64 |
 | W7 | editar una nota después de entrenar; la respuesta tiene que seguir a la biblioteca | Colab, minutos | la sigue |
+| W8 | **no es mecánica de fluidos, no depende de W1–W7** — una prueba a nivel de esquema: ¿el formato de nota siquiera expresa una referencia que no es un enlace de árbol (§1.2a), preguntado desde el propio ejemplo del usuario de la Mona Lisa → pintor → dibujos? | no | un destino de `refs` resuelve; la trayectoria nombrada resuelve a través de él — ✅ **[ran] 2026-09-22**: `knowledge/wikipedia-arts/`, 0 hallazgos del lint; `mona-lisa.refs[0]` → `leonardo-da-vinci`, `.children[0]` → `drawings`. No está indexado por el radar, no lo recorre ningún runtime, no está entrenado — sólo la pregunta de formato ([`BRIEF`](../../results/W8-wikipedia-refs-20260922/BRIEF.md)) |
 
 **Lo que podría haberlo detenido, y no lo hizo [ran] 2026-09-19.** El brazo 0b del hito 7 preguntó si el
 experto de fluidos usa el resultado de una herramienta cuando le llega inline, como le enseñó su corpus — había

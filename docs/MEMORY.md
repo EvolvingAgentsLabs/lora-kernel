@@ -107,6 +107,25 @@ slots: {a: 5.74, b: 3.7}
 f = 0.25 / ( log10( eps/({{b}}·D) + {{a}}/Re^0.9 ) )^2
 ```
 
+### 1.2a `refs` — a reference, not a tree edge **[ran]** W8
+
+`parent`/`children` classify (is-a, more general than); not every fact a note needs is that shape —
+*"the Mona Lisa was painted by Leonardo da Vinci"* is not *"the Mona Lisa is a kind of Leonardo da
+Vinci."* `refs: [note id, …]` is one generic, untyped list any note on either shelf may carry, added
+after the user's own worked example (Mona Lisa → its painter → what else that painter made →
+drawings) named a shape the tree could not express. The schema does not name what a `refs` edge
+*means* on purpose: which reference matters for a given request, and when to follow one instead of
+stopping, is a per-subdomain judgment left to a LoRA trained on it, not a runtime rule enumerating
+relation types. `lint` checks only that a `refs` target resolves — the same generic rule
+`requires`/`uses`/`parent`/`children` already share.
+
+Proved at the schema level only, zero GPU, zero model
+([`results/W8-wikipedia-refs-20260922/BRIEF.md`](../results/W8-wikipedia-refs-20260922/BRIEF.md)):
+`knowledge/wikipedia-arts/` — three notes, CC BY-SA 4.0, isolated to that directory — where
+`mona-lisa.refs[0]` resolves to `leonardo-da-vinci`, whose `children[0]` resolves to `drawings`,
+mechanically. Not radar-indexed, not walked by any runtime, not trained or measured against a
+baseline — that is a separate, larger question this run does not answer.
+
 ### 1.3 Two fields every note carries, and why
 
 `when:` — *what situation is this note for.* `what:` — *what concept does it define.* These two
@@ -197,7 +216,7 @@ every expert in this pool is already trained and served in (0.992 that way again
 | verb | the expert writes | the runtime answers |
 |---|---|---|
 | **search** | `<search>situation or doubt</search>` | `= 3 notes` and, per note, `[id] kind · title — when: …`. **Titles and `when` lines only — never bodies** |
-| **open** | `<open>id</open>` | the note's body, slots filled and local rules applied, then its links: `next …` · `requires …` · `uses …` (on the wiki shelf `parent …` · `children …`; every link but `next` carries the note's title beside its id — W2 **[ran]**) |
+| **open** | `<open>id</open>` | the note's body, slots filled and local rules applied, then its links: `next …` · `requires …` · `uses …` (on the wiki shelf `parent …` · `children …`; either shelf may also carry `refs …` — §1.2a, not yet exercised by this runtime **[ran]** W8; every link but `next` carries the note's title beside its id — W2 **[ran]**) |
 | **calc** | `<calc>500 * 20 / (4 * 60)</calc>` | `= 41.6667` — so the model **never does arithmetic in its head**, where it always fails (adapter alone 4/40, adapter + calculator 40/40 **[ran]** P5–P7) |
 
 ```
@@ -459,6 +478,7 @@ Each package ends in a gate, fits a sixty-minute Colab session where it needs a 
 | W5d | **the answer policy** — the adapter walks; the base writes the final line when a *value* is asked, the adapter when a procedure is *carried* or a rate computed; policy and task-kind rule frozen in a commit before the evaluation set was written | Colab, one L4 session, no training | ❌ **[ran] — falsified as written.** On the new set `policy vs withlib` 5 : 0, $p=0.0625$, a tie (42 vs 37 of 67; base-reads 52); control holds (75 vs 73). Where the walk opened the supplying note the base reads it right **21 of 21**; the other 11 are retrieval misses **made by the adapter's own query** — a training query for another topic, verbatim, in 9 of 11 — where the same searcher given the request's statement lists the note 16 of 16. On W5c's sets (0 misses; not the claim): 56/66, 14 : 0 and 12 : 2 · `results/M7-W5d-answer-policy-20260920` |
 | W6 | radar **R1**, the compression claim | Colab, minutes | recall@3 flat as $d$ falls to 64 |
 | W7 | edit one note after training; the answer must follow the library | Colab, minutes | it does |
+| W8 | **not fluid mechanics, not gated on W1–W7** — a schema-level side proof: does the note format even express a reference that is not a tree edge (§1.2a), asked from the user's own Mona Lisa → painter → drawings example | no | a `refs` target resolves; the named trajectory resolves through it — ✅ **[ran] 2026-09-22**: `knowledge/wikipedia-arts/`, 0 lint findings; `mona-lisa.refs[0]` → `leonardo-da-vinci`, `.children[0]` → `drawings`. Not radar-indexed, not walked by any runtime, not trained — the format question only ([`BRIEF`](../results/W8-wikipedia-refs-20260922/BRIEF.md)) |
 
 **What could have stopped it, and did not [ran] 2026-09-19.** Milestone 7's arm 0b asked whether the
 fluids expert uses a tool's result when it arrives inline, as its corpus taught — it had scored 11

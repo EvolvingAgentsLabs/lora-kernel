@@ -654,6 +654,14 @@ Las cuatro que deciden la forma de un paso:
 
 ## 5. Historia
 
+- **2026-09-22** — memoria **W8 [ran]: sólo la pregunta de esquema, pasó.** No es mecánica de
+  fluidos, no depende de W1–W7 — desde el propio ejemplo del usuario de la Mona Lisa → pintor →
+  dibujos: ¿el formato de nota expresa una referencia que no es un enlace de árbol? Se agregó
+  `refs`, un campo genérico y sin tipo, en cualquiera de los dos estantes; probado sobre una
+  rebanada de tres notas, `knowledge/wikipedia-arts/` (CC BY-SA 4.0, aislada), 0 hallazgos del
+  lint, la trayectoria nombrada resuelve mecánicamente. No está indexado por el radar, no lo
+  recorre nada, no está entrenado ([`MEMORY.md`](MEMORY.md) §1.2a,
+  [`BRIEF`](../../results/W8-wikipedia-refs-20260922/BRIEF.md)).
 - **2026-09-21** — hito 2 **brazo 3 [ran]: no se compra un brazo real.** `cactus-compute/needle`,
   pesos de fábrica, mismo evaluador que el brazo 2 — `NOT SAFE: serves foreign text locally`,
   62/142 casos fuera de región servidos localmente (~10× la tasa de fuga del brazo 2), contra
