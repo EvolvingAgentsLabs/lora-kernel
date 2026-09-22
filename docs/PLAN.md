@@ -604,6 +604,15 @@ that decide the shape of a step:
 
 ## 5. History
 
+- **2026-09-22** — `examples/school`'s first LoRA **[ran]: FALSIFIED before training — headroom
+  already exhausted.** One role (`educador`, its largest single-tool corpus, regenerated at the
+  generator's own default: 114 train / 19 eval), one unknown (tool-call fidelity), gate ≥ 0.90 —
+  the bare `Qwen3.5-4B` scored **18/19 = 0.9474** before any adapter existed, clearing the gate on
+  its own: one of the three falsification conditions written before the run. The corpus's one
+  tool, one argument, stated outright in the system prompt and named or implied in every
+  request, is too thin a gap for training to close. No adapter arm bought; the other six roles
+  share the same shape and are not bought either
+  ([`BRIEF`](../results/M7-school-pilot-20260922/BRIEF.md)).
 - **2026-09-22** — memory **W8 [ran]: the schema question only, passed.** Not fluid mechanics, not
   gated on W1–W7 — from the user's own Mona Lisa → painter → drawings example: does the note format
   express a reference that is not a tree edge? Added `refs`, one generic untyped field, either

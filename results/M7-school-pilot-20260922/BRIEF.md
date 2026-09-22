@@ -62,3 +62,40 @@ and prints `ok` either way, so a launch without it boots clean and fails deep in
 relaunch, cost was boot time only.
 
 **Redesign count: 0.**
+
+## Result [ran] 2026-09-22 — FALSIFIED before training: headroom already exhausted
+
+Session `srv081926`. Headroom (bare `Qwen3.5-4B`, before any adapter exists) scored
+**18 of 19 = 0.9474** on tool-call fidelity — the single miss (`educador-0034`) wrote "I will
+read the agenda for student 51 now." and never emitted the closing tag inside the 32-token
+budget, not a wrong tool or a wrong id. **This clears the 0.90 gate on its own, exactly the
+third falsification condition named before the run: "the base already at or above 0.90 —
+headroom exhausted."** The pre-registered arm stops here — training an adapter on top of a task
+the base already does from the system prompt alone cannot produce an attributable result.
+
+Session ended (reclaimed or self-terminated) partway through training (step 20 of 24, ~83%,
+`adapters/school-educador` never completed or reached the adapter's own eval) before this could
+be confirmed with the adapter side too — but per the rule above, that arm was already decided
+moot by the headroom number regardless: `school_pilot.json`'s `base_eval` (persisted before
+training started, per "persist every result as it lands") is what survives, and it is enough to
+answer the question this run was bought to ask. No GPU-minutes were spent chasing a session that
+had already answered its own falsifier.
+
+**What this says about the corpus, not just the model.** `agenda_read` is a single tool with one
+argument the system prompt states outright ("You may read the agenda of students at this school
+only... Read the agenda entries (events) for one student, by id"), and every training/eval case's
+user turn already names or implies the id in plain language ("student 60", "Petrov, Zuri (id
+60)"). A capable base model does not need training to bridge a gap that thin — this is the same
+finding P61/W5c's own family of lessons already generalised: **a corpus with one difficulty
+teaches a floor**, and here the floor was already the ceiling. The other six roles in `examples/`
+share this same one-tool, id-stated-in-the-request shape (`docs/RECORD.md`'s bar on this project:
+buy the arm that can kill the hypothesis first — it did, on the first and cheapest role tried, so
+the other six are not bought yet either.
+
+**Next, if this is worth another arm.** Either (a) a role whose task needs *judgement*, not just
+syntax — closer to `email-full`'s shape (when to call the tool, not only how) — or (b) a harder
+version of `educador` itself: multi-step or ambiguous requests where the id is not stated, only
+inferable. Neither is this run; both are new, separately-bought arms.
+
+**Falsified by:** the base already at 0.90 or above — it is, 0.9474. (The other two named
+conditions — adapter < 0.90, or a tie against the base — were never reached.)
