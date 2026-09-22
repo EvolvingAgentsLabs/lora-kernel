@@ -92,7 +92,7 @@ def _library(tmp: Path, edit=None) -> Path:
         "harness/p/01-a.md": "---\nid: toy/harness/p/01-a\nshelf: harness\nkind: step\ntitle: A\nwhen: before a\nwhat: a\nrequires: []\nnext: toy/harness/p/02-b\nuses: [toy/wiki/w/leaf]\nslots: {n: 5}\n---\nDo a for {{n}} seconds.\n",
         "harness/p/02-b.md": "---\nid: toy/harness/p/02-b\nshelf: harness\nkind: step\ntitle: B\nwhen: before b\nwhat: b\nrequires: [toy/harness/p/01-a]\nnext: null\nuses: []\n---\nDo b.\n",
         "wiki/w.md": "---\nid: toy/wiki/w\nshelf: wiki\nkind: concept\ntitle: W\nwhen: asking w\nwhat: w\nparent: null\nchildren: [toy/wiki/w/leaf]\n---\nW.\n",
-        "wiki/w/leaf.md": "---\nid: toy/wiki/w/leaf\nshelf: wiki\nkind: formula\ntitle: Leaf\nwhen: asking leaf\nwhat: leaf\nparent: toy/wiki/w\nchildren: []\n---\ny = x\n",
+        "wiki/w/leaf.md": "---\nid: toy/wiki/w/leaf\nshelf: wiki\nkind: formula\ntitle: Leaf\nwhen: asking leaf\nwhat: leaf\nparent: toy/wiki/w\nchildren: []\nrefs: [toy/harness/p]\n---\ny = x\n",
         "site/s.md": "---\nsite: s\noverrides:\n  toy/harness/p/01-a: {n: 9}\n---\n",
     }
     for rel, text in files.items():

@@ -3,8 +3,17 @@
 WHAT A NOTE IS. One markdown file: a frontmatter block and a body of at most `BODY_TOKENS`
 tokens. Two shelves. The **harness** shelf holds procedures, steps and checks, joined by the typed
 links `requires` / `next` / `uses` — those links are the control flow. The **wiki** shelf holds
-concepts, formulas and tables, joined by `parent` → `children`. Every note carries `when:` and
-`what:`; those two lines, not the body, are what the radar will index (§2, W3).
+concepts, formulas and tables, joined by `parent` → `children` — one tree, general to specific.
+Every note carries `when:` and `what:`; those two lines, not the body, are what the radar will
+index (§2, W3).
+
+`refs` — A NOTE THAT IS NOT A TREE EDGE. `parent`/`children` classify (is-a, more general than);
+not every fact a note needs is that shape — "the Mona Lisa was painted by Leonardo da Vinci" is not
+"Mona Lisa is a kind of Leonardo da Vinci". `refs` is one generic, untyped list of note ids for
+exactly that: any note, either shelf, may point at any other. The schema does not name what a
+`refs` edge *means* on purpose — which reference matters for a given request, and when to follow
+one, is a per-subdomain judgment a LoRA is trained on, not a rule this runtime enforces. `lint`
+checks only that a `refs` target resolves.
 
 SLOTS AND LAYERS (§1.4, §5.2). A body says `{{seconds}}`; the value is resolved nearest-wins,
 
@@ -32,7 +41,7 @@ SHELVES = {"harness": ("procedure", "step", "check"), "wiki": ("concept", "formu
 SLOT = re.compile(r"\{\{\s*([A-Za-z_][A-Za-z0-9_]*)\s*\}\}")
 _PIECE = re.compile(r"\w+|[^\w\s]")
 _ORDER = ("id", "shelf", "kind", "title", "when", "what", "requires", "next", "uses",
-          "parent", "children", "first", "steps", "slots", "source")
+          "parent", "children", "refs", "first", "steps", "slots", "source")
 
 
 class NoteError(ValueError):
@@ -162,6 +171,7 @@ class Note:
     steps: list[str] = field(default_factory=list)      # a procedure's ordered step ids
     parent: str | None = None                           # wiki
     children: list[str] = field(default_factory=list)   # wiki
+    refs: list[str] = field(default_factory=list)       # either shelf — generic, untyped
     slots: dict = field(default_factory=dict)
     source: str = ""
     path: Path | None = None
@@ -184,7 +194,8 @@ class Note:
                    requires=list(f.get("requires") or []), next=f.get("next"),
                    uses=list(f.get("uses") or []), first=f.get("first"),
                    steps=list(f.get("steps") or []), parent=f.get("parent"),
-                   children=list(f.get("children") or []), slots=dict(f.get("slots") or {}),
+                   children=list(f.get("children") or []), refs=list(f.get("refs") or []),
+                   slots=dict(f.get("slots") or {}),
                    source=str(f.get("source") or ""), path=path)
 
     def serialise(self) -> str:
@@ -198,6 +209,8 @@ class Note:
                 f.update(requires=self.requires, next=self.next, uses=self.uses)
         else:
             f.update(parent=self.parent, children=self.children)
+        if self.refs:
+            f["refs"] = self.refs
         if self.slots:
             f["slots"] = self.slots
         if self.source:
@@ -209,6 +222,7 @@ class Note:
         """Every (link type, target id) this note declares."""
         out = [("requires", t) for t in self.requires] + [("uses", t) for t in self.uses]
         out += [("steps", t) for t in self.steps] + [("children", t) for t in self.children]
+        out += [("refs", t) for t in self.refs]
         out += [(k, v) for k, v in (("next", self.next), ("first", self.first),
                                     ("parent", self.parent)) if v]
         return out
