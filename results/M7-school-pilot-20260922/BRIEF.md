@@ -51,8 +51,14 @@ a second unknown — `../../CLAUDE.md` §3), through `training/harness/chain_ser
 ```bash
 GPU=L4 BRANCH=m7-school-pilot-20260922 RUN_DIR=results/M7-school-pilot-20260922 \
   MODULE=training.harness.school_pilot MARGS="--role educador --out school_pilot.json" \
-  RESULTS_NAME=school_pilot.json BASE=Qwen/Qwen3.5-4B SKIP_ADAPTERS=1 SESSIONS=1 \
+  RESULTS_NAME=school_pilot.json BASE=Qwen/Qwen3.5-4B TRAINDEPS=1 SKIP_ADAPTERS=1 SESSIONS=1 \
   training/harness/chain_serve.sh
 ```
+
+`TRAINDEPS=1` is not optional here — `chain_serve.sh`'s own "train deps" step is gated on it being
+non-empty (`[ -z '${TRAINDEPS:-}' ] || pip install peft trl datasets accelerate bitsandbytes …`)
+and prints `ok` either way, so a launch without it boots clean and fails deep inside training with
+`ImportError: … requires bitsandbytes` — caught on the first attempt 2026-09-22, fixed here before
+relaunch, cost was boot time only.
 
 **Redesign count: 0.**
