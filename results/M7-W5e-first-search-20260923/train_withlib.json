@@ -1,0 +1,45 @@
+{
+ "base": "Qwen/Qwen3.5-4B",
+ "started": "2026-09-23T22:10:40",
+ "grader": "training.nursing.grade_walks",
+ "searcher": "lexical (memory.runtime.Lexical) — R0 did not pass W3",
+ "arms": {},
+ "G1": {},
+ "members": {
+  "withlib": {
+   "adapter": "adapters/nursing-walks-v2-q35",
+   "corpus": "training/nursing/data_walks_v2/train.jsonl",
+   "corpus_sha256": "0770bdacca02800aad904330d4a597094184f181367c691335cb54411e72a3a9",
+   "adapter_sha256": "4caceaa3179ff4446c85637ac9c720592d09dfadf6ee6412be3a4109d877d1f0",
+   "named_for_serving": {
+    "base": "Qwen/Qwen3.5-4B",
+    "architecture": "Qwen3_5ForConditionalGeneration",
+    "renamed": true,
+    "src": "adapters/nursing-walks-v2-q35",
+    "dst": "adapters/nursing-walks-v2-q35.renamed",
+    "moved": 256,
+    "before": {
+     "tensors": 256,
+     "land_on_text_stack": 0
+    },
+    "after": {
+     "tensors": 256,
+     "land_on_text_stack": 256
+    }
+   }
+  }
+ },
+ "recipe": {
+  "r": 16,
+  "lora_alpha": 32,
+  "epochs": 3,
+  "lr": 0.0002,
+  "batch": 2,
+  "accum": 8,
+  "max_seq": 1536,
+  "seed": 0,
+  "targets": "q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"
+ },
+ "packed": 1,
+ "trained_only": "2026-09-23T22:34:25"
+}

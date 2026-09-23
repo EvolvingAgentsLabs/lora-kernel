@@ -144,3 +144,48 @@ GPU=L4 BRANCH=arbiter-first-search-20260923 RUN_DIR=$R MODULE=training.nursing.w
 `cannot score: … not on disk` means the carry-in failed: stop, do not retrain inside the scoring run. Read
 the verdict from `walks_first_search.json`, not from the chain's peek. **The adapter tarball is copied to
 `~/lora-kernel-adapters/` as soon as it is home** — W5c's was lost by living only in a scratchpad.
+
+## Result **[ran]** 2026-09-23 · NO HEADROOM — the retrained adapter does not write the memorised query
+
+Session T: attempt 1 never started its runner (no `run.log` on the VM; the chain now proves a launch —
+`T_chain_attempt1_never_started.log`); attempt 2 trained in 22 minutes, 114 steps, adapter sha256
+`4caceaa3…` (W5c's was `0f7d872d…`), copied to `~/lora-kernel-adapters/`. Session S: one L4, G1 `applied`
+3/3, 0 transport errors, 0 unreplayable. Read off `walks_first_search.json`.
+
+**The verdict, as written: NO HEADROOM.** The retrained `withlib` loses **0** of the 32 headline value rows
+to a retrieval miss (W5c's adapter: 11). On W5d's 11 it writes queries of its own — `pressure to hold a
+dressing on a wound` 7, `pressure to hold` 3, `turning pressure to a number` 1, **none of them in its
+corpus** — lists the note and opens it, 11 of 11. There is nothing for the referee's query to repair, so the
+arm says so instead of reporting its pairs as a verdict. `passed = false`. Redesign count 1, as declared.
+
+| arm (same session unless marked) | headline credit (67) | control (78) | value: conditional (16) · plain (16) |
+|---|--:|--:|--:|
+| `base-reads` — W5d's record | 52 | 58 | 16 · 15 |
+| `withlib` — retrained | 42 | 72 | 10 · 12 |
+| `withlib-fs` | 48 | 74 | 13 · 12 |
+| `policy` | 50 | 72 | 16 · 14 |
+| `policy-fs` | 54 | 74 | 16 · 15 |
+
+Beside, never the verdict (paired, exact sign test): `policy-fs vs policy` 5 : 1, tie; `withlib-fs vs withlib`
+8 : 2, tie (carry 23 vs 20); control 2 : 0 both, tie. `policy vs withlib` — **W5d's own deciding pair, on the
+sets written after W5d's freeze, with the retrained adapter — 9 : 1, $p = 0.021$, improvement**; control
+72 vs 72, 1 : 1. `policy vs base-reads` 5 : 7, tie (control 15 : 1). The policy's two remaining value losses
+are `wrong` with the note open.
+
+**What this measures instead — the training draw.** The same corpus and recipe, trained twice: the retrained
+`withlib` against W5c's on the same 67 headline rows is **15 : 10** — a tie, and **25 of 67 discordant**;
+control 2 : 3. W5d's diagnosis *"the adapter wrote a memorised query"* was true of one training run, not of
+the recipe: the second run writes queries its corpus never held. So W5d's falsification of the policy (5 : 0,
+a tie) and this run's 9 : 1 on the same pair and sets are **two draws of one recipe that disagree on the
+verdict**. Neither re-reads W5d — its verdict stands as written — but together they say an arm decided on
+one training run of a walking adapter is deciding on a draw.
+
+**What follows — not run; the user's decision.**
+1. **Price the draw before any more single-adapter verdicts:** retrain the same recipe with 2–3 seeds (one
+   A100 each), score them on W5d's sets as `withlib` and `policy`. *Prediction:* retrieval misses on value
+   rows range from 0 to ~11 across seeds; `policy vs withlib` is an improvement in most. *Falsified if* all
+   seeds miss ≤ 1 — then W5c's adapter was the outlier and the query problem is closed.
+2. **The policy's claim on a fresh set**, with the retrained adapter — W5d's policy, never redesigned, now
+   ahead of the adapter alone on the sets written after its freeze. A new set written now is the claim.
+3. **The referee's first query stays in the runtime, off by default.** It costs nothing on control (74 vs 72)
+   and repairs a failure one training draw had; it is insurance against a draw, not a measured gain.

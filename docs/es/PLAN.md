@@ -654,6 +654,17 @@ Las cuatro que deciden la forma de un paso:
 
 ## 5. Historia
 
+- **2026-09-23** — memoria **W5e [ran]: SIN MARGEN — el adaptador reentrenado no escribe la consulta memorizada.**
+  El adaptador de W5c no estaba en ningún disco, así que se reentrenó (mismo corpus, misma receta; sha
+  `4caceaa3…`). La nueva tirada pierde **0** filas de valor del titular por su propia consulta (la de W5c: 11) —
+  escribe consultas que su corpus nunca tuvo y abre la nota 11 de 11 — así que la primera búsqueda del árbitro
+  no tenía nada que reparar. Al lado del veredicto: el par de W5d sobre sus sets posteriores al congelamiento,
+  `policy vs withlib`, da **9 : 1, $p=0.021$** con esta tirada (5 : 0, empate, con la de W5c), control 72 vs 72;
+  y las dos tiradas de una misma receta discrepan en **25 de 67** filas del titular (15 : 10). **Un brazo
+  decidido sobre una sola corrida de entrenamiento de un adaptador que navega decide sobre una tirada.**
+  Siguiente, decisión del usuario: medir la tirada con 2–3 semillas, o la afirmación de la política sobre un set
+  nuevo. El lanzamiento que nunca arrancó costó una sesión A100; la cadena ahora prueba un lanzamiento con
+  `run.log` ([`BRIEF`](../../results/M7-W5e-first-search-20260923/BRIEF.md)).
 - **2026-09-23** — memoria **W5e pre-registrado, sin correr: el árbitro escribe la primera búsqueda.** La
   única incógnita abierta de W5d. `Conversation.first_query` (apagado por defecto): la primera búsqueda del
   recorrido corre sobre el enunciado del pedido, en el estante que nombró el adaptador; nada más cambia. Sin

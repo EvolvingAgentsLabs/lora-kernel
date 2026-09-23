@@ -1,0 +1,15 @@
+=== session 1 of 1 · srv183116 · A100
+    boot clone: rc=0 68ee7ce W5e, THE FREEZE: the referee writes the walk's first query — brief, runner, zero-GPU numbers
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 68ee7ce W5e, THE FREEZE: the referee writes the walk's first query — brief, runner, zero-GPU numbers
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    68ee7ce W5e, THE FREEZE: the referee writes the walk's first query — brief, runner, zero-GPU numbers | 0.30.0
+    this module trains its own adapter — nothing to carry in
+    srv183116 did not answer a probe (1 of 3)
+    srv183116 did not answer a probe (2 of 3)
+    srv183116 did not answer a probe (3 of 3)
+    srv183116 is not answering — giving up on it

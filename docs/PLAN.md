@@ -604,6 +604,16 @@ that decide the shape of a step:
 
 ## 5. History
 
+- **2026-09-23** — memory **W5e [ran]: NO HEADROOM — the retrained adapter does not write the memorised query.**
+  W5c's adapter was on no disk, so it was retrained (same corpus, same recipe; sha `4caceaa3…`). The new draw
+  loses **0** headline value rows to its own query (W5c's: 11) — it writes queries its corpus never held and
+  opens the note 11 of 11 — so the referee's first query had nothing to repair. Beside the verdict: W5d's own
+  pair on its post-freeze sets, `policy vs withlib`, is **9 : 1, $p=0.021$** with this draw (5 : 0, a tie, with
+  W5c's), control 72 vs 72; and the two draws of one recipe disagree on **25 of 67** headline rows (15 : 10).
+  **An arm decided on one training run of a walking adapter is deciding on a draw.** Next, the user's call:
+  price the draw with 2–3 seeds, or the policy's claim on a fresh set. The launch that never started cost one
+  A100 session; the chain now proves a launch by `run.log`
+  ([`BRIEF`](../results/M7-W5e-first-search-20260923/BRIEF.md)).
 - **2026-09-23** — memory **W5e pre-registered, not run: the referee writes the first query.** W5d's one
   open unknown. `Conversation.first_query` (off by default): the walk's first search runs on the request's
   statement, on the shelf the adapter named; nothing else changes. Zero GPU **[ran]**: on W5d's 11 missed
