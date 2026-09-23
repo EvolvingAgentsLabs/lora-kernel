@@ -1,0 +1,97 @@
+{
+ "base": "Qwen/Qwen3.5-4B",
+ "started": "2026-09-23T18:20:24",
+ "grader": "training.nursing.grade_walks",
+ "adapter": "adapters/nursing-walks-v2-q35",
+ "sets": "training/nursing/data_walks_w5d",
+ "recorded_in": "results/M7-W5d-answer-policy-20260920/walks_policy.json",
+ "treatment": "Conversation.first_query = statement",
+ "w5d_missed": [
+  "w5dh-069",
+  "w5dh-070",
+  "w5dh-071",
+  "w5dh-072",
+  "w5dh-073",
+  "w5dh-075",
+  "w5dh-076",
+  "w5dh-085",
+  "w5dh-087",
+  "w5dh-089",
+  "w5dh-091"
+ ],
+ "zero_gpu": {
+  "headline": {
+   "rows": 67,
+   "need_a_search": 39,
+   "statement_lists_a_walk_note": 39,
+   "statement_lists_the_supplying_note": 18
+  },
+  "heldout_deeper_than_trained": {
+   "rows": 0,
+   "need_a_search": 0,
+   "statement_lists_a_walk_note": 0,
+   "statement_lists_the_supplying_note": 0
+  },
+  "heldout_shared_line": {
+   "rows": 22,
+   "need_a_search": 8,
+   "statement_lists_a_walk_note": 8,
+   "statement_lists_the_supplying_note": 1
+  },
+  "heldout_carry": {
+   "rows": 35,
+   "need_a_search": 23,
+   "statement_lists_a_walk_note": 23,
+   "statement_lists_the_supplying_note": 2
+  },
+  "heldout_quantity_site_or_case": {
+   "rows": 26,
+   "need_a_search": 14,
+   "statement_lists_a_walk_note": 14,
+   "statement_lists_the_supplying_note": 14
+  },
+  "heldout_quantity_textbook": {
+   "rows": 6,
+   "need_a_search": 2,
+   "statement_lists_a_walk_note": 2,
+   "statement_lists_the_supplying_note": 2
+  },
+  "heldout_quantity_conditional": {
+   "rows": 16,
+   "need_a_search": 8,
+   "statement_lists_a_walk_note": 8,
+   "statement_lists_the_supplying_note": 8
+  },
+  "heldout_quantity_plain": {
+   "rows": 16,
+   "need_a_search": 8,
+   "statement_lists_a_walk_note": 8,
+   "statement_lists_the_supplying_note": 8
+  },
+  "control": {
+   "rows": 78,
+   "need_a_search": 20,
+   "statement_lists_a_walk_note": 20,
+   "statement_lists_the_supplying_note": 16
+  },
+  "control_without_rate": {
+   "rows": 68,
+   "need_a_search": 16,
+   "statement_lists_a_walk_note": 16,
+   "statement_lists_the_supplying_note": 12
+  },
+  "control_rate": {
+   "rows": 10,
+   "need_a_search": 4,
+   "statement_lists_a_walk_note": 4,
+   "statement_lists_the_supplying_note": 4
+  },
+  "w5d_missed": {
+   "rows": 11,
+   "need_a_search": 11,
+   "statement_lists_a_walk_note": 11,
+   "statement_lists_the_supplying_note": 11
+  }
+ },
+ "arms": {}
+}

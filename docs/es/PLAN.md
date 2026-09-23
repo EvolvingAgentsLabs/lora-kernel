@@ -654,6 +654,17 @@ Las cuatro que deciden la forma de un paso:
 
 ## 5. Historia
 
+- **2026-09-23** — memoria **W5e pre-registrado, sin correr: el árbitro escribe la primera búsqueda.** La
+  única incógnita abierta de W5d. `Conversation.first_query` (apagado por defecto): la primera búsqueda del
+  recorrido corre sobre el enunciado del pedido, en el estante que nombró el adaptador; nada más cambia. Sin
+  GPU **[ran]**: en las 11 filas que W5d perdió — todas en el estante correcto con una consulta de
+  entrenamiento del tema de goteos — el enunciado lista la nota que aporta el valor 11 de 11; sobre el corpus
+  de entrenamiento lista una nota del recorrido en 268 de 274 filas, contra 258 de la consulta del oráculo.
+  El adaptador de W5c no está en ningún disco, así que se reentrena (una A100, misma receta) y
+  `withlib`/`policy` se vuelven a correr en la sesión de medición (una L4). Primero el margen (el adaptador
+  reentrenado tiene que seguir fallando ≥ 4); se falsa si el recorrido, con la nota a la vista, sigue
+  fallando en al menos la mitad; atribución sobre los sets ya vistos de W5d, nunca la afirmación
+  ([`BRIEF`](../../results/M7-W5e-first-search-20260923/BRIEF.md)).
 - **2026-09-22** — el primer LoRA de `examples/school` **[ran]: FALSEADO antes de entrenar — el
   margen ya estaba agotado.** Un rol (`educador`, su corpus de una sola herramienta más grande,
   regenerado con el default propio del generador: 114 train / 19 eval), un desconocido

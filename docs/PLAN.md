@@ -604,6 +604,15 @@ that decide the shape of a step:
 
 ## 5. History
 
+- **2026-09-23** — memory **W5e pre-registered, not run: the referee writes the first query.** W5d's one
+  open unknown. `Conversation.first_query` (off by default): the walk's first search runs on the request's
+  statement, on the shelf the adapter named; nothing else changes. Zero GPU **[ran]**: on W5d's 11 missed
+  rows — all on the right shelf with a rates-topic training query — the statement lists the supplying note
+  11 of 11; on the training corpus it lists a walk note on 268 of 274 rows against the oracle query's 258.
+  W5c's adapter is on no disk, so it is retrained (one A100, same recipe) and `withlib`/`policy` are re-run in
+  the scoring session (one L4). Headroom first (the retrained adapter must still miss ≥ 4); falsified if the
+  walk, shown the note, still misses at least half; attribution on W5d's seen sets, never the claim
+  ([`BRIEF`](../results/M7-W5e-first-search-20260923/BRIEF.md)).
 - **2026-09-22** — `examples/school`'s first LoRA **[ran]: FALSIFIED before training — headroom
   already exhausted.** One role (`educador`, its largest single-tool corpus, regenerated at the
   generator's own default: 114 train / 19 eval), one unknown (tool-call fidelity), gate ≥ 0.90 —
