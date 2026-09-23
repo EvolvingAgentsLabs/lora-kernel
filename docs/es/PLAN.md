@@ -654,6 +654,16 @@ Las cuatro que deciden la forma de un paso:
 
 ## 5. Historia
 
+- **2026-09-22** — el primer LoRA de `examples/school` **[ran]: FALSEADO antes de entrenar — el
+  margen ya estaba agotado.** Un rol (`educador`, su corpus de una sola herramienta más grande,
+  regenerado con el default propio del generador: 114 train / 19 eval), un desconocido
+  (fidelidad de llamada a herramienta), compuerta ≥ 0,90 — el `Qwen3.5-4B` pelado sacó
+  **18/19 = 0,9474** antes de que existiera ningún adaptador, cubriendo la compuerta por sí solo:
+  una de las tres condiciones de falsificación escritas antes de la corrida. La única
+  herramienta del corpus, con un solo argumento, dicha explícitamente en el system prompt y
+  nombrada o implícita en cada pedido, es una brecha demasiado angosta para que el entrenamiento
+  la cierre. No se compra ningún brazo de adaptador; los otros seis roles comparten la misma
+  forma y tampoco se compran ([`BRIEF`](../../results/M7-school-pilot-20260922/BRIEF.md)).
 - **2026-09-22** — memoria **W8 [ran]: sólo la pregunta de esquema, pasó.** No es mecánica de
   fluidos, no depende de W1–W7 — desde el propio ejemplo del usuario de la Mona Lisa → pintor →
   dibujos: ¿el formato de nota expresa una referencia que no es un enlace de árbol? Se agregó

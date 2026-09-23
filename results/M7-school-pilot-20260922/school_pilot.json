@@ -1,0 +1,264 @@
+{
+ "base": "Qwen/Qwen3.5-4B",
+ "role": "educador",
+ "train_n": 114,
+ "eval_n": 19,
+ "lora": {
+  "r": 16,
+  "alpha": 32,
+  "epochs": 3,
+  "lr": 0.0002
+ },
+ "started": "2026-09-22T11:26:32",
+ "base_eval": {
+  "n": 19,
+  "correct": 18,
+  "accuracy": 0.9474,
+  "records": [
+   {
+    "case_id": "educador-0003",
+    "passed": true,
+    "got": [
+     "agenda_read",
+     109
+    ],
+    "want": [
+     "agenda_read",
+     109
+    ],
+    "out": "I will read the agenda for Ashby, Mira (id 109).\n\n<agenda_read>109</agenda_read>\n"
+   },
+   {
+    "case_id": "educador-0006",
+    "passed": true,
+    "got": [
+     "agenda_read",
+     84
+    ],
+    "want": [
+     "agenda_read",
+     84
+    ],
+    "out": "I will read the agenda for student 84.\n\n<agenda_read>84</agenda_read>\n"
+   },
+   {
+    "case_id": "educador-0007",
+    "passed": true,
+    "got": [
+     "agenda_read",
+     12
+    ],
+    "want": [
+     "agenda_read",
+     12
+    ],
+    "out": "I will read the agenda for student 12 (Lucian).\n\n<agenda_read>12</agenda_read>\n"
+   },
+   {
+    "case_id": "educador-0015",
+    "passed": true,
+    "got": [
+     "agenda_read",
+     41
+    ],
+    "want": [
+     "agenda_read",
+     41
+    ],
+    "out": "I will read the agenda for student 41.\n\n<agenda_read>41</agenda_read>\n"
+   },
+   {
+    "case_id": "educador-0020",
+    "passed": true,
+    "got": [
+     "agenda_read",
+     90
+    ],
+    "want": [
+     "agenda_read",
+     90
+    ],
+    "out": "I will read the agenda for student 90 (Yusuf).\n\n<agenda_read>90</agenda_read>\n"
+   },
+   {
+    "case_id": "educador-0034",
+    "passed": false,
+    "got": null,
+    "want": [
+     "agenda_read",
+     51
+    ],
+    "out": "I will read the agenda for student 51 now.\n"
+   },
+   {
+    "case_id": "educador-0041",
+    "passed": true,
+    "got": [
+     "agenda_read",
+     62
+    ],
+    "want": [
+     "agenda_read",
+     62
+    ],
+    "out": "I will read the agenda for Lindqvist, Theo (id 62).\n\n<agenda_read>62</agenda_read>\n"
+   },
+   {
+    "case_id": "educador-0043",
+    "passed": true,
+    "got": [
+     "agenda_read",
+     129
+    ],
+    "want": [
+     "agenda_read",
+     129
+    ],
+    "out": "I will read the agenda for student 129 (Idris).\n\n<agenda_read>129</agenda_read>\n"
+   },
+   {
+    "case_id": "educador-0047",
+    "passed": true,
+    "got": [
+     "agenda_read",
+     10
+    ],
+    "want": [
+     "agenda_read",
+     10
+    ],
+    "out": "I will read the agenda for student Lucian Lindqvist (id 10).\n\n<agenda_read>10</agenda_read>\n"
+   },
+   {
+    "case_id": "educador-0071",
+    "passed": true,
+    "got": [
+     "agenda_read",
+     8
+    ],
+    "want": [
+     "agenda_read",
+     8
+    ],
+    "out": "I will read the agenda for Callum Marchetti (id 8) to check for any updates.\n\n<agenda_read>8</agenda_read>"
+   },
+   {
+    "case_id": "educador-0073",
+    "passed": true,
+    "got": [
+     "agenda_read",
+     18
+    ],
+    "want": [
+     "agenda_read",
+     18
+    ],
+    "out": "I will read the agenda for Ashby, Kavi (id 18).\n\n<agenda_read>18</agenda_read>\n"
+   },
+   {
+    "case_id": "educador-0076",
+    "passed": true,
+    "got": [
+     "agenda_read",
+     85
+    ],
+    "want": [
+     "agenda_read",
+     85
+    ],
+    "out": "I will read the agenda for student 85.\n\n<agenda_read>85</agenda_read>\n"
+   },
+   {
+    "case_id": "educador-0085",
+    "passed": true,
+    "got": [
+     "agenda_read",
+     104
+    ],
+    "want": [
+     "agenda_read",
+     104
+    ],
+    "out": "I will read the agenda for student 104.\n\n<agenda_read>104</agenda_read>\n"
+   },
+   {
+    "case_id": "educador-0098",
+    "passed": true,
+    "got": [
+     "agenda_read",
+     20
+    ],
+    "want": [
+     "agenda_read",
+     20
+    ],
+    "out": "I will read the agenda for student 20.\n\n<agenda_read>20</agenda_read>\n"
+   },
+   {
+    "case_id": "educador-0099",
+    "passed": true,
+    "got": [
+     "agenda_read",
+     74
+    ],
+    "want": [
+     "agenda_read",
+     74
+    ],
+    "out": "I will read the agenda for student 74 (Zuri).\n\n<agenda_read>74</agenda_read>\n"
+   },
+   {
+    "case_id": "educador-0115",
+    "passed": true,
+    "got": [
+     "agenda_read",
+     49
+    ],
+    "want": [
+     "agenda_read",
+     49
+    ],
+    "out": "I will read the agenda for student 49.\n\n<agenda_read>49</agenda_read>\n"
+   },
+   {
+    "case_id": "educador-0116",
+    "passed": true,
+    "got": [
+     "agenda_read",
+     19
+    ],
+    "want": [
+     "agenda_read",
+     19
+    ],
+    "out": "I will read the agenda for Ashby, Idris (id 19).\n\n<agenda_read>19</agenda_read>\n"
+   },
+   {
+    "case_id": "educador-0117",
+    "passed": true,
+    "got": [
+     "agenda_read",
+     92
+    ],
+    "want": [
+     "agenda_read",
+     92
+    ],
+    "out": "I will read the agenda for student 92 (Rowan).\n\n<agenda_read>92</agenda_read>\n"
+   },
+   {
+    "case_id": "educador-0121",
+    "passed": true,
+    "got": [
+     "agenda_read",
+     98
+    ],
+    "want": [
+     "agenda_read",
+     98
+    ],
+    "out": "I will read the agenda for student 98.\n\n<agenda_read>98</agenda_read>\n"
+   }
+  ]
+ }
+}
