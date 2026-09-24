@@ -1,0 +1,32 @@
+{
+ "G1_eval_world_in_corpus": 0,
+ "G2_shared_phrasing_templates": 0,
+ "G2_eval_question_in_corpus": 0,
+ "G3_not_verified": 0,
+ "G4_value_in_question": 0,
+ "G5_over_window": 0,
+ "max_tokens": 476,
+ "rows": 600,
+ "families": [
+  "contact-ext",
+  "cutoff",
+  "damaged-ext",
+  "damaged-hours",
+  "depot-cutoff",
+  "depot-hours",
+  "invoice-ext",
+  "lead",
+  "manager-ext",
+  "none-recipe",
+  "none-supplier",
+  "order-approver",
+  "overtime-ext",
+  "pack",
+  "product-cutoff",
+  "supplier-lead",
+  "supplier-town",
+  "terms",
+  "wrong-days"
+ ],
+ "passed": true
+}
