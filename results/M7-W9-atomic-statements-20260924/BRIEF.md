@@ -102,3 +102,26 @@ GPU=L4 BRANCH=w9-atomic-statements-20260924 RUN_DIR=$R MODULE=training.wiki.wiki
   MARGS="--concurrency 8" RESULTS_NAME=wiki_arm.json BASE=Qwen/Qwen3.5-4B SKIP_ADAPTERS=1 SESSIONS=1 \
   training/harness/chain_serve.sh
 ```
+
+## Stage 1 result **[ran]** 2026-09-24 · NAVIGATION IS THE GAP — stage 2 bought
+
+One L4 session, 0 transport errors, read off `wiki_arm.json`. Headline n = 40, credit (value right **and**
+citation verified) · value right:
+
+| arm | credit | value right |
+|---|--:|--:|
+| `nolib` | 0 | **0** — the set is valid: the values are not in the weights |
+| `base-reads` | **29** | 40 |
+| `base-walks` | **0** | 1 |
+
+`base-reads vs base-walks` **29 : 0**, improvement. By the verdict as written: **NAVIGATION IS THE GAP** →
+stage 2, two seeds.
+
+**Read where it happens, and it is not section choice.** In 63 of 67 walks the untrained base writes one
+`<search>`, reads the listing, and then **continues the listing** — inventing `[k3f] page · …` lines until its
+token budget ends — instead of writing `<open>`. It never reaches a page. What is missing is the protocol
+habit (write a verb after a result), which is exactly what a corpus of walks teaches; it is not yet evidence
+about choosing the right section or following the right link. **And `base-reads` loses its 11 on the citation,
+not the value:** 10 of them cite the chain's *first* statement (`§supplier`, `§carrier`) instead of the last
+one that holds the value (`§town`, `§cutoff`) — a citation habit, also taught by the corpus, and the reason the
+verdict reads credit and not value.
