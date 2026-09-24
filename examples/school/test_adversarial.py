@@ -14,8 +14,7 @@ examples/README.md says how (both MCP servers are registered and `mcp probe`-ver
 real OpenClaw instance, under the project's isolated `lorakernel` profile); a live agent *turn*
 still needs a model behind that profile, which is why it is not run here.
 
-Covers the full roster the reference diagram names (`docs/img/solution-architecture-school.png`,
-`docs/FRAMEWORK.md` §1): `educador`, `compras`, `trainee`, `marketing`, `it`, `cfo`, `dev` — 7
+Covers the full roster (`docs/FRAMEWORK.md` §1): `educador`, `compras`, `trainee`, `marketing`, `it`, `cfo`, `dev` — 7
 roles, 13 tools, 2 tenants, 4 planted injection strings.
 """
 from __future__ import annotations
