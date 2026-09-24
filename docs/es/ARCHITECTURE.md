@@ -152,13 +152,27 @@ base lee los valores de lo que abrió el recorrido del adaptador — que es 47/5
 pagados y evidencia de nada hasta que se corra sobre un conjunto escrito después de congelar la
 política.
 
+**La unidad de la biblioteca, desde el 2026-09-24: el enunciado atómico [spec] W9.** El diseño del
+usuario: la biblioteca tiene forma de Wikipedia. Una página es sobre una sola cosa y es una lista de
+**enunciados atómicos** — una oración chequeable cada uno, bajo un ancla — y **el enunciado, no la
+página, es la unidad de memoria**. Los enlaces viven dentro del enunciado que los nombra (el
+`§supplier` de un producto es también el camino a la página del proveedor); las páginas operativas son
+recetas cuyos enunciados son pasos y ramas, y un plan es la trayectoria que el contexto de la tarea
+elige por ellos. `<open>id</open>` muestra las secciones de una página, `<open>id§anchor</open>` un
+solo enunciado, y toda respuesta cita el enunciado en el que se apoya — una cita que el runtime
+chequea mecánicamente, así que la memoria es su propio verificador. Primer banco de pruebas: una wiki
+de distribuidora inventada cuyas páginas operativas siguen los roles de la organización de referencia
+(compras, recepción, despacho, reclamos y devoluciones, comunicaciones con clientes, finanzas, RRHH,
+marketing, IT), generada por mundo para que ningún valor se pueda saber de memoria; el base sin
+entrenar se mide antes de comprar un LoRA de trayectoria ([`MEMORY.md`](MEMORY.md) §1.6).
+
 Especificada pieza por pieza en [`MEMORY.md`](MEMORY.md) **[spec]**; argumentada, con sus
 preguntas abiertas, en [`KNOWLEDGE-TRAJECTORIES.md`](KNOWLEDGE-TRAJECTORIES.md). Cinco piezas,
 cuatro de ellas no neuronales:
 
 | pieza | qué es | dónde vive |
 |---|---|---|
-| **la biblioteca** | notas en markdown de menos de media página, en dos estantes. **Arnés operativo** — *cómo se hace*: notas tipo receta cuyos links son control de flujo (`requires`, `next`, `uses`). **Wiki enciclopédica** — *qué es, qué fórmula aplica*: un árbol, de lo general a lo específico (`parent` → `children`) | `knowledge/<subdominio>/`, en git |
+| **la biblioteca** | notas en markdown de menos de media página, en dos estantes — y, desde W9 **[spec]**, páginas de enunciados atómicos con sus enlaces adentro, citadas por cada respuesta. **Arnés operativo** — *cómo se hace*: notas tipo receta cuyos links son control de flujo (`requires`, `next`, `uses`). **Wiki enciclopédica** — *qué es, qué fórmula aplica*: un árbol, de lo general a lo específico (`parent` → `children`) | `knowledge/<subdominio>/`, en git |
 | **el radar** | embeddings comprimidos a un subdominio; por nota dos vectores, *para qué sirve* y *qué define*; devuelve las dos o tres notas exactas del subdominio en juego | un índice chico por subdominio |
 | **el lenguaje** | tres verbos que el experto puede escribir — `<search>`, `<open>`, `<calc>` — cada uno respondido en línea después de su etiqueta de cierre | una gramática, versionada con la liberación |
 | **el LoRA** | entrenado sobre el **hábito de navegar**: casos cuyas constantes cambian cada vez, así que el número hay que leerlo de la nota | el adaptador — la única pieza entrenada |

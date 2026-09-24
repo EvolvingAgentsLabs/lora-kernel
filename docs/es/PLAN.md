@@ -102,7 +102,7 @@ brazos de atribución se compran sólo una vez que hay un efecto que atribuir.
 | **4** | el par especulativo | 3 | la aceptación de borradores del LoRA chico bajo verificación del LoRA grande supera la aceptación bajo el modelo grande pelado | — |
 | **5** | la primera región real, a mano | 1, 2, un sandbox, claves rotadas | la compuerta de release, sobre una suite con un verificador que nadie acá generó | **región nombrada el 2026-09-19: procedimientos de enfermería y material de educación en salud** (*Nursing Skills* de Open RN, CC BY 4.0, primero); sigue el brazo de margen, cero GPU |
 | **6** | la política de servicio, con la factura | 2, 4, 5 | la porción local ahorra más de lo que cuesta, sobre tráfico real | 🔶 **primera pasada [ran] 2026-09-21, cero GPU:** el replay de P41/P62 tasado a las tarifas reales de `gemini-3.8-flash` — la factura real de hoy hacia la frontera (90 casos de fluidos) **$0,18**, evitada al mantener locales los 150 casos de email **$0,11**, techo si todo hubiera salido **$0,30**. **El costo en dólares de la propia GPU local no está tasado** — la tarifa de alquiler no se pudo obtener en vivo; no se adivinó |
-| **7** | **una base de conocimiento por subdominio, y la trayectoria por ella como harness** — sobre mecánica de fluidos, partida en subdominios | 1; comparte su modelo de embeddings con el brazo 2 del hito 2; independiente de 3–6, **corre a continuación** | un experto entrenado para navegar y seguir notas contesta familias sobre las que nunca entrenó, donde el mismo experto sin la base está en 1/20 | 🔶 **W1–W4 construidos [ran]; el radar de W3 y el brazo que mata de W5 [ran] y no pasan.** W5: el brazo con biblioteca 35/56 contra el base sin entrenar que lee, 45/56 (6 : 16, $p=0{,}052$), 35 : 2 sobre sin-biblioteca — la navegación se transfirió, leer una nota de dos valores no. Sigue a decisión del usuario: composición, sin entrenar |
+| **7** | **una base de conocimiento por subdominio, y la trayectoria por ella como harness** — sobre mecánica de fluidos, partida en subdominios | 1; comparte su modelo de embeddings con el brazo 2 del hito 2; independiente de 3–6, **corre a continuación** | un experto entrenado para navegar y seguir notas contesta familias sobre las que nunca entrenó, donde el mismo experto sin la base está en 1/20 | 🔶 **W1–W4 construidos [ran]; el radar de W3 y el brazo que mata de W5 [ran] y no pasan.** W5: el brazo con biblioteca 35/56 contra el base sin entrenar que lee, 45/56 (6 : 16, $p=0{,}052$), 35 : 2 sobre sin-biblioteca — la navegación se transfirió, leer una nota de dos valores no. Sigue a decisión del usuario: composición, sin entrenar. **2026-09-24: la unidad de la biblioteca pasa a ser el enunciado atómico (diseño del usuario, `MEMORY.md` §1.6) — W9 pre-registrado: una wiki de distribuidora inventada, margen sobre el base sin entrenar primero** |
 
 ### Hito 1 — el pool en Qwen 3.x chico
 
@@ -654,6 +654,18 @@ Las cuatro que deciden la forma de un paso:
 
 ## 5. Historia
 
+- **2026-09-24** — memoria **W9 pre-registrado, sin correr: enunciados atómicos.** El diseño del
+  usuario: la biblioteca con forma de Wikipedia, una página una lista de enunciados de una oración,
+  verificables, bajo anclas, los enlaces dentro del enunciado que los nombra, la misma forma para las
+  recetas operativas; toda respuesta cita `[id§anchor]` y el runtime verifica la cita mecánicamente
+  (`MEMORY.md` §1.6). Banco de pruebas: una wiki de distribuidora — páginas de productos, proveedores,
+  depósitos, transportistas y personal, y recetas operativas que siguen los roles de la organización
+  de referencia (compras, recepción, despacho, reclamos y devoluciones, comunicaciones, finanzas,
+  RRHH, marketing, IT) — **generada por mundo** para que ningún valor se sepa de memoria; un mundo
+  commiteado como evaluación. Una L4, sin entrenar: el brazo a libro cerrado tiene que fallar, después
+  `base-walks` contra `base-reads` decide si hace falta un LoRA de trayectoria; si hace falta, dos
+  semillas (W5e: dos sorteos de una misma receta discreparon en 25 de 67)
+  ([`BRIEF`](../../results/M7-W9-atomic-statements-20260924/BRIEF.md)).
 - **2026-09-22** — el primer LoRA de `examples/school` **[ran]: FALSEADO antes de entrenar — el
   margen ya estaba agotado.** Un rol (`educador`, su corpus de una sola herramienta más grande,
   regenerado con el default propio del generador: 114 train / 19 eval), un desconocido

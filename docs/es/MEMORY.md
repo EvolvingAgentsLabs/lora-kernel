@@ -9,14 +9,14 @@ Esta es la especificación de implementación de la memoria por experto, el núc
 [`KNOWLEDGE-TRAJECTORIES.md`](KNOWLEDGE-TRAJECTORIES.md); este documento es el *qué construir*. La
 explicación que implementa es la del usuario, 2026-09-19. Marcadores de estado como en todas partes acá: **[ran]**
 medido en este repositorio, **[read]** leído en el código fuente o en un paper, **[spec]** decidido y todavía no
-construido. **Nada de lo que hay en este documento está construido todavía**; el §10 dice en qué orden se va a
-construir, y qué puede detenerlo.
+construido. W1–W5e y W8 están construidos y medidos, el §10 dice qué mostró cada uno; **el §1.6, los
+enunciados atómicos, es el diseño del usuario del 2026-09-24 y es [spec] hasta que corra W9.**
 
 Cinco piezas:
 
 | # | pieza | una línea | ¿neuronal? |
 |---|---|---|---|
-| 1 | **la biblioteca** | notas markdown pequeñas en dos estantes — el arnés operativo y la wiki enciclopédica | no — texto en git |
+| 1 | **la biblioteca** | notas markdown pequeñas en dos estantes — el arnés operativo y la wiki enciclopédica; desde W9, **páginas de enunciados atómicos** (§1.6) | no — texto en git |
 | 2 | **el radar** | embeddings comprimidos a un subdominio: *para qué es esta nota*, *qué define* | un encoder chico, congelado al servir |
 | 3 | **el lenguaje** | tres verbos que el experto puede escribir: `<search>`, `<open>`, `<calc>` | no — una gramática |
 | 4 | **el LoRA** | entrenado sobre el *hábito de navegación*, nunca sobre los datos | sí — la única parte entrenada |
@@ -149,6 +149,66 @@ tienen el mismo `when:`. El conocimiento que vive en git recibe las mismas compu
 
 ---
 
+
+### 1.6 Enunciados atómicos — una página es una lista de enunciados verificables **[spec]** W9
+
+El diseño del usuario, 2026-09-24. La biblioteca tiene forma de **Wikipedia**: una **página** es sobre
+una sola cosa — un producto, un proveedor, un procedimiento — y está hecha de **enunciados atómicos**:
+la pieza más chica de información que se puede chequear por sí sola — una oración, un hecho o una
+instrucción — bajo un ancla (`§supplier`, `§if-damaged`). **El enunciado, no la página, es la unidad de
+memoria, y eso es lo que vuelve la memoria verificable:** una respuesta nombra el enunciado en el que
+se apoya, y el chequeo es mecánico.
+
+**Los enlaces viven dentro de los enunciados.** El enunciado que dice quién provee un producto es
+también el camino a la página del proveedor: `§supplier Supplied by [[…/suppliers/norvale]].` El
+recorrido del usuario: *"¿cuáles son las obras del autor de la Mona Lisa?"* → la búsqueda encuentra la
+página `La_Gioconda` → la página muestra sus secciones → el modelo abre `§author` → su enlace lleva a
+`Leonardo_da_Vinci` → el modelo elige `§works` ahí. **La memoria operativa tiene la misma forma:** una
+página es una receta cuyos enunciados son pasos y ramas — `§if-damaged If the goods arrived damaged,
+follow [[…/damage-claim]].` — y un plan es la trayectoria por ellos que eligen las particularidades y
+el contexto de la tarea.
+
+```
+---
+id: distributor-wiki/wiki/products/brisk-40
+shelf: wiki
+kind: page
+title: Brisk-40 pallet wrap
+when: You need a fact about the Brisk-40 pallet wrap — who supplies it, where it is stocked, its pack.
+what: A stretch film for pallets; one of the products the distributor carries.
+---
+§supplier Brisk-40 is supplied by [[distributor-wiki/wiki/suppliers/norvale]].
+§warehouse Brisk-40 is stocked at [[distributor-wiki/wiki/warehouses/east-quay]].
+§pack A pack of Brisk-40 holds 18 rolls.
+```
+
+**Reglas — linteadas, como el código.** Kind `page` en el estante wiki, `recipe` en el estante del
+arnés. Cada línea de cuerpo de una página es un enunciado, `§ancla texto`; el ancla es única en su
+página (`[a-z0-9-]`); un enunciado es **una oración de a lo sumo 40 tokens**; todo `[[link]]` resuelve;
+los `refs` de la página se derivan de los enlaces de sus enunciados, nunca se escriben a mano.
+
+**Lo que muestra el runtime.** `<open>id</open>` sobre una página devuelve su título, su `what:` y sus
+**secciones — las anclas, nunca el texto de los enunciados** — como el índice de Wikipedia: elegir la
+sección es trabajo del modelo. `<open>id§anchor</open>` devuelve ese único enunciado, con sus enlaces
+escritos `[p7q] Title` para que se puedan abrir. Un enunciado existe en una conversación sólo una vez
+que se mostró su página.
+
+**El contrato de la respuesta.** La línea final termina con la cita `[id§anchor]` del enunciado en el
+que se apoya. **Verificada** = el valor de la respuesta ocurre en el enunciado citado **y** el
+recorrido lo abrió. Un valor correcto sin cita, o una cita que no lo contiene, es `unverified` — se
+reporta, nunca se acredita.
+
+**Por qué el banco de pruebas es inventado, no Wikipedia.** Los hechos famosos están en los pesos de
+un 4B: un brazo a libro cerrado contestaría *quién pintó la Mona Lisa*, y el número mediría los pesos,
+no la memoria (la misma trampa de P15/P21). La wiki de W9 es una **distribuidora con forma de
+Wikipedia, generada por *mundo* a partir de una semilla** — nombres, valores y enlaces sorteados de
+nuevo — con un mundo commiteado como mundo de evaluación, nunca usado para entrenar. Las tres páginas
+reales de W8 quedan como la prueba del formato sobre texto real.
+
+**Dónde vive el arnés.** Las secciones, el chequeo de la cita y los verbos son software. Elegir la
+sección y seguir el enlace correcto es lo que un **LoRA de trayectoria** aprendería por subdominio — y
+se compra sólo si el base sin entrenar todavía no lo hace: lo decide el brazo de margen de W9.
+
 ## 2. El radar — embeddings comprimidos a un subdominio
 
 No es un motor de búsqueda general, ni un modelo de embeddings grande construido para saber de historia, cultura pop y
@@ -216,7 +276,7 @@ mensajes `tool_calls` **[ran]** P55).
 | verbo | lo que escribe el experto | lo que responde el runtime |
 |---|---|---|
 | **search** | `<search>situation or doubt</search>` | `= 3 notes` y, por nota, `[id] kind · title — when: …`. **Sólo títulos y líneas `when` — nunca cuerpos** |
-| **open** | `<open>id</open>` | el cuerpo de la nota, con los huecos completados y las reglas locales aplicadas, y después sus enlaces: `next …` · `requires …` · `uses …` (en el estante wiki `parent …` · `children …`; cualquiera de los dos estantes puede llevar además `refs …` — §1.2a, todavía no ejercitado por este runtime **[ran]** W8; todo enlace salvo `next` lleva el título de la nota junto a su id — W2 **[ran]**) |
+| **open** | `<open>id</open>` — o, sobre una página de enunciados atómicos, `<open>id§anchor</open>` para un solo enunciado (§1.6, W9 **[spec]**) | sobre una página, sólo sus secciones; si no, el cuerpo de la nota, con los huecos completados y las reglas locales aplicadas, y después sus enlaces: `next …` · `requires …` · `uses …` (en el estante wiki `parent …` · `children …`; cualquiera de los dos estantes puede llevar además `refs …` — §1.2a, todavía no ejercitado por este runtime **[ran]** W8; todo enlace salvo `next` lleva el título de la nota junto a su id — W2 **[ran]**) |
 | **calc** | `<calc>500 * 20 / (4 * 60)</calc>` | `= 41.6667` — así el modelo **nunca hace aritmética de memoria**, donde siempre falla (adaptador solo 4/40, adaptador + calculadora 40/40 **[ran]** P5–P7) |
 
 ```
@@ -457,6 +517,7 @@ puntaje final no puede ver:
 | **usada** | ¿su valor llegó a un paso posterior? (`training/physics/result_use.py` — el instrumento que encontró que el experto de fluidos busca una densidad, 882,3, y la multiplica por 1359,7 **[ran]**) |
 | **conforme** | ¿el recorrido respetó cada `requires`? |
 | **correcta** | el veredicto del verificador |
+| **citada** | sobre una página de enunciados atómicos: ¿la respuesta nombra un enunciado que sostiene su valor, y lo abrió el recorrido? (§1.6 — el propio verificador de la memoria) |
 | **tokens** | un recorrido no es gratis |
 
 Los brazos y su orden están en el hito 7 de [`PLAN.md`](PLAN.md). Dos bancos de prueba con trabajos distintos: **la
@@ -481,6 +542,7 @@ Cada paquete termina en una compuerta, entra en una sesión de Colab de sesenta 
 | W6 | radar **R1**, la afirmación de compresión | Colab, minutos | recall@3 plano a medida que $d$ baja a 64 |
 | W7 | editar una nota después de entrenar; la respuesta tiene que seguir a la biblioteca | Colab, minutos | la sigue |
 | W8 | **no es mecánica de fluidos, no depende de W1–W7** — una prueba a nivel de esquema: ¿el formato de nota siquiera expresa una referencia que no es un enlace de árbol (§1.2a), preguntado desde el propio ejemplo del usuario de la Mona Lisa → pintor → dibujos? | no | un destino de `refs` resuelve; la trayectoria nombrada resuelve a través de él — ✅ **[ran] 2026-09-22**: `knowledge/wikipedia-arts/`, 0 hallazgos del lint; `mona-lisa.refs[0]` → `leonardo-da-vinci`, `.children[0]` → `drawings`. No está indexado por el radar, no lo recorre ningún runtime, no está entrenado — sólo la pregunta de formato ([`BRIEF`](../../results/W8-wikipedia-refs-20260922/BRIEF.md)) |
+| W9 | **enunciados atómicos** (§1.6) — páginas de enunciados, `<open>id§anchor</open>`, respuestas citadas verificadas mecánicamente; una wiki de distribuidora inventada generada por mundo; preguntas enciclopédicas y operativas de 1 a 3 saltos | una L4, sin entrenar; un LoRA de trayectoria (2 semillas) sólo si el brazo de margen dice que la navegación es la brecha | **el brazo a libro cerrado tiene que fallar** (≤ 10 % de aciertos) o el conjunto es nulo; después `base-walks` contra `base-reads` decide si hace falta un LoRA — **[spec]** ([`BRIEF`](../../results/M7-W9-atomic-statements-20260924/BRIEF.md)) |
 
 **Lo que podría haberlo detenido, y no lo hizo [ran] 2026-09-19.** El brazo 0b del hito 7 preguntó si el
 experto de fluidos usa el resultado de una herramienta cuando le llega inline, como le enseñó su corpus — había

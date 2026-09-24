@@ -141,13 +141,26 @@ recovers those and loses 19 control cases (W5b), so it is not a serving design. 
 adapter's walk opened — which is 47/56 on records already paid for and evidence of nothing until it
 is run on a set written after the policy is frozen.
 
+**The unit of the library, from 2026-09-24: the atomic statement [spec] W9.** The user's design: the
+library is shaped like Wikipedia. A page is about one thing and is a list of **atomic statements** —
+one checkable sentence each, under an anchor — and **the statement, not the page, is the unit of
+memory**. Links live inside the statement that names them (a product's `§supplier` is also the way to
+the supplier's page); operative pages are recipes whose statements are steps and branches, and a plan
+is the trajectory the task's context chooses through them. `<open>id</open>` shows a page's sections,
+`<open>id§anchor</open>` one statement, and every answer cites the statement it rests on — a citation
+the runtime checks mechanically, so the memory is its own verifier. First test bed: an invented
+distributor wiki whose operative pages follow the roles of the reference organisation (purchasing,
+receiving, dispatch, claims and returns, customer communications, finance, HR, marketing, IT), generated
+per world so no value can be known by heart; the untrained base is measured before a trajectory LoRA is
+bought ([`MEMORY.md`](MEMORY.md) §1.6).
+
 Specified piece by piece in [`MEMORY.md`](MEMORY.md) **[spec]**; argued for, with its open
 questions, in [`KNOWLEDGE-TRAJECTORIES.md`](KNOWLEDGE-TRAJECTORIES.md). Five pieces, four of them
 not neural:
 
 | piece | what it is | where it lives |
 |---|---|---|
-| **the library** | markdown notes under half a page, on two shelves. **Operational harness** — *how is it done*: recipe-like notes whose links are control flow (`requires`, `next`, `uses`). **Encyclopedic wiki** — *what is it, which formula applies*: a tree, general to specific (`parent` → `children`) | `knowledge/<subdomain>/`, in git |
+| **the library** | markdown notes under half a page, on two shelves — and, since W9 **[spec]**, pages of atomic statements with their links inside, cited by every answer. **Operational harness** — *how is it done*: recipe-like notes whose links are control flow (`requires`, `next`, `uses`). **Encyclopedic wiki** — *what is it, which formula applies*: a tree, general to specific (`parent` → `children`) | `knowledge/<subdomain>/`, in git |
 | **the radar** | embeddings compressed to one subdomain; per note two vectors, *when is it for* and *what does it define*; returns the two or three notes of exactly the subdomain in play | one small index per subdomain |
 | **the language** | three verbs the expert may write — `<search>`, `<open>`, `<calc>` — each answered inline after its closing tag | a grammar, versioned with the release |
 | **the LoRA** | trained on the *habit of navigating*: cases whose constants change every time, so the number has to be read from the note | the adapter — the only trained piece |

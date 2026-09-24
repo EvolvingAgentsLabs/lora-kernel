@@ -69,7 +69,11 @@ Full specification: [`docs/MEMORY.md`](docs/MEMORY.md) **[spec]**.
    harness** (*how is it done?*): recipe-like notes whose links are the control flow — `requires`
    (before this, that), `next` (the step that follows), `uses` (for this step, consult…). The
    **encyclopedic wiki** (*what is it, which formula applies?*): a tree, general to specific, that
-   classifies which case you are in before you compute.
+   classifies which case you are in before you compute. **Shaped like Wikipedia, its unit is the
+   atomic statement:** a page is a list of one-sentence, checkable statements under anchors
+   (`§supplier`, `§if-damaged`), links live inside the statement that names them, and an answer cites
+   the statement it rests on — so the memory is verifiable, not just searchable
+   ([`docs/MEMORY.md`](docs/MEMORY.md) §1.6 **[spec]**, measured next as W9).
 2. **The radar — embeddings compressed to one subdomain.** Not a general search engine. In a closed
    domain the vocabulary has exact functional meaning, so a small vector is enough to map the only
    two intents that matter: *what situation is this note for* (`when:`) and *what does it define*
@@ -172,6 +176,11 @@ but *reading* a note whose shape the corpus never showed does not yet transfer r
 against an untrained base handed the right note scoring 45 of 56). That is the one result in this
 README most likely to still be true next week, because the rest of the plan is built to answer it
 next **[ran]** `docs/PLAN.md` milestone 7.
+
+**Next: atomic statements.** The library is being rebuilt as pages of verifiable one-sentence
+statements — *what are the works of the author of the Mona Lisa?* is a search, a section, a link and a
+section — first on an invented distributor wiki the model cannot know by heart, with the untrained
+base measured before any LoRA is trained for it **[spec]** `docs/MEMORY.md` §1.6, W9.
 
 **Not solved yet.** The router is still a keyword dictionary — its two learned replacements are both
 measured and neither passes, for the same reason: a request from an unfamiliar sender and a familiar

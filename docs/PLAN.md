@@ -92,7 +92,7 @@ arms are bought only once there is an effect to attribute.
 | **4** | the speculative pair | 3 | acceptance of small-LoRA drafts under large-LoRA verification exceeds acceptance under the bare large model | — |
 | **5** | the first real region, by hand | 1, 2, a sandbox, keys rotated | the release gate, on a suite with a verifier nobody here generated | **region named 2026-09-19: nursing procedures and health-education material** (Open RN *Nursing Skills*, CC BY 4.0, first); headroom arm next, zero GPU |
 | **6** | the service policy, with the bill | 2, 4, 5 | the local share saves more than it costs, on real traffic | 🔶 **first pass [ran] 2026-09-21, zero GPU:** the P41/P62 replay priced at real `gemini-3.8-flash` rates — today's actual frontier bill (90 fluids cases) **$0.18**, avoided by keeping 150 email cases local **$0.11**, ceiling if everything left **$0.30**. **The local GPU's own dollar cost is not priced** — the rental rate could not be fetched live; not guessed around |
-| **7** | **a knowledge base per subdomain, and the trajectory through it as the harness** — on fluid mechanics, split into subdomains | 1; shares its embedding model with 2's arm 2; independent of 3–6, **runs next** | an expert trained to navigate and follow notes answers families it never trained on, where the same expert without the base is at 1/20 | 🔶 **W1–W4 built [ran]; W3's radar and W5's kill arm [ran] and not passed.** W5: the library arm 35/56 against the untrained base that reads at 45/56 (6 : 16, $p=0.052$), 35 : 2 over no-library — navigation transferred, reading a two-valued note did not. Next is the user's call: composition, no training |
+| **7** | **a knowledge base per subdomain, and the trajectory through it as the harness** — on fluid mechanics, split into subdomains | 1; shares its embedding model with 2's arm 2; independent of 3–6, **runs next** | an expert trained to navigate and follow notes answers families it never trained on, where the same expert without the base is at 1/20 | 🔶 **W1–W4 built [ran]; W3's radar and W5's kill arm [ran] and not passed.** W5: the library arm 35/56 against the untrained base that reads at 45/56 (6 : 16, $p=0.052$), 35 : 2 over no-library — navigation transferred, reading a two-valued note did not. Next is the user's call: composition, no training. **2026-09-24: the library's unit becomes the atomic statement (user's design, `MEMORY.md` §1.6) — W9 pre-registered: an invented distributor wiki, headroom on the untrained base first** |
 
 ### Milestone 1 — the pool on Qwen 3.x small
 
@@ -604,6 +604,17 @@ that decide the shape of a step:
 
 ## 5. History
 
+- **2026-09-24** — memory **W9 pre-registered, not run: atomic statements.** The user's design: the
+  library shaped like Wikipedia, a page a list of one-sentence checkable statements under anchors,
+  links inside the statement that names them, the same shape for operative recipes; every answer cites
+  `[id§anchor]` and the runtime verifies the citation mechanically (`MEMORY.md` §1.6). Test bed: a
+  distributor wiki — pages for products, suppliers, warehouses, carriers and staff, and operative
+  recipes following the reference organisation's roles (purchasing, receiving, dispatch, claims and
+  returns, communications, finance, HR, marketing, IT) — **generated per world** so no value is known
+  by heart; one committed evaluation world. One L4, no training: the closed-book arm must fail, then
+  `base-walks` against `base-reads` decides whether a trajectory LoRA is needed; if it is, two seeds
+  (W5e: two draws of one recipe disagreed on 25 of 67)
+  ([`BRIEF`](../results/M7-W9-atomic-statements-20260924/BRIEF.md)).
 - **2026-09-22** — `examples/school`'s first LoRA **[ran]: FALSIFIED before training — headroom
   already exhausted.** One role (`educador`, its largest single-tool corpus, regenerated at the
   generator's own default: 114 train / 19 eval), one unknown (tool-call fidelity), gate ≥ 0.90 —

@@ -11,6 +11,10 @@ must be the file's path; a shelf admits only its kinds and its link types; a pro
 must be the walk its `next` links give (two statements of one order must not disagree); `parent`
 and `children` must mirror each other; a site may override only slots that exist.
 
+Pages of atomic statements (§1.6, W9): every body line is `§anchor text`; an anchor is unique in its
+page; a statement is one sentence of at most `STATEMENT_TOKENS`; a page's `refs` are derived from its
+statements' links and are never written by hand. A page's limit is per statement, not per body.
+
 Every finding is `(rule, note id, message)`. Rules are stable strings: tests and CI key on them.
 """
 
@@ -20,7 +24,12 @@ import sys
 from collections import Counter
 from pathlib import Path
 
-from memory.notes import BODY_TOKENS, SHELVES, SLOT, Library, NoteError, count_tokens
+import re
+
+from memory.notes import BODY_TOKENS, SHELVES, SLOT, STATEMENT_TOKENS, Library, NoteError, count_tokens, statements_of
+
+# a second sentence starts after `.`, `!` or `?` and a space, with a capital: "3.5 kg" and "e.g. a" are not
+_SECOND_SENTENCE = re.compile(r"[.!?]\s+[A-Z]")
 
 Finding = tuple[str, str, str]
 
@@ -56,7 +65,9 @@ def lint(root: str | Path) -> list[Finding]:
                 out.append((name, n.id, f"`{name}:` is missing"))
 
         tokens = count_tokens(n.body)
-        if tokens > BODY_TOKENS:
+        if n.is_page:
+            out.extend(_page(n))
+        elif tokens > BODY_TOKENS:
             out.append(("body-tokens", n.id, f"{tokens} tokens > {BODY_TOKENS}"))
         if not n.body.strip():
             out.append(("body-empty", n.id, "a note with no body"))
@@ -154,6 +165,29 @@ def lint(root: str | Path) -> list[Finding]:
             if count_tokens(f"{notes[target].body} {text}") > BODY_TOKENS:
                 out.append(("site", s.name, f"`{target}` with its added sentence is over {BODY_TOKENS} tokens"))
     return sorted(set(out))
+
+
+def _page(n) -> list[Finding]:
+    """§1.6: the statements of one page."""
+    out: list[Finding] = []
+    good, bad = statements_of(n.body)
+    for line in bad:
+        out.append(("statement-line", n.id, f"not a `§anchor text` statement: {line.strip()[:60]!r}"))
+    if not good:
+        out.append(("statement-none", n.id, "a page with no statement"))
+    for anchor, k in Counter(st.anchor for st in good).items():
+        if k > 1:
+            out.append(("statement-anchor", n.id, f"§{anchor} appears {k} times"))
+    for st in good:
+        t = count_tokens(st.text)
+        if t > STATEMENT_TOKENS:
+            out.append(("statement-tokens", n.id, f"§{st.anchor}: {t} tokens > {STATEMENT_TOKENS}"))
+        plain = re.sub(r"\[\[[^\]]*\]\]", "X", st.text)
+        if _SECOND_SENTENCE.search(plain) or not plain.rstrip().endswith((".", "!", "?")):
+            out.append(("statement-sentence", n.id, f"§{st.anchor} is not one sentence"))
+    if n.refs:
+        out.append(("page-refs", n.id, "a page's refs come from its statements' links, not from `refs:`"))
+    return out
 
 
 def main(argv: list[str] | None = None) -> int:

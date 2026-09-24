@@ -27,6 +27,13 @@ this library uses is a small, closed subset: scalars, `[a, b]`, `{k: v}`, and on
 site's `overrides:`). Anything outside that subset raises — a note the parser half-understands is
 worse than one it refuses.
 
+ATOMIC STATEMENTS (§1.6, W9 **[spec]**). A note of kind `page` (wiki) or `recipe` (harness) is a
+Wikipedia-shaped page: its body is a list of statements, one per line, `§anchor text`, each one
+sentence, the smallest piece of information that can be checked on its own. A link lives inside the
+statement that names it, `[[note id]]`, and is the only way a page points at another — so a page's
+`refs` are derived from its statements, never written. The statement, not the page, is the unit of
+memory: an answer cites `[id§anchor]`, and the runtime checks the citation.
+
 No model is involved anywhere in this module **[spec]** W1.
 """
 
@@ -37,7 +44,11 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 BODY_TOKENS = 150                      # §1: the hard limit on a note's body
-SHELVES = {"harness": ("procedure", "step", "check"), "wiki": ("concept", "formula", "table")}
+SHELVES = {"harness": ("procedure", "step", "check", "recipe"), "wiki": ("concept", "formula", "table", "page")}
+PAGES = ("page", "recipe")             # §1.6: kinds whose body is a list of atomic statements
+STATEMENT_TOKENS = 40                  # §1.6: one sentence, at most this long
+STATEMENT = re.compile(r"^§([a-z0-9][a-z0-9-]*) (\S.*)$")
+LINK = re.compile(r"\[\[([^\]\s]+)\]\]")
 SLOT = re.compile(r"\{\{\s*([A-Za-z_][A-Za-z0-9_]*)\s*\}\}")
 _PIECE = re.compile(r"\w+|[^\w\s]")
 _ORDER = ("id", "shelf", "kind", "title", "when", "what", "requires", "next", "uses",
@@ -155,6 +166,28 @@ def _dump(value, inside: bool = False) -> str:
 
 # ---------------------------------------------------------------- the note
 
+@dataclass(frozen=True)
+class Statement:
+    """One atomic statement of a page (§1.6): its anchor, its text as written, the pages it links."""
+    anchor: str
+    text: str
+
+    @property
+    def links(self) -> list[str]:
+        return LINK.findall(self.text)
+
+
+def statements_of(body: str) -> tuple[list[Statement], list[str]]:
+    """(the statements, the lines that are not one) — a page's body, parsed. Blank lines are skipped."""
+    good, bad = [], []
+    for line in body.splitlines():
+        if not line.strip():
+            continue
+        m = STATEMENT.match(line.strip())
+        (good.append(Statement(m.group(1), m.group(2))) if m else bad.append(line))
+    return good, bad
+
+
 @dataclass
 class Note:
     id: str
@@ -223,12 +256,24 @@ class Note:
         out = [("requires", t) for t in self.requires] + [("uses", t) for t in self.uses]
         out += [("steps", t) for t in self.steps] + [("children", t) for t in self.children]
         out += [("refs", t) for t in self.refs]
+        out += [("statement", t) for st in self.statements for t in st.links]
         out += [(k, v) for k, v in (("next", self.next), ("first", self.first),
                                     ("parent", self.parent)) if v]
         return out
 
     def used_slots(self) -> list[str]:
         return SLOT.findall(self.body)
+
+    @property
+    def is_page(self) -> bool:
+        return self.kind in PAGES
+
+    @property
+    def statements(self) -> list[Statement]:
+        return statements_of(self.body)[0] if self.is_page else []
+
+    def statement(self, anchor: str) -> Statement | None:
+        return next((st for st in self.statements if st.anchor == anchor), None)
 
 
 # ---------------------------------------------------------------- layers

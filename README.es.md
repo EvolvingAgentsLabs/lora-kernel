@@ -71,7 +71,12 @@ Especificación completa: [`docs/es/MEMORY.md`](docs/es/MEMORY.md) **[spec]**.
    **arnés operativo** (*¿cómo se hace?*): notas tipo receta cuyos enlaces son el flujo de
    control — `requires` (antes de esto, aquello), `next` (el paso que sigue), `uses` (para
    este paso, consultar…). La **wiki enciclopédica** (*¿qué es, qué fórmula aplica?*): un
-   árbol, de general a específico, que clasifica en qué caso estás antes de calcular.
+   árbol, de general a específico, que clasifica en qué caso estás antes de calcular. **Con forma
+   de Wikipedia, su unidad es el enunciado atómico:** una página es una lista de enunciados de
+   una oración, verificables, bajo anclas (`§supplier`, `§if-damaged`), los enlaces viven dentro
+   del enunciado que los nombra, y una respuesta cita el enunciado en el que se apoya — así la
+   memoria es verificable, no sólo buscable ([`docs/es/MEMORY.md`](docs/es/MEMORY.md) §1.6
+   **[spec]**, medido a continuación como W9).
 2. **El radar — embeddings comprimidos a un subdominio.** No es un motor de búsqueda general.
    En un dominio cerrado el vocabulario tiene un significado funcional exacto, así que un
    vector chico alcanza para mapear las únicas dos intenciones que importan: *para qué
@@ -180,6 +185,12 @@ se transfiere de manera confiable (35 de 56, contra un base sin entrenar al que 
 nota correcta y sacó 45 de 56). Ese es el resultado de este README con más chances de seguir siendo
 cierto la semana que viene, porque el resto del plan está construido para responderlo a continuación
 **[ran]** `docs/PLAN.md` hito 7.
+
+**Próximo: enunciados atómicos.** La biblioteca se está reconstruyendo como páginas de enunciados
+de una oración, verificables — *¿cuáles son las obras del autor de la Mona Lisa?* es una búsqueda,
+una sección, un enlace y una sección — primero sobre una wiki de distribuidora inventada que el
+modelo no puede saber de memoria, con el base sin entrenar medido antes de entrenar cualquier LoRA
+para eso **[spec]** `docs/MEMORY.md` §1.6, W9.
 
 **Todavía sin resolver.** El router sigue siendo un diccionario de palabras clave — sus dos
 reemplazos aprendidos ya están medidos y ninguno pasa, por la misma razón: un pedido de un
