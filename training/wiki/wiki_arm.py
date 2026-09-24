@@ -360,9 +360,10 @@ def main() -> int:
                           f"value-right {sum(bool(y.get('value_right')) for y in done)} errors {len(slot) - len(done)} {time.time() - t0:.0f}s", flush=True)
         save()
 
-    lora = []
-    for x, d in members.items():
-        lora += ["--lora-modules", f"{x}={d}"]
+    # ONE `--lora-modules` FLAG, EVERY ADAPTER AFTER IT. vLLM 0.30 reads a repeated flag as a
+    # duplicate key and keeps the last: W9's first scoring loaded only `withlib-s1`, and G1 on
+    # `withlib-s0` got a 404 [ran] 2026-09-24 (S2_vllm.log: "Found duplicate keys --lora-modules").
+    lora = ["--lora-modules", *[f"{x}={d}" for x, d in members.items()]] if members else []
     extra = ["--enable-lora", "--max-lora-rank", "16", "--max-loras", str(max(1, len(members)))] + lora if members else []
     srv = serve(a.base, ["--max-model-len", str(MAX_MODEL_LEN), "--gpu-memory-utilization", "0.90", *extra])
     try:

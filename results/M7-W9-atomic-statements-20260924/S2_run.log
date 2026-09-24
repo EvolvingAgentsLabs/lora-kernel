@@ -1,0 +1,36 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 --lora-modules withlib-s1=adapters/wiki-walks-s1
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/content/lora-kernel/training/wiki/wiki_arm.py", line 395, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "/content/lora-kernel/training/wiki/wiki_arm.py", line 373, in main
+    rec.setdefault("G1", {})[x] = identity(a.base, x, tok)
+                                  ~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/content/lora-kernel/training/harness/verify_substrate.py", line 73, in identity
+    pairs = [(_say(base, p, tok), _say(member, p, tok)) for p in probes]
+                                  ~~~~^^^^^^^^^^^^^^^^
+  File "/content/lora-kernel/training/harness/verify_substrate.py", line 66, in _say
+    r = post("/v1/completions", {"model": model, "prompt": text,
+                                 "temperature": 0, "max_tokens": max_tokens})
+  File "/content/lora-kernel/training/harness/accept_rank.py", line 184, in post
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+         ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/urllib/request.py", line 189, in urlopen
+    return opener.open(url, data, timeout)
+           ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/urllib/request.py", line 495, in open
+    response = meth(req, response)
+  File "/usr/lib/python3.13/urllib/request.py", line 604, in http_response
+    response = self.parent.error(
+        'http', request, response, code, msg, hdrs)
+  File "/usr/lib/python3.13/urllib/request.py", line 533, in error
+    return self._call_chain(*args)
+           ~~~~~~~~~~~~~~~~^^^^^^^
+  File "/usr/lib/python3.13/urllib/request.py", line 466, in _call_chain
+    result = func(*args)
+  File "/usr/lib/python3.13/urllib/request.py", line 613, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 404: Not Found

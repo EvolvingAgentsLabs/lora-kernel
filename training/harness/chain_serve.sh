@@ -290,7 +290,10 @@ PY
     if [ -f "$LOCAL" ] && grep -q '"finished"\|"decision"\|stopped_at_gate\|"trained_only"' "$LOCAL" 2>/dev/null; then
       echo "    the runner wrote its result — done"; break
     fi
-    echo "$out" | grep -qE "prompts/s|decision:|clears the gate|STOPPED|Traceback|OutOfMemory|Killed|never came up" && break
+    # A PYTHON EXCEPTION'S LAST LINE ENDS A RUN TOO. The peek shows three lines, and a traceback's
+    # `Traceback` header is rarely one of them: W9's scoring died on `urllib.error.HTTPError: …`
+    # and the chain kept polling an idle L4 [ran] 2026-09-24.
+    echo "$out" | grep -qE "prompts/s|decision:|clears the gate|STOPPED|Traceback|OutOfMemory|Killed|never came up|^ *[A-Za-z_.]+(Error|Exception): " && break
     sleep 45
   done
   tmo 300 colab download -s "$S" /content/lora-kernel/$RESULTS_NAME "$LOCAL" >/dev/null 2>&1 || true

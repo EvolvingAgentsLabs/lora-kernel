@@ -1,0 +1,29 @@
+{
+ "base": "Qwen/Qwen3.5-4B",
+ "started": "2026-09-24T15:43:40",
+ "grader": "training.wiki.grade",
+ "library": "knowledge/distributor-wiki",
+ "eval_world": 20260924,
+ "arms": {},
+ "members": {
+  "withlib-s0": {
+   "adapter": "adapters/wiki-walks-s0",
+   "seed": 0,
+   "recipe": {
+    "r": 16,
+    "lora_alpha": 32,
+    "epochs": 3,
+    "lr": 0.0002,
+    "batch": 2,
+    "accum": 8,
+    "max_seq": 1536,
+    "seed": 0,
+    "targets": "q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"
+   },
+   "adapter_sha256": "d6f87d2729925ba008092c21bab0525ca4d6a987ec8976d1b50d6078d2270e9f",
+   "corpus_sha256": "562786385b6d1460c1a88e13aed9975626ba1285a36b0d951b71e5b66c584193"
+  }
+ },
+ "packed": 1,
+ "trained_only": "2026-09-24T16:28:10"
+}
