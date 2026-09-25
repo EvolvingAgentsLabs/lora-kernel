@@ -188,3 +188,9 @@ def test_the_scoring_verdict_reads_each_seed_and_voids_an_unapplied_one():
     assert wa.verdict(rec)["scoring_reading"].startswith("PASSED")
     rec["G1"]["withlib-s1"]["applied"] = False
     assert wa.verdict(rec)["scoring_reading"].startswith("VOID")
+
+
+def test_a_member_is_served_under_its_lora_name_never_its_path():
+    members = {"withlib-s0": "adapters/wiki-walks-s0"}
+    assert wa.served_model("withlib-s0", members, wa.BASE) == "withlib-s0"
+    assert wa.served_model("base-walks", members, wa.BASE) == wa.BASE

@@ -259,6 +259,12 @@ def verdict(rec: dict) -> dict:
     return out
 
 
+def served_model(arm: str, members: dict, base: str) -> str:
+    """The name vLLM serves an arm under: a member's LoRA NAME, never its path. W9's scoring asked for
+    `adapters/wiki-walks-s0` and got 134 404s behind a G1 that had passed on the name [ran] 2026-09-25."""
+    return arm if arm in members else base
+
+
 # ------------------------------------------------------------------ the session
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -397,7 +403,7 @@ def main() -> int:
                 rec["stopped"] = "G1: an adapter is not applied"
             else:
                 for arm in arms:               # nolib FIRST: it is the gate on the whole set
-                    run(arm, members.get(arm, a.base))
+                    run(arm, served_model(arm, members, a.base))
     finally:
         stop(srv)
     scored = {x: v for x, v in rec["arms"].items()}
