@@ -44,6 +44,7 @@ def main() -> int:
 
     import torch
     from peft import LoraConfig, get_peft_model
+    from training.s4_train import towers_to_exclude
     from transformers import (AutoModelForCausalLM, AutoTokenizer,
                               DataCollatorForLanguageModeling, Trainer,
                               TrainingArguments)
@@ -99,7 +100,9 @@ def main() -> int:
 
     model = get_peft_model(model, LoraConfig(
         r=args.r, lora_alpha=args.alpha, lora_dropout=0.0, bias="none",
-        task_type="CAUSAL_LM", target_modules=names))
+        task_type="CAUSAL_LM", target_modules=names,
+        # Gemma 4: the towers reuse q_proj/k_proj/... as Gemma4ClippableLinear — B1 attempt 2 died on it [ran]
+        exclude_modules=towers_to_exclude(model)))
     model.print_trainable_parameters()
 
     # THE CONTENT DOES NOT MATTER. It has to be text and it has to produce gradients.

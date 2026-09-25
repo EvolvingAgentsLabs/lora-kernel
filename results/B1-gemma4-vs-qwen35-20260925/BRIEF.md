@@ -69,3 +69,12 @@ the run is void as the instrument says. And Gemma's in-process G1 failed in 67 s
 VM: the chain did not fetch `run.log` (now it does). Attempt 2: the instrument's own control
 (`Qwen/Qwen2.5-3B-Instruct`, applied without rekey **[ran]** P26/P33). Redesign count of this stage: 0 — the
 gates and their reading are unchanged; the control is the instrument's default.
+
+## Stage 1, attempt 2 **[ran]** 2026-09-25 · the control valid, Gemma's G1 lost to my omission
+
+Control `Qwen2.5-3B-Instruct` valid (G1 and G2 applied). Gemma's in-process G1 raised peft's
+`ValueError: Target module Gemma4ClippableLinear(...)` (`run_attempt2_tiny_no_exclude.log`): `tiny_adapter`
+targets modules BY NAME, and the towers reuse `q_proj`/`k_proj`/…; the tower exclusion had been added to
+`s4_train` and not to `tiny_adapter`. That is a harness omission, not a fact about Gemma — the reading
+"cannot be trained this way" is not taken as the answer. Attempt 3: the same exclusion in `tiny_adapter`
+(`tests/test_gemma_towers.py` holds the rule). Redesign count of the stage: 0.
