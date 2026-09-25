@@ -125,3 +125,33 @@ about choosing the right section or following the right link. **And `base-reads`
 not the value:** 10 of them cite the chain's *first* statement (`§supplier`, `§carrier`) instead of the last
 one that holds the value (`§town`, `§cutoff`) — a citation habit, also taught by the corpus, and the reason the
 verdict reads credit and not value.
+
+## Stage 2–3 result **[ran]** 2026-09-25 · PASSED — both seeds beat the untrained walk, 35 : 0
+
+Two A100 sessions trained `wiki-walks-s0` (`d6f87d27…`) and `wiki-walks-s1` (`c1265178…`) on the 600-row
+corpus of 32 other worlds; one L4 session scored both on the evaluation world, G1 `applied` on both, 0
+transport errors; paired with stage 1's records by `wiki_arm --combine` (the verdict's code, unchanged).
+Three scoring attempts before it were lost to harness bugs, none to a model, each fixed with a test — a
+repeated `--lora-modules` flag vLLM 0.30 reads as one (only the last adapter loaded), the chain not stopping
+on an exception, and arms asking vLLM for an adapter's path instead of its name; `training/harness/fake_vllm.py`
+now reproduces vLLM at those edges and `tests/test_fake_vllm.py` fails on both runner bugs on the Mac.
+
+| headline (40) | credit | value right |
+|---|--:|--:|
+| `base-walks` (stage 1) | 0 | 1 |
+| `base-reads` (stage 1) | 29 | 40 |
+| **`withlib-s0`** | **35** | 35 |
+| **`withlib-s1`** | **35** | 35 |
+
+Paired: `withlib-s0 vs base-walks` **35 : 0**, `withlib-s1 vs base-walks` **35 : 0** — improvement, both seeds:
+**PASSED** as written. Beside, not folded in: against `base-reads` 9 : 3 and 8 : 2, ties — the adapter, walking
+alone, reaches what the base reaches when handed the oracle's statements. By hops: 3-hop **16/16** on both seeds
+(base-reads 11/16), 2-hop 19/24, 1-hop 18/21; `none` 5/6. Every walk that credits cites the statement that
+holds its value; the 9 misses per seed are 6 citations of a statement that does not hold it, 2 with no
+citation, 1 wrong. **The two draws agree on 57 of 67 rows** (53 walks byte-identical) — the draw that moved
+W5d's verdict does not move this one.
+
+**What this is and is not.** A trajectory LoRA taught the habit — search, open a page, choose the section,
+follow the link inside the statement, cite — on worlds it never saw the values of, and on an evaluation world
+it never saw at all. It is not real Wikipedia text, not retrieval by embeddings, not beyond three hops, not
+another domain. The next claim is the same member on a second, differently shaped wiki.

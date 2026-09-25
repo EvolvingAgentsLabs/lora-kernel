@@ -604,6 +604,12 @@ that decide the shape of a step:
 
 ## 5. History
 
+- **2026-09-25** — memory **W9 [ran]: PASSED.** A trajectory LoRA on a wiki of atomic statements: both seeds
+  (`wiki-walks-s0`, `-s1`, trained on 32 worlds never evaluated) beat the untrained base walking the evaluation
+  world **35 : 0** on the 40-row headline (35/40 against 0/40, verified citations); against the base handed the
+  oracle's statements, ties (9 : 3, 8 : 2). 3-hop 16/16. The two draws agree on 57 of 67 rows. Three scoring
+  attempts were lost to harness bugs, now reproduced by a fake `vllm serve` on the Mac
+  ([`BRIEF`](../results/M7-W9-atomic-statements-20260924/BRIEF.md)).
 - **2026-09-24** — memory **W9 pre-registered, not run: atomic statements.** The user's design: the
   library shaped like Wikipedia, a page a list of one-sentence checkable statements under anchors,
   links inside the statement that names them, the same shape for operative recipes; every answer cites

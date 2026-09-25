@@ -654,6 +654,13 @@ Las cuatro que deciden la forma de un paso:
 
 ## 5. Historia
 
+- **2026-09-25** — memoria **W9 [ran]: PASÓ.** Un LoRA de trayectorias sobre una wiki de enunciados
+  atómicos: las dos semillas (`wiki-walks-s0`, `-s1`, entrenadas sobre 32 mundos que nunca se evalúan) le ganan
+  al base sin entrenar recorriendo el mundo de evaluación **35 : 0** en el titular de 40 filas (35/40 contra
+  0/40, citas verificadas); contra el base al que se le dan los enunciados del oráculo, empates (9 : 3, 8 : 2).
+  3 saltos 16/16. Las dos tiradas coinciden en 57 de 67 filas. Tres intentos de medición se perdieron por bugs
+  del harness, que ahora reproduce un `vllm serve` falso en la Mac
+  ([`BRIEF`](../../results/M7-W9-atomic-statements-20260924/BRIEF.md)).
 - **2026-09-24** — memoria **W9 pre-registrado, sin correr: enunciados atómicos.** El diseño del
   usuario: la biblioteca con forma de Wikipedia, una página una lista de enunciados de una oración,
   verificables, bajo anclas, los enlaces dentro del enunciado que los nombra, la misma forma para las
