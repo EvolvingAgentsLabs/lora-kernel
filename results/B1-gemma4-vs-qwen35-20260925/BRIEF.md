@@ -33,9 +33,13 @@ exact two-sided sign test on discordant pairs, $p = 2\sum_{k\le\min(b,c)}\binom{
 
 - **GEMMA IS PREFERRED** only if `withlib-gemma` beats **each** Qwen seed (`withlib-s0`, `withlib-s1`),
   paired, an improvement against both.
-- **A TIE KEEPS QWEN.** The family is decided; a switch would re-release every member and re-open every
-  number measured on Qwen — it has to buy something measurable.
-- **GEMMA LOSES** if either Qwen seed beats it.
+- ~~**A TIE KEEPS QWEN.** The family is decided; a switch would re-release every member and re-open every
+  number measured on Qwen — it has to buy something measurable.~~
+- **A TIE CHOOSES GEMMA — the user's decision, 2026-09-25, before any stage ran:** the user's whole
+  development stack targets Gemma 4, so parity is enough; the cost of re-releasing the Qwen members is
+  accepted. A tie = neither `withlib-gemma vs withlib-s<k>` pair is a regression.
+- **GEMMA LOSES** if either Qwen seed beats it (a REGRESSION on either pair) — then Qwen stays and the
+  user decides whether stack alignment is worth a measured loss.
 
 Beside, never folded in: stage 2's three arms against Qwen's; value-right beside credit; calls, refusals,
 the continued-listing failure W9 stage 1 found on Qwen (does Gemma's base write a verb after a result?);
