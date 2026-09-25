@@ -1,0 +1,28 @@
+# M8 — a school-staff trajectory LoRA, for the demo that has to work (pre-registered 2026-09-25)
+
+**Why.** The school demo's first live run **[ran]** (`results/DEMO-school-20260925/`): every part of the system
+behaved — identity, tenant boundary, held writes, a director's approval, egress, the log — and the bare
+`Qwen3.5-4B` passed 3 of 8 scenes: it invented an answer after a correct call, retried a denied call, looped
+after a write, skipped calls. W9 **[ran]** took the same missing habit from 0/40 to 35/40 with a corpus of walks.
+**One unknown here: does a corpus of full gateway turns give the school's roles that habit?**
+
+**The corpus [ran, zero GPU]** — `examples/school/generate_turns.py`: 700 turns played through the gateway's own
+loop with a scripted oracle as the model, so the system and user turns are byte for byte what the gateway serves
+and the assistant turn is the real chain — the call, the real tool result, an answer built from it. Kinds: read 307,
+write 151, held 75, denied 93, out of scope 74. Each case on its own synthetic school (a new seed, a second tenant
+for denials). Gate PASSED: no demo request and no held-out request in the corpus, no shared world, every walk the
+kind it was meant to be. **Held-out: 70 turns**, their own worlds, the evaluation wording.
+
+**Arms.** T0, T1: `school_arm --train-seed 0|1`, one A100 each, W9's recipe (`release_gate.RECIPE`). S: one L4,
+`--arms base,school-s0,school-s1` — every arm on the 70 held-out turns and on the demo's scripted day.
+
+**Verdict — written first (`school_arm.analyse`).** Credit per turn = `demo_run.check` passed: the intended call (or
+none), the denial or the hold where one is due, the route, a clean reply, no loop, a grounded answer. On the 70,
+paired, exact sign test on discordant pairs: `school-s<k> vs base` an improvement for **every** seed → **PASSED**;
+for some → **DRAW-DEPENDENT**; none → **FALSIFIED**. The demo day (8 scenes, the fixed demo school) is reported
+beside — a demonstration, not a sample. G1 not applied → VOID.
+
+**Model, provider.** `Qwen/Qwen3.5-4B`, bf16, vLLM 0.30 on Colab; no API provider. Thinking off. **Ceiling:** 2 A100
++ 1 L4. Every piece was first run end to end against `training/harness/fake_vllm.py` (`tests/test_school_demo.py`).
+**Not measured:** WhatsApp (the user's call: not yet), a real identity provider (the token is HS256 with a demo
+secret), Postgres (sqlite), a real payment provider (a mock ledger).

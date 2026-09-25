@@ -92,3 +92,25 @@ def test_a_role_cannot_be_claimed_by_the_model_id(demo):
     gw = Gateway(db.build(), generate=lambda *a: (lambda p: "", lambda: {}))
     with pytest.raises(Denied):
         gw.turn(tokens.issue("educador-north", "educador", "northgate"), [{"role": "user", "content": "x"}], "auto:cfo")
+
+
+def test_the_school_arm_scores_base_and_a_member_end_to_end_against_the_fake(tmp_path, monkeypatch):
+    """examples.school.school_arm on the fake: G1, the 70 held-out turns and the demo day for both arms."""
+    from pathlib import Path as P
+    repo = P(__file__).resolve().parent.parent
+    (tmp_path / "examples").symlink_to(repo / "examples")
+    d = tmp_path / "adapters" / "school-staff-s0"
+    d.mkdir(parents=True)
+    (d / "adapter_model.safetensors").write_bytes(b"stand-in")
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setitem(sys.modules, "transformers", types.SimpleNamespace(AutoTokenizer=fv.FakeTokenizer))
+    from examples.school import school_arm
+    monkeypatch.setattr(sys, "argv", ["school_arm", "--arms", "base,school-s0", "--out", "s.json"])
+    with fv.patched(scripted) as seen:
+        school_arm.main()
+    rec = json.loads((tmp_path / "s.json").read_text())
+    assert rec["G1"]["school-s0"]["applied"] and seen["server"].refused == []
+    for arm in ("base", "school-s0"):
+        assert len(rec["arms"][arm]["held_out"]) == 70 and not [r for r in rec["arms"][arm]["held_out"].values() if "error" in r]
+        assert rec["arms"][arm]["demo"]["n"] == 8
+    assert rec["analysis"]["pairs"][0]["pair"] == "school-s0 vs base"
