@@ -654,6 +654,13 @@ Las cuatro que deciden la forma de un paso:
 
 ## 5. Historia
 
+- **2026-09-25** — **B1 [ran]: Gemma 4 E4B contra Qwen3.5-4B — empate, que por la regla del usuario elige Gemma.**
+  El bloqueo de P29 se levanta (el LoRA excluye las torres de visión y audio de Gemma; vLLM lo sirve aplicado). Sin
+  entrenar, Gemma recorre la wiki de W9 19/40 donde Qwen recorre 0/40, y lee 40/40 donde Qwen lee 29/40. Con el corpus y la
+  receta de W9, el miembro de Gemma 38/40 contra 35 y 35 de Qwen — 4 : 1 contra cada una, empate. El usuario decidió antes
+  de correr cualquier tramo que la paridad elige Gemma (el stack de desarrollo apunta ahí): **los miembros nuevos se
+  entrenan sobre Gemma 4 E4B**; los miembros de Qwen liberados siguen hasta volver a liberarse
+  ([`BRIEF`](../../results/B1-gemma4-vs-qwen35-20260925/BRIEF.md)).
 - **2026-09-25** — memoria **W9 [ran]: PASÓ.** Un LoRA de trayectorias sobre una wiki de enunciados
   atómicos: las dos semillas (`wiki-walks-s0`, `-s1`, entrenadas sobre 32 mundos que nunca se evalúan) le ganan
   al base sin entrenar recorriendo el mundo de evaluación **35 : 0** en el titular de 40 filas (35/40 contra

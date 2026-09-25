@@ -101,3 +101,24 @@ Paired on the same rows: Gemma's `base-walks` against Qwen's **19 : 0**; against
 citation, 7 citing a statement that does not hold the value — typically stopping one hop early (the supplier's
 page cited for the supplier's town). By W9's verdict as written: **NAVIGATION IS THE GAP → stage 3 bought**, the wiki
 member trained on Gemma, W9's corpus and recipe, `train_one --seed 0`.
+
+## Stages 3–4 result **[ran]** 2026-09-25 · A TIE — which, by the user's rule, CHOOSES GEMMA
+
+Stage 3: W9's corpus and recipe on `google/gemma-4-E4B-it`, one A100, 114 steps in ~13 min (Qwen's took ~44), seed 0,
+adapter `6c7915e9…`, all 516 tensors on the text stack. Stage 4: one L4, G1 applied, 0 transport errors
+(`gemma_wiki_scoring.json`); the verdict computed from the records (`b1_verdict.json`).
+
+| headline (40), verified | |
+|---|--:|
+| **Gemma 4 E4B + trajectory LoRA** | **38** |
+| Qwen3.5-4B + trajectory LoRA, s0 · s1 | 35 · 35 |
+| Gemma 4 E4B untrained, walking | 19 |
+
+Paired: **Gemma+LoRA vs Qwen s0 4 : 1, vs s1 4 : 1** ($p = 0.375$ each) — neither an improvement nor a regression:
+**A TIE → GEMMA, the user's rule written before any stage ran.** Beside: all 67 rows 61 vs 58 · 58; 2-hop 23/24 vs 19/24,
+3-hop 15/16 vs 16/16, 1-hop 18 = 18; against Gemma's own untrained walk 19 : 0; against Gemma's base handed the
+statements 0 : 2, a tie. One Gemma seed against two Qwen seeds, said as such.
+
+**What it decides.** New members are trained on Gemma 4 E4B. The released Qwen members (`email-full`, `desk-commitment`)
+stay released until each is re-released on Gemma through the release gate. **Not measured:** a second Gemma seed,
+the large half of a pair on Gemma (4 31B), the MTP drafter, a Mac runtime.

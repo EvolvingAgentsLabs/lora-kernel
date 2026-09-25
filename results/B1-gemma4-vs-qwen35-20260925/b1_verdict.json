@@ -1,0 +1,101 @@
+{
+ "summary": {
+  "headline": {
+   "gemma+lora": 38,
+   "qwen+lora s0": 35,
+   "qwen+lora s1": 35,
+   "gemma base-walks": 19,
+   "n": 40
+  },
+  "all": {
+   "gemma+lora": 61,
+   "qwen+lora s0": 58,
+   "qwen+lora s1": 58,
+   "gemma base-walks": 27,
+   "n": 67
+  },
+  "hops-1": {
+   "gemma+lora": 18,
+   "qwen+lora s0": 18,
+   "qwen+lora s1": 18,
+   "gemma base-walks": 7,
+   "n": 21
+  },
+  "hops-2": {
+   "gemma+lora": 23,
+   "qwen+lora s0": 19,
+   "qwen+lora s1": 19,
+   "gemma base-walks": 9,
+   "n": 24
+  },
+  "hops-3": {
+   "gemma+lora": 15,
+   "qwen+lora s0": 16,
+   "qwen+lora s1": 16,
+   "gemma base-walks": 10,
+   "n": 16
+  },
+  "none": {
+   "gemma+lora": 5,
+   "qwen+lora s0": 5,
+   "qwen+lora s1": 5,
+   "gemma base-walks": 1,
+   "n": 6
+  }
+ },
+ "pairs": [
+  {
+   "pair": "gemma+lora vs qwen withlib-s0",
+   "n_paired": 40,
+   "a_total": 38,
+   "b_total": 35,
+   "only_a": 4,
+   "only_b": 1,
+   "discordant": 5,
+   "p_value": 0.375,
+   "different": false,
+   "reading": "a tie: the totals differ but the cases behind them do not",
+   "state": "tie"
+  },
+  {
+   "pair": "gemma+lora vs qwen withlib-s1",
+   "n_paired": 40,
+   "a_total": 38,
+   "b_total": 35,
+   "only_a": 4,
+   "only_b": 1,
+   "discordant": 5,
+   "p_value": 0.375,
+   "different": false,
+   "reading": "a tie: the totals differ but the cases behind them do not",
+   "state": "tie"
+  },
+  {
+   "pair": "gemma+lora vs gemma base-walks",
+   "n_paired": 40,
+   "a_total": 38,
+   "b_total": 19,
+   "only_a": 19,
+   "only_b": 0,
+   "discordant": 19,
+   "p_value": 0.0,
+   "different": true,
+   "reading": "the arms differ",
+   "state": "improvement"
+  },
+  {
+   "pair": "gemma+lora vs gemma base-reads",
+   "n_paired": 40,
+   "a_total": 38,
+   "b_total": 40,
+   "only_a": 0,
+   "only_b": 2,
+   "discordant": 2,
+   "p_value": 0.5,
+   "different": false,
+   "reading": "a tie: the totals differ but the cases behind them do not",
+   "state": "tie"
+  }
+ ],
+ "verdict": "A TIE \u2014 CHOOSES GEMMA (the user's rule)"
+}

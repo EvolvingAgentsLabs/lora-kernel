@@ -39,13 +39,15 @@ el proyecto?"* **When in doubt, the next step is the one that puts a weight delt
   do not let its question replace this one.
 - **Anything needing a GPU runs on Colab through `training/harness/chain_serve.sh`.** This
   machine is a 16 GB arm64 Mac. Do not shrink an experiment to fit it. A 27B is A100 work.
-- **The family is Qwen 3.x and that is decided.** Small `Qwen3.5-4B` (or `2B`), large
-  `Qwen3.8-27B`; one id space **[ran]** D0. **The released members are on
-  `Qwen3.5-4B` since milestone 1 [ran]** (`releases/*@v2.json`, each tying its Qwen 2.5 release);
-  the `@v1` releases on `Qwen2.5-3B-Instruct` stay as the control arm. New regions are trained on the
-  4B — after checking how much headroom its bare base leaves, which is a lot less than the 3B's. Gemma 4 is the
-  named alternative and is blocked at PEFT **[ran]** P29. Do not shop for other bases; run
-  `lora_matrix` against a candidate instead.
+- **New members are trained on Gemma 4 E4B — the user's decision, 2026-09-25, on B1 [ran].** Measured against
+  `Qwen3.5-4B` on W9's wiki with the same corpus and recipe: a tie (38/40 against 35 and 35, 4 : 1 each), and the user
+  had decided before any stage ran that parity chooses Gemma because the development stack targets it. The LoRA must
+  exclude Gemma's vision/audio towers (`s4_train.towers_to_exclude`) — P29's block was that and nothing else. **The
+  released members stay on `Qwen3.5-4B`** (`releases/*@v2.json`) until each is re-released on Gemma through the gate;
+  the `@v1` releases on `Qwen2.5-3B-Instruct` stay as the control arm. New regions still check the bare base's headroom
+  first — Gemma's leaves less than Qwen's (it walks W9 untrained 19/40 where Qwen walks 0/40). The large half of a pair
+  on Gemma is not measured. ~~The family is Qwen 3.x and that is decided … Gemma 4 is the named alternative and is
+  blocked at PEFT **[ran]** P29.~~ Do not shop for other bases; run `lora_matrix` against a candidate instead.
 - **The frontier is a permanent component**, `google/gemini-3.8-flash` through the same
   client the members use. It answers what falls in no corpus and what a region is measured
   to fail. It is never a speculative target: no logprobs, another tokenizer **[ran]** P48.

@@ -604,6 +604,12 @@ that decide the shape of a step:
 
 ## 5. History
 
+- **2026-09-25** — **B1 [ran]: Gemma 4 E4B against Qwen3.5-4B — a tie, which by the user's rule chooses Gemma.**
+  P29's block is lifted (the LoRA excludes Gemma's vision/audio towers; vLLM serves it applied). Untrained, Gemma walks
+  W9's wiki 19/40 where Qwen walks 0/40, and reads 40/40 where Qwen reads 29/40. With W9's corpus and recipe, Gemma's
+  member 38/40 against Qwen's 35 and 35 — 4 : 1 against each, a tie. The user decided before any stage ran that parity
+  chooses Gemma (the development stack targets it): **new members are trained on Gemma 4 E4B**; the released Qwen
+  members stay until re-released ([`BRIEF`](../results/B1-gemma4-vs-qwen35-20260925/BRIEF.md)).
 - **2026-09-25** — memory **W9 [ran]: PASSED.** A trajectory LoRA on a wiki of atomic statements: both seeds
   (`wiki-walks-s0`, `-s1`, trained on 32 worlds never evaluated) beat the untrained base walking the evaluation
   world **35 : 0** on the 40-row headline (35/40 against 0/40, verified citations); against the base handed the
