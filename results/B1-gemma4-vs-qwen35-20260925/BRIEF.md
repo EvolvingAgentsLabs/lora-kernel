@@ -78,3 +78,10 @@ targets modules BY NAME, and the towers reuse `q_proj`/`k_proj`/…; the tower e
 `s4_train` and not to `tiny_adapter`. That is a harness omission, not a fact about Gemma — the reading
 "cannot be trained this way" is not taken as the answer. Attempt 3: the same exclusion in `tiny_adapter`
 (`tests/test_gemma_towers.py` holds the rule). Redesign count of the stage: 0.
+
+## Stage 1, attempt 3 **[ran]** 2026-09-25 · PASSED — Gemma 4 E4B trains a LoRA and vLLM serves it applied
+
+Control `Qwen2.5-3B-Instruct`: G1 and G2 applied — the procedure is valid. Subject `google/gemma-4-E4B-it`: G1
+in process passed (`lora_B` moved, the output changed) with the vision/audio towers excluded; G2 passed — vLLM 0.30
+serves the adapter and its text differs from the base's. **P29's block is lifted**, for the reason
+[peft#3129](https://github.com/huggingface/peft/issues/3129) documents. Stage 2 is bought.

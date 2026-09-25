@@ -1,0 +1,35 @@
+{
+  "control_base": "Qwen/Qwen2.5-3B-Instruct",
+  "subject_base": "google/gemma-4-E4B-it",
+  "arms": {
+    "control": {
+      "base": "Qwen/Qwen2.5-3B-Instruct",
+      "G1": {
+        "passed": true,
+        "adapter": "adapters/tiny-control"
+      },
+      "G2": {
+        "passed": true,
+        "verdict": "applied",
+        "exit": 0
+      },
+      "seconds": 423
+    },
+    "subject": {
+      "base": "google/gemma-4-E4B-it",
+      "G1": {
+        "passed": true,
+        "adapter": "adapters/tiny-subject"
+      },
+      "G2": {
+        "passed": true,
+        "verdict": "applied",
+        "exit": 0
+      },
+      "seconds": 684
+    }
+  },
+  "control_valid": true,
+  "reading": "the subject serves LoRA through vLLM",
+  "decision": "Qwen3.5 is usable; whether to pay for retraining is a separate call"
+}
