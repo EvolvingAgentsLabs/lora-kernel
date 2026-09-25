@@ -175,3 +175,16 @@ def test_the_evaluation_world_on_disk_is_the_frozen_generators():
 def test_the_nursing_members_prompt_is_untouched_by_the_wiki_member():
     from memory import prompt
     assert "id§section" not in prompt.SYSTEM and "open id§section" in prompt.SCHEMA_WIKI[1]["function"]["description"]
+
+
+def test_the_scoring_verdict_reads_each_seed_and_voids_an_unapplied_one():
+    rec = _rec(0, 38, 0, "improvement")
+    for seed, state in (("withlib-s0", "improvement"), ("withlib-s1", "tie")):
+        rec["analysis"]["summary"][seed] = rec["analysis"]["summary"]["base-walks"]
+        rec["analysis"]["pairs"]["headline"].append({"pair": f"{seed} vs base-walks", "state": state, "only_a": 9, "only_b": 0, "p_value": 0.004})
+    rec["G1"] = {"withlib-s0": {"applied": True}, "withlib-s1": {"applied": True}}
+    assert wa.verdict(rec)["scoring_reading"].startswith("DRAW-DEPENDENT")
+    rec["analysis"]["pairs"]["headline"][-1]["state"] = "improvement"
+    assert wa.verdict(rec)["scoring_reading"].startswith("PASSED")
+    rec["G1"]["withlib-s1"]["applied"] = False
+    assert wa.verdict(rec)["scoring_reading"].startswith("VOID")

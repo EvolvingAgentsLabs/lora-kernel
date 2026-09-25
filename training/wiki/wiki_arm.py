@@ -251,7 +251,9 @@ def verdict(rec: dict) -> dict:
     if seeds:
         wins = [x for x in seeds if heads.get(f"{x} vs base-walks", {}).get("state") == "improvement"]
         out["scoring"] = {x: show(heads[f"{x} vs base-walks"]) for x in seeds if f"{x} vs base-walks" in heads}
-        out["scoring_reading"] = ("PASSED: every seed beats the untrained walk" if len(wins) == len(seeds) else
+        unapplied = [x for x in seeds if not rec.get("G1", {}).get(x, {}).get("applied")]
+        out["scoring_reading"] = (f"VOID: G1 does not show {unapplied} applied — no walk there is the member's" if unapplied else
+                                  "PASSED: every seed beats the untrained walk" if len(wins) == len(seeds) else
                                   f"DRAW-DEPENDENT: {len(wins)} of {len(seeds)} seeds beat the untrained walk" if wins else
                                   "FALSIFIED: no seed beats the untrained walk")
     return out
@@ -269,7 +271,24 @@ def main() -> int:
     ap.add_argument("--max-tokens-plain", type=int, default=160)
     ap.add_argument("--concurrency", type=int, default=8)
     ap.add_argument("--out", default="wiki_arm.json")
+    ap.add_argument("--combine", default=None, help="zero GPU: add this file's scored arms to --out's and re-read the verdict")
     a = ap.parse_args()
+    if a.combine:
+        # THE SCORING SESSION'S ARMS BESIDE STAGE 1'S, READ BY THE SAME `analyse` AND `verdict`. The
+        # bare base was scored in stage 1's session; pairing across sessions carries vLLM's spread,
+        # which the brief states — and base-walks sat at 0/40, where no spread can move a pair.
+        rec = json.loads(Path(a.out).read_text())
+        more = json.loads(Path(a.combine).read_text())
+        rec["arms"].update({k: v for k, v in more["arms"].items() if k.startswith("withlib-s")})
+        rec["G1"] = {**rec.get("G1", {}), **more.get("G1", {})}
+        rec["scoring_from"] = a.combine
+        rec["analysis"] = analyse(rec["arms"], load_rows("eval"))
+        rec["verdict"] = verdict(rec)
+        Path(a.out).write_text(json.dumps(rec, indent=1, ensure_ascii=False))
+        for p in rec["analysis"]["pairs"]["headline"]:
+            print(f"[wiki] headline · {p['pair']}: {p['state']} ({p['only_a']}:{p['only_b']}, p={p['p_value']})", flush=True)
+        print(f"[wiki] {rec['verdict'].get('scoring_reading', rec['verdict']['reading'])}", flush=True)
+        return 0
     out = Path(a.out); out.parent.mkdir(parents=True, exist_ok=True)
     rec = json.loads(out.read_text()) if out.exists() else {}
     rec.update(base=a.base, started=rec.get("started") or time.strftime("%Y-%m-%dT%H:%M:%S"), grader="training.wiki.grade",
