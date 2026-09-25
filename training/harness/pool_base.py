@@ -95,8 +95,17 @@ def main() -> int:
     ap.add_argument("--against", default=None,
                     help="a previous pool_base.json whose member arms are the reference (M1b: results/M1-pool-qwen35-20260919/"
                          "pool_base.json, the @v2 Qwen3.5-4B releases) instead of each member's first recorded release")
+    ap.add_argument("--members", default=None, help="comma list: only these members (M1c: desk-commitment)")
+    ap.add_argument("--suite-for", action="append", default=[], help="member=suite, e.g. desk-commitment=desk:commitment_deep")
     ap.add_argument("--out", default="pool_base.json")
     args = ap.parse_args()
+    # M1c: one member, another band. `--against none` pairs against the base only — a record of another band
+    # shares no case with this one, and a pair of disjoint case ids would read as a tie.
+    global MEMBERS
+    MEMBERS = {m: dict(v) for m, v in MEMBERS.items() if not args.members or m in args.members.split(",")}
+    for spec in args.suite_for:
+        m, _, name = spec.partition("=")
+        MEMBERS[m]["suite"] = name
     out = Path(args.out); out.parent.mkdir(parents=True, exist_ok=True)
     rec = json.loads(out.read_text()) if out.exists() else {}
     rec.update(base=args.base, recipe=RECIPE, started=rec.get("started") or time.strftime("%Y-%m-%dT%H:%M:%S"))
@@ -201,12 +210,14 @@ def main() -> int:
                 a.update(summarise(recs))
                 print(f"[pool] arm {arm}: {a['correct']}/{a['n']} errors {a['errors']}", flush=True)
                 save()
-            path, name = (args.against, m) if args.against else MEMBERS[m]["recorded"]
-            old = json.loads(Path(path).read_text())["arms"][name]["records"]
-            old = old if isinstance(old, list) else list(old.values())
             new = list(rec["arms"][m]["records"].values())
             base = list(rec["arms"][f"base:{suite.name}"]["records"].values())
-            rec["pairs"][m] = [pair(new, old, "new vs recorded"), pair(new, base, "new vs base")]
+            rec["pairs"][m] = [pair(new, base, "new vs base")]
+            if args.against != "none":
+                path, name = (args.against, m) if args.against else MEMBERS[m]["recorded"]
+                old = json.loads(Path(path).read_text())["arms"][name]["records"]
+                old = old if isinstance(old, list) else list(old.values())
+                rec["pairs"][m].insert(0, pair(new, old, "new vs recorded"))
             for pr in rec["pairs"][m]:
                 print(f"[pool] {m} · {pr['pair']}: {pr['state']} ({pr['only_a']}:{pr['only_b']}, "
                       f"p={pr['p_value']})", flush=True)
