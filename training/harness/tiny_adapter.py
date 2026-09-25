@@ -76,7 +76,7 @@ def main() -> int:
     # Every Linear is a candidate now, minus the two that are never adapted: the
     # output head and anything in a vision tower, which would make the comparison
     # about a modality this project does not use.
-    SKIP = ("lm_head", "visual", "vision", "patch_embed", "merger")
+    SKIP = ("lm_head", "visual", "vision", "patch_embed", "merger", "audio", "multi_modal")   # Gemma 4: audio_tower, multi_modal_projector
     # UNDER 4-BIT THE LINEARS ARE `Linear4bit`, NOT `torch.nn.Linear`. A discovery
     # keyed on the torch class would find nothing but the head and refuse.
     names = sorted({n.split(".")[-1] for n, m in model.named_modules()
