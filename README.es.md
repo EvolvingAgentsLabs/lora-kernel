@@ -75,8 +75,9 @@ Especificación completa: [`docs/es/MEMORY.md`](docs/es/MEMORY.md) **[spec]**.
    de Wikipedia, su unidad es el enunciado atómico:** una página es una lista de enunciados de
    una oración, verificables, bajo anclas (`§supplier`, `§if-damaged`), los enlaces viven dentro
    del enunciado que los nombra, y una respuesta cita el enunciado en el que se apoya — así la
-   memoria es verificable, no sólo buscable ([`docs/es/MEMORY.md`](docs/es/MEMORY.md) §1.6
-   **[spec]**, medido a continuación como W9).
+   memoria es verificable, no sólo buscable ([`docs/es/MEMORY.md`](docs/es/MEMORY.md) §1.6 —
+   **[ran]** W9: un LoRA de trayectoria la camina 35/40 donde la base sin entrenar camina 0/40,
+   3-hop 16/16).
 2. **El radar — embeddings comprimidos a un subdominio.** No es un motor de búsqueda general.
    En un dominio cerrado el vocabulario tiene un significado funcional exacto, así que un
    vector chico alcanza para mapear las únicas dos intenciones que importan: *para qué
@@ -96,11 +97,16 @@ Especificación completa: [`docs/es/MEMORY.md`](docs/es/MEMORY.md) **[spec]**.
    segundos tiene ese valor sustituido *antes* de que la nota llegue al experto, que lee la
    regla ya resuelta. Y vigila que no haga trampa: si el paso 4 `requires` el paso 1 y el
    experto nunca abrió el paso 1, el runtime corta la ejecución — sin necesitar saber si la
-   respuesta final estaba bien.
+   respuesta final estaba bien. **Y decide qué puede afirmar una respuesta:** cada respuesta cita
+   el enunciado en el que se apoya, y el árbitro chequea la cita; frente a las herramientas, el
+   gateway no muestra ninguna línea que no esté en un resultado real de una herramienta
+   (`examples/common/grounding.py`).
 
-![Siete paneles numerados unidos por una línea, como un mapa de subte: un pedido, una búsqueda que ilumina tres fichas, un procedimiento que se abre, la línea que recorre el estante del arnés, un desvío hacia el estante de la wiki y de vuelta, una calculadora, la respuesta.](docs/img/memory-walkthrough.png)
-
-*Una tarea, de punta a punta. El desvío del arnés a la wiki y de vuelta es el punto.*
+> **[ILLUSTRATION PLACEHOLDER — `docs/img/memory-walkthrough.png`]**
+> *Siendo redibujada para páginas de enunciados atómicos; el brief está en [`docs/img/README.md`](docs/img/README.md). Seis
+> paneles en una línea: un pedido, una búsqueda que ilumina tres fichas de página, una página que se abre como su
+> tabla de secciones, una oración cuyo nombre subrayado es el enlace a la próxima página, la sección de una tercera
+> página, y la respuesta con su cita estampada — el chequeo del árbitro debajo del último panel.*
 
 **La ganancia.** Si el protocolo cambia mañana, se edita un archivo markdown en git. El LoRA
 no se reentrena, porque lo que aprendió fue a obedecer los enlaces y leer las notas.
@@ -109,23 +115,28 @@ no se reentrena, porque lo que aprendió fue a obedecer los enlaces y leer las n
 
 ## El camino del pedido
 
-![Cinco estaciones sobre una línea: cliente, proxy, router, experto con su biblioteca, respuesta. Del router sale una rama punteada que corre por abajo hasta la frontera y se reúne en la respuesta. Debajo del experto, tres teclas: search, open, calc.](docs/img/request-path.png)
-
-*El camino de un pedido. Abstenerse hacia la frontera es un carril, no un error.*
+> **[ILLUSTRATION PLACEHOLDER — `docs/img/request-path.png`]**
+> *Siendo redibujada para el gateway; el brief está en [`docs/img/README.md`](docs/img/README.md). Una línea: un
+> agente → el gateway lee el token firmado (usuario · rol · tenant) → el experto local del rol → las herramientas
+> corren con ese permiso (un registro rechazado, un pago retenido para un director) → cada línea de la respuesta
+> chequeada contra un resultado real de herramienta → la respuesta; una rama punteada para lo que está fuera de
+> alcance, hacia la frontera o hacia una persona; un log debajo de todo.*
 
 ```mermaid
 flowchart LR
-    C["cliente<br>API OpenAI · OpenClaw"] --> P["proxy<br>poda · prompt del miembro"]
-    P --> R["router<br>un modelo chico de los corpus de los expertos"]
-    R -- "cae en un corpus" --> E["LoRA experto<br>entrenado para navegar"]
-    E <--> M["runtime + biblioteca<br>search · open · calc"]
-    R -- "no cae en ninguno · o región medida a fallar" --> F["modelo de frontera"]
-    E --> A["respuesta"]
+    C["agente / cliente<br>API OpenAI · OpenClaw"] --> G["gateway<br>token firmado → usuario · rol · tenant"]
+    G --> R["ruta<br>el rol nombra al miembro · el diccionario · abstenerse"]
+    R -- "en la región de un miembro" --> E["LoRA experto sobre Gemma 4 E4B<br>entrenado para navegar"]
+    E <--> M["runtime + biblioteca<br>search · open · calc · páginas de enunciados"]
+    E <--> T["herramientas, corridas con el permiso del token<br>rechazadas entre tenants · pagos retenidos para una persona"]
+    E --> V["anclaje<br>cada línea en un resultado real de herramienta"]
+    R -- "en ninguna · o fuera del alcance del rol" --> F["modelo de frontera · o una persona"]
+    V --> A["respuesta + log"]
     F --> A
     classDef local fill:#e8f1e4,stroke:#4a7a3a,color:#1d3314
     classDef art fill:#eef0f6,stroke:#4a5a8a,color:#1d2240
     classDef out fill:#f4e6d4,stroke:#9a6a2a,color:#3d2a0e
-    class P,R,E local
+    class G,R,E,T,V local
     class M art
     class F out
 ```
@@ -177,26 +188,29 @@ Un experto entrenado, servido exactamente como le enseñó su corpus, llega a pr
 humano en el trabajo para el que se entrenó (triage de inbox, 0,989 contra 0,345 de una base pelada)
 **[ran]**.
 
-**La pregunta abierta sobre la que gira todo el diseño.** ¿Una biblioteca realmente le permite a un
-experto manejar un procedimiento sobre el que nunca entrenó, como lo haría una persona buscándolo?
-La navegación se transfiere — el hábito entrenado de buscar, abrir y seguir enlaces funciona sobre
-notas que el adaptador nunca vio — pero *leer* una nota cuya forma el corpus nunca mostró todavía no
-se transfiere de manera confiable (35 de 56, contra un base sin entrenar al que se le entregó la
-nota correcta y sacó 45 de 56). Ese es el resultado de este README con más chances de seguir siendo
-cierto la semana que viene, porque el resto del plan está construido para responderlo a continuación
-**[ran]** `docs/PLAN.md` hito 7.
+**La memoria funciona en su primer banco de pruebas [ran].** En una wiki de enunciados atómicos
+cuyos hechos ningún modelo puede saber, la base sin entrenar no camina las preguntas de dos y tres
+saltos (0 de 40); un LoRA de trayectoria entrenado sobre otros 32 mundos las camina 35 de 40 con la
+cita de cada respuesta verificada, 16 de 16 a tres saltos — y sobre Gemma 4 E4B, 38 de 40
+(`docs/PLAN.md` hito 7, W9 y B1).
 
-**Próximo: enunciados atómicos.** La biblioteca se está reconstruyendo como páginas de enunciados
-de una oración, verificables — *¿cuáles son las obras del autor de la Mona Lisa?* es una búsqueda,
-una sección, un enlace y una sección — primero sobre una wiki de distribuidora inventada que el
-modelo no puede saber de memoria, con el base sin entrenar medido antes de entrenar cualquier LoRA
-para eso **[spec]** `docs/MEMORY.md` §1.6, W9.
+**Una organización de referencia, funcionando de punta a punta [ran].** La demo de la escuela:
+identidad desde un token firmado, los registros de otra escuela rechazados por la capa de
+herramientas, un pago retenido hasta que un director lo aprueba, pedidos fuera de alcance derivados
+a la frontera o a una persona, un log y un dashboard — y **cada respuesta chequeada contra los
+resultados reales de las herramientas por el gateway, fuera del modelo**. 8 de 8 escenas sobre
+Gemma 4 E4B con un adaptador del personal de la escuela, contra 3 de 8 con un modelo pelado
+([`docs/es/DEMO.md`](docs/es/DEMO.md)).
+
+**La familia es Gemma 4** desde 2026-09-25: medida contra Qwen3.5-4B sobre la misma wiki, un
+empate, y la pila de desarrollo del usuario apunta a Gemma; los miembros publicados pasan por la
+compuerta de release uno por uno (hito 1b).
 
 **Todavía sin resolver.** El router sigue siendo un diccionario de palabras clave — sus dos
-reemplazos aprendidos ya están medidos y ninguno pasa, por la misma razón: un pedido de un
-remitente no familiar y un listado familiar seguido de una tarea no familiar se parecen para los
-dos **[ran]** `docs/PLAN.md` hito 2. Todavía no se midió tráfico real en ningún lugar de este
-repositorio.
+reemplazos aprendidos ya están medidos y ninguno pasa **[ran]** hito 2. Los modelos chicos todavía
+inventan: en la demo de la escuela el gateway reemplazó 2 de 5 respuestas locales por el texto
+propio de las herramientas — atrapado, contado, nunca mostrado, pero no curado. El par especulativo
+todavía no arrancó. Todavía no se midió tráfico real en ningún lugar de este repositorio.
 
 **Todo lo demás — cada hito, cada brazo, cada corrida — se mueve con el proyecto y no se repite
 acá, a propósito.** [`docs/es/PLAN.md`](docs/es/PLAN.md) es el estado vivo, con una compuerta y una
@@ -250,6 +264,10 @@ modelo).
 | `training/harness/chain_serve.sh` | el chain de Colab: aprovisionar, correr desacoplado, streamear, traer los pesos a medida que aparecen, reanudar |
 | `training/harness/bill.py` | tasa un replay existente a tarifas reales de frontera — cero GPU, nada se re-corre (`results/M6-bill-20260921/`) |
 | `examples/` | **la organización de referencia, sólo código, antes de que exista ningún adaptador** — `school/` y `distributor/`, los dos con dos inquilinos; un almacén de juguete, una capa de herramientas que refuerza el permiso fuera del modelo, un servidor MCP por dominio, una suite adversarial a 0 fugas; `examples/README.md` dice cómo apuntar tu propio OpenClaw |
+| `training/wiki/` | **W9, la wiki de enunciados atómicos**: un mundo de distribuidora por semilla, preguntas de 1 a 3 saltos, el grader de citas, el runner de trayectorias y su corpus |
+| `examples/school/gateway.py`, `demo_run.py`, `school_arm.py` | **la demo de la escuela, como sistema funcionando**: identidad firmada, escrituras retenidas y la aprobación de un director, salida por rol, anclaje, un log y un dashboard; el LoRA de trayectoria del personal de la escuela y su medición |
+| `training/harness/fake_vllm.py` | un `vllm serve` falso para los tests de integración del camino de serving — los bugs que modela se pagaron una vez con una tarjeta |
+| `training/harness/family.py` | la familia de modelos en un solo lugar: Gemma 4 E4B para miembros nuevos, Qwen3.5-4B para los publicados hasta que se los vuelva a publicar |
 | `releases/`, `results/` | los manifiestos, y las corridas que citan los documentos |
 
 ## Documentos

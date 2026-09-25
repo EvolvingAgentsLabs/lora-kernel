@@ -9,8 +9,9 @@ This is the implementation specification of the per-expert memory, the core of v
 [`KNOWLEDGE-TRAJECTORIES.md`](KNOWLEDGE-TRAJECTORIES.md); this document is the *what to build*. The
 explanation it implements is the user's, 2026-09-19. Status markers as everywhere here: **[ran]**
 measured in this repository, **[read]** read in source or a paper, **[spec]** decided and not yet
-built. W1–W5e and W8 are built and measured, §10 says what each showed; **§1.6, atomic statements, is
-the user's design of 2026-09-24 and is [spec] until W9 runs.**
+built. W1–W5e, W8 and W9 are built and measured, §10 says what each showed; **§1.6, atomic statements — the
+user's design of 2026-09-24 — PASSED W9 [ran] 2026-09-25**: a trajectory LoRA walks it 35/40 where the untrained base
+walks 0/40 (Gemma 4 E4B: 38/40).
 
 Five pieces:
 
@@ -149,7 +150,7 @@ have the same `when:`. Knowledge that lives in git gets the gates code gets.
 ---
 
 
-### 1.6 Atomic statements — a page is a list of verifiable statements **[spec]** W9
+### 1.6 Atomic statements — a page is a list of verifiable statements **[ran]** W9
 
 The user's design, 2026-09-24. The library is shaped like **Wikipedia**: a **page** is about one
 thing — a product, a supplier, a procedure — and is made of **atomic statements**: the smallest piece
@@ -203,7 +204,12 @@ real text.
 
 **Where the harness lives.** The sections, the citation check and the verbs are software. Choosing the
 section and following the right link is what a **trajectory LoRA** would learn per subdomain — and it
-is bought only if the untrained base does not already do it: W9's headroom arm decides.
+is bought only if the untrained base does not already do it: W9's headroom arm decides. **It did [ran]:** the
+untrained base never wrote a verb after a search result (0/40); trained on 32 other worlds, both seeds walked the
+evaluation world 35/40 with every citation verified, 3-hop 16/16 — a tie with the base handed the oracle's statements.
+**In front of an organisation's tools the same principle holds one level up:** the gateway shows no line of a reply that
+a real tool result does not contain (`examples/common/grounding.py`), because a trajectory LoRA can still invent a line
+in a result's format **[ran]** M8.
 
 ## 2. The radar — embeddings compressed to one subdomain
 
@@ -463,9 +469,10 @@ page** again, ids re-drawn, to stand in the turn that continues. The corpus call
 
 ## 6. In operation — one task, end to end
 
-![Seven numbered panels joined by one line, like a subway map: a request, a search that lights three cards, a procedure opening, the line running along the harness shelf, a detour down to the wiki shelf and back, a calculator, the answer.](img/memory-walkthrough.png)
-
-*One task, end to end. The detour from the harness to the wiki and back is the point.*
+> **[ILLUSTRATION PLACEHOLDER — `docs/img/memory-walkthrough.png`]**
+> *Being redrawn for pages of atomic statements (§1.6); the brief is in [`img/README.md`](img/README.md): a request, a
+> search that lights three page cards, a page as its table of sections, a sentence whose underlined name links to the
+> next page, a person's section, the answer with its citation stamped on it and the referee's check.*
 
 1. **The task comes in:** *"Infuse 500 mL over 4 hours by gravity; drop factor 20 gtt/mL."*
 2. **The expert consults its radar:** `<search shelf=harness>start a primary infusion</search>`.

@@ -5,8 +5,10 @@ its file exists here; when a file arrives, the placeholder in **both languages**
 image. File names are fixed — the documents already point at them. `python3 scripts/place-images.py`
 does the replacing; `--check` lists what is still wanted.
 
-**Known, in a delivered image:** `request-path.png` spells a book spine "Harenss" — cosmetic, to fix in
-the next export.
+**Withdrawn 2026-09-25, to be redrawn:** `memory-walkthrough.png` (it showed the pre-W9 walk — notes and a calculator —
+where the memory is now pages of atomic statements with cited answers) and `request-path.png` (it had no gateway, no
+permission, no approval and no grounding — and spelled a spine "Harenss"). Their placeholders are back in the documents;
+the briefs below are new.
 
 **House style** (from the hero): flat, warm technical illustration — ink lines, two or three muted
 colours, no gradients, no glow. **No robots, no brains, no glowing neural nets**: four of the five
@@ -20,8 +22,8 @@ English in both language versions.
 | `article-team.png` | wide, ~1600 px | ✅ **in** | `docs/articles/2026-09-it-was-the-harness.md`, `docs/articles/2026-09-era-el-arnes.es.md` |
 | `core-1-0.png` | wide, ~1600 px | ✅ **in** | `README.md`, `README.es.md` |
 | `memory-five-pieces.png` | wide, ~1600 px | ⬜ wanted | `docs/MEMORY.md`, `docs/es/MEMORY.md`, `docs/ARCHITECTURE.md`, `docs/es/ARCHITECTURE.md` |
-| `memory-walkthrough.png` | wide, ~1600 px | ✅ **in** | `README.md`, `README.es.md`, `docs/MEMORY.md`, `docs/es/MEMORY.md` |
-| `request-path.png` | wide, ~1600 px | ✅ **in** | `README.md`, `README.es.md` |
+| `memory-walkthrough.png` | tall, ~1200 × 1600 | ⬜ **wanted — redraw (v2)** | `README.md`, `README.es.md`, `docs/MEMORY.md`, `docs/es/MEMORY.md` |
+| `request-path.png` | wide, ~1600 px | ⬜ **wanted — redraw (v2)** | `README.md`, `README.es.md` |
 | `solution-architecture.png` | wide, ~1600 px | ✅ **in** | `README.md`, `README.es.md`, `docs/articles/2026-09-it-was-the-harness.md`, `docs/articles/2026-09-era-el-arnes.es.md` (cover) |
 
 ## Briefs
@@ -42,13 +44,30 @@ One horizontal diagram in the hero's style. A request enters from the left and m
 
 A single wide diagram, left to right, flat technical style, light background. Far left, a bookcase with two labelled shelves: the top shelf "Operational harness" holds cards joined by arrows in a line (a procedure); the bottom shelf "Encyclopedic wiki" holds cards arranged as a tree. In the middle, a small radar dish labelled "radar — embeddings of this subdomain only" sweeping over the bookcase and lighting up three cards. To its right, a figure at a desk labelled "LoRA — the specialist" holding exactly three tools labelled `search`, `open`, `calc`. Beneath everything, a thin band labelled "runtime — referee" with three icons: a page being turned, a stamp reading "site rule applied", and a barrier gate reading "requires step 1". No robots, no brains, no glowing neural nets: the point of the picture is that four of the five pieces are not neural.
 
-### `memory-walkthrough.png`
+### `memory-walkthrough.png` — v2, pages of atomic statements
 
-A vertical storyboard of seven numbered panels joined by one line, like a subway map. 1: a request card "500 mL over 4 h, gravity, 20 gtt/mL". 2: the expert writes `search`; the radar lights three cards on the harness shelf. 3: the card "Primary infusion" opens. 4: the line runs along the harness shelf, step to step. 5: at "set the rate" the line drops to the wiki shelf, to a card "gravity drip rate", and climbs back — this detour is the point of the picture. 6: a small calculator shows 500 × 20 ÷ 240 = 41.67. 7: the answer, "42 drops per minute". Along the bottom the referee band shows one green check under panel 4: "requires: safety steps — opened".
+A vertical storyboard of six numbered panels joined by one line, like a subway map, in the house style. 1: a request
+card, "What extension reaches the manager of the depot that stocks the Lumo-410 pallet wrap?". 2: the expert writes
+`search`; three PAGE cards light up on the wiki shelf. 3: the page "Lumo-410 pallet wrap" opens as a small table of
+contents — four section tabs, "§supplier · §warehouse · §pack · §reorder-point" — and the expert's finger is on
+"§warehouse". 4: that ONE sentence, on its own slip, "The Lumo-410 pallet wrap is stocked at Old Mill depot", with "Old
+Mill depot" underlined; the line runs along the underline to a second page, "Old Mill depot", and its tab "§manager".
+5: a third page, a person — "Wanda Marrow" — and its tab "§extension": "can be reached on extension 9970". 6: the answer
+card, "extension 9970", with the citation as a small stamped tag, "[9du§extension]". Along the bottom, the referee band,
+with a green check under panel 6: "citation checked — the walk opened this sentence, and it holds 9970". THE POINT: a
+page is a list of one-sentence slips, the links live inside the sentences, and the answer names the slip it rests on.
+No robots, no brains.
 
-### `request-path.png`
+### `request-path.png` — v2, through the gateway
 
-A clean left-to-right flow in the same style, five stations on one line: "client (OpenAI API · OpenClaw)" → "proxy — prunes the tools to the member's own, swaps in the member's prompt" → "router — abstains when it looks like no corpus" → "expert + its library" → "answer". From the router a dashed branch drops down and runs along the bottom to "frontier", rejoining at "answer". Under the expert station, a small inset shows the three verbs as three keys on a keyboard: `search`, `open`, `calc`.
+A clean left-to-right flow in the house style, six stations on one line. 1 "agent — one per role (OpenClaw)". 2 "gateway —
+signed token → user · role · school", drawn as a small turnstile reading a badge. 3 "the role's expert — one small local
+model + its adapter", a desk with a thin coloured spine leaning on a thick one. 4 "tools, with the badge's permission":
+two small insets — a red stamp across a folder, "another school's record — refused", and a paper clip holding a slip,
+"payment — held for a director". 5 "grounding — every line of the reply must be in a tool's result": a sheet with one
+line crossed out, "invented". 6 "answer". From station 3 a dashed branch, "out of scope", splits in two: one runs to a
+distant building, "frontier", the other to a person at a desk, "staff". Under the whole line, a thin band: "log →
+dashboard: served here · sent on · held · replaced". Labels in English; spell every word correctly.
 
 ### `solution-architecture.png`
 

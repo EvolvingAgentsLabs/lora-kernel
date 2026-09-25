@@ -654,6 +654,15 @@ Las cuatro que deciden la forma de un paso:
 
 ## 5. Historia
 
+- **2026-09-25** — **la demo de la escuela [ran]: 8/8 sobre Gemma 4 E4B, el sistema de punta a punta.** M8: un
+  LoRA de trayectoria del personal de la escuela sobre 700 turnos completos de gateway — held-out 70/70 en las dos
+  semillas contra el 27/70 del Gemma pelado (43 : 0), día de la demo 8/8 contra 3/8. Leído donde ocurre, todavía
+  puede inventar una línea con el formato de un resultado de herramienta y citar una instrucción plantada; el
+  gateway ahora fundamenta cada respuesta en resultados reales de herramientas y redacta las instrucciones
+  plantadas, afuera del modelo — en el día de la demo grabado reemplazó 2 de 5 respuestas locales, el usuario no
+  vio ninguna. Dos imágenes retiradas para ser redibujadas (`memory-walkthrough.png`, `request-path.png`); los
+  documentos llevan sus marcadores
+  ([`M8`](../../results/M8-school-staff-20260925/BRIEF.md), [`demo`](../../results/DEMO-school-gemma-20260925/README.md)).
 - **2026-09-25** — **todo se muda a Gemma 4, la decisión del usuario sobre el empate de B1.** Los miembros nuevos
   se entrenan sobre `gemma-4-E4B-it` (`training/harness/family.py`: SMALL; los runners activos lo usan por
   default); la mitad grande de un par se nombra `gemma-4-31B-it`, no medida; el hito 1b vuelve a liberar a los dos

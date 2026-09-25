@@ -105,6 +105,19 @@ llamó **[ran]** P63. Dos decisiones se mantienen separadas a propósito:
 **El default es la frontera.** Un modelo al que se le pide elegir siempre elige, así que la
 abstención está diseñada de entrada y se mide primero (hito 2).
 
+**Frente a las herramientas de una organización, el gateway [ran] 2026-09-25** (`examples/school/gateway.py`, el
+camino de la organización de referencia). Lo que el proxy hace por un miembro, más las cuatro cosas que necesita un
+sistema de agentes por rol y que un modelo no debe decidir:
+
+| paso | qué hace | dónde vive, y por qué no en el modelo |
+|---|---|---|
+| **quién** | se verifica el token portador → usuario, rol, tenant; un rol pedido en `model: auto:<rol>` tiene que coincidir con él | `examples/common/tokens.py` (HS256 con un secreto de demo, en lugar del RS256/JWKS del proveedor de identidad — esa verificación no está construida) |
+| **permiso** | cada herramienta corre con esa credencial; la fila de otro tenant se rechaza antes de leerla | la capa de herramientas (`examples/school/tools.py`) — 77 casos adversariales, 0 fugas **[ran]** |
+| **una persona para lo que importa** | un pago o un mensaje a todas las familias queda RETENIDO; lo aprueba un director del mismo tenant, nunca la cuenta que lo pidió; después corre con el alcance de quien lo pidió | `examples/common/approvals.py` |
+| **qué puede afirmar una respuesta** | cada ítem de una respuesta tiene que ocurrir en un resultado real de herramienta, o la respuesta se reemplaza por el texto propio de las herramientas; el texto con forma de instrucción encontrado en un registro se saca de lo que se muestra | `examples/common/grounding.py` — el LoRA del personal de la escuela inventó una línea de un listado de una herramienta el día de la demo; el filtro reemplazó 2 de 5 respuestas locales y el usuario no vio ninguna de las dos **[ran]** `results/DEMO-school-gemma-20260925` |
+| **alcance** | un pedido que las herramientas del rol no cubren sigue la salida del rol: la frontera, o la cola de una persona | el modelo dice `OUT OF SCOPE`; la política decide adónde va — el juicio del modelo queda registrado, no se confía en él |
+| **log** | una línea JSON por pedido — quién, rol, ruta, llamadas, rechazos, retenciones, anclaje, tokens — y un dashboard que tasa los tokens locales a las tarifas de la frontera | el feed de monitoreo; el costo propio de la GPU no se tasa |
+
 ## 3. El par
 
 **Por qué la mitad grande está entrenada, no prestada.** Un modelo grande sin entrenar no es
@@ -135,25 +148,22 @@ bits.
 
 > **El LoRA no es el libro de texto. Es el especialista que sabe usar la biblioteca.**
 
-**Estado, 2026-09-20 [ran].** El formato de la biblioteca, el lint, la primera biblioteca (W1), el
-árbitro (W2) y el corpus de recorridos (W4) están construidos y pasan sus compuertas. La búsqueda con
-un encoder estándar llega a recall@3 0,638 contra una vara de 0,80 (W3). El brazo que mata (W5) se
-corrió tres veces sobre un procedimiento que el adaptador nunca entrenó, y **no pasa**: el adaptador
-empata o pierde contra el base *sin entrenar* con las notas correctas delante (35 contra 45 de 56;
-42 contra 46 de 66). Leído donde ocurre, el resultado tiene dos mitades. **La navegación se
-transfiere**: 42 : 0 contra el base sin entrenar obligado a navegar, 22/22 en filas de línea
-compartida donde el base leyendo las notas correctas saca 8/22, 0 fallos de recuperación. **Una
-habilidad de lectura no se transfiere**: preguntado un valor dado bajo una condición en una nota
-nunca vista, el adaptador escribe el primer número — 0/11, y 4/15 tras un corpus que mostró la forma
-sobre ocho notas (17/18 sobre esas ocho; el base sin entrenar 15/15). Dejar que el base escriba cada
-línea final recupera esas y pierde 19 casos de control (W5b), así que no es un diseño de servido. Lo
-que queda abierto es una **partición por tipo de tarea** — el adaptador lleva los procedimientos, el
-base lee los valores de lo que abrió el recorrido del adaptador — que es 47/56 sobre registros ya
-pagados y evidencia de nada hasta que se corra sobre un conjunto escrito después de congelar la
-política.
+**Estado, 2026-09-25 [ran].** **La memoria funciona en su primer banco de pruebas.** En una wiki de
+enunciados atómicos (más abajo), cuyos hechos ningún modelo puede saber, la base sin entrenar no
+camina las preguntas de dos y tres saltos (0/40 sobre Qwen3.5-4B; nunca escribe un verbo después de
+un resultado) y un LoRA de trayectoria entrenado sobre otros 32 mundos sí — 35/40 en las dos
+semillas, cada cita verificada, 3-hop 16/16; sobre Gemma 4 E4B 38/40 (W9, B1). Antes de eso, sobre la
+biblioteca de enfermería (W1–W5e), el resultado tenía dos mitades que siguen en pie: **la navegación
+se transfiere** a un procedimiento que el adaptador nunca vio (42 : 0 contra el base sin entrenar
+obligado a navegar), **leer un valor bajo una condición en una nota nunca vista no** (el base sin
+entrenar la lee, 15/15; una partición por tipo de tarea empató, W5d; y dos sorteos de entrenamiento
+de una misma receta discreparon en 25 de 67 filas, W5e — así que los miembros se entrenan sobre dos
+semillas). La búsqueda con un encoder estándar llegó a recall@3 0,638 contra una vara de 0,80 (W3);
+el buscador es léxico. ~~Estado, 2026-09-20 … evidencia de nada hasta que se corra sobre un conjunto
+escrito después de congelar la política.~~
 
-**La unidad de la biblioteca, desde el 2026-09-24: el enunciado atómico [spec] W9.** El diseño del
-usuario: la biblioteca tiene forma de Wikipedia. Una página es sobre una sola cosa y es una lista de
+**La unidad de la biblioteca, desde el 2026-09-24: el enunciado atómico — [ran] W9, PASÓ.** El
+diseño del usuario: la biblioteca tiene forma de Wikipedia. Una página es sobre una sola cosa y es una lista de
 **enunciados atómicos** — una oración chequeable cada uno, bajo un ancla — y **el enunciado, no la
 página, es la unidad de memoria**. Los enlaces viven dentro del enunciado que los nombra (el
 `§supplier` de un producto es también el camino a la página del proveedor); las páginas operativas son
@@ -172,7 +182,7 @@ cuatro de ellas no neuronales:
 
 | pieza | qué es | dónde vive |
 |---|---|---|
-| **la biblioteca** | notas en markdown de menos de media página, en dos estantes — y, desde W9 **[spec]**, páginas de enunciados atómicos con sus enlaces adentro, citadas por cada respuesta. **Arnés operativo** — *cómo se hace*: notas tipo receta cuyos links son control de flujo (`requires`, `next`, `uses`). **Wiki enciclopédica** — *qué es, qué fórmula aplica*: un árbol, de lo general a lo específico (`parent` → `children`) | `knowledge/<subdominio>/`, en git |
+| **la biblioteca** | notas en markdown de menos de media página, en dos estantes — y, desde W9 **[ran]**, páginas de enunciados atómicos con sus enlaces adentro, citadas por cada respuesta. **Arnés operativo** — *cómo se hace*: notas tipo receta cuyos links son control de flujo (`requires`, `next`, `uses`). **Wiki enciclopédica** — *qué es, qué fórmula aplica*: un árbol, de lo general a lo específico (`parent` → `children`) | `knowledge/<subdominio>/`, en git |
 | **el radar** | embeddings comprimidos a un subdominio; por nota dos vectores, *para qué sirve* y *qué define*; devuelve las dos o tres notas exactas del subdominio en juego | un índice chico por subdominio |
 | **el lenguaje** | tres verbos que el experto puede escribir — `<search>`, `<open>`, `<calc>` — cada uno respondido en línea después de su etiqueta de cierre | una gramática, versionada con la liberación |
 | **el LoRA** | entrenado sobre el **hábito de navegar**: casos cuyas constantes cambian cada vez, así que el número hay que leerlo de la nota | el adaptador — la única pieza entrenada |
@@ -296,17 +306,20 @@ flowchart TB
     P["personas, en roles"] --> RT["runtime de agentes — un agente por rol"]
     RT <--> APPS["aplicaciones y canales"]
     APPS <--> DB["sistemas de registro<br>base de datos · identidad · pagos · monitoreo"]
-    RT -- "API compatible con OpenAI" --> PX["proxy — poda · prompt del miembro"]
+    RT -- "API compatible con OpenAI + un token firmado" --> PX["gateway — token → usuario · rol · tenant<br>poda · prompt del miembro"]
     PX --> RO{"router<br>el rol es la ruta"}
     RO -- "una región medida" --> EX["el adaptador del rol<br>sobre un modelo chico residente"]
     EX <--> REF["árbitro — search · open · calc · reglas del sitio · guarda"]
     REF <--> LIB["la biblioteca del rol<br>cómo lo hacemos acá · lo que sabemos"]
+    EX <--> TL["las herramientas de la organización, corridas con el permiso del token<br>pagos retenidos para un director"]
+    TL <--> DB
+    EX --> GRD["anclaje — ninguna línea mostrada que una herramienta no haya devuelto"]
     RO -- "sin medir" --> FR["modelo de frontera"]
     RO -. "política: nada sale" .-> HU["una persona"]
     classDef ours fill:#e8f1e4,stroke:#4a7a3a,color:#1d3314
     classDef theirs fill:#eef0f6,stroke:#4a5a8a,color:#1a2240
     classDef out fill:#f4e6d4,stroke:#9a6a2a,color:#3d2a0e
-    class PX,RO,EX,REF,LIB ours
+    class PX,RO,EX,REF,LIB,TL,GRD ours
     class P,RT,APPS,DB theirs
     class FR,HU out
 ```

@@ -23,7 +23,7 @@ it ran live, 40 turns, all local **[ran]** P63.
 | 1 | one OpenAI-compatible endpoint; several adapters on one resident `Qwen3.5-4B`; each request routed to its own | the service is a drop-in for an agent runtime's model setting | **[ran]** P62, P63 |
 | 2 | **school demo [ran] 2026-09-25: 8/8 on Gemma 4 E4B + the school-staff LoRA, every reply grounded by the gateway** ([`results/DEMO-school-gemma-20260925/`](../results/DEMO-school-gemma-20260925/README.md)) · roles of a distributor — customer service, purchasing, IT — asking the local model; it calls the real tool layer and answers from what the tool returned | a small model serves routine role tasks with tools, locally | **[ran]** this demo (`training/harness/demo_org.py` part A) |
 | 3 | the same user asks for another tenant's order: **the tool refuses**; a delivery note carries a planted instruction: it is reported, not obeyed | permission lives outside the model; a prompt cannot widen it | tool layer **[ran]** 77 adversarial cases, 0 leaks; model side, this demo |
-| 4 | a question two or three hops deep — *what extension reaches the manager of the depot that stocks this product?* — walked through a wiki of **atomic statements**, answered with the citation `[id§anchor]` the runtime checks | facts live in editable pages, not weights; every answer names the statement it rests on | **[spec → running]** W9 — see its brief for where it stands |
+| 4 | a question two or three hops deep — *what extension reaches the manager of the depot that stocks this product?* — walked through a wiki of **atomic statements**, answered with the citation `[id§anchor]` the runtime checks | facts live in editable pages, not weights; every answer names the statement it rests on | **[ran]** W9 — PASSED: 35/40 against the untrained walk's 0/40; on Gemma 4 E4B 38/40 |
 | 5 | the route: a request in a trained member's region stays local, one outside every region leaves for the frontier; the bill for the turns served locally, at the frontier's own rates | where the money is — and what is not priced | route **[ran]** M2; bill **[ran]** M6 first pass |
 
 ## 2. What to say plainly
@@ -31,9 +31,9 @@ it ran live, 40 turns, all local **[ran]** P63.
 | claim | honest status |
 |---|---|
 | "a 4B serves your routine role tasks locally" | for one-tool role tasks the **untrained** 4B already reaches 18/19 **[ran]** school pilot — the value there is moving the traffic local, not an adapter |
-| "an adapter makes it an expert" | shown on inbox triage: 0.989 against a bare base's 0.345 **[ran]**; **no adapter trained for a distributor or school role yet** |
+| "an adapter makes it an expert" | shown on inbox triage (0.989 against a bare base's 0.345) and on the school's staff roles: 70/70 held-out turns against the bare Gemma's 27/70, demo day 8/8 against 3/8 **[ran]** M8 — on generated turns, not real traffic |
 | "it knows when to hand off" | the router today is a keyword dictionary; two learned routers were measured and **neither passed** (a paraphrase leaves — the demo shows it) **[ran]** M2 |
-| "the memory is verifiable" | the format, the referee and the citation check are built; whether a small model walks it, with or without a trajectory adapter, is W9's open measurement |
+| "the memory is verifiable" | every answer on the wiki cites the statement it rests on and the referee checks it (W9 **[ran]**); in front of tools, the gateway shows no line that a tool did not return — it replaced 2 of 5 local replies on the demo day, so the model still invents and the system still catches it |
 | "it saves money" | **not shown on real traffic.** The replay bill is cents; the local GPU's cost is not priced. The number that decides it is your traffic, measured |
 
 ## 3. What would make it a real result

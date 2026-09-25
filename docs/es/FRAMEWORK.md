@@ -60,7 +60,8 @@ donde la política dice que nada sale.
 ## 2. Qué funciona hoy
 
 Todo sobre suites generadas; el §3 dice qué cuesta eso. Modelo base `Qwen/Qwen3.5-4B` salvo que se
-indique otro.
+indique otro; **desde 2026-09-25 los miembros nuevos se entrenan sobre `google/gemma-4-E4B-it`**
+(B1 **[ran]**, un empate, decisión del usuario).
 
 | pieza del objetivo | qué está establecido | evidencia |
 |---|---|---|
@@ -72,6 +73,9 @@ indique otro.
 | **la biblioteca** | formato de nota, lint, primera biblioteca: 94 notas enlazadas, una capa de ejemplo de sitio; 72/72 recorridos oráculo | **[ran]** W1 |
 | **el árbitro** | tres verbos con resultados inline, ids opacos re-sorteados por conversación, reglas del sitio aplicadas antes de mostrar una nota, una guarda que corta un recorrido que se salta un paso requerido; 72/72 recorridos, 0 rechazos, tres recorridos con trampa cortados | **[ran]** W2 |
 | **la navegación se transfiere a un procedimiento nunca entrenado** | contra el base sin entrenar obligado a navegar: 42 : 0; filas de línea compartida 22/22 (el base con las notas correctas delante: 8/22); ubicarse a mitad de procedimiento 14/22 (5/22); 0 fallos de recuperación, 5 verbos rechazados en 88 recorridos | **[ran]** W5c |
+| **una memoria que responde preguntas de dos y tres saltos, verificablemente** | páginas de enunciados atómicos con los enlaces adentro de los enunciados; la base sin entrenar las camina 0/40, un LoRA de trayectoria entrenado sobre otros mundos 35/40 en las dos semillas (Gemma 4 E4B: 38/40), 3-hop 16/16; cada respuesta cita `[id§anchor]` y el árbitro la chequea | **[ran]** W9, B1 |
+| **una organización de referencia, de punta a punta** | la escuela: identidad desde un token firmado, el límite de tenant en la capa de herramientas, pagos y mensajes a todas las familias retenidos hasta que un director los aprueba, lo fuera de alcance a la frontera o a una persona, cada respuesta anclada en resultados reales de herramientas por el gateway, un log y un dashboard — 8/8 escenas sobre Gemma 4 E4B + un adaptador del personal de la escuela (3/8 sobre un modelo pelado); el adaptador 70/70 sobre turnos held-out contra el 27/70 del base pelado | **[ran]** M8, `results/DEMO-school-gemma-20260925` |
+| **integración testeada antes de comprar una GPU** | un `vllm serve` falso que reproduce vLLM 0.30 en los bordes que costaron sesiones (un `--lora-modules` repetido se queda con el último; un modelo que no sirve es un 404); las sesiones enteras de los runners corren contra él en segundos | **[ran]** `tests/test_fake_vllm.py`, `tests/test_school_demo.py` |
 | **el kit de medición** | margen primero, tests de signos exactos pareados, briefs con falsadores escritos antes de correr, un calificador que separa *correcto*, *correcto en otro formato*, *correcto pero nunca leído*; **formas** del tráfico registradas en passthrough sin guardar los prompts | **[ran]** a lo largo de todo; `openai_proxy --passthrough --log` |
 | **el chain que lo corre** | sesiones de Colab de ≤ 60 min, reanudables, adaptadores traídos mientras la sesión vive | **[ran]** cada corrida de arriba |
 
@@ -80,19 +84,20 @@ indique otro.
 | | estado | evidencia |
 |---|---|---|
 | **sin datos reales** | cada suite se genera acá; ningún tráfico real pasó todavía por el sistema | — |
-| **la afirmación central de la memoria** — una biblioteca extiende a un experto a un procedimiento sobre el que nunca entrenó | **medida tres veces, no pasa.** El adaptador empata o pierde contra el base *sin entrenar* con las notas correctas delante: 35 contra 45 de 56; sobre un segundo corpus 42 contra 46 de 66 | **[ran]** W5, W5c |
+| **la afirmación central de la memoria, sobre la biblioteca de enfermería** — una biblioteca extiende a un experto a un procedimiento sobre el que nunca entrenó | **medida tres veces, no pasa** (sobre la wiki de enunciados atómicos sí pasó — §2, W9). El adaptador empata o pierde contra el base *sin entrenar* con las notas correctas delante: 35 contra 45 de 56; sobre un segundo corpus 42 contra 46 de 66 | **[ran]** W5, W5c |
 | **leer un valor bajo una condición, en una nota nunca vista** | el adaptador escribe el primer número: 0/11, y después 4/15 tras un corpus que mostró la forma sobre ocho notas — donde lee las notas *entrenadas* 17/18 y el base sin entrenar lee 15/15. *Un corpus balanceado sobre ocho notas enseña ocho notas* | **[ran]** W5c |
 | **búsqueda de notas** | un encoder estándar: recall@3 0,638 contra una vara de 0,80 fijada de antemano (por palabras: 0,064). **Y la consulta es del adaptador:** ante una redacción nueva escribe una consulta de entrenamiento de otro tema, textual en 9 de 11 fallas, donde el mismo buscador de palabras, con el enunciado del pedido, lista la nota necesaria 16 de 16 | **[ran]** W3, W5d |
 | **un router aprendido** | dos brazos (n-gramas, embeddings) pierden todo pedido legítimo de un remitente no visto; el default es un diccionario de palabras clave | **[ran]** M2 |
 | **mover un experto que razona a una base nueva** | 80/90 contra su propio 90/90: diez cadenas correctas hasta el número cuya última línea se sale del formato del corpus; no liberado | **[ran]** M7 brazo 0c |
 | **escalamiento por caso** | las dos reglas disponibles entregan menos que rutear por región: las cadenas equivocadas del experto son *consistentes* | **[ran]** P41 |
-| **aislamiento por usuario y autenticación** | una API key, un único destino | **[read]** `openai_proxy.py` |
+| **aislamiento por usuario y autenticación** | el proxy: una API key, un único destino **[read]**. El gateway de la escuela: un token firmado por pedido → usuario, rol, tenant — HS256 con un secreto de demo; la verificación RS256/JWKS de un proveedor de identidad real **no está construida** | **[ran]** `examples/school/gateway.py` |
 | **concurrencia** | docenas de sesiones alternando entre adaptadores: nunca medido | — |
 | **streaming** | bufferizado a propósito: una llamada a herramienta es una llamada recién cuando se cierra | **[read]** `docs/OPENCLAW.md` |
 | **instalabilidad** | corre sobre una GPU alquilada a través de un túnel y un chain de Colab; sin paquete, sin contenedor | — |
 | **el ahorro en plata** | nunca medido | — |
-| **cualquier idioma que no sea inglés** | nunca medido; el despliegue de referencia habla español | — |
-| **escrituras** | cada herramienta medida *lee*, *decide* o *calcula*. Ningún experto fue medido ejecutando una acción que cambie un sistema de registro | — |
+| **cualquier idioma que no sea inglés** | los turnos held-out de la escuela y el día de la demo mezclan español e inglés (M8: 70/70); nada más medido fuera del inglés | **[ran]** M8 |
+| **escrituras** | medidas una vez, en la demo de la escuela: una inscripción borradoreada, un ticket de mantenimiento cargado, y dos escrituras de cara afuera (un cobro, un anuncio) retenidas hasta que un director las aprobó — sobre un almacén de demo, no un sistema de registro real | **[ran]** M8, la demo de la escuela |
+| **el modelo todavía inventa** | después de un resultado real de herramienta el LoRA del personal de la escuela puede escribir más líneas en el formato del resultado y restablecerlas; el gateway reemplaza esa respuesta por el texto propio de las herramientas (2 de 5 respuestas locales el día de la demo) — atrapado y contado, no curado | **[ran]** M8, la demo de la escuela |
 
 ## 4. El hallazgo que reordena el diseño: el adaptador navega, el base lee
 

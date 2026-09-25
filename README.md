@@ -73,7 +73,8 @@ Full specification: [`docs/MEMORY.md`](docs/MEMORY.md) **[spec]**.
    atomic statement:** a page is a list of one-sentence, checkable statements under anchors
    (`§supplier`, `§if-damaged`), links live inside the statement that names them, and an answer cites
    the statement it rests on — so the memory is verifiable, not just searchable
-   ([`docs/MEMORY.md`](docs/MEMORY.md) §1.6 **[spec]**, measured next as W9).
+   ([`docs/MEMORY.md`](docs/MEMORY.md) §1.6 — **[ran]** W9: a trajectory LoRA walks it 35/40 where the untrained
+   base walks 0/40, 3-hop 16/16).
 2. **The radar — embeddings compressed to one subdomain.** Not a general search engine. In a closed
    domain the vocabulary has exact functional meaning, so a small vector is enough to map the only
    two intents that matter: *what situation is this note for* (`when:`) and *what does it define*
@@ -90,11 +91,15 @@ Full specification: [`docs/MEMORY.md`](docs/MEMORY.md) **[spec]**.
    tag. It applies local rules automatically: a ward that cleanses for 20 seconds has that value
    substituted *before* the note reaches the expert, which reads the rule already resolved. And it
    watches for cheating: if step 4 `requires` step 1 and the expert never opened step 1, the runtime
-   cuts the execution — without needing to know whether the final answer was right.
+   cuts the execution — without needing to know whether the final answer was right. **And it decides what
+   a reply may state:** every answer cites the statement it rests on, and the referee checks the citation;
+   in front of tools, the gateway shows no line that is not in a real tool result (`examples/common/grounding.py`).
 
-![Seven numbered panels joined by one line, like a subway map: a request, a search that lights three cards, a procedure opening, the line running along the harness shelf, a detour down to the wiki shelf and back, a calculator, the answer.](docs/img/memory-walkthrough.png)
-
-*One task, end to end. The detour from the harness to the wiki and back is the point.*
+> **[ILLUSTRATION PLACEHOLDER — `docs/img/memory-walkthrough.png`]**
+> *Being redrawn for pages of atomic statements; the brief is in [`docs/img/README.md`](docs/img/README.md). Six
+> panels on one line: a request, a search that lights three page cards, a page opening as its table of sections, one
+> sentence whose underlined name is the link to the next page, a third page's section, and the answer with its
+> citation stamped on it — the referee's check under the last panel.*
 
 **The gain.** If the protocol changes tomorrow you edit one markdown file in git. The LoRA is not
 retrained, because what it learned was to obey the links and read the notes.
@@ -103,23 +108,27 @@ retrained, because what it learned was to obey the links and read the notes.
 
 ## The request path
 
-![Five stations on one line: client, proxy, router, expert with its library, answer. From the router a dashed branch runs along the bottom to the frontier and rejoins at the answer. Under the expert, three keys: search, open, calc.](docs/img/request-path.png)
-
-*The path of a request. Abstaining to the frontier is a lane, not an error.*
+> **[ILLUSTRATION PLACEHOLDER — `docs/img/request-path.png`]**
+> *Being redrawn for the gateway; the brief is in [`docs/img/README.md`](docs/img/README.md). One line: an agent → the
+> gateway reads the signed token (user · role · tenant) → the role's local expert → tools run with that permission (a
+> refused record, a payment held for a director) → every line of the reply checked against a real tool result → the
+> answer; a dashed branch for out of scope, to the frontier or to a person; a log under all of it.*
 
 ```mermaid
 flowchart LR
-    C["client<br>OpenAI API · OpenClaw"] --> P["proxy<br>prune · member prompt"]
-    P --> R["router<br>a small model of the experts' corpora"]
-    R -- "falls in a corpus" --> E["expert LoRA<br>trained to navigate"]
-    E <--> M["runtime + library<br>search · open · calc"]
-    R -- "falls in none · or region measured to fail" --> F["frontier model"]
-    E --> A["answer"]
+    C["agent / client<br>OpenAI API · OpenClaw"] --> G["gateway<br>signed token → user · role · tenant"]
+    G --> R["route<br>the role names the member · the dictionary · abstain"]
+    R -- "in a member's region" --> E["expert LoRA on Gemma 4 E4B<br>trained to navigate"]
+    E <--> M["runtime + library<br>search · open · calc · pages of statements"]
+    E <--> T["tools, run with the token's permission<br>refused across tenants · payments held for a person"]
+    E --> V["grounding<br>every line in a real tool result"]
+    R -- "in none · or out of the role's scope" --> F["frontier model · or a person"]
+    V --> A["answer + log"]
     F --> A
     classDef local fill:#e8f1e4,stroke:#4a7a3a,color:#1d3314
     classDef art fill:#eef0f6,stroke:#4a5a8a,color:#1d2240
     classDef out fill:#f4e6d4,stroke:#9a6a2a,color:#3d2a0e
-    class P,R,E local
+    class G,R,E,T,V local
     class M art
     class F out
 ```
@@ -169,23 +178,24 @@ request routed to its own adapter, live through the OpenAI-compatible API and th
 served exactly the way its corpus taught it, reaches human-level accuracy on the job it was trained
 for (inbox triage, 0.989 against a bare base's 0.345) **[ran]**.
 
-**The open question the whole design turns on.** Does a library actually let an expert handle a
-procedure it never trained on, the way a person would look one up? Navigation transfers — the
-trained habit of searching, opening and following links works on notes the adapter has never seen —
-but *reading* a note whose shape the corpus never showed does not yet transfer reliably (35 of 56,
-against an untrained base handed the right note scoring 45 of 56). That is the one result in this
-README most likely to still be true next week, because the rest of the plan is built to answer it
-next **[ran]** `docs/PLAN.md` milestone 7.
+**The memory works on its first test bed [ran].** On a wiki of atomic statements whose facts no model can know,
+the untrained base cannot walk two- and three-hop questions (0 of 40); a trajectory LoRA trained on 32 other worlds
+walks them 35 of 40 with every answer's citation verified, 16 of 16 at three hops — and on Gemma 4 E4B, 38 of 40
+(`docs/PLAN.md` milestone 7, W9 and B1).
 
-**Next: atomic statements.** The library is being rebuilt as pages of verifiable one-sentence
-statements — *what are the works of the author of the Mona Lisa?* is a search, a section, a link and a
-section — first on an invented distributor wiki the model cannot know by heart, with the untrained
-base measured before any LoRA is trained for it **[spec]** `docs/MEMORY.md` §1.6, W9.
+**A reference organisation, working end to end [ran].** The school demo: identity from a signed token, another
+school's records refused by the tool layer, a payment held until a director approves it, out-of-scope requests
+handed to the frontier or to a person, a log and a dashboard — and **every reply checked against the real tool
+results by the gateway, outside the model**. 8 of 8 scenes on Gemma 4 E4B with a school-staff adapter, from 3 of 8
+with a bare model ([`docs/DEMO.md`](docs/DEMO.md)).
 
-**Not solved yet.** The router is still a keyword dictionary — its two learned replacements are both
-measured and neither passes, for the same reason: a request from an unfamiliar sender and a familiar
-listing followed by an unfamiliar task look alike to both **[ran]** `docs/PLAN.md` milestone 2. No
-real traffic has been measured anywhere in this repository yet.
+**The family is Gemma 4** since 2026-09-25: measured against Qwen3.5-4B on the same wiki, a tie, and the user's
+development stack targets Gemma; the released members move through the release gate one by one (milestone 1b).
+
+**Not solved yet.** The router is still a keyword dictionary — its two learned replacements are both measured and
+neither passes **[ran]** milestone 2. The small models still invent: in the school demo the gateway replaced 2 of 5
+local replies with the tools' own text — caught, counted, never shown, but not cured. The speculative pair has not
+started. No real traffic has been measured anywhere in this repository yet.
 
 **Everything else — every milestone, every arm, every run — moves as the project does and is not
 repeated here, on purpose.** [`docs/PLAN.md`](docs/PLAN.md) is the living state, with a gate and
@@ -238,6 +248,10 @@ reason: `--prune` (its own tool surface), `--member-prompt` (the prompt its corp
 | `training/harness/chain_serve.sh` | the Colab chain: provision, run detached, stream, fetch weights as they appear, resume |
 | `training/harness/bill.py` | prices an existing replay at real frontier rates — zero GPU, nothing re-run (`results/M6-bill-20260921/`) |
 | `examples/` | **the reference organisation, code-only, before any adapter** — `school/` and `distributor/`, both two tenants; a toy store, a tool layer that enforces permission outside the model, an MCP server per domain, an adversarial suite at 0 leaks; `examples/README.md` says how to point your own OpenClaw at it |
+| `training/wiki/` | **W9, the wiki of atomic statements**: a distributor world per seed, 1–3-hop questions, the citation grader, the trajectory runner and its corpus |
+| `examples/school/gateway.py`, `demo_run.py`, `school_arm.py` | **the school demo, as a working system**: signed identity, held writes and a director's approval, egress by role, grounding, a log and a dashboard; the school-staff trajectory LoRA and its measurement |
+| `training/harness/fake_vllm.py` | a fake `vllm serve` for the serving path's integration tests — the bugs it models were paid for on a card once |
+| `training/harness/family.py` | the model family in one place: Gemma 4 E4B for new members, Qwen3.5-4B for the released ones until re-released |
 | `releases/`, `results/` | the manifests, and the runs the documents cite |
 
 ## Documents

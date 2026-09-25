@@ -9,8 +9,9 @@ Esta es la especificación de implementación de la memoria por experto, el núc
 [`KNOWLEDGE-TRAJECTORIES.md`](KNOWLEDGE-TRAJECTORIES.md); este documento es el *qué construir*. La
 explicación que implementa es la del usuario, 2026-09-19. Marcadores de estado como en todas partes acá: **[ran]**
 medido en este repositorio, **[read]** leído en el código fuente o en un paper, **[spec]** decidido y todavía no
-construido. W1–W5e y W8 están construidos y medidos, el §10 dice qué mostró cada uno; **el §1.6, los
-enunciados atómicos, es el diseño del usuario del 2026-09-24 y es [spec] hasta que corra W9.**
+construido. W1–W5e, W8 y W9 están construidos y medidos, el §10 dice qué mostró cada uno; **el §1.6,
+los enunciados atómicos — el diseño del usuario del 2026-09-24 — PASÓ W9 [ran] 2026-09-25**: un LoRA
+de trayectoria la camina 35/40 donde el base sin entrenar camina 0/40 (Gemma 4 E4B: 38/40).
 
 Cinco piezas:
 
@@ -150,7 +151,7 @@ tienen el mismo `when:`. El conocimiento que vive en git recibe las mismas compu
 ---
 
 
-### 1.6 Enunciados atómicos — una página es una lista de enunciados verificables **[spec]** W9
+### 1.6 Enunciados atómicos — una página es una lista de enunciados verificables **[ran]** W9
 
 El diseño del usuario, 2026-09-24. La biblioteca tiene forma de **Wikipedia**: una **página** es sobre
 una sola cosa — un producto, un proveedor, un procedimiento — y está hecha de **enunciados atómicos**:
@@ -207,7 +208,14 @@ reales de W8 quedan como la prueba del formato sobre texto real.
 
 **Dónde vive el arnés.** Las secciones, el chequeo de la cita y los verbos son software. Elegir la
 sección y seguir el enlace correcto es lo que un **LoRA de trayectoria** aprendería por subdominio — y
-se compra sólo si el base sin entrenar todavía no lo hace: lo decide el brazo de margen de W9.
+se compra sólo si el base sin entrenar todavía no lo hace: lo decide el brazo de margen de W9. **Lo
+decidió [ran]:** el base sin entrenar nunca escribió un verbo después de un resultado de búsqueda
+(0/40); entrenadas sobre otros 32 mundos, las dos semillas caminaron el mundo de evaluación 35/40 con
+cada cita verificada, 3-hop 16/16 — un empate con el base al que se le entregaron los enunciados del
+oráculo. **Frente a las herramientas de una organización el mismo principio vale un nivel más arriba:**
+el gateway no muestra ninguna línea de una respuesta que un resultado real de herramienta no contenga
+(`examples/common/grounding.py`), porque un LoRA de trayectoria todavía puede inventar una línea con el
+formato de un resultado **[ran]** M8.
 
 ## 2. El radar — embeddings comprimidos a un subdominio
 
@@ -468,9 +476,10 @@ turno que continúa. El corpus lo llama; nada lo imita.
 
 ## 6. En operación — una tarea, de punta a punta
 
-![Siete paneles numerados unidos por una línea, como un mapa de subte: un pedido, una búsqueda que ilumina tres fichas, un procedimiento que se abre, la línea que recorre el estante del arnés, un desvío hacia el estante de la wiki y de vuelta, una calculadora, la respuesta.](../img/memory-walkthrough.png)
-
-*Una tarea, de punta a punta. El desvío del arnés a la wiki y de vuelta es el punto.*
+> **[ILLUSTRATION PLACEHOLDER — `docs/img/memory-walkthrough.png`]**
+> *Siendo redibujada para páginas de enunciados atómicos (§1.6); el brief está en [`img/README.md`](../img/README.md): un pedido, una
+> búsqueda que ilumina tres fichas de página, una página como su tabla de secciones, una oración cuyo nombre subrayado
+> enlaza a la próxima página, la sección de una persona, la respuesta con su cita estampada y el chequeo del árbitro.*
 
 1. **Llega la tarea:** *"Infuse 500 mL over 4 hours by gravity; drop factor 20 gtt/mL."*
 2. **El experto consulta su radar:** `<search shelf=harness>start a primary infusion</search>`.

@@ -56,7 +56,7 @@ handle leaves — to a frontier model, or to a person where policy says nothing 
 
 ## 2. What works today
 
-All on generated suites; §3 says what that costs. Base model `Qwen/Qwen3.5-4B` unless noted.
+All on generated suites; §3 says what that costs. Base model `Qwen/Qwen3.5-4B` unless noted; **since 2026-09-25 new members are trained on `google/gemma-4-E4B-it`** (B1 **[ran]**, a tie, the user's decision).
 
 | piece of the target | what is established | evidence |
 |---|---|---|
@@ -68,6 +68,9 @@ All on generated suites; §3 says what that costs. Base model `Qwen/Qwen3.5-4B` 
 | **the library** | note format, lint, first library: 94 linked notes, an example site layer; 72/72 oracle walks | **[ran]** W1 |
 | **the referee** | three verbs with results inline, opaque ids re-drawn per conversation, site rules applied before a note is shown, a guard that cuts a walk that skips a required step; 72/72 walks, 0 refusals, three cheating walks cut | **[ran]** W2 |
 | **navigation transfers to a procedure never trained on** | against the untrained base made to navigate: 42 : 0; shared-line rows 22/22 (the base handed the right notes: 8/22); finding one's place mid-procedure 14/22 (5/22); 0 retrieval misses, 5 refused verbs in 88 walks | **[ran]** W5c |
+| **a memory that answers two- and three-hop questions, verifiably** | pages of atomic statements with the links inside the statements; the untrained base walks them 0/40, a trajectory LoRA trained on other worlds 35/40 on both seeds (Gemma 4 E4B: 38/40), 3-hop 16/16; every answer cites `[id§anchor]` and the referee checks it | **[ran]** W9, B1 |
+| **a reference organisation, end to end** | the school: identity from a signed token, tenant boundary in the tool layer, payments and all-families messages held until a director approves, out-of-scope to the frontier or a person, every reply grounded in real tool results by the gateway, a log and a dashboard — 8/8 scenes on Gemma 4 E4B + a school-staff adapter (3/8 on a bare model); the adapter 70/70 on held-out turns against the bare base's 27/70 | **[ran]** M8, `results/DEMO-school-gemma-20260925` |
+| **integration tested before a GPU is bought** | a fake `vllm serve` that reproduces vLLM 0.30 at the edges that cost sessions (a repeated `--lora-modules` keeps the last; a model it does not serve is a 404); the runners' whole sessions run against it in seconds | **[ran]** `tests/test_fake_vllm.py`, `tests/test_school_demo.py` |
 | **the measurement kit** | headroom-first, paired exact sign tests, briefs with falsifiers written before the run, a grader that separates *right*, *right in another format*, *right but never read*; traffic **shapes** logged in passthrough without storing prompts | **[ran]** throughout; `openai_proxy --passthrough --log` |
 | **the chain that runs it** | Colab sessions of ≤ 60 min, resumable, adapters fetched while the session lives | **[ran]** every run above |
 
@@ -76,19 +79,20 @@ All on generated suites; §3 says what that costs. Base model `Qwen/Qwen3.5-4B` 
 | | state | evidence |
 |---|---|---|
 | **no real data** | every suite is generated here; no real traffic has passed through the system | — |
-| **the memory's central claim** — a library extends an expert to a procedure it never trained on | **measured three times, not passed.** The adapter ties or trails the *untrained* base handed the right notes: 35 vs 45 of 56; on a second corpus 42 vs 46 of 66 | **[ran]** W5, W5c |
+| **the memory's central claim, on the nursing library** — a library extends an expert to a procedure it never trained on | **measured three times, not passed** (on the atomic-statement wiki it passed — §2, W9). The adapter ties or trails the *untrained* base handed the right notes: 35 vs 45 of 56; on a second corpus 42 vs 46 of 66 | **[ran]** W5, W5c |
 | **reading a value under a condition, in an unseen note** | the adapter writes the first number: 0/11, then 4/15 after a corpus that showed the shape over eight notes — where it reads the *trained* notes 17/18 and the untrained base reads 15/15. *A balanced corpus over eight notes teaches eight notes* | **[ran]** W5c |
 | **note search** | an off-the-shelf encoder: recall@3 0.638 against a bar of 0.80 fixed beforehand (word matching: 0.064). **And the query is the adapter's:** on a new wording it writes a training query for another topic, verbatim in 9 of 11 misses, where the same word-matcher given the request's own statement lists the needed note 16 of 16 | **[ran]** W3, W5d |
 | **a learned router** | two arms (n-grams, embeddings) lose every legitimate request from an unseen sender; the default is a keyword dictionary | **[ran]** M2 |
 | **moving a reasoning expert to a new base** | 80/90 against its own 90/90: ten chains right to the number whose last line leaves the corpus's format; not released | **[ran]** M7 arm 0c |
 | **per-case escalation** | both available rules deliver less than routing by region: the expert's wrong chains are *consistent* | **[ran]** P41 |
-| **per-user isolation and auth** | one API key, one destination | **[read]** `openai_proxy.py` |
+| **per-user isolation and auth** | the proxy: one API key, one destination **[read]**. The school gateway: a signed token per request → user, role, tenant — HS256 with a demo secret; a real identity provider's RS256/JWKS verification is **not built** | **[ran]** `examples/school/gateway.py` |
 | **concurrency** | dozens of sessions alternating between adapters: never measured | — |
 | **streaming** | buffered on purpose: a tool call is only a call once it closes | **[read]** `docs/OPENCLAW.md` |
 | **installability** | runs on a rented GPU through a tunnel and a Colab chain; no package, no container | — |
 | **the saving in money** | never measured | — |
-| **any language but English** | never measured; the reference deployment speaks Spanish | — |
-| **writes** | every measured tool *reads*, *decides* or *calculates*. No expert has been measured performing an action that changes a system of record | — |
+| **any language but English** | the school's held-out turns and demo day mix Spanish and English (M8: 70/70); nothing else measured outside English | **[ran]** M8 |
+| **writes** | measured once, in the school demo: an enrolment drafted, a maintenance ticket filed, and two outward-facing writes (a charge, an announcement) held until a director approved them — on a demo store, not a real system of record | **[ran]** M8, the school demo |
+| **the model still invents** | after a real tool result the school-staff LoRA can write more lines in the result's format and restate them; the gateway replaces such a reply with the tools' own text (2 of 5 local replies on the demo day) — caught and counted, not cured | **[ran]** M8, the school demo |
 
 ## 4. The finding that reshapes the design: the adapter navigates, the base reads
 

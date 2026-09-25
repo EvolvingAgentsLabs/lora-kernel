@@ -603,6 +603,13 @@ that decide the shape of a step:
 
 ## 5. History
 
+- **2026-09-25** — **the school demo [ran]: 8/8 on Gemma 4 E4B, the system end to end.** M8: a school-staff trajectory
+  LoRA on 700 full gateway turns — held-out 70/70 on both seeds against the bare Gemma's 27/70 (43 : 0), demo day 8/8
+  against 3/8. Read where it happens it can still invent a line in a tool result's format and quote a planted
+  instruction; the gateway now grounds every reply in real tool results and redacts planted instructions, outside the
+  model — on the recorded demo day it replaced 2 of 5 local replies, the user saw neither. Two images withdrawn to be
+  redrawn (`memory-walkthrough.png`, `request-path.png`); the documents carry their placeholders
+  ([`M8`](../results/M8-school-staff-20260925/BRIEF.md), [`demo`](../results/DEMO-school-gemma-20260925/README.md)).
 - **2026-09-25** — **everything moves to Gemma 4, the user's decision on B1's tie.** New members are trained on
   `gemma-4-E4B-it` (`training/harness/family.py`: SMALL; the active runners default to it); the large half of a pair is
   named `gemma-4-31B-it`, not measured; milestone 1b re-releases the two Qwen members on Gemma through the gate. The
