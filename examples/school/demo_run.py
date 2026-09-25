@@ -14,7 +14,9 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import time
+from collections import Counter
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -82,7 +84,37 @@ def check(expect: dict, out: dict) -> dict:
             ok[k] = got[k] == expect[k]
     if "no_leak" in expect:
         ok["no_leak"] = not any(w.lower() in reply.lower() for w in expect["no_leak"])
+    # THE REPLY, NOT ONLY THE CALL. The first run passed a scene whose tool returned "field trip permission"
+    # and whose reply said "homework: Due Monday" — the check read the call and never the answer [ran]
+    # results/DEMO-school-20260925. Three more, each mechanical: the reply is words, not a raw tag; no tool is
+    # called more than twice (a loop is not an answer); and where a tool RETURNED something, the reply shares
+    # at least one content word with it — a grounded answer, the crudest check that catches an invented one.
+    ok["clean_reply"] = not TAG.search(reply)
+    ok["no_loop"] = all(n <= 2 for n in Counter(c["tool"] for c in calls).values())
+    results = " ".join(c.get("result", "") for c in calls)
+    if results.strip() and got["route"] == "local":
+        ok["grounded"] = bool(_words(results) & _words(reply))
     return {"got": got, "ok": ok, "passed": all(ok.values()), "reply": reply}
+
+
+TAG = re.compile(r"</?[a-z_]+>")
+_STOP = {"the", "and", "for", "with", "this", "that", "from", "have", "your", "está", "para", "como", "pero", "sobre"}
+
+
+def _words(text: str) -> set[str]:
+    return {w for w in re.findall(r"[a-záéíóúñ0-9]{4,}", text.lower()) if w not in _STOP}
+
+
+def rescore(rec: dict) -> dict:
+    """Re-read a recorded run with the current checks — zero GPU, nothing re-run."""
+    for s, (_, _, expect) in zip(rec["scenes"], SCENES):
+        if "got" in s:
+            out = {"x_route": s["got"]["route"], "x_calls": next(e["calls"] for e in rec["events"] if e["user"] == s["who"] and
+                                                                    [c["tool"] for c in e["calls"]] == s["got"]["tools"]),
+                   "choices": [{"message": {"content": s["reply"]}}]}
+            s.update(check(expect, out))
+    rec["passed"] = sum(s["passed"] for s in rec["scenes"])
+    return rec
 
 
 def run_scenario() -> dict:
@@ -129,8 +161,16 @@ def main() -> int:
     ap.add_argument("--base", default=BASE)
     ap.add_argument("--adapter", action="append", default=[], help="pool adapters (ignored)")
     ap.add_argument("--render", default=None)
+    ap.add_argument("--rescore", default=None, help="re-read a recorded run with the current checks, zero GPU")
     ap.add_argument("--out", default="demo_school.json")
     a = ap.parse_args()
+    if a.rescore:
+        rec = rescore(json.loads(Path(a.rescore).read_text()))
+        Path(a.rescore).write_text(json.dumps(rec, indent=1, ensure_ascii=False))
+        for sc in rec["scenes"]:
+            print(f"[demo] {'PASS' if sc['passed'] else 'FAIL'} {sc['who']}: {sc.get('ok')}")
+        print(f"[demo] {rec['passed']}/{len(rec['scenes'])} scenes as expected")
+        return 0
     if a.render:
         print(render(json.loads(Path(a.render).read_text())))
         return 0

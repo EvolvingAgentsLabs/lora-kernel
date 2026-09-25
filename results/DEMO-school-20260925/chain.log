@@ -1,0 +1,24 @@
+=== session 1 of 1 · srv074559 · L4
+    boot clone: rc=0 46e3e14 The school demo, as a working system: a gateway with signed identity, held writes, egress, a log and a dashboard
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 46e3e14 The school demo, as a working system: a gateway with signed identity, held writes, egress, a log and a dashboard
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    46e3e14 The school demo, as a working system: a gateway with signed identity, held writes, egress, a log and a dashboard | 0.30.0
+    this module trains its own adapter — nothing to carry in
+    runner started (launch 1)
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [demo] compras-north: PASS · nothing purchasing's tools cover: its egress is the frontier · route frontier
+    [demo] educador-north: PASS · outside the tools, and the educator's egress is a person · route person
+    [demo] 6/8 scenes as expected · cfo self-approval refused True · approved by the director: True · bill $0.003795
+    the runner wrote its result — done
+exit 0

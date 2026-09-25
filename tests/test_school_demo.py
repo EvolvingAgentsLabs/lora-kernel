@@ -51,7 +51,7 @@ def scripted(model: str, prompt: str) -> str:
     if "ERROR: permission denied" in turn:
         return "No tengo acceso a ese alumno."
     if "</" in turn and ">=" in turn:
-        return "Listo."
+        return "Listo: " + turn.rsplit(">= ", 1)[1].strip().splitlines()[0]     # answered FROM the result
     asked = prompt.rsplit("<|user|>", 1)[-1]
     rules = [("agenda del alumno 3", "<agenda_read>3</agenda_read>"), ("alumno 3", "<agenda_read>3</agenda_read>"),
              ("alumno 1", "<agenda_read>1</agenda_read>"),
