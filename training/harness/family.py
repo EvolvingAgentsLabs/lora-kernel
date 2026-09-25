@@ -1,5 +1,8 @@
 """The model family, in one place — CLAUDE.md §0 and docs/ARCHITECTURE.md §6.
 
+M1b **[ran]** 2026-09-25: `email-full` is released on SMALL (`releases/email-full@v3.json`); `desk-commitment` ties the
+bare SMALL at the ceiling and stays on PREVIOUS (`@v2`) until a suite with room decides it.
+
 SMALL is the base every NEW member is trained on: Gemma 4 E4B, the user's decision of 2026-09-25 on B1 **[ran]**
 (a tie with Qwen3.5-4B on W9, 38 vs 35 and 35; the development stack targets Gemma). PREVIOUS is the base the
 released members were trained on (`releases/*@v2.json`); the serving pool keeps it until each member is re-released

@@ -87,7 +87,7 @@ arms are bought only once there is an effect to attribute.
 | # | milestone | depends on | gate | state |
 |---|---|---|---|---|
 | **1** | the pool on Qwen 3.x small | D2 ✅ | both members released on `Qwen3.5-4B`, each tying or beating its Qwen 2.5 release, paired | ✅ **[ran] 2026-09-19 — MOVED.** G1 `applied` on both full-recipe adapters; `email-full` **471/475 = its recorded 471**, tie 1 : 1; `desk-commitment` **240/240**, tie; `releases/*@v2.json`. Four sessions under an hour each ([`BRIEF`](../results/M1-pool-qwen35-20260919/BRIEF.md)) |
-| **1b** | **the pool re-released on Gemma 4 E4B** | B1 ✅ | `email-full` and `desk-commitment` retrained on `google/gemma-4-E4B-it` from the same corpora and recipe, each tying or beating its `@v2` Qwen3.5-4B release on the same cases, paired; `@v3` manifests | **next** — pre-registered with its brief before any session |
+| **1b** | **the pool re-released on Gemma 4 E4B** | B1 ✅ | `email-full` and `desk-commitment` retrained on `google/gemma-4-E4B-it` from the same corpora and recipe, each tying or beating its `@v2` Qwen3.5-4B release on the same cases, paired; `@v3` manifests | **[ran] 2026-09-25 — NOT MOVED as a pool:** `email-full` ties its `@v2` (469 vs 471, 1 : 3) and beats the bare Gemma (119 : 0) → **`email-full@v3` on Gemma**; `desk-commitment` ties `@v2` and the bare Gemma alike (240/240, the ceiling) — no adapter needed there, stays `@v2` ([`BRIEF`](../results/M1b-pool-gemma4-20260925/BRIEF.md)) |
 | **2** | the router as a tiny model of the corpora | the members' corpora | misrouted-to-local no higher than the dictionary's on prompts the dictionary was not written for; abstains on out-of-distribution text | **arm 1 [ran] 2026-09-19 — does not pass.** Foreign text, fresh sets: dictionary 59/128 served locally, n-gram router **0/128**; legitimate requests from unseen senders: dictionary loses 0/120, router loses **120/120**. The dictionary stays; **arm 2 is an embedding model**, shared with milestone 7 |
 | **3** | the large half of one pair | 1 | a LoRA on ~~`Qwen3.8-27B`~~ `gemma-4-31B-it` (family.LARGE) is applied when served; large + LoRA beats small + LoRA on the deep band, paired | — |
 | **4** | the speculative pair | 3 | acceptance of small-LoRA drafts under large-LoRA verification exceeds acceptance under the bare large model | — |
@@ -577,7 +577,7 @@ oracle is 140/140 through the same function ([`BRIEF`](../results/M7-W5-kill-arm
 **Adopted, 2026-09-25: Gemma 4** — `google/gemma-4-E4B-it` for every new member; `gemma-4-31B-it` named for the
 large half, not measured. B1 **[ran]**: a tie with Qwen3.5-4B on W9 (38 vs 35, 35), which by the user's rule written
 before the comparison chooses Gemma. P29's block is lifted by excluding the vision/audio towers. The released members
-stay on `Qwen3.5-4B` until each is re-released on Gemma through the gate (next, below); Qwen 2.5 stays the control arm.
+move one by one: `email-full@v3` on Gemma (M1b [ran]); `desk-commitment@v2` stays on `Qwen3.5-4B`; Qwen 2.5 stays the control arm.
 
 **Previous, until re-release: Qwen 3.x** (`Qwen3.5-4B`, `Qwen3.8-27B`) — one id space **[ran]** D0, the family of every
 release so far. ~~Adopted: Qwen 3.x … Alternative, not now: Gemma 4, blocked at PEFT [ran] P29.~~
@@ -603,6 +603,7 @@ that decide the shape of a step:
 
 ## 5. History
 
+- **2026-09-25** — **M1b [ran]: `email-full` released on Gemma 4 E4B (`@v3`)** — a tie with its Qwen `@v2` (469 vs 471 of 475) and 119 : 0 over the bare Gemma. `desk-commitment` ties both `@v2` and the bare Gemma at 240/240: the pool does not move as a unit by the verdict as written; desk stays on Qwen until a suite with room above the base decides it ([`BRIEF`](../results/M1b-pool-gemma4-20260925/BRIEF.md)).
 - **2026-09-25** — **the school demo [ran]: 8/8 on Gemma 4 E4B, the system end to end.** M8: a school-staff trajectory
   LoRA on 700 full gateway turns — held-out 70/70 on both seeds against the bare Gemma's 27/70 (43 : 0), demo day 8/8
   against 3/8. Read where it happens it can still invent a line in a tool result's format and quote a planted

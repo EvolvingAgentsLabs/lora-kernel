@@ -43,7 +43,7 @@ el proyecto?"* **When in doubt, the next step is the one that puts a weight delt
   `Qwen3.5-4B` on W9's wiki with the same corpus and recipe: a tie (38/40 against 35 and 35, 4 : 1 each), and the user
   had decided before any stage ran that parity chooses Gemma because the development stack targets it. The LoRA must
   exclude Gemma's vision/audio towers (`s4_train.towers_to_exclude`) — P29's block was that and nothing else. **The
-  released members stay on `Qwen3.5-4B`** (`releases/*@v2.json`) until each is re-released on Gemma through the gate;
+  released members move one by one through the gate:** `email-full@v3` is on Gemma since M1b **[ran]**; `desk-commitment@v2` stays on `Qwen3.5-4B` (it ties the bare Gemma at the ceiling, 240/240);
   the `@v1` releases on `Qwen2.5-3B-Instruct` stay as the control arm. New regions still check the bare base's headroom
   first — Gemma's leaves less than Qwen's (it walks W9 untrained 19/40 where Qwen walks 0/40). The large half of a pair
   on Gemma is not measured. ~~The family is Qwen 3.x and that is decided … Gemma 4 is the named alternative and is

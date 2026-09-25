@@ -243,8 +243,9 @@ Gemma, because the development stack targets it. Two engineering constraints com
 vision and audio towers, whose projections are `Gemma4ClippableLinear` (P29's block, and nothing else —
 `training/s4_train.py::towers_to_exclude`); and its thinking channel stays off for members, as Qwen's did.
 
-**The released members stay on `Qwen3.5-4B`** (`releases/*@v2.json`) until each is re-released on Gemma through the
-release gate; the `@v1` releases on `Qwen2.5-3B-Instruct` stay as the control arm. The family is named in one place,
+**The released members move one by one through the release gate:** `email-full@v3` is on Gemma (M1b **[ran]**: a tie
+with `@v2`, 119 : 0 over the bare Gemma); `desk-commitment@v2` stays on `Qwen3.5-4B` — it ties the bare Gemma at the
+ceiling; the `@v1` releases on `Qwen2.5-3B-Instruct` stay as the control arm. The family is named in one place,
 `training/harness/family.py`. ~~Qwen 3.x: `Qwen3.5-4B` small, `Qwen3.8-27B` large … Gemma 4 meets the id-space
 requirement and not yet the PEFT one **[ran]** P29.~~
 

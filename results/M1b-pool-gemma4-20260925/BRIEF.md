@@ -25,3 +25,20 @@ member stays on Qwen and the user decides whether stack alignment is worth a mea
 loss). A member tying the new base → the region needs no adapter on Gemma, reported as headroom.
 
 **Not measured:** the deep band; the 31B; the MTP drafter. **Redesign counter: 0.**
+
+## Result **[ran]** 2026-09-25 · NOT MOVED as a pool — email-full moves, desk-commitment needs no adapter on Gemma
+
+One A100 trained both members (`email-full-g4` `725ad8dd…`, `desk-commitment-g4` `f8dc47d7…`); one L4 carried both in:
+G1 applied on both, G2 reachable, G2′ `auto` routed each probe to its member, 0 transport errors (`pool_base.json`).
+
+| member on Gemma 4 E4B | vs its `@v2` (Qwen3.5-4B) | vs the bare Gemma |
+|---|---|---|
+| **email-full** | 469 vs 471 of 475 — **tie** (1 : 3, $p = 0.625$) | 469 vs 350 — **improvement** (119 : 0) |
+| **desk-commitment** | 240 vs 240 — **tie** | 240 vs 240 — **tie**: the bare Gemma is already at the ceiling |
+
+`pool_base.verdict`, as written, requires every member to beat the new base: **NOT MOVED**. Read by the brief's own
+table, row by row: **email-full moves** — `releases/email-full@v3.json` on Gemma, `@v2` stays the control;
+**desk-commitment ties the new base — the region needs no adapter on Gemma**, reported as headroom, not a failure.
+M1 had said it before this ran: desk's shallow band sits at the ceiling (240/240), so a tie there says little. The
+desk member stays released on Qwen (`@v2`) until a suite with room above the base decides it — the verdict is not
+rewritten to release it.
