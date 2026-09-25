@@ -10,10 +10,9 @@ cero GPU, sin modelo** — el falsificador que este repositorio se puede permiti
 `docs/FRAMEWORK.md` §9: Postgres RLS y Auth0 son una *implementación* de "permiso reforzado
 fuera del modelo", no el falsificador en sí.
 
-**`school/` es el caso principal, 2026-09-21** — la organización de referencia del propio
-usuario (`docs/img/solution-architecture-school.png`, hermana de la de la distribuidora,
-`docs/img/solution-architecture.png`, las dos instancias de la tabla del §1 de
-`docs/FRAMEWORK.md`) — expandida a su roster completo de siete roles: `educador`, `compras`,
+**`school/` es el caso principal, 2026-09-21** — un centro educativo con un roster de funciones
+laborales comunes (una instancia de la tabla del §1 de `docs/FRAMEWORK.md`, como la de la
+distribuidora, `docs/img/solution-architecture.png`), expandido a siete roles: `educador`, `compras`,
 **`trainee`, `marketing`, `it`, `cfo`, `dev`**. Trece herramientas, seis de ellas de escritura
 (`WRITE_TOOLS` en `tools.py`, correctamente anotadas `readOnlyHint: false` sobre MCP — un
 `true` general habría dejado que un agente se saltee la aprobación en `billing_charge`), cuatro

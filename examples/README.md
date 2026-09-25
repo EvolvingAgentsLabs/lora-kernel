@@ -9,10 +9,9 @@ schema, not new infrastructure. **sqlite, mocks, zero GPU, no model** — the fa
 repository can afford today, per `docs/FRAMEWORK.md` §9: Postgres row-level security and Auth0
 are one *implementation* of "permission enforced outside the model," not the falsifier itself.
 
-**`school/` is the main case, 2026-09-21** — the user's own reference deployment
-(`docs/img/solution-architecture-school.png`, the sibling of the distributor's
-`docs/img/solution-architecture.png`, both instances of `docs/FRAMEWORK.md` §1's table) —
-expanded to its full seven-role roster: `educador`, `compras`, **`trainee`, `marketing`, `it`,
+**`school/` is the main case, 2026-09-21** — an educational centre with a roster of common job
+functions (an instance of `docs/FRAMEWORK.md` §1's table, like the distributor's
+`docs/img/solution-architecture.png`), expanded to seven roles: `educador`, `compras`, **`trainee`, `marketing`, `it`,
 `cfo`, `dev`**. Thirteen tools, six of them writes (`WRITE_TOOLS` in `tools.py`, correctly
 annotated `readOnlyHint: false` over MCP — a blanket `true` would have let an agent skip
 approval on `billing_charge`), four planted injection strings, two tenants throughout.
