@@ -231,7 +231,7 @@ print(subprocess.run(
     # showed as silence for its whole length and could not have been stopped
     # early [ran] 2026-09-14. Fifth time a log held the answer and a filter
     # kept it out, so tests/test_chain_scripts.py now checks the two agree.
-    "grep -E '(serve|gate|tiny|native|matrix|run|arm|resume|cost|domain|P24|sweep|depth|fluids|sim|pool|judge|conf|shim|tunnel|3p|read|skip|train|loss|corpora|draft|desk|zero|code|rank|substrate|release|attr|sim|awq|tiny|precision|kb|route|live|radar|bill|school)\\]|"
+    "grep -E '(serve|gate|tiny|native|matrix|run|arm|resume|cost|domain|P24|sweep|depth|fluids|sim|pool|judge|conf|shim|tunnel|3p|read|skip|train|loss|corpora|draft|desk|zero|code|rank|substrate|release|attr|sim|awq|tiny|precision|kb|route|live|radar|bill|school|wiki|demo)\\]|"
     "passed [0-9]+|clears the gate|prompts/s|Traceback|[Ee]rror|OutOfMemory|Killed|"
     # THE TRAINER'S ONLY SIGN OF LIFE IS ITS STEP BAR. `loss]` above has never matched: this
     # harness's Trainer prints no loss line at all — zero in M1's logs, zero in arm 0c's 114 steps
@@ -290,11 +290,17 @@ PY
     if [ -f "$LOCAL" ] && grep -q '"finished"\|"decision"\|stopped_at_gate\|"trained_only"' "$LOCAL" 2>/dev/null; then
       echo "    the runner wrote its result — done"; break
     fi
-    echo "$out" | grep -qE "prompts/s|decision:|clears the gate|STOPPED|Traceback|OutOfMemory|Killed|never came up" && break
+    # A PYTHON EXCEPTION'S LAST LINE ENDS A RUN TOO. The peek shows three lines, and a traceback's
+    # `Traceback` header is rarely one of them: W9's scoring died on `urllib.error.HTTPError: …`
+    # and the chain kept polling an idle L4 [ran] 2026-09-24.
+    echo "$out" | grep -qE "prompts/s|decision:|clears the gate|STOPPED|Traceback|OutOfMemory|Killed|never came up|^ *[A-Za-z_.]+(Error|Exception): " && break
     sleep 45
   done
   tmo 300 colab download -s "$S" /content/lora-kernel/$RESULTS_NAME "$LOCAL" >/dev/null 2>&1 || true
   tmo 300 colab download -s "$S" /content/lora-kernel/vllm.log "$RUN_DIR/vllm.log" >/dev/null 2>&1 || true
+  # THE RUNNER'S OWN LOG COMES HOME TOO. B1's first gate failed Gemma's in-process step in 67 seconds and
+  # the reason stayed on the VM: the chain fetched the results and vLLM's log, never run.log [ran] 2026-09-25.
+  tmo 300 colab download -s "$S" /content/lora-kernel/run.log "$RUN_DIR/run.log" >/dev/null 2>&1 || true
   # WEIGHTS A RUNNER PRODUCED COME HOME. P64 attempt 1 trained and released a member
   # and this chain stopped the session with the adapter still on it [ran] 2026-09-18;
   # a runner that trains packs `adapters_out.tgz` and it is fetched here.

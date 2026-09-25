@@ -1,0 +1,16 @@
+=== session 1 of 1 · srv145739 · L4
+    boot clone: rc=0 b5c2844 W9 scoring, attempt 1 lost to a harness bug: one --lora-modules flag, and the chain now stops on an exception's last line
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 b5c2844 W9 scoring, attempt 1 lost to a harness bug: one --lora-modules flag, and the chain now stops on an exception's last line
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    b5c2844 W9 scoring, attempt 1 lost to a harness bug: one --lora-modules flag, and the chain now stops on an exception's last line | 0.30.0
+    carried the adapters in (4 chunks)
+    runner started (launch 1)
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 withlib-s1=adapters/wiki-walks-s1
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 withlib-s1=adapters/wiki-walks-s1
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 withlib-s1=adapters/wiki-walks-s1
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 withlib-s1=adapters/wiki-walks-s1

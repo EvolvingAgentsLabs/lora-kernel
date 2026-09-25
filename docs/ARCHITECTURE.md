@@ -99,6 +99,19 @@ Two decisions are kept apart on purpose:
 **The default is the frontier.** A model asked to choose always chooses, so abstention is
 designed in and measured first (milestone 2).
 
+**In front of an organisation's tools, the gateway [ran] 2026-09-25** (`examples/school/gateway.py`, the reference
+organisation's path). What the proxy does for a member, plus the four things a role-based agent system needs and a
+model must not decide:
+
+| step | what it does | where it lives, and why not in the model |
+|---|---|---|
+| **who** | the bearer token is verified → user, role, tenant; a role asked for in `model: auto:<role>` must match it | `examples/common/tokens.py` (HS256 with a demo secret, standing in for the identity provider's RS256/JWKS — that verification is not built) |
+| **permission** | every tool runs with that claim; another tenant's row is refused before it is read | the tool layer (`examples/school/tools.py`) — 77 adversarial cases, 0 leaks **[ran]** |
+| **a person for what matters** | a payment or an all-families message is HELD; a director of the same tenant approves it, never the account that asked; it then runs with the requester's scope | `examples/common/approvals.py` |
+| **what a reply may state** | every item of a reply must occur in a real tool result, or the reply is replaced by the tools' own text; instruction-shaped text found in a record is removed from what is shown | `examples/common/grounding.py` — the school-staff LoRA invented a line of a tool's list on the demo day; the filter replaced 2 of 5 local replies and the user saw neither **[ran]** `results/DEMO-school-gemma-20260925` |
+| **scope** | a request the role's tools do not cover follows the role's egress: the frontier, or a person's queue | the model says `OUT OF SCOPE`; the policy decides where it goes — the model's judgment is recorded, not trusted |
+| **log** | one JSON line per request — who, role, route, calls, denials, holds, grounding, tokens — and a dashboard that prices the local tokens at the frontier's rates | the monitoring feed; the GPU's own cost is not priced |
+
 ## 3. The pair
 
 **Why the large half is trained, not borrowed.** An untrained large model is not a better
@@ -126,20 +139,29 @@ small one has headroom) and then a **speculative** one (does the matched LoRA ra
 
 > **The LoRA is not the textbook. It is the specialist who knows how to use the library.**
 
-**State, 2026-09-20 [ran].** The library format, the lint, the first library (W1), the referee (W2)
-and the corpus of walks (W4) are built and pass their gates. Search with an off-the-shelf encoder
-reaches recall@3 0.638 against a bar of 0.80 (W3). The kill arm (W5) has been run three times on a
-procedure the adapter never trained on, and **does not pass**: the adapter ties or trails the
-*untrained* base handed the right notes (35 vs 45 of 56; 42 vs 46 of 66). Read where it happens, the
-result has two halves. **Navigation transfers**: 42 : 0 against the untrained base made to navigate,
-22/22 on shared-line rows where the base reading the right notes gets 8/22, 0 retrieval misses.
-**A reading skill does not**: asked a value stated under a condition in a note it never saw, the
-adapter writes the first number — 0/11, and 4/15 after a corpus that showed the shape over eight
-notes (17/18 on those eight; the untrained base 15/15). Letting the base write every final line
-recovers those and loses 19 control cases (W5b), so it is not a serving design. What is open is a
-**split by kind of task** — the adapter carries procedures, the base reads values from what the
-adapter's walk opened — which is 47/56 on records already paid for and evidence of nothing until it
-is run on a set written after the policy is frozen.
+**State, 2026-09-25 [ran].** **The memory works on its first test bed.** On a wiki of atomic statements (below),
+whose facts no model can know, the untrained base does not walk two- and three-hop questions (0/40 on Qwen3.5-4B; it
+never writes a verb after a result) and a trajectory LoRA trained on 32 other worlds does — 35/40 on both seeds, every
+citation verified, 3-hop 16/16; on Gemma 4 E4B 38/40 (W9, B1). Before it, on the nursing library (W1–W5e), the result
+had two halves that still stand: **navigation transfers** to a procedure the adapter never saw (42 : 0 against the
+untrained base made to navigate), **reading a value under a condition in an unseen note does not** (the untrained base
+reads it, 15/15; a split by kind of task tied, W5d; and two training draws of one recipe disagreed on 25 of 67 rows,
+W5e — so members are trained on two seeds). Search with an off-the-shelf encoder reached recall@3 0.638 against a bar
+of 0.80 (W3); the searcher is lexical. ~~State, 2026-09-20 … evidence of nothing until it is run on a set written after
+the policy is frozen.~~
+
+**The unit of the library, from 2026-09-24: the atomic statement — [ran] W9, PASSED.** The user's design: the
+library is shaped like Wikipedia. A page is about one thing and is a list of **atomic statements** —
+one checkable sentence each, under an anchor — and **the statement, not the page, is the unit of
+memory**. Links live inside the statement that names them (a product's `§supplier` is also the way to
+the supplier's page); operative pages are recipes whose statements are steps and branches, and a plan
+is the trajectory the task's context chooses through them. `<open>id</open>` shows a page's sections,
+`<open>id§anchor</open>` one statement, and every answer cites the statement it rests on — a citation
+the runtime checks mechanically, so the memory is its own verifier. First test bed: an invented
+distributor wiki whose operative pages follow the roles of the reference organisation (purchasing,
+receiving, dispatch, claims and returns, customer communications, finance, HR, marketing, IT), generated
+per world so no value can be known by heart; the untrained base is measured before a trajectory LoRA is
+bought ([`MEMORY.md`](MEMORY.md) §1.6).
 
 Specified piece by piece in [`MEMORY.md`](MEMORY.md) **[spec]**; argued for, with its open
 questions, in [`KNOWLEDGE-TRAJECTORIES.md`](KNOWLEDGE-TRAJECTORIES.md). Five pieces, four of them
@@ -147,7 +169,7 @@ not neural:
 
 | piece | what it is | where it lives |
 |---|---|---|
-| **the library** | markdown notes under half a page, on two shelves. **Operational harness** — *how is it done*: recipe-like notes whose links are control flow (`requires`, `next`, `uses`). **Encyclopedic wiki** — *what is it, which formula applies*: a tree, general to specific (`parent` → `children`) | `knowledge/<subdomain>/`, in git |
+| **the library** | markdown notes under half a page, on two shelves — and, since W9 **[ran]**, pages of atomic statements with their links inside, cited by every answer. **Operational harness** — *how is it done*: recipe-like notes whose links are control flow (`requires`, `next`, `uses`). **Encyclopedic wiki** — *what is it, which formula applies*: a tree, general to specific (`parent` → `children`) | `knowledge/<subdomain>/`, in git |
 | **the radar** | embeddings compressed to one subdomain; per note two vectors, *when is it for* and *what does it define*; returns the two or three notes of exactly the subdomain in play | one small index per subdomain |
 | **the language** | three verbs the expert may write — `<search>`, `<open>`, `<calc>` — each answered inline after its closing tag | a grammar, versioned with the release |
 | **the LoRA** | trained on the *habit of navigating*: cases whose constants change every time, so the number has to be read from the note | the adapter — the only trained piece |
@@ -213,14 +235,22 @@ knowledge base's hash and its index's hash: a member is its corpus *and* its bas
 
 ## 6. The family
 
-Qwen 3.x: `Qwen3.5-4B` (or `2B`) small, `Qwen3.8-27B` large. The 3.x line is hybrid — three
-linear-attention layers to one full-attention layer — and D2's renamed adapter landed
-weights on both kinds. Its `<think>` channel stays off for members. **The released members are on
-`Qwen3.5-4B` since milestone 1 [ran]** — retrained from the same corpora, each tying its Qwen 2.5
-release (471/475, 240/240); the `@v1` releases on 2.5 stay as the control.
+**Gemma 4, from 2026-09-25 — the user's decision on B1 [ran].** `google/gemma-4-E4B-it` small; `gemma-4-31B-it`
+named as the large half of a pair and **not measured**. On W9's wiki, with the same corpus and recipe, Gemma's member
+tied Qwen3.5-4B's (38/40 against 35 and 35, 4 : 1 against each); untrained, Gemma already walks it 19/40 where Qwen
+walks 0/40, and it trains in a third of the time. The user decided before the comparison ran that parity chooses
+Gemma, because the development stack targets it. Two engineering constraints come with it: the LoRA excludes the
+vision and audio towers, whose projections are `Gemma4ClippableLinear` (P29's block, and nothing else —
+`training/s4_train.py::towers_to_exclude`); and its thinking channel stays off for members, as Qwen's did.
 
-Nothing in §1–§5 names a family. A pair needs one id space and a base PEFT can attach to;
-`Gemma 4 2B / 12B` meets the first and not yet the second **[ran]** P29.
+**The released members move one by one through the release gate:** `email-full@v3` is on Gemma (M1b **[ran]**: a tie
+with `@v2`, 119 : 0 over the bare Gemma); `desk-commitment@v2` stays on `Qwen3.5-4B` — it ties the bare Gemma at the
+ceiling; the `@v1` releases on `Qwen2.5-3B-Instruct` stay as the control arm. The family is named in one place,
+`training/harness/family.py`. ~~Qwen 3.x: `Qwen3.5-4B` small, `Qwen3.8-27B` large … Gemma 4 meets the id-space
+requirement and not yet the PEFT one **[ran]** P29.~~
+
+Nothing in §1–§5 names a family. A pair needs one id space and a base PEFT can attach to; Gemma 4 E4B now meets the
+second **[ran]** B1; whether it shares an id space with 31B is milestone 3's first check.
 
 ## 7. What is not neural, on purpose
 
@@ -250,17 +280,20 @@ flowchart TB
     P["people, in roles"] --> RT["agent runtime — one agent per role"]
     RT <--> APPS["applications and channels"]
     APPS <--> DB["systems of record<br>database · identity · payments · monitoring"]
-    RT -- "OpenAI-compatible API" --> PX["proxy — prune · member prompt"]
+    RT -- "OpenAI-compatible API + a signed token" --> PX["gateway — token → user · role · tenant<br>prune · member prompt"]
     PX --> RO{"router<br>the role is the route"}
     RO -- "a measured region" --> EX["the role's adapter<br>on one small resident model"]
     EX <--> REF["referee — search · open · calc · site rules · guard"]
     REF <--> LIB["the role's library<br>how we do it here · what we know"]
+    EX <--> TL["the org's tools, run with the token's permission<br>payments held for a director"]
+    TL <--> DB
+    EX --> GRD["grounding — no line shown that a tool did not return"]
     RO -- "unmeasured" --> FR["frontier model"]
     RO -. "policy: nothing leaves" .-> HU["a person"]
     classDef ours fill:#e8f1e4,stroke:#4a7a3a,color:#1d3314
     classDef theirs fill:#eef0f6,stroke:#4a5a8a,color:#1a2240
     classDef out fill:#f4e6d4,stroke:#9a6a2a,color:#3d2a0e
-    class PX,RO,EX,REF,LIB ours
+    class PX,RO,EX,REF,LIB,TL,GRD ours
     class P,RT,APPS,DB theirs
     class FR,HU out
 ```

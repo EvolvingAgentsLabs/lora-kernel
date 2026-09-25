@@ -1,0 +1,99 @@
+
+[matrix] ===== control: Qwen/Qwen2.5-3B-Instruct =====
+W0925 11:26:46.353000 3760 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W0925 11:26:46.397000 3760 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files:  50%|█████     | 1/2 [00:52<00:52, 52.68s/it]Fetching 2 files: 100%|██████████| 2/2 [00:57<00:00, 24.58s/it]Fetching 2 files: 100%|██████████| 2/2 [00:57<00:00, 28.79s/it]
+Loading weights:   0%|          | 0/434 [00:00<?, ?it/s]Loading weights:   0%|          | 1/434 [00:00<00:47,  9.20it/s]Loading weights:   6%|▋         | 28/434 [00:00<00:02, 153.16it/s]Loading weights:  14%|█▍        | 60/434 [00:00<00:01, 226.51it/s]Loading weights:  20%|██        | 88/434 [00:00<00:01, 242.75it/s]Loading weights:  28%|██▊       | 123/434 [00:00<00:01, 271.82it/s]Loading weights:  35%|███▍      | 151/434 [00:00<00:01, 271.73it/s]Loading weights:  42%|████▏     | 184/434 [00:00<00:00, 283.41it/s]Loading weights:  50%|█████     | 219/434 [00:00<00:00, 286.73it/s]Loading weights:  59%|█████▉    | 255/434 [00:00<00:00, 300.79it/s]Loading weights:  66%|██████▌   | 286/434 [00:01<00:00, 297.10it/s]Loading weights:  73%|███████▎  | 316/434 [00:01<00:00, 290.93it/s]Loading weights:  81%|████████  | 351/434 [00:01<00:00, 297.80it/s]Loading weights:  88%|████████▊ | 381/434 [00:01<00:00, 291.44it/s]Loading weights:  95%|█████████▍| 412/434 [00:01<00:00, 290.84it/s]Loading weights: 100%|██████████| 434/434 [00:01<00:00, 277.05it/s]
+[tiny] Linear modules: ['down_proj', 'gate_proj', 'k_proj', 'o_proj', 'q_proj', 'up_proj', 'v_proj']
+[tiny] of those, attention-shaped: ['k_proj', 'o_proj', 'q_proj', 'v_proj']
+[tiny] target modules found: ['down_proj', 'gate_proj', 'k_proj', 'o_proj', 'q_proj', 'up_proj', 'v_proj']
+trainable params: 29,933,568 || all params: 3,115,872,256 || trainable%: 0.9607
+Map:   0%|          | 0/120 [00:00<?, ? examples/s]Map: 100%|██████████| 120/120 [00:00<00:00, 4768.60 examples/s]
+  0%|          | 0/60 [00:00<?, ?it/s]  2%|▏         | 1/60 [00:03<03:22,  3.44s/it]  3%|▎         | 2/60 [00:03<01:33,  1.61s/it]  5%|▌         | 3/60 [00:04<00:58,  1.02s/it]  7%|▋         | 4/60 [00:04<00:41,  1.34it/s]  8%|▊         | 5/60 [00:04<00:32,  1.70it/s] 10%|█         | 6/60 [00:05<00:26,  2.00it/s] 12%|█▏        | 7/60 [00:05<00:22,  2.31it/s] 13%|█▎        | 8/60 [00:05<00:20,  2.55it/s] 15%|█▌        | 9/60 [00:05<00:18,  2.70it/s] 17%|█▋        | 10/60 [00:06<00:17,  2.84it/s] 18%|█▊        | 11/60 [00:06<00:16,  2.94it/s] 20%|██        | 12/60 [00:06<00:16,  2.97it/s] 22%|██▏       | 13/60 [00:07<00:15,  3.08it/s] 23%|██▎       | 14/60 [00:07<00:14,  3.07it/s] 25%|██▌       | 15/60 [00:07<00:14,  3.10it/s] 27%|██▋       | 16/60 [00:08<00:14,  3.13it/s] 28%|██▊       | 17/60 [00:08<00:13,  3.12it/s] 30%|███       | 18/60 [00:08<00:13,  3.21it/s] 32%|███▏      | 19/60 [00:09<00:12,  3.24it/s] 33%|███▎      | 20/60 [00:09<00:12,  3.17it/s]                                               {'loss': '0.1198', 'grad_norm': '0.01485', 'learning_rate': '0.0001367', 'epoch': '0.3333'}
+ 33%|███▎      | 20/60 [00:09<00:12,  3.17it/s] 35%|███▌      | 21/60 [00:09<00:12,  3.21it/s] 37%|███▋      | 22/60 [00:10<00:12,  3.16it/s] 38%|███▊      | 23/60 [00:10<00:11,  3.13it/s] 40%|████      | 24/60 [00:10<00:11,  3.15it/s] 42%|████▏     | 25/60 [00:11<00:11,  3.13it/s] 43%|████▎     | 26/60 [00:11<00:10,  3.19it/s] 45%|████▌     | 27/60 [00:11<00:10,  3.14it/s] 47%|████▋     | 28/60 [00:11<00:10,  3.14it/s] 48%|████▊     | 29/60 [00:12<00:09,  3.22it/s] 50%|█████     | 30/60 [00:12<00:09,  3.20it/s] 52%|█████▏    | 31/60 [00:12<00:09,  3.19it/s] 53%|█████▎    | 32/60 [00:13<00:08,  3.22it/s] 55%|█████▌    | 33/60 [00:13<00:08,  3.16it/s] 57%|█████▋    | 34/60 [00:13<00:08,  3.20it/s] 58%|█████▊    | 35/60 [00:14<00:07,  3.17it/s] 60%|██████    | 36/60 [00:14<00:07,  3.16it/s] 62%|██████▏   | 37/60 [00:14<00:07,  3.18it/s] 63%|██████▎   | 38/60 [00:15<00:07,  3.12it/s] 65%|██████▌   | 39/60 [00:15<00:06,  3.18it/s] 67%|██████▋   | 40/60 [00:15<00:06,  3.24it/s]                                               {'loss': '1.389e-05', 'grad_norm': '0.0001143', 'learning_rate': '7e-05', 'epoch': '0.6667'}
+ 67%|██████▋   | 40/60 [00:15<00:06,  3.24it/s] 68%|██████▊   | 41/60 [00:16<00:05,  3.19it/s] 70%|███████   | 42/60 [00:16<00:05,  3.19it/s] 72%|███████▏  | 43/60 [00:16<00:05,  3.20it/s] 73%|███████▎  | 44/60 [00:16<00:05,  3.17it/s] 75%|███████▌  | 45/60 [00:17<00:04,  3.21it/s] 77%|███████▋  | 46/60 [00:17<00:04,  3.16it/s] 78%|███████▊  | 47/60 [00:17<00:04,  3.16it/s] 80%|████████  | 48/60 [00:18<00:03,  3.17it/s] 82%|████████▏ | 49/60 [00:18<00:03,  3.15it/s] 83%|████████▎ | 50/60 [00:18<00:03,  3.22it/s] 85%|████████▌ | 51/60 [00:19<00:02,  3.26it/s] 87%|████████▋ | 52/60 [00:19<00:02,  3.21it/s] 88%|████████▊ | 53/60 [00:19<00:02,  3.22it/s] 90%|█████████ | 54/60 [00:20<00:01,  3.21it/s] 92%|█████████▏| 55/60 [00:20<00:01,  3.16it/s] 93%|█████████▎| 56/60 [00:20<00:01,  3.22it/s] 95%|█████████▌| 57/60 [00:21<00:00,  3.17it/s] 97%|█████████▋| 58/60 [00:21<00:00,  3.16it/s] 98%|█████████▊| 59/60 [00:21<00:00,  3.18it/s]100%|██████████| 60/60 [00:22<00:00,  3.14it/s]                                               {'loss': '2.515e-06', 'grad_norm': '0.000101', 'learning_rate': '3.333e-06', 'epoch': '1'}
+100%|██████████| 60/60 [00:22<00:00,  3.14it/s]                                               {'train_runtime': '22.02', 'train_samples_per_second': '5.45', 'train_steps_per_second': '2.725', 'train_loss': '0.03994', 'epoch': '1'}
+100%|██████████| 60/60 [00:22<00:00,  3.14it/s]100%|██████████| 60/60 [00:22<00:00,  2.73it/s]
+{
+  "out": "adapters/tiny-control",
+  "weights_bytes": 119801528,
+  "target_modules": [
+    "down_proj",
+    "gate_proj",
+    "k_proj",
+    "o_proj",
+    "q_proj",
+    "up_proj",
+    "v_proj"
+  ],
+  "lora_B_abs_sum": 18492.448,
+  "changes_output_in_process": true
+}
+[tiny] lora_B_abs_sum=18492.4480 changes_output=True
+[matrix] control G1 in-process: passed
+[serve] vllm serve Qwen/Qwen2.5-3B-Instruct --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+[serve] /v1/models -> ['Qwen/Qwen2.5-3B-Instruct', 'tiny']
+[gate] tiny: applied
+[gate-only] applied
+[matrix] control G2 served: applied 
+
+[matrix] ===== subject: google/gemma-4-E4B-it =====
+W0925 11:33:00.225000 5912 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W0925 11:33:00.267000 5912 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/2076 [00:00<?, ?it/s]Loading weights:  12%|█▏        | 250/2076 [00:00<00:00, 2486.58it/s]Loading weights:  24%|██▍       | 499/2076 [00:00<00:00, 2401.27it/s]Loading weights:  36%|███▌      | 751/2076 [00:00<00:00, 2443.73it/s]Loading weights:  48%|████▊     | 996/2076 [00:02<00:04, 236.26it/s] Loading weights:  55%|█████▌    | 1148/2076 [00:03<00:03, 256.59it/s]Loading weights:  61%|██████    | 1258/2076 [00:03<00:03, 261.18it/s]Loading weights:  65%|██████▍   | 1340/2076 [00:03<00:02, 263.48it/s]Loading weights:  68%|██████▊   | 1404/2076 [00:04<00:02, 262.85it/s]Loading weights:  77%|███████▋  | 1605/2076 [00:04<00:01, 420.49it/s]Loading weights:  91%|█████████ | 1883/2076 [00:04<00:00, 689.63it/s]Loading weights: 100%|██████████| 2076/2076 [00:04<00:00, 464.09it/s]
+[tiny] Linear modules: ['down_proj', 'gate_proj', 'k_proj', 'o_proj', 'per_layer_input_gate', 'per_layer_model_projection', 'per_layer_projection', 'q_proj', 'up_proj', 'v_proj']
+[tiny] of those, attention-shaped: ['k_proj', 'o_proj', 'q_proj', 'v_proj']
+[tiny] target modules found: ['down_proj', 'gate_proj', 'k_proj', 'o_proj', 'per_layer_input_gate', 'per_layer_model_projection', 'per_layer_projection', 'q_proj', 'up_proj', 'v_proj']
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/content/lora-kernel/training/harness/tiny_adapter.py", line 173, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "/content/lora-kernel/training/harness/tiny_adapter.py", line 100, in main
+    model = get_peft_model(model, LoraConfig(
+        r=args.r, lora_alpha=args.alpha, lora_dropout=0.0, bias="none",
+        task_type="CAUSAL_LM", target_modules=names))
+  File "/usr/local/lib/python3.13/dist-packages/peft/mapping_func.py", line 122, in get_peft_model
+    return MODEL_TYPE_TO_PEFT_MODEL_MAPPING[peft_config.task_type](
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        model,
+        ^^^^^^
+    ...<3 lines>...
+        low_cpu_mem_usage=low_cpu_mem_usage,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/dist-packages/peft/peft_model.py", line 2063, in __init__
+    super().__init__(model, peft_config, adapter_name, **kwargs)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/peft/peft_model.py", line 164, in __init__
+    self.base_model = cls(model, {adapter_name: peft_config}, adapter_name)
+                      ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/peft/tuners/tuners_utils.py", line 318, in __init__
+    self.inject_adapter(self.model, adapter_name, low_cpu_mem_usage=low_cpu_mem_usage, state_dict=state_dict)
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/peft/tuners/tuners_utils.py", line 917, in inject_adapter
+    self._create_and_replace(
+    ~~~~~~~~~~~~~~~~~~~~~~~~^
+        peft_config, adapter_name, target, target_name, parent, current_key=key
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/dist-packages/peft/tuners/lora/model.py", line 281, in _create_and_replace
+    new_module = self._create_new_module(lora_config, adapter_name, target, device_map=device_map, **kwargs)
+  File "/usr/local/lib/python3.13/dist-packages/peft/tuners/lora/model.py", line 436, in _create_new_module
+    raise ValueError(
+    ...<3 lines>...
+    )
+ValueError: Target module Gemma4ClippableLinear(
+  (linear): Linear(in_features=768, out_features=768, bias=False)
+) is not supported. Currently, only the following modules are supported: `torch.nn.Linear`, `torch.nn.Embedding`, `torch.nn.Conv1d`, `torch.nn.Conv2d`, `torch.nn.Conv3d`, `transformers.pytorch_utils.Conv1D`, `torch.nn.MultiheadAttention.`.
+[matrix] subject G1 in-process: FAILED
+[matrix] subject G2 skipped — a no-op adapter cannot ask a serving gate anything
+
+[matrix] control valid: True
+[matrix] reading: the adapter cannot be trained this way on this architecture
+[matrix] decision: Qwen2.5 for the end-to-end

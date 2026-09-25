@@ -1,0 +1,30 @@
+{
+ "base": "Qwen/Qwen3.5-4B",
+ "started": "2026-09-24T12:16:57",
+ "grader": "training.wiki.grade",
+ "library": "knowledge/distributor-wiki",
+ "eval_world": 20260924,
+ "arms": {},
+ "zero_gpu": {
+  "n": 67,
+  "headline": 40,
+  "oracle_credit": 67,
+  "oracle_refused": 0,
+  "floor_headline": 0,
+  "floor_all": 5,
+  "slices": {
+   "headline": 40,
+   "all": 67,
+   "none": 6,
+   "hops-1": 21,
+   "hops-2": 24,
+   "hops-3": 16,
+   "block-E1": 9,
+   "block-E2": 16,
+   "block-E3": 12,
+   "block-O1": 12,
+   "block-O2": 8,
+   "block-O3": 4
+  }
+ }
+}

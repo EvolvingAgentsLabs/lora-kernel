@@ -1,0 +1,36 @@
+=== session 1 of 1 · srv071712 · L4
+    boot clone: rc=0 30263eb W9 scoring, attempt 3 lost to a harness bug: arms asked vLLM for the adapter's path, not its LoRA name
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 30263eb W9 scoring, attempt 3 lost to a harness bug: arms asked vLLM for the adapter's path, not its LoRA name
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    boot attempt 2 did not take: silence
+    boot clone: rc=0 c2e7c87 A fake vllm serve for the serving path's integration tests; B1 (Gemma 4 E4B vs Qwen3.5-4B) pre-registered
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    c2e7c87 A fake vllm serve for the serving path's integration tests; B1 (Gemma 4 E4B vs Qwen3.5-4B) pre-registered | 0.30.0
+    carried the adapters in (4 chunks)
+    runner started (launch 1)
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 withlib-s1=adapters/wiki-walks-s1
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 withlib-s1=adapters/wiki-walks-s1
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 withlib-s1=adapters/wiki-walks-s1
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 withlib-s1=adapters/wiki-walks-s1
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 withlib-s1=adapters/wiki-walks-s1
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 withlib-s1=adapters/wiki-walks-s1
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 withlib-s1=adapters/wiki-walks-s1
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 withlib-s1=adapters/wiki-walks-s1
+    [pool] G1 withlib-s0: applied
+    [pool] G1 withlib-s1: applied
+    [wiki] withlib-s0: 67 to run, 0 resumed
+    [wiki] withlib-s0 67/67 credit 58 value-right 58 errors 0 52s
+    [wiki] withlib-s1: 67 to run, 0 resumed
+    [wiki] withlib-s1 10/67 credit 10 value-right 10 errors 0 10s
+    [wiki] withlib-s1 60/67 credit 52 value-right 52 errors 0 47s
+    [wiki] withlib-s1 67/67 credit 58 value-right 58 errors 0 52s
+    [wiki] NOTHING SCORED
+    the runner wrote its result — done
+exit 0

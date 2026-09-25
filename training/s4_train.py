@@ -129,6 +129,16 @@ def make_generate(model, tok, max_new_tokens: int = 64):
     return gen
 
 
+def towers_to_exclude(model) -> str | None:
+    """Gemma 4's vision and audio towers wrap their projections in `Gemma4ClippableLinear`, which peft
+    cannot wrap — P29's block [ran]. Their q_proj/k_proj/... share the language model's names, so a
+    name-targeted LoRA reaches them. Excluded ONLY when that class is present: every other base's
+    targets, Qwen's included, are exactly what they were."""
+    if not any(type(m).__name__ == "Gemma4ClippableLinear" for m in model.modules()):
+        return None
+    return r".*(vision_tower|audio_tower|multi_modal_projector|embed_vision|embed_audio).*"
+
+
 def train_adapter(base: str, rows: list[dict], out_dir: str, args):
     """A fresh base per adapter.
 
@@ -164,8 +174,8 @@ def train_adapter(base: str, rows: list[dict], out_dir: str, args):
     peft_model = get_peft_model(model, LoraConfig(
         r=args.r, lora_alpha=args.alpha, lora_dropout=0.05, bias="none",
         task_type="CAUSAL_LM",
-        target_modules=args.targets.split(",")))
-    print(f"[targets] {args.targets}", flush=True)
+        target_modules=args.targets.split(","), exclude_modules=towers_to_exclude(model)))
+    print(f"[targets] {args.targets} · excluded {towers_to_exclude(model)}", flush=True)
     peft_model.print_trainable_parameters()
     SFTTrainer(
         model=peft_model, train_dataset=Dataset.from_list(texts),

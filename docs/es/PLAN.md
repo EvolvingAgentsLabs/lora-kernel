@@ -12,7 +12,7 @@ los dos lados. El texto superado se tacha, no se borra. Lo que se midió antes d
 > **Construir el servicio como expertos definidos por sus corpus: un router muy chico que
 > decide en el corpus de qué experto cae un pedido y se abstiene hacia un modelo de frontera
 > cuando no cae en ninguno; y, por subdominio, un par especulativo — un LoRA en un modelo
-> chico y un LoRA en uno grande, entrenados sobre el mismo corpus. Familia: Qwen 3.x, chico
+> chico y un LoRA en uno grande, entrenados sobre el mismo corpus. Familia: ~~Qwen 3.x~~ **Gemma 4 desde 2026-09-25 (B1 [ran], la decisión del usuario)**, chico
 > y grande.**
 >
 > **Extendido el mismo día: cada experto también recibe una base de conocimiento de su
@@ -97,12 +97,13 @@ brazos de atribución se compran sólo una vez que hay un efecto que atribuir.
 | # | hito | depende de | compuerta | estado |
 |---|---|---|---|---|
 | **1** | el pool en Qwen 3.x chico | D2 ✅ | los dos miembros liberados sobre `Qwen3.5-4B`, cada uno empatando o ganándole a su release de Qwen 2.5, pareado | ✅ **[ran] 2026-09-19 — MOVIDO.** G1 `applied` en los dos adaptadores de receta completa; `email-full` **471/475 = sus 471 grabados**, empate 1 : 1; `desk-commitment` **240/240**, empate; `releases/*@v2.json`. Cuatro sesiones de menos de una hora ([`BRIEF`](../../results/M1-pool-qwen35-20260919/BRIEF.md)) |
+| **1b** | **el pool re-liberado sobre Gemma 4 E4B** | B1 ✅ | `email-full` y `desk-commitment` reentrenados sobre `google/gemma-4-E4B-it` desde los mismos corpus y la misma receta, cada uno empatando o ganándole a su release `@v2` de Qwen3.5-4B en los mismos casos, pareado; manifiestos `@v3` | **[ran] 2026-09-25 — NO SE MUEVE como pool:** `email-full` empata con su `@v2` (469 vs 471, 1 : 3) y le gana al Gemma pelado (119 : 0) → **`email-full@v3` sobre Gemma**; `desk-commitment` empata con `@v2` y con el Gemma pelado por igual (240/240, el techo) — ahí no hace falta adaptador, se queda en `@v2` ([`BRIEF`](../../results/M1b-pool-gemma4-20260925/BRIEF.md)) |
 | **2** | el router como un modelo chico de los corpus | los corpus de los miembros | mal-ruteados-a-local no mayor que el del diccionario en prompts para los que el diccionario no fue escrito; abstiene ante texto fuera de distribución | **brazo 1 [ran] 2026-09-19 — no pasa.** Texto extranjero, conjuntos frescos: el diccionario sirve 59/128 localmente, el router de n-gramas **0/128**; pedidos legítimos de remitentes no vistos: el diccionario pierde 0/120, el router pierde **120/120**. El diccionario se queda; **el brazo 2 es un modelo de embeddings**, compartido con el hito 7 |
-| **3** | la mitad grande de un par | 1 | un LoRA en `Qwen3.8-27B` está `applied` al servirse; grande + LoRA le gana a chico + LoRA en la banda profunda, pareado | — |
+| **3** | la mitad grande de un par | 1 | un LoRA en ~~`Qwen3.8-27B`~~ `gemma-4-31B-it` (family.LARGE) está `applied` al servirse; grande + LoRA le gana a chico + LoRA en la banda profunda, pareado | — |
 | **4** | el par especulativo | 3 | la aceptación de borradores del LoRA chico bajo verificación del LoRA grande supera la aceptación bajo el modelo grande pelado | — |
 | **5** | la primera región real, a mano | 1, 2, un sandbox, claves rotadas | la compuerta de release, sobre una suite con un verificador que nadie acá generó | **región nombrada el 2026-09-19: procedimientos de enfermería y material de educación en salud** (*Nursing Skills* de Open RN, CC BY 4.0, primero); sigue el brazo de margen, cero GPU |
 | **6** | la política de servicio, con la factura | 2, 4, 5 | la porción local ahorra más de lo que cuesta, sobre tráfico real | 🔶 **primera pasada [ran] 2026-09-21, cero GPU:** el replay de P41/P62 tasado a las tarifas reales de `gemini-3.8-flash` — la factura real de hoy hacia la frontera (90 casos de fluidos) **$0,18**, evitada al mantener locales los 150 casos de email **$0,11**, techo si todo hubiera salido **$0,30**. **El costo en dólares de la propia GPU local no está tasado** — la tarifa de alquiler no se pudo obtener en vivo; no se adivinó |
-| **7** | **una base de conocimiento por subdominio, y la trayectoria por ella como harness** — sobre mecánica de fluidos, partida en subdominios | 1; comparte su modelo de embeddings con el brazo 2 del hito 2; independiente de 3–6, **corre a continuación** | un experto entrenado para navegar y seguir notas contesta familias sobre las que nunca entrenó, donde el mismo experto sin la base está en 1/20 | 🔶 **W1–W4 construidos [ran]; el radar de W3 y el brazo que mata de W5 [ran] y no pasan.** W5: el brazo con biblioteca 35/56 contra el base sin entrenar que lee, 45/56 (6 : 16, $p=0{,}052$), 35 : 2 sobre sin-biblioteca — la navegación se transfirió, leer una nota de dos valores no. Sigue a decisión del usuario: composición, sin entrenar |
+| **7** | **una base de conocimiento por subdominio, y la trayectoria por ella como harness** — sobre mecánica de fluidos, partida en subdominios | 1; comparte su modelo de embeddings con el brazo 2 del hito 2; independiente de 3–6, **corre a continuación** | un experto entrenado para navegar y seguir notas contesta familias sobre las que nunca entrenó, donde el mismo experto sin la base está en 1/20 | 🔶 **W1–W4 construidos [ran]; el radar de W3 y el brazo que mata de W5 [ran] y no pasan.** W5: el brazo con biblioteca 35/56 contra el base sin entrenar que lee, 45/56 (6 : 16, $p=0{,}052$), 35 : 2 sobre sin-biblioteca — la navegación se transfirió, leer una nota de dos valores no. Sigue a decisión del usuario: composición, sin entrenar. **2026-09-24: la unidad de la biblioteca pasa a ser el enunciado atómico (diseño del usuario, `MEMORY.md` §1.6) — W9 pre-registrado: una wiki de distribuidora inventada, margen sobre el base sin entrenar primero** |
 
 ### Hito 1 — el pool en Qwen 3.x chico
 
@@ -621,16 +622,15 @@ de línea compartida, cantidad por capa, control sin `rate`, fallos de recuperac
 
 ## 2. La familia, y la alternativa
 
-**Adoptada: Qwen 3.x.** `Qwen3.5-2B/4B` y `Qwen3.8-27B` comparten un espacio de ids —
-248.044 ids, 7 sólo del grande, todos especiales de audio/TTS; `<think>` es compartido
-**[ran]** D0. El canal de pensamiento está apagado para los miembros: ningún corpus lo
-enseñó. Los miembros liberados están en `Qwen2.5-3B-Instruct` hasta que aterrice el hito
-1, y la línea Qwen 2.5 sigue siendo el control en cada compuerta.
+**Adoptada, 2026-09-25: Gemma 4** — `google/gemma-4-E4B-it` para todo miembro nuevo; `gemma-4-31B-it` nombrado
+para la mitad grande, no medido. B1 **[ran]**: un empate con Qwen3.5-4B en W9 (38 contra 35, 35), que por la
+regla del usuario escrita antes de la comparación elige a Gemma. El bloqueo de P29 se levanta excluyendo las
+torres de visión/audio. Los miembros liberados se mueven de a uno: `email-full@v3` sobre Gemma (M1b [ran]);
+`desk-commitment@v2` queda sobre `Qwen3.5-4B`; Qwen 2.5 sigue siendo el brazo de control.
 
-**Alternativa, no ahora: Gemma 4, 2B y 12B.** El diseño es agnóstico de familia — un par
-necesita un espacio de ids y una base a la que PEFT pueda engancharse. Gemma 4 falla lo
-segundo hoy: `Gemma4ClippableLinear` no es `nn.Linear` **[ran]** P29. `lora_matrix` con
-un sujeto Gemma es la compuerta que la reabre.
+**Previa, hasta la re-liberación: Qwen 3.x** (`Qwen3.5-4B`, `Qwen3.8-27B`) — un espacio de ids **[ran]** D0,
+la familia de cada release hasta ahora. ~~Adoptada: Qwen 3.x … Alternativa, no ahora: Gemma 4, bloqueada en
+PEFT [ran] P29.~~
 
 ## 3. Reglas que sigue cada paso
 
@@ -654,6 +654,49 @@ Las cuatro que deciden la forma de un paso:
 
 ## 5. Historia
 
+- **2026-09-25** — **M1b [ran]: `email-full` liberado sobre Gemma 4 E4B (`@v3`)** — empate con su `@v2` de Qwen (469 vs 471 de 475) y 119 : 0 sobre el Gemma pelado. `desk-commitment` empata con `@v2` y con el Gemma pelado a 240/240: por el veredicto tal como está escrito el pool no se mueve como unidad; desk se queda en Qwen hasta que una suite con margen sobre el base lo decida ([`BRIEF`](../../results/M1b-pool-gemma4-20260925/BRIEF.md)).
+- **2026-09-25** — **la demo de la escuela [ran]: 8/8 sobre Gemma 4 E4B, el sistema de punta a punta.** M8: un
+  LoRA de trayectoria del personal de la escuela sobre 700 turnos completos de gateway — held-out 70/70 en las dos
+  semillas contra el 27/70 del Gemma pelado (43 : 0), día de la demo 8/8 contra 3/8. Leído donde ocurre, todavía
+  puede inventar una línea con el formato de un resultado de herramienta y citar una instrucción plantada; el
+  gateway ahora fundamenta cada respuesta en resultados reales de herramientas y redacta las instrucciones
+  plantadas, afuera del modelo — en el día de la demo grabado reemplazó 2 de 5 respuestas locales, el usuario no
+  vio ninguna. Dos imágenes retiradas para ser redibujadas (`memory-walkthrough.png`, `request-path.png`); los
+  documentos llevan sus marcadores
+  ([`M8`](../../results/M8-school-staff-20260925/BRIEF.md), [`demo`](../../results/DEMO-school-gemma-20260925/README.md)).
+- **2026-09-25** — **todo se muda a Gemma 4, la decisión del usuario sobre el empate de B1.** Los miembros nuevos
+  se entrenan sobre `gemma-4-E4B-it` (`training/harness/family.py`: SMALL; los runners activos lo usan por
+  default); la mitad grande de un par se nombra `gemma-4-31B-it`, no medida; el hito 1b vuelve a liberar a los dos
+  miembros de Qwen sobre Gemma a través de la compuerta. El gateway de la demo de la escuela ahora fundamenta
+  cada respuesta en resultados reales de herramientas y redacta instrucciones plantadas, afuera del modelo,
+  después de que M8 [ran] mostrara que el LoRA de personal de la escuela puede inventar una línea de la lista de
+  una herramienta.
+- **2026-09-25** — **B1 [ran]: Gemma 4 E4B contra Qwen3.5-4B — empate, que por la regla del usuario elige Gemma.**
+  El bloqueo de P29 se levanta (el LoRA excluye las torres de visión y audio de Gemma; vLLM lo sirve aplicado). Sin
+  entrenar, Gemma recorre la wiki de W9 19/40 donde Qwen recorre 0/40, y lee 40/40 donde Qwen lee 29/40. Con el corpus y la
+  receta de W9, el miembro de Gemma 38/40 contra 35 y 35 de Qwen — 4 : 1 contra cada una, empate. El usuario decidió antes
+  de correr cualquier tramo que la paridad elige Gemma (el stack de desarrollo apunta ahí): **los miembros nuevos se
+  entrenan sobre Gemma 4 E4B**; los miembros de Qwen liberados siguen hasta volver a liberarse
+  ([`BRIEF`](../../results/B1-gemma4-vs-qwen35-20260925/BRIEF.md)).
+- **2026-09-25** — memoria **W9 [ran]: PASÓ.** Un LoRA de trayectorias sobre una wiki de enunciados
+  atómicos: las dos semillas (`wiki-walks-s0`, `-s1`, entrenadas sobre 32 mundos que nunca se evalúan) le ganan
+  al base sin entrenar recorriendo el mundo de evaluación **35 : 0** en el titular de 40 filas (35/40 contra
+  0/40, citas verificadas); contra el base al que se le dan los enunciados del oráculo, empates (9 : 3, 8 : 2).
+  3 saltos 16/16. Las dos tiradas coinciden en 57 de 67 filas. Tres intentos de medición se perdieron por bugs
+  del harness, que ahora reproduce un `vllm serve` falso en la Mac
+  ([`BRIEF`](../../results/M7-W9-atomic-statements-20260924/BRIEF.md)).
+- **2026-09-24** — memoria **W9 pre-registrado, sin correr: enunciados atómicos.** El diseño del
+  usuario: la biblioteca con forma de Wikipedia, una página una lista de enunciados de una oración,
+  verificables, bajo anclas, los enlaces dentro del enunciado que los nombra, la misma forma para las
+  recetas operativas; toda respuesta cita `[id§anchor]` y el runtime verifica la cita mecánicamente
+  (`MEMORY.md` §1.6). Banco de pruebas: una wiki de distribuidora — páginas de productos, proveedores,
+  depósitos, transportistas y personal, y recetas operativas que siguen los roles de la organización
+  de referencia (compras, recepción, despacho, reclamos y devoluciones, comunicaciones, finanzas,
+  RRHH, marketing, IT) — **generada por mundo** para que ningún valor se sepa de memoria; un mundo
+  commiteado como evaluación. Una L4, sin entrenar: el brazo a libro cerrado tiene que fallar, después
+  `base-walks` contra `base-reads` decide si hace falta un LoRA de trayectoria; si hace falta, dos
+  semillas (W5e: dos sorteos de una misma receta discreparon en 25 de 67)
+  ([`BRIEF`](../../results/M7-W9-atomic-statements-20260924/BRIEF.md)).
 - **2026-09-23** — memoria **W5e [ran]: SIN MARGEN — el adaptador reentrenado no escribe la consulta memorizada.**
   El adaptador de W5c no estaba en ningún disco, así que se reentrenó (mismo corpus, misma receta; sha
   `4caceaa3…`). La nueva tirada pierde **0** filas de valor del titular por su propia consulta (la de W5c: 11) —

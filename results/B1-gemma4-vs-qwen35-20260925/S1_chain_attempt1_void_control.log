@@ -1,0 +1,59 @@
+=== session 1 of 1 · srv080154 · A100
+    boot clone: rc=0 ad216b3 School demo, first live run [ran]: the system works end to end; the bare 4B is 3/8
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 d3cd7f3 M8 pre-registered: a school-staff trajectory LoRA — 700 full gateway turns, 70 held out, the demo day beside
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    d3cd7f3 M8 pre-registered: a school-staff trajectory LoRA — 700 full gateway turns, 70 held out, the demo day beside | 0.30.0
+    this module trains its own adapter — nothing to carry in
+    runner started (launch 1)
+    [matrix] ===== control: Qwen/Qwen3.5-4B =====
+    W0925 11:08:23.613000 3383 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 11:08:23.652000 3383 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+      3%|▎         | 2/60 [00:05<02:30,  2.60s/it]
+      5%|▌         | 3/60 [00:06<01:52,  1.97s/it]
+      7%|▋         | 4/60 [00:08<01:33,  1.67s/it]
+     70%|███████   | 42/60 [00:54<00:22,  1.23s/it]
+     72%|███████▏  | 43/60 [00:55<00:20,  1.22s/it]
+     73%|███████▎  | 44/60 [00:56<00:19,  1.22s/it]
+    [tiny] lora_B_abs_sum=18740.1658 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen3.5-4B --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [tiny] lora_B_abs_sum=18740.1658 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen3.5-4B --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [tiny] lora_B_abs_sum=18740.1658 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen3.5-4B --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [tiny] lora_B_abs_sum=18740.1658 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen3.5-4B --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [tiny] lora_B_abs_sum=18740.1658 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen3.5-4B --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [tiny] lora_B_abs_sum=18740.1658 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen3.5-4B --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [tiny] lora_B_abs_sum=18740.1658 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen3.5-4B --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [tiny] lora_B_abs_sum=18740.1658 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen3.5-4B --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [tiny] lora_B_abs_sum=18740.1658 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen3.5-4B --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen3.5-4B --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [serve] /v1/models -> ['Qwen/Qwen3.5-4B', 'tiny']
+    [matrix] ===== subject: google/gemma-4-E4B-it =====
+    W0925 11:18:12.591000 6666 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 11:18:12.633000 6666 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [matrix] control valid: False
+    [matrix] reading: VOID: the procedure failed on a base where it is known to work. Nothing here is a fact about google/gemma-4-E4B-it
+    [matrix] decision: fix the harness; no model was measured
+    the runner wrote its result — done
+exit 0

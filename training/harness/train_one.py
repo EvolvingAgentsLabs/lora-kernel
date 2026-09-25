@@ -33,6 +33,10 @@ def main() -> int:
     ap.add_argument("--r", type=int, default=16)
     ap.add_argument("--alpha", type=int, default=32)
     ap.add_argument("--lr", type=float, default=2e-4)
+    # 0 is every adapter trained before W9. W5e's retrain of W5c's recipe, at seed 0 both times,
+    # disagreed with the original on 25 of 67 rows [ran]: the GPU is not deterministic, so a seed
+    # prices the draw only beside that noise, never instead of it.
+    ap.add_argument("--seed", type=int, default=0)
     a = ap.parse_args()
 
     from training.s4_train import train_adapter
@@ -41,7 +45,7 @@ def main() -> int:
     print(f"[train] {a.out_dir} from {len(rows)} examples", flush=True)
     train_adapter(a.base, rows, a.out_dir, SimpleNamespace(
         epochs=a.epochs, r=a.r, alpha=a.alpha, lr=a.lr, batch=2, accum=8,
-        max_seq=1536, seed=0, four_bit=False,
+        max_seq=1536, seed=a.seed, four_bit=False,
         targets="q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"))
     named_for_serving(a.base, a.out_dir)
     print("[train] done", flush=True)

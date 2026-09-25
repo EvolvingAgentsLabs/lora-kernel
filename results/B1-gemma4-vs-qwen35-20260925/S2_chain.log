@@ -1,0 +1,20 @@
+=== session 1 of 1 · srv090428 · L4
+    boot clone: rc=0 ff8d708 B1 stage 1 [ran]: PASSED — Gemma 4 E4B trains a LoRA (towers excluded) and vLLM serves it applied; P29 lifted
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 ff8d708 B1 stage 1 [ran]: PASSED — Gemma 4 E4B trains a LoRA (towers excluded) and vLLM serves it applied; P29 lifted
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    ff8d708 B1 stage 1 [ran]: PASSED — Gemma 4 E4B trains a LoRA (towers excluded) and vLLM serves it applied; P29 lifted | 0.30.0
+    this module trains its own adapter — nothing to carry in
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [wiki] base-walks 67/67 credit 27 value-right 31 errors 0 34s
+    [wiki] headline · base-reads vs base-walks: improvement (21:0, p=0.0)
+    [wiki] NAVIGATION IS THE GAP: base-reads 100% vs base-walks 48%, improvement (21:0, p=0.0) — train the trajectory LoRA, 2 seeds
+    the runner wrote its result — done
+exit 0

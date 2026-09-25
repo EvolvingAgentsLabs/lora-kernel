@@ -56,24 +56,16 @@ TEXT = {
                "*Las cinco piezas de la memoria. Cuatro no son neuronales.*"),
     },
     "memory-walkthrough.png": {
-        "en": ("Seven numbered panels joined by one line, like a subway map: a request, a search that lights three "
-               "cards, a procedure opening, the line running along the harness shelf, a detour down to the wiki "
-               "shelf and back, a calculator, the answer.",
-               "*One task, end to end. The detour from the harness to the wiki and back is the point.*"),
-        "es": ("Siete paneles numerados unidos por una línea, como un mapa de subte: un pedido, una búsqueda que "
-               "ilumina tres fichas, un procedimiento que se abre, la línea que recorre el estante del arnés, un "
-               "desvío hacia el estante de la wiki y de vuelta, una calculadora, la respuesta.",
-               "*Una tarea, de punta a punta. El desvío del arnés a la wiki y de vuelta es el punto.*"),
+        "en": ("Six panels joined by one line, like a subway map: a request; a search that lights three page cards; a page opening as its table of sections; one sentence whose underlined name links to the next page; a person's page and its extension; the answer with its citation stamped on it, and the referee's check.",
+               '*One question, end to end: pages of one-sentence statements, links inside the sentences, an answer that names the sentence it rests on.*'),
+        "es": ('Seis paneles unidos por una línea, como un mapa de subte: un pedido; una búsqueda que ilumina tres fichas de página; una página que se abre como su índice de secciones; una oración cuyo nombre subrayado enlaza a la página siguiente; la página de una persona y su interno; la respuesta con su cita estampada, y el visto bueno del árbitro.',
+               '*Una pregunta, de punta a punta: páginas de enunciados de una oración, enlaces dentro de las oraciones, una respuesta que nombra la oración en que se apoya.*'),
     },
     "request-path.png": {
-        "en": ("Five stations on one line: client, proxy, router, expert with its library, answer. From the router "
-               "a dashed branch runs along the bottom to the frontier and rejoins at the answer. Under the expert, "
-               "three keys: search, open, calc.",
-               "*The path of a request. Abstaining to the frontier is a lane, not an error.*"),
-        "es": ("Cinco estaciones sobre una línea: cliente, proxy, router, experto con su biblioteca, respuesta. Del "
-               "router sale una rama punteada que corre por abajo hasta la frontera y se reúne en la respuesta. "
-               "Debajo del experto, tres teclas: search, open, calc.",
-               "*El camino de un pedido. Abstenerse hacia la frontera es un carril, no un error.*"),
+        "en": ("One line of six stations: an agent; the gateway reading a signed badge; the role's small local expert; tools run with the badge's permission, one record refused and a payment held; a sheet with an invented line crossed out; the answer. A dashed branch for out of scope leads to a distant building and to a person; a log band runs under everything.",
+               '*The path of a request: identity from a token, permission in the tools, a person for payments, and no line shown that a tool did not return.*'),
+        "es": ('Una línea de seis estaciones: un agente; el gateway que lee una credencial firmada; el experto local chico del rol; herramientas con el permiso de la credencial, un registro rechazado y un pago retenido; una hoja con una línea inventada tachada; la respuesta. Una rama punteada para lo que está fuera de alcance lleva a un edificio lejano y a una persona; una banda de registro corre debajo de todo.',
+               '*El camino de un pedido: identidad desde un token, permiso en las herramientas, una persona para los pagos, y ninguna línea que una herramienta no haya devuelto.*'),
     },
     "article-harness.png": {
         "en": ("Two panels. Left: a specialist posts a query through a slot and the answer comes back through "

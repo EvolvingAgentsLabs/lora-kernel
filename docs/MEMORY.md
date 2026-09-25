@@ -9,14 +9,15 @@ This is the implementation specification of the per-expert memory, the core of v
 [`KNOWLEDGE-TRAJECTORIES.md`](KNOWLEDGE-TRAJECTORIES.md); this document is the *what to build*. The
 explanation it implements is the user's, 2026-09-19. Status markers as everywhere here: **[ran]**
 measured in this repository, **[read]** read in source or a paper, **[spec]** decided and not yet
-built. **Nothing in this document is built yet**; §10 says in what order it will be, and what can
-stop it.
+built. W1–W5e, W8 and W9 are built and measured, §10 says what each showed; **§1.6, atomic statements — the
+user's design of 2026-09-24 — PASSED W9 [ran] 2026-09-25**: a trajectory LoRA walks it 35/40 where the untrained base
+walks 0/40 (Gemma 4 E4B: 38/40).
 
 Five pieces:
 
 | # | piece | one line | neural? |
 |---|---|---|---|
-| 1 | **the library** | small markdown notes on two shelves — the operational harness and the encyclopedic wiki | no — text in git |
+| 1 | **the library** | small markdown notes on two shelves — the operational harness and the encyclopedic wiki; since W9, **pages of atomic statements** (§1.6) | no — text in git |
 | 2 | **the radar** | embeddings compressed to one subdomain: *when is this note for*, *what does it define* | a small encoder, frozen at serving |
 | 3 | **the language** | three verbs the expert may write: `<search>`, `<open>`, `<calc>` | no — a grammar |
 | 4 | **the LoRA** | trained on the *habit of navigating*, never on the data | yes — the only trained part |
@@ -148,6 +149,68 @@ have the same `when:`. Knowledge that lives in git gets the gates code gets.
 
 ---
 
+
+### 1.6 Atomic statements — a page is a list of verifiable statements **[ran]** W9
+
+The user's design, 2026-09-24. The library is shaped like **Wikipedia**: a **page** is about one
+thing — a product, a supplier, a procedure — and is made of **atomic statements**: the smallest piece
+of information that can be checked on its own — one sentence, one fact or one instruction — under an
+anchor (`§supplier`, `§if-damaged`). **The statement, not the page, is the unit of memory, and that is
+what makes the memory verifiable:** an answer names the statement it rests on, and the check is
+mechanical.
+
+**Links live inside statements.** The statement that says who supplies a product is also the way to
+the supplier's page: `§supplier Supplied by [[…/suppliers/norvale]].` The user's walk: *"what are the
+works of the author of the Mona Lisa?"* → search finds the page `La_Gioconda` → the page shows its
+sections → the model opens `§author` → its link leads to `Leonardo_da_Vinci` → the model picks
+`§works` there. **Operative memory has the same shape:** a page is a recipe whose statements are steps
+and branches — `§if-damaged If the goods arrived damaged, follow [[…/damage-claim]].` — and a plan is
+the trajectory through them that the task's particulars and context choose.
+
+```
+---
+id: distributor-wiki/wiki/products/brisk-40
+shelf: wiki
+kind: page
+title: Brisk-40 pallet wrap
+when: You need a fact about the Brisk-40 pallet wrap — who supplies it, where it is stocked, its pack.
+what: A stretch film for pallets; one of the products the distributor carries.
+---
+§supplier Brisk-40 is supplied by [[distributor-wiki/wiki/suppliers/norvale]].
+§warehouse Brisk-40 is stocked at [[distributor-wiki/wiki/warehouses/east-quay]].
+§pack A pack of Brisk-40 holds 18 rolls.
+```
+
+**Rules — linted, like code.** Kind `page` on the wiki shelf, `recipe` on the harness shelf. Every body
+line of a page is a statement, `§anchor text`; the anchor is unique in its page (`[a-z0-9-]`); a
+statement is **one sentence of at most 40 tokens**; every `[[link]]` resolves; the page's `refs` are
+derived from its statements' links, never written by hand.
+
+**What the runtime shows.** `<open>id</open>` on a page returns its title, its `what:` and its
+**sections — the anchors, never the statements' text**, like Wikipedia's table of contents: choosing
+the section is the model's job. `<open>id§anchor</open>` returns that one statement, its links written
+`[p7q] Title` so they can be opened. A statement exists in a conversation only once its page was shown.
+
+**The answer contract.** The final line ends with the citation `[id§anchor]` of the statement it rests
+on. **Verified** = the answer's value occurs in the cited statement **and** the walk opened it. A right
+value with no citation, or a citation that does not hold it, is `unverified` — reported, never credit.
+
+**Why the test bed is invented, not Wikipedia.** Famous facts are in a 4B's weights: a closed-book arm
+would answer *who painted the Mona Lisa*, and the number would measure the weights, not the memory
+(the same trap as P15/P21). W9's wiki is a **distribution company shaped like Wikipedia, generated per
+*world* from a seed** — names, values and links drawn fresh — with one world committed as the
+evaluation world and never used for training. W8's three real pages stay as the format's proof on
+real text.
+
+**Where the harness lives.** The sections, the citation check and the verbs are software. Choosing the
+section and following the right link is what a **trajectory LoRA** would learn per subdomain — and it
+is bought only if the untrained base does not already do it: W9's headroom arm decides. **It did [ran]:** the
+untrained base never wrote a verb after a search result (0/40); trained on 32 other worlds, both seeds walked the
+evaluation world 35/40 with every citation verified, 3-hop 16/16 — a tie with the base handed the oracle's statements.
+**In front of an organisation's tools the same principle holds one level up:** the gateway shows no line of a reply that
+a real tool result does not contain (`examples/common/grounding.py`), because a trajectory LoRA can still invent a line
+in a result's format **[ran]** M8.
+
 ## 2. The radar — embeddings compressed to one subdomain
 
 Not a general search engine, and not a large embedding model built to know history, pop culture and
@@ -216,7 +279,7 @@ every expert in this pool is already trained and served in (0.992 that way again
 | verb | the expert writes | the runtime answers |
 |---|---|---|
 | **search** | `<search>situation or doubt</search>` | `= 3 notes` and, per note, `[id] kind · title — when: …`. **Titles and `when` lines only — never bodies** |
-| **open** | `<open>id</open>` | the note's body, slots filled and local rules applied, then its links: `next …` · `requires …` · `uses …` (on the wiki shelf `parent …` · `children …`; either shelf may also carry `refs …` — §1.2a, not yet exercised by this runtime **[ran]** W8; every link but `next` carries the note's title beside its id — W2 **[ran]**) |
+| **open** | `<open>id</open>` — or, on a page of atomic statements, `<open>id§anchor</open>` for one statement (§1.6, W9 **[spec]**) | on a page, its sections only; otherwise the note's body, slots filled and local rules applied, then its links: `next …` · `requires …` · `uses …` (on the wiki shelf `parent …` · `children …`; either shelf may also carry `refs …` — §1.2a, not yet exercised by this runtime **[ran]** W8; every link but `next` carries the note's title beside its id — W2 **[ran]**) |
 | **calc** | `<calc>500 * 20 / (4 * 60)</calc>` | `= 41.6667` — so the model **never does arithmetic in its head**, where it always fails (adapter alone 4/40, adapter + calculator 40/40 **[ran]** P5–P7) |
 
 ```
@@ -406,9 +469,10 @@ page** again, ids re-drawn, to stand in the turn that continues. The corpus call
 
 ## 6. In operation — one task, end to end
 
-![Seven numbered panels joined by one line, like a subway map: a request, a search that lights three cards, a procedure opening, the line running along the harness shelf, a detour down to the wiki shelf and back, a calculator, the answer.](img/memory-walkthrough.png)
-
-*One task, end to end. The detour from the harness to the wiki and back is the point.*
+> **[ILLUSTRATION PLACEHOLDER — `docs/img/memory-walkthrough.png`]**
+> *Being redrawn for pages of atomic statements (§1.6); the brief is in [`img/README.md`](img/README.md): a request, a
+> search that lights three page cards, a page as its table of sections, a sentence whose underlined name links to the
+> next page, a person's section, the answer with its citation stamped on it and the referee's check.*
 
 1. **The task comes in:** *"Infuse 500 mL over 4 hours by gravity; drop factor 20 gtt/mL."*
 2. **The expert consults its radar:** `<search shelf=harness>start a primary infusion</search>`.
@@ -455,6 +519,7 @@ score cannot see:
 | **used** | did its value reach a later step? (`training/physics/result_use.py` — the instrument that found the fluids expert looks a density up, 882.3, and multiplies by 1359.7 **[ran]**) |
 | **conformant** | did the walk respect every `requires`? |
 | **correct** | the verifier's verdict |
+| **cited** | on a page of atomic statements: does the answer name a statement that holds its value, and did the walk open it? (§1.6 — the memory's own verifier) |
 | **tokens** | a walk is not free |
 
 Arms and their order are [`PLAN.md`](PLAN.md) milestone 7. Two test beds with different jobs: **fluid
@@ -479,6 +544,7 @@ Each package ends in a gate, fits a sixty-minute Colab session where it needs a 
 | W6 | radar **R1**, the compression claim | Colab, minutes | recall@3 flat as $d$ falls to 64 |
 | W7 | edit one note after training; the answer must follow the library | Colab, minutes | it does |
 | W8 | **not fluid mechanics, not gated on W1–W7** — a schema-level side proof: does the note format even express a reference that is not a tree edge (§1.2a), asked from the user's own Mona Lisa → painter → drawings example | no | a `refs` target resolves; the named trajectory resolves through it — ✅ **[ran] 2026-09-22**: `knowledge/wikipedia-arts/`, 0 lint findings; `mona-lisa.refs[0]` → `leonardo-da-vinci`, `.children[0]` → `drawings`. Not radar-indexed, not walked by any runtime, not trained — the format question only ([`BRIEF`](../results/W8-wikipedia-refs-20260922/BRIEF.md)) |
+| W9 | **atomic statements** (§1.6) — pages of statements, `<open>id§anchor</open>`, cited answers verified mechanically; an invented distributor wiki generated per world; 1–3-hop encyclopedic and operative questions | one L4, no training; a trajectory LoRA (2 seeds) only if the headroom arm says navigation is the gap | **the closed-book arm must fail** (≤ 10 % right) or the set is void; then `base-walks` against `base-reads` decides whether a LoRA is needed at all — ✅ **[ran] 2026-09-25: PASSED** — untrained walk 0/40 (it never writes a verb after a result), the trajectory LoRA 35/40 on both seeds (35 : 0), 3-hop 16/16, a tie with the base handed the oracle's statements ([`BRIEF`](../results/M7-W9-atomic-statements-20260924/BRIEF.md)) |
 
 **What could have stopped it, and did not [ran] 2026-09-19.** Milestone 7's arm 0b asked whether the
 fluids expert uses a tool's result when it arrives inline, as its corpus taught — it had scored 11

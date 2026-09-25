@@ -11,7 +11,7 @@ Superseded text is struck, not deleted. What was measured before 2026-09-19 is i
 > **Build the service as experts defined by their corpora: a very small router that
 > decides which expert's corpus a request falls in and abstains to a frontier model when
 > it falls in none; and, per subdomain, a speculative pair — a LoRA on a small model and a
-> LoRA on a large one, trained on the same corpus. Family: Qwen 3.x, small and large.**
+> LoRA on a large one, trained on the same corpus. Family: ~~Qwen 3.x~~ **Gemma 4 since 2026-09-25 (B1 [ran], the user's decision)**, small and large.**
 >
 > **Extended the same day: each expert also gets a knowledge base of its own subdomain —
 > markdown notes, embedded, encyclopedic and operational — and what the LoRA learns is the
@@ -87,12 +87,13 @@ arms are bought only once there is an effect to attribute.
 | # | milestone | depends on | gate | state |
 |---|---|---|---|---|
 | **1** | the pool on Qwen 3.x small | D2 ✅ | both members released on `Qwen3.5-4B`, each tying or beating its Qwen 2.5 release, paired | ✅ **[ran] 2026-09-19 — MOVED.** G1 `applied` on both full-recipe adapters; `email-full` **471/475 = its recorded 471**, tie 1 : 1; `desk-commitment` **240/240**, tie; `releases/*@v2.json`. Four sessions under an hour each ([`BRIEF`](../results/M1-pool-qwen35-20260919/BRIEF.md)) |
+| **1b** | **the pool re-released on Gemma 4 E4B** | B1 ✅ | `email-full` and `desk-commitment` retrained on `google/gemma-4-E4B-it` from the same corpora and recipe, each tying or beating its `@v2` Qwen3.5-4B release on the same cases, paired; `@v3` manifests | **[ran] 2026-09-25 — NOT MOVED as a pool:** `email-full` ties its `@v2` (469 vs 471, 1 : 3) and beats the bare Gemma (119 : 0) → **`email-full@v3` on Gemma**; `desk-commitment` ties `@v2` and the bare Gemma alike (240/240, the ceiling) — no adapter needed there, stays `@v2` ([`BRIEF`](../results/M1b-pool-gemma4-20260925/BRIEF.md)) |
 | **2** | the router as a tiny model of the corpora | the members' corpora | misrouted-to-local no higher than the dictionary's on prompts the dictionary was not written for; abstains on out-of-distribution text | **arm 1 [ran] 2026-09-19 — does not pass.** Foreign text, fresh sets: dictionary 59/128 served locally, n-gram router **0/128**; legitimate requests from unseen senders: dictionary loses 0/120, router loses **120/120**. The dictionary stays; **arm 2 is an embedding model**, shared with milestone 7 |
-| **3** | the large half of one pair | 1 | a LoRA on `Qwen3.8-27B` is applied when served; large + LoRA beats small + LoRA on the deep band, paired | — |
+| **3** | the large half of one pair | 1 | a LoRA on ~~`Qwen3.8-27B`~~ `gemma-4-31B-it` (family.LARGE) is applied when served; large + LoRA beats small + LoRA on the deep band, paired | — |
 | **4** | the speculative pair | 3 | acceptance of small-LoRA drafts under large-LoRA verification exceeds acceptance under the bare large model | — |
 | **5** | the first real region, by hand | 1, 2, a sandbox, keys rotated | the release gate, on a suite with a verifier nobody here generated | **region named 2026-09-19: nursing procedures and health-education material** (Open RN *Nursing Skills*, CC BY 4.0, first); headroom arm next, zero GPU |
 | **6** | the service policy, with the bill | 2, 4, 5 | the local share saves more than it costs, on real traffic | 🔶 **first pass [ran] 2026-09-21, zero GPU:** the P41/P62 replay priced at real `gemini-3.8-flash` rates — today's actual frontier bill (90 fluids cases) **$0.18**, avoided by keeping 150 email cases local **$0.11**, ceiling if everything left **$0.30**. **The local GPU's own dollar cost is not priced** — the rental rate could not be fetched live; not guessed around |
-| **7** | **a knowledge base per subdomain, and the trajectory through it as the harness** — on fluid mechanics, split into subdomains | 1; shares its embedding model with 2's arm 2; independent of 3–6, **runs next** | an expert trained to navigate and follow notes answers families it never trained on, where the same expert without the base is at 1/20 | 🔶 **W1–W4 built [ran]; W3's radar and W5's kill arm [ran] and not passed.** W5: the library arm 35/56 against the untrained base that reads at 45/56 (6 : 16, $p=0.052$), 35 : 2 over no-library — navigation transferred, reading a two-valued note did not. Next is the user's call: composition, no training |
+| **7** | **a knowledge base per subdomain, and the trajectory through it as the harness** — on fluid mechanics, split into subdomains | 1; shares its embedding model with 2's arm 2; independent of 3–6, **runs next** | an expert trained to navigate and follow notes answers families it never trained on, where the same expert without the base is at 1/20 | 🔶 **W1–W4 built [ran]; W3's radar and W5's kill arm [ran] and not passed.** W5: the library arm 35/56 against the untrained base that reads at 45/56 (6 : 16, $p=0.052$), 35 : 2 over no-library — navigation transferred, reading a two-valued note did not. Next is the user's call: composition, no training. **2026-09-24: the library's unit becomes the atomic statement (user's design, `MEMORY.md` §1.6) — W9 pre-registered: an invented distributor wiki, headroom on the untrained base first** |
 
 ### Milestone 1 — the pool on Qwen 3.x small
 
@@ -573,15 +574,13 @@ oracle is 140/140 through the same function ([`BRIEF`](../results/M7-W5-kill-arm
 
 ## 2. The family, and the alternative
 
-**Adopted: Qwen 3.x.** `Qwen3.5-2B/4B` and `Qwen3.8-27B` share one id space — 248,044 ids,
-7 large-only, all audio/TTS specials; `<think>` is shared **[ran]** D0. The thinking channel
-is off for members: no corpus taught it. The released members are on `Qwen2.5-3B-Instruct`
-until milestone 1 lands, and the Qwen 2.5 line stays the control in every gate.
+**Adopted, 2026-09-25: Gemma 4** — `google/gemma-4-E4B-it` for every new member; `gemma-4-31B-it` named for the
+large half, not measured. B1 **[ran]**: a tie with Qwen3.5-4B on W9 (38 vs 35, 35), which by the user's rule written
+before the comparison chooses Gemma. P29's block is lifted by excluding the vision/audio towers. The released members
+move one by one: `email-full@v3` on Gemma (M1b [ran]); `desk-commitment@v2` stays on `Qwen3.5-4B`; Qwen 2.5 stays the control arm.
 
-**Alternative, not now: Gemma 4, 2B and 12B.** The design is family-agnostic — a pair needs
-one id space and a base PEFT can attach to. Gemma 4 fails the second today:
-`Gemma4ClippableLinear` is not `nn.Linear` **[ran]** P29. `lora_matrix` with a Gemma subject
-is the gate that reopens it.
+**Previous, until re-release: Qwen 3.x** (`Qwen3.5-4B`, `Qwen3.8-27B`) — one id space **[ran]** D0, the family of every
+release so far. ~~Adopted: Qwen 3.x … Alternative, not now: Gemma 4, blocked at PEFT [ran] P29.~~
 
 ## 3. Rules every step follows
 
@@ -604,6 +603,42 @@ that decide the shape of a step:
 
 ## 5. History
 
+- **2026-09-25** — **M1b [ran]: `email-full` released on Gemma 4 E4B (`@v3`)** — a tie with its Qwen `@v2` (469 vs 471 of 475) and 119 : 0 over the bare Gemma. `desk-commitment` ties both `@v2` and the bare Gemma at 240/240: the pool does not move as a unit by the verdict as written; desk stays on Qwen until a suite with room above the base decides it ([`BRIEF`](../results/M1b-pool-gemma4-20260925/BRIEF.md)).
+- **2026-09-25** — **the school demo [ran]: 8/8 on Gemma 4 E4B, the system end to end.** M8: a school-staff trajectory
+  LoRA on 700 full gateway turns — held-out 70/70 on both seeds against the bare Gemma's 27/70 (43 : 0), demo day 8/8
+  against 3/8. Read where it happens it can still invent a line in a tool result's format and quote a planted
+  instruction; the gateway now grounds every reply in real tool results and redacts planted instructions, outside the
+  model — on the recorded demo day it replaced 2 of 5 local replies, the user saw neither. Two images withdrawn to be
+  redrawn (`memory-walkthrough.png`, `request-path.png`); the documents carry their placeholders
+  ([`M8`](../results/M8-school-staff-20260925/BRIEF.md), [`demo`](../results/DEMO-school-gemma-20260925/README.md)).
+- **2026-09-25** — **everything moves to Gemma 4, the user's decision on B1's tie.** New members are trained on
+  `gemma-4-E4B-it` (`training/harness/family.py`: SMALL; the active runners default to it); the large half of a pair is
+  named `gemma-4-31B-it`, not measured; milestone 1b re-releases the two Qwen members on Gemma through the gate. The
+  school demo's gateway now grounds every reply in real tool results and redacts planted instructions, outside the
+  model, after M8 [ran] showed the school-staff LoRA can invent a line of a tool's list.
+- **2026-09-25** — **B1 [ran]: Gemma 4 E4B against Qwen3.5-4B — a tie, which by the user's rule chooses Gemma.**
+  P29's block is lifted (the LoRA excludes Gemma's vision/audio towers; vLLM serves it applied). Untrained, Gemma walks
+  W9's wiki 19/40 where Qwen walks 0/40, and reads 40/40 where Qwen reads 29/40. With W9's corpus and recipe, Gemma's
+  member 38/40 against Qwen's 35 and 35 — 4 : 1 against each, a tie. The user decided before any stage ran that parity
+  chooses Gemma (the development stack targets it): **new members are trained on Gemma 4 E4B**; the released Qwen
+  members stay until re-released ([`BRIEF`](../results/B1-gemma4-vs-qwen35-20260925/BRIEF.md)).
+- **2026-09-25** — memory **W9 [ran]: PASSED.** A trajectory LoRA on a wiki of atomic statements: both seeds
+  (`wiki-walks-s0`, `-s1`, trained on 32 worlds never evaluated) beat the untrained base walking the evaluation
+  world **35 : 0** on the 40-row headline (35/40 against 0/40, verified citations); against the base handed the
+  oracle's statements, ties (9 : 3, 8 : 2). 3-hop 16/16. The two draws agree on 57 of 67 rows. Three scoring
+  attempts were lost to harness bugs, now reproduced by a fake `vllm serve` on the Mac
+  ([`BRIEF`](../results/M7-W9-atomic-statements-20260924/BRIEF.md)).
+- **2026-09-24** — memory **W9 pre-registered, not run: atomic statements.** The user's design: the
+  library shaped like Wikipedia, a page a list of one-sentence checkable statements under anchors,
+  links inside the statement that names them, the same shape for operative recipes; every answer cites
+  `[id§anchor]` and the runtime verifies the citation mechanically (`MEMORY.md` §1.6). Test bed: a
+  distributor wiki — pages for products, suppliers, warehouses, carriers and staff, and operative
+  recipes following the reference organisation's roles (purchasing, receiving, dispatch, claims and
+  returns, communications, finance, HR, marketing, IT) — **generated per world** so no value is known
+  by heart; one committed evaluation world. One L4, no training: the closed-book arm must fail, then
+  `base-walks` against `base-reads` decides whether a trajectory LoRA is needed; if it is, two seeds
+  (W5e: two draws of one recipe disagreed on 25 of 67)
+  ([`BRIEF`](../results/M7-W9-atomic-statements-20260924/BRIEF.md)).
 - **2026-09-23** — memory **W5e [ran]: NO HEADROOM — the retrained adapter does not write the memorised query.**
   W5c's adapter was on no disk, so it was retrained (same corpus, same recipe; sha `4caceaa3…`). The new draw
   loses **0** headline value rows to its own query (W5c's: 11) — it writes queries its corpus never held and

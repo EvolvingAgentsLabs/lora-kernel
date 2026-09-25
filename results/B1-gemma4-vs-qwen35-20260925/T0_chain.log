@@ -1,0 +1,87 @@
+=== session 1 of 1 · srv092121 · A100
+    boot clone: rc=0 af27317 B1 stage 2 [ran]: untrained Gemma 4 E4B walks the wiki 19/40 where untrained Qwen walks 0/40; reads 40/40 vs 29/40
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 af27317 B1 stage 2 [ran]: untrained Gemma 4 E4B walks the wiki 19/40 where untrained Qwen walks 0/40; reads 40/40 vs 29/40
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    af27317 B1 stage 2 [ran]: untrained Gemma 4 E4B walks the wiki 19/40 where untrained Qwen walks 0/40; reads 40/40 vs 29/40 | 0.30.0
+    this module trains its own adapter — nothing to carry in
+    runner started (launch 1)
+    [train] adapters/wiki-walks-s0 from 600 examples
+    W0925 12:27:50.865000 3305 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 12:27:50.908000 3305 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [train] adapters/wiki-walks-s0 from 600 examples
+    W0925 12:27:50.865000 3305 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 12:27:50.908000 3305 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [train] adapters/wiki-walks-s0 from 600 examples
+    W0925 12:27:50.865000 3305 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 12:27:50.908000 3305 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [train] adapters/wiki-walks-s0 from 600 examples
+    W0925 12:27:50.865000 3305 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 12:27:50.908000 3305 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [train] adapters/wiki-walks-s0 from 600 examples
+    W0925 12:27:50.865000 3305 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 12:27:50.908000 3305 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [train] adapters/wiki-walks-s0 from 600 examples
+    W0925 12:27:50.865000 3305 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 12:27:50.908000 3305 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+      0%|          | 0/114 [00:00<?, ?it/s]
+      1%|          | 1/114 [00:10<20:33, 10.92s/it]
+      2%|▏         | 2/114 [00:18<16:27,  8.81s/it]
+      5%|▌         | 6/114 [00:46<13:16,  7.37s/it]
+      6%|▌         | 7/114 [00:54<13:10,  7.39s/it]
+      7%|▋         | 8/114 [01:01<12:50,  7.27s/it]
+     11%|█▏        | 13/114 [01:37<12:02,  7.15s/it]
+     12%|█▏        | 14/114 [01:44<12:03,  7.23s/it]
+     13%|█▎        | 15/114 [01:51<11:49,  7.17s/it]
+     18%|█▊        | 20/114 [02:26<11:06,  7.09s/it]
+     18%|█▊        | 21/114 [02:34<11:08,  7.19s/it]
+     19%|█▉        | 22/114 [02:41<10:56,  7.14s/it]
+     23%|██▎       | 26/114 [03:09<10:24,  7.10s/it]
+     24%|██▎       | 27/114 [03:16<10:15,  7.07s/it]
+     25%|██▍       | 28/114 [03:24<10:16,  7.17s/it]
+     29%|██▉       | 33/114 [03:59<09:34,  7.09s/it]
+     30%|██▉       | 34/114 [04:06<09:35,  7.19s/it]
+     31%|███       | 35/114 [04:14<09:24,  7.15s/it]
+     35%|███▌      | 40/114 [04:46<08:09,  6.61s/it]
+     36%|███▌      | 41/114 [04:53<08:11,  6.73s/it]
+     37%|███▋      | 42/114 [05:00<08:19,  6.94s/it]
+     40%|████      | 46/114 [05:29<08:05,  7.13s/it]
+     41%|████      | 47/114 [05:36<07:55,  7.10s/it]
+     42%|████▏     | 48/114 [05:43<07:48,  7.09s/it]
+     46%|████▋     | 53/114 [06:19<07:17,  7.17s/it]
+     47%|████▋     | 54/114 [06:26<07:06,  7.11s/it]
+     48%|████▊     | 55/114 [06:33<07:06,  7.22s/it]
+     53%|█████▎    | 60/114 [07:09<06:29,  7.21s/it]
+     54%|█████▎    | 61/114 [07:16<06:19,  7.16s/it]
+     54%|█████▍    | 62/114 [07:24<06:17,  7.26s/it]
+     58%|█████▊    | 66/114 [07:53<05:45,  7.19s/it]
+     59%|█████▉    | 67/114 [08:00<05:37,  7.17s/it]
+     60%|█████▉    | 68/114 [08:07<05:28,  7.14s/it]
+     64%|██████▍   | 73/114 [08:43<04:55,  7.21s/it]
+     65%|██████▍   | 74/114 [08:50<04:47,  7.18s/it]
+     66%|██████▌   | 75/114 [08:58<04:43,  7.27s/it]
+     70%|███████   | 80/114 [09:30<03:55,  6.92s/it]
+     71%|███████   | 81/114 [09:37<03:49,  6.96s/it]
+     72%|███████▏  | 82/114 [09:44<03:47,  7.11s/it]
+     76%|███████▋  | 87/114 [10:20<03:12,  7.13s/it]
+     77%|███████▋  | 88/114 [10:27<03:04,  7.10s/it]
+     78%|███████▊  | 89/114 [10:34<02:59,  7.19s/it]
+     82%|████████▏ | 93/114 [11:03<02:30,  7.15s/it]
+     82%|████████▏ | 94/114 [11:10<02:22,  7.11s/it]
+     83%|████████▎ | 95/114 [11:17<02:14,  7.09s/it]
+     88%|████████▊ | 100/114 [11:53<01:40,  7.18s/it]
+     89%|████████▊ | 101/114 [12:00<01:33,  7.16s/it]
+     89%|████████▉ | 102/114 [12:08<01:27,  7.26s/it]
+     93%|█████████▎| 106/114 [12:36<00:58,  7.25s/it]
+     94%|█████████▍| 107/114 [12:43<00:50,  7.19s/it]
+     95%|█████████▍| 108/114 [12:50<00:42,  7.16s/it]
+    [train] named for serving: {'base': 'google/gemma-4-E4B-it', 'architecture': 'Gemma4ForConditionalGeneration', 'renamed': True, 'src': 'adapters/wiki-walks-s0', 'dst': 'adapters/wiki-walks-s0.renamed', 'moved': 0, 'before': {'tensors': 516, 'land_on_text_stack': 516}, 'after': {'tensors': 516, 'land_on_text_stack': 516}}
+    [train] done
+    [pool] trained and packed 1 — stopping before serving, as asked
+    adapters home: 1 packed
+    the runner wrote its result — done
+exit 0

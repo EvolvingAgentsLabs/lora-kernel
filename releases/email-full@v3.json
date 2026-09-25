@@ -1,0 +1,105 @@
+{
+ "name": "email-full",
+ "version": 3,
+ "base": "google/gemma-4-E4B-it",
+ "recipe": {
+  "r": 16,
+  "lora_alpha": 32,
+  "epochs": 3,
+  "lr": 0.0002,
+  "batch": 2,
+  "accum": 8,
+  "max_seq": 1536,
+  "seed": 0,
+  "targets": "q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"
+ },
+ "lora_exclusions": "vision/audio towers (training/s4_train.py::towers_to_exclude) — Gemma4ClippableLinear",
+ "corpus": "training/harness/data_ef/train.jsonl",
+ "corpus_sha256": "382c67d2d16b355b9b4aa1093d9452e05087ede4913e2fdfb21d5ea1a1c0948f",
+ "adapter_sha256": "725ad8ddd2124b753742caf7b0c5d6d5b165f1f41ef6e38d36f4fca9754676b1",
+ "adapter_tarball": "results/M1b-pool-gemma4-20260925/adapters.tgz (git-ignored; a copy in ~/lora-kernel-adapters/M1b-pool-gemma4-20260925/)",
+ "named_for_serving": {
+  "base": "google/gemma-4-E4B-it",
+  "architecture": "Gemma4ForConditionalGeneration",
+  "renamed": true,
+  "src": "adapters/email-full-g4",
+  "dst": "adapters/email-full-g4.renamed",
+  "moved": 0,
+  "before": {
+   "tensors": 516,
+   "land_on_text_stack": 516
+  },
+  "after": {
+   "tensors": 516,
+   "land_on_text_stack": 516
+  }
+ },
+ "thinking": "off — chat_template_kwargs enable_thinking=false in every render",
+ "prompt_sha": "d38fe1bce1255014",
+ "suite": "email",
+ "n": 475,
+ "score": {
+  "correct": 469
+ },
+ "supersedes": "releases/email-full@v2.json — Qwen/Qwen3.5-4B, kept as the control arm",
+ "pairs": [
+  {
+   "pair": "new vs recorded",
+   "n_paired": 475,
+   "a_total": 469,
+   "b_total": 471,
+   "only_a": 1,
+   "only_b": 3,
+   "discordant": 4,
+   "p_value": 0.625,
+   "different": false,
+   "reading": "a tie: the totals differ but the cases behind them do not",
+   "state": "tie"
+  },
+  {
+   "pair": "new vs base",
+   "n_paired": 475,
+   "a_total": 469,
+   "b_total": 350,
+   "only_a": 119,
+   "only_b": 0,
+   "discordant": 119,
+   "p_value": 0.0,
+   "different": true,
+   "reading": "the arms differ",
+   "state": "improvement"
+  }
+ ],
+ "gates": {
+  "G1": {
+   "probed": 3,
+   "empty": 0,
+   "differs": 2,
+   "applied": true,
+   "samples": [
+    {
+     "base": "The sky appears blue because of a phenomenon called Rayleigh",
+     "member": "The sky appears blue because Earth's atmosphere scatters sho"
+    },
+    {
+     "base": "Here are three things a careful reader checks before answeri",
+     "member": "Here are three things a careful reader checks before answeri"
+    },
+    {
+     "base": "A pressure drop in a pipe depends on the fluid's properties,",
+     "member": "A pressure drop in a pipe depends on the fluid's properties,"
+    }
+   ]
+  },
+  "G2": {
+   "reachable": true,
+   "tool_calls": 1,
+   "answered": false
+  },
+  "G2_auto": {
+   "served": "email-full",
+   "ok": true
+  }
+ },
+ "released_by": "M1b [ran] 2026-09-25 — ties @v2 (469 vs 471, 1:3, p=0.625), beats the bare Gemma (469 vs 350, 119:0); results/M1b-pool-gemma4-20260925/BRIEF.md"
+}

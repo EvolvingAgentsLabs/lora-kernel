@@ -92,6 +92,9 @@ def main() -> int:
     ap.add_argument("--stop-after-training", dest="train_only", action="store_true",
                     help="end the session once every adapter is trained, packed and said so: a Colab "
                          "session lives sixty minutes [ran] 2026-09-19 and one member takes ~45 to train")
+    ap.add_argument("--against", default=None,
+                    help="a previous pool_base.json whose member arms are the reference (M1b: results/M1-pool-qwen35-20260919/"
+                         "pool_base.json, the @v2 Qwen3.5-4B releases) instead of each member's first recorded release")
     ap.add_argument("--out", default="pool_base.json")
     args = ap.parse_args()
     out = Path(args.out); out.parent.mkdir(parents=True, exist_ok=True)
@@ -198,7 +201,7 @@ def main() -> int:
                 a.update(summarise(recs))
                 print(f"[pool] arm {arm}: {a['correct']}/{a['n']} errors {a['errors']}", flush=True)
                 save()
-            path, name = MEMBERS[m]["recorded"]
+            path, name = (args.against, m) if args.against else MEMBERS[m]["recorded"]
             old = json.loads(Path(path).read_text())["arms"][name]["records"]
             old = old if isinstance(old, list) else list(old.values())
             new = list(rec["arms"][m]["records"].values())

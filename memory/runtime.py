@@ -27,6 +27,16 @@ overlap standing in for the inner product,
 behind `Searcher` — the one method W3's index implements. §2.3 keeps lexical search as a reported
 baseline whatever the radar does, so this class outlives W2.
 
+PAGES OF ATOMIC STATEMENTS (§1.6, W9 **[spec]**). `<open>id</open>` on a page shows its title, its
+`what:` and its SECTIONS — anchors only, never a statement's text, like Wikipedia's contents: which
+section answers the task is the expert's choice. `<open>id§anchor</open>` shows that one statement,
+slots filled, each `[[link]]` written `[p7q] Title` so it can be opened. Opened statements are kept
+in `statements`, which is what a citation `[id§anchor]` is checked against.
+
+    <open>k3f</open>= Brisk-40 pallet wrap — A stretch film for pallets.
+      sections §supplier · §warehouse · §pack
+    <open>k3f§supplier</open>= Brisk-40 is supplied by [q7m] Norvale Supplies.
+
 ERRORS ARE OBSERVATIONS, AND THEY ARE COUNTED. Nothing here swallows an exception: a bad call
 becomes an `ERROR:` line the expert reads and an entry in `errors`; a bug raises.
 """
@@ -41,7 +51,7 @@ from typing import Protocol
 
 from memory.guard import Guard
 from memory.layers import render, resolve, shown_slots
-from memory.notes import Library, Note, Site, count_tokens
+from memory.notes import LINK, Library, Note, Site, count_tokens, statements_of
 
 VERBS = ("search", "open", "calc")
 GRAMMAR = "verbs-en-1"                       # frozen with a release (§3, §8)
@@ -113,6 +123,7 @@ class Conversation:
     shown: dict[str, str] = field(default_factory=dict)      # opaque → library id
     opaque: dict[str, str] = field(default_factory=dict)     # library id → opaque
     opened: list[str] = field(default_factory=list)
+    statements: list[tuple[str, str]] = field(default_factory=list)   # (library id, anchor), in order
     errors: dict[str, int] = field(default_factory=dict)
     log: list[dict] = field(default_factory=list)
     ended: str | None = None              # why the walk is *not answered*, if it is
@@ -192,6 +203,9 @@ class Conversation:
 
     def _open(self, shown: str) -> str:
         shown = shown.strip("[] ")
+        shown, section, anchor = shown.partition("§")
+        if section:
+            return self._open_statement(shown.strip(), anchor.strip())
         if shown not in self.shown:
             self.guard.unknown_id(shown)
             return self._violation(f"no note {shown} in this conversation", "unknown_id", shown)
@@ -200,7 +214,7 @@ class Conversation:
         if not v.ok:
             first = " ".join(self._id(m) for m in v.missing)
             return self._violation(f"requires {first} first", "requires", shown, note=note.id)
-        if len(self.opened) >= self.max_opens:
+        if len(self.opened) + len(self.statements) >= self.max_opens:
             return self._end("open budget", "open")
         self.opened.append(note.id)
         case = (self.case or {}).get(note.id)
@@ -210,7 +224,35 @@ class Conversation:
                          if k in shown_slots(note, self.site)})
         return text
 
+    def _open_statement(self, shown: str, anchor: str) -> str:
+        """§1.6: one statement of a page. A wrong section is an observation, not a violation."""
+        if shown not in self.shown:
+            self.guard.unknown_id(shown)
+            return self._violation(f"no note {shown} in this conversation", "unknown_id", shown)
+        note = self.lib[self.shown[shown]]
+        if not note.is_page:
+            return self._error("section", f"{shown} is not a page of sections — open it whole", "open")
+        text = self._statement_text(note, anchor)
+        if text is None:
+            return self._error("section", f"no section §{anchor} on {shown}", "open")
+        if len(self.opened) + len(self.statements) >= self.max_opens:
+            return self._end("open budget", "open")
+        self.statements.append((note.id, anchor))
+        self._log("open", f"{shown}§{anchor}", note=note.id, anchor=anchor, guard="ok", tokens=count_tokens(text))
+        return text
+
+    def _statement_text(self, note: Note, anchor: str) -> str | None:
+        """The statement as the expert reads it — slots filled, links as openable ids — or None."""
+        body = render(note, self.site, (self.case or {}).get(note.id))
+        st = next((x for x in statements_of(body)[0] if x.anchor == anchor), None)
+        if st is None:
+            return None
+        return LINK.sub(lambda m: f"[{self._id(m.group(1))}] {self.lib[m.group(1)].title}", st.text)
+
     def _render(self, note: Note, case: dict | None) -> str:
+        if note.is_page:
+            anchors = " · ".join(f"§{st.anchor}" for st in note.statements)
+            return f"{note.title} — {note.what}\n  sections {anchors}"
         body = render(note, self.site, case)
         if note.kind == "procedure":
             head = f"{note.title} — {len(note.steps)} steps. First step: {self._id(note.first)}"

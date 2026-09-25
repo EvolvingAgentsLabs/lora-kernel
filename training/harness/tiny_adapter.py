@@ -44,6 +44,7 @@ def main() -> int:
 
     import torch
     from peft import LoraConfig, get_peft_model
+    from training.s4_train import towers_to_exclude
     from transformers import (AutoModelForCausalLM, AutoTokenizer,
                               DataCollatorForLanguageModeling, Trainer,
                               TrainingArguments)
@@ -76,7 +77,7 @@ def main() -> int:
     # Every Linear is a candidate now, minus the two that are never adapted: the
     # output head and anything in a vision tower, which would make the comparison
     # about a modality this project does not use.
-    SKIP = ("lm_head", "visual", "vision", "patch_embed", "merger")
+    SKIP = ("lm_head", "visual", "vision", "patch_embed", "merger", "audio", "multi_modal")   # Gemma 4: audio_tower, multi_modal_projector
     # UNDER 4-BIT THE LINEARS ARE `Linear4bit`, NOT `torch.nn.Linear`. A discovery
     # keyed on the torch class would find nothing but the head and refuse.
     names = sorted({n.split(".")[-1] for n, m in model.named_modules()
@@ -99,7 +100,9 @@ def main() -> int:
 
     model = get_peft_model(model, LoraConfig(
         r=args.r, lora_alpha=args.alpha, lora_dropout=0.0, bias="none",
-        task_type="CAUSAL_LM", target_modules=names))
+        task_type="CAUSAL_LM", target_modules=names,
+        # Gemma 4: the towers reuse q_proj/k_proj/... as Gemma4ClippableLinear — B1 attempt 2 died on it [ran]
+        exclude_modules=towers_to_exclude(model)))
     model.print_trainable_parameters()
 
     # THE CONTENT DOES NOT MATTER. It has to be text and it has to produce gradients.

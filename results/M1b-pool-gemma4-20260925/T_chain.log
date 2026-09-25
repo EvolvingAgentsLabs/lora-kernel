@@ -1,0 +1,109 @@
+=== session 1 of 1 · srv131054 · A100
+    boot clone: rc=0 1b287cd School demo on Gemma 4 E4B [ran]: 8/8 — the school-staff LoRA behind a gateway that grounds every reply
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 1b287cd School demo on Gemma 4 E4B [ran]: 8/8 — the school-staff LoRA behind a gateway that grounds every reply
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    1b287cd School demo on Gemma 4 E4B [ran]: 8/8 — the school-staff LoRA behind a gateway that grounds every reply | 0.30.0
+    this module trains its own adapter — nothing to carry in
+    runner started (launch 1)
+    [train] adapters/email-full-g4 from 598 examples
+    W0925 16:18:26.781000 2645 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 16:18:26.824000 2645 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [train] adapters/email-full-g4 from 598 examples
+    W0925 16:18:26.781000 2645 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 16:18:26.824000 2645 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+      4%|▍         | 5/114 [00:39<13:48,  7.60s/it]
+      5%|▌         | 6/114 [00:46<13:18,  7.40s/it]
+      6%|▌         | 7/114 [00:54<13:11,  7.40s/it]
+     13%|█▎        | 15/114 [01:51<11:39,  7.06s/it]
+     14%|█▍        | 16/114 [01:58<11:30,  7.05s/it]
+     15%|█▍        | 17/114 [02:05<11:36,  7.18s/it]
+     19%|█▉        | 22/114 [02:40<10:51,  7.08s/it]
+     20%|██        | 23/114 [02:47<10:42,  7.06s/it]
+     21%|██        | 24/114 [02:55<10:47,  7.20s/it]
+     26%|██▋       | 30/114 [03:38<09:53,  7.07s/it]
+     26%|██▋       | 30/114 [03:38<09:53,  7.07s/it]
+     27%|██▋       | 31/114 [03:45<09:53,  7.15s/it]
+     32%|███▏      | 37/114 [04:28<09:15,  7.22s/it]
+     33%|███▎      | 38/114 [04:31<07:24,  5.85s/it]
+     34%|███▍      | 39/114 [04:38<07:45,  6.21s/it]
+     40%|████      | 46/114 [05:28<08:01,  7.09s/it]
+     41%|████      | 47/114 [05:35<07:54,  7.08s/it]
+     42%|████▏     | 48/114 [05:42<07:53,  7.17s/it]
+     46%|████▋     | 53/114 [06:18<07:15,  7.14s/it]
+     47%|████▋     | 54/114 [06:25<07:06,  7.11s/it]
+     48%|████▊     | 55/114 [06:32<07:05,  7.21s/it]
+     53%|█████▎    | 60/114 [07:08<06:24,  7.12s/it]
+     54%|█████▎    | 61/114 [07:15<06:22,  7.22s/it]
+     54%|█████▍    | 62/114 [07:22<06:13,  7.18s/it]
+     59%|█████▉    | 67/114 [07:58<05:36,  7.16s/it]
+     60%|█████▉    | 68/114 [08:05<05:33,  7.26s/it]
+     61%|██████    | 69/114 [08:13<05:24,  7.21s/it]
+     65%|██████▍   | 74/114 [08:48<04:45,  7.14s/it]
+     66%|██████▌   | 75/114 [08:56<04:42,  7.23s/it]
+     67%|██████▋   | 76/114 [08:59<03:42,  5.86s/it]
+     71%|███████   | 81/114 [09:34<03:47,  6.91s/it]
+     72%|███████▏  | 82/114 [09:42<03:45,  7.06s/it]
+     73%|███████▎  | 83/114 [09:49<03:38,  7.05s/it]
+     81%|████████  | 92/114 [10:53<02:36,  7.10s/it]
+     82%|████████▏ | 93/114 [11:01<02:30,  7.18s/it]
+     82%|████████▏ | 94/114 [11:08<02:22,  7.13s/it]
+     88%|████████▊ | 100/114 [11:51<01:40,  7.14s/it]
+     88%|████████▊ | 100/114 [11:51<01:40,  7.14s/it]
+     89%|████████▊ | 101/114 [11:58<01:32,  7.11s/it]
+     93%|█████████▎| 106/114 [12:34<00:57,  7.17s/it]
+     94%|█████████▍| 107/114 [12:41<00:49,  7.13s/it]
+     95%|█████████▍| 108/114 [12:48<00:42,  7.12s/it]
+    [train] done
+    [pool] training desk-commitment on google/gemma-4-E4B-it from training/harness/data_desk/train.jsonl
+    [train] adapters/desk-commitment-g4 from 600 examples
+    adapters home: 1 packed
+      5%|▌         | 6/114 [00:43<12:36,  7.01s/it]
+      6%|▌         | 7/114 [00:50<12:36,  7.07s/it]
+      7%|▋         | 8/114 [00:57<12:23,  7.01s/it]
+     15%|█▍        | 17/114 [02:00<11:23,  7.05s/it]
+     16%|█▌        | 18/114 [02:07<11:16,  7.05s/it]
+     17%|█▋        | 19/114 [02:14<11:04,  6.99s/it]
+     26%|██▋       | 30/114 [03:31<09:50,  7.03s/it]
+     26%|██▋       | 30/114 [03:31<09:50,  7.03s/it]
+     27%|██▋       | 31/114 [03:38<09:38,  6.98s/it]
+     32%|███▏      | 37/114 [04:20<09:06,  7.10s/it]
+     33%|███▎      | 38/114 [04:24<07:36,  6.00s/it]
+     34%|███▍      | 39/114 [04:31<07:48,  6.25s/it]
+     40%|████      | 46/114 [05:19<07:47,  6.87s/it]
+     41%|████      | 47/114 [05:26<07:49,  7.00s/it]
+     42%|████▏     | 48/114 [05:33<07:39,  6.96s/it]
+     47%|████▋     | 54/114 [06:16<07:08,  7.14s/it]
+     48%|████▊     | 55/114 [06:23<06:56,  7.06s/it]
+     49%|████▉     | 56/114 [06:30<06:46,  7.00s/it]
+     54%|█████▎    | 61/114 [07:04<06:11,  7.02s/it]
+     54%|█████▍    | 62/114 [07:11<06:01,  6.94s/it]
+     55%|█████▌    | 63/114 [07:18<05:52,  6.91s/it]
+     62%|██████▏   | 71/114 [08:14<05:04,  7.09s/it]
+     63%|██████▎   | 72/114 [08:21<04:57,  7.07s/it]
+     64%|██████▍   | 73/114 [08:28<04:48,  7.05s/it]
+     70%|███████   | 80/114 [09:15<03:50,  6.79s/it]
+     70%|███████   | 80/114 [09:15<03:50,  6.79s/it]
+     71%|███████   | 81/114 [09:21<03:45,  6.83s/it]
+     75%|███████▌  | 86/114 [09:57<03:16,  7.01s/it]
+     76%|███████▋  | 87/114 [10:04<03:08,  6.97s/it]
+     77%|███████▋  | 88/114 [10:11<03:01,  6.96s/it]
+     82%|████████▏ | 93/114 [10:46<02:27,  7.04s/it]
+     82%|████████▏ | 94/114 [10:53<02:19,  6.99s/it]
+     83%|████████▎ | 95/114 [11:00<02:14,  7.07s/it]
+     88%|████████▊ | 100/114 [11:35<01:38,  7.01s/it]
+     89%|████████▊ | 101/114 [11:42<01:30,  6.97s/it]
+     89%|████████▉ | 102/114 [11:49<01:24,  7.05s/it]
+     96%|█████████▋| 110/114 [12:45<00:27,  6.99s/it]
+     96%|█████████▋| 110/114 [12:45<00:27,  6.99s/it]
+     97%|█████████▋| 111/114 [12:52<00:20,  6.96s/it]
+    [train] named for serving: {'base': 'google/gemma-4-E4B-it', 'architecture': 'Gemma4ForConditionalGeneration', 'renamed': True, 'src': 'adapters/desk-commitment-g4', 'dst': 'adapters/desk-commitment-g4.renamed', 'moved': 0, 'before': {'tensors': 516, 'land_on_text_stack': 516}, 'after': {'tensors': 516, 'land_on_text_stack': 516}}
+    [train] done
+    [pool] trained and packed 2 — stopping before serving, as asked
+    adapters home: 2 packed
+    the runner wrote its result — done
+exit 0

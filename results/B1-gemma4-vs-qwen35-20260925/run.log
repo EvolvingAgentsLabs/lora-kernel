@@ -1,0 +1,12 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/wiki-walks-s0
+[pool] G1 withlib-s0: applied
+[wiki] withlib-s0: 67 to run, 0 resumed
+[wiki] withlib-s0 10/67 credit 10 value-right 10 errors 0 6s
+[wiki] withlib-s0 20/67 credit 20 value-right 20 errors 0 11s
+[wiki] withlib-s0 30/67 credit 29 value-right 30 errors 0 16s
+[wiki] withlib-s0 40/67 credit 39 value-right 40 errors 0 21s
+[wiki] withlib-s0 50/67 credit 46 value-right 47 errors 0 26s
+[wiki] withlib-s0 60/67 credit 55 value-right 56 errors 0 29s
+[wiki] withlib-s0 67/67 credit 61 value-right 62 errors 0 33s
+[wiki] NOTHING SCORED

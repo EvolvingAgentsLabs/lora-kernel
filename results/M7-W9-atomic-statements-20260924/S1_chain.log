@@ -1,0 +1,20 @@
+=== session 1 of 1 · srv121741 · L4
+    boot clone: rc=0 9009e31 W9, AFTER the freeze: the evaluation world, its 67 questions, the 600-row corpus, the zero-GPU numbers
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 9009e31 W9, AFTER the freeze: the evaluation world, its 67 questions, the 600-row corpus, the zero-GPU numbers
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    9009e31 W9, AFTER the freeze: the evaluation world, its 67 questions, the 600-row corpus, the zero-GPU numbers | 0.30.0
+    this module trains its own adapter — nothing to carry in
+    runner started (launch 1)
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [wiki] base-walks 67/67 credit 0 value-right 1 errors 0 56s
+    [wiki] headline · base-reads vs base-walks: improvement (29:0, p=0.0)
+    [wiki] NAVIGATION IS THE GAP: base-reads 72% vs base-walks 0%, improvement (29:0, p=0.0) — train the trajectory LoRA, 2 seeds
+    the runner wrote its result — done
+exit 0

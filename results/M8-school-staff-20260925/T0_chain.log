@@ -1,0 +1,42 @@
+=== session 1 of 1 · srv103254 · A100
+    boot clone: rc=0 68d84de M8 headroom [ran]: bare Gemma 4 E4B 27/70 on the school's held-out turns, demo day 3/8 — the adapter is bought
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 68d84de M8 headroom [ran]: bare Gemma 4 E4B 27/70 on the school's held-out turns, demo day 3/8 — the adapter is bought
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    68d84de M8 headroom [ran]: bare Gemma 4 E4B 27/70 on the school's held-out turns, demo day 3/8 — the adapter is bought | 0.30.0
+    this module trains its own adapter — nothing to carry in
+    runner started (launch 1)
+    [train] adapters/school-staff-s0 from 700 examples
+    W0925 13:40:09.407000 2571 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 13:40:09.447000 2571 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [train] adapters/school-staff-s0 from 700 examples
+    W0925 13:40:09.407000 2571 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 13:40:09.447000 2571 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+     38%|███▊      | 50/132 [06:03<09:40,  7.08s/it]
+     39%|███▊      | 51/132 [06:10<09:35,  7.10s/it]
+     39%|███▉      | 52/132 [06:18<09:36,  7.20s/it]
+     43%|████▎     | 57/132 [06:54<08:59,  7.19s/it]
+     44%|████▍     | 58/132 [07:01<08:48,  7.14s/it]
+     45%|████▍     | 59/132 [07:08<08:48,  7.24s/it]
+     48%|████▊     | 64/132 [07:44<08:06,  7.16s/it]
+     49%|████▉     | 65/132 [07:52<08:06,  7.27s/it]
+     50%|█████     | 66/132 [07:59<07:57,  7.23s/it]
+     54%|█████▍    | 71/132 [08:35<07:17,  7.18s/it]
+     55%|█████▍    | 72/132 [08:42<07:15,  7.26s/it]
+     55%|█████▌    | 73/132 [08:49<07:04,  7.20s/it]
+     62%|██████▏   | 82/132 [09:54<06:00,  7.20s/it]
+     63%|██████▎   | 83/132 [10:02<05:57,  7.29s/it]
+     64%|██████▎   | 84/132 [10:09<05:46,  7.22s/it]
+     72%|███████▏  | 95/132 [11:26<04:23,  7.12s/it]
+     73%|███████▎  | 96/132 [11:34<04:21,  7.26s/it]
+     73%|███████▎  | 97/132 [11:41<04:11,  7.19s/it]
+     78%|███████▊  | 103/132 [12:24<03:31,  7.28s/it]
+     79%|███████▉  | 104/132 [12:31<03:22,  7.23s/it]
+     80%|███████▉  | 105/132 [12:39<03:14,  7.22s/it]
+    adapters home: 1 packed
+    the runner wrote its result — done
+exit 0

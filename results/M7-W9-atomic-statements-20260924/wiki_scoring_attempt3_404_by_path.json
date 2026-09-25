@@ -1,0 +1,1314 @@
+{
+ "base": "Qwen/Qwen3.5-4B",
+ "started": "2026-09-25T10:06:06",
+ "grader": "training.wiki.grade",
+ "library": "knowledge/distributor-wiki",
+ "eval_world": 20260924,
+ "arms": {
+  "withlib-s0": {
+   "w20260924-eval-cutoff-0": {
+    "id": "w20260924-eval-cutoff-0",
+    "family": "cutoff",
+    "block": "E1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-cutoff-1": {
+    "id": "w20260924-eval-cutoff-1",
+    "family": "cutoff",
+    "block": "E1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-lead-0": {
+    "id": "w20260924-eval-lead-0",
+    "family": "lead",
+    "block": "E1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-pack-0": {
+    "id": "w20260924-eval-pack-0",
+    "family": "pack",
+    "block": "E1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-lead-2": {
+    "id": "w20260924-eval-lead-2",
+    "family": "lead",
+    "block": "E1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-lead-1": {
+    "id": "w20260924-eval-lead-1",
+    "family": "lead",
+    "block": "E1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-pack-2": {
+    "id": "w20260924-eval-pack-2",
+    "family": "pack",
+    "block": "E1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-pack-1": {
+    "id": "w20260924-eval-pack-1",
+    "family": "pack",
+    "block": "E1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-supplier-town-3": {
+    "id": "w20260924-eval-supplier-town-3",
+    "family": "supplier-town",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-supplier-lead-1": {
+    "id": "w20260924-eval-supplier-lead-1",
+    "family": "supplier-lead",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-supplier-lead-2": {
+    "id": "w20260924-eval-supplier-lead-2",
+    "family": "supplier-lead",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-supplier-town-1": {
+    "id": "w20260924-eval-supplier-town-1",
+    "family": "supplier-town",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-supplier-lead-0": {
+    "id": "w20260924-eval-supplier-lead-0",
+    "family": "supplier-lead",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-cutoff-2": {
+    "id": "w20260924-eval-cutoff-2",
+    "family": "cutoff",
+    "block": "E1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-supplier-town-2": {
+    "id": "w20260924-eval-supplier-town-2",
+    "family": "supplier-town",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-supplier-town-0": {
+    "id": "w20260924-eval-supplier-town-0",
+    "family": "supplier-town",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-depot-hours-0": {
+    "id": "w20260924-eval-depot-hours-0",
+    "family": "depot-hours",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-depot-hours-2": {
+    "id": "w20260924-eval-depot-hours-2",
+    "family": "depot-hours",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-depot-cutoff-0": {
+    "id": "w20260924-eval-depot-cutoff-0",
+    "family": "depot-cutoff",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-depot-cutoff-2": {
+    "id": "w20260924-eval-depot-cutoff-2",
+    "family": "depot-cutoff",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-supplier-lead-3": {
+    "id": "w20260924-eval-supplier-lead-3",
+    "family": "supplier-lead",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-depot-hours-3": {
+    "id": "w20260924-eval-depot-hours-3",
+    "family": "depot-hours",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-depot-cutoff-1": {
+    "id": "w20260924-eval-depot-cutoff-1",
+    "family": "depot-cutoff",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-depot-cutoff-3": {
+    "id": "w20260924-eval-depot-cutoff-3",
+    "family": "depot-cutoff",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-contact-ext-0": {
+    "id": "w20260924-eval-contact-ext-0",
+    "family": "contact-ext",
+    "block": "E3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-depot-hours-1": {
+    "id": "w20260924-eval-depot-hours-1",
+    "family": "depot-hours",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-contact-ext-3": {
+    "id": "w20260924-eval-contact-ext-3",
+    "family": "contact-ext",
+    "block": "E3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-manager-ext-1": {
+    "id": "w20260924-eval-manager-ext-1",
+    "family": "manager-ext",
+    "block": "E3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-contact-ext-1": {
+    "id": "w20260924-eval-contact-ext-1",
+    "family": "contact-ext",
+    "block": "E3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-manager-ext-3": {
+    "id": "w20260924-eval-manager-ext-3",
+    "family": "manager-ext",
+    "block": "E3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-manager-ext-2": {
+    "id": "w20260924-eval-manager-ext-2",
+    "family": "manager-ext",
+    "block": "E3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-product-cutoff-0": {
+    "id": "w20260924-eval-product-cutoff-0",
+    "family": "product-cutoff",
+    "block": "E3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-contact-ext-2": {
+    "id": "w20260924-eval-contact-ext-2",
+    "family": "contact-ext",
+    "block": "E3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-manager-ext-0": {
+    "id": "w20260924-eval-manager-ext-0",
+    "family": "manager-ext",
+    "block": "E3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-damaged-hours-0": {
+    "id": "w20260924-eval-damaged-hours-0",
+    "family": "damaged-hours",
+    "block": "O1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-product-cutoff-1": {
+    "id": "w20260924-eval-product-cutoff-1",
+    "family": "product-cutoff",
+    "block": "E3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-damaged-hours-1": {
+    "id": "w20260924-eval-damaged-hours-1",
+    "family": "damaged-hours",
+    "block": "O1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-product-cutoff-3": {
+    "id": "w20260924-eval-product-cutoff-3",
+    "family": "product-cutoff",
+    "block": "E3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-product-cutoff-2": {
+    "id": "w20260924-eval-product-cutoff-2",
+    "family": "product-cutoff",
+    "block": "E3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-wrong-days-0": {
+    "id": "w20260924-eval-wrong-days-0",
+    "family": "wrong-days",
+    "block": "O1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-wrong-days-1": {
+    "id": "w20260924-eval-wrong-days-1",
+    "family": "wrong-days",
+    "block": "O1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-damaged-hours-2": {
+    "id": "w20260924-eval-damaged-hours-2",
+    "family": "damaged-hours",
+    "block": "O1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-wrong-days-2": {
+    "id": "w20260924-eval-wrong-days-2",
+    "family": "wrong-days",
+    "block": "O1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-terms-0": {
+    "id": "w20260924-eval-terms-0",
+    "family": "terms",
+    "block": "O1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-terms-1": {
+    "id": "w20260924-eval-terms-1",
+    "family": "terms",
+    "block": "O1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-terms-2": {
+    "id": "w20260924-eval-terms-2",
+    "family": "terms",
+    "block": "O1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-order-approver-0": {
+    "id": "w20260924-eval-order-approver-0",
+    "family": "order-approver",
+    "block": "O1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-order-approver-1": {
+    "id": "w20260924-eval-order-approver-1",
+    "family": "order-approver",
+    "block": "O1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-order-approver-2": {
+    "id": "w20260924-eval-order-approver-2",
+    "family": "order-approver",
+    "block": "O1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-damaged-ext-0": {
+    "id": "w20260924-eval-damaged-ext-0",
+    "family": "damaged-ext",
+    "block": "O2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-damaged-ext-1": {
+    "id": "w20260924-eval-damaged-ext-1",
+    "family": "damaged-ext",
+    "block": "O2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-damaged-ext-2": {
+    "id": "w20260924-eval-damaged-ext-2",
+    "family": "damaged-ext",
+    "block": "O2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-damaged-ext-3": {
+    "id": "w20260924-eval-damaged-ext-3",
+    "family": "damaged-ext",
+    "block": "O2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-invoice-ext-0": {
+    "id": "w20260924-eval-invoice-ext-0",
+    "family": "invoice-ext",
+    "block": "O2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-invoice-ext-1": {
+    "id": "w20260924-eval-invoice-ext-1",
+    "family": "invoice-ext",
+    "block": "O2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-invoice-ext-2": {
+    "id": "w20260924-eval-invoice-ext-2",
+    "family": "invoice-ext",
+    "block": "O2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-invoice-ext-3": {
+    "id": "w20260924-eval-invoice-ext-3",
+    "family": "invoice-ext",
+    "block": "O2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-overtime-ext-0": {
+    "id": "w20260924-eval-overtime-ext-0",
+    "family": "overtime-ext",
+    "block": "O3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-overtime-ext-1": {
+    "id": "w20260924-eval-overtime-ext-1",
+    "family": "overtime-ext",
+    "block": "O3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-overtime-ext-2": {
+    "id": "w20260924-eval-overtime-ext-2",
+    "family": "overtime-ext",
+    "block": "O3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-overtime-ext-3": {
+    "id": "w20260924-eval-overtime-ext-3",
+    "family": "overtime-ext",
+    "block": "O3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-none-supplier-0": {
+    "id": "w20260924-eval-none-supplier-0",
+    "family": "none-supplier",
+    "block": "none",
+    "hops": 0,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-none-supplier-1": {
+    "id": "w20260924-eval-none-supplier-1",
+    "family": "none-supplier",
+    "block": "none",
+    "hops": 0,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-none-supplier-2": {
+    "id": "w20260924-eval-none-supplier-2",
+    "family": "none-supplier",
+    "block": "none",
+    "hops": 0,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-none-recipe-0": {
+    "id": "w20260924-eval-none-recipe-0",
+    "family": "none-recipe",
+    "block": "none",
+    "hops": 0,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-none-recipe-1": {
+    "id": "w20260924-eval-none-recipe-1",
+    "family": "none-recipe",
+    "block": "none",
+    "hops": 0,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-none-recipe-2": {
+    "id": "w20260924-eval-none-recipe-2",
+    "family": "none-recipe",
+    "block": "none",
+    "hops": 0,
+    "error": "<HTTPError 404: 'Not Found'>"
+   }
+  },
+  "withlib-s1": {
+   "w20260924-eval-pack-2": {
+    "id": "w20260924-eval-pack-2",
+    "family": "pack",
+    "block": "E1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-lead-1": {
+    "id": "w20260924-eval-lead-1",
+    "family": "lead",
+    "block": "E1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-pack-1": {
+    "id": "w20260924-eval-pack-1",
+    "family": "pack",
+    "block": "E1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-pack-0": {
+    "id": "w20260924-eval-pack-0",
+    "family": "pack",
+    "block": "E1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-lead-0": {
+    "id": "w20260924-eval-lead-0",
+    "family": "lead",
+    "block": "E1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-cutoff-0": {
+    "id": "w20260924-eval-cutoff-0",
+    "family": "cutoff",
+    "block": "E1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-cutoff-1": {
+    "id": "w20260924-eval-cutoff-1",
+    "family": "cutoff",
+    "block": "E1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-lead-2": {
+    "id": "w20260924-eval-lead-2",
+    "family": "lead",
+    "block": "E1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-cutoff-2": {
+    "id": "w20260924-eval-cutoff-2",
+    "family": "cutoff",
+    "block": "E1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-supplier-town-1": {
+    "id": "w20260924-eval-supplier-town-1",
+    "family": "supplier-town",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-supplier-town-2": {
+    "id": "w20260924-eval-supplier-town-2",
+    "family": "supplier-town",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-supplier-lead-1": {
+    "id": "w20260924-eval-supplier-lead-1",
+    "family": "supplier-lead",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-supplier-town-3": {
+    "id": "w20260924-eval-supplier-town-3",
+    "family": "supplier-town",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-supplier-lead-0": {
+    "id": "w20260924-eval-supplier-lead-0",
+    "family": "supplier-lead",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-supplier-lead-2": {
+    "id": "w20260924-eval-supplier-lead-2",
+    "family": "supplier-lead",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-supplier-town-0": {
+    "id": "w20260924-eval-supplier-town-0",
+    "family": "supplier-town",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-supplier-lead-3": {
+    "id": "w20260924-eval-supplier-lead-3",
+    "family": "supplier-lead",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-depot-hours-0": {
+    "id": "w20260924-eval-depot-hours-0",
+    "family": "depot-hours",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-depot-hours-1": {
+    "id": "w20260924-eval-depot-hours-1",
+    "family": "depot-hours",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-depot-cutoff-0": {
+    "id": "w20260924-eval-depot-cutoff-0",
+    "family": "depot-cutoff",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-depot-cutoff-1": {
+    "id": "w20260924-eval-depot-cutoff-1",
+    "family": "depot-cutoff",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-contact-ext-0": {
+    "id": "w20260924-eval-contact-ext-0",
+    "family": "contact-ext",
+    "block": "E3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-depot-cutoff-3": {
+    "id": "w20260924-eval-depot-cutoff-3",
+    "family": "depot-cutoff",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-depot-cutoff-2": {
+    "id": "w20260924-eval-depot-cutoff-2",
+    "family": "depot-cutoff",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-depot-hours-2": {
+    "id": "w20260924-eval-depot-hours-2",
+    "family": "depot-hours",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-depot-hours-3": {
+    "id": "w20260924-eval-depot-hours-3",
+    "family": "depot-hours",
+    "block": "E2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-contact-ext-1": {
+    "id": "w20260924-eval-contact-ext-1",
+    "family": "contact-ext",
+    "block": "E3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-contact-ext-3": {
+    "id": "w20260924-eval-contact-ext-3",
+    "family": "contact-ext",
+    "block": "E3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-manager-ext-0": {
+    "id": "w20260924-eval-manager-ext-0",
+    "family": "manager-ext",
+    "block": "E3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-manager-ext-1": {
+    "id": "w20260924-eval-manager-ext-1",
+    "family": "manager-ext",
+    "block": "E3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-contact-ext-2": {
+    "id": "w20260924-eval-contact-ext-2",
+    "family": "contact-ext",
+    "block": "E3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-manager-ext-2": {
+    "id": "w20260924-eval-manager-ext-2",
+    "family": "manager-ext",
+    "block": "E3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-manager-ext-3": {
+    "id": "w20260924-eval-manager-ext-3",
+    "family": "manager-ext",
+    "block": "E3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-product-cutoff-1": {
+    "id": "w20260924-eval-product-cutoff-1",
+    "family": "product-cutoff",
+    "block": "E3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-product-cutoff-3": {
+    "id": "w20260924-eval-product-cutoff-3",
+    "family": "product-cutoff",
+    "block": "E3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-product-cutoff-2": {
+    "id": "w20260924-eval-product-cutoff-2",
+    "family": "product-cutoff",
+    "block": "E3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-product-cutoff-0": {
+    "id": "w20260924-eval-product-cutoff-0",
+    "family": "product-cutoff",
+    "block": "E3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-damaged-hours-1": {
+    "id": "w20260924-eval-damaged-hours-1",
+    "family": "damaged-hours",
+    "block": "O1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-damaged-hours-0": {
+    "id": "w20260924-eval-damaged-hours-0",
+    "family": "damaged-hours",
+    "block": "O1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-wrong-days-0": {
+    "id": "w20260924-eval-wrong-days-0",
+    "family": "wrong-days",
+    "block": "O1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-wrong-days-1": {
+    "id": "w20260924-eval-wrong-days-1",
+    "family": "wrong-days",
+    "block": "O1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-terms-0": {
+    "id": "w20260924-eval-terms-0",
+    "family": "terms",
+    "block": "O1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-wrong-days-2": {
+    "id": "w20260924-eval-wrong-days-2",
+    "family": "wrong-days",
+    "block": "O1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-terms-2": {
+    "id": "w20260924-eval-terms-2",
+    "family": "terms",
+    "block": "O1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-damaged-hours-2": {
+    "id": "w20260924-eval-damaged-hours-2",
+    "family": "damaged-hours",
+    "block": "O1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-order-approver-0": {
+    "id": "w20260924-eval-order-approver-0",
+    "family": "order-approver",
+    "block": "O1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-terms-1": {
+    "id": "w20260924-eval-terms-1",
+    "family": "terms",
+    "block": "O1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-order-approver-1": {
+    "id": "w20260924-eval-order-approver-1",
+    "family": "order-approver",
+    "block": "O1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-order-approver-2": {
+    "id": "w20260924-eval-order-approver-2",
+    "family": "order-approver",
+    "block": "O1",
+    "hops": 1,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-damaged-ext-0": {
+    "id": "w20260924-eval-damaged-ext-0",
+    "family": "damaged-ext",
+    "block": "O2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-damaged-ext-1": {
+    "id": "w20260924-eval-damaged-ext-1",
+    "family": "damaged-ext",
+    "block": "O2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-damaged-ext-2": {
+    "id": "w20260924-eval-damaged-ext-2",
+    "family": "damaged-ext",
+    "block": "O2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-invoice-ext-1": {
+    "id": "w20260924-eval-invoice-ext-1",
+    "family": "invoice-ext",
+    "block": "O2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-damaged-ext-3": {
+    "id": "w20260924-eval-damaged-ext-3",
+    "family": "damaged-ext",
+    "block": "O2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-invoice-ext-2": {
+    "id": "w20260924-eval-invoice-ext-2",
+    "family": "invoice-ext",
+    "block": "O2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-overtime-ext-0": {
+    "id": "w20260924-eval-overtime-ext-0",
+    "family": "overtime-ext",
+    "block": "O3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-invoice-ext-3": {
+    "id": "w20260924-eval-invoice-ext-3",
+    "family": "invoice-ext",
+    "block": "O2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-invoice-ext-0": {
+    "id": "w20260924-eval-invoice-ext-0",
+    "family": "invoice-ext",
+    "block": "O2",
+    "hops": 2,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-overtime-ext-2": {
+    "id": "w20260924-eval-overtime-ext-2",
+    "family": "overtime-ext",
+    "block": "O3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-overtime-ext-1": {
+    "id": "w20260924-eval-overtime-ext-1",
+    "family": "overtime-ext",
+    "block": "O3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-overtime-ext-3": {
+    "id": "w20260924-eval-overtime-ext-3",
+    "family": "overtime-ext",
+    "block": "O3",
+    "hops": 3,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-none-supplier-0": {
+    "id": "w20260924-eval-none-supplier-0",
+    "family": "none-supplier",
+    "block": "none",
+    "hops": 0,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-none-supplier-2": {
+    "id": "w20260924-eval-none-supplier-2",
+    "family": "none-supplier",
+    "block": "none",
+    "hops": 0,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-none-recipe-2": {
+    "id": "w20260924-eval-none-recipe-2",
+    "family": "none-recipe",
+    "block": "none",
+    "hops": 0,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-none-recipe-0": {
+    "id": "w20260924-eval-none-recipe-0",
+    "family": "none-recipe",
+    "block": "none",
+    "hops": 0,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-none-recipe-1": {
+    "id": "w20260924-eval-none-recipe-1",
+    "family": "none-recipe",
+    "block": "none",
+    "hops": 0,
+    "error": "<HTTPError 404: 'Not Found'>"
+   },
+   "w20260924-eval-none-supplier-1": {
+    "id": "w20260924-eval-none-supplier-1",
+    "family": "none-supplier",
+    "block": "none",
+    "hops": 0,
+    "error": "<HTTPError 404: 'Not Found'>"
+   }
+  }
+ },
+ "G1": {
+  "withlib-s0": {
+   "probed": 3,
+   "empty": 0,
+   "differs": 3,
+   "applied": true,
+   "samples": [
+    {
+     "base": "Sunlight appears white but is actually composed of all color",
+     "member": "The sky appears blue because sunlight is composed of all col"
+    },
+    {
+     "base": "Before sending an email, a careful reader typically checks t",
+     "member": "Before sending an email, a careful reader typically checks t"
+    },
+    {
+     "base": "Pressure drop in a pipe depends on the fluid's viscosity, fl",
+     "member": "The pressure drop in a pipe depends on the fluid's viscosity"
+    }
+   ]
+  },
+  "withlib-s1": {
+   "probed": 3,
+   "empty": 0,
+   "differs": 3,
+   "applied": true,
+   "samples": [
+    {
+     "base": "Sunlight appears white but is actually composed of all color",
+     "member": "The sky appears blue because sunlight is composed of all col"
+    },
+    {
+     "base": "Before sending an email, a careful reader typically checks t",
+     "member": "Before sending an email, a careful reader typically checks t"
+    },
+    {
+     "base": "Pressure drop in a pipe depends on the fluid's viscosity, fl",
+     "member": "The pressure drop in a pipe depends on the fluid's viscosity"
+    }
+   ]
+  }
+ },
+ "analysis": {
+  "slices": {
+   "headline": 40,
+   "all": 67,
+   "none": 6,
+   "hops-1": 21,
+   "hops-2": 24,
+   "hops-3": 16,
+   "block-E1": 9,
+   "block-E2": 16,
+   "block-E3": 12,
+   "block-O1": 12,
+   "block-O2": 8,
+   "block-O3": 4
+  },
+  "summary": {
+   "withlib-s0": {
+    "headline": {
+     "n": 40,
+     "scored": 0,
+     "errors": 40,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "all": {
+     "n": 67,
+     "scored": 0,
+     "errors": 67,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "none": {
+     "n": 6,
+     "scored": 0,
+     "errors": 6,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "hops-1": {
+     "n": 21,
+     "scored": 0,
+     "errors": 21,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "hops-2": {
+     "n": 24,
+     "scored": 0,
+     "errors": 24,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "hops-3": {
+     "n": 16,
+     "scored": 0,
+     "errors": 16,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-E1": {
+     "n": 9,
+     "scored": 0,
+     "errors": 9,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-E2": {
+     "n": 16,
+     "scored": 0,
+     "errors": 16,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-E3": {
+     "n": 12,
+     "scored": 0,
+     "errors": 12,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-O1": {
+     "n": 12,
+     "scored": 0,
+     "errors": 12,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-O2": {
+     "n": 8,
+     "scored": 0,
+     "errors": 8,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-O3": {
+     "n": 4,
+     "scored": 0,
+     "errors": 4,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    }
+   },
+   "withlib-s1": {
+    "headline": {
+     "n": 40,
+     "scored": 0,
+     "errors": 40,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "all": {
+     "n": 67,
+     "scored": 0,
+     "errors": 67,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "none": {
+     "n": 6,
+     "scored": 0,
+     "errors": 6,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "hops-1": {
+     "n": 21,
+     "scored": 0,
+     "errors": 21,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "hops-2": {
+     "n": 24,
+     "scored": 0,
+     "errors": 24,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "hops-3": {
+     "n": 16,
+     "scored": 0,
+     "errors": 16,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-E1": {
+     "n": 9,
+     "scored": 0,
+     "errors": 9,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-E2": {
+     "n": 16,
+     "scored": 0,
+     "errors": 16,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-E3": {
+     "n": 12,
+     "scored": 0,
+     "errors": 12,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-O1": {
+     "n": 12,
+     "scored": 0,
+     "errors": 12,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-O2": {
+     "n": 8,
+     "scored": 0,
+     "errors": 8,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-O3": {
+     "n": 4,
+     "scored": 0,
+     "errors": 4,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    }
+   }
+  },
+  "pairs": {
+   "headline": [],
+   "all": [],
+   "hops-2": [],
+   "hops-3": []
+  }
+ },
+ "verdict": {
+  "decided": false,
+  "reading": "NOTHING SCORED"
+ },
+ "finished": "2026-09-25T10:15:07"
+}

@@ -1,0 +1,89 @@
+=== session 1 of 1 · srv083837 · A100
+    boot clone: rc=0 b6b2e04 B1 stage 1, attempt 2: Gemma's G1 lost to a missing tower exclusion in tiny_adapter; fixed and held by a test
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 b6b2e04 B1 stage 1, attempt 2: Gemma's G1 lost to a missing tower exclusion in tiny_adapter; fixed and held by a test
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    b6b2e04 B1 stage 1, attempt 2: Gemma's G1 lost to a missing tower exclusion in tiny_adapter; fixed and held by a test | 0.30.0
+    this module trains its own adapter — nothing to carry in
+    runner started (launch 1)
+    [matrix] ===== control: Qwen/Qwen2.5-3B-Instruct =====
+    W0925 11:45:05.850000 6975 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 11:45:05.890000 6975 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 11:45:05.890000 6975 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]
+    Fetching 2 files:  50%|█████     | 1/2 [00:39<00:39, 39.38s/it]
+    W0925 11:45:05.890000 6975 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]
+    Fetching 2 files:  50%|█████     | 1/2 [00:39<00:39, 39.38s/it]
+    100%|██████████| 60/60 [00:21<00:00,  3.26it/s]
+    100%|██████████| 60/60 [00:21<00:00,  3.26it/s]
+    100%|██████████| 60/60 [00:21<00:00,  2.81it/s]
+    [tiny] lora_B_abs_sum=18688.3349 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen2.5-3B-Instruct --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [tiny] lora_B_abs_sum=18688.3349 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen2.5-3B-Instruct --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [tiny] lora_B_abs_sum=18688.3349 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen2.5-3B-Instruct --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [tiny] lora_B_abs_sum=18688.3349 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen2.5-3B-Instruct --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [tiny] lora_B_abs_sum=18688.3349 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen2.5-3B-Instruct --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [matrix] ===== subject: google/gemma-4-E4B-it =====
+    W0925 11:52:05.913000 9318 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 11:52:05.952000 9318 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [matrix] ===== subject: google/gemma-4-E4B-it =====
+    W0925 11:52:05.913000 9318 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 11:52:05.952000 9318 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [matrix] ===== subject: google/gemma-4-E4B-it =====
+    W0925 11:52:05.913000 9318 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 11:52:05.952000 9318 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [matrix] ===== subject: google/gemma-4-E4B-it =====
+    W0925 11:52:05.913000 9318 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 11:52:05.952000 9318 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [matrix] ===== subject: google/gemma-4-E4B-it =====
+    W0925 11:52:05.913000 9318 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 11:52:05.952000 9318 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+      5%|▌         | 3/60 [00:04<01:04,  1.13s/it]
+      7%|▋         | 4/60 [00:04<00:49,  1.13it/s]
+      8%|▊         | 5/60 [00:05<00:41,  1.31it/s]
+    [tiny] lora_B_abs_sum=23324.1635 changes_output=True
+    [matrix] subject G1 in-process: passed
+    [serve] vllm serve google/gemma-4-E4B-it --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-subject
+    [tiny] lora_B_abs_sum=23324.1635 changes_output=True
+    [matrix] subject G1 in-process: passed
+    [serve] vllm serve google/gemma-4-E4B-it --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-subject
+    [tiny] lora_B_abs_sum=23324.1635 changes_output=True
+    [matrix] subject G1 in-process: passed
+    [serve] vllm serve google/gemma-4-E4B-it --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-subject
+    [tiny] lora_B_abs_sum=23324.1635 changes_output=True
+    [matrix] subject G1 in-process: passed
+    [serve] vllm serve google/gemma-4-E4B-it --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-subject
+    [tiny] lora_B_abs_sum=23324.1635 changes_output=True
+    [matrix] subject G1 in-process: passed
+    [serve] vllm serve google/gemma-4-E4B-it --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-subject
+    [tiny] lora_B_abs_sum=23324.1635 changes_output=True
+    [matrix] subject G1 in-process: passed
+    [serve] vllm serve google/gemma-4-E4B-it --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-subject
+    [tiny] lora_B_abs_sum=23324.1635 changes_output=True
+    [matrix] subject G1 in-process: passed
+    [serve] vllm serve google/gemma-4-E4B-it --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-subject
+    [tiny] lora_B_abs_sum=23324.1635 changes_output=True
+    [matrix] subject G1 in-process: passed
+    [serve] vllm serve google/gemma-4-E4B-it --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-subject
+    [matrix] subject G1 in-process: passed
+    [serve] vllm serve google/gemma-4-E4B-it --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-subject
+    [serve] /v1/models -> ['google/gemma-4-E4B-it', 'tiny']
+    [matrix] control valid: True
+    [matrix] reading: the subject serves LoRA through vLLM
+    [matrix] decision: Qwen3.5 is usable; whether to pay for retraining is a separate call
+    the runner wrote its result — done
+exit 0

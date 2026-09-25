@@ -151,7 +151,8 @@ SEED = [
 
 
 def build(path: str = ":memory:") -> sqlite3.Connection:
-    conn = sqlite3.connect(path)
+    # the gateway serves requests on several threads; every tool call holds `agent_loop.DB_LOCK`
+    conn = sqlite3.connect(path, check_same_thread=False)
     conn.row_factory = sqlite3.Row
     conn.executescript(SCHEMA)
     for stmt, rows in SEED:

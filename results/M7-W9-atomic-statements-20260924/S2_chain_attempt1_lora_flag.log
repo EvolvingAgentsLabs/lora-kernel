@@ -1,0 +1,37 @@
+=== session 1 of 1 · srv142717 · L4
+    boot clone: rc=0 1defdcf The demo: a reference organisation on a small local model, recorded end to end (docs/DEMO.md)
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 1defdcf The demo: a reference organisation on a small local model, recorded end to end (docs/DEMO.md)
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    1defdcf The demo: a reference organisation on a small local model, recorded end to end (docs/DEMO.md) | 0.30.0
+    carried the adapters in (4 chunks)
+    runner started (launch 1)
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 --lora-modules withlib-s1=adapters/wiki-walks-s1
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 --lora-modules withlib-s1=adapters/wiki-walks-s1
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 --lora-modules withlib-s1=adapters/wiki-walks-s1
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 --lora-modules withlib-s1=adapters/wiki-walks-s1
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 --lora-modules withlib-s1=adapters/wiki-walks-s1
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 --lora-modules withlib-s1=adapters/wiki-walks-s1
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 --lora-modules withlib-s1=adapters/wiki-walks-s1
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 --lora-modules withlib-s1=adapters/wiki-walks-s1
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 --lora-modules withlib-s1=adapters/wiki-walks-s1
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 --lora-modules withlib-s1=adapters/wiki-walks-s1
+      File "/usr/lib/python3.13/urllib/request.py", line 613, in http_error_default
+        raise HTTPError(req.full_url, code, msg, hdrs, fp)
+    urllib.error.HTTPError: HTTP Error 404: Not Found
+      File "/usr/lib/python3.13/urllib/request.py", line 613, in http_error_default
+        raise HTTPError(req.full_url, code, msg, hdrs, fp)
+    urllib.error.HTTPError: HTTP Error 404: Not Found
+      File "/usr/lib/python3.13/urllib/request.py", line 613, in http_error_default
+        raise HTTPError(req.full_url, code, msg, hdrs, fp)
+    urllib.error.HTTPError: HTTP Error 404: Not Found
+      File "/usr/lib/python3.13/urllib/request.py", line 613, in http_error_default
+        raise HTTPError(req.full_url, code, msg, hdrs, fp)
+    urllib.error.HTTPError: HTTP Error 404: Not Found
+      File "/usr/lib/python3.13/urllib/request.py", line 613, in http_error_default
+        raise HTTPError(req.full_url, code, msg, hdrs, fp)
+    urllib.error.HTTPError: HTTP Error 404: Not Found

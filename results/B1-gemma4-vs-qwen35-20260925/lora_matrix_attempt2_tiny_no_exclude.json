@@ -1,0 +1,34 @@
+{
+  "control_base": "Qwen/Qwen2.5-3B-Instruct",
+  "subject_base": "google/gemma-4-E4B-it",
+  "arms": {
+    "control": {
+      "base": "Qwen/Qwen2.5-3B-Instruct",
+      "G1": {
+        "passed": true,
+        "adapter": "adapters/tiny-control"
+      },
+      "G2": {
+        "passed": true,
+        "verdict": "applied",
+        "exit": 0
+      },
+      "seconds": 376
+    },
+    "subject": {
+      "base": "google/gemma-4-E4B-it",
+      "G1": {
+        "passed": false,
+        "adapter": "adapters/tiny-subject"
+      },
+      "G2": {
+        "passed": false,
+        "verdict": "not asked: G1 failed"
+      },
+      "seconds": 261
+    }
+  },
+  "control_valid": true,
+  "reading": "the adapter cannot be trained this way on this architecture",
+  "decision": "Qwen2.5 for the end-to-end"
+}

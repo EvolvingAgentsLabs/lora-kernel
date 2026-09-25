@@ -1,0 +1,59 @@
+=== session 1 of 1 · srv082017 · A100
+    boot clone: rc=0 14ca1fe B1 stage 1, attempt 1: VOID by the harness — a control that needs rekey, and run.log never fetched
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 14ca1fe B1 stage 1, attempt 1: VOID by the harness — a control that needs rekey, and run.log never fetched
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    14ca1fe B1 stage 1, attempt 1: VOID by the harness — a control that needs rekey, and run.log never fetched | 0.30.0
+    this module trains its own adapter — nothing to carry in
+    runner started (launch 1)
+    [matrix] ===== control: Qwen/Qwen2.5-3B-Instruct =====
+    W0925 11:26:46.353000 3760 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 11:26:46.397000 3760 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 11:26:46.353000 3760 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 11:26:46.397000 3760 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]
+    100%|██████████| 60/60 [00:22<00:00,  3.14it/s]
+    100%|██████████| 60/60 [00:22<00:00,  2.73it/s]
+    [tiny] lora_B_abs_sum=18492.4480 changes_output=True
+    [tiny] lora_B_abs_sum=18492.4480 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen2.5-3B-Instruct --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [tiny] lora_B_abs_sum=18492.4480 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen2.5-3B-Instruct --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [tiny] lora_B_abs_sum=18492.4480 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen2.5-3B-Instruct --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [tiny] lora_B_abs_sum=18492.4480 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen2.5-3B-Instruct --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [tiny] lora_B_abs_sum=18492.4480 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen2.5-3B-Instruct --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [matrix] ===== subject: google/gemma-4-E4B-it =====
+    W0925 11:33:00.225000 5912 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 11:33:00.267000 5912 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [matrix] ===== subject: google/gemma-4-E4B-it =====
+    W0925 11:33:00.225000 5912 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 11:33:00.267000 5912 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [matrix] ===== subject: google/gemma-4-E4B-it =====
+    W0925 11:33:00.225000 5912 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 11:33:00.267000 5912 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [matrix] ===== subject: google/gemma-4-E4B-it =====
+    W0925 11:33:00.225000 5912 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 11:33:00.267000 5912 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [matrix] ===== subject: google/gemma-4-E4B-it =====
+    W0925 11:33:00.225000 5912 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 11:33:00.267000 5912 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [matrix] ===== subject: google/gemma-4-E4B-it =====
+    W0925 11:33:00.225000 5912 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0925 11:33:00.267000 5912 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [matrix] control valid: True
+    [matrix] reading: the adapter cannot be trained this way on this architecture
+    [matrix] decision: Qwen2.5 for the end-to-end
+    the runner wrote its result — done
+exit 0
