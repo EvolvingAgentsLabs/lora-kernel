@@ -26,3 +26,11 @@ beside — a demonstration, not a sample. G1 not applied → VOID.
 + 1 L4. Every piece was first run end to end against `training/harness/fake_vllm.py` (`tests/test_school_demo.py`).
 **Not measured:** WhatsApp (the user's call: not yet), a real identity provider (the token is HS256 with a demo
 secret), Postgres (sqlite), a real payment provider (a mock ledger).
+
+## Amended before any arm ran, 2026-09-25 — the base is Gemma 4 E4B, and its headroom is bought first
+
+B1 **[ran]** chose Gemma 4 E4B for new members (a tie on W9, the user's rule). And its bare base leaves less headroom
+than Qwen's did (it walks W9 untrained 19/40 where Qwen walked 0/40), so the order changes: **H — one L4, the bare
+Gemma on the 70 held-out turns and the demo day** (`school_arm --arms base --base google/gemma-4-E4B-it`). If the bare
+base already passes ≥ 90 % of the held-out turns, no adapter is trained and the demo runs on the bare base; otherwise
+T0/T1 train on Gemma and S scores `base, school-s0, school-s1`, the verdict as written above. The corpus is unchanged.
