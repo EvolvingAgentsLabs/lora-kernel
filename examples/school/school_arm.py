@@ -23,7 +23,9 @@ from pathlib import Path
 
 from examples.common import tokens
 
-BASE = "Qwen/Qwen3.5-4B"
+from training.harness.family import SMALL  # noqa: E402
+
+BASE = SMALL                                        # training/harness/family.py
 DATA = Path("examples/school/data_turns")
 
 

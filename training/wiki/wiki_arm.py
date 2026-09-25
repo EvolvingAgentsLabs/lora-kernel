@@ -43,7 +43,9 @@ from training.wiki import grade as gr
 from training.wiki import questions as qs
 from training.wiki import world as wd
 
-BASE = "Qwen/Qwen3.5-4B"
+from training.harness.family import SMALL  # noqa: E402
+
+BASE = SMALL                                        # training/harness/family.py
 LIBRARY = Path("knowledge") / wd.ROOT
 DATA = Path("training/wiki/data")
 MAX_CALLS = 24

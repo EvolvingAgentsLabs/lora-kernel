@@ -7,7 +7,7 @@
 **The LoRA is not the textbook. It is the specialist who knows how to use the library.**
 
 [![license Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
-[![family Qwen 3.x](https://img.shields.io/badge/family-Qwen%203.x-8A5C10)](docs/ARCHITECTURE.md)
+[![family Gemma 4](https://img.shields.io/badge/family-Gemma%204-8A5C10)](docs/ARCHITECTURE.md)
 [![core 1.0 specified](https://img.shields.io/badge/core%201.0-specified-555)](docs/MEMORY.md)
 [![record v0.1-foundations](https://img.shields.io/badge/record-v0.1--foundations-555)](docs/RECORD.md)
 
@@ -194,10 +194,10 @@ the full ledger, including what failed and the instruments that lied. [`docs/FRA
 is the gap analysis against being a generic framework, self-contained and written to be reviewed by
 another model.
 
-**Engineering constraints, decided and not up for debate.** The family is Qwen 3.x — small
-`Qwen3.5-4B`, large `Qwen3.8-27B` — trained and served on Colab, in sessions under an hour, never on
-a user's machine. A 27B is A100 work in 4-bit. Gemma 4 is the named alternative and is blocked at
-PEFT for now.
+**Engineering constraints, decided and not up for debate.** The family is **Gemma 4** since 2026-09-25 —
+small `gemma-4-E4B-it`, large `gemma-4-31B-it` (not yet measured) — chosen on a measured tie with
+Qwen3.5-4B, whose released members stay until re-released ([`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) §6).
+Trained and served on Colab, in sessions under an hour, never on a user's machine.
 
 ---
 

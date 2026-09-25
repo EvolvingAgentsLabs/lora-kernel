@@ -12,7 +12,7 @@ los dos lados. El texto superado se tacha, no se borra. Lo que se midió antes d
 > **Construir el servicio como expertos definidos por sus corpus: un router muy chico que
 > decide en el corpus de qué experto cae un pedido y se abstiene hacia un modelo de frontera
 > cuando no cae en ninguno; y, por subdominio, un par especulativo — un LoRA en un modelo
-> chico y un LoRA en uno grande, entrenados sobre el mismo corpus. Familia: Qwen 3.x, chico
+> chico y un LoRA en uno grande, entrenados sobre el mismo corpus. Familia: ~~Qwen 3.x~~ **Gemma 4 desde 2026-09-25 (B1 [ran], la decisión del usuario)**, chico
 > y grande.**
 >
 > **Extendido el mismo día: cada experto también recibe una base de conocimiento de su
@@ -97,8 +97,9 @@ brazos de atribución se compran sólo una vez que hay un efecto que atribuir.
 | # | hito | depende de | compuerta | estado |
 |---|---|---|---|---|
 | **1** | el pool en Qwen 3.x chico | D2 ✅ | los dos miembros liberados sobre `Qwen3.5-4B`, cada uno empatando o ganándole a su release de Qwen 2.5, pareado | ✅ **[ran] 2026-09-19 — MOVIDO.** G1 `applied` en los dos adaptadores de receta completa; `email-full` **471/475 = sus 471 grabados**, empate 1 : 1; `desk-commitment` **240/240**, empate; `releases/*@v2.json`. Cuatro sesiones de menos de una hora ([`BRIEF`](../../results/M1-pool-qwen35-20260919/BRIEF.md)) |
+| **1b** | **el pool re-liberado sobre Gemma 4 E4B** | B1 ✅ | `email-full` y `desk-commitment` reentrenados sobre `google/gemma-4-E4B-it` desde los mismos corpus y la misma receta, cada uno empatando o ganándole a su release `@v2` de Qwen3.5-4B en los mismos casos, pareado; manifiestos `@v3` | **próximo** — preregistrado con su brief antes de cualquier sesión |
 | **2** | el router como un modelo chico de los corpus | los corpus de los miembros | mal-ruteados-a-local no mayor que el del diccionario en prompts para los que el diccionario no fue escrito; abstiene ante texto fuera de distribución | **brazo 1 [ran] 2026-09-19 — no pasa.** Texto extranjero, conjuntos frescos: el diccionario sirve 59/128 localmente, el router de n-gramas **0/128**; pedidos legítimos de remitentes no vistos: el diccionario pierde 0/120, el router pierde **120/120**. El diccionario se queda; **el brazo 2 es un modelo de embeddings**, compartido con el hito 7 |
-| **3** | la mitad grande de un par | 1 | un LoRA en `Qwen3.8-27B` está `applied` al servirse; grande + LoRA le gana a chico + LoRA en la banda profunda, pareado | — |
+| **3** | la mitad grande de un par | 1 | un LoRA en ~~`Qwen3.8-27B`~~ `gemma-4-31B-it` (family.LARGE) está `applied` al servirse; grande + LoRA le gana a chico + LoRA en la banda profunda, pareado | — |
 | **4** | el par especulativo | 3 | la aceptación de borradores del LoRA chico bajo verificación del LoRA grande supera la aceptación bajo el modelo grande pelado | — |
 | **5** | la primera región real, a mano | 1, 2, un sandbox, claves rotadas | la compuerta de release, sobre una suite con un verificador que nadie acá generó | **región nombrada el 2026-09-19: procedimientos de enfermería y material de educación en salud** (*Nursing Skills* de Open RN, CC BY 4.0, primero); sigue el brazo de margen, cero GPU |
 | **6** | la política de servicio, con la factura | 2, 4, 5 | la porción local ahorra más de lo que cuesta, sobre tráfico real | 🔶 **primera pasada [ran] 2026-09-21, cero GPU:** el replay de P41/P62 tasado a las tarifas reales de `gemini-3.8-flash` — la factura real de hoy hacia la frontera (90 casos de fluidos) **$0,18**, evitada al mantener locales los 150 casos de email **$0,11**, techo si todo hubiera salido **$0,30**. **El costo en dólares de la propia GPU local no está tasado** — la tarifa de alquiler no se pudo obtener en vivo; no se adivinó |
@@ -621,16 +622,15 @@ de línea compartida, cantidad por capa, control sin `rate`, fallos de recuperac
 
 ## 2. La familia, y la alternativa
 
-**Adoptada: Qwen 3.x.** `Qwen3.5-2B/4B` y `Qwen3.8-27B` comparten un espacio de ids —
-248.044 ids, 7 sólo del grande, todos especiales de audio/TTS; `<think>` es compartido
-**[ran]** D0. El canal de pensamiento está apagado para los miembros: ningún corpus lo
-enseñó. Los miembros liberados están en `Qwen2.5-3B-Instruct` hasta que aterrice el hito
-1, y la línea Qwen 2.5 sigue siendo el control en cada compuerta.
+**Adoptada, 2026-09-25: Gemma 4** — `google/gemma-4-E4B-it` para todo miembro nuevo; `gemma-4-31B-it` nombrado
+para la mitad grande, no medido. B1 **[ran]**: un empate con Qwen3.5-4B en W9 (38 contra 35, 35), que por la
+regla del usuario escrita antes de la comparación elige a Gemma. El bloqueo de P29 se levanta excluyendo las
+torres de visión/audio. Los miembros liberados quedan sobre `Qwen3.5-4B` hasta que cada uno se vuelva a liberar
+sobre Gemma a través de la compuerta (más abajo); Qwen 2.5 sigue siendo el brazo de control.
 
-**Alternativa, no ahora: Gemma 4, 2B y 12B.** El diseño es agnóstico de familia — un par
-necesita un espacio de ids y una base a la que PEFT pueda engancharse. Gemma 4 falla lo
-segundo hoy: `Gemma4ClippableLinear` no es `nn.Linear` **[ran]** P29. `lora_matrix` con
-un sujeto Gemma es la compuerta que la reabre.
+**Previa, hasta la re-liberación: Qwen 3.x** (`Qwen3.5-4B`, `Qwen3.8-27B`) — un espacio de ids **[ran]** D0,
+la familia de cada release hasta ahora. ~~Adoptada: Qwen 3.x … Alternativa, no ahora: Gemma 4, bloqueada en
+PEFT [ran] P29.~~
 
 ## 3. Reglas que sigue cada paso
 
@@ -654,6 +654,13 @@ Las cuatro que deciden la forma de un paso:
 
 ## 5. Historia
 
+- **2026-09-25** — **todo se muda a Gemma 4, la decisión del usuario sobre el empate de B1.** Los miembros nuevos
+  se entrenan sobre `gemma-4-E4B-it` (`training/harness/family.py`: SMALL; los runners activos lo usan por
+  default); la mitad grande de un par se nombra `gemma-4-31B-it`, no medida; el hito 1b vuelve a liberar a los dos
+  miembros de Qwen sobre Gemma a través de la compuerta. El gateway de la demo de la escuela ahora fundamenta
+  cada respuesta en resultados reales de herramientas y redacta instrucciones plantadas, afuera del modelo,
+  después de que M8 [ran] mostrara que el LoRA de personal de la escuela puede inventar una línea de la lista de
+  una herramienta.
 - **2026-09-25** — **B1 [ran]: Gemma 4 E4B contra Qwen3.5-4B — empate, que por la regla del usuario elige Gemma.**
   El bloqueo de P29 se levanta (el LoRA excluye las torres de visión y audio de Gemma; vLLM lo sirve aplicado). Sin
   entrenar, Gemma recorre la wiki de W9 19/40 donde Qwen recorre 0/40, y lee 40/40 donde Qwen lee 29/40. Con el corpus y la

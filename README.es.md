@@ -7,7 +7,7 @@
 **El LoRA no es el libro de texto; es el especialista que sabe usar la biblioteca.**
 
 [![licencia Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
-[![familia Qwen 3.x](https://img.shields.io/badge/family-Qwen%203.x-8A5C10)](docs/es/ARCHITECTURE.md)
+[![familia Gemma 4](https://img.shields.io/badge/family-Gemma%204-8A5C10)](docs/es/ARCHITECTURE.md)
 [![núcleo 1.0 especificado](https://img.shields.io/badge/core%201.0-specified-555)](docs/es/MEMORY.md)
 [![registro v0.1-foundations](https://img.shields.io/badge/record-v0.1--foundations-555)](docs/es/RECORD.md)
 
@@ -205,10 +205,10 @@ es el registro completo, incluido lo que falló y los instrumentos que mintieron
 [`docs/es/FRAMEWORK.md`](docs/es/FRAMEWORK.md) es el análisis de brechas contra ser un framework
 genérico, autocontenido y escrito para que lo revise otro modelo.
 
-**Restricciones de ingeniería, decididas y no en discusión.** La familia es Qwen 3.x — chico
-`Qwen3.5-4B`, grande `Qwen3.8-27B` — entrenada y servida en Colab, en sesiones de menos de una hora,
-nunca en la máquina de un usuario. Un 27B es trabajo de A100 en 4 bits. Gemma 4 es la alternativa
-nombrada y por ahora está bloqueada en PEFT.
+**Restricciones de ingeniería, decididas y no en discusión.** La familia es **Gemma 4** desde 2026-09-25 —
+chico `gemma-4-E4B-it`, grande `gemma-4-31B-it` (todavía no medido) — elegida en un empate medido con
+Qwen3.5-4B, cuyos miembros publicados quedan hasta que se los vuelva a publicar ([`docs/es/ARCHITECTURE.md`](docs/es/ARCHITECTURE.md) §6).
+Entrenada y servida en Colab, en sesiones de menos de una hora, nunca en la máquina de un usuario.
 
 ---
 

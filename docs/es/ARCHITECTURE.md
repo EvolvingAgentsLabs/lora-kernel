@@ -244,16 +244,25 @@ base de conocimiento y el hash de su índice: un miembro es su corpus *y* su bas
 
 ## 6. La familia
 
-Qwen 3.x: `Qwen3.5-4B` (o `2B`) chico, `Qwen3.8-27B` grande. La línea 3.x es híbrida — tres
-capas de atención lineal por cada capa de atención completa — y el adaptador renombrado de
-D2 aterrizó pesos en los dos tipos. Su canal `<think>` queda apagado para los miembros. **Los miembros
-liberados están sobre `Qwen3.5-4B` desde el hito 1 [ran]** — reentrenados desde los mismos corpus,
-cada uno empatando a su release de Qwen 2.5 (471/475, 240/240); los releases `@v1` sobre 2.5 quedan
-como control.
+**Gemma 4, desde 2026-09-25 — la decisión del usuario sobre B1 [ran].** `google/gemma-4-E4B-it` chico;
+`gemma-4-31B-it` nombrado como la mitad grande de un par y **no medido**. En el wiki de W9, con el mismo corpus y
+la misma receta, el miembro de Gemma empató al de Qwen3.5-4B (38/40 contra 35 y 35, 4 : 1 contra cada uno); sin
+entrenar, Gemma ya la camina 19/40 donde Qwen camina 0/40, y entrena en un tercio del tiempo. El usuario decidió
+antes de que corriera la comparación que la paridad elige a Gemma, porque el stack de desarrollo apunta a ella. Le
+vienen dos restricciones de ingeniería: el LoRA excluye las torres de visión y audio, cuyas proyecciones son
+`Gemma4ClippableLinear` (el bloqueo de P29, y nada más —
+`training/s4_train.py::towers_to_exclude`); y su canal de pensamiento queda apagado para los miembros, como el de
+Qwen.
 
-Nada en §1–§5 nombra una familia. Un par necesita un espacio de ids y una base a la que PEFT
-pueda engancharse; `Gemma 4 2B / 12B` cumple lo primero y todavía no lo segundo **[ran]**
-P29.
+**Los miembros liberados quedan sobre `Qwen3.5-4B`** (`releases/*@v2.json`) hasta que cada uno se vuelva a
+liberar sobre Gemma a través de la compuerta de release; los releases `@v1` sobre `Qwen2.5-3B-Instruct` quedan
+como brazo de control. La familia se nombra en un solo lugar, `training/harness/family.py`. ~~Qwen 3.x:
+`Qwen3.5-4B` chico, `Qwen3.8-27B` grande … Gemma 4 cumple el requisito de espacio de ids y todavía no el de
+PEFT **[ran]** P29.~~
+
+Nada en §1–§5 nombra una familia. Un par necesita un espacio de ids y una base a la que PEFT pueda engancharse;
+Gemma 4 E4B ahora cumple lo segundo **[ran]** B1; si comparte espacio de ids con 31B es la primera verificación
+del hito 3.
 
 ## 7. Lo que no es neuronal, a propósito
 

@@ -24,7 +24,9 @@ from pathlib import Path
 from examples.common import grounding as grounding_mod
 from examples.common import mock_billing, tokens
 
-BASE = "Qwen/Qwen3.5-4B"
+from training.harness.family import SMALL  # noqa: E402
+
+BASE = SMALL                                        # training/harness/family.py
 PORT = 8765
 NORTH_ONLY = ("Nandakumar", "Kavi", "Priya", "southport")        # what must never reach a northgate user
 SOUTH_ONLY = ("Ashby", "Jamie", "Rowan", "Devon")                 # and the other way

@@ -26,7 +26,9 @@ import re
 import time
 from pathlib import Path
 
-BASE = "Qwen/Qwen3.5-4B"
+from training.harness.family import SMALL  # noqa: E402
+
+BASE = SMALL                                        # training/harness/family.py
 MAX_MODEL_LEN = 8192
 
 # part A — (user id, request). Ids are examples/distributor/users.py's; nothing here is real.

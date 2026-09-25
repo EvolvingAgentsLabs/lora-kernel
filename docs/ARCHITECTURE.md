@@ -226,14 +226,21 @@ knowledge base's hash and its index's hash: a member is its corpus *and* its bas
 
 ## 6. The family
 
-Qwen 3.x: `Qwen3.5-4B` (or `2B`) small, `Qwen3.8-27B` large. The 3.x line is hybrid — three
-linear-attention layers to one full-attention layer — and D2's renamed adapter landed
-weights on both kinds. Its `<think>` channel stays off for members. **The released members are on
-`Qwen3.5-4B` since milestone 1 [ran]** — retrained from the same corpora, each tying its Qwen 2.5
-release (471/475, 240/240); the `@v1` releases on 2.5 stay as the control.
+**Gemma 4, from 2026-09-25 — the user's decision on B1 [ran].** `google/gemma-4-E4B-it` small; `gemma-4-31B-it`
+named as the large half of a pair and **not measured**. On W9's wiki, with the same corpus and recipe, Gemma's member
+tied Qwen3.5-4B's (38/40 against 35 and 35, 4 : 1 against each); untrained, Gemma already walks it 19/40 where Qwen
+walks 0/40, and it trains in a third of the time. The user decided before the comparison ran that parity chooses
+Gemma, because the development stack targets it. Two engineering constraints come with it: the LoRA excludes the
+vision and audio towers, whose projections are `Gemma4ClippableLinear` (P29's block, and nothing else —
+`training/s4_train.py::towers_to_exclude`); and its thinking channel stays off for members, as Qwen's did.
 
-Nothing in §1–§5 names a family. A pair needs one id space and a base PEFT can attach to;
-`Gemma 4 2B / 12B` meets the first and not yet the second **[ran]** P29.
+**The released members stay on `Qwen3.5-4B`** (`releases/*@v2.json`) until each is re-released on Gemma through the
+release gate; the `@v1` releases on `Qwen2.5-3B-Instruct` stay as the control arm. The family is named in one place,
+`training/harness/family.py`. ~~Qwen 3.x: `Qwen3.5-4B` small, `Qwen3.8-27B` large … Gemma 4 meets the id-space
+requirement and not yet the PEFT one **[ran]** P29.~~
+
+Nothing in §1–§5 names a family. A pair needs one id space and a base PEFT can attach to; Gemma 4 E4B now meets the
+second **[ran]** B1; whether it shares an id space with 31B is milestone 3's first check.
 
 ## 7. What is not neural, on purpose
 
