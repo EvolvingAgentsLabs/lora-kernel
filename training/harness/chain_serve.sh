@@ -298,6 +298,9 @@ PY
   done
   tmo 300 colab download -s "$S" /content/lora-kernel/$RESULTS_NAME "$LOCAL" >/dev/null 2>&1 || true
   tmo 300 colab download -s "$S" /content/lora-kernel/vllm.log "$RUN_DIR/vllm.log" >/dev/null 2>&1 || true
+  # THE RUNNER'S OWN LOG COMES HOME TOO. B1's first gate failed Gemma's in-process step in 67 seconds and
+  # the reason stayed on the VM: the chain fetched the results and vLLM's log, never run.log [ran] 2026-09-25.
+  tmo 300 colab download -s "$S" /content/lora-kernel/run.log "$RUN_DIR/run.log" >/dev/null 2>&1 || true
   # WEIGHTS A RUNNER PRODUCED COME HOME. P64 attempt 1 trained and released a member
   # and this chain stopped the session with the adapter still on it [ran] 2026-09-18;
   # a runner that trains packs `adapters_out.tgz` and it is fetched here.

@@ -60,3 +60,12 @@ GPU=A100 BRANCH=w9-atomic-statements-20260924 RUN_DIR=$R MODULE=training.harness
   MARGS="--control Qwen/Qwen3.5-4B --subject google/gemma-4-E4B-it" RESULTS_NAME=lora_matrix.json \
   BASE=google/gemma-4-E4B-it TRAINDEPS=1 SKIP_ADAPTERS=1 SESSIONS=1 training/harness/chain_serve.sh
 ```
+
+## Stage 1, attempt 1 **[ran]** 2026-09-25 · VOID — the harness, not a model
+
+The control was chosen wrong: `Qwen3.5-4B`'s adapters are applied by vLLM only after `rekey` (D2), which
+`lora_matrix` applies to the subject, not the control — so the control's G2 read "identical to the base" and
+the run is void as the instrument says. And Gemma's in-process G1 failed in 67 s for a reason that stayed on the
+VM: the chain did not fetch `run.log` (now it does). Attempt 2: the instrument's own control
+(`Qwen/Qwen2.5-3B-Instruct`, applied without rekey **[ran]** P26/P33). Redesign count of this stage: 0 — the
+gates and their reading are unchanged; the control is the instrument's default.
