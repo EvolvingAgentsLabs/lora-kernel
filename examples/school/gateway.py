@@ -32,6 +32,7 @@ import urllib.request
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 from examples.common import approvals, tokens
+from examples.common import grounding as grounding_mod
 from examples.common.agent_loop import ToolSuite
 from examples.common.permissions import Denied
 from examples.school import roles as school_roles
@@ -80,8 +81,16 @@ class Gateway:
                 with self.lock:
                     self.handoffs.append({"id": len(self.handoffs) + 1, "user": claim.user_id, "org": claim.org_id, "request": request})
                 reply = "This needs a member of staff; it has been passed to a person."
+        grounding = "no_result"
+        if route == "local":
+            # WHAT THE REPLY MAY STATE IS DECIDED HERE, NOT BY THE MODEL (examples/common/grounding.py): an item
+            # that is in no real tool result replaces the reply with the tools' own text; instruction-shaped
+            # text found in a record is removed from what is shown.
+            spanish = bool(re.search(r"[¿¡áéíóúñ]", request)) or request.split(" ", 1)[0].lower().endswith(("á", "ame", "é"))
+            reply, grounding = grounding_mod.ground(reply, [c["result"] for c in suite.calls if "result" in c], spanish)
+            reply = grounding_mod.redact(reply)
         ev = {"at": time.strftime("%Y-%m-%dT%H:%M:%S"), "user": claim.user_id, "role": claim.role, "org": claim.org_id,
-              "route": route, "calls": suite.calls, "denied": sum("denied" in c for c in suite.calls),
+              "route": route, "grounding": grounding, "calls": suite.calls, "denied": sum("denied" in c for c in suite.calls),
               "held": sum("held" in c for c in suite.calls), "latency_s": round(time.time() - t0, 2), **used()}
         with self.lock:
             self.events.append(ev)
@@ -123,6 +132,7 @@ class Gateway:
         return {"org": claim.org_id, "turns": len(evs), "served_locally": len(local),
                 "to_frontier": sum(e["route"] == "frontier" for e in evs), "to_a_person": sum(e["route"] == "person" for e in evs),
                 "denied_calls": sum(e["denied"] for e in evs), "held_for_approval": sum(e["held"] for e in evs),
+                "replies_replaced_by_the_tools_text": sum(e.get("grounding") == "replaced" for e in evs),
                 "local_tokens": {"prompt": p, "completion": c},
                 "frontier_cost_avoided_usd": round(p * INPUT_RATE + c * OUTPUT_RATE, 6),
                 "not_priced": "the local GPU's own cost"}

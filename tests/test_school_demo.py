@@ -114,3 +114,14 @@ def test_the_school_arm_scores_base_and_a_member_end_to_end_against_the_fake(tmp
         assert len(rec["arms"][arm]["held_out"]) == 70 and not [r for r in rec["arms"][arm]["held_out"].values() if "error" in r]
         assert rec["arms"][arm]["demo"]["n"] == 8
     assert rec["analysis"]["pairs"][0]["pair"] == "school-s0 vs base"
+
+
+def test_the_demo_serves_a_member_and_checks_it_first(demo, tmp_path, monkeypatch):
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(sys, "argv", ["demo_run", "--member", "school-s0=adapters/school-staff-s0", "--out", "demo.json"])
+    with fv.patched(scripted) as seen:
+        demo.main()
+    rec = json.loads((tmp_path / "demo.json").read_text())
+    assert seen["spec"]["loras"] == {"school-s0": "adapters/school-staff-s0"} and rec["G1"]["applied"]
+    assert "school-s0" in seen["server"].served and rec["passed"] == len(demo.SCENES)
+    assert "replies_replaced_by_the_tools_text" in rec["dashboard"]
