@@ -149,7 +149,10 @@ These are not style. Each was paid for; [`docs/RECORD.md`](docs/RECORD.md) §4 h
   polling** — a hand probe beside the chain's own may have cost W5c a whole session **[ran]**. **A rejected
   accelerator is quota, not an outage** — `colab new` exits 0 on it, the chain now reads what it said and
   stops; a T4 is not a substitute (no bf16: an adapter trained in bf16 and served in fp16 is a second
-  unknown) **[ran]** 2026-09-20.
+  unknown) **[ran]** 2026-09-20. **A launch is proven by `run.log` on the VM, not by the exec's exit code** — W5e's first A100
+  sat 25 minutes behind a runner that never started; the chain now probes and relaunches. **Killing a chain
+  does not stop its card** (SIGTERM skips the EXIT trap): `colab stop -s <name>` after **[ran]** 2026-09-23.
+  **An adapter a later arm carries in lives outside the scratchpad** (`~/lora-kernel-adapters/`): W5c's was lost.
 - **Freeze the design, *then* write the set that counts.** Three looks at the same sets said
   milestone 2's router was perfect; one set written after the freeze found it loses every
   real-looking request. A set the designer has iterated against is a training set.

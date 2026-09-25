@@ -1,0 +1,34 @@
+=== session 1 of 1 · srv193523 · L4
+    boot clone: rc=0 1980f5f Chain: prove a launch by run.log on the VM, relaunch only on a probe that says no log
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 1980f5f Chain: prove a launch by run.log on the VM, relaunch only on a probe that says no log
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    1980f5f Chain: prove a launch by run.log on the VM, relaunch only on a probe that says no log | 0.30.0
+    carried the adapters in (2 chunks)
+    runner started (launch 1)
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib=adapters/nursing-walks-v2-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib=adapters/nursing-walks-v2-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib=adapters/nursing-walks-v2-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib=adapters/nursing-walks-v2-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib=adapters/nursing-walks-v2-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib=adapters/nursing-walks-v2-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib=adapters/nursing-walks-v2-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib=adapters/nursing-walks-v2-q35
+    [arm] withlib · heldout 20/89 credit 15 errors 0 18s
+    [arm] withlib · heldout 40/89 credit 26 errors 0 33s
+    [arm] withlib · heldout 60/89 credit 41 errors 0 43s
+    [arm] withlib · control 60/78 credit 55 errors 0 29s
+    [arm] withlib · control 78/78 credit 72 errors 0 38s
+    [arm] withlib-fs · heldout: 89 to run, 0 resumed
+    [arm] withlib-fs · heldout 80/89 credit 57 errors 0 45s
+    [arm] withlib-fs · heldout 89/89 credit 64 errors 0 47s
+    [arm] withlib-fs · control: 78 to run, 0 resumed
+    [arm] headline · withlib-fs vs withlib: tie (8:2, p=0.10938)
+    [arm] headline · policy vs withlib: improvement (9:1, p=0.02148)
+    [arm] NO HEADROOM: the retrained adapter loses only 0 value rows to its own query — nothing to repair
+    the runner wrote its result — done
+exit 0

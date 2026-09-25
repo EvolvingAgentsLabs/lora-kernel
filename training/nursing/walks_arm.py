@@ -125,11 +125,17 @@ def retrieval(conv, row: dict) -> dict:
     return {"searches": len(searches), "needed": needs, "miss": bool(needs and not hit)}
 
 
-def run_case(lib: Library, row: dict, arm: str, gen_for, max_calls: int = gw.MAX_CALLS) -> dict:
+def run_case(lib: Library, row: dict, arm: str, gen_for, max_calls: int = gw.MAX_CALLS,
+             first_query: bool = False) -> dict:
     """`gen_for(system, user, conv)` returns `gen(prefix) -> continuation` — the model, or a scripted
-    policy (`conv` is None for an arm with no verbs; the model never looks at it)."""
+    policy (`conv` is None for an arm with no verbs; the model never looks at it). `first_query`: the
+    referee runs the walk's first search on the statement (`Conversation.first_query`, W5e); the record
+    says so, and a replay of it does the same."""
     system, user, conv = served(lib, row, arm)
     rec = {"id": row["case_id"], "family": row["family"], "variant": row["variant"]}
+    if first_query and conv is not None:
+        conv.first_query = row["statement"]
+        rec["first_query"] = "statement"
     try:
         gen = gen_for(system, user, conv)
         if conv is None:

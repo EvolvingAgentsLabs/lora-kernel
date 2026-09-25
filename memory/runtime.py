@@ -103,6 +103,12 @@ class Conversation:
     max_opens: int = MAX_OPENS
     max_searches: int = MAX_SEARCHES
     log_content: bool = False             # §5.4: shapes by default, content is a setting
+    # THE REFEREE MAY WRITE THE FIRST QUERY. Set, the conversation's first `<search>` runs on this text
+    # (the request's own statement) on the shelf the expert named, and the expert's words are logged,
+    # not searched. W5d [ran]: on a new wording the adapter wrote a training query for another topic in
+    # 9 of 11 misses, where the statement lists the needed note 16 of 16. None: the expert's query, as
+    # trained. One unknown, measured in results/M7-W5e-first-search-20260923.
+    first_query: str | None = None
 
     shown: dict[str, str] = field(default_factory=dict)      # opaque → library id
     opaque: dict[str, str] = field(default_factory=dict)     # library id → opaque
@@ -167,6 +173,9 @@ class Conversation:
     def _search(self, query: str, shelf: str | None) -> str:
         if shelf and shelf not in ("harness", "wiki"):
             return self._error("shelf", f"no shelf `{shelf}` — harness or wiki", "search")
+        written = None
+        if self.first_query is not None and self.searches == 0:
+            written, query = query, self.first_query
         if not query:
             return self._error("empty", "an empty search", "search")
         if self.searches >= self.max_searches:
@@ -177,7 +186,8 @@ class Conversation:
         for i in ids:
             n = self.lib[i]
             lines.append(f"  [{self._id(i)}] {n.kind} · {n.title} — when: {n.when}")
-        self._log("search", query, shelf=shelf, returned=ids, guard="ok")
+        more = {} if written is None else {"substituted": True, "written": written if self.log_content else None}
+        self._log("search", query, shelf=shelf, returned=ids, guard="ok", **more)
         return "\n".join(lines)
 
     def _open(self, shown: str) -> str:

@@ -199,7 +199,29 @@ subprocess.Popen(
     "nohup python -u -m $MODULE --base $BASE $MARGS --out $RESULTS_NAME "
     "> run.log 2>&1 &", shell=True)
 PY
-  tmo 300 colab exec -s "$S" -f /tmp/_vrun.py >/dev/null 2>&1 || true
+  # A LAUNCH IS PROVEN BY ITS LOG, NOT BY ITS EXIT CODE. The exec above is `|| true`, and W5e's
+  # session T held an A100 for 25 minutes watching a runner that never started — no run.log on
+  # the VM, nothing for the peek to match, the chain none the wiser [ran] 2026-09-23. Relaunch
+  # ONLY on a probe that answers "no log": a silent probe is not a missing runner, and two
+  # runners on one card write one results file.
+  printf 'import os\nprint("RUNLOG" if os.path.exists("/content/lora-kernel/run.log") else "NORUNLOG")\n' > /tmp/_vstarted.py
+  STARTED=0; LAUNCHES=0
+  for _ in 1 2 3 4 5 6; do
+    if [ "$LAUNCHES" -eq 0 ]; then
+      tmo 300 colab exec -s "$S" -f /tmp/_vrun.py >/dev/null 2>&1 || true; LAUNCHES=1; sleep 10
+    fi
+    P=$(tmo 300 colab exec -s "$S" -f /tmp/_vstarted.py 2>/dev/null | grep -oE '^(NO)?RUNLOG' | tail -1 || true)
+    if [ "$P" = "RUNLOG" ]; then STARTED=1; break; fi
+    if [ "$P" = "NORUNLOG" ]; then
+      [ "$LAUNCHES" -ge 3 ] && break
+      echo "    launch $LAUNCHES did not take: no run.log on the VM — relaunching"
+      tmo 300 colab exec -s "$S" -f /tmp/_vrun.py >/dev/null 2>&1 || true; LAUNCHES=$((LAUNCHES + 1)); sleep 10
+    else
+      sleep 20
+    fi
+  done
+  [ "$STARTED" = 1 ] || { echo "    the runner never started ($LAUNCHES launches) — STOPPED, stopping the card"; exit 1; }
+  echo "    runner started (launch $LAUNCHES)"
 
   cat > /tmp/_vpeek.py <<'PY'
 import subprocess

@@ -84,6 +84,8 @@ def _plan_call(conv, step) -> tuple[str, str] | None:
 def _run(lib: Library, row: dict, head: list, calls: list, rec: dict):
     """Replay `head` (plan steps) then `calls`; None unless every visible result is the record's."""
     conv, page = gw.conversation(lib, gw.case_of(row))
+    if rec.get("first_query") == "statement":            # the walk ran under W5e's referee: so does its replay
+        conv.first_query = row["statement"]
     pages = [page] if page else []
     n = 0
     for step in head:
