@@ -1,0 +1,11 @@
+{
+ "arms": {},
+ "members": {
+  "school-s0": {
+   "adapter": "adapters/school-staff-s0",
+   "adapter_sha256": "4190c32019e0bba3aac2390e0dc305d889a31fa7201c027419d20c208c593153"
+  }
+ },
+ "packed": 1,
+ "trained_only": "2026-09-25T13:57:42"
+}
