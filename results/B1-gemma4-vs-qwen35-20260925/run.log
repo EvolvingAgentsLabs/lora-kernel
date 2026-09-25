@@ -1,84 +1,28 @@
-
-[matrix] ===== control: Qwen/Qwen2.5-3B-Instruct =====
-W0925 11:45:05.850000 6975 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-W0925 11:45:05.890000 6975 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
 Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
-Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files:  50%|█████     | 1/2 [00:39<00:39, 39.38s/it]Fetching 2 files: 100%|██████████| 2/2 [01:50<00:00, 58.03s/it]Fetching 2 files: 100%|██████████| 2/2 [01:50<00:00, 55.24s/it]
-Loading weights:   0%|          | 0/434 [00:00<?, ?it/s]Loading weights:   0%|          | 1/434 [00:00<00:46,  9.34it/s]Loading weights:   6%|▌         | 27/434 [00:00<00:02, 150.07it/s]Loading weights:  15%|█▍        | 63/434 [00:00<00:01, 232.05it/s]Loading weights:  21%|██        | 89/434 [00:00<00:01, 239.48it/s]Loading weights:  28%|██▊       | 122/434 [00:00<00:01, 251.70it/s]Loading weights:  37%|███▋      | 159/434 [00:00<00:01, 270.44it/s]Loading weights:  45%|████▍     | 195/434 [00:00<00:00, 278.49it/s]Loading weights:  53%|█████▎    | 232/434 [00:00<00:00, 295.23it/s]Loading weights:  61%|██████▏   | 266/434 [00:01<00:00, 300.19it/s]Loading weights:  68%|██████▊   | 297/434 [00:01<00:00, 296.67it/s]Loading weights:  76%|███████▌  | 328/434 [00:01<00:00, 292.08it/s]Loading weights:  84%|████████▎ | 363/434 [00:01<00:00, 292.21it/s]Loading weights:  92%|█████████▏| 399/434 [00:01<00:00, 304.33it/s]Loading weights:  99%|█████████▉| 430/434 [00:01<00:00, 300.00it/s]Loading weights: 100%|██████████| 434/434 [00:01<00:00, 277.53it/s]
-[tiny] Linear modules: ['down_proj', 'gate_proj', 'k_proj', 'o_proj', 'q_proj', 'up_proj', 'v_proj']
-[tiny] of those, attention-shaped: ['k_proj', 'o_proj', 'q_proj', 'v_proj']
-[tiny] target modules found: ['down_proj', 'gate_proj', 'k_proj', 'o_proj', 'q_proj', 'up_proj', 'v_proj']
-trainable params: 29,933,568 || all params: 3,115,872,256 || trainable%: 0.9607
-Map:   0%|          | 0/120 [00:00<?, ? examples/s]Map: 100%|██████████| 120/120 [00:00<00:00, 4846.39 examples/s]
-  0%|          | 0/60 [00:00<?, ?it/s]  2%|▏         | 1/60 [00:03<03:20,  3.40s/it]  3%|▎         | 2/60 [00:03<01:32,  1.59s/it]  5%|▌         | 3/60 [00:04<00:57,  1.00s/it]  7%|▋         | 4/60 [00:04<00:40,  1.38it/s]  8%|▊         | 5/60 [00:04<00:31,  1.74it/s] 10%|█         | 6/60 [00:04<00:25,  2.08it/s] 12%|█▏        | 7/60 [00:05<00:22,  2.37it/s] 13%|█▎        | 8/60 [00:05<00:19,  2.61it/s] 15%|█▌        | 9/60 [00:05<00:18,  2.80it/s] 17%|█▋        | 10/60 [00:06<00:17,  2.94it/s] 18%|█▊        | 11/60 [00:06<00:16,  3.03it/s] 20%|██        | 12/60 [00:06<00:15,  3.11it/s] 22%|██▏       | 13/60 [00:07<00:14,  3.18it/s] 23%|██▎       | 14/60 [00:07<00:14,  3.22it/s] 25%|██▌       | 15/60 [00:07<00:13,  3.23it/s] 27%|██▋       | 16/60 [00:07<00:13,  3.24it/s] 28%|██▊       | 17/60 [00:08<00:13,  3.27it/s] 30%|███       | 18/60 [00:08<00:12,  3.28it/s] 32%|███▏      | 19/60 [00:08<00:12,  3.28it/s] 33%|███▎      | 20/60 [00:09<00:12,  3.29it/s]                                               {'loss': '0.1271', 'grad_norm': '0.002506', 'learning_rate': '0.0001367', 'epoch': '0.3333'}
- 33%|███▎      | 20/60 [00:09<00:12,  3.29it/s] 35%|███▌      | 21/60 [00:09<00:11,  3.30it/s] 37%|███▋      | 22/60 [00:09<00:11,  3.29it/s] 38%|███▊      | 23/60 [00:10<00:11,  3.26it/s] 40%|████      | 24/60 [00:10<00:11,  3.22it/s] 42%|████▏     | 25/60 [00:10<00:10,  3.22it/s] 43%|████▎     | 26/60 [00:11<00:10,  3.23it/s] 45%|████▌     | 27/60 [00:11<00:10,  3.24it/s] 47%|████▋     | 28/60 [00:11<00:09,  3.27it/s] 48%|████▊     | 29/60 [00:11<00:09,  3.29it/s] 50%|█████     | 30/60 [00:12<00:09,  3.31it/s] 52%|█████▏    | 31/60 [00:12<00:08,  3.33it/s] 53%|█████▎    | 32/60 [00:12<00:08,  3.32it/s] 55%|█████▌    | 33/60 [00:13<00:08,  3.33it/s] 57%|█████▋    | 34/60 [00:13<00:07,  3.33it/s] 58%|█████▊    | 35/60 [00:13<00:07,  3.33it/s] 60%|██████    | 36/60 [00:14<00:07,  3.33it/s] 62%|██████▏   | 37/60 [00:14<00:06,  3.34it/s] 63%|██████▎   | 38/60 [00:14<00:06,  3.34it/s] 65%|██████▌   | 39/60 [00:14<00:06,  3.31it/s] 67%|██████▋   | 40/60 [00:15<00:06,  3.32it/s]                                               {'loss': '3.649e-06', 'grad_norm': '0.0001105', 'learning_rate': '7e-05', 'epoch': '0.6667'}
- 67%|██████▋   | 40/60 [00:15<00:06,  3.32it/s] 68%|██████▊   | 41/60 [00:15<00:05,  3.32it/s] 70%|███████   | 42/60 [00:15<00:05,  3.31it/s] 72%|███████▏  | 43/60 [00:16<00:05,  3.32it/s] 73%|███████▎  | 44/60 [00:16<00:04,  3.33it/s] 75%|███████▌  | 45/60 [00:16<00:04,  3.33it/s] 77%|███████▋  | 46/60 [00:17<00:04,  3.33it/s] 78%|███████▊  | 47/60 [00:17<00:03,  3.34it/s] 80%|████████  | 48/60 [00:17<00:03,  3.33it/s] 82%|████████▏ | 49/60 [00:17<00:03,  3.29it/s] 83%|████████▎ | 50/60 [00:18<00:03,  3.28it/s] 85%|████████▌ | 51/60 [00:18<00:02,  3.29it/s] 87%|████████▋ | 52/60 [00:18<00:02,  3.30it/s] 88%|████████▊ | 53/60 [00:19<00:02,  3.29it/s] 90%|█████████ | 54/60 [00:19<00:01,  3.25it/s] 92%|█████████▏| 55/60 [00:19<00:01,  3.22it/s] 93%|█████████▎| 56/60 [00:20<00:01,  3.23it/s] 95%|█████████▌| 57/60 [00:20<00:00,  3.22it/s] 97%|█████████▋| 58/60 [00:20<00:00,  3.23it/s] 98%|█████████▊| 59/60 [00:21<00:00,  3.25it/s]100%|██████████| 60/60 [00:21<00:00,  3.26it/s]                                               {'loss': '2.642e-06', 'grad_norm': '0.0001029', 'learning_rate': '3.333e-06', 'epoch': '1'}
-100%|██████████| 60/60 [00:21<00:00,  3.26it/s]                                               {'train_runtime': '21.33', 'train_samples_per_second': '5.626', 'train_steps_per_second': '2.813', 'train_loss': '0.04237', 'epoch': '1'}
-100%|██████████| 60/60 [00:21<00:00,  3.26it/s]100%|██████████| 60/60 [00:21<00:00,  2.81it/s]
-{
-  "out": "adapters/tiny-control",
-  "weights_bytes": 119801528,
-  "target_modules": [
-    "down_proj",
-    "gate_proj",
-    "k_proj",
-    "o_proj",
-    "q_proj",
-    "up_proj",
-    "v_proj"
-  ],
-  "lora_B_abs_sum": 18688.3349,
-  "changes_output_in_process": true
-}
-[tiny] lora_B_abs_sum=18688.3349 changes_output=True
-[matrix] control G1 in-process: passed
-[serve] vllm serve Qwen/Qwen2.5-3B-Instruct --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
-[serve] /v1/models -> ['Qwen/Qwen2.5-3B-Instruct', 'tiny']
-[gate] tiny: applied
-[gate-only] applied
-[matrix] control G2 served: applied 
-
-[matrix] ===== subject: google/gemma-4-E4B-it =====
-W0925 11:52:05.913000 9318 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-W0925 11:52:05.952000 9318 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
-Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
-Loading weights:   0%|          | 0/2076 [00:00<?, ?it/s]Loading weights:  12%|█▏        | 258/2076 [00:00<00:00, 2578.98it/s]Loading weights:  25%|██▍       | 516/2076 [00:00<00:00, 2460.76it/s]Loading weights:  37%|███▋      | 763/2076 [00:02<00:04, 272.60it/s] Loading weights:  43%|████▎     | 903/2076 [00:02<00:04, 289.24it/s]Loading weights:  48%|████▊     | 1002/2076 [00:02<00:03, 297.79it/s]Loading weights:  52%|█████▏    | 1077/2076 [00:03<00:03, 307.89it/s]Loading weights:  55%|█████▍    | 1139/2076 [00:03<00:03, 311.12it/s]Loading weights:  57%|█████▋    | 1192/2076 [00:03<00:02, 315.36it/s]Loading weights:  60%|█████▉    | 1239/2076 [00:03<00:02, 302.19it/s]Loading weights:  62%|██████▏   | 1279/2076 [00:03<00:02, 296.26it/s]Loading weights:  63%|██████▎   | 1315/2076 [00:03<00:02, 306.62it/s]Loading weights:  65%|██████▌   | 1351/2076 [00:03<00:02, 292.85it/s]Loading weights:  67%|██████▋   | 1384/2076 [00:04<00:02, 298.18it/s]Loading weights:  68%|██████▊   | 1417/2076 [00:04<00:02, 294.94it/s]Loading weights:  81%|████████▏ | 1689/2076 [00:04<00:00, 860.74it/s]Loading weights:  96%|█████████▌| 1996/2076 [00:04<00:00, 1409.50it/s]Loading weights: 100%|██████████| 2076/2076 [00:04<00:00, 472.36it/s] 
-[tiny] Linear modules: ['down_proj', 'gate_proj', 'k_proj', 'o_proj', 'per_layer_input_gate', 'per_layer_model_projection', 'per_layer_projection', 'q_proj', 'up_proj', 'v_proj']
-[tiny] of those, attention-shaped: ['k_proj', 'o_proj', 'q_proj', 'v_proj']
-[tiny] target modules found: ['down_proj', 'gate_proj', 'k_proj', 'o_proj', 'per_layer_input_gate', 'per_layer_model_projection', 'per_layer_projection', 'q_proj', 'up_proj', 'v_proj']
-trainable params: 38,879,232 || all params: 7,979,980,064 || trainable%: 0.4872
-Map:   0%|          | 0/120 [00:00<?, ? examples/s]Map: 100%|██████████| 120/120 [00:00<00:00, 8209.10 examples/s]
-  0%|          | 0/60 [00:00<?, ?it/s]  2%|▏         | 1/60 [00:03<03:12,  3.26s/it]  3%|▎         | 2/60 [00:03<01:36,  1.66s/it]  5%|▌         | 3/60 [00:04<01:04,  1.13s/it]  7%|▋         | 4/60 [00:04<00:49,  1.13it/s]  8%|▊         | 5/60 [00:05<00:41,  1.31it/s] 10%|█         | 6/60 [00:05<00:37,  1.46it/s] 12%|█▏        | 7/60 [00:06<00:33,  1.58it/s] 13%|█▎        | 8/60 [00:06<00:31,  1.68it/s] 15%|█▌        | 9/60 [00:07<00:29,  1.75it/s] 17%|█▋        | 10/60 [00:07<00:27,  1.80it/s] 18%|█▊        | 11/60 [00:08<00:26,  1.84it/s] 20%|██        | 12/60 [00:09<00:25,  1.86it/s] 22%|██▏       | 13/60 [00:09<00:24,  1.88it/s] 23%|██▎       | 14/60 [00:10<00:24,  1.90it/s] 25%|██▌       | 15/60 [00:10<00:23,  1.91it/s] 27%|██▋       | 16/60 [00:11<00:23,  1.91it/s] 28%|██▊       | 17/60 [00:11<00:22,  1.92it/s] 30%|███       | 18/60 [00:12<00:21,  1.92it/s] 32%|███▏      | 19/60 [00:12<00:21,  1.93it/s] 33%|███▎      | 20/60 [00:13<00:20,  1.94it/s]                                               {'loss': '0.2257', 'grad_norm': '0.006721', 'learning_rate': '0.0001367', 'epoch': '0.3333'}
- 33%|███▎      | 20/60 [00:13<00:20,  1.94it/s] 35%|███▌      | 21/60 [00:13<00:20,  1.95it/s] 37%|███▋      | 22/60 [00:14<00:19,  1.95it/s] 38%|███▊      | 23/60 [00:14<00:19,  1.92it/s] 40%|████      | 24/60 [00:15<00:18,  1.92it/s] 42%|████▏     | 25/60 [00:15<00:18,  1.91it/s] 43%|████▎     | 26/60 [00:16<00:17,  1.90it/s] 45%|████▌     | 27/60 [00:16<00:17,  1.88it/s] 47%|████▋     | 28/60 [00:17<00:17,  1.87it/s] 48%|████▊     | 29/60 [00:17<00:16,  1.87it/s] 50%|█████     | 30/60 [00:18<00:15,  1.88it/s] 52%|█████▏    | 31/60 [00:18<00:15,  1.90it/s] 53%|█████▎    | 32/60 [00:19<00:14,  1.89it/s] 55%|█████▌    | 33/60 [00:20<00:14,  1.89it/s] 57%|█████▋    | 34/60 [00:20<00:13,  1.89it/s] 58%|█████▊    | 35/60 [00:21<00:13,  1.89it/s] 60%|██████    | 36/60 [00:21<00:12,  1.88it/s] 62%|██████▏   | 37/60 [00:22<00:12,  1.88it/s] 63%|██████▎   | 38/60 [00:22<00:11,  1.88it/s] 65%|██████▌   | 39/60 [00:23<00:11,  1.89it/s] 67%|██████▋   | 40/60 [00:23<00:10,  1.88it/s]                                               {'loss': '4.174e-05', 'grad_norm': '0.001307', 'learning_rate': '7e-05', 'epoch': '0.6667'}
- 67%|██████▋   | 40/60 [00:23<00:10,  1.88it/s] 68%|██████▊   | 41/60 [00:24<00:10,  1.86it/s] 70%|███████   | 42/60 [00:24<00:09,  1.86it/s] 72%|███████▏  | 43/60 [00:25<00:09,  1.87it/s] 73%|███████▎  | 44/60 [00:25<00:08,  1.88it/s] 75%|███████▌  | 45/60 [00:26<00:07,  1.90it/s] 77%|███████▋  | 46/60 [00:26<00:07,  1.91it/s] 78%|███████▊  | 47/60 [00:27<00:06,  1.92it/s] 80%|████████  | 48/60 [00:27<00:06,  1.92it/s] 82%|████████▏ | 49/60 [00:28<00:05,  1.93it/s] 83%|████████▎ | 50/60 [00:28<00:05,  1.93it/s] 85%|████████▌ | 51/60 [00:29<00:04,  1.94it/s] 87%|████████▋ | 52/60 [00:29<00:04,  1.94it/s] 88%|████████▊ | 53/60 [00:30<00:03,  1.95it/s] 90%|█████████ | 54/60 [00:31<00:03,  1.94it/s] 92%|█████████▏| 55/60 [00:31<00:02,  1.95it/s] 93%|█████████▎| 56/60 [00:32<00:02,  1.95it/s] 95%|█████████▌| 57/60 [00:32<00:01,  1.95it/s] 97%|█████████▋| 58/60 [00:33<00:01,  1.94it/s] 98%|█████████▊| 59/60 [00:33<00:00,  1.94it/s]100%|██████████| 60/60 [00:34<00:00,  1.92it/s]                                               {'loss': '1.359e-05', 'grad_norm': '0.0006395', 'learning_rate': '3.333e-06', 'epoch': '1'}
-100%|██████████| 60/60 [00:34<00:00,  1.92it/s]                                               {'train_runtime': '34.14', 'train_samples_per_second': '3.514', 'train_steps_per_second': '1.757', 'train_loss': '0.07524', 'epoch': '1'}
-100%|██████████| 60/60 [00:34<00:00,  1.92it/s]100%|██████████| 60/60 [00:34<00:00,  1.76it/s]
-{
-  "out": "adapters/tiny-subject",
-  "weights_bytes": 155619824,
-  "target_modules": [
-    "down_proj",
-    "gate_proj",
-    "k_proj",
-    "o_proj",
-    "per_layer_input_gate",
-    "per_layer_model_projection",
-    "per_layer_projection",
-    "q_proj",
-    "up_proj",
-    "v_proj"
-  ],
-  "lora_B_abs_sum": 23324.1635,
-  "changes_output_in_process": true
-}
-[tiny] lora_B_abs_sum=23324.1635 changes_output=True
-[matrix] subject G1 in-process: passed
-[serve] vllm serve google/gemma-4-E4B-it --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-subject
-[serve] /v1/models -> ['google/gemma-4-E4B-it', 'tiny']
-[gate] tiny: applied
-[gate-only] applied
-[matrix] subject G2 served: applied 
-
-[matrix] control valid: True
-[matrix] reading: the subject serves LoRA through vLLM
-[matrix] decision: Qwen3.5 is usable; whether to pay for retraining is a separate call
+[rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+[wiki] nolib: 67 to run, 0 resumed
+[wiki] nolib 10/67 credit 0 value-right 0 errors 0 3s
+[wiki] nolib 20/67 credit 0 value-right 0 errors 0 3s
+[wiki] nolib 30/67 credit 0 value-right 0 errors 0 4s
+[wiki] nolib 40/67 credit 0 value-right 0 errors 0 4s
+[wiki] nolib 50/67 credit 0 value-right 0 errors 0 5s
+[wiki] nolib 60/67 credit 2 value-right 2 errors 0 5s
+[wiki] nolib 67/67 credit 3 value-right 3 errors 0 6s
+[wiki] base-reads: 67 to run, 0 resumed
+[wiki] base-reads 10/67 credit 10 value-right 10 errors 0 1s
+[wiki] base-reads 20/67 credit 20 value-right 20 errors 0 2s
+[wiki] base-reads 30/67 credit 30 value-right 30 errors 0 3s
+[wiki] base-reads 40/67 credit 40 value-right 40 errors 0 4s
+[wiki] base-reads 50/67 credit 50 value-right 50 errors 0 5s
+[wiki] base-reads 60/67 credit 60 value-right 60 errors 0 5s
+[wiki] base-reads 67/67 credit 67 value-right 67 errors 0 6s
+[wiki] base-walks: 67 to run, 0 resumed
+[wiki] base-walks 10/67 credit 7 value-right 8 errors 0 6s
+[wiki] base-walks 20/67 credit 12 value-right 13 errors 0 11s
+[wiki] base-walks 30/67 credit 18 value-right 20 errors 0 17s
+[wiki] base-walks 40/67 credit 22 value-right 25 errors 0 23s
+[wiki] base-walks 50/67 credit 23 value-right 26 errors 0 27s
+[wiki] base-walks 60/67 credit 24 value-right 28 errors 0 31s
+[wiki] base-walks 67/67 credit 27 value-right 31 errors 0 34s
+[wiki] headline · base-reads vs base-walks: improvement (21:0, p=0.0)
+[wiki] NAVIGATION IS THE GAP: base-reads 100% vs base-walks 48%, improvement (21:0, p=0.0) — train the trajectory LoRA, 2 seeds

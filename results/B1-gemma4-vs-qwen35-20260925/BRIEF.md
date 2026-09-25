@@ -85,3 +85,19 @@ Control `Qwen2.5-3B-Instruct`: G1 and G2 applied — the procedure is valid. Sub
 in process passed (`lora_B` moved, the output changed) with the vision/audio towers excluded; G2 passed — vLLM 0.30
 serves the adapter and its text differs from the base's. **P29's block is lifted**, for the reason
 [peft#3129](https://github.com/huggingface/peft/issues/3129) documents. Stage 2 is bought.
+
+## Stage 2 result **[ran]** 2026-09-25 · the untrained Gemma already walks — NAVIGATION IS STILL THE GAP
+
+One L4, W9's evaluation set, W9's arms and verdict code, `gemma_wiki_stage1.json`. Headline (40), verified:
+
+| | Gemma 4 E4B, untrained | Qwen3.5-4B, untrained (W9 stage 1) | Qwen + trajectory LoRA (s0 · s1) |
+|---|--:|--:|--:|
+| `nolib` | 0 | 0 | — |
+| `base-reads` | **40** | 29 | — |
+| `base-walks` | **19** | 0 | 35 · 35 |
+
+Paired on the same rows: Gemma's `base-walks` against Qwen's **19 : 0**; against Qwen's trained seeds 0 : 16 and 2 : 18
+(it loses). By hops, Gemma walking untrained: 1-hop 7/21, 2-hop 9/24, 3-hop 10/16. Its misses: 28 answers with no
+citation, 7 citing a statement that does not hold the value — typically stopping one hop early (the supplier's
+page cited for the supplier's town). By W9's verdict as written: **NAVIGATION IS THE GAP → stage 3 bought**, the wiki
+member trained on Gemma, W9's corpus and recipe, `train_one --seed 0`.
