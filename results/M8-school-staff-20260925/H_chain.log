@@ -1,0 +1,29 @@
+=== session 1 of 1 · srv101707 · L4
+    boot clone: rc=0 77b382c M8 amended before any arm: the base is Gemma 4 E4B (B1), its headroom first
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 77b382c M8 amended before any arm: the base is Gemma 4 E4B (B1), its headroom first
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    77b382c M8 amended before any arm: the base is Gemma 4 E4B (B1), its headroom first | 0.30.0
+    this module trains its own adapter — nothing to carry in
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90
+    [school] base 20/70 credit 9
+    [school] base 30/70 credit 14
+    [school] base 40/70 credit 18
+    [school] base 70/70 credit 27
+    [school] base demo day 3/8
+    [school] NOTHING SCORED · {'base': {'held_out': '27/70', 'demo_day': '3/8'}}
+    the runner wrote its result — done
+exit 0

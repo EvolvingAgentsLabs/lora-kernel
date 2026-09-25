@@ -34,3 +34,11 @@ than Qwen's did (it walks W9 untrained 19/40 where Qwen walked 0/40), so the ord
 Gemma on the 70 held-out turns and the demo day** (`school_arm --arms base --base google/gemma-4-E4B-it`). If the bare
 base already passes ≥ 90 % of the held-out turns, no adapter is trained and the demo runs on the bare base; otherwise
 T0/T1 train on Gemma and S scores `base, school-s0, school-s1`, the verdict as written above. The corpus is unchanged.
+
+## H — the bare Gemma's headroom **[ran]** 2026-09-25 · 27/70, demo day 3/8 — the adapter is bought
+
+One L4, `school_headroom.json`. Held-out 27/70 (39 %): out-of-scope 12/12, denied 4/4, read 11/30, write 0/19, held 0/5.
+Failed checks: the intended call not made 27 (Gemma writes the arguments as XML attributes —
+`<billing_charge amount_cents=4500; membership_id=1>` — a form the loop does not parse), a raw tag as the reply 18, an
+answer not grounded in the tool's result 16. Demo day 3/8 (an invented agenda again: "Math test: Chapter 3 review").
+Under 90 %: T0/T1 train on Gemma, as amended.
