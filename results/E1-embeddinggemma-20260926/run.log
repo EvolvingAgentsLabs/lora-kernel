@@ -1,0 +1,11 @@
+Loading weights:   0%|          | 0/314 [00:00<?, ?it/s]Loading weights: 100%|██████████| 314/314 [00:00<00:00, 5566.97it/s]
+[route] probe {'paraphrase': 0.9372, 'unrelated': 0.2998}
+[route] A n 715 misrouted 0 lost 304 abstained 0 right 411
+[route] B n 240 misrouted 0 lost 134 abstained 0 right 106
+[route] C n 14 misrouted 0 lost 0 abstained 14 right 0
+[route] D n 76 misrouted 0 lost 0 abstained 76 right 0
+[route] E n 120 misrouted 1 lost 0 abstained 119 right 0
+[route] C2 n 8 misrouted 0 lost 0 abstained 8 right 0
+[route] E2 n 120 misrouted 4 lost 0 abstained 116 right 0
+[route] F n 120 misrouted 0 lost 98 abstained 0 right 22
+[route] SAFE AND LOSES REAL-LOOKING TRAFFIC: the same wall arm 1 hit

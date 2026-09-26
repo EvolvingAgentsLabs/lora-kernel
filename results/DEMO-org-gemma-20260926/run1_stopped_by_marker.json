@@ -1,0 +1,24 @@
+{
+ "base": "google/gemma-4-E4B-it",
+ "started": "2026-09-26T21:23:32",
+ "routed": [
+  {
+   "request": "From: Maren Oakes <maren@riverside.example>\nSubject: deadline tomorrow\n\nIs this important?",
+   "what": "email triage, in the member's own wording \u2014 a released member's region",
+   "decision": "local",
+   "to": "email-full"
+  },
+  {
+   "request": "Is this email from my manager about tomorrow's deadline urgent?",
+   "what": "the same ask, paraphrased",
+   "decision": "out",
+   "to": "no region"
+  },
+  {
+   "request": "Write three slogans for our summer promotion on packing tape.",
+   "what": "marketing copy \u2014 no member's region",
+   "decision": "out",
+   "to": "no region"
+  }
+ ]
+}

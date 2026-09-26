@@ -40,6 +40,7 @@ SESSIONS="${SESSIONS:-2}"
 # recorded in chain_separate.sh, which cost two sessions.
 TRAINDEPS="${TRAINDEPS:-}"
 SKIP_ADAPTERS="${SKIP_ADAPTERS:-}"
+HF_AUTH="${HF_AUTH:-}"
 LOCAL="$RUN_DIR/$RESULTS_NAME"
 ADAPTERS="$RUN_DIR/adapters.tgz"
 
@@ -190,14 +191,27 @@ PY
         || { echo "    adapters did not upload"; exit 1; }
   fi
 
+  # A GATED MODEL NEEDS THE USER'S HUGGING FACE TOKEN (E1: embeddinggemma-300m answers 401 without it [ran]
+  # 2026-09-26). Opt-in, HF_AUTH=1, with the user's permission given for it: the token travels as a FILE, is read by the
+  # runner's Python into its environment, and is never on a command line, in a log, or in the repository.
+  if [ -n "${HF_AUTH:-}" ]; then
+    tmo 120 colab upload -s "$S" "$HOME/.cache/huggingface/token" /content/_hf_token >/dev/null 2>&1 \
+      && echo "    carried the Hugging Face token in (a file, never logged)" \
+      || { echo "    the Hugging Face token did not upload"; exit 1; }
+  fi
+
   cat > /tmp/_vrun.py <<PY
+import os
 import subprocess
+env = dict(os.environ)
+if os.path.exists("/content/_hf_token"):
+    env["HF_TOKEN"] = open("/content/_hf_token").read().strip()
 subprocess.Popen(
     "cd /content/lora-kernel && ([ -f adapters.tgz ] && tar xzf adapters.tgz || true) && "
     # --out is passed so the runner writes the name the chain will ask for. Two
     # pool-cost runs came home empty because those two names disagreed.
     "nohup python -u -m $MODULE --base $BASE $MARGS --out $RESULTS_NAME "
-    "> run.log 2>&1 &", shell=True)
+    "> run.log 2>&1 &", shell=True, env=env)
 PY
   # A LAUNCH IS PROVEN BY ITS LOG, NOT BY ITS EXIT CODE. The exec above is `|| true`, and W5e's
   # session T held an A100 for 25 minutes watching a runner that never started — no run.log on
@@ -231,7 +245,7 @@ print(subprocess.run(
     # showed as silence for its whole length and could not have been stopped
     # early [ran] 2026-09-14. Fifth time a log held the answer and a filter
     # kept it out, so tests/test_chain_scripts.py now checks the two agree.
-    "grep -E '(serve|gate|tiny|native|matrix|run|arm|resume|cost|domain|P24|sweep|depth|fluids|sim|pool|judge|conf|shim|tunnel|3p|read|skip|train|loss|corpora|draft|desk|zero|code|rank|substrate|release|attr|sim|awq|tiny|precision|kb|route|live|radar|bill|school|wiki|demo|pair|gate)\\]|"
+    "grep -E '(serve|gate|tiny|native|matrix|run|arm|resume|cost|domain|P24|sweep|depth|fluids|sim|pool|judge|conf|shim|tunnel|3p|read|skip|train|loss|corpora|draft|desk|zero|code|rank|substrate|release|attr|sim|awq|tiny|precision|kb|route|live|radar|bill|school|wiki|demo|pair|gate|embed)\\]|"
     "passed [0-9]+|clears the gate|prompts/s|Traceback|[Ee]rror|OutOfMemory|Killed|"
     # THE TRAINER'S ONLY SIGN OF LIFE IS ITS STEP BAR. `loss]` above has never matched: this
     # harness's Trainer prints no loss line at all — zero in M1's logs, zero in arm 0c's 114 steps

@@ -1,0 +1,16 @@
+=== session 1 of 1 · srv183139 · L4
+    boot clone: rc=0 2744c16 Demo run 1 stopped by the chain's own completion marker: the route record used the key "decision"
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 e2d3bc5 chain_serve: HF_AUTH=1 carries the user's Hugging Face token in, for a gated model
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    e2d3bc5 chain_serve: HF_AUTH=1 carries the user's Hugging Face token in, for a gated model | 0.30.0
+    this module trains its own adapter — nothing to carry in
+    runner started (launch 1)
+      File "/usr/local/lib/python3.13/dist-packages/huggingface_hub/file_download.py", line 1953, in _raise_on_head_call_error
+        raise head_call_error
+    huggingface_hub.errors.GatedRepoError: 401 Client Error. (Request ID: Root=1-6ab83b45-12c1f66345ff05552745a606;b96bdacf-b6d1-4181-a3c3-5f9fa942a574)
+exit 0

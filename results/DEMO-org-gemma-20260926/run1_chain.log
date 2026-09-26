@@ -1,0 +1,15 @@
+=== session 1 of 1 · srv181552 · L4
+    boot clone: rc=0 a641e23 Pre-register the distributor demo's first run on Gemma, and E1: EmbeddingGemma on the radar and the router
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 a641e23 Pre-register the distributor demo's first run on Gemma, and E1: EmbeddingGemma on the radar and the router
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    a641e23 Pre-register the distributor demo's first run on Gemma, and E1: EmbeddingGemma on the radar and the router | 0.30.0
+    carried the adapters in (3 chunks)
+    runner started (launch 1)
+    [demo] route: email triage, in the member's own wording — a released member's region → local · the same ask, paraphrased → out · marketing copy — no member's region → out
+    the runner wrote its result — done
+exit 0

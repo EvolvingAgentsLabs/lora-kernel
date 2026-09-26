@@ -70,6 +70,43 @@ class HashingEncoder:
         return out
 
 
+GEMMA = "google/embeddinggemma-300m"
+# EmbeddingGemma's own convention [read, model card]: a task prompt, `task: <task> | query: `, instead of an instruction.
+# One per space, as the Qwen arm had one instruction per space: the router classifies, the radar matches situations.
+GEMMA_TASK = {"router": "task: classification | query: ", "radar": "task: sentence similarity | query: "}
+
+
+class SentenceEncoder:
+    """EmbeddingGemma through sentence-transformers — its pooling AND its dense projection, which a bare
+    AutoModel does not carry — normalised, fp32 (the model card: it does not support fp16)."""
+
+    def __init__(self, model: str, prompt: str, batch: int = 32):
+        try:
+            import sentence_transformers  # noqa: F401
+        except ImportError:                                  # Colab ships it; if a vLLM install removed it, say so
+            import subprocess
+            import sys
+            print("[embed] installing sentence-transformers", flush=True)
+            subprocess.check_call([sys.executable, "-m", "pip", "-q", "install", "sentence-transformers"])
+        from sentence_transformers import SentenceTransformer, __version__
+        self.prompt, self.batch, self.version = prompt, batch, __version__
+        self.model = SentenceTransformer(model, device="cuda")
+
+    def encode(self, texts: list[str]) -> list[list[float]]:
+        return self.model.encode(list(texts), prompt=self.prompt, batch_size=self.batch,
+                                 normalize_embeddings=True, convert_to_numpy=True).tolist()
+
+
+def encoder_for(model: str, space: str, instruction: str | None = None):
+    """The encoder a model is meant to be run with: EmbeddingGemma by its task prompt, Qwen3-Embedding by last-token
+    pooling under the space's instruction. Returns (encoder, what the record should say about it)."""
+    if "embeddinggemma" in model.lower():
+        enc = SentenceEncoder(model, GEMMA_TASK[space])
+        return enc, {"model": model, "prompt": GEMMA_TASK[space], "sentence_transformers": enc.version}
+    enc = TransformerEncoder(model, instruction=instruction)
+    return enc, {"model": model, "instruction": enc.instruction}
+
+
 class TransformerEncoder:
     """Last-token pooling over an instruction-following embedding model, on the GPU it is given."""
 
@@ -196,7 +233,8 @@ def main() -> int:
     rec = {"encoder": a.base, "params": {"k": K, "percentile": PERCENTILE, "held_out": HELD_OUT,
                                          "instruction": INSTRUCTION}, "started": time.strftime("%Y-%m-%dT%H:%M:%S")}
     out.write_text(json.dumps(rec, indent=1))
-    enc = TransformerEncoder(a.base)
+    enc, rec["encoder_detail"] = encoder_for(a.base, "router")
+    out.write_text(json.dumps(rec, indent=1))
     probe = enc.encode(["Is this important?", "Does this matter?", "Write a haiku about rain."])
     rec["probe"] = {"paraphrase": round(_dot(probe[0], probe[1]), 4), "unrelated": round(_dot(probe[0], probe[2]), 4)}
     print(f"[route] probe {rec['probe']}", flush=True)
