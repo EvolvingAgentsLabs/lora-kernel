@@ -11,6 +11,10 @@ Key results, all [ran]: an inbox-triage expert 0.989 vs the bare base's 0.345; m
 - [Record](https://github.com/EvolvingAgentsLabs/lora-kernel/blob/main/docs/RECORD.md): everything measured, including negative results and instruments that lied, each line naming its run
 - [Plan](https://github.com/EvolvingAgentsLabs/lora-kernel/blob/main/docs/PLAN.md): living milestones, each with gate and falsification condition written before it ran
 
+## Weights
+
+- [distributor-wiki@v2 on Hugging Face](https://huggingface.co/Matias/lora-kernel-distributor-wiki-gemma4-e4b): the trajectory LoRA on gemma-4-E4B-it, research preview, with its limits
+
 ## Architecture and serving
 
 - [Architecture](https://github.com/EvolvingAgentsLabs/lora-kernel/blob/main/docs/ARCHITECTURE.md): experts, router, memory, runtime, the small/large pair, the frontier

@@ -21,7 +21,8 @@
 > saltos sobre una wiki que ningún modelo vio, 38/40 contra 19/40 del Gemma sin entrenar; y una
 > lección que por sí sola vale la visita — el mismo adapter sacó 11/90 servido por `tool_calls` y
 > **90/90** servido como su corpus le enseñó. Todo sobre suites generadas, todavía sin tráfico real;
-> lo que falló está en [`docs/es/RECORD.md`](docs/es/RECORD.md).
+> lo que falló está en [`docs/es/RECORD.md`](docs/es/RECORD.md). El adapter que recorre la wiki está en
+> [Hugging Face](https://huggingface.co/Matias/lora-kernel-distributor-wiki-gemma4-e4b).
 
 ## El problema
 

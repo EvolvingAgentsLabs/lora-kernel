@@ -20,7 +20,8 @@
 > the bare base's 0.345; multi-hop questions over a wiki no model has seen, 38/40 against the bare
 > Gemma's 19/40; and one lesson worth the visit on its own — the same adapter scored 11/90 served
 > through `tool_calls` and **90/90** served the way its corpus taught it. All on generated suites, no
-> real traffic yet; what failed is in [`docs/RECORD.md`](docs/RECORD.md).
+> real traffic yet; what failed is in [`docs/RECORD.md`](docs/RECORD.md). The wiki-walking adapter is on
+> [Hugging Face](https://huggingface.co/Matias/lora-kernel-distributor-wiki-gemma4-e4b).
 
 ## The problem
 
