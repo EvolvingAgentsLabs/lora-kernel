@@ -1,0 +1,150 @@
++ cd /content/nbtest
++ pip -q uninstall -y torchao
+WARNING: Skipping torchao as it is not installed.
++ pip -q install -U transformers peft accelerate
++ tail -3
++ rm -rf lora-kernel
++ git clone -q --depth 1 https://github.com/EvolvingAgentsLabs/lora-kernel.git
++ cd lora-kernel
++ python -u /content/nbtest/nb.py
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+LoRA modules applied: 258
+
+### In which town is the supplier of the Tollan-640 edge protector based?   (expected: Fenmoor Quay, 2 hops)
+--- bare: wrong
+ reorder point.
+  [smz] page · Brackmoor Industrial — when: You need a fact about the supplier Brackmoor Industrial: where it is, its lead time, its minimum order or its contact.
+  [bm5] page · Dunmere Industrial — when: You need a fact about the supplier Dunmere Industrial: where it is, its lead time, its minimum order or its contact.
+<open>dez</open>= Tollan-640 edge protector — The Tollan-640 edge protector, one of the products the distributor carries.
+  sections §supplier · §warehouse · §pack · §reorder-point
+<open>dez§supplier</open>= The Tollan-640 edge protector is supplied by [bm5] Dunmere Industrial.
+The supplier of the Tollan-640 edge protector is Dunmere Industrial. [dez§supplier]
+--- adapter: right
+age · Tollan-640 edge protector — when: You need a fact about the Tollan-640 edge protector: who supplies it, where it is stocked, its pack or its reorder point.
+<open>dez</open>= Tollan-640 edge protector — The Tollan-640 edge protector, one of the products the distributor carries.
+  sections §supplier · §warehouse · §pack · §reorder-point
+<open>dez§supplier</open>= The Tollan-640 edge protector is supplied by [smz] Dunmere Industrial.
+<open>smz</open>= Dunmere Industrial — Dunmere Industrial, a supplier of packaging the distributor buys from.
+  sections §town · §lead-time · §minimum-order · §contact
+<open>smz§town</open>= Dunmere Industrial is based in Fenmoor Quay.
+Fenmoor Quay [smz§town]
+
+### Where is the company that supplies the Marl-380 mailing sleeve?   (expected: Merriden, 2 hops)
+--- bare: wrong
+er point.
+  [cwm] page · Brackmoor Industrial — when: You need a fact about the supplier Brackmoor Industrial: where it is, its lead time, its minimum order or its contact.
+  [5u2] page · Dunmere Industrial — when: You need a fact about the supplier Dunmere Industrial: where it is, its lead time, its minimum order or its contact.
+<open>im4</open>= Marl-380 mailing sleeve — The Marl-380 mailing sleeve, one of the products the distributor carries.
+  sections §supplier · §warehouse · §pack · §reorder-point
+<open>im4§supplier</open>= The Marl-380 mailing sleeve is supplied by [cwm] Brackmoor Industrial.
+The company that supplies the Marl-380 mailing sleeve is Brackmoor Industrial.
+[im4§supplier]
+--- adapter: right
+
+  [im4] page · Marl-380 mailing sleeve — when: You need a fact about the Marl-380 mailing sleeve: who supplies it, where it is stocked, its pack or its reorder point.
+<open>im4</open>= Marl-380 mailing sleeve — The Marl-380 mailing sleeve, one of the products the distributor carries.
+  sections §supplier · §warehouse · §pack · §reorder-point
+<open>im4§supplier</open>= The Marl-380 mailing sleeve is supplied by [cwm] Brackmoor Industrial.
+<open>cwm</open>= Brackmoor Industrial — Brackmoor Industrial, a supplier of packaging the distributor buys from.
+  sections §town · §lead-time · §minimum-order · §contact
+<open>cwm§town</open>= Brackmoor Industrial is based in Merriden.
+Merriden [cwm§town]
+
+### In which town is the supplier of the Rask-500 shipping carton based?   (expected: Corriskey, 2 hops)
+--- bare: right
+You need a fact about the supplier Dunmere Industrial: where it is, its lead time, its minimum order or its contact.
+<open>p5h</open>= Rask-500 shipping carton — The Rask-500 shipping carton, one of the products the distributor carries.
+  sections §supplier · §warehouse · §pack · §reorder-point
+<open>p5h§supplier</open>= The Rask-500 shipping carton is supplied by [x0h] Quarrie Packaging.
+<open>x0h</open>= Quarrie Packaging — Quarrie Packaging, a supplier of packaging the distributor buys from.
+  sections §town · §lead-time · §minimum-order · §contact
+<open>x0h§town</open>= Quarrie Packaging is based in Corriskey.
+The supplier of the Rask-500 shipping carton is based in Corriskey. [x0h§town]
+--- adapter: right
+ note
+  [p5h] page · Rask-500 shipping carton — when: You need a fact about the Rask-500 shipping carton: who supplies it, where it is stocked, its pack or its reorder point.
+<open>p5h</open>= Rask-500 shipping carton — The Rask-500 shipping carton, one of the products the distributor carries.
+  sections §supplier · §warehouse · §pack · §reorder-point
+<open>p5h§supplier</open>= The Rask-500 shipping carton is supplied by [8at] Quarrie Packaging.
+<open>8at</open>= Quarrie Packaging — Quarrie Packaging, a supplier of packaging the distributor buys from.
+  sections §town · §lead-time · §minimum-order · §contact
+<open>8at§town</open>= Quarrie Packaging is based in Corriskey.
+Corriskey [8at§town]
+
+### Where is the company that supplies the Rask-500 shipping carton?   (expected: Corriskey, 2 hops)
+--- bare: wrong
+<search shelf=wiki>Rask-500 shipping carton</search>= 1 note
+  [hk6] page · Rask-500 shipping carton — when: You need a fact about the Rask-500 shipping carton: who supplies it, where it is stocked, its pack or its reorder point.
+  [hk7] page · Shipping Cartons — a general page about shipping cartons.
+  [hk8] page · Carton Suppliers — a list of various carton suppliers.
+
+<open>hk6</open>= Rask-500 shipping carton — The Rask-500 shipping carton, one of the products the distributor carries.
+  sections §supplier · §warehouse · §pack · §reorder-point
+<open>hk6§supplier</open>= The Rask-500 shipping carton is supplied by [66d] Quarrie Packaging.
+The answer is Quarrie Packaging. [hk6§supplier]
+--- adapter: right
+ note
+  [hk6] page · Rask-500 shipping carton — when: You need a fact about the Rask-500 shipping carton: who supplies it, where it is stocked, its pack or its reorder point.
+<open>hk6</open>= Rask-500 shipping carton — The Rask-500 shipping carton, one of the products the distributor carries.
+  sections §supplier · §warehouse · §pack · §reorder-point
+<open>hk6§supplier</open>= The Rask-500 shipping carton is supplied by [66d] Quarrie Packaging.
+<open>66d</open>= Quarrie Packaging — Quarrie Packaging, a supplier of packaging the distributor buys from.
+  sections §town · §lead-time · §minimum-order · §contact
+<open>66d§town</open>= Quarrie Packaging is based in Corriskey.
+Corriskey [66d§town]
+
+### If I reorder the Fenwa-930 label roll from its supplier, how many days until it arrives?   (expected: 7 days, 2 hops)
+--- bare: wrong
+<search shelf=wiki>Fenwa-930 label roll</search>= 1 note
+  [w7c] page · Fenwa-930 label roll — when: You need a fact about the Fenwa-930 label roll: who supplies it, where it is stocked, its pack or its reorder point.
+<open>w7c</open>= Fenwa-930 label roll — The Fenwa-930 label roll, one of the products the distributor carries.
+  sections §supplier · §warehouse · §pack · §reorder-point
+<open>w7c§supplier</open>= The Fenwa-930 label roll is supplied by [rfu] Quarrie Packaging.
+<open>w7c§reorder-point</open>= The Fenwa-930 label roll is reordered when stock falls below 40 packs.
+Not in my library.
+--- adapter: right
+ page · Fenwa-930 label roll — when: You need a fact about the Fenwa-930 label roll: who supplies it, where it is stocked, its pack or its reorder point.
+<open>w7c</open>= Fenwa-930 label roll — The Fenwa-930 label roll, one of the products the distributor carries.
+  sections §supplier · §warehouse · §pack · §reorder-point
+<open>w7c§supplier</open>= The Fenwa-930 label roll is supplied by [rfu] Quarrie Packaging.
+<open>rfu</open>= Quarrie Packaging — Quarrie Packaging, a supplier of packaging the distributor buys from.
+  sections §town · §lead-time · §minimum-order · §contact
+<open>rfu§lead-time</open>= An order from Quarrie Packaging arrives 7 days after it is placed.
+7 days [rfu§lead-time]
+
+### What is the lead time of the supplier of the Fenwa-930 label roll?   (expected: 7 days, 2 hops)
+--- bare: right
+ supplier Dunmere Industrial: where it is, its lead time, its minimum order or its contact.
+<open>edx</open>= Fenwa-930 label roll — The Fenwa-930 label roll, one of the products the distributor carries.
+  sections §supplier · §warehouse · §pack · §reorder-point
+<open>edx§supplier</open>= The Fenwa-930 label roll is supplied by [7x1] Quarrie Packaging.
+<open>7x1</open>= Quarrie Packaging — Quarrie Packaging, a supplier of packaging the distributor buys from.
+  sections §town · §lead-time · §minimum-order · §contact
+<open>7x1§lead-time</open>= An order from Quarrie Packaging arrives 7 days after it is placed.
+The lead time of the supplier of the Fenwa-930 label roll is 7 days [7x1§lead-time].
+--- adapter: right
+ page · Fenwa-930 label roll — when: You need a fact about the Fenwa-930 label roll: who supplies it, where it is stocked, its pack or its reorder point.
+<open>edx</open>= Fenwa-930 label roll — The Fenwa-930 label roll, one of the products the distributor carries.
+  sections §supplier · §warehouse · §pack · §reorder-point
+<open>edx§supplier</open>= The Fenwa-930 label roll is supplied by [y4g] Quarrie Packaging.
+<open>y4g</open>= Quarrie Packaging — Quarrie Packaging, a supplier of packaging the distributor buys from.
+  sections §town · §lead-time · §minimum-order · §contact
+<open>y4g§lead-time</open>= An order from Quarrie Packaging arrives 7 days after it is placed.
+7 days [y4g§lead-time]
+
+credit (value right AND citation verified): bare 2/6 · adapter 6/6
+before: §lead-time An order from Quarrie Packaging arrives 7 days after it is placed.
+after:  §lead-time An order from Quarrie Packaging arrives 14 days after it is placed.
+
+If I reorder the Fenwa-930 label roll from its supplier, how many days until it arrives?
+wa-930 label roll, one of the products the distributor carries.
+  sections §supplier · §warehouse · §pack · §reorder-point
+<open>w7c§supplier</open>= The Fenwa-930 label roll is supplied by [rfu] Quarrie Packaging.
+<open>rfu</open>= Quarrie Packaging — Quarrie Packaging, a supplier of packaging the distributor buys from.
+  sections §town · §lead-time · §minimum-order · §contact
+<open>rfu§lead-time</open>= An order from Quarrie Packaging arrives 14 days after it is placed.
+14 days [rfu§lead-time]
+
+expected now: 14 -> right
++ echo EXIT=0
+EXIT=0

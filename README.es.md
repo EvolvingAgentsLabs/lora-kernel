@@ -13,6 +13,18 @@
 
 *[English](README.md)*
 
+> **En un minuto.** Un modelo chico (Gemma 4 E4B) recibe un LoRA por tarea, entrenado en *cómo
+> recorrer* una biblioteca de notas en markdown — buscar, abrir, seguir el enlace, calcular — y no en
+> los datos que contienen. Cambia un procedimiento: se edita la nota, sin reentrenar. Un router muy
+> chico manda a un modelo de frontera lo que no cae en el terreno de ningún experto. Medido acá
+> **[ran]**: un experto de triage de inbox en 0.989 contra 0.345 del modelo base; preguntas de varios
+> saltos sobre una wiki que ningún modelo vio, 38/40 contra 19/40 del Gemma sin entrenar; y una
+> lección que por sí sola vale la visita — el mismo adapter sacó 11/90 servido por `tool_calls` y
+> **90/90** servido como su corpus le enseñó. Todo sobre suites generadas, todavía sin tráfico real;
+> lo que falló está en [`docs/es/RECORD.md`](docs/es/RECORD.md). El adapter que recorre la wiki está en
+> [Hugging Face](https://huggingface.co/Matias/lora-kernel-distributor-wiki-gemma4-e4b) — probalo en diez minutos:
+> [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EvolvingAgentsLabs/lora-kernel/blob/main/examples/colab/wiki_walk.ipynb)
+
 ## El problema
 
 Una organización que funciona con agentes sigue mandando el mismo puñado de trabajos que se repiten

@@ -75,5 +75,10 @@
  },
  "released_by": "B5 [ran] 2026-09-26 \u2014 improvement on the comparison band (28:1), tie on W9's set; results/B5-comparison-corpus-20260926/BRIEF.md",
  "supersedes": "distributor-wiki@v1 (kept as the control arm)",
- "corpus_note": "W9's 600 rows byte for byte + 128 comparison walks (training/wiki/corpus.py --comparisons)"
+ "corpus_note": "W9's 600 rows byte for byte + 128 comparison walks (training/wiki/corpus.py --comparisons)",
+ "published": {
+  "hub": "https://huggingface.co/Matias/lora-kernel-distributor-wiki-gemma4-e4b",
+  "sha256_verified": "d4d91ea4aa7a8ffcd82beabb87d07112c02b212388412fb61f43df49d3eb93d6",
+  "date": "2026-09-26"
+ }
 }
