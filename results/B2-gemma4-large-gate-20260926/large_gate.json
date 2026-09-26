@@ -1,0 +1,36 @@
+{
+ "small": "google/gemma-4-E4B-it",
+ "large": "google/gemma-4-12B-it",
+ "started": "2026-09-26T00:51:49",
+ "ids": {
+  "vocab_identical": true,
+  "drafter_vocab": 262144,
+  "target_vocab": 262144,
+  "merges_identical": true,
+  "id_collisions": {},
+  "target_only_special_ids": {},
+  "usable_for_speculation": true,
+  "guaranteed_rejection_ids": [],
+  "reading": "usable, and the id spaces are the same \u2014 nothing to handle"
+ },
+ "lora_matrix": {
+  "exit": 0,
+  "control_valid": true,
+  "reading": "the subject serves LoRA through vLLM",
+  "subject": {
+   "base": "google/gemma-4-12B-it",
+   "G1": {
+    "passed": true,
+    "adapter": "adapters/tiny-subject"
+   },
+   "G2": {
+    "passed": true,
+    "verdict": "applied",
+    "exit": 0
+   },
+   "seconds": 568
+  }
+ },
+ "verdict": "PAIR POSSIBLE: one id space, and the large serves a LoRA applied",
+ "finished": "2026-09-26T01:07:07"
+}

@@ -1,0 +1,68 @@
+=== session 1 of 1 · srv214516 · A100
+    boot clone: rc=0 b9bb4a6 The wiki member released on Gemma 4 E4B: two seeds, both beat the untrained walk, they agree on 65 of 67
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 87ddcac M1d pre-registered: desk-commitment trained on both bands on Gemma; pool_base --corpus-for
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    87ddcac M1d pre-registered: desk-commitment trained on both bands on Gemma; pool_base --corpus-for | 0.30.0
+    this module trains its own adapter — nothing to carry in
+    runner started (launch 1)
+    [matrix] ===== control: Qwen/Qwen2.5-3B-Instruct =====
+    W0926 00:52:03.786000 6553 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0926 00:52:03.825000 6553 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+     82%|████████▏ | 49/60 [00:17<00:03,  3.31it/s]
+     83%|████████▎ | 50/60 [00:18<00:03,  3.29it/s]
+     85%|████████▌ | 51/60 [00:18<00:02,  3.30it/s]
+    [tiny] lora_B_abs_sum=18788.6544 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen2.5-3B-Instruct --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [tiny] lora_B_abs_sum=18788.6544 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen2.5-3B-Instruct --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [tiny] lora_B_abs_sum=18788.6544 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen2.5-3B-Instruct --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [tiny] lora_B_abs_sum=18788.6544 changes_output=True
+    [matrix] control G1 in-process: passed
+    [serve] vllm serve Qwen/Qwen2.5-3B-Instruct --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+    [matrix] ===== subject: google/gemma-4-12B-it =====
+    W0926 00:57:47.594000 8558 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0926 00:57:47.634000 8558 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [matrix] ===== subject: google/gemma-4-12B-it =====
+    W0926 00:57:47.594000 8558 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0926 00:57:47.634000 8558 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+     45%|████▌     | 27/60 [00:17<00:18,  1.80it/s]
+     47%|████▋     | 28/60 [00:18<00:17,  1.81it/s]
+     48%|████▊     | 29/60 [00:18<00:17,  1.82it/s]
+    [tiny] lora_B_abs_sum=34741.1977 changes_output=True
+    [matrix] subject G1 in-process: passed
+    [serve] vllm serve google/gemma-4-12B-it --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-subject
+    [tiny] lora_B_abs_sum=34741.1977 changes_output=True
+    [matrix] subject G1 in-process: passed
+    [serve] vllm serve google/gemma-4-12B-it --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-subject
+    [tiny] lora_B_abs_sum=34741.1977 changes_output=True
+    [matrix] subject G1 in-process: passed
+    [serve] vllm serve google/gemma-4-12B-it --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-subject
+    [tiny] lora_B_abs_sum=34741.1977 changes_output=True
+    [matrix] subject G1 in-process: passed
+    [serve] vllm serve google/gemma-4-12B-it --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-subject
+    [tiny] lora_B_abs_sum=34741.1977 changes_output=True
+    [matrix] subject G1 in-process: passed
+    [serve] vllm serve google/gemma-4-12B-it --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-subject
+    [tiny] lora_B_abs_sum=34741.1977 changes_output=True
+    [matrix] subject G1 in-process: passed
+    [serve] vllm serve google/gemma-4-12B-it --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-subject
+    [tiny] lora_B_abs_sum=34741.1977 changes_output=True
+    [matrix] subject G1 in-process: passed
+    [serve] vllm serve google/gemma-4-12B-it --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-subject
+    [matrix] subject G1 in-process: passed
+    [serve] vllm serve google/gemma-4-12B-it --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-subject
+    [serve] /v1/models -> ['google/gemma-4-12B-it', 'tiny']
+    [matrix] reading: the subject serves LoRA through vLLM
+    [matrix] decision: Qwen3.5 is usable; whether to pay for retraining is a separate call
+    [gate] PAIR POSSIBLE: one id space, and the large serves a LoRA applied
+    the runner wrote its result — done
+exit 0
