@@ -5,7 +5,7 @@ its file exists here; when a file arrives, the placeholder in **both languages**
 image. File names are fixed — the documents already point at them. `python3 scripts/place-images.py`
 does the replacing; `--check` lists what is still wanted.
 
-**Withdrawn 2026-09-25, to be redrawn:** `memory-walkthrough.png` (it showed the pre-W9 walk — notes and a calculator —
+**Withdrawn 2026-09-25, redrawn and back 2026-09-26:** `memory-walkthrough.png` (it showed the pre-W9 walk — notes and a calculator —
 where the memory is now pages of atomic statements with cited answers) and `request-path.png` (it had no gateway, no
 permission, no approval and no grounding — and spelled a spine "Harenss"). Their placeholders are back in the documents;
 the briefs below are new.
@@ -21,9 +21,9 @@ English in both language versions.
 | `article-harness.png` | 1200 × 627 | ✅ **in** | `docs/articles/2026-09-it-was-the-harness.md`, `docs/articles/2026-09-era-el-arnes.es.md` |
 | `article-team.png` | wide, ~1600 px | ✅ **in** | `docs/articles/2026-09-it-was-the-harness.md`, `docs/articles/2026-09-era-el-arnes.es.md` |
 | `core-1-0.png` | wide, ~1600 px | ✅ **in** | `README.md`, `README.es.md` |
-| `memory-five-pieces.png` | wide, ~1600 px | ⬜ wanted | `docs/MEMORY.md`, `docs/es/MEMORY.md`, `docs/ARCHITECTURE.md`, `docs/es/ARCHITECTURE.md` |
-| `memory-walkthrough.png` | tall, ~1200 × 1600 | ⬜ **wanted — redraw (v2)** | `README.md`, `README.es.md`, `docs/MEMORY.md`, `docs/es/MEMORY.md` |
-| `request-path.png` | wide, ~1600 px | ⬜ **wanted — redraw (v2)** | `README.md`, `README.es.md` |
+| `memory-five-pieces.png` | wide, ~1600 px | ✅ **in** | `docs/MEMORY.md`, `docs/es/MEMORY.md`, `docs/ARCHITECTURE.md`, `docs/es/ARCHITECTURE.md` |
+| `memory-walkthrough.png` | tall, ~1200 × 1600 | ✅ **in (v2, 2026-09-26)** | `README.md`, `README.es.md`, `docs/MEMORY.md`, `docs/es/MEMORY.md` |
+| `request-path.png` | wide, ~1600 px | ✅ **in (v2, 2026-09-26)** | `README.md`, `README.es.md` |
 | `solution-architecture.png` | wide, ~1600 px | ✅ **in** | `README.md`, `README.es.md`, `docs/articles/2026-09-it-was-the-harness.md`, `docs/articles/2026-09-era-el-arnes.es.md` (cover) |
 
 ## Briefs

@@ -95,11 +95,9 @@ Full specification: [`docs/MEMORY.md`](docs/MEMORY.md) **[spec]**.
    a reply may state:** every answer cites the statement it rests on, and the referee checks the citation;
    in front of tools, the gateway shows no line that is not in a real tool result (`examples/common/grounding.py`).
 
-> **[ILLUSTRATION PLACEHOLDER — `docs/img/memory-walkthrough.png`]**
-> *Being redrawn for pages of atomic statements; the brief is in [`docs/img/README.md`](docs/img/README.md). Six
-> panels on one line: a request, a search that lights three page cards, a page opening as its table of sections, one
-> sentence whose underlined name is the link to the next page, a third page's section, and the answer with its
-> citation stamped on it — the referee's check under the last panel.*
+![Six panels joined by one line, like a subway map: a request; a search that lights three page cards; a page opening as its table of sections; one sentence whose underlined name links to the next page; a person's page and its extension; the answer with its citation stamped on it, and the referee's check.](docs/img/memory-walkthrough.png)
+
+*One question, end to end: pages of one-sentence statements, links inside the sentences, an answer that names the sentence it rests on.*
 
 **The gain.** If the protocol changes tomorrow you edit one markdown file in git. The LoRA is not
 retrained, because what it learned was to obey the links and read the notes.
@@ -108,11 +106,9 @@ retrained, because what it learned was to obey the links and read the notes.
 
 ## The request path
 
-> **[ILLUSTRATION PLACEHOLDER — `docs/img/request-path.png`]**
-> *Being redrawn for the gateway; the brief is in [`docs/img/README.md`](docs/img/README.md). One line: an agent → the
-> gateway reads the signed token (user · role · tenant) → the role's local expert → tools run with that permission (a
-> refused record, a payment held for a director) → every line of the reply checked against a real tool result → the
-> answer; a dashed branch for out of scope, to the frontier or to a person; a log under all of it.*
+![One line of six stations: an agent; the gateway reading a signed badge; the role's small local expert; tools run with the badge's permission, one record refused and a payment held; a sheet with an invented line crossed out; the answer. A dashed branch for out of scope leads to a distant building and to a person; a log band runs under everything.](docs/img/request-path.png)
+
+*The path of a request: identity from a token, permission in the tools, a person for payments, and no line shown that a tool did not return.*
 
 ```mermaid
 flowchart LR
@@ -190,12 +186,19 @@ results by the gateway, outside the model**. 8 of 8 scenes on Gemma 4 E4B with a
 with a bare model ([`docs/DEMO.md`](docs/DEMO.md)).
 
 **The family is Gemma 4** since 2026-09-25: measured against Qwen3.5-4B on the same wiki, a tie, and the user's
-development stack targets Gemma; the released members move through the release gate one by one (milestone 1b).
+development stack targets Gemma. **Every released member is on Gemma 4 E4B** — `email-full@v3`, `desk-commitment@v3`,
+`distributor-wiki@v2`; the Qwen 2.5 releases stay only as the control arm.
+
+**The pair, measured [ran].** The large half is `gemma-4-12B-it` — one id space with the E4B, a LoRA served applied,
+small enough for a Mac mini. Its LoRA raises acceptance of the small member's drafts (α 0.871 → 0.898, 76 : 18
+records), so it earns its place as the **verifier**. It buys **no accuracy**: on a band of comparison questions both
+halves failed while the corpus never showed one, and once it did the small member alone went from 10 to 37 of 40
+(milestones 3 and 4, B2–B5).
 
 **Not solved yet.** The router is still a keyword dictionary — its two learned replacements are both measured and
 neither passes **[ran]** milestone 2. The small models still invent: in the school demo the gateway replaced 2 of 5
-local replies with the tools' own text — caught, counted, never shown, but not cured. The speculative pair has not
-started. No real traffic has been measured anywhere in this repository yet.
+local replies with the tools' own text — caught, counted, never shown, but not cured. The pair's wall-clock speed-up
+is not measured — acceptance is. No real traffic has been measured anywhere in this repository yet.
 
 **Everything else — every milestone, every arm, every run — moves as the project does and is not
 repeated here, on purpose.** [`docs/PLAN.md`](docs/PLAN.md) is the living state, with a gate and
@@ -205,8 +208,8 @@ is the gap analysis against being a generic framework, self-contained and writte
 another model.
 
 **Engineering constraints, decided and not up for debate.** The family is **Gemma 4** since 2026-09-25 —
-small `gemma-4-E4B-it`, large `gemma-4-31B-it` (not yet measured) — chosen on a measured tie with
-Qwen3.5-4B, whose released members stay until re-released ([`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) §6).
+small `gemma-4-E4B-it`, large `gemma-4-12B-it` (measured, B2–B5) — chosen on a measured tie with
+Qwen3.5-4B; every released member has moved ([`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) §6).
 Trained and served on Colab, in sessions under an hour, never on a user's machine.
 
 ---
@@ -251,7 +254,7 @@ reason: `--prune` (its own tool surface), `--member-prompt` (the prompt its corp
 | `training/wiki/` | **W9, the wiki of atomic statements**: a distributor world per seed, 1–3-hop questions, the citation grader, the trajectory runner and its corpus |
 | `examples/school/gateway.py`, `demo_run.py`, `school_arm.py` | **the school demo, as a working system**: signed identity, held writes and a director's approval, egress by role, grounding, a log and a dashboard; the school-staff trajectory LoRA and its measurement |
 | `training/harness/fake_vllm.py` | a fake `vllm serve` for the serving path's integration tests — the bugs it models were paid for on a card once |
-| `training/harness/family.py` | the model family in one place: Gemma 4 E4B for new members, Qwen3.5-4B for the released ones until re-released |
+| `training/harness/family.py` | the model family in one place: Gemma 4 E4B small, 12B large; Qwen only as the control arm |
 | `releases/`, `results/` | the manifests, and the runs the documents cite |
 
 ## Documents

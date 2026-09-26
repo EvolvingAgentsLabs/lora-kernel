@@ -23,17 +23,9 @@ Cinco piezas:
 | 4 | **el LoRA** | entrenado sobre el *hábito de navegación*, nunca sobre los datos | sí — la única parte entrenada |
 | 5 | **el runtime** | un árbitro chico en Python: pasa las páginas, aplica reglas locales, hace cumplir el orden | no — puro software |
 
-> **[MARCADOR DE ILUSTRACIÓN — `docs/img/memory-five-pieces.png`]**
-> *Un único diagrama ancho, de izquierda a derecha, estilo técnico plano, fondo claro. A la izquierda del todo, una
-> biblioteca con dos estantes rotulados: el estante de arriba "Operational harness" tiene fichas unidas por
-> flechas en línea (un procedimiento); el estante de abajo "Encyclopedic wiki" tiene fichas dispuestas en
-> árbol. En el medio, una pequeña antena de radar rotulada "radar — embeddings of this subdomain only"
-> que barre la biblioteca e ilumina tres fichas. A su derecha, una figura en un escritorio rotulada
-> "LoRA — the specialist" sosteniendo exactamente tres herramientas rotuladas `search`, `open`, `calc`. Debajo
-> de todo, una banda fina rotulada "runtime — referee" con tres íconos: una página siendo pasada, un
-> sello que dice "site rule applied", y una barrera que dice "requires step 1". Sin robots, sin
-> cerebros, sin redes neuronales brillantes: el punto de la imagen es que cuatro de las cinco piezas no son
-> neuronales.*
+![Una estantería con dos estantes — arriba una ruta de fichas, abajo un árbol de fichas — un radar chico que ilumina tres fichas, un especialista con tres herramientas, y debajo una banda, el árbitro: una página que se pasa, un sello de regla local, una barrera.](../img/memory-five-pieces.png)
+
+*Las cinco piezas de la memoria. Cuatro no son neuronales.*
 
 ---
 
@@ -476,10 +468,9 @@ turno que continúa. El corpus lo llama; nada lo imita.
 
 ## 6. En operación — una tarea, de punta a punta
 
-> **[ILLUSTRATION PLACEHOLDER — `docs/img/memory-walkthrough.png`]**
-> *Siendo redibujada para páginas de enunciados atómicos (§1.6); el brief está en [`img/README.md`](../img/README.md): un pedido, una
-> búsqueda que ilumina tres fichas de página, una página como su tabla de secciones, una oración cuyo nombre subrayado
-> enlaza a la próxima página, la sección de una persona, la respuesta con su cita estampada y el chequeo del árbitro.*
+![Seis paneles unidos por una línea, como un mapa de subte: un pedido; una búsqueda que ilumina tres fichas de página; una página que se abre como su índice de secciones; una oración cuyo nombre subrayado enlaza a la página siguiente; la página de una persona y su interno; la respuesta con su cita estampada, y el visto bueno del árbitro.](../img/memory-walkthrough.png)
+
+*Una pregunta, de punta a punta: páginas de enunciados de una oración, enlaces dentro de las oraciones, una respuesta que nombra la oración en que se apoya.*
 
 1. **Llega la tarea:** *"Infuse 500 mL over 4 hours by gravity; drop factor 20 gtt/mL."*
 2. **El experto consulta su radar:** `<search shelf=harness>start a primary infusion</search>`.

@@ -141,8 +141,8 @@ exactamente y la aceleración nada. El par es primero un dispositivo de **calida
 grande + LoRA le gana al chico + LoRA donde el chico tiene margen?) y después uno
 **especulativo** (¿el LoRA emparejado sube α?).
 
-**Dónde corre.** El pool chico se sirve desde una sola L4. Un 27B es trabajo de A100 en 4
-bits.
+**Dónde corre.** El pool chico se sirve desde una sola L4. La mitad grande, `gemma-4-12B-it`, se sirve en bf16
+desde una A100 (B3, B4) y está dimensionada para una Mac mini; ~~un 27B es trabajo de A100 en 4 bits~~.
 
 ## 4. La memoria — el núcleo de 1.0
 
@@ -205,12 +205,9 @@ flowchart LR
     class I,H,K art
 ```
 
-> **[MARCADOR DE ILUSTRACIÓN — `docs/img/memory-five-pieces.png`]**
-> *La misma imagen que en `MEMORY.md`: una biblioteca con dos estantes rotulados (una ruta de
-> fichas arriba, un árbol de fichas abajo), un radar chico iluminando tres fichas, un
-> especialista sosteniendo tres herramientas rotuladas `search`, `open`, `calc`, y debajo de
-> ellas una banda rotulada "runtime — árbitro" con una página siendo dada vuelta, un sello
-> "regla del sitio aplicada" y una barrera que dice "requires paso 1".*
+![Una estantería con dos estantes — arriba una ruta de fichas, abajo un árbol de fichas — un radar chico que ilumina tres fichas, un especialista con tres herramientas, y debajo una banda, el árbitro: una página que se pasa, un sello de regla local, una barrera.](../img/memory-five-pieces.png)
+
+*Las cinco piezas de la memoria. Cuatro no son neuronales.*
 
 **Por qué es un harness.** Un harness de agente clásico mantiene tres cosas fundidas: el
 procedimiento en el system prompt, el bucle en código escrito a mano, y la esperanza de que el
@@ -255,7 +252,9 @@ base de conocimiento y el hash de su índice: un miembro es su corpus *y* su bas
 ## 6. La familia
 
 **Gemma 4, desde 2026-09-25 — la decisión del usuario sobre B1 [ran].** `google/gemma-4-E4B-it` chico;
-`gemma-4-31B-it` nombrado como la mitad grande de un par y **no medido**. En el wiki de W9, con el mismo corpus y
+`gemma-4-12B-it` grande (~~`gemma-4-31B-it`~~, cambiado por una Mac mini): un espacio de ids con el E4B y un LoRA servido
+aplicado (B2 **[ran]**); su LoRA sube la aceptación de los borradores del miembro chico, α 0,871 → 0,898 (B4 **[ran]**);
+no compra precisión en la banda comparativa una vez que al chico se le enseña (B3, B5 **[ran]**). En el wiki de W9, con el mismo corpus y
 la misma receta, el miembro de Gemma empató al de Qwen3.5-4B (38/40 contra 35 y 35, 4 : 1 contra cada uno); sin
 entrenar, Gemma ya la camina 19/40 donde Qwen camina 0/40, y entrena en un tercio del tiempo. El usuario decidió
 antes de que corriera la comparación que la paridad elige a Gemma, porque el stack de desarrollo apunta a ella. Le
@@ -264,7 +263,7 @@ vienen dos restricciones de ingeniería: el LoRA excluye las torres de visión y
 `training/s4_train.py::towers_to_exclude`); y su canal de pensamiento queda apagado para los miembros, como el de
 Qwen.
 
-**Los miembros liberados se mueven de a uno por la compuerta de release:** `email-full@v3` está sobre Gemma (M1b **[ran]**:
+**Todos los miembros liberados pasaron por la compuerta de release:** `email-full@v3` está sobre Gemma (M1b **[ran]**:
 empate con `@v2`, 119 : 0 sobre el Gemma pelado); `desk-commitment@v3` también, entrenado en las dos bandas de desk (M1d **[ran]**: banda profunda 239/240
 contra 83 del Gemma pelado); `distributor-wiki@v2` sobre Gemma (B5: más comparaciones, 37/40 en esa banda); los releases `@v1` sobre `Qwen2.5-3B-Instruct` quedan
 como brazo de control. La familia se nombra en un solo lugar, `training/harness/family.py`. ~~Qwen 3.x:
@@ -272,8 +271,8 @@ como brazo de control. La familia se nombra en un solo lugar, `training/harness/
 PEFT **[ran]** P29.~~
 
 Nada en §1–§5 nombra una familia. Un par necesita un espacio de ids y una base a la que PEFT pueda engancharse;
-Gemma 4 E4B ahora cumple lo segundo **[ran]** B1; si comparte espacio de ids con 31B es la primera verificación
-del hito 3.
+Gemma 4 E4B cumple lo segundo **[ran]** B1, y comparte su espacio de ids con el 12B — vocabularios idénticos byte a
+byte, 0 ids sólo del objetivo **[ran]** B2.
 
 ## 7. Lo que no es neuronal, a propósito
 

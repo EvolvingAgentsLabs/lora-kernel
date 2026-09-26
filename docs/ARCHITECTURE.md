@@ -133,7 +133,7 @@ large model scores the small one's finished draft in one prefill (`accept_rank.p
 all. The pair is first a **quality** device (does large + LoRA beat small + LoRA where the
 small one has headroom) and then a **speculative** one (does the matched LoRA raise α).
 
-**Where it runs.** The small pool is served from one L4. A 27B is A100 work in 4-bit.
+**Where it runs.** The small pool is served from one L4. The large half, `gemma-4-12B-it`, is served in bf16 from one A100 (B3, B4) and is sized for a Mac mini; ~~a 27B is A100 work in 4-bit~~.
 
 ## 4. The memory — the core of 1.0
 
@@ -192,11 +192,9 @@ flowchart LR
     class I,H,K art
 ```
 
-> **[ILLUSTRATION PLACEHOLDER — `docs/img/memory-five-pieces.png`]**
-> *The same picture as in `MEMORY.md`: a bookcase with two labelled shelves (a route of cards above,
-> a tree of cards below), a small radar lighting three cards, a specialist holding three tools
-> labelled `search`, `open`, `calc`, and beneath them a band labelled "runtime — referee" with a page
-> being turned, a "site rule applied" stamp and a barrier gate reading "requires step 1".*
+![A bookcase with two shelves — a route of cards above, a tree of cards below — a small radar lighting three cards, a specialist holding three tools, and beneath them a band, the referee: a page being turned, a stamp for a site's rule, a barrier gate.](img/memory-five-pieces.png)
+
+*The five pieces of the memory. Four of them are not neural.*
 
 **Why it is a harness.** A classical agent harness keeps three things fused: the procedure in the
 system prompt, the loop in hand-written code, and the hope that the model obeys. Here they are
@@ -235,22 +233,24 @@ knowledge base's hash and its index's hash: a member is its corpus *and* its bas
 
 ## 6. The family
 
-**Gemma 4, from 2026-09-25 — the user's decision on B1 [ran].** `google/gemma-4-E4B-it` small; `gemma-4-31B-it`
-named as the large half of a pair and **not measured**. On W9's wiki, with the same corpus and recipe, Gemma's member
+**Gemma 4, from 2026-09-25 — the user's decision on B1 [ran].** `google/gemma-4-E4B-it` small; `gemma-4-12B-it`
+large (~~`gemma-4-31B-it`~~, changed for a Mac mini): one id space with the E4B and a LoRA served applied (B2 **[ran]**);
+its LoRA raises acceptance of the small member's drafts, α 0.871 → 0.898 (B4 **[ran]**); it buys no accuracy on the
+comparison band once the small member is taught it (B3, B5 **[ran]**). On W9's wiki, with the same corpus and recipe, Gemma's member
 tied Qwen3.5-4B's (38/40 against 35 and 35, 4 : 1 against each); untrained, Gemma already walks it 19/40 where Qwen
 walks 0/40, and it trains in a third of the time. The user decided before the comparison ran that parity chooses
 Gemma, because the development stack targets it. Two engineering constraints come with it: the LoRA excludes the
 vision and audio towers, whose projections are `Gemma4ClippableLinear` (P29's block, and nothing else —
 `training/s4_train.py::towers_to_exclude`); and its thinking channel stays off for members, as Qwen's did.
 
-**The released members move one by one through the release gate:** `email-full@v3` is on Gemma (M1b **[ran]**: a tie
+**Every released member has moved through the release gate:** `email-full@v3` is on Gemma (M1b **[ran]**: a tie
 with `@v2`, 119 : 0 over the bare Gemma); `desk-commitment@v3` too, trained on both desk bands (M1d **[ran]**: deep band 239/240 against the bare
 Gemma's 83); `distributor-wiki@v2` on Gemma (B5: plus comparisons, 37/40 on that band); the `@v1` releases on `Qwen2.5-3B-Instruct` stay as the control arm. The family is named in one place,
 `training/harness/family.py`. ~~Qwen 3.x: `Qwen3.5-4B` small, `Qwen3.8-27B` large … Gemma 4 meets the id-space
 requirement and not yet the PEFT one **[ran]** P29.~~
 
-Nothing in §1–§5 names a family. A pair needs one id space and a base PEFT can attach to; Gemma 4 E4B now meets the
-second **[ran]** B1; whether it shares an id space with 31B is milestone 3's first check.
+Nothing in §1–§5 names a family. A pair needs one id space and a base PEFT can attach to; Gemma 4 E4B meets the
+second **[ran]** B1, and shares its id space with the 12B — byte-identical vocabularies, 0 target-only ids **[ran]** B2.
 
 ## 7. What is not neural, on purpose
 
