@@ -51,7 +51,7 @@ it), transcript [`transcript.md`](transcript.md).
 Beside them, as before: the CFO cannot approve its own $45 charge, the director approves it and it lands with the requester's
 scope; an all-families announcement held; purchasing's poem to the frontier; an injured-student question to a person.
 
-**Counted, not hidden:** the grounding filter replaced **3 of 11** local replies with the tools' own text — scenes 1 and 5
+**Counted, not hidden:** the grounding filter replaced **3 of 12** local replies (corrected 2026-09-26: first written 3 of 11 — 11 is northgate's alone; scene 5 is southport's) with the tools' own text — scenes 1 and 5
 as in the 8/8 run, and scene 13. The user saw none of the model's unsupported lines. Dashboard (northgate): 14 turns, 11
 served locally, 1 to the frontier, 2 to a person, 1 denied call, 2 held for approval, $0.00656 of frontier cost avoided —
 the GPU's own cost not priced.
