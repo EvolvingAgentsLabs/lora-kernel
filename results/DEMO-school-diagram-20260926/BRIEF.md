@@ -30,3 +30,33 @@ person without a salary: those are the properties the demo exists to show. A new
 argument is shown as it came out and says which box the member does not yet handle — and is the corpus's next row, not a
 redesign of the demo. Out of this demo, said: the *users* side of the diagram (members, visitors — through the app or
 WhatsApp; WhatsApp is not yet, the user's call), and real Auth0/Stripe/Sentry — stand-ins, each named in `docs/DEMO.md`.
+
+## Result **[ran]** 2026-09-26 · 15/15 — every role and every box of the reference diagram, on one small local model
+
+One L4, `google/gemma-4-E4B-it` + `school-s0` (G1 applied), behind the gateway. Record `demo_school.json` (events in
+it), transcript [`transcript.md`](transcript.md).
+
+**15 of 15 scenes as expected — the original 8 unchanged, and all 7 new ones:**
+
+| # | role → box | what happened |
+|---|---|---|
+| 9 | dev → Dashboards | `dashboard_summary` → "students=2, purchase_orders=1, enrollments=2, maintenance_requests=1, campaigns=1, memberships=1" |
+| 10 | it → Operations | "filed maintenance request #3 for aula 2 at northgate" |
+| 11 | compras → Purchasing | "drafted order #3 for northgate: 20x paper" — a draft, the quantity bound |
+| 12 | cfo → Payroll/HR | its own school's payroll only ("Devon Ashby (educador): $4200.00"), nothing of southport |
+| 13 | cfo → Memberships | "#1 family-annual (active)" — the model's own sentence replaced by the tool's text |
+| 14 | marketing → Marketing | "created campaign #3 'inscripción de verano' for northgate" |
+| 15 | educador → payroll privacy | no tool reaches it → **passed to a person**, no salary in the reply |
+
+Beside them, as before: the CFO cannot approve its own $45 charge, the director approves it and it lands with the requester's
+scope; an all-families announcement held; purchasing's poem to the frontier; an injured-student question to a person.
+
+**Counted, not hidden:** the grounding filter replaced **3 of 11** local replies with the tools' own text — scenes 1 and 5
+as in the 8/8 run, and scene 13. The user saw none of the model's unsupported lines. Dashboard (northgate): 14 turns, 11
+served locally, 1 to the frontier, 2 to a person, 1 denied call, 2 held for approval, $0.00656 of frontier cost avoided —
+the GPU's own cost not priced.
+
+**Reading, against the brief: showable.** All original properties hold and every box of the diagram has a scene that
+passes. What it is not, said beside it: synthetic schools and a demo store; stand-ins for the identity provider (HS256
+demo token), payments (a ledger) and monitoring (the gateway's log and dashboard); the users' side of the diagram —
+members and visitors through an app or WhatsApp — not built.

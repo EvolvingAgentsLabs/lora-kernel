@@ -193,7 +193,9 @@ walks them 35 of 40 with every answer's citation verified, 16 of 16 at three hop
 **A reference organisation, working end to end [ran].** The school demo: identity from a signed token, another
 school's records refused by the tool layer, a payment held until a director approves it, out-of-scope requests
 handed to the frontier or to a person, a log and a dashboard — and **every reply checked against the real tool
-results by the gateway, outside the model**. 8 of 8 scenes on Gemma 4 E4B with a school-staff adapter, from 3 of 8
+results by the gateway, outside the model**. **15 of 15 scenes covering every role and every box of the reference diagram** (dev, trainee, marketing, educator,
+purchasing, CFO, IT; agenda, memberships, enrolments; communications, operations, purchasing, payroll, marketing,
+dashboards) on Gemma 4 E4B with a school-staff adapter — the first 8 from 3 of 8
 with a bare model ([`docs/DEMO.md`](docs/DEMO.md)).
 
 **The family is Gemma 4** since 2026-09-25: measured against Qwen3.5-4B on the same wiki, a tie, and the user's
