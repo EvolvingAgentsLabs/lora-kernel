@@ -1,0 +1,84 @@
+=== session 1 of 1 · srv152149 · A100
+    boot clone: rc=0 a4710bb fake_vllm answers prompt_logprobs; pair_accept runs end to end against it
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 a4710bb fake_vllm answers prompt_logprobs; pair_accept runs end to end against it
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    a4710bb fake_vllm answers prompt_logprobs; pair_accept runs end to end against it | 0.30.0
+    this module trains its own adapter — nothing to carry in
+    runner started (launch 1)
+    [train] adapters/wiki12b-walks-s0 from 600 examples
+    W0926 18:29:01.452000 2626 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0926 18:29:01.491000 2626 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [train] adapters/wiki12b-walks-s0 from 600 examples
+    W0926 18:29:01.452000 2626 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0926 18:29:01.491000 2626 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    Dropping fully masked examples from train dataset:   0%|          | 0/600 [00:00<?, ? examples/s]
+    Dropping fully masked examples from train dataset: 100%|██████████| 600/600 [00:00<00:00, 2385.77 examples/s]
+    Dropping fully masked examples from train dataset: 100%|██████████| 600/600 [00:00<00:00, 2373.46 examples/s]
+      2%|▏         | 2/114 [00:21<19:30, 10.45s/it]
+      3%|▎         | 3/114 [00:30<17:57,  9.70s/it]
+      4%|▎         | 4/114 [00:39<17:08,  9.35s/it]
+      8%|▊         | 9/114 [01:23<15:35,  8.91s/it]
+      9%|▉         | 10/114 [01:32<15:23,  8.88s/it]
+      9%|▉         | 10/114 [01:32<15:23,  8.88s/it]
+     12%|█▏        | 14/114 [02:07<14:45,  8.85s/it]
+     13%|█▎        | 15/114 [02:16<14:45,  8.94s/it]
+     14%|█▍        | 16/114 [02:25<14:25,  8.83s/it]
+     18%|█▊        | 20/114 [02:59<13:35,  8.67s/it]
+     18%|█▊        | 20/114 [02:59<13:35,  8.67s/it]
+     18%|█▊        | 21/114 [03:08<13:27,  8.68s/it]
+     22%|██▏       | 25/114 [03:43<12:51,  8.67s/it]
+     23%|██▎       | 26/114 [03:51<12:39,  8.63s/it]
+     24%|██▎       | 27/114 [04:00<12:30,  8.62s/it]
+     27%|██▋       | 31/114 [04:35<12:00,  8.68s/it]
+     28%|██▊       | 32/114 [04:43<11:48,  8.65s/it]
+     29%|██▉       | 33/114 [04:52<11:38,  8.62s/it]
+     32%|███▏      | 37/114 [05:27<11:20,  8.84s/it]
+     33%|███▎      | 38/114 [05:32<09:34,  7.56s/it]
+     34%|███▍      | 39/114 [05:41<09:50,  7.87s/it]
+     39%|███▉      | 45/114 [06:33<09:56,  8.64s/it]
+     40%|████      | 46/114 [06:42<09:47,  8.65s/it]
+     41%|████      | 47/114 [06:50<09:36,  8.61s/it]
+     45%|████▍     | 51/114 [07:25<09:14,  8.81s/it]
+     46%|████▌     | 52/114 [07:34<09:07,  8.82s/it]
+     46%|████▋     | 53/114 [07:43<08:56,  8.79s/it]
+     50%|█████     | 57/114 [08:18<08:18,  8.74s/it]
+     51%|█████     | 58/114 [08:27<08:17,  8.89s/it]
+     52%|█████▏    | 59/114 [08:36<08:00,  8.73s/it]
+     54%|█████▍    | 62/114 [09:02<07:40,  8.86s/it]
+     55%|█████▌    | 63/114 [09:11<07:26,  8.76s/it]
+     56%|█████▌    | 64/114 [09:20<07:19,  8.79s/it]
+     61%|██████    | 69/114 [10:03<06:31,  8.70s/it]
+     61%|██████▏   | 70/114 [10:12<06:25,  8.77s/it]
+     61%|██████▏   | 70/114 [10:12<06:25,  8.77s/it]
+     67%|██████▋   | 76/114 [11:00<04:39,  7.35s/it]
+     68%|██████▊   | 77/114 [11:09<04:43,  7.65s/it]
+     68%|██████▊   | 78/114 [11:17<04:44,  7.91s/it]
+     74%|███████▎  | 84/114 [12:08<04:13,  8.44s/it]
+     75%|███████▍  | 85/114 [12:17<04:05,  8.46s/it]
+     75%|███████▌  | 86/114 [12:25<03:57,  8.47s/it]
+     79%|███████▉  | 90/114 [12:59<03:22,  8.43s/it]
+     80%|███████▉  | 91/114 [13:08<03:16,  8.56s/it]
+     81%|████████  | 92/114 [13:17<03:08,  8.58s/it]
+     84%|████████▍ | 96/114 [13:51<02:35,  8.65s/it]
+     85%|████████▌ | 97/114 [13:59<02:26,  8.61s/it]
+     86%|████████▌ | 98/114 [14:08<02:18,  8.64s/it]
+     89%|████████▉ | 102/114 [14:43<01:43,  8.60s/it]
+     90%|█████████ | 103/114 [14:51<01:35,  8.64s/it]
+     91%|█████████ | 104/114 [15:00<01:26,  8.65s/it]
+     94%|█████████▍| 107/114 [15:25<00:59,  8.44s/it]
+     95%|█████████▍| 108/114 [15:34<00:50,  8.41s/it]
+     96%|█████████▌| 109/114 [15:42<00:42,  8.43s/it]
+    100%|██████████| 114/114 [16:22<00:00,  8.61s/it]
+    [train] named for serving: {'base': 'google/gemma-4-12B-it', 'architecture': 'Gemma4UnifiedForConditionalGeneration', 'renamed': True, 'src': 'adapters/wiki12b-walks-s0', 'dst': 'adapters/wiki12b-walks-s0.renamed', 'moved': 0, 'before': {'tensors': 656, 'land_on_text_stack': 656}, 'after': {'tensors': 656, 'land_on_text_stack': 656}}
+    [train] done
+    [train] named for serving: {'base': 'google/gemma-4-12B-it', 'architecture': 'Gemma4UnifiedForConditionalGeneration', 'renamed': True, 'src': 'adapters/wiki12b-walks-s0', 'dst': 'adapters/wiki12b-walks-s0.renamed', 'moved': 0, 'before': {'tensors': 656, 'land_on_text_stack': 656}, 'after': {'tensors': 656, 'land_on_text_stack': 656}}
+    [train] done
+    [pool] trained and packed 1 — stopping before serving, as asked
+    adapters home: 1 packed
+    the runner wrote its result — done
+exit 0

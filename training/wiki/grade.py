@@ -49,6 +49,8 @@ def value_right(row: dict, line: str) -> bool:
     toks = row["check"]["tokens"]
     if not toks or not all(_has(plain, t) for t in toks):
         return False
+    if any(_has(plain, t) for t in row["check"].get("never", [])):
+        return False
     wanted = {_norm(t) for t in toks if _NUM.fullmatch(t)}
     if not wanted:                       # a name: a restated "Brisk-40" is not a second answer
         return True

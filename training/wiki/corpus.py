@@ -34,7 +34,7 @@ from training.wiki import wiki_arm as wa
 from training.wiki import world as wd
 
 TRAIN_WORLDS = range(1000, 1032)
-TRAIN_MIX = {f: 1 for f in qs.FAMILY}
+TRAIN_MIX = {f: 1 for f, (_, _, block) in qs.FAMILY.items() if block != "C"}   # W9's corpus, frozen: B3's comparisons are evaluation only
 TRAIN_ROWS = 600
 WINDOW = 1536
 
@@ -80,6 +80,7 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--eval", action="store_true")
     ap.add_argument("--train", action="store_true")
+    ap.add_argument("--hard", action="store_true", help="data/eval_hard.jsonl: B3's comparison band on the evaluation world")
     a = ap.parse_args()
     wa.DATA.mkdir(parents=True, exist_ok=True)
     if a.eval:
@@ -88,6 +89,10 @@ def main() -> int:
         (wa.DATA / "eval.jsonl").write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows))
         print(f"[wiki] evaluation world {wd.EVAL_SEED} → {wa.LIBRARY}, {len(rows)} questions, "
               f"headline {sum(qs.headline(r) for r in rows)}", flush=True)
+    if a.hard:
+        rows = qs.rows(wd.build(wd.EVAL_SEED), "eval", qs.HARD_MIX, wd.EVAL_SEED + 1)
+        (wa.DATA / "eval_hard.jsonl").write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows))
+        print(f"[wiki] hard band: {len(rows)} comparison questions on world {wd.EVAL_SEED}", flush=True)
     if a.train:
         train = train_rows()
         g = gate(train, eval_rows())

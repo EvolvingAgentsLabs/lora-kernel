@@ -135,7 +135,9 @@ def run_case(lib: Library, row: dict, arm: str, gen_for) -> dict:
     if chain is not None:
         rec.update(calls=chain["calls"], refused=chain["refused"], malformed=chain["malformed"], ran_out=chain["ran_out"],
                    ended=conv.ended, errors=dict(conv.errors), opened_pages=len(conv.opened),
-                   opened_statements=[list(s) for s in conv.statements], text=chain["text"])
+                   opened_statements=[list(s) for s in conv.statements], text=chain["text"],
+                   # THE MODEL'S OWN SPANS, for B4's acceptance: what it wrote between the referee's results
+                   spans=[{"at": s["at"], "text": s["text"]} for s in chain["spans"]])
     return rec
 
 
@@ -278,6 +280,8 @@ def main() -> int:
     ap.add_argument("--max-tokens", type=int, default=120)
     ap.add_argument("--max-tokens-plain", type=int, default=160)
     ap.add_argument("--concurrency", type=int, default=8)
+    ap.add_argument("--rows", default="eval", help="which question set: eval (W9) or eval_hard (B3's comparisons)")
+    ap.add_argument("--member-prefix", default="adapters/wiki-walks-s", help="where withlib-s<k> lives (B3: adapters/wiki12b-walks-s)")
     ap.add_argument("--out", default="wiki_arm.json")
     ap.add_argument("--combine", default=None, help="zero GPU: add this file's scored arms to --out's and re-read the verdict")
     a = ap.parse_args()
@@ -303,7 +307,7 @@ def main() -> int:
                library=str(LIBRARY), eval_world=wd.EVAL_SEED)
     rec.setdefault("arms", {})
     lib = Library.load(LIBRARY)
-    rows = load_rows("eval")
+    rows = load_rows(a.rows)
 
     def save():
         out.write_text(json.dumps(rec, indent=1, ensure_ascii=False))
@@ -323,7 +327,7 @@ def main() -> int:
         return 0
 
     if a.train_seed is not None:
-        spec = f"adapters/wiki-walks-s{a.train_seed}"
+        spec = f"{a.member_prefix}{a.train_seed}"
         from training.harness.release_gate import RECIPE
         if not Path(spec, "adapter_model.safetensors").exists():
             print(f"[pool] training {spec} on {a.base} from {DATA / 'train.jsonl'}", flush=True)
@@ -339,7 +343,7 @@ def main() -> int:
             "adapter": spec, "seed": a.train_seed, "recipe": RECIPE,
             "adapter_sha256": hashlib.sha256(Path(spec, "adapter_model.safetensors").read_bytes()).hexdigest(),
             "corpus_sha256": hashlib.sha256((DATA / "train.jsonl").read_bytes()).hexdigest()}
-        have = sorted(str(p.parent) for p in Path("adapters").glob("wiki-walks-s*/adapter_model.safetensors"))
+        have = sorted(str(p.parent) for p in Path(a.member_prefix).parent.glob(Path(a.member_prefix).name + "*/adapter_model.safetensors"))
         subprocess.call(["tar", "czf", "adapters_out.tgz", *have])
         rec["packed"] = len(have); rec["trained_only"] = time.strftime("%Y-%m-%dT%H:%M:%S")
         save()
@@ -347,7 +351,7 @@ def main() -> int:
         return 0
 
     arms = [x for x in a.arms.split(",") if x]
-    members = {x: f"adapters/wiki-walks-s{x.removeprefix('withlib-s')}" for x in arms if x.startswith("withlib-s")}
+    members = {x: f"{a.member_prefix}{x.removeprefix('withlib-s')}" for x in arms if x.startswith("withlib-s")}
     lacking = [x for x, d in members.items() if not Path(d, "adapter_model.safetensors").exists()]
     if lacking:
         print(f"[wiki] cannot score: adapters not on disk {lacking}", flush=True)
