@@ -603,6 +603,7 @@ that decide the shape of a step:
 
 ## 5. History
 
+- **2026-09-26** — **B5 pre-registered: milestone 3's second and last look** — a corpus that shows comparisons (W9's 600 rows byte for byte + 128 comparison walks, gate passed against both evaluation sets), trained on both halves; the E4B first against its released member, the 12B only if the small leaves room. Whatever it says closes milestone 3 on this family ([`BRIEF`](../results/B5-comparison-corpus-20260926/BRIEF.md)).
 - **2026-09-26** — **B4 [ran]: milestone 4 PASSES** — the 12B's LoRA raises acceptance of the E4B member's drafts, 76 : 18 records, pooled α 0.871 → 0.898; the gain is on the corpus's distribution (0.855 → 0.914), none on a band neither half trained on ([`BRIEF`](../results/B4-gemma4-pair-acceptance-20260926/BRIEF.md)).
 - **2026-09-26** — **B3 [ran]: milestone 3 NOT passed on the comparison band** — E4B + LoRA 10/40 (room), 12B + LoRA 9/40, a tie (5 : 6); the bare 12B 2/40. Both walk and fail the comparison: W9's corpus never showed one. Next: comparisons in the training corpus, both halves retrained ([`BRIEF`](../results/B3-gemma4-large-member-20260926/BRIEF.md)).
 - **2026-09-26** — **M1d [ran]: `desk-commitment@v3` on Gemma, one member for both bands** — trained on the shallow and the deep corpora: shallow 240/240 (a tie with `@v2`), deep **239/240** against the bare Gemma's 83 (156 : 0) and `@v2`'s 64. **Every released member is now on Gemma 4 E4B** ([`BRIEF`](../results/M1d-desk-both-bands-20260926/BRIEF.md)).

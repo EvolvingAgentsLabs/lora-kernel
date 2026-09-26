@@ -161,6 +161,20 @@ def test_the_corpus_gate_passes_and_each_clause_can_fail():
     assert cp.gate(train, [leak] + evals[1:])["G4_value_in_question"] >= 1
 
 
+def test_the_comparison_corpus_is_w9s_plus_comparisons_and_g4_reads_a_choice_by_what_decides_it():
+    """B5: W9's 600 rows unchanged plus 128 comparison walks, gated against both evaluation sets. A choice offers both
+    names, so G4 forbids the deciding value there — and a question that leaks it still fails."""
+    train, cmp, hard = cp.train_rows(), cp.cmp_rows(), cp.hard_rows()
+    assert len(cmp) == len(train) + 128 and {r["case_id"] for r in train} <= {r["case_id"] for r in cmp}
+    assert sum(r["block"] == "C" for r in cmp) == 128
+    g = cp.gate(cmp, cp.eval_rows() + hard)
+    assert g["passed"], g
+    choice = next(r for r in hard if r["family"] == "compare-pack")
+    assert cp.asked(choice) != choice["check"]["tokens"]            # the names are the choice, not the leak
+    leak = dict(choice); leak["question"] += f" (one holds {cp.asked(choice)[0]})"
+    assert cp.gate(cmp, [leak])["G4_value_in_question"] == 1
+
+
 def test_the_evaluation_world_on_disk_is_the_frozen_generators():
     if not wa.LIBRARY.exists():
         pytest.skip("written after the freeze")
