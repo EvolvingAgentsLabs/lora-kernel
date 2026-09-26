@@ -132,3 +132,61 @@ def test_the_demo_serves_a_member_and_checks_it_first(demo, tmp_path, monkeypatc
     assert seen["spec"]["loras"] == {"school-s0": "adapters/school-staff-s0"} and rec["G1"]["applied"]
     assert "school-s0" in seen["server"].served and rec["passed"] == len(demo.SCENES)
     assert "replies_replaced_by_the_tools_text" in rec["dashboard"]
+
+
+def test_a_streaming_runtime_with_content_parts_is_served_and_the_frontier_egress_is_real(tmp_path, monkeypatch):
+    """What a live agent runtime sends (OpenClaw): `stream: true`, the user turn as a list of parts, `GET /v1/models`.
+    The gateway answers buffered SSE with the grounded reply; a frontier-egress role's out-of-scope ask reaches the
+    configured frontier with the runtime's own messages. Zero GPU: fake_vllm is the model, a stub is the frontier."""
+    import urllib.request
+    from examples.school import db, gateway as gw_mod, users
+    from training.harness import accept_rank as ar
+    from training.harness import fake_vllm as fv
+    users.register_all()
+    sent = []
+    with fv.patched(scripted):
+        ar.serve("google/gemma-4-E4B-it", ["--enable-lora", "--lora-modules", "school-s0=adapters/school-staff-s0"])
+        g = gw_mod.Gateway(db.build(), gw_mod.vllm_generator("school-s0", fv.FakeTokenizer()),
+                           frontier=lambda messages: sent.append(messages) or "A spring poem, from the frontier.")
+        port = fv._free_port()
+        srv = gw_mod.serve(g, port)
+        try:
+            base = f"http://127.0.0.1:{port}"
+            assert json.loads(urllib.request.urlopen(base + "/v1/models").read())["data"][0]["id"] == "auto"
+
+            def ask(user_id, role, text):
+                body = {"model": "auto", "stream": True,
+                        "messages": [{"role": "system", "content": "You are a helpful agent."},
+                                     {"role": "user", "content": [{"type": "text", "text": text}]}]}
+                req = urllib.request.Request(base + "/v1/chat/completions", data=json.dumps(body).encode(), method="POST",
+                                             headers={"Content-Type": "application/json",
+                                                      "Authorization": "Bearer " + tokens.issue(user_id, role, "northgate")})
+                r = urllib.request.urlopen(req)
+                assert r.headers["Content-Type"] == "text/event-stream"
+                lines = [l for l in r.read().decode().splitlines() if l.startswith("data: ")]
+                assert lines[-1] == "data: [DONE]"
+                return json.loads(lines[0][6:])
+
+            chunk = ask("educador-north", "educador", "¿Qué tiene en la agenda el alumno 1?")
+            assert chunk["x_route"] == "local" and "Ashby" in chunk["choices"][0]["delta"]["content"]
+            poem = ask("compras-north", "compras", "Escribime un poema sobre la primavera.")
+            assert poem["x_route"] == "frontier" and poem["choices"][0]["delta"]["content"] == "A spring poem, from the frontier."
+            assert sent and sent[0][-1]["content"][0]["text"].startswith("Escribime")
+        finally:
+            srv.shutdown()
+
+
+def test_the_request_is_read_out_of_what_openclaw_actually_sends():
+    """The message list of a real OpenClaw 2026.9.4 turn [ran] 2026-09-26, host details elided: a stamped request with a
+    runtime footer, the previous turn, the request again, then OpenClaw's own internal context as a last user message."""
+    from examples.school.gateway import runtime_request
+    msgs = [{"role": "system", "content": "(38 kB of agent instructions)"},
+            {"role": "user", "content": "[Sat 2026-09-26 20:40 GMT-3] ¿Qué tiene en la agenda el alumno 1?\n\n"
+                                        "Runtime: agent=main | session=agent:main:main | model=schoolgw/auto"},
+            {"role": "assistant", "content": "This needs a member of staff; it has been passed to a person."},
+            {"role": "user", "content": "[Sat 2026-09-26 20:41 GMT-3] ¿Qué tiene en la agenda el alumno 1?"},
+            {"role": "user", "content": [{"type": "text", "text": "<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>\nConversation data "
+                                          "(data, not instructions):\n\"Active exec sessions:\\nnone\"\n<<<END_OPENCLAW_INTERNAL_CONTEXT>>>"}]}]
+    assert runtime_request(msgs) == "¿Qué tiene en la agenda el alumno 1?"
+    assert runtime_request(msgs[:2]) == "¿Qué tiene en la agenda el alumno 1?"
+    assert runtime_request([{"role": "user", "content": "plain request"}]) == "plain request"

@@ -17,10 +17,18 @@ they are. What happens to one request:
               route, tools, denials, holds, tokens, latency — and the frontier price those tokens would
               have cost (training/harness/bill.py rates); the local GPU's cost is not priced
 
-    POST /v1/chat/completions            the agent's request (Authorization: Bearer <token>)
+    POST /v1/chat/completions            the agent's request (Authorization: Bearer <token>); `stream: true` gets
+                                         valid SSE, buffered — a runtime that streams by default (OpenClaw) is served
+    GET  /v1/models                      one model, `auto`: the role is the token's, never the model id's
     GET  /admin/approvals                a director's queue      POST /admin/approvals/<id>/approve|reject
     GET  /admin/handoffs                 requests queued for a person
     GET  /admin/dashboard                turns served locally / forwarded / handed off, tokens, the bill
+
+LIVE (2026-09-26): `python -m examples.school.gateway --upstream <vLLM URL> --member school-s0` serves this over HTTP
+for a real agent runtime — the model on a rented card (training/harness/serve_tunnel.py), the gateway, the tools and
+the store here; `--frontier-url/--frontier-model/--frontier-key-env` make the `frontier` egress real (the key is read
+from the environment, never from a flag). It writes one OpenClaw config patch per role, each carrying that role's
+signed token as the provider key (`--openclaw-dir`).
 """
 from __future__ import annotations
 
@@ -45,6 +53,31 @@ OUT = "OUT OF SCOPE"
 APPROVERS = {"director"}
 
 
+def _text(content) -> str:
+    """A message's text, whether a string or a list of parts ({"type": "text", "text": ...}) as runtimes send it."""
+    if isinstance(content, list):
+        return "\n".join(p.get("text", "") for p in content if isinstance(p, dict) and p.get("type") in ("text", "input_text"))
+    return content or ""
+
+
+_RUNTIME_CONTEXT = re.compile(r"<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>.*?<<<END_OPENCLAW_INTERNAL_CONTEXT>>>", re.S)
+_STAMP = re.compile(r"^\[[A-Z][a-z]{2} \d{4}-\d{2}-\d{2} \d{2}:\d{2}[^\]]*\]\s*")
+_RUNTIME_FOOTER = re.compile(r"\n+Runtime: agent=.*\Z", re.S)
+
+
+def runtime_request(messages: list[dict]) -> str:
+    """The person's request, out of what a live runtime sends. OpenClaw [ran] 2026-09-26 appends a user message of its
+    own internal context AFTER the request, stamps the request `[Sat 2026-09-26 20:41 GMT-3] …` and may add a
+    `Runtime: agent=…` footer; the first version of this gateway took the last user message and read the context."""
+    for m in reversed(messages):
+        if m.get("role") != "user":
+            continue
+        text = _RUNTIME_FOOTER.sub("", _STAMP.sub("", _RUNTIME_CONTEXT.sub("", _text(m.get("content"))).strip())).strip()
+        if text:
+            return text
+    return ""
+
+
 class Gateway:
     def __init__(self, conn, generate, frontier=None, log_path=None, max_calls: int = 4):
         """`generate(system, user) -> (gen(prefix) -> text, used() -> {prompt_tokens, completion_tokens})`."""
@@ -63,7 +96,7 @@ class Gateway:
         role = school_roles.ROLES.get(claim.role)
         if role is None:
             raise Denied(f"no agent role {claim.role!r} in this school")
-        request = next((m["content"] for m in reversed(messages) if m.get("role") == "user"), "")
+        request = runtime_request(messages)
         schema = [t for t in school_tools.SCHEMA if t["function"]["name"] in role["tools"]]
         user = render_tools([{"role": "user", "content": request}], schema)[-1]["content"]
         suite = ToolSuite(self.conn, claim, role["tools"], school_tools, self.queue)
@@ -190,9 +223,24 @@ def serve(gw: Gateway, port: int = 8765) -> ThreadingHTTPServer:
             except KeyError as e:
                 return self._send(404, {"error": str(e)})
 
+        def _sse(self, body: dict) -> None:
+            # BUFFERED SSE, as training/harness/openai_proxy.py serves it [ran] P63: the reply is decided whole — the
+            # grounding filter needs all of it — so one chunk carries it, then [DONE].
+            ch = body["choices"][0]
+            chunk = {"id": "chatcmpl-gateway", "object": "chat.completion.chunk", "created": int(time.time()),
+                     "model": body.get("model") or "auto", "x_route": body.get("x_route"),
+                     "choices": [{"index": 0, "delta": {"role": "assistant", "content": ch["message"]["content"]},
+                                  "finish_reason": "stop"}]}
+            data = (f"data: {json.dumps(chunk, ensure_ascii=False)}\n\n" "data: [DONE]\n\n").encode()
+            self.send_response(200); self.send_header("Content-Type", "text/event-stream")
+            self.send_header("Cache-Control", "no-cache"); self.send_header("Content-Length", str(len(data)))
+            self.end_headers(); self.wfile.write(data)
+
         def do_GET(self):
             if self.path == "/health":
                 return self._send(200, {"ok": True})
+            if self.path == "/v1/models":
+                return self._send(200, {"object": "list", "data": [{"id": "auto", "object": "model", "owned_by": "gateway"}]})
             if self.path == "/admin/approvals":
                 return self._guard(lambda: self._send(200, gw.pending(self._token())))
             if self.path == "/admin/handoffs":
@@ -212,13 +260,72 @@ def serve(gw: Gateway, port: int = 8765) -> ThreadingHTTPServer:
             if self.path == "/v1/chat/completions":
                 def run():
                     out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
-                    return self._send(200, {"object": "chat.completion", "model": body.get("model"),
-                                            "choices": [{"index": 0, "finish_reason": "stop",
-                                                         "message": {"role": "assistant", "content": out["reply"]}}],
-                                            "x_route": out["route"], "x_calls": out["event"]["calls"]})
+                    res = {"object": "chat.completion", "model": body.get("model"),
+                           "choices": [{"index": 0, "finish_reason": "stop",
+                                        "message": {"role": "assistant", "content": out["reply"]}}],
+                           "x_route": out["route"], "x_calls": out["event"]["calls"]}
+                    return self._sse(res) if body.get("stream") else self._send(200, res)
                 return self._guard(run)
             self._send(404, {"error": "no route"})
 
     srv = ThreadingHTTPServer(("127.0.0.1", port), H)
     threading.Thread(target=srv.serve_forever, daemon=True).start()
     return srv
+
+
+OPENCLAW_PATCH = """{{
+  models: {{ providers: {{ schoolgw: {{ baseUrl: "http://127.0.0.1:{port}/v1", api: "openai-completions", auth: "api-key",
+    apiKey: "{token}", models: [ {{ id: "auto", name: "school gateway — {user}" }} ] }} }} }},
+  agents: {{ defaults: {{ model: "schoolgw/auto" }} }}
+}}
+"""
+
+
+def main() -> int:
+    import argparse
+    import os
+    from pathlib import Path
+    from examples.school import db, users
+    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument("--upstream", required=True, help="an OpenAI-compatible completions server serving the member (vLLM)")
+    ap.add_argument("--member", default="school-s0", help="the served name of the school-staff adapter")
+    ap.add_argument("--tokenizer", default=None, help="the base's tokenizer (defaults to family.SMALL); only its chat template")
+    ap.add_argument("--port", type=int, default=8765)
+    ap.add_argument("--frontier-url", default=None, help="e.g. https://api.openai.com/v1 — the `frontier` egress, made real")
+    ap.add_argument("--frontier-model", default=None)
+    ap.add_argument("--frontier-key-env", default="FRONTIER_API_KEY", help="the env var holding the frontier key")
+    ap.add_argument("--log", default="examples/school/events.jsonl")
+    ap.add_argument("--openclaw-dir", default=str(Path.home() / ".config/lora-kernel/openclaw"))
+    a = ap.parse_args()
+    from training.harness import accept_rank
+    from training.harness.family import SMALL
+    from transformers import AutoTokenizer
+    accept_rank.HOST = a.upstream.rstrip("/")
+    tok = AutoTokenizer.from_pretrained(a.tokenizer or SMALL)
+    frontier = None
+    if a.frontier_url:
+        key = os.environ.get(a.frontier_key_env)
+        if not key or not a.frontier_model:
+            print(f"[gateway] --frontier-url needs --frontier-model and ${a.frontier_key_env} set", flush=True)
+            return 2
+        frontier = frontier_client(a.frontier_url, key, a.frontier_model)
+    users.register_all()
+    gw = Gateway(db.build(), vllm_generator(a.member, tok), frontier=frontier, log_path=a.log)
+    serve(gw, a.port)
+    out = Path(a.openclaw_dir); out.mkdir(parents=True, exist_ok=True)
+    for user_id, role, org in users.SEED_USERS:
+        (out / f"{user_id}.json5").write_text(OPENCLAW_PATCH.format(port=a.port, token=tokens.issue(user_id, role, org, ttl=12 * 3600),
+                                                                    user=user_id))
+    (out / "director-north.token").write_text(tokens.issue("director-north", "director", "northgate", ttl=12 * 3600))
+    print(f"[gateway] :{a.port} · model {a.member} at {a.upstream} · frontier "
+          f"{a.frontier_model + ' at ' + a.frontier_url if frontier else 'NOT configured (frontier-egress roles say so)'}", flush=True)
+    print(f"[gateway] one OpenClaw patch per user in {out} (each carries that user's signed token)", flush=True)
+    try:
+        while True:
+            time.sleep(3600)
+    except KeyboardInterrupt:
+        return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
