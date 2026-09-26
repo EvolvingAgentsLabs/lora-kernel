@@ -87,10 +87,10 @@ arms are bought only once there is an effect to attribute.
 | # | milestone | depends on | gate | state |
 |---|---|---|---|---|
 | **1** | the pool on Qwen 3.x small | D2 ✅ | both members released on `Qwen3.5-4B`, each tying or beating its Qwen 2.5 release, paired | ✅ **[ran] 2026-09-19 — MOVED.** G1 `applied` on both full-recipe adapters; `email-full` **471/475 = its recorded 471**, tie 1 : 1; `desk-commitment` **240/240**, tie; `releases/*@v2.json`. Four sessions under an hour each ([`BRIEF`](../results/M1-pool-qwen35-20260919/BRIEF.md)) |
-| **1b** | **the pool re-released on Gemma 4 E4B** | B1 ✅ | `email-full` and `desk-commitment` retrained on `google/gemma-4-E4B-it` from the same corpora and recipe, each tying or beating its `@v2` Qwen3.5-4B release on the same cases, paired; `@v3` manifests | **[ran] 2026-09-25 — NOT MOVED as a pool:** `email-full` ties its `@v2` (469 vs 471, 1 : 3) and beats the bare Gemma (119 : 0) → **`email-full@v3` on Gemma**; `desk-commitment` ties `@v2` and the bare Gemma alike (240/240, the ceiling) — no adapter needed there, stays `@v2` ([`BRIEF`](../results/M1b-pool-gemma4-20260925/BRIEF.md)) |
+| **1b** | **the pool re-released on Gemma 4 E4B** | B1 ✅ | `email-full` and `desk-commitment` retrained on `google/gemma-4-E4B-it` from the same corpora and recipe, each tying or beating its `@v2` Qwen3.5-4B release on the same cases, paired; `@v3` manifests | **[ran] 2026-09-25 — NOT MOVED as a pool:** `email-full` ties its `@v2` (469 vs 471, 1 : 3) and beats the bare Gemma (119 : 0) → **`email-full@v3` on Gemma**; `desk-commitment` ties `@v2` and the bare Gemma alike (240/240, the ceiling) — no adapter needed there, stays `@v2` ([`BRIEF`](../results/M1b-pool-gemma4-20260925/BRIEF.md)). **2026-09-26: all moved** — `desk-commitment@v3` trained on both bands (M1d [ran], deep 239/240), `distributor-wiki@v2` (B5 [ran]) |
 | **2** | the router as a tiny model of the corpora | the members' corpora | misrouted-to-local no higher than the dictionary's on prompts the dictionary was not written for; abstains on out-of-distribution text | **arm 1 [ran] 2026-09-19 — does not pass.** Foreign text, fresh sets: dictionary 59/128 served locally, n-gram router **0/128**; legitimate requests from unseen senders: dictionary loses 0/120, router loses **120/120**. The dictionary stays; **arm 2 is an embedding model**, shared with milestone 7 |
-| **3** | the large half of one pair | 1 | a LoRA on ~~`Qwen3.8-27B`~~ `gemma-4-31B-it` (family.LARGE) is applied when served; large + LoRA beats small + LoRA on the deep band, paired | — |
-| **4** | the speculative pair | 3 | acceptance of small-LoRA drafts under large-LoRA verification exceeds acceptance under the bare large model | — |
+| **3** | the large half of one pair | 1 | a LoRA on ~~`Qwen3.8-27B`~~ ~~`gemma-4-31B-it`~~ `gemma-4-12B-it` (family.LARGE) is applied when served; large + LoRA beats small + LoRA on the deep band, paired | ✅ **[ran] 2026-09-26, on `gemma-4-12B-it`: closed — the large buys no accuracy here.** B3: 12B + LoRA 9/40 vs E4B + LoRA 10/40, a tie, with neither corpus showing a comparison; B5: shown them, the E4B alone does 37/40 — no room ([`BRIEF`](../results/B5-comparison-corpus-20260926/BRIEF.md)) |
+| **4** | the speculative pair | 3 | acceptance of small-LoRA drafts under large-LoRA verification exceeds acceptance under the bare large model | ✅ **[ran] 2026-09-26 — PASSED (B4):** α 0.871 → 0.898, 76 : 18 records, $p<10^{-4}$; the gain is on the corpus's own distribution (0.855 → 0.914). Wall-clock not measured ([`BRIEF`](../results/B4-gemma4-pair-acceptance-20260926/BRIEF.md)) |
 | **5** | the first real region, by hand | 1, 2, a sandbox, keys rotated | the release gate, on a suite with a verifier nobody here generated | **region named 2026-09-19: nursing procedures and health-education material** (Open RN *Nursing Skills*, CC BY 4.0, first); headroom arm next, zero GPU |
 | **6** | the service policy, with the bill | 2, 4, 5 | the local share saves more than it costs, on real traffic | 🔶 **first pass [ran] 2026-09-21, zero GPU:** the P41/P62 replay priced at real `gemini-3.8-flash` rates — today's actual frontier bill (90 fluids cases) **$0.18**, avoided by keeping 150 email cases local **$0.11**, ceiling if everything left **$0.30**. **The local GPU's own dollar cost is not priced** — the rental rate could not be fetched live; not guessed around |
 | **7** | **a knowledge base per subdomain, and the trajectory through it as the harness** — on fluid mechanics, split into subdomains | 1; shares its embedding model with 2's arm 2; independent of 3–6, **runs next** | an expert trained to navigate and follow notes answers families it never trained on, where the same expert without the base is at 1/20 | 🔶 **W1–W4 built [ran]; W3's radar and W5's kill arm [ran] and not passed.** W5: the library arm 35/56 against the untrained base that reads at 45/56 (6 : 16, $p=0.052$), 35 : 2 over no-library — navigation transferred, reading a two-valued note did not. Next is the user's call: composition, no training. **2026-09-24: the library's unit becomes the atomic statement (user's design, `MEMORY.md` §1.6) — W9 pre-registered: an invented distributor wiki, headroom on the untrained base first** |
@@ -232,6 +232,11 @@ pair is not built here. That is a result about the subdomain, not about the desi
 
 **Constraint.** A100, 4-bit. It does not run on the L4 the pool is served from.
 
+**State (2026-09-26) — closed on Gemma 4 E4B / 12B.** ~~Qwen3.8-27B~~: the family is Gemma 4 and the large half is
+`gemma-4-12B-it` (B2 **[ran]**). On the comparison band the halves tied while neither corpus showed a comparison (B3
+**[ran]**, 9 vs 10 of 40); taught them, the small half does 37/40 (B5 **[ran]**, 28 : 1 over its predecessor, its W9 score
+unchanged) — no room, so **the large half buys no accuracy here**, as the falsification clause reads. Its job is milestone 4's.
+
 ### Milestone 4 — the speculative pair
 
 **Objective.** Measure acceptance of the small member's drafts under the large member's
@@ -259,6 +264,9 @@ device (milestone 3) but not a speculative one.
 
 **Not claimed:** wall-clock speed-up. That needs the runtime feature and is a separate
 measurement.
+
+**State (2026-09-26) — passed on Gemma 4 E4B / 12B (B4 [ran]).** The 12B's LoRA raises acceptance of the E4B member's
+drafts, α 0.871 → 0.898 pooled, 76 : 18 records — all of it on the corpus's own distribution (0.855 → 0.914).
 
 ### Milestone 5 — the first real region
 
@@ -574,12 +582,12 @@ oracle is 140/140 through the same function ([`BRIEF`](../results/M7-W5-kill-arm
 
 ## 2. The family, and the alternative
 
-**Adopted, 2026-09-25: Gemma 4** — `google/gemma-4-E4B-it` for every new member; `gemma-4-31B-it` named for the
-large half, not measured. B1 **[ran]**: a tie with Qwen3.5-4B on W9 (38 vs 35, 35), which by the user's rule written
-before the comparison chooses Gemma. P29's block is lifted by excluding the vision/audio towers. The released members
-move one by one: `email-full@v3` on Gemma (M1b [ran]); `desk-commitment@v2` stays on `Qwen3.5-4B`; Qwen 2.5 stays the control arm.
+**Adopted, 2026-09-25: Gemma 4** — `google/gemma-4-E4B-it` for every new member; `gemma-4-12B-it` for the
+large half (~~`gemma-4-31B-it`~~ — the user's call, to run on a Mac mini), measured B2–B5. B1 **[ran]**: a tie with Qwen3.5-4B on W9 (38 vs 35, 35), which by the user's rule written
+before the comparison chooses Gemma. P29's block is lifted by excluding the vision/audio towers. Every released member
+has moved: `email-full@v3` (M1b [ran]), `desk-commitment@v3` (M1d [ran]), `distributor-wiki@v2` (B5 [ran]); Qwen 2.5 stays the control arm.
 
-**Previous, until re-release: Qwen 3.x** (`Qwen3.5-4B`, `Qwen3.8-27B`) — one id space **[ran]** D0, the family of every
+**Previous: Qwen 3.x** (`Qwen3.5-4B`, `Qwen3.8-27B`) — one id space **[ran]** D0, the family of every
 release so far. ~~Adopted: Qwen 3.x … Alternative, not now: Gemma 4, blocked at PEFT [ran] P29.~~
 
 ## 3. Rules every step follows
@@ -603,6 +611,8 @@ that decide the shape of a step:
 
 ## 5. History
 
+- **2026-09-26** — **B5 [ran]: milestone 3 closes — the small half compares once shown comparisons.** E4B trained on W9's corpus + 128 comparison walks: 37/40 on the band (released: 10/40, 28 : 1), W9's set unchanged (39/40, 63/67, 0 : 0). No room: the 12B was not trained, as the brief said. `distributor-wiki@v2` released ([`BRIEF`](../results/B5-comparison-corpus-20260926/BRIEF.md)).
+- **2026-09-26** — **B5 pre-registered: milestone 3's second and last look** — a corpus that shows comparisons (W9's 600 rows byte for byte + 128 comparison walks, gate passed against both evaluation sets), trained on both halves; the E4B first against its released member, the 12B only if the small leaves room. Whatever it says closes milestone 3 on this family ([`BRIEF`](../results/B5-comparison-corpus-20260926/BRIEF.md)).
 - **2026-09-26** — **B4 [ran]: milestone 4 PASSES** — the 12B's LoRA raises acceptance of the E4B member's drafts, 76 : 18 records, pooled α 0.871 → 0.898; the gain is on the corpus's distribution (0.855 → 0.914), none on a band neither half trained on ([`BRIEF`](../results/B4-gemma4-pair-acceptance-20260926/BRIEF.md)).
 - **2026-09-26** — **B3 [ran]: milestone 3 NOT passed on the comparison band** — E4B + LoRA 10/40 (room), 12B + LoRA 9/40, a tie (5 : 6); the bare 12B 2/40. Both walk and fail the comparison: W9's corpus never showed one. Next: comparisons in the training corpus, both halves retrained ([`BRIEF`](../results/B3-gemma4-large-member-20260926/BRIEF.md)).
 - **2026-09-26** — **M1d [ran]: `desk-commitment@v3` on Gemma, one member for both bands** — trained on the shallow and the deep corpora: shallow 240/240 (a tie with `@v2`), deep **239/240** against the bare Gemma's 83 (156 : 0) and `@v2`'s 64. **Every released member is now on Gemma 4 E4B** ([`BRIEF`](../results/M1d-desk-both-bands-20260926/BRIEF.md)).

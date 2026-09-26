@@ -1,0 +1,29 @@
+=== session 1 of 1 · srv172806 · L4
+    boot clone: rc=0 d0c1e57 B5 pre-registered: a comparison corpus (W9's 600 rows + 128 comparison walks) for milestone 3's last look
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 d0c1e57 B5 pre-registered: a comparison corpus (W9's 600 rows + 128 comparison walks) for milestone 3's last look
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    d0c1e57 B5 pre-registered: a comparison corpus (W9's 600 rows + 128 comparison walks) for milestone 3's last look | 0.30.0
+    carried the adapters in (3 chunks)
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/wiki-cmp-walks-s1
+    [pool] G1 withlib-s1: applied
+    [wiki] withlib-s1: 67 to run, 0 resumed
+    [wiki] withlib-s1 60/67 credit 56 value-right 56 errors 0 30s
+    [wiki] withlib-s1 67/67 credit 63 value-right 63 errors 0 33s
+    [wiki] NOTHING SCORED
+    the runner wrote its result — done
+exit 0

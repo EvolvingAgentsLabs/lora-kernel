@@ -102,11 +102,9 @@ Especificación completa: [`docs/es/MEMORY.md`](docs/es/MEMORY.md) **[spec]**.
    gateway no muestra ninguna línea que no esté en un resultado real de una herramienta
    (`examples/common/grounding.py`).
 
-> **[ILLUSTRATION PLACEHOLDER — `docs/img/memory-walkthrough.png`]**
-> *Siendo redibujada para páginas de enunciados atómicos; el brief está en [`docs/img/README.md`](docs/img/README.md). Seis
-> paneles en una línea: un pedido, una búsqueda que ilumina tres fichas de página, una página que se abre como su
-> tabla de secciones, una oración cuyo nombre subrayado es el enlace a la próxima página, la sección de una tercera
-> página, y la respuesta con su cita estampada — el chequeo del árbitro debajo del último panel.*
+![Seis paneles unidos por una línea, como un mapa de subte: un pedido; una búsqueda que ilumina tres fichas de página; una página que se abre como su índice de secciones; una oración cuyo nombre subrayado enlaza a la página siguiente; la página de una persona y su interno; la respuesta con su cita estampada, y el visto bueno del árbitro.](docs/img/memory-walkthrough.png)
+
+*Una pregunta, de punta a punta: páginas de enunciados de una oración, enlaces dentro de las oraciones, una respuesta que nombra la oración en que se apoya.*
 
 **La ganancia.** Si el protocolo cambia mañana, se edita un archivo markdown en git. El LoRA
 no se reentrena, porque lo que aprendió fue a obedecer los enlaces y leer las notas.
@@ -115,12 +113,9 @@ no se reentrena, porque lo que aprendió fue a obedecer los enlaces y leer las n
 
 ## El camino del pedido
 
-> **[ILLUSTRATION PLACEHOLDER — `docs/img/request-path.png`]**
-> *Siendo redibujada para el gateway; el brief está en [`docs/img/README.md`](docs/img/README.md). Una línea: un
-> agente → el gateway lee el token firmado (usuario · rol · tenant) → el experto local del rol → las herramientas
-> corren con ese permiso (un registro rechazado, un pago retenido para un director) → cada línea de la respuesta
-> chequeada contra un resultado real de herramienta → la respuesta; una rama punteada para lo que está fuera de
-> alcance, hacia la frontera o hacia una persona; un log debajo de todo.*
+![Una línea de seis estaciones: un agente; el gateway que lee una credencial firmada; el experto local chico del rol; herramientas con el permiso de la credencial, un registro rechazado y un pago retenido; una hoja con una línea inventada tachada; la respuesta. Una rama punteada para lo que está fuera de alcance lleva a un edificio lejano y a una persona; una banda de registro corre debajo de todo.](docs/img/request-path.png)
+
+*El camino de un pedido: identidad desde un token, permiso en las herramientas, una persona para los pagos, y ninguna línea que una herramienta no haya devuelto.*
 
 ```mermaid
 flowchart LR
@@ -203,14 +198,20 @@ Gemma 4 E4B con un adaptador del personal de la escuela, contra 3 de 8 con un mo
 ([`docs/es/DEMO.md`](docs/es/DEMO.md)).
 
 **La familia es Gemma 4** desde 2026-09-25: medida contra Qwen3.5-4B sobre la misma wiki, un
-empate, y la pila de desarrollo del usuario apunta a Gemma; los miembros publicados pasan por la
-compuerta de release uno por uno (hito 1b).
+empate, y la pila de desarrollo del usuario apunta a Gemma. **Todos los miembros publicados están sobre Gemma 4 E4B** —
+`email-full@v3`, `desk-commitment@v3`, `distributor-wiki@v2`; los releases de Qwen 2.5 quedan sólo como brazo de control.
+
+**El par, medido [ran].** La mitad grande es `gemma-4-12B-it` — un espacio de ids con el E4B, un LoRA servido aplicado,
+lo bastante chica para una Mac mini. Su LoRA sube la aceptación de los borradores del miembro chico (α 0,871 → 0,898,
+76 : 18 registros), así que se gana su lugar como **verificador**. **No compra precisión**: en una banda de preguntas
+comparativas las dos mitades fallaron mientras el corpus nunca mostró una, y cuando la mostró el miembro chico solo pasó
+de 10 a 37 de 40 (hitos 3 y 4, B2–B5).
 
 **Todavía sin resolver.** El router sigue siendo un diccionario de palabras clave — sus dos
 reemplazos aprendidos ya están medidos y ninguno pasa **[ran]** hito 2. Los modelos chicos todavía
 inventan: en la demo de la escuela el gateway reemplazó 2 de 5 respuestas locales por el texto
-propio de las herramientas — atrapado, contado, nunca mostrado, pero no curado. El par especulativo
-todavía no arrancó. Todavía no se midió tráfico real en ningún lugar de este repositorio.
+propio de las herramientas — atrapado, contado, nunca mostrado, pero no curado. La aceleración de reloj del
+par no está medida — la aceptación sí. Todavía no se midió tráfico real en ningún lugar de este repositorio.
 
 **Todo lo demás — cada hito, cada brazo, cada corrida — se mueve con el proyecto y no se repite
 acá, a propósito.** [`docs/es/PLAN.md`](docs/es/PLAN.md) es el estado vivo, con una compuerta y una
@@ -220,8 +221,8 @@ es el registro completo, incluido lo que falló y los instrumentos que mintieron
 genérico, autocontenido y escrito para que lo revise otro modelo.
 
 **Restricciones de ingeniería, decididas y no en discusión.** La familia es **Gemma 4** desde 2026-09-25 —
-chico `gemma-4-E4B-it`, grande `gemma-4-31B-it` (todavía no medido) — elegida en un empate medido con
-Qwen3.5-4B, cuyos miembros publicados quedan hasta que se los vuelva a publicar ([`docs/es/ARCHITECTURE.md`](docs/es/ARCHITECTURE.md) §6).
+chico `gemma-4-E4B-it`, grande `gemma-4-12B-it` (medido, B2–B5) — elegida en un empate medido con
+Qwen3.5-4B; todos los miembros publicados ya se movieron ([`docs/es/ARCHITECTURE.md`](docs/es/ARCHITECTURE.md) §6).
 Entrenada y servida en Colab, en sesiones de menos de una hora, nunca en la máquina de un usuario.
 
 ---
@@ -267,7 +268,7 @@ modelo).
 | `training/wiki/` | **W9, la wiki de enunciados atómicos**: un mundo de distribuidora por semilla, preguntas de 1 a 3 saltos, el grader de citas, el runner de trayectorias y su corpus |
 | `examples/school/gateway.py`, `demo_run.py`, `school_arm.py` | **la demo de la escuela, como sistema funcionando**: identidad firmada, escrituras retenidas y la aprobación de un director, salida por rol, anclaje, un log y un dashboard; el LoRA de trayectoria del personal de la escuela y su medición |
 | `training/harness/fake_vllm.py` | un `vllm serve` falso para los tests de integración del camino de serving — los bugs que modela se pagaron una vez con una tarjeta |
-| `training/harness/family.py` | la familia de modelos en un solo lugar: Gemma 4 E4B para miembros nuevos, Qwen3.5-4B para los publicados hasta que se los vuelva a publicar |
+| `training/harness/family.py` | la familia de modelos en un solo lugar: Gemma 4 E4B chico, 12B grande; Qwen sólo como brazo de control |
 | `releases/`, `results/` | los manifiestos, y las corridas que citan los documentos |
 
 ## Documentos

@@ -1,0 +1,30 @@
+{
+ "base": "google/gemma-4-E4B-it",
+ "started": "2026-09-26T19:48:21",
+ "grader": "training.wiki.grade",
+ "library": "knowledge/distributor-wiki",
+ "eval_world": 20260924,
+ "arms": {},
+ "members": {
+  "withlib-s1": {
+   "adapter": "adapters/wiki-cmp-walks-s1",
+   "seed": 1,
+   "recipe": {
+    "r": 16,
+    "lora_alpha": 32,
+    "epochs": 3,
+    "lr": 0.0002,
+    "batch": 2,
+    "accum": 8,
+    "max_seq": 1536,
+    "seed": 0,
+    "targets": "q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"
+   },
+   "adapter_sha256": "d4d91ea4aa7a8ffcd82beabb87d07112c02b212388412fb61f43df49d3eb93d6",
+   "corpus": "train_cmp.jsonl",
+   "corpus_sha256": "7b307d53cf9afd5a99a2c4bfe253f7b12a77f47988ad781e09d49bed79638f92"
+  }
+ },
+ "packed": 1,
+ "trained_only": "2026-09-26T20:06:49"
+}

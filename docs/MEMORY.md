@@ -23,17 +23,9 @@ Five pieces:
 | 4 | **the LoRA** | trained on the *habit of navigating*, never on the data | yes — the only trained part |
 | 5 | **the runtime** | a small Python referee: turns the pages, applies local rules, enforces the order | no — pure software |
 
-> **[ILLUSTRATION PLACEHOLDER — `docs/img/memory-five-pieces.png`]**
-> *A single wide diagram, left to right, flat technical style, light background. Far left, a
-> bookcase with two labelled shelves: the top shelf "Operational harness" holds cards joined by
-> arrows in a line (a procedure); the bottom shelf "Encyclopedic wiki" holds cards arranged as a
-> tree. In the middle, a small radar dish labelled "radar — embeddings of this subdomain only"
-> sweeping over the bookcase and lighting up three cards. To its right, a figure at a desk labelled
-> "LoRA — the specialist" holding exactly three tools labelled `search`, `open`, `calc`. Beneath
-> everything, a thin band labelled "runtime — referee" with three icons: a page being turned, a
-> stamp reading "site rule applied", and a barrier gate reading "requires step 1". No robots, no
-> brains, no glowing neural nets: the point of the picture is that four of the five pieces are not
-> neural.*
+![A bookcase with two shelves — a route of cards above, a tree of cards below — a small radar lighting three cards, a specialist holding three tools, and beneath them a band, the referee: a page being turned, a stamp for a site's rule, a barrier gate.](img/memory-five-pieces.png)
+
+*The five pieces of the memory. Four of them are not neural.*
 
 ---
 
@@ -469,10 +461,9 @@ page** again, ids re-drawn, to stand in the turn that continues. The corpus call
 
 ## 6. In operation — one task, end to end
 
-> **[ILLUSTRATION PLACEHOLDER — `docs/img/memory-walkthrough.png`]**
-> *Being redrawn for pages of atomic statements (§1.6); the brief is in [`img/README.md`](img/README.md): a request, a
-> search that lights three page cards, a page as its table of sections, a sentence whose underlined name links to the
-> next page, a person's section, the answer with its citation stamped on it and the referee's check.*
+![Six panels joined by one line, like a subway map: a request; a search that lights three page cards; a page opening as its table of sections; one sentence whose underlined name links to the next page; a person's page and its extension; the answer with its citation stamped on it, and the referee's check.](img/memory-walkthrough.png)
+
+*One question, end to end: pages of one-sentence statements, links inside the sentences, an answer that names the sentence it rests on.*
 
 1. **The task comes in:** *"Infuse 500 mL over 4 hours by gravity; drop factor 20 gtt/mL."*
 2. **The expert consults its radar:** `<search shelf=harness>start a primary infusion</search>`.

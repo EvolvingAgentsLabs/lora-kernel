@@ -1,0 +1,79 @@
+{
+ "name": "distributor-wiki",
+ "version": 2,
+ "base": "google/gemma-4-E4B-it",
+ "kind": "trajectory LoRA over pages of atomic statements (docs/MEMORY.md \u00a71.6)",
+ "recipe": {
+  "r": 16,
+  "lora_alpha": 32,
+  "epochs": 3,
+  "lr": 0.0002,
+  "batch": 2,
+  "accum": 8,
+  "max_seq": 1536,
+  "seed": 1,
+  "targets": "q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"
+ },
+ "lora_exclusions": "vision/audio towers (training/s4_train.py::towers_to_exclude)",
+ "corpus": "training/wiki/data/train_cmp.jsonl",
+ "corpus_sha256": "7b307d53cf9afd5a99a2c4bfe253f7b12a77f47988ad781e09d49bed79638f92",
+ "adapter_sha256": "d4d91ea4aa7a8ffcd82beabb87d07112c02b212388412fb61f43df49d3eb93d6",
+ "adapter_tarball": "results/B5-comparison-corpus-20260926/adapters.tgz (git-ignored; a copy in ~/lora-kernel-adapters/B5-e4b-cmp-s1/)",
+ "library": "knowledge/distributor-wiki (evaluation world 20260924; the member is trained on 32 other worlds)",
+ "prompt": "memory.prompt.SYSTEM_WIKI + user_text_wiki",
+ "thinking": "off \u2014 enable_thinking=false in every render",
+ "suite": "training/wiki/data/eval.jsonl + training/wiki/data/eval_hard.jsonl",
+ "score": {
+  "headline_credit": 39,
+  "all_credit": 63,
+  "hard_band": "37/40 (compare-lead 17/20, compare-pack 20/20)"
+ },
+ "seed_choice": "s1 only \u2014 the released member's seed, so the pair against v1 differs only in the corpus",
+ "pairs": [
+  {
+   "pair": "v2 vs v1 on eval_hard",
+   "n_paired": 40,
+   "a_total": 37,
+   "b_total": 10,
+   "only_a": 28,
+   "only_b": 1,
+   "p_value": 1.1e-07,
+   "state": "improvement"
+  },
+  {
+   "pair": "v2 vs v1 on eval (all 67)",
+   "n_paired": 67,
+   "a_total": 63,
+   "b_total": 63,
+   "only_a": 0,
+   "only_b": 0,
+   "p_value": 1.0,
+   "state": "tie \u2014 the same four misses"
+  }
+ ],
+ "gates": {
+  "G1": {
+   "probed": 3,
+   "empty": 0,
+   "differs": 3,
+   "applied": true,
+   "samples": [
+    {
+     "base": "The sky appears blue because of a phenomenon called Rayleigh",
+     "member": "The sky appears blue because of a phenomenon called Rayleigh"
+    },
+    {
+     "base": "Here are three things a careful reader checks before answeri",
+     "member": "Here are three things a careful reader checks before answeri"
+    },
+    {
+     "base": "A pressure drop in a pipe depends on the fluid's properties,",
+     "member": "A pressure drop in a pipe depends on the fluid's viscosity, "
+    }
+   ]
+  }
+ },
+ "released_by": "B5 [ran] 2026-09-26 \u2014 improvement on the comparison band (28:1), tie on W9's set; results/B5-comparison-corpus-20260926/BRIEF.md",
+ "supersedes": "distributor-wiki@v1 (kept as the control arm)",
+ "corpus_note": "W9's 600 rows byte for byte + 128 comparison walks (training/wiki/corpus.py --comparisons)"
+}

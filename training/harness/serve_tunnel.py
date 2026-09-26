@@ -15,7 +15,7 @@ it without a human reading scrollback:
 
     [tunnel] URL https://something.trycloudflare.com
 
-    python3 -m training.harness.serve_tunnel --base Qwen/Qwen2.5-3B-Instruct \\
+    python3 -m training.harness.serve_tunnel --base google/gemma-4-E4B-it \\
         --adapter email-full=adapters/email-full --hours 3
 """
 
@@ -29,6 +29,8 @@ import sys
 import time
 import urllib.request
 from pathlib import Path
+
+from training.harness import family
 
 OUT = Path("tunnel.json")
 
@@ -73,7 +75,7 @@ def start_tunnel(port: int, minutes: int = 3) -> tuple[subprocess.Popen, str | N
 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
-    ap.add_argument("--base", default="Qwen/Qwen2.5-3B-Instruct")
+    ap.add_argument("--base", default=family.SMALL)   # every released member is on it (training/harness/family.py)
     ap.add_argument("--adapter", action="append", default=[], help="name=path")
     ap.add_argument("--hours", type=float, default=3.0,
                     help="how long to hold the tunnel open before shutting down")

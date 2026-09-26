@@ -14,6 +14,9 @@ GPU=L4 BRANCH=main RUN_DIR=results/DEMO-org-20260924 MODULE=training.harness.dem
 python -m training.harness.demo_org --render results/DEMO-org-20260924/demo.json > transcript.md
 ```
 
+*Este recorrido corrió sobre `Qwen3.5-4B` con los miembros `@v2`; los miembros liberados ahora están sobre Gemma 4 E4B
+(`@v3`) y no se volvió a correr sobre ellos — la demo de la escuela, más abajo, sí, 8/8.*
+
 Para la versión en vivo — el mismo modelo detrás de OpenClaw, turno por turno — ver
 [`OPENCLAW.md`](OPENCLAW.md); corrió en vivo, 40 turnos, todos locales **[ran]** P63.
 
@@ -24,7 +27,7 @@ Para la versión en vivo — el mismo modelo detrás de OpenClaw, turno por turn
 | 1 | un endpoint compatible con OpenAI; varios adaptadores sobre un `Qwen3.5-4B` residente; cada pedido ruteado al suyo | el servicio reemplaza sin cambios el modelo que configura un runtime de agentes | **[ran]** P62, P63 |
 | 2 | **demo de la escuela [ran] 2026-09-25: 8/8 sobre Gemma 4 E4B + el LoRA del personal, cada respuesta anclada por el gateway** ([`results/DEMO-school-gemma-20260925/`](../../results/DEMO-school-gemma-20260925/README.md)) · roles de una distribuidora — atención al cliente, compras, IT — le piden al modelo local; llama a la capa de herramientas real y responde con lo que la herramienta devolvió | un modelo chico atiende tareas rutinarias por rol, con herramientas, local | **[ran]** esta demo (`training/harness/demo_org.py` parte A) |
 | 3 | el mismo usuario pide el pedido de otro cliente: **la herramienta se niega**; una nota de entrega trae una instrucción plantada: se reporta, no se obedece | el permiso vive fuera del modelo; un prompt no lo puede ampliar | capa de herramientas **[ran]** 77 casos adversariales, 0 fugas; lado del modelo, esta demo |
-| 4 | una pregunta de dos o tres saltos — *¿qué interno tiene el encargado del depósito que guarda este producto?* — recorrida por una wiki de **enunciados atómicos**, respondida con la cita `[id§anchor]` que el runtime verifica | los hechos viven en páginas editables, no en pesos; cada respuesta nombra el enunciado en que se apoya | **[ran]** W9 — PASÓ: 35/40 contra el 0/40 del recorrido sin entrenar; sobre Gemma 4 E4B 38/40 |
+| 4 | una pregunta de dos o tres saltos — *¿qué interno tiene el encargado del depósito que guarda este producto?* — recorrida por una wiki de **enunciados atómicos**, respondida con la cita `[id§anchor]` que el runtime verifica | los hechos viven en páginas editables, no en pesos; cada respuesta nombra el enunciado en que se apoya | **[ran]** W9 — PASÓ: 35/40 contra el 0/40 del recorrido sin entrenar; sobre Gemma 4 E4B 38/40; con comparaciones en su corpus, 37/40 en una banda comparativa (B5) |
 | 5 | la ruta: un pedido en la región de un miembro entrenado queda local, uno fuera de toda región sale hacia la frontera; la factura de los turnos atendidos localmente, a las tarifas de la propia frontera | dónde está la plata — y qué no está cotizado | ruta **[ran]** M2; factura **[ran]** primera pasada de M6 |
 
 ## 2. Qué decir sin rodeos

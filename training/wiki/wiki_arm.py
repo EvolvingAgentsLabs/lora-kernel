@@ -282,6 +282,7 @@ def main() -> int:
     ap.add_argument("--concurrency", type=int, default=8)
     ap.add_argument("--rows", default="eval", help="which question set: eval (W9) or eval_hard (B3's comparisons)")
     ap.add_argument("--member-prefix", default="adapters/wiki-walks-s", help="where withlib-s<k> lives (B3: adapters/wiki12b-walks-s)")
+    ap.add_argument("--corpus", default="train", help="training/wiki/data/<corpus>.jsonl to train on (B5: train_cmp, W9's plus comparisons)")
     ap.add_argument("--out", default="wiki_arm.json")
     ap.add_argument("--combine", default=None, help="zero GPU: add this file's scored arms to --out's and re-read the verdict")
     a = ap.parse_args()
@@ -328,10 +329,11 @@ def main() -> int:
 
     if a.train_seed is not None:
         spec = f"{a.member_prefix}{a.train_seed}"
+        corpus = DATA / f"{a.corpus}.jsonl"
         from training.harness.release_gate import RECIPE
         if not Path(spec, "adapter_model.safetensors").exists():
-            print(f"[pool] training {spec} on {a.base} from {DATA / 'train.jsonl'}", flush=True)
-            rc = subprocess.call([sys.executable, "-m", "training.harness.train_one", "--base", a.base, "--train", str(DATA / "train.jsonl"),
+            print(f"[pool] training {spec} on {a.base} from {corpus}", flush=True)
+            rc = subprocess.call([sys.executable, "-m", "training.harness.train_one", "--base", a.base, "--train", str(corpus),
                                   "--out-dir", spec, "--epochs", str(RECIPE["epochs"]), "--r", str(RECIPE["r"]),
                                   "--alpha", str(RECIPE["lora_alpha"]), "--lr", str(RECIPE["lr"]), "--seed", str(a.train_seed)])
             if rc != 0:
@@ -342,7 +344,7 @@ def main() -> int:
         rec.setdefault("members", {})[f"withlib-s{a.train_seed}"] = {
             "adapter": spec, "seed": a.train_seed, "recipe": RECIPE,
             "adapter_sha256": hashlib.sha256(Path(spec, "adapter_model.safetensors").read_bytes()).hexdigest(),
-            "corpus_sha256": hashlib.sha256((DATA / "train.jsonl").read_bytes()).hexdigest()}
+            "corpus": corpus.name, "corpus_sha256": hashlib.sha256(corpus.read_bytes()).hexdigest()}
         have = sorted(str(p.parent) for p in Path(a.member_prefix).parent.glob(Path(a.member_prefix).name + "*/adapter_model.safetensors"))
         subprocess.call(["tar", "czf", "adapters_out.tgz", *have])
         rec["packed"] = len(have); rec["trained_only"] = time.strftime("%Y-%m-%dT%H:%M:%S")

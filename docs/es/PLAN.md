@@ -97,10 +97,10 @@ brazos de atribución se compran sólo una vez que hay un efecto que atribuir.
 | # | hito | depende de | compuerta | estado |
 |---|---|---|---|---|
 | **1** | el pool en Qwen 3.x chico | D2 ✅ | los dos miembros liberados sobre `Qwen3.5-4B`, cada uno empatando o ganándole a su release de Qwen 2.5, pareado | ✅ **[ran] 2026-09-19 — MOVIDO.** G1 `applied` en los dos adaptadores de receta completa; `email-full` **471/475 = sus 471 grabados**, empate 1 : 1; `desk-commitment` **240/240**, empate; `releases/*@v2.json`. Cuatro sesiones de menos de una hora ([`BRIEF`](../../results/M1-pool-qwen35-20260919/BRIEF.md)) |
-| **1b** | **el pool re-liberado sobre Gemma 4 E4B** | B1 ✅ | `email-full` y `desk-commitment` reentrenados sobre `google/gemma-4-E4B-it` desde los mismos corpus y la misma receta, cada uno empatando o ganándole a su release `@v2` de Qwen3.5-4B en los mismos casos, pareado; manifiestos `@v3` | **[ran] 2026-09-25 — NO SE MUEVE como pool:** `email-full` empata con su `@v2` (469 vs 471, 1 : 3) y le gana al Gemma pelado (119 : 0) → **`email-full@v3` sobre Gemma**; `desk-commitment` empata con `@v2` y con el Gemma pelado por igual (240/240, el techo) — ahí no hace falta adaptador, se queda en `@v2` ([`BRIEF`](../../results/M1b-pool-gemma4-20260925/BRIEF.md)) |
+| **1b** | **el pool re-liberado sobre Gemma 4 E4B** | B1 ✅ | `email-full` y `desk-commitment` reentrenados sobre `google/gemma-4-E4B-it` desde los mismos corpus y la misma receta, cada uno empatando o ganándole a su release `@v2` de Qwen3.5-4B en los mismos casos, pareado; manifiestos `@v3` | **[ran] 2026-09-25 — NO SE MUEVE como pool:** `email-full` empata con su `@v2` (469 vs 471, 1 : 3) y le gana al Gemma pelado (119 : 0) → **`email-full@v3` sobre Gemma**; `desk-commitment` empata con `@v2` y con el Gemma pelado por igual (240/240, el techo) — ahí no hace falta adaptador, se queda en `@v2` ([`BRIEF`](../../results/M1b-pool-gemma4-20260925/BRIEF.md)). **2026-09-26: todos movidos** — `desk-commitment@v3` entrenado en las dos bandas (M1d [ran], profunda 239/240), `distributor-wiki@v2` (B5 [ran]) |
 | **2** | el router como un modelo chico de los corpus | los corpus de los miembros | mal-ruteados-a-local no mayor que el del diccionario en prompts para los que el diccionario no fue escrito; abstiene ante texto fuera de distribución | **brazo 1 [ran] 2026-09-19 — no pasa.** Texto extranjero, conjuntos frescos: el diccionario sirve 59/128 localmente, el router de n-gramas **0/128**; pedidos legítimos de remitentes no vistos: el diccionario pierde 0/120, el router pierde **120/120**. El diccionario se queda; **el brazo 2 es un modelo de embeddings**, compartido con el hito 7 |
-| **3** | la mitad grande de un par | 1 | un LoRA en ~~`Qwen3.8-27B`~~ `gemma-4-31B-it` (family.LARGE) está `applied` al servirse; grande + LoRA le gana a chico + LoRA en la banda profunda, pareado | — |
-| **4** | el par especulativo | 3 | la aceptación de borradores del LoRA chico bajo verificación del LoRA grande supera la aceptación bajo el modelo grande pelado | — |
+| **3** | la mitad grande de un par | 1 | un LoRA en ~~`Qwen3.8-27B`~~ ~~`gemma-4-31B-it`~~ `gemma-4-12B-it` (family.LARGE) está `applied` al servirse; grande + LoRA le gana a chico + LoRA en la banda profunda, pareado | ✅ **[ran] 2026-09-26, sobre `gemma-4-12B-it`: cerrado — el grande no compra precisión acá.** B3: 12B + LoRA 9/40 vs E4B + LoRA 10/40, empate, sin que ningún corpus mostrara una comparación; B5: mostradas, el E4B solo hace 37/40 — sin margen ([`BRIEF`](../../results/B5-comparison-corpus-20260926/BRIEF.md)) |
+| **4** | el par especulativo | 3 | la aceptación de borradores del LoRA chico bajo verificación del LoRA grande supera la aceptación bajo el modelo grande pelado | ✅ **[ran] 2026-09-26 — PASADO (B4):** α 0,871 → 0,898, 76 : 18 registros, $p<10^{-4}$; la ganancia está en la distribución del propio corpus (0,855 → 0,914). Reloj no medido ([`BRIEF`](../../results/B4-gemma4-pair-acceptance-20260926/BRIEF.md)) |
 | **5** | la primera región real, a mano | 1, 2, un sandbox, claves rotadas | la compuerta de release, sobre una suite con un verificador que nadie acá generó | **región nombrada el 2026-09-19: procedimientos de enfermería y material de educación en salud** (*Nursing Skills* de Open RN, CC BY 4.0, primero); sigue el brazo de margen, cero GPU |
 | **6** | la política de servicio, con la factura | 2, 4, 5 | la porción local ahorra más de lo que cuesta, sobre tráfico real | 🔶 **primera pasada [ran] 2026-09-21, cero GPU:** el replay de P41/P62 tasado a las tarifas reales de `gemini-3.8-flash` — la factura real de hoy hacia la frontera (90 casos de fluidos) **$0,18**, evitada al mantener locales los 150 casos de email **$0,11**, techo si todo hubiera salido **$0,30**. **El costo en dólares de la propia GPU local no está tasado** — la tarifa de alquiler no se pudo obtener en vivo; no se adivinó |
 | **7** | **una base de conocimiento por subdominio, y la trayectoria por ella como harness** — sobre mecánica de fluidos, partida en subdominios | 1; comparte su modelo de embeddings con el brazo 2 del hito 2; independiente de 3–6, **corre a continuación** | un experto entrenado para navegar y seguir notas contesta familias sobre las que nunca entrenó, donde el mismo experto sin la base está en 1/20 | 🔶 **W1–W4 construidos [ran]; el radar de W3 y el brazo que mata de W5 [ran] y no pasan.** W5: el brazo con biblioteca 35/56 contra el base sin entrenar que lee, 45/56 (6 : 16, $p=0{,}052$), 35 : 2 sobre sin-biblioteca — la navegación se transfirió, leer una nota de dos valores no. Sigue a decisión del usuario: composición, sin entrenar. **2026-09-24: la unidad de la biblioteca pasa a ser el enunciado atómico (diseño del usuario, `MEMORY.md` §1.6) — W9 pre-registrado: una wiki de distribuidora inventada, margen sobre el base sin entrenar primero** |
@@ -256,6 +256,11 @@ diseño.
 
 **Restricción.** A100, 4 bits. No corre en la L4 desde la que se sirve el pool.
 
+**Estado (2026-09-26) — cerrado en Gemma 4 E4B / 12B.** ~~Qwen3.8-27B~~: la familia es Gemma 4 y la mitad grande es
+`gemma-4-12B-it` (B2 **[ran]**). En la banda comparativa las mitades empataron mientras ningún corpus mostraba una
+comparación (B3 **[ran]**, 9 vs 10 de 40); enseñadas, la mitad chica hace 37/40 (B5 **[ran]**, 28 : 1 sobre su predecesor,
+su puntaje de W9 intacto) — sin margen, así que **la mitad grande no compra precisión acá**, como dice la cláusula de falsación. Su trabajo es el del hito 4.
+
 ### Hito 4 — el par especulativo
 
 **Objetivo.** Medir la aceptación de los borradores del miembro chico bajo la
@@ -283,6 +288,9 @@ calidad (hito 3) pero no uno especulativo.
 
 **No se afirma:** aceleración de reloj. Eso necesita la feature del runtime y es una
 medición aparte.
+
+**Estado (2026-09-26) — pasado en Gemma 4 E4B / 12B (B4 [ran]).** El LoRA del 12B sube la aceptación de los borradores del
+miembro E4B, α 0,871 → 0,898 agregado, 76 : 18 registros — toda en la distribución del propio corpus (0,855 → 0,914).
 
 ### Hito 5 — la primera región real
 
@@ -622,13 +630,14 @@ de línea compartida, cantidad por capa, control sin `rate`, fallos de recuperac
 
 ## 2. La familia, y la alternativa
 
-**Adoptada, 2026-09-25: Gemma 4** — `google/gemma-4-E4B-it` para todo miembro nuevo; `gemma-4-31B-it` nombrado
-para la mitad grande, no medido. B1 **[ran]**: un empate con Qwen3.5-4B en W9 (38 contra 35, 35), que por la
+**Adoptada, 2026-09-25: Gemma 4** — `google/gemma-4-E4B-it` para todo miembro nuevo; `gemma-4-12B-it` para la
+mitad grande (~~`gemma-4-31B-it`~~ — decisión del usuario, para correr en una Mac mini), medido en B2–B5. B1 **[ran]**: un empate con Qwen3.5-4B en W9 (38 contra 35, 35), que por la
 regla del usuario escrita antes de la comparación elige a Gemma. El bloqueo de P29 se levanta excluyendo las
-torres de visión/audio. Los miembros liberados se mueven de a uno: `email-full@v3` sobre Gemma (M1b [ran]);
-`desk-commitment@v2` queda sobre `Qwen3.5-4B`; Qwen 2.5 sigue siendo el brazo de control.
+torres de visión/audio. Todos los miembros liberados
+se movieron: `email-full@v3` (M1b [ran]), `desk-commitment@v3` (M1d [ran]), `distributor-wiki@v2` (B5 [ran]); Qwen 2.5
+sigue siendo el brazo de control.
 
-**Previa, hasta la re-liberación: Qwen 3.x** (`Qwen3.5-4B`, `Qwen3.8-27B`) — un espacio de ids **[ran]** D0,
+**Previa: Qwen 3.x** (`Qwen3.5-4B`, `Qwen3.8-27B`) — un espacio de ids **[ran]** D0,
 la familia de cada release hasta ahora. ~~Adoptada: Qwen 3.x … Alternativa, no ahora: Gemma 4, bloqueada en
 PEFT [ran] P29.~~
 
@@ -654,6 +663,8 @@ Las cuatro que deciden la forma de un paso:
 
 ## 5. Historia
 
+- **2026-09-26** — **B5 [ran]: se cierra el hito 3 — la mitad chica compara cuando le muestran comparaciones.** E4B entrenado con el corpus de W9 + 128 recorridos comparativos: 37/40 en la banda (liberado: 10/40, 28 : 1), el conjunto de W9 intacto (39/40, 63/67, 0 : 0). Sin margen: el 12B no se entrenó, como decía el brief. Se libera `distributor-wiki@v2` ([`BRIEF`](../../results/B5-comparison-corpus-20260926/BRIEF.md)).
+- **2026-09-26** — **B5 pre-registrado: la segunda y última mirada al hito 3** — un corpus que muestra comparaciones (las 600 filas de W9 byte a byte + 128 recorridos comparativos, compuerta pasada contra los dos conjuntos de evaluación), entrenado en las dos mitades; primero el E4B contra su miembro liberado, el 12B sólo si el chico deja margen. Lo que diga cierra el hito 3 en esta familia ([`BRIEF`](../../results/B5-comparison-corpus-20260926/BRIEF.md)).
 - **2026-09-26** — **B4 [ran]: el hito 4 PASA** — el LoRA del 12B sube la aceptación de los borradores del miembro E4B, 76 : 18 registros, α agregado 0,871 → 0,898; la ganancia está en la distribución del corpus (0,855 → 0,914), ninguna en una banda que ninguna de las dos mitades entrenó ([`BRIEF`](../../results/B4-gemma4-pair-acceptance-20260926/BRIEF.md)).
 - **2026-09-26** — **B3 [ran]: el hito 3 NO pasa en la banda comparativa** — E4B + LoRA 10/40 (hay margen), 12B + LoRA 9/40, empate (5 : 6); el 12B pelado 2/40. Los dos recorren y fallan la comparación: el corpus de W9 nunca mostró una. Siguiente: comparaciones en el corpus de entrenamiento, las dos mitades reentrenadas ([`BRIEF`](../../results/B3-gemma4-large-member-20260926/BRIEF.md)).
 - **2026-09-26** — **M1d [ran]: `desk-commitment@v3` sobre Gemma, un miembro para las dos bandas** — entrenado con el corpus superficial y el profundo: superficial 240/240 (empate con `@v2`), profunda **239/240** contra 83 del Gemma pelado (156 : 0) y 64 de `@v2`. **Todos los miembros liberados están ahora sobre Gemma 4 E4B** ([`BRIEF`](../../results/M1d-desk-both-bands-20260926/BRIEF.md)).
