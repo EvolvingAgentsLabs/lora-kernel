@@ -24,7 +24,7 @@ English in both language versions.
 | `memory-five-pieces.png` | wide, ~1600 px | ✅ **in** | `docs/MEMORY.md`, `docs/es/MEMORY.md`, `docs/ARCHITECTURE.md`, `docs/es/ARCHITECTURE.md` |
 | `memory-walkthrough.png` | tall, ~1200 × 1600 | ✅ **in (v2, 2026-09-26)** | `README.md`, `README.es.md`, `docs/MEMORY.md`, `docs/es/MEMORY.md` |
 | `request-path.png` | wide, ~1600 px | ✅ **in (v2, 2026-09-26)** | `README.md`, `README.es.md` |
-| `demo-escuela-preview.gif`, `demo-escuela-poster.png` | 960 px GIF · 1280 px PNG | ✅ **in** — cut from `docs/video/demo-escuela.mp4` by ffmpeg, not drawn (`video/README.md`) | `README.md`, `README.es.md` |
+| `demo-escuela-preview.gif`, `demo-escuela-poster.png` | 960 px GIF · 1280 px PNG | ✅ **in** — cut from `docs/video/demo-escuela.mp4` by ffmpeg, not drawn (`video/README.md`) | not embedded — the READMEs play the video itself (a GitHub attachment of the same MP4); kept for sharing where video does not play |
 | `solution-architecture.png` | wide, ~1600 px | ✅ **in** | `README.md`, `README.es.md`, `docs/articles/2026-09-it-was-the-harness.md`, `docs/articles/2026-09-era-el-arnes.es.md` (cover) |
 
 ## Briefs

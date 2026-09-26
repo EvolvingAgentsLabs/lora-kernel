@@ -26,9 +26,9 @@
 
 ## Watch the demo — a whole educational centre on one small local model (76 s)
 
-[![The recorded demo: an educator reads a student's agenda; another school's record refused by the tool layer; a $45 charge held until a director approves; every role and box of the reference diagram; 15 of 15 scenes.](docs/img/demo-escuela-preview.gif)](docs/video/demo-escuela.mp4)
+https://github.com/user-attachments/assets/e392f2b9-ff83-45f5-bc96-0da483a7b05f
 
-**[▶ Play the video (MP4, 1.8 MB)](docs/video/demo-escuela.mp4)** · in Spanish · every request, tool call, reply and number on screen is
+**[the MP4 in the repository (1.8 MB)](docs/video/demo-escuela.mp4)** · in Spanish · every request, tool call, reply and number on screen is
 copied from one recorded run — [`results/DEMO-school-diagram-20260926/`](results/DEMO-school-diagram-20260926/BRIEF.md), **15/15** on
 Gemma 4 E4B + a school-staff LoRA behind the gateway. Synthetic schools; identity, payments and monitoring are demo stand-ins.
 The video is HTML rendered with [HyperFrames](https://github.com/heygen-com/hyperframes): [`video/demo-escuela/`](video/README.md).

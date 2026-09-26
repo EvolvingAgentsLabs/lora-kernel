@@ -27,9 +27,9 @@
 
 ## Mirá la demo — un centro educativo completo sobre un modelo chico y local (76 s)
 
-[![La demo grabada: un educador lee la agenda de un alumno; el registro de otra escuela, rechazado por la capa de herramientas; un cobro de $45 retenido hasta que un director lo aprueba; cada rol y caja del diagrama de referencia; 15 de 15 escenas.](docs/img/demo-escuela-preview.gif)](docs/video/demo-escuela.mp4)
+https://github.com/user-attachments/assets/e392f2b9-ff83-45f5-bc96-0da483a7b05f
 
-**[▶ Ver el video (MP4, 1,8 MB)](docs/video/demo-escuela.mp4)** · en español · cada pedido, llamada a herramienta, respuesta y número en
+**[el MP4 en el repositorio (1,8 MB)](docs/video/demo-escuela.mp4)** · en español · cada pedido, llamada a herramienta, respuesta y número en
 pantalla está copiado de una corrida grabada — [`results/DEMO-school-diagram-20260926/`](results/DEMO-school-diagram-20260926/BRIEF.md),
 **15/15** sobre Gemma 4 E4B + un LoRA del personal detrás del gateway. Escuelas sintéticas; identidad, pagos y monitoreo son
 sustitutos de demo. El video es HTML renderizado con [HyperFrames](https://github.com/heygen-com/hyperframes):
