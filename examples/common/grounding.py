@@ -62,6 +62,8 @@ def ground(reply: str, results: list[str], spanish: bool = True) -> tuple[str, s
     results = [r for r in results if r and r.strip()]
     if not results:
         return reply, "no_result"
-    if grounded(reply, results):
+    # AN EMPTY REPLY IS NOT GROUNDED — it has no items, so `grounded` holds vacuously, and a model that stopped right
+    # after a real result handed the user nothing [ran] results/DEMO-org-gemma-20260926 (the maintenance ticket).
+    if items(reply) and grounded(reply, results):
         return reply, "kept"
     return fallback(results, spanish), "replaced"

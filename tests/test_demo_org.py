@@ -146,3 +146,11 @@ def test_no_partial_record_reads_as_finished_to_the_chain():
     assert any(m in _json.dumps({"routed": [{"decision": "local"}]}) for m in markers)   # the old key trips it
     early = _json.dumps({"base": "x", "started": "t", "routed": d.routed()})
     assert not any(m in early for m in markers), markers
+
+
+def test_an_empty_reply_after_a_real_result_is_replaced_not_kept():
+    """A model that stops right after the tool's result gives the user nothing: grounding serves the tools' text."""
+    from examples.common import grounding
+    served, how = grounding.ground("", ["filed maintenance request #3 for dock 2 at riverside"], spanish=False)
+    assert how == "replaced" and "request #3" in served
+    assert grounding.ground("   \n", ["x result"], spanish=False)[1] == "replaced"

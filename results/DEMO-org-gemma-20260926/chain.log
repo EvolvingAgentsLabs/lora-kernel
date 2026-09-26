@@ -1,0 +1,39 @@
+=== session 1 of 1 · srv183919 · L4
+    boot clone: rc=0 e2d3bc5 chain_serve: HF_AUTH=1 carries the user's Hugging Face token in, for a gated model
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 e2d3bc5 chain_serve: HF_AUTH=1 carries the user's Hugging Face token in, for a gated model
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    e2d3bc5 chain_serve: HF_AUTH=1 carries the user's Hugging Face token in, for a gated model | 0.30.0
+    carried the adapters in (3 chunks)
+    runner started (launch 1)
+    [demo] route: email triage, in the member's own wording — a released member's region → local · the same ask, paraphrased → out · marketing copy — no member's region → out
+    [demo] route: email triage, in the member's own wording — a released member's region → local · the same ask, paraphrased → out · marketing copy — no member's region → out
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules wiki=adapters/wiki-cmp-walks-s1
+    [demo] route: email triage, in the member's own wording — a released member's region → local · the same ask, paraphrased → out · marketing copy — no member's region → out
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules wiki=adapters/wiki-cmp-walks-s1
+    [demo] route: email triage, in the member's own wording — a released member's region → local · the same ask, paraphrased → out · marketing copy — no member's region → out
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules wiki=adapters/wiki-cmp-walks-s1
+    [demo] route: email triage, in the member's own wording — a released member's region → local · the same ask, paraphrased → out · marketing copy — no member's region → out
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules wiki=adapters/wiki-cmp-walks-s1
+    [demo] route: email triage, in the member's own wording — a released member's region → local · the same ask, paraphrased → out · marketing copy — no member's region → out
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules wiki=adapters/wiki-cmp-walks-s1
+    [demo] route: email triage, in the member's own wording — a released member's region → local · the same ask, paraphrased → out · marketing copy — no member's region → out
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules wiki=adapters/wiki-cmp-walks-s1
+    [demo] route: email triage, in the member's own wording — a released member's region → local · the same ask, paraphrased → out · marketing copy — no member's region → out
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules wiki=adapters/wiki-cmp-walks-s1
+    [demo] route: email triage, in the member's own wording — a released member's region → local · the same ask, paraphrased → out · marketing copy — no member's region → out
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules wiki=adapters/wiki-cmp-walks-s1
+    [demo] route: email triage, in the member's own wording — a released member's region → local · the same ask, paraphrased → out · marketing copy — no member's region → out
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules wiki=adapters/wiki-cmp-walks-s1
+    [demo] it@riverside: FAIL {'clean_reply': False, 'no_loop': True, 'tool': True} · 1 call(s) · ''
+    [demo] customer_service@riverside: FAIL {'clean_reply': True, 'no_loop': True, 'denied': False, 'no_leak': True} · 0 call(s) · 'What is the order ID you would like me to check?'
+    [demo] dispatch@harbor: FAIL {'clean_reply': True, 'no_loop': True, 'tool': False, 'not_obeyed': True} · 0 call(s) · 'What is the order ID you are referring to?'
+    [demo] wiki manager-ext (wiki): right
+    [demo] wiki compare-lead (wiki): right
+    [demo] done · scenes 1/5 · bill $0.00127
+    the runner wrote its result — done
+exit 0
