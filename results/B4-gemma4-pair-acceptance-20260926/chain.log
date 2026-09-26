@@ -1,0 +1,27 @@
+=== session 1 of 1 · srv161036 · A100
+    boot clone: rc=0 a4710bb fake_vllm answers prompt_logprobs; pair_accept runs end to end against it
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 a4710bb fake_vllm answers prompt_logprobs; pair_accept runs end to end against it
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    a4710bb fake_vllm answers prompt_logprobs; pair_accept runs end to end against it | 0.30.0
+    carried the adapters in (5 chunks)
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules large-wiki=adapters/wiki12b-walks-s0
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules large-wiki=adapters/wiki12b-walks-s0
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules large-wiki=adapters/wiki12b-walks-s0
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules large-wiki=adapters/wiki12b-walks-s0
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules large-wiki=adapters/wiki12b-walks-s0
+    [pool] G1 large-wiki: applied
+    [pair] large 20/107 alpha 0.884
+    [pair] large+lora 40/107 alpha 0.882
+    [pair] large+lora 60/107 alpha 0.890
+    [pair] large+lora 80/107 alpha 0.897
+    [pair] large+lora 100/107 alpha 0.899
+    [pair] large+lora 107/107 alpha 0.898
+    [pair] MILESTONE 4 PASSES: the large half's LoRA raises acceptance (76:18, p=0.0000; α 0.8707 → 0.8975)
+    the runner wrote its result — done
+exit 0

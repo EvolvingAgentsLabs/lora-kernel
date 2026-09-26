@@ -27,3 +27,23 @@ trained on the same corpus, as the design says, and measured on a band neither s
 | `12B+LoRA vs E4B+LoRA` on the hard band | improvement | tie → the large buys no accuracy on this band; regression → it loses |
 
 Beside: 12B bare vs E4B bare (what size alone buys); by family. One seed each, said as such. **Ceiling:** 2 L4 + 2 A100.
+
+## Result **[ran]** 2026-09-26 · headroom yes; 12B + LoRA TIES E4B + LoRA — the corpus, not the size, is what is missing
+
+H (two L4): the hard band has room — E4B + LoRA **10/40**, E4B bare 14/40. T (A100): `wiki12b-walks-s0`, 114 steps, ~15 min.
+S (A100): G1 applied.
+
+| hard band (40) | total | compare-lead | compare-pack |
+|---|--:|--:|--:|
+| E4B bare | 14 | 7 | 7 |
+| E4B + LoRA | 10 | 6 | 4 |
+| 12B bare | 2 | 0 | 2 |
+| 12B + LoRA | 9 | 1 | 8 |
+
+**`12B+LoRA vs E4B+LoRA`: 5 : 6, a tie — milestone 3 NOT passed on this band.** Beside: 12B bare vs E4B bare 2 : 14 (a
+regression: the bare 12B walks and answers without citing, 36 of 38 misses); 12B + LoRA vs 12B bare 8 : 1 (the LoRA teaches
+the answer form). **Read where it happens:** both members walk the two products and then fail the comparison — the E4B reads
+both lead times (3 and 7 days) and names the slower supplier; the 12B stops after one supplier and names the first product.
+Neither corpus ever showed a comparison: W9's is single-chain. **A corpus with one difficulty teaches a floor — for the
+large half too.** What follows: the comparison families in the TRAINING corpus (train wording, other worlds), both halves
+retrained, the hard band re-read.

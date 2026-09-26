@@ -13,3 +13,20 @@ session H with spans. **Arms:** `gemma-4-12B-it` bare and `gemma-4-12B-it` + `wi
 sign test on the discordant records: `large+LoRA vs large` must be an **improvement** → **MILESTONE 4 PASSES**; otherwise
 NOT PASSED, with the pooled α of both arms. Beside: pooled α, longest accepted prefix per span, by question set.
 **Not measured:** wall-clock speed-up (vLLM speculative decoding with a LoRA on both halves is its own gate), a Mac runtime.
+
+## Result **[ran]** 2026-09-26 · MILESTONE 4 PASSES — the large half's LoRA raises acceptance, where its corpus reaches
+
+One A100, `gemma-4-12B-it`, G1 applied on `wiki12b-walks-s0`; 107 draft records of the E4B member (67 on W9's set, 40 on the
+hard band), 0 scoring errors (`pair_accept.json`).
+
+| drafts | 12B bare | 12B + LoRA |
+|---|--:|--:|
+| all (107), pooled α | 0.871 | **0.898** |
+| W9's set (67) | 0.855 | **0.914** |
+| hard band (40) | 0.885 | 0.881 |
+
+Per record, the arm with the higher accepted fraction: **large+LoRA 76, bare 18 — improvement, $p < 0.0001$. PASSED as
+written.** Read where it happens: the gain is on the drafts in the corpus's distribution (0.855 → 0.914); on the comparison
+band, which neither half was trained on, the LoRA moves nothing (0.885 → 0.881). The pair buys latency where the two halves
+share a trained distribution. **Not measured:** wall-clock speed-up with speculative decoding actually running (vLLM with a
+LoRA on both halves), a Mac runtime.
