@@ -1,0 +1,21 @@
+=== session 1 of 1 · srv190805 · L4
+    boot clone: rc=0 3eb73e6 DEMO-org [ran]: the wiki member 2/2 cited; the bare E4B 1/5 on the distributor's roles; an empty reply is no longer grounded
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 3eb73e6 DEMO-org [ran]: the wiki member 2/2 cited; the bare E4B 1/5 on the distributor's roles; an empty reply is no longer grounded
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    3eb73e6 DEMO-org [ran]: the wiki member 2/2 cited; the bare E4B 1/5 on the distributor's roles; an empty reply is no longer grounded | 0.30.0
+    this module trains its own adapter — nothing to carry in
+    carried the Hugging Face token in (a file, never logged)
+    runner started (launch 1)
+    Loading weights:   0%|          | 0/314 [00:00<?, ?it/s]
+    Loading weights: 100%|██████████| 314/314 [00:00<00:00, 5566.97it/s]
+    [route] probe {'paraphrase': 0.9372, 'unrelated': 0.2998}
+    Loading weights:   0%|          | 0/314 [00:00<?, ?it/s]
+    Loading weights: 100%|██████████| 314/314 [00:00<00:00, 5566.97it/s]
+    [route] probe {'paraphrase': 0.9372, 'unrelated': 0.2998}
+    the runner wrote its result — done
+exit 0

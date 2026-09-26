@@ -103,7 +103,8 @@ def verdict(rec: dict) -> dict:
 
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("--base", default="Qwen/Qwen3-Embedding-0.6B", help="the embedding model")
+    ap.add_argument("--base", default="google/embeddinggemma-300m",   # E1 [ran]: ties W3's Qwen3-Embedding, 13 : 14
+                    help="the embedding model (gated: the chain needs HF_AUTH=1)")
     ap.add_argument("--adapter", action="append", default=[], help="pool adapters (ignored)")
     ap.add_argument("--beta", type=float, default=BETA)
     ap.add_argument("--lexical-only", action="store_true", help="the zero-GPU half: loads no model")

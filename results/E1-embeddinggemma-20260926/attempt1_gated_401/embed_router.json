@@ -1,0 +1,10 @@
+{
+ "encoder": "google/embeddinggemma-300m",
+ "params": {
+  "k": 5,
+  "percentile": 1.0,
+  "held_out": 0.2,
+  "instruction": "Instruct: Given a request sent to an assistant, represent the task the user is asking to be performed, not the content it is about\nQuery: "
+ },
+ "started": "2026-09-26T21:37:57"
+}
