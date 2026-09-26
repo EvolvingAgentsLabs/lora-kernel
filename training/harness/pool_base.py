@@ -97,6 +97,7 @@ def main() -> int:
                          "pool_base.json, the @v2 Qwen3.5-4B releases) instead of each member's first recorded release")
     ap.add_argument("--members", default=None, help="comma list: only these members (M1c: desk-commitment)")
     ap.add_argument("--suite-for", action="append", default=[], help="member=suite, e.g. desk-commitment=desk:commitment_deep")
+    ap.add_argument("--corpus-for", action="append", default=[], help="member=path of the corpus to train it on (M1d: both desk bands)")
     ap.add_argument("--out", default="pool_base.json")
     args = ap.parse_args()
     # M1c: one member, another band. `--against none` pairs against the base only — a record of another band
@@ -106,6 +107,9 @@ def main() -> int:
     for spec in args.suite_for:
         m, _, name = spec.partition("=")
         MEMBERS[m]["suite"] = name
+    for spec in args.corpus_for:
+        m, _, path = spec.partition("=")
+        MEMBERS[m]["corpus"] = path
     out = Path(args.out); out.parent.mkdir(parents=True, exist_ok=True)
     rec = json.loads(out.read_text()) if out.exists() else {}
     rec.update(base=args.base, recipe=RECIPE, started=rec.get("started") or time.strftime("%Y-%m-%dT%H:%M:%S"))
