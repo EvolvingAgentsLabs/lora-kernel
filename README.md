@@ -21,7 +21,8 @@
 > Gemma's 19/40; and one lesson worth the visit on its own — the same adapter scored 11/90 served
 > through `tool_calls` and **90/90** served the way its corpus taught it. All on generated suites, no
 > real traffic yet; what failed is in [`docs/RECORD.md`](docs/RECORD.md). The wiki-walking adapter is on
-> [Hugging Face](https://huggingface.co/Matias/lora-kernel-distributor-wiki-gemma4-e4b).
+> [Hugging Face](https://huggingface.co/Matias/lora-kernel-distributor-wiki-gemma4-e4b) — try it in ten minutes:
+> [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EvolvingAgentsLabs/lora-kernel/blob/main/examples/colab/wiki_walk.ipynb)
 
 ## The problem
 

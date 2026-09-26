@@ -14,6 +14,7 @@ Key results, all [ran]: an inbox-triage expert 0.989 vs the bare base's 0.345; m
 ## Weights
 
 - [distributor-wiki@v2 on Hugging Face](https://huggingface.co/Matias/lora-kernel-distributor-wiki-gemma4-e4b): the trajectory LoRA on gemma-4-E4B-it, research preview, with its limits
+- [Colab notebook](https://colab.research.google.com/github/EvolvingAgentsLabs/lora-kernel/blob/main/examples/colab/wiki_walk.ipynb): bare vs adapter on multi-hop questions, then edit one note and ask again
 
 ## Architecture and serving
 
