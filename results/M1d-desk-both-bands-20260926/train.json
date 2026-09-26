@@ -1,0 +1,46 @@
+{
+ "base": "google/gemma-4-E4B-it",
+ "recipe": {
+  "r": 16,
+  "lora_alpha": 32,
+  "epochs": 3,
+  "lr": 0.0002,
+  "batch": 2,
+  "accum": 8,
+  "max_seq": 1536,
+  "seed": 0,
+  "targets": "q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"
+ },
+ "started": "2026-09-26T01:14:25",
+ "arms": {},
+ "G1": {},
+ "G2": {},
+ "G2_auto": {},
+ "pairs": {},
+ "members": {
+  "desk-commitment": {
+   "adapter": "adapters/desk-commitment-g4b",
+   "corpus": "training/harness/data_desk_both/train.jsonl",
+   "corpus_sha256": "152c59826bac8d8f3c64008d3ce2b5f4318b02a1146e52ca2a141bb4144beeee",
+   "adapter_sha256": "dd8e2ba026fe52d21cc259f759876eac548571727745eba5289561a148f1c122",
+   "named_for_serving": {
+    "base": "google/gemma-4-E4B-it",
+    "architecture": "Gemma4ForConditionalGeneration",
+    "renamed": true,
+    "src": "adapters/desk-commitment-g4b",
+    "dst": "adapters/desk-commitment-g4b.renamed",
+    "moved": 0,
+    "before": {
+     "tensors": 516,
+     "land_on_text_stack": 516
+    },
+    "after": {
+     "tensors": 516,
+     "land_on_text_stack": 516
+    }
+   }
+  }
+ },
+ "packed": 1,
+ "trained_only": "2026-09-26T01:43:13"
+}

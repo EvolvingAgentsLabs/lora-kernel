@@ -1,0 +1,84 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[gate] ids google/gemma-4-E4B-it vs google/gemma-4-12B-it: usable, and the id spaces are the same — nothing to handle
+
+[matrix] ===== control: Qwen/Qwen2.5-3B-Instruct =====
+W0926 00:52:03.786000 6553 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W0926 00:52:03.825000 6553 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Fetching 2 files:   0%|          | 0/2 [00:00<?, ?it/s]Fetching 2 files:  50%|█████     | 1/2 [00:20<00:20, 20.20s/it]Fetching 2 files: 100%|██████████| 2/2 [00:20<00:00, 10.10s/it]
+Loading weights:   0%|          | 0/434 [00:00<?, ?it/s]Loading weights:   0%|          | 1/434 [00:00<00:46,  9.34it/s]Loading weights:   6%|▋         | 28/434 [00:00<00:02, 156.14it/s]Loading weights:  15%|█▍        | 63/434 [00:00<00:01, 234.53it/s]Loading weights:  21%|██        | 89/434 [00:00<00:01, 241.48it/s]Loading weights:  28%|██▊       | 123/434 [00:00<00:01, 268.48it/s]Loading weights:  36%|███▌      | 157/434 [00:00<00:00, 291.61it/s]Loading weights:  43%|████▎     | 187/434 [00:00<00:00, 280.90it/s]Loading weights:  50%|█████     | 219/434 [00:00<00:00, 286.29it/s]Loading weights:  59%|█████▉    | 255/434 [00:00<00:00, 300.86it/s]Loading weights:  66%|██████▌   | 286/434 [00:01<00:00, 294.74it/s]Loading weights:  73%|███████▎  | 316/434 [00:01<00:00, 293.58it/s]Loading weights:  81%|████████  | 351/434 [00:01<00:00, 302.67it/s]Loading weights:  88%|████████▊ | 382/434 [00:01<00:00, 297.92it/s]Loading weights:  95%|█████████▍| 412/434 [00:01<00:00, 295.89it/s]Loading weights: 100%|██████████| 434/434 [00:01<00:00, 280.17it/s]
+[tiny] Linear modules: ['down_proj', 'gate_proj', 'k_proj', 'o_proj', 'q_proj', 'up_proj', 'v_proj']
+[tiny] of those, attention-shaped: ['k_proj', 'o_proj', 'q_proj', 'v_proj']
+[tiny] target modules found: ['down_proj', 'gate_proj', 'k_proj', 'o_proj', 'q_proj', 'up_proj', 'v_proj']
+trainable params: 29,933,568 || all params: 3,115,872,256 || trainable%: 0.9607
+Map:   0%|          | 0/120 [00:00<?, ? examples/s]Map: 100%|██████████| 120/120 [00:00<00:00, 4824.41 examples/s]
+  0%|          | 0/60 [00:00<?, ?it/s]  2%|▏         | 1/60 [00:03<03:18,  3.36s/it]  3%|▎         | 2/60 [00:03<01:31,  1.57s/it]  5%|▌         | 3/60 [00:03<00:56,  1.01it/s]  7%|▋         | 4/60 [00:04<00:40,  1.38it/s]  8%|▊         | 5/60 [00:04<00:31,  1.75it/s] 10%|█         | 6/60 [00:04<00:25,  2.09it/s] 12%|█▏        | 7/60 [00:05<00:22,  2.38it/s] 13%|█▎        | 8/60 [00:05<00:19,  2.62it/s] 15%|█▌        | 9/60 [00:05<00:18,  2.80it/s] 17%|█▋        | 10/60 [00:06<00:17,  2.92it/s] 18%|█▊        | 11/60 [00:06<00:16,  3.02it/s] 20%|██        | 12/60 [00:06<00:15,  3.11it/s] 22%|██▏       | 13/60 [00:07<00:14,  3.16it/s] 23%|██▎       | 14/60 [00:07<00:14,  3.21it/s] 25%|██▌       | 15/60 [00:07<00:13,  3.25it/s] 27%|██▋       | 16/60 [00:07<00:13,  3.27it/s] 28%|██▊       | 17/60 [00:08<00:13,  3.27it/s] 30%|███       | 18/60 [00:08<00:13,  3.21it/s] 32%|███▏      | 19/60 [00:08<00:13,  3.15it/s] 33%|███▎      | 20/60 [00:09<00:12,  3.19it/s]                                               {'loss': '0.1194', 'grad_norm': '0.002123', 'learning_rate': '0.0001367', 'epoch': '0.3333'}
+ 33%|███▎      | 20/60 [00:09<00:12,  3.19it/s] 35%|███▌      | 21/60 [00:09<00:12,  3.21it/s] 37%|███▋      | 22/60 [00:09<00:11,  3.24it/s] 38%|███▊      | 23/60 [00:10<00:11,  3.26it/s] 40%|████      | 24/60 [00:10<00:11,  3.27it/s] 42%|████▏     | 25/60 [00:10<00:10,  3.27it/s] 43%|████▎     | 26/60 [00:11<00:10,  3.25it/s] 45%|████▌     | 27/60 [00:11<00:10,  3.26it/s] 47%|████▋     | 28/60 [00:11<00:09,  3.27it/s] 48%|████▊     | 29/60 [00:11<00:09,  3.27it/s] 50%|█████     | 30/60 [00:12<00:09,  3.29it/s] 52%|█████▏    | 31/60 [00:12<00:08,  3.28it/s] 53%|█████▎    | 32/60 [00:12<00:08,  3.28it/s] 55%|█████▌    | 33/60 [00:13<00:08,  3.28it/s] 57%|█████▋    | 34/60 [00:13<00:07,  3.29it/s] 58%|█████▊    | 35/60 [00:13<00:07,  3.30it/s] 60%|██████    | 36/60 [00:14<00:07,  3.30it/s] 62%|██████▏   | 37/60 [00:14<00:06,  3.31it/s] 63%|██████▎   | 38/60 [00:14<00:06,  3.32it/s] 65%|██████▌   | 39/60 [00:14<00:06,  3.33it/s] 67%|██████▋   | 40/60 [00:15<00:06,  3.32it/s]                                               {'loss': '4.647e-06', 'grad_norm': '0.0001386', 'learning_rate': '7e-05', 'epoch': '0.6667'}
+ 67%|██████▋   | 40/60 [00:15<00:06,  3.32it/s] 68%|██████▊   | 41/60 [00:15<00:05,  3.33it/s] 70%|███████   | 42/60 [00:15<00:05,  3.32it/s] 72%|███████▏  | 43/60 [00:16<00:05,  3.30it/s] 73%|███████▎  | 44/60 [00:16<00:04,  3.30it/s] 75%|███████▌  | 45/60 [00:16<00:04,  3.30it/s] 77%|███████▋  | 46/60 [00:17<00:04,  3.30it/s] 78%|███████▊  | 47/60 [00:17<00:03,  3.31it/s] 80%|████████  | 48/60 [00:17<00:03,  3.31it/s] 82%|████████▏ | 49/60 [00:17<00:03,  3.31it/s] 83%|████████▎ | 50/60 [00:18<00:03,  3.29it/s] 85%|████████▌ | 51/60 [00:18<00:02,  3.30it/s] 87%|████████▋ | 52/60 [00:18<00:02,  3.30it/s] 88%|████████▊ | 53/60 [00:19<00:02,  3.30it/s] 90%|█████████ | 54/60 [00:19<00:01,  3.30it/s] 92%|█████████▏| 55/60 [00:19<00:01,  3.30it/s] 93%|█████████▎| 56/60 [00:20<00:01,  3.31it/s] 95%|█████████▌| 57/60 [00:20<00:00,  3.31it/s] 97%|█████████▋| 58/60 [00:20<00:00,  3.30it/s] 98%|█████████▊| 59/60 [00:21<00:00,  3.31it/s]100%|██████████| 60/60 [00:21<00:00,  3.25it/s]                                               {'loss': '2.597e-06', 'grad_norm': '9.976e-05', 'learning_rate': '3.333e-06', 'epoch': '1'}
+100%|██████████| 60/60 [00:21<00:00,  3.25it/s]                                               {'train_runtime': '21.33', 'train_samples_per_second': '5.626', 'train_steps_per_second': '2.813', 'train_loss': '0.0398', 'epoch': '1'}
+100%|██████████| 60/60 [00:21<00:00,  3.25it/s]100%|██████████| 60/60 [00:21<00:00,  2.81it/s]
+{
+  "out": "adapters/tiny-control",
+  "weights_bytes": 119801528,
+  "target_modules": [
+    "down_proj",
+    "gate_proj",
+    "k_proj",
+    "o_proj",
+    "q_proj",
+    "up_proj",
+    "v_proj"
+  ],
+  "lora_B_abs_sum": 18788.6544,
+  "changes_output_in_process": true
+}
+[tiny] lora_B_abs_sum=18788.6544 changes_output=True
+[matrix] control G1 in-process: passed
+[serve] vllm serve Qwen/Qwen2.5-3B-Instruct --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-control
+[serve] /v1/models -> ['Qwen/Qwen2.5-3B-Instruct', 'tiny']
+[gate] tiny: applied
+[gate-only] applied
+[matrix] control G2 served: applied 
+
+[matrix] ===== subject: google/gemma-4-12B-it =====
+W0926 00:57:47.594000 8558 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W0926 00:57:47.634000 8558 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/677 [00:00<?, ?it/s]Loading weights:   0%|          | 2/677 [00:00<02:23,  4.70it/s]Loading weights:   2%|▏         | 14/677 [00:00<00:19, 33.42it/s]Loading weights:   3%|▎         | 22/677 [00:00<00:14, 45.51it/s]Loading weights:   5%|▌         | 36/677 [00:00<00:09, 68.50it/s]Loading weights:   7%|▋         | 50/677 [00:00<00:07, 84.62it/s]Loading weights:   9%|▉         | 64/677 [00:00<00:06, 95.74it/s]Loading weights:  11%|█▏        | 77/677 [00:01<00:05, 100.79it/s]Loading weights:  13%|█▎        | 91/677 [00:01<00:05, 104.68it/s]Loading weights:  16%|█▌        | 105/677 [00:01<00:05, 109.54it/s]Loading weights:  17%|█▋        | 118/677 [00:01<00:05, 110.55it/s]Loading weights:  20%|█▉        | 133/677 [00:01<00:04, 116.84it/s]Loading weights:  22%|██▏       | 147/677 [00:01<00:04, 118.83it/s]Loading weights:  24%|██▎       | 160/677 [00:01<00:04, 117.27it/s]Loading weights:  26%|██▌       | 173/677 [00:01<00:04, 113.77it/s]Loading weights:  28%|██▊       | 188/677 [00:02<00:04, 118.94it/s]Loading weights:  30%|██▉       | 202/677 [00:02<00:03, 119.81it/s]Loading weights:  32%|███▏      | 216/677 [00:02<00:03, 120.72it/s]Loading weights:  34%|███▍      | 229/677 [00:02<00:03, 118.29it/s]Loading weights:  36%|███▌      | 243/677 [00:02<00:03, 119.57it/s]Loading weights:  38%|███▊      | 257/677 [00:02<00:03, 117.39it/s]Loading weights:  40%|███▉      | 270/677 [00:02<00:03, 116.23it/s]Loading weights:  42%|████▏     | 285/677 [00:02<00:03, 120.71it/s]Loading weights:  44%|████▍     | 298/677 [00:02<00:03, 118.58it/s]Loading weights:  46%|████▌     | 313/677 [00:03<00:02, 122.21it/s]Loading weights:  48%|████▊     | 327/677 [00:03<00:02, 122.38it/s]Loading weights:  50%|█████     | 340/677 [00:03<00:02, 117.12it/s]Loading weights:  52%|█████▏    | 354/677 [00:03<00:02, 118.08it/s]Loading weights:  54%|█████▍    | 368/677 [00:03<00:02, 119.26it/s]Loading weights:  56%|█████▋    | 382/677 [00:03<00:02, 119.78it/s]Loading weights:  58%|█████▊    | 396/677 [00:03<00:02, 120.07it/s]Loading weights:  61%|██████    | 410/677 [00:03<00:02, 121.10it/s]Loading weights:  62%|██████▏   | 423/677 [00:03<00:02, 116.10it/s]Loading weights:  64%|██████▍   | 436/677 [00:04<00:02, 115.02it/s]Loading weights:  67%|██████▋   | 451/677 [00:04<00:01, 119.55it/s]Loading weights:  69%|██████▊   | 464/677 [00:04<00:01, 117.83it/s]Loading weights:  71%|███████   | 479/677 [00:04<00:01, 121.44it/s]Loading weights:  73%|███████▎  | 492/677 [00:04<00:01, 118.88it/s]Loading weights:  75%|███████▍  | 506/677 [00:04<00:01, 116.62it/s]Loading weights:  77%|███████▋  | 520/677 [00:04<00:01, 118.09it/s]Loading weights:  79%|███████▉  | 534/677 [00:04<00:01, 118.69it/s]Loading weights:  81%|████████  | 548/677 [00:05<00:01, 119.06it/s]Loading weights:  83%|████████▎ | 561/677 [00:05<00:00, 116.89it/s]Loading weights:  85%|████████▍ | 575/677 [00:05<00:00, 117.95it/s]Loading weights:  87%|████████▋ | 589/677 [00:05<00:00, 115.84it/s]Loading weights:  89%|████████▉ | 603/677 [00:05<00:00, 117.42it/s]Loading weights:  91%|█████████ | 617/677 [00:05<00:00, 118.49it/s]Loading weights:  93%|█████████▎| 630/677 [00:05<00:00, 116.55it/s]Loading weights:  95%|█████████▌| 644/677 [00:05<00:00, 117.96it/s]Loading weights:  97%|█████████▋| 658/677 [00:05<00:00, 118.81it/s]Loading weights: 100%|██████████| 677/677 [00:06<00:00, 112.08it/s]
+[tiny] Linear modules: ['down_proj', 'gate_proj', 'k_proj', 'o_proj', 'q_proj', 'up_proj', 'v_proj']
+[tiny] of those, attention-shaped: ['k_proj', 'o_proj', 'q_proj', 'v_proj']
+[tiny] target modules found: ['down_proj', 'gate_proj', 'k_proj', 'o_proj', 'q_proj', 'up_proj', 'v_proj']
+trainable params: 65,568,768 || all params: 12,025,298,944 || trainable%: 0.5453
+Map:   0%|          | 0/120 [00:00<?, ? examples/s]Map: 100%|██████████| 120/120 [00:00<00:00, 7926.37 examples/s]
+  0%|          | 0/60 [00:00<?, ?it/s]  2%|▏         | 1/60 [00:03<03:19,  3.38s/it]  3%|▎         | 2/60 [00:03<01:39,  1.72s/it]  5%|▌         | 3/60 [00:04<01:07,  1.18s/it]  7%|▋         | 4/60 [00:05<00:52,  1.07it/s]  8%|▊         | 5/60 [00:05<00:43,  1.26it/s] 10%|█         | 6/60 [00:06<00:38,  1.41it/s] 12%|█▏        | 7/60 [00:06<00:34,  1.52it/s] 13%|█▎        | 8/60 [00:07<00:32,  1.61it/s] 15%|█▌        | 9/60 [00:07<00:30,  1.68it/s] 17%|█▋        | 10/60 [00:08<00:29,  1.72it/s] 18%|█▊        | 11/60 [00:08<00:27,  1.75it/s] 20%|██        | 12/60 [00:09<00:27,  1.77it/s] 22%|██▏       | 13/60 [00:09<00:26,  1.80it/s] 23%|██▎       | 14/60 [00:10<00:25,  1.82it/s] 25%|██▌       | 15/60 [00:11<00:24,  1.83it/s] 27%|██▋       | 16/60 [00:11<00:23,  1.84it/s] 28%|██▊       | 17/60 [00:12<00:23,  1.84it/s] 30%|███       | 18/60 [00:12<00:22,  1.84it/s] 32%|███▏      | 19/60 [00:13<00:22,  1.84it/s] 33%|███▎      | 20/60 [00:13<00:21,  1.84it/s]                                               {'loss': '1.087', 'grad_norm': '2.453', 'learning_rate': '0.0001367', 'epoch': '0.3333'}
+ 33%|███▎      | 20/60 [00:13<00:21,  1.84it/s] 35%|███▌      | 21/60 [00:14<00:21,  1.84it/s] 37%|███▋      | 22/60 [00:14<00:20,  1.85it/s] 38%|███▊      | 23/60 [00:15<00:20,  1.84it/s] 40%|████      | 24/60 [00:15<00:19,  1.82it/s] 42%|████▏     | 25/60 [00:16<00:19,  1.82it/s] 43%|████▎     | 26/60 [00:17<00:19,  1.78it/s] 45%|████▌     | 27/60 [00:17<00:18,  1.80it/s] 47%|████▋     | 28/60 [00:18<00:17,  1.81it/s] 48%|████▊     | 29/60 [00:18<00:17,  1.82it/s] 50%|█████     | 30/60 [00:19<00:16,  1.83it/s] 52%|█████▏    | 31/60 [00:19<00:15,  1.84it/s] 53%|█████▎    | 32/60 [00:20<00:15,  1.84it/s] 55%|█████▌    | 33/60 [00:20<00:14,  1.85it/s] 57%|█████▋    | 34/60 [00:21<00:14,  1.86it/s] 58%|█████▊    | 35/60 [00:21<00:13,  1.87it/s] 60%|██████    | 36/60 [00:22<00:12,  1.87it/s] 62%|██████▏   | 37/60 [00:22<00:12,  1.88it/s] 63%|██████▎   | 38/60 [00:23<00:11,  1.88it/s] 65%|██████▌   | 39/60 [00:24<00:11,  1.86it/s] 67%|██████▋   | 40/60 [00:24<00:10,  1.86it/s]                                               {'loss': '0.07057', 'grad_norm': '0.9738', 'learning_rate': '7e-05', 'epoch': '0.6667'}
+ 67%|██████▋   | 40/60 [00:24<00:10,  1.86it/s] 68%|██████▊   | 41/60 [00:25<00:10,  1.87it/s] 70%|███████   | 42/60 [00:25<00:09,  1.87it/s] 72%|███████▏  | 43/60 [00:26<00:09,  1.87it/s] 73%|███████▎  | 44/60 [00:26<00:08,  1.87it/s] 75%|███████▌  | 45/60 [00:27<00:08,  1.85it/s] 77%|███████▋  | 46/60 [00:27<00:07,  1.84it/s] 78%|███████▊  | 47/60 [00:28<00:07,  1.84it/s] 80%|████████  | 48/60 [00:28<00:06,  1.84it/s] 82%|████████▏ | 49/60 [00:29<00:06,  1.83it/s] 83%|████████▎ | 50/60 [00:29<00:05,  1.84it/s] 85%|████████▌ | 51/60 [00:30<00:04,  1.85it/s] 87%|████████▋ | 52/60 [00:31<00:04,  1.85it/s] 88%|████████▊ | 53/60 [00:31<00:03,  1.81it/s] 90%|█████████ | 54/60 [00:32<00:03,  1.81it/s] 92%|█████████▏| 55/60 [00:32<00:02,  1.82it/s] 93%|█████████▎| 56/60 [00:33<00:02,  1.84it/s] 95%|█████████▌| 57/60 [00:33<00:01,  1.85it/s] 97%|█████████▋| 58/60 [00:34<00:01,  1.86it/s] 98%|█████████▊| 59/60 [00:34<00:00,  1.86it/s]100%|██████████| 60/60 [00:35<00:00,  1.85it/s]                                               {'loss': '0.0009804', 'grad_norm': '0.01592', 'learning_rate': '3.333e-06', 'epoch': '1'}
+100%|██████████| 60/60 [00:35<00:00,  1.85it/s]                                               {'train_runtime': '35.43', 'train_samples_per_second': '3.387', 'train_steps_per_second': '1.694', 'train_loss': '0.3863', 'epoch': '1'}
+100%|██████████| 60/60 [00:35<00:00,  1.85it/s]100%|██████████| 60/60 [00:35<00:00,  1.69it/s]
+{
+  "out": "adapters/tiny-subject",
+  "weights_bytes": 262373216,
+  "target_modules": [
+    "down_proj",
+    "gate_proj",
+    "k_proj",
+    "o_proj",
+    "q_proj",
+    "up_proj",
+    "v_proj"
+  ],
+  "lora_B_abs_sum": 34741.1977,
+  "changes_output_in_process": true
+}
+[tiny] lora_B_abs_sum=34741.1977 changes_output=True
+[matrix] subject G1 in-process: passed
+[serve] vllm serve google/gemma-4-12B-it --enable-lora --max-lora-rank 16 --max-loras 1 --dtype bfloat16 --lora-modules tiny=adapters/tiny-subject
+[serve] /v1/models -> ['google/gemma-4-12B-it', 'tiny']
+[gate] tiny: applied
+[gate-only] applied
+[matrix] subject G2 served: applied 
+
+[matrix] control valid: True
+[matrix] reading: the subject serves LoRA through vLLM
+[matrix] decision: Qwen3.5 is usable; whether to pay for retraining is a separate call
+[gate] PAIR POSSIBLE: one id space, and the large serves a LoRA applied

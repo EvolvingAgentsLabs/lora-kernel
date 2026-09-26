@@ -244,8 +244,8 @@ vision and audio towers, whose projections are `Gemma4ClippableLinear` (P29's bl
 `training/s4_train.py::towers_to_exclude`); and its thinking channel stays off for members, as Qwen's did.
 
 **The released members move one by one through the release gate:** `email-full@v3` is on Gemma (M1b **[ran]**: a tie
-with `@v2`, 119 : 0 over the bare Gemma); `desk-commitment@v2` stays on `Qwen3.5-4B` — it ties the bare Gemma at the
-ceiling; the `@v1` releases on `Qwen2.5-3B-Instruct` stay as the control arm. The family is named in one place,
+with `@v2`, 119 : 0 over the bare Gemma); `desk-commitment@v3` too, trained on both desk bands (M1d **[ran]**: deep band 239/240 against the bare
+Gemma's 83); `distributor-wiki@v1` on Gemma; the `@v1` releases on `Qwen2.5-3B-Instruct` stay as the control arm. The family is named in one place,
 `training/harness/family.py`. ~~Qwen 3.x: `Qwen3.5-4B` small, `Qwen3.8-27B` large … Gemma 4 meets the id-space
 requirement and not yet the PEFT one **[ran]** P29.~~
 

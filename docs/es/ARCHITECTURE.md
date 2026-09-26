@@ -265,8 +265,8 @@ vienen dos restricciones de ingeniería: el LoRA excluye las torres de visión y
 Qwen.
 
 **Los miembros liberados se mueven de a uno por la compuerta de release:** `email-full@v3` está sobre Gemma (M1b **[ran]**:
-empate con `@v2`, 119 : 0 sobre el Gemma pelado); `desk-commitment@v2` queda sobre `Qwen3.5-4B` — empata con el Gemma
-pelado en el techo; los releases `@v1` sobre `Qwen2.5-3B-Instruct` quedan
+empate con `@v2`, 119 : 0 sobre el Gemma pelado); `desk-commitment@v3` también, entrenado en las dos bandas de desk (M1d **[ran]**: banda profunda 239/240
+contra 83 del Gemma pelado); `distributor-wiki@v1` sobre Gemma; los releases `@v1` sobre `Qwen2.5-3B-Instruct` quedan
 como brazo de control. La familia se nombra en un solo lugar, `training/harness/family.py`. ~~Qwen 3.x:
 `Qwen3.5-4B` chico, `Qwen3.8-27B` grande … Gemma 4 cumple el requisito de espacio de ids y todavía no el de
 PEFT **[ran]** P29.~~

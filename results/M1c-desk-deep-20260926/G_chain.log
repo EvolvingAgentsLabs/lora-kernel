@@ -1,0 +1,33 @@
+=== session 1 of 1 · srv210159 · L4
+    boot clone: rc=0 5f15d1e M1c and B2 pre-registered: desk-commitment on the deep band, and the large half of the pair on Gemma 4 12B
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 b9bb4a6 The wiki member released on Gemma 4 E4B: two seeds, both beat the untrained walk, they agree on 65 of 67
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    b9bb4a6 The wiki member released on Gemma 4 E4B: two seeds, both beat the untrained walk, they agree on 65 of 67 | 0.30.0
+    carried the adapters in (6 chunks)
+    runner started (launch 1)
+    adapters home: 1 packed
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules desk-commitment=adapters/desk-commitment-g4
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules desk-commitment=adapters/desk-commitment-g4
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules desk-commitment=adapters/desk-commitment-g4
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules desk-commitment=adapters/desk-commitment-g4
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules desk-commitment=adapters/desk-commitment-g4
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules desk-commitment=adapters/desk-commitment-g4
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules desk-commitment=adapters/desk-commitment-g4
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules desk-commitment=adapters/desk-commitment-g4
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules desk-commitment=adapters/desk-commitment-g4
+    [rank] arm google/gemma-4-E4B-it 100/240 correct 32 22s
+    [rank] arm google/gemma-4-E4B-it 125/240 correct 42 28s
+    [rank] arm google/gemma-4-E4B-it 150/240 correct 51 33s
+    [rank] arm desk-commitment 150/240 correct 38 23s
+    [rank] arm desk-commitment 175/240 correct 45 27s
+    [rank] arm desk-commitment 200/240 correct 51 31s
+    [pool] desk-commitment · new vs base: REGRESSION (0:22, p=0.0)
+    [pool] NOT MOVED: gates [] or a member does not beat the new base
+    [pool] adapters packed: adapters_out.tgz
+    the runner wrote its result — done
+exit 0
