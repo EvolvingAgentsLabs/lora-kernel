@@ -603,6 +603,7 @@ that decide the shape of a step:
 
 ## 5. History
 
+- **2026-09-26** — **M1d [ran]: `desk-commitment@v3` on Gemma, one member for both bands** — trained on the shallow and the deep corpora: shallow 240/240 (a tie with `@v2`), deep **239/240** against the bare Gemma's 83 (156 : 0) and `@v2`'s 64. **Every released member is now on Gemma 4 E4B** ([`BRIEF`](../results/M1d-desk-both-bands-20260926/BRIEF.md)).
 - **2026-09-26** — **B2 [ran]: the pair is possible on Gemma 4 E4B + 12B** — byte-identical vocabularies (262,144), identical merges, 0 collisions, 0 target-only ids; a LoRA on the 12B trains and vLLM serves it applied. Milestone 3's two preconditions hold on a large half that fits a Mac mini ([`BRIEF`](../results/B2-gemma4-large-gate-20260926/BRIEF.md)).
 - **2026-09-26** — **M1c [ran]: `desk-commitment` is not a member on Gemma, and neither member does the deep band.** On `commitment_deep` the bare Gemma scores 82/240 (room); the shallow-trained members score 60 (Gemma, 0 : 22 against its base) and 64 (Qwen `@v2`) — both copy the last message's date. `desk-commitment` stays on Qwen; next, a member trained on both bands ([`BRIEF`](../results/M1c-desk-deep-20260926/BRIEF.md)).
 - **2026-09-26** — **the wiki member released on Gemma 4 E4B (`releases/distributor-wiki@v1.json`).** A second Gemma seed: both beat the untrained walk (19 : 0, 20 : 0; 38 and 39 of 40), the two draws agree on 65 of 67, and both tie Qwen's seeds with Gemma ahead ([`BRIEF`](../results/B1-gemma4-vs-qwen35-20260925/BRIEF.md)).

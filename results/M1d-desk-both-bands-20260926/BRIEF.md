@@ -22,3 +22,20 @@ bare Gemma of the same session.
 
 Both → **`desk-commitment@v3` on Gemma** (one member for both bands), `@v2` stays the control. Beside: by depth; against M1c's
 shallow-only `g4` on the deep band. One seed, said as such. **Ceiling:** 1 A100 + 2 L4. **Redesign counter: 0.**
+
+## Result **[ran]** 2026-09-26 · PASSED — `desk-commitment@v3` on Gemma, one member for both bands
+
+One A100 trained `desk-commitment-g4b` (`dd8e2ba0…`, 1,200 rows, 225 steps); two L4 scored it (`shallow.json`, `deep.json`),
+G1 applied in both.
+
+| deep band (240) | depth 1 | 2 | 3 | 4 | total |
+|---|--:|--:|--:|--:|--:|
+| bare Gemma 4 E4B | 60 | 0 | 0 | 23 | 83 |
+| shallow-only member on Gemma (M1c) | 60 | 0 | 0 | 0 | 60 |
+| `@v2` on Qwen (M1c) | 60 | 0 | 0 | 4 | 64 |
+| **both-bands member on Gemma** | **60** | **59** | **60** | **60** | **239** |
+
+**Shallow:** 240/240, a tie with `@v2` (0 : 0) — the deep corpus cost the shallow band nothing. **Deep:** 239/240 — **156 : 0**
+against the bare Gemma, 175 : 0 against `@v2`. Read where it happens: every deep walk makes one `thread_history` call and
+picks MY latest promise among the sender's proposals (depth 4: five dates in play, "June 17" right). **PASSED as written:
+`releases/desk-commitment@v3.json` on Gemma**, `@v2` stays the control. One seed, said as such.

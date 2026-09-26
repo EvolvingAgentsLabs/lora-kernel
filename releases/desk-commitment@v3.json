@@ -1,0 +1,138 @@
+{
+ "name": "desk-commitment",
+ "version": 3,
+ "base": "google/gemma-4-E4B-it",
+ "recipe": {
+  "r": 16,
+  "lora_alpha": 32,
+  "epochs": 3,
+  "lr": 0.0002,
+  "batch": 2,
+  "accum": 8,
+  "max_seq": 1536,
+  "seed": 0,
+  "targets": "q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"
+ },
+ "lora_exclusions": "vision/audio towers (training/s4_train.py::towers_to_exclude)",
+ "corpus": "training/harness/data_desk_both/train.jsonl",
+ "corpus_sha256": "152c59826bac8d8f3c64008d3ce2b5f4318b02a1146e52ca2a141bb4144beeee",
+ "corpus_note": "data_desk (shallow, 600) + data_desk_deep (P60, 600), shuffled; 0 evaluation prompts of either band",
+ "adapter_sha256": "dd8e2ba026fe52d21cc259f759876eac548571727745eba5289561a148f1c122",
+ "adapter_tarball": "results/M1d-desk-both-bands-20260926/adapters.tgz (git-ignored; a copy in ~/lora-kernel-adapters/M1d-desk-both-g4b/)",
+ "named_for_serving": {
+  "base": "google/gemma-4-E4B-it",
+  "architecture": "Gemma4ForConditionalGeneration",
+  "renamed": true,
+  "src": "adapters/desk-commitment-g4b",
+  "dst": "adapters/desk-commitment-g4b.renamed",
+  "moved": 0,
+  "before": {
+   "tensors": 516,
+   "land_on_text_stack": 516
+  },
+  "after": {
+   "tensors": 516,
+   "land_on_text_stack": 516
+  }
+ },
+ "thinking": "off — chat_template_kwargs enable_thinking=false in every render",
+ "prompt_sha": "760238bf87d5457c",
+ "suites": {
+  "desk:commitment": {
+   "n": 240,
+   "correct": 240,
+   "pairs": [
+    {
+     "pair": "new vs recorded",
+     "n_paired": 240,
+     "a_total": 240,
+     "b_total": 240,
+     "only_a": 0,
+     "only_b": 0,
+     "discordant": 0,
+     "p_value": 1.0,
+     "different": false,
+     "reading": "a tie: the totals differ but the cases behind them do not",
+     "state": "tie"
+    },
+    {
+     "pair": "new vs base",
+     "n_paired": 240,
+     "a_total": 240,
+     "b_total": 240,
+     "only_a": 0,
+     "only_b": 0,
+     "discordant": 0,
+     "p_value": 1.0,
+     "different": false,
+     "reading": "a tie: the totals differ but the cases behind them do not",
+     "state": "tie"
+    }
+   ]
+  },
+  "desk:commitment_deep": {
+   "n": 240,
+   "correct": 239,
+   "bare_base": 83,
+   "pairs": [
+    {
+     "pair": "new vs base",
+     "n_paired": 240,
+     "a_total": 239,
+     "b_total": 83,
+     "only_a": 156,
+     "only_b": 0,
+     "discordant": 156,
+     "p_value": 0.0,
+     "different": true,
+     "reading": "the arms differ",
+     "state": "improvement"
+    }
+   ]
+  }
+ },
+ "gates": {
+  "G1_shallow": {
+   "probed": 3,
+   "empty": 0,
+   "differs": 2,
+   "applied": true,
+   "samples": [
+    {
+     "base": "The sky appears blue because of a phenomenon called Rayleigh",
+     "member": "The sky appears blue because Earth's atmosphere scatters sun"
+    },
+    {
+     "base": "Here are three things a careful reader checks before answeri",
+     "member": "Here are three things a careful reader checks before answeri"
+    },
+    {
+     "base": "A pressure drop in a pipe depends on the fluid's properties,",
+     "member": "A pressure drop in a pipe depends on the fluid's properties,"
+    }
+   ]
+  },
+  "G1_deep": {
+   "probed": 3,
+   "empty": 0,
+   "differs": 2,
+   "applied": true,
+   "samples": [
+    {
+     "base": "The sky appears blue because of a phenomenon called Rayleigh",
+     "member": "The sky appears blue because Earth's atmosphere scatters sun"
+    },
+    {
+     "base": "Here are three things a careful reader checks before answeri",
+     "member": "Here are three things a careful reader checks before answeri"
+    },
+    {
+     "base": "A pressure drop in a pipe depends on the fluid's properties,",
+     "member": "A pressure drop in a pipe depends on the fluid's properties,"
+    }
+   ]
+  }
+ },
+ "supersedes": "releases/desk-commitment@v2.json — Qwen/Qwen3.5-4B, shallow band only, kept as the control arm",
+ "released_by": "M1d [ran] 2026-09-26 — shallow 240/240 ties @v2; deep 239/240 against the bare Gemma's 83 (156:0) and @v2's 64 (175:0); one seed; results/M1d-desk-both-bands-20260926/BRIEF.md"
+}
