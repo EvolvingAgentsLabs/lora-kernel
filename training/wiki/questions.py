@@ -75,6 +75,13 @@ PHRASINGS = {
     "overtime-ext": {"eval": ["An employee at the {d} wants overtime approved. What extension reaches the person who approves it?",
                               "Overtime at the {d} needs approval: which extension do I call?"],
                      "train": ["Extension of the overtime approver for staff at the {d}?", "Staff at the {d} want overtime — approver's extension?"]},
+    "compare-lead": {"eval": ["Which arrives sooner if ordered today: the {p1} or the {p2}? Name the supplier that delivers first.",
+                              "Between the suppliers of the {p1} and of the {p2}, which one has the shorter lead time?"],
+                     "train": ["Of the {p1}'s supplier and the {p2}'s supplier, which delivers faster?",
+                               "Which supplier is quicker: the one for the {p1} or the one for the {p2}?"]},
+    "compare-pack": {"eval": ["Which holds more per pack, the {p1} or the {p2}? Name the product.",
+                              "Between the {p1} and the {p2}, which one has the bigger pack?"],
+                     "train": ["Does the {p1} or the {p2} come in the larger pack?", "Which pack is bigger: {p1} or {p2}?"]},
     "none-supplier": {"eval": ["How many days does an order from {fake} take to arrive?", "What is the minimum order at {fake}?"],
                       "train": ["What is the lead time of {fake}?", "Where is {fake} based?"]},
     "none-recipe": {"eval": ["What is the procedure for importing goods by sea?", "How do we register a new vehicle in the fleet?"],
@@ -90,6 +97,7 @@ FAMILY = {  # family → (hops, shelf of the task, block)
     "order-approver": (1, "harness", "O1"),
     "damaged-ext": (2, "harness", "O2"), "invoice-ext": (2, "harness", "O2"),
     "overtime-ext": (3, "harness", "O3"),
+    "compare-lead": (4, "wiki", "C"), "compare-pack": (2, "wiki", "C"),
     "none-supplier": (0, "wiki", "none"), "none-recipe": (0, "harness", "none"),
 }
 RECIPE_QUERY = {"claims": "goods arrived damaged or wrong item claim", "finance": "approve a supplier invoice payment",
@@ -112,9 +120,11 @@ def instances(w: wd.World, family: str, r: random.Random, k: int) -> list[dict]:
     P, S, D, C, people = f["products"], f["suppliers"], f["warehouses"], f["carriers"], f["people"]
     v, rec = f["values"], f["recipes"]
 
-    def row(fill, plan, support, answer, tokens, kind="value"):
-        return {"fill": fill, "plan": plan, "support": support, "answer": answer,
-                "check": {"kind": kind, "tokens": [str(t) for t in tokens]}}
+    def row(fill, plan, support, answer, tokens, kind="value", never=()):
+        check = {"kind": kind, "tokens": [str(t) for t in tokens]}
+        if never:
+            check["never"] = [str(t) for t in never]     # a comparison that names both has decided nothing
+        return {"fill": fill, "plan": plan, "support": support, "answer": answer, "check": check}
 
     def recipe(role):
         return [("search", "harness", RECIPE_QUERY[role]), _o(rec[role])]
@@ -180,6 +190,27 @@ def instances(w: wd.World, family: str, r: random.Random, k: int) -> list[dict]:
         elif family == "overtime-ext":
             tail, sup, ans, tok = person_ext(d["manager"])
             out.append(row({"d": d["name"]}, recipe("hr") + [_o(rec["hr"], "approval")] + _find(d) + [_o(d, "manager")] + tail, sup, ans, tok))
+        elif family in ("compare-lead", "compare-pack"):
+            # TWO WALKS AND A COMPARISON (B3's band): the answer is a NAME, cited on the statement that decides it.
+            # Pairs are drawn until the two values differ, so exactly one name is right.
+            while True:
+                p1, p2 = r.sample(P, 2)
+                if family == "compare-lead":
+                    a, b = p1["supplier"], p2["supplier"]
+                    if a["id"] != b["id"] and a["lead"] != b["lead"]:
+                        break
+                elif p1["pack"] != p2["pack"]:
+                    break
+            if family == "compare-lead":
+                win = a if a["lead"] < b["lead"] else b
+                plan = _find(p1) + [_o(p1, "supplier"), _o(a), _o(a, "lead-time")] + _find(p2) + [_o(p2, "supplier"), _o(b), _o(b, "lead-time")]
+                lose = b if win is a else a
+                out.append(row({"p1": p1["name"], "p2": p2["name"]}, plan, (win["id"], "lead-time"), win["name"], [win["name"]], never=[lose["name"]]))
+            else:
+                win = p1 if p1["pack"] > p2["pack"] else p2
+                plan = _find(p1) + [_o(p1, "pack")] + _find(p2) + [_o(p2, "pack")]
+                lose = p2 if win is p1 else p1
+                out.append(row({"p1": p1["name"], "p2": p2["name"]}, plan, (win["id"], "pack"), win["name"], [win["name"]], never=[lose["name"]]))
         elif family == "none-supplier":
             fake = FAKE_SUPPLIERS[(i + r.randrange(4)) % 4]
             out.append(row({"fake": fake}, [("search", "wiki", fake)], None, "Not in my library.", [], kind="none"))
@@ -205,6 +236,9 @@ def rows(w: wd.World, split: str, per_family: dict[str, int], seed: int) -> list
 EVAL_MIX = {"pack": 3, "lead": 3, "cutoff": 3, "supplier-town": 4, "supplier-lead": 4, "depot-hours": 4, "depot-cutoff": 4,
             "contact-ext": 4, "manager-ext": 4, "product-cutoff": 4, "damaged-hours": 3, "wrong-days": 3, "terms": 3,
             "order-approver": 3, "damaged-ext": 4, "invoice-ext": 4, "overtime-ext": 4, "none-supplier": 3, "none-recipe": 3}
+
+
+HARD_MIX = {"compare-lead": 20, "compare-pack": 20}      # B3: the band where one walk is not enough
 
 
 def headline(r: dict) -> bool:

@@ -94,6 +94,13 @@ class _Handler(BaseHTTPRequestHandler):
         if model != s["base"] and model not in s["loras"]:
             self.server.refused.append(model)
             return self._send(404, {"error": {"message": f"The model `{model}` does not exist."}})
+        if body.get("prompt_logprobs"):
+            # ACCEPTANCE (B4): one entry per prompt token, as vLLM returns it — the first is None; a token counts as
+            # the model's rank-1 unless `server.rank(model, i)` says otherwise. Tokens are the fake tokenizer's words.
+            words = body.get("prompt", "").split()
+            pl = [None] + [{w: {"rank": self.server.rank(model, i), "logprob": 0.0}} for i, w in enumerate(words) if i > 0]
+            self.server.served.append(model)
+            return self._send(200, {"choices": [{"text": "", "prompt_logprobs": pl, "finish_reason": "length"}]})
         text = self.server.responder(model, body.get("prompt", ""))
         # G1'S PROBES CARRY NO STOP LIST. A registered adapter changes the text there — the one thing G1
         # asks — so what G1 checks against this fake is that the member EXISTS under that name.
@@ -135,7 +142,7 @@ def _free_port() -> int:
 
 
 @contextlib.contextmanager
-def patched(responder=default_responder):
+def patched(responder=default_responder, rank=lambda model, i: 1):
     """Point `accept_rank.serve` at a fake server built from the SAME command line the runner writes.
     Yields a dict that fills in with the server (its `refused` and `served` lists) once one starts."""
     from training.harness import accept_rank as ar
@@ -148,6 +155,7 @@ def patched(responder=default_responder):
         spec = parse_serve(cmd)
         server = ThreadingHTTPServer(("127.0.0.1", port), _Handler)
         server.spec, server.responder, server.refused, server.served = spec, responder, [], []
+        server.rank = rank
         threading.Thread(target=server.serve_forever, daemon=True).start()
         seen.update(spec=spec, server=server)
         return FakeProc(server)
