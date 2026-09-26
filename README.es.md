@@ -25,6 +25,16 @@
 > [Hugging Face](https://huggingface.co/Matias/lora-kernel-distributor-wiki-gemma4-e4b) — probalo en diez minutos:
 > [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EvolvingAgentsLabs/lora-kernel/blob/main/examples/colab/wiki_walk.ipynb)
 
+## Mirá la demo — un centro educativo completo sobre un modelo chico y local (76 s)
+
+[![La demo grabada: un educador lee la agenda de un alumno; el registro de otra escuela, rechazado por la capa de herramientas; un cobro de $45 retenido hasta que un director lo aprueba; cada rol y caja del diagrama de referencia; 15 de 15 escenas.](docs/img/demo-escuela-preview.gif)](docs/video/demo-escuela.mp4)
+
+**[▶ Ver el video (MP4, 1,8 MB)](docs/video/demo-escuela.mp4)** · en español · cada pedido, llamada a herramienta, respuesta y número en
+pantalla está copiado de una corrida grabada — [`results/DEMO-school-diagram-20260926/`](results/DEMO-school-diagram-20260926/BRIEF.md),
+**15/15** sobre Gemma 4 E4B + un LoRA del personal detrás del gateway. Escuelas sintéticas; identidad, pagos y monitoreo son
+sustitutos de demo. El video es HTML renderizado con [HyperFrames](https://github.com/heygen-com/hyperframes):
+[`video/demo-escuela/`](video/README.md).
+
 ## El problema
 
 Una organización que funciona con agentes sigue mandando el mismo puñado de trabajos que se repiten
