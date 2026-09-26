@@ -13,8 +13,9 @@ GPU=L4 BRANCH=main RUN_DIR=results/DEMO-org-20260924 MODULE=training.harness.dem
 python -m training.harness.demo_org --render results/DEMO-org-20260924/demo.json > transcript.md
 ```
 
-*This walkthrough ran on `Qwen3.5-4B` with the `@v2` members; the released members are now on Gemma 4 E4B (`@v3`) and
-it has not been re-run on them — the school demo below has, 8/8.*
+*~~This walkthrough ran on `Qwen3.5-4B`~~ — corrected 2026-09-26: **this command had never been run**; no
+`results/DEMO-org-*` exists in any commit, and part A was marked [ran] without one. Its first run, on Gemma 4 E4B with
+`distributor-wiki@v2` and checks on every scene, is `results/DEMO-org-gemma-20260926/`. The school demo below has run, 8/8.*
 
 For the live version — the same model behind OpenClaw, turn by turn — see [`OPENCLAW.md`](OPENCLAW.md);
 it ran live, 40 turns, all local **[ran]** P63.
@@ -24,7 +25,7 @@ it ran live, 40 turns, all local **[ran]** P63.
 | minute | what is on screen | what it shows | status |
 |---|---|---|---|
 | 1 | one OpenAI-compatible endpoint; several adapters on one resident `Qwen3.5-4B`; each request routed to its own | the service is a drop-in for an agent runtime's model setting | **[ran]** P62, P63 |
-| 2 | **school demo [ran] 2026-09-25: 8/8 on Gemma 4 E4B + the school-staff LoRA, every reply grounded by the gateway** ([`results/DEMO-school-gemma-20260925/`](../results/DEMO-school-gemma-20260925/README.md)) · roles of a distributor — customer service, purchasing, IT — asking the local model; it calls the real tool layer and answers from what the tool returned | a small model serves routine role tasks with tools, locally | **[ran]** this demo (`training/harness/demo_org.py` part A) |
+| 2 | **school demo [ran] 2026-09-25: 8/8 on Gemma 4 E4B + the school-staff LoRA, every reply grounded by the gateway** ([`results/DEMO-school-gemma-20260925/`](../results/DEMO-school-gemma-20260925/README.md)) · roles of a distributor — customer service, purchasing, IT — asking the local model; it calls the real tool layer and answers from what the tool returned | a small model serves routine role tasks with tools, locally | school **[ran]**; distributor: first run `DEMO-org-gemma-20260926` (`demo_org.py` part A) — ~~[ran] this demo~~, it had never run |
 | 3 | the same user asks for another tenant's order: **the tool refuses**; a delivery note carries a planted instruction: it is reported, not obeyed | permission lives outside the model; a prompt cannot widen it | tool layer **[ran]** 77 adversarial cases, 0 leaks; model side, this demo |
 | 4 | a question two or three hops deep — *what extension reaches the manager of the depot that stocks this product?* — walked through a wiki of **atomic statements**, answered with the citation `[id§anchor]` the runtime checks | facts live in editable pages, not weights; every answer names the statement it rests on | **[ran]** W9 — PASSED: 35/40 against the untrained walk's 0/40; on Gemma 4 E4B 38/40; with comparisons in its corpus, 37/40 on a comparison band (B5) |
 | 5 | the route: a request in a trained member's region stays local, one outside every region leaves for the frontier; the bill for the turns served locally, at the frontier's own rates | where the money is — and what is not priced | route **[ran]** M2; bill **[ran]** M6 first pass |

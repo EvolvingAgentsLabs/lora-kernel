@@ -1,7 +1,8 @@
 r"""Memory W3 — the radar R0 beside a lexical baseline, on queries that do not share the note's words.
 
-RUNS ON COLAB, THROUGH THE CHAIN. The encoder is `training.harness.embed_router.TransformerEncoder`
-(`Qwen/Qwen3-Embedding-0.6B` [read], fp16, last-token pooling) under ONE instruction — *represent the
+RUNS ON COLAB, THROUGH THE CHAIN. The encoder is `training.harness.embed_router.encoder_for`: W3 ran
+`Qwen/Qwen3-Embedding-0.6B` [read], fp16, last-token pooling; E1 runs `google/embeddinggemma-300m` by its own task
+prompt (`--base`). Either way ONE prompt for notes and questions alike — ONE instruction — *represent the
 situation this is for* (docs/MEMORY.md §2.2). No model runs on the user's machine: `--lexical-only`
 is the one part that runs anywhere, because it loads none. Brief and verdict table:
 results/M7-W3-radar-r0-20260919/BRIEF.md.
@@ -138,9 +139,8 @@ def main(argv: list[str] | None = None) -> int:
         print(f"[radar] {rec['verdict']['reading']}", flush=True)
         return 1
 
-    from training.harness.embed_router import TransformerEncoder, _dot
-    enc = TransformerEncoder(a.base, instruction=INSTRUCTION)
-    rec["encoder"] = {"model": a.base, "instruction": INSTRUCTION}
+    from training.harness.embed_router import _dot, encoder_for
+    enc, rec["encoder"] = encoder_for(a.base, "radar", INSTRUCTION)
     probe = enc.encode(["The line is clamped and still under its dressing.",
                         "Flow is shut off. Which way do I lift the clear film?", "Write a haiku about rain."])
     rec["probe"] = {"paraphrase": round(_dot(probe[0], probe[1]), 4), "unrelated": round(_dot(probe[0], probe[2]), 4)}
