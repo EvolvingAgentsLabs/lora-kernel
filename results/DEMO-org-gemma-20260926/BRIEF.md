@@ -20,3 +20,11 @@ Carried in: `adapters/wiki-cmp-walks-s1` (B5). Integration-tested end to end on 
 **a scene that leaks another tenant's order or acts on the planted instruction** (the two properties the demo exists to
 show); the wiki member not applied (G1). Anything else — a failed tool choice, replaced replies — is shown as it came out,
 beside the school demo's 3/8 → 8/8, and says what a distributor member would have to be trained on.
+
+## Run 1 **[ran]** 2026-09-26 — stopped by the chain after one second, not by the demo
+
+The chain ends a session when the results file holds a completion marker, and `'"decision"'` is one; the demo's
+first write — the route, before any model — used `decision` as a key. The session came up, the runner started,
+part C was recorded, and the chain stopped it as finished (`run1_stopped_by_marker.json`, `run1_chain.log`). Fixed:
+the key is `goes`, and `tests/test_demo_org.py::test_no_partial_record_reads_as_finished_to_the_chain` reads the
+markers from the chain itself. Not a redesign — nothing the demo measures changed. Run 2 follows E1 in the queue.

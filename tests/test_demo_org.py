@@ -21,7 +21,7 @@ def _scripted(tag: str):
 
 
 def test_the_route_it_shows_is_the_dictionarys():
-    got = [r["decision"] for r in d.routed()]
+    got = [r["goes"] for r in d.routed()]
     assert got == ["local", "out", "out"]
 
 
@@ -132,3 +132,17 @@ def test_the_whole_demo_runs_against_the_fake_with_the_wiki_member_checked_first
     assert "finished" in rec and "stopped" not in rec
     text = d.render(rec)
     assert "PASS" in text and "compare-lead" in text and "grounding:" in text
+
+
+def test_no_partial_record_reads_as_finished_to_the_chain():
+    """chain_serve.sh stops a session when the results file holds a completion marker. The demo writes its record
+    before serving anything; that record must hold none — '"decision"' did, and the first run stopped in a second."""
+    import json as _json
+    import re as _re
+    from pathlib import Path as P
+    chain = (P(__file__).resolve().parent.parent / "training/harness/chain_serve.sh").read_text()
+    markers = {m for g in _re.findall(r"""grep -q '("finished"[^']*)'""", chain) for m in g.split("\\|")}
+    assert '"decision"' in markers, markers                                   # read from the chain itself
+    assert any(m in _json.dumps({"routed": [{"decision": "local"}]}) for m in markers)   # the old key trips it
+    early = _json.dumps({"base": "x", "started": "t", "routed": d.routed()})
+    assert not any(m in early for m in markers), markers

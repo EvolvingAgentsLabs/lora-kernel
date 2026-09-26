@@ -164,7 +164,9 @@ def routed() -> list[dict]:
     out = []
     for text, what in ROUTED:
         d = decide({"model": "auto", "messages": [{"role": "user", "content": text}]}, role=None, policy="off")
-        out.append({"request": text, "what": what, "decision": d[0], "to": d[1]})
+        # NOT "decision": chain_serve.sh reads '"decision"' in a results file as FINISHED, and this record is written
+        # first — the first run stopped after one second on it [ran] results/DEMO-org-gemma-20260926
+        out.append({"request": text, "what": what, "goes": d[0], "to": d[1]})
     return out
 
 
@@ -199,7 +201,7 @@ def render(rec: dict) -> str:
               + (f" ({w['why']})" if w.get("why") else ""), ""]
     L += ["## C — the route (production default: the dictionary)", ""]
     for r in rec.get("routed", []):
-        L.append(f"- *{r['request']}* ({r['what']}) → **{r['decision']}** ({r['to']})")
+        L.append(f"- *{r['request']}* ({r['what']}) → **{r['goes']}** ({r['to']})")
     b = rec.get("bill", {})
     L += ["", "## D — the bill", "",
           f"{b.get('turns_served_locally')} turns served locally, {b.get('prompt_tokens')} prompt + {b.get('completion_tokens')} completion tokens. "
@@ -225,7 +227,7 @@ def main() -> int:
     out = Path(a.out)
     rec = {"base": a.base, "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "routed": routed()}
     out.write_text(json.dumps(rec, indent=1))
-    print(f"[demo] route: " + " · ".join(f"{r['what']} → {r['decision']}" for r in rec["routed"]), flush=True)
+    print(f"[demo] route: " + " · ".join(f"{r['what']} → {r['goes']}" for r in rec["routed"]), flush=True)
     wname, _, wpath = a.wiki_member.partition("=")
     wiki_adapter = wpath if Path(wpath, "adapter_model.safetensors").exists() else None
     rec["wiki_member"] = wpath if wiki_adapter else f"NONE — {wpath} not on disk, the bare base walks"
