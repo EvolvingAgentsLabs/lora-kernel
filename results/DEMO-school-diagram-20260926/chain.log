@@ -1,0 +1,31 @@
+=== session 1 of 1 · srv192530 · L4
+    boot clone: rc=0 546a49a School demo across the whole reference diagram: 7 scenes added, one per role and box it had not reached
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 546a49a School demo across the whole reference diagram: 7 scenes added, one per role and box it had not reached
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    546a49a School demo across the whole reference diagram: 7 scenes added, one per role and box it had not reached | 0.30.0
+    carried the adapters in (3 chunks)
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules school-s0=adapters/school-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules school-s0=adapters/school-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules school-s0=adapters/school-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules school-s0=adapters/school-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules school-s0=adapters/school-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules school-s0=adapters/school-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules school-s0=adapters/school-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules school-s0=adapters/school-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules school-s0=adapters/school-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules school-s0=adapters/school-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules school-s0=adapters/school-staff-s0
+    [demo] marketing-north: PASS · Marketing: a campaign drafted by its role · route local
+    [demo] educador-north: PASS · Payroll is not an educator's: no tool reaches it, the question goes to a person and no salary is shown · route person
+    [demo] 15/15 scenes as expected · cfo self-approval refused True · approved by the director: True · bill $0.00656
+    [demo] marketing-north: PASS · Marketing: a campaign drafted by its role · route local
+    [demo] educador-north: PASS · Payroll is not an educator's: no tool reaches it, the question goes to a person and no salary is shown · route person
+    [demo] 15/15 scenes as expected · cfo self-approval refused True · approved by the director: True · bill $0.00656
+    the runner wrote its result — done
+exit 0

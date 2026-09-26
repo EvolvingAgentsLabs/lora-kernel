@@ -205,8 +205,9 @@ cita de cada respuesta verificada, 16 de 16 a tres saltos — y sobre Gemma 4 E4
 identidad desde un token firmado, los registros de otra escuela rechazados por la capa de
 herramientas, un pago retenido hasta que un director lo aprueba, pedidos fuera de alcance derivados
 a la frontera o a una persona, un log y un dashboard — y **cada respuesta chequeada contra los
-resultados reales de las herramientas por el gateway, fuera del modelo**. 8 de 8 escenas sobre
-Gemma 4 E4B con un adaptador del personal de la escuela, contra 3 de 8 con un modelo pelado
+resultados reales de las herramientas por el gateway, fuera del modelo**. **15 de 15 escenas que cubren cada rol y cada caja del diagrama de referencia** (dev, trainee, marketing, educador,
+compras, CFO, IT; agenda, membresías, inscripciones; comunicaciones, operaciones, compras, nómina, marketing,
+dashboards) sobre Gemma 4 E4B con un adaptador del personal de la escuela — las primeras 8 contra 3 de 8 con un modelo pelado
 ([`docs/es/DEMO.md`](docs/es/DEMO.md)).
 
 **La familia es Gemma 4** desde 2026-09-25: medida contra Qwen3.5-4B sobre la misma wiki, un

@@ -17,6 +17,7 @@ import pytest
 from examples.common import approvals, mock_billing, tokens
 from examples.common.permissions import Claim, Denied
 from training.harness import fake_vllm as fv
+from examples.school.demo_run import SCENES
 
 
 def test_a_token_is_the_identity_and_a_tampered_one_is_refused():
@@ -57,7 +58,13 @@ def scripted(model: str, prompt: str) -> str:
              ("alumno 1", "<agenda_read>1</agenda_read>"),
              ("Inscribí al alumno 2", "<enrollment_draft>student_id=2; program=after-school-robotics</enrollment_draft>"),
              ("membresía 1", "<billing_charge>membership_id=1; amount_cents=4500</billing_charge>"),
-             ("anuncio", "<announcement_post>audience=families; body=El viernes no hay clases</announcement_post>")]
+             ("anuncio", "<announcement_post>audience=families; body=El viernes no hay clases</announcement_post>"),
+             ("tablero", "<dashboard_summary></dashboard_summary>"),
+             ("proyector", "<maintenance_create>area=aula 2; description=el proyector no enciende</maintenance_create>"),
+             ("resmas", "<order_draft>item=resmas de papel; qty=20; description=para secretaría</order_draft>"),
+             ("nómina", "<payroll_read></payroll_read>"),
+             ("membresías", "<membership_status></membership_status>"),
+             ("campaña", "<campaign_create>name=inscripcion-verano; channel=email; budget_cents=30000</campaign_create>")]
     return next((tag for key, tag in rules if key in asked), "OUT OF SCOPE")
 
 
@@ -79,9 +86,9 @@ def test_the_scripted_day_runs_through_the_gateway_over_http(demo, tmp_path, mon
     assert rec["passed"] == len(demo.SCENES), [s for s in rec["scenes"] if not s["passed"]]
     assert rec["cfo_cannot_approve"] and "charged $45.00" in rec["director_approved"]["result"]
     assert rec["ledger_after"] == [{"org_id": "northgate", "membership_id": 1, "amount_cents": 4500, "id": 1}]
-    assert [h["user"] for h in rec["handoffs"]] == ["educador-north"]
+    assert [h["user"] for h in rec["handoffs"]] == ["educador-north", "educador-north"]     # the injury; the payroll question
     d = rec["dashboard"]
-    assert d["turns"] == 7 and d["to_frontier"] == 1 and d["to_a_person"] == 1 and d["held_for_approval"] == 2 and d["denied_calls"] == 1
+    assert d["turns"] == 14 and d["to_frontier"] == 1 and d["to_a_person"] == 2 and d["held_for_approval"] == 2 and d["denied_calls"] == 1
     assert (tmp_path / "events.jsonl").read_text().count("\n") == len(demo.SCENES)
     assert "## A director's side" in demo.render(rec)
 
@@ -112,7 +119,7 @@ def test_the_school_arm_scores_base_and_a_member_end_to_end_against_the_fake(tmp
     assert rec["G1"]["school-s0"]["applied"] and seen["server"].refused == []
     for arm in ("base", "school-s0"):
         assert len(rec["arms"][arm]["held_out"]) == 70 and not [r for r in rec["arms"][arm]["held_out"].values() if "error" in r]
-        assert rec["arms"][arm]["demo"]["n"] == 8
+        assert rec["arms"][arm]["demo"]["n"] == len(SCENES)
     assert rec["analysis"]["pairs"][0]["pair"] == "school-s0 vs base"
 
 
