@@ -40,6 +40,7 @@ SESSIONS="${SESSIONS:-2}"
 # recorded in chain_separate.sh, which cost two sessions.
 TRAINDEPS="${TRAINDEPS:-}"
 SKIP_ADAPTERS="${SKIP_ADAPTERS:-}"
+HF_AUTH="${HF_AUTH:-}"
 LOCAL="$RUN_DIR/$RESULTS_NAME"
 ADAPTERS="$RUN_DIR/adapters.tgz"
 
@@ -190,14 +191,27 @@ PY
         || { echo "    adapters did not upload"; exit 1; }
   fi
 
+  # A GATED MODEL NEEDS THE USER'S HUGGING FACE TOKEN (E1: embeddinggemma-300m answers 401 without it [ran]
+  # 2026-09-26). Opt-in, HF_AUTH=1, with the user's permission given for it: the token travels as a FILE, is read by the
+  # runner's Python into its environment, and is never on a command line, in a log, or in the repository.
+  if [ -n "${HF_AUTH:-}" ]; then
+    tmo 120 colab upload -s "$S" "$HOME/.cache/huggingface/token" /content/_hf_token >/dev/null 2>&1 \
+      && echo "    carried the Hugging Face token in (a file, never logged)" \
+      || { echo "    the Hugging Face token did not upload"; exit 1; }
+  fi
+
   cat > /tmp/_vrun.py <<PY
+import os
 import subprocess
+env = dict(os.environ)
+if os.path.exists("/content/_hf_token"):
+    env["HF_TOKEN"] = open("/content/_hf_token").read().strip()
 subprocess.Popen(
     "cd /content/lora-kernel && ([ -f adapters.tgz ] && tar xzf adapters.tgz || true) && "
     # --out is passed so the runner writes the name the chain will ask for. Two
     # pool-cost runs came home empty because those two names disagreed.
     "nohup python -u -m $MODULE --base $BASE $MARGS --out $RESULTS_NAME "
-    "> run.log 2>&1 &", shell=True)
+    "> run.log 2>&1 &", shell=True, env=env)
 PY
   # A LAUNCH IS PROVEN BY ITS LOG, NOT BY ITS EXIT CODE. The exec above is `|| true`, and W5e's
   # session T held an A100 for 25 minutes watching a runner that never started — no run.log on
