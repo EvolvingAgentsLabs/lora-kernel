@@ -654,6 +654,7 @@ Las cuatro que deciden la forma de un paso:
 
 ## 5. Historia
 
+- **2026-09-26** — **M1c [ran]: `desk-commitment` no es miembro sobre Gemma, y ninguno de los dos miembros resuelve la banda profunda.** En `commitment_deep` el Gemma pelado saca 82/240 (hay margen); los miembros entrenados en la banda superficial sacan 60 (Gemma, 0 : 22 contra su base) y 64 (Qwen `@v2`) — los dos copian la fecha del último mensaje. `desk-commitment` se queda en Qwen; siguiente, un miembro entrenado en las dos bandas ([`BRIEF`](../../results/M1c-desk-deep-20260926/BRIEF.md)).
 - **2026-09-26** — **el miembro de la wiki liberado sobre Gemma 4 E4B (`releases/distributor-wiki@v1.json`).** Una segunda semilla de Gemma: las dos le ganan al recorrido sin entrenar (19 : 0, 20 : 0; 38 y 39 de 40), las dos tiradas coinciden en 65 de 67, y las dos empatan con las semillas de Qwen con Gemma adelante ([`BRIEF`](../../results/B1-gemma4-vs-qwen35-20260925/BRIEF.md)).
 - **2026-09-25** — **M1b [ran]: `email-full` liberado sobre Gemma 4 E4B (`@v3`)** — empate con su `@v2` de Qwen (469 vs 471 de 475) y 119 : 0 sobre el Gemma pelado. `desk-commitment` empata con `@v2` y con el Gemma pelado a 240/240: por el veredicto tal como está escrito el pool no se mueve como unidad; desk se queda en Qwen hasta que una suite con margen sobre el base lo decida ([`BRIEF`](../../results/M1b-pool-gemma4-20260925/BRIEF.md)).
 - **2026-09-25** — **la demo de la escuela [ran]: 8/8 sobre Gemma 4 E4B, el sistema de punta a punta.** M8: un

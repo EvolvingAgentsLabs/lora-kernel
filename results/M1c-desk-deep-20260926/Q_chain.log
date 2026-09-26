@@ -1,0 +1,43 @@
+=== session 1 of 1 · srv212417 · L4
+    boot clone: rc=0 b9bb4a6 The wiki member released on Gemma 4 E4B: two seeds, both beat the untrained walk, they agree on 65 of 67
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 b9bb4a6 The wiki member released on Gemma 4 E4B: two seeds, both beat the untrained walk, they agree on 65 of 67
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    b9bb4a6 The wiki member released on Gemma 4 E4B: two seeds, both beat the untrained walk, they agree on 65 of 67 | 0.30.0
+    carried the adapters in (4 chunks)
+    runner started (launch 1)
+    adapters home: 1 packed
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules desk-commitment=adapters/desk-commitment-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules desk-commitment=adapters/desk-commitment-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules desk-commitment=adapters/desk-commitment-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules desk-commitment=adapters/desk-commitment-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules desk-commitment=adapters/desk-commitment-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules desk-commitment=adapters/desk-commitment-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules desk-commitment=adapters/desk-commitment-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules desk-commitment=adapters/desk-commitment-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules desk-commitment=adapters/desk-commitment-q35
+    [rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules desk-commitment=adapters/desk-commitment-q35
+    [pool] G2 desk-commitment: {'reachable': True, 'tool_calls': 0, 'answered': True} · auto -> desk-commitment
+    [rank] arm Qwen/Qwen3.5-4B: 240 to draft, 0 resumed
+    [rank] arm Qwen/Qwen3.5-4B 25/240 correct 0 27s
+    [rank] arm Qwen/Qwen3.5-4B 25/240 correct 0 27s
+    [rank] arm Qwen/Qwen3.5-4B 50/240 correct 0 48s
+    [rank] arm Qwen/Qwen3.5-4B 75/240 correct 0 69s
+    [rank] arm Qwen/Qwen3.5-4B 75/240 correct 0 69s
+    [rank] arm Qwen/Qwen3.5-4B 100/240 correct 0 91s
+    [rank] arm Qwen/Qwen3.5-4B 125/240 correct 0 112s
+    [rank] arm Qwen/Qwen3.5-4B 125/240 correct 0 112s
+    [rank] arm Qwen/Qwen3.5-4B 150/240 correct 0 133s
+    [rank] arm Qwen/Qwen3.5-4B 175/240 correct 0 156s
+    [pool] arm base:desk:commitment_deep: 0/240 errors 3
+    [rank] arm desk-commitment: 240 to draft, 0 resumed
+    [rank] arm desk-commitment 25/240 correct 6 6s
+    [pool] desk-commitment · new vs base: improvement (64:0, p=0.0)
+    [pool] NOT MOVED: gates [] or a member does not beat the new base
+    [pool] adapters packed: adapters_out.tgz
+    the runner wrote its result — done
+exit 0

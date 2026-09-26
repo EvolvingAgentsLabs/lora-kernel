@@ -1,0 +1,33 @@
+/content/lora-kernel/training/harness/pool_second.py:24: SyntaxWarning: invalid escape sequence '\g'
+  prompts to the right member, the new arm ties the recorded 240/240 ($p \ge 0.05$ on
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[rank] vllm serve Qwen/Qwen3.5-4B --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules desk-commitment=adapters/desk-commitment-q35
+[pool] G1 desk-commitment: 3/3 differ → applied
+[pool] G2 desk-commitment: {'reachable': True, 'tool_calls': 0, 'answered': True} · auto -> desk-commitment
+[rank] arm Qwen/Qwen3.5-4B: 240 to draft, 0 resumed
+[rank] arm Qwen/Qwen3.5-4B 25/240 correct 0 27s
+[rank] arm Qwen/Qwen3.5-4B 50/240 correct 0 48s
+[rank] arm Qwen/Qwen3.5-4B 75/240 correct 0 69s
+[rank] arm Qwen/Qwen3.5-4B 100/240 correct 0 91s
+[rank] arm Qwen/Qwen3.5-4B 125/240 correct 0 112s
+[rank] arm Qwen/Qwen3.5-4B 150/240 correct 0 133s
+[rank] arm Qwen/Qwen3.5-4B 175/240 correct 0 156s
+[rank] arm Qwen/Qwen3.5-4B 200/240 correct 0 178s
+[rank] arm Qwen/Qwen3.5-4B 225/240 correct 0 201s
+[rank] arm Qwen/Qwen3.5-4B 240/240 correct 0 213s
+[pool] arm base:desk:commitment_deep: 0/240 errors 3
+[rank] arm desk-commitment: 240 to draft, 0 resumed
+[rank] arm desk-commitment 25/240 correct 6 6s
+[rank] arm desk-commitment 50/240 correct 13 12s
+[rank] arm desk-commitment 75/240 correct 18 17s
+[rank] arm desk-commitment 100/240 correct 29 21s
+[rank] arm desk-commitment 125/240 correct 36 26s
+[rank] arm desk-commitment 150/240 correct 42 31s
+[rank] arm desk-commitment 175/240 correct 48 36s
+[rank] arm desk-commitment 200/240 correct 54 41s
+[rank] arm desk-commitment 225/240 correct 61 46s
+[rank] arm desk-commitment 240/240 correct 64 48s
+[pool] arm desk-commitment: 64/240 errors 0
+[pool] desk-commitment · new vs base: improvement (64:0, p=0.0)
+[pool] NOT MOVED: gates [] or a member does not beat the new base
+[pool] adapters packed: adapters_out.tgz

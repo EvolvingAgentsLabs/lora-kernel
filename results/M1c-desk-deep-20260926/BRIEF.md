@@ -25,3 +25,24 @@ the member on the same 240 cases (`eval_seed 424242`). The two sessions are pair
 
 All three hold → **`desk-commitment@v3` on Gemma**, `@v2` stays the control. Beside: by depth; the bare Qwen on the band.
 **Ceiling: 2 L4.** No training. **Redesign counter: 0.**
+
+## Result **[ran]** 2026-09-26 · NOT A MEMBER ON GEMMA — and neither member does the deep band
+
+Two L4 sessions (`deep_gemma.json`, `deep_qwen.json`), G1 applied on both members. `desk:commitment_deep`, 240 cases:
+
+| arm | depth 1 | 2 | 3 | 4 | total |
+|---|--:|--:|--:|--:|--:|
+| bare Gemma 4 E4B | 60 | 0 | 0 | 22 | **82** |
+| `desk-commitment-g4` | 60 | 0 | 0 | 0 | 60 |
+| `desk-commitment@v2` (Qwen3.5-4B) | 60 | 0 | 0 | 4 | 64 |
+| bare Qwen3.5-4B | 0 | 0 | 0 | 0 | 0 (3 transport errors) |
+
+By the verdict as written: headroom **yes** (82 < 216); `g4 vs bare Gemma` **REGRESSION** (0 : 22) → **NOT A MEMBER ON
+GEMMA**; `g4 vs @v2` a tie (0 : 4). `desk-commitment` stays on Qwen (`@v2`).
+
+**Read where it happens.** Both members were trained on the shallow band, where the promise is always the last message:
+they call `message` once and copy its date. From depth 2 the last message is the sender's ("Noted, thanks."), and both
+answer a date the sender proposed. Neither is a deep-band member; the bare Qwen does not even finish depth 1 (it calls
+`thread_history` and writes no answer). **What follows — the user's decision:** the member retrained on Gemma from BOTH
+corpora (`data_desk` shallow + `data_desk_deep`, 600 + 600 rows, P60), scored on both bands; released only if it ties
+`@v2` on the shallow band and beats the bare Gemma on the deep one.
