@@ -13,6 +13,15 @@
 
 *[Español](README.es.md)*
 
+> **In one minute.** A small model (Gemma 4 E4B) gets one LoRA per job, trained on *how to walk* a
+> library of markdown notes — search, open, follow the link, calculate — not on the facts inside them.
+> A procedure changes: edit the note, no retraining. A tiny router sends whatever falls outside every
+> expert's ground to a frontier model. Measured here **[ran]**: an inbox-triage expert at 0.989 against
+> the bare base's 0.345; multi-hop questions over a wiki no model has seen, 38/40 against the bare
+> Gemma's 19/40; and one lesson worth the visit on its own — the same adapter scored 11/90 served
+> through `tool_calls` and **90/90** served the way its corpus taught it. All on generated suites, no
+> real traffic yet; what failed is in [`docs/RECORD.md`](docs/RECORD.md).
+
 ## The problem
 
 An organisation running on agents keeps sending the same handful of repeating jobs — triage an

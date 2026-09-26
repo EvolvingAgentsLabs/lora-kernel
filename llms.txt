@@ -1,0 +1,33 @@
+# lora-kernel
+
+> Experts defined by their corpora: one small LoRA per job on Gemma 4 E4B, trained on how to navigate an editable markdown knowledge base (search, open, follow links, calculate) rather than on its facts; a very small router that abstains to a frontier model outside every expert's corpus; served as an OpenAI-compatible API with OpenClaw on top. Apache-2.0. Every claim is marked [ran] (observed, run directory named), [read] (from source or a paper) or [spec] (decided, not built). All measurements are on generated suites; no real traffic yet.
+
+Key results, all [ran]: an inbox-triage expert 0.989 vs the bare base's 0.345; multi-hop questions over an unseen wiki of atomic statements, 38/40 on Gemma 4 E4B (bare 19/40); the same fluids adapter 11/90 through `tool_calls` and 90/90 served with results inline as its corpus taught — serve an expert the way it was trained before concluding a capability is absent. Not solved: the learned router does not yet beat a keyword dictionary; small models still invent, caught by a grounding check outside the model.
+
+## Start here
+
+- [README](https://github.com/EvolvingAgentsLabs/lora-kernel/blob/main/README.md): the shape, the five pieces of 1.0, where it stands
+- [Memory specification](https://github.com/EvolvingAgentsLabs/lora-kernel/blob/main/docs/MEMORY.md): library, radar, three verbs (`<search>`, `<open>`, `<calc>`), the navigating LoRA, the runtime referee
+- [Record](https://github.com/EvolvingAgentsLabs/lora-kernel/blob/main/docs/RECORD.md): everything measured, including negative results and instruments that lied, each line naming its run
+- [Plan](https://github.com/EvolvingAgentsLabs/lora-kernel/blob/main/docs/PLAN.md): living milestones, each with gate and falsification condition written before it ran
+
+## Architecture and serving
+
+- [Architecture](https://github.com/EvolvingAgentsLabs/lora-kernel/blob/main/docs/ARCHITECTURE.md): experts, router, memory, runtime, the small/large pair, the frontier
+- [Serving](https://github.com/EvolvingAgentsLabs/lora-kernel/blob/main/docs/SERVING.md): vLLM multi-LoRA behind the OpenAI-compatible proxy (`training/harness/openai_proxy.py`)
+- [OpenClaw](https://github.com/EvolvingAgentsLabs/lora-kernel/blob/main/docs/OPENCLAW.md): agents per task on top, as run live
+- [Demo](https://github.com/EvolvingAgentsLabs/lora-kernel/blob/main/docs/DEMO.md): a reference organisation (school, distributor) with signed identity, held payments, grounding
+- [Examples](https://github.com/EvolvingAgentsLabs/lora-kernel/tree/main/examples): code-only reference organisations and MCP servers
+
+## Why and how it is measured
+
+- [Knowledge trajectories](https://github.com/EvolvingAgentsLabs/lora-kernel/blob/main/docs/KNOWLEDGE-TRAJECTORIES.md): why weights should hold navigation and notes hold content; self-contained, written for review by other models
+- [Framework gaps](https://github.com/EvolvingAgentsLabs/lora-kernel/blob/main/docs/FRAMEWORK.md): what works, what does not, what a generic framework would still need
+- [Foundations](https://github.com/EvolvingAgentsLabs/lora-kernel/blob/main/docs/FOUNDATIONS.md): the mathematics, each section tied to the run that instantiates it
+- [Instructions for coding agents](https://github.com/EvolvingAgentsLabs/lora-kernel/blob/main/CLAUDE.md): the measurement rules this project paid for
+
+## Optional
+
+- [Article: an organisation that runs on agents, on a single GPU](https://github.com/EvolvingAgentsLabs/lora-kernel/blob/main/docs/articles/2026-09-it-was-the-harness.md)
+- [Spanish documentation](https://github.com/EvolvingAgentsLabs/lora-kernel/tree/main/docs/es)
+- [Record before 2026-09-19, tag v0.1-foundations](https://github.com/EvolvingAgentsLabs/lora-kernel/tree/v0.1-foundations)
