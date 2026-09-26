@@ -1,0 +1,29 @@
+=== session 1 of 1 · srv204034 · L4
+    boot clone: rc=0 2750794 W9: atomic statements — a Wikipedia-shaped wiki the small expert walks, cited answers verified (#268)
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 2750794 W9: atomic statements — a Wikipedia-shaped wiki the small expert walks, cited answers verified (#268)
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    2750794 W9: atomic statements — a Wikipedia-shaped wiki the small expert walks, cited answers verified (#268) | 0.30.0
+    carried the adapters in (6 chunks)
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 withlib-s1=adapters/wiki-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 withlib-s1=adapters/wiki-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 withlib-s1=adapters/wiki-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 withlib-s1=adapters/wiki-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 withlib-s1=adapters/wiki-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 withlib-s1=adapters/wiki-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 withlib-s1=adapters/wiki-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 withlib-s1=adapters/wiki-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/wiki-walks-s0 withlib-s1=adapters/wiki-walks-s1
+    [wiki] withlib-s0 40/67 credit 39 value-right 40 errors 0 22s
+    [wiki] withlib-s0 50/67 credit 46 value-right 47 errors 0 26s
+    [wiki] withlib-s0 60/67 credit 55 value-right 56 errors 0 30s
+    [wiki] withlib-s1 60/67 credit 56 value-right 56 errors 0 30s
+    [wiki] withlib-s1 67/67 credit 63 value-right 63 errors 0 33s
+    [wiki] NOTHING SCORED
+    the runner wrote its result — done
+exit 0

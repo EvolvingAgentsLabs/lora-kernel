@@ -1,0 +1,85 @@
+{
+ "name": "distributor-wiki",
+ "version": 1,
+ "base": "google/gemma-4-E4B-it",
+ "kind": "trajectory LoRA over pages of atomic statements (docs/MEMORY.md §1.6)",
+ "recipe": {
+  "r": 16,
+  "lora_alpha": 32,
+  "epochs": 3,
+  "lr": 0.0002,
+  "batch": 2,
+  "accum": 8,
+  "max_seq": 1536,
+  "seed": 1,
+  "targets": "q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"
+ },
+ "lora_exclusions": "vision/audio towers (training/s4_train.py::towers_to_exclude)",
+ "corpus": "training/wiki/data/train.jsonl",
+ "corpus_sha256": "562786385b6d1460c1a88e13aed9975626ba1285a36b0d951b71e5b66c584193",
+ "adapter_sha256": "c12fe5c66536d43824eacb4903672fe99f65c1b26e14a60f28851906ca87be56",
+ "adapter_tarball": "results/B1-gemma4-vs-qwen35-20260925/adapters_s1.tgz (git-ignored; a copy in ~/lora-kernel-adapters/B1-gemma4-wiki-walks-s1-20260926/)",
+ "library": "knowledge/distributor-wiki (evaluation world 20260924; the member is trained on 32 other worlds)",
+ "prompt": "memory.prompt.SYSTEM_WIKI + user_text_wiki",
+ "thinking": "off — enable_thinking=false in every render",
+ "suite": "training/wiki/data/eval.jsonl",
+ "n": 67,
+ "headline_n": 40,
+ "score": {
+  "headline_credit": 39,
+  "all_credit": 63,
+  "hops_3": "16/16"
+ },
+ "seed_choice": "s1 (39/40) over s0 (38/40, adapter 6c7915e9d4ad): chosen on the evaluation set, worth one row; the seeds agree on 65 of 67",
+ "pairs": [
+  {
+   "pair": "withlib-s1 vs base-walks",
+   "n_paired": 40,
+   "a_total": 39,
+   "b_total": 19,
+   "only_a": 20,
+   "only_b": 0,
+   "discordant": 20,
+   "p_value": 0.0,
+   "different": true,
+   "reading": "the arms differ",
+   "state": "improvement"
+  },
+  {
+   "pair": "withlib-s1 vs base-reads",
+   "n_paired": 40,
+   "a_total": 39,
+   "b_total": 40,
+   "only_a": 0,
+   "only_b": 1,
+   "discordant": 1,
+   "p_value": 1.0,
+   "different": false,
+   "reading": "a tie: the totals differ but the cases behind them do not",
+   "state": "tie"
+  }
+ ],
+ "gates": {
+  "G1": {
+   "probed": 3,
+   "empty": 0,
+   "differs": 2,
+   "applied": true,
+   "samples": [
+    {
+     "base": "The sky appears blue because of a phenomenon called Rayleigh",
+     "member": "The sky appears blue because of a phenomenon called Rayleigh"
+    },
+    {
+     "base": "Here are three things a careful reader checks before answeri",
+     "member": "Here are three things a careful reader checks before answeri"
+    },
+    {
+     "base": "A pressure drop in a pipe depends on the fluid's properties,",
+     "member": "A pressure drop in a pipe depends on the fluid's viscosity, "
+    }
+   ]
+  }
+ },
+ "released_by": "W9 + B1 [ran] 2026-09-26 — both Gemma seeds beat the untrained walk (19:0, 20:0); ties with Qwen's two seeds; results/B1-gemma4-vs-qwen35-20260925/BRIEF.md"
+}

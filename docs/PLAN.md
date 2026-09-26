@@ -603,6 +603,7 @@ that decide the shape of a step:
 
 ## 5. History
 
+- **2026-09-26** — **the wiki member released on Gemma 4 E4B (`releases/distributor-wiki@v1.json`).** A second Gemma seed: both beat the untrained walk (19 : 0, 20 : 0; 38 and 39 of 40), the two draws agree on 65 of 67, and both tie Qwen's seeds with Gemma ahead ([`BRIEF`](../results/B1-gemma4-vs-qwen35-20260925/BRIEF.md)).
 - **2026-09-25** — **M1b [ran]: `email-full` released on Gemma 4 E4B (`@v3`)** — a tie with its Qwen `@v2` (469 vs 471 of 475) and 119 : 0 over the bare Gemma. `desk-commitment` ties both `@v2` and the bare Gemma at 240/240: the pool does not move as a unit by the verdict as written; desk stays on Qwen until a suite with room above the base decides it ([`BRIEF`](../results/M1b-pool-gemma4-20260925/BRIEF.md)).
 - **2026-09-25** — **the school demo [ran]: 8/8 on Gemma 4 E4B, the system end to end.** M8: a school-staff trajectory
   LoRA on 700 full gateway turns — held-out 70/70 on both seeds against the bare Gemma's 27/70 (43 : 0), demo day 8/8

@@ -122,3 +122,11 @@ statements 0 : 2, a tie. One Gemma seed against two Qwen seeds, said as such.
 **What it decides.** New members are trained on Gemma 4 E4B. The released Qwen members (`email-full`, `desk-commitment`)
 stay released until each is re-released on Gemma through the release gate. **Not measured:** a second Gemma seed,
 the large half of a pair on Gemma (4 31B), the MTP drafter, a Mac runtime.
+
+## The second Gemma seed **[ran]** 2026-09-26 · both seeds pass — the wiki member is released on Gemma
+
+Seed 1 trained (one A100), both seeds scored in one L4 (`gemma_wiki_scoring2.json`, G1 applied), combined with stage 1's
+base arms by `wiki_arm --combine` (`gemma_wiki_combined.json`). Headline (40), verified: **s0 38, s1 39**; against the
+untrained Gemma walk **19 : 0 and 20 : 0 — PASSED, both seeds**; against the untrained Gemma handed the statements, ties.
+**The two draws agree on 65 of 67 rows.** Against Qwen's two seeds: four ties, Gemma ahead in each (4 : 0, 4 : 1).
+Released: **`releases/distributor-wiki@v1.json`**, seed 1 — chosen on the evaluation set, worth one row, said as such.
