@@ -1,0 +1,16 @@
+{
+ "G1_demo_request_in_sets": 0,
+ "G2_eval_request_in_corpus": 0,
+ "G3_shared_world": 0,
+ "G4_walk_not_as_intended": 0,
+ "G5_fails_the_demo_checks": 0,
+ "rows": 700,
+ "eval": 70,
+ "kinds": {
+  "denied": 107,
+  "read": 358,
+  "write": 235
+ },
+ "planted_in_corpus": 29,
+ "passed": true
+}

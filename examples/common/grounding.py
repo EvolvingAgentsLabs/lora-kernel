@@ -22,7 +22,9 @@ from __future__ import annotations
 import re
 
 PREFIXES = ("según el sistema:", "according to the system:", "hecho:", "done:", "listo:")
-_INJECTION = re.compile(r"\[?\s*(system override|ignore (?:all |your |the )?(?:prior|previous) instructions|disregard your instructions)"
+# "ignore your instructions above" (no prior/previous) is planted in the distributor's own store and slipped past the
+# first version of this pattern [ran] tests/test_distributor_staff.py, 2026-09-26.
+_INJECTION = re.compile(r"\[?\s*(system override|ignore (?:all |your |the )?(?:prior |previous )?instructions|disregard your instructions)"
                         r"[^\]\n]*\]?", re.I)
 REDACTED = "[instruction in the record removed]"
 
