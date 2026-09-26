@@ -256,6 +256,11 @@ diseño.
 
 **Restricción.** A100, 4 bits. No corre en la L4 desde la que se sirve el pool.
 
+**Estado (2026-09-26) — cerrado en Gemma 4 E4B / 12B.** ~~Qwen3.8-27B~~: la familia es Gemma 4 y la mitad grande es
+`gemma-4-12B-it` (B2 **[ran]**). En la banda comparativa las mitades empataron mientras ningún corpus mostraba una
+comparación (B3 **[ran]**, 9 vs 10 de 40); enseñadas, la mitad chica hace 37/40 (B5 **[ran]**, 28 : 1 sobre su predecesor,
+su puntaje de W9 intacto) — sin margen, así que **la mitad grande no compra precisión acá**, como dice la cláusula de falsación. Su trabajo es el del hito 4.
+
 ### Hito 4 — el par especulativo
 
 **Objetivo.** Medir la aceptación de los borradores del miembro chico bajo la
@@ -283,6 +288,9 @@ calidad (hito 3) pero no uno especulativo.
 
 **No se afirma:** aceleración de reloj. Eso necesita la feature del runtime y es una
 medición aparte.
+
+**Estado (2026-09-26) — pasado en Gemma 4 E4B / 12B (B4 [ran]).** El LoRA del 12B sube la aceptación de los borradores del
+miembro E4B, α 0,871 → 0,898 agregado, 76 : 18 registros — toda en la distribución del propio corpus (0,855 → 0,914).
 
 ### Hito 5 — la primera región real
 
@@ -654,6 +662,7 @@ Las cuatro que deciden la forma de un paso:
 
 ## 5. Historia
 
+- **2026-09-26** — **B5 [ran]: se cierra el hito 3 — la mitad chica compara cuando le muestran comparaciones.** E4B entrenado con el corpus de W9 + 128 recorridos comparativos: 37/40 en la banda (liberado: 10/40, 28 : 1), el conjunto de W9 intacto (39/40, 63/67, 0 : 0). Sin margen: el 12B no se entrenó, como decía el brief. Se libera `distributor-wiki@v2` ([`BRIEF`](../../results/B5-comparison-corpus-20260926/BRIEF.md)).
 - **2026-09-26** — **B5 pre-registrado: la segunda y última mirada al hito 3** — un corpus que muestra comparaciones (las 600 filas de W9 byte a byte + 128 recorridos comparativos, compuerta pasada contra los dos conjuntos de evaluación), entrenado en las dos mitades; primero el E4B contra su miembro liberado, el 12B sólo si el chico deja margen. Lo que diga cierra el hito 3 en esta familia ([`BRIEF`](../../results/B5-comparison-corpus-20260926/BRIEF.md)).
 - **2026-09-26** — **B4 [ran]: el hito 4 PASA** — el LoRA del 12B sube la aceptación de los borradores del miembro E4B, 76 : 18 registros, α agregado 0,871 → 0,898; la ganancia está en la distribución del corpus (0,855 → 0,914), ninguna en una banda que ninguna de las dos mitades entrenó ([`BRIEF`](../../results/B4-gemma4-pair-acceptance-20260926/BRIEF.md)).
 - **2026-09-26** — **B3 [ran]: el hito 3 NO pasa en la banda comparativa** — E4B + LoRA 10/40 (hay margen), 12B + LoRA 9/40, empate (5 : 6); el 12B pelado 2/40. Los dos recorren y fallan la comparación: el corpus de W9 nunca mostró una. Siguiente: comparaciones en el corpus de entrenamiento, las dos mitades reentrenadas ([`BRIEF`](../../results/B3-gemma4-large-member-20260926/BRIEF.md)).

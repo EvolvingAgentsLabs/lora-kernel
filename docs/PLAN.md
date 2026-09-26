@@ -232,6 +232,11 @@ pair is not built here. That is a result about the subdomain, not about the desi
 
 **Constraint.** A100, 4-bit. It does not run on the L4 the pool is served from.
 
+**State (2026-09-26) — closed on Gemma 4 E4B / 12B.** ~~Qwen3.8-27B~~: the family is Gemma 4 and the large half is
+`gemma-4-12B-it` (B2 **[ran]**). On the comparison band the halves tied while neither corpus showed a comparison (B3
+**[ran]**, 9 vs 10 of 40); taught them, the small half does 37/40 (B5 **[ran]**, 28 : 1 over its predecessor, its W9 score
+unchanged) — no room, so **the large half buys no accuracy here**, as the falsification clause reads. Its job is milestone 4's.
+
 ### Milestone 4 — the speculative pair
 
 **Objective.** Measure acceptance of the small member's drafts under the large member's
@@ -259,6 +264,9 @@ device (milestone 3) but not a speculative one.
 
 **Not claimed:** wall-clock speed-up. That needs the runtime feature and is a separate
 measurement.
+
+**State (2026-09-26) — passed on Gemma 4 E4B / 12B (B4 [ran]).** The 12B's LoRA raises acceptance of the E4B member's
+drafts, α 0.871 → 0.898 pooled, 76 : 18 records — all of it on the corpus's own distribution (0.855 → 0.914).
 
 ### Milestone 5 — the first real region
 
@@ -603,6 +611,7 @@ that decide the shape of a step:
 
 ## 5. History
 
+- **2026-09-26** — **B5 [ran]: milestone 3 closes — the small half compares once shown comparisons.** E4B trained on W9's corpus + 128 comparison walks: 37/40 on the band (released: 10/40, 28 : 1), W9's set unchanged (39/40, 63/67, 0 : 0). No room: the 12B was not trained, as the brief said. `distributor-wiki@v2` released ([`BRIEF`](../results/B5-comparison-corpus-20260926/BRIEF.md)).
 - **2026-09-26** — **B5 pre-registered: milestone 3's second and last look** — a corpus that shows comparisons (W9's 600 rows byte for byte + 128 comparison walks, gate passed against both evaluation sets), trained on both halves; the E4B first against its released member, the 12B only if the small leaves room. Whatever it says closes milestone 3 on this family ([`BRIEF`](../results/B5-comparison-corpus-20260926/BRIEF.md)).
 - **2026-09-26** — **B4 [ran]: milestone 4 PASSES** — the 12B's LoRA raises acceptance of the E4B member's drafts, 76 : 18 records, pooled α 0.871 → 0.898; the gain is on the corpus's distribution (0.855 → 0.914), none on a band neither half trained on ([`BRIEF`](../results/B4-gemma4-pair-acceptance-20260926/BRIEF.md)).
 - **2026-09-26** — **B3 [ran]: milestone 3 NOT passed on the comparison band** — E4B + LoRA 10/40 (room), 12B + LoRA 9/40, a tie (5 : 6); the bare 12B 2/40. Both walk and fail the comparison: W9's corpus never showed one. Next: comparisons in the training corpus, both halves retrained ([`BRIEF`](../results/B3-gemma4-large-member-20260926/BRIEF.md)).

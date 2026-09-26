@@ -1,0 +1,3480 @@
+{
+ "base": "google/gemma-4-E4B-it",
+ "started": "2026-09-26T20:17:15",
+ "grader": "training.wiki.grade",
+ "library": "knowledge/distributor-wiki",
+ "eval_world": 20260924,
+ "arms": {
+  "withlib-s1": {
+   "w20260924-eval-compare-lead-5": {
+    "id": "w20260924-eval-compare-lead-5",
+    "family": "compare-lead",
+    "block": "C",
+    "hops": 4,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/suppliers/ostlund-supplies",
+     "lead-time"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/suppliers/ostlund-supplies",
+     "lead-time"
+    ],
+    "cited_the_supporting": true,
+    "line": "Ostlund Supplies [4sw§lead-time]",
+    "credit": true,
+    "final": "Ostlund Supplies [4sw§lead-time]",
+    "calls": 10,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 4,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/quill-860-packing-tape",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/ostlund-supplies",
+      "lead-time"
+     ],
+     [
+      "distributor-wiki/wiki/products/brisk-660-stretch-film",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/umberly-industrial",
+      "lead-time"
+     ]
+    ],
+    "text": "<search shelf=wiki>Quill-860 packing tape</search>= 1 note\n  [xdv] page · Quill-860 packing tape — when: You need a fact about the Quill-860 packing tape: who supplies it, where it is stocked, its pack or its reorder point.\n<open>xdv</open>= Quill-860 packing tape — The Quill-860 packing tape, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>xdv§supplier</open>= The Quill-860 packing tape is supplied by [4sw] Ostlund Supplies.\n<open>4sw</open>= Ostlund Supplies — Ostlund Supplies, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>4sw§lead-time</open>= An order from Ostlund Supplies arrives 3 days after it is placed.\n<search shelf=wiki>Brisk-660 stretch film</search>= 1 note\n  [sp4] page · Brisk-660 stretch film — when: You need a fact about the Brisk-660 stretch film: who supplies it, where it is stocked, its pack or its reorder point.\n<open>sp4</open>= Brisk-660 stretch film — The Brisk-660 stretch film, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>sp4§supplier</open>= The Brisk-660 stretch film is supplied by [0yx] Umberly Industrial.\n<open>0yx</open>= Umberly Industrial — Umberly Industrial, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>0yx§lead-time</open>= An order from Umberly Industrial arrives 14 days after it is placed.\nOstlund Supplies [4sw§lead-time]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Quill-860 packing tape</search>"
+     },
+     {
+      "at": 224,
+      "text": "<open>xdv</open>"
+     },
+     {
+      "at": 399,
+      "text": "<open>xdv§supplier</open>"
+     },
+     {
+      "at": 492,
+      "text": "<open>4sw</open>"
+     },
+     {
+      "at": 656,
+      "text": "<open>4sw§lead-time</open>"
+     },
+     {
+      "at": 750,
+      "text": "<search shelf=wiki>Brisk-660 stretch film</search>"
+     },
+     {
+      "at": 974,
+      "text": "<open>sp4</open>"
+     },
+     {
+      "at": 1149,
+      "text": "<open>sp4§supplier</open>"
+     },
+     {
+      "at": 1244,
+      "text": "<open>0yx</open>"
+     },
+     {
+      "at": 1412,
+      "text": "<open>0yx§lead-time</open>"
+     },
+     {
+      "at": 1509,
+      "text": "Ostlund Supplies [4sw§lead-time]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-lead-3": {
+    "id": "w20260924-eval-compare-lead-3",
+    "family": "compare-lead",
+    "block": "C",
+    "hops": 4,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/suppliers/ostlund-supplies",
+     "lead-time"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/suppliers/ostlund-supplies",
+     "lead-time"
+    ],
+    "cited_the_supporting": true,
+    "line": "Ostlund Supplies [ayr§lead-time]",
+    "credit": true,
+    "final": "Ostlund Supplies [ayr§lead-time]",
+    "calls": 10,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 4,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/quill-860-packing-tape",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/ostlund-supplies",
+      "lead-time"
+     ],
+     [
+      "distributor-wiki/wiki/products/marl-380-mailing-sleeve",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/brackmoor-industrial",
+      "lead-time"
+     ]
+    ],
+    "text": "<search shelf=wiki>Quill-860 packing tape</search>= 1 note\n  [phy] page · Quill-860 packing tape — when: You need a fact about the Quill-860 packing tape: who supplies it, where it is stocked, its pack or its reorder point.\n<open>phy</open>= Quill-860 packing tape — The Quill-860 packing tape, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>phy§supplier</open>= The Quill-860 packing tape is supplied by [ayr] Ostlund Supplies.\n<open>ayr</open>= Ostlund Supplies — Ostlund Supplies, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>ayr§lead-time</open>= An order from Ostlund Supplies arrives 3 days after it is placed.\n<search shelf=wiki>Marl-380 mailing sleeve</search>= 1 note\n  [s6k] page · Marl-380 mailing sleeve — when: You need a fact about the Marl-380 mailing sleeve: who supplies it, where it is stocked, its pack or its reorder point.\n<open>s6k</open>= Marl-380 mailing sleeve — The Marl-380 mailing sleeve, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>s6k§supplier</open>= The Marl-380 mailing sleeve is supplied by [9sz] Brackmoor Industrial.\n<open>9sz</open>= Brackmoor Industrial — Brackmoor Industrial, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>9sz§lead-time</open>= An order from Brackmoor Industrial arrives 13 days after it is placed.\nOstlund Supplies [ayr§lead-time]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Quill-860 packing tape</search>"
+     },
+     {
+      "at": 224,
+      "text": "<open>phy</open>"
+     },
+     {
+      "at": 399,
+      "text": "<open>phy§supplier</open>"
+     },
+     {
+      "at": 492,
+      "text": "<open>ayr</open>"
+     },
+     {
+      "at": 656,
+      "text": "<open>ayr§lead-time</open>"
+     },
+     {
+      "at": 750,
+      "text": "<search shelf=wiki>Marl-380 mailing sleeve</search>"
+     },
+     {
+      "at": 977,
+      "text": "<open>s6k</open>"
+     },
+     {
+      "at": 1154,
+      "text": "<open>s6k§supplier</open>"
+     },
+     {
+      "at": 1252,
+      "text": "<open>9sz</open>"
+     },
+     {
+      "at": 1424,
+      "text": "<open>9sz§lead-time</open>"
+     },
+     {
+      "at": 1523,
+      "text": "Ostlund Supplies [ayr§lead-time]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-lead-2": {
+    "id": "w20260924-eval-compare-lead-2",
+    "family": "compare-lead",
+    "block": "C",
+    "hops": 4,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/suppliers/ostlund-supplies",
+     "lead-time"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/suppliers/ostlund-supplies",
+     "lead-time"
+    ],
+    "cited_the_supporting": true,
+    "line": "Ostlund Supplies [epe§lead-time]",
+    "credit": true,
+    "final": "Ostlund Supplies [epe§lead-time]",
+    "calls": 10,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 4,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/fenwa-930-label-roll",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/quarrie-packaging",
+      "lead-time"
+     ],
+     [
+      "distributor-wiki/wiki/products/kestra-410-strapping-band",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/ostlund-supplies",
+      "lead-time"
+     ]
+    ],
+    "text": "<search shelf=wiki>Fenwa-930 label roll</search>= 1 note\n  [ghw] page · Fenwa-930 label roll — when: You need a fact about the Fenwa-930 label roll: who supplies it, where it is stocked, its pack or its reorder point.\n<open>ghw</open>= Fenwa-930 label roll — The Fenwa-930 label roll, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>ghw§supplier</open>= The Fenwa-930 label roll is supplied by [p18] Quarrie Packaging.\n<open>p18</open>= Quarrie Packaging — Quarrie Packaging, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>p18§lead-time</open>= An order from Quarrie Packaging arrives 7 days after it is placed.\n<search shelf=wiki>Kestra-410 strapping band</search>= 2 notes\n  [d61] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n  [mav] page · Lumo-410 pallet wrap — when: You need a fact about the Lumo-410 pallet wrap: who supplies it, where it is stocked, its pack or its reorder point.\n<open>d61</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>d61§supplier</open>= The Kestra-410 strapping band is supplied by [epe] Ostlund Supplies.\n<open>epe</open>= Ostlund Supplies — Ostlund Supplies, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>epe§lead-time</open>= An order from Ostlund Supplies arrives 3 days after it is placed.\nOstlund Supplies [epe§lead-time]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Fenwa-930 label roll</search>"
+     },
+     {
+      "at": 218,
+      "text": "<open>ghw</open>"
+     },
+     {
+      "at": 389,
+      "text": "<open>ghw§supplier</open>"
+     },
+     {
+      "at": 481,
+      "text": "<open>p18</open>"
+     },
+     {
+      "at": 647,
+      "text": "<open>p18§lead-time</open>"
+     },
+     {
+      "at": 742,
+      "text": "<search shelf=wiki>Kestra-410 strapping band</search>"
+     },
+     {
+      "at": 1137,
+      "text": "<open>d61</open>"
+     },
+     {
+      "at": 1318,
+      "text": "<open>d61§supplier</open>"
+     },
+     {
+      "at": 1414,
+      "text": "<open>epe</open>"
+     },
+     {
+      "at": 1578,
+      "text": "<open>epe§lead-time</open>"
+     },
+     {
+      "at": 1672,
+      "text": "Ostlund Supplies [epe§lead-time]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-lead-0": {
+    "id": "w20260924-eval-compare-lead-0",
+    "family": "compare-lead",
+    "block": "C",
+    "hops": 4,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/suppliers/ostlund-supplies",
+     "lead-time"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/suppliers/ostlund-supplies",
+     "lead-time"
+    ],
+    "cited_the_supporting": true,
+    "line": "Ostlund Supplies [0ya§lead-time]",
+    "credit": true,
+    "final": "Ostlund Supplies [0ya§lead-time]",
+    "calls": 10,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 4,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/kestra-410-strapping-band",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/ostlund-supplies",
+      "lead-time"
+     ],
+     [
+      "distributor-wiki/wiki/products/fenwa-930-label-roll",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/quarrie-packaging",
+      "lead-time"
+     ]
+    ],
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>= 2 notes\n  [p5g] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n  [wuv] page · Lumo-410 pallet wrap — when: You need a fact about the Lumo-410 pallet wrap: who supplies it, where it is stocked, its pack or its reorder point.\n<open>p5g</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>p5g§supplier</open>= The Kestra-410 strapping band is supplied by [0ya] Ostlund Supplies.\n<open>0ya</open>= Ostlund Supplies — Ostlund Supplies, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>0ya§lead-time</open>= An order from Ostlund Supplies arrives 3 days after it is placed.\n<search shelf=wiki>Fenwa-930 label roll</search>= 1 note\n  [igj] page · Fenwa-930 label roll — when: You need a fact about the Fenwa-930 label roll: who supplies it, where it is stocked, its pack or its reorder point.\n<open>igj</open>= Fenwa-930 label roll — The Fenwa-930 label roll, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>igj§supplier</open>= The Fenwa-930 label roll is supplied by [dpq] Quarrie Packaging.\n<open>dpq</open>= Quarrie Packaging — Quarrie Packaging, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>dpq§lead-time</open>= An order from Quarrie Packaging arrives 7 days after it is placed.\nOstlund Supplies [0ya§lead-time]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Kestra-410 strapping band</search>"
+     },
+     {
+      "at": 395,
+      "text": "<open>p5g</open>"
+     },
+     {
+      "at": 576,
+      "text": "<open>p5g§supplier</open>"
+     },
+     {
+      "at": 672,
+      "text": "<open>0ya</open>"
+     },
+     {
+      "at": 836,
+      "text": "<open>0ya§lead-time</open>"
+     },
+     {
+      "at": 930,
+      "text": "<search shelf=wiki>Fenwa-930 label roll</search>"
+     },
+     {
+      "at": 1148,
+      "text": "<open>igj</open>"
+     },
+     {
+      "at": 1319,
+      "text": "<open>igj§supplier</open>"
+     },
+     {
+      "at": 1411,
+      "text": "<open>dpq</open>"
+     },
+     {
+      "at": 1577,
+      "text": "<open>dpq§lead-time</open>"
+     },
+     {
+      "at": 1672,
+      "text": "Ostlund Supplies [0ya§lead-time]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-lead-7": {
+    "id": "w20260924-eval-compare-lead-7",
+    "family": "compare-lead",
+    "block": "C",
+    "hops": 4,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/suppliers/quarrie-packaging",
+     "lead-time"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/suppliers/quarrie-packaging",
+     "lead-time"
+    ],
+    "cited_the_supporting": true,
+    "line": "Quarrie Packaging [bgv§lead-time]",
+    "credit": true,
+    "final": "Quarrie Packaging [bgv§lead-time]",
+    "calls": 10,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 4,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/marl-380-mailing-sleeve",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/brackmoor-industrial",
+      "lead-time"
+     ],
+     [
+      "distributor-wiki/wiki/products/rask-500-shipping-carton",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/quarrie-packaging",
+      "lead-time"
+     ]
+    ],
+    "text": "<search shelf=wiki>Marl-380 mailing sleeve</search>= 1 note\n  [i2q] page · Marl-380 mailing sleeve — when: You need a fact about the Marl-380 mailing sleeve: who supplies it, where it is stocked, its pack or its reorder point.\n<open>i2q</open>= Marl-380 mailing sleeve — The Marl-380 mailing sleeve, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>i2q§supplier</open>= The Marl-380 mailing sleeve is supplied by [3un] Brackmoor Industrial.\n<open>3un</open>= Brackmoor Industrial — Brackmoor Industrial, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>3un§lead-time</open>= An order from Brackmoor Industrial arrives 13 days after it is placed.\n<search shelf=wiki>Rask-500 shipping carton</search>= 1 note\n  [jhu] page · Rask-500 shipping carton — when: You need a fact about the Rask-500 shipping carton: who supplies it, where it is stocked, its pack or its reorder point.\n<open>jhu</open>= Rask-500 shipping carton — The Rask-500 shipping carton, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>jhu§supplier</open>= The Rask-500 shipping carton is supplied by [bgv] Quarrie Packaging.\n<open>bgv</open>= Quarrie Packaging — Quarrie Packaging, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>bgv§lead-time</open>= An order from Quarrie Packaging arrives 7 days after it is placed.\nQuarrie Packaging [bgv§lead-time]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Marl-380 mailing sleeve</search>"
+     },
+     {
+      "at": 227,
+      "text": "<open>i2q</open>"
+     },
+     {
+      "at": 404,
+      "text": "<open>i2q§supplier</open>"
+     },
+     {
+      "at": 502,
+      "text": "<open>3un</open>"
+     },
+     {
+      "at": 674,
+      "text": "<open>3un§lead-time</open>"
+     },
+     {
+      "at": 773,
+      "text": "<search shelf=wiki>Rask-500 shipping carton</search>"
+     },
+     {
+      "at": 1003,
+      "text": "<open>jhu</open>"
+     },
+     {
+      "at": 1182,
+      "text": "<open>jhu§supplier</open>"
+     },
+     {
+      "at": 1278,
+      "text": "<open>bgv</open>"
+     },
+     {
+      "at": 1444,
+      "text": "<open>bgv§lead-time</open>"
+     },
+     {
+      "at": 1539,
+      "text": "Quarrie Packaging [bgv§lead-time]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-lead-4": {
+    "id": "w20260924-eval-compare-lead-4",
+    "family": "compare-lead",
+    "block": "C",
+    "hops": 4,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/suppliers/brackmoor-industrial",
+     "lead-time"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/suppliers/brackmoor-industrial",
+     "lead-time"
+    ],
+    "cited_the_supporting": true,
+    "line": "Brackmoor Industrial [8z8§lead-time]",
+    "credit": true,
+    "final": "Brackmoor Industrial [8z8§lead-time]",
+    "calls": 10,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 4,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/marl-380-mailing-sleeve",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/brackmoor-industrial",
+      "lead-time"
+     ],
+     [
+      "distributor-wiki/wiki/products/brisk-660-stretch-film",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/umberly-industrial",
+      "lead-time"
+     ]
+    ],
+    "text": "<search shelf=wiki>Marl-380 mailing sleeve</search>= 1 note\n  [hfb] page · Marl-380 mailing sleeve — when: You need a fact about the Marl-380 mailing sleeve: who supplies it, where it is stocked, its pack or its reorder point.\n<open>hfb</open>= Marl-380 mailing sleeve — The Marl-380 mailing sleeve, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>hfb§supplier</open>= The Marl-380 mailing sleeve is supplied by [8z8] Brackmoor Industrial.\n<open>8z8</open>= Brackmoor Industrial — Brackmoor Industrial, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>8z8§lead-time</open>= An order from Brackmoor Industrial arrives 13 days after it is placed.\n<search shelf=wiki>Brisk-660 stretch film</search>= 1 note\n  [6q2] page · Brisk-660 stretch film — when: You need a fact about the Brisk-660 stretch film: who supplies it, where it is stocked, its pack or its reorder point.\n<open>6q2</open>= Brisk-660 stretch film — The Brisk-660 stretch film, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>6q2§supplier</open>= The Brisk-660 stretch film is supplied by [ynv] Umberly Industrial.\n<open>ynv</open>= Umberly Industrial — Umberly Industrial, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>ynv§lead-time</open>= An order from Umberly Industrial arrives 14 days after it is placed.\nBrackmoor Industrial [8z8§lead-time]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Marl-380 mailing sleeve</search>"
+     },
+     {
+      "at": 227,
+      "text": "<open>hfb</open>"
+     },
+     {
+      "at": 404,
+      "text": "<open>hfb§supplier</open>"
+     },
+     {
+      "at": 502,
+      "text": "<open>8z8</open>"
+     },
+     {
+      "at": 674,
+      "text": "<open>8z8§lead-time</open>"
+     },
+     {
+      "at": 773,
+      "text": "<search shelf=wiki>Brisk-660 stretch film</search>"
+     },
+     {
+      "at": 997,
+      "text": "<open>6q2</open>"
+     },
+     {
+      "at": 1172,
+      "text": "<open>6q2§supplier</open>"
+     },
+     {
+      "at": 1267,
+      "text": "<open>ynv</open>"
+     },
+     {
+      "at": 1435,
+      "text": "<open>ynv§lead-time</open>"
+     },
+     {
+      "at": 1532,
+      "text": "Brackmoor Industrial [8z8§lead-time]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-lead-1": {
+    "id": "w20260924-eval-compare-lead-1",
+    "family": "compare-lead",
+    "block": "C",
+    "hops": 4,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/suppliers/ostlund-supplies",
+     "lead-time"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/suppliers/ostlund-supplies",
+     "lead-time"
+    ],
+    "cited_the_supporting": true,
+    "line": "Ostlund Supplies [11e§lead-time]",
+    "credit": true,
+    "final": "Ostlund Supplies [11e§lead-time]",
+    "calls": 10,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 4,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/rask-500-shipping-carton",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/quarrie-packaging",
+      "lead-time"
+     ],
+     [
+      "distributor-wiki/wiki/products/quill-860-packing-tape",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/ostlund-supplies",
+      "lead-time"
+     ]
+    ],
+    "text": "<search shelf=wiki>Rask-500 shipping carton</search>= 1 note\n  [36u] page · Rask-500 shipping carton — when: You need a fact about the Rask-500 shipping carton: who supplies it, where it is stocked, its pack or its reorder point.\n<open>36u</open>= Rask-500 shipping carton — The Rask-500 shipping carton, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>36u§supplier</open>= The Rask-500 shipping carton is supplied by [f9w] Quarrie Packaging.\n<open>f9w</open>= Quarrie Packaging — Quarrie Packaging, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>f9w§lead-time</open>= An order from Quarrie Packaging arrives 7 days after it is placed.\n<search shelf=wiki>Quill-860 packing tape</search>= 1 note\n  [6jj] page · Quill-860 packing tape — when: You need a fact about the Quill-860 packing tape: who supplies it, where it is stocked, its pack or its reorder point.\n<open>6jj</open>= Quill-860 packing tape — The Quill-860 packing tape, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>6jj§supplier</open>= The Quill-860 packing tape is supplied by [11e] Ostlund Supplies.\n<open>11e</open>= Ostlund Supplies — Ostlund Supplies, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>11e§lead-time</open>= An order from Ostlund Supplies arrives 3 days after it is placed.\nOstlund Supplies [11e§lead-time]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Rask-500 shipping carton</search>"
+     },
+     {
+      "at": 230,
+      "text": "<open>36u</open>"
+     },
+     {
+      "at": 409,
+      "text": "<open>36u§supplier</open>"
+     },
+     {
+      "at": 505,
+      "text": "<open>f9w</open>"
+     },
+     {
+      "at": 671,
+      "text": "<open>f9w§lead-time</open>"
+     },
+     {
+      "at": 766,
+      "text": "<search shelf=wiki>Quill-860 packing tape</search>"
+     },
+     {
+      "at": 990,
+      "text": "<open>6jj</open>"
+     },
+     {
+      "at": 1165,
+      "text": "<open>6jj§supplier</open>"
+     },
+     {
+      "at": 1258,
+      "text": "<open>11e</open>"
+     },
+     {
+      "at": 1422,
+      "text": "<open>11e§lead-time</open>"
+     },
+     {
+      "at": 1516,
+      "text": "Ostlund Supplies [11e§lead-time]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-lead-6": {
+    "id": "w20260924-eval-compare-lead-6",
+    "family": "compare-lead",
+    "block": "C",
+    "hops": 4,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": [
+     "distributor-wiki/wiki/suppliers/umberly-industrial",
+     "lead-time"
+    ],
+    "why": "the cited statement does not hold the value",
+    "supporting": [
+     "distributor-wiki/wiki/suppliers/brackmoor-industrial",
+     "lead-time"
+    ],
+    "cited_the_supporting": false,
+    "line": "Brisk-660 stretch film [bh3§lead-time]",
+    "credit": false,
+    "final": "Brisk-660 stretch film [bh3§lead-time]",
+    "calls": 10,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 4,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/brisk-660-stretch-film",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/umberly-industrial",
+      "lead-time"
+     ],
+     [
+      "distributor-wiki/wiki/products/marl-380-mailing-sleeve",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/brackmoor-industrial",
+      "lead-time"
+     ]
+    ],
+    "text": "<search shelf=wiki>Brisk-660 stretch film</search>= 1 note\n  [81m] page · Brisk-660 stretch film — when: You need a fact about the Brisk-660 stretch film: who supplies it, where it is stocked, its pack or its reorder point.\n<open>81m</open>= Brisk-660 stretch film — The Brisk-660 stretch film, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>81m§supplier</open>= The Brisk-660 stretch film is supplied by [bh3] Umberly Industrial.\n<open>bh3</open>= Umberly Industrial — Umberly Industrial, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>bh3§lead-time</open>= An order from Umberly Industrial arrives 14 days after it is placed.\n<search shelf=wiki>Marl-380 mailing sleeve</search>= 1 note\n  [a61] page · Marl-380 mailing sleeve — when: You need a fact about the Marl-380 mailing sleeve: who supplies it, where it is stocked, its pack or its reorder point.\n<open>a61</open>= Marl-380 mailing sleeve — The Marl-380 mailing sleeve, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>a61§supplier</open>= The Marl-380 mailing sleeve is supplied by [yf2] Brackmoor Industrial.\n<open>yf2</open>= Brackmoor Industrial — Brackmoor Industrial, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>yf2§lead-time</open>= An order from Brackmoor Industrial arrives 13 days after it is placed.\nBrisk-660 stretch film [bh3§lead-time]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Brisk-660 stretch film</search>"
+     },
+     {
+      "at": 224,
+      "text": "<open>81m</open>"
+     },
+     {
+      "at": 399,
+      "text": "<open>81m§supplier</open>"
+     },
+     {
+      "at": 494,
+      "text": "<open>bh3</open>"
+     },
+     {
+      "at": 662,
+      "text": "<open>bh3§lead-time</open>"
+     },
+     {
+      "at": 759,
+      "text": "<search shelf=wiki>Marl-380 mailing sleeve</search>"
+     },
+     {
+      "at": 986,
+      "text": "<open>a61</open>"
+     },
+     {
+      "at": 1163,
+      "text": "<open>a61§supplier</open>"
+     },
+     {
+      "at": 1261,
+      "text": "<open>yf2</open>"
+     },
+     {
+      "at": 1433,
+      "text": "<open>yf2§lead-time</open>"
+     },
+     {
+      "at": 1532,
+      "text": "Brisk-660 stretch film [bh3§lead-time]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-lead-8": {
+    "id": "w20260924-eval-compare-lead-8",
+    "family": "compare-lead",
+    "block": "C",
+    "hops": 4,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/suppliers/ostlund-supplies",
+     "lead-time"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/suppliers/ostlund-supplies",
+     "lead-time"
+    ],
+    "cited_the_supporting": true,
+    "line": "Ostlund Supplies [cfg§lead-time]",
+    "credit": true,
+    "final": "Ostlund Supplies [cfg§lead-time]",
+    "calls": 10,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 4,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/rask-500-shipping-carton",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/quarrie-packaging",
+      "lead-time"
+     ],
+     [
+      "distributor-wiki/wiki/products/kestra-410-strapping-band",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/ostlund-supplies",
+      "lead-time"
+     ]
+    ],
+    "text": "<search shelf=wiki>Rask-500 shipping carton</search>= 1 note\n  [n1i] page · Rask-500 shipping carton — when: You need a fact about the Rask-500 shipping carton: who supplies it, where it is stocked, its pack or its reorder point.\n<open>n1i</open>= Rask-500 shipping carton — The Rask-500 shipping carton, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>n1i§supplier</open>= The Rask-500 shipping carton is supplied by [7wv] Quarrie Packaging.\n<open>7wv</open>= Quarrie Packaging — Quarrie Packaging, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>7wv§lead-time</open>= An order from Quarrie Packaging arrives 7 days after it is placed.\n<search shelf=wiki>Kestra-410 strapping band</search>= 2 notes\n  [ksk] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n  [zh0] page · Lumo-410 pallet wrap — when: You need a fact about the Lumo-410 pallet wrap: who supplies it, where it is stocked, its pack or its reorder point.\n<open>ksk</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>ksk§supplier</open>= The Kestra-410 strapping band is supplied by [cfg] Ostlund Supplies.\n<open>cfg</open>= Ostlund Supplies — Ostlund Supplies, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>cfg§lead-time</open>= An order from Ostlund Supplies arrives 3 days after it is placed.\nOstlund Supplies [cfg§lead-time]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Rask-500 shipping carton</search>"
+     },
+     {
+      "at": 230,
+      "text": "<open>n1i</open>"
+     },
+     {
+      "at": 409,
+      "text": "<open>n1i§supplier</open>"
+     },
+     {
+      "at": 505,
+      "text": "<open>7wv</open>"
+     },
+     {
+      "at": 671,
+      "text": "<open>7wv§lead-time</open>"
+     },
+     {
+      "at": 766,
+      "text": "<search shelf=wiki>Kestra-410 strapping band</search>"
+     },
+     {
+      "at": 1161,
+      "text": "<open>ksk</open>"
+     },
+     {
+      "at": 1342,
+      "text": "<open>ksk§supplier</open>"
+     },
+     {
+      "at": 1438,
+      "text": "<open>cfg</open>"
+     },
+     {
+      "at": 1602,
+      "text": "<open>cfg§lead-time</open>"
+     },
+     {
+      "at": 1696,
+      "text": "Ostlund Supplies [cfg§lead-time]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-lead-11": {
+    "id": "w20260924-eval-compare-lead-11",
+    "family": "compare-lead",
+    "block": "C",
+    "hops": 4,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/suppliers/quarrie-packaging",
+     "lead-time"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/suppliers/quarrie-packaging",
+     "lead-time"
+    ],
+    "cited_the_supporting": true,
+    "line": "Quarrie Packaging [rbr§lead-time]",
+    "credit": true,
+    "final": "Quarrie Packaging [rbr§lead-time]",
+    "calls": 10,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 4,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/fenwa-930-label-roll",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/quarrie-packaging",
+      "lead-time"
+     ],
+     [
+      "distributor-wiki/wiki/products/brisk-660-stretch-film",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/umberly-industrial",
+      "lead-time"
+     ]
+    ],
+    "text": "<search shelf=wiki>Fenwa-930 label roll</search>= 1 note\n  [aju] page · Fenwa-930 label roll — when: You need a fact about the Fenwa-930 label roll: who supplies it, where it is stocked, its pack or its reorder point.\n<open>aju</open>= Fenwa-930 label roll — The Fenwa-930 label roll, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>aju§supplier</open>= The Fenwa-930 label roll is supplied by [rbr] Quarrie Packaging.\n<open>rbr</open>= Quarrie Packaging — Quarrie Packaging, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>rbr§lead-time</open>= An order from Quarrie Packaging arrives 7 days after it is placed.\n<search shelf=wiki>Brisk-660 stretch film</search>= 1 note\n  [pnn] page · Brisk-660 stretch film — when: You need a fact about the Brisk-660 stretch film: who supplies it, where it is stocked, its pack or its reorder point.\n<open>pnn</open>= Brisk-660 stretch film — The Brisk-660 stretch film, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>pnn§supplier</open>= The Brisk-660 stretch film is supplied by [zv9] Umberly Industrial.\n<open>zv9</open>= Umberly Industrial — Umberly Industrial, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>zv9§lead-time</open>= An order from Umberly Industrial arrives 14 days after it is placed.\nQuarrie Packaging [rbr§lead-time]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Fenwa-930 label roll</search>"
+     },
+     {
+      "at": 218,
+      "text": "<open>aju</open>"
+     },
+     {
+      "at": 389,
+      "text": "<open>aju§supplier</open>"
+     },
+     {
+      "at": 481,
+      "text": "<open>rbr</open>"
+     },
+     {
+      "at": 647,
+      "text": "<open>rbr§lead-time</open>"
+     },
+     {
+      "at": 742,
+      "text": "<search shelf=wiki>Brisk-660 stretch film</search>"
+     },
+     {
+      "at": 966,
+      "text": "<open>pnn</open>"
+     },
+     {
+      "at": 1141,
+      "text": "<open>pnn§supplier</open>"
+     },
+     {
+      "at": 1236,
+      "text": "<open>zv9</open>"
+     },
+     {
+      "at": 1404,
+      "text": "<open>zv9§lead-time</open>"
+     },
+     {
+      "at": 1501,
+      "text": "Quarrie Packaging [rbr§lead-time]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-lead-9": {
+    "id": "w20260924-eval-compare-lead-9",
+    "family": "compare-lead",
+    "block": "C",
+    "hops": 4,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/suppliers/dunmere-industrial",
+     "lead-time"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/suppliers/dunmere-industrial",
+     "lead-time"
+    ],
+    "cited_the_supporting": true,
+    "line": "Dunmere Industrial [twi§lead-time]",
+    "credit": true,
+    "final": "Dunmere Industrial [twi§lead-time]",
+    "calls": 10,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 4,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/lumo-410-pallet-wrap",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/brackmoor-industrial",
+      "lead-time"
+     ],
+     [
+      "distributor-wiki/wiki/products/carrow-940-dunnage-bag",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/dunmere-industrial",
+      "lead-time"
+     ]
+    ],
+    "text": "<search shelf=wiki>Lumo-410 pallet wrap</search>= 2 notes\n  [2y6] page · Lumo-410 pallet wrap — when: You need a fact about the Lumo-410 pallet wrap: who supplies it, where it is stocked, its pack or its reorder point.\n  [vvp] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n<open>2y6</open>= Lumo-410 pallet wrap — The Lumo-410 pallet wrap, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>2y6§supplier</open>= The Lumo-410 pallet wrap is supplied by [kxw] Brackmoor Industrial.\n<open>kxw</open>= Brackmoor Industrial — Brackmoor Industrial, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>kxw§lead-time</open>= An order from Brackmoor Industrial arrives 13 days after it is placed.\n<search shelf=wiki>Carrow-940 dunnage bag</search>= 1 note\n  [c5v] page · Carrow-940 dunnage bag — when: You need a fact about the Carrow-940 dunnage bag: who supplies it, where it is stocked, its pack or its reorder point.\n<open>c5v</open>= Carrow-940 dunnage bag — The Carrow-940 dunnage bag, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>c5v§supplier</open>= The Carrow-940 dunnage bag is supplied by [twi] Dunmere Industrial.\n<open>twi</open>= Dunmere Industrial — Dunmere Industrial, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>twi§lead-time</open>= An order from Dunmere Industrial arrives 10 days after it is placed.\nDunmere Industrial [twi§lead-time]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Lumo-410 pallet wrap</search>"
+     },
+     {
+      "at": 390,
+      "text": "<open>2y6</open>"
+     },
+     {
+      "at": 561,
+      "text": "<open>2y6§supplier</open>"
+     },
+     {
+      "at": 656,
+      "text": "<open>kxw</open>"
+     },
+     {
+      "at": 828,
+      "text": "<open>kxw§lead-time</open>"
+     },
+     {
+      "at": 927,
+      "text": "<search shelf=wiki>Carrow-940 dunnage bag</search>"
+     },
+     {
+      "at": 1151,
+      "text": "<open>c5v</open>"
+     },
+     {
+      "at": 1326,
+      "text": "<open>c5v§supplier</open>"
+     },
+     {
+      "at": 1421,
+      "text": "<open>twi</open>"
+     },
+     {
+      "at": 1589,
+      "text": "<open>twi§lead-time</open>"
+     },
+     {
+      "at": 1686,
+      "text": "Dunmere Industrial [twi§lead-time]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-lead-12": {
+    "id": "w20260924-eval-compare-lead-12",
+    "family": "compare-lead",
+    "block": "C",
+    "hops": 4,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/suppliers/dunmere-industrial",
+     "lead-time"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/suppliers/dunmere-industrial",
+     "lead-time"
+    ],
+    "cited_the_supporting": true,
+    "line": "Dunmere Industrial [fa2§lead-time]",
+    "credit": true,
+    "final": "Dunmere Industrial [fa2§lead-time]",
+    "calls": 10,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 4,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/carrow-940-dunnage-bag",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/dunmere-industrial",
+      "lead-time"
+     ],
+     [
+      "distributor-wiki/wiki/products/brisk-660-stretch-film",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/umberly-industrial",
+      "lead-time"
+     ]
+    ],
+    "text": "<search shelf=wiki>Carrow-940 dunnage bag</search>= 1 note\n  [pj2] page · Carrow-940 dunnage bag — when: You need a fact about the Carrow-940 dunnage bag: who supplies it, where it is stocked, its pack or its reorder point.\n<open>pj2</open>= Carrow-940 dunnage bag — The Carrow-940 dunnage bag, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>pj2§supplier</open>= The Carrow-940 dunnage bag is supplied by [fa2] Dunmere Industrial.\n<open>fa2</open>= Dunmere Industrial — Dunmere Industrial, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>fa2§lead-time</open>= An order from Dunmere Industrial arrives 10 days after it is placed.\n<search shelf=wiki>Brisk-660 stretch film</search>= 1 note\n  [5mh] page · Brisk-660 stretch film — when: You need a fact about the Brisk-660 stretch film: who supplies it, where it is stocked, its pack or its reorder point.\n<open>5mh</open>= Brisk-660 stretch film — The Brisk-660 stretch film, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>5mh§supplier</open>= The Brisk-660 stretch film is supplied by [027] Umberly Industrial.\n<open>027</open>= Umberly Industrial — Umberly Industrial, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>027§lead-time</open>= An order from Umberly Industrial arrives 14 days after it is placed.\nDunmere Industrial [fa2§lead-time]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Carrow-940 dunnage bag</search>"
+     },
+     {
+      "at": 224,
+      "text": "<open>pj2</open>"
+     },
+     {
+      "at": 399,
+      "text": "<open>pj2§supplier</open>"
+     },
+     {
+      "at": 494,
+      "text": "<open>fa2</open>"
+     },
+     {
+      "at": 662,
+      "text": "<open>fa2§lead-time</open>"
+     },
+     {
+      "at": 759,
+      "text": "<search shelf=wiki>Brisk-660 stretch film</search>"
+     },
+     {
+      "at": 983,
+      "text": "<open>5mh</open>"
+     },
+     {
+      "at": 1158,
+      "text": "<open>5mh§supplier</open>"
+     },
+     {
+      "at": 1253,
+      "text": "<open>027</open>"
+     },
+     {
+      "at": 1421,
+      "text": "<open>027§lead-time</open>"
+     },
+     {
+      "at": 1518,
+      "text": "Dunmere Industrial [fa2§lead-time]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-lead-10": {
+    "id": "w20260924-eval-compare-lead-10",
+    "family": "compare-lead",
+    "block": "C",
+    "hops": 4,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/suppliers/ostlund-supplies",
+     "lead-time"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/suppliers/ostlund-supplies",
+     "lead-time"
+    ],
+    "cited_the_supporting": true,
+    "line": "Ostlund Supplies [17g§lead-time]",
+    "credit": true,
+    "final": "Ostlund Supplies [17g§lead-time]",
+    "calls": 10,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 4,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/quill-860-packing-tape",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/ostlund-supplies",
+      "lead-time"
+     ],
+     [
+      "distributor-wiki/wiki/products/rask-500-shipping-carton",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/quarrie-packaging",
+      "lead-time"
+     ]
+    ],
+    "text": "<search shelf=wiki>Quill-860 packing tape</search>= 1 note\n  [2wc] page · Quill-860 packing tape — when: You need a fact about the Quill-860 packing tape: who supplies it, where it is stocked, its pack or its reorder point.\n<open>2wc</open>= Quill-860 packing tape — The Quill-860 packing tape, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>2wc§supplier</open>= The Quill-860 packing tape is supplied by [17g] Ostlund Supplies.\n<open>17g</open>= Ostlund Supplies — Ostlund Supplies, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>17g§lead-time</open>= An order from Ostlund Supplies arrives 3 days after it is placed.\n<search shelf=wiki>Rask-500 shipping carton</search>= 1 note\n  [s9g] page · Rask-500 shipping carton — when: You need a fact about the Rask-500 shipping carton: who supplies it, where it is stocked, its pack or its reorder point.\n<open>s9g</open>= Rask-500 shipping carton — The Rask-500 shipping carton, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>s9g§supplier</open>= The Rask-500 shipping carton is supplied by [r08] Quarrie Packaging.\n<open>r08</open>= Quarrie Packaging — Quarrie Packaging, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>r08§lead-time</open>= An order from Quarrie Packaging arrives 7 days after it is placed.\nOstlund Supplies [17g§lead-time]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Quill-860 packing tape</search>"
+     },
+     {
+      "at": 224,
+      "text": "<open>2wc</open>"
+     },
+     {
+      "at": 399,
+      "text": "<open>2wc§supplier</open>"
+     },
+     {
+      "at": 492,
+      "text": "<open>17g</open>"
+     },
+     {
+      "at": 656,
+      "text": "<open>17g§lead-time</open>"
+     },
+     {
+      "at": 750,
+      "text": "<search shelf=wiki>Rask-500 shipping carton</search>"
+     },
+     {
+      "at": 980,
+      "text": "<open>s9g</open>"
+     },
+     {
+      "at": 1159,
+      "text": "<open>s9g§supplier</open>"
+     },
+     {
+      "at": 1255,
+      "text": "<open>r08</open>"
+     },
+     {
+      "at": 1421,
+      "text": "<open>r08§lead-time</open>"
+     },
+     {
+      "at": 1516,
+      "text": "Ostlund Supplies [17g§lead-time]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-lead-13": {
+    "id": "w20260924-eval-compare-lead-13",
+    "family": "compare-lead",
+    "block": "C",
+    "hops": 4,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/suppliers/dunmere-industrial",
+     "lead-time"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/suppliers/dunmere-industrial",
+     "lead-time"
+    ],
+    "cited_the_supporting": true,
+    "line": "Dunmere Industrial [mck§lead-time]",
+    "credit": true,
+    "final": "Dunmere Industrial [mck§lead-time]",
+    "calls": 10,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 4,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/oberly-950-void-fill",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/umberly-industrial",
+      "lead-time"
+     ],
+     [
+      "distributor-wiki/wiki/products/carrow-940-dunnage-bag",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/dunmere-industrial",
+      "lead-time"
+     ]
+    ],
+    "text": "<search shelf=wiki>Oberly-950 void fill</search>= 1 note\n  [w45] page · Oberly-950 void fill — when: You need a fact about the Oberly-950 void fill: who supplies it, where it is stocked, its pack or its reorder point.\n<open>w45</open>= Oberly-950 void fill — The Oberly-950 void fill, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>w45§supplier</open>= The Oberly-950 void fill is supplied by [fiu] Umberly Industrial.\n<open>fiu</open>= Umberly Industrial — Umberly Industrial, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>fiu§lead-time</open>= An order from Umberly Industrial arrives 14 days after it is placed.\n<search shelf=wiki>Carrow-940 dunnage bag</search>= 1 note\n  [945] page · Carrow-940 dunnage bag — when: You need a fact about the Carrow-940 dunnage bag: who supplies it, where it is stocked, its pack or its reorder point.\n<open>945</open>= Carrow-940 dunnage bag — The Carrow-940 dunnage bag, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>945§supplier</open>= The Carrow-940 dunnage bag is supplied by [mck] Dunmere Industrial.\n<open>mck</open>= Dunmere Industrial — Dunmere Industrial, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>mck§lead-time</open>= An order from Dunmere Industrial arrives 10 days after it is placed.\nDunmere Industrial [mck§lead-time]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Oberly-950 void fill</search>"
+     },
+     {
+      "at": 218,
+      "text": "<open>w45</open>"
+     },
+     {
+      "at": 389,
+      "text": "<open>w45§supplier</open>"
+     },
+     {
+      "at": 482,
+      "text": "<open>fiu</open>"
+     },
+     {
+      "at": 650,
+      "text": "<open>fiu§lead-time</open>"
+     },
+     {
+      "at": 747,
+      "text": "<search shelf=wiki>Carrow-940 dunnage bag</search>"
+     },
+     {
+      "at": 971,
+      "text": "<open>945</open>"
+     },
+     {
+      "at": 1146,
+      "text": "<open>945§supplier</open>"
+     },
+     {
+      "at": 1241,
+      "text": "<open>mck</open>"
+     },
+     {
+      "at": 1409,
+      "text": "<open>mck§lead-time</open>"
+     },
+     {
+      "at": 1506,
+      "text": "Dunmere Industrial [mck§lead-time]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-lead-14": {
+    "id": "w20260924-eval-compare-lead-14",
+    "family": "compare-lead",
+    "block": "C",
+    "hops": 4,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/suppliers/quarrie-packaging",
+     "lead-time"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/suppliers/quarrie-packaging",
+     "lead-time"
+    ],
+    "cited_the_supporting": true,
+    "line": "Quarrie Packaging [kb5§lead-time]",
+    "credit": true,
+    "final": "Quarrie Packaging [kb5§lead-time]",
+    "calls": 10,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 4,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/lumo-410-pallet-wrap",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/brackmoor-industrial",
+      "lead-time"
+     ],
+     [
+      "distributor-wiki/wiki/products/fenwa-930-label-roll",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/quarrie-packaging",
+      "lead-time"
+     ]
+    ],
+    "text": "<search shelf=wiki>Lumo-410 pallet wrap</search>= 2 notes\n  [tgt] page · Lumo-410 pallet wrap — when: You need a fact about the Lumo-410 pallet wrap: who supplies it, where it is stocked, its pack or its reorder point.\n  [pwh] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n<open>tgt</open>= Lumo-410 pallet wrap — The Lumo-410 pallet wrap, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>tgt§supplier</open>= The Lumo-410 pallet wrap is supplied by [a8i] Brackmoor Industrial.\n<open>a8i</open>= Brackmoor Industrial — Brackmoor Industrial, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>a8i§lead-time</open>= An order from Brackmoor Industrial arrives 13 days after it is placed.\n<search shelf=wiki>Fenwa-930 label roll</search>= 1 note\n  [134] page · Fenwa-930 label roll — when: You need a fact about the Fenwa-930 label roll: who supplies it, where it is stocked, its pack or its reorder point.\n<open>134</open>= Fenwa-930 label roll — The Fenwa-930 label roll, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>134§supplier</open>= The Fenwa-930 label roll is supplied by [kb5] Quarrie Packaging.\n<open>kb5</open>= Quarrie Packaging — Quarrie Packaging, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>kb5§lead-time</open>= An order from Quarrie Packaging arrives 7 days after it is placed.\nQuarrie Packaging [kb5§lead-time]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Lumo-410 pallet wrap</search>"
+     },
+     {
+      "at": 390,
+      "text": "<open>tgt</open>"
+     },
+     {
+      "at": 561,
+      "text": "<open>tgt§supplier</open>"
+     },
+     {
+      "at": 656,
+      "text": "<open>a8i</open>"
+     },
+     {
+      "at": 828,
+      "text": "<open>a8i§lead-time</open>"
+     },
+     {
+      "at": 927,
+      "text": "<search shelf=wiki>Fenwa-930 label roll</search>"
+     },
+     {
+      "at": 1145,
+      "text": "<open>134</open>"
+     },
+     {
+      "at": 1316,
+      "text": "<open>134§supplier</open>"
+     },
+     {
+      "at": 1408,
+      "text": "<open>kb5</open>"
+     },
+     {
+      "at": 1574,
+      "text": "<open>kb5§lead-time</open>"
+     },
+     {
+      "at": 1669,
+      "text": "Quarrie Packaging [kb5§lead-time]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-lead-15": {
+    "id": "w20260924-eval-compare-lead-15",
+    "family": "compare-lead",
+    "block": "C",
+    "hops": 4,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": [
+     "distributor-wiki/wiki/suppliers/umberly-industrial",
+     "lead-time"
+    ],
+    "why": "the cited statement does not hold the value",
+    "supporting": [
+     "distributor-wiki/wiki/suppliers/brackmoor-industrial",
+     "lead-time"
+    ],
+    "cited_the_supporting": false,
+    "line": "Umberly Industrial [v53§lead-time]",
+    "credit": false,
+    "final": "Umberly Industrial [v53§lead-time]",
+    "calls": 10,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 4,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/oberly-950-void-fill",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/umberly-industrial",
+      "lead-time"
+     ],
+     [
+      "distributor-wiki/wiki/products/marl-380-mailing-sleeve",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/brackmoor-industrial",
+      "lead-time"
+     ]
+    ],
+    "text": "<search shelf=wiki>Oberly-950 void fill</search>= 1 note\n  [gnn] page · Oberly-950 void fill — when: You need a fact about the Oberly-950 void fill: who supplies it, where it is stocked, its pack or its reorder point.\n<open>gnn</open>= Oberly-950 void fill — The Oberly-950 void fill, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>gnn§supplier</open>= The Oberly-950 void fill is supplied by [v53] Umberly Industrial.\n<open>v53</open>= Umberly Industrial — Umberly Industrial, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>v53§lead-time</open>= An order from Umberly Industrial arrives 14 days after it is placed.\n<search shelf=wiki>Marl-380 mailing sleeve</search>= 1 note\n  [gmf] page · Marl-380 mailing sleeve — when: You need a fact about the Marl-380 mailing sleeve: who supplies it, where it is stocked, its pack or its reorder point.\n<open>gmf</open>= Marl-380 mailing sleeve — The Marl-380 mailing sleeve, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>gmf§supplier</open>= The Marl-380 mailing sleeve is supplied by [9j1] Brackmoor Industrial.\n<open>9j1</open>= Brackmoor Industrial — Brackmoor Industrial, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>9j1§lead-time</open>= An order from Brackmoor Industrial arrives 13 days after it is placed.\nUmberly Industrial [v53§lead-time]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Oberly-950 void fill</search>"
+     },
+     {
+      "at": 218,
+      "text": "<open>gnn</open>"
+     },
+     {
+      "at": 389,
+      "text": "<open>gnn§supplier</open>"
+     },
+     {
+      "at": 482,
+      "text": "<open>v53</open>"
+     },
+     {
+      "at": 650,
+      "text": "<open>v53§lead-time</open>"
+     },
+     {
+      "at": 747,
+      "text": "<search shelf=wiki>Marl-380 mailing sleeve</search>"
+     },
+     {
+      "at": 974,
+      "text": "<open>gmf</open>"
+     },
+     {
+      "at": 1151,
+      "text": "<open>gmf§supplier</open>"
+     },
+     {
+      "at": 1249,
+      "text": "<open>9j1</open>"
+     },
+     {
+      "at": 1421,
+      "text": "<open>9j1§lead-time</open>"
+     },
+     {
+      "at": 1520,
+      "text": "Umberly Industrial [v53§lead-time]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-pack-0": {
+    "id": "w20260924-eval-compare-pack-0",
+    "family": "compare-pack",
+    "block": "C",
+    "hops": 2,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/products/lumo-410-pallet-wrap",
+     "pack"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/products/lumo-410-pallet-wrap",
+     "pack"
+    ],
+    "cited_the_supporting": true,
+    "line": "Lumo-410 pallet wrap [pdt§pack]",
+    "credit": true,
+    "final": "Lumo-410 pallet wrap [pdt§pack]",
+    "calls": 5,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 2,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/lumo-410-pallet-wrap",
+      "pack"
+     ],
+     [
+      "distributor-wiki/wiki/products/kestra-410-strapping-band",
+      "pack"
+     ]
+    ],
+    "text": "<search shelf=wiki>Lumo-410 pallet wrap</search>= 2 notes\n  [pdt] page · Lumo-410 pallet wrap — when: You need a fact about the Lumo-410 pallet wrap: who supplies it, where it is stocked, its pack or its reorder point.\n  [u3n] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n<open>pdt</open>= Lumo-410 pallet wrap — The Lumo-410 pallet wrap, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>pdt§pack</open>= A pack of Lumo-410 pallet wrap holds 48 rolls.\n<open>u3n</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>u3n§pack</open>= A pack of Kestra-410 strapping band holds 18 coils.\nLumo-410 pallet wrap [pdt§pack]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Lumo-410 pallet wrap</search>"
+     },
+     {
+      "at": 390,
+      "text": "<open>pdt</open>"
+     },
+     {
+      "at": 561,
+      "text": "<open>pdt§pack</open>"
+     },
+     {
+      "at": 631,
+      "text": "<open>u3n</open>"
+     },
+     {
+      "at": 812,
+      "text": "<open>u3n§pack</open>"
+     },
+     {
+      "at": 887,
+      "text": "Lumo-410 pallet wrap [pdt§pack]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-pack-2": {
+    "id": "w20260924-eval-compare-pack-2",
+    "family": "compare-pack",
+    "block": "C",
+    "hops": 2,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/products/lumo-410-pallet-wrap",
+     "pack"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/products/lumo-410-pallet-wrap",
+     "pack"
+    ],
+    "cited_the_supporting": true,
+    "line": "Lumo-410 pallet wrap [x4d§pack]",
+    "credit": true,
+    "final": "Lumo-410 pallet wrap [x4d§pack]",
+    "calls": 5,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 2,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/lumo-410-pallet-wrap",
+      "pack"
+     ],
+     [
+      "distributor-wiki/wiki/products/kestra-410-strapping-band",
+      "pack"
+     ]
+    ],
+    "text": "<search shelf=wiki>Lumo-410 pallet wrap</search>= 2 notes\n  [x4d] page · Lumo-410 pallet wrap — when: You need a fact about the Lumo-410 pallet wrap: who supplies it, where it is stocked, its pack or its reorder point.\n  [jiz] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n<open>x4d</open>= Lumo-410 pallet wrap — The Lumo-410 pallet wrap, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>x4d§pack</open>= A pack of Lumo-410 pallet wrap holds 48 rolls.\n<open>jiz</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>jiz§pack</open>= A pack of Kestra-410 strapping band holds 18 coils.\nLumo-410 pallet wrap [x4d§pack]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Lumo-410 pallet wrap</search>"
+     },
+     {
+      "at": 390,
+      "text": "<open>x4d</open>"
+     },
+     {
+      "at": 561,
+      "text": "<open>x4d§pack</open>"
+     },
+     {
+      "at": 631,
+      "text": "<open>jiz</open>"
+     },
+     {
+      "at": 812,
+      "text": "<open>jiz§pack</open>"
+     },
+     {
+      "at": 887,
+      "text": "Lumo-410 pallet wrap [x4d§pack]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-pack-1": {
+    "id": "w20260924-eval-compare-pack-1",
+    "family": "compare-pack",
+    "block": "C",
+    "hops": 2,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/products/quill-860-packing-tape",
+     "pack"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/products/quill-860-packing-tape",
+     "pack"
+    ],
+    "cited_the_supporting": true,
+    "line": "Quill-860 packing tape [bpr§pack]",
+    "credit": true,
+    "final": "Quill-860 packing tape [bpr§pack]",
+    "calls": 6,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 2,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/carrow-940-dunnage-bag",
+      "pack"
+     ],
+     [
+      "distributor-wiki/wiki/products/quill-860-packing-tape",
+      "pack"
+     ]
+    ],
+    "text": "<search shelf=wiki>Carrow-940 dunnage bag</search>= 1 note\n  [7iv] page · Carrow-940 dunnage bag — when: You need a fact about the Carrow-940 dunnage bag: who supplies it, where it is stocked, its pack or its reorder point.\n<open>7iv</open>= Carrow-940 dunnage bag — The Carrow-940 dunnage bag, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>7iv§pack</open>= A pack of Carrow-940 dunnage bag holds 10 bags.\n<search shelf=wiki>Quill-860 packing tape</search>= 1 note\n  [bpr] page · Quill-860 packing tape — when: You need a fact about the Quill-860 packing tape: who supplies it, where it is stocked, its pack or its reorder point.\n<open>bpr</open>= Quill-860 packing tape — The Quill-860 packing tape, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>bpr§pack</open>= A pack of Quill-860 packing tape holds 24 rolls.\nQuill-860 packing tape [bpr§pack]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Carrow-940 dunnage bag</search>"
+     },
+     {
+      "at": 224,
+      "text": "<open>7iv</open>"
+     },
+     {
+      "at": 399,
+      "text": "<open>7iv§pack</open>"
+     },
+     {
+      "at": 470,
+      "text": "<search shelf=wiki>Quill-860 packing tape</search>"
+     },
+     {
+      "at": 694,
+      "text": "<open>bpr</open>"
+     },
+     {
+      "at": 869,
+      "text": "<open>bpr§pack</open>"
+     },
+     {
+      "at": 941,
+      "text": "Quill-860 packing tape [bpr§pack]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-pack-3": {
+    "id": "w20260924-eval-compare-pack-3",
+    "family": "compare-pack",
+    "block": "C",
+    "hops": 2,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/products/lumo-410-pallet-wrap",
+     "pack"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/products/lumo-410-pallet-wrap",
+     "pack"
+    ],
+    "cited_the_supporting": true,
+    "line": "Lumo-410 pallet wrap [a5f§pack]",
+    "credit": true,
+    "final": "Lumo-410 pallet wrap [a5f§pack]",
+    "calls": 6,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 2,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/lumo-410-pallet-wrap",
+      "pack"
+     ],
+     [
+      "distributor-wiki/wiki/products/marl-380-mailing-sleeve",
+      "pack"
+     ]
+    ],
+    "text": "<search shelf=wiki>Lumo-410 pallet wrap</search>= 2 notes\n  [a5f] page · Lumo-410 pallet wrap — when: You need a fact about the Lumo-410 pallet wrap: who supplies it, where it is stocked, its pack or its reorder point.\n  [uqu] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n<open>a5f</open>= Lumo-410 pallet wrap — The Lumo-410 pallet wrap, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>a5f§pack</open>= A pack of Lumo-410 pallet wrap holds 48 rolls.\n<search shelf=wiki>Marl-380 mailing sleeve</search>= 1 note\n  [pnr] page · Marl-380 mailing sleeve — when: You need a fact about the Marl-380 mailing sleeve: who supplies it, where it is stocked, its pack or its reorder point.\n<open>pnr</open>= Marl-380 mailing sleeve — The Marl-380 mailing sleeve, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>pnr§pack</open>= A pack of Marl-380 mailing sleeve holds 24 sleeves.\nLumo-410 pallet wrap [a5f§pack]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Lumo-410 pallet wrap</search>"
+     },
+     {
+      "at": 390,
+      "text": "<open>a5f</open>"
+     },
+     {
+      "at": 561,
+      "text": "<open>a5f§pack</open>"
+     },
+     {
+      "at": 631,
+      "text": "<search shelf=wiki>Marl-380 mailing sleeve</search>"
+     },
+     {
+      "at": 858,
+      "text": "<open>pnr</open>"
+     },
+     {
+      "at": 1035,
+      "text": "<open>pnr§pack</open>"
+     },
+     {
+      "at": 1110,
+      "text": "Lumo-410 pallet wrap [a5f§pack]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-lead-16": {
+    "id": "w20260924-eval-compare-lead-16",
+    "family": "compare-lead",
+    "block": "C",
+    "hops": 4,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/suppliers/quarrie-packaging",
+     "lead-time"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/suppliers/quarrie-packaging",
+     "lead-time"
+    ],
+    "cited_the_supporting": true,
+    "line": "Quarrie Packaging [9ye§lead-time]",
+    "credit": true,
+    "final": "Quarrie Packaging [9ye§lead-time]",
+    "calls": 10,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 4,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/fenwa-930-label-roll",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/quarrie-packaging",
+      "lead-time"
+     ],
+     [
+      "distributor-wiki/wiki/products/lumo-410-pallet-wrap",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/brackmoor-industrial",
+      "lead-time"
+     ]
+    ],
+    "text": "<search shelf=wiki>Fenwa-930 label roll</search>= 1 note\n  [5vg] page · Fenwa-930 label roll — when: You need a fact about the Fenwa-930 label roll: who supplies it, where it is stocked, its pack or its reorder point.\n<open>5vg</open>= Fenwa-930 label roll — The Fenwa-930 label roll, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>5vg§supplier</open>= The Fenwa-930 label roll is supplied by [9ye] Quarrie Packaging.\n<open>9ye</open>= Quarrie Packaging — Quarrie Packaging, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>9ye§lead-time</open>= An order from Quarrie Packaging arrives 7 days after it is placed.\n<search shelf=wiki>Lumo-410 pallet wrap</search>= 2 notes\n  [tyr] page · Lumo-410 pallet wrap — when: You need a fact about the Lumo-410 pallet wrap: who supplies it, where it is stocked, its pack or its reorder point.\n  [2ud] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n<open>tyr</open>= Lumo-410 pallet wrap — The Lumo-410 pallet wrap, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>tyr§supplier</open>= The Lumo-410 pallet wrap is supplied by [at2] Brackmoor Industrial.\n<open>at2</open>= Brackmoor Industrial — Brackmoor Industrial, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>at2§lead-time</open>= An order from Brackmoor Industrial arrives 13 days after it is placed.\nQuarrie Packaging [9ye§lead-time]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Fenwa-930 label roll</search>"
+     },
+     {
+      "at": 218,
+      "text": "<open>5vg</open>"
+     },
+     {
+      "at": 389,
+      "text": "<open>5vg§supplier</open>"
+     },
+     {
+      "at": 481,
+      "text": "<open>9ye</open>"
+     },
+     {
+      "at": 647,
+      "text": "<open>9ye§lead-time</open>"
+     },
+     {
+      "at": 742,
+      "text": "<search shelf=wiki>Lumo-410 pallet wrap</search>"
+     },
+     {
+      "at": 1132,
+      "text": "<open>tyr</open>"
+     },
+     {
+      "at": 1303,
+      "text": "<open>tyr§supplier</open>"
+     },
+     {
+      "at": 1398,
+      "text": "<open>at2</open>"
+     },
+     {
+      "at": 1570,
+      "text": "<open>at2§lead-time</open>"
+     },
+     {
+      "at": 1669,
+      "text": "Quarrie Packaging [9ye§lead-time]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-lead-17": {
+    "id": "w20260924-eval-compare-lead-17",
+    "family": "compare-lead",
+    "block": "C",
+    "hops": 4,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/suppliers/brackmoor-industrial",
+     "lead-time"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/suppliers/brackmoor-industrial",
+     "lead-time"
+    ],
+    "cited_the_supporting": true,
+    "line": "Brackmoor Industrial [i49§lead-time]",
+    "credit": true,
+    "final": "Brackmoor Industrial [i49§lead-time]",
+    "calls": 10,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 4,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/marl-380-mailing-sleeve",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/brackmoor-industrial",
+      "lead-time"
+     ],
+     [
+      "distributor-wiki/wiki/products/oberly-950-void-fill",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/umberly-industrial",
+      "lead-time"
+     ]
+    ],
+    "text": "<search shelf=wiki>Marl-380 mailing sleeve</search>= 1 note\n  [15n] page · Marl-380 mailing sleeve — when: You need a fact about the Marl-380 mailing sleeve: who supplies it, where it is stocked, its pack or its reorder point.\n<open>15n</open>= Marl-380 mailing sleeve — The Marl-380 mailing sleeve, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>15n§supplier</open>= The Marl-380 mailing sleeve is supplied by [i49] Brackmoor Industrial.\n<open>i49</open>= Brackmoor Industrial — Brackmoor Industrial, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>i49§lead-time</open>= An order from Brackmoor Industrial arrives 13 days after it is placed.\n<search shelf=wiki>Oberly-950 void fill</search>= 1 note\n  [2dx] page · Oberly-950 void fill — when: You need a fact about the Oberly-950 void fill: who supplies it, where it is stocked, its pack or its reorder point.\n<open>2dx</open>= Oberly-950 void fill — The Oberly-950 void fill, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>2dx§supplier</open>= The Oberly-950 void fill is supplied by [393] Umberly Industrial.\n<open>393</open>= Umberly Industrial — Umberly Industrial, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>393§lead-time</open>= An order from Umberly Industrial arrives 14 days after it is placed.\nBrackmoor Industrial [i49§lead-time]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Marl-380 mailing sleeve</search>"
+     },
+     {
+      "at": 227,
+      "text": "<open>15n</open>"
+     },
+     {
+      "at": 404,
+      "text": "<open>15n§supplier</open>"
+     },
+     {
+      "at": 502,
+      "text": "<open>i49</open>"
+     },
+     {
+      "at": 674,
+      "text": "<open>i49§lead-time</open>"
+     },
+     {
+      "at": 773,
+      "text": "<search shelf=wiki>Oberly-950 void fill</search>"
+     },
+     {
+      "at": 991,
+      "text": "<open>2dx</open>"
+     },
+     {
+      "at": 1162,
+      "text": "<open>2dx§supplier</open>"
+     },
+     {
+      "at": 1255,
+      "text": "<open>393</open>"
+     },
+     {
+      "at": 1423,
+      "text": "<open>393§lead-time</open>"
+     },
+     {
+      "at": 1520,
+      "text": "Brackmoor Industrial [i49§lead-time]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-lead-18": {
+    "id": "w20260924-eval-compare-lead-18",
+    "family": "compare-lead",
+    "block": "C",
+    "hops": 4,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/suppliers/quarrie-packaging",
+     "lead-time"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/suppliers/quarrie-packaging",
+     "lead-time"
+    ],
+    "cited_the_supporting": true,
+    "line": "Quarrie Packaging [wb3§lead-time]",
+    "credit": true,
+    "final": "Quarrie Packaging [wb3§lead-time]",
+    "calls": 10,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 4,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/oberly-950-void-fill",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/umberly-industrial",
+      "lead-time"
+     ],
+     [
+      "distributor-wiki/wiki/products/fenwa-930-label-roll",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/quarrie-packaging",
+      "lead-time"
+     ]
+    ],
+    "text": "<search shelf=wiki>Oberly-950 void fill</search>= 1 note\n  [ir0] page · Oberly-950 void fill — when: You need a fact about the Oberly-950 void fill: who supplies it, where it is stocked, its pack or its reorder point.\n<open>ir0</open>= Oberly-950 void fill — The Oberly-950 void fill, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>ir0§supplier</open>= The Oberly-950 void fill is supplied by [mqk] Umberly Industrial.\n<open>mqk</open>= Umberly Industrial — Umberly Industrial, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>mqk§lead-time</open>= An order from Umberly Industrial arrives 14 days after it is placed.\n<search shelf=wiki>Fenwa-930 label roll</search>= 1 note\n  [s70] page · Fenwa-930 label roll — when: You need a fact about the Fenwa-930 label roll: who supplies it, where it is stocked, its pack or its reorder point.\n<open>s70</open>= Fenwa-930 label roll — The Fenwa-930 label roll, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>s70§supplier</open>= The Fenwa-930 label roll is supplied by [wb3] Quarrie Packaging.\n<open>wb3</open>= Quarrie Packaging — Quarrie Packaging, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>wb3§lead-time</open>= An order from Quarrie Packaging arrives 7 days after it is placed.\nQuarrie Packaging [wb3§lead-time]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Oberly-950 void fill</search>"
+     },
+     {
+      "at": 218,
+      "text": "<open>ir0</open>"
+     },
+     {
+      "at": 389,
+      "text": "<open>ir0§supplier</open>"
+     },
+     {
+      "at": 482,
+      "text": "<open>mqk</open>"
+     },
+     {
+      "at": 650,
+      "text": "<open>mqk§lead-time</open>"
+     },
+     {
+      "at": 747,
+      "text": "<search shelf=wiki>Fenwa-930 label roll</search>"
+     },
+     {
+      "at": 965,
+      "text": "<open>s70</open>"
+     },
+     {
+      "at": 1136,
+      "text": "<open>s70§supplier</open>"
+     },
+     {
+      "at": 1228,
+      "text": "<open>wb3</open>"
+     },
+     {
+      "at": 1394,
+      "text": "<open>wb3§lead-time</open>"
+     },
+     {
+      "at": 1489,
+      "text": "Quarrie Packaging [wb3§lead-time]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-lead-19": {
+    "id": "w20260924-eval-compare-lead-19",
+    "family": "compare-lead",
+    "block": "C",
+    "hops": 4,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": [
+     "distributor-wiki/wiki/suppliers/dunmere-industrial",
+     "lead-time"
+    ],
+    "why": "the cited statement does not hold the value",
+    "supporting": [
+     "distributor-wiki/wiki/suppliers/quarrie-packaging",
+     "lead-time"
+    ],
+    "cited_the_supporting": false,
+    "line": "Dunmere Industrial [ifb§lead-time]",
+    "credit": false,
+    "final": "Dunmere Industrial [ifb§lead-time]",
+    "calls": 10,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 4,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/tollan-640-edge-protector",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/dunmere-industrial",
+      "lead-time"
+     ],
+     [
+      "distributor-wiki/wiki/products/fenwa-930-label-roll",
+      "supplier"
+     ],
+     [
+      "distributor-wiki/wiki/suppliers/quarrie-packaging",
+      "lead-time"
+     ]
+    ],
+    "text": "<search shelf=wiki>Tollan-640 edge protector</search>= 1 note\n  [yvj] page · Tollan-640 edge protector — when: You need a fact about the Tollan-640 edge protector: who supplies it, where it is stocked, its pack or its reorder point.\n<open>yvj</open>= Tollan-640 edge protector — The Tollan-640 edge protector, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>yvj§supplier</open>= The Tollan-640 edge protector is supplied by [ifb] Dunmere Industrial.\n<open>ifb</open>= Dunmere Industrial — Dunmere Industrial, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>ifb§lead-time</open>= An order from Dunmere Industrial arrives 10 days after it is placed.\n<search shelf=wiki>Fenwa-930 label roll</search>= 1 note\n  [8yp] page · Fenwa-930 label roll — when: You need a fact about the Fenwa-930 label roll: who supplies it, where it is stocked, its pack or its reorder point.\n<open>8yp</open>= Fenwa-930 label roll — The Fenwa-930 label roll, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>8yp§supplier</open>= The Fenwa-930 label roll is supplied by [n0x] Quarrie Packaging.\n<open>n0x</open>= Quarrie Packaging — Quarrie Packaging, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>n0x§lead-time</open>= An order from Quarrie Packaging arrives 7 days after it is placed.\nDunmere Industrial [ifb§lead-time]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Tollan-640 edge protector</search>"
+     },
+     {
+      "at": 233,
+      "text": "<open>yvj</open>"
+     },
+     {
+      "at": 414,
+      "text": "<open>yvj§supplier</open>"
+     },
+     {
+      "at": 512,
+      "text": "<open>ifb</open>"
+     },
+     {
+      "at": 680,
+      "text": "<open>ifb§lead-time</open>"
+     },
+     {
+      "at": 777,
+      "text": "<search shelf=wiki>Fenwa-930 label roll</search>"
+     },
+     {
+      "at": 995,
+      "text": "<open>8yp</open>"
+     },
+     {
+      "at": 1166,
+      "text": "<open>8yp§supplier</open>"
+     },
+     {
+      "at": 1258,
+      "text": "<open>n0x</open>"
+     },
+     {
+      "at": 1424,
+      "text": "<open>n0x§lead-time</open>"
+     },
+     {
+      "at": 1519,
+      "text": "Dunmere Industrial [ifb§lead-time]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-pack-4": {
+    "id": "w20260924-eval-compare-pack-4",
+    "family": "compare-pack",
+    "block": "C",
+    "hops": 2,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/products/marl-380-mailing-sleeve",
+     "pack"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/products/marl-380-mailing-sleeve",
+     "pack"
+    ],
+    "cited_the_supporting": true,
+    "line": "Marl-380 mailing sleeve [h2k§pack]",
+    "credit": true,
+    "final": "Marl-380 mailing sleeve [h2k§pack]",
+    "calls": 6,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 2,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/marl-380-mailing-sleeve",
+      "pack"
+     ],
+     [
+      "distributor-wiki/wiki/products/brisk-660-stretch-film",
+      "pack"
+     ]
+    ],
+    "text": "<search shelf=wiki>Marl-380 mailing sleeve</search>= 1 note\n  [h2k] page · Marl-380 mailing sleeve — when: You need a fact about the Marl-380 mailing sleeve: who supplies it, where it is stocked, its pack or its reorder point.\n<open>h2k</open>= Marl-380 mailing sleeve — The Marl-380 mailing sleeve, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>h2k§pack</open>= A pack of Marl-380 mailing sleeve holds 24 sleeves.\n<search shelf=wiki>Brisk-660 stretch film</search>= 1 note\n  [m8x] page · Brisk-660 stretch film — when: You need a fact about the Brisk-660 stretch film: who supplies it, where it is stocked, its pack or its reorder point.\n<open>m8x</open>= Brisk-660 stretch film — The Brisk-660 stretch film, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>m8x§pack</open>= A pack of Brisk-660 stretch film holds 20 rolls.\nMarl-380 mailing sleeve [h2k§pack]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Marl-380 mailing sleeve</search>"
+     },
+     {
+      "at": 227,
+      "text": "<open>h2k</open>"
+     },
+     {
+      "at": 404,
+      "text": "<open>h2k§pack</open>"
+     },
+     {
+      "at": 479,
+      "text": "<search shelf=wiki>Brisk-660 stretch film</search>"
+     },
+     {
+      "at": 703,
+      "text": "<open>m8x</open>"
+     },
+     {
+      "at": 878,
+      "text": "<open>m8x§pack</open>"
+     },
+     {
+      "at": 950,
+      "text": "Marl-380 mailing sleeve [h2k§pack]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-pack-5": {
+    "id": "w20260924-eval-compare-pack-5",
+    "family": "compare-pack",
+    "block": "C",
+    "hops": 2,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/products/tollan-640-edge-protector",
+     "pack"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/products/tollan-640-edge-protector",
+     "pack"
+    ],
+    "cited_the_supporting": true,
+    "line": "Tollan-640 edge protector [93p§pack]",
+    "credit": true,
+    "final": "Tollan-640 edge protector [93p§pack]",
+    "calls": 6,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 2,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/tollan-640-edge-protector",
+      "pack"
+     ],
+     [
+      "distributor-wiki/wiki/products/quill-860-packing-tape",
+      "pack"
+     ]
+    ],
+    "text": "<search shelf=wiki>Tollan-640 edge protector</search>= 1 note\n  [93p] page · Tollan-640 edge protector — when: You need a fact about the Tollan-640 edge protector: who supplies it, where it is stocked, its pack or its reorder point.\n<open>93p</open>= Tollan-640 edge protector — The Tollan-640 edge protector, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>93p§pack</open>= A pack of Tollan-640 edge protector holds 48 pieces.\n<search shelf=wiki>Quill-860 packing tape</search>= 1 note\n  [8qb] page · Quill-860 packing tape — when: You need a fact about the Quill-860 packing tape: who supplies it, where it is stocked, its pack or its reorder point.\n<open>8qb</open>= Quill-860 packing tape — The Quill-860 packing tape, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>8qb§pack</open>= A pack of Quill-860 packing tape holds 24 rolls.\nTollan-640 edge protector [93p§pack]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Tollan-640 edge protector</search>"
+     },
+     {
+      "at": 233,
+      "text": "<open>93p</open>"
+     },
+     {
+      "at": 414,
+      "text": "<open>93p§pack</open>"
+     },
+     {
+      "at": 490,
+      "text": "<search shelf=wiki>Quill-860 packing tape</search>"
+     },
+     {
+      "at": 714,
+      "text": "<open>8qb</open>"
+     },
+     {
+      "at": 889,
+      "text": "<open>8qb§pack</open>"
+     },
+     {
+      "at": 961,
+      "text": "Tollan-640 edge protector [93p§pack]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-pack-6": {
+    "id": "w20260924-eval-compare-pack-6",
+    "family": "compare-pack",
+    "block": "C",
+    "hops": 2,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/products/marl-380-mailing-sleeve",
+     "pack"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/products/marl-380-mailing-sleeve",
+     "pack"
+    ],
+    "cited_the_supporting": true,
+    "line": "Marl-380 mailing sleeve [yj6§pack]",
+    "credit": true,
+    "final": "Marl-380 mailing sleeve [yj6§pack]",
+    "calls": 6,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 2,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/carrow-940-dunnage-bag",
+      "pack"
+     ],
+     [
+      "distributor-wiki/wiki/products/marl-380-mailing-sleeve",
+      "pack"
+     ]
+    ],
+    "text": "<search shelf=wiki>Carrow-940 dunnage bag</search>= 1 note\n  [shz] page · Carrow-940 dunnage bag — when: You need a fact about the Carrow-940 dunnage bag: who supplies it, where it is stocked, its pack or its reorder point.\n<open>shz</open>= Carrow-940 dunnage bag — The Carrow-940 dunnage bag, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>shz§pack</open>= A pack of Carrow-940 dunnage bag holds 10 bags.\n<search shelf=wiki>Marl-380 mailing sleeve</search>= 1 note\n  [yj6] page · Marl-380 mailing sleeve — when: You need a fact about the Marl-380 mailing sleeve: who supplies it, where it is stocked, its pack or its reorder point.\n<open>yj6</open>= Marl-380 mailing sleeve — The Marl-380 mailing sleeve, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>yj6§pack</open>= A pack of Marl-380 mailing sleeve holds 24 sleeves.\nMarl-380 mailing sleeve [yj6§pack]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Carrow-940 dunnage bag</search>"
+     },
+     {
+      "at": 224,
+      "text": "<open>shz</open>"
+     },
+     {
+      "at": 399,
+      "text": "<open>shz§pack</open>"
+     },
+     {
+      "at": 470,
+      "text": "<search shelf=wiki>Marl-380 mailing sleeve</search>"
+     },
+     {
+      "at": 697,
+      "text": "<open>yj6</open>"
+     },
+     {
+      "at": 874,
+      "text": "<open>yj6§pack</open>"
+     },
+     {
+      "at": 949,
+      "text": "Marl-380 mailing sleeve [yj6§pack]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-pack-7": {
+    "id": "w20260924-eval-compare-pack-7",
+    "family": "compare-pack",
+    "block": "C",
+    "hops": 2,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/products/kestra-410-strapping-band",
+     "pack"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/products/kestra-410-strapping-band",
+     "pack"
+    ],
+    "cited_the_supporting": true,
+    "line": "Kestra-410 strapping band [jjn§pack]",
+    "credit": true,
+    "final": "Kestra-410 strapping band [jjn§pack]",
+    "calls": 6,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 2,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/rask-500-shipping-carton",
+      "pack"
+     ],
+     [
+      "distributor-wiki/wiki/products/kestra-410-strapping-band",
+      "pack"
+     ]
+    ],
+    "text": "<search shelf=wiki>Rask-500 shipping carton</search>= 1 note\n  [b6c] page · Rask-500 shipping carton — when: You need a fact about the Rask-500 shipping carton: who supplies it, where it is stocked, its pack or its reorder point.\n<open>b6c</open>= Rask-500 shipping carton — The Rask-500 shipping carton, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>b6c§pack</open>= A pack of Rask-500 shipping carton holds 8 cartons.\n<search shelf=wiki>Kestra-410 strapping band</search>= 2 notes\n  [jjn] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n  [4jr] page · Lumo-410 pallet wrap — when: You need a fact about the Lumo-410 pallet wrap: who supplies it, where it is stocked, its pack or its reorder point.\n<open>jjn</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>jjn§pack</open>= A pack of Kestra-410 strapping band holds 18 coils.\nKestra-410 strapping band [jjn§pack]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Rask-500 shipping carton</search>"
+     },
+     {
+      "at": 230,
+      "text": "<open>b6c</open>"
+     },
+     {
+      "at": 409,
+      "text": "<open>b6c§pack</open>"
+     },
+     {
+      "at": 484,
+      "text": "<search shelf=wiki>Kestra-410 strapping band</search>"
+     },
+     {
+      "at": 879,
+      "text": "<open>jjn</open>"
+     },
+     {
+      "at": 1060,
+      "text": "<open>jjn§pack</open>"
+     },
+     {
+      "at": 1135,
+      "text": "Kestra-410 strapping band [jjn§pack]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-pack-8": {
+    "id": "w20260924-eval-compare-pack-8",
+    "family": "compare-pack",
+    "block": "C",
+    "hops": 2,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/products/marl-380-mailing-sleeve",
+     "pack"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/products/marl-380-mailing-sleeve",
+     "pack"
+    ],
+    "cited_the_supporting": true,
+    "line": "Marl-380 mailing sleeve [7wk§pack]",
+    "credit": true,
+    "final": "Marl-380 mailing sleeve [7wk§pack]",
+    "calls": 6,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 2,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/kestra-410-strapping-band",
+      "pack"
+     ],
+     [
+      "distributor-wiki/wiki/products/marl-380-mailing-sleeve",
+      "pack"
+     ]
+    ],
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>= 2 notes\n  [340] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n  [ha7] page · Lumo-410 pallet wrap — when: You need a fact about the Lumo-410 pallet wrap: who supplies it, where it is stocked, its pack or its reorder point.\n<open>340</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>340§pack</open>= A pack of Kestra-410 strapping band holds 18 coils.\n<search shelf=wiki>Marl-380 mailing sleeve</search>= 1 note\n  [7wk] page · Marl-380 mailing sleeve — when: You need a fact about the Marl-380 mailing sleeve: who supplies it, where it is stocked, its pack or its reorder point.\n<open>7wk</open>= Marl-380 mailing sleeve — The Marl-380 mailing sleeve, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>7wk§pack</open>= A pack of Marl-380 mailing sleeve holds 24 sleeves.\nMarl-380 mailing sleeve [7wk§pack]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Kestra-410 strapping band</search>"
+     },
+     {
+      "at": 395,
+      "text": "<open>340</open>"
+     },
+     {
+      "at": 576,
+      "text": "<open>340§pack</open>"
+     },
+     {
+      "at": 651,
+      "text": "<search shelf=wiki>Marl-380 mailing sleeve</search>"
+     },
+     {
+      "at": 878,
+      "text": "<open>7wk</open>"
+     },
+     {
+      "at": 1055,
+      "text": "<open>7wk§pack</open>"
+     },
+     {
+      "at": 1130,
+      "text": "Marl-380 mailing sleeve [7wk§pack]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-pack-9": {
+    "id": "w20260924-eval-compare-pack-9",
+    "family": "compare-pack",
+    "block": "C",
+    "hops": 2,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/products/lumo-410-pallet-wrap",
+     "pack"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/products/lumo-410-pallet-wrap",
+     "pack"
+    ],
+    "cited_the_supporting": true,
+    "line": "Lumo-410 pallet wrap [3g9§pack]",
+    "credit": true,
+    "final": "Lumo-410 pallet wrap [3g9§pack]",
+    "calls": 6,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 2,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/brisk-660-stretch-film",
+      "pack"
+     ],
+     [
+      "distributor-wiki/wiki/products/lumo-410-pallet-wrap",
+      "pack"
+     ]
+    ],
+    "text": "<search shelf=wiki>Brisk-660 stretch film</search>= 1 note\n  [944] page · Brisk-660 stretch film — when: You need a fact about the Brisk-660 stretch film: who supplies it, where it is stocked, its pack or its reorder point.\n<open>944</open>= Brisk-660 stretch film — The Brisk-660 stretch film, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>944§pack</open>= A pack of Brisk-660 stretch film holds 20 rolls.\n<search shelf=wiki>Lumo-410 pallet wrap</search>= 2 notes\n  [3g9] page · Lumo-410 pallet wrap — when: You need a fact about the Lumo-410 pallet wrap: who supplies it, where it is stocked, its pack or its reorder point.\n  [c2f] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n<open>3g9</open>= Lumo-410 pallet wrap — The Lumo-410 pallet wrap, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>3g9§pack</open>= A pack of Lumo-410 pallet wrap holds 48 rolls.\nLumo-410 pallet wrap [3g9§pack]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Brisk-660 stretch film</search>"
+     },
+     {
+      "at": 224,
+      "text": "<open>944</open>"
+     },
+     {
+      "at": 399,
+      "text": "<open>944§pack</open>"
+     },
+     {
+      "at": 471,
+      "text": "<search shelf=wiki>Lumo-410 pallet wrap</search>"
+     },
+     {
+      "at": 861,
+      "text": "<open>3g9</open>"
+     },
+     {
+      "at": 1032,
+      "text": "<open>3g9§pack</open>"
+     },
+     {
+      "at": 1102,
+      "text": "Lumo-410 pallet wrap [3g9§pack]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-pack-11": {
+    "id": "w20260924-eval-compare-pack-11",
+    "family": "compare-pack",
+    "block": "C",
+    "hops": 2,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/products/tollan-640-edge-protector",
+     "pack"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/products/tollan-640-edge-protector",
+     "pack"
+    ],
+    "cited_the_supporting": true,
+    "line": "Tollan-640 edge protector [if6§pack]",
+    "credit": true,
+    "final": "Tollan-640 edge protector [if6§pack]",
+    "calls": 6,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 2,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/marl-380-mailing-sleeve",
+      "pack"
+     ],
+     [
+      "distributor-wiki/wiki/products/tollan-640-edge-protector",
+      "pack"
+     ]
+    ],
+    "text": "<search shelf=wiki>Marl-380 mailing sleeve</search>= 1 note\n  [3yt] page · Marl-380 mailing sleeve — when: You need a fact about the Marl-380 mailing sleeve: who supplies it, where it is stocked, its pack or its reorder point.\n<open>3yt</open>= Marl-380 mailing sleeve — The Marl-380 mailing sleeve, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>3yt§pack</open>= A pack of Marl-380 mailing sleeve holds 24 sleeves.\n<search shelf=wiki>Tollan-640 edge protector</search>= 1 note\n  [if6] page · Tollan-640 edge protector — when: You need a fact about the Tollan-640 edge protector: who supplies it, where it is stocked, its pack or its reorder point.\n<open>if6</open>= Tollan-640 edge protector — The Tollan-640 edge protector, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>if6§pack</open>= A pack of Tollan-640 edge protector holds 48 pieces.\nTollan-640 edge protector [if6§pack]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Marl-380 mailing sleeve</search>"
+     },
+     {
+      "at": 227,
+      "text": "<open>3yt</open>"
+     },
+     {
+      "at": 404,
+      "text": "<open>3yt§pack</open>"
+     },
+     {
+      "at": 479,
+      "text": "<search shelf=wiki>Tollan-640 edge protector</search>"
+     },
+     {
+      "at": 712,
+      "text": "<open>if6</open>"
+     },
+     {
+      "at": 893,
+      "text": "<open>if6§pack</open>"
+     },
+     {
+      "at": 969,
+      "text": "Tollan-640 edge protector [if6§pack]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-pack-10": {
+    "id": "w20260924-eval-compare-pack-10",
+    "family": "compare-pack",
+    "block": "C",
+    "hops": 2,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/products/marl-380-mailing-sleeve",
+     "pack"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/products/marl-380-mailing-sleeve",
+     "pack"
+    ],
+    "cited_the_supporting": true,
+    "line": "Marl-380 mailing sleeve [y1u§pack]",
+    "credit": true,
+    "final": "Marl-380 mailing sleeve [y1u§pack]",
+    "calls": 6,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 2,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/marl-380-mailing-sleeve",
+      "pack"
+     ],
+     [
+      "distributor-wiki/wiki/products/brisk-660-stretch-film",
+      "pack"
+     ]
+    ],
+    "text": "<search shelf=wiki>Marl-380 mailing sleeve</search>= 1 note\n  [y1u] page · Marl-380 mailing sleeve — when: You need a fact about the Marl-380 mailing sleeve: who supplies it, where it is stocked, its pack or its reorder point.\n<open>y1u</open>= Marl-380 mailing sleeve — The Marl-380 mailing sleeve, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>y1u§pack</open>= A pack of Marl-380 mailing sleeve holds 24 sleeves.\n<search shelf=wiki>Brisk-660 stretch film</search>= 1 note\n  [s5p] page · Brisk-660 stretch film — when: You need a fact about the Brisk-660 stretch film: who supplies it, where it is stocked, its pack or its reorder point.\n<open>s5p</open>= Brisk-660 stretch film — The Brisk-660 stretch film, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>s5p§pack</open>= A pack of Brisk-660 stretch film holds 20 rolls.\nMarl-380 mailing sleeve [y1u§pack]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Marl-380 mailing sleeve</search>"
+     },
+     {
+      "at": 227,
+      "text": "<open>y1u</open>"
+     },
+     {
+      "at": 404,
+      "text": "<open>y1u§pack</open>"
+     },
+     {
+      "at": 479,
+      "text": "<search shelf=wiki>Brisk-660 stretch film</search>"
+     },
+     {
+      "at": 703,
+      "text": "<open>s5p</open>"
+     },
+     {
+      "at": 878,
+      "text": "<open>s5p§pack</open>"
+     },
+     {
+      "at": 950,
+      "text": "Marl-380 mailing sleeve [y1u§pack]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-pack-12": {
+    "id": "w20260924-eval-compare-pack-12",
+    "family": "compare-pack",
+    "block": "C",
+    "hops": 2,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/products/quill-860-packing-tape",
+     "pack"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/products/quill-860-packing-tape",
+     "pack"
+    ],
+    "cited_the_supporting": true,
+    "line": "Quill-860 packing tape [ff4§pack]",
+    "credit": true,
+    "final": "Quill-860 packing tape [ff4§pack]",
+    "calls": 6,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 2,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/quill-860-packing-tape",
+      "pack"
+     ],
+     [
+      "distributor-wiki/wiki/products/carrow-940-dunnage-bag",
+      "pack"
+     ]
+    ],
+    "text": "<search shelf=wiki>Quill-860 packing tape</search>= 1 note\n  [ff4] page · Quill-860 packing tape — when: You need a fact about the Quill-860 packing tape: who supplies it, where it is stocked, its pack or its reorder point.\n<open>ff4</open>= Quill-860 packing tape — The Quill-860 packing tape, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>ff4§pack</open>= A pack of Quill-860 packing tape holds 24 rolls.\n<search shelf=wiki>Carrow-940 dunnage bag</search>= 1 note\n  [9i8] page · Carrow-940 dunnage bag — when: You need a fact about the Carrow-940 dunnage bag: who supplies it, where it is stocked, its pack or its reorder point.\n<open>9i8</open>= Carrow-940 dunnage bag — The Carrow-940 dunnage bag, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>9i8§pack</open>= A pack of Carrow-940 dunnage bag holds 10 bags.\nQuill-860 packing tape [ff4§pack]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Quill-860 packing tape</search>"
+     },
+     {
+      "at": 224,
+      "text": "<open>ff4</open>"
+     },
+     {
+      "at": 399,
+      "text": "<open>ff4§pack</open>"
+     },
+     {
+      "at": 471,
+      "text": "<search shelf=wiki>Carrow-940 dunnage bag</search>"
+     },
+     {
+      "at": 695,
+      "text": "<open>9i8</open>"
+     },
+     {
+      "at": 870,
+      "text": "<open>9i8§pack</open>"
+     },
+     {
+      "at": 941,
+      "text": "Quill-860 packing tape [ff4§pack]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-pack-13": {
+    "id": "w20260924-eval-compare-pack-13",
+    "family": "compare-pack",
+    "block": "C",
+    "hops": 2,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/products/brisk-660-stretch-film",
+     "pack"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/products/brisk-660-stretch-film",
+     "pack"
+    ],
+    "cited_the_supporting": true,
+    "line": "Brisk-660 stretch film [qqg§pack]",
+    "credit": true,
+    "final": "Brisk-660 stretch film [qqg§pack]",
+    "calls": 6,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 2,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/brisk-660-stretch-film",
+      "pack"
+     ],
+     [
+      "distributor-wiki/wiki/products/carrow-940-dunnage-bag",
+      "pack"
+     ]
+    ],
+    "text": "<search shelf=wiki>Brisk-660 stretch film</search>= 1 note\n  [qqg] page · Brisk-660 stretch film — when: You need a fact about the Brisk-660 stretch film: who supplies it, where it is stocked, its pack or its reorder point.\n<open>qqg</open>= Brisk-660 stretch film — The Brisk-660 stretch film, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>qqg§pack</open>= A pack of Brisk-660 stretch film holds 20 rolls.\n<search shelf=wiki>Carrow-940 dunnage bag</search>= 1 note\n  [ixr] page · Carrow-940 dunnage bag — when: You need a fact about the Carrow-940 dunnage bag: who supplies it, where it is stocked, its pack or its reorder point.\n<open>ixr</open>= Carrow-940 dunnage bag — The Carrow-940 dunnage bag, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>ixr§pack</open>= A pack of Carrow-940 dunnage bag holds 10 bags.\nBrisk-660 stretch film [qqg§pack]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Brisk-660 stretch film</search>"
+     },
+     {
+      "at": 224,
+      "text": "<open>qqg</open>"
+     },
+     {
+      "at": 399,
+      "text": "<open>qqg§pack</open>"
+     },
+     {
+      "at": 471,
+      "text": "<search shelf=wiki>Carrow-940 dunnage bag</search>"
+     },
+     {
+      "at": 695,
+      "text": "<open>ixr</open>"
+     },
+     {
+      "at": 870,
+      "text": "<open>ixr§pack</open>"
+     },
+     {
+      "at": 941,
+      "text": "Brisk-660 stretch film [qqg§pack]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-pack-14": {
+    "id": "w20260924-eval-compare-pack-14",
+    "family": "compare-pack",
+    "block": "C",
+    "hops": 2,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/products/lumo-410-pallet-wrap",
+     "pack"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/products/lumo-410-pallet-wrap",
+     "pack"
+    ],
+    "cited_the_supporting": true,
+    "line": "Lumo-410 pallet wrap [j0k§pack]",
+    "credit": true,
+    "final": "Lumo-410 pallet wrap [j0k§pack]",
+    "calls": 6,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 2,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/lumo-410-pallet-wrap",
+      "pack"
+     ],
+     [
+      "distributor-wiki/wiki/products/marl-380-mailing-sleeve",
+      "pack"
+     ]
+    ],
+    "text": "<search shelf=wiki>Lumo-410 pallet wrap</search>= 2 notes\n  [j0k] page · Lumo-410 pallet wrap — when: You need a fact about the Lumo-410 pallet wrap: who supplies it, where it is stocked, its pack or its reorder point.\n  [maz] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n<open>j0k</open>= Lumo-410 pallet wrap — The Lumo-410 pallet wrap, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>j0k§pack</open>= A pack of Lumo-410 pallet wrap holds 48 rolls.\n<search shelf=wiki>Marl-380 mailing sleeve</search>= 1 note\n  [mz5] page · Marl-380 mailing sleeve — when: You need a fact about the Marl-380 mailing sleeve: who supplies it, where it is stocked, its pack or its reorder point.\n<open>mz5</open>= Marl-380 mailing sleeve — The Marl-380 mailing sleeve, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>mz5§pack</open>= A pack of Marl-380 mailing sleeve holds 24 sleeves.\nLumo-410 pallet wrap [j0k§pack]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Lumo-410 pallet wrap</search>"
+     },
+     {
+      "at": 390,
+      "text": "<open>j0k</open>"
+     },
+     {
+      "at": 561,
+      "text": "<open>j0k§pack</open>"
+     },
+     {
+      "at": 631,
+      "text": "<search shelf=wiki>Marl-380 mailing sleeve</search>"
+     },
+     {
+      "at": 858,
+      "text": "<open>mz5</open>"
+     },
+     {
+      "at": 1035,
+      "text": "<open>mz5§pack</open>"
+     },
+     {
+      "at": 1110,
+      "text": "Lumo-410 pallet wrap [j0k§pack]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-pack-15": {
+    "id": "w20260924-eval-compare-pack-15",
+    "family": "compare-pack",
+    "block": "C",
+    "hops": 2,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/products/quill-860-packing-tape",
+     "pack"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/products/quill-860-packing-tape",
+     "pack"
+    ],
+    "cited_the_supporting": true,
+    "line": "Quill-860 packing tape [rvt§pack]",
+    "credit": true,
+    "final": "Quill-860 packing tape [rvt§pack]",
+    "calls": 6,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 2,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/quill-860-packing-tape",
+      "pack"
+     ],
+     [
+      "distributor-wiki/wiki/products/rask-500-shipping-carton",
+      "pack"
+     ]
+    ],
+    "text": "<search shelf=wiki>Quill-860 packing tape</search>= 1 note\n  [rvt] page · Quill-860 packing tape — when: You need a fact about the Quill-860 packing tape: who supplies it, where it is stocked, its pack or its reorder point.\n<open>rvt</open>= Quill-860 packing tape — The Quill-860 packing tape, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>rvt§pack</open>= A pack of Quill-860 packing tape holds 24 rolls.\n<search shelf=wiki>Rask-500 shipping carton</search>= 1 note\n  [u7m] page · Rask-500 shipping carton — when: You need a fact about the Rask-500 shipping carton: who supplies it, where it is stocked, its pack or its reorder point.\n<open>u7m</open>= Rask-500 shipping carton — The Rask-500 shipping carton, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>u7m§pack</open>= A pack of Rask-500 shipping carton holds 8 cartons.\nQuill-860 packing tape [rvt§pack]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Quill-860 packing tape</search>"
+     },
+     {
+      "at": 224,
+      "text": "<open>rvt</open>"
+     },
+     {
+      "at": 399,
+      "text": "<open>rvt§pack</open>"
+     },
+     {
+      "at": 471,
+      "text": "<search shelf=wiki>Rask-500 shipping carton</search>"
+     },
+     {
+      "at": 701,
+      "text": "<open>u7m</open>"
+     },
+     {
+      "at": 880,
+      "text": "<open>u7m§pack</open>"
+     },
+     {
+      "at": 955,
+      "text": "Quill-860 packing tape [rvt§pack]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-pack-16": {
+    "id": "w20260924-eval-compare-pack-16",
+    "family": "compare-pack",
+    "block": "C",
+    "hops": 2,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/products/lumo-410-pallet-wrap",
+     "pack"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/products/lumo-410-pallet-wrap",
+     "pack"
+    ],
+    "cited_the_supporting": true,
+    "line": "Lumo-410 pallet wrap [q1d§pack]",
+    "credit": true,
+    "final": "Lumo-410 pallet wrap [q1d§pack]",
+    "calls": 6,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 2,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/brisk-660-stretch-film",
+      "pack"
+     ],
+     [
+      "distributor-wiki/wiki/products/lumo-410-pallet-wrap",
+      "pack"
+     ]
+    ],
+    "text": "<search shelf=wiki>Brisk-660 stretch film</search>= 1 note\n  [qkb] page · Brisk-660 stretch film — when: You need a fact about the Brisk-660 stretch film: who supplies it, where it is stocked, its pack or its reorder point.\n<open>qkb</open>= Brisk-660 stretch film — The Brisk-660 stretch film, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>qkb§pack</open>= A pack of Brisk-660 stretch film holds 20 rolls.\n<search shelf=wiki>Lumo-410 pallet wrap</search>= 2 notes\n  [q1d] page · Lumo-410 pallet wrap — when: You need a fact about the Lumo-410 pallet wrap: who supplies it, where it is stocked, its pack or its reorder point.\n  [5mi] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n<open>q1d</open>= Lumo-410 pallet wrap — The Lumo-410 pallet wrap, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>q1d§pack</open>= A pack of Lumo-410 pallet wrap holds 48 rolls.\nLumo-410 pallet wrap [q1d§pack]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Brisk-660 stretch film</search>"
+     },
+     {
+      "at": 224,
+      "text": "<open>qkb</open>"
+     },
+     {
+      "at": 399,
+      "text": "<open>qkb§pack</open>"
+     },
+     {
+      "at": 471,
+      "text": "<search shelf=wiki>Lumo-410 pallet wrap</search>"
+     },
+     {
+      "at": 861,
+      "text": "<open>q1d</open>"
+     },
+     {
+      "at": 1032,
+      "text": "<open>q1d§pack</open>"
+     },
+     {
+      "at": 1102,
+      "text": "Lumo-410 pallet wrap [q1d§pack]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-pack-18": {
+    "id": "w20260924-eval-compare-pack-18",
+    "family": "compare-pack",
+    "block": "C",
+    "hops": 2,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/products/fenwa-930-label-roll",
+     "pack"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/products/fenwa-930-label-roll",
+     "pack"
+    ],
+    "cited_the_supporting": true,
+    "line": "Fenwa-930 label roll [v36§pack]",
+    "credit": true,
+    "final": "Fenwa-930 label roll [v36§pack]",
+    "calls": 6,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 2,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/kestra-410-strapping-band",
+      "pack"
+     ],
+     [
+      "distributor-wiki/wiki/products/fenwa-930-label-roll",
+      "pack"
+     ]
+    ],
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>= 2 notes\n  [usc] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n  [chj] page · Lumo-410 pallet wrap — when: You need a fact about the Lumo-410 pallet wrap: who supplies it, where it is stocked, its pack or its reorder point.\n<open>usc</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>usc§pack</open>= A pack of Kestra-410 strapping band holds 18 coils.\n<search shelf=wiki>Fenwa-930 label roll</search>= 1 note\n  [v36] page · Fenwa-930 label roll — when: You need a fact about the Fenwa-930 label roll: who supplies it, where it is stocked, its pack or its reorder point.\n<open>v36</open>= Fenwa-930 label roll — The Fenwa-930 label roll, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>v36§pack</open>= A pack of Fenwa-930 label roll holds 24 rolls.\nFenwa-930 label roll [v36§pack]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Kestra-410 strapping band</search>"
+     },
+     {
+      "at": 395,
+      "text": "<open>usc</open>"
+     },
+     {
+      "at": 576,
+      "text": "<open>usc§pack</open>"
+     },
+     {
+      "at": 651,
+      "text": "<search shelf=wiki>Fenwa-930 label roll</search>"
+     },
+     {
+      "at": 869,
+      "text": "<open>v36</open>"
+     },
+     {
+      "at": 1040,
+      "text": "<open>v36§pack</open>"
+     },
+     {
+      "at": 1110,
+      "text": "Fenwa-930 label roll [v36§pack]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-pack-17": {
+    "id": "w20260924-eval-compare-pack-17",
+    "family": "compare-pack",
+    "block": "C",
+    "hops": 2,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/products/tollan-640-edge-protector",
+     "pack"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/products/tollan-640-edge-protector",
+     "pack"
+    ],
+    "cited_the_supporting": true,
+    "line": "Tollan-640 edge protector [uj0§pack]",
+    "credit": true,
+    "final": "Tollan-640 edge protector [uj0§pack]",
+    "calls": 6,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 2,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/tollan-640-edge-protector",
+      "pack"
+     ],
+     [
+      "distributor-wiki/wiki/products/oberly-950-void-fill",
+      "pack"
+     ]
+    ],
+    "text": "<search shelf=wiki>Tollan-640 edge protector</search>= 1 note\n  [uj0] page · Tollan-640 edge protector — when: You need a fact about the Tollan-640 edge protector: who supplies it, where it is stocked, its pack or its reorder point.\n<open>uj0</open>= Tollan-640 edge protector — The Tollan-640 edge protector, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>uj0§pack</open>= A pack of Tollan-640 edge protector holds 48 pieces.\n<search shelf=wiki>Oberly-950 void fill</search>= 1 note\n  [3mr] page · Oberly-950 void fill — when: You need a fact about the Oberly-950 void fill: who supplies it, where it is stocked, its pack or its reorder point.\n<open>3mr</open>= Oberly-950 void fill — The Oberly-950 void fill, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>3mr§pack</open>= A pack of Oberly-950 void fill holds 18 bags.\nTollan-640 edge protector [uj0§pack]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Tollan-640 edge protector</search>"
+     },
+     {
+      "at": 233,
+      "text": "<open>uj0</open>"
+     },
+     {
+      "at": 414,
+      "text": "<open>uj0§pack</open>"
+     },
+     {
+      "at": 490,
+      "text": "<search shelf=wiki>Oberly-950 void fill</search>"
+     },
+     {
+      "at": 708,
+      "text": "<open>3mr</open>"
+     },
+     {
+      "at": 879,
+      "text": "<open>3mr§pack</open>"
+     },
+     {
+      "at": 948,
+      "text": "Tollan-640 edge protector [uj0§pack]"
+     }
+    ]
+   },
+   "w20260924-eval-compare-pack-19": {
+    "id": "w20260924-eval-compare-pack-19",
+    "family": "compare-pack",
+    "block": "C",
+    "hops": 2,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "distributor-wiki/wiki/products/kestra-410-strapping-band",
+     "pack"
+    ],
+    "why": null,
+    "supporting": [
+     "distributor-wiki/wiki/products/kestra-410-strapping-band",
+     "pack"
+    ],
+    "cited_the_supporting": true,
+    "line": "Kestra-410 strapping band [5w1§pack]",
+    "credit": true,
+    "final": "Kestra-410 strapping band [5w1§pack]",
+    "calls": 6,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 2,
+    "opened_statements": [
+     [
+      "distributor-wiki/wiki/products/kestra-410-strapping-band",
+      "pack"
+     ],
+     [
+      "distributor-wiki/wiki/products/carrow-940-dunnage-bag",
+      "pack"
+     ]
+    ],
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>= 2 notes\n  [5w1] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n  [nkd] page · Lumo-410 pallet wrap — when: You need a fact about the Lumo-410 pallet wrap: who supplies it, where it is stocked, its pack or its reorder point.\n<open>5w1</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>5w1§pack</open>= A pack of Kestra-410 strapping band holds 18 coils.\n<search shelf=wiki>Carrow-940 dunnage bag</search>= 1 note\n  [chb] page · Carrow-940 dunnage bag — when: You need a fact about the Carrow-940 dunnage bag: who supplies it, where it is stocked, its pack or its reorder point.\n<open>chb</open>= Carrow-940 dunnage bag — The Carrow-940 dunnage bag, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>chb§pack</open>= A pack of Carrow-940 dunnage bag holds 10 bags.\nKestra-410 strapping band [5w1§pack]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Kestra-410 strapping band</search>"
+     },
+     {
+      "at": 395,
+      "text": "<open>5w1</open>"
+     },
+     {
+      "at": 576,
+      "text": "<open>5w1§pack</open>"
+     },
+     {
+      "at": 651,
+      "text": "<search shelf=wiki>Carrow-940 dunnage bag</search>"
+     },
+     {
+      "at": 875,
+      "text": "<open>chb</open>"
+     },
+     {
+      "at": 1050,
+      "text": "<open>chb§pack</open>"
+     },
+     {
+      "at": 1121,
+      "text": "Kestra-410 strapping band [5w1§pack]"
+     }
+    ]
+   }
+  }
+ },
+ "G1": {
+  "withlib-s1": {
+   "probed": 3,
+   "empty": 0,
+   "differs": 3,
+   "applied": true,
+   "samples": [
+    {
+     "base": "The sky appears blue because of a phenomenon called Rayleigh",
+     "member": "The sky appears blue because of a phenomenon called Rayleigh"
+    },
+    {
+     "base": "Here are three things a careful reader checks before answeri",
+     "member": "Here are three things a careful reader checks before answeri"
+    },
+    {
+     "base": "A pressure drop in a pipe depends on the fluid's properties,",
+     "member": "A pressure drop in a pipe depends on the fluid's viscosity, "
+    }
+   ]
+  }
+ },
+ "analysis": {
+  "slices": {
+   "headline": 40,
+   "all": 40,
+   "none": 0,
+   "hops-1": 0,
+   "hops-2": 20,
+   "hops-3": 0,
+   "block-E1": 0,
+   "block-E2": 0,
+   "block-E3": 0,
+   "block-O1": 0,
+   "block-O2": 0,
+   "block-O3": 0
+  },
+  "summary": {
+   "withlib-s1": {
+    "headline": {
+     "n": 40,
+     "scored": 40,
+     "errors": 0,
+     "missing": 0,
+     "credit": 37,
+     "value_right": 37,
+     "right": 37,
+     "unverified": 0,
+     "wrong": 3,
+     "context": 0
+    },
+    "all": {
+     "n": 40,
+     "scored": 40,
+     "errors": 0,
+     "missing": 0,
+     "credit": 37,
+     "value_right": 37,
+     "right": 37,
+     "unverified": 0,
+     "wrong": 3,
+     "context": 0
+    },
+    "none": {
+     "n": 0,
+     "scored": 0,
+     "errors": 0,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "hops-1": {
+     "n": 0,
+     "scored": 0,
+     "errors": 0,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "hops-2": {
+     "n": 20,
+     "scored": 20,
+     "errors": 0,
+     "missing": 0,
+     "credit": 20,
+     "value_right": 20,
+     "right": 20,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "hops-3": {
+     "n": 0,
+     "scored": 0,
+     "errors": 0,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-E1": {
+     "n": 0,
+     "scored": 0,
+     "errors": 0,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-E2": {
+     "n": 0,
+     "scored": 0,
+     "errors": 0,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-E3": {
+     "n": 0,
+     "scored": 0,
+     "errors": 0,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-O1": {
+     "n": 0,
+     "scored": 0,
+     "errors": 0,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-O2": {
+     "n": 0,
+     "scored": 0,
+     "errors": 0,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-O3": {
+     "n": 0,
+     "scored": 0,
+     "errors": 0,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    }
+   }
+  },
+  "pairs": {
+   "headline": [],
+   "all": [],
+   "hops-2": [],
+   "hops-3": []
+  }
+ },
+ "verdict": {
+  "decided": false,
+  "reading": "NOTHING SCORED"
+ },
+ "finished": "2026-09-26T20:27:27"
+}

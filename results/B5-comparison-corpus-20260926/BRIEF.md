@@ -37,3 +37,25 @@ everything but the corpus), 12B seed 0 (B3's). One seed each, said as such.
 **Stopping condition.** This is the band's second corpus. Whatever S2 says closes milestone 3 on Gemma E4B/12B: no third
 corpus, no other band, no seed shopping. Beside: by family; the misses read as B3's were (cited-and-wrong vs uncited).
 **Ceiling:** 2 A100 training + 1 A100 scoring + 2 L4.
+
+## Result **[ran]** 2026-09-26 · NO ROOM — the small half compares once shown comparisons; milestone 3 closes: on this band the large buys no accuracy
+
+T1 (A100): `wiki-cmp-walks-s1`, corpus `train_cmp.jsonl` sha `7b307d53…` (reproduced locally, byte for byte), adapter
+`d4d91ea4…`. S1 and G1 (L4): G1 identity gate applied on both.
+
+| E4B + LoRA | hard band (40) | compare-lead | compare-pack | W9 headline (40) | W9 all (67) |
+|---|--:|--:|--:|--:|--:|
+| released, W9's corpus (B3, B1) | 10 | 6 | 4 | 39 | 63 |
+| **comparison corpus** | **37** | 17 | **20** | **39** | **63** |
+
+- **E4B cmp vs released on the hard band: 28 : 1, $p = 1.1\times10^{-7}$ — improvement.** Showing comparisons teaches them.
+- **Guard: 0 : 0 on W9's set** — the same 4 misses on both (`terms-1`, `order-approver-0/1`, `invoice-ext-2`). The
+  comparisons cost nothing.
+- **37 ≥ 36: NO ROOM** — as written, T2/S2 were not bought. The 3 misses are all `compare-lead`: a supplier named and the
+  lead-time statement of another cited (`the cited statement does not hold the value`).
+
+**Reading.** B3's tie was the corpus: both halves failed a skill neither was shown. Taught it, the E4B does 37/40, so on
+this band a 12B has at most 3 cases to win — milestone 3 closes *the large half buys no accuracy here*; on this family its
+job is the verifier of the pair (B4). One seed, said as such. **What follows:** `distributor-wiki@v2` — the same member
+plus comparisons, through the gate on both sets (`releases/distributor-wiki@v2.json`). Not measured: B4's acceptance with
+this member's drafts, which would need a 12B trained on `train_cmp`.

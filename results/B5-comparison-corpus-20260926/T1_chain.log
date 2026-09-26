@@ -1,0 +1,72 @@
+=== session 1 of 1 · srv164147 · A100
+    boot clone: rc=0 d0c1e57 B5 pre-registered: a comparison corpus (W9's 600 rows + 128 comparison walks) for milestone 3's last look
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 d0c1e57 B5 pre-registered: a comparison corpus (W9's 600 rows + 128 comparison walks) for milestone 3's last look
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    d0c1e57 B5 pre-registered: a comparison corpus (W9's 600 rows + 128 comparison walks) for milestone 3's last look | 0.30.0
+    this module trains its own adapter — nothing to carry in
+    runner started (launch 1)
+    [train] adapters/wiki-cmp-walks-s1 from 728 examples
+    W0926 19:48:32.752000 3883 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W0926 19:48:32.792000 3883 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    Loading weights:  97%|█████████▋| 2008/2076 [00:04<00:00, 1104.65it/s]
+    Loading weights: 100%|██████████| 2076/2076 [00:04<00:00, 476.72it/s] 
+    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
+      5%|▌         | 7/138 [00:54<16:29,  7.55s/it]
+      6%|▌         | 8/138 [01:01<16:04,  7.42s/it]
+      7%|▋         | 9/138 [01:08<15:45,  7.33s/it]
+     10%|█         | 14/138 [01:45<15:08,  7.33s/it]
+     11%|█         | 15/138 [01:52<14:54,  7.27s/it]
+     12%|█▏        | 16/138 [01:59<14:42,  7.23s/it]
+     15%|█▌        | 21/138 [02:36<14:15,  7.31s/it]
+     16%|█▌        | 22/138 [02:43<14:03,  7.27s/it]
+     17%|█▋        | 23/138 [02:50<13:52,  7.24s/it]
+     21%|██        | 29/138 [03:34<13:10,  7.25s/it]
+     22%|██▏       | 30/138 [03:41<13:02,  7.25s/it]
+     22%|██▏       | 30/138 [03:41<13:02,  7.25s/it]
+     27%|██▋       | 37/138 [04:32<12:12,  7.26s/it]
+     28%|██▊       | 38/138 [04:40<12:12,  7.33s/it]
+     28%|██▊       | 39/138 [04:47<12:00,  7.28s/it]
+     32%|███▏      | 44/138 [05:24<11:32,  7.37s/it]
+     33%|███▎      | 45/138 [05:31<11:19,  7.30s/it]
+     33%|███▎      | 46/138 [05:35<09:29,  6.19s/it]
+     37%|███▋      | 51/138 [06:11<10:12,  7.05s/it]
+     38%|███▊      | 52/138 [06:18<10:17,  7.19s/it]
+     38%|███▊      | 53/138 [06:25<10:09,  7.17s/it]
+     43%|████▎     | 59/138 [07:09<09:33,  7.26s/it]
+     43%|████▎     | 60/138 [07:16<09:23,  7.22s/it]
+     43%|████▎     | 60/138 [07:16<09:23,  7.22s/it]
+     51%|█████     | 70/138 [08:29<08:11,  7.23s/it]
+     51%|█████▏    | 71/138 [08:36<08:03,  7.22s/it]
+     52%|█████▏    | 72/138 [08:44<08:03,  7.32s/it]
+     56%|█████▌    | 77/138 [09:20<07:21,  7.24s/it]
+     57%|█████▋    | 78/138 [09:28<07:19,  7.32s/it]
+     57%|█████▋    | 79/138 [09:35<07:09,  7.27s/it]
+     61%|██████    | 84/138 [10:11<06:30,  7.23s/it]
+     62%|██████▏   | 85/138 [10:18<06:28,  7.33s/it]
+     62%|██████▏   | 86/138 [10:26<06:18,  7.27s/it]
+     67%|██████▋   | 92/138 [11:05<04:42,  6.14s/it]
+     67%|██████▋   | 93/138 [11:13<04:54,  6.55s/it]
+     68%|██████▊   | 94/138 [11:20<04:56,  6.73s/it]
+     74%|███████▍  | 102/138 [12:18<04:17,  7.15s/it]
+     75%|███████▍  | 103/138 [12:25<04:14,  7.27s/it]
+     75%|███████▌  | 104/138 [12:32<04:06,  7.25s/it]
+     80%|███████▉  | 110/138 [13:16<03:23,  7.27s/it]
+     80%|███████▉  | 110/138 [13:16<03:23,  7.27s/it]
+     80%|████████  | 111/138 [13:23<03:15,  7.23s/it]
+     84%|████████▍ | 116/138 [14:00<02:40,  7.31s/it]
+     85%|████████▍ | 117/138 [14:07<02:32,  7.26s/it]
+     86%|████████▌ | 118/138 [14:14<02:24,  7.22s/it]
+     92%|█████████▏| 127/138 [15:19<01:19,  7.26s/it]
+     93%|█████████▎| 128/138 [15:26<01:12,  7.23s/it]
+     93%|█████████▎| 129/138 [15:34<01:05,  7.32s/it]
+    [train] named for serving: {'base': 'google/gemma-4-E4B-it', 'architecture': 'Gemma4ForConditionalGeneration', 'renamed': True, 'src': 'adapters/wiki-cmp-walks-s1', 'dst': 'adapters/wiki-cmp-walks-s1.renamed', 'moved': 0, 'before': {'tensors': 516, 'land_on_text_stack': 516}, 'after': {'tensors': 516, 'land_on_text_stack': 516}}
+    [train] done
+    [pool] trained and packed 1 — stopping before serving, as asked
+    adapters home: 1 packed
+    the runner wrote its result — done
+exit 0
