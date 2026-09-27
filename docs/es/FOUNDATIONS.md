@@ -35,18 +35,18 @@ Un tokenizer mapea texto a una secuencia de ids enteros $x_1, \dots, x_T$ sobre 
 vocabulario $V$. Un modelo de lenguaje causal es una función $f_\theta$ de un prefijo a
 una distribución sobre el próximo id:
 
-$$
+```math
 p_\theta(x_t \mid x_{<t}) = \mathrm{softmax}\big(f_\theta(x_{<t})\big)_{x_t},
 \qquad
 p_\theta(x_{1:T}) = \prod_{t=1}^{T} p_\theta(x_t \mid x_{<t}).
-$$
+```
 
-Generar es la recursión $x_{t} \sim p_\theta(\cdot \mid x_{<t})$, un id a la vez;
+Generar es la recursión $x_{t} \sim p_\theta(\cdot \mid x_{\lt t})$, un id a la vez;
 **cada paso necesita el prefijo entero y no puede empezar antes de que exista el id
 anterior.** Ese único hecho — la generación es secuencial en $t$ — es lo que el §2
 tarifa y lo que el §6 explota.
 
-A temperatura 0 el muestreo colapsa a $x_t = \arg\max_v f_\theta(x_{<t})_v$, y toda la
+A temperatura 0 el muestreo colapsa a $x_t = \arg\max_v f_\theta(x_{\lt t})_v$, y toda la
 generación pasa a ser una función determinista del prompt. Cada medición de este
 repositorio se toma a temperatura 0 — con la salvedad de que vLLM a temperatura 0 no
 es reproducible bit a bit entre sesiones (84, 81, 82 sobre casos idénticos **[ran]**
@@ -60,24 +60,26 @@ Con ancho oculto $d$, $H$ cabezas de consulta, $H_{kv}$ cabezas de clave/valor, 
 cabeza $d_h$ y ancho de MLP $d_{ff}$, el bloque $\ell$ mapea $h^{(\ell)} \in \mathbb{R}^{T\times d}$
 a $h^{(\ell+1)}$:
 
-1. **Pre-norm.** $\tilde h = \mathrm{RMSNorm}(h) = h \oslash \sqrt{\tfrac{1}{d}\sum_j h_j^2 + \epsilon}\;\odot\; g$.
+1. **Pre-norm.** $\tilde h = \mathrm{RMSNorm}(h) = h \oslash \sqrt{\tfrac{1}{d}\sum_j h_j^2 + \epsilon}\ \odot\  g$.
 
-2. **Proyecciones.** $Q = \tilde h W_q,\; K = \tilde h W_k,\; V = \tilde h W_v$ con
+2. **Proyecciones.** $Q = \tilde h W_q,\  K = \tilde h W_k,\  V = \tilde h W_v$ con
    $W_q \in \mathbb{R}^{d\times H d_h}$ y $W_k, W_v \in \mathbb{R}^{d \times H_{kv} d_h}$.
-   Con $H_{kv} < H$ cada cabeza de clave/valor sirve a $H/H_{kv}$ cabezas de consulta —
+   Con $H_{kv} \lt  H$ cada cabeza de clave/valor sirve a $H/H_{kv}$ cabezas de consulta —
    *atención de consultas agrupadas*, que es lo que hace más chica la caché KV del §2.2.
 
 3. **Posición rotatoria (RoPE).** Cada par de coordenadas $(q_{2i}, q_{2i+1})$ en la
-   posición $t$ se rota un ángulo $t\,\omega_i$ con $\omega_i = \theta^{-2i/d_h}$; lo
+   posición $t$ se rota un ángulo $t\ \omega_i$ con $\omega_i = \theta^{-2i/d_h}$; lo
    mismo para $k$. Entonces $\langle q_t, k_s\rangle$ depende sólo de $t-s$ — la posición
    entra como fase relativa. Las dos familias usan $\theta = 10^6$ **[read]**.
 
 4. **Atención causal**, por cabeza:
-   $$
-   A = \mathrm{softmax}\!\Big(\frac{QK^\top}{\sqrt{d_h}} + M\Big)V,
-   \qquad M_{ts} = \begin{cases}0 & s\le t\\ -\infty & s>t\end{cases}
-   $$
-   y luego $h \leftarrow h + A\,W_o$.
+
+```math
+A = \mathrm{softmax}\!\Big(\frac{QK^\top}{\sqrt{d_h}} + M\Big)V,
+\qquad M_{ts} = \begin{cases}0 & s\le t\\ -\infty & s>t\end{cases}
+```
+
+   y luego $h \leftarrow h + A\ W_o$.
 
 5. **MLP (SwiGLU).** $h \leftarrow h + \big(\sigma(\tilde h W_{gate}) \odot \tilde h W_{up}\big) W_{down}$,
    con $\sigma$ la SiLU, $W_{gate}, W_{up} \in \mathbb{R}^{d\times d_{ff}}$,
@@ -123,10 +125,10 @@ Una capa de atención lineal reemplaza el softmax $T\times T$ por un **estado
 recurrente** $S_t \in \mathbb{R}^{d_k\times d_v}$ actualizado una vez por token. La regla de
 Gated DeltaNet **[read]** (Yang et al., *Gated Delta Networks*, 2024) es
 
-$$
+```math
 S_t = \alpha_t\,\big(I - \beta_t\, k_t k_t^\top\big)\, S_{t-1} \;+\; \beta_t\, k_t v_t^\top,
 \qquad o_t = S_t^\top q_t,
-$$
+```
 
 con compuertas dependientes de los datos $\alpha_t \in (0,1]$ (decaimiento) y
 $\beta_t \in (0,1]$ (fuerza de escritura). El primer término *olvida* a lo largo de
@@ -162,9 +164,9 @@ La atención en el paso $t$ necesita $K_{1:t}, V_{1:t}$ de cada capa. Recomputar
 cuesta $O(t)$ por paso; cachearlos hace el decode $O(1)$ en recómputo al precio de
 memoria:
 
-$$
+```math
 \text{bytes}_{KV}(t) \;=\; 2 \cdot L \cdot H_{kv} \cdot d_h \cdot t \cdot b,
-$$
+```
 
 con $b$ bytes por elemento. Para `Qwen2.5-3B` en bf16: $2\cdot 36\cdot 2\cdot 128\cdot 2 = 36{.}864$
 bytes por token — **36 KB/token**, 147 MB a 4.096 tokens. Para el 32B (caché bf16
@@ -178,9 +180,9 @@ razón de ser.
 Un paso de decode lee cada peso una vez. Con $B_W$ bytes de pesos y ancho de banda
 $\mathcal{B}$, el piso es
 
-$$
+```math
 t_{\text{step}} \;\gtrsim\; \frac{B_W}{\mathcal{B}} \;+\; \frac{\text{bytes}_{KV}(t)}{\mathcal{B}}.
-$$
+```
 
 En una A100-40GB ($\mathcal{B}\approx 1,5$ TB/s **[read]**): el 3B (~6,2 GB) tiene piso
 de **~4 ms/token**; el 32B-AWQ (19,3 GB), **~13 ms/token**. La aritmética es diminuta
@@ -254,9 +256,9 @@ serving, no un problema de ids.
 LoRA **[read]** (Hu et al. 2021) reemplaza un peso congelado $W \in \mathbb{R}^{d_{in}\times d_{out}}$
 por
 
-$$
+```math
 W' = W + \frac{\alpha}{r}\, A B, \qquad A \in \mathbb{R}^{d_{in}\times r},\; B\in\mathbb{R}^{r\times d_{out}},\; r \ll \min(d_{in}, d_{out}),
-$$
+```
 
 entrena sólo $A, B$, y en inferencia calcula $xW' = xW + \tfrac{\alpha}{r}(xA)B$ — dos
 productos delgados al lado del congelado. Cada adaptador de acá usa $r=16$,
@@ -271,7 +273,7 @@ de deltas sobre una base residente.*
 ### 4.2 La cuenta, reconciliada con el artefacto
 
 Por bloque de `Qwen2.5-3B` ($d = 2048$, $H_{kv} d_h = 256$, $d_{ff} = 11008$), los
-parámetros LoRA son $r\,(d_{in} + d_{out})$ por matriz:
+parámetros LoRA son $r\ (d_{in} + d_{out})$ por matriz:
 
 | matriz | $d_{in}\to d_{out}$ | parámetros |
 |---|---|---:|
@@ -309,11 +311,11 @@ observación sobre la que descansa el §10.1.
 SFT minimiza la entropía cruzada del próximo token sobre el span del asistente
 solamente:
 
-$$
+```math
 \mathcal{L}(A,B) = -\sum_{t \in \text{asistente}} \log p_{\theta + \Delta}(x_t \mid x_{<t}),
-$$
+```
 
-así que el adaptador aprende $p(x_t \mid x_{<t})$ **para los prefijos que el corpus
+así que el adaptador aprende $p(x_t \mid x_{\lt t})$ **para los prefijos que el corpus
 contiene**. Servirle un prefijo de otra distribución es pedirle que extrapole. El corpus
 de email-full renderiza toda la cadena en un solo turno de asistente,
 `<tag>…</tag>= {resultado}\n…\nIMPORTANT`, así que la condicional aprendida es
@@ -338,12 +340,12 @@ acá es `vllm serve` 0.29.0 **[ran]** P3…P55.
 
 ### 5.2 Serving multi-LoRA
 
-Con adaptadores $\{(A_i, B_i)\}$ residentes y un batch en el que el pedido $j$ nombra al
+Con adaptadores $\lbrace (A_i, B_i)\rbrace$ residentes y un batch en el que el pedido $j$ nombra al
 adaptador $i(j)$, la capa calcula
 
-$$
+```math
 y_j = x_j W + s\,(x_j A_{i(j)}) B_{i(j)},
-$$
+```
 
 como un GEMM compartido para $xW$ más un par de GEMMs delgados *batcheados y
 recolectados* (los kernels `bgmv` / Punica **[read]**, Chen et al. 2023; S-LoRA, Sheng
@@ -359,7 +361,7 @@ adaptador y exige que los textos difieran **[ran]** P33 (`Qwen2.5-3B`: difiere;
 
 ### 5.3 Teacher forcing en un prefill: `prompt_logprobs`
 
-El prefill (§2.1) calcula $f_\theta(x_{<t})$ **para cada $t \le P$ a la vez**. Pedirle al
+El prefill (§2.1) calcula $f_\theta(x_{\lt t})$ **para cada $t \le P$ a la vez**. Pedirle al
 servidor `prompt_logprobs` devuelve, en cada posición, los top-$k$ ids del target con
 log-probabilidades *y el rango del token real* — es decir, la distribución completa con
 teacher forcing a lo largo de un texto dado, en una pasada, sin generar nada. Esa es la
@@ -391,28 +393,32 @@ Chen et al. 2023):
 
 1. **Draft.** Muestrear $\tilde x_1 \sim q(\cdot\mid x)$, $\tilde x_2 \sim q(\cdot\mid x,\tilde x_1)$, …, $\tilde x_k$ — $k$ pasos de decode baratos.
 2. **Verificar.** Una pasada del target sobre $x, \tilde x_1,\dots,\tilde x_k$ da
-   $p(\cdot\mid x,\tilde x_{<i})$ para todo $i \le k+1$ a la vez (§5.3).
+   $p(\cdot\mid x,\tilde x_{\lt i})$ para todo $i \le k+1$ a la vez (§5.3).
 3. **Aceptar / rechazar**, de izquierda a derecha: aceptar $\tilde x_i$ con probabilidad
-   $$
-   a_i = \min\!\Big(1, \frac{p(\tilde x_i \mid x, \tilde x_{<i})}{q(\tilde x_i \mid x, \tilde x_{<i})}\Big).
-   $$
+
+```math
+a_i = \min\!\Big(1, \frac{p(\tilde x_i \mid x, \tilde x_{<i})}{q(\tilde x_i \mid x, \tilde x_{<i})}\Big).
+```
+
    En el primer rechazo, en la posición $i$, emitir un token del **residual**
-   $$
-   p'(v) \propto \max\big(0,\; p(v \mid \cdot) - q(v \mid \cdot)\big)
-   $$
+
+```math
+p'(v) \propto \max\big(0,\; p(v \mid \cdot) - q(v \mid \cdot)\big)
+```
+
    y terminar la ronda. Si se aceptan los $k$, emitir un token extra de
    $p(\cdot\mid x,\tilde x_{1:k})$ — la pasada ya lo calculó.
 
 ### 6.2 Exactitud
 
-Para cualquier $v$: $\Pr[\text{emitir } v] = q(v)\min(1, p(v)/q(v)) + \big(1-\sum_u q(u)\min(1,p(u)/q(u))\big)\,p'(v) = \min(p(v),q(v)) + \max(0, p(v)-q(v)) = p(v)$.
+Para cualquier $v$: $\Pr[\text{emitir } v] = q(v)\min(1, p(v)/q(v)) + \big(1-\sum_u q(u)\min(1,p(u)/q(u))\big)\ p'(v) = \min(p(v),q(v)) + \max(0, p(v)-q(v)) = p(v)$.
 **La salida se distribuye exactamente como la del target**, sea cual sea el drafter. Un
 drafter malo cuesta velocidad, nunca corrección — por eso la aceptación se puede leer
 como un puntaje *sobre el drafter* (§7).
 
 ### 6.3 Temperatura 0
 
-Con $p$ one-hot en su argmax, $a_i = 1$ sii $\tilde x_i = \arg\max_v p(v\mid x,\tilde x_{<i})$
+Con $p$ one-hot en su argmax, $a_i = 1$ sii $\tilde x_i = \arg\max_v p(v\mid x,\tilde x_{\lt i})$
 y $0$ si no. **La aceptación es igualdad de argmax**, y el prefijo aceptado es el
 prefijo más largo del draft a lo largo del cual el target habría hecho la misma
 elección. Es la identidad sobre la que `alpha/` descansó desde el principio y que
@@ -424,18 +430,18 @@ preflight.
 Si cada token se acepta independientemente con tasa $\alpha$, el número esperado de
 tokens emitidos por ronda con $k$ drafts es
 
-$$
+```math
 \mathbb{E}[\tau] = \frac{1-\alpha^{k+1}}{1-\alpha}.
-$$
+```
 
 Sea $c = t_{\text{draft}} / t_{\text{target}}$ el costo de un paso del drafter relativo
-a un paso del target. Una ronda cuesta $k\,c + 1$ pasos-de-target y rinde
+a un paso del target. Una ronda cuesta $k\ c + 1$ pasos-de-target y rinde
 $\mathbb{E}[\tau]$ tokens, así que
 
-$$
+```math
 \text{aceleración} \;=\; \frac{\mathbb{E}[\tau]}{k\,c + 1}
 \;=\; \frac{1-\alpha^{k+1}}{(1-\alpha)(k c + 1)}.
-$$
+```
 
 Dos lecturas. **La pasada de verificación del target cuesta una lectura de pesos para
 $k+1$ posiciones** (§2.3–2.4): de ahí salen los tokens. Y **la ganancia crece cuando
@@ -476,13 +482,13 @@ y es lo que el §7 formaliza.
 ### 7.1 Definiciones y la afirmación
 
 Una suite es un conjunto de casos $\mathcal{C}$ con un verificador mecánico
-$\mathrm{ok}(c, \text{respuesta}) \in \{0,1\}$. Para un experto $E$ (base + un adaptador)
+$\mathrm{ok}(c, \text{respuesta}) \in \lbrace 0,1\rbrace$. Para un experto $E$ (base + un adaptador)
 su **calidad verificada** es $Q(E) = \tfrac{1}{|\mathcal C|}\sum_c \mathrm{ok}(c, E(c))$.
 Para un target $T$, su **aceptación** en el caso $c$ es
 
-$$
+```math
 \alpha_T(E, c) = \frac{1}{n_c}\sum_{i=1}^{n_c} \mathbf{1}\big[\tilde x_i^{E}(c) = \arg\max p_T(\cdot \mid \text{prefijo}, \tilde x_{<i}^{E}(c))\big],
-$$
+```
 
 la fracción de los $n_c$ *tokens de decisión* de $E$ en ese caso que el target habría
 escrito él mismo (§6.3), y $\alpha_T(E) = \tfrac1{|\mathcal C|}\sum_c \alpha_T(E,c)$.
@@ -496,11 +502,13 @@ un target sin entrenar y la pregunta se cerró sin veredicto ([`RECORD.md`](RECO
 chico con el LoRA de un subdominio, $T$ el modelo grande pelado y $T_\phi$ el modelo grande
 con un LoRA entrenado sobre el *mismo corpus*. El par es especulativo sii
 
-$$\alpha_{T_\phi}(S_\theta) > \alpha_{T}(S_\theta),$$
+```math
+\alpha_{T_\phi}(S_\theta) > \alpha_{T}(S_\theta),
+```
 
 pareado sobre casos — entrenar la mitad grande en el subdominio la hace coincidir con los
 borradores correctos del experto chico más que el generalista. Se lee al lado de
-$Q(T_\phi) > Q(S_\theta)$ (hito 3): un verificador que no es mejor que su drafter no tiene
+$Q(T_\phi) \gt  Q(S_\theta)$ (hito 3): un verificador que no es mejor que su drafter no tiene
 nada que verificar. **Todavía sin medir.**
 
 ### 7.2 La precondición, y P55 A como su instancia
@@ -509,15 +517,15 @@ $\alpha_T(E)$ es acuerdo con $T$. Si $T$ está equivocado en un caso, un experto
 está *bien* es **rechazado ahí**, y $\alpha$ premia al experto que comparte el error del
 target. Así que la afirmación es sobre calidad sólo cuando
 
-$$
+```math
 Q(T) \;\ge\; \max_a Q(E_a)
-$$
+```
 
 — "es un puntaje de destilación sólo cuando el target es más fuerte que cada candidato"
 (skill `alpha-surface`). La compuerta M-target de P55 es esa desigualdad como test
 pareado, y disparó: en 351 casos humanos de triage el 32B acertó donde el experto falló
 en **2** y falló donde el experto acertó en **87**, $p = 0,0$;
-$Q(T)=0,746 < Q(E) = 0,989$ **[ran]** P55 A. El modelo grande sin entrenar *consigue
+$Q(T)=0,746 \lt  Q(E) = 0,989$ **[ran]** P55 A. El modelo grande sin entrenar *consigue
 todos los hechos y aplica mal la regla*; un orden medido contra él habría sido un orden
 por acuerdo con sus errores. **El instrumento estaba listo y correctamente no corrió.**
 
@@ -543,14 +551,14 @@ dice entonces *dónde* vivió el acuerdo y no sólo que falló.
 
 **Como se escribió para la afirmación de orden (P55).** Para cada par $(E_a, E_b)$ que el
 verificador resuelve (§9.2), tomar los casos en que ambos fueron puntuados y contar
-$u = \#\{c: \alpha(E_a,c) > \alpha(E_b,c)\}$, $d = \#\{c: \alpha(E_a,c) < \alpha(E_b,c)\}$;
+$u = \lvert\lbrace c: \alpha(E_a,c) \gt  \alpha(E_b,c)\rbrace\rvert$, $d = \lvert\lbrace c: \alpha(E_a,c) \lt  \alpha(E_b,c)\rbrace\rvert$;
 los empates se excluyen; decide el binomial exacto a dos colas sobre $(u,d)$.
 **SUPPORTED** si todo par resuelto coincide; **FALSIFIED** si algún par queda ordenado al
 revés con $p\le0.05$; **UNRESOLVED** si el verificador vio una diferencia y $\alpha$ no
 **[ran]** `results/P55-graded-ranking-20260916/BRIEF.md`.
 
 **Para un par (hito 4)** la misma cuenta se hace sobre *targets* en vez de expertos:
-$u = \#\{c: \alpha_{T_\phi}(S_\theta,c) > \alpha_{T}(S_\theta,c)\}$ y $d$ su espejo, mismo
+$u = \lvert\lbrace c: \alpha_{T_\phi}(S_\theta,c) \gt  \alpha_{T}(S_\theta,c)\rbrace\rvert$ y $d$ su espejo, mismo
 binomial. El borrador es el mismo texto bajo ambos targets, así que la comparación es
 pareada por construcción y cuesta un prefill extra por caso (§5.3).
 
@@ -563,9 +571,9 @@ pareada por construcción y cuesta un prefill extra por caso (§5.3).
 Un mensaje $m$ lleva hechos $\phi(m) = (\text{automated}, w, a, s, f)$ — *yo escribí en
 el hilo*, *dirigido a mí*, *pide algo*, *remitente frecuente*. La etiqueta es
 
-$$
+```math
 y(m) = \neg\,\text{automated} \;\wedge\; \big[\,w + a + s + f \;\ge\; 2\,\big],
-$$
+```
 
 `training/email/inbox.py::important`. **El listado no muestra ninguno de $w, a, f$** —
 viven detrás de tres herramientas (`thread_history` → $w$, `sender_stats` → $f$,
@@ -576,11 +584,11 @@ llamarlas con el argumento correcto, leer los resultados, aplicar la regla.
 
 El harness de modo corpus $\mathcal H$ es la recursión
 
-$$
+```math
 s_0 = \text{prompt},\qquad
 \tilde s_{j} = E(s_{j-1}) \text{ hasta } \texttt{</tag>},\qquad
 s_j = s_{j-1} \,\|\, \tilde s_j \,\|\, \texttt{= } \mathrm{tool}(\tilde s_j)\texttt{\textbackslash n},
-$$
+```
 
 hasta que un span no lleva tag, cuyo texto se parsea como veredicto. Los *spans*
 $\tilde s_j$ son las decisiones del experto y lo único que el target puntúa (§7.3).
@@ -620,12 +628,14 @@ puede concordar o no.
 
 Cada miembro liberado $m$ tiene un corpus $K_m$; sus turnos de usuario son muestras de la
 distribución $P_m$ bajo la que el miembro fue entrenado. Un router es una función
-$r(x) \in \{m_1,\dots,m_M,\ \mathrm{out}\}$ construida con un puntaje $s_m(x)$ por miembro y
+$r(x) \in \lbrace m_1,\dots,m_M,\ \mathrm{out}\rbrace$ construida con un puntaje $s_m(x)$ por miembro y
 un umbral:
 
-$$r(x) = \begin{cases} \arg\max_m s_m(x) & \text{si } \max_m s_m(x) \ge \tau \ \text{y el margen al segundo} \ge \delta,\\ \mathrm{out} & \text{si no.}\end{cases}$$
+```math
+r(x) = \begin{cases} \arg\max_m s_m(x) & \text{si } \max_m s_m(x) \ge \tau \ \text{y el margen al segundo} \ge \delta,\\ \mathrm{out} & \text{si no.}\end{cases}
+```
 
-El diccionario de P62 es el caso particular $s_m(x) = \#\{\text{claves de } m \text{ en } x\}$,
+El diccionario de P62 es el caso particular $s_m(x) = \lvert\lbrace \text{claves de } m \text{ en } x\rbrace\rvert$,
 $\tau = 1$, $\delta = 1$. En la suma de §8.4 el único término que un router puede cambiar es
 el tercero — un pedido mandado a un miembro a cuyo corpus no pertenece cuenta como mal —
 así que un router se puntúa por **mal-ruteados-a-local** y por la fracción que sale, no por
@@ -641,7 +651,9 @@ y un embedding $e:\text{texto}\to\mathbb R^d$. Una **trayectoria** sobre el caso
 secuencia de notas que el experto abre, $\pi(x) = (n_1,\dots,n_T)$, cada una elegida a partir de
 lo que expuso el último paso:
 
-$$n_{t+1} \in \underbrace{\operatorname{top-}k_{\,n \in \mathcal N}\ \langle e(q_t), e(n)\rangle}_{\text{una consulta que escribió el experto}} \ \cup\ \underbrace{\{n : (n_t, n) \in \mathcal L\}}_{\text{un link que ofreció la última nota}} .$$
+```math
+n_{t+1} \in \underbrace{\mathrm{top\text{-}}k_{\,n \in \mathcal N}\ \langle e(q_t), e(n)\rangle}_{\text{una consulta que escribió el experto}} \ \cup\ \underbrace{\{n : (n_t, n) \in \mathcal L\}}_{\text{un link que ofreció la última nota}} .
+```
 
 Los parámetros del adaptador son la **política** — qué $q_t$ escribir, qué candidato abrir,
 cuándo parar; la base es el **contenido**. Dos condiciones hacen que esa separación sea medible
@@ -653,9 +665,11 @@ consultado aparece en el enunciado.
 Con $\pi^{\star}(x)$ la trayectoria del oráculo y $Q_{\pi}(F)$ la calidad verificada sobre la
 familia $F$ bajo la trayectoria $\pi$, el hito 7 lee tres diferencias, en este orden:
 
-$$\underbrace{Q_{\pi^{\star}}(F') - Q_{\varnothing}(F')}_{\text{lo que compra leer sobre una familia hermana } F'} \qquad
+```math
+\underbrace{Q_{\pi^{\star}}(F') - Q_{\varnothing}(F')}_{\text{lo que compra leer sobre una familia hermana } F'} \qquad
 \underbrace{Q_{\pi^{\star}}(F') - Q_{\hat\pi}(F')}_{\text{lo que pierde la navegación}} \qquad
-\underbrace{Q_{\hat\pi}^{\text{op}} \ \text{contra}\ Q_{\hat\pi}^{\text{enc}}}_{\text{qué tipo de conocimiento lo carga}}$$
+\underbrace{Q_{\hat\pi}^{\text{op}} \ \text{contra}\ Q_{\hat\pi}^{\text{enc}}}_{\text{qué tipo de conocimiento lo carga}}
+```
 
 cada una pareada (§9.2). $Q_{\varnothing}(F') \approx 1/20$ está medido **[ran]** P14; el resto
 está **todavía sin medir** — hito 7 de [`PLAN.md`](PLAN.md). La navegación se puntúa donde
@@ -667,10 +681,12 @@ una nota vacía es un caso que el score final no puede ver.
 ### 8.4 Exactitud entregada bajo una política de ruteo
 
 Una política $r$ manda el caso $x$ a un miembro local $m$ o afuera a la frontera. Con
-$L_m(x) \in \{0,1\}$ si el miembro $m$ contesta bien $x$, $F(x)$ si la frontera lo
-hace, y $m^*(x)$ el miembro de la región de $x$,
+$L_m(x) \in \lbrace 0,1\rbrace$ si el miembro $m$ contesta bien $x$, $F(x)$ si la frontera lo
+hace, y $m^\ast (x)$ el miembro de la región de $x$,
 
-$$\mathrm{entregado}(r) = \frac{1}{n}\sum_x \Big( [r(x) = (\mathrm{local}, m^*(x))]\,L_{m^*}(x) + [r(x) = \mathrm{afuera}]\,F(x) + [r(x) = (\mathrm{local}, m \ne m^*(x))]\cdot 0 \Big)$$
+```math
+\mathrm{entregado}(r) = \frac{1}{n}\sum_x \Big( [r(x) = (\mathrm{local}, m^*(x))]\,L_{m^*}(x) + [r(x) = \mathrm{afuera}]\,F(x) + [r(x) = (\mathrm{local}, m \ne m^*(x))]\cdot 0 \Big)
+```
 
 Un caso entregado al miembro equivocado cuenta como mal por construcción — la lectura
 conservadora. La política por región (P41) es $r(x) = \mathrm{región}(x)$ leída de una
@@ -694,9 +710,9 @@ Dos brazos puntuados sobre los mismos casos discrepan en $n_d$ de ellos; $u$ de 
 favorecen a $A$. Bajo $H_0$ cada caso discordante favorece a cualquiera de los dos con
 probabilidad $\tfrac12$, así que $u \sim \mathrm{Bin}(n_d, \tfrac12)$ y
 
-$$
+```math
 p = \min\Big(1,\; 2\,\Pr\big[\mathrm{Bin}(n_d,\tfrac12) \ge \max(u, n_d-u)\big]\Big),
-$$
+```
 
 `training/harness/bar.py::sign_test`. Los empates no llevan información y se excluyen
 — eso es lo que lo hace el test pareado y no una comparación de dos proporciones. **Los
@@ -731,7 +747,7 @@ La decodificación especulativa tiene dos modelos y dos trabajos. El **drafter**
 
 ~~El target es un modelo denso, sin modificar, y no necesita LoRA.~~ **Reformulado el
 2026-09-19.** Un modelo grande sin modificar sacó *menos* que el experto chico en las dos
-regiones probadas — $Q(T) < \max Q(E)$, 0,746 < 0,989 y 0,967 < 1,000 **[ran]** P55, P55b
+regiones probadas — $Q(T) \lt  \max Q(E)$, 0,746 < 0,989 y 0,967 < 1,000 **[ran]** P55, P55b
 (§7.2) — así que el target de un par es $T_\phi$: el modelo grande con un LoRA del mismo
 subdominio. Eso vuelve servir un LoRA un requisito de **las dos** mitades, y las dos están
 medidas: sobre un modelo grande en 4 bits el adaptador se aplica, $|\Delta\ell|$ medio
@@ -772,7 +788,9 @@ cambió en proceso), el motor dice que lo cargó, el texto servido es igual al d
 tensores del adaptador, $m$ el mapper de nombres de vLLM para la clase servida y $M$ los
 módulos del modelo servido,
 
-$$\text{applied}(K) = \{\,k \in K : m(k) \in M\,\}.$$
+```math
+\text{applied}(K) = \{\,k \in K : m(k) \in M\,\}.
+```
 
 Entrenado por `AutoModelForCausalLM`, PEFT nombra los tensores `model.layers.N…`; vLLM sirve
 `Qwen3_5ForConditionalGeneration` y activa por `language_model.model.layers.N…`. La carga
@@ -815,21 +833,21 @@ entrena la mitad grande; el hito 4 mide la desigualdad de §7.1.
 | §5.2 | compuerta de identidad C18 | P33 `lora_matrix.json`; P55 A `applied`; **Fase 0 P56: los dos miembros 3/3 `applied`, herramientas alcanzables, stop honrado** |
 | §5.3 | forma de `prompt_logprobs` | P55 A `preflight_target` |
 | §5.4 | preflight del stop; shim posicional | P55 A intentos 1, 2 |
-| §7.2 | $Q(T) < \max Q(E)$: 2 : 87, $p=0$ | P55 A `target_gate` |
+| §7.2 | $Q(T) \lt  \max Q(E)$: 2 : 87, $p=0$ | P55 A `target_gate` |
 | §8.2 | techo 0,989; gradiente de commitment | P55 A; P51 `desk_profile.json` |
 | §8.3 | el grado más chico no está saturado: $Q(g25) = 0,000$, base 0,171 — fabrica la respuesta de la herramienta | P58 `g25.json` |
 | §8.3 | **sin grado intermedio**: `g75` ≡ `g600` = 1,000 en un protocolo de una llamada; M1 pasa por un bit | P55b `p55b.json` |
 | §8.2 | **una banda más profunda existe por construcción**: `commitment_deep`, la última de 1–3 promesas entre las propuestas del remitente, último mensaje del remitente desde profundidad 2; la suite superficial pinada por hash después de que #206 la moviera en silencio (0 desajustes vs P55b) | P60 §3a, `tests/test_desk_deep.py` |
-| §7.2 | **$Q(T) < \max Q(E)$ por segunda vez**: 32B 0,967 (fechas normalizadas) contra `g600` 1,000, 0 : 8, $p = 0,008$ | P55b `target_gate` |
+| §7.2 | **$Q(T) \lt  \max Q(E)$ por segunda vez**: 32B 0,967 (fechas normalizadas) contra `g600` 1,000, 0 : 8, $p = 0,008$ | P55b `target_gate` |
 | §9.3 | potencia a $n=351$ | `bar.resolvable` **[ran]** 2026-09-16 |
 | §10.2 | espacio de ids 3.5 → 3.8 | P55 `D0-tokenizers.txt` |
 | §10.5 D1 | vLLM resuelve a 0.29.0 | log de boot de P55 A |
 | §4.4 | **una superficie desconocida es extrapolación**: sin podar (54 herramientas) el experto copia etiquetas del bloque, 225 de 227 llamadas rechazadas; podado, 8 de 1160; el bloque son ~7.956 contra ~77 tokens | P59 `attribution.json` |
 | §6.4 | **α, $\mathbb{E}[\tau]$, aceleración** | α por token (aceptación rank-1) **[ran]** B4: 0,871 el 12B pelado, 0,898 el 12B + LoRA sobre 107 registros de borradores del E4B; $\mathbb{E}[\tau]$ con $k=4$ bajo la independencia de §6.4, 3,87 → 4,08 — derivado, no medido; **reloj [ran] F0** (12B FP8 + LoRA, el drafter MTP nativo, k = 4): el base 2,73× a batch 1 con largo medio aceptado 4,16, el experto LoRA 1,74× en su dominio (4,16 → 2,25) — el LoRA le cuesta al drafter, medido; la identidad de la salida a temperatura 0 todavía no establecida |
 | §7.4 | **el veredicto de orden** | **cerrado sin veredicto el 2026-09-19**: el §7.2 falla para un target *sin entrenar* en dos regiones fáciles (P55 A, P55b). Lo que sobrevivió es el target entrenado — ahora la mitad grande de un par (§7.1, §10.1) |
-| §10.5 D2 / §3.4 | **un LoRA aplica sobre el 32B AWQ**: media de $|\Delta\ell|$ 0,22–0,49 nats contra base-vs-base 0,000, 3/3; compuerta de texto 2/3 | P60 §3b `awq_gate.json` |
-| §10.5 D2 | **C18 es un desajuste de nombres**: $\text{applied}(K)=\{k\in K: m(k)\in M\}$ — tal como se entrenó 0 de 496 tensores caen sobre el stack de texto servido y la activación real fija 0 de 178 módulos (`not applied`); renombrado, 496 de 496 y 152 de 178 (`applied`); control `applied` | D2 `lora_matrix.json`, `vllm.log` |
-| §7.1, §7.4 | **la desigualdad del par** $\alpha_{T_\phi}(S_\theta) > \alpha_T(S_\theta)$ | **se cumple [ran] B4**: 76 : 18 registros, $p < 10^{-4}$ — en la distribución del propio corpus (0,855 → 0,914), no en una banda que ninguna mitad entrenó (0,885 → 0,881); hito 4 de [`PLAN.md`](PLAN.md) |
+| §10.5 D2 / §3.4 | **un LoRA aplica sobre el 32B AWQ**: media de $\vert \Delta\ell\vert$ 0,22–0,49 nats contra base-vs-base 0,000, 3/3; compuerta de texto 2/3 | P60 §3b `awq_gate.json` |
+| §10.5 D2 | **C18 es un desajuste de nombres**: $\text{applied}(K)=\lbrace k\in K: m(k)\in M\rbrace$ — tal como se entrenó 0 de 496 tensores caen sobre el stack de texto servido y la activación real fija 0 de 178 módulos (`not applied`); renombrado, 496 de 496 y 152 de 178 (`applied`); control `applied` | D2 `lora_matrix.json`, `vllm.log` |
+| §7.1, §7.4 | **la desigualdad del par** $\alpha_{T_\phi}(S_\theta) \gt  \alpha_T(S_\theta)$ | **se cumple [ran] B4**: 76 : 18 registros, $p \lt  10^{-4}$ — en la distribución del propio corpus (0,855 → 0,914), no en una banda que ninguna mitad entrenó (0,885 → 0,881); hito 4 de [`PLAN.md`](PLAN.md) |
 | §8.5 | **el router como clasificador con abstención**; el diccionario es su caso particular | diccionario: P62, P64. **Un modelo de n-gramas del marco de cada corpus [ran] M2**: texto ajeno 0/128 servido localmente contra 59/128 del diccionario; pedidos legítimos de remitentes nunca vistos 120/120 perdidos contra 0/120 — no pasa; el brazo de embeddings: **todavía sin medir** |
 | §8.6 | **una trayectoria por la base de conocimiento de un subdominio**; la política en los pesos, el contenido afuera | $Q_\varnothing(F') \approx 1/20$: P14. Recorridos de dos y tres saltos sobre páginas de enunciados atómicos, citados y verificados: 0/40 sin entrenar → 35/40, 38/40 sobre Gemma **[ran]** W9, B1; una habilidad que el corpus nunca mostró no se aprende (comparaciones 10/40), mostrada sí (37/40) **[ran]** B3, B5; en la biblioteca de enfermería la afirmación central no pasa **[ran]** W5, W5c |
 | §7.3, §8.2 | **pesos o harness — pesos**: base 0,345, base + procedimiento de 914 tokens 0,601 (las dos con 0 llamadas, debajo de la barra de mayoría 0,655), experto 0,989; experto contra base+kb **137 : 1**; el test de signos solo leyó el default dado vuelta como pagando (164 : 74) — la barra de mayoría lo guarda | P61 `session.json` |

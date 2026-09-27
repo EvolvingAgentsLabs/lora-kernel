@@ -209,7 +209,9 @@ de las tareas del subdominio — de la **distribución de su corpus** — y esa 
 El puntaje de S4, con $q$ la consulta, $n$ un candidato, $\ell$ la última nota abierta, $N(\ell)$ sus vecinos
 enlazados y $e$ el encoder:
 
-$$s(n \mid q, \ell) = \underbrace{\langle e(q), e_{\text{when}}(n)\rangle}_{\text{es para esto}} \;+\; \beta\,\underbrace{\langle e(q), e_{\text{what}}(n)\rangle}_{\text{es esto}} \;+\; \lambda\,\mathbf 1[n \in N(\ell)] \;+\; \mu\,\langle e(\ell), e(n)\rangle ,$$
+```math
+s(n \mid q, \ell) = \underbrace{\langle e(q), e_{\text{when}}(n)\rangle}_{\text{es para esto}} \;+\; \beta\,\underbrace{\langle e(q), e_{\text{what}}(n)\rangle}_{\text{es esto}} \;+\; \lambda\,\mathbf 1[n \in N(\ell)] \;+\; \mu\,\langle e(\ell), e(n)\rangle ,
+```
 
 $\beta = \lambda = \mu = 0$ es la búsqueda plana de S1, así que el brazo es una generalización estricta de su
 línea de base y cada sub-puntaje se guarda en el match para decir qué término movió un ranking.
