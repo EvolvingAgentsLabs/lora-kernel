@@ -395,7 +395,7 @@ fijo en el corpus que se memoriza; un modelo sin el prompt con el que se entren�
 |---|---|---|
 | salida idéntica con especulativa | no establecida | repetir F0 con `VLLM_BATCH_INVARIANT=1` y un control |
 | el borrador con el LoRA activo | pierde aceptación en el dominio (1,74×) | estrategias A–D (§6.4), empezando por la más barata |
-| la pista Mac | programa listo, sin correr | 12B en MLX con cambio de LoRA en caliente y MTP |
+| la pista Mac | **[ran]**: cambio en caliente en 2,9 µs, 8,4 GB; MTP sin ganancia con el LoRA (0,92–1,04×) | un drafter alineado al LoRA (§6.4, A–D); encontrar por qué el base en MLX entra en bucle con un prompt de sistema |
 | router aprendido | ninguno pasa | el rol es la ruta; queda abierto |
 | buscador de notas con embeddings | 0,63 contra 0,80 | búsqueda por palabras en uso |
 | tráfico real | todo es sintético | una muestra anonimizada de un sistema en uso |

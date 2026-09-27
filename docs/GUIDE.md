@@ -399,7 +399,7 @@ happened to us last week).
 |---|---|---|
 | identical output with speculative | not established | repeat F0 with `VLLM_BATCH_INVARIANT=1` and a control |
 | the draft with the LoRA active | loses acceptance in the domain (1.74×) | strategies A–D (§6.4), starting with the cheapest |
-| the Mac track | program ready, not run | 12B on MLX with hot LoRA switching and MTP |
+| the Mac track | **[ran]**: hot swap in 2.9 µs, 8.4 GB; MTP no gain with the LoRA on (0.92–1.04×) | a drafter aligned to the LoRA (§6.4, A–D); find why the MLX base loops on a system prompt |
 | learned router | none passes | the role is the route; left open |
 | note search with embeddings | 0.63 against 0.80 | keyword search in use |
 | real traffic | everything is synthetic | an anonymized sample from a system in use |

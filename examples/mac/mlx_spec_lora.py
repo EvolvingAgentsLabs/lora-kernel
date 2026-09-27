@@ -142,11 +142,12 @@ def main() -> int:
         kw = {"max_tokens": a.max_tokens, "temperature": 0.0, "verbose": False}
         if spec_on:
             kw.update(draft_model=draft, draft_kind=kind)
-            n0 = len(getattr(draft, "accept_lens", []) or [])
         r = generate(model, processor, p, **kw)
         res = {"text": r.text, "tokens": r.generation_tokens, "tps": round(r.generation_tps, 2)}
         if spec_on:
-            acc = (getattr(draft, "accept_lens", []) or [])[n0:]
+            # mlx-vlm RESETS the drafter's counters at each generation: read them whole, after it. The first runner
+            # sliced them as if cumulative and read only the first prompt [ran] results/MAC-mlx-12b-lora-mtp-20260927.
+            acc = list(getattr(draft, "accept_lens", []) or [])
             res["rounds"], res["mean_accepted_per_round"] = len(acc), round(sum(acc) / len(acc), 3) if acc else None
         return res
 
