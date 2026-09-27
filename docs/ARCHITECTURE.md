@@ -236,7 +236,7 @@ knowledge base's hash and its index's hash: a member is its corpus *and* its bas
 **Gemma 4, from 2026-09-25 — the user's decision on B1 [ran].** `google/gemma-4-E4B-it` small; `gemma-4-12B-it`
 large (~~`gemma-4-31B-it`~~, changed for a Mac mini): one id space with the E4B and a LoRA served applied (B2 **[ran]**);
 its LoRA raises acceptance of the small member's drafts, α 0.871 → 0.898 (B4 **[ran]**); it buys no accuracy on the
-comparison band once the small member is taught it (B3, B5 **[ran]**). On W9's wiki, with the same corpus and recipe, Gemma's member
+comparison band once the small member is taught it (B3, B5 **[ran]**). **Served with its own MTP drafter** (`gemma-4-12B-it-assistant`) and an expert LoRA in one vLLM server: 2.7× on the base, 1.7–2.1× with the LoRA on (F0 **[ran]**). On W9's wiki, with the same corpus and recipe, Gemma's member
 tied Qwen3.5-4B's (38/40 against 35 and 35, 4 : 1 against each); untrained, Gemma already walks it 19/40 where Qwen
 walks 0/40, and it trains in a third of the time. The user decided before the comparison ran that parity chooses
 Gemma, because the development stack targets it. Two engineering constraints come with it: the LoRA excludes the

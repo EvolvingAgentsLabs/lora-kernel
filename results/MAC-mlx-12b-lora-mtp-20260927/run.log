@@ -1,0 +1,12 @@
+Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Fetching 9 files: 100%|██████████| 9/9 [00:00<00:00, 1942.51it/s]
+Fetching 5 files:   0%|          | 0/5 [00:00<?, ?it/s]Fetching 5 files:  20%|██        | 1/5 [00:00<00:03,  1.03it/s]Fetching 5 files:  80%|████████  | 4/5 [00:03<00:00,  1.09it/s]Fetching 5 files: 100%|██████████| 5/5 [00:22<00:00,  5.87s/it]Fetching 5 files: 100%|██████████| 5/5 [00:22<00:00,  4.47s/it]
+[mac] base 5.9 s · drafter mtp 23.1 s · adapters {'wiki12b': {'dir': '/tmp/w12/adapters/wiki12b-walks-s0', 'projections': 328, 'attach_s': 1.04}}
+[mac] base/domain/off: 13.8 tok/s
+[mac] base/domain/mtp: 27.0 tok/s · accepted/round 0.47
+[mac] base/general/off: 14.1 tok/s
+[mac] base/general/mtp: 17.6 tok/s · accepted/round 1.93
+[mac] wiki12b/domain/off: 12.9 tok/s
+[mac] wiki12b/domain/mtp: 11.8 tok/s · accepted/round 0.19
+[mac] wiki12b/general/off: 13.0 tok/s
+[mac] wiki12b/general/mtp: 13.5 tok/s · accepted/round 1.32
+[mac] {"base/domain": {"tps_off": 13.8, "tps_mtp": 27.04, "speedup": 1.96, "identical": "3/6", "accepted_per_round": 0.468}, "base/general": {"tps_off": 14.12, "tps_mtp": 17.64, "speedup": 1.25, "identical": "1/4", "accepted_per_round": 1.928}, "wiki12b/domain": {"tps_off": 12.88, "tps_mtp": 11.83, "speedup": 0.92, "identical": "2/6", "accepted_per_round": 0.194}, "wiki12b/general": {"tps_off": 13.0, "tps_mtp": 13.48, "speedup": 1.04, "identical": "2/4", "accepted_per_round": 1.324}, "G1:wiki12b": "6/6 domain texts differ from the base"}

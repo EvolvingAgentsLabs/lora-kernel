@@ -1,0 +1,453 @@
+# Guide — understanding lora-kernel from scratch
+
+*For people, not for models.* This guide explains, in words and examples, every piece this repository uses: how a
+language model generates text, what inference engines do (llama.cpp, vLLM, MLX), what quantization is, what a LoRA
+is, how speculative decoding works (with a draft model, with MTP and with EAGLE), how many experts are served on a
+single GPU, and how it all fits into what we are after. Then it tells, in order, what we have unlocked and what is
+still missing.
+
+The rigorous mathematics lives in [`FOUNDATIONS.md`](FOUNDATIONS.md); here is the intuition, with a link to the formal
+section whenever it is needed. Measured results live in [`RECORD.md`](RECORD.md) and the live state in
+[`PLAN.md`](PLAN.md).
+
+**A convention you will see throughout the repository.** **[read]** marks something we know from reading (a paper,
+documentation, someone else's code). **[ran]** marks something we observed by running it here, with the run's
+directory. Anything without a marker is treated as [read]. The rule exists because an earlier project in this
+organization reached 18,680 lines with three tests: reading is not measuring.
+
+---
+
+## 1. What we are after, in one page
+
+An organization that runs on agents — one agent per role: customer service, purchasing, IT, teachers — sends every
+task to a frontier model in the cloud (OpenAI, Anthropic, Google). Many of those tasks repeat: read a calendar, open a
+ticket, answer from a list. This repository's thesis is that **that repetitive part can be done by a small, local,
+specialized model**, and the frontier is kept for whatever falls in no measured territory.
+
+The pieces, from the inside out:
+
+- **A small base model, resident on a GPU** (today Gemma 4 E4B, and Gemma 4 12B as the large half).
+- **One expert per task, as a LoRA** — a lightweight patch on top of the base model. Switching experts means switching
+  patches, not models.
+- **One memory per expert**: pages of short, verifiable statements. The LoRA does not memorize the facts; it learns to
+  *walk* the memory and to cite the statement it relies on.
+- **A gateway** in front: it verifies identity, decides the role, runs the tools with permissions the model cannot
+  change, holds back what needs approval and anchors every answer in what the tools returned.
+- **An exit to the frontier** for whatever no expert covers.
+- **A speculative pair** (small + large) to gain speed without losing quality.
+
+And one rule of method: **every claim is measured against our own previous version**, with the condition that would
+falsify it written *before* running.
+
+---
+
+## 2. How a language model generates text
+
+### 2.1 Tokens
+
+A model does not see letters: it sees **tokens**, pieces of text drawn from a fixed vocabulary (in Gemma 4, 262,144
+tokens). "refrigerator" may be one token or three. Text goes in as a list of numbers (ids) and comes out as another
+list of numbers that are turned back into text. Details in [`FOUNDATIONS.md`](FOUNDATIONS.md) §3.
+
+Why it matters here: **two models can only do speculative decoding together if they share the same vocabulary** — the
+draft proposes ids that the large one has to be able to verify. Gemma 4 E4B and Gemma 4 12B have byte-for-byte
+identical vocabularies **[ran]** B2.
+
+### 2.2 One token at a time
+
+Generating is a loop: the model looks at all the text so far, computes a **probability distribution** over the next
+token (the *logits*, normalized), picks one, appends it and repeats. Always picking the most probable one is called
+**greedy** or **temperature 0**: it is deterministic *in theory* — in practice, see §8.4.
+
+### 2.3 Prefill and decode: two very different regimes
+
+- **Prefill**: processing the whole prompt. It is a single pass over all positions at once — lots of arithmetic, well
+  exploited by the GPU.
+- **Decode**: generating each new token. Each step processes *one* position… but has to **read all of the model's
+  weights from memory**. A 12B in bf16 is ~24 GB per step.
+
+That is why generating is slow even when the GPU is fast: **the bottleneck is not multiplying, it is moving weights from
+memory** (*memory-bound*). This single idea explains almost everything that follows: quantization (smaller weights →
+fewer bytes per step), batching (several requests share one read) and speculative decoding (verifying several tokens
+with a single read). See [`FOUNDATIONS.md`](FOUNDATIONS.md) §2.3.
+
+### 2.4 The KV cache
+
+To avoid recomputing everything at each step, the model keeps, for each layer, some intermediate matrices (the
+attention keys and values) of the tokens already seen: the **KV cache**. It makes decode fast at the cost of memory,
+which grows with the length of the text and with how many requests you serve at once. Managing it well is the central
+problem of a server (§3.2).
+
+---
+
+## 3. Inference engines
+
+A model is a file of weights. An **inference engine** is the program that loads it and generates text fast. Three
+matter to us.
+
+### 3.1 llama.cpp (and Ollama)
+
+**[read]** llama.cpp is a C/C++ engine designed to run models on common hardware: CPU, Apple Silicon (Metal),
+consumer GPUs. Its traits:
+
+- **GGUF format**: a single file with weights and metadata, typically **quantized** (§4) with schemes such as `Q4_K_M`
+  or `Q8_0`. It is what lets a 12B run on a laptop.
+- **One request at a time, very well**: it is optimized for single-user latency; the server (`llama-server`) exposes
+  an OpenAI-compatible API and supports several requests in parallel, but it is not designed for hundreds at once.
+- **LoRA**: an adapter can be loaded at startup, and the server lets you adjust the scale of the loaded adapters at
+  runtime — check with the version you use.
+- **Speculative decoding with a draft model** (`--model-draft`).
+- **Ollama** is built on llama.cpp (and, in recent versions, on MLX on Mac): it packages models (`gemma4:12b`,
+  `gemma4:12b-mlx`) with a recipe (`Modelfile`) that can include a LoRA `ADAPTER` **fixed when the model is created**. It
+  is not a per-request switch.
+
+When it fits: one user, a local machine, little memory. Our 2026-09 analysis compared it with vLLM and vLLM was kept
+for development for a concrete reason: **serving many LoRAs per request and measuring with the same tools across the
+whole project**.
+
+### 3.2 vLLM
+
+**[read]** (Kwon et al. 2023) vLLM is a server engine, designed for **many concurrent requests** on GPU:
+
+- **PagedAttention**: it stores the KV cache in fixed blocks with a page table per request, like an operating system's
+  virtual memory. Requests of different lengths coexist without waste.
+- **Continuous batching**: a new request joins the batch at any step, without waiting for the others to finish. It is
+  what turns "several requests share one read of the weights" (§2.3) into real throughput.
+- **OpenAI-compatible API** (`vllm serve`): any client that talks to OpenAI talks to vLLM.
+- **Multi-LoRA**: many adapters resident at once, and **each request picks its own through the `model` field**; within
+  one batch, each request uses its own LoRA (§5.4). Adapters can be **loaded and unloaded hot** with
+  `VLLM_ALLOW_RUNTIME_LORA_UPDATING` and the `/v1/load_lora_adapter` endpoints — **0.23–0.28 s per adapter [ran] F0**.
+- **Speculative decoding** with a draft model, n-grams, EAGLE/EAGLE-3 and MTP (§6), configured at startup with
+  `--speculative-config`.
+
+It is the engine of this whole repository: it runs on GPUs rented in Colab (L4, A100) through
+`training/harness/chain_serve.sh`. Current version here: 0.30.0.
+
+### 3.3 MLX (and mlx-lm, mlx-vlm)
+
+**[read]** MLX is Apple's framework for its **unified memory**: on a Mac with Apple Silicon, CPU and GPU share the same
+memory, so a model is not copied between them. `mlx-lm` generates and trains text; `mlx-vlm` adds multimodal models.
+
+What we found reading its code (2026-09-27):
+
+- Gemma 4's 12B is multimodal (`gemma4_unified`): **it is loaded by `mlx-vlm`, not `mlx-lm`**.
+- The `mlx-lm` server accepts an adapter per request, but **switching it reloads the whole model** — it is not a hot
+  switch.
+- `mlx-vlm` ships **Gemma 4's MTP drafter** (`gemma4_unified_assistant`) and an EAGLE-3 one.
+
+That is why this project's Mac track builds its own hot switch: the base model is loaded once and each layer carries
+the patches of every expert; switching experts is switching a pointer (§5.5).
+
+### 3.4 Which to use, in one table
+
+| | llama.cpp / Ollama | vLLM | MLX |
+|---|---|---|---|
+| hardware | CPU, Mac, consumer GPU | NVIDIA GPU (and others) | Apple Silicon |
+| strong at | one user, little memory | many requests, many LoRAs | Mac, unified memory |
+| LoRA per request | limited | **yes, native** | not native (we build it) |
+| speculative | draft model | draft, EAGLE-3, MTP | draft, MTP (mlx-vlm) |
+| here | compared, not used | **the project's engine** | Mac track (2026-09-27) |
+
+---
+
+## 4. Quantization: smaller weights
+
+Weights are stored as numbers. In **bf16/fp16** each takes 2 bytes: a 12B ≈ 24 GB. Quantizing is storing them with
+fewer bits:
+
+- **FP8** (1 byte): half. Recent GPUs (L4, H100) accelerate it in hardware. vLLM can quantize to FP8 at load time
+  (`--quantization fp8`). **That is how we ran the 12B on a 24 GB L4 [ran] F0.**
+- **INT4 / 4 bits** (½ byte): AWQ and GPTQ on GPU; `Q4_K_M` in GGUF; 4-bit "affine" in MLX. A 12B fits in ~7 GB — that
+  is why it runs on your 16 GB Mac.
+
+The cost is a small loss of numerical precision. Two practical consequences here:
+
+1. **A LoRA trained on bf16 weights can be applied on quantized weights** (QLoRA does exactly that when training). We
+   verified it: the 12B's LoRA, trained in bf16, is applied on the 12B in FP8 **[ran] F0** (G1, §8.2).
+2. **Numbers are not compared across precisions as if they were the same**: a result in 4-bit MLX is not the same
+   experiment as one in bf16 vLLM.
+
+Details: [`FOUNDATIONS.md`](FOUNDATIONS.md) §4.3.
+
+---
+
+## 5. LoRA: an expert as a patch
+
+### 5.1 The idea
+
+Tuning a whole model (full *fine-tuning*) changes billions of weights and produces another model of the same size.
+**LoRA** (Hu et al. 2021) **[read]** freezes the weights and learns, for some matrices, a **low-rank** correction:
+
+$$W' = W + \tfrac{\alpha}{r}\,A\,B$$
+
+where $A$ and $B$ are two thin matrices (rank $r$, 16 here). Instead of changing $W$ (millions of numbers) you learn
+$A$ and $B$ (thousands). A LoRA of the 12B weighs ~140 MB against the model's ~24 GB. See
+[`FOUNDATIONS.md`](FOUNDATIONS.md) §4.1.
+
+### 5.2 Why it is the central piece
+
+Since $W$ is never touched, **the base model stays resident and the only thing that changes between experts is the
+patch**. You can:
+
+- switch it per request;
+- mix requests for different experts in the same batch;
+- version, publish and discard an expert without touching the base.
+
+*The system is a set of patches on a resident base.*
+
+### 5.3 How it is trained here
+
+- With **PEFT** (Hugging Face), in Colab, on the seven attention and MLP projections of each layer, $r = 16$,
+  $\alpha = 32$.
+- In Gemma 4 the **vision and audio towers must be excluded**: their projections are of another type and PEFT does not
+  accept them (that was block P29; `training/s4_train.py::towers_to_exclude`).
+- The corpus is **exactly what the model will see when it is served**: the same system prompt, the same tool block,
+  the same format. A corpus that teaches another prompt teaches something else (§8).
+
+### 5.4 Serving many LoRAs at once
+
+**[read]** (Punica, Chen et al. 2023; S-LoRA, Sheng et al. 2023) In a batch where each request uses a different
+expert, the common part ($xW$) is computed once for all of them and each one's correction is computed with kernels that
+"gather" the $A_i, B_i$ of each request. vLLM does it with `--enable-lora --lora-modules name=path`, and the request
+picks its expert with the `model` field. See [`FOUNDATIONS.md`](FOUNDATIONS.md) §5.2.
+
+### 5.5 Hot switching: what it really means
+
+There are three different things called "switching LoRA":
+
+| | how | cost |
+|---|---|---|
+| **reload** | unload the model and load it again with another adapter | seconds (what the `mlx-lm` server does) |
+| **hot load** | add a new adapter to a running server | **0.23–0.28 s in vLLM [ran] F0** |
+| **pick per request** | all adapters resident, each request uses its own | almost zero (vLLM; our Mac track) |
+
+### 5.6 The trap of the adapter that is not applied
+
+An engine can say "adapter loaded" and answer with the base model, with no error. It happened to us (C18: the tensor
+names did not match the served model). That is why **every expert passes gate G1 before being measured**: the same
+question to the base and to the expert has to give different texts (§8.2).
+
+---
+
+## 6. Speculative decoding
+
+### 6.1 The idea
+
+Generating with the large model is slow because each token is a full read of the weights (§2.3). But verifying **k
+proposed tokens** costs almost the same as generating one: they are all processed in a single pass. So:
+
+1. A fast **draft** proposes k tokens.
+2. The large model **verifies them all in one pass**.
+3. They are accepted left to right as long as they match what the large model would have chosen; at the first
+   disagreement, the large model puts in its own token and the round ends.
+
+**The output is exactly the large model's** — with any draft. A bad draft costs speed, never quality **[read]**
+(Leviathan et al. 2023; Chen et al. 2023). At temperature 0 the rule is simple: a token is accepted if it is exactly
+the one the large model would have chosen. Proof: [`FOUNDATIONS.md`](FOUNDATIONS.md) §6.1–6.3.
+
+### 6.2 How much it yields: α and the accepted length
+
+- **α (acceptance)**: the fraction of proposed tokens that are accepted.
+- **Mean accepted length**: how many tokens are emitted per pass of the large model (including the one the large model
+  puts in).
+
+If each token is accepted with independent probability α and k are proposed:
+
+$$\mathbb{E}[\tau] = \frac{1-\alpha^{k+1}}{1-\alpha}$$
+
+tokens per pass. The real speedup also depends on how much the draft costs ([`FOUNDATIONS.md`](FOUNDATIONS.md) §6.4).
+With a large batch it yields less: the GPU is already busy with other requests and "verifying for free" stops being
+free.
+
+### 6.3 Three kinds of draft
+
+| | what it is | sees the large model | here |
+|---|---|---|---|
+| **draft model** | a complete small model with the same vocabulary (E4B for the 12B) | no: it generates on its own | B4 measured its acceptance |
+| **EAGLE / EAGLE-3** **[read]** | a small head that predicts from the large model's *hidden states* | yes | BCCard's public EAGLE-3, F0 |
+| **MTP** (*multi-token prediction*) **[read]** | the draft Google published with Gemma 4 (`-assistant`): 4 layers that use the large model's activations and cache | yes | **the best performer, F0** |
+
+The difference matters for experts: a draft that **sees the large model's activations** also "sees" the effect of the
+active LoRA, so a single draft could serve every expert.
+
+### 6.4 The LoRA problem: the draft was not trained with it
+
+Gemma 4's MTP was trained looking at the 12B **without** a LoRA. With the LoRA active, the large model writes
+differently — with the expert's style and format — and the draft guesses right less often. **We measured it [ran]
+F0:** on the expert's own questions, acceptance at the first position falls from 0.98 to 0.58 and the speedup from
+2.73× to 1.74×.
+
+How that gap closes (the user's strategies document, 2026-09-27):
+
+- **A. A shared draft**, trained on the answers of every expert.
+- **B. A base draft + a draft LoRA per expert**, picked together with the large model's LoRA (vLLM does not support it
+  yet; it is a proposal, RFC #52038).
+- **C. A complete draft per expert**: the acceptance ceiling, expensive in GPU.
+- **D. Retraining the native MTP per expert.**
+
+---
+
+## 7. From a model to a system
+
+### 7.1 Memory: pages of atomic statements
+
+A LoRA that memorizes facts is wrong when the facts change and cannot show where it got a piece of data. The user's
+design (2026-09-24) separates the two:
+
+- **The memory** is a wiki of pages; each page is a list of **one-sentence statements**, verifiable, with the links
+  *inside* the statements ("The Lumo-410 film is stored in the Old Mill warehouse").
+- **The LoRA learns the trajectory**: search, open a page, open the statement, follow the link, and **cite**
+  `[id§anchor]` the statement it relies on. The "referee" verifies the citation mechanically.
+
+**[ran]** W9: on a world the model never saw, the untrained model walks 19/40 multi-hop questions (Gemma); trained on
+other worlds, 38/40. A skill the corpus did not show (comparing) is not learned (10/40); shown, it is (37/40) **[ran]**
+B3, B5. Details: [`MEMORY.md`](MEMORY.md).
+
+### 7.2 The router and the frontier
+
+Deciding *which expert* handles a request is a classifier that also has to be able to say "none". We tried an n-gram
+model, embeddings (Qwen3-Embedding and EmbeddingGemma) and a small classifier: **none passed** — all of them lose
+legitimate requests from senders they did not see **[ran]** M2, E1. In production, **the user's role (which comes in
+their token) is the route**, and whatever the role does not cover goes to the frontier or to a person according to the
+role's policy.
+
+### 7.3 Agents and the gateway
+
+**OpenClaw** is an agent runtime: each agent talks to "a model" through an OpenAI-compatible API. This repository's
+gateway sits in that place:
+
+1. **Identity**: a signed token states user, role and school. The model cannot change it.
+2. **Turn**: the role's prompt and tools, on the local expert.
+3. **Permissions in the tools**: asking for another school's record is rejected by the tool, whatever the model
+   writes.
+4. **Holds**: a charge or a notice to every family waits for a principal's approval.
+5. **Anchoring**: every line of the answer has to be in what the tools returned; if not, the tool's text is shown —
+   and counted.
+6. **Exit**: whatever the role does not cover goes to the frontier (Claude Haiku in the live run) or to a person.
+
+**[ran]** the school from the reference diagram, 15/15 scripted scenes and 15/15 **through the real OpenClaw** with the
+real model and Haiku as the frontier. What the first live turn taught: OpenClaw adds its own context as the last
+message; the gateway has to read the real request inside that. See [`OPENCLAW.md`](OPENCLAW.md) §6, [`DEMO.md`](DEMO.md).
+
+---
+
+## 8. How we measure (and why this way)
+
+### 8.1 Headroom first
+
+Before building a treatment, you measure whether it **can** move anything: if the untrained model already scores
+10/10, no treatment can improve and every arm ties — and a tie reads as success. Conversely, if everything is out of
+reach, everything fails and it reads as "it does not work". A suite needs a difficulty axis.
+
+### 8.2 G1: is the expert applied?
+
+Three questions to the base and to the expert; if none changes, the adapter was not applied. A finding from this
+month: in an expert trained only on tool turns, generic questions may change little (1 of 3) even though the adapter is
+applied; that is why G1 now repeats with domain questions, under the same rule **[ran]** M9.
+
+### 8.3 Comparing in pairs
+
+Two variants on the same cases are compared **case by case**: only the cases where they differ count (one gets it
+right and the other does not). With $b$ cases in favor of A and $c$ in favor of B, the exact sign test:
+
+$$p = 2\sum_{k\le\min(b,c)}\binom{b+c}{k}2^{-(b+c)}$$
+
+So "53 to 0" is a real difference and "5 to 6" is a tie, even if the totals look different. See
+[`FOUNDATIONS.md`](FOUNDATIONS.md) §9.2.
+
+### 8.4 Temperature 0 does not guarantee the same output
+
+In theory, greedy is deterministic. On a GPU, **the same question can give another text if the batch size changes**:
+floating-point sums are done in another order, and in a near-exact tie between two tokens the other one wins. vLLM has
+a batch-invariant mode (`VLLM_BATCH_INVARIANT=1`) for when exact texts need to be compared. **[ran] F0:** without that
+mode, speculative decoding gave texts different from normal decoding in part of the cases — and so did the same LoRA
+reloaded *without* a draft. Until it is repeated in invariant mode, "identical output" is not established.
+
+### 8.5 Pre-registering
+
+Every run has a `BRIEF.md` written **before**: what, why, with which model, what falsifies it and the verdict table.
+Redesigns are counted: one is fine, two is suspicious, the third is already looking for the result.
+
+### 8.6 Instruments lie in a few ways
+
+A list paid for with time ([`CLAUDE.md`](../CLAUDE.md) §3, [`RECORD.md`](RECORD.md) §4): a suite at the ceiling; a
+one-word check that measures phrasing; a corpus with a single difficulty that teaches a floor; knowledge fixed in the
+corpus that gets memorized; a model without the prompt it was trained with; a key the chain reads as "finished" (it
+happened to us last week).
+
+---
+
+## 9. What we have unlocked
+
+| when | what was unlocked | how we know |
+|---|---|---|
+| 2026-09 | one expert per task on a small model, released through a gate | M1, M1b, M1d **[ran]** |
+| 2026-09-15 | a real agent runtime (OpenClaw) using a local expert | P63, 40/40 **[ran]** |
+| 2026-09-24 | memory as pages of atomic statements, with verifiable citations | W9, 35/40 → 38/40 on Gemma **[ran]** |
+| 2026-09-25 | the whole family on Gemma 4 (the user's decision, on a measured tie) | B1 **[ran]** |
+| 2026-09-26 | the E4B + 12B pair: they share a vocabulary, the large model's LoRA raises acceptance | B2, B4 **[ran]** |
+| 2026-09-26 | the large model does not buy accuracy; the corpus does (comparisons 10 → 37/40) | B3, B5 **[ran]** |
+| 2026-09-26 | the diagram's school complete, 15/15, and **live** with OpenClaw and Haiku | DEMO-school-diagram, LIVE **[ran]** |
+| 2026-09-26 | the distributor with its own expert, 5/5 | M9 **[ran]** |
+| 2026-09-27 | **speculative decoding with an expert LoRA on the 12B, in a server** | F0 **[ran]** |
+
+---
+
+## 10. What does not work yet, and the next step for each
+
+| what | state | next step |
+|---|---|---|
+| identical output with speculative | not established | repeat F0 with `VLLM_BATCH_INVARIANT=1` and a control |
+| the draft with the LoRA active | loses acceptance in the domain (1.74×) | strategies A–D (§6.4), starting with the cheapest |
+| the Mac track | **[ran]**: hot swap in 2.9 µs, 8.4 GB; MTP no gain with the LoRA on (0.92–1.04×) | a drafter aligned to the LoRA (§6.4, A–D); find why the MLX base loops on a system prompt |
+| learned router | none passes | the role is the route; left open |
+| note search with embeddings | 0.63 against 0.80 | keyword search in use |
+| real traffic | everything is synthetic | an anonymized sample from a system in use |
+| the model still makes things up | 3 of 12 answers caught by the filter | a corpus that teaches it to repeat only what the tool says |
+| real identity (Auth0), WhatsApp, concurrency, installation | not built | after the above |
+
+---
+
+## 11. Glossary
+
+- **Adapter / LoRA**: the low-rank patch that turns the base model into an expert (§5).
+- **α (acceptance)**: fraction of the draft's tokens that the large model accepts (§6.2).
+- **bf16, FP8, 4 bits**: weight precisions (§4).
+- **Draft (drafter)**: the model or head that proposes tokens in speculative decoding (§6.3).
+- **KV cache**: what the model keeps from the tokens already seen so as not to recompute them (§2.4).
+- **Continuous batching**: adding requests to a running batch (§3.2).
+- **EAGLE-3**: a draft that predicts from the large model's hidden states (§6.3).
+- **Frontier**: a large cloud model (Haiku, Gemini) for whatever no expert covers.
+- **G1**: the gate that verifies an adapter is applied (§8.2).
+- **Gateway**: the server in front of the model that handles identity, permissions, holds and anchoring (§7.3).
+- **GGUF**: llama.cpp's file format (§3.1).
+- **MTP**: *multi-token prediction*; Gemma 4's native draft (§6.3).
+- **OpenClaw**: the agent runtime the reference system uses (§7.3).
+- **PagedAttention**: vLLM's paged management of the KV cache (§3.2).
+- **Prefill / decode**: processing the prompt / generating each token (§2.3).
+- **[read] / [ran]**: read / run here.
+
+---
+
+## 12. Sources
+
+**Papers [read]:** Hu et al. 2021 (LoRA) · Kwon et al. 2023 (vLLM, PagedAttention) · Leviathan et al. 2023 and Chen et
+al. 2023 (speculative decoding) · Chen et al. 2023 (Punica) · Sheng et al. 2023 (S-LoRA) · Gemma 4 Technical Report
+(arXiv 2607.02770).
+
+**Documentation and code [read], 2026-09-27:**
+- [vLLM — Speculative Decoding](https://docs.vllm.ai/en/latest/features/speculative_decoding/) and
+  [compatibility matrix](https://docs.vllm.ai/en/latest/features/)
+- [vLLM PR #21068 — LoRA with speculative decoding (merged)](https://github.com/vllm-project/vllm/pull/21068) ·
+  [PR #55628 (closed without merging)](https://github.com/vllm-project/vllm/pull/55628) ·
+  [RFC #52038 — LoRA on drafts](https://github.com/vllm-project/vllm/issues/52038) ·
+  [test_lora.py](https://github.com/vllm-project/vllm/blob/main/tests/v1/e2e/spec_decode/draft_model/test_lora.py)
+- [Google — MTP for Gemma 4](https://ai.google.dev/gemma/docs/mtp/overview) ·
+  [google/gemma-4-12B-it-assistant](https://huggingface.co/google/gemma-4-12B-it-assistant)
+- [BCCard — EAGLE-3 for gemma-4-12B-it](https://huggingface.co/BCCard/MoAI-gemma-4-12B-it-speculator.eagle3)
+- [mlx-lm — server](https://github.com/ml-explore/mlx-lm/blob/main/mlx_lm/server.py) ·
+  [mlx-vlm — Gemma 4 MTP drafter](https://github.com/Blaizzy/mlx-vlm/blob/main/mlx_vlm/speculative/drafters/gemma4_assistant/README.md) ·
+  [mlx-optiq — Gemma 4 speculative decoding on Apple Silicon](https://mlx-optiq.com/blog/gemma-spec-decoding)
+
+**Our runs [ran]:** [`RECORD.md`](RECORD.md) lists them all; the ones in this guide: W9, B1–B5, M8, M9,
+DEMO-school-diagram, LIVE-school-openclaw, E1 and F0, each in `results/` with its `BRIEF.md`.

@@ -96,7 +96,7 @@ indique otro; **desde 2026-09-25 los miembros nuevos se entrenan sobre `google/g
 | **streaming** | bufferizado a propósito: una llamada a herramienta es una llamada recién cuando se cierra | **[read]** `docs/OPENCLAW.md` |
 | **instalabilidad** | corre sobre una GPU alquilada a través de un túnel y un chain de Colab; sin paquete, sin contenedor | — |
 | **el ahorro en plata** | nunca medido | — |
-| **la aceleración del par** | la aceptación está medida (α 0,898); el reloj con decodificación especulativa corriendo, y el par en una Mac mini, no | **[ran]** B4 sólo para α |
+| **la aceleración del par** | la decodificación especulativa corre con un experto LoRA sobre el 12B: el drafter MTP nativo 2,7× sobre el base, 1,7–2,1× con el LoRA; la identidad de la salida a temperatura 0 todavía no establecida; la Mac mini no medida | **[ran]** B4, F0 |
 | **cualquier idioma que no sea inglés** | los turnos held-out de la escuela y el día de la demo mezclan español e inglés (M8: 70/70); nada más medido fuera del inglés | **[ran]** M8 |
 | **escrituras** | medidas una vez, en la demo de la escuela: una inscripción borradoreada, un ticket de mantenimiento cargado, y dos escrituras de cara afuera (un cobro, un anuncio) retenidas hasta que un director las aprobó — sobre un almacén de demo, no un sistema de registro real | **[ran]** M8, la demo de la escuela |
 | **el modelo todavía inventa** | después de un resultado real de herramienta el LoRA del personal de la escuela puede escribir más líneas en el formato del resultado y restablecerlas; el gateway reemplaza esa respuesta por el texto propio de las herramientas (2 de 5 respuestas locales el día de la demo) — atrapado y contado, no curado | **[ran]** M8, la demo de la escuela |

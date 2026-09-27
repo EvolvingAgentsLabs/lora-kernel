@@ -223,10 +223,18 @@ records), so it earns its place as the **verifier**. It buys **no accuracy**: on
 halves failed while the corpus never showed one, and once it did the small member alone went from 10 to 37 of 40
 (milestones 3 and 4, B2–B5).
 
+**Speculative decoding with a LoRA expert, running [ran] 2026-09-27 (F0).** One vLLM server, `gemma-4-12B-it` + an expert
+LoRA + **Gemma 4's own MTP drafter** (`gemma-4-12B-it-assistant`), on one L4 in FP8: it starts, the LoRA is applied, a
+LoRA loads at runtime in 0.25 s with the drafter on. The base runs **2.7×** faster on the expert's prompts (acceptance
+0.79); **with the LoRA on, 1.7× on its own domain and 2.1× on general text** — the drafter sees the LoRA through the
+target's activations but does not predict what it makes the target write. The public EAGLE-3 does far worse (1.2×). Not
+yet established: that the output is identical to plain decoding at temperature 0 — the run was not batch-invariant
+([`results/F0-spec-lora-12b-20260927/`](results/F0-spec-lora-12b-20260927/BRIEF.md)).
+
 **Not solved yet.** The router is still a keyword dictionary — its two learned replacements are both measured and
 neither passes **[ran]** milestone 2. The small models still invent: in the school demo the gateway replaced 2 of 5
-local replies with the tools' own text — caught, counted, never shown, but not cured. The pair's wall-clock speed-up
-is not measured — acceptance is. No real traffic has been measured anywhere in this repository yet.
+local replies with the tools' own text — caught, counted, never shown, but not cured. Speculative decoding with a LoRA
+expert runs for real (F0, below), but its output is not yet shown identical to plain decoding. No real traffic has been measured anywhere in this repository yet.
 
 **Everything else — every milestone, every arm, every run — moves as the project does and is not
 repeated here, on purpose.** [`docs/PLAN.md`](docs/PLAN.md) is the living state, with a gate and
@@ -289,6 +297,7 @@ reason: `--prune` (its own tool surface), `--member-prompt` (the prompt its corp
 
 | | |
 |---|---|
+| [`docs/GUIDE.md`](docs/GUIDE.md) | **start here if you want to understand it** — a guide for people: how a model generates text, llama.cpp, vLLM and MLX, quantisation, LoRA, speculative decoding (draft model, MTP, EAGLE), serving many experts, the memory, the gateway, how we measure, and what has been unlocked so far |
 | [`docs/MEMORY.md`](docs/MEMORY.md) | **the memory, as it will be built** — library, radar, three verbs, the LoRA's habit, the referee; build order for 1.0 |
 | [`docs/KNOWLEDGE-TRAJECTORIES.md`](docs/KNOWLEDGE-TRAJECTORIES.md) | the *why* behind it, self-contained, written to be reviewed by other models: ten findings, five strategies, ten questions |
 | [`docs/FRAMEWORK.md`](docs/FRAMEWORK.md) | **state and gaps, self-contained, written to be reviewed by other models** — what works, what does not, and what is missing for this to be a generic framework for an organisation with one agent per role |

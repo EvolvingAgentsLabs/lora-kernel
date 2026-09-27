@@ -91,7 +91,7 @@ All on generated suites; §3 says what that costs. Base model `Qwen/Qwen3.5-4B` 
 | **streaming** | buffered on purpose: a tool call is only a call once it closes | **[read]** `docs/OPENCLAW.md` |
 | **installability** | runs on a rented GPU through a tunnel and a Colab chain; no package, no container | — |
 | **the saving in money** | never measured | — |
-| **the pair's speed-up** | acceptance is measured (α 0.898); wall-clock with speculative decoding running, and the pair on a Mac mini, are not | **[ran]** B4 for α only |
+| **the pair's speed-up** | speculative decoding runs with a LoRA expert on the 12B: the native MTP drafter 2.7× on the base, 1.7–2.1× with the LoRA on; output identity at temperature 0 not yet established; the Mac mini not measured | **[ran]** B4, F0 |
 | **any language but English** | the school's held-out turns and demo day mix Spanish and English (M8: 70/70); nothing else measured outside English | **[ran]** M8 |
 | **writes** | measured once, in the school demo: an enrolment drafted, a maintenance ticket filed, and two outward-facing writes (a charge, an announcement) held until a director approved them — on a demo store, not a real system of record | **[ran]** M8, the school demo |
 | **the model still invents** | after a real tool result the school-staff LoRA can write more lines in the result's format and restate them; the gateway replaces such a reply with the tools' own text (2 of 5 local replies on the demo day) — caught and counted, not cured | **[ran]** M8, the school demo |
