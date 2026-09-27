@@ -325,7 +325,7 @@ and the speed-up from 2.73× to 1.74× **[ran] F0**. On the Mac, with the LoRA, 
 | **D. the native MTP retrained per expert** | same as C | no support in `speculators`; the training would have to be written |
 
 **What we are measuring now:**
-- **F0b**: whether the output with the draft is identical to the plain one, with the engine in deterministic mode.
+- ~~**F0b**: whether the output with the draft is identical to the plain one~~ — **[ran]**: not testable on an L4 in FP8; the differences read as drift (§8.4).
 - **C0**: does aligning the draft to the expert give the speed back? It is the cheapest possible test. The wiki E4B is
   already aligned: it was trained on the same corpus as the 12B's LoRA, and in B4 the large model accepted 90% of its
   drafts. Its LoRA is merged into the weights and it is used as the draft (strategy C, built from what already exists).
@@ -408,7 +408,7 @@ In theory, greedy is deterministic. On a GPU, **the same question can give anoth
 floating-point sums are done in another order, and in a near-exact tie between two tokens the other one wins. vLLM has
 a batch-invariant mode (`VLLM_BATCH_INVARIANT=1`) for when exact texts need to be compared. **[ran] F0:** without that
 mode, speculative decoding gave texts different from normal decoding in part of the cases — and so did the same LoRA
-reloaded *without* a draft. Until it is repeated in invariant mode, "identical output" is not established.
+reloaded *without* a draft. Until it is repeated in invariant mode, "identical output" is not established. **[ran] F0b:** repeated in that mode, on an L4 in FP8, two plain runs already differed (9/16 identical on the domain), so the mode does not make this card deterministic; spec decode differed from plain about as much — which reads as drift, but proving it needs bf16 on an A100/H100.
 
 ### 8.5 Pre-registering
 
@@ -444,7 +444,7 @@ happened to us last week).
 
 | what | state | next step |
 |---|---|---|
-| identical output with speculative | not established | **F0b running**: `VLLM_BATCH_INVARIANT=1` mode with a control |
+| identical output with speculative | **not testable on an L4 in FP8 [ran] F0b**: plain decoding twice already differs; spec decode differs about as much (reads as drift) | bf16 on an A100/H100, where batch-invariant mode is built for |
 | a draft tuned per expert, hot-swapped | does not exist in vLLM (one draft per server, no draft LoRA) | **C0 queued**: does aligning give the speed back? Then A (vLLM) or B (Mac track) — §6.5 |
 | the draft with the LoRA active | loses acceptance in the domain (1.74×) | strategies A–D (§6.4), starting with the cheapest |
 | the Mac track | **[ran]**: hot swap in 2.9 µs, 8.4 GB; MTP no gain with the LoRA on (0.92–1.04×) | a drafter aligned to the LoRA (§6.4, A–D); find why the MLX base loops on a system prompt |

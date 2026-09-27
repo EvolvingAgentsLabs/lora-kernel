@@ -324,7 +324,7 @@ a 0,58 y la aceleración de 2,73× a 1,74× **[ran] F0**. En la Mac, con el LoRA
 | **D. el MTP nativo reentrenado por experto** | igual que C | sin soporte en `speculators`; habría que escribir el entrenamiento |
 
 **Lo que estamos midiendo ahora:**
-- **F0b**: si la salida con el borrador es idéntica a la normal, con el motor en modo determinista.
+- ~~**F0b**: si la salida con el borrador es idéntica a la normal~~ — **[ran]**: no se puede probar en una L4 en FP8; las diferencias se leen como deriva (§8.4).
 - **C0**: ¿alinear el borrador al experto devuelve la velocidad? Es la prueba más barata posible. El E4B de la wiki ya está
   alineado: se entrenó con el mismo corpus que el LoRA del 12B, y en B4 el grande aceptó el 90 % de sus borradores. Se
   fusiona su LoRA en los pesos y se usa como borrador (estrategia C, hecha con lo que ya existe).
@@ -406,7 +406,7 @@ En teoría, greedy es determinista. En una GPU, **la misma pregunta puede dar ot
 las sumas en punto flotante se hacen en otro orden, y en un empate casi exacto entre dos tokens gana el otro. vLLM tiene
 un modo invariante al lote (`VLLM_BATCH_INVARIANT=1`) para cuando hace falta comparar textos exactos. **[ran] F0:** sin
 ese modo, la decodificación especulativa dio textos distintos de la normal en parte de los casos — y el mismo LoRA
-recargado *sin* borrador también. Mientras no se repita en modo invariante, "salida idéntica" no está establecida.
+recargado *sin* borrador también. Mientras no se repita en modo invariante, "salida idéntica" no está establecida. **[ran] F0b:** repetido en ese modo, en una L4 en FP8, dos corridas normales ya difirieron (9/16 idénticas en el dominio), así que el modo no vuelve determinista a esta placa; la especulativa difirió de la normal más o menos lo mismo — se lee como deriva, pero probarlo necesita bf16 en una A100/H100.
 
 ### 8.5 Pre-registrar
 
@@ -442,7 +442,7 @@ fijo en el corpus que se memoriza; un modelo sin el prompt con el que se entren�
 
 | qué | estado | próximo paso |
 |---|---|---|
-| salida idéntica con especulativa | no establecida | **F0b corriendo**: modo `VLLM_BATCH_INVARIANT=1` con un control |
+| salida idéntica con especulativa | **no se puede probar en una L4 en FP8 [ran] F0b**: la decodificación normal dos veces ya difiere; la especulativa difiere más o menos lo mismo (se lee como deriva) | bf16 en una A100/H100, donde el modo invariante al lote está pensado |
 | un borrador ajustado por experto, en caliente | no existe en vLLM (un borrador por servidor, sin LoRA de borrador) | **C0 en cola**: ¿alinear devuelve la velocidad? Después A (vLLM) o B (pista Mac) — §6.5 |
 | el borrador con el LoRA activo | pierde aceptación en el dominio (1,74×) | estrategias A–D (§6.4), empezando por la más barata |
 | la pista Mac | **[ran]**: cambio en caliente en 2,9 µs, 8,4 GB; MTP sin ganancia con el LoRA (0,92–1,04×) | un drafter alineado al LoRA (§6.4, A–D); encontrar por qué el base en MLX entra en bucle con un prompt de sistema |
