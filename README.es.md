@@ -236,11 +236,19 @@ lo bastante chica para una Mac mini. Su LoRA sube la aceptación de los borrador
 comparativas las dos mitades fallaron mientras el corpus nunca mostró una, y cuando la mostró el miembro chico solo pasó
 de 10 a 37 de 40 (hitos 3 y 4, B2–B5).
 
+**Decodificación especulativa con un experto LoRA, corriendo [ran] 2026-09-27 (F0).** Un solo servidor vLLM,
+`gemma-4-12B-it` + un LoRA experto + **el propio drafter MTP de Gemma 4** (`gemma-4-12B-it-assistant`), en una L4 en FP8:
+arranca, el LoRA queda aplicado, un LoRA se carga en caliente en 0,25 s con el drafter encendido. El modelo base corre
+**2,7×** más rápido en las preguntas del experto (aceptación 0,79); **con el LoRA activo, 1,7× en su propio dominio y 2,1× en
+texto general** — el drafter ve el LoRA a través de las activaciones del objetivo pero no predice lo que le hace escribir.
+El EAGLE-3 público rinde mucho peor (1,2×). Todavía no establecido: que la salida sea idéntica a la decodificación normal a
+temperatura 0 — la corrida no fue invariante al batch ([`results/F0-spec-lora-12b-20260927/`](results/F0-spec-lora-12b-20260927/BRIEF.md)).
+
 **Todavía sin resolver.** El router sigue siendo un diccionario de palabras clave — sus dos
 reemplazos aprendidos ya están medidos y ninguno pasa **[ran]** hito 2. Los modelos chicos todavía
 inventan: en la demo de la escuela el gateway reemplazó 2 de 5 respuestas locales por el texto
-propio de las herramientas — atrapado, contado, nunca mostrado, pero no curado. La aceleración de reloj del
-par no está medida — la aceptación sí. Todavía no se midió tráfico real en ningún lugar de este repositorio.
+propio de las herramientas — atrapado, contado, nunca mostrado, pero no curado. La decodificación especulativa con un
+experto LoRA corre de verdad (F0, abajo), pero todavía no está mostrado que su salida sea idéntica a la decodificación normal. Todavía no se midió tráfico real en ningún lugar de este repositorio.
 
 **Todo lo demás — cada hito, cada brazo, cada corrida — se mueve con el proyecto y no se repite
 acá, a propósito.** [`docs/es/PLAN.md`](docs/es/PLAN.md) es el estado vivo, con una compuerta y una

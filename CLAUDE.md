@@ -46,7 +46,7 @@ el proyecto?"* **When in doubt, the next step is the one that puts a weight delt
   released members move one by one through the gate:** **every released member is on Gemma**: `email-full@v3` (M1b **[ran]**), `desk-commitment@v3` trained on both desk bands (M1d **[ran]**: shallow 240/240, deep 239/240 against the bare Gemma's 83), `distributor-wiki@v2` (B5 **[ran]**: W9's corpus plus comparisons, 37/40 on the comparison band, W9's set unchanged);
   the `@v1` releases on `Qwen2.5-3B-Instruct` stay as the control arm. New regions still check the bare base's headroom
   first — Gemma's leaves less than Qwen's (it walks W9 untrained 19/40 where Qwen walks 0/40). The large half of a pair on Gemma is `gemma-4-12B-it` (B2 **[ran]**: one id space, LoRA served); its LoRA raises
-  acceptance of E4B drafts α 0.871 → 0.898 (B4 **[ran]**), and buys no accuracy: taught comparisons, the E4B alone does 37/40 (B3, B5 **[ran]**). ~~The family is Qwen 3.x and that is decided … Gemma 4 is the named alternative and is
+  acceptance of E4B drafts α 0.871 → 0.898 (B4 **[ran]**), and buys no accuracy: taught comparisons, the E4B alone does 37/40 (B3, B5 **[ran]**). Speculative decoding with a LoRA on the 12B runs in vLLM with Gemma's own MTP drafter: 1.7–2.1× with the LoRA on, 2.7× without (F0 **[ran]**, FP8, output identity not yet established). ~~The family is Qwen 3.x and that is decided … Gemma 4 is the named alternative and is
   blocked at PEFT **[ran]** P29.~~ Do not shop for other bases; run `lora_matrix` against a candidate instead.
 - **The frontier is a permanent component**, `google/gemini-3.8-flash` through the same
   client the members use. It answers what falls in no corpus and what a region is measured

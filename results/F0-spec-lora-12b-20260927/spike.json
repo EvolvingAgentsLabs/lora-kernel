@@ -1,0 +1,316 @@
+{
+ "configs": {
+  "nospec": {
+   "spec": null,
+   "started": true,
+   "boot_s": 680.1,
+   "G1": {
+    "probed": 3,
+    "empty": 0,
+    "differs": 2,
+    "applied": true,
+    "samples": [
+     {
+      "base": "The sky appears blue because of a phenomenon called Rayleigh",
+      "member": "The sky appears blue because Earth's atmosphere scatters sho"
+     },
+     {
+      "base": "A careful reader typically checks these three things before ",
+      "member": "A careful reader typically checks the following three things"
+     },
+     {
+      "base": "A pressure drop in a pipe depends on the fluid's velocity, t",
+      "member": "A pressure drop in a pipe depends on the fluid's velocity, t"
+     }
+    ]
+   },
+   "runs": {
+    "base/domain": {
+     "texts": [
+      "thought\n<search shelf=wiki>Tollan-640 edge protector</search>",
+      "thought\n<search shelf=wiki>Kestra-410 strapping band</search>",
+      "thought\n<search shelf=wiki>Carrow-940 dunnage bag</search>",
+      "thought\n<search shelf=wiki>Ostlund Supplies</search>",
+      "thought\n<search shelf=wiki>Umerly Industrial</search>",
+      "thought\n<search shelf=wiki>Dunmere Industrial</search>",
+      "thought\n<search shelf=harness>Wrenfield Transport booking time</search>",
+      "thought\ncall:search shelf=wiki{query=\"Wrenfield Transport\"}",
+      "thought\n<search shelf=harness>Kestra-410 strapping band Fenwa-930 label roll delivery</search>",
+      "thought\n<search shelf=wiki>Rask-500 shipping carton</search>\nthought\nthought\n<search shelf=wiki>Quill-860 packing tape</search>",
+      "thought\n<search shelf=wiki>Fenwa-930 label roll</search>\nthought\n<search shelf=wiki>Kestra-410 strapping band</search>",
+      "thought\n<search shelf=wiki>Quill-860 packing tape</search>\n<search shelf=wiki>Marl-380 mailing sleeve</search>",
+      "thought\n<search shelf=wiki>Marl-380 mailing sleeve</search>\nthought\n<search shelf=wiki>Brisk-660 stretch film</search>",
+      "thought\n<search shelf=wiki>Quill-860 packing tape</search>\nthought\nthought\n<search shelf=wiki>Brisk-660 stretch film</search>\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+      "thought\n<search shelf=wiki>Brisk-660 stretch film</search>\n<search shelf=wiki>Marl-380 mailing sleeve</search>thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+      "thought\n<search shelf=wiki>Marl-380 mailing sleeve</search>\n<search shelf=wiki>Rask-500 shipping carton</search>"
+     ],
+     "b1_tokens_per_s": 16.53,
+     "b8_tokens_per_s": 64.66,
+     "acceptance_b1": null
+    },
+    "base/general": {
+     "texts": [
+      "A refrigerator keeps food cold by using a continuous cycle of evaporation and condensation to move heat from the inside of the unit to the outside. A substance called a **refrigerant** flows through coils; as it travels through the evaporator coils inside the fridge, it absorbs heat from the food and surrounding air, causing the refrigerant to evaporate into a gas. This gas is then compressed by a compressor, which increases its temperature and pressure, and then flows through condenser coils on the outside of the unit where it releases the heat into the room and turns back into a liquid. This cycle repeats, constantly \"pumping\" heat out of the interior to maintain a low temperature.",
+      "Depending on your relationship with the colleague, here are three options ranging from casual to formal.\n\n### Option 1: Standard/Professional (Best for most situations)\n**Subject:** Rescheduling our meeting: [Meeting Name]\n\nHi [Colleague's Name],\n\nI hope you’re having a good week.\n\nWould it be possible to move our meeting scheduled for [Original Day] to Thursday instead? Something has come up on my end that requires my attention during our original time.\n\nPlease let me know if you have any availability on Thursday, and I’ll be happy to send over a new calendar invite.\n\nBest regards,\n\n[Your Name]\n\n***\n\n### Option 2: Short & Casual (Best for a close teammate)\n**Subject:** Moving",
+      "To stay focused while studying, the goal is to manage your environment, your energy, and your time. Here are three highly effective habits to help you achieve deep focus:\n\n### 1. Use the Pomodoro Technique (Time Boxing)\nThe human brain is not designed to focus intensely for hours on end; concentration naturally wanes over time. The Pomodoro Technique trains your brain to work in \"sprints.\"\n\n*   **How to do it:** Set a timer for **25 minutes** of deep, uninterrupted work. When the timer goes off, take a **5-minute break** (get up, stretch, or grab water). After four cycles, take a longer break (15–30 minutes).\n*   **Why it works:** It creates a sense",
+      "Here is a simple way to explain the water cycle to a ten-year-old. You can think of it as nature’s way of **recycling** all the water on Earth!\n\nThe water you drink today is the same water that dinosaurs drank millions of years ago. It just keeps moving in a big circle. Here are the four main steps:\n\n### 1. Evaporation (The \"Warm Up\")\nWhen the sun shines on oceans, lakes, and rivers, it heats up the water. When water gets warm enough, it turns from a liquid into an invisible gas called **water vapor**. This is just like the steam you see rising from a hot bowl of soup. This gas floats up into the sky.\n\n### 2. Condensation (The \"Cool",
+      "This is a classic, \"pantry-staple\" vegetable soup. It is healthy, easy to customize based on what you have in your fridge, and very comforting.\n\n### **Simple Garden Vegetable Soup**\n*Prep time: 10 mins | Cook time: 25 mins | Serves: 4*\n\n---\n\n### **Ingredients**\n**The Base:**\n*   **Olive oil:** 2 tablespoons\n*   **Onion:** 1 medium (chopped)\n*   **Garlic:** 3 cloves (minced)\n*   **Carrots:** 2 large (chopped)\n*   **Celery:** 2 stalks (chopped)\n\n**The Heart:**\n*   **Potatoes:** 2 medium",
+      "The change in leaf color is a complex biological process driven by the changing seasons, specifically the decrease in light and temperature. It is essentially a story of **chemistry, survival, and preparation for winter.**\n\nHere is the step-by-step breakdown of why it happens:\n\n### 1. The Role of Chlorophyll (The Green Phase)\nDuring the spring and summer, leaves are green because they are packed with **chlorophyll**. This is the pigment responsible for photosynthesis—the process by which plants turn sunlight into food (sugar). \n\nBecause plants are constantly producing new chlorophyll to stay fed, the green color is so dominant that it masks all other colors present in the leaf.\n\n### 2. The Shutdown (The Trigger)\nAs autumn approaches, two things happen: the",
+      "Changing a flat bicycle tire is a fundamental skill for every cyclist. Here is a step-by-step guide to getting back on the road.\n\n### Tools You Will Need:\n*   **Tire levers** (usually 2)\n*   **New inner tube** (ensure it matches your tire size and valve type)\n*   **Bike pump**\n*   **Wrench** (only if your wheels are not \"quick-release\")\n\n---\n\n### Step 1: Remove the Wheel\n1.  **Shift Gears:** If you are changing a rear tire, shift the chain onto the smallest cog (the hardest gear). This makes it much easier to remove and reinstall the wheel.\n2.  **Release the Brakes:** If you have rim brakes",
+      "The simplest way to understand the difference between weather and climate is to look at **time**. \n\nIn short: **Weather is what is happening right now; climate is what happens over a long period of time.**\n\nHere is a detailed breakdown of the differences:\n\n### 1. Weather (Short-term)\nWeather refers to the state of the atmosphere at a specific place at a specific moment. It can change within minutes, hours, or days.\n\n*   **Timeframe:** Minutes, hours, days, or weeks.\n*   **Focus:** Current conditions.\n*   **Examples:** A rainstorm, a sunny afternoon, a blizzard, a heatwave, or a foggy morning.\n*   **Predictability:** Weather is difficult to predict accurately beyond a few"
+     ],
+     "b1_tokens_per_s": 17.12,
+     "b8_tokens_per_s": 126.07,
+     "acceptance_b1": null
+    },
+    "lora/domain": {
+     "texts": [
+      "<search shelf=wiki>Tollan-640 edge protector</search>= 1 note\n  [00i] page · Tollan-640 edge protector — when: You need a fact about the Tollan-640 edge protector: who supplies it, where it is stocked, its pack or its reorder point.\n<open>00i</open>= Tollan-640 edge protector — The Tollan-640 edge protector, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>00i§pack</open>= A pack of Tollan-640 edge protector holds 12 pieces.\n12 pieces",
+      "<search shelf=wiki>Kestra-410 strapping band</search>= 1 note\n  [00i] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n<open>00i</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>00i§pack</open>= A pack of Kestra-410 strapping band holds 12 coils.\n12 coils [",
+      "<search shelf=wiki>Carrow-940 dunnage bag</search>= 1 note\n  [00i] page · Carrow-940 dunnage bag — when: You need a fact about the Carrow-940 dunnage bag: who supplies it, where it is stocked, its pack or its reorder point.\n<open>00i</open>= Carrow-940 dunnage bag — The Carrow-940 dunnage bag, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>00i§pack</open>= A pack of Carrow-940 dunnage",
+      "<search shelf=wiki>Ostlund Supplies</search>= 1 note\n  [00i] page · Ostlund Supplies — when: You need a fact about the supplier Ostlund Supplies: where it is, its lead time, its minimum order or its contact.\n<open>00i</open>= Ostlund Supplies — Ostlund Supplies, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>00i§lead-time</open>= An order from Ostlund Supplies arrives 10 days after it is placed.\n10 days [00i§lead-time]",
+      "<search shelf=wiki>Umberly Industrial</search>= 0 notes\nNot in my library.",
+      "<search shelf=wiki>Dunmere Industrial</search>= 1 note\n  [00i] page · Dunmere Industrial — when: You need a fact about the supplier Dunmere Industrial: where it is, its lead time, its minimum order or its contact.\n<open>00i</open>= Dunmere Industrial — Dunmere Industrial, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>00i§lead-time</open>= An order from Dunmere Industrial arrives 10 days after it is placed.\n10 days [00i§lead-time]",
+      "<search shelf=wiki>Wrenfield Transport</search>= 1 note\n  [30n] page · Wrenfield Transport — when: You need a fact about the carrier Wrenfield Transport: its pickup cutoff, its delivery time or its dispatch line.\n<open>30n</open>= Wrenfield Transport — Wrenfield Transport, a road carrier the distributor books pickups with.\n  sections §cutoff · §delivery · §dispatch-line\n<open>30n§cutoff</open>= A pickup with Wrenfield Transport must be booked before 13:00.\n13:00 [30n§cutoff]",
+      "<search shelf=wiki>Wrenfield Transport</search>= 1 note\n  [300] page · Wrenfield Transport — when: You need a fact about the carrier Wrenfield Transport: its pickup cutoff, its delivery time or its dispatch line.\n<open>300</open>= Wrenfield Transport — Wrenfield Transport, a road carrier the distributor books pickups with.\n  sections §cutoff · §delivery · §dispatch-line\n<open>300§cutoff</open>= A pickup with Wrenfield Transport must be booked before 13:00.\n13:00 [300§cutoff]",
+      "<search shelf=wiki>Kestra-410 strapping band</search>= 1 note\n  [00h] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n<open>00h</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>00h§supplier</open>= The Kestra-410 strapping band is supplied by [301] Brackmoor Industrial.\n",
+      "<search shelf=wiki>Rask-500 shipping carton</search>= 1 note\n  [001] page · Rask-500 shipping carton — when: You need a fact about the Rask-500 shipping carton: who supplies it, where it is stocked, its pack or its reorder point.\n<open>001</open>= Rask-500 shipping carton — The Rask-500 shipping carton, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>001§supplier</open>= The Rask-500 shipping carton is supplied by [30h] Brackmoor Supplies.\n",
+      "<search shelf=wiki>Fenwa-930 label roll</search>= 1 note\n  [00i] page · Fenwa-930 label roll — when: You need a fact about the Fenwa-930 label roll: who supplies it, where it is stocked, its pack or its reorder point.\n<open>00i</open>= Fenwa-930 label roll — The Fenwa-930 label roll, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>00i§supplier</open>= The Fenwa-930 label roll is supplied by [301] Brackmoor Supplies.\n",
+      "<search shelf=wiki>Quill-860 packing tape</search>= 1 note\n  [00i] page · Quill-860 packing tape — when: You need a fact about the Quill-860 packing tape: who supplies it, where it is stocked, its pack or its reorder point.\n<open>00i</open>= Quill-860 packing tape — The Quill-860 packing tape, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>00i§supplier</open>= The Quill-860 packing tape is supplied by [00h] Brackmoor Packaging.\n<open>00",
+      "<search shelf=wiki>Marl-380 mailing sleeve</search>= 1 note\n  [00i] page · Marl-380 mailing sleeve — when: You need a fact about the Marl-380 mailing sleeve: who supplies it, where it is stocked, its pack or its reorder point.\n<open>00i</open>= Marl-380 mailing sleeve — The Marl-380 mailing sleeve, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>00i§supplier</open>= The Marl-380 mailing sleeve is supplied by [001] Ostlund Packaging.\n<open>00",
+      "<search shelf=wiki>Quill-860 packing tape</search>= 1 note\n  [00i] page · Quill-860 packing tape — when: You need a fact about the Quill-860 packing tape: who supplies it, where it is stocked, its pack or its reorder point.\n<open>00i</open>= Quill-860 packing tape — The Quill-860 packing tape, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>00i§supplier</open>= The Quill-860 packing tape is supplied by [300] Brackmoor Packaging.\n<open>30",
+      "<search shelf=wiki>Brisk-660 stretch film</search>= 1 note\n  [100] page · Brisk-660 stretch film — when: You need a fact about the Brisk-660 stretch film: who supplies it, where it is stocked, its pack or its reorder point.\n<open>100</open>= Brisk-660 stretch film — The Brisk-660 stretch film, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>100§supplier</open>= The Brisk-660 stretch film is supplied by [301] Coldhollow Packaging.",
+      "<search shelf=wiki>Marl-380 mailing sleeve</search>= 1 note\n  [00n] page · Marl-380 mailing sleeve — when: You need a fact about the Marl-380 mailing sleeve: who supplies it, where it is stocked, its pack or its reorder point.\n<open>00n</open>= Marl-380 mailing sleeve — The Marl-380 mailing sleeve, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>00n§supplier</open>= The Marl-380 mailing sleeve is supplied by [30i] Fallowmere Trading.\n<open>3"
+     ],
+     "b1_tokens_per_s": 15.89,
+     "b8_tokens_per_s": 110.83,
+     "acceptance_b1": null
+    },
+    "lora/general": {
+     "texts": [
+      "A refrigerator works by moving heat from the inside of the cabinet to the outside environment. A system of coils circulates a refrigerant—a special fluid that evaporates and condenses at different temperatures—through the unit. As the refrigerant evaporates into a gas inside the fridge, it absorbs heat from the food, cooling the interior. The gas then flows into coils on the outside of the unit, where it releases that heat into the room and condenses back into a liquid. This cycle repeats continuously, constantly pumping heat out of the fridge to maintain a cold temperature.",
+      "Here are a few options, depending on how well you know the colleague and the level of formality you need.\n\n### Option 1: Standard (Best for most situations)\n**Subject:** Rescheduling our meeting: [Meeting Name]\n\nHi [Colleague's Name],\n\nI hope you’re having a good week.\n\nWould it be possible to move our meeting from [Original Day] to Thursday instead? Something has come up on my end that I need to attend to.\n\nI am free at the following times on Thursday—do any of these work for you?\n*   [Time Slot 1]\n*   [Time Slot 2]\n\nSorry for any inconvenience this causes, and thanks for being flexible!\n\nBest regards,\n\n[Your Name]",
+      "To stay focused while studying, you need to manage three things: your environment, your time, and your brain's energy. Here are three evidence-based habits to achieve that:\n\n### 1. The Pomodoro Technique (Time Boxing)\nThe human brain is not designed to focus on a single task for hours at a time. When you try to \"power through,\" you eventually hit a wall of fatigue where you are reading words but not absorbing them.\n*   **How it works:** Set a timer for **25 minutes** of deep work, then take a **5-minute break**. After four rounds, take a longer 20–30 minute break.\n*   **Why it works:** It creates a sense of urgency (the ticking clock) and",
+      "Here is a simple way to explain the water cycle to a ten-year-old. You can think of it as the Earth's way of **recycling** the same water over and over again!\n\nThe water cycle has four main stages:\n\n### 1. Evaporation (The Warm-Up)\nThe sun shines down on oceans, lakes, and puddles. It warms the water up until it turns from a liquid into an invisible gas called **water vapor**. This is just like the steam you see rising from a hot cup of cocoa. The vapor rises high up into the sky.\n\n### 2. Condensation (The Cooling Down)\nHigh up in the air, it is much cooler. When the warm water vapor hits that cool air, it turns back",
+      "This is a recipe for a **Simple Garden Vegetable Soup**. It is versatile, healthy, and comes together in one pot.\n\n### Prep time\n15 minutes\n### Cook time\n30 minutes\n### Serves\n4 people\n\n---\n\n### Ingredients\n*   **The Base:** 2 tablespoons olive oil (or butter), 1 onion (chopped), 2 cloves garlic (minced).\n*   **The Vegetables:** 3 carrots (sliced), 3 potatoes (cubed), 2 stalks celery (sliced), 2 cups green beans (trimmed and halved) — *You can swap any of these for the vegetables you have on hand.*\n*   **The Liquid:** 6 cups vegetable broth (or water with a bouillon cube).\n*   ",
+      "The change of leaf color is a complex biological process that happens because trees are preparing for winter. It comes down to three main factors: **the breakdown of chlorophyll, the unmasking of hidden pigments, and the production of new pigments.**\n\nHere is the step-by-step breakdown of how it works:\n\n### 1. The Role of Chlorophyll (Green)\nDuring the spring and summer, leaves are green because they are full of **chlorophyll**. This is the pigment the tree uses to turn sunlight into food through photosynthesis. Because the tree is constantly producing new chlorophyll to feed itself, it masks up all the other colors the leaf contains.\n\n### 2. The Shutdown (The Trigger)\nAs autumn approaches, two things happen:\n*   **Shorter",
+      "Changing a flat bicycle tire is a fundamental skill every cyclist should know. You can do it on the side of the road with a small kit or in your garage with full tools.\n\nHere is the step system to get back on the road.\n\n### Tools You Need\n*   **Tire levers** (2 pieces)\n*   **A new inner tube** (ensure it matches your tire's width and valve type: Schrader or Presta)\n*   **A pump** (mini-pump for the road, floor pump for the garage)\n*   **A wrench** (only if your wheels are not \"quick-release\" or \"thru-axle\")\n\n---\n\n### Step 1: Remove the Wheel\nIf you are fixing a **rear",
+      "The simplest way to remember the difference is: **Weather is what you getS, climate is what you expect.**\n\nHere is a breakdown of the differences across three categories: time, scope, and purpose.\n\n### 1. Time Frame (The biggest difference)\n*   **Weather** refers to short-term conditions. It is what is happening right now or what will happen over the next few days. It can change in minutes (a sudden rain shower) or hours (the temperature dropping at sunset).\n*   **Climate** refers to long-term averages. It is the pattern of weather in a specific area over many years—usually 30 years or more. It doesn't tell you if it is raining today; it tells you how much it rains in a"
+     ],
+     "b1_tokens_per_s": 16.09,
+     "b8_tokens_per_s": 119.0,
+     "acceptance_b1": null
+    }
+   },
+   "hot_lora": {
+    "load_s": 0.23,
+    "load_reply": {
+     "raw": "Success: LoRA adapter 'hot' added successfully."
+    },
+    "same_text_as_the_preloaded_lora": false,
+    "unload_reply": {
+     "raw": "Success: LoRA adapter 'hot' removed successfully."
+    }
+   }
+  },
+  "mtp": {
+   "spec": {
+    "method": "mtp",
+    "model": "google/gemma-4-12B-it-assistant",
+    "num_speculative_tokens": 4
+   },
+   "started": true,
+   "boot_s": 545.1,
+   "G1": {
+    "probed": 3,
+    "empty": 0,
+    "differs": 3,
+    "applied": true,
+    "samples": [
+     {
+      "base": "The sky appears blue because of a phenomenon called Rayleigh",
+      "member": "The sky appears blue because Earth's atmosphere contains air"
+     },
+     {
+      "base": "A careful reader typically checks these three things before ",
+      "member": "A careful reader typically checks the following three things"
+     },
+     {
+      "base": "A pressure drop in a pipe depends on the fluid's velocity, t",
+      "member": "A pressure drop in a pipe depends on the fluid's velocity, t"
+     }
+    ]
+   },
+   "runs": {
+    "base/domain": {
+     "texts": [
+      "thought\n<search shelf=wiki>Tollan-640 edge protector</search>",
+      "thought\n<search shelf=wiki>Kestra-410 strapping band</search>",
+      "thought\n<search shelf=wiki>Carrow-940 dunnage bag</search>",
+      "thought\n<search shelf=wiki>Ostlund Supplies</search>",
+      "thought\n<search shelf=wiki>Umerly Industrial</search>",
+      "thought\n<search shelf=wiki>Dunmere Industrial</search>",
+      "thought\n<search shelf=harness>Wrenfield Transport booking</search>",
+      "thought\n<search shelf=wiki>Wrenfield Transport</search>",
+      "thought\n<search shelf=harness>Kestra-410 strapping band Fenwa-930 label roll delivery</search>",
+      "thought\n<search shelf=wiki>Rask-500 shipping carton</search>\nthought\nthought\n<search shelf=wiki>Quill-860 packing tape</search>\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+      "thought\n<search shelf=wiki>Fenwa-930 label roll Kestra-410 strapping band</search>",
+      "thought\n<search shelf=wiki>Quill-860 packing tape</search>\nthought\nthought\n<search shelf=wiki>Marl-380 mailing sleeve</search>\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+      "thought\n<search shelf=wiki>Marl-380 mailing sleeve</search>\nthought\n<search shelf=wiki>Brisk-660 stretch film</search>",
+      "thought\n<search shelf=wiki>Quill-860 packing tape supplier</search>\n<search shelf=wiki>Brisk-660 stretch film supplier</search>thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought",
+      "thought\n<search shelf=wiki>Brisk-660 stretch film</search>\n<search shelf=wiki>Marl-380 mailing sleeve</search>",
+      "thought\n<search shelf=wiki>Marl-380 mailing sleeve</search>\nthought\n<search shelf=wiki>Rask-500 shipping carton</search>"
+     ],
+     "b1_tokens_per_s": 45.18,
+     "b8_tokens_per_s": 190.65,
+     "acceptance_b1": {
+      "drafted": 792.0,
+      "accepted": 626.0,
+      "alpha": 0.7904,
+      "mean_accepted_length": 4.162,
+      "per_position": {
+       "0": 0.9798,
+       "1": 0.8838,
+       "2": 0.8333,
+       "3": 0.4646
+      }
+     }
+    },
+    "base/general": {
+     "texts": [
+      "A refrigerator keeps food cold by using a continuous cycle of evaporation and condensation to move heat from the inside of the unit to the outside. A refrigerant fluid flows through coils, absorbing heat from the air inside the fridge as it turns from a liquid into a gas. This gas is then compressed by a compressor, which increases its temperature and pressure, and then flows through outdoor coils where it releases that heat into the surrounding room, turning back into a liquid. This cycle repeats, constantly \"pumping\" heat out of the interior to maintain a low, consistent temperature.",
+      "Here are a few options, ranging from casual to formal, so you can choose the one that best fits your relationship with your colleague.\n\n### Option 1: Standard/Professional (Best for most situations)\n**Subject:** Rescheduling our meeting: [Meeting Name]\n\nHi [Colleague's Name],\n\nI hope you’re having a good week.\n\nWould it be possible to move our meeting scheduled for [Original Day/Time] to Thursday instead? Something has come up on my end that requires my attention during our original slot.\n\nPlease let me know if you have any availability on Thursday, and I’ll be happy to send over a new calendar invite.\n\nBest regards,\n\n[Your Name]\n\n***\n\n### Option 2: Short & Casual (",
+      "To stay focused while studying, the goal is to manage your environment, your energy, and your attention span. Here are three highly effective habits to help you achieve that:\n\n### 1. Use the Pomodoro Technique (Time Boxing)\nThe human brain is not designed to focus intensely for hours on end. Trying to \"power through\" often leads to burnout and procrastination.\n*   **How to do it:** Set a timer for **25 minutes** of deep, uninterrupted work, followed by a **5-minute break**. After four cycles, take a longer break (15–30 minutes).\n*   **Why it works:** It creates a sense of urgency (the ticking clock) and provides a \"light at the end of the tunnel,\" making it easier to",
+      "Imagine the Earth is like a giant recycling machine. It constantly moves the same water around and around in a never-ending loop. This is called the **Water Cycle**.\n\nHere are the four main steps:\n\n### 1. Evaporation (The \"Warm Up\")\nThink about a puddle on the ground after it rains. When the sun comes out, it heats up that water. When water gets warm enough, it turns into an invisible gas called **water vapor**. It’s like the steam you see rising from a hot cup of cocoa. This vapor floats up into the sky.\n\n### 2. Condensation (The \"Cool Down\")\nHigh up in the sky, the air is much cooler. When the warm water vapor hits that cool air, it cools down and",
+      "This is a classic, \"pantry-staple\" vegetable soup. It is healthy, easy to customize based on what you have in your fridge, and very comforting.\n\n### **Simple Garden Vegetable Soup**\n*Prep time: 10 mins | Cook time: 25 mins | Serves: 4*\n\n---\n\n### **Ingredients**\n**The Base:**\n*   **Olive oil:** 2 tablespoons\n*   **Onion:** 1 medium (chopped)\n*   **Garlic:** 3 cloves (minced)\n*   **Carrots:** 2 large (chopped)\n*   **Celery:** 2 stalks (chopped)\n\n**The Bulk:**\n*   **Potatoes:** 2 medium",
+      "The change in leaf color is a complex biological process driven by the changing seasons, specifically the decrease in sunlight and temperature. It is essentially a story of **chemistry, survival, and preparation.**\n\nHere is the step-by-step breakdown of why and how it happens:\n\n### 1. The Role of Chlorophyll (The Green Phase)\nDuring the spring and summer, leaves are green because they are packed with **chlorophyll**. This is the pigment responsible for photosynthesis—the process by which plants turn sunlight, water, and carbon dioxide into food (sugar). \n\nBecause plants are constantly producing new chlorophyll to stay fed, the green color is dominant and masks all other colors present in the leaf.\n\n### 2. The Shutdown (The Transition)\nAs autumn approaches, the",
+      "Changing a flat bicycle tire is a fundamental skill for every cyclist. Here is a step-by-step guide to getting back on the road.\n\n### Tools You Will Need:\n*   **Tire levers** (usually 2)\n*   **New inner tube** (ensure it matches your tire size and valve type)\n*   **Bike pump**\n*   **Wrench** (only if your wheels are not \"quick-release\")\n\n---\n\n### Step 1: Remove the Wheel\n*   **Shift Gears:** If you are changing a rear tire, shift the chain onto the smallest cog (the hardest gear). This makes it much easier to remove and reinstall the wheel.\n*   **Release the Brakes:** If you have rim brakes (cal",
+      "The simplest way to understand the difference between weather and climate is to look at **time**. \n\nA common saying among meteorologists is: **\"Climate is what you expect; weather is what you get.\"**\n\nHere is a detailed breakdown of the differences:\n\n### 1. Weather (Short-term)\nWeather refers to the atmospheric conditions occurring at a **specific place at a specific moment** (or over a very short period, such as minutes, hours, or days).\n\n*   **Timeframe:** Minutes, hours, days, or weeks.\n*   **Changes:** Changes very quickly. It can change from sunny to rainy in an hour.\n*   **Examples:** A thunderstorm, a heatwave, a blizzard, a foggy morning, or a humid afternoon"
+     ],
+     "b1_tokens_per_s": 41.18,
+     "b8_tokens_per_s": 234.68,
+     "acceptance_b1": {
+      "drafted": 1580.0,
+      "accepted": 838.0,
+      "alpha": 0.5304,
+      "mean_accepted_length": 3.122,
+      "per_position": {
+       "0": 0.7873,
+       "1": 0.5823,
+       "2": 0.4304,
+       "3": 0.3215
+      }
+     }
+    },
+    "lora/domain": {
+     "texts": [
+      "<search shelf=wiki>Tollan-640 edge protector</search>= 1 note\n  [00i] page · Tollan-640 edge protector — when: You need a fact about the Tollan-640 edge protector: who supplies it, where it is stocked, its pack or its reorder point.\n<open>00i</open>= Tollan-640 edge protector — The Tollan-640 edge protector, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>00i§pack</open>= A pack of Tollan-640 edge protector holds 12 pieces.\n12 pieces",
+      "<search shelf=wiki>Kestra-410 strapping band</search>= 1 note\n  [00h] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n<open>00h</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier §warehouse §pack §reorder-point\n<open>00h§pack</open>= A pack of Kestra-410 strapping band holds 12 coils.\n12 coils [00h",
+      "<search shelf=wiki>Carrow-940 dunnage bag</search>= 1 note\n  [00i] page · Carrow-940 dunnage bag — when: You need a fact about the Carrow-940 dunnage bag: who supplies it, where it is stocked, its pack or its reorder point.\n<open>00i</open>= Carrow-940 dunnage bag — The Carrow-940 dunnage bag, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>00i§pack</open>= A pack of Carrow-940 dunnage",
+      "<search shelf=wiki>Ostlund Supplies</search>= 1 note\n  [00n] page · Ostlund Supplies — when: You need a fact about the supplier Ostlund Supplies: where it is, its lead time, its minimum order or its contact.\n<open>00n</open>= Ostlund Supplies — Ostlund Supplies, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>00n§lead-time</open>= An order from Ostlund Supplies arrives 12 days after it is placed.\n12 days [00n§lead-time]",
+      "<search shelf=wiki>Umberly Industrial</search>= 0 notes\nNot in my library.",
+      "<search shelf=wiki>Dunmere Industrial</search>= 1 note\n  [00i] page · Dunmere Industrial — when: You need a fact about the supplier Dunmere Industrial: where it is, its lead time, its minimum order or its contact.\n<open>00i</open>= Dunmere Industrial — Dunmere Industrial, a supplier of packaging the distributor buys from.\n  sections §town · §lead-time · §minimum-order · §contact\n<open>00i§lead-time</open>= An order from Dunmere Industrial arrives 10 days after it is placed.\n10 days [00i§lead-time]",
+      "<search shelf=wiki>Wrenfield Transport</search>= 1 note\n  [00n] page · Wrenfield Transport — when: You need a fact about the carrier Wrenfield Transport: its pickup cutoff, its delivery time or its dispatch line.\n<open>00n</open>= Wrenfield Transport — Wrenfield Transport, a road carrier the distributor books pickups with.\n  sections §cutoff · §delivery · §dispatch-line\n<open>00n§cutoff</open>= A pickup with Wrenfield Transport must be booked before 13:00.\n13:00 [00n§cutoff]",
+      "<search shelf=wiki>Wrenfield Transport</search>= 1 note\n  [001] page · Wrenfield Transport — when: You need a fact about the carrier Wrenfield Transport: its pickup cutoff, its delivery time or its dispatch line.\n<open>001</open>= Wrenfield Transport — Wrenfield Transport, a road carrier the distributor books pickups with.\n  sections §cutoff · §delivery · §dispatch-line\n<open>001§cutoff</open>= A pickup with Wrenfield Transport must be booked before 13:00.\n13:00 [001§cutoff]",
+      "<search shelf=wiki>Kestra-410 strapping band</search>= 1 note\n  [10n] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n<open>10n</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>10n§supplier</open>= The Kestra-410 strapping band is supplied by [30h] Ostlund Packaging.\n",
+      "<search shelf=wiki>Rask-500 shipping carton</search>= 1 note\n  [00e] page · Rask-500 shipping carton — when: You need a fact about the Rask-500 shipping carton: who supplies it, where it is stocked, its pack or its reorder point.\n<open>00e</open>= Rask-500 shipping carton — The Rask-500 shipping carton, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>00e§supplier</open>= The Rask-500 shipping carton is supplied by [30h] Brackmoor Packaging.\n",
+      "<search shelf=wiki>Fenwa-930 label roll</search>= 1 note\n  [00h] page · Fenwa-930 label roll — when: You need a fact about the Fenwa-930 label roll: who supplies it, where it is stocked, its pack or its reorder point.\n<open>00h</open>= Fenwa-930 label roll — The Fenwa-930 label roll, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>00h§supplier</open>= The Fenwa-930 label roll is supplied by [00n] Brackmoor Packaging.\n",
+      "<search shelf=wiki>Quill-860 packing tape</search>= 1 note\n  [00e] page · Quill-860 packing tape — when: You need a fact about the Quill-860 packing tape: who supplies it, where it is stocked, its pack or its reorder point.\n<open>00e</open>= Quill-860 packing tape — The Quill-860 packing tape, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>00e§supplier</open>= The Quill-860 packing tape is supplied by [300] Ostlund Packaging.\n<open>30",
+      "<search shelf=wiki>Marl-380 mailing sleeve</search>= 1 note\n  [00i] page · Marl-380 mailing sleeve — when: You need a fact about the Marl-380 mailing sleeve: who supplies it, where it is stocked, its pack or its reorder point.\n<open>00i</open>= Marl-380 mailing sleeve — The Marl-380 mailing sleeve, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>00i§supplier</open>= The Marl-380 mailing sleeve is supplied by [30h] Brackmoor Packaging.\n<open>30",
+      "<search shelf=wiki>Quill-860 packing tape</search>= 1 note\n  [00e] page · Quill-860 packing tape — when: You need a fact about the Quill-860 packing tape: who supplies it, where it is stocked, its pack or its reorder point.\n<open>00e</open>= Quill-860 packing tape — The Quill-860 packing tape, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>00e§supplier</open>= The Quill-860 packing tape is supplied by [301] Brackmoor Packaging.\n<search shelf=wiki",
+      "<search shelf=wiki>Brisk-660 stretch film</search>= 1 note\n  [001] page · Brisk-660 stretch film — when: You need a fact about the Brisk-660 stretch film: who supplies it, where it is stocked, its pack or its reorder point.\n<open>001</open>= Brisk-660 stretch film — The Brisk-660 stretch film, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>001§supplier</open>= The Brisk-660 stretch film is supplied by [30n] Coldhollow Packaging.",
+      "<search shelf=wiki>Marl-380 mailing sleeve</search>= 1 note\n  [00i] page · Marl-380 mailing sleeve — when: You need a fact about the Marl-380 mailing sleeve: who supplies it, where it is stocked, its pack or its reorder point.\n<open>00i</open>= Marl-380 mailing sleeve — The Marl-380 mailing sleeve, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>00i§supplier</open>= The Marl-380 mailing sleeve is supplied by [30n] Elsworth Supplies.\n<open>30"
+     ],
+     "b1_tokens_per_s": 27.62,
+     "b8_tokens_per_s": 163.74,
+     "acceptance_b1": {
+      "drafted": 4180.0,
+      "accepted": 1310.0,
+      "alpha": 0.3134,
+      "mean_accepted_length": 2.254,
+      "per_position": {
+       "0": 0.5837,
+       "1": 0.3416,
+       "2": 0.1962,
+       "3": 0.1321
+      }
+     }
+    },
+    "lora/general": {
+     "texts": [
+      "A refrigerator works by moving heat from the inside to the outside using a system of coils and a refrigerant. A pump circulates the refrigerant, which absorbs heat as it evaporates from a liquid into a gas inside the cooling coils of the fridge. This gas then flows into the condenser coils on the back or bottom, where it releases that heat into the surrounding air and turns back into a liquid. This continuous cycle keeps the interior cold by constantly pumping heat out of the cabinet.",
+      "Here are a few options, depending on how well you know the colleague and how urgent the request is.\n\n### Option 1: Standard & Professional (Best for most situations)\n**Subject:** Rescheduling our meeting: [Meeting Name]\n\nHi [Colleague's Name],\n\nI hope you’re having a good week.\n\nWould it be possible to move our meeting from [Original Day] to Thursday instead? Something has come up on my end that I need to attend to.\n\nI am free at the following times on Thursday—do any of these work for you?\n*   [Time Slot 1]\n*   [Time Slot 2]\n\nSorry for any inconvenience this causes, and thanks for being flexible!\n\nBest regards,\n\n[Your Name",
+      "To stay focused while studying, you need to manage three things: your environment, your time, and your brain's energy. Here are three evidence-based habits to achieve that:\n\n### 1. The Pomodoro Technique (Time Boxing)\nThe human brain is not designed to focus on a single task for hours on end. When you try to \"power through,\" you eventually hit a wall of fatigue where you are reading words but not absorbing them.\n*   **How it works:** Set a timer for **25 minutes** of deep work, then take a **5-minute break**. After four rounds, take a longer 20–30 minute break.\n*   **Why it works:** It creates a sense of urgency (the ticking clock) and provides",
+      "Here is a simple way to explain the water cycle to a ten-year-old. You can think of it as the earth's way of **recycling** the same water over and over again!\n\nThe water cycle has four main stages:\n\n### 1. Evaporation (The Warm-Up)\nWhen the sun shines on oceans, lakes, and puddles, it warms the water up. The water gets so warm that it turns from a liquid into an invisible gas called **water vapor**. This is just like the steam you see rising from a hot cup of cocoa—the water is \"floating\" up into the air.\n\n### 2. Condensation (The Cooling Down)\nAs that water vapor rises high into the sky, the air gets cooler. When",
+      "This is a classic, versatile vegetable soup. It is healthy, comes together in about 30 minutes, and can be customized with whatever vegetables you have in your fridge.\n\n### **Simple Garden Vegetable Soup**\n*Serves: 4 | Prep time: 10 mins | Cook time: 25 mins*\n\n---\n\n### **Ingredients**\n**The Base:**\n*   2 tablespoons olive oil (or butter)\n*   1 medium onion, chopped\n*   2 cloves garlic, minced\n*   1 teaspoon dried thyme (or oregano)\n\n**The Vegetables:**\n*   2 large carrots, sliced into rounds\n*   2 celery stalks, sliced\n*   2 medium potatoes, diced into small cubes\n*   1 can (14 oz",
+      "The change of leaf color is a complex biological process that happens because trees are preparing for winter. It comes down to three main factors: **the breakdown of chlorophyll, the unmasking of hidden pigments, and the production of new pigments.**\n\nHere is the step-by-step breakdown of how it works:\n\n### 1. The Role of Chlorophyll (The Green Phase)\nDuring the spring and summer, leaves are green because they are full of **chlorophyll**. This is the pigment the tree uses to turn sunlight into food through photosynthesis. Because the tree is constantly producing new chlorophyll to feed itself, it masks up every other color the leaf might have.\n\n### 2. The Shutdown (The Trigger)\nAs days get shorter and temperatures drop in autumn, the tree receives",
+      "Changing a flat bicycle tyre is a fundamental skill every cyclist should know. You don't need a workshop to do it—you just need a few tools and a systematic approach.\n\nHere is a step-by-step guide to getting back on the road.\n\n### Tools You Will Need\n*   **Tire levers** (2 pieces)\n*   **A new inner tube** (ensure it matches your tyre's width and ISO 4549B label) OR a **patch kit**\n*   **A bicycle pump** (mini-pump for the road, floor pump for home)\n*   **A wrench** (only if your wheels are not \"quick-release\" or \"thru-axle\")\n\n---\n\n### Step 1:",
+      "The simplest way to remember the difference is: **Weather is what you getS, climate is what you expect.**\n\nHere is a breakdown of the differences across three categories: time, scope, and purpose.\n\n### 1. Time Frame (The biggest difference)\n*   **Weather** refers to short-term conditions. It is what is happening right now or what will happen over the next few days. It can change in minutes (a sudden rain shower) or hours (the temperature dropping at sunset).\n*   **Climate** refers to long-term averages. It is the pattern of weather in a specific area over many years—usually 30 years or more. It doesn't tell you if it is raining today; it tells you how much it rains in a"
+     ],
+     "b1_tokens_per_s": 34.25,
+     "b8_tokens_per_s": 225.56,
+     "acceptance_b1": {
+      "drafted": 1792.0,
+      "accepted": 769.0,
+      "alpha": 0.4291,
+      "mean_accepted_length": 2.717,
+      "per_position": {
+       "0": 0.7143,
+       "1": 0.4665,
+       "2": 0.3237,
+       "3": 0.2121
+      }
+     }
+    }
+   },
+   "hot_lora": {
+    "load_s": 0.28,
+    "load_reply": {
+     "raw": "Success: LoRA adapter 'hot' added successfully."
+    },
+    "same_text_as_the_preloaded_lora": false,
+    "unload_reply": {
+     "raw": "Success: LoRA adapter 'hot' removed successfully."
+    }
+   }
+  }
+ },
+ "vllm": "0.30.0",
+ "target": "google/gemma-4-12B-it",
+ "member": "wiki12b",
+ "adapter": "adapters/wiki12b-walks-s0",
+ "max_tokens": 160,
+ "quantization": "fp8",
+ "comparison": {
+  "mtp": {
+   "base/domain": {
+    "identical_to_nospec": "8/16",
+    "speedup_b1": 2.73,
+    "speedup_b8": 2.95,
+    "alpha": 0.7904,
+    "mean_accepted_length": 4.162
+   },
+   "base/general": {
+    "identical_to_nospec": "0/8",
+    "speedup_b1": 2.41,
+    "speedup_b8": 1.86,
+    "alpha": 0.5304,
+    "mean_accepted_length": 3.122
+   },
+   "lora/domain": {
+    "identical_to_nospec": "4/16",
+    "speedup_b1": 1.74,
+    "speedup_b8": 1.48,
+    "alpha": 0.3134,
+    "mean_accepted_length": 2.254
+   },
+   "lora/general": {
+    "identical_to_nospec": "1/8",
+    "speedup_b1": 2.13,
+    "speedup_b8": 1.9,
+    "alpha": 0.4291,
+    "mean_accepted_length": 2.717
+   }
+  }
+ }
+}

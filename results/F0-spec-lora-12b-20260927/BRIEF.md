@@ -40,3 +40,35 @@ install and a training run — F3), the 31B distillation, new domains. One seed,
 bf16 does not fit an L4, so F0 runs the target in **FP8** (`--quantization fp8`, vLLM's dynamic FP8) on an L4 — the
 precision BCCard's EAGLE-3 was trained against. A second unknown, said: the LoRA was trained on bf16 weights and is
 served over FP8 ones; G1 says whether it is applied, and every comparison is FP8 against FP8.
+
+## Result **[ran]** 2026-09-27 (session 1) — the combination runs; the native MTP drafter keeps 1.7–2.1× with a LoRA on; the output is NOT yet shown identical
+
+vLLM 0.30.0, `gemma-4-12B-it` **FP8** on one L4, the expert LoRA `wiki12b` (B3), k = 4, temperature 0, 16 expert prompts
+and 8 general, `max_tokens` 160 (`spike.json`).
+
+**What works [ran]:** vLLM serves the 12B + a LoRA **with the MTP drafter and with EAGLE-3** — both start, G1 applied in
+both (3/3); a LoRA **loads at runtime in 0.23–0.28 s with the drafter running**, no restart.
+
+| | set | tok/s b1 | **speed-up b1** | speed-up b8 | α | mean accepted len | acceptance at position 0 · 1 · 2 · 3 | identical to no-SD |
+|---|---|--:|--:|--:|--:|--:|---|--:|
+| no SD | base / domain | 16.5 | — | — | — | — | — | — |
+| **MTP** | base / domain | 45.2 | **2.73×** | 2.95× | 0.790 | 4.16 | .98 · .88 · .83 · .46 | 8/16 |
+| **MTP** | base / general | 41.2 | **2.41×** | 1.86× | 0.530 | 3.12 | .79 · .58 · .43 · .32 | 0/8 |
+| **MTP** | **LoRA / domain** | 27.6 | **1.74×** | 1.48× | 0.313 | 2.25 | .58 · .34 · .20 · .13 | 4/16 |
+| **MTP** | LoRA / general | 34.3 | **2.13×** | 1.90× | 0.429 | 2.72 | .71 · .47 · .32 · .21 | 1/8 |
+| EAGLE-3 (BCCard) | base / domain | 19.4 | 1.17× | 1.01× | 0.136 | 1.55 | | |
+| EAGLE-3 (BCCard) | base / general | 27.3 | 1.59× | 1.40× | 0.245 | 1.98 | | |
+
+**Readings.**
+1. **The native MTP drafter is the one to build on**, not the public EAGLE-3: on the same prompts it accepts 5.8× as
+   much on the domain (α 0.79 against 0.14) — the brief's choice of EAGLE-3 as the main drafter is contradicted here.
+2. **The LoRA costs the drafter, and most on the expert's own ground:** position-0 acceptance on the domain falls from
+   0.98 to 0.58, the speed-up from 2.73× to **1.74×** — just under the brief's 1.8× bar; on general text 2.41× → 2.13×. A
+   drafter that reads the target's activations *sees* the LoRA, and still does not predict what the LoRA makes the target
+   write. That is exactly the gap the brief's strategies B, C, D exist to close — now measured, not assumed.
+3. **The mandatory test does not pass as run, and is not yet read:** at temperature 0, spec decode's text equals no-SD's
+   in 8/16, 0/8, 4/16, 1/8 cases, diverging at near-ties ("booking time" / "booking"). vLLM without batch-invariant mode
+   is not deterministic across batch shapes — the **same** LoRA reloaded at runtime, no drafter, also wrote a different
+   text — so this run cannot tell a spec-decode fault from ordinary numeric drift. Next: the same comparison under
+   `VLLM_BATCH_INVARIANT=1` (as vLLM's own LoRA × SD test runs), with a no-SD-vs-no-SD control. Until then *identical
+   output* is **not established**.
