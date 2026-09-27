@@ -190,3 +190,20 @@ def test_the_request_is_read_out_of_what_openclaw_actually_sends():
     assert runtime_request(msgs) == "¿Qué tiene en la agenda el alumno 1?"
     assert runtime_request(msgs[:2]) == "¿Qué tiene en la agenda el alumno 1?"
     assert runtime_request([{"role": "user", "content": "plain request"}]) == "plain request"
+
+
+def test_the_frontier_stops_forwarding_at_its_budget(monkeypatch):
+    """Each call's real usage is priced; once the budget is reached nothing more leaves."""
+    import io
+    from examples.school import gateway as gw_mod
+    calls = []
+
+    def fake_urlopen(req, timeout=0):
+        calls.append(json.loads(req.data))
+        return io.BytesIO(json.dumps({"choices": [{"message": {"content": "ok"}}],
+                                      "usage": {"prompt_tokens": 400_000, "completion_tokens": 100_000}}).encode())
+    monkeypatch.setattr(gw_mod.urllib.request, "urlopen", fake_urlopen)
+    ask = gw_mod.frontier_client("https://x/v1", "k", "m", budget_usd=1.0, rates=(1.0, 5.0))
+    assert ask([{"role": "user", "content": "a"}]) == "ok" and ask.spent["usd"] == 0.9
+    assert ask([{"role": "user", "content": "b"}]) == "ok" and ask.spent["usd"] == 1.8
+    assert "budget" in ask([{"role": "user", "content": "c"}]) and len(calls) == 2

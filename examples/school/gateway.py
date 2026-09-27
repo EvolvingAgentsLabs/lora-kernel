@@ -189,17 +189,31 @@ def vllm_generator(model: str, tok, max_tokens: int = 160):
     return generate
 
 
-def frontier_client(url: str, key: str, model: str):
-    """A forwarded request, OpenAI-compatible. Only built when the operator configures one."""
+def frontier_client(url: str, key: str, model: str, budget_usd: float | None = None, rates: tuple = (0.0, 0.0)):
+    """A forwarded request, OpenAI-compatible. Only built when the operator configures one. With `budget_usd`, each
+    call's real usage is priced at `rates` ($ per million input, output tokens) and nothing more is forwarded once the
+    spend reaches the budget — the reply says so instead."""
+    spent = {"usd": 0.0, "calls": 0, "prompt_tokens": 0, "completion_tokens": 0}
+
     def ask(messages: list[dict]) -> str:
+        if budget_usd is not None and spent["usd"] >= budget_usd:
+            return f"The frontier budget (${budget_usd:.2f}) is spent; this request was not forwarded."
         req = urllib.request.Request(url.rstrip("/") + "/chat/completions", method="POST",
                                      data=json.dumps({"model": model, "messages": messages}).encode(),
                                      headers={"Content-Type": "application/json", "Authorization": f"Bearer {key}"})
-        return json.loads(urllib.request.urlopen(req, timeout=120).read())["choices"][0]["message"]["content"]
+        out = json.loads(urllib.request.urlopen(req, timeout=120).read())
+        u = out.get("usage") or {}
+        spent["calls"] += 1
+        spent["prompt_tokens"] += u.get("prompt_tokens", 0)
+        spent["completion_tokens"] += u.get("completion_tokens", 0)
+        spent["usd"] = round((spent["prompt_tokens"] * rates[0] + spent["completion_tokens"] * rates[1]) / 1e6, 6)
+        print(f"[frontier] call {spent['calls']} · {u.get('prompt_tokens')}+{u.get('completion_tokens')} tokens · "
+              f"${spent['usd']:.4f} spent" + (f" of ${budget_usd:.2f}" if budget_usd is not None else ""), flush=True)
+        return out["choices"][0]["message"]["content"]
+    ask.spent = spent
     return ask
 
 
-# ------------------------------------------------------------------ HTTP
 def serve(gw: Gateway, port: int = 8765) -> ThreadingHTTPServer:
     class H(BaseHTTPRequestHandler):
         def log_message(self, *a):
@@ -294,6 +308,8 @@ def main() -> int:
     ap.add_argument("--frontier-url", default=None, help="e.g. https://api.openai.com/v1 — the `frontier` egress, made real")
     ap.add_argument("--frontier-model", default=None)
     ap.add_argument("--frontier-key-env", default="FRONTIER_API_KEY", help="the env var holding the frontier key")
+    ap.add_argument("--frontier-budget-usd", type=float, default=None, help="stop forwarding once this much is spent")
+    ap.add_argument("--frontier-rates", default="0,0", help="$ per million input,output tokens, to price each call")
     ap.add_argument("--log", default="examples/school/events.jsonl")
     ap.add_argument("--openclaw-dir", default=str(Path.home() / ".config/lora-kernel/openclaw"))
     a = ap.parse_args()
@@ -308,7 +324,8 @@ def main() -> int:
         if not key or not a.frontier_model:
             print(f"[gateway] --frontier-url needs --frontier-model and ${a.frontier_key_env} set", flush=True)
             return 2
-        frontier = frontier_client(a.frontier_url, key, a.frontier_model)
+        frontier = frontier_client(a.frontier_url, key, a.frontier_model, a.frontier_budget_usd,
+                                   tuple(float(x) for x in a.frontier_rates.split(",")))
     users.register_all()
     gw = Gateway(db.build(), vllm_generator(a.member, tok), frontier=frontier, log_path=a.log)
     serve(gw, a.port)
