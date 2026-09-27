@@ -287,6 +287,47 @@ How that gap closes (the user's strategies document, 2026-09-27):
 
 ---
 
+### 6.5 Hot-swapping: the LoRA yes, the draft not yet
+
+What we want is one server with **one base model**, **N experts** and, for each, **a draft tuned to that expert**, all
+switchable per request. Those are two different things to hot-swap, and today they stand in very different places.
+
+**The large model's LoRA — works today.**
+
+| where | how | measured |
+|---|---|---|
+| vLLM | every LoRA resident; each request picks its own by the `model` field; added and removed with `/v1/load_lora_adapter` | hot load **0.23–0.28 s**, also with the draft running **[ran] F0** |
+| Mac (MLX, our code) | each layer carries every expert's patch; one active; switching is moving a pointer | **2.9 µs**, and the base's text comes back exactly **[ran] MAC** |
+
+**The draft (MTP, EAGLE, a small model) — one draft per server.**
+
+- In vLLM the draft is fixed **at start-up** (`--speculative-config`) and is **one for the whole server**: there is no
+  draft per request, and no way to change it without a restart **[read]** vLLM documentation.
+- vLLM **applies no LoRA to a draft**: the proposal exists (RFC #52038, for DFlash drafts) but is not implemented **[read]**.
+- Gemma 4's MTP draft **cannot be retrained with `speculators`**: its "MTP finetuning" covers the MTP heads that ship inside
+  the checkpoint (Qwen3-Next, Qwen3.5), not Gemma 4's external `assistant` **[read]**.
+
+**What happens today with one draft and several LoRAs.** It works, and the output is still the large model's (§6.1), but
+the draft guesses worse on each expert's own ground: with the wiki LoRA, position-0 acceptance falls from 0.98 to 0.58
+and the speed-up from 2.73× to 1.74× **[ran] F0**. On the Mac, with the LoRA, the draft does not speed things up **[ran] MAC**.
+
+**How to get "a draft tuned per expert", depending on what exists:**
+
+| strategy | what changes per request | does it exist today? |
+|---|---|---|
+| **A. one shared draft**, trained on the answers of all experts | only the large model's LoRA | yes, with vLLM as is; it remains to be trained (EAGLE-3 with `speculators`) |
+| **B. base draft + one draft LoRA per expert** | the large model's LoRA **and** the draft's | **not in vLLM** (it would take modifying the component that runs the draft). **Possible on our Mac track**: the same `HotLoRA` that wraps the large model's layers can wrap the draft's |
+| **C. one full draft per expert** | the whole server (one instance per expert, or a restart) | yes, but it does not scale; it serves as the ceiling |
+| **D. the native MTP retrained per expert** | same as C | no support in `speculators`; the training would have to be written |
+
+**What we are measuring now:**
+- **F0b**: whether the output with the draft is identical to the plain one, with the engine in deterministic mode.
+- **C0**: does aligning the draft to the expert give the speed back? It is the cheapest possible test. The wiki E4B is
+  already aligned: it was trained on the same corpus as the 12B's LoRA, and in B4 the large model accepted 90% of its
+  drafts. Its LoRA is merged into the weights and it is used as the draft (strategy C, built from what already exists).
+  - If acceptance rises and speed does too, aligning works.
+  - If acceptance rises but speed does not, the E4B is too expensive a draft, and a light one has to be aligned (A, B or D).
+
 ## 7. From a model to a system
 
 ### 7.1 Memory: pages of atomic statements
@@ -397,7 +438,8 @@ happened to us last week).
 
 | what | state | next step |
 |---|---|---|
-| identical output with speculative | not established | repeat F0 with `VLLM_BATCH_INVARIANT=1` and a control |
+| identical output with speculative | not established | **F0b running**: `VLLM_BATCH_INVARIANT=1` mode with a control |
+| a draft tuned per expert, hot-swapped | does not exist in vLLM (one draft per server, no draft LoRA) | **C0 queued**: does aligning give the speed back? Then A (vLLM) or B (Mac track) — §6.5 |
 | the draft with the LoRA active | loses acceptance in the domain (1.74×) | strategies A–D (§6.4), starting with the cheapest |
 | the Mac track | **[ran]**: hot swap in 2.9 µs, 8.4 GB; MTP no gain with the LoRA on (0.92–1.04×) | a drafter aligned to the LoRA (§6.4, A–D); find why the MLX base loops on a system prompt |
 | learned router | none passes | the role is the route; left open |

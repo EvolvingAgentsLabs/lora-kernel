@@ -254,7 +254,7 @@ base de conocimiento y el hash de su índice: un miembro es su corpus *y* su bas
 **Gemma 4, desde 2026-09-25 — la decisión del usuario sobre B1 [ran].** `google/gemma-4-E4B-it` chico;
 `gemma-4-12B-it` grande (~~`gemma-4-31B-it`~~, cambiado por una Mac mini): un espacio de ids con el E4B y un LoRA servido
 aplicado (B2 **[ran]**); su LoRA sube la aceptación de los borradores del miembro chico, α 0,871 → 0,898 (B4 **[ran]**);
-no compra precisión en la banda comparativa una vez que al chico se le enseña (B3, B5 **[ran]**). **Servido con su propio drafter MTP** (`gemma-4-12B-it-assistant`) y un LoRA experto en un solo servidor vLLM: 2,7× sobre el base, 1,7–2,1× con el LoRA (F0 **[ran]**). En el wiki de W9, con el mismo corpus y
+no compra precisión en la banda comparativa una vez que al chico se le enseña (B3, B5 **[ran]**). **Servido con su propio drafter MTP** (`gemma-4-12B-it-assistant`) y un LoRA experto en un solo servidor vLLM: 2,7× sobre el base, 1,7–2,1× con el LoRA (F0 **[ran]**). **Qué se cambia en caliente y qué no:** el LoRA del experto por pedido (0,25 s cargar uno en caliente, F0; 2,9 µs en la Mac, MAC); el drafter es uno por servidor y no admite LoRA en vLLM — un drafter ajustado por experto es la estrategia A (uno compartido, entrenado) o B (un LoRA de drafter, hoy sólo en nuestro runtime de la Mac); [`GUIDE.md`](GUIDE.md) §6.5. En el wiki de W9, con el mismo corpus y
 la misma receta, el miembro de Gemma empató al de Qwen3.5-4B (38/40 contra 35 y 35, 4 : 1 contra cada uno); sin
 entrenar, Gemma ya la camina 19/40 donde Qwen camina 0/40, y entrena en un tercio del tiempo. El usuario decidió
 antes de que corriera la comparación que la paridad elige a Gemma, porque el stack de desarrollo apunta a ella. Le

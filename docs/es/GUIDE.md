@@ -284,6 +284,49 @@ Cómo se cierra esa brecha (el documento de estrategias del usuario, 2026-09-27)
 
 ---
 
+### 6.5 Cambiar en caliente: el LoRA sí, el borrador todavía no
+
+Lo que queremos es un servidor con **un modelo base**, **N expertos** y, para cada uno, **un borrador ajustado a ese
+experto**, todo intercambiable por pedido. Son dos cosas distintas que cambiar en caliente, y hoy están en lugares
+muy distintos.
+
+**El LoRA del modelo grande — funciona hoy.**
+
+| dónde | cómo | medido |
+|---|---|---|
+| vLLM | todos los LoRA residentes; cada pedido elige el suyo por el campo `model`; se agregan y quitan con `/v1/load_lora_adapter` | carga en caliente **0,23–0,28 s**, también con el borrador encendido **[ran] F0** |
+| Mac (MLX, nuestro código) | cada capa lleva los parches de todos los expertos; uno activo; cambiar es mover un puntero | **2,9 µs**, y el texto del base vuelve exacto **[ran] MAC** |
+
+**El borrador (MTP, EAGLE, un modelo chico) — un solo borrador por servidor.**
+
+- En vLLM el borrador se fija **al arrancar** (`--speculative-config`) y es **uno solo para todo el servidor**: no hay
+  un borrador por pedido, ni forma de cambiarlo sin reiniciar **[read]** documentación de vLLM.
+- vLLM **no aplica LoRA a un borrador**: la propuesta existe (RFC #52038, para los borradores DFlash) pero no está
+  implementada **[read]**.
+- El borrador MTP de Gemma 4 **no se puede reentrenar con `speculators`**: su "MTP finetuning" cubre las cabezas MTP que
+  vienen dentro del checkpoint (Qwen3-Next, Qwen3.5), no el `assistant` externo de Gemma 4 **[read]**.
+
+**Qué pasa hoy con un borrador y varios LoRA.** Funciona, y la salida sigue siendo la del modelo grande (§6.1), pero el
+borrador acierta menos en el terreno de cada experto: con el LoRA de la wiki, la aceptación en la posición 0 cae de 0,98
+a 0,58 y la aceleración de 2,73× a 1,74× **[ran] F0**. En la Mac, con el LoRA, el borrador no acelera **[ran] MAC**.
+
+**Cómo se consigue "un borrador ajustado por experto", según lo que exista:**
+
+| estrategia | qué cambia por pedido | ¿existe hoy? |
+|---|---|---|
+| **A. un borrador compartido**, entrenado con respuestas de todos los expertos | sólo el LoRA del grande | sí, con vLLM tal cual; falta entrenarlo (EAGLE-3 con `speculators`) |
+| **B. borrador base + un LoRA de borrador por experto** | el LoRA del grande **y** el del borrador | **no en vLLM** (haría falta modificar el componente que corre el borrador). **Sí se puede en nuestra pista Mac**: el mismo `HotLoRA` que envuelve las capas del grande puede envolver las del borrador |
+| **C. un borrador completo por experto** | todo el servidor (una instancia por experto, o reiniciar) | sí, pero no escala; sirve como techo |
+| **D. el MTP nativo reentrenado por experto** | igual que C | sin soporte en `speculators`; habría que escribir el entrenamiento |
+
+**Lo que estamos midiendo ahora:**
+- **F0b**: si la salida con el borrador es idéntica a la normal, con el motor en modo determinista.
+- **C0**: ¿alinear el borrador al experto devuelve la velocidad? Es la prueba más barata posible. El E4B de la wiki ya está
+  alineado: se entrenó con el mismo corpus que el LoRA del 12B, y en B4 el grande aceptó el 90 % de sus borradores. Se
+  fusiona su LoRA en los pesos y se usa como borrador (estrategia C, hecha con lo que ya existe).
+  - Si la aceptación sube y la velocidad también, alinear sirve.
+  - Si sube la aceptación pero no la velocidad, el E4B es un borrador demasiado caro, y hay que alinear uno liviano (A, B o D).
+
 ## 7. De un modelo a un sistema
 
 ### 7.1 La memoria: páginas de enunciados atómicos
@@ -393,7 +436,8 @@ fijo en el corpus que se memoriza; un modelo sin el prompt con el que se entren�
 
 | qué | estado | próximo paso |
 |---|---|---|
-| salida idéntica con especulativa | no establecida | repetir F0 con `VLLM_BATCH_INVARIANT=1` y un control |
+| salida idéntica con especulativa | no establecida | **F0b corriendo**: modo `VLLM_BATCH_INVARIANT=1` con un control |
+| un borrador ajustado por experto, en caliente | no existe en vLLM (un borrador por servidor, sin LoRA de borrador) | **C0 en cola**: ¿alinear devuelve la velocidad? Después A (vLLM) o B (pista Mac) — §6.5 |
 | el borrador con el LoRA activo | pierde aceptación en el dominio (1,74×) | estrategias A–D (§6.4), empezando por la más barata |
 | la pista Mac | **[ran]**: cambio en caliente en 2,9 µs, 8,4 GB; MTP sin ganancia con el LoRA (0,92–1,04×) | un drafter alineado al LoRA (§6.4, A–D); encontrar por qué el base en MLX entra en bucle con un prompt de sistema |
 | router aprendido | ninguno pasa | el rol es la ruta; queda abierto |
