@@ -11,7 +11,7 @@ ritual. Esta es la compuerta, y cada fila existe porque un número ya la pagó.
 ## La matemática que protege
 
 Un miembro es un delta sobre las siete proyecciones por bloque de la base,
-$y = xW + s\,(xA)B$ ([`FOUNDATIONS.md`](FOUNDATIONS.md) §4–§5). Con $W$ congelado,
+$y = xW + s\ (xA)B$ ([`FOUNDATIONS.md`](FOUNDATIONS.md) §4–§5). Con $W$ congelado,
 **un miembro cuyo texto servido nunca difiere del de la base está sirviendo
 $y = xW$** — el término delta ausente, diga lo que diga el log del motor. Eso es C18,
 y G1 es su test.
