@@ -1,0 +1,1128 @@
+(APIServer pid=3354) INFO 09-27 16:35:45 [api_utils.py:347] 
+(APIServer pid=3354) INFO 09-27 16:35:45 [api_utils.py:347]        █     █     █▄   ▄█
+(APIServer pid=3354) INFO 09-27 16:35:45 [api_utils.py:347]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.30.0
+(APIServer pid=3354) INFO 09-27 16:35:45 [api_utils.py:347]   █▄█▀ █     █     █     █  model   google/gemma-4-12B-it
+(APIServer pid=3354) INFO 09-27 16:35:45 [api_utils.py:347]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+(APIServer pid=3354) INFO 09-27 16:35:45 [api_utils.py:347] 
+(APIServer pid=3354) INFO 09-27 16:35:45 [api_utils.py:286] non-default args: {'model_tag': 'google/gemma-4-12B-it', 'lora_modules': [LoRAModulePath(name='wiki12b', path='adapters/wiki12b-walks-s0', base_model_name=None, is_3d_lora_weight=False)], 'model': 'google/gemma-4-12B-it', 'max_model_len': 4096, 'quantization': 'fp8', 'gpu_memory_utilization': 0.9, 'enable_lora': True, 'max_loras': 2}
+(APIServer pid=3354) Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+(APIServer pid=3354) INFO 09-27 16:36:03 [model.py:692] Resolved architecture: Gemma4UnifiedForConditionalGeneration
+(APIServer pid=3354) INFO 09-27 16:36:03 [model.py:2030] Using max model len 4096
+(APIServer pid=3354) [transformers] `SiglipImageProcessorFast` is deprecated. The `Fast` suffix for image processors has been removed; use `SiglipImageProcessor` instead.
+(APIServer pid=3354) INFO 09-27 16:36:34 [arg_utils.py:2961] Raising max_num_batched_tokens from 2048 to 2496 to accommodate 'video' input for prefix-LM model google/gemma-4-12B-it.
+(APIServer pid=3354) INFO 09-27 16:36:34 [scheduler.py:288] Chunked prefill is enabled with max_num_batched_tokens=2496.
+(APIServer pid=3354) INFO 09-27 16:36:34 [config.py:252] Gemma4 model has heterogeneous head dimensions {'sliding_attention': 256, 'full_attention': 512}. FA4 not available, forcing TRITON_ATTN backend.
+(APIServer pid=3354) INFO 09-27 16:36:36 [kernel.py:416] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+(APIServer pid=3354) WARNING 09-27 16:36:36 [cuda.py:351] Forcing --disable_chunked_mm_input for models with multimodal-bidirectional attention.
+(EngineCore pid=3900) INFO 09-27 16:37:14 [core.py:123] Initializing a V1 LLM engine (v0.30.0) with config: model='google/gemma-4-12B-it', speculative_config=None, tokenizer='google/gemma-4-12B-it', skip_tokenizer_init=False, tokenizer_mode=auto, revision=main, tokenizer_revision=main, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=4096, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=fp8, quantization_config=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=google/gemma-4-12B-it, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::qwen4_exp_ple_short_conv', 'vllm::qwen4_exp_qsa_with_output', 'vllm::linear_attention', 'vllm::qwen_gdn_attention_core', 'vllm::qwen_gdn_attention_core_fused_norm_packed', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [2496], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 272, 288, 304, 320, 336, 352, 368, 384, 400, 416, 432, 448, 464, 480, 496, 512], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 512, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native']), enable_flashinfer_autotune=True, enable_cutedsl_warmup=True, enable_jit_warmup=True, moe_backend='auto', sparse_indexer_topk_backend='auto', linear_backend='auto', linear_backend_per_quant=None)
+(EngineCore pid=3900) [transformers] `SiglipImageProcessorFast` is deprecated. The `Fast` suffix for image processors has been removed; use `SiglipImageProcessor` instead.
+(EngineCore pid=3900) INFO 09-27 16:37:20 [parallel_state.py:1827] world_size=1 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_bb32c543d40849d3b45734eb2419e5d3 backend=nccl
+(EngineCore pid=3900) INFO 09-27 16:37:20 [parallel_state.py:2267] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, ETP rank 0, EP rank N/A, EPLB rank N/A
+(EngineCore pid=3900) INFO 09-27 16:37:20 [gpu_worker.py:441] Using V2 Model Runner
+(EngineCore pid=3900) INFO 09-27 16:37:22 [model_runner.py:396] Loading model from scratch...
+(EngineCore pid=3900) INFO 09-27 16:37:22 [__init__.py:758] Selected CutlassFP8ScaledMMLinearKernel for Fp8PerTensorOnlineLinearMethod
+(EngineCore pid=3900) Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+(EngineCore pid=3900) INFO 09-27 16:37:23 [kernel.py:416] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+(EngineCore pid=3900) INFO 09-27 16:37:23 [cuda.py:478] Using AttentionBackendEnum.TRITON_ATTN backend.
+(EngineCore pid=3900) INFO 09-27 16:37:23 [cuda.py:478] Using AttentionBackendEnum.TRITON_ATTN backend.
+(APIServer pid=3354) INFO 09-27 16:37:49 [base.py:261] Multi-modal warmup completed in 47.259s
+(APIServer pid=3354) INFO 09-27 16:37:50 [base.py:261] Readonly multi-modal warmup completed in 0.416s
+(EngineCore pid=3900) INFO 09-27 16:38:33 [weight_utils.py:558] Time spent downloading weights for google/gemma-4-12B-it: 66.857155 seconds
+(EngineCore pid=3900) INFO 09-27 16:38:33 [weight_utils.py:895] Filesystem type for checkpoints: OVERLAY. Checkpoint size: 22.28 GiB. Available RAM: 75.47 GiB.
+(EngineCore pid=3900) INFO 09-27 16:38:33 [weight_utils.py:918] Auto-prefetch is disabled because the filesystem (OVERLAY) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+(EngineCore pid=3900) Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+(EngineCore pid=3900) Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:06<00:00,  6.46s/it]
+(EngineCore pid=3900) Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:06<00:00,  6.46s/it]
+(EngineCore pid=3900) 
+(EngineCore pid=3900) INFO 09-27 16:38:40 [default_loader.py:430] Loading weights took 6.46 seconds
+(EngineCore pid=3900) INFO 09-27 16:38:40 [punica_selector.py:20] Using PunicaWrapperGPU.
+(EngineCore pid=3900) INFO 09-27 16:38:40 [model_manager.py:211] Gemma4UnifiedForConditionalGeneration supports adding LoRA to the tower modules. If needed, please set `enable_tower_connector_lora=True`.
+(EngineCore pid=3900) WARNING 09-27 16:38:40 [model_manager.py:442] Regarding Gemma4UnifiedForConditionalGeneration, no matching PunicaWrapper is found; vision_embedder.patch_dense will be ignored.
+(EngineCore pid=3900) WARNING 09-27 16:38:40 [model_manager.py:442] Regarding Gemma4UnifiedForConditionalGeneration, no matching PunicaWrapper is found; embed_vision.embedding_projection will be ignored.
+(EngineCore pid=3900) WARNING 09-27 16:38:40 [model_manager.py:442] Regarding Gemma4UnifiedForConditionalGeneration, no matching PunicaWrapper is found; embed_audio.embedding_projection will be ignored.
+(EngineCore pid=3900) INFO 09-27 16:38:41 [model_runner.py:428] Model loading took 13.11 GiB memory and 80.097317 seconds
+(EngineCore pid=3900) INFO 09-27 16:38:41 [topk_topp_sampler.py:78] Using FlashInfer for top-p & top-k sampling.
+(EngineCore pid=3900) INFO 09-27 16:38:41 [utils.py:320] Using LBNHC KV cache layout.
+(EngineCore pid=3900) INFO 09-27 16:39:26 [encoder_runner.py:131] Encoder cache will be initialized with a budget of 2496 tokens, and profiled with 1 video items of the maximum feature size.
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366] EngineCore failed to start.
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366] Traceback (most recent call last):
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 1328, in run_engine_core
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 1085, in __init__
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     super().__init__(
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     ~~~~~~~~~~~~~~~~^
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]         vllm_config,
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]         ^^^^^^^^^^^^
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     ...<3 lines>...
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]         internal_dp_balancing,
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]         ^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     )
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     ^
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 145, in __init__
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     kv_cache_config = self._initialize_kv_caches(vllm_config)
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 308, in _initialize_kv_caches
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     available_gpu_memory = self.model_executor.determine_available_memory()
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/executor/abstract.py", line 149, in determine_available_memory
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     return self.collective_rpc("determine_available_memory")
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/executor/uniproc_executor.py", line 103, in collective_rpc
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     result = run_method(self.driver_worker, method, args, kwargs)
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/serial_utils.py", line 510, in run_method
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu_worker.py", line 572, in determine_available_memory
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     self.model_runner.profile_run()
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu/model_runner.py", line 951, in profile_run
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     self.model_state.encoder_runner.profile_encoder_cache(
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]         dummy_mm_inputs, mm_budget
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     )
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     ^
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu/mm/encoder_runner.py", line 139, in profile_encoder_cache
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     dummy_encoder_outputs = self.execute_mm_encoder(dummy_mm_inputs)
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu/mm/encoder_runner.py", line 168, in execute_mm_encoder
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     else self.model.embed_multimodal(**mm_kwargs_batch)
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]          ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/models/gemma4_mm.py", line 1647, in embed_multimodal
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     self._process_video_input(multimodal_input)
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/models/gemma4_unified.py", line 406, in _process_video_input
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     embedded = self.vision_embedder(pv, pp)
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     return self._call_impl(*args, **kwargs)
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     return forward_call(*args, **kwargs)
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/models/gemma4_unified.py", line 128, in forward
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     hidden_states, _ = self.patch_dense(hidden_states)
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]                        ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     return self._call_impl(*args, **kwargs)
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     return forward_call(*args, **kwargs)
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/layers/linear.py", line 606, in forward
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     output_parallel = self.quant_method.apply(self, input_, bias)
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/layers/quantization/online/fp8.py", line 257, in apply
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     return self.fp8_linear.apply_weights(layer, x, bias)
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/kernels/linear/scaled_mm/ScaledMMLinearKernel.py", line 162, in apply_weights
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     return self.apply_scaled_mm(
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]            ~~~~~~~~~~~~~~~~~~~~^
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]         A=x_2d_q,
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]         ^^^^^^^^^
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     ...<5 lines>...
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]         output_shape=output_shape,
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     )
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     ^
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/kernels/linear/scaled_mm/cutlass.py", line 265, in apply_scaled_mm
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     output = ops.cutlass_scaled_mm(
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]         A, B, out_dtype=out_dtype, scale_a=As, scale_b=Bs, bias=bias
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     )
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/_custom_ops.py", line 828, in cutlass_scaled_mm
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     torch.ops._C.cutlass_scaled_mm(out, a, b, scale_a, scale_b, bias)
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/_ops.py", line 1279, in __call__
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]     return self._op(*args, **kwargs)
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366]            ~~~~~~~~^^^^^^^^^^^^^^^^^
+(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366] RuntimeError: cutlass_scaled_mm_sm80_epilogue, /workspace/csrc/libtorch_stable/quantization/w8a8/cutlass/scaled_mm_c2x.cu:89, 
+(EngineCore pid=3900) Process EngineCore:
+(EngineCore pid=3900) Traceback (most recent call last):
+(EngineCore pid=3900)   File "/usr/lib/python3.13/multiprocessing/process.py", line 313, in _bootstrap
+(EngineCore pid=3900)     self.run()
+(EngineCore pid=3900)     ~~~~~~~~^^
+(EngineCore pid=3900)   File "/usr/lib/python3.13/multiprocessing/process.py", line 108, in run
+(EngineCore pid=3900)     self._target(*self._args, **self._kwargs)
+(EngineCore pid=3900)     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 1370, in run_engine_core
+(EngineCore pid=3900)     raise e
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 1328, in run_engine_core
+(EngineCore pid=3900)     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=3900)     return func(*args, **kwargs)
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 1085, in __init__
+(EngineCore pid=3900)     super().__init__(
+(EngineCore pid=3900)     ~~~~~~~~~~~~~~~~^
+(EngineCore pid=3900)         vllm_config,
+(EngineCore pid=3900)         ^^^^^^^^^^^^
+(EngineCore pid=3900)     ...<3 lines>...
+(EngineCore pid=3900)         internal_dp_balancing,
+(EngineCore pid=3900)         ^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=3900)     )
+(EngineCore pid=3900)     ^
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 145, in __init__
+(EngineCore pid=3900)     kv_cache_config = self._initialize_kv_caches(vllm_config)
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=3900)     return func(*args, **kwargs)
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 308, in _initialize_kv_caches
+(EngineCore pid=3900)     available_gpu_memory = self.model_executor.determine_available_memory()
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/executor/abstract.py", line 149, in determine_available_memory
+(EngineCore pid=3900)     return self.collective_rpc("determine_available_memory")
+(EngineCore pid=3900)            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/executor/uniproc_executor.py", line 103, in collective_rpc
+(EngineCore pid=3900)     result = run_method(self.driver_worker, method, args, kwargs)
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/serial_utils.py", line 510, in run_method
+(EngineCore pid=3900)     return func(*args, **kwargs)
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(EngineCore pid=3900)     return func(*args, **kwargs)
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu_worker.py", line 572, in determine_available_memory
+(EngineCore pid=3900)     self.model_runner.profile_run()
+(EngineCore pid=3900)     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(EngineCore pid=3900)     return func(*args, **kwargs)
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu/model_runner.py", line 951, in profile_run
+(EngineCore pid=3900)     self.model_state.encoder_runner.profile_encoder_cache(
+(EngineCore pid=3900)     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+(EngineCore pid=3900)         dummy_mm_inputs, mm_budget
+(EngineCore pid=3900)         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=3900)     )
+(EngineCore pid=3900)     ^
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(EngineCore pid=3900)     return func(*args, **kwargs)
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu/mm/encoder_runner.py", line 139, in profile_encoder_cache
+(EngineCore pid=3900)     dummy_encoder_outputs = self.execute_mm_encoder(dummy_mm_inputs)
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(EngineCore pid=3900)     return func(*args, **kwargs)
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu/mm/encoder_runner.py", line 168, in execute_mm_encoder
+(EngineCore pid=3900)     else self.model.embed_multimodal(**mm_kwargs_batch)
+(EngineCore pid=3900)          ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/models/gemma4_mm.py", line 1647, in embed_multimodal
+(EngineCore pid=3900)     self._process_video_input(multimodal_input)
+(EngineCore pid=3900)     ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/models/gemma4_unified.py", line 406, in _process_video_input
+(EngineCore pid=3900)     embedded = self.vision_embedder(pv, pp)
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+(EngineCore pid=3900)     return self._call_impl(*args, **kwargs)
+(EngineCore pid=3900)            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+(EngineCore pid=3900)     return forward_call(*args, **kwargs)
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/models/gemma4_unified.py", line 128, in forward
+(EngineCore pid=3900)     hidden_states, _ = self.patch_dense(hidden_states)
+(EngineCore pid=3900)                        ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+(EngineCore pid=3900)     return self._call_impl(*args, **kwargs)
+(EngineCore pid=3900)            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+(EngineCore pid=3900)     return forward_call(*args, **kwargs)
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/layers/linear.py", line 606, in forward
+(EngineCore pid=3900)     output_parallel = self.quant_method.apply(self, input_, bias)
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/layers/quantization/online/fp8.py", line 257, in apply
+(EngineCore pid=3900)     return self.fp8_linear.apply_weights(layer, x, bias)
+(EngineCore pid=3900)            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/kernels/linear/scaled_mm/ScaledMMLinearKernel.py", line 162, in apply_weights
+(EngineCore pid=3900)     return self.apply_scaled_mm(
+(EngineCore pid=3900)            ~~~~~~~~~~~~~~~~~~~~^
+(EngineCore pid=3900)         A=x_2d_q,
+(EngineCore pid=3900)         ^^^^^^^^^
+(EngineCore pid=3900)     ...<5 lines>...
+(EngineCore pid=3900)         output_shape=output_shape,
+(EngineCore pid=3900)         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=3900)     )
+(EngineCore pid=3900)     ^
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/kernels/linear/scaled_mm/cutlass.py", line 265, in apply_scaled_mm
+(EngineCore pid=3900)     output = ops.cutlass_scaled_mm(
+(EngineCore pid=3900)         A, B, out_dtype=out_dtype, scale_a=As, scale_b=Bs, bias=bias
+(EngineCore pid=3900)     )
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/vllm/_custom_ops.py", line 828, in cutlass_scaled_mm
+(EngineCore pid=3900)     torch.ops._C.cutlass_scaled_mm(out, a, b, scale_a, scale_b, bias)
+(EngineCore pid=3900)     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=3900)   File "/usr/local/lib/python3.13/dist-packages/torch/_ops.py", line 1279, in __call__
+(EngineCore pid=3900)     return self._op(*args, **kwargs)
+(EngineCore pid=3900)            ~~~~~~~~^^^^^^^^^^^^^^^^^
+(EngineCore pid=3900) RuntimeError: cutlass_scaled_mm_sm80_epilogue, /workspace/csrc/libtorch_stable/quantization/w8a8/cutlass/scaled_mm_c2x.cu:89, 
+[rank0]:[W927 16:39:32.758825406 ProcessGroupNCCL.cpp:1624] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+(APIServer pid=3354) INFO 09-27 16:39:33 [utils.py:632] [shutdown] Process manager: send sigterm to process EngineCore
+(APIServer pid=3354) Traceback (most recent call last):
+(APIServer pid=3354)   File "/usr/local/bin/vllm", line 8, in <module>
+(APIServer pid=3354)     sys.exit(main())
+(APIServer pid=3354)              ~~~~^^
+(APIServer pid=3354)   File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/cli/main.py", line 106, in main
+(APIServer pid=3354)     args.dispatch_function(args)
+(APIServer pid=3354)     ~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+(APIServer pid=3354)   File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/cli/serve.py", line 154, in cmd
+(APIServer pid=3354)     uvloop.run(run_server(args))
+(APIServer pid=3354)     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+(APIServer pid=3354)   File "/usr/local/lib/python3.13/dist-packages/uvloop/__init__.py", line 96, in run
+(APIServer pid=3354)     return __asyncio.run(
+(APIServer pid=3354)            ~~~~~~~~~~~~~^
+(APIServer pid=3354)         wrapper(),
+(APIServer pid=3354)         ^^^^^^^^^^
+(APIServer pid=3354)     ...<2 lines>...
+(APIServer pid=3354)         **run_kwargs
+(APIServer pid=3354)         ^^^^^^^^^^^^
+(APIServer pid=3354)     )
+(APIServer pid=3354)     ^
+(APIServer pid=3354)   File "/usr/lib/python3.13/asyncio/runners.py", line 196, in run
+(APIServer pid=3354)     return runner.run(main)
+(APIServer pid=3354)            ~~~~~~~~~~^^^^^^
+(APIServer pid=3354)   File "/usr/lib/python3.13/asyncio/runners.py", line 119, in run
+(APIServer pid=3354)     return self._loop.run_until_complete(task)
+(APIServer pid=3354)            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+(APIServer pid=3354)   File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+(APIServer pid=3354)   File "/usr/local/lib/python3.13/dist-packages/uvloop/__init__.py", line 48, in wrapper
+(APIServer pid=3354)     return await main
+(APIServer pid=3354)            ^^^^^^^^^^
+(APIServer pid=3354)   File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/launchers/api_server/entry.py", line 176, in run_server
+(APIServer pid=3354)     await run_server_worker(listen_address, sock, args, **uvicorn_kwargs)
+(APIServer pid=3354)   File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/launchers/api_server/entry.py", line 190, in run_server_worker
+(APIServer pid=3354)     async with build_async_engine_client(
+(APIServer pid=3354)                ~~~~~~~~~~~~~~~~~~~~~~~~~^
+(APIServer pid=3354)         args,
+(APIServer pid=3354)         ^^^^^
+(APIServer pid=3354)         client_config=client_config,
+(APIServer pid=3354)         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=3354)     ) as engine_client:
+(APIServer pid=3354)     ^
+(APIServer pid=3354)   File "/usr/lib/python3.13/contextlib.py", line 214, in __aenter__
+(APIServer pid=3354)     return await anext(self.gen)
+(APIServer pid=3354)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=3354)   File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/launchers/api_server/entry.py", line 58, in build_async_engine_client
+(APIServer pid=3354)     async with build_async_engine_client_from_engine_args(
+(APIServer pid=3354)                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+(APIServer pid=3354)         engine_args,
+(APIServer pid=3354)         ^^^^^^^^^^^^
+(APIServer pid=3354)         usage_context=usage_context,
+(APIServer pid=3354)         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=3354)         client_config=client_config,
+(APIServer pid=3354)         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=3354)     ) as engine:
+(APIServer pid=3354)     ^
+(APIServer pid=3354)   File "/usr/lib/python3.13/contextlib.py", line 214, in __aenter__
+(APIServer pid=3354)     return await anext(self.gen)
+(APIServer pid=3354)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=3354)   File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/launchers/api_server/entry.py", line 94, in build_async_engine_client_from_engine_args
+(APIServer pid=3354)     async_llm = AsyncLLM.from_vllm_config(
+(APIServer pid=3354)         vllm_config=vllm_config,
+(APIServer pid=3354)     ...<6 lines>...
+(APIServer pid=3354)         client_index=client_index,
+(APIServer pid=3354)     )
+(APIServer pid=3354)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/async_llm.py", line 235, in from_vllm_config
+(APIServer pid=3354)     return cls(
+(APIServer pid=3354)         vllm_config=vllm_config,
+(APIServer pid=3354)     ...<9 lines>...
+(APIServer pid=3354)         client_index=client_index,
+(APIServer pid=3354)     )
+(APIServer pid=3354)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/async_llm.py", line 169, in __init__
+(APIServer pid=3354)     self.engine_core = EngineCoreClient.make_async_mp_client(
+(APIServer pid=3354)                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+(APIServer pid=3354)         vllm_config=vllm_config,
+(APIServer pid=3354)         ^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=3354)     ...<5 lines>...
+(APIServer pid=3354)         renderer=renderer,
+(APIServer pid=3354)         ^^^^^^^^^^^^^^^^^^
+(APIServer pid=3354)     )
+(APIServer pid=3354)     ^
+(APIServer pid=3354)   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(APIServer pid=3354)     return func(*args, **kwargs)
+(APIServer pid=3354)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core_client.py", line 163, in make_async_mp_client
+(APIServer pid=3354)     return AsyncMPClient(
+(APIServer pid=3354)         *client_args,
+(APIServer pid=3354)         renderer=renderer,
+(APIServer pid=3354)     )
+(APIServer pid=3354)   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(APIServer pid=3354)     return func(*args, **kwargs)
+(APIServer pid=3354)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core_client.py", line 1060, in __init__
+(APIServer pid=3354)     super().__init__(
+(APIServer pid=3354)     ~~~~~~~~~~~~~~~~^
+(APIServer pid=3354)         asyncio_mode=True,
+(APIServer pid=3354)         ^^^^^^^^^^^^^^^^^^
+(APIServer pid=3354)     ...<4 lines>...
+(APIServer pid=3354)         renderer=renderer,
+(APIServer pid=3354)         ^^^^^^^^^^^^^^^^^^
+(APIServer pid=3354)     )
+(APIServer pid=3354)     ^
+(APIServer pid=3354)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core_client.py", line 656, in __init__
+(APIServer pid=3354)     with launch_core_engines(
+(APIServer pid=3354)          ~~~~~~~~~~~~~~~~~~~^
+(APIServer pid=3354)         vllm_config, executor_class, log_stats, addresses
+(APIServer pid=3354)         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=3354)     ) as engine_launch:
+(APIServer pid=3354)     ^
+(APIServer pid=3354)   File "/usr/lib/python3.13/contextlib.py", line 148, in __exit__
+(APIServer pid=3354)     next(self.gen)
+(APIServer pid=3354)     ~~~~^^^^^^^^^^
+(APIServer pid=3354)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/utils.py", line 1240, in launch_core_engines
+(APIServer pid=3354)     wait_for_engine_startup(
+(APIServer pid=3354)     ~~~~~~~~~~~~~~~~~~~~~~~^
+(APIServer pid=3354)         handshake_socket,
+(APIServer pid=3354)         ^^^^^^^^^^^^^^^^^
+(APIServer pid=3354)     ...<4 lines>...
+(APIServer pid=3354)         launch,
+(APIServer pid=3354)         ^^^^^^^
+(APIServer pid=3354)     )
+(APIServer pid=3354)     ^
+(APIServer pid=3354)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/utils.py", line 1320, in wait_for_engine_startup
+(APIServer pid=3354)     raise RuntimeError(
+(APIServer pid=3354)     ...<8 lines>...
+(APIServer pid=3354)     )
+(APIServer pid=3354) RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}
+(APIServer pid=4824) INFO 09-27 16:39:53 [api_utils.py:347] 
+(APIServer pid=4824) INFO 09-27 16:39:53 [api_utils.py:347]        █     █     █▄   ▄█
+(APIServer pid=4824) INFO 09-27 16:39:53 [api_utils.py:347]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.30.0
+(APIServer pid=4824) INFO 09-27 16:39:53 [api_utils.py:347]   █▄█▀ █     █     █     █  model   google/gemma-4-12B-it
+(APIServer pid=4824) INFO 09-27 16:39:53 [api_utils.py:347]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+(APIServer pid=4824) INFO 09-27 16:39:53 [api_utils.py:347] 
+(APIServer pid=4824) INFO 09-27 16:39:53 [api_utils.py:286] non-default args: {'model_tag': 'google/gemma-4-12B-it', 'lora_modules': [LoRAModulePath(name='wiki12b', path='adapters/wiki12b-walks-s0', base_model_name=None, is_3d_lora_weight=False)], 'model': 'google/gemma-4-12B-it', 'max_model_len': 4096, 'quantization': 'fp8', 'gpu_memory_utilization': 0.9, 'enable_lora': True, 'max_loras': 2, 'speculative_config': {'method': 'mtp', 'model': 'google/gemma-4-12B-it-assistant', 'num_speculative_tokens': 4}}
+(APIServer pid=4824) INFO 09-27 16:39:55 [model.py:692] Resolved architecture: Gemma4UnifiedForConditionalGeneration
+(APIServer pid=4824) INFO 09-27 16:39:55 [model.py:2030] Using max model len 4096
+(APIServer pid=4824) [transformers] `SiglipImageProcessorFast` is deprecated. The `Fast` suffix for image processors has been removed; use `SiglipImageProcessor` instead.
+(APIServer pid=4824) INFO 09-27 16:40:15 [model.py:692] Resolved architecture: Gemma4MTPModel
+(APIServer pid=4824) INFO 09-27 16:40:15 [model.py:2030] Using max model len 262144
+(APIServer pid=4824) WARNING 09-27 16:40:15 [speculative.py:1361] Enabling num_speculative_tokens > 1 will run multiple times of forward on same MTP layer,which may result in lower acceptance rate
+(APIServer pid=4824) INFO 09-27 16:40:15 [speculative.py:1651] Overriding draft model max model len from 262144 to 4096
+(APIServer pid=4824) Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+(APIServer pid=4824) INFO 09-27 16:40:41 [arg_utils.py:2961] Raising max_num_batched_tokens from 2048 to 2496 to accommodate 'video' input for prefix-LM model google/gemma-4-12B-it.
+(APIServer pid=4824) INFO 09-27 16:40:41 [scheduler.py:288] Chunked prefill is enabled with max_num_batched_tokens=2496.
+(APIServer pid=4824) INFO 09-27 16:40:41 [config.py:252] Gemma4 model has heterogeneous head dimensions {'sliding_attention': 256, 'full_attention': 512}. FA4 not available, forcing TRITON_ATTN backend.
+(APIServer pid=4824) INFO 09-27 16:40:42 [kernel.py:416] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+(APIServer pid=4824) WARNING 09-27 16:40:42 [vllm.py:2135] max_num_scheduled_tokens is set to 2496 based on the speculative decoding settings. This may lead to suboptimal performance. Consider increasing max_num_batched_tokens to accommodate the additional draft token slots, or decrease num_speculative_tokens.
+(APIServer pid=4824) WARNING 09-27 16:40:42 [cuda.py:351] Forcing --disable_chunked_mm_input for models with multimodal-bidirectional attention.
+(EngineCore pid=5358) INFO 09-27 16:41:21 [core.py:123] Initializing a V1 LLM engine (v0.30.0) with config: model='google/gemma-4-12B-it', speculative_config=SpeculativeConfig(method='mtp', model='google/gemma-4-12B-it-assistant', num_spec_tokens=4), tokenizer='google/gemma-4-12B-it', skip_tokenizer_init=False, tokenizer_mode=auto, revision=main, tokenizer_revision=main, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=4096, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=fp8, quantization_config=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=google/gemma-4-12B-it, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::qwen4_exp_ple_short_conv', 'vllm::qwen4_exp_qsa_with_output', 'vllm::linear_attention', 'vllm::qwen_gdn_attention_core', 'vllm::qwen_gdn_attention_core_fused_norm_packed', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [2496], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 5, 8, 10, 16, 20, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 272, 280, 288, 304, 320, 336, 352, 360, 368, 384, 400, 416, 432, 440, 448, 464, 480, 496, 512], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 512, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native']), enable_flashinfer_autotune=True, enable_cutedsl_warmup=True, enable_jit_warmup=True, moe_backend='auto', sparse_indexer_topk_backend='auto', linear_backend='auto', linear_backend_per_quant=None)
+(EngineCore pid=5358) [transformers] `SiglipImageProcessorFast` is deprecated. The `Fast` suffix for image processors has been removed; use `SiglipImageProcessor` instead.
+(EngineCore pid=5358) INFO 09-27 16:41:27 [parallel_state.py:1827] world_size=1 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_c6f007b8161c4fd9bb2bca4b0cb4024d backend=nccl
+(EngineCore pid=5358) INFO 09-27 16:41:27 [parallel_state.py:2267] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, ETP rank 0, EP rank N/A, EPLB rank N/A
+(EngineCore pid=5358) INFO 09-27 16:41:27 [gpu_worker.py:441] Using V2 Model Runner
+(EngineCore pid=5358) INFO 09-27 16:41:29 [model_runner.py:396] Loading model from scratch...
+(EngineCore pid=5358) INFO 09-27 16:41:29 [__init__.py:758] Selected CutlassFP8ScaledMMLinearKernel for Fp8PerTensorOnlineLinearMethod
+(EngineCore pid=5358) Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+(EngineCore pid=5358) INFO 09-27 16:41:31 [kernel.py:416] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+(EngineCore pid=5358) WARNING 09-27 16:41:31 [vllm.py:2135] max_num_scheduled_tokens is set to 2496 based on the speculative decoding settings. This may lead to suboptimal performance. Consider increasing max_num_batched_tokens to accommodate the additional draft token slots, or decrease num_speculative_tokens.
+(EngineCore pid=5358) INFO 09-27 16:41:31 [cuda.py:478] Using AttentionBackendEnum.TRITON_ATTN backend.
+(EngineCore pid=5358) INFO 09-27 16:41:31 [cuda.py:478] Using AttentionBackendEnum.TRITON_ATTN backend.
+(EngineCore pid=5358) INFO 09-27 16:41:32 [weight_utils.py:895] Filesystem type for checkpoints: OVERLAY. Checkpoint size: 22.28 GiB. Available RAM: 75.80 GiB.
+(EngineCore pid=5358) INFO 09-27 16:41:32 [weight_utils.py:918] Auto-prefetch is disabled because the filesystem (OVERLAY) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+(EngineCore pid=5358) Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+(EngineCore pid=5358) Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:06<00:00,  6.53s/it]
+(EngineCore pid=5358) Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:06<00:00,  6.53s/it]
+(EngineCore pid=5358) 
+(EngineCore pid=5358) INFO 09-27 16:41:39 [default_loader.py:430] Loading weights took 6.54 seconds
+(EngineCore pid=5358) INFO 09-27 16:41:40 [punica_selector.py:20] Using PunicaWrapperGPU.
+(EngineCore pid=5358) INFO 09-27 16:41:40 [model_manager.py:211] Gemma4UnifiedForConditionalGeneration supports adding LoRA to the tower modules. If needed, please set `enable_tower_connector_lora=True`.
+(EngineCore pid=5358) WARNING 09-27 16:41:40 [model_manager.py:442] Regarding Gemma4UnifiedForConditionalGeneration, no matching PunicaWrapper is found; vision_embedder.patch_dense will be ignored.
+(EngineCore pid=5358) WARNING 09-27 16:41:40 [model_manager.py:442] Regarding Gemma4UnifiedForConditionalGeneration, no matching PunicaWrapper is found; embed_vision.embedding_projection will be ignored.
+(EngineCore pid=5358) WARNING 09-27 16:41:40 [model_manager.py:442] Regarding Gemma4UnifiedForConditionalGeneration, no matching PunicaWrapper is found; embed_audio.embedding_projection will be ignored.
+(EngineCore pid=5358) INFO 09-27 16:41:41 [kernel.py:416] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+(EngineCore pid=5358) INFO 09-27 16:41:41 [kernel.py:416] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+(EngineCore pid=5358) INFO 09-27 16:41:41 [cuda.py:478] Using AttentionBackendEnum.TRITON_ATTN backend.
+(EngineCore pid=5358) INFO 09-27 16:41:41 [cuda.py:478] Using AttentionBackendEnum.TRITON_ATTN backend.
+(EngineCore pid=5358) INFO 09-27 16:41:49 [weight_utils.py:558] Time spent downloading weights for google/gemma-4-12B-it-assistant: 6.498034 seconds
+(EngineCore pid=5358) INFO 09-27 16:41:49 [weight_utils.py:895] Filesystem type for checkpoints: OVERLAY. Checkpoint size: 0.79 GiB. Available RAM: 75.43 GiB.
+(EngineCore pid=5358) Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+(EngineCore pid=5358) Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:00<00:00,  4.43it/s]
+(EngineCore pid=5358) Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:00<00:00,  4.43it/s]
+(EngineCore pid=5358) 
+(EngineCore pid=5358) INFO 09-27 16:41:49 [default_loader.py:430] Loading weights took 0.24 seconds
+(EngineCore pid=5358) INFO 09-27 16:41:49 [speculator.py:130] Gemma4 MTP: draft layer 0 (sliding_attention) -> language_model.model.layers.46.self_attn.attn
+(EngineCore pid=5358) INFO 09-27 16:41:49 [speculator.py:130] Gemma4 MTP: draft layer 1 (sliding_attention) -> language_model.model.layers.46.self_attn.attn
+(EngineCore pid=5358) INFO 09-27 16:41:49 [speculator.py:130] Gemma4 MTP: draft layer 2 (sliding_attention) -> language_model.model.layers.46.self_attn.attn
+(EngineCore pid=5358) INFO 09-27 16:41:49 [speculator.py:130] Gemma4 MTP: draft layer 3 (full_attention) -> language_model.model.layers.47.self_attn.attn
+(EngineCore pid=5358) WARNING 09-27 16:41:49 [speculator.py:235] Draft model Gemma4MTP does not support external multimodal embeddings. Embeddings from the target model will not be passed to the drafter; using text-only draft inputs instead.
+(EngineCore pid=5358) INFO 09-27 16:41:50 [model_runner.py:428] Model loading took 13.89 GiB memory and 21.366116 seconds
+(EngineCore pid=5358) INFO 09-27 16:41:50 [topk_topp_sampler.py:78] Using FlashInfer for top-p & top-k sampling.
+(EngineCore pid=5358) INFO 09-27 16:41:50 [utils.py:320] Using LBNHC KV cache layout.
+(APIServer pid=4824) INFO 09-27 16:41:53 [base.py:261] Multi-modal warmup completed in 43.999s
+(APIServer pid=4824) INFO 09-27 16:41:53 [base.py:261] Readonly multi-modal warmup completed in 0.216s
+(EngineCore pid=5358) INFO 09-27 16:42:35 [encoder_runner.py:131] Encoder cache will be initialized with a budget of 2496 tokens, and profiled with 1 video items of the maximum feature size.
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366] EngineCore failed to start.
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366] Traceback (most recent call last):
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 1328, in run_engine_core
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 1085, in __init__
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     super().__init__(
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     ~~~~~~~~~~~~~~~~^
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]         vllm_config,
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]         ^^^^^^^^^^^^
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     ...<3 lines>...
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]         internal_dp_balancing,
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]         ^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     )
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     ^
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 145, in __init__
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     kv_cache_config = self._initialize_kv_caches(vllm_config)
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 308, in _initialize_kv_caches
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     available_gpu_memory = self.model_executor.determine_available_memory()
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/executor/abstract.py", line 149, in determine_available_memory
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     return self.collective_rpc("determine_available_memory")
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/executor/uniproc_executor.py", line 103, in collective_rpc
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     result = run_method(self.driver_worker, method, args, kwargs)
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/serial_utils.py", line 510, in run_method
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu_worker.py", line 572, in determine_available_memory
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     self.model_runner.profile_run()
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu/model_runner.py", line 951, in profile_run
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     self.model_state.encoder_runner.profile_encoder_cache(
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]         dummy_mm_inputs, mm_budget
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     )
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     ^
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu/mm/encoder_runner.py", line 139, in profile_encoder_cache
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     dummy_encoder_outputs = self.execute_mm_encoder(dummy_mm_inputs)
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu/mm/encoder_runner.py", line 168, in execute_mm_encoder
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     else self.model.embed_multimodal(**mm_kwargs_batch)
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]          ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/models/gemma4_mm.py", line 1647, in embed_multimodal
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     self._process_video_input(multimodal_input)
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/models/gemma4_unified.py", line 406, in _process_video_input
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     embedded = self.vision_embedder(pv, pp)
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     return self._call_impl(*args, **kwargs)
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     return forward_call(*args, **kwargs)
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/models/gemma4_unified.py", line 128, in forward
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     hidden_states, _ = self.patch_dense(hidden_states)
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]                        ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     return self._call_impl(*args, **kwargs)
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     return forward_call(*args, **kwargs)
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/layers/linear.py", line 606, in forward
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     output_parallel = self.quant_method.apply(self, input_, bias)
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/layers/quantization/online/fp8.py", line 257, in apply
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     return self.fp8_linear.apply_weights(layer, x, bias)
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/kernels/linear/scaled_mm/ScaledMMLinearKernel.py", line 162, in apply_weights
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     return self.apply_scaled_mm(
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]            ~~~~~~~~~~~~~~~~~~~~^
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]         A=x_2d_q,
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]         ^^^^^^^^^
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     ...<5 lines>...
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]         output_shape=output_shape,
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     )
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     ^
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/kernels/linear/scaled_mm/cutlass.py", line 265, in apply_scaled_mm
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     output = ops.cutlass_scaled_mm(
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]         A, B, out_dtype=out_dtype, scale_a=As, scale_b=Bs, bias=bias
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     )
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/_custom_ops.py", line 828, in cutlass_scaled_mm
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     torch.ops._C.cutlass_scaled_mm(out, a, b, scale_a, scale_b, bias)
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/_ops.py", line 1279, in __call__
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]     return self._op(*args, **kwargs)
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366]            ~~~~~~~~^^^^^^^^^^^^^^^^^
+(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366] RuntimeError: cutlass_scaled_mm_sm80_epilogue, /workspace/csrc/libtorch_stable/quantization/w8a8/cutlass/scaled_mm_c2x.cu:89, 
+(EngineCore pid=5358) Process EngineCore:
+(EngineCore pid=5358) Traceback (most recent call last):
+(EngineCore pid=5358)   File "/usr/lib/python3.13/multiprocessing/process.py", line 313, in _bootstrap
+(EngineCore pid=5358)     self.run()
+(EngineCore pid=5358)     ~~~~~~~~^^
+(EngineCore pid=5358)   File "/usr/lib/python3.13/multiprocessing/process.py", line 108, in run
+(EngineCore pid=5358)     self._target(*self._args, **self._kwargs)
+(EngineCore pid=5358)     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 1370, in run_engine_core
+(EngineCore pid=5358)     raise e
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 1328, in run_engine_core
+(EngineCore pid=5358)     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=5358)     return func(*args, **kwargs)
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 1085, in __init__
+(EngineCore pid=5358)     super().__init__(
+(EngineCore pid=5358)     ~~~~~~~~~~~~~~~~^
+(EngineCore pid=5358)         vllm_config,
+(EngineCore pid=5358)         ^^^^^^^^^^^^
+(EngineCore pid=5358)     ...<3 lines>...
+(EngineCore pid=5358)         internal_dp_balancing,
+(EngineCore pid=5358)         ^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=5358)     )
+(EngineCore pid=5358)     ^
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 145, in __init__
+(EngineCore pid=5358)     kv_cache_config = self._initialize_kv_caches(vllm_config)
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=5358)     return func(*args, **kwargs)
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 308, in _initialize_kv_caches
+(EngineCore pid=5358)     available_gpu_memory = self.model_executor.determine_available_memory()
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/executor/abstract.py", line 149, in determine_available_memory
+(EngineCore pid=5358)     return self.collective_rpc("determine_available_memory")
+(EngineCore pid=5358)            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/executor/uniproc_executor.py", line 103, in collective_rpc
+(EngineCore pid=5358)     result = run_method(self.driver_worker, method, args, kwargs)
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/serial_utils.py", line 510, in run_method
+(EngineCore pid=5358)     return func(*args, **kwargs)
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(EngineCore pid=5358)     return func(*args, **kwargs)
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu_worker.py", line 572, in determine_available_memory
+(EngineCore pid=5358)     self.model_runner.profile_run()
+(EngineCore pid=5358)     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(EngineCore pid=5358)     return func(*args, **kwargs)
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu/model_runner.py", line 951, in profile_run
+(EngineCore pid=5358)     self.model_state.encoder_runner.profile_encoder_cache(
+(EngineCore pid=5358)     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+(EngineCore pid=5358)         dummy_mm_inputs, mm_budget
+(EngineCore pid=5358)         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=5358)     )
+(EngineCore pid=5358)     ^
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(EngineCore pid=5358)     return func(*args, **kwargs)
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu/mm/encoder_runner.py", line 139, in profile_encoder_cache
+(EngineCore pid=5358)     dummy_encoder_outputs = self.execute_mm_encoder(dummy_mm_inputs)
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(EngineCore pid=5358)     return func(*args, **kwargs)
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu/mm/encoder_runner.py", line 168, in execute_mm_encoder
+(EngineCore pid=5358)     else self.model.embed_multimodal(**mm_kwargs_batch)
+(EngineCore pid=5358)          ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/models/gemma4_mm.py", line 1647, in embed_multimodal
+(EngineCore pid=5358)     self._process_video_input(multimodal_input)
+(EngineCore pid=5358)     ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/models/gemma4_unified.py", line 406, in _process_video_input
+(EngineCore pid=5358)     embedded = self.vision_embedder(pv, pp)
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+(EngineCore pid=5358)     return self._call_impl(*args, **kwargs)
+(EngineCore pid=5358)            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+(EngineCore pid=5358)     return forward_call(*args, **kwargs)
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/models/gemma4_unified.py", line 128, in forward
+(EngineCore pid=5358)     hidden_states, _ = self.patch_dense(hidden_states)
+(EngineCore pid=5358)                        ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+(EngineCore pid=5358)     return self._call_impl(*args, **kwargs)
+(EngineCore pid=5358)            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+(EngineCore pid=5358)     return forward_call(*args, **kwargs)
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/layers/linear.py", line 606, in forward
+(EngineCore pid=5358)     output_parallel = self.quant_method.apply(self, input_, bias)
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/layers/quantization/online/fp8.py", line 257, in apply
+(EngineCore pid=5358)     return self.fp8_linear.apply_weights(layer, x, bias)
+(EngineCore pid=5358)            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/kernels/linear/scaled_mm/ScaledMMLinearKernel.py", line 162, in apply_weights
+(EngineCore pid=5358)     return self.apply_scaled_mm(
+(EngineCore pid=5358)            ~~~~~~~~~~~~~~~~~~~~^
+(EngineCore pid=5358)         A=x_2d_q,
+(EngineCore pid=5358)         ^^^^^^^^^
+(EngineCore pid=5358)     ...<5 lines>...
+(EngineCore pid=5358)         output_shape=output_shape,
+(EngineCore pid=5358)         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=5358)     )
+(EngineCore pid=5358)     ^
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/kernels/linear/scaled_mm/cutlass.py", line 265, in apply_scaled_mm
+(EngineCore pid=5358)     output = ops.cutlass_scaled_mm(
+(EngineCore pid=5358)         A, B, out_dtype=out_dtype, scale_a=As, scale_b=Bs, bias=bias
+(EngineCore pid=5358)     )
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/vllm/_custom_ops.py", line 828, in cutlass_scaled_mm
+(EngineCore pid=5358)     torch.ops._C.cutlass_scaled_mm(out, a, b, scale_a, scale_b, bias)
+(EngineCore pid=5358)     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=5358)   File "/usr/local/lib/python3.13/dist-packages/torch/_ops.py", line 1279, in __call__
+(EngineCore pid=5358)     return self._op(*args, **kwargs)
+(EngineCore pid=5358)            ~~~~~~~~^^^^^^^^^^^^^^^^^
+(EngineCore pid=5358) RuntimeError: cutlass_scaled_mm_sm80_epilogue, /workspace/csrc/libtorch_stable/quantization/w8a8/cutlass/scaled_mm_c2x.cu:89, 
+[rank0]:[W927 16:42:39.701579948 ProcessGroupNCCL.cpp:1624] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+(APIServer pid=4824) INFO 09-27 16:42:40 [utils.py:632] [shutdown] Process manager: send sigterm to process EngineCore
+(APIServer pid=4824) Traceback (most recent call last):
+(APIServer pid=4824)   File "/usr/local/bin/vllm", line 8, in <module>
+(APIServer pid=4824)     sys.exit(main())
+(APIServer pid=4824)              ~~~~^^
+(APIServer pid=4824)   File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/cli/main.py", line 106, in main
+(APIServer pid=4824)     args.dispatch_function(args)
+(APIServer pid=4824)     ~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+(APIServer pid=4824)   File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/cli/serve.py", line 154, in cmd
+(APIServer pid=4824)     uvloop.run(run_server(args))
+(APIServer pid=4824)     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+(APIServer pid=4824)   File "/usr/local/lib/python3.13/dist-packages/uvloop/__init__.py", line 96, in run
+(APIServer pid=4824)     return __asyncio.run(
+(APIServer pid=4824)            ~~~~~~~~~~~~~^
+(APIServer pid=4824)         wrapper(),
+(APIServer pid=4824)         ^^^^^^^^^^
+(APIServer pid=4824)     ...<2 lines>...
+(APIServer pid=4824)         **run_kwargs
+(APIServer pid=4824)         ^^^^^^^^^^^^
+(APIServer pid=4824)     )
+(APIServer pid=4824)     ^
+(APIServer pid=4824)   File "/usr/lib/python3.13/asyncio/runners.py", line 196, in run
+(APIServer pid=4824)     return runner.run(main)
+(APIServer pid=4824)            ~~~~~~~~~~^^^^^^
+(APIServer pid=4824)   File "/usr/lib/python3.13/asyncio/runners.py", line 119, in run
+(APIServer pid=4824)     return self._loop.run_until_complete(task)
+(APIServer pid=4824)            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+(APIServer pid=4824)   File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+(APIServer pid=4824)   File "/usr/local/lib/python3.13/dist-packages/uvloop/__init__.py", line 48, in wrapper
+(APIServer pid=4824)     return await main
+(APIServer pid=4824)            ^^^^^^^^^^
+(APIServer pid=4824)   File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/launchers/api_server/entry.py", line 176, in run_server
+(APIServer pid=4824)     await run_server_worker(listen_address, sock, args, **uvicorn_kwargs)
+(APIServer pid=4824)   File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/launchers/api_server/entry.py", line 190, in run_server_worker
+(APIServer pid=4824)     async with build_async_engine_client(
+(APIServer pid=4824)                ~~~~~~~~~~~~~~~~~~~~~~~~~^
+(APIServer pid=4824)         args,
+(APIServer pid=4824)         ^^^^^
+(APIServer pid=4824)         client_config=client_config,
+(APIServer pid=4824)         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=4824)     ) as engine_client:
+(APIServer pid=4824)     ^
+(APIServer pid=4824)   File "/usr/lib/python3.13/contextlib.py", line 214, in __aenter__
+(APIServer pid=4824)     return await anext(self.gen)
+(APIServer pid=4824)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=4824)   File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/launchers/api_server/entry.py", line 58, in build_async_engine_client
+(APIServer pid=4824)     async with build_async_engine_client_from_engine_args(
+(APIServer pid=4824)                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+(APIServer pid=4824)         engine_args,
+(APIServer pid=4824)         ^^^^^^^^^^^^
+(APIServer pid=4824)         usage_context=usage_context,
+(APIServer pid=4824)         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=4824)         client_config=client_config,
+(APIServer pid=4824)         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=4824)     ) as engine:
+(APIServer pid=4824)     ^
+(APIServer pid=4824)   File "/usr/lib/python3.13/contextlib.py", line 214, in __aenter__
+(APIServer pid=4824)     return await anext(self.gen)
+(APIServer pid=4824)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=4824)   File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/launchers/api_server/entry.py", line 94, in build_async_engine_client_from_engine_args
+(APIServer pid=4824)     async_llm = AsyncLLM.from_vllm_config(
+(APIServer pid=4824)         vllm_config=vllm_config,
+(APIServer pid=4824)     ...<6 lines>...
+(APIServer pid=4824)         client_index=client_index,
+(APIServer pid=4824)     )
+(APIServer pid=4824)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/async_llm.py", line 235, in from_vllm_config
+(APIServer pid=4824)     return cls(
+(APIServer pid=4824)         vllm_config=vllm_config,
+(APIServer pid=4824)     ...<9 lines>...
+(APIServer pid=4824)         client_index=client_index,
+(APIServer pid=4824)     )
+(APIServer pid=4824)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/async_llm.py", line 169, in __init__
+(APIServer pid=4824)     self.engine_core = EngineCoreClient.make_async_mp_client(
+(APIServer pid=4824)                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+(APIServer pid=4824)         vllm_config=vllm_config,
+(APIServer pid=4824)         ^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=4824)     ...<5 lines>...
+(APIServer pid=4824)         renderer=renderer,
+(APIServer pid=4824)         ^^^^^^^^^^^^^^^^^^
+(APIServer pid=4824)     )
+(APIServer pid=4824)     ^
+(APIServer pid=4824)   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(APIServer pid=4824)     return func(*args, **kwargs)
+(APIServer pid=4824)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core_client.py", line 163, in make_async_mp_client
+(APIServer pid=4824)     return AsyncMPClient(
+(APIServer pid=4824)         *client_args,
+(APIServer pid=4824)         renderer=renderer,
+(APIServer pid=4824)     )
+(APIServer pid=4824)   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(APIServer pid=4824)     return func(*args, **kwargs)
+(APIServer pid=4824)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core_client.py", line 1060, in __init__
+(APIServer pid=4824)     super().__init__(
+(APIServer pid=4824)     ~~~~~~~~~~~~~~~~^
+(APIServer pid=4824)         asyncio_mode=True,
+(APIServer pid=4824)         ^^^^^^^^^^^^^^^^^^
+(APIServer pid=4824)     ...<4 lines>...
+(APIServer pid=4824)         renderer=renderer,
+(APIServer pid=4824)         ^^^^^^^^^^^^^^^^^^
+(APIServer pid=4824)     )
+(APIServer pid=4824)     ^
+(APIServer pid=4824)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core_client.py", line 656, in __init__
+(APIServer pid=4824)     with launch_core_engines(
+(APIServer pid=4824)          ~~~~~~~~~~~~~~~~~~~^
+(APIServer pid=4824)         vllm_config, executor_class, log_stats, addresses
+(APIServer pid=4824)         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=4824)     ) as engine_launch:
+(APIServer pid=4824)     ^
+(APIServer pid=4824)   File "/usr/lib/python3.13/contextlib.py", line 148, in __exit__
+(APIServer pid=4824)     next(self.gen)
+(APIServer pid=4824)     ~~~~^^^^^^^^^^
+(APIServer pid=4824)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/utils.py", line 1240, in launch_core_engines
+(APIServer pid=4824)     wait_for_engine_startup(
+(APIServer pid=4824)     ~~~~~~~~~~~~~~~~~~~~~~~^
+(APIServer pid=4824)         handshake_socket,
+(APIServer pid=4824)         ^^^^^^^^^^^^^^^^^
+(APIServer pid=4824)     ...<4 lines>...
+(APIServer pid=4824)         launch,
+(APIServer pid=4824)         ^^^^^^^
+(APIServer pid=4824)     )
+(APIServer pid=4824)     ^
+(APIServer pid=4824)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/utils.py", line 1320, in wait_for_engine_startup
+(APIServer pid=4824)     raise RuntimeError(
+(APIServer pid=4824)     ...<8 lines>...
+(APIServer pid=4824)     )
+(APIServer pid=4824) RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}
+(APIServer pid=6540) INFO 09-27 16:44:44 [api_utils.py:347] 
+(APIServer pid=6540) INFO 09-27 16:44:44 [api_utils.py:347]        █     █     █▄   ▄█
+(APIServer pid=6540) INFO 09-27 16:44:44 [api_utils.py:347]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.30.0
+(APIServer pid=6540) INFO 09-27 16:44:44 [api_utils.py:347]   █▄█▀ █     █     █     █  model   google/gemma-4-12B-it
+(APIServer pid=6540) INFO 09-27 16:44:44 [api_utils.py:347]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+(APIServer pid=6540) INFO 09-27 16:44:44 [api_utils.py:347] 
+(APIServer pid=6540) INFO 09-27 16:44:44 [api_utils.py:286] non-default args: {'model_tag': 'google/gemma-4-12B-it', 'lora_modules': [LoRAModulePath(name='wiki12b', path='adapters/wiki12b-walks-s0', base_model_name=None, is_3d_lora_weight=False)], 'model': 'google/gemma-4-12B-it', 'max_model_len': 4096, 'quantization': 'fp8', 'gpu_memory_utilization': 0.9, 'enable_lora': True, 'max_loras': 2, 'speculative_config': {'method': 'draft_model', 'model': 'merged/wiki-e4b', 'num_speculative_tokens': 4, 'quantization': 'fp8', 'max_model_len': 4096}}
+(APIServer pid=6540) INFO 09-27 16:44:46 [model.py:692] Resolved architecture: Gemma4UnifiedForConditionalGeneration
+(APIServer pid=6540) INFO 09-27 16:44:46 [model.py:2030] Using max model len 4096
+(APIServer pid=6540) [transformers] `SiglipImageProcessorFast` is deprecated. The `Fast` suffix for image processors has been removed; use `SiglipImageProcessor` instead.
+(APIServer pid=6540) INFO 09-27 16:45:06 [model.py:692] Resolved architecture: Gemma4ForConditionalGeneration
+(APIServer pid=6540) INFO 09-27 16:45:06 [model.py:2030] Using max model len 4096
+(APIServer pid=6540) Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+(APIServer pid=6540) INFO 09-27 16:45:36 [arg_utils.py:2961] Raising max_num_batched_tokens from 2048 to 2496 to accommodate 'video' input for prefix-LM model google/gemma-4-12B-it.
+(APIServer pid=6540) INFO 09-27 16:45:36 [scheduler.py:288] Chunked prefill is enabled with max_num_batched_tokens=2496.
+(APIServer pid=6540) INFO 09-27 16:45:36 [config.py:252] Gemma4 model has heterogeneous head dimensions {'sliding_attention': 256, 'full_attention': 512}. FA4 not available, forcing TRITON_ATTN backend.
+(APIServer pid=6540) INFO 09-27 16:45:38 [kernel.py:416] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+(APIServer pid=6540) WARNING 09-27 16:45:38 [vllm.py:2135] max_num_scheduled_tokens is set to 2496 based on the speculative decoding settings. This may lead to suboptimal performance. Consider increasing max_num_batched_tokens to accommodate the additional draft token slots, or decrease num_speculative_tokens.
+(APIServer pid=6540) WARNING 09-27 16:45:38 [cuda.py:351] Forcing --disable_chunked_mm_input for models with multimodal-bidirectional attention.
+(APIServer pid=6540) WARNING 09-27 16:45:38 [vllm.py:716] Model Runner V2 does not yet support speculative method 'draft_model'; using the V1 model runner instead.
+(EngineCore pid=7101) INFO 09-27 16:46:16 [core.py:123] Initializing a V1 LLM engine (v0.30.0) with config: model='google/gemma-4-12B-it', speculative_config=SpeculativeConfig(method='draft_model', model='merged/wiki-e4b', num_spec_tokens=4), tokenizer='google/gemma-4-12B-it', skip_tokenizer_init=False, tokenizer_mode=auto, revision=main, tokenizer_revision=main, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=4096, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=fp8, quantization_config=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=google/gemma-4-12B-it, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::qwen4_exp_ple_short_conv', 'vllm::qwen4_exp_qsa_with_output', 'vllm::linear_attention', 'vllm::qwen_gdn_attention_core', 'vllm::qwen_gdn_attention_core_fused_norm_packed', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [2496], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 5, 8, 10, 16, 20, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 272, 280, 288, 304, 320, 336, 352, 360, 368, 384, 400, 416, 432, 440, 448, 464, 480, 496, 512], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 512, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native']), enable_flashinfer_autotune=True, enable_cutedsl_warmup=True, enable_jit_warmup=True, moe_backend='auto', sparse_indexer_topk_backend='auto', linear_backend='auto', linear_backend_per_quant=None)
+(EngineCore pid=7101) [transformers] `SiglipImageProcessorFast` is deprecated. The `Fast` suffix for image processors has been removed; use `SiglipImageProcessor` instead.
+(EngineCore pid=7101) WARNING 09-27 16:46:23 [vllm.py:716] Model Runner V2 does not yet support speculative method 'draft_model'; using the V1 model runner instead.
+(EngineCore pid=7101) INFO 09-27 16:46:23 [parallel_state.py:1827] world_size=1 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_34fd07fca23b441bac7550288bee1d0a backend=nccl
+(EngineCore pid=7101) INFO 09-27 16:46:23 [parallel_state.py:2267] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, ETP rank 0, EP rank N/A, EPLB rank N/A
+(EngineCore pid=7101) INFO 09-27 16:46:25 [topk_topp_sampler.py:78] Using FlashInfer for top-p & top-k sampling.
+(EngineCore pid=7101) WARNING 09-27 16:46:25 [llm_base_proposer.py:342] Speculative Decoding with draft models or parallel drafting does not fully support multimodal models yet. Proceeding with text-only speculative decoding.
+(EngineCore pid=7101) WARNING 09-27 16:46:25 [__init__.py:205] min_p and logit_bias parameters won't work with speculative decoding.
+(EngineCore pid=7101) Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+(APIServer pid=6540) INFO 09-27 16:46:48 [base.py:261] Multi-modal warmup completed in 44.073s
+(APIServer pid=6540) INFO 09-27 16:46:49 [base.py:261] Readonly multi-modal warmup completed in 0.219s
+(EngineCore pid=7101) INFO 09-27 16:46:51 [gpu_model_runner.py:5317] Starting to load model google/gemma-4-12B-it...
+(EngineCore pid=7101) INFO 09-27 16:46:52 [__init__.py:758] Selected CutlassFP8ScaledMMLinearKernel for Fp8PerTensorOnlineLinearMethod
+(EngineCore pid=7101) INFO 09-27 16:46:53 [kernel.py:416] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+(EngineCore pid=7101) WARNING 09-27 16:46:53 [vllm.py:2135] max_num_scheduled_tokens is set to 2496 based on the speculative decoding settings. This may lead to suboptimal performance. Consider increasing max_num_batched_tokens to accommodate the additional draft token slots, or decrease num_speculative_tokens.
+(EngineCore pid=7101) INFO 09-27 16:46:53 [cuda.py:478] Using AttentionBackendEnum.TRITON_ATTN backend.
+(EngineCore pid=7101) INFO 09-27 16:46:53 [cuda.py:478] Using AttentionBackendEnum.TRITON_ATTN backend.
+(EngineCore pid=7101) INFO 09-27 16:46:55 [weight_utils.py:895] Filesystem type for checkpoints: OVERLAY. Checkpoint size: 22.28 GiB. Available RAM: 74.80 GiB.
+(EngineCore pid=7101) INFO 09-27 16:46:55 [weight_utils.py:918] Auto-prefetch is disabled because the filesystem (OVERLAY) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+(EngineCore pid=7101) Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+(EngineCore pid=7101) Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:06<00:00,  6.49s/it]
+(EngineCore pid=7101) Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:06<00:00,  6.49s/it]
+(EngineCore pid=7101) 
+(EngineCore pid=7101) INFO 09-27 16:47:01 [default_loader.py:430] Loading weights took 6.49 seconds
+(EngineCore pid=7101) INFO 09-27 16:47:02 [punica_selector.py:20] Using PunicaWrapperGPU.
+(EngineCore pid=7101) INFO 09-27 16:47:02 [model_manager.py:211] Gemma4UnifiedForConditionalGeneration supports adding LoRA to the tower modules. If needed, please set `enable_tower_connector_lora=True`.
+(EngineCore pid=7101) WARNING 09-27 16:47:02 [model_manager.py:442] Regarding Gemma4UnifiedForConditionalGeneration, no matching PunicaWrapper is found; vision_embedder.patch_dense will be ignored.
+(EngineCore pid=7101) WARNING 09-27 16:47:02 [model_manager.py:442] Regarding Gemma4UnifiedForConditionalGeneration, no matching PunicaWrapper is found; embed_vision.embedding_projection will be ignored.
+(EngineCore pid=7101) WARNING 09-27 16:47:02 [model_manager.py:442] Regarding Gemma4UnifiedForConditionalGeneration, no matching PunicaWrapper is found; embed_audio.embedding_projection will be ignored.
+(EngineCore pid=7101) INFO 09-27 16:47:02 [gpu_model_runner.py:5348] Loading drafter model...
+(EngineCore pid=7101) INFO 09-27 16:47:02 [kernel.py:416] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+(EngineCore pid=7101) INFO 09-27 16:47:02 [config.py:252] Gemma4 model has heterogeneous head dimensions {'sliding_attention': 256, 'full_attention': 512}. FA4 not available, forcing TRITON_ATTN backend.
+(EngineCore pid=7101) INFO 09-27 16:47:02 [kernel.py:416] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+(EngineCore pid=7101) INFO 09-27 16:47:03 [kernel.py:416] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+(EngineCore pid=7101) INFO 09-27 16:47:03 [cuda.py:478] Using AttentionBackendEnum.TRITON_ATTN backend.
+(EngineCore pid=7101) INFO 09-27 16:47:03 [cuda.py:478] Using AttentionBackendEnum.TRITON_ATTN backend.
+(EngineCore pid=7101) INFO 09-27 16:47:04 [weight_utils.py:895] Filesystem type for checkpoints: OVERLAY. Checkpoint size: 14.89 GiB. Available RAM: 74.79 GiB.
+(EngineCore pid=7101) Loading safetensors checkpoint shards:   0% Completed | 0/1 [00:00<?, ?it/s]
+(EngineCore pid=7101) Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:07<00:00,  7.04s/it]
+(EngineCore pid=7101) Loading safetensors checkpoint shards: 100% Completed | 1/1 [00:07<00:00,  7.04s/it]
+(EngineCore pid=7101) 
+(EngineCore pid=7101) INFO 09-27 16:47:11 [default_loader.py:430] Loading weights took 7.05 seconds
+(EngineCore pid=7101) INFO 09-27 16:47:12 [gpu_model_runner.py:5416] Model loading took 24.13 GiB memory and 19.229336 seconds
+(EngineCore pid=7101) INFO 09-27 16:47:12 [utils.py:320] Using LBNHC KV cache layout.
+(EngineCore pid=7101) INFO 09-27 16:47:13 [gpu_model_runner.py:6496] Encoder cache will be initialized with a budget of 2496 tokens, and profiled with 1 video items of the maximum feature size.
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366] EngineCore failed to start.
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366] Traceback (most recent call last):
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 1328, in run_engine_core
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 1085, in __init__
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     super().__init__(
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     ~~~~~~~~~~~~~~~~^
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]         vllm_config,
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]         ^^^^^^^^^^^^
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     ...<3 lines>...
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]         internal_dp_balancing,
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]         ^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     )
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     ^
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 145, in __init__
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     kv_cache_config = self._initialize_kv_caches(vllm_config)
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 308, in _initialize_kv_caches
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     available_gpu_memory = self.model_executor.determine_available_memory()
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/executor/abstract.py", line 149, in determine_available_memory
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     return self.collective_rpc("determine_available_memory")
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/executor/uniproc_executor.py", line 103, in collective_rpc
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     result = run_method(self.driver_worker, method, args, kwargs)
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/serial_utils.py", line 510, in run_method
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu_worker.py", line 572, in determine_available_memory
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     self.model_runner.profile_run()
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu_model_runner.py", line 6512, in profile_run
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     dummy_encoder_outputs = self.model.embed_multimodal(
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]         **batched_dummy_mm_inputs
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     )
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/models/gemma4_mm.py", line 1647, in embed_multimodal
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     self._process_video_input(multimodal_input)
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/models/gemma4_unified.py", line 406, in _process_video_input
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     embedded = self.vision_embedder(pv, pp)
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     return self._call_impl(*args, **kwargs)
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     return forward_call(*args, **kwargs)
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/models/gemma4_unified.py", line 128, in forward
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     hidden_states, _ = self.patch_dense(hidden_states)
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]                        ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     return self._call_impl(*args, **kwargs)
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     return forward_call(*args, **kwargs)
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/layers/linear.py", line 606, in forward
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     output_parallel = self.quant_method.apply(self, input_, bias)
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/layers/quantization/online/fp8.py", line 257, in apply
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     return self.fp8_linear.apply_weights(layer, x, bias)
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/kernels/linear/scaled_mm/ScaledMMLinearKernel.py", line 162, in apply_weights
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     return self.apply_scaled_mm(
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]            ~~~~~~~~~~~~~~~~~~~~^
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]         A=x_2d_q,
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]         ^^^^^^^^^
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     ...<5 lines>...
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]         output_shape=output_shape,
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     )
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     ^
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/kernels/linear/scaled_mm/cutlass.py", line 265, in apply_scaled_mm
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     output = ops.cutlass_scaled_mm(
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]         A, B, out_dtype=out_dtype, scale_a=As, scale_b=Bs, bias=bias
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     )
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/_custom_ops.py", line 828, in cutlass_scaled_mm
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     torch.ops._C.cutlass_scaled_mm(out, a, b, scale_a, scale_b, bias)
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/_ops.py", line 1279, in __call__
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]     return self._op(*args, **kwargs)
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366]            ~~~~~~~~^^^^^^^^^^^^^^^^^
+(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366] RuntimeError: cutlass_scaled_mm_sm80_epilogue, /workspace/csrc/libtorch_stable/quantization/w8a8/cutlass/scaled_mm_c2x.cu:89, 
+(EngineCore pid=7101) Process EngineCore:
+(EngineCore pid=7101) Traceback (most recent call last):
+(EngineCore pid=7101)   File "/usr/lib/python3.13/multiprocessing/process.py", line 313, in _bootstrap
+(EngineCore pid=7101)     self.run()
+(EngineCore pid=7101)     ~~~~~~~~^^
+(EngineCore pid=7101)   File "/usr/lib/python3.13/multiprocessing/process.py", line 108, in run
+(EngineCore pid=7101)     self._target(*self._args, **self._kwargs)
+(EngineCore pid=7101)     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=7101)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 1370, in run_engine_core
+(EngineCore pid=7101)     raise e
+(EngineCore pid=7101)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 1328, in run_engine_core
+(EngineCore pid=7101)     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)
+(EngineCore pid=7101)   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=7101)     return func(*args, **kwargs)
+(EngineCore pid=7101)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 1085, in __init__
+(EngineCore pid=7101)     super().__init__(
+(EngineCore pid=7101)     ~~~~~~~~~~~~~~~~^
+(EngineCore pid=7101)         vllm_config,
+(EngineCore pid=7101)         ^^^^^^^^^^^^
+(EngineCore pid=7101)     ...<3 lines>...
+(EngineCore pid=7101)         internal_dp_balancing,
+(EngineCore pid=7101)         ^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=7101)     )
+(EngineCore pid=7101)     ^
+(EngineCore pid=7101)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 145, in __init__
+(EngineCore pid=7101)     kv_cache_config = self._initialize_kv_caches(vllm_config)
+(EngineCore pid=7101)   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=7101)     return func(*args, **kwargs)
+(EngineCore pid=7101)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 308, in _initialize_kv_caches
+(EngineCore pid=7101)     available_gpu_memory = self.model_executor.determine_available_memory()
+(EngineCore pid=7101)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/executor/abstract.py", line 149, in determine_available_memory
+(EngineCore pid=7101)     return self.collective_rpc("determine_available_memory")
+(EngineCore pid=7101)            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=7101)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/executor/uniproc_executor.py", line 103, in collective_rpc
+(EngineCore pid=7101)     result = run_method(self.driver_worker, method, args, kwargs)
+(EngineCore pid=7101)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/serial_utils.py", line 510, in run_method
+(EngineCore pid=7101)     return func(*args, **kwargs)
+(EngineCore pid=7101)   File "/usr/local/lib/python3.13/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(EngineCore pid=7101)     return func(*args, **kwargs)
+(EngineCore pid=7101)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu_worker.py", line 572, in determine_available_memory
+(EngineCore pid=7101)     self.model_runner.profile_run()
+(EngineCore pid=7101)     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+(EngineCore pid=7101)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu_model_runner.py", line 6512, in profile_run
+(EngineCore pid=7101)     dummy_encoder_outputs = self.model.embed_multimodal(
+(EngineCore pid=7101)         **batched_dummy_mm_inputs
+(EngineCore pid=7101)     )
+(EngineCore pid=7101)   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/models/gemma4_mm.py", line 1647, in embed_multimodal
+(EngineCore pid=7101)     self._process_video_input(multimodal_input)
+(EngineCore pid=7101)     ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+(EngineCore pid=7101)   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/models/gemma4_unified.py", line 406, in _process_video_input
+(EngineCore pid=7101)     embedded = self.vision_embedder(pv, pp)
+(EngineCore pid=7101)   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+(EngineCore pid=7101)     return self._call_impl(*args, **kwargs)
+(EngineCore pid=7101)            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+(EngineCore pid=7101)   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+(EngineCore pid=7101)     return forward_call(*args, **kwargs)
+(EngineCore pid=7101)   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/models/gemma4_unified.py", line 128, in forward
+(EngineCore pid=7101)     hidden_states, _ = self.patch_dense(hidden_states)
+(EngineCore pid=7101)                        ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^
+(EngineCore pid=7101)   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+(EngineCore pid=7101)     return self._call_impl(*args, **kwargs)
+(EngineCore pid=7101)            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+(EngineCore pid=7101)   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+(EngineCore pid=7101)     return forward_call(*args, **kwargs)
+(EngineCore pid=7101)   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/layers/linear.py", line 606, in forward
+(EngineCore pid=7101)     output_parallel = self.quant_method.apply(self, input_, bias)
+(EngineCore pid=7101)   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/layers/quantization/online/fp8.py", line 257, in apply
+(EngineCore pid=7101)     return self.fp8_linear.apply_weights(layer, x, bias)
+(EngineCore pid=7101)            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+(EngineCore pid=7101)   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/kernels/linear/scaled_mm/ScaledMMLinearKernel.py", line 162, in apply_weights
+(EngineCore pid=7101)     return self.apply_scaled_mm(
+(EngineCore pid=7101)            ~~~~~~~~~~~~~~~~~~~~^
+(EngineCore pid=7101)         A=x_2d_q,
+(EngineCore pid=7101)         ^^^^^^^^^
+(EngineCore pid=7101)     ...<5 lines>...
+(EngineCore pid=7101)         output_shape=output_shape,
+(EngineCore pid=7101)         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=7101)     )
+(EngineCore pid=7101)     ^
+(EngineCore pid=7101)   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/kernels/linear/scaled_mm/cutlass.py", line 265, in apply_scaled_mm
+(EngineCore pid=7101)     output = ops.cutlass_scaled_mm(
+(EngineCore pid=7101)         A, B, out_dtype=out_dtype, scale_a=As, scale_b=Bs, bias=bias
+(EngineCore pid=7101)     )
+(EngineCore pid=7101)   File "/usr/local/lib/python3.13/dist-packages/vllm/_custom_ops.py", line 828, in cutlass_scaled_mm
+(EngineCore pid=7101)     torch.ops._C.cutlass_scaled_mm(out, a, b, scale_a, scale_b, bias)
+(EngineCore pid=7101)     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=7101)   File "/usr/local/lib/python3.13/dist-packages/torch/_ops.py", line 1279, in __call__
+(EngineCore pid=7101)     return self._op(*args, **kwargs)
+(EngineCore pid=7101)            ~~~~~~~~^^^^^^^^^^^^^^^^^
+(EngineCore pid=7101) RuntimeError: cutlass_scaled_mm_sm80_epilogue, /workspace/csrc/libtorch_stable/quantization/w8a8/cutlass/scaled_mm_c2x.cu:89, 
+[rank0]:[W927 16:47:35.704214388 ProcessGroupNCCL.cpp:1624] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+(APIServer pid=6540) INFO 09-27 16:47:36 [utils.py:632] [shutdown] Process manager: send sigterm to process EngineCore
+(APIServer pid=6540) Traceback (most recent call last):
+(APIServer pid=6540)   File "/usr/local/bin/vllm", line 8, in <module>
+(APIServer pid=6540)     sys.exit(main())
+(APIServer pid=6540)              ~~~~^^
+(APIServer pid=6540)   File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/cli/main.py", line 106, in main
+(APIServer pid=6540)     args.dispatch_function(args)
+(APIServer pid=6540)     ~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+(APIServer pid=6540)   File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/cli/serve.py", line 154, in cmd
+(APIServer pid=6540)     uvloop.run(run_server(args))
+(APIServer pid=6540)     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+(APIServer pid=6540)   File "/usr/local/lib/python3.13/dist-packages/uvloop/__init__.py", line 96, in run
+(APIServer pid=6540)     return __asyncio.run(
+(APIServer pid=6540)            ~~~~~~~~~~~~~^
+(APIServer pid=6540)         wrapper(),
+(APIServer pid=6540)         ^^^^^^^^^^
+(APIServer pid=6540)     ...<2 lines>...
+(APIServer pid=6540)         **run_kwargs
+(APIServer pid=6540)         ^^^^^^^^^^^^
+(APIServer pid=6540)     )
+(APIServer pid=6540)     ^
+(APIServer pid=6540)   File "/usr/lib/python3.13/asyncio/runners.py", line 196, in run
+(APIServer pid=6540)     return runner.run(main)
+(APIServer pid=6540)            ~~~~~~~~~~^^^^^^
+(APIServer pid=6540)   File "/usr/lib/python3.13/asyncio/runners.py", line 119, in run
+(APIServer pid=6540)     return self._loop.run_until_complete(task)
+(APIServer pid=6540)            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+(APIServer pid=6540)   File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+(APIServer pid=6540)   File "/usr/local/lib/python3.13/dist-packages/uvloop/__init__.py", line 48, in wrapper
+(APIServer pid=6540)     return await main
+(APIServer pid=6540)            ^^^^^^^^^^
+(APIServer pid=6540)   File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/launchers/api_server/entry.py", line 176, in run_server
+(APIServer pid=6540)     await run_server_worker(listen_address, sock, args, **uvicorn_kwargs)
+(APIServer pid=6540)   File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/launchers/api_server/entry.py", line 190, in run_server_worker
+(APIServer pid=6540)     async with build_async_engine_client(
+(APIServer pid=6540)                ~~~~~~~~~~~~~~~~~~~~~~~~~^
+(APIServer pid=6540)         args,
+(APIServer pid=6540)         ^^^^^
+(APIServer pid=6540)         client_config=client_config,
+(APIServer pid=6540)         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=6540)     ) as engine_client:
+(APIServer pid=6540)     ^
+(APIServer pid=6540)   File "/usr/lib/python3.13/contextlib.py", line 214, in __aenter__
+(APIServer pid=6540)     return await anext(self.gen)
+(APIServer pid=6540)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=6540)   File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/launchers/api_server/entry.py", line 58, in build_async_engine_client
+(APIServer pid=6540)     async with build_async_engine_client_from_engine_args(
+(APIServer pid=6540)                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+(APIServer pid=6540)         engine_args,
+(APIServer pid=6540)         ^^^^^^^^^^^^
+(APIServer pid=6540)         usage_context=usage_context,
+(APIServer pid=6540)         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=6540)         client_config=client_config,
+(APIServer pid=6540)         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=6540)     ) as engine:
+(APIServer pid=6540)     ^
+(APIServer pid=6540)   File "/usr/lib/python3.13/contextlib.py", line 214, in __aenter__
+(APIServer pid=6540)     return await anext(self.gen)
+(APIServer pid=6540)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=6540)   File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/launchers/api_server/entry.py", line 94, in build_async_engine_client_from_engine_args
+(APIServer pid=6540)     async_llm = AsyncLLM.from_vllm_config(
+(APIServer pid=6540)         vllm_config=vllm_config,
+(APIServer pid=6540)     ...<6 lines>...
+(APIServer pid=6540)         client_index=client_index,
+(APIServer pid=6540)     )
+(APIServer pid=6540)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/async_llm.py", line 235, in from_vllm_config
+(APIServer pid=6540)     return cls(
+(APIServer pid=6540)         vllm_config=vllm_config,
+(APIServer pid=6540)     ...<9 lines>...
+(APIServer pid=6540)         client_index=client_index,
+(APIServer pid=6540)     )
+(APIServer pid=6540)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/async_llm.py", line 169, in __init__
+(APIServer pid=6540)     self.engine_core = EngineCoreClient.make_async_mp_client(
+(APIServer pid=6540)                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+(APIServer pid=6540)         vllm_config=vllm_config,
+(APIServer pid=6540)         ^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=6540)     ...<5 lines>...
+(APIServer pid=6540)         renderer=renderer,
+(APIServer pid=6540)         ^^^^^^^^^^^^^^^^^^
+(APIServer pid=6540)     )
+(APIServer pid=6540)     ^
+(APIServer pid=6540)   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(APIServer pid=6540)     return func(*args, **kwargs)
+(APIServer pid=6540)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core_client.py", line 163, in make_async_mp_client
+(APIServer pid=6540)     return AsyncMPClient(
+(APIServer pid=6540)         *client_args,
+(APIServer pid=6540)         renderer=renderer,
+(APIServer pid=6540)     )
+(APIServer pid=6540)   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(APIServer pid=6540)     return func(*args, **kwargs)
+(APIServer pid=6540)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core_client.py", line 1060, in __init__
+(APIServer pid=6540)     super().__init__(
+(APIServer pid=6540)     ~~~~~~~~~~~~~~~~^
+(APIServer pid=6540)         asyncio_mode=True,
+(APIServer pid=6540)         ^^^^^^^^^^^^^^^^^^
+(APIServer pid=6540)     ...<4 lines>...
+(APIServer pid=6540)         renderer=renderer,
+(APIServer pid=6540)         ^^^^^^^^^^^^^^^^^^
+(APIServer pid=6540)     )
+(APIServer pid=6540)     ^
+(APIServer pid=6540)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core_client.py", line 656, in __init__
+(APIServer pid=6540)     with launch_core_engines(
+(APIServer pid=6540)          ~~~~~~~~~~~~~~~~~~~^
+(APIServer pid=6540)         vllm_config, executor_class, log_stats, addresses
+(APIServer pid=6540)         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=6540)     ) as engine_launch:
+(APIServer pid=6540)     ^
+(APIServer pid=6540)   File "/usr/lib/python3.13/contextlib.py", line 148, in __exit__
+(APIServer pid=6540)     next(self.gen)
+(APIServer pid=6540)     ~~~~^^^^^^^^^^
+(APIServer pid=6540)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/utils.py", line 1240, in launch_core_engines
+(APIServer pid=6540)     wait_for_engine_startup(
+(APIServer pid=6540)     ~~~~~~~~~~~~~~~~~~~~~~~^
+(APIServer pid=6540)         handshake_socket,
+(APIServer pid=6540)         ^^^^^^^^^^^^^^^^^
+(APIServer pid=6540)     ...<4 lines>...
+(APIServer pid=6540)         launch,
+(APIServer pid=6540)         ^^^^^^^
+(APIServer pid=6540)     )
+(APIServer pid=6540)     ^
+(APIServer pid=6540)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/utils.py", line 1320, in wait_for_engine_startup
+(APIServer pid=6540)     raise RuntimeError(
+(APIServer pid=6540)     ...<8 lines>...
+(APIServer pid=6540)     )
+(APIServer pid=6540) RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}
