@@ -1,0 +1,21 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0
+[pool] G1 school-s0: applied
+[pool] G1 upper-s0: applied
+[school] school-s0 10/70 credit 10
+[school] school-s0 20/70 credit 20
+[school] school-s0 30/70 credit 30
+[school] school-s0 40/70 credit 40
+[school] school-s0 50/70 credit 50
+[school] school-s0 60/70 credit 60
+[school] school-s0 70/70 credit 70
+[school] school-s0 demo day 15/15
+[school] upper-s0 10/70 credit 10
+[school] upper-s0 20/70 credit 20
+[school] upper-s0 30/70 credit 30
+[school] upper-s0 40/70 credit 40
+[school] upper-s0 50/70 credit 50
+[school] upper-s0 60/70 credit 60
+[school] upper-s0 70/70 credit 70
+[school] upper-s0 demo day 15/15
+[school] NOTHING SCORED · {'school-s0': {'held_out': '70/70', 'demo_day': '15/15'}, 'upper-s0': {'held_out': '70/70', 'demo_day': '15/15'}}
