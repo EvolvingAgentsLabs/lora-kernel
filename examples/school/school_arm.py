@@ -208,11 +208,14 @@ def main() -> int:
                     gen = vllm_generator(served_model(arm, a.base), tok)
                     slot = rec["arms"].setdefault(arm, {"held_out": {}})
                     for i, r in enumerate(held_out, 1):
+                        if r["case_id"] in slot["held_out"] and "error" not in slot["held_out"][r["case_id"]]:
+                            continue                         # resumed across sessions: a scored turn is not re-scored
                         slot["held_out"][r["case_id"]] = score_turn(gen, r)
                         if i % 10 == 0 or i == len(held_out):
                             save()
                             print(f"[school] {arm} {i}/{len(held_out)} credit {sum(x.get('credit', False) for x in slot['held_out'].values())}", flush=True)
-                    slot["demo"] = demo_day(gen); save()
+                    if "demo" not in slot:
+                        slot["demo"] = demo_day(gen); save()
                     print(f"[school] {arm} demo day {slot['demo']['passed']}/{slot['demo']['n']}", flush=True)
     finally:
         ar.stop(srv)
