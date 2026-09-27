@@ -48,3 +48,38 @@ recorded as such; a different $k$ would be a new brief.
 
 **Not in this run.** The second seed; other values of $k$; switching experts mid-generation; the drafter's acceptance under
 `upper-s0`. The last is the next arm if E6 passes, and it is cheap: C0's spike with `upper-s0`.
+
+## Result **[ran]** 2026-09-27 — **PASSED: 0 of 70 turns lost, and the layers below 21 are the base's bit for bit**
+
+T (L4): `upper-s0` trained with M8's recipe on layers 21…41 of 42 (`file_layers` read back from the adapter).
+S (L4, vLLM 0.30): G1 shows both adapters applied.
+
+| arm | LoRA on | held-out turns | demo day |
+|---|---|--:|--:|
+| `school-s0` (full, M8, rescored) | layers 0…41 | **70/70** | 15/15 |
+| `upper-s0` | layers 21…41 | **70/70** | 15/15 |
+
+Paired on the 70 turns there are 0 discordant pairs: $\ell = 0 \le 3$.
+
+**The mechanical check, in T's process (`lower_identity.json`).**
+- Control: adapter off against adapter off is bit-identical.
+- The KV cache of the 21 layers below $k$ is bit-identical with the adapter on and off, and so are the inputs to layers
+  $0\ldots 21$.
+- Layer 21's output moves, so the adapter was active.
+- The file has no tensor below 21.
+
+**By the table written first: PASSED.**
+
+**What it means, and what it does not.**
+- **The school expert survives being confined to the upper half.** On this suite it loses nothing, at about half the
+  adapter's parameters.
+- **The lower half is shared, bit for bit, by every expert trained this way.** That is the precondition for switching
+  experts mid-generation without recomputing layers 0…20, and for a frozen lower half.
+- **The E4B shares KV across layers:** it caches 24 of its 42 layers, and layers 24…41 reuse KV computed by earlier
+  layers. The KV those upper layers read comes from layers 21…23, which *are* adapted. A switch keeps layers 0…20 and
+  still recomputes 21…23. The `k_proj`/`v_proj` pieces of the LoRA on layers 24…41 probably act on nothing — a recipe
+  detail, not measured here.
+- **The suite sits at the full member's ceiling (70/70).** It shows the upper-half member is not worse *on this suite*;
+  a loss on harder turns would be invisible. The bare base's 27/70 shows the suite does measure the adapter.
+- One seed. Not measured: other values of $k$; the switch itself; how much the MTP drafter's acceptance recovers when the
+  LoRA leaves the lower half. The last is cheap: C0's spike with `upper-s0`.
