@@ -1,0 +1,5 @@
+=== session 1 of 1 · srv203156 · L4
+NO SESSION: the backend gave no L4 (rc=1) — quota or entitlement, not an outage; nothing was started. A T4 is not a substitute.
+[colab] Creating session 'srv203156'...
+[colab] Backend rejected accelerator 'L4'. You may not have quota or entitlement for this accelerator on your account. Try a different one (e.g. --gpu T4) or omit --gpu/--tpu for a CPU runtime.
+exit 3

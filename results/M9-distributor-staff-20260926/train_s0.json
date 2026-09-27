@@ -1,0 +1,12 @@
+{
+ "arms": {},
+ "members": {
+  "staff-s0": {
+   "adapter": "adapters/distributor-staff-s0",
+   "adapter_sha256": "980096576bb26c70be9ffc3e633f842e214f3cf06dfbe24df6a87833f8879987",
+   "corpus_sha256": "f90492a2776b6a6fcdcc2c2c943345cbf9bc2304bc6574701f8b4be6417cc88a"
+  }
+ },
+ "packed": 1,
+ "trained_only": "2026-09-27T00:54:02"
+}

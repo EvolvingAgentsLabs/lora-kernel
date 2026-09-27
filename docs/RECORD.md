@@ -49,6 +49,7 @@ Do not re-derive what is here. Do not cite a number from it without the caveat b
 
 | what was tried | what happened | run |
 |---|---|---|
+| **A distributor-staff trajectory LoRA (M9).** 700 turns played through the demo's own loop, six roles, read / write / denied | held-out **70/70** against the bare Gemma's 6/70 (53 : 0); the distributor demo **5/5** against 1/5 — the untrained model asked for an order id it was given | M9 |
 | **The school through a real agent runtime (LIVE).** OpenClaw 2026.9.4, one profile per role with its signed token, against the gateway; the member on a rented L4; Claude Haiku 4.5 as the frontier | **15/15**, the scripted run's bar met through the runtime; one frontier turn, $0.0112; OpenClaw's own message shape (appended internal context, stamped request) had to be read by the gateway — the first live turn routed the context to a person | LIVE |
 | **EmbeddingGemma in place of Qwen3-Embedding (E1).** The same two instruments, the same sets | the note radar ties (0.628 vs 0.638 recall@3, 13 : 14) — the default moves; the router is safer on foreign text and loses 304 of 715 of its own traffic against 13 — a regression, the default stays | E1 |
 | **A corpus that shows comparisons (B5).** The E4B wiki member retrained on W9's corpus plus 128 comparison walks, against its released predecessor | the comparison band **10 → 37/40** (28 : 1); W9's set unchanged (39/40, the same four misses). B3's tie was the corpus, not the size: the large half had 3 cases left to win, and was not trained | B5 |

@@ -1,0 +1,20 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules staff-s0=adapters/distributor-staff-s0
+[pool] G1 staff-s0: applied (generic 2/3, domain -/3)
+[distributor] base 10/70 credit 1
+[distributor] base 20/70 credit 2
+[distributor] base 30/70 credit 2
+[distributor] base 40/70 credit 3
+[distributor] base 50/70 credit 4
+[distributor] base 60/70 credit 6
+[distributor] base 70/70 credit 6
+[distributor] base demo 1/5
+[distributor] staff-s0 10/70 credit 10
+[distributor] staff-s0 20/70 credit 20
+[distributor] staff-s0 30/70 credit 30
+[distributor] staff-s0 40/70 credit 40
+[distributor] staff-s0 50/70 credit 50
+[distributor] staff-s0 60/70 credit 60
+[distributor] staff-s0 70/70 credit 70
+[distributor] staff-s0 demo 5/5
+[distributor] PASSED: every seed beats the bare base on the held-out turns · {'base': {'held_out': '6/70', 'demo': '1/5'}, 'staff-s0': {'held_out': '70/70', 'demo': '5/5'}}

@@ -154,3 +154,10 @@ def test_an_empty_reply_after_a_real_result_is_replaced_not_kept():
     served, how = grounding.ground("", ["filed maintenance request #3 for dock 2 at riverside"], spanish=False)
     assert how == "replaced" and "request #3" in served
     assert grounding.ground("   \n", ["x result"], spanish=False)[1] == "replaced"
+
+
+def test_a_body_written_into_a_tool_without_parameters_is_ignored_not_an_error():
+    users.register_all()
+    conn = db.build()
+    s = d.scene(conn, "purchasing-riverside", "stock?", _scripted("<stock_read>item=canned goods</stock_read>"))
+    assert "canned goods" in s["calls"][0]["result"] and "error" not in s["calls"][0]
