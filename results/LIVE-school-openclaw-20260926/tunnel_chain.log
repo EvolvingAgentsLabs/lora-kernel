@@ -1,0 +1,30 @@
+=== session 1 of 1 · srv210506 · L4
+    boot clone: rc=0 5607362 Frontier egress with a spend cap; the tunnel bounds vLLM's context for an L4
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 5607362 Frontier egress with a spend cap; the tunnel bounds vLLM's context for an L4
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    5607362 Frontier egress with a spend cap; the tunnel bounds vLLM's context for an L4 | 0.30.0
+    carried the adapters in (3 chunks)
+    runner started (launch 1)
+    [tunnel] vllm serve google/gemma-4-E4B-it --dtype bfloat16 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules school-s0=adapters/school-staff-s0
+    [tunnel] vllm serve google/gemma-4-E4B-it --dtype bfloat16 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules school-s0=adapters/school-staff-s0
+    [tunnel] vllm serve google/gemma-4-E4B-it --dtype bfloat16 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules school-s0=adapters/school-staff-s0
+    [tunnel] vllm serve google/gemma-4-E4B-it --dtype bfloat16 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules school-s0=adapters/school-staff-s0
+    [tunnel] vllm serve google/gemma-4-E4B-it --dtype bfloat16 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules school-s0=adapters/school-staff-s0
+    [tunnel] vllm serve google/gemma-4-E4B-it --dtype bfloat16 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules school-s0=adapters/school-staff-s0
+    [tunnel] vllm serve google/gemma-4-E4B-it --dtype bfloat16 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules school-s0=adapters/school-staff-s0
+    [tunnel] vllm serve google/gemma-4-E4B-it --dtype bfloat16 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules school-s0=adapters/school-staff-s0
+    [tunnel] vllm serve google/gemma-4-E4B-it --dtype bfloat16 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules school-s0=adapters/school-staff-s0
+    [tunnel] vllm up
+    [tunnel] URL https://trio-head-licence-frequently.trycloudflare.com
+    [tunnel] EVERYTHING THE POOL SERVES CROSSES THIS TUNNEL to a rented VM. Synthetic suites cost nothing; real correspondence is the message.
+    [tunnel] vllm up
+    [tunnel] URL https://trio-head-licence-frequently.trycloudflare.com
+    [tunnel] EVERYTHING THE POOL SERVES CROSSES THIS TUNNEL to a rented VM. Synthetic suites cost nothing; real correspondence is the message.
+    [tunnel] vllm up
+    [tunnel] URL https://trio-head-licence-frequently.trycloudflare.com
+    [tunnel] EVERYTHING THE POOL SERVES CROSSES THIS TUNNEL to a rented VM. Synthetic suites cost nothing; real correspondence is the message.

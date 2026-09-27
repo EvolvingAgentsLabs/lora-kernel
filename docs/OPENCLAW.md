@@ -252,7 +252,7 @@ with **its own signed token as the provider key** — the role is decided by the
     ~/.openclaw/bin/openclaw --profile school-educador-north agent --local -m "¿Qué tiene en la agenda el alumno 1?"
 
 `python -m examples.school.live_openclaw` plays the whole scripted demo this way and scores it with the same checks.
-**Wiring [ran] 2026-09-26: 15/15 through OpenClaw 2026.9.4 with a stand-in model** — the real-model run is pending a GPU
+**[ran] 2026-09-26: 15/15 through OpenClaw 2026.9.4 with the real model (Gemma 4 E4B + `school-s0` on an L4) and Claude Haiku 4.5 as the frontier** — the wiring first passed 15/15 with a stand-in
 ([`BRIEF`](../results/LIVE-school-openclaw-20260926/BRIEF.md)). One thing the first live turn taught: OpenClaw appends
 its own internal context as a *last* user message and stamps the request; the gateway reads the person's request out
 of that (`runtime_request`).

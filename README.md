@@ -33,6 +33,12 @@ copied from one recorded run — [`results/DEMO-school-diagram-20260926/`](resul
 Gemma 4 E4B + a school-staff LoRA behind the gateway. Synthetic schools; identity, payments and monitoring are demo stand-ins.
 The video is HTML rendered with [HyperFrames](https://github.com/heygen-com/hyperframes): [`video/demo-escuela/`](video/README.md).
 
+**And live, not only scripted [ran] 2026-09-26: 15/15 through the real OpenClaw.** The same scenes sent by OpenClaw 2026.9.4
+itself — one profile per role, each holding its signed token as the provider key — to the gateway, with the member on a
+rented L4 and **Claude Haiku 4.5 as the frontier** for what no tool covers: every scene passes, the one frontier turn cost
+$0.0112, and the director's approval executed the held charge. How to point your own OpenClaw at it:
+[`docs/OPENCLAW.md`](docs/OPENCLAW.md) §6 · the run: [`results/LIVE-school-openclaw-20260926/`](results/LIVE-school-openclaw-20260926/BRIEF.md).
+
 ## The problem
 
 An organisation running on agents keeps sending the same handful of repeating jobs — triage an

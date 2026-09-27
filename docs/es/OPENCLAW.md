@@ -261,8 +261,8 @@ apunta a él con **su propio token firmado como clave del proveedor** — el rol
     ~/.openclaw/bin/openclaw --profile school-educador-north agent --local -m "¿Qué tiene en la agenda el alumno 1?"
 
 `python -m examples.school.live_openclaw` juega así toda la demo guionada y la puntúa con las mismas verificaciones.
-**Cableado [ran] 2026-09-26: 15/15 a través de OpenClaw 2026.9.4 con un modelo sustituto** — la corrida con el modelo real
-espera una GPU ([`BRIEF`](../../results/LIVE-school-openclaw-20260926/BRIEF.md)). Algo que enseñó el primer turno en vivo:
+**[ran] 2026-09-26: 15/15 a través de OpenClaw 2026.9.4 con el modelo real (Gemma 4 E4B + `school-s0` en una L4) y Claude
+Haiku 4.5 como frontera** — el cableado pasó antes 15/15 con un sustituto ([`BRIEF`](../../results/LIVE-school-openclaw-20260926/BRIEF.md)). Algo que enseñó el primer turno en vivo:
 OpenClaw agrega su propio contexto interno como *último* mensaje de usuario y le pone fecha al pedido; el gateway lee el
 pedido de la persona dentro de eso (`runtime_request`).
 
