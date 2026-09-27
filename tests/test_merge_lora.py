@@ -1,5 +1,7 @@
 """merge_lora: names and arithmetic, zero GPU — the merged weight is W + (alpha/r)·B·A on exactly the adapted projections."""
-import numpy as np
+import pytest
+
+np = pytest.importorskip("numpy")                      # CI installs no numpy; the arithmetic runs where it exists
 
 from training.harness import merge_lora as m
 
