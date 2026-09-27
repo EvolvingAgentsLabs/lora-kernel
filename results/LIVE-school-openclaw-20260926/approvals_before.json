@@ -1,0 +1,1 @@
+[{"id": 1, "tool": "billing_charge", "args": {"membership_id": "1", "amount_cents": "4500"}, "requested_by": "cfo-north"}, {"id": 2, "tool": "announcement_post", "args": {"audience": "families", "body": "el viernes no hay clases."}, "requested_by": "marketing-north"}]

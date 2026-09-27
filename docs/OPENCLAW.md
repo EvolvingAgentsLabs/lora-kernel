@@ -240,6 +240,23 @@ every chunk carries `x_buffered: true` **in the payload** — not only in a comm
 A client gets correct SSE and a correct answer. What it does not get is incremental
 delivery, which is latency and not correctness.
 
+## 6. The school, one OpenClaw profile per role
+
+The gateway (`examples/school/gateway.py`) is itself an OpenAI-compatible endpoint, so each role's OpenClaw points at it
+with **its own signed token as the provider key** — the role is decided by the token, never by the model id:
+
+    python -m examples.school.gateway --upstream <vLLM URL> --member school-s0 \
+        [--frontier-url https://api.openai.com/v1 --frontier-model <model>]    # key from $FRONTIER_API_KEY
+    ~/.openclaw/bin/openclaw --profile school-educador-north config patch \
+        --file ~/.config/lora-kernel/openclaw/educador-north.json5
+    ~/.openclaw/bin/openclaw --profile school-educador-north agent --local -m "¿Qué tiene en la agenda el alumno 1?"
+
+`python -m examples.school.live_openclaw` plays the whole scripted demo this way and scores it with the same checks.
+**[ran] 2026-09-26: 15/15 through OpenClaw 2026.9.4 with the real model (Gemma 4 E4B + `school-s0` on an L4) and Claude Haiku 4.5 as the frontier** — the wiring first passed 15/15 with a stand-in
+([`BRIEF`](../results/LIVE-school-openclaw-20260926/BRIEF.md)). One thing the first live turn taught: OpenClaw appends
+its own internal context as a *last* user message and stamps the request; the gateway reads the person's request out
+of that (`runtime_request`).
+
 ## What this is worth, measured
 
 | | delivered | leaves the machine |
