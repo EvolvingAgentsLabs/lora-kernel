@@ -1,0 +1,119 @@
+=== session 1 of 2 · srv114317 · L4
+    boot clone: rc=0 651f7e7 F0b pre-registered: spec decode's output identity under VLLM_BATCH_INVARIANT=1, with a plain-vs-plain control
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 651f7e7 F0b pre-registered: spec decode's output identity under VLLM_BATCH_INVARIANT=1, with a plain-vs-plain control
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    651f7e7 F0b pre-registered: spec decode's output identity under VLLM_BATCH_INVARIANT=1, with a plain-vs-plain control | 0.30.0
+    carried the adapters in (5 chunks)
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8
+    [spike] nospec: up in 655.1 s · G1 applied (3/3)
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8
+    [spike] nospec: up in 655.1 s · G1 applied (3/3)
+    [spike] nospec base/domain: b1 15.25 tok/s · b8 0.0 tok/s
+    [spike] nospec: up in 655.1 s · G1 applied (3/3)
+    [spike] nospec base/domain: b1 15.25 tok/s · b8 0.0 tok/s
+    [spike] nospec base/general: b1 15.81 tok/s · b8 0.0 tok/s
+    [spike] nospec: up in 655.1 s · G1 applied (3/3)
+    [spike] nospec base/domain: b1 15.25 tok/s · b8 0.0 tok/s
+    [spike] nospec base/general: b1 15.81 tok/s · b8 0.0 tok/s
+    [spike] nospec: up in 655.1 s · G1 applied (3/3)
+    [spike] nospec base/domain: b1 15.25 tok/s · b8 0.0 tok/s
+    [spike] nospec base/general: b1 15.81 tok/s · b8 0.0 tok/s
+    [spike] nospec base/domain: b1 15.25 tok/s · b8 0.0 tok/s
+    [spike] nospec base/general: b1 15.81 tok/s · b8 0.0 tok/s
+    [spike] nospec lora/domain: b1 13.43 tok/s · b8 0.0 tok/s
+    [spike] nospec base/domain: b1 15.25 tok/s · b8 0.0 tok/s
+    [spike] nospec base/general: b1 15.81 tok/s · b8 0.0 tok/s
+    [spike] nospec lora/domain: b1 13.43 tok/s · b8 0.0 tok/s
+    [spike] nospec lora/domain: b1 13.43 tok/s · b8 0.0 tok/s
+    [spike] nospec lora/general: b1 13.76 tok/s · b8 0.0 tok/s
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8
+    [spike] nospec lora/domain: b1 13.43 tok/s · b8 0.0 tok/s
+    [spike] nospec lora/general: b1 13.76 tok/s · b8 0.0 tok/s
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8
+    [spike] nospec lora/domain: b1 13.43 tok/s · b8 0.0 tok/s
+    [spike] nospec lora/general: b1 13.76 tok/s · b8 0.0 tok/s
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8
+    [spike] nospec lora/domain: b1 13.43 tok/s · b8 0.0 tok/s
+    [spike] nospec lora/general: b1 13.76 tok/s · b8 0.0 tok/s
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8
+    [spike] nospec lora/domain: b1 13.43 tok/s · b8 0.0 tok/s
+    [spike] nospec lora/general: b1 13.76 tok/s · b8 0.0 tok/s
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8
+    [spike] nospec lora/domain: b1 13.43 tok/s · b8 0.0 tok/s
+    [spike] nospec lora/general: b1 13.76 tok/s · b8 0.0 tok/s
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8
+    [spike] nospec lora/general: b1 13.76 tok/s · b8 0.0 tok/s
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8
+    [spike] nospec2: up in 355.0 s · G1 applied (3/3)
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8
+    [spike] nospec2: up in 355.0 s · G1 applied (3/3)
+    [spike] nospec2 base/domain: b1 15.06 tok/s · b8 0.0 tok/s
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8
+    [spike] nospec2: up in 355.0 s · G1 applied (3/3)
+    [spike] nospec2 base/domain: b1 15.06 tok/s · b8 0.0 tok/s
+    [spike] nospec2: up in 355.0 s · G1 applied (3/3)
+    [spike] nospec2 base/domain: b1 15.06 tok/s · b8 0.0 tok/s
+    [spike] nospec2 base/general: b1 15.82 tok/s · b8 0.0 tok/s
+    [spike] nospec2: up in 355.0 s · G1 applied (3/3)
+    [spike] nospec2 base/domain: b1 15.06 tok/s · b8 0.0 tok/s
+    [spike] nospec2 base/general: b1 15.82 tok/s · b8 0.0 tok/s
+    [spike] nospec2 base/domain: b1 15.06 tok/s · b8 0.0 tok/s
+    [spike] nospec2 base/general: b1 15.82 tok/s · b8 0.0 tok/s
+    [spike] nospec2 lora/domain: b1 13.42 tok/s · b8 0.0 tok/s
+    [spike] nospec2 base/domain: b1 15.06 tok/s · b8 0.0 tok/s
+    [spike] nospec2 base/general: b1 15.82 tok/s · b8 0.0 tok/s
+    [spike] nospec2 lora/domain: b1 13.42 tok/s · b8 0.0 tok/s
+    [spike] nospec2 lora/domain: b1 13.42 tok/s · b8 0.0 tok/s
+    [spike] nospec2 lora/general: b1 13.76 tok/s · b8 0.0 tok/s
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8 --speculative-config {"method": "mtp", "model": "google/gemma-4-12B-it-assistant", "num_speculative_tokens": 4}
+    [spike] nospec2 lora/domain: b1 13.42 tok/s · b8 0.0 tok/s
+    [spike] nospec2 lora/general: b1 13.76 tok/s · b8 0.0 tok/s
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8 --speculative-config {"method": "mtp", "model": "google/gemma-4-12B-it-assistant", "num_speculative_tokens": 4}
+    [spike] nospec2 lora/domain: b1 13.42 tok/s · b8 0.0 tok/s
+    [spike] nospec2 lora/general: b1 13.76 tok/s · b8 0.0 tok/s
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8 --speculative-config {"method": "mtp", "model": "google/gemma-4-12B-it-assistant", "num_speculative_tokens": 4}
+    [spike] nospec2 lora/domain: b1 13.42 tok/s · b8 0.0 tok/s
+    [spike] nospec2 lora/general: b1 13.76 tok/s · b8 0.0 tok/s
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8 --speculative-config {"method": "mtp", "model": "google/gemma-4-12B-it-assistant", "num_speculative_tokens": 4}
+    [spike] nospec2 lora/domain: b1 13.42 tok/s · b8 0.0 tok/s
+    [spike] nospec2 lora/general: b1 13.76 tok/s · b8 0.0 tok/s
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8 --speculative-config {"method": "mtp", "model": "google/gemma-4-12B-it-assistant", "num_speculative_tokens": 4}
+    [spike] nospec2 lora/domain: b1 13.42 tok/s · b8 0.0 tok/s
+    [spike] nospec2 lora/general: b1 13.76 tok/s · b8 0.0 tok/s
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8 --speculative-config {"method": "mtp", "model": "google/gemma-4-12B-it-assistant", "num_speculative_tokens": 4}
+    [spike] nospec2 lora/domain: b1 13.42 tok/s · b8 0.0 tok/s
+    [spike] nospec2 lora/general: b1 13.76 tok/s · b8 0.0 tok/s
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8 --speculative-config {"method": "mtp", "model": "google/gemma-4-12B-it-assistant", "num_speculative_tokens": 4}
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8 --speculative-config {"method": "mtp", "model": "google/gemma-4-12B-it-assistant", "num_speculative_tokens": 4}
+    [spike] mtp: up in 400.0 s · G1 applied (3/3)
+    [spike] mtp base/domain: b1 36.58 tok/s · b8 0.0 tok/s · α 0.7801 · mean len 4.121
+    [spike] mtp: up in 400.0 s · G1 applied (3/3)
+    [spike] mtp base/domain: b1 36.58 tok/s · b8 0.0 tok/s · α 0.7801 · mean len 4.121
+    [spike] mtp base/general: b1 36.69 tok/s · b8 0.0 tok/s · α 0.5506 · mean len 3.203
+    [spike] mtp: up in 400.0 s · G1 applied (3/3)
+    [spike] mtp base/domain: b1 36.58 tok/s · b8 0.0 tok/s · α 0.7801 · mean len 4.121
+    [spike] mtp base/general: b1 36.69 tok/s · b8 0.0 tok/s · α 0.5506 · mean len 3.203
+    [spike] mtp base/domain: b1 36.58 tok/s · b8 0.0 tok/s · α 0.7801 · mean len 4.121
+    [spike] mtp base/general: b1 36.69 tok/s · b8 0.0 tok/s · α 0.5506 · mean len 3.203
+    [spike] mtp lora/domain: b1 23.2 tok/s · b8 0.0 tok/s · α 0.332 · mean len 2.328
+    [spike] mtp lora/domain: b1 23.2 tok/s · b8 0.0 tok/s · α 0.332 · mean len 2.328
+    [spike] mtp lora/general: b1 27.81 tok/s · b8 0.0 tok/s · α 0.4238 · mean len 2.695
+    [spike] done · {"nospec2": {"base/domain": {"identical_to_nospec": "9/16", "speedup_b1": 0.99, "speedup_b8": null, "alpha": null, "mean_accepted_length": null}, "base/general": {"identical_to_nospec": "1/8", "speedup_b1": 1.0, "speedup_b8": null, "alpha": null, "mean_accepted_length": null}, "lora/domain": {"identical_to_nospec": "3/16", "speedup_b1": 1.0, "speedup_b8": null, "alpha": null, "mean_accepted_length": null}, "lora/general": {"identical_to_nospec": "0/8", "speedup_b1": 1.0, "speedup_b8": null, "alpha": null, "mean_accepted_length": null}}, "mtp": {"base/domain": {"identical_to_nospec": "12/16", "speedup_b1": 2.4, "speedup_b8": null, "alpha": 0.7801, "mean_accepted_length": 4.121}, "base/general": {"identical_to_nospec": "0/8", "speedup_b1": 2.32, "speedup_b8": null, "alpha": 0.5506, "mean_accepted_length": 3.203}, "lora/domain": {"identical_to_nospec": "3/16", "speedup_b1": 1.73, "speedup_b
+    the runner wrote its result — done
