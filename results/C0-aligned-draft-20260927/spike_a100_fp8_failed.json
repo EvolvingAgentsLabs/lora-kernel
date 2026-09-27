@@ -1,0 +1,60 @@
+{
+ "configs": {
+  "nospec": {
+   "spec": null,
+   "started": false,
+   "why": [
+    "(EngineCore pid=3900) ERROR 09-27 16:39:30 [core.py:1366] RuntimeError: cutlass_scaled_mm_sm80_epilogue, /workspace/csrc/libtorch_stable/quantization/w8a8/cutlass/scaled_mm_c2x.cu:89, ",
+    "(EngineCore pid=3900)     raise e",
+    "(EngineCore pid=3900) RuntimeError: cutlass_scaled_mm_sm80_epilogue, /workspace/csrc/libtorch_stable/quantization/w8a8/cutlass/scaled_mm_c2x.cu:89, ",
+    "(APIServer pid=3354)     raise RuntimeError(",
+    "(APIServer pid=3354) RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}"
+   ]
+  },
+  "mtp": {
+   "spec": {
+    "method": "mtp",
+    "model": "google/gemma-4-12B-it-assistant",
+    "num_speculative_tokens": 4
+   },
+   "started": false,
+   "why": [
+    "(APIServer pid=3354) RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}",
+    "(EngineCore pid=5358) ERROR 09-27 16:42:37 [core.py:1366] RuntimeError: cutlass_scaled_mm_sm80_epilogue, /workspace/csrc/libtorch_stable/quantization/w8a8/cutlass/scaled_mm_c2x.cu:89, ",
+    "(EngineCore pid=5358)     raise e",
+    "(EngineCore pid=5358) RuntimeError: cutlass_scaled_mm_sm80_epilogue, /workspace/csrc/libtorch_stable/quantization/w8a8/cutlass/scaled_mm_c2x.cu:89, ",
+    "(APIServer pid=4824)     raise RuntimeError(",
+    "(APIServer pid=4824) RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}"
+   ]
+  },
+  "draft_e4b": {
+   "spec": {
+    "method": "draft_model",
+    "model": "merged/wiki-e4b",
+    "num_speculative_tokens": 4,
+    "quantization": "fp8",
+    "max_model_len": 4096
+   },
+   "started": false,
+   "why": [
+    "(APIServer pid=4824)     raise RuntimeError(",
+    "(APIServer pid=4824) RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}",
+    "(EngineCore pid=7101) ERROR 09-27 16:47:33 [core.py:1366] RuntimeError: cutlass_scaled_mm_sm80_epilogue, /workspace/csrc/libtorch_stable/quantization/w8a8/cutlass/scaled_mm_c2x.cu:89, ",
+    "(EngineCore pid=7101)     raise e",
+    "(EngineCore pid=7101) RuntimeError: cutlass_scaled_mm_sm80_epilogue, /workspace/csrc/libtorch_stable/quantization/w8a8/cutlass/scaled_mm_c2x.cu:89, ",
+    "(APIServer pid=6540)     raise RuntimeError(",
+    "(APIServer pid=6540) RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}"
+   ]
+  }
+ },
+ "batch_invariant": false,
+ "equality_only": false,
+ "vllm": "0.30.0",
+ "target": "google/gemma-4-12B-it",
+ "member": "wiki12b",
+ "adapter": "adapters/wiki12b-walks-s0",
+ "max_tokens": 160,
+ "quantization": "fp8",
+ "comparison": {},
+ "finished": "2026-09-27T16:47:40"
+}

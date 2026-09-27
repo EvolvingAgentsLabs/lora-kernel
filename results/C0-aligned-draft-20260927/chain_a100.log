@@ -1,0 +1,48 @@
+=== session 1 of 2 · srv132527 · A100
+    boot clone: rc=0 bb8bbd2 GUIDE (+es): F0b's reading — output identity not testable on an L4 in FP8, differences read as drift
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 bb8bbd2 GUIDE (+es): F0b's reading — output identity not testable on an L4 in FP8, differences read as drift
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    bb8bbd2 GUIDE (+es): F0b's reading — output identity not testable on an L4 in FP8, differences read as drift | 0.30.0
+    carried the adapters in (8 chunks)
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8
+    [rank] the server exited with 1
+    [spike] nospec: DID NOT START · ['(APIServer pid=3354) RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}']
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8 --speculative-config {"method": "mtp", "model": "google/gemma-4-12B-it-assistant", "num_speculative_tokens": 4}
+    [rank] the server exited with 1
+    [spike] nospec: DID NOT START · ['(APIServer pid=3354) RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}']
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8 --speculative-config {"method": "mtp", "model": "google/gemma-4-12B-it-assistant", "num_speculative_tokens": 4}
+    [rank] the server exited with 1
+    [spike] nospec: DID NOT START · ['(APIServer pid=3354) RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}']
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8 --speculative-config {"method": "mtp", "model": "google/gemma-4-12B-it-assistant", "num_speculative_tokens": 4}
+    [spike] mtp: DID NOT START · ['(APIServer pid=4824) RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}']
+    Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+    Fetching 9 files:  22%|██▏       | 2/9 [00:00<00:00,  7.64it/s]
+    Fetching 9 files:  22%|██▏       | 2/9 [00:00<00:00,  7.64it/s]
+    Fetching 9 files: 100%|██████████| 9/9 [00:46<00:00,  5.55s/it]
+    Fetching 9 files: 100%|██████████| 9/9 [00:46<00:00,  5.19s/it]
+    Fetching 9 files: 100%|██████████| 9/9 [00:46<00:00,  5.19s/it]
+    [merge] 258/258 projections merged into merged/wiki-e4b
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8 --speculative-config {"method": "draft_model", "model": "merged/wiki-e4b", "num_speculative_tokens": 4, "quantization": "fp8", "max_model_len": 4096}
+    Fetching 9 files: 100%|██████████| 9/9 [00:46<00:00,  5.19s/it]
+    [merge] 258/258 projections merged into merged/wiki-e4b
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8 --speculative-config {"method": "draft_model", "model": "merged/wiki-e4b", "num_speculative_tokens": 4, "quantization": "fp8", "max_model_len": 4096}
+    Fetching 9 files: 100%|██████████| 9/9 [00:46<00:00,  5.19s/it]
+    [merge] 258/258 projections merged into merged/wiki-e4b
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8 --speculative-config {"method": "draft_model", "model": "merged/wiki-e4b", "num_speculative_tokens": 4, "quantization": "fp8", "max_model_len": 4096}
+    Fetching 9 files: 100%|██████████| 9/9 [00:46<00:00,  5.19s/it]
+    [merge] 258/258 projections merged into merged/wiki-e4b
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --quantization fp8 --speculative-config {"method": "draft_model", "model": "merged/wiki-e4b", "num_speculative_tokens": 4, "quantization": "fp8", "max_model_len": 4096}
+    [rank] the server exited with 1
+    [spike] draft_e4b: DID NOT START · ['(APIServer pid=6540) RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}']
+    [spike] done · {}
+    the runner wrote its result — done
+=== already decided — no further sessions

@@ -24,3 +24,14 @@ same prompts as F0, batch 1 and 8.
 
 Beside: the same on `base/*` and `lora/general` (the aligned drafter should lose there — it was trained on the wiki).
 Output identity is F0b's question, not this run's.
+
+## Attempts **[ran]** 2026-09-27 — hardware, not the question
+
+- **L4, FP8** (`spike_l4.json`): `nospec` and `mtp` ran and reproduce F0 (MTP with the LoRA on its domain **1.74×**,
+  α 0.32); the merge worked (258/258 projections); **`draft_e4b` did not fit** — the 12B in FP8 takes ~14 GB and the merged
+  E4B, carrying its per-layer embedding tables and its vision/audio towers, OOMs beside it on 22 GB (`vllm_l4.log`).
+- **A100, FP8** (`spike_a100_fp8_failed.json`): **vLLM's online FP8 does not run on Ampere** — every server failed in
+  `cutlass_scaled_mm_sm80` (`vllm_a100.log`). In bf16 the 12B (~24 GB) and the E4B (~16 GB) do not fit 40 GB together.
+- **H100**: refused over quota.
+- **Next, A100 with the 12B in bf16 and the drafter in 4-bit (`--draft-quantization bitsandbytes`)**, all three configs on
+  the same card and precision so the speed-ups stay comparable with each other (not with the L4's numbers).

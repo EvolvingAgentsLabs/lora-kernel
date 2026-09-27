@@ -223,6 +223,8 @@ def main() -> int:
     ap.add_argument("--configs", default=",".join(CONFIGS))
     ap.add_argument("--quantization", default=None, help="fp8: the 12B on an L4 (bf16 needs an A100)")
     ap.add_argument("--batch-invariant", action="store_true", help="F0b: VLLM_BATCH_INVARIANT=1 in every server")
+    ap.add_argument("--draft-quantization", default="fp8", help="C0: the merged E4B drafter's quantization — fp8 (L4/H100), "
+                    "bitsandbytes (A100: vLLM's online FP8 fails on sm80 [ran], and bf16 12B + bf16 E4B do not fit 40 GB), none")
     ap.add_argument("--equality-only", action="store_true", help="F0b: batch 1 texts only")
     ap.add_argument("--out", default="spike.json")
     a = ap.parse_args()
@@ -232,6 +234,11 @@ def main() -> int:
     import vllm
     from transformers import AutoTokenizer
     globals()["QUANT"] = a.quantization
+    if a.draft_quantization == "none":
+        CONFIGS["draft_e4b"].pop("quantization", None)
+    else:
+        CONFIGS["draft_e4b"]["quantization"] = a.draft_quantization
+    rec.update(draft_quantization=a.draft_quantization)
     globals()["BATCH_INVARIANT"], globals()["EQUALITY_ONLY"] = a.batch_invariant, a.equality_only
     rec.update(batch_invariant=a.batch_invariant, equality_only=a.equality_only)
     rec.update(vllm=vllm.__version__, target=TARGET, member=MEMBER, adapter=ADAPTER, max_tokens=MAX_TOKENS, quantization=a.quantization)
