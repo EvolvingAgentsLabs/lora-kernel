@@ -35,3 +35,26 @@ Output identity is F0b's question, not this run's.
 - **H100**: refused over quota.
 - **Next, A100 with the 12B in bf16 and the drafter in 4-bit (`--draft-quantization bitsandbytes`)**, all three configs on
   the same card and precision so the speed-ups stay comparable with each other (not with the L4's numbers).
+
+## A100, 12B in bf16 **[ran]** 2026-09-27 — MTP clears the brief's bar with the LoRA on; the aligned drafter is still blocked by hardware
+
+`spike_a100_bf16.json`. All three configs on the same card and precision (speed-ups comparable with each other only).
+
+| MTP vs no SD | speed-up b1 | b8 | α | mean accepted len | identical to no SD |
+|---|--:|--:|--:|--:|--:|
+| base / domain | **2.80×** | 3.18× | 0.785 | 4.14 | 13/16 |
+| base / general | 2.60× | 2.02× | 0.537 | 3.15 | 4/8 |
+| **LoRA / domain** | **1.92×** | 1.73× | 0.336 | 2.34 | 11/16 |
+| LoRA / general | **2.40×** | 1.86× | 0.445 | 2.78 | 5/8 |
+
+(no SD, batch 1: base 46.6 / 48.4 tok/s, LoRA 40.6 / 41.1 tok/s; hot LoRA load 0.23–0.25 s, and **the reloaded LoRA now
+writes the same text** — bf16 is steadier than FP8 was on the L4.)
+
+**Reading.** In bf16 on an A100 the native MTP drafter with the LoRA on reaches **1.92× on the expert's domain and 2.40×
+on general text** — above the brief's 1.8× bar at batch 1 (1.73× at batch 8). The LoRA still costs acceptance (α 0.79 →
+0.34 on the domain), so an aligned drafter has room to add; it does not have to rescue the pair.
+
+**`draft_e4b` did not start:** vLLM's speculative config accepts only pre-quantised formats for a drafter (awq, gptq,
+fp8, …), not bitsandbytes. The four routes so far: L4 FP8 → OOM; A100 FP8 → no kernel on sm80; A100 bf16 + 4-bit drafter →
+not a drafter format; H100 → quota. Open routes: an H100 (FP8, 80 GB); or an A100 with the drafter pre-quantised to AWQ/GPTQ
+(llm-compressor, one calibration pass); or the 12B in a pre-quantised INT4 with the E4B in bf16.
