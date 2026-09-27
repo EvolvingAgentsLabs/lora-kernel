@@ -142,7 +142,6 @@ tienen el mismo `when:`. El conocimiento que vive en git recibe las mismas compu
 
 ---
 
-
 ### 1.6 Enunciados atómicos — una página es una lista de enunciados verificables **[ran]** W9
 
 El diseño del usuario, 2026-09-24. La biblioteca tiene forma de **Wikipedia**: una **página** es sobre
@@ -240,7 +239,9 @@ Esa es una hipótesis con una prueba barata, y está construida en dos etapas pa
 paso, *esta consulta tendría que haber encontrado esta nota*. Esos pares (consulta, nota necesaria), con las otras
 notas del subdominio como negativos, son un conjunto de entrenamiento contrastivo que nadie tiene que etiquetar:
 
-$$\mathcal L = -\log \frac{\exp(\langle W e(q), W e_{\text{when}}(n^+)\rangle / \tau)}{\sum_{n \in \mathcal N}\exp(\langle W e(q), W e_{\text{when}}(n)\rangle/\tau)}, \qquad W \in \mathbb R^{d \times D},\ d \ll D .$$
+```math
+\mathcal L = -\log \frac{\exp(\langle W e(q), W e_{\text{when}}(n^+)\rangle / \tau)}{\sum_{n \in \mathcal N}\exp(\langle W e(q), W e_{\text{when}}(n)\rangle/\tau)}, \qquad W \in \mathbb R^{d \times D},\ d \ll D .
+```
 
 **Lo que mostraría que la afirmación de compresión es cierta:** el recall@3 de la nota necesaria, sobre recorridos
 retenidos, quedándose plano a medida que $d$ baja de $D$ a 64 — y R1 con $d = 64$ ganándole a R0 a ancho completo en
@@ -249,7 +250,9 @@ confusiones *dentro del mismo tema*, que es donde la recuperación plana falló 
 
 ### 2.3 Puntuar una búsqueda
 
-$$s(n \mid q) = \langle e(q), e_{\text{when}}(n)\rangle + \beta\,\langle e(q), e_{\text{what}}(n)\rangle, \qquad \text{devolver el top } k = 3 .$$
+```math
+s(n \mid q) = \langle e(q), e_{\text{when}}(n)\rangle + \beta\,\langle e(q), e_{\text{what}}(n)\rangle, \qquad \text{devolver el top } k = 3 .
+```
 
 Una búsqueda puede restringirse a un estante: `<search shelf=harness>` para "encontrame el protocolo",
 `<search shelf=wiki>` para "qué fórmula". $\beta$ y los términos condicionados por la trayectoria del

@@ -209,7 +209,9 @@ of the subdomain's tasks — of the **distribution of its corpus** — and that 
 S4's score, with $q$ the query, $n$ a candidate, $\ell$ the last note opened, $N(\ell)$ its linked
 neighbours and $e$ the encoder:
 
-$$s(n \mid q, \ell) = \underbrace{\langle e(q), e_{\text{when}}(n)\rangle}_{\text{is it for this}} \;+\; \beta\,\underbrace{\langle e(q), e_{\text{what}}(n)\rangle}_{\text{is it this}} \;+\; \lambda\,\mathbf 1[n \in N(\ell)] \;+\; \mu\,\langle e(\ell), e(n)\rangle ,$$
+```math
+s(n \mid q, \ell) = \underbrace{\langle e(q), e_{\text{when}}(n)\rangle}_{\text{is it for this}} \;+\; \beta\,\underbrace{\langle e(q), e_{\text{what}}(n)\rangle}_{\text{is it this}} \;+\; \lambda\,\mathbf 1[n \in N(\ell)] \;+\; \mu\,\langle e(\ell), e(n)\rangle ,
+```
 
 $\beta = \lambda = \mu = 0$ is S1's flat search, so the arm is a strict generalisation of its
 baseline and every sub-score is kept on the match to say which term moved a rank.
