@@ -41,7 +41,12 @@ CONFIGS = {
     "nospec2": None,          # F0b's control: plain decoding twice — if these two differ, drift is not spec decode's
     "mtp": {"method": "mtp", "model": "google/gemma-4-12B-it-assistant", "num_speculative_tokens": 4},
     "eagle3": {"method": "eagle3", "model": "BCCard/MoAI-gemma-4-12B-it-speculator.eagle3", "num_speculative_tokens": 4},
+    # C0 (2026-09-27): a drafter ALIGNED to the expert with no training — the E4B member trained on the same corpus as the
+    # 12B's LoRA (B1 `wiki-walks-s1`), merged into its weights (vLLM puts no LoRA on a drafter), served as a draft model.
+    "draft_e4b": {"method": "draft_model", "model": "merged/wiki-e4b", "num_speculative_tokens": 4, "quantization": "fp8",
+                  "max_model_len": 4096},
 }
+DRAFT_ADAPTER = "adapters/wiki-walks-s1"
 GENERAL = ["Explain in a short paragraph how a refrigerator keeps food cold.",
            "Write a polite email asking a colleague to move a meeting to Thursday.",
            "What are three good habits for staying focused while studying?",
@@ -123,6 +128,14 @@ def run_config(name: str, spec: dict | None, sets: dict, tok) -> dict:
              "--max-loras", "2", "--lora-modules", f"{MEMBER}={ADAPTER}"]
     if QUANT:
         extra += ["--quantization", QUANT]
+    if spec and spec.get("model") == "merged/wiki-e4b" and not Path("merged/wiki-e4b/config.json").exists():
+        import subprocess
+        import sys
+        rc = subprocess.call([sys.executable, "-m", "training.harness.merge_lora", "--base", "google/gemma-4-E4B-it",
+                              "--adapter", DRAFT_ADAPTER, "--out", "merged/wiki-e4b"])
+        if rc != 0:
+            print(f"[spike] {name}: the merge failed rc={rc}", flush=True)
+            return {"spec": spec, "started": False, "why": [f"merge_lora rc={rc}"]}
     if spec:
         extra += ["--speculative-config", json.dumps(spec)]
     os.environ["VLLM_ALLOW_RUNTIME_LORA_UPDATING"] = "True"
@@ -210,6 +223,8 @@ def main() -> int:
     ap.add_argument("--configs", default=",".join(CONFIGS))
     ap.add_argument("--quantization", default=None, help="fp8: the 12B on an L4 (bf16 needs an A100)")
     ap.add_argument("--batch-invariant", action="store_true", help="F0b: VLLM_BATCH_INVARIANT=1 in every server")
+    ap.add_argument("--draft-quantization", default="fp8", help="C0: the merged E4B drafter's quantization — fp8 (L4/H100), "
+                    "bitsandbytes (A100: vLLM's online FP8 fails on sm80 [ran], and bf16 12B + bf16 E4B do not fit 40 GB), none")
     ap.add_argument("--equality-only", action="store_true", help="F0b: batch 1 texts only")
     ap.add_argument("--out", default="spike.json")
     a = ap.parse_args()
@@ -219,6 +234,11 @@ def main() -> int:
     import vllm
     from transformers import AutoTokenizer
     globals()["QUANT"] = a.quantization
+    if a.draft_quantization == "none":
+        CONFIGS["draft_e4b"].pop("quantization", None)
+    else:
+        CONFIGS["draft_e4b"]["quantization"] = a.draft_quantization
+    rec.update(draft_quantization=a.draft_quantization)
     globals()["BATCH_INVARIANT"], globals()["EQUALITY_ONLY"] = a.batch_invariant, a.equality_only
     rec.update(batch_invariant=a.batch_invariant, equality_only=a.equality_only)
     rec.update(vllm=vllm.__version__, target=TARGET, member=MEMBER, adapter=ADAPTER, max_tokens=MAX_TOKENS, quantization=a.quantization)

@@ -1,0 +1,69 @@
+=== session 1 of 2 · srv134959 · A100
+    boot clone: rc=0 98373e8 C0 attempts: the merged E4B OOMs beside the 12B on an L4; online FP8 fails on A100 (sm80); H100 refused — next: A100, 12B bf16 + drafter 4-bit
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 98373e8 C0 attempts: the merged E4B OOMs beside the 12B on an L4; online FP8 fails on A100 (sm80); H100 refused — next: A100, 12B bf16 + drafter 4-bit
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    98373e8 C0 attempts: the merged E4B OOMs beside the 12B on an L4; online FP8 fails on A100 (sm80); H100 refused — next: A100, 12B bf16 + drafter 4-bit | 0.30.0
+    carried the adapters in (8 chunks)
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0
+    [spike] nospec: up in 580.1 s · G1 applied (3/3)
+    [spike] nospec: up in 580.1 s · G1 applied (3/3)
+    [spike] nospec base/domain: b1 46.58 tok/s · b8 150.01 tok/s
+    [spike] nospec base/general: b1 48.44 tok/s · b8 360.1 tok/s
+    [spike] nospec base/domain: b1 46.58 tok/s · b8 150.01 tok/s
+    [spike] nospec base/general: b1 48.44 tok/s · b8 360.1 tok/s
+    [spike] nospec lora/domain: b1 40.56 tok/s · b8 233.28 tok/s
+    [spike] nospec lora/general: b1 41.09 tok/s · b8 313.18 tok/s
+    [spike] nospec: runtime LoRA load 0.23 s · serves identically: True
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --speculative-config {"method": "mtp", "model": "google/gemma-4-12B-it-assistant", "num_speculative_tokens": 4}
+    [spike] nospec lora/general: b1 41.09 tok/s · b8 313.18 tok/s
+    [spike] nospec: runtime LoRA load 0.23 s · serves identically: True
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --speculative-config {"method": "mtp", "model": "google/gemma-4-12B-it-assistant", "num_speculative_tokens": 4}
+    [spike] nospec lora/general: b1 41.09 tok/s · b8 313.18 tok/s
+    [spike] nospec: runtime LoRA load 0.23 s · serves identically: True
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --speculative-config {"method": "mtp", "model": "google/gemma-4-12B-it-assistant", "num_speculative_tokens": 4}
+    [spike] nospec lora/general: b1 41.09 tok/s · b8 313.18 tok/s
+    [spike] nospec: runtime LoRA load 0.23 s · serves identically: True
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --speculative-config {"method": "mtp", "model": "google/gemma-4-12B-it-assistant", "num_speculative_tokens": 4}
+    [spike] nospec lora/general: b1 41.09 tok/s · b8 313.18 tok/s
+    [spike] nospec: runtime LoRA load 0.23 s · serves identically: True
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --speculative-config {"method": "mtp", "model": "google/gemma-4-12B-it-assistant", "num_speculative_tokens": 4}
+    [spike] nospec lora/general: b1 41.09 tok/s · b8 313.18 tok/s
+    [spike] nospec: runtime LoRA load 0.23 s · serves identically: True
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --speculative-config {"method": "mtp", "model": "google/gemma-4-12B-it-assistant", "num_speculative_tokens": 4}
+    [spike] nospec lora/general: b1 41.09 tok/s · b8 313.18 tok/s
+    [spike] nospec: runtime LoRA load 0.23 s · serves identically: True
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --speculative-config {"method": "mtp", "model": "google/gemma-4-12B-it-assistant", "num_speculative_tokens": 4}
+    [spike] nospec lora/general: b1 41.09 tok/s · b8 313.18 tok/s
+    [spike] nospec: runtime LoRA load 0.23 s · serves identically: True
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --speculative-config {"method": "mtp", "model": "google/gemma-4-12B-it-assistant", "num_speculative_tokens": 4}
+    [spike] mtp: up in 465.0 s · G1 applied (3/3)
+    [spike] mtp base/domain: b1 130.52 tok/s · b8 477.41 tok/s · α 0.7853 · mean len 4.141
+    [spike] mtp base/general: b1 126.02 tok/s · b8 727.93 tok/s · α 0.5365 · mean len 3.146
+    [spike] mtp: runtime LoRA load 0.25 s · serves identically: True
+    Fetching 9 files:   0%|          | 0/9 [00:00<?, ?it/s]Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+    Fetching 9 files:  22%|██▏       | 2/9 [00:00<00:01,  6.88it/s]
+    Fetching 9 files:  22%|██▏       | 2/9 [00:00<00:01,  6.88it/s]
+    Fetching 9 files: 100%|██████████| 9/9 [00:46<00:00,  5.52s/it]
+    Fetching 9 files: 100%|██████████| 9/9 [00:46<00:00,  5.16s/it]
+    Fetching 9 files: 100%|██████████| 9/9 [00:46<00:00,  5.16s/it]
+    [merge] 258/258 projections merged into merged/wiki-e4b
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules wiki12b=adapters/wiki12b-walks-s0 --speculative-config {"method": "draft_model", "model": "merged/wiki-e4b", "num_speculative_tokens": 4, "quantization": "bitsandbytes", "max_model_len": 4096}
+    [rank] the server exited with 1
+    [spike] draft_e4b: DID NOT START · ['(APIServer pid=11070) pydantic_core._pydantic_core.ValidationError: 1 validation error for SpeculativeConfig']
+    [spike] done · {"mtp": {"base/domain": {"identical_to_nospec": "13/16", "speedup_b1": 2.8, "speedup_b8": 3.18, "alpha": 0.7853, "mean_accepted_length": 4.141}, "base/general": {"identical_to_nospec": "4/8", "speedup_b1": 2.6, "speedup_b8": 2.02, "alpha": 0.5365, "mean_accepted_length": 3.146}, "lora/domain": {"identical_to_nospec": "11/16", "speedup_b1": 1.92, "speedup_b8": 1.73, "alpha": 0.3356, "mean_accepted_length": 2.343}, "lora/general": {"identical_to_nospec": "5/8", "speedup_b1": 2.4, "speedup_b8": 1.86, "alpha": 0.4448, "mean_accepted_length": 2.779}}}
+    the runner wrote its result — done

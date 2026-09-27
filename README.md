@@ -228,7 +228,8 @@ LoRA + **Gemma 4's own MTP drafter** (`gemma-4-12B-it-assistant`), on one L4 in 
 LoRA loads at runtime in 0.25 s with the drafter on. The base runs **2.7×** faster on the expert's prompts (acceptance
 0.79); **with the LoRA on, 1.7× on its own domain and 2.1× on general text** — the drafter sees the LoRA through the
 target's activations but does not predict what it makes the target write. The public EAGLE-3 does far worse (1.2×). Not
-yet established: that the output is identical to plain decoding at temperature 0 — the run was not batch-invariant
+yet established: that the output is identical to plain decoding at temperature 0 — the run was not batch-invariant. And the
+expert LoRA hot-swaps, the drafter does not: vLLM binds one drafter per server; what that means and what is being measured, [`docs/GUIDE.md`](docs/GUIDE.md) §6.5
 ([`results/F0-spec-lora-12b-20260927/`](results/F0-spec-lora-12b-20260927/BRIEF.md)).
 
 **Not solved yet.** The router is still a keyword dictionary — its two learned replacements are both measured and
