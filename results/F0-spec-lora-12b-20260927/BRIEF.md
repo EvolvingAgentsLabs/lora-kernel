@@ -35,3 +35,8 @@ and 8; outputs at temperature 0 against `nospec`'s; a LoRA loaded and unloaded a
 
 Not in F0, said: training any drafter (A, B, C), speculators' hidden-state extraction with a LoRA (needs a speculators
 install and a training run — F3), the 31B distillation, new domains. One seed, one adapter, 24 prompts: a spike, not a bench.
+
+**Hardware, as it came (2026-09-27):** the A100 and the H100 were refused over quota (`attempt1_*`, `attempt2_*`). The 12B in
+bf16 does not fit an L4, so F0 runs the target in **FP8** (`--quantization fp8`, vLLM's dynamic FP8) on an L4 — the
+precision BCCard's EAGLE-3 was trained against. A second unknown, said: the LoRA was trained on bf16 weights and is
+served over FP8 ones; G1 says whether it is applied, and every comparison is FP8 against FP8.

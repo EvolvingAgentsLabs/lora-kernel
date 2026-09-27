@@ -110,11 +110,16 @@ def prompt_sets() -> dict:
             "general": [[{"role": "user", "content": g}] for g in GENERAL]}
 
 
+QUANT: str | None = None                            # --quantization: fp8 on an L4, where bf16 does not fit
+
+
 def run_config(name: str, spec: dict | None, sets: dict, tok) -> dict:
     from training.harness import accept_rank as ar
     from training.harness.verify_substrate import identity
     extra = ["--max-model-len", "4096", "--gpu-memory-utilization", "0.90", "--enable-lora", "--max-lora-rank", "16",
              "--max-loras", "2", "--lora-modules", f"{MEMBER}={ADAPTER}"]
+    if QUANT:
+        extra += ["--quantization", QUANT]
     if spec:
         extra += ["--speculative-config", json.dumps(spec)]
     os.environ["VLLM_ALLOW_RUNTIME_LORA_UPDATING"] = "True"
@@ -194,6 +199,7 @@ def main() -> int:
     ap.add_argument("--base", default=TARGET)
     ap.add_argument("--adapter", action="append", default=[], help="pool adapters (ignored)")
     ap.add_argument("--configs", default=",".join(CONFIGS))
+    ap.add_argument("--quantization", default=None, help="fp8: the 12B on an L4 (bf16 needs an A100)")
     ap.add_argument("--out", default="spike.json")
     a = ap.parse_args()
     out = Path(a.out)
@@ -201,7 +207,8 @@ def main() -> int:
     rec.setdefault("configs", {})
     import vllm
     from transformers import AutoTokenizer
-    rec.update(vllm=vllm.__version__, target=TARGET, member=MEMBER, adapter=ADAPTER, max_tokens=MAX_TOKENS)
+    globals()["QUANT"] = a.quantization
+    rec.update(vllm=vllm.__version__, target=TARGET, member=MEMBER, adapter=ADAPTER, max_tokens=MAX_TOKENS, quantization=a.quantization)
     if not Path(ADAPTER, "adapter_model.safetensors").exists():
         rec["stopped"] = f"no adapter at {ADAPTER}"; out.write_text(json.dumps(rec, indent=1)); print(f"[spike] {rec['stopped']}", flush=True)
         return 1

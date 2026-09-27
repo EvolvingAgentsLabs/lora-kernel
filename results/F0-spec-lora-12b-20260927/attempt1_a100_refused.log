@@ -1,0 +1,4 @@
+=== session 1 of 2 · srv085920 · A100
+NO SESSION: the backend gave no A100 (rc=1) — quota or entitlement, not an outage; nothing was started. A T4 is not a substitute.
+https://colab.research.google.com/tun/m/assign?nbh=8bf2cf10_306e_4c68_bcd0_31071
+6dbb64a........&variant=GPU&accelerator=A100: Service Unavailable
