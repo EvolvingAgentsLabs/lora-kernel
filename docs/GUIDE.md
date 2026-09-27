@@ -178,7 +178,9 @@ Details: [`FOUNDATIONS.md`](FOUNDATIONS.md) §4.3.
 Tuning a whole model (full *fine-tuning*) changes billions of weights and produces another model of the same size.
 **LoRA** (Hu et al. 2021) **[read]** freezes the weights and learns, for some matrices, a **low-rank** correction:
 
-$$W' = W + \tfrac{\alpha}{r}\,A\,B$$
+```math
+W' = W + \tfrac{\alpha}{r}\,A\,B
+```
 
 where $A$ and $B$ are two thin matrices (rank $r$, 16 here). Instead of changing $W$ (millions of numbers) you learn
 $A$ and $B$ (thousands). A LoRA of the 12B weighs ~140 MB against the model's ~24 GB. See
@@ -253,7 +255,9 @@ the one the large model would have chosen. Proof: [`FOUNDATIONS.md`](FOUNDATIONS
 
 If each token is accepted with independent probability α and k are proposed:
 
-$$\mathbb{E}[\tau] = \frac{1-\alpha^{k+1}}{1-\alpha}$$
+```math
+\mathbb{E}[\tau] = \frac{1-\alpha^{k+1}}{1-\alpha}
+```
 
 tokens per pass. The real speedup also depends on how much the draft costs ([`FOUNDATIONS.md`](FOUNDATIONS.md) §6.4).
 With a large batch it yields less: the GPU is already busy with other requests and "verifying for free" stops being
@@ -391,7 +395,9 @@ applied; that is why G1 now repeats with domain questions, under the same rule *
 Two variants on the same cases are compared **case by case**: only the cases where they differ count (one gets it
 right and the other does not). With $b$ cases in favor of A and $c$ in favor of B, the exact sign test:
 
-$$p = 2\sum_{k\le\min(b,c)}\binom{b+c}{k}2^{-(b+c)}$$
+```math
+p = 2\sum_{k\le\min(b,c)}\binom{b+c}{k}2^{-(b+c)}
+```
 
 So "53 to 0" is a real difference and "5 to 6" is a tie, even if the totals look different. See
 [`FOUNDATIONS.md`](FOUNDATIONS.md) §9.2.

@@ -90,7 +90,7 @@ arms are bought only once there is an effect to attribute.
 | **1b** | **the pool re-released on Gemma 4 E4B** | B1 ✅ | `email-full` and `desk-commitment` retrained on `google/gemma-4-E4B-it` from the same corpora and recipe, each tying or beating its `@v2` Qwen3.5-4B release on the same cases, paired; `@v3` manifests | **[ran] 2026-09-25 — NOT MOVED as a pool:** `email-full` ties its `@v2` (469 vs 471, 1 : 3) and beats the bare Gemma (119 : 0) → **`email-full@v3` on Gemma**; `desk-commitment` ties `@v2` and the bare Gemma alike (240/240, the ceiling) — no adapter needed there, stays `@v2` ([`BRIEF`](../results/M1b-pool-gemma4-20260925/BRIEF.md)). **2026-09-26: all moved** — `desk-commitment@v3` trained on both bands (M1d [ran], deep 239/240), `distributor-wiki@v2` (B5 [ran]) |
 | **2** | the router as a tiny model of the corpora | the members' corpora | misrouted-to-local no higher than the dictionary's on prompts the dictionary was not written for; abstains on out-of-distribution text | **arm 1 [ran] 2026-09-19 — does not pass.** Foreign text, fresh sets: dictionary 59/128 served locally, n-gram router **0/128**; legitimate requests from unseen senders: dictionary loses 0/120, router loses **120/120**. The dictionary stays; **arm 2 is an embedding model**, shared with milestone 7 |
 | **3** | the large half of one pair | 1 | a LoRA on ~~`Qwen3.8-27B`~~ ~~`gemma-4-31B-it`~~ `gemma-4-12B-it` (family.LARGE) is applied when served; large + LoRA beats small + LoRA on the deep band, paired | ✅ **[ran] 2026-09-26, on `gemma-4-12B-it`: closed — the large buys no accuracy here.** B3: 12B + LoRA 9/40 vs E4B + LoRA 10/40, a tie, with neither corpus showing a comparison; B5: shown them, the E4B alone does 37/40 — no room ([`BRIEF`](../results/B5-comparison-corpus-20260926/BRIEF.md)) |
-| **4** | the speculative pair | 3 | acceptance of small-LoRA drafts under large-LoRA verification exceeds acceptance under the bare large model | ✅ **[ran] 2026-09-26 — PASSED (B4):** α 0.871 → 0.898, 76 : 18 records, $p<10^{-4}$; the gain is on the corpus's own distribution (0.855 → 0.914). ~~Wall-clock not measured~~ — **F0 [ran] 2026-09-27: speculative decoding running with a LoRA expert on the 12B, the native MTP drafter 1.74× on the expert's domain, 2.13× on general text** ([`B4`](../results/B4-gemma4-pair-acceptance-20260926/BRIEF.md), [`F0`](../results/F0-spec-lora-12b-20260927/BRIEF.md)) |
+| **4** | the speculative pair | 3 | acceptance of small-LoRA drafts under large-LoRA verification exceeds acceptance under the bare large model | ✅ **[ran] 2026-09-26 — PASSED (B4):** α 0.871 → 0.898, 76 : 18 records, $p\lt 10^{-4}$; the gain is on the corpus's own distribution (0.855 → 0.914). ~~Wall-clock not measured~~ — **F0 [ran] 2026-09-27: speculative decoding running with a LoRA expert on the 12B, the native MTP drafter 1.74× on the expert's domain, 2.13× on general text** ([`B4`](../results/B4-gemma4-pair-acceptance-20260926/BRIEF.md), [`F0`](../results/F0-spec-lora-12b-20260927/BRIEF.md)) |
 | **5** | the first real region, by hand | 1, 2, a sandbox, keys rotated | the release gate, on a suite with a verifier nobody here generated | **region named 2026-09-19: nursing procedures and health-education material** (Open RN *Nursing Skills*, CC BY 4.0, first); headroom arm next, zero GPU |
 | **6** | the service policy, with the bill | 2, 4, 5 | the local share saves more than it costs, on real traffic | 🔶 **first pass [ran] 2026-09-21, zero GPU:** the P41/P62 replay priced at real `gemini-3.8-flash` rates — today's actual frontier bill (90 fluids cases) **$0.18**, avoided by keeping 150 email cases local **$0.11**, ceiling if everything left **$0.30**. **The local GPU's own dollar cost is not priced** — the rental rate could not be fetched live; not guessed around |
 | **7** | **a knowledge base per subdomain, and the trajectory through it as the harness** — on fluid mechanics, split into subdomains | 1; shares its embedding model with 2's arm 2; independent of 3–6, **runs next** | an expert trained to navigate and follow notes answers families it never trained on, where the same expert without the base is at 1/20 | 🔶 **W1–W4 built [ran]; W3's radar and W5's kill arm [ran] and not passed.** W5: the library arm 35/56 against the untrained base that reads at 45/56 (6 : 16, $p=0.052$), 35 : 2 over no-library — navigation transferred, reading a two-valued note did not. Next is the user's call: composition, no training. **2026-09-24: the library's unit becomes the atomic statement (user's design, `MEMORY.md` §1.6) — W9 pre-registered: an invented distributor wiki, headroom on the untrained base first** |
@@ -110,7 +110,9 @@ judged only on whether served text differs. If a full-recipe adapter is not `app
 **Gate.** Paired against the recorded Qwen 2.5 run on the same cases: ties or beats,
 exact sign test on discordant pairs,
 
-$$p = 2\sum_{k=0}^{\min(b,c)} \binom{b+c}{k}\,2^{-(b+c)} .$$
+```math
+p = 2\sum_{k=0}^{\min(b,c)} \binom{b+c}{k}\,2^{-(b+c)} .
+```
 
 **Falsified by** a member that loses to its own Qwen 2.5 release — the family move costs
 quality in that region, and the pool stays on 2.5 until a reason is found.
@@ -141,7 +143,9 @@ seeds, and out-of-region text — OpenClaw's recorded shapes and the fluids stat
 
 **The metric is the term a router can change** ([`FOUNDATIONS.md`](FOUNDATIONS.md) §8.4):
 
-$$\text{delivered} = \tfrac1n\sum_x [r(x)=(\text{local},m^*)]\,L_{m^*}(x) + [r(x)=\text{out}]\,F(x) + [r(x)=(\text{local},m\ne m^*)]\cdot 0 ,$$
+```math
+\text{delivered} = \tfrac1n\sum_x [r(x)=(\text{local},m^*)]\,L_{m^*}(x) + [r(x)=\text{out}]\,F(x) + [r(x)=(\text{local},m\ne m^*)]\cdot 0 ,
+```
 
 so it is scored on **misrouted-to-local** and on the out share, not on routing accuracy.
 
@@ -249,7 +253,9 @@ one scores the draft in a single teacher-forced pass (`prompt_logprobs`), and a 
 accepted when it is the large model's argmax at temperature 0. With per-token acceptance
 $\alpha$ and draft length $k$, the expected tokens per large-model pass are
 
-$$\mathbb{E}[\tau] = \frac{1-\alpha^{k+1}}{1-\alpha} .$$
+```math
+\mathbb{E}[\tau] = \frac{1-\alpha^{k+1}}{1-\alpha} .
+```
 
 **α is reported with its $k$ and beside the verified score of the same run.** α alone is
 not a decision.

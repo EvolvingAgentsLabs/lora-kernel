@@ -141,7 +141,6 @@ have the same `when:`. Knowledge that lives in git gets the gates code gets.
 
 ---
 
-
 ### 1.6 Atomic statements — a page is a list of verifiable statements **[ran]** W9
 
 The user's design, 2026-09-24. The library is shaped like **Wikipedia**: a **page** is about one
@@ -234,7 +233,9 @@ That is a hypothesis with a cheap test, and it is built in two stages so the tes
 step, *this query should have found this note*. Those (query, needed note) pairs, with the other
 notes of the subdomain as negatives, are a contrastive training set nobody has to label:
 
-$$\mathcal L = -\log \frac{\exp(\langle W e(q), W e_{\text{when}}(n^+)\rangle / \tau)}{\sum_{n \in \mathcal N}\exp(\langle W e(q), W e_{\text{when}}(n)\rangle/\tau)}, \qquad W \in \mathbb R^{d \times D},\ d \ll D .$$
+```math
+\mathcal L = -\log \frac{\exp(\langle W e(q), W e_{\text{when}}(n^+)\rangle / \tau)}{\sum_{n \in \mathcal N}\exp(\langle W e(q), W e_{\text{when}}(n)\rangle/\tau)}, \qquad W \in \mathbb R^{d \times D},\ d \ll D .
+```
 
 **What would show the compression claim is true:** recall@3 of the needed note, on held-out walks,
 staying flat as $d$ falls from $D$ to 64 — and R1 at $d = 64$ beating R0 at full width on
@@ -244,7 +245,9 @@ reported.
 
 ### 2.3 Scoring a search
 
-$$s(n \mid q) = \langle e(q), e_{\text{when}}(n)\rangle + \beta\,\langle e(q), e_{\text{what}}(n)\rangle, \qquad \text{return the top } k = 3 .$$
+```math
+s(n \mid q) = \langle e(q), e_{\text{when}}(n)\rangle + \beta\,\langle e(q), e_{\text{what}}(n)\rangle, \qquad \text{return the top } k = 3 .
+```
 
 A search may be restricted to a shelf: `<search shelf=harness>` for "find me the protocol",
 `<search shelf=wiki>` for "which formula". $\beta$ and the trajectory-conditioned terms of the

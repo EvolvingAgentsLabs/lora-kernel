@@ -180,7 +180,9 @@ Ajustar un modelo entero (*fine-tuning* completo) cambia miles de millones de pe
 tamaño. **LoRA** (Hu et al. 2021) **[read]** congela los pesos y aprende, para algunas matrices, una corrección de
 **rango bajo**:
 
-$$W' = W + \tfrac{\alpha}{r}\,A\,B$$
+```math
+W' = W + \tfrac{\alpha}{r}\,A\,B
+```
 
 donde $A$ y $B$ son dos matrices finitas (rango $r$, acá 16). En vez de cambiar $W$ (millones de números) se aprenden
 $A$ y $B$ (miles). Un LoRA del 12B pesa ~140 MB contra ~24 GB del modelo. Ver [`FOUNDATIONS.md`](FOUNDATIONS.md) §4.1.
@@ -252,7 +254,9 @@ es exactamente el que el grande habría elegido. Demostración: [`FOUNDATIONS.md
 
 Si cada token se acepta con probabilidad α independiente y se proponen k:
 
-$$\mathbb{E}[\tau] = \frac{1-\alpha^{k+1}}{1-\alpha}$$
+```math
+\mathbb{E}[\tau] = \frac{1-\alpha^{k+1}}{1-\alpha}
+```
 
 tokens por pasada. La aceleración real depende además de cuánto cuesta el borrador ([`FOUNDATIONS.md`](FOUNDATIONS.md) §6.4).
 Con batch grande rinde menos: la GPU ya está ocupada con otros pedidos y "verificar gratis" deja de ser gratis.
@@ -389,7 +393,9 @@ aplicado; por eso G1 ahora repite con preguntas del dominio, con la misma regla 
 Dos variantes sobre los mismos casos se comparan **caso por caso**: sólo cuentan los casos donde difieren (uno acierta y
 el otro no). Con $b$ casos a favor de A y $c$ a favor de B, la prueba exacta de signos:
 
-$$p = 2\sum_{k\le\min(b,c)}\binom{b+c}{k}2^{-(b+c)}$$
+```math
+p = 2\sum_{k\le\min(b,c)}\binom{b+c}{k}2^{-(b+c)}
+```
 
 Así "53 a 0" es una diferencia real y "5 a 6" es un empate, aunque los totales parezcan distintos. Ver
 [`FOUNDATIONS.md`](FOUNDATIONS.md) §9.2.

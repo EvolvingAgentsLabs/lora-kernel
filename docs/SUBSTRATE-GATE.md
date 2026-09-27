@@ -11,7 +11,7 @@ ritual. This is the gate, and each row exists because a number already paid for 
 ## The mathematics it guards
 
 A member is a delta on the base's seven projections per block,
-$y = xW + s\,(xA)B$ ([`FOUNDATIONS.md`](FOUNDATIONS.md) §4–§5). With $W$ frozen,
+$y = xW + s\ (xA)B$ ([`FOUNDATIONS.md`](FOUNDATIONS.md) §4–§5). With $W$ frozen,
 **a member whose served text never differs from the base's is serving $y = xW$** —
 the delta term absent, whatever the engine logged. That is C18, and G1 is its test.
 

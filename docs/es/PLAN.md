@@ -100,7 +100,7 @@ brazos de atribución se compran sólo una vez que hay un efecto que atribuir.
 | **1b** | **el pool re-liberado sobre Gemma 4 E4B** | B1 ✅ | `email-full` y `desk-commitment` reentrenados sobre `google/gemma-4-E4B-it` desde los mismos corpus y la misma receta, cada uno empatando o ganándole a su release `@v2` de Qwen3.5-4B en los mismos casos, pareado; manifiestos `@v3` | **[ran] 2026-09-25 — NO SE MUEVE como pool:** `email-full` empata con su `@v2` (469 vs 471, 1 : 3) y le gana al Gemma pelado (119 : 0) → **`email-full@v3` sobre Gemma**; `desk-commitment` empata con `@v2` y con el Gemma pelado por igual (240/240, el techo) — ahí no hace falta adaptador, se queda en `@v2` ([`BRIEF`](../../results/M1b-pool-gemma4-20260925/BRIEF.md)). **2026-09-26: todos movidos** — `desk-commitment@v3` entrenado en las dos bandas (M1d [ran], profunda 239/240), `distributor-wiki@v2` (B5 [ran]) |
 | **2** | el router como un modelo chico de los corpus | los corpus de los miembros | mal-ruteados-a-local no mayor que el del diccionario en prompts para los que el diccionario no fue escrito; abstiene ante texto fuera de distribución | **brazo 1 [ran] 2026-09-19 — no pasa.** Texto extranjero, conjuntos frescos: el diccionario sirve 59/128 localmente, el router de n-gramas **0/128**; pedidos legítimos de remitentes no vistos: el diccionario pierde 0/120, el router pierde **120/120**. El diccionario se queda; **el brazo 2 es un modelo de embeddings**, compartido con el hito 7 |
 | **3** | la mitad grande de un par | 1 | un LoRA en ~~`Qwen3.8-27B`~~ ~~`gemma-4-31B-it`~~ `gemma-4-12B-it` (family.LARGE) está `applied` al servirse; grande + LoRA le gana a chico + LoRA en la banda profunda, pareado | ✅ **[ran] 2026-09-26, sobre `gemma-4-12B-it`: cerrado — el grande no compra precisión acá.** B3: 12B + LoRA 9/40 vs E4B + LoRA 10/40, empate, sin que ningún corpus mostrara una comparación; B5: mostradas, el E4B solo hace 37/40 — sin margen ([`BRIEF`](../../results/B5-comparison-corpus-20260926/BRIEF.md)) |
-| **4** | el par especulativo | 3 | la aceptación de borradores del LoRA chico bajo verificación del LoRA grande supera la aceptación bajo el modelo grande pelado | ✅ **[ran] 2026-09-26 — PASADO (B4):** α 0,871 → 0,898, 76 : 18 registros, $p<10^{-4}$; la ganancia está en la distribución del propio corpus (0,855 → 0,914). ~~Reloj no medido~~ — **F0 [ran] 2026-09-27: decodificación especulativa corriendo con un experto LoRA sobre el 12B, el drafter MTP nativo 1,74× en el dominio del experto, 2,13× en texto general** ([`B4`](../../results/B4-gemma4-pair-acceptance-20260926/BRIEF.md), [`F0`](../../results/F0-spec-lora-12b-20260927/BRIEF.md)) |
+| **4** | el par especulativo | 3 | la aceptación de borradores del LoRA chico bajo verificación del LoRA grande supera la aceptación bajo el modelo grande pelado | ✅ **[ran] 2026-09-26 — PASADO (B4):** α 0,871 → 0,898, 76 : 18 registros, $p\lt 10^{-4}$; la ganancia está en la distribución del propio corpus (0,855 → 0,914). ~~Reloj no medido~~ — **F0 [ran] 2026-09-27: decodificación especulativa corriendo con un experto LoRA sobre el 12B, el drafter MTP nativo 1,74× en el dominio del experto, 2,13× en texto general** ([`B4`](../../results/B4-gemma4-pair-acceptance-20260926/BRIEF.md), [`F0`](../../results/F0-spec-lora-12b-20260927/BRIEF.md)) |
 | **5** | la primera región real, a mano | 1, 2, un sandbox, claves rotadas | la compuerta de release, sobre una suite con un verificador que nadie acá generó | **región nombrada el 2026-09-19: procedimientos de enfermería y material de educación en salud** (*Nursing Skills* de Open RN, CC BY 4.0, primero); sigue el brazo de margen, cero GPU |
 | **6** | la política de servicio, con la factura | 2, 4, 5 | la porción local ahorra más de lo que cuesta, sobre tráfico real | 🔶 **primera pasada [ran] 2026-09-21, cero GPU:** el replay de P41/P62 tasado a las tarifas reales de `gemini-3.8-flash` — la factura real de hoy hacia la frontera (90 casos de fluidos) **$0,18**, evitada al mantener locales los 150 casos de email **$0,11**, techo si todo hubiera salido **$0,30**. **El costo en dólares de la propia GPU local no está tasado** — la tarifa de alquiler no se pudo obtener en vivo; no se adivinó |
 | **7** | **una base de conocimiento por subdominio, y la trayectoria por ella como harness** — sobre mecánica de fluidos, partida en subdominios | 1; comparte su modelo de embeddings con el brazo 2 del hito 2; independiente de 3–6, **corre a continuación** | un experto entrenado para navegar y seguir notas contesta familias sobre las que nunca entrenó, donde el mismo experto sin la base está en 1/20 | 🔶 **W1–W4 construidos [ran]; el radar de W3 y el brazo que mata de W5 [ran] y no pasan.** W5: el brazo con biblioteca 35/56 contra el base sin entrenar que lee, 45/56 (6 : 16, $p=0{,}052$), 35 : 2 sobre sin-biblioteca — la navegación se transfirió, leer una nota de dos valores no. Sigue a decisión del usuario: composición, sin entrenar. **2026-09-24: la unidad de la biblioteca pasa a ser el enunciado atómico (diseño del usuario, `MEMORY.md` §1.6) — W9 pre-registrado: una wiki de distribuidora inventada, margen sobre el base sin entrenar primero** |
@@ -122,7 +122,9 @@ difiere. Si un adaptador de receta completa no queda `applied`, parar.
 **Compuerta.** Pareado contra la corrida grabada de Qwen 2.5 sobre los mismos casos:
 empata o gana, test de signos exacto sobre pares discordantes,
 
-$$p = 2\sum_{k=0}^{\min(b,c)} \binom{b+c}{k}\,2^{-(b+c)} .$$
+```math
+p = 2\sum_{k=0}^{\min(b,c)} \binom{b+c}{k}\,2^{-(b+c)} .
+```
 
 **Falsificado por** un miembro que pierde contra su propio release de Qwen 2.5 — el
 cambio de familia cuesta calidad en esa región, y el pool se queda en 2.5 hasta que se
@@ -157,7 +159,9 @@ de la pregunta de cada miembro, semillas de generador reservadas, y texto fuera 
 
 **La métrica es el término que un router puede cambiar** ([`FOUNDATIONS.md`](FOUNDATIONS.md) §8.4):
 
-$$\text{entregado} = \tfrac1n\sum_x [r(x)=(\text{local},m^*)]\,L_{m^*}(x) + [r(x)=\text{out}]\,F(x) + [r(x)=(\text{local},m\ne m^*)]\cdot 0 ,$$
+```math
+\text{entregado} = \tfrac1n\sum_x [r(x)=(\text{local},m^*)]\,L_{m^*}(x) + [r(x)=\text{out}]\,F(x) + [r(x)=(\text{local},m\ne m^*)]\cdot 0 ,
+```
 
 así que se puntúa por **mal-ruteados-a-local** y por la fracción que sale, no por
 exactitud de ruteo.
@@ -273,7 +277,9 @@ el borrador en una sola pasada con teacher forcing (`prompt_logprobs`), y un tok
 acepta cuando es el argmax del modelo grande a temperatura 0. Con aceptación por token
 $\alpha$ y largo de borrador $k$, los tokens esperados por pasada del modelo grande son
 
-$$\mathbb{E}[\tau] = \frac{1-\alpha^{k+1}}{1-\alpha} .$$
+```math
+\mathbb{E}[\tau] = \frac{1-\alpha^{k+1}}{1-\alpha} .
+```
 
 **α se reporta con su $k$ y al lado del puntaje verificado de la misma corrida.** α sola
 no es una decisión.
