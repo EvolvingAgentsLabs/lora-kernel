@@ -41,7 +41,12 @@ CONFIGS = {
     "nospec2": None,          # F0b's control: plain decoding twice — if these two differ, drift is not spec decode's
     "mtp": {"method": "mtp", "model": "google/gemma-4-12B-it-assistant", "num_speculative_tokens": 4},
     "eagle3": {"method": "eagle3", "model": "BCCard/MoAI-gemma-4-12B-it-speculator.eagle3", "num_speculative_tokens": 4},
+    # C0 (2026-09-27): a drafter ALIGNED to the expert with no training — the E4B member trained on the same corpus as the
+    # 12B's LoRA (B1 `wiki-walks-s1`), merged into its weights (vLLM puts no LoRA on a drafter), served as a draft model.
+    "draft_e4b": {"method": "draft_model", "model": "merged/wiki-e4b", "num_speculative_tokens": 4, "quantization": "fp8",
+                  "max_model_len": 4096},
 }
+DRAFT_ADAPTER = "adapters/wiki-walks-s1"
 GENERAL = ["Explain in a short paragraph how a refrigerator keeps food cold.",
            "Write a polite email asking a colleague to move a meeting to Thursday.",
            "What are three good habits for staying focused while studying?",
@@ -123,6 +128,14 @@ def run_config(name: str, spec: dict | None, sets: dict, tok) -> dict:
              "--max-loras", "2", "--lora-modules", f"{MEMBER}={ADAPTER}"]
     if QUANT:
         extra += ["--quantization", QUANT]
+    if spec and spec.get("model") == "merged/wiki-e4b" and not Path("merged/wiki-e4b/config.json").exists():
+        import subprocess
+        import sys
+        rc = subprocess.call([sys.executable, "-m", "training.harness.merge_lora", "--base", "google/gemma-4-E4B-it",
+                              "--adapter", DRAFT_ADAPTER, "--out", "merged/wiki-e4b"])
+        if rc != 0:
+            print(f"[spike] {name}: the merge failed rc={rc}", flush=True)
+            return {"spec": spec, "started": False, "why": [f"merge_lora rc={rc}"]}
     if spec:
         extra += ["--speculative-config", json.dumps(spec)]
     os.environ["VLLM_ALLOW_RUNTIME_LORA_UPDATING"] = "True"
