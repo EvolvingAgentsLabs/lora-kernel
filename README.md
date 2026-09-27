@@ -297,6 +297,7 @@ reason: `--prune` (its own tool surface), `--member-prompt` (the prompt its corp
 
 | | |
 |---|---|
+| [`docs/GUIDE.md`](docs/GUIDE.md) | **start here if you want to understand it** — a guide for people: how a model generates text, llama.cpp, vLLM and MLX, quantisation, LoRA, speculative decoding (draft model, MTP, EAGLE), serving many experts, the memory, the gateway, how we measure, and what has been unlocked so far |
 | [`docs/MEMORY.md`](docs/MEMORY.md) | **the memory, as it will be built** — library, radar, three verbs, the LoRA's habit, the referee; build order for 1.0 |
 | [`docs/KNOWLEDGE-TRAJECTORIES.md`](docs/KNOWLEDGE-TRAJECTORIES.md) | the *why* behind it, self-contained, written to be reviewed by other models: ten findings, five strategies, ten questions |
 | [`docs/FRAMEWORK.md`](docs/FRAMEWORK.md) | **state and gaps, self-contained, written to be reviewed by other models** — what works, what does not, and what is missing for this to be a generic framework for an organisation with one agent per role |
