@@ -49,6 +49,7 @@ Do not re-derive what is here. Do not cite a number from it without the caveat b
 
 | what was tried | what happened | run |
 |---|---|---|
+| **Is spec decode's output identical? (F0b)** Plain vs plain as the control, under `VLLM_BATCH_INVARIANT=1`, FP8 on an L4 | not testable here: the control itself differs (9/16, 1/8, 3/16, 0/8) and spec decode differs about as much — F0's divergences read as drift; needs bf16 on an A100/H100 | F0b |
 | **The 12B on a MacBook Air (MAC).** MLX 4-bit, LoRA experts switched per request by pointer, the native MTP drafter | the swap is hot and exact (2.9 µs), the LoRA acts over 4-bit weights, 8.4 GB peak; the drafter 1.25× on the base, **no gain with the LoRA on (0.92–1.04×)** — F0's misalignment, worse on a laptop | MAC |
 | **Speculative decoding with a LoRA expert on Gemma 4 12B (F0).** One vLLM server: the 12B (FP8) + an expert LoRA + the native MTP drafter or the public EAGLE-3 | it runs, the LoRA applied, a LoRA hot-loads in 0.25 s with the drafter on; MTP 2.73× on the base, **1.74× with the LoRA on its domain** — the LoRA costs the drafter (position 0: 0.98 → 0.58); EAGLE-3 far behind; identical output at temperature 0 not established (not batch-invariant) | F0 |
 | **A distributor-staff trajectory LoRA (M9).** 700 turns played through the demo's own loop, six roles, read / write / denied | held-out **70/70** against the bare Gemma's 6/70 (53 : 0); the distributor demo **5/5** against 1/5 — the untrained model asked for an order id it was given | M9 |
