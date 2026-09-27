@@ -41,7 +41,7 @@ bf16 does not fit an L4, so F0 runs the target in **FP8** (`--quantization fp8`,
 precision BCCard's EAGLE-3 was trained against. A second unknown, said: the LoRA was trained on bf16 weights and is
 served over FP8 ones; G1 says whether it is applied, and every comparison is FP8 against FP8.
 
-## Result **[ran]** 2026-09-27 (session 1) — the combination runs; the native MTP drafter keeps 1.7–2.1× with a LoRA on; the output is NOT yet shown identical
+## Result **[ran]** 2026-09-27 (one L4 session, all three configs) — the combination runs; the native MTP drafter keeps 1.7–2.1× with a LoRA on; the output is NOT yet shown identical
 
 vLLM 0.30.0, `gemma-4-12B-it` **FP8** on one L4, the expert LoRA `wiki12b` (B3), k = 4, temperature 0, 16 expert prompts
 and 8 general, `max_tokens` 160 (`spike.json`).
@@ -58,6 +58,8 @@ both (3/3); a LoRA **loads at runtime in 0.23–0.28 s with the drafter running*
 | **MTP** | LoRA / general | 34.3 | **2.13×** | 1.90× | 0.429 | 2.72 | .71 · .47 · .32 · .21 | 1/8 |
 | EAGLE-3 (BCCard) | base / domain | 19.4 | 1.17× | 1.01× | 0.136 | 1.55 | | |
 | EAGLE-3 (BCCard) | base / general | 27.3 | 1.59× | 1.40× | 0.245 | 1.98 | | |
+| EAGLE-3 (BCCard) | LoRA / domain | 20.5 | 1.29× | 1.12× | 0.150 | 1.60 | | 3/16 |
+| EAGLE-3 (BCCard) | LoRA / general | 24.9 | 1.55× | 1.38× | 0.223 | 1.89 | | 0/8 |
 
 **Readings.**
 1. **The native MTP drafter is the one to build on**, not the public EAGLE-3: on the same prompts it accepts 5.8× as
