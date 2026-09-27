@@ -26,3 +26,15 @@ denial, denied; for a delivery note, the planted instruction not acted on). Pair
 | the demo's five scenes, beside | reported, not gated | five scenes are a demonstration, not a sample |
 
 One seed, said as such (M8's two seeds agreed). **Ceiling:** 1 A100 + 1 L4.
+
+## T **[ran]** 2026-09-26 and S1 — trained on an L4; the generic identity gate did not show the adapter
+
+T: `distributor-staff-s0` trained on a Colab **L4** (the A100 was refused twice over quota — `T_attempt*`; an L4 has bf16,
+unlike the T4 the rules exclude), adapter `98009657…`, corpus `f90492a2…`; config as every Gemma member (r 16, the vision
+and audio towers excluded). S1 (`S1_generic_g1_only.json`): **G1 NOT APPLIED — 1 of 3 generic probes differ**, the rule
+needs 2; the run stopped before scoring, as it must.
+
+**Redesign 1 (of the gate, not of the arms):** a LoRA trained only on the distributor's tool turns can leave off-domain
+text ("why is the sky blue") almost untouched. G1 now falls back to **three held-out distributor requests under the same
+rule** (2 of 3 differ, none empty) — a member vLLM did not apply serves the base's text on those too, so the fallback
+cannot pass an unapplied adapter. Written before S2 runs; the verdict table above is unchanged.

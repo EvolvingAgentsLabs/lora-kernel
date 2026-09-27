@@ -1,0 +1,4 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules staff-s0=adapters/distributor-staff-s0
+[pool] G1 staff-s0: NOT APPLIED
+[distributor] G1: an adapter is not applied · {}

@@ -95,3 +95,17 @@ def test_the_arm_scores_base_and_a_member_end_to_end_against_the_fake(tmp_path, 
     member = sum(r["credit"] for r in rec["arms"]["staff-s0"]["held_out"].values())
     base = sum(r["credit"] for r in rec["arms"]["base"]["held_out"].values())
     assert member > base and rec["analysis"]["pairs"][0]["pair"] == "staff-s0 vs base"
+
+
+def test_g1_falls_back_to_domain_probes_under_the_same_rule():
+    from examples.distributor import staff_arm
+    calls = []
+
+    def identity(base, member, tok, probes=None):
+        calls.append(probes)
+        applied = probes is not None and len(probes) == 3
+        return {"probed": 3, "empty": 0, "differs": 3 if applied else 1, "applied": applied}
+    g = staff_arm.g1("b", "m", None, identity)
+    assert g["applied"] and g["generic"]["differs"] == 1 and g["domain"]["differs"] == 3 and len(calls) == 2
+    unapplied = staff_arm.g1("b", "m", None, lambda *a, **k: {"probed": 3, "empty": 0, "differs": 0, "applied": False})
+    assert not unapplied["applied"]

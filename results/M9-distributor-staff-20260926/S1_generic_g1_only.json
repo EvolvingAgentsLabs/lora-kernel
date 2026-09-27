@@ -1,0 +1,32 @@
+{
+ "arms": {},
+ "G1": {
+  "staff-s0": {
+   "probed": 3,
+   "empty": 0,
+   "differs": 1,
+   "applied": false,
+   "samples": [
+    {
+     "base": "The sky appears blue because of a phenomenon called Rayleigh",
+     "member": "The sky appears blue because of a phenomenon called Rayleigh"
+    },
+    {
+     "base": "Here are three things a careful reader checks before answeri",
+     "member": "Here are three things a careful reader checks before answeri"
+    },
+    {
+     "base": "A pressure drop in a pipe depends on the fluid's properties,",
+     "member": "A pressure drop in a pipe depends on the fluid's properties,"
+    }
+   ]
+  }
+ },
+ "stopped": "G1: an adapter is not applied",
+ "analysis": {
+  "summary": {},
+  "pairs": [],
+  "reading": "NOTHING SCORED"
+ },
+ "finished": "2026-09-27T01:13:42"
+}

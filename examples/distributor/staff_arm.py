@@ -66,6 +66,24 @@ def demo_day(generate) -> dict:
     return {"passed": sum(s["passed"] for s in out), "n": len(out), "scenes": out}
 
 
+def domain_probes() -> list[str]:
+    """Three held-out distributor requests, the member's own ground (their eval wording, their own worlds' ids)."""
+    return [r["request"] for r in rows("eval")[:3]]
+
+
+def g1(base: str, member: str, tok, identity) -> dict:
+    """G1 — the generic probes, and if they do not show the adapter, the domain probes under the SAME rule (2 of 3
+    differ, none empty). REDESIGN 1, 2026-09-26 [ran] results/M9-distributor-staff-20260926: `staff-s0` changed 1 of
+    3 generic probes ("why is the sky blue") — a LoRA trained only on tool turns can leave off-domain text almost
+    untouched. The domain probe cannot pass an adapter vLLM did not apply: that member serves the base's text."""
+    gen = identity(base, member, tok)
+    out = {"generic": gen, "applied": gen["applied"]}
+    if not gen["applied"]:
+        dom = identity(base, member, tok, probes=domain_probes())
+        out.update(domain=dom, applied=dom["applied"])
+    return out
+
+
 def analyse(rec: dict) -> dict:
     from training.harness.release_gate import pair
     arms = rec["arms"]
@@ -142,8 +160,9 @@ def main() -> int:
             rec["stopped"] = "the base never came up"
         else:
             for x in members:
-                rec.setdefault("G1", {})[x] = identity(a.base, x, tok)
-                print(f"[pool] G1 {x}: {'applied' if rec['G1'][x]['applied'] else 'NOT APPLIED'}", flush=True)
+                rec.setdefault("G1", {})[x] = g1(a.base, x, tok, identity)
+                print(f"[pool] G1 {x}: {'applied' if rec['G1'][x]['applied'] else 'NOT APPLIED'}"
+                      f" (generic {rec['G1'][x]['generic']['differs']}/3, domain {rec['G1'][x].get('domain', {}).get('differs', '-')}/3)", flush=True)
             save()
             if not all(rec["G1"][x]["applied"] for x in members):
                 rec["stopped"] = "G1: an adapter is not applied"
