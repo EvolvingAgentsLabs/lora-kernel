@@ -139,6 +139,35 @@ def towers_to_exclude(model) -> str | None:
     return r".*(vision_tower|audio_tower|multi_modal_projector|embed_vision|embed_audio).*"
 
 
+def n_layers(model) -> int:
+    """The language model's decoder layers — Gemma 4 keeps them under `text_config`."""
+    cfg = getattr(model.config, "text_config", None) or model.config
+    return int(cfg.num_hidden_layers)
+
+
+def layers_from(spec, n: int) -> int:
+    """`None` or 0 → every layer (every adapter before E6); `"half"` → n // 2; an integer → that layer."""
+    if spec in (None, "", 0, "0"):
+        return 0
+    return n // 2 if spec == "half" else int(spec)
+
+
+def layer_regex(targets: list[str], layers) -> str:
+    r"""A peft `target_modules` regex (full match) for the named projections in the listed decoder layers only.
+
+    E6 (docs/review/00-thesis-review.md §5): a LoRA on layers k…N-1 leaves every layer below k byte-identical to
+    the base, so their KV under a shared prefix is the base's — the precondition for switching experts mid-generation.
+    Explicit, not `layers_to_transform`: what was adapted is read back from the adapter file (`adapter_layers`)."""
+    idx = "|".join(str(i) for i in layers)
+    return rf".*\.layers\.({idx})\.(?:.*\.)?({'|'.join(targets)})"
+
+
+def adapter_layers(names) -> list[int]:
+    """The decoder layer indices an adapter's tensor names touch — `…layers.<i>.…lora_A.weight`."""
+    import re
+    return sorted({int(m.group(1)) for n in names for m in [re.search(r"\.layers\.(\d+)\.", n)] if m})
+
+
 def train_adapter(base: str, rows: list[dict], out_dir: str, args):
     """A fresh base per adapter.
 
@@ -171,11 +200,15 @@ def train_adapter(base: str, rows: list[dict], out_dir: str, args):
     model.gradient_checkpointing_enable()
     model.enable_input_require_grads()
     model.config.use_cache = False
+    targets = args.targets.split(",")
+    k = layers_from(getattr(args, "layers_from", None), n_layers(model))
+    if k:                                             # E6: only layers k…N-1 carry a LoRA
+        targets = layer_regex(targets, range(k, n_layers(model)))
     peft_model = get_peft_model(model, LoraConfig(
         r=args.r, lora_alpha=args.alpha, lora_dropout=0.05, bias="none",
         task_type="CAUSAL_LM",
-        target_modules=args.targets.split(","), exclude_modules=towers_to_exclude(model)))
-    print(f"[targets] {args.targets} · excluded {towers_to_exclude(model)}", flush=True)
+        target_modules=targets, exclude_modules=towers_to_exclude(model)))
+    print(f"[targets] {args.targets} · layers from {k or 0} of {n_layers(model)} · excluded {towers_to_exclude(model)}", flush=True)
     peft_model.print_trainable_parameters()
     SFTTrainer(
         model=peft_model, train_dataset=Dataset.from_list(texts),

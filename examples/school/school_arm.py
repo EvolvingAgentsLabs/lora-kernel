@@ -33,6 +33,13 @@ def rows(name: str) -> list[dict]:
     return [json.loads(l) for l in (DATA / f"{name}.jsonl").read_text().splitlines() if l.strip()]
 
 
+def adapter_dir(arm: str) -> str:
+    """`school-s<k>` — the full member (M8); `upper-s<k>` — E6, the same recipe on the upper half of the layers."""
+    if arm.startswith("upper-s"):
+        return f"adapters/school-upper-s{arm.removeprefix('upper-s')}"
+    return f"adapters/school-staff-s{arm.removeprefix('school-s')}"
+
+
 def served_model(arm: str, base: str) -> str:
     return base if arm == "base" else arm
 
@@ -79,6 +86,8 @@ def analyse(rec: dict) -> dict:
             keep = [i for i in ids if i in A and "error" not in A[i] and "error" not in B[i]]
             out["pairs"].append(pair([{"id": i, "correct": bool(A[i]["credit"])} for i in keep],
                                      [{"id": i, "correct": bool(B[i]["credit"])} for i in keep], f"{a} vs base"))
+    if any(x.startswith("upper-s") for x in arms):
+        out["E6"] = e6(rec)
     wins = [p for p in out["pairs"] if p["state"] == "improvement"]
     unapplied = [a for a in arms if a != "base" and not rec.get("G1", {}).get(a, {}).get("applied")]
     out["reading"] = (f"VOID: G1 does not show {unapplied} applied" if unapplied else
@@ -89,11 +98,46 @@ def analyse(rec: dict) -> dict:
     return out
 
 
+E6_MAX_LOST = 3                                     # docs/review/00-thesis-review.md §5, written before the run
+
+
+def e6(rec: dict) -> dict:
+    r"""E6's verdict, written first (results/E6-upper-layers-20260927/BRIEF.md). Paired against the full member on the 70
+    held-out turns: $\ell$ = turns the full member passes and the upper-half member fails; PASSED needs $\ell\le 3$
+    AND the lower layers bit-identical to the base (`train_one.lower_layers_identical`, read from the adapter directory).
+    A base-vs-base control that differs, or an adapter that does not move layer $k$, makes the identity unreadable: VOID."""
+    from training.harness.release_gate import pair
+    arms, res = rec["arms"], {}
+    full = next((x for x in sorted(arms) if x.startswith("school-s")), None)
+    for up in sorted(x for x in arms if x.startswith("upper-s")):
+        low = rec.get("lower_identity", {}).get(up) or {}
+        r = {"lower_identity": low}
+        if full:
+            A, B = arms[up]["held_out"], arms[full]["held_out"]
+            keep = [i for i in sorted(B) if i in A and "error" not in A[i] and "error" not in B[i]]
+            r["pair"] = pair([{"id": i, "correct": bool(A[i]["credit"])} for i in keep],
+                             [{"id": i, "correct": bool(B[i]["credit"])} for i in keep], f"{up} vs {full}")
+            r["lost"] = r["pair"]["only_b"]
+        identical = low.get("inputs_identical") and low.get("kv_identical") is not False and not low.get("file_layers_below_k")
+        r["reading"] = ("VOID: no full member scored beside it" if not full else
+                        "VOID: G1 does not show it applied" if not rec.get("G1", {}).get(up, {}).get("applied") else
+                        "VOID: no lower-layer check in the adapter directory" if not low else
+                        "VOID: base against base is not bit-identical — the engine, not the adapter" if not low.get("control_identical") else
+                        "VOID: the adapter does not move layer k" if not low.get("adapted_moves") else
+                        "FALSIFIED: the layers below k are not the base's" if not identical else
+                        f"PASSED: {r['lost']} of {len(keep)} turns lost (≤ {E6_MAX_LOST}), lower layers bit-identical"
+                        if r["lost"] <= E6_MAX_LOST else
+                        f"FALSIFIED: {r['lost']} turns lost against the full member (> {E6_MAX_LOST})")
+        res[up] = r
+    return res
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--base", default=BASE)
     ap.add_argument("--adapter", action="append", default=[], help="pool adapters (ignored)")
     ap.add_argument("--train-seed", type=int, default=None)
+    ap.add_argument("--layers-from", default=None, help="E6: train `upper-s<K>` on decoder layers k…N-1 only ('half')")
     ap.add_argument("--arms", default="base")
     ap.add_argument("--combine", default=None, help="zero GPU: add this file's arms to --out's and re-read the verdict")
     ap.add_argument("--out", default="school_arm.json")
@@ -110,29 +154,36 @@ def main() -> int:
         return 0
     if a.train_seed is not None:
         from training.harness.release_gate import RECIPE
-        spec = f"adapters/school-staff-s{a.train_seed}"
-        print(f"[pool] training {spec} on {a.base}", flush=True)
+        name = f"upper-s{a.train_seed}" if a.layers_from else f"school-s{a.train_seed}"
+        spec = adapter_dir(name)
+        print(f"[pool] training {spec} on {a.base}{f' (layers from {a.layers_from})' if a.layers_from else ''}", flush=True)
         rc = subprocess.call([sys.executable, "-m", "training.harness.train_one", "--base", a.base, "--train", str(DATA / "train.jsonl"),
                               "--out-dir", spec, "--epochs", str(RECIPE["epochs"]), "--r", str(RECIPE["r"]),
-                              "--alpha", str(RECIPE["lora_alpha"]), "--lr", str(RECIPE["lr"]), "--seed", str(a.train_seed)])
+                              "--alpha", str(RECIPE["lora_alpha"]), "--lr", str(RECIPE["lr"]), "--seed", str(a.train_seed),
+                              *(["--layers-from", a.layers_from] if a.layers_from else [])])
         if rc != 0:
             rec["stopped"] = f"training failed rc={rc}"; rec["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S"); save()
             return 1
         import hashlib
-        rec.setdefault("members", {})[f"school-s{a.train_seed}"] = {
+        rec.setdefault("members", {})[name] = {
             "adapter": spec, "adapter_sha256": hashlib.sha256(Path(spec, "adapter_model.safetensors").read_bytes()).hexdigest()}
-        have = sorted(str(p.parent) for p in Path("adapters").glob("school-staff-s*/adapter_model.safetensors"))
+        if Path(spec, "lower_identity.json").exists():
+            rec["members"][name]["lower_identity"] = json.loads(Path(spec, "lower_identity.json").read_text())
+        have = sorted(str(p.parent) for p in Path("adapters").glob(f"{Path(spec).name.rsplit('-s', 1)[0]}-s*/adapter_model.safetensors"))
         subprocess.call(["tar", "czf", "adapters_out.tgz", *have])
         rec["packed"] = len(have); rec["trained_only"] = time.strftime("%Y-%m-%dT%H:%M:%S"); save()
         print(f"[pool] trained and packed {len(have)} — stopping before serving, as asked", flush=True)
         return 0
 
     arms = [x for x in a.arms.split(",") if x]
-    members = {x: f"adapters/school-staff-s{x.removeprefix('school-s')}" for x in arms if x != "base"}
+    members = {x: adapter_dir(x) for x in arms if x != "base"}
     lacking = [x for x, d in members.items() if not Path(d, "adapter_model.safetensors").exists()]
     if lacking:
         print(f"[school] cannot score: adapters not on disk {lacking}", flush=True)
         return 2
+    for x, d in members.items():                      # E6: the lower-layer check travels with the adapter
+        if Path(d, "lower_identity.json").exists():
+            rec.setdefault("lower_identity", {})[x] = json.loads(Path(d, "lower_identity.json").read_text())
     from transformers import AutoTokenizer
     from examples.school.gateway import vllm_generator
     from training.harness import accept_rank as ar
@@ -157,11 +208,14 @@ def main() -> int:
                     gen = vllm_generator(served_model(arm, a.base), tok)
                     slot = rec["arms"].setdefault(arm, {"held_out": {}})
                     for i, r in enumerate(held_out, 1):
+                        if r["case_id"] in slot["held_out"] and "error" not in slot["held_out"][r["case_id"]]:
+                            continue                         # resumed across sessions: a scored turn is not re-scored
                         slot["held_out"][r["case_id"]] = score_turn(gen, r)
                         if i % 10 == 0 or i == len(held_out):
                             save()
                             print(f"[school] {arm} {i}/{len(held_out)} credit {sum(x.get('credit', False) for x in slot['held_out'].values())}", flush=True)
-                    slot["demo"] = demo_day(gen); save()
+                    if "demo" not in slot:
+                        slot["demo"] = demo_day(gen); save()
                     print(f"[school] {arm} demo day {slot['demo']['passed']}/{slot['demo']['n']}", flush=True)
     finally:
         ar.stop(srv)

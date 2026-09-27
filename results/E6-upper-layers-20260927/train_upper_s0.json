@@ -1,0 +1,45 @@
+{
+ "arms": {},
+ "members": {
+  "upper-s0": {
+   "adapter": "adapters/school-upper-s0",
+   "adapter_sha256": "bd75db2342cca0495e6637608217db26400cf46c07bd98f3a97d48e60d78890b",
+   "lower_identity": {
+    "k": 21,
+    "prompts": 4,
+    "inputs_identical": true,
+    "adapted_moves": true,
+    "kv_identical": true,
+    "kv_layers_compared": 21,
+    "control_identical": true,
+    "kv_cached_layers": 24,
+    "file_layers": [
+     21,
+     22,
+     23,
+     24,
+     25,
+     26,
+     27,
+     28,
+     29,
+     30,
+     31,
+     32,
+     33,
+     34,
+     35,
+     36,
+     37,
+     38,
+     39,
+     40,
+     41
+    ],
+    "file_layers_below_k": []
+   }
+  }
+ },
+ "packed": 1,
+ "trained_only": "2026-09-27T18:42:12"
+}
