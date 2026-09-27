@@ -95,7 +95,9 @@ def main() -> int:
         print(f"[tunnel] no weights for {missing}")
         return 1
 
-    cmd = ["vllm", "serve", args.base, "--dtype", "bfloat16"]
+    # THE CONTEXT IS BOUNDED as every other serving runner bounds it: Gemma 4's default length does not leave an L4
+    # room for its KV cache, and a member's turn fits in 8192 with the tool block.
+    cmd = ["vllm", "serve", args.base, "--dtype", "bfloat16", "--max-model-len", "8192", "--gpu-memory-utilization", "0.90"]
     if pool:
         cmd += ["--enable-lora", "--max-lora-rank", "16",
                 "--max-loras", str(len(pool)), "--lora-modules",

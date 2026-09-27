@@ -1,0 +1,1 @@
+{"org": "northgate", "turns": 14, "served_locally": 11, "to_frontier": 1, "to_a_person": 2, "denied_calls": 1, "held_for_approval": 2, "replies_replaced_by_the_tools_text": 2, "local_tokens": {"prompt": 5871, "completion": 575}, "frontier_cost_avoided_usd": 0.00656, "not_priced": "the local GPU's own cost"}

@@ -1,0 +1,4 @@
+[transformers] PyTorch was not found. Models won't be available and only tokenizers, configuration and file/data utilities can be used.
+[gateway] :8765 · model school-s0 at https://trio-head-licence-frequently.trycloudflare.com · frontier claude-haiku-4-5-20251001 at https://api.anthropic.com/v1
+[gateway] one OpenClaw patch per user in ~/.config/lora-kernel/openclaw (each carries that user's signed token)
+[frontier] call 1 · 10175+200 tokens · $0.0112 spent of $50.00

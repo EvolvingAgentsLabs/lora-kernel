@@ -35,6 +35,12 @@ pantalla está copiado de una corrida grabada — [`results/DEMO-school-diagram-
 sustitutos de demo. El video es HTML renderizado con [HyperFrames](https://github.com/heygen-com/hyperframes):
 [`video/demo-escuela/`](video/README.md).
 
+**Y en vivo, no sólo guionada [ran] 2026-09-26: 15/15 a través del OpenClaw real.** Las mismas escenas enviadas por el propio
+OpenClaw 2026.9.4 — un perfil por rol, cada uno con su token firmado como clave del proveedor — al gateway, con el miembro
+en una L4 alquilada y **Claude Haiku 4.5 como frontera** para lo que ninguna herramienta cubre: pasan todas, el único turno a
+la frontera costó $0,0112 y la aprobación del director ejecutó el cobro retenido. Cómo apuntar tu propio OpenClaw:
+[`docs/es/OPENCLAW.md`](docs/es/OPENCLAW.md) §6 · la corrida: [`results/LIVE-school-openclaw-20260926/`](results/LIVE-school-openclaw-20260926/BRIEF.md).
+
 ## El problema
 
 Una organización que funciona con agentes sigue mandando el mismo puñado de trabajos que se repiten

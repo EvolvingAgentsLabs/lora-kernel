@@ -249,6 +249,23 @@ y cada chunk lleva `x_buffered: true` **en el payload** — no sólo en un comen
 cliente recibe SSE correcto y una respuesta correcta. Lo que no recibe es entrega
 incremental, que es latencia y no corrección.
 
+## 6. La escuela, un perfil de OpenClaw por rol
+
+El gateway (`examples/school/gateway.py`) es en sí un endpoint compatible con OpenAI, así que el OpenClaw de cada rol
+apunta a él con **su propio token firmado como clave del proveedor** — el rol lo decide el token, nunca el id del modelo:
+
+    python -m examples.school.gateway --upstream <URL de vLLM> --member school-s0 \
+        [--frontier-url https://api.openai.com/v1 --frontier-model <modelo>]    # la clave desde $FRONTIER_API_KEY
+    ~/.openclaw/bin/openclaw --profile school-educador-north config patch \
+        --file ~/.config/lora-kernel/openclaw/educador-north.json5
+    ~/.openclaw/bin/openclaw --profile school-educador-north agent --local -m "¿Qué tiene en la agenda el alumno 1?"
+
+`python -m examples.school.live_openclaw` juega así toda la demo guionada y la puntúa con las mismas verificaciones.
+**[ran] 2026-09-26: 15/15 a través de OpenClaw 2026.9.4 con el modelo real (Gemma 4 E4B + `school-s0` en una L4) y Claude
+Haiku 4.5 como frontera** — el cableado pasó antes 15/15 con un sustituto ([`BRIEF`](../../results/LIVE-school-openclaw-20260926/BRIEF.md)). Algo que enseñó el primer turno en vivo:
+OpenClaw agrega su propio contexto interno como *último* mensaje de usuario y le pone fecha al pedido; el gateway lee el
+pedido de la persona dentro de eso (`runtime_request`).
+
 ## Cuánto vale esto, medido
 
 | | entrega | sale de la máquina |
