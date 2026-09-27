@@ -84,7 +84,9 @@ class ToolSuite:
                     args[k.strip()] = v.strip()
         elif body:
             params = [p["function"]["parameters"]["properties"] for p in dt.SCHEMA if p["function"]["name"] == name][0]
-            args = {next(iter(params)): body}
+            # A TOOL WITH NO PARAMETERS IGNORES A BODY. `next(iter({}))` raised StopIteration out of the harness and 11
+            # of the bare base's 70 held-out turns were recorded as errors instead of scored [ran] results/M9-…
+            args = {next(iter(params)): body} if params else {}
         try:
             out = dt.answer(self.conn, self.claim, name, args)
             self.calls.append({"tool": name, "args": args, "result": out})
