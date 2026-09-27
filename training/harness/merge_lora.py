@@ -20,6 +20,8 @@ import json
 import shutil
 from pathlib import Path
 
+SHARD_BYTES = 2 * 1024 ** 3
+
 
 def plan(adapter_keys: list[str]) -> dict[str, str]:
     """{adapter module prefix → checkpoint weight name} for every A/B pair."""
@@ -59,20 +61,41 @@ def main() -> int:
     targets = plan(list(ad.keys()))
     by_weight = {w: m for m, w in targets.items()}
     done = set()
-    for f in src.iterdir():
+    # Written in ~2 GB shards with an index: the E4B ships as ONE 16 GB shard, and holding it whole swaps a 16 GB Mac
+    # (MAC2, 2026-09-27). Readers (vLLM, transformers, convert_hf_to_gguf) take a sharded checkpoint through the index.
+    weight_map, pending, size, n = {}, {}, 0, 0
+
+    def flush():
+        nonlocal pending, size, n
+        if pending:
+            n += 1
+            name = f"merged-{n:05d}.safetensors"
+            save_file(pending, str(out / name), metadata={"format": "pt"})
+            weight_map.update({k: name for k in pending})
+            pending, size = {}, 0
+
+    for f in sorted(src.iterdir()):
         if f.suffix == ".safetensors":
             sh = safe_open(str(f), "pt")
-            tensors = {}
             for k in sh.keys():
                 t = sh.get_tensor(k)
                 m = by_weight.get(k)
                 if m is not None:
                     t = merge_tensor(t, ad.get_tensor(f"{m}.lora_A.weight"), ad.get_tensor(f"{m}.lora_B.weight"), scale)
                     done.add(m)
-                tensors[k] = t.contiguous()
-            save_file(tensors, str(out / f.name), metadata={"format": "pt"})
-        elif f.is_file():
+                pending[k] = t.contiguous()
+                size += t.numel() * t.element_size()
+                if size >= SHARD_BYTES:
+                    flush()
+        elif f.is_file() and not f.name.endswith(".safetensors.index.json"):
             shutil.copy2(f, out / f.name)
+    flush()
+    # HF's shard names: converters find a checkpoint by `model*.safetensors` (convert_hf_to_gguf read `merged-*` as empty)
+    final = {f"merged-{i:05d}.safetensors": f"model-{i:05d}-of-{n:05d}.safetensors" for i in range(1, n + 1)}
+    for old_name, new_name in final.items():
+        (out / old_name).rename(out / new_name)
+    weight_map = {k: final[v] for k, v in weight_map.items()}
+    (out / "model.safetensors.index.json").write_text(json.dumps({"metadata": {}, "weight_map": weight_map}, indent=1))
     missing = sorted(set(targets) - done)
     report = {"base": a.base, "adapter": a.adapter, "scale": scale, "pairs": len(targets), "merged": len(done),
               "missing": missing[:5], "torch": torch.__version__}
