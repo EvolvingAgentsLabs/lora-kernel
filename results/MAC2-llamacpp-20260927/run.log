@@ -1,0 +1,42 @@
+[mac2] nospec/base/domain: 12.6 tok/s
+[mac2] nospec/base/general: 12.8 tok/s
+[mac2] nospec/lora/domain: 12.1 tok/s
+[mac2] nospec/lora/general: 11.2 tok/s
+[mac2] swap: {'on_ms': 3.02, 'off_ms': 1.65, 'expert_differs': True, 'base_restored': True, 'expert_matches_per_request': True}
+[mac2] mtp/base/domain: 11.0 tok/s · acceptance 0.77
+[mac2] mtp/base/general: 8.4 tok/s · acceptance 0.53
+[mac2] mtp/lora/domain: 6.3 tok/s · acceptance 0.37
+[mac2] mtp/lora/general: 7.8 tok/s · acceptance 0.46
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/mac/llamacpp_spec_lora.py", line 206, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/mac/llamacpp_spec_lora.py", line 177, in main
+    rec["runs"][key] = [chat(m, scale, a.max_tokens) for m in msgs]
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/mac/llamacpp_spec_lora.py", line 79, in chat
+    r = _post("/v1/chat/completions", body)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/mac/llamacpp_spec_lora.py", line 54, in _post
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/urllib/request.py", line 215, in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/urllib/request.py", line 521, in open
+    response = meth(req, response)
+               ^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/urllib/request.py", line 630, in http_response
+    response = self.parent.error(
+               ^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/urllib/request.py", line 559, in error
+    return self._call_chain(*args)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/urllib/request.py", line 492, in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/urllib/request.py", line 639, in http_error_default
+    raise HTTPError(req.full_url, code, msg, hdrs, fp)
+urllib.error.HTTPError: HTTP Error 500: Internal Server Error
