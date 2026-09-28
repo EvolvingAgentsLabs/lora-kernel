@@ -1,0 +1,76 @@
+=== session 1 of 2 · srv111928 · L4
+    boot clone: rc=0 76538f8 E5 attempt 1 stopped at G1 before any number; the distributor member is checked by its release rule (M9's domain-probe fallback)
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 76538f8 E5 attempt 1 stopped at G1 before any number; the distributor member is checked by its release rule (M9's domain-probe fallback)
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    76538f8 E5 attempt 1 stopped at G1 before any number; the distributor member is checked by its release rule (M9's domain-probe fallback) | 0.30.0
+    carried the adapters in (6 chunks)
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 staff-s0=adapters/distributor-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 staff-s0=adapters/distributor-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 staff-s0=adapters/distributor-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 staff-s0=adapters/distributor-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 staff-s0=adapters/distributor-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 staff-s0=adapters/distributor-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 staff-s0=adapters/distributor-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 staff-s0=adapters/distributor-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 staff-s0=adapters/distributor-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 staff-s0=adapters/distributor-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 staff-s0=adapters/distributor-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 staff-s0=adapters/distributor-staff-s0
+    [e5] G1 {'school-s0': True, 'staff-s0': True}
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 staff-s0=adapters/distributor-staff-s0
+    [e5] G1 {'school-s0': True, 'staff-s0': True}
+    [e5] pruned: prompt 216.0 tok · TTFT b1 0.1015 s · 23.1 tok/s b1 · 131.76 tok/s b8 · prefix hit 0.588
+    [e5] G1 {'school-s0': True, 'staff-s0': True}
+    [e5] pruned: prompt 216.0 tok · TTFT b1 0.1015 s · 23.1 tok/s b1 · 131.76 tok/s b8 · prefix hit 0.588
+    [e5] full: prompt 7395.0 tok · TTFT b1 1.701 s · 12.39 tok/s b1 · 107.9 tok/s b8 · prefix hit 0.513
+    [e5] G1 {'school-s0': True, 'staff-s0': True}
+    [e5] pruned: prompt 216.0 tok · TTFT b1 0.1015 s · 23.1 tok/s b1 · 131.76 tok/s b8 · prefix hit 0.588
+    [e5] full: prompt 7395.0 tok · TTFT b1 1.701 s · 12.39 tok/s b1 · 107.9 tok/s b8 · prefix hit 0.513
+    [e5] full_first: prompt 7395.0 tok · TTFT b1 1.6912 s · 15.44 tok/s b1 · 118.15 tok/s b8 · prefix hit 0.719
+    [e5] Q3 multi-LoRA: {'one_adapter': {'tps': 223.62, 'ttft_median_s': 0.4835}, 'two_adapters': {'tps': 196.88, 'ttft_median_s': 0.4073}, 'ratio': 0.88}
+    [e5] accuracy pruned 10/70 · credit 10
+    [e5] Q3 multi-LoRA: {'one_adapter': {'tps': 223.62, 'ttft_median_s': 0.4835}, 'two_adapters': {'tps': 196.88, 'ttft_median_s': 0.4073}, 'ratio': 0.88}
+    [e5] accuracy pruned 10/70 · credit 10
+    [e5] accuracy pruned 20/70 · credit 20
+    [e5] accuracy pruned 20/70 · credit 20
+    [e5] accuracy pruned 30/70 · credit 30
+    [e5] accuracy pruned 40/70 · credit 40
+    [e5] accuracy pruned 30/70 · credit 30
+    [e5] accuracy pruned 40/70 · credit 40
+    [e5] accuracy pruned 50/70 · credit 50
+    [e5] accuracy pruned 50/70 · credit 50
+    [e5] accuracy pruned 60/70 · credit 60
+    [e5] accuracy pruned 70/70 · credit 70
+    [e5] accuracy pruned 60/70 · credit 60
+    [e5] accuracy pruned 70/70 · credit 70
+    [e5] accuracy full 10/70 · credit 6
+    [e5] accuracy pruned 60/70 · credit 60
+    [e5] accuracy pruned 70/70 · credit 70
+    [e5] accuracy full 10/70 · credit 6
+    [e5] accuracy pruned 70/70 · credit 70
+    [e5] accuracy full 10/70 · credit 6
+    [e5] accuracy full 20/70 · credit 10
+    [e5] accuracy full 20/70 · credit 10
+    [e5] accuracy full 30/70 · credit 16
+    [e5] accuracy full 40/70 · credit 21
+    [e5] accuracy full 30/70 · credit 16
+    [e5] accuracy full 40/70 · credit 21
+    [e5] accuracy full 50/70 · credit 27
+    [e5] accuracy full 40/70 · credit 21
+    [e5] accuracy full 50/70 · credit 27
+    [e5] accuracy full 60/70 · credit 34
+    [e5] accuracy full 40/70 · credit 21
+    [e5] accuracy full 50/70 · credit 27
+    [e5] accuracy full 60/70 · credit 34
+    [e5] accuracy full 60/70 · credit 34
+    [e5] accuracy full 70/70 · credit 39
+    [e5] {"Q1": {"ttft_ratio": 16.76, "tps_b8_ratio": 0.819, "reading": "COSTS"}, "Q2": {"ttft_ratio": 16.66, "prefix_hit_rate": 0.719, "reading": "NOT FREE"}, "Q3": {"ratio": 0.88, "reading": "CONTENTION"}, "accuracy": {"pruned": "70/70", "full": "39/70"}}
+    the runner wrote its result — done
+=== already decided — no further sessions
+exit 0

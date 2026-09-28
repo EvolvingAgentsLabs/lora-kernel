@@ -202,6 +202,13 @@ tres: 1160 llamadas, 8 rechazadas. Exactitud 0,664 → 0,729 en mensajes humanos
 $p = 0,073$ — empate a $n = 475$; la conducta no. El bloque son **~7.956 tokens** sin podar,
 **~77** podado.
 
+**Y cuesta latencia, con caché de prefijos o sin ella — E5 [ran] 2026-09-28.** El corpus de un miembro pone el bloque de
+herramientas *después* del pedido, así que dos pedidos nunca lo comparten como prefijo: en el miembro de la escuela (E4B,
+vLLM 0.30, caché encendida) el bloque de 54 herramientas (7.205 tokens de Gemma) lleva el tiempo al primer token de
+**0,10 s a 1,70 s** (16,8×) y el throughput con 8 en vuelo de 132 a 108 tok/s; exactitud 70/70 → 39/70. Donde el prefijo
+entero se repitió, el mismo bloque no costó nada (0,09–0,11 s): lo que la caché no absorbe es el orden, no el tamaño
+([`E5`](../../results/E5-engine-baseline-20260928/BRIEF.md)).
+
 **Así que: arrancá el proxy con `--prune`.** Sigue siendo un flag para que el brazo sin
 podar se pueda volver a comprar; ya no es el default que esta página recomendaba en
 contra.

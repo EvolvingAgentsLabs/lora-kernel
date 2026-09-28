@@ -822,7 +822,7 @@ milestone 3 trains the large half; milestone 4 measures §7.1's inequality.
 | §9.3 | power at $n=351$ | `bar.resolvable` **[ran]** 2026-09-16 |
 | §10.2 | 3.5 → 3.8 id space | P55 `D0-tokenizers.txt` |
 | §10.5 D1 | vLLM resolves to 0.29.0 | P55 A boot log |
-| §4.4 | **an unknown surface is extrapolation**: unpruned (54 tools) the expert copies tags off the block, 225 of 227 calls refused; pruned, 8 of 1160; the block is ~7,956 vs ~77 tokens | P59 `attribution.json` |
+| §4.4 | **an unknown surface is extrapolation**: unpruned (54 tools) the expert copies tags off the block, 225 of 227 calls refused; pruned, 8 of 1160; the block is ~7,956 vs ~77 tokens — and served after the request, as trained, it costs TTFT 0.10 → 1.70 s with prefix caching on | P59 `attribution.json`; E5 `e5.json` |
 | §6.4 | **α, $\mathbb{E}[\tau]$, speed-up** | token-level α (rank-1 acceptance) **[ran]** B4: 0.871 bare 12B, 0.898 12B + LoRA over 107 E4B draft records; $\mathbb{E}[\tau]$ at $k=4$ under §6.4's independence, 3.87 → 4.08 — derived, not measured; **wall-clock [ran] F0** (12B FP8 + LoRA, the native MTP drafter, k = 4): the base 2.73× at batch 1 with mean accepted length 4.16, the LoRA expert 1.74× on its domain (4.16 → 2.25) — the LoRA costs the drafter, measured; output identity at temperature 0 not yet established |
 | §7.4 | **the ordering verdict** | **closed without a verdict 2026-09-19**: §7.2 fails for an *untrained* target in two easy regions (P55 A, P55b). What survived it is the trained target — now the large half of a pair (§7.1, §10.1) |
 | §10.5 D2 / §3.4 | **a LoRA applies over the AWQ 32B**: mean $\vert \Delta\ell\vert$ 0.22–0.49 nats vs base-vs-base 0.000, 3/3; text gate 2/3 | P60 §3b `awq_gate.json` |

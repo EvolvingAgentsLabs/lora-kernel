@@ -197,6 +197,12 @@ inbox, and inside OpenClaw those would have *executed*. Pruned to its three: 116
 8 refused. Accuracy 0.664 → 0.729 on human messages, 87 : 64, $p = 0.073$ — a tie at
 $n = 475$; the behaviour is not. The block is **~7,956 tokens** unpruned, **~77** pruned.
 
+**And it costs latency, prefix caching or not — E5 [ran] 2026-09-28.** A member's corpus puts the tool block *after*
+the request, so no two requests share it as a prefix: on the school member (E4B, vLLM 0.30, cache on) the 54-tool block
+(7,205 Gemma tokens) takes the time to first token from **0.10 s to 1.70 s** (16.8×) and throughput at 8 in flight
+from 132 to 108 tok/s; accuracy 70/70 → 39/70. Where the whole prefix recurred, the same block cost nothing (0.09–0.11 s),
+so it is the order, not the size, that the cache cannot absorb ([`E5`](../results/E5-engine-baseline-20260928/BRIEF.md)).
+
 **So: start the proxy with `--prune`.** It stays a flag so the unpruned arm can be
 bought again; it is no longer the default this page recommends against.
 
