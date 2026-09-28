@@ -1,0 +1,24 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules staff-s0=adapters/distributor-staff-s0 out-s0=adapters/distributor-staff-out-s0
+[pool] G1 staff-s0: applied (generic 1/3, domain 3/3)
+[pool] G1 out-s0: applied (generic 2/3, domain -/3)
+[distributor] staff-s0 10/70 credit 10
+[distributor] staff-s0 20/70 credit 20
+[distributor] staff-s0 30/70 credit 30
+[distributor] staff-s0 40/70 credit 40
+[distributor] staff-s0 50/70 credit 50
+[distributor] staff-s0 60/70 credit 60
+[distributor] staff-s0 70/70 credit 70
+[distributor] staff-s0 out-of-scope abstained 0/20
+[distributor] staff-s0 demo 5/6
+[distributor] out-s0 10/70 credit 10
+[distributor] out-s0 20/70 credit 20
+[distributor] out-s0 30/70 credit 30
+[distributor] out-s0 40/70 credit 40
+[distributor] out-s0 50/70 credit 50
+[distributor] out-s0 60/70 credit 60
+[distributor] out-s0 70/70 credit 70
+[distributor] out-s0 out-of-scope abstained 20/20
+[distributor] out-s0 demo 6/6
+[distributor] M10 · {'arm': 'out-s0', 'lost': 0, 'gained': 0, 'abstained': '20/20', 'abstained_by_staff_s0': '0/20', 'demo': '6/6', 'reading': 'PASSED: 0 lost (≤ 3), 20 abstained (≥ 18), demo 6/6'}
+[distributor] NOTHING SCORED · {'staff-s0': {'held_out': '70/70', 'demo': '5/6'}, 'out-s0': {'held_out': '70/70', 'demo': '6/6'}}

@@ -46,3 +46,18 @@ different proportion of `out` turns would be a new brief.
 
 **Not in this run.** A second seed; the router proper (milestone 2's dictionary) in the gateway's path; abstention by the
 wiki member.
+
+## Result **[ran]** 2026-09-28 — **PASSED: 0 of 70 lost, 20 of 20 abstained, demo 6/6**
+
+T (L4): `out-s0` trained on `train_out.jsonl` (770 rows), recipe unchanged. S (L4, vLLM 0.30): G1 applied for both
+members; `staff-s0` by its domain probes (3/3), `out-s0` already on the generic ones (2/3). `m10.json`.
+
+| | `staff-s0` (M9, released) | **`out-s0`** |
+|---|--:|--:|
+| 70 held-out turns | 70/70 | **70/70**: 0 lost, 0 gained, no in-scope turn abstained |
+| 20 held-out out-of-scope turns, abstained by the role's egress | **0/20**: the headroom, as expected | **20/20** |
+| the demo's six scenes | 5/6 (fails the frontier scene) | **6/6** |
+
+**By the table written first: PASSED.** Seventy abstaining turns, 9 % of the corpus, taught the member to abstain on
+requests worded apart, without costing one in-scope turn. The distributor half of the diagram can now reach the frontier.
+The live run with Haiku follows below.
