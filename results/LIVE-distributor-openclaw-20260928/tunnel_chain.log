@@ -1,0 +1,17 @@
+=== session 1 of 1 · srv124101 · L4
+    boot clone: rc=0 e10db42 LIVE-distributor pre-registered: the gateway serves one organisation per process; the distributor through OpenClaw
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 e10db42 LIVE-distributor pre-registered: the gateway serves one organisation per process; the distributor through OpenClaw
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    e10db42 LIVE-distributor pre-registered: the gateway serves one organisation per process; the distributor through OpenClaw | 0.30.0
+    carried the adapters in (3 chunks)
+    runner started (launch 1)
+    [tunnel] vllm serve google/gemma-4-E4B-it --dtype bfloat16 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules staff-s0=adapters/distributor-staff-s0
+    [tunnel] vllm serve google/gemma-4-E4B-it --dtype bfloat16 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules staff-s0=adapters/distributor-staff-s0
+    [tunnel] vllm serve google/gemma-4-E4B-it --dtype bfloat16 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules staff-s0=adapters/distributor-staff-s0
+    [tunnel] vllm serve google/gemma-4-E4B-it --dtype bfloat16 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules staff-s0=adapters/distributor-staff-s0
+    [tunnel] vllm serve google/gemma-4-E4B-it --dtype bfloat16 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules staff-s0=adapters/distributor-staff-s0

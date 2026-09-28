@@ -41,6 +41,12 @@ en una L4 alquilada y **Claude Haiku 4.5 como frontera** para lo que ninguna her
 la frontera costó $0,0112 y la aprobación del director ejecutó el cobro retenido. Cómo apuntar tu propio OpenClaw:
 [`docs/es/OPENCLAW.md`](docs/es/OPENCLAW.md) §6 · la corrida: [`results/LIVE-school-openclaw-20260926/`](results/LIVE-school-openclaw-20260926/BRIEF.md).
 
+**La distribuidora también, en vivo y entera en una notebook [ran] 2026-09-28: 5/5 a través del OpenClaw real.** El miembro
+de la distribuidora (`gemma-4-E4B-it` + `distributor-staff-s0`, 8 bits, llama.cpp en una MacBook Air M4) detrás del mismo
+gateway (`--org distributor`): la lectura de un pedido, la de stock, un ticket escrito, el pedido de otro centro rechazado
+por la herramienta, la instrucción plantada en una nota de entrega reportada como dato — sin GPU alquilada, 5–8 s por
+escena de punta a punta ([`results/LIVE-distributor-openclaw-20260928/`](results/LIVE-distributor-openclaw-20260928/BRIEF.md)).
+
 ## El problema
 
 Una organización que funciona con agentes sigue mandando el mismo puñado de trabajos que se repiten

@@ -1,0 +1,3 @@
+[transformers] PyTorch was not found. Models won't be available and only tokenizers, configuration and file/data utilities can be used.
+[gateway] distributor :8766 · model staff-s0 at http://localhost:8792 · frontier NOT configured (frontier-egress roles say so)
+[gateway] one OpenClaw patch per user in /Users/agustinazwiener/.config/lora-kernel/openclaw (each carries that user's signed token)

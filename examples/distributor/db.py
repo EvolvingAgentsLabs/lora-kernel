@@ -112,7 +112,9 @@ SEED = [
 
 
 def build(path: str = ":memory:") -> sqlite3.Connection:
-    conn = sqlite3.connect(path)
+    # the gateway serves each request on its own thread (ThreadingHTTPServer) and serialises writes with DB_LOCK, as
+    # the school's store does; the first live run crashed on every request without this [ran] 2026-09-28
+    conn = sqlite3.connect(path, check_same_thread=False)
     conn.row_factory = sqlite3.Row
     conn.executescript(SCHEMA)
     for stmt, rows in SEED:
