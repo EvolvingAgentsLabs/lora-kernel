@@ -1,0 +1,4 @@
+[transformers] PyTorch was not found. Models won't be available and only tokenizers, configuration and file/data utilities can be used.
+[gateway] distributor :8766 · model out-s0 at http://localhost:8792 · frontier claude-haiku-4-5 at https://api.anthropic.com/v1
+[gateway] one OpenClaw patch per user in /Users/agustinazwiener/.config/lora-kernel/openclaw (each carries that user's signed token)
+[frontier] call 1 · 10198+195 tokens · $0.0112 spent of $1.00
