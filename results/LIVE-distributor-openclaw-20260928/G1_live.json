@@ -1,0 +1,24 @@
+{
+ "rule": "staff_arm.g1's domain probes, member (LoRA scale 1) against base (scale 0) on the same llama.cpp server",
+ "probed": 3,
+ "differs": 3,
+ "empty": 0,
+ "applied": true,
+ "samples": [
+  {
+   "probe": "Has order 64 shipped yet?",
+   "base": "I do not have access to real-time order information, so I cannot tell you whether order 64 has shipped.\n\nTo check the status of your order, please visit the website of the company you ordered from and look for their",
+   "member": "I do not have access to real-time order status for any company, including whether order 64 has shipped.\n\nTo check the status of your order, please:\n\n1. **Log in** to the website where you placed"
+  },
+  {
+   "probe": "File a maintenance request at Loading bay: a forklift battery will not charge",
+   "base": "Here are a few ways you could file that maintenance request, depending on the system you are using (e.g., an online portal, an email, or a verbal report).\n\n### Option 1: Formal Email/Ticket Submission (",
+   "member": "Maintenance ticket filed for Loading bay: a forklift battery will not charge."
+  },
+  {
+   "probe": "Check order 76, please.",
+   "base": "I would be happy to check order 76 for you, but I need more information. Could you please tell me **where** this order is from?\n\nFor example, is it from:\n\n*   An online store?\n",
+   "member": "I do not have access to real-time systems, including order status for any company. To check order 76, please log into the customer service portal or contact the company's support line directly."
+  }
+ ]
+}

@@ -1,0 +1,1788 @@
+[transformers] PyTorch was not found. Models won't be available and only tokenizers, configuration and file/data utilities can be used.
+[gateway] distributor :8766 · model staff-s0 at http://localhost:8792 · frontier NOT configured (frontier-egress roles say so)
+[gateway] one OpenClaw patch per user in /Users/agustinazwiener/.config/lora-kernel/openclaw (each carries that user's signed token)
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52638)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 185, in answer
+    return order_status(conn, claim, int(args["order_id"]))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 91, in order_status
+    row = _order_row(conn, claim, order_id)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 81, in _order_row
+    row = conn.execute("select * from orders where id=?", (order_id,)).fetchone()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 13136146432.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52644)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 185, in answer
+    return order_status(conn, claim, int(args["order_id"]))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 91, in order_status
+    row = _order_row(conn, claim, order_id)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 81, in _order_row
+    row = conn.execute("select * from orders where id=?", (order_id,)).fetchone()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 13136146432.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52647)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 185, in answer
+    return order_status(conn, claim, int(args["order_id"]))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 91, in order_status
+    row = _order_row(conn, claim, order_id)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 81, in _order_row
+    row = conn.execute("select * from orders where id=?", (order_id,)).fetchone()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 13136146432.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52653)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 185, in answer
+    return order_status(conn, claim, int(args["order_id"]))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 91, in order_status
+    row = _order_row(conn, claim, order_id)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 81, in _order_row
+    row = conn.execute("select * from orders where id=?", (order_id,)).fetchone()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 13136146432.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52662)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 185, in answer
+    return order_status(conn, claim, int(args["order_id"]))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 91, in order_status
+    row = _order_row(conn, claim, order_id)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 81, in _order_row
+    row = conn.execute("select * from orders where id=?", (order_id,)).fetchone()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52675)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 185, in answer
+    return order_status(conn, claim, int(args["order_id"]))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 91, in order_status
+    row = _order_row(conn, claim, order_id)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 81, in _order_row
+    row = conn.execute("select * from orders where id=?", (order_id,)).fetchone()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52700)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 185, in answer
+    return order_status(conn, claim, int(args["order_id"]))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 91, in order_status
+    row = _order_row(conn, claim, order_id)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 81, in _order_row
+    row = conn.execute("select * from orders where id=?", (order_id,)).fetchone()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52715)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 185, in answer
+    return order_status(conn, claim, int(args["order_id"]))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 91, in order_status
+    row = _order_row(conn, claim, order_id)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 81, in _order_row
+    row = conn.execute("select * from orders where id=?", (order_id,)).fetchone()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52724)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 195, in answer
+    return stock_read(conn, claim)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 130, in stock_read
+    rows = conn.execute("select item, qty, reorder_threshold from stock where org_id=?",
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52730)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 195, in answer
+    return stock_read(conn, claim)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 130, in stock_read
+    rows = conn.execute("select item, qty, reorder_threshold from stock where org_id=?",
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52736)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 195, in answer
+    return stock_read(conn, claim)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 130, in stock_read
+    rows = conn.execute("select item, qty, reorder_threshold from stock where org_id=?",
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52742)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 195, in answer
+    return stock_read(conn, claim)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 130, in stock_read
+    rows = conn.execute("select item, qty, reorder_threshold from stock where org_id=?",
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52754)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 195, in answer
+    return stock_read(conn, claim)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 130, in stock_read
+    rows = conn.execute("select item, qty, reorder_threshold from stock where org_id=?",
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52770)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 195, in answer
+    return stock_read(conn, claim)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 130, in stock_read
+    rows = conn.execute("select item, qty, reorder_threshold from stock where org_id=?",
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52793)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 195, in answer
+    return stock_read(conn, claim)
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 130, in stock_read
+    rows = conn.execute("select item, qty, reorder_threshold from stock where org_id=?",
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52800)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 203, in answer
+    return maintenance_create(conn, claim, args["area"], args["description"])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 167, in maintenance_create
+    cur = conn.execute(
+          ^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52804)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 203, in answer
+    return maintenance_create(conn, claim, args["area"], args["description"])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 167, in maintenance_create
+    cur = conn.execute(
+          ^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52810)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 203, in answer
+    return maintenance_create(conn, claim, args["area"], args["description"])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 167, in maintenance_create
+    cur = conn.execute(
+          ^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52819)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 203, in answer
+    return maintenance_create(conn, claim, args["area"], args["description"])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 167, in maintenance_create
+    cur = conn.execute(
+          ^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52825)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 203, in answer
+    return maintenance_create(conn, claim, args["area"], args["description"])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 167, in maintenance_create
+    cur = conn.execute(
+          ^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52839)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 203, in answer
+    return maintenance_create(conn, claim, args["area"], args["description"])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 167, in maintenance_create
+    cur = conn.execute(
+          ^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52861)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 203, in answer
+    return maintenance_create(conn, claim, args["area"], args["description"])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 167, in maintenance_create
+    cur = conn.execute(
+          ^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52867)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 185, in answer
+    return order_status(conn, claim, int(args["order_id"]))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 91, in order_status
+    row = _order_row(conn, claim, order_id)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 81, in _order_row
+    row = conn.execute("select * from orders where id=?", (order_id,)).fetchone()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52870)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 185, in answer
+    return order_status(conn, claim, int(args["order_id"]))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 91, in order_status
+    row = _order_row(conn, claim, order_id)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 81, in _order_row
+    row = conn.execute("select * from orders where id=?", (order_id,)).fetchone()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52876)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 185, in answer
+    return order_status(conn, claim, int(args["order_id"]))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 91, in order_status
+    row = _order_row(conn, claim, order_id)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 81, in _order_row
+    row = conn.execute("select * from orders where id=?", (order_id,)).fetchone()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52882)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 185, in answer
+    return order_status(conn, claim, int(args["order_id"]))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 91, in order_status
+    row = _order_row(conn, claim, order_id)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 81, in _order_row
+    row = conn.execute("select * from orders where id=?", (order_id,)).fetchone()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52890)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 185, in answer
+    return order_status(conn, claim, int(args["order_id"]))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 91, in order_status
+    row = _order_row(conn, claim, order_id)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 81, in _order_row
+    row = conn.execute("select * from orders where id=?", (order_id,)).fetchone()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52910)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 185, in answer
+    return order_status(conn, claim, int(args["order_id"]))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 91, in order_status
+    row = _order_row(conn, claim, order_id)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 81, in _order_row
+    row = conn.execute("select * from orders where id=?", (order_id,)).fetchone()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52931)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 185, in answer
+    return order_status(conn, claim, int(args["order_id"]))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 91, in order_status
+    row = _order_row(conn, claim, order_id)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 81, in _order_row
+    row = conn.execute("select * from orders where id=?", (order_id,)).fetchone()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52937)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 187, in answer
+    return delivery_status(conn, claim, int(args["order_id"]))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 96, in delivery_status
+    _order_row(conn, claim, order_id)          # the org check, even though deliveries has its own org_id
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 81, in _order_row
+    row = conn.execute("select * from orders where id=?", (order_id,)).fetchone()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52940)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 187, in answer
+    return delivery_status(conn, claim, int(args["order_id"]))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 96, in delivery_status
+    _order_row(conn, claim, order_id)          # the org check, even though deliveries has its own org_id
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 81, in _order_row
+    row = conn.execute("select * from orders where id=?", (order_id,)).fetchone()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52946)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 187, in answer
+    return delivery_status(conn, claim, int(args["order_id"]))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 96, in delivery_status
+    _order_row(conn, claim, order_id)          # the org check, even though deliveries has its own org_id
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 81, in _order_row
+    row = conn.execute("select * from orders where id=?", (order_id,)).fetchone()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52954)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 187, in answer
+    return delivery_status(conn, claim, int(args["order_id"]))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 96, in delivery_status
+    _order_row(conn, claim, order_id)          # the org check, even though deliveries has its own org_id
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 81, in _order_row
+    row = conn.execute("select * from orders where id=?", (order_id,)).fetchone()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52960)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 187, in answer
+    return delivery_status(conn, claim, int(args["order_id"]))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 96, in delivery_status
+    _order_row(conn, claim, order_id)          # the org check, even though deliveries has its own org_id
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 81, in _order_row
+    row = conn.execute("select * from orders where id=?", (order_id,)).fetchone()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52978)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 187, in answer
+    return delivery_status(conn, claim, int(args["order_id"]))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 96, in delivery_status
+    _order_row(conn, claim, order_id)          # the org check, even though deliveries has its own org_id
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 81, in _order_row
+    row = conn.execute("select * from orders where id=?", (order_id,)).fetchone()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 52996)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 187, in answer
+    return delivery_status(conn, claim, int(args["order_id"]))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 96, in delivery_status
+    _order_row(conn, claim, order_id)          # the org check, even though deliveries has its own org_id
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 81, in _order_row
+    row = conn.execute("select * from orders where id=?", (order_id,)).fetchone()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 53019)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 187, in answer
+    return delivery_status(conn, claim, int(args["order_id"]))
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 96, in delivery_status
+    _order_row(conn, claim, order_id)          # the org check, even though deliveries has its own org_id
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 81, in _order_row
+    row = conn.execute("select * from orders where id=?", (order_id,)).fetchone()
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 53034)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 203, in answer
+    return maintenance_create(conn, claim, args["area"], args["description"])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 167, in maintenance_create
+    cur = conn.execute(
+          ^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 53038)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 203, in answer
+    return maintenance_create(conn, claim, args["area"], args["description"])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 167, in maintenance_create
+    cur = conn.execute(
+          ^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 53045)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 203, in answer
+    return maintenance_create(conn, claim, args["area"], args["description"])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 167, in maintenance_create
+    cur = conn.execute(
+          ^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 53053)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 203, in answer
+    return maintenance_create(conn, claim, args["area"], args["description"])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 167, in maintenance_create
+    cur = conn.execute(
+          ^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 53062)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 203, in answer
+    return maintenance_create(conn, claim, args["area"], args["description"])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 167, in maintenance_create
+    cur = conn.execute(
+          ^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 53087)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 203, in answer
+    return maintenance_create(conn, claim, args["area"], args["description"])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 167, in maintenance_create
+    cur = conn.execute(
+          ^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 53109)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 298, in do_POST
+    return self._guard(run)
+           ^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 248, in _guard
+    return fn()
+           ^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 292, in run
+    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/school/gateway.py", line 120, in turn
+    chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 166, in run_chain
+    res = tool(inbox, m.group(1), keyed(m.group(1), m.group(2), pos))
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/common/agent_loop.py", line 56, in answer
+    out = self.tools.answer(self.conn, self.claim, name, args)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 203, in answer
+    return maintenance_create(conn, claim, args["area"], args["description"])
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/distributor/tools.py", line 167, in maintenance_create
+    cur = conn.execute(
+          ^^^^^^^^^^^^^
+sqlite3.ProgrammingError: SQLite objects created in a thread can only be used in that same thread. The object was created in thread id 8707433152 and this is thread id 6183776256.
+----------------------------------------

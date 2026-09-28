@@ -63,3 +63,15 @@ def test_a_server_that_drops_the_stop_string_gets_the_open_tag_closed():
     assert close_open_tag("Order 1 is in transit.", close) == "Order 1 is in transit."
     assert close_open_tag("<order_status>1</order_status>", close) == "<order_status>1</order_status>"
     assert close_open_tag("<stock_read>x", close) == "<stock_read>x"          # not a tag this request stops at
+
+
+def test_the_store_is_usable_from_the_gateways_request_threads():
+    """The first live run [ran] 2026-09-28 crashed on every request: SQLite objects created in a thread can only be used
+    in that same thread. The gateway serves each request on its own thread."""
+    import threading
+    users.register_all()
+    gw, out = _gw(["<order_status>1</order_status>", "Order 1 is in transit."], []), {}
+    t = threading.Thread(target=lambda: out.update(r=gw.turn(tokens.issue("customer_service-riverside", "customer_service", "riverside"),
+                                                              [{"role": "user", "content": "Order 1?"}])))
+    t.start(); t.join()
+    assert "result" in out["r"]["event"]["calls"][0]
