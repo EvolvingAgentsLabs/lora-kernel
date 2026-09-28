@@ -26,7 +26,9 @@ borrador al lado del 12B en una L4 **[ran]** C0.
 **¿El kernel conoce el adaptador activo antes de generar?** Sí, y antes del primer token:
 - el gateway resuelve el rol desde el token firmado y con eso el experto (`examples/school/gateway.py`);
 - en vLLM el pedido nombra el adapter por el campo `model`;
-- en la pista Mac el experto se activa con un puntero antes de `generate` **[ran]** LIVE, F0, MAC.
+- en la pista Mac el experto se activa con un puntero antes de `generate` **[ran]** LIVE, F0, MAC. **Superado el
+  2026-09-28:** el serving del edge corre ahora en llama.cpp, no en MLX (`CLAUDE.md` §0); MLX queda como el banco
+  de investigación de este documento, donde los números de cambio por puntero de arriba siguen valiendo.
 
 **Hay una ventana para prefetch entre la llegada del pedido y el primer token de decode**: dura todo el prefill.
 

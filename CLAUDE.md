@@ -39,6 +39,13 @@ el proyecto?"* **When in doubt, the next step is the one that puts a weight delt
   do not let its question replace this one.
 - **Anything needing a GPU runs on Colab through `training/harness/chain_serve.sh`.** This
   machine is a 16 GB arm64 Mac. Do not shrink an experiment to fit it. A 27B is A100 work.
+- **Two runtimes, the user's decision, 2026-09-28.** `server` is vLLM on Colab — every training and every
+  measurement. `edge` is **llama.cpp on the user's own machine** — serving a member to a live runtime (OpenClaw):
+  the E4B as **Q8_0** GGUF (Q4_0 flips an order id with the prompt cache **[ran]** LIVE-distributor) plus the member's
+  LoRA converted to GGUF, hot-swapped per request or by `POST /lora-adapters` in ~3 ms **[ran]** MAC2. The distributor
+  ran 6/6 live that way, Haiku writing the one out-of-scope turn **[ran]** M10. MLX stays a research bench (Python access
+  to the graph). ~~MLX stays the `edge` engine~~ (MAC2's verdict was about speculative decoding, not serving). A result
+  from the edge is a different arm from the same member on vLLM bf16, and says so.
 - **New members are trained on Gemma 4 E4B — the user's decision, 2026-09-25, on B1 [ran].** Measured against
   `Qwen3.5-4B` on W9's wiki with the same corpus and recipe: a tie (38/40 against 35 and 35, 4 : 1 each), and the user
   had decided before any stage ran that parity chooses Gemma because the development stack targets it. The LoRA must
@@ -46,10 +53,12 @@ el proyecto?"* **When in doubt, the next step is the one that puts a weight delt
   released members move one by one through the gate:** **every released member is on Gemma**: `email-full@v3` (M1b **[ran]**), `desk-commitment@v3` trained on both desk bands (M1d **[ran]**: shallow 240/240, deep 239/240 against the bare Gemma's 83), `distributor-wiki@v2` (B5 **[ran]**: W9's corpus plus comparisons, 37/40 on the comparison band, W9's set unchanged);
   the `@v1` releases on `Qwen2.5-3B-Instruct` stay as the control arm. New regions still check the bare base's headroom
   first — Gemma's leaves less than Qwen's (it walks W9 untrained 19/40 where Qwen walks 0/40). The large half of a pair on Gemma is `gemma-4-12B-it` (B2 **[ran]**: one id space, LoRA served); its LoRA raises
-  acceptance of E4B drafts α 0.871 → 0.898 (B4 **[ran]**), and buys no accuracy: taught comparisons, the E4B alone does 37/40 (B3, B5 **[ran]**). Speculative decoding with a LoRA on the 12B runs in vLLM with Gemma's own MTP drafter: 1.7–2.1× with the LoRA on, 2.7× without (F0 **[ran]**, FP8, output identity not yet established). ~~The family is Qwen 3.x and that is decided … Gemma 4 is the named alternative and is
+  acceptance of E4B drafts α 0.871 → 0.898 (B4 **[ran]**), and buys no accuracy: taught comparisons, the E4B alone does 37/40 (B3, B5 **[ran]**). Speculative decoding with a LoRA on the 12B runs in vLLM with Gemma's own MTP drafter: 1.7–2.1× with the LoRA on, 2.7× without (F0 **[ran]**, FP8, output identity not yet established); 1.92× in bf16 on an A100 (C0 **[ran]**); on the E4B with its own MTP drafter 2.4× with the LoRA on (C0-upper **[ran]**). The LoRA halves the drafter's acceptance on its domain (0.8 → 0.4, both sizes), confining the LoRA to the upper layers gives none of it back (ρ = −0.02, C0-upper **[ran]**), and on the Mac the MTP drafter slows the 12B (MAC2 **[ran]**): an aligned drafter is the open lever. ~~The family is Qwen 3.x and that is decided … Gemma 4 is the named alternative and is
   blocked at PEFT **[ran]** P29.~~ Do not shop for other bases; run `lora_matrix` against a candidate instead.
 - **The frontier is a permanent component**, `google/gemini-3.8-flash` through the same
-  client the members use. It answers what falls in no corpus and what a region is measured
+  client the members use — in the live runs, **Claude Haiku 4.5** through the gateway's `--frontier-*` flags, the key
+  in `~/.config/lora-kernel/frontier.env` (never in a flag, a log or a commit), under a spend cap. A member reaches it only
+  if its corpus taught it to answer `OUT OF SCOPE` (the school's does; the distributor's since M10 **[ran]**). It answers what falls in no corpus and what a region is measured
   to fail. It is never a speculative target: no logprobs, another tokenizer **[ran]** P48.
 - **Scope.** The customisation service and its tooling — a customer's corpora, adapters as
   a service, traces → corpus → gate → release without hands — are not part of this runtime
@@ -169,8 +178,9 @@ These are not style. Each was paid for; [`docs/RECORD.md`](docs/RECORD.md) §4 h
   absent, read the failure where it happens (*was the result used?*) and re-serve once in corpus mode.
 - **A Colab session lives sixty minutes** (`colab log -s <name> | grep EVENT`). The unit of work is a
   session: one training per session, adapters fetched while it lives, runs resumable across sessions.
-- **No model runs on the user's machine.** Anything that calls a model goes through the chain; local
-  is for tests, generators and replays over records.
+- ~~**No model runs on the user's machine.**~~ **Measurement and training run on Colab through the chain**; local is for
+  tests, generators, replays over records — and, since 2026-09-28, the `edge` runtime above (llama.cpp serving a member
+  for a live demo, the user's decision). Nothing local is a measurement of a member unless its brief names the local arm.
 - **On the 3.x line, thinking is off for members, in every render.** A trained turn sits behind an
   empty `<think>` block and the default generation prompt leaves it open: a bare base thinks its
   tokens away and scores as a floor.

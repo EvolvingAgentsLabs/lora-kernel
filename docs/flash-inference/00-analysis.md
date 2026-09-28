@@ -26,7 +26,9 @@ On an MoE base that would mean patching the experts too: see §3.
 **Does the kernel know the active adapter before generating?** Yes, and before the first token:
 - the gateway resolves the role from the signed token, and with it the expert (`examples/school/gateway.py`);
 - in vLLM the request names the adapter by the `model` field;
-- on the Mac track the expert is switched by a pointer before `generate` **[ran]** LIVE, F0, MAC.
+- on the Mac track the expert is switched by a pointer before `generate` **[ran]** LIVE, F0, MAC. **Superseded
+  2026-09-28:** edge *serving* now runs on llama.cpp, not MLX (`CLAUDE.md` §0); MLX stays this document's research
+  bench, where the pointer-switch numbers above still apply.
 
 **There is a prefetch window between the request's arrival and the first decode token**: it lasts the whole prefill.
 

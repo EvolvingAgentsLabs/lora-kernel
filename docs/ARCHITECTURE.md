@@ -112,6 +112,29 @@ model must not decide:
 | **scope** | a request the role's tools do not cover follows the role's egress: the frontier, or a person's queue | the model says `OUT OF SCOPE`; the policy decides where it goes — the model's judgment is recorded, not trusted |
 | **log** | one JSON line per request — who, role, route, calls, denials, holds, grounding, tokens — and a dashboard that prices the local tokens at the frontier's rates | the monitoring feed; the GPU's own cost is not priced |
 
+**One process per organisation, not one gateway for all of them [ran] 2026-09-28** (`--org school|distributor`).
+Each organisation's tools, corpus and approval state live in its own process, so a school's HELD approvals and a
+distributor's egress policy never share memory by accident. The two organisations differ on purpose, not by omission:
+the distributor's member is served its **own corpus prompt**, with no SCOPE line — its scope decision is trained into
+the corpus itself (below), not stated in the system prompt — and its writes run without a director's approval, a
+policy choice for that organisation's roles, not a gap in the approvals mechanism above.
+
+**Abstention lives in the corpus, per member, not in a second model in front of it. [ran] M10:** the distributor's
+member is trained on `train_out` — its usual 700 turns byte for byte, plus 70 `OUT OF SCOPE` turns drawn from the
+role's own egress policy. Against the member without them, nothing already learned regresses (0 of 70 held-out) and
+every held-out out-of-scope request abstains (20/20, against 0/20 for the plain member); the scripted demo goes 6/6
+against 5/6. This is the same `scope` row above, trained rather than prompted: the model still only *proposes*
+`OUT OF SCOPE`, and the policy — not the model — decides where the request goes.
+
+**The edge deployment, run against a real client, not a replay. [ran] LIVE-distributor, M10:** the distributor's
+member served through llama.cpp on the user's own machine (`google/gemma-4-E4B-it` Q8_0 + the member's LoRA converted
+to GGUF, `python -m examples.school.gateway --org distributor --upstream <llama-server>`) went 5 of 5 turns through
+the real OpenClaw 2026.9.4; the abstaining member then went 6 of 6, the one out-of-scope turn (a thank-you note to
+suppliers) forwarded to **Claude Haiku 4.5** through the gateway's frontier exit (10,198 + 195 tokens, $0.0112). What a
+real client caught that a replay would not: llama.cpp drops the stop string the corpus-mode loop relies on to end a
+turn, and the distributor's own store was not thread-safe under OpenClaw's concurrent calls (first attempt void; both
+fixed). Neither member is a formal release from this run (no release file) — it demonstrates the path, not a gate pass.
+
 ## 3. The pair
 
 **Why the large half is trained, not borrowed.** An untrained large model is not a better
@@ -135,6 +158,27 @@ small one has headroom) and then a **speculative** one (does the matched LoRA ra
 
 **Where it runs.** The small pool is served from one L4. The large half, `gemma-4-12B-it`, is served in bf16 from one A100 (B3, B4) and is sized for a Mac mini; ~~a 27B is A100 work in 4-bit~~.
 
+**Two runtime profiles name this split explicitly, the user's decision 2026-09-28.** **`server`** is vLLM on Colab —
+every training run and every measurement, the pair included. **`edge`** is **llama.cpp on the user's own machine**,
+serving *one member* (not the pair) to a live agent runtime: the E4B as **Q8_0** GGUF — Q4_0 flips an order id with
+llama.cpp's own prompt cache **[ran]** LIVE-distributor — plus the member's LoRA converted to GGUF, hot-swapped in
+**~3 ms** by `POST /lora-adapters` **[ran] MAC2**. MLX, the Mac's earlier engine, is now a research bench: its
+hot-swap (2.9 µs, **[ran] MAC**) needed Python access to the graph that `edge` does not. ~~MLX stays the `edge`
+engine~~ — that was MAC2's verdict about speculative decoding specifically, and it does not extend to serving.
+
+**A LoRA confined to the upper layers: a lever for shared KV across experts, not a fix for the drafter.** Two
+measurements read the same lever two different ways. **[ran] E6:** training a LoRA on only the upper half of the
+decoder (layers 21–41 of 42) costs nothing measured against the full-depth member — 70/70 held-out, 15/15 demo — and
+the KV of the layers below comes back **bit-identical to the base model's own** (a base-vs-base control matched it).
+That is the precondition a server would need to compute the shared lower KV once, from the base, and let every
+expert's requests read it — still not built (§8); the caveat is that the E4B already caches 24 of its 42 layers on its
+own, a boundary this LoRA's layer choice does not line up with, so a switch still recomputes layers 21–23. **[ran]
+C0-upper:** the same restriction does **not** help the drafter — on the E4B with its own MTP, α on the domain moved
+base 0.82 → full-depth LoRA 0.44 → upper-half LoRA 0.43 (ρ = −0.02, read as none). The reason the two diverge
+**[read]**: MTP already reads from near the top of the stack, which an "upper-half" adapter still touches — confining
+the LoRA there removes almost nothing of what the drafter sees. In vLLM the upper-half adapter also serves at exactly
+the full adapter's speed: it saves memory, not time.
+
 ## 4. The memory — the core of 1.0
 
 > **The LoRA is not the textbook. It is the specialist who knows how to use the library.**
@@ -149,6 +193,13 @@ reads it, 15/15; a split by kind of task tied, W5d; and two training draws of on
 W5e — so members are trained on two seeds). Search with an off-the-shelf encoder reached recall@3 0.638 against a bar
 of 0.80 (W3); the searcher is lexical. ~~State, 2026-09-20 … evidence of nothing until it is run on a set written after
 the policy is frozen.~~
+
+**Editing the page after training holds up, for the reason the design intends. [ran] W7:** one statement patched in
+`distributor-wiki@v2`'s own library, no retraining: 37 of 38 control answers on that member's own worlds and questions
+followed the new value, cited to the patched line; 0 stale. Closed-book, without the page in front of it, the weights
+still answer with the old value on 1 of 40 — not zero. The member learned the *route* well enough to occasionally
+reproduce what it usually only reads; that is reading, not the library overruling memory, and it bounds rather than
+removes the risk the split is meant to close.
 
 **The unit of the library, from 2026-09-24: the atomic statement — [ran] W9, PASSED.** The user's design: the
 library is shaped like Wikipedia. A page is about one thing and is a list of **atomic statements** —
@@ -236,7 +287,7 @@ knowledge base's hash and its index's hash: a member is its corpus *and* its bas
 **Gemma 4, from 2026-09-25 — the user's decision on B1 [ran].** `google/gemma-4-E4B-it` small; `gemma-4-12B-it`
 large (~~`gemma-4-31B-it`~~, changed for a Mac mini): one id space with the E4B and a LoRA served applied (B2 **[ran]**);
 its LoRA raises acceptance of the small member's drafts, α 0.871 → 0.898 (B4 **[ran]**); it buys no accuracy on the
-comparison band once the small member is taught it (B3, B5 **[ran]**). **Served with its own MTP drafter** (`gemma-4-12B-it-assistant`) and an expert LoRA in one vLLM server: 2.7× on the base, 1.7–2.1× with the LoRA on (F0 **[ran]**). **What is hot-swapped and what is not:** the expert LoRA per request (0.25 s to load one at runtime, F0; 2.9 µs on the Mac, MAC); the drafter is one per server and takes no LoRA in vLLM — a drafter tuned per expert is strategy A (one shared, trained) or B (a drafter LoRA, only on our own Mac runtime today); [`GUIDE.md`](GUIDE.md) §6.5. On W9's wiki, with the same corpus and recipe, Gemma's member
+comparison band once the small member is taught it (B3, B5 **[ran]**). **Served with its own MTP drafter** (`gemma-4-12B-it-assistant`) and an expert LoRA in one vLLM server: 2.7× on the base, 1.7–2.1× with the LoRA on (F0 **[ran]**). **What is hot-swapped and what is not:** the expert LoRA per request (0.25 s to load one at runtime, F0; 2.9 µs on the Mac's MLX research bench, MAC; **~3 ms on the Mac's `edge` profile, llama.cpp, via `POST /lora-adapters`, MAC2** — §3); the drafter is one per server and takes no LoRA in vLLM — a drafter tuned per expert is strategy A (one shared, trained), C (a full aligned draft: **[ran] C0** — Gemma's own MTP with the expert LoRA on recovers to 1.92× domain / 2.40× general against 2.80×/2.60× on the base; a merged, purpose-built E4B draft has not run, blocked this round by memory and quantization on every GPU tried), or B (a drafter LoRA, parked — MTP already pays for itself on an L4 and does not on the Mac); [`GUIDE.md`](GUIDE.md) §6.5, §6.6. On the Mac's `edge` profile Gemma's MTP does not help the 12B the way it does on an L4: it slows it (0.52× with the LoRA on its own domain, 0.66–0.87× otherwise, **[ran] MAC2**), and the E4B+12B pair does not fit together in 16 GB. On W9's wiki, with the same corpus and recipe, Gemma's member
 tied Qwen3.5-4B's (38/40 against 35 and 35, 4 : 1 against each); untrained, Gemma already walks it 19/40 where Qwen
 walks 0/40, and it trains in a third of the time. The user decided before the comparison ran that parity chooses
 Gemma, because the development stack targets it. Two engineering constraints come with it: the LoRA excludes the
@@ -262,10 +313,11 @@ second **[ran]** B1, and shares its id space with the 12B — byte-identical voc
 
 ## 8. Deliberately not built
 
-A bespoke inference runtime, KV-cache sharing across adapters, tree attention across
-adapters, composition of adapters, a tournament that breeds them, the control plane, vertical
-packs. And, by scope rather than by order: the customisation service and its tooling are not
-part of this runtime nor of the open-source version.
+A bespoke inference runtime, KV-cache sharing across adapters (a layer-restricted LoRA's precondition for it — a
+bit-identical lower KV against the base — is measured, §3; the sharing itself is not built), tree attention across
+adapters, composition of adapters, a tournament that breeds them, the control plane, vertical packs. And, by scope
+rather than by order: the customisation service and its tooling are not part of this runtime nor of the open-source
+version.
 
 ## 9. Where it sits in an organisation — and the framework boundary
 

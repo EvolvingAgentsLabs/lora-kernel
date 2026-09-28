@@ -143,7 +143,12 @@ Especificación completa: [`docs/es/MEMORY.md`](docs/es/MEMORY.md) **[spec]**.
 *Una pregunta, de punta a punta: páginas de enunciados de una oración, enlaces dentro de las oraciones, una respuesta que nombra la oración en que se apoya.*
 
 **La ganancia.** Si el protocolo cambia mañana, se edita un archivo markdown en git. El LoRA
-no se reentrena, porque lo que aprendió fue a obedecer los enlaces y leer las notas.
+no se reentrena, porque lo que aprendió fue a obedecer los enlaces y leer las notas — probado
+directamente parchando un enunciado de la biblioteca después de entrenar (W7): el miembro sigue el
+valor nuevo 37 de 38 veces, citando la línea parchada, 0 obsoletas; en modo cerrado, los mismos pesos
+recitan el valor viejo sólo 1 vez de 40 — evidencia de lo que esta afirmación en realidad sostiene:
+se aprendió la ruta, no el hecho
+([`results/W7-edit-after-training-20260927/`](results/W7-edit-after-training-20260927/BRIEF.md)).
 
 ---
 
@@ -234,6 +239,13 @@ compras, CFO, IT; agenda, membresías, inscripciones; comunicaciones, operacione
 dashboards) sobre Gemma 4 E4B con un adaptador del personal de la escuela — las primeras 8 contra 3 de 8 con un modelo pelado
 ([`docs/es/DEMO.md`](docs/es/DEMO.md)).
 
+**El LoRA de ese miembro de la escuela necesita sólo su mitad de arriba [ran] (E6).** Restringido a
+las capas 21–41 de 42, iguala al adaptador completo exactamente — 70 de 70 retenidos, 15 de 15 en la
+demo — y el KV de las 21 capas de abajo sale idéntico bit a bit al de la base, con un control
+base-contra-base incluido. Todavía no ahorra nada: el E4B ya cachea 24 de 42 capas entre adaptadores,
+así que un cambio de adaptador sigue recalculando las capas 21–23, y el resultado descansa sobre una
+sola semilla ([`results/E6-upper-layers-20260927/`](results/E6-upper-layers-20260927/BRIEF.md)).
+
 **La familia es Gemma 4** desde 2026-09-25: medida contra Qwen3.5-4B sobre la misma wiki, un
 empate, y la pila de desarrollo del usuario apunta a Gemma. **Todos los miembros publicados están sobre Gemma 4 E4B** —
 `email-full@v3`, `desk-commitment@v3`, `distributor-wiki@v2`; los releases de Qwen 2.5 quedan sólo como brazo de control.
@@ -244,6 +256,17 @@ lo bastante chica para una Mac mini. Su LoRA sube la aceptación de los borrador
 comparativas las dos mitades fallaron mientras el corpus nunca mostró una, y cuando la mostró el miembro chico solo pasó
 de 10 a 37 de 40 (hitos 3 y 4, B2–B5).
 
+**Confirmado en una GPU de tamaño completo, bf16 (C0).** El drafter MTP propio del 12B con el LoRA
+experto activo: 1,92× en el dominio (α 0,34), 2,40× general; el par base solo corre 2,80×/2,60×. Un
+drafter E4B fusionado y alineado con el mismo LoRA no llegó a correr esta vez: se queda sin memoria
+junto al 12B en una L4, el FP8 en línea de vLLM falla en esa GPU, bitsandbytes no es una cuantización
+de drafter aceptada, y una H100 fue rechazada por cupo. Restringir ese mismo LoRA a las capas de
+arriba del propio drafter tampoco ayuda — α en el dominio pasa de 0,82 base a 0,44 con el LoRA
+completo y 0,43 con la mitad de arriba (ρ = −0,02, NINGUNO) — y en vLLM el adaptador de la mitad de
+arriba sirve exactamente a la velocidad del completo: medio adaptador ahorra memoria, no tiempo
+([`results/C0-aligned-draft-20260927/`](results/C0-aligned-draft-20260927/BRIEF.md),
+[`results/C0-upper-e4b-20260927/`](results/C0-upper-e4b-20260927/BRIEF.md)).
+
 **Decodificación especulativa con un experto LoRA, corriendo [ran] 2026-09-27 (F0).** Un solo servidor vLLM,
 `gemma-4-12B-it` + un LoRA experto + **el propio drafter MTP de Gemma 4** (`gemma-4-12B-it-assistant`), en una L4 en FP8:
 arranca, el LoRA queda aplicado, un LoRA se carga en caliente en 0,25 s con el drafter encendido. El modelo base corre
@@ -253,11 +276,29 @@ El EAGLE-3 público rinde mucho peor (1,2×). Todavía no establecido: que la sa
 temperatura 0 — la corrida no fue invariante al batch. Y el LoRA del experto se cambia en caliente, el drafter no: vLLM fija un drafter por
 servidor; qué significa y qué se está midiendo, [`docs/es/GUIDE.md`](docs/es/GUIDE.md) §6.5 ([`results/F0-spec-lora-12b-20260927/`](results/F0-spec-lora-12b-20260927/BRIEF.md)).
 
+**El runtime de edge es llama.cpp, no MLX — decidido el 2026-09-28 (MAC2).** En la MacBook Air M4
+del usuario (16 GB), la build 11146 de llama.cpp carga el GGUF del E4B, sirve el LoRA del 12B (6/6),
+cambia un LoRA con `POST /lora-adapters` en 3 ms restaurando la base exacto, y reproduce la salida de
+la decodificación especulativa 20/20 idéntica — aunque el propio MTP de Gemma frena al 12B ahí
+(0,52× con el LoRA en su dominio, 0,66–0,87× en lo demás) y el par E4B+12B no entra en 16 GB (se
+probó: Q4_0, Q3_K_M, embeddings por capa en CPU). ~~MLX se queda como el motor de `edge`~~ — ese
+veredicto era sobre decodificación especulativa nada más. **`vLLM` se queda como el perfil
+`server`** (Colab, toda medición y todo entrenamiento acá) y **MLX se queda como el banco de
+investigación**, no un motor de serving (acceso Python al grafo, hot-swap de puntero 2,9 µs). Usar el
+GGUF **Q8_0** del E4B, no Q4_0 — el cuant más chico invierte el id de orden en la propia caché de
+prompt de llama.cpp, como encontró la corrida en vivo de la distribuidora más abajo
+([`results/MAC2-llamacpp-20260927/`](results/MAC2-llamacpp-20260927/BRIEF.md)).
+
 **Todavía sin resolver.** El router sigue siendo un diccionario de palabras clave — sus dos
 reemplazos aprendidos ya están medidos y ninguno pasa **[ran]** hito 2. Los modelos chicos todavía
 inventan: en la demo de la escuela el gateway reemplazó 2 de 5 respuestas locales por el texto
 propio de las herramientas — atrapado, contado, nunca mostrado, pero no curado. La decodificación especulativa con un
-experto LoRA corre de verdad (F0, abajo), pero todavía no está mostrado que su salida sea idéntica a la decodificación normal. Todavía no se midió tráfico real en ningún lugar de este repositorio.
+experto LoRA corre de verdad (F0, C0, arriba), pero todavía no está mostrado que su salida sea idéntica a la
+decodificación normal, y el drafter alineado que podría cerrar esa brecha está en pausa — todavía no corre en
+absoluto (C0). Nunca se midieron sesiones multi-turno ni concurrencia contra el gateway. La biblioteca de la memoria
+vive sólo en `distributor-wiki@v2`, un miembro aparte — ningún miembro servido lleva su propia biblioteca todavía.
+La corrida en vivo de la distribuidora de arriba es sólo llama.cpp; todavía nadie corrió el par a través de vLLM
+bf16 como demo en vivo. Todavía no se midió tráfico real en ningún lugar de este repositorio.
 
 **Todo lo demás — cada hito, cada brazo, cada corrida — se mueve con el proyecto y no se repite
 acá, a propósito.** [`docs/es/PLAN.md`](docs/es/PLAN.md) es el estado vivo, con una compuerta y una
@@ -269,7 +310,10 @@ genérico, autocontenido y escrito para que lo revise otro modelo.
 **Restricciones de ingeniería, decididas y no en discusión.** La familia es **Gemma 4** desde 2026-09-25 —
 chico `gemma-4-E4B-it`, grande `gemma-4-12B-it` (medido, B2–B5) — elegida en un empate medido con
 Qwen3.5-4B; todos los miembros publicados ya se movieron ([`docs/es/ARCHITECTURE.md`](docs/es/ARCHITECTURE.md) §6).
-Entrenada y servida en Colab, en sesiones de menos de una hora, nunca en la máquina de un usuario.
+Entrenada en Colab, en sesiones de menos de una hora. ~~Servida sólo en Colab, nunca en la máquina de un
+usuario~~ — servir tiene ahora dos perfiles: `server` es vLLM en Colab (toda medición y todo
+entrenamiento); `edge` es llama.cpp en la máquina propia del usuario, decidido el 2026-09-28 (MAC2,
+arriba).
 
 ---
 
@@ -291,9 +335,27 @@ GPU=L4 BRANCH=main MODULE=training.harness.verify_substrate \
 Servir el pool a un agente, los flags del proxy y la compuerta del sustrato:
 [`docs/es/SERVING.md`](docs/es/SERVING.md). OpenClaw, paso a paso, tal como corrió en vivo:
 [`docs/es/OPENCLAW.md`](docs/es/OPENCLAW.md). A un miembro se lo sirve con tres flags, cada
-uno default por una razón: `--prune` (su propia superficie de herramientas),
+uno default por una razón: `--prune` (su propia superficie de herramientas — servir el bloque
+completo de 54 herramientas de OpenClaw en su lugar cuesta 16,8× en time-to-first-token y baja la
+precisión de 70/70 a 39/70, [E5](results/E5-engine-baseline-20260928/BRIEF.md)),
 `--member-prompt` (el prompt que le enseñó su corpus), `--auto` (el cliente no nombra
 modelo).
+
+**Correr un miembro en la máquina propia — el perfil `edge`, sin alquilar GPU:**
+
+```bash
+# una vez: el LoRA del miembro a GGUF
+python llama.cpp/convert_lora_to_gguf.py --base <snapshot HF de gemma-4-E4B-it> --outtype f16 \
+    --outfile lora-<miembro>-f16.gguf adapters/<miembro>
+llama-server -m gemma-4-E4B-it-Q8_0.gguf --lora lora-<miembro>-f16.gguf --port 8792 -c 8192 -ngl 99
+python -m examples.school.gateway --org <school|distributor> --upstream http://localhost:8792 \
+    --member <miembro> --tokenizer google/gemma-4-E4B-it --port 8766
+```
+
+Q8_0, no Q4_0 — el cuant más chico invierte el id de orden en la propia caché de prompt de llama.cpp.
+Así corre exactamente la demo en vivo de la distribuidora de arriba, miembro incluido
+([`docs/es/OPENCLAW.md`](docs/es/OPENCLAW.md), [`docs/es/SERVING.md`](docs/es/SERVING.md),
+[`results/LIVE-distributor-openclaw-20260928/`](results/LIVE-distributor-openclaw-20260928/BRIEF.md)).
 
 ## Qué hay en la caja
 

@@ -98,7 +98,7 @@ La alternativa del brief (un objetivo, asumiendo el costo de generar dos veces) 
 | perfil | motor | qué ya corre acá | experimentos válidos |
 |---|---|---|---|
 | **`server`** | vLLM 0.30 | multi-LoRA por pedido; LoRA en caliente 0,23–0,28 s; **especulativa con LoRA en el objetivo y el MTP nativo**, 1,74–2,40× **[ran]** F0, C0; el borrador es uno por servidor y no admite LoRA **[read]** | todos los de `results/` desde M1; F0, F0b, C0; E5 y E6 propuestos |
-| **`edge`** | MLX (mlx-vlm) | 12B en 4 bits, cambio de experto por puntero en 2,9 µs, 8,4 GB; MTP 1,25× sobre el base, sin ganancia con el LoRA **[ran]** MAC | MAC; la línea de inferencia desde flash (H1a en la nube, M3 en la Mac mini); un LoRA de borrador por experto (estrategia B, §6.5 de la guía) |
+| **`edge`** | ~~MLX (mlx-vlm)~~ **llama.cpp** (2026-09-28, §6) | 12B en 4 bits, cambio de experto por puntero en 2,9 µs, 8,4 GB; MTP 1,25× sobre el base, sin ganancia con el LoRA **[ran]** MAC — números propios de MLX, ahora el banco de investigación, no el motor de serving | MAC; la línea de inferencia desde flash (H1a en la nube, M3 en la Mac mini); un LoRA de borrador por experto (estrategia B, §6.5 de la guía) |
 
 Corrección al brief: la especulativa en `server` no espera el RFC. Corre hoy con un LoRA en el objetivo; lo que espera el RFC
 es un LoRA **en el borrador**.
@@ -142,3 +142,27 @@ entre expertos y base, bit a bit, bajo el mismo prefijo**. Ese es un test mecán
 
 **Pausa para revisión.** No sigo con código hasta que apruebes: la lectura de H-A…H-D, los dos perfiles, la FSM como
 declaración del bucle actual, y E6 y E5 como los únicos experimentos de la Fase 1.
+
+---
+
+## 6. Resultados de la Fase 1 (2026-09-28)
+
+**E6 — PASSED.** `results/E6-upper-layers-20260927`: el miembro de la escuela sobre las capas 21–41 de 42 sostuvo
+su compuerta — 70/70 retenidos, 15/15 en la demo, 0 perdidos contra el miembro completo — y la KV de las capas
+debajo del rango adaptado volvió bit-idéntica bajo un control base-contra-base, exactamente el test mecánico que
+pedía la compuerta del §5.
+
+**E5 — corrió, y más filoso que la propia lectura de H-C.** `results/E5-engine-baseline-20260928`: la caché de
+prefijos no ahorra un bloque de herramientas estático servido después del pedido — TTFT 0,10 → 1,70 s (16,8×),
+throughput b8 132 → 108 tok/s, exactitud 70/70 → 39/70. El bloque no cuesta nada sólo donde *todo* el prefijo
+vuelve a aparecer desde la posición 0: **el orden, no el tamaño, derrota a la caché** — más filoso que la lectura
+de H-C, que nombraba el tamaño.
+
+**C0-upper — NONE, y corrige lo que la propuesta de E6 esperaba de él.** El H-D del §1 leyó a E6 conectado con "la
+alineación del borrador" — la esperanza de que un LoRA confinado a las capas superiores dejara la entrada de la
+cabeza MTP nativa más cerca de la del base, recuperando la aceptación que le cuesta un LoRA de dominio.
+`results/C0-upper-e4b-20260927` lo midió directamente sobre el E4B y su propio drafter: $\rho = (\alpha_{\text{superior}} - \alpha_{\text{completo}}) / (\alpha_{\text{base}} - \alpha_{\text{completo}}) = -0,02$ — **restringir las
+capas no ayuda al drafter.** La cabeza lee el estado de la *última* capa, y un adaptador confinado a las capas más
+cercanas a la cabeza igual mueve exactamente ese estado. El resultado de identidad de KV de E6 (debajo de la
+profundidad adaptada) y el beneficio esperado de alineación del borrador (en la profundidad adaptada) son
+afirmaciones distintas; la primera se sostuvo, la segunda no.

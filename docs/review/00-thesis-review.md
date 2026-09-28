@@ -97,7 +97,7 @@ The brief's alternative (one target, paying the cost of generating twice) is not
 | profile | engine | what already runs here | valid experiments |
 |---|---|---|---|
 | **`server`** | vLLM 0.30 | multi-LoRA per request; hot LoRA load 0.23–0.28 s; **speculative decoding with a LoRA on the target and the native MTP**, 1.74–2.40× **[ran]** F0, C0; the draft is one per server and takes no LoRA **[read]** | everything in `results/` from M1; F0, F0b, C0; E5 and E6 as proposed |
-| **`edge`** | MLX (mlx-vlm) | the 12B in 4 bits, switching experts by pointer in 2.9 µs, 8.4 GB; MTP 1.25× on the base, no gain with the LoRA on **[ran]** MAC | MAC; the flash-inference line (H1a in the cloud, M3 on the Mac mini); one draft LoRA per expert (strategy B, the guide's §6.5) |
+| **`edge`** | ~~MLX (mlx-vlm)~~ **llama.cpp** (2026-09-28, §6) | the 12B in 4 bits, switching experts by pointer in 2.9 µs, 8.4 GB; MTP 1.25× on the base, no gain with the LoRA on **[ran]** MAC — MLX's own numbers, now the research bench, not the serving engine | MAC; the flash-inference line (H1a in the cloud, M3 on the Mac mini); one draft LoRA per expert (strategy B, the guide's §6.5) |
 
 A correction to the brief: speculative decoding on `server` does not wait for the RFC. It runs today with a LoRA on the target;
 what waits for the RFC is a LoRA **on the draft**.
@@ -140,3 +140,24 @@ bit for bit, under the same prefix**. That is a mechanical test, not a metric.
 
 **Paused for review.** No code until you approve: the reading of H-A…H-D, the two profiles, the FSM as a declaration of the
 current loop, and E6 and E5 as Phase 1's only experiments.
+
+---
+
+## 6. Phase 1 outcomes (2026-09-28)
+
+**E6 — PASSED.** `results/E6-upper-layers-20260927`: the school member on layers 21–41 of 42 held its gate — 70/70
+held-out, 15/15 demo, 0 lost against the full member — and the KV of the layers below the adapted range came back
+bit-identical under a base-vs-base control, exactly the mechanical test §5's gate asked for.
+
+**E5 — ran, and sharper than H-C's own reading.** `results/E5-engine-baseline-20260928`: prefix caching does not
+save a static tool block served after the request — TTFT 0.10 → 1.70 s (16.8×), b8 throughput 132 → 108 tok/s,
+accuracy 70/70 → 39/70. The block costs nothing only where the *whole* prefix recurs from position 0: **order, not
+size, defeats the cache** — sharper than H-C's reading, which named the size.
+
+**C0-upper — NONE, and it corrects what E6's proposal expected of it.** §1's H-D read E6 as connecting with "the
+alignment of the draft" — the hope that a LoRA confined to the upper layers would leave the native MTP head's
+input closer to the base's, recovering the acceptance a domain LoRA costs it. `results/C0-upper-e4b-20260927`
+measured that directly on the E4B and its own drafter: $\rho = (\alpha_{\text{upper}} - \alpha_{\text{full}}) / (\alpha_{\text{base}} - \alpha_{\text{full}}) = -0.02$ — **layer restriction does not help the drafter.** The head
+reads the *last* layer's state, and an adapter confined to the layers nearest the head still moves exactly that
+state. E6's KV-identity result (below the adapted depth) and the hoped-for drafter-alignment benefit (at the
+adapted depth) are different claims; the first held, the second did not.

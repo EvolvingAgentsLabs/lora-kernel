@@ -531,7 +531,7 @@ una capa de sitio real.
 ## 10. Orden de construcción para 1.0 **[spec]**
 
 Cada paquete termina en una compuerta, entra en una sesión de Colab de sesenta minutos donde necesita GPU, y
-**ningún modelo corre en la máquina del usuario**.
+**ningún modelo corre en la máquina del usuario** para una medición (desde el 2026-09-28 un miembro puede *servirse* ahí, con llama.cpp, para una demo en vivo — `CLAUDE.md` §3).
 
 | # | paquete | ¿necesita un modelo? | compuerta |
 |---|---|---|---|

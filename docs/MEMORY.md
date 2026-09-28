@@ -524,7 +524,7 @@ a real site layer.
 ## 10. Build order for 1.0 **[spec]**
 
 Each package ends in a gate, fits a sixty-minute Colab session where it needs a GPU at all, and
-**no model runs on the user's machine**.
+**no model runs on the user's machine** for a measurement (since 2026-09-28 a member may be *served* there, llama.cpp, for a live demo — `CLAUDE.md` §3).
 
 | # | package | needs a model? | gate |
 |---|---|---|---|

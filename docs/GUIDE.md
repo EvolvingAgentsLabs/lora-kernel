@@ -103,7 +103,9 @@ consumer GPUs. Its traits:
 
 When it fits: one user, a local machine, little memory. Our 2026-09 analysis compared it with vLLM and vLLM was kept
 for development for a concrete reason: **serving many LoRAs per request and measuring with the same tools across the
-whole project**.
+whole project**. Since 2026-09-28 llama.cpp is also, by the user's decision, the **edge serving runtime** — the
+profile that puts a member in front of a live agent runtime on the user's own machine, once training and measurement
+are done on the server profile (§3.5).
 
 ### 3.2 vLLM
 
@@ -135,8 +137,11 @@ What we found reading its code (2026-09-27):
   switch.
 - `mlx-vlm` ships **Gemma 4's MTP drafter** (`gemma4_unified_assistant`) and an EAGLE-3 one.
 
-That is why this project's Mac track builds its own hot switch: the base model is loaded once and each layer carries
-the patches of every expert; switching experts is switching a pointer (§5.5).
+That is why this project's Mac track built its own hot switch: the base model is loaded once and each layer carries
+the patches of every expert; switching experts is switching a pointer (§5.5). ~~MLX stays the `edge` engine~~ — as of
+2026-09-28 that is superseded (§3.5): the verdict behind it was about speculative decoding only, and it still holds on
+that narrow question. MLX remains the **research bench**: it is the one runtime with Python access to the graph
+itself, which is what the hot-switch pointer trick needs.
 
 ### 3.4 Which to use, in one table
 
@@ -146,7 +151,43 @@ the patches of every expert; switching experts is switching a pointer (§5.5).
 | strong at | one user, little memory | many requests, many LoRAs | Mac, unified memory |
 | LoRA per request | limited | **yes, native** | not native (we build it) |
 | speculative | draft model | draft, EAGLE-3, MTP | draft, MTP (mlx-vlm) |
-| here | compared, not used | **the project's engine** | Mac track (2026-09-27) |
+| here | **edge serving profile (2026-09-28)** | **server profile — training, measurement** | research bench (Python access to the graph) |
+
+### 3.5 Two profiles, the user's decision (2026-09-28)
+
+The project now names two runtime profiles instead of asking, case by case, which engine to use:
+
+- **`server`** is vLLM on Colab: every training run and every measurement in this repository goes through it, for one
+  reason that does not change with the hardware — **the same tool, the same numbers, across the whole project** (§8).
+- **`edge`** is **llama.cpp on the user's own machine** (a MacBook Air M4, 16 GB): serving one member to a live agent
+  runtime. **[ran] MAC2:** llama.cpp build 11146 loads the E4B, the 12B's LoRA acts once converted to GGUF (6/6), and
+  `POST /lora-adapters` swaps it in **3 ms**, restoring the base exactly — the same swap-and-restore behaviour MLX
+  showed in 2.9 µs, on a different engine. Serve the E4B as **Q8_0**, not Q4_0: Q4_0 flips the order id with
+  llama.cpp's own prompt cache **[ran]** LIVE-distributor — a quantization choice that changes *which token* comes out,
+  not just how fast.
+
+This does not overturn MAC's finding about speculative decoding on the Mac: Gemma's MTP drafter still slows the 12B
+there (0.52× with the expert's LoRA on its own domain, 0.66–0.87× otherwise, **[ran]** MAC2), and the E4B+12B pair
+together still run out of Metal memory in 16 GB. What changed is narrower and cheaper to state: for *serving* one
+member — no speculative pair, no second model resident — llama.cpp on the Mac is what the user runs, and MLX is kept
+for the research that needs to reach inside the graph.
+
+### 3.6 Prefix caching: what defeats it is order, not size
+
+vLLM (and llama.cpp) can reuse the KV cache of a prompt's shared prefix across requests, so a tool block that every
+request repeats should, in principle, be computed once. **[ran] E5:** it was not. OpenClaw's 54-tool block (7,205
+Gemma tokens) served exactly as the member was trained — request first, tool block after, inside the same user turn —
+made TTFT go from 0.10 s to 1.70 s (16.8×) and b8 throughput fall from 132 to 108 tok/s; accuracy fell with it, 70/70
+to 39/70, because the member stopped calling its own tool in 28 of 31 failures. Put the very same block *before* the
+request instead — the one change that lets a cache reuse it as a literal prefix — and it costs nothing: 0.09–0.11 s,
+indistinguishable from the pruned baseline.
+
+**Why [read]:** a prefix cache keys on the exact leading bytes of a prompt. Two requests that differ in their first
+few hundred tokens never share a cache entry no matter how much of the rest is identical — so a block's *size* was
+never the variable that mattered; its *position* was. This is also why pruning stays the default on both axes here:
+the corpus was never trained with the block first, so moving it would be training a different member, not a format
+change. **[ran] E5** also found that two LoRAs sharing one batch keep 0.88 of one adapter's throughput (contention at
+the edge of one burst of 16) — small next to the caching effect, but real.
 
 ---
 
@@ -302,6 +343,7 @@ switchable per request. Those are two different things to hot-swap, and today th
 |---|---|---|
 | vLLM | every LoRA resident; each request picks its own by the `model` field; added and removed with `/v1/load_lora_adapter` | hot load **0.23–0.28 s**, also with the draft running **[ran] F0** |
 | Mac (MLX, our code) | each layer carries every expert's patch; one active; switching is moving a pointer | **2.9 µs**, and the base's text comes back exactly **[ran] MAC** |
+| Mac (llama.cpp, `edge` profile) | the LoRA is converted to GGUF once; `POST /lora-adapters` swaps it on a running server | **3 ms**, base restored exactly, spec-decode output identical 20/20 **[ran] MAC2** |
 
 **The draft (MTP, EAGLE, a small model) — one draft per server.**
 
@@ -313,7 +355,10 @@ switchable per request. Those are two different things to hot-swap, and today th
 
 **What happens today with one draft and several LoRAs.** It works, and the output is still the large model's (§6.1), but
 the draft guesses worse on each expert's own ground: with the wiki LoRA, position-0 acceptance falls from 0.98 to 0.58
-and the speed-up from 2.73× to 1.74× **[ran] F0**. On the Mac, with the LoRA, the draft does not speed things up **[ran] MAC**.
+and the speed-up from 2.73× to 1.74× **[ran] F0**. On the Mac, with the LoRA, the draft does not speed things up **[ran]
+MAC**; on llama.cpp it is worse than that — the MTP drafter *slows down* the 12B with the expert's LoRA on its own
+domain (0.52×) and gives only a modest win otherwise (0.66–0.87×) **[ran] MAC2**. Restricting which layers carry the
+LoRA does not rescue the drafter either — see §6.6.
 
 **How to get "a draft tuned per expert", depending on what exists:**
 
@@ -324,13 +369,50 @@ and the speed-up from 2.73× to 1.74× **[ran] F0**. On the Mac, with the LoRA, 
 | **C. one full draft per expert** | the whole server (one instance per expert, or a restart) | yes, but it does not scale; it serves as the ceiling |
 | **D. the native MTP retrained per expert** | same as C | no support in `speculators`; the training would have to be written |
 
-**What we are measuring now:**
+**What we measured next:**
 - ~~**F0b**: whether the output with the draft is identical to the plain one~~ — **[ran]**: not testable on an L4 in FP8; the differences read as drift (§8.4).
-- **C0**: does aligning the draft to the expert give the speed back? It is the cheapest possible test. The wiki E4B is
-  already aligned: it was trained on the same corpus as the 12B's LoRA, and in B4 the large model accepted 90% of its
-  drafts. Its LoRA is merged into the weights and it is used as the draft (strategy C, built from what already exists).
-  - If acceptance rises and speed does too, aligning works.
-  - If acceptance rises but speed does not, the E4B is too expensive a draft, and a light one has to be aligned (A, B or D).
+- **C0 [ran]:** on an A100 in bf16, Gemma's own MTP drafter with the domain's expert LoRA turned on gives 1.92× on the
+  domain (α 0.34) and 2.40× general, against 2.80×/2.60× on the base — a real recovery from F0's 1.74×, but still below
+  the base's speed. The other arm — the wiki E4B, already aligned to the same corpus (B4: the 12B accepted 90% of its
+  drafts), merged and served as a full standalone draft (strategy C) — did not run: it OOMs beside the 12B on an L4;
+  vLLM's online FP8 fails on that GPU's compute capability; bitsandbytes is not an accepted drafter quantization; an
+  H100 was refused on quota. **This is still open** — a drafter aligned to the expert (strategy B or C, properly sized)
+  is parked, not falsified, because MTP already pays for itself on an L4 and does not on the Mac (§6.5).
+- **C0-upper [ran]:** does confining the LoRA to the upper half of the layers (§6.6) help the drafter, since MTP reads
+  the large model's own upper-layer activations? No: α on the domain goes base 0.82 → full LoRA 0.44 → upper-half LoRA
+  0.43 (ρ = −0.02). **Layer restriction does not help the drafter** — see §6.6 for why, and for what it *is* good for.
+
+### 6.6 Restricting the LoRA to the upper layers: a KV-sharing lever, not a drafter fix
+
+Everything in §6.4–§6.5 changes the expert's LoRA and asks what it does to the drafter. This section asks a different
+question about the *same* lever — putting the LoRA only on the upper layers of the decoder — and gets a different
+answer depending on which problem it is aimed at.
+
+**As a way to share KV across experts — it works. [ran] E6:** the school member trained again with its LoRA reaching
+only decoder layers 21–41 of 42 (the upper half; `--layers-from half`) scores exactly like the full member: 70/70
+held-out, 15/15 demo, 0 lost. More to the point, **the KV cache of the 21 layers below is bit-identical to the base
+model's** (a base-vs-base control came back identical too). The reason is mechanical, not a property of this expert in
+particular: a layer the LoRA never touches computes the same keys and values for any expert, because nothing about the
+weights that produced them changed. A server holding several experts could compute that lower KV once, from the base
+model, and let every expert's requests share it — paying the LoRA's extra cost only from layer 21 up. **The caveat
+[ran] E6:** the E4B already caches 24 of its 42 layers on its own (an architecture feature, unrelated to this LoRA), and
+that boundary does not line up with the LoRA's: switching experts still recomputes layers 21–23. The suite also sits at
+the full member's ceiling, and this ran on one seed.
+
+**As a way to help the drafter — it does not. [ran] C0-upper:** the hope was that if MTP mainly reads hidden states
+from the upper layers, an adapter confined to that same upper half would change less of what the drafter sees than a
+full-depth adapter does, and so cost it less acceptance. It does not: α on the domain lands at 0.43 with the upper-half
+adapter against 0.44 with the full one — no improvement (ρ = −0.02, read as none). **Why, [read]:** the upper-half
+adapter still touches exactly the layers MTP reads from — confining the LoRA to the *upper* half leaves the top
+untouched-by-restriction, so from the drafter's point of view almost nothing changed. On an L4 the E4B's own MTP still
+pays with its LoRA on regardless (2.4× b1, 2.1× b8) — a result about that draft being cheap and aligned to begin with
+(C0), not about which layers carry the adapter. **In vLLM, the upper-half adapter serves at exactly the full adapter's
+speed** — half an adapter saves memory, not time, probably because the untouched lower layers are zero-filled rather
+than skipped **[read]**.
+
+**The two readings side by side, so as not to conflate them:** layer-restricted LoRA is a genuine lever for *serving
+many experts cheaply* (shared lower KV, one control run to confirm it, §6.6 above) and a genuine dead end for *aligning
+a drafter to an expert* (§6.4–§6.5) — the same knob, two different mechanisms, and only one of them moved.
 
 ## 7. From a model to a system
 
@@ -348,6 +430,15 @@ design (2026-09-24) separates the two:
 other worlds, 38/40. A skill the corpus did not show (comparing) is not learned (10/40); shown, it is (37/40) **[ran]**
 B3, B5. Details: [`MEMORY.md`](MEMORY.md).
 
+**Editing the library after training holds up — for the reason the design intends, not a stronger one. [ran] W7:** one
+statement was patched in the markdown library, no retraining, on `distributor-wiki@v2`'s own worlds and questions: 37
+of 38 control answers followed the new value, each one citing the patched line; 0 stale. That is the split working as
+designed — the LoRA never held the fact, so there is nothing in the weights to contradict the page. Closed-book,
+without the note in front of it, the weights still answer with the *old* value on 1 of 40 questions: not zero. **Why
+[read]:** the member learned the *route* to the statement well enough that on rare occasions it can reproduce the
+value it usually only reads — reading, not the library overruling memory, and a reminder that "the LoRA does not
+memorize facts" is a matter of degree measured here, not an architectural guarantee.
+
 ### 7.2 The router and the frontier
 
 Deciding *which expert* handles a request is a classifier that also has to be able to say "none". We tried an n-gram
@@ -355,6 +446,17 @@ model, embeddings (Qwen3-Embedding and EmbeddingGemma) and a small classifier: *
 legitimate requests from senders they did not see **[ran]** M2, E1. In production, **the user's role (which comes in
 their token) is the route**, and whatever the role does not cover goes to the frontier or to a person according to the
 role's policy.
+
+That leaves a second decision the router was never going to make for a single member anyway: once a request *is*
+inside a role's corpus, when should that member itself say "not this"? **[ran]** M10 answers it by training the
+abstention directly into the corpus rather than adding a classifier in front of it: `train_out` is the distributor
+member's usual 700 turns, byte for byte, plus 70 `OUT OF SCOPE` turns drawn from the role's own egress policy. Compared
+against the plain member (`staff-s0`), the abstaining one (`out-s0`) loses nothing it already had — 0 of 70 held-out
+turns regress — and gains what it was trained for: 20 of 20 held-out out-of-scope requests abstained, against 0 of 20
+for the member that never saw the pattern; the live demo went 6/6 against 5/6. **[read]** why this is cheaper than a
+router: the member already reads the whole request to answer it, so asking it to also classify "is this mine" costs a
+few training turns, not a second model in the path — at the price of doing it per member rather than once for all of
+them.
 
 ### 7.3 Agents and the gateway
 
@@ -373,6 +475,17 @@ gateway sits in that place:
 **[ran]** the school from the reference diagram, 15/15 scripted scenes and 15/15 **through the real OpenClaw** with the
 real model and Haiku as the frontier. What the first live turn taught: OpenClaw adds its own context as the last
 message; the gateway has to read the real request inside that. See [`OPENCLAW.md`](OPENCLAW.md) §6, [`DEMO.md`](DEMO.md).
+
+**The gateway does not care what serves the model underneath — proven by running it on the edge. [ran] LIVE-distributor:**
+the distributor's member (E4B Q8_0 + its LoRA) served through llama.cpp on the user's own machine (§3.5), 5 of 5 turns
+through the real OpenClaw 2026.9.4. The same identity/permission/hold/anchoring/exit machinery applied unchanged; what
+running against a real client caught, and the server profile never would have: llama.cpp drops the stop string the
+corpus-mode loop relies on to end a turn cleanly, and the distributor's own store was not thread-safe under OpenClaw's
+concurrent calls (first attempt void; both fixed). **[ran] M10** then ran the abstaining member live the same way: 6 of
+6 through OpenClaw, 5 answered locally and the sixth — a thank-you note to suppliers, correctly read as out of scope —
+forwarded to **Claude Haiku 4.5** through the gateway's frontier exit: 10,198 + 195 tokens, $0.0112. That member is not
+a formal release (no release file yet) — the live run is a demonstration of the egress path, not a claim that the
+member has passed the gate.
 
 ---
 
@@ -437,6 +550,7 @@ happened to us last week).
 | 2026-09-26 | the diagram's school complete, 15/15, and **live** with OpenClaw and Haiku | DEMO-school-diagram, LIVE **[ran]** |
 | 2026-09-26 | the distributor with its own expert, 5/5 | M9 **[ran]** |
 | 2026-09-27 | **speculative decoding with an expert LoRA on the 12B, in a server** | F0 **[ran]** |
+| 2026-09-28 | the distributor served on the edge (llama.cpp, the user's own machine), abstaining correctly to the frontier, live through OpenClaw | LIVE-distributor, M10 **[ran]** |
 
 ---
 
@@ -445,14 +559,17 @@ happened to us last week).
 | what | state | next step |
 |---|---|---|
 | identical output with speculative | **not testable on an L4 in FP8 [ran] F0b**: plain decoding twice already differs; spec decode differs about as much (reads as drift) | bf16 on an A100/H100, where batch-invariant mode is built for |
-| a draft tuned per expert, hot-swapped | does not exist in vLLM (one draft per server, no draft LoRA) | **C0 queued**: does aligning give the speed back? Then A (vLLM) or B (Mac track) — §6.5 |
-| the draft with the LoRA active | loses acceptance in the domain (1.74×) | strategies A–D (§6.4), starting with the cheapest |
-| the Mac track | **[ran]**: hot swap in 2.9 µs, 8.4 GB; MTP no gain with the LoRA on (0.92–1.04×) | a drafter aligned to the LoRA (§6.4, A–D); find why the MLX base loops on a system prompt |
-| learned router | none passes | the role is the route; left open |
+| a draft tuned per expert, hot-swapped | **[ran] C0**: the native MTP + expert LoRA recovers some of the speed (1.92× domain, 2.40× general, against 2.80×/2.60× on the base) but not all of it; the merged, fully-aligned E4B draft (strategy C) has not run — OOM beside the 12B on an L4, FP8/bitsandbytes/H100 all blocked this round. **[ran] C0-upper**: restricting the LoRA's layers does not help either (§6.6) | **still open, parked, not falsified**: strategy B (a draft LoRA) waits because MTP already pays for itself on an L4 and does not on the Mac — no reason yet to build the harder thing |
+| the draft with the LoRA active | loses acceptance in the domain; aligning the large model's own MTP recovers part of it (1.74× → 1.92×, C0) but layer restriction does not add to that (C0-upper) | strategies A, C (properly sized) or D (§6.4), starting with the cheapest |
+| the Mac track | **[ran]**: MLX hot swap in 2.9 µs (research bench, §3.5); **edge serving is now llama.cpp** — LoRA hot-swap in 3 ms, but MTP slows the 12B there too (0.52–0.87×, MAC2) and the E4B+12B pair does not fit in 16 GB | serve one member at a time on the edge, as LIVE-distributor does; a drafter aligned to the LoRA stays parked (above) |
+| learned router | none passes; milestone 2's router loses real-looking requests | the role is the route; per-member abstention (M10) covers the "is this mine" half without one — left open only for cross-role routing |
 | note search with embeddings | 0.63 against 0.80 | keyword search in use |
 | real traffic | everything is synthetic | an anonymized sample from a system in use |
 | the model still makes things up | 3 of 12 answers caught by the filter | a corpus that teaches it to repeat only what the tool says |
-| real identity (Auth0), WhatsApp, concurrency, installation | not built | after the above |
+| the memory (library) inside a serving member | lives in `distributor-wiki@v2`, a separate member from the abstaining `out-s0` (M10) | merge them, or keep them apart by design — not yet decided |
+| a vLLM bf16 live run of the distributor | not run — the only local arm measured is llama.cpp Q8_0 (LIVE-distributor) | run it once a same-precision comparison against the edge is needed |
+| multi-turn sessions and concurrency against the gateway | never measured | after the above |
+| real identity (Auth0), WhatsApp, installation | not built | after the above |
 
 ---
 
@@ -462,10 +579,14 @@ happened to us last week).
 - **α (acceptance)**: fraction of the draft's tokens that the large model accepts (§6.2).
 - **bf16, FP8, 4 bits**: weight precisions (§4).
 - **Draft (drafter)**: the model or head that proposes tokens in speculative decoding (§6.3).
+- **`edge` / `server`**: the two runtime profiles — `edge` is llama.cpp on the user's own machine, serving one member
+  to a live agent runtime; `server` is vLLM on Colab, for training and measurement (§3.5).
 - **KV cache**: what the model keeps from the tokens already seen so as not to recompute them (§2.4).
 - **Continuous batching**: adding requests to a running batch (§3.2).
 - **EAGLE-3**: a draft that predicts from the large model's hidden states (§6.3).
 - **Frontier**: a large cloud model (Haiku, Gemini) for whatever no expert covers.
+- **Prefix caching**: reusing the KV cache of a prompt's shared leading bytes across requests; defeated by moving the
+  shared block later in the prompt, not by its size (§3.6).
 - **G1**: the gate that verifies an adapter is applied (§8.2).
 - **Gateway**: the server in front of the model that handles identity, permissions, holds and anchoring (§7.3).
 - **GGUF**: llama.cpp's file format (§3.1).
@@ -498,4 +619,5 @@ al. 2023 (speculative decoding) · Chen et al. 2023 (Punica) · Sheng et al. 202
   [mlx-optiq — Gemma 4 speculative decoding on Apple Silicon](https://mlx-optiq.com/blog/gemma-spec-decoding)
 
 **Our runs [ran]:** [`RECORD.md`](RECORD.md) lists them all; the ones in this guide: W9, B1–B5, M8, M9,
-DEMO-school-diagram, LIVE-school-openclaw, E1 and F0, each in `results/` with its `BRIEF.md`.
+DEMO-school-diagram, LIVE-school-openclaw, E1, F0, C0, C0-upper, E6, MAC2, W7, E5, LIVE-distributor and M10, each in
+`results/` with its `BRIEF.md`.

@@ -28,6 +28,59 @@ tocarlo.
 Apuntá el agente a `http://127.0.0.1:8001/v1` y poné `model` en `kernel` o `domain`.
 `/v1/models` los lista.
 
+## El perfil edge: llama.cpp en tu propia máquina, al lado de `server`
+
+Todo lo de arriba es el perfil **`server`**: vLLM en Colab, y por ahí pasa cada medición y cada
+entrenamiento de este repositorio. **`edge`** es un segundo perfil, decidido el 2026-09-28, para
+servir un miembro ya liberado a un runtime de agentes en vivo, en la máquina que lo corre — sin
+tarjeta alquilada, sin túnel **[ran]** `results/MAC2-llamacpp-20260927/`,
+`results/LIVE-distributor-openclaw-20260928/`. ~~MLX se queda como el motor de `edge`~~ — ese
+veredicto (2026-09-27) era sobre decodificación especulativa, nada más; MLX se queda como banco de
+investigación, por el acceso en Python que da al grafo (hot-swap por puntero 2,9 µs), no como lo que
+contesta un pedido en vivo. El motor que hace eso en la Mac del usuario es **llama.cpp**.
+
+    # una vez por miembro: su LoRA a GGUF
+    python llama.cpp/convert_lora_to_gguf.py --base <snapshot HF de gemma-4-E4B-it> --outtype f16 \
+        --outfile lora-distributor-staff-out-s0-f16.gguf adapters/distributor-staff-out-s0
+    llama-server -m gemma-4-E4B-it-Q8_0.gguf --lora lora-distributor-staff-out-s0-f16.gguf \
+        --port 8792 -c 8192 -ngl 99
+
+**Usá el E4B como Q8_0, nunca Q4_0.** Q4_0 no es sólo un archivo más chico: invierte un id de orden
+adentro de la propia caché de prompts de llama.cpp **[ran]** LIVE-distributor, así que un pedido en
+vivo puede servirse contra el turno cacheado equivocado. `edge` significa Q8_0 hasta que eso se
+arregle aguas arriba.
+
+La fuerza del adaptador es un campo por request en la llamada de completions (`"lora": [{"id": 0,
+"scale": 1.0}]`), y el adaptador mismo se cambia en caliente sin reiniciar el servidor: `POST
+/lora-adapters` sobre una instancia corriendo cambia el GGUF de un miembro por otro y restaura la
+base exactamente, en **3 ms** **[ran]** MAC2 — tres órdenes de magnitud por debajo del propio cambio
+de vLLM de 0,25 s, en una máquina sin memoria de sobra para un segundo modelo residente.
+
+**llama.cpp no corta en el stop string** — una completion no se detuvo en la etiqueta de cierre
+propia del miembro como sí lo hace la de vLLM, y un turno en vivo siguió de largo inventando texto;
+el arreglo es del lado del cliente, no un flag (`accept_rank.close_open_tag`) **[ran]**
+LIVE-distributor. Quien reuse `edge` necesita ese mismo parche, no sólo la misma línea de comandos.
+
+## Cuánto cuesta servir en vivo: el orden le gana al tamaño, y dos adaptadores no cuestan el doble
+
+Dos hallazgos de la misma corrida ponen precio al motor mismo, en `server` y en `edge` por igual,
+porque los dos sirven a través de una caché de prefijos y un batch multi-adaptador.
+
+**Un bloque de herramientas puesto después del pedido nunca es un prefijo compartido.** El corpus de
+un miembro pone el pedido primero y la superficie (grande) de herramientas después — la forma que
+enseñó el corpus, no un accidente — así que dos pedidos nunca comparten ese bloque como prefijo aun
+con la caché encendida. Sirviendo el bloque real de 54 herramientas de OpenClaw (7.205 tokens de
+Gemma) así, después del pedido, sobre el miembro de la escuela (E4B, vLLM 0.30) el tiempo al primer
+token va de 0,10 s a 1,70 s (16,8×) y el throughput con 8 en vuelo de 132 a 108 tok/s, al lado de la
+exactitud cayendo 70/70 → 39/70 **[ran]** `results/E5-engine-baseline-20260928/`. Donde el prefijo
+entero se repitió en cambio, el mismo bloque no costó nada (0,09–0,11 s) — **la caché la vence el
+orden en que el corpus puso las cosas, no el tamaño del bloque.**
+
+**Dos LoRAs en un mismo batch se quedan con 0,88 del throughput de uno solo.** Una ráfaga de 16
+pedidos repartida entre dos adaptadores servidos juntos pierde 12% contra servir los mismos 16 por
+separado — contención, no una pared, y vale la pena tarifarla antes de dimensionar un servidor para
+más de un miembro a la vez **[ran]** E5.
+
 ## La base tiene que ser una a la que vLLM realmente le aplique adaptadores — se chequea, no se supone
 
 **vLLM puede aceptar un LoRA, registrar en el log que lo cargó, y servir la base.**

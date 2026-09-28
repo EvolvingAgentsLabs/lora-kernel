@@ -260,7 +260,7 @@ Los brazos del hito 7, en el orden que puede matarlo más rápido ([`PLAN.md`](P
 | 2 | navegación aprendida contra el recorrido oráculo | qué pierde la navegación |
 | 3 | sólo enciclopédico · sólo operacional · las dos | qué tipo de conocimiento carga la ganancia |
 | 4 | S1 léxico plano · S1 embedding plano · S4 | si una estrategia de trayectoria le gana a una búsqueda plana (F9 dice no asumirlo) |
-| 5 | editar una nota después de entrenar | que la respuesta sigue a la base, no a los pesos |
+| 5 | editar una nota después de entrenar | que la respuesta sigue a la base, no a los pesos — **hecho [ran] W7**: sobre `distributor-wiki@v2`, un enunciado parcheado, 37 de 38 respuestas del control siguen el valor nuevo citado a la línea parcheada, 0 stale; a libro cerrado los pesos igual sostienen el valor viejo en 1 de 40 — lee una ruta memorizada, no la biblioteca siendo pasada por alto ([`MEMORY.md`](MEMORY.md) §1.6, W7) |
 
 Medido **por paso, no sólo en la respuesta**: *recuperada* (la nota necesaria en la lista de `<search>`),
 *abierta*, *usada* (su valor llega a un paso posterior — el instrumento de F7), *conforme* (§3.5),
