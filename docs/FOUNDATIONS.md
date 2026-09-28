@@ -199,6 +199,33 @@ chains (2.6 calls/case against 2.2) and its int4 dequantisation.
 step costs a full weight read *whether it verifies one token or five*, because the
 $k+1$ positions are scored in one prefill-shaped pass.
 
+### 2.5 KV identity below an untouched depth, and switching mid-generation (E6)
+
+The recursion of §1.2 makes block $\ell$'s output depend only on the blocks *below* it:
+$h^{(\ell)}$ is a function of $\theta_0,\dots,\theta_{\ell-1}$ and the input, never of
+$\theta_\ell,\dots,\theta_{L-1}$. So if a LoRA leaves every block below some depth $k$
+untouched ($\theta_\ell = \theta_\ell^{\text{base}}$ for $\ell \lt  k$),
+
+```math
+h^{(\ell)}_{\text{expert}} = h^{(\ell)}_{\text{base}}, \qquad K_\ell = K_\ell^{\text{base}}, \qquad V_\ell = V_\ell^{\text{base}}, \qquad \text{for every } \ell < k \text{ and every prefix.}
+```
+
+This is a mechanical identity, not a statistical one — it holds bit for bit or the
+derivation is wrong — and it is the condition under which a request can switch which
+expert answers *mid-generation* without invalidating the KV already computed for the
+layers below $k$.
+
+**Measured [ran] `results/E6-upper-layers-20260927`.** The school member retrained
+with its LoRA on layers 21–41 of 42 only: **70/70 held-out, 15/15 demo**, exactly the
+full member's score (0 lost against it), and a base-vs-base control over the 21 layers
+below the adapted range came back bit-identical, confirming the identity above rather
+than just assuming it. Two caveats travel with the result. The E4B shares KV across
+groups of layers (24 of 42 are cache-sharing groups **[ran]**), so a switch still
+recomputes layers 21–23 even though *their own* weights sit below $k$ — sharing, not
+the LoRA, is what reaches into the adapted range. And the suite sits at the full
+member's ceiling with one seed (§9.4), so this is a mechanism check, not yet a quality
+comparison.
+
 ---
 
 ## 3. Text as ids: BPE, id maps and merges
@@ -370,6 +397,35 @@ model cannot avoid (counting, stopped at `3`), and a positional tag body is keye
 parameter count before the tool sees it — both added after an attempt each
 **[ran]** P55 A attempts 1 and 2.
 
+### 5.5 Prefix caching is keyed by position, not by content (E5)
+
+vLLM's prefix cache (§5.1) hashes a sequence's blocks **in order from position 0**:
+block $j$'s hash chains from block $j-1$'s, so a cache hit at block $j$ requires every
+earlier block to match too. With $\text{hit}(x)$ the number of tokens $x$ shares, from
+position 0, with some previously served sequence,
+
+```math
+\text{TTFT}(x) \;\approx\; t_{\text{prefill}}(|x| - \text{hit}(x)),
+```
+
+with $t_{\text{prefill}}$ the compute-bound cost of §2.1. **A block's own content being
+static does not make it cacheable** — only its *position* being a shared prefix does. A
+tool-call block served, as trained, after the user's request sits behind that
+request's tokens, which differ per call; $\text{hit}(x)$ collapses to whatever the
+system prompt shares, and the whole block is recomputed every time despite being
+byte-identical across requests.
+
+**Measured [ran] `results/E5-engine-baseline-20260928`.** OpenClaw's 54-tool block
+(7,205 Gemma tokens) served after the request: TTFT **0.10 → 1.70 s (16.8×)** with
+prefix caching on; batch-8 throughput **132 → 108 tok/s**; accuracy **70/70 → 39/70**
+(the member stops calling its own tool in 28 of 31 failures — an instance of §4.4's
+drift, not of the engine). The same block costs **nothing** (0.09–0.11 s) in the one
+case where the whole prefix, block included, recurred from position 0 — **the order,
+not the size, defeats the cache.** Two LoRAs served in one batch (§5.2) keep **0.88**
+of one adapter's solo throughput (contention at the edge, measured over one burst of
+16); pruning the tool block to the member's own stays the default on both accuracy and
+latency.
+
 ---
 
 ## 6. Speculative decoding
@@ -461,6 +517,56 @@ separate small model cannot. A community `Qwen2.5-32B-Instruct_EAGLE3` exists
 What a single bound head cannot do is compare $k$ *different* drafters — there is one
 of it. **Acceptance as a judge-free ordering over $k$ experts** is the claim this
 architecture keeps ([`RECORD.md`](RECORD.md) §5), and it is what §7 formalises.
+
+### 6.7 MTP acceptance under a domain LoRA, and layer restriction (C0, C0-upper)
+
+Gemma's own multi-token-prediction (MTP) head drafts from the target's own final
+hidden states — a bound head in the sense of §6.6, so §6.4's speed-up formula applies
+with $c$ the MTP head's cost relative to one full decode step. **A domain LoRA on the
+target moves the hidden states the head reads from, and acceptance falls with them.**
+
+**Measured [ran] `results/C0-aligned-draft-20260927`** (A100, bf16, `gemma-4-12B-it`'s
+native MTP, $k=4$): with no adapter the speed-up is **2.80×** on the domain and
+**2.60×** general; with the expert LoRA on, domain acceptance falls and the speed-up
+with it — **1.92× on the domain ($\alpha$ 0.34, against $\alpha \approx 0.79$ with no
+adapter)**, **2.40× general** (the LoRA barely touches general-text hidden states).
+**The LoRA costs the drafter, not the target** — §6.4's $c$ is unchanged; what moved is
+$\alpha$.
+
+**Does restricting the LoRA to the upper layers recover it? [ran]
+`results/C0-upper-e4b-20260927`.** The natural hope from §2.5's identity — if the
+lower layers are untouched, maybe the head's *input* is untouched too — has to be
+checked, because the head reads the *last* layer's state, which a LoRA confined to the
+upper half still moves. Normalise the upper-restricted adapter's acceptance between the
+untouched base and the fully-adapted model:
+
+```math
+\rho = \frac{\alpha_{\text{upper}} - \alpha_{\text{full}}}{\alpha_{\text{base}} - \alpha_{\text{full}}},
+```
+
+so $\rho = 1$ says layer restriction recovers all the acceptance the full LoRA lost,
+$\rho = 0$ says it is exactly as damaging as the full LoRA. On the E4B and its own MTP
+drafter, domain: $\alpha_{\text{base}} = 0.82$, $\alpha_{\text{full}} = 0.44$,
+$\alpha_{\text{upper}} = 0.43$, so
+
+```math
+\rho = \frac{0.43 - 0.44}{0.82 - 0.44} = -0.02.
+```
+
+**NONE: layer restriction does not help the drafter** — $\rho$ sits at (within noise
+of) zero, not toward 1. Restricting the adapter to layers close to the head still moves
+exactly the states the head reads. On an L4 the E4B's own MTP still pays with the LoRA
+on (2.4× batch 1, 2.1× batch 8); served in vLLM, the upper-half adapter runs at exactly
+the full adapter's *speed* — layer restriction saves memory, not decode time
+(**[read]**, probably zero-filled layers rather than skipped ones).
+
+**A different regime, where $c$ moves instead of $\alpha$ [ran]
+`results/MAC2-llamacpp-20260927`.** On llama.cpp/Metal (the Air), Gemma's MTP *slows*
+the 12B rather than speeding it up — **0.52×** with the LoRA on its domain, **0.66–
+0.87×** otherwise. Speculative decoding output is identical either way (20/20), so
+this is not an $\alpha$ effect: §6.4's $c$, the drafter's cost relative to the target's,
+is high enough on this engine that $kc+1$ exceeds $\mathbb{E}[\tau]$ even at the same
+acceptance a GPU would pay for gladly — the same formula, a different hardware term.
 
 ---
 
@@ -661,6 +767,54 @@ each paired (§9.2). $Q_{\varnothing}(F') \approx 1/20$ is measured **[ran]** P1
 retrieved, opened, followed — not only at the answer: a reader that got lucky over an empty note
 is a case the final score cannot see.
 
+### 8.7 Abstention inside a member, beside the router's (M10)
+
+§8.5's $r(x)$ abstains *before* a request reaches a member. A member can abstain a
+second time, *inside* its own region, once its corpus teaches an `OUT OF SCOPE`
+verdict — the generation-level analogue of $r(x) = \mathrm{out}$, scored the same way:
+a **lost** rate over what the member already answered, and a **caught** rate over what
+it now correctly refuses.
+
+```math
+\ell = \frac{|\{x \in D_{\text{prior}} : \text{answered before, wrong or silent now}\}|}{|D_{\text{prior}}|}, \qquad
+\text{caught} = \frac{|\{x \in D_{\text{oos}} : \text{abstained}\}|}{|D_{\text{oos}}|}.
+```
+
+**Measured [ran] `results/M10-distributor-abstain-20260928`.** `train_out` adds 70
+`OUT OF SCOPE` turns, by the role's own egress, to M9's 700 turns **byte for byte**.
+Against the prior member (`staff-s0`): **$\ell = 0$ of 70** — nothing the member already
+did is lost by teaching it to refuse — and **caught = 20/20** held-out out-of-scope
+cases (`staff-s0` itself: 0/20, since it was never taught the verdict); demo 6/6
+against `staff-s0`'s 5/6. Live on the Air, the sixth scene (a thank-you note to
+suppliers) is exactly the case that abstains and is forwarded — 10,198 + 195 tokens
+through **Claude Haiku 4.5**, $0.0112 — the frontier component of `CLAUDE.md` reached
+by a member's own abstention, not the router's.
+
+### 8.8 Editing the library after training (W7)
+
+§8.6's unmemorisable-content condition, $I(\text{answer}; \text{weights} \mid
+\text{policy}) = 0$, makes a prediction: if the policy really carries no fact, patching
+one statement in the library after training should change every answer that cites it,
+with nothing in the weights to disagree. Two rates read the walks against the edit —
+**follow**, over the control's answers that touch the patched statement, and **stale**,
+over the same set, mutually exclusive by definition
+($\text{follow} + \text{stale} \le 1$, the remainder being answers that do not reach
+the statement at all):
+
+```math
+\text{follow} = \frac{|\{x : \text{answer}(x) = \text{new value, cited to the patched line}\}|}{|\{x : \text{control answers, touches the statement}\}|}, \qquad
+\text{stale} = \frac{|\{x : \text{answer}(x) = \text{old value}\}|}{|\{x : \text{control answers, touches the statement}\}|}.
+```
+
+**Measured [ran] `results/W7-edit-after-training-20260927`**, one statement patched on
+`distributor-wiki@v2`'s own training worlds and questions: **follow = 37/38**, cited to
+the patched line; **stale = 0**. Closed-book — the same questions with no library open
+— the weights still write the old value on **1 of 40**: the member learned *the route
+to the statement*, not the statement itself, and that one case is reading a route
+memorised well enough to answer without opening the page, not the library being
+overruled. This is the mechanism [`MEMORY.md`](MEMORY.md) §7 lists as "a value … no
+retrain", now measured rather than only claimed.
+
 ---
 
 ### 8.4 Delivered accuracy under a routing policy
@@ -834,3 +988,10 @@ milestone 3 trains the large half; milestone 4 measures §7.1's inequality.
 | §8.4 | **routing per request ties by region**: 0.775 = 0.775, 0 misroutes, 37.5 % out on P41's 240 cases | P62 `replay.json` (zero GPU) |
 | §4.4, §8.1 | **the live turn is corpus mode or it is nothing**: under the runtime's prompt 2/32 human turns call a tool (0.281); under the member's released prompt with `</tag>` stops, the round-trip cap and 256 tokens/step, 19/32 call and 0.688 vs bar 0.655 ($p=0.43$), 40/40 local | P63 `live.json`, attempts 4 and 7 |
 | §9.2, §8.4 | **a second member through Phase 1's door**: `desk-commitment` ties its recorded run 240/240 (0 discordant, $p=1$) and beats the base 202 : 0 ($p = 2\cdot2^{-202}$); co-resident with `email-full`, `auto` routes each by its question | P64 `pool_second.json` |
+| §2.5 | **KV below an untouched depth is bit-identical**: LoRA on layers 21–41 of 42 only, 70/70 held-out = the full member (0 lost), base-vs-base control over layers 0–20 identical bit for bit; caveat: 24 of 42 layers are KV-shared, so 21–23 still recompute | E6 `results/E6-upper-layers-20260927/BRIEF.md` |
+| §5.5 | **prefix caching is keyed by position, not content**: TTFT 0.10 → 1.70 s (16.8×), b8 throughput 132 → 108 tok/s, accuracy 70/70 → 39/70; 0.09–0.11 s where the whole prefix recurred; two LoRAs in one batch keep 0.88× | E5 `results/E5-engine-baseline-20260928/BRIEF.md` |
+| §6.7 | **MTP speed-up under a domain LoRA**: base 2.80×/2.60× (domain/general), LoRA on 1.92× ($\alpha$ 0.34) / 2.40× | C0 `results/C0-aligned-draft-20260927/BRIEF.md` |
+| §6.7 | **layer restriction does not help the drafter**: $\rho = -0.02$ (E4B's own MTP, base 0.82, full 0.44, upper 0.43) — NONE | C0-upper `results/C0-upper-e4b-20260927/BRIEF.md` |
+| §6.7 | **on llama.cpp/Metal the drafter is not cheap**: Gemma's MTP *slows* the 12B, 0.52× with the LoRA on its domain, 0.66–0.87× otherwise — §6.4's $c$, not $\alpha$, is what moved | MAC2 `results/MAC2-llamacpp-20260927/BRIEF.md` |
+| §8.7 | **abstention inside a member**: $\ell = 0$ of 70, caught 20/20 against `staff-s0`'s 0/20, demo 6/6; live, the abstained turn reaches Claude Haiku 4.5, $0.0112 | M10 `results/M10-distributor-abstain-20260928/BRIEF.md` |
+| §8.8 | **editing the library after training**: follow 37/38, stale 0, closed-book 1/40 | W7 `results/W7-edit-after-training-20260927/BRIEF.md` |

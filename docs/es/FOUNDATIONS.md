@@ -205,6 +205,34 @@ de pared para 3,1× en bytes de pesos, el resto siendo las cadenas más largas d
 de decode del target cuesta una lectura completa de pesos *tanto si verifica un token
 como cinco*, porque las $k+1$ posiciones se puntúan en una pasada con forma de prefill.
 
+### 2.5 Identidad de la KV bajo una profundidad no tocada, y conmutar a mitad de generación (E6)
+
+La recursión del §1.2 hace que la salida del bloque $\ell$ dependa sólo de los bloques
+*debajo* de él: $h^{(\ell)}$ es una función de $\theta_0,\dots,\theta_{\ell-1}$ y de la
+entrada, nunca de $\theta_\ell,\dots,\theta_{L-1}$. Así que si un LoRA deja intacto cada
+bloque bajo cierta profundidad $k$ ($\theta_\ell = \theta_\ell^{\text{base}}$ para
+$\ell \lt  k$),
+
+```math
+h^{(\ell)}_{\text{experto}} = h^{(\ell)}_{\text{base}}, \qquad K_\ell = K_\ell^{\text{base}}, \qquad V_\ell = V_\ell^{\text{base}}, \qquad \text{para todo } \ell < k \text{ y todo prefijo.}
+```
+
+Es una identidad mecánica, no estadística — vale bit a bit o la derivación está mal —
+y es la condición bajo la cual un pedido puede conmutar qué experto contesta *a mitad
+de generación* sin invalidar la KV ya calculada para las capas bajo $k$.
+
+**Medido [ran] `results/E6-upper-layers-20260927`.** El miembro de la escuela
+reentrenado con su LoRA en las capas 21–41 de 42 solamente: **70/70 retenidos, 15/15 en
+la demo**, exactamente el puntaje del miembro completo (0 perdidos contra él), y un
+control base-contra-base sobre las 21 capas debajo del rango adaptado volvió
+bit-idéntico, confirmando la identidad de arriba en vez de sólo suponerla. Dos
+salvedades viajan con el resultado. El E4B comparte KV entre grupos de capas (24 de 42
+son grupos que comparten caché **[ran]**), así que una conmutación igual recomputa las
+capas 21–23 aunque *sus propios* pesos estén debajo de $k$ — es el compartido, no el
+LoRA, lo que alcanza el rango adaptado. Y la suite está en el techo del miembro completo
+con una sola semilla (§9.4), así que esto es un chequeo de mecanismo, todavía no una
+comparación de calidad.
+
 ---
 
 ## 3. El texto como ids: BPE, mapas de ids y merges
@@ -381,6 +409,38 @@ cuerpo posicional de tag se convierte a clave por conteo de parámetros antes de
 herramienta lo vea — ambos agregados después de un intento cada uno **[ran]** P55 A
 intentos 1 y 2.
 
+### 5.5 La caché de prefijos se indexa por posición, no por contenido (E5)
+
+La caché de prefijos de vLLM (§5.1) hashea los bloques de una secuencia **en orden
+desde la posición 0**: el hash del bloque $j$ encadena del bloque $j-1$, así que un hit
+de caché en el bloque $j$ exige que todo bloque anterior también coincida. Con
+$\text{hit}(x)$ la cantidad de tokens que $x$ comparte, desde la posición 0, con alguna
+secuencia servida antes,
+
+```math
+\text{TTFT}(x) \;\approx\; t_{\text{prefill}}(|x| - \text{hit}(x)),
+```
+
+con $t_{\text{prefill}}$ el costo limitado por cómputo del §2.1. **Que el contenido de
+un bloque sea estático no lo vuelve cacheable** — sólo lo vuelve cacheable que su
+*posición* sea un prefijo compartido. Un bloque de llamadas a herramientas servido,
+como se entrenó, después del pedido del usuario queda detrás de los tokens de ese
+pedido, que difieren por llamada; $\text{hit}(x)$ colapsa a lo que comparta el system
+prompt, y el bloque entero se recomputa cada vez a pesar de ser idéntico byte a byte
+entre pedidos.
+
+**Medido [ran] `results/E5-engine-baseline-20260928`.** El bloque de 54 herramientas de
+OpenClaw (7.205 tokens de Gemma) servido después del pedido: TTFT **0,10 → 1,70 s
+(16,8×)** con la caché de prefijos encendida; throughput a batch 8 **132 → 108 tok/s**;
+exactitud **70/70 → 39/70** (el miembro deja de llamar a su propia herramienta en 28 de
+31 fallas — una instancia de la deriva del §4.4, no del motor). El mismo bloque no
+cuesta **nada** (0,09–0,11 s) en el único caso donde todo el prefijo, bloque incluido,
+volvió a aparecer desde la posición 0 — **el orden, no el tamaño, derrota a la caché.**
+Dos LoRAs servidos en un mismo batch (§5.2) conservan **0,88** del throughput de un
+adaptador solo (contención en el edge, medida sobre una ráfaga de 16); podar el bloque
+de herramientas al del miembro sigue siendo el default tanto en exactitud como en
+latencia.
+
 ---
 
 ## 6. Decodificación especulativa
@@ -474,6 +534,60 @@ latencia está resuelta, y no por nosotros.** Lo que una cabeza atada no puede h
 comparar $k$ drafters *distintos* — hay una sola. **La aceptación como orden sin juez
 sobre $k$ expertos** es la afirmación que esta arquitectura conserva ([`RECORD.md`](RECORD.md) §5),
 y es lo que el §7 formaliza.
+
+### 6.7 Aceptación del MTP bajo un LoRA de dominio, y restricción de capas (C0, C0-upper)
+
+La propia cabeza de predicción multi-token (MTP) de Gemma draftea a partir de los
+estados ocultos finales del propio target — una cabeza atada en el sentido del §6.6,
+así que la fórmula de aceleración del §6.4 aplica con $c$ el costo de la cabeza MTP
+relativo a un paso de decode completo. **Un LoRA de dominio sobre el target mueve los
+estados ocultos de los que lee la cabeza, y la aceptación cae con ellos.**
+
+**Medido [ran] `results/C0-aligned-draft-20260927`** (A100, bf16, el MTP nativo de
+`gemma-4-12B-it`, $k=4$): sin adaptador la aceleración es **2,80×** en el dominio y
+**2,60×** en general; con el LoRA del experto encendido, la aceptación de dominio cae y
+la aceleración con ella — **1,92× en el dominio ($\alpha$ 0,34, contra
+$\alpha \approx 0,79$ sin adaptador)**, **2,40× en general** (el LoRA apenas toca los
+estados ocultos de texto general). **El LoRA le cuesta al drafter, no al target** — la
+$c$ del §6.4 no cambia; lo que se movió es $\alpha$.
+
+**¿Restringir el LoRA a las capas superiores lo recupera? [ran]
+`results/C0-upper-e4b-20260927`.** La esperanza natural de la identidad del §2.5 — si
+las capas inferiores quedan intactas, tal vez la *entrada* de la cabeza también quede
+intacta — hay que chequearla, porque la cabeza lee el estado de la *última* capa, que
+un LoRA confinado a la mitad superior igual mueve. Normalizar la aceptación del
+adaptador restringido a la mitad superior entre la base intacta y el modelo totalmente
+adaptado:
+
+```math
+\rho = \frac{\alpha_{\text{superior}} - \alpha_{\text{completo}}}{\alpha_{\text{base}} - \alpha_{\text{completo}}},
+```
+
+así que $\rho = 1$ dice que restringir las capas recupera toda la aceptación que perdió
+el LoRA completo, $\rho = 0$ dice que es exactamente tan dañino como el LoRA completo.
+Sobre el E4B y su propio drafter MTP, dominio: $\alpha_{\text{base}} = 0,82$,
+$\alpha_{\text{completo}} = 0,44$, $\alpha_{\text{superior}} = 0,43$, así que
+
+```math
+\rho = \frac{0,43 - 0,44}{0,82 - 0,44} = -0,02.
+```
+
+**NONE: restringir las capas no ayuda al drafter** — $\rho$ está en (dentro del ruido
+de) cero, no cerca de 1. Restringir el adaptador a las capas cercanas a la cabeza igual
+mueve exactamente los estados que la cabeza lee. En una L4 el propio MTP del E4B sigue
+pagando con el LoRA encendido (2,4× batch 1, 2,1× batch 8); servido en vLLM, el
+adaptador de mitad superior corre exactamente a la *velocidad* del adaptador completo —
+restringir capas ahorra memoria, no tiempo de decode (**[read]**, probablemente capas
+rellenadas con ceros en vez de saltadas).
+
+**Un régimen distinto, donde se mueve $c$ en vez de $\alpha$ [ran]
+`results/MAC2-llamacpp-20260927`.** Sobre llama.cpp/Metal (la Air), el MTP de Gemma
+*enlentece* al 12B en vez de acelerarlo — **0,52×** con el LoRA en su dominio,
+**0,66–0,87×** en el resto. La salida de la decodificación especulativa es idéntica en
+ambos casos (20/20), así que no es un efecto de $\alpha$: la $c$ del §6.4, el costo del
+drafter relativo al del target, es lo bastante alta en este motor como para que
+$kc+1$ supere a $\mathbb{E}[\tau]$ aun con la misma aceptación que una GPU pagaría con
+gusto — la misma fórmula, un término de hardware distinto.
 
 ---
 
@@ -676,6 +790,55 @@ está **todavía sin medir** — hito 7 de [`PLAN.md`](PLAN.md). La navegación 
 sucede — recuperada, abierta, seguida — no sólo en la respuesta: un lector que tuvo suerte sobre
 una nota vacía es un caso que el score final no puede ver.
 
+### 8.7 Abstención dentro de un miembro, al lado de la del router (M10)
+
+El $r(x)$ del §8.5 abstiene *antes* de que un pedido llegue a un miembro. Un miembro
+puede abstener una segunda vez, *dentro* de su propia región, una vez que su corpus le
+enseña un veredicto `OUT OF SCOPE` — el análogo a nivel de generación de
+$r(x) = \mathrm{afuera}$, puntuado igual: una tasa de **perdido** sobre lo que el
+miembro ya contestaba, y una tasa de **atrapado** sobre lo que ahora rechaza
+correctamente.
+
+```math
+\ell = \frac{|\{x \in D_{\text{previo}} : \text{contestaba antes, mal o mudo ahora}\}|}{|D_{\text{previo}}|}, \qquad
+\text{atrapado} = \frac{|\{x \in D_{\text{fuera}} : \text{abstuvo}\}|}{|D_{\text{fuera}}|}.
+```
+
+**Medido [ran] `results/M10-distributor-abstain-20260928`.** `train_out` suma 70 turnos
+`OUT OF SCOPE`, de la propia salida del rol, a los 700 turnos de M9 **byte a byte**.
+Contra el miembro previo (`staff-s0`): **$\ell = 0$ de 70** — nada de lo que el miembro
+ya hacía se pierde por enseñarle a rechazar — y **atrapado = 20/20** casos retenidos
+fuera de alcance (`staff-s0` mismo: 0/20, porque nunca se le enseñó el veredicto); demo
+6/6 contra el 5/6 de `staff-s0`. En vivo sobre la Air, la sexta escena (una nota de
+agradecimiento a proveedores) es justo el caso que abstiene y se reenvía — 10.198 + 195
+tokens a través de **Claude Haiku 4.5**, $0,0112 — el componente frontera de `CLAUDE.md`
+alcanzado por la propia abstención de un miembro, no por la del router.
+
+### 8.8 Editar la biblioteca después de entrenar (W7)
+
+La condición de contenido inmemorizable del §8.6, $I(\text{respuesta}; \text{pesos}
+\mid \text{política}) = 0$, hace una predicción: si la política de verdad no lleva
+ningún hecho, parchear un enunciado de la biblioteca después de entrenar debería cambiar
+toda respuesta que lo cite, sin nada en los pesos para disentir. Dos tasas leen los
+recorridos contra el parche — **sigue**, sobre las respuestas del control que tocan el
+enunciado parcheado, y **stale**, sobre el mismo conjunto, mutuamente excluyentes por
+definición ($\text{sigue} + \text{stale} \le 1$, el resto siendo respuestas que no
+llegan al enunciado):
+
+```math
+\text{sigue} = \frac{|\{x : \text{respuesta}(x) = \text{valor nuevo, citado a la línea parcheada}\}|}{|\{x : \text{el control contesta, toca el enunciado}\}|}, \qquad
+\text{stale} = \frac{|\{x : \text{respuesta}(x) = \text{valor viejo}\}|}{|\{x : \text{el control contesta, toca el enunciado}\}|}.
+```
+
+**Medido [ran] `results/W7-edit-after-training-20260927`**, un enunciado parcheado
+sobre los mundos y preguntas de entrenamiento propios de `distributor-wiki@v2`:
+**sigue = 37/38**, citado a la línea parcheada; **stale = 0**. A libro cerrado — las
+mismas preguntas sin la biblioteca abierta — los pesos igual escriben el valor viejo en
+**1 de 40**: el miembro aprendió *la ruta al enunciado*, no el enunciado, y ese caso es
+una ruta memorizada lo bastante bien como para contestar sin abrir la página, no la
+biblioteca siendo pasada por alto. Es el mecanismo que [`MEMORY.md`](MEMORY.md) §7 lista
+como "un valor … sin reentrenar", ahora medido y no sólo afirmado.
+
 ---
 
 ### 8.4 Exactitud entregada bajo una política de ruteo
@@ -854,3 +1017,10 @@ entrena la mitad grande; el hito 4 mide la desigualdad de §7.1.
 | §8.4 | **el ruteo por request empata al por región**: 0,775 = 0,775, 0 mal ruteados, 37,5 % afuera sobre los 240 casos de P41 | P62 `replay.json` (cero GPU) |
 | §4.4, §8.1 | **el turno en vivo es modo corpus o no es nada**: bajo el prompt del runtime 2/32 turnos humanos llaman una herramienta (0,281); bajo el prompt liberado del miembro con cortes en `</tag>`, tope de idas y vueltas y 256 tokens/paso, 19/32 llaman y 0,688 contra barra 0,655 ($p=0,43$), 40/40 local | P63 `live.json`, intentos 4 y 7 |
 | §9.2, §8.4 | **un segundo miembro por la puerta de la Fase 1**: `desk-commitment` empata su corrida grabada 240/240 (0 discordantes, $p=1$) y le gana a la base 202 : 0 ($p = 2\cdot2^{-202}$); co-residente con `email-full`, `auto` rutea a cada uno por su pregunta | P64 `pool_second.json` |
+| §2.5 | **la KV bajo una profundidad no tocada es bit-idéntica**: LoRA en las capas 21–41 de 42 solamente, 70/70 retenidos = el miembro completo (0 perdidos), control base-contra-base sobre las capas 0–20 idéntico bit a bit; salvedad: 24 de 42 capas comparten KV, así que 21–23 igual recomputan | E6 `results/E6-upper-layers-20260927/BRIEF.md` |
+| §5.5 | **la caché de prefijos se indexa por posición, no por contenido**: TTFT 0,10 → 1,70 s (16,8×), throughput b8 132 → 108 tok/s, exactitud 70/70 → 39/70; 0,09–0,11 s donde volvió todo el prefijo; dos LoRAs en un mismo batch conservan 0,88× | E5 `results/E5-engine-baseline-20260928/BRIEF.md` |
+| §6.7 | **aceleración del MTP bajo un LoRA de dominio**: sin adaptador 2,80×/2,60× (dominio/general), con LoRA 1,92× ($\alpha$ 0,34) / 2,40× | C0 `results/C0-aligned-draft-20260927/BRIEF.md` |
+| §6.7 | **restringir capas no ayuda al drafter**: $\rho = -0,02$ (el propio MTP del E4B, base 0,82, completo 0,44, superior 0,43) — NONE | C0-upper `results/C0-upper-e4b-20260927/BRIEF.md` |
+| §6.7 | **sobre llama.cpp/Metal el drafter no es barato**: el MTP de Gemma *enlentece* al 12B, 0,52× con el LoRA en su dominio, 0,66–0,87× en el resto — se movió la $c$ del §6.4, no la $\alpha$ | MAC2 `results/MAC2-llamacpp-20260927/BRIEF.md` |
+| §8.7 | **abstención dentro de un miembro**: $\ell = 0$ de 70, atrapado 20/20 contra el 0/20 de `staff-s0`, demo 6/6; en vivo, el turno abstenido llega a Claude Haiku 4.5, $0,0112 | M10 `results/M10-distributor-abstain-20260928/BRIEF.md` |
+| §8.8 | **editar la biblioteca después de entrenar**: sigue 37/38, stale 0, a libro cerrado 1/40 | W7 `results/W7-edit-after-training-20260927/BRIEF.md` |

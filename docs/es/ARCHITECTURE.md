@@ -118,6 +118,32 @@ sistema de agentes por rol y que un modelo no debe decidir:
 | **alcance** | un pedido que las herramientas del rol no cubren sigue la salida del rol: la frontera, o la cola de una persona | el modelo dice `OUT OF SCOPE`; la política decide adónde va — el juicio del modelo queda registrado, no se confía en él |
 | **log** | una línea JSON por pedido — quién, rol, ruta, llamadas, rechazos, retenciones, anclaje, tokens — y un dashboard que tasa los tokens locales a las tarifas de la frontera | el feed de monitoreo; el costo propio de la GPU no se tasa |
 
+**Un proceso por organización, no un solo gateway para todas [ran] 2026-09-28** (`--org school|distributor`). Las
+herramientas, el corpus y el estado de aprobación de cada organización viven en su propio proceso, así que las
+aprobaciones RETENIDAS de una escuela y la política de salida de una distribuidora nunca comparten memoria por
+accidente. Las dos organizaciones difieren a propósito, no por omisión: el miembro de la distribuidora se sirve con su
+**propio prompt de corpus**, sin línea de SCOPE — su decisión de alcance está entrenada en el corpus mismo (más abajo),
+no declarada en el system prompt — y sus escrituras corren sin aprobación de un director, una decisión de política de
+esa organización y sus roles, no un hueco en el mecanismo de aprobaciones de arriba.
+
+**La abstención vive en el corpus, por miembro, no en un segundo modelo delante. [ran] M10:** el miembro de la
+distribuidora se entrena sobre `train_out` — sus 700 turnos habituales byte a byte, más 70 turnos `OUT OF SCOPE`
+sacados de la propia política de salida del rol. Contra el miembro sin ellos, nada de lo ya aprendido retrocede (0 de
+70 en held-out) y todo pedido held-out fuera de alcance abstiene (20/20, contra 0/20 del miembro llano); la demo
+guionada da 6/6 contra 5/6. Es la misma fila `alcance` de arriba, entrenada en vez de sólo pedida por prompt: el modelo
+sigue sólo *proponiendo* `OUT OF SCOPE`, y es la política — no el modelo — la que decide adónde va el pedido.
+
+**El despliegue en el edge, corrido contra un cliente real, no un replay. [ran] LIVE-distributor, M10:** el miembro de
+la distribuidora servido con llama.cpp en la propia máquina del usuario (`google/gemma-4-E4B-it` Q8_0 + el LoRA del
+miembro convertido a GGUF, `python -m examples.school.gateway --org distributor --upstream <llama-server>`) pasó 5 de
+5 turnos por el OpenClaw real 2026.9.4; el miembro que abstiene después pasó 6 de 6, el único turno fuera de alcance
+(una nota de agradecimiento a proveedores) reenviado a **Claude Haiku 4.5** por la salida a frontera del gateway
+(10.198 + 195 tokens, $0,0112). Lo que atrapó un cliente real que un replay no habría atrapado: llama.cpp descarta la
+cadena de parada de la que depende el bucle de modo corpus para cerrar un turno, y el propio almacén de la
+distribuidora no era thread-safe bajo las llamadas concurrentes de OpenClaw (primer intento void; los dos se
+arreglaron). Ninguno de los dos miembros es un release formal en esta corrida (sin archivo de release) — demuestra el
+camino, no que pasó una compuerta.
+
 ## 3. El par
 
 **Por qué la mitad grande está entrenada, no prestada.** Un modelo grande sin entrenar no es
@@ -144,6 +170,29 @@ grande + LoRA le gana al chico + LoRA donde el chico tiene margen?) y después u
 **Dónde corre.** El pool chico se sirve desde una sola L4. La mitad grande, `gemma-4-12B-it`, se sirve en bf16
 desde una A100 (B3, B4) y está dimensionada para una Mac mini; ~~un 27B es trabajo de A100 en 4 bits~~.
 
+**Dos perfiles de runtime nombran esta división explícitamente, decisión del usuario del 2026-09-28.** **`server`** es
+vLLM en Colab — toda corrida de entrenamiento y toda medición, el par incluido. **`edge`** es **llama.cpp en la propia
+máquina del usuario**, sirviendo *un miembro* (no el par) a un runtime de agentes en vivo: el E4B como GGUF **Q8_0** —
+Q4_0 invierte un id de orden con la propia caché de prompt de llama.cpp **[ran]** LIVE-distributor — más el LoRA del
+miembro convertido a GGUF, cambiado en caliente en **~3 ms** por `POST /lora-adapters` **[ran] MAC2**. MLX, el motor
+anterior de la Mac, ahora es un banco de investigación: su cambio en caliente (2,9 µs, **[ran] MAC**) necesitaba
+acceso desde Python al grafo que `edge` no tiene. ~~MLX queda como motor `edge`~~ — ese fue el veredicto de MAC2 sobre
+decodificación especulativa específicamente, y no se extiende a servir.
+
+**Un LoRA confinado a las capas superiores: una palanca para compartir la KV entre expertos, no un arreglo para el
+borrador.** Dos mediciones leen la misma palanca de dos formas distintas. **[ran] E6:** entrenar un LoRA sólo sobre
+la mitad superior del decoder (capas 21–41 de 42) no cuesta nada medido contra el miembro de profundidad completa —
+70/70 held-out, 15/15 demo — y la KV de las capas de abajo vuelve **idéntica byte a byte a la del modelo base** (un
+control base-contra-base coincidió). Esa es la precondición que necesitaría un servidor para calcular la KV compartida
+de abajo una sola vez, desde el base, y dejar que los pedidos de cada experto la lean — todavía sin construir (§8); la
+salvedad es que el E4B ya cachea 24 de sus 42 capas por su cuenta, un límite con el que la elección de capas de este
+LoRA no coincide, así que un cambio igual recalcula las capas 21–23. **[ran] C0-upper:** la misma restricción **no**
+ayuda al borrador — en el E4B con su propio MTP, α en el dominio pasó de base 0,82 → LoRA completo 0,44 → LoRA de
+mitad superior 0,43 (ρ = −0,02, se lee como ninguna). Por qué divergen las dos **[read]**: el MTP ya lee cerca de la
+cima de la pila, que un adaptador de "mitad superior" sigue tocando — confinar el LoRA ahí no quita casi nada de lo que
+ve el borrador. En vLLM el adaptador de mitad superior también sirve exactamente a la velocidad del completo: ahorra
+memoria, no tiempo.
+
 ## 4. La memoria — el núcleo de 1.0
 
 > **El LoRA no es el libro de texto. Es el especialista que sabe usar la biblioteca.**
@@ -161,6 +210,14 @@ de una misma receta discreparon en 25 de 67 filas, W5e — así que los miembros
 semillas). La búsqueda con un encoder estándar llegó a recall@3 0,638 contra una vara de 0,80 (W3);
 el buscador es léxico. ~~Estado, 2026-09-20 … evidencia de nada hasta que se corra sobre un conjunto
 escrito después de congelar la política.~~
+
+**Editar la página después de entrenar se sostiene, por la razón que busca el diseño. [ran] W7:** se parchó un
+enunciado en la biblioteca propia de `distributor-wiki@v2`, sin reentrenar: 37 de 38 respuestas de control sobre los
+mundos y preguntas propios de ese miembro siguieron el valor nuevo, citando la línea parchada; 0 desactualizadas. En
+modo cerrado, sin la página delante, los pesos todavía contestan con el valor viejo en 1 de 40 — no es cero. El
+miembro aprendió la *ruta* lo bastante bien como para reproducir, de vez en cuando, lo que por lo general sólo lee;
+eso es lectura, no la biblioteca imponiéndose sobre la memoria, y acota el riesgo que la separación busca cerrar en
+vez de eliminarlo.
 
 **La unidad de la biblioteca, desde el 2026-09-24: el enunciado atómico — [ran] W9, PASÓ.** El
 diseño del usuario: la biblioteca tiene forma de Wikipedia. Una página es sobre una sola cosa y es una lista de
@@ -254,7 +311,7 @@ base de conocimiento y el hash de su índice: un miembro es su corpus *y* su bas
 **Gemma 4, desde 2026-09-25 — la decisión del usuario sobre B1 [ran].** `google/gemma-4-E4B-it` chico;
 `gemma-4-12B-it` grande (~~`gemma-4-31B-it`~~, cambiado por una Mac mini): un espacio de ids con el E4B y un LoRA servido
 aplicado (B2 **[ran]**); su LoRA sube la aceptación de los borradores del miembro chico, α 0,871 → 0,898 (B4 **[ran]**);
-no compra precisión en la banda comparativa una vez que al chico se le enseña (B3, B5 **[ran]**). **Servido con su propio drafter MTP** (`gemma-4-12B-it-assistant`) y un LoRA experto en un solo servidor vLLM: 2,7× sobre el base, 1,7–2,1× con el LoRA (F0 **[ran]**). **Qué se cambia en caliente y qué no:** el LoRA del experto por pedido (0,25 s cargar uno en caliente, F0; 2,9 µs en la Mac, MAC); el drafter es uno por servidor y no admite LoRA en vLLM — un drafter ajustado por experto es la estrategia A (uno compartido, entrenado) o B (un LoRA de drafter, hoy sólo en nuestro runtime de la Mac); [`GUIDE.md`](GUIDE.md) §6.5. En el wiki de W9, con el mismo corpus y
+no compra precisión en la banda comparativa una vez que al chico se le enseña (B3, B5 **[ran]**). **Servido con su propio drafter MTP** (`gemma-4-12B-it-assistant`) y un LoRA experto en un solo servidor vLLM: 2,7× sobre el base, 1,7–2,1× con el LoRA (F0 **[ran]**). **Qué se cambia en caliente y qué no:** el LoRA del experto por pedido (0,25 s cargar uno en caliente, F0; 2,9 µs en el banco de investigación MLX de la Mac, MAC; **~3 ms en el perfil `edge` de la Mac, llama.cpp, por `POST /lora-adapters`, MAC2** — §3); el drafter es uno por servidor y no admite LoRA en vLLM — un drafter ajustado por experto es la estrategia A (uno compartido, entrenado), C (un borrador completo alineado: **[ran] C0** — el propio MTP de Gemma con el LoRA experto encendido recupera 1,92× dominio / 2,40× general contra 2,80×/2,60× en el base; un borrador E4B fusionado y construido a medida todavía no corrió, bloqueado esta vuelta por memoria y cuantización en cada GPU probada), o B (un LoRA de drafter, en pausa — el MTP ya se paga solo en una L4 y no en la Mac); [`GUIDE.md`](GUIDE.md) §6.5, §6.6. En el perfil `edge` de la Mac el MTP de Gemma no ayuda al 12B como en una L4: lo frena (0,52× con el LoRA en su propio dominio, 0,66–0,87× en el resto, **[ran] MAC2**), y el par E4B+12B no entra junto en 16 GB. En el wiki de W9, con el mismo corpus y
 la misma receta, el miembro de Gemma empató al de Qwen3.5-4B (38/40 contra 35 y 35, 4 : 1 contra cada uno); sin
 entrenar, Gemma ya la camina 19/40 donde Qwen camina 0/40, y entrena en un tercio del tiempo. El usuario decidió
 antes de que corriera la comparación que la paridad elige a Gemma, porque el stack de desarrollo apunta a ella. Le
@@ -287,10 +344,11 @@ byte, 0 ids sólo del objetivo **[ran]** B2.
 
 ## 8. Deliberadamente sin construir
 
-Un runtime de inferencia a medida, compartir la caché KV entre adaptadores, tree attention
-entre adaptadores, composición de adaptadores, un torneo que los cría, el control plane, los
-packs verticales. Y, por alcance más que por orden: el servicio de personalización y sus
-herramientas no son parte de este runtime ni de la versión open-source.
+Un runtime de inferencia a medida, compartir la caché KV entre adaptadores (la precondición de un LoRA restringido por
+capas para lograrlo — una KV de abajo idéntica byte a byte contra el base — está medida, §3; compartirla en sí no está
+construido), tree attention entre adaptadores, composición de adaptadores, un torneo que los cría, el control plane,
+los packs verticales. Y, por alcance más que por orden: el servicio de personalización y sus herramientas no son
+parte de este runtime ni de la versión open-source.
 
 ## 9. Dónde se ubica dentro de una organización — y el límite del framework
 

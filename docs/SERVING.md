@@ -28,6 +28,55 @@ untouched.
 Point the agent at `http://127.0.0.1:8001/v1` and set `model` to `kernel` or
 `domain`. `/v1/models` lists them.
 
+## The edge profile: llama.cpp on your own machine, beside `server`
+
+Everything above is the **`server`** profile: vLLM on Colab, and every measurement and training run
+in this repository goes through it. **`edge`** is a second profile, decided 2026-09-28, for serving
+one already-released member to a live agent runtime on the machine that runs it — no rented card,
+no tunnel **[ran]** `results/MAC2-llamacpp-20260927/`, `results/LIVE-distributor-openclaw-20260928/`.
+~~MLX stays the `edge` engine~~ — that verdict (2026-09-27) was about speculative decoding only; MLX
+stays a research bench, for the Python access it gives to the graph (pointer hot-swap 2.9 µs), not
+the thing that answers a live request. The engine that does that on the user's Mac is **llama.cpp**.
+
+    # once per member: its LoRA to GGUF
+    python llama.cpp/convert_lora_to_gguf.py --base <gemma-4-E4B-it HF snapshot> --outtype f16 \
+        --outfile lora-distributor-staff-out-s0-f16.gguf adapters/distributor-staff-out-s0
+    llama-server -m gemma-4-E4B-it-Q8_0.gguf --lora lora-distributor-staff-out-s0-f16.gguf \
+        --port 8792 -c 8192 -ngl 99
+
+**Use the E4B as Q8_0, never Q4_0.** Q4_0 is not merely a smaller file: it flips an order id inside
+llama.cpp's own prompt cache **[ran]** LIVE-distributor, so a live request can be served against the
+wrong cached turn. `edge` means Q8_0 until that is fixed upstream.
+
+The adapter's strength is a per-request field on the completion call (`"lora": [{"id": 0, "scale":
+1.0}]`), and the adapter itself hot-swaps without restarting the server: `POST /lora-adapters` on a
+running instance swaps in a different member's GGUF and restores the base exactly, in **3 ms**
+**[ran]** MAC2 — three orders of magnitude under vLLM's own 0.25 s swap, on a machine with no memory
+to spare for a second resident model.
+
+**llama.cpp drops the stop string** — a completion did not stop at the member's own closing tag the
+way vLLM's does, and a live turn ran on past it inventing text; the fix is client-side, not a flag
+(`accept_rank.close_open_tag`) **[ran]** LIVE-distributor. Anyone reusing `edge` needs that same
+patch, not just the same command line.
+
+## What live serving costs: order beats size, and two adapters are not twice the cost
+
+Two findings from the same run price the engine itself, on `server` and `edge` alike, because both
+serve through a prefix cache and a multi-adapter batch.
+
+**A tool block placed after the request is never a shared prefix.** A member's corpus puts the
+request first and the (large) tool surface after it — the shape the corpus taught, not an accident —
+so no two requests share that block as a prefix even with caching on. Serving OpenClaw's real 54-tool
+block (7,205 Gemma tokens) this way, after the request, on the school member (E4B, vLLM 0.30) takes
+time to first token from 0.10 s to 1.70 s (16.8×) and throughput at 8 in flight from 132 to 108
+tok/s, beside accuracy falling 70/70 → 39/70 **[ran]** `results/E5-engine-baseline-20260928/`. Where
+the whole prefix recurred instead, the same block cost nothing (0.09–0.11 s) — **the cache is beaten
+by the order the corpus put things in, not by the block's size.**
+
+**Two LoRAs in one batch keep 0.88 of one's own throughput.** A burst of 16 requests split across two
+adapters served together loses 12% against serving the same 16 apart — contention, not a wall, and
+worth pricing before sizing one server for more than one member at a time **[ran]** E5.
+
 ## The base has to be one vLLM actually applies adapters to — check, do not assume
 
 **vLLM can accept a LoRA, log that it loaded it, and serve the base.** No error, no

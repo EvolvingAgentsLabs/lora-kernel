@@ -260,7 +260,7 @@ Milestone 7's arms, in the order that can kill it soonest ([`PLAN.md`](PLAN.md))
 | 2 | learned navigation vs the oracle walk | what navigation loses |
 | 3 | encyclopedic only · operational only · both | which kind of knowledge carries the gain |
 | 4 | S1 flat lexical · S1 flat embedding · S4 | whether a trajectory strategy beats a flat search (F9 says do not assume it) |
-| 5 | edit one note after training | that the answer follows the base, not the weights |
+| 5 | edit one note after training | that the answer follows the base, not the weights — **done [ran] W7**: on `distributor-wiki@v2`, one statement patched, 37 of 38 control answers follow the new value cited to the patched line, 0 stale; closed-book the weights still hold the old value on 1 of 40 — reading a memorised route, not the library being overruled ([`MEMORY.md`](MEMORY.md) §1.6, W7) |
 
 Measured **per step, not only at the answer**: *retrieved* (the needed note in `<search>`'s list),
 *opened*, *used* (its value reaches a later step — the instrument of F7), *conformant* (§3.5),

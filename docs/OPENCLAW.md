@@ -246,22 +246,49 @@ every chunk carries `x_buffered: true` **in the payload** — not only in a comm
 A client gets correct SSE and a correct answer. What it does not get is incremental
 delivery, which is latency and not correctness.
 
-## 6. The school, one OpenClaw profile per role
+## 6. One gateway, one organisation per process
 
-The gateway (`examples/school/gateway.py`) is itself an OpenAI-compatible endpoint, so each role's OpenClaw points at it
-with **its own signed token as the provider key** — the role is decided by the token, never by the model id:
+The gateway (`examples/school/gateway.py`) is itself an OpenAI-compatible endpoint, and **since
+2026-09-28 it serves one organisation per process** — `--org school` or `--org distributor`, sharing
+the roles/tools/store shape but not the prompt each organisation's member trained on: the school's
+corpus ends in `SCOPE` and teaches `OUT OF SCOPE`; the distributor's runs its writes without a
+director's approval, and until M10 never abstained at all. Each role's OpenClaw points at the
+gateway with **its own signed token as the provider key** — the role is decided by the token, never
+by the model id:
 
-    python -m examples.school.gateway --upstream <vLLM URL> --member school-s0 \
+    python -m examples.school.gateway --upstream <vLLM URL> --org school --member school-s0 \
         [--frontier-url https://api.openai.com/v1 --frontier-model <model>]    # key from $FRONTIER_API_KEY
     ~/.openclaw/bin/openclaw --profile school-educador-north config patch \
         --file ~/.config/lora-kernel/openclaw/educador-north.json5
     ~/.openclaw/bin/openclaw --profile school-educador-north agent --local -m "¿Qué tiene en la agenda el alumno 1?"
 
-`python -m examples.school.live_openclaw` plays the whole scripted demo this way and scores it with the same checks.
-**[ran] 2026-09-26: 15/15 through OpenClaw 2026.9.4 with the real model (Gemma 4 E4B + `school-s0` on an L4) and Claude Haiku 4.5 as the frontier** — the wiring first passed 15/15 with a stand-in
-([`BRIEF`](../results/LIVE-school-openclaw-20260926/BRIEF.md)). One thing the first live turn taught: OpenClaw appends
-its own internal context as a *last* user message and stamps the request; the gateway reads the person's request out
-of that (`runtime_request`).
+`python -m examples.school.live_openclaw --org school` plays the whole scripted demo this way and
+scores it with the same checks. **[ran] 2026-09-26: 15/15 through OpenClaw 2026.9.4 with the real
+model (Gemma 4 E4B + `school-s0` on an L4) and Claude Haiku 4.5 as the frontier** — the wiring first
+passed 15/15 with a stand-in ([`BRIEF`](../results/LIVE-school-openclaw-20260926/BRIEF.md)). One
+thing the first live turn taught: OpenClaw appends its own internal context as a *last* user message
+and stamps the request; the gateway reads the person's request out of that (`runtime_request`).
+
+### The distributor, live and local — `--org distributor`
+
+The same gateway, pointed at the `edge` profile instead of a rented card ([`SERVING.md`](SERVING.md)):
+llama.cpp serving the E4B as Q8_0 with the distributor's own LoRA GGUF, on the very machine running
+OpenClaw — nothing rented, nothing tunnelled.
+
+    llama-server -m gemma-4-E4B-it-Q8_0.gguf --lora lora-distributor-staff-out-s0-f16.gguf --port 8792 -c 8192 -ngl 99
+    python -m examples.school.gateway --org distributor --upstream http://localhost:8792 --member out-s0 \
+        --tokenizer google/gemma-4-E4B-it --port 8766 \
+        [--frontier-url https://api.anthropic.com/v1 --frontier-model claude-haiku-4-5 \
+         --frontier-key-env FRONTIER_API_KEY --frontier-budget-usd 1 --frontier-rates 1,5]
+    python -m examples.school.live_openclaw --org distributor --out live.json
+
+**[ran] 2026-09-28: 6/6 through the real OpenClaw** — five turns answered locally and the sixth, a
+thank-you note to suppliers that `out-s0` recognises as `OUT OF SCOPE` (M10, held out 20/20), forwarded
+to **Claude Haiku 4.5**: 10,198 + 195 tokens, **$0.0112**
+([`BRIEF`](../results/LIVE-distributor-openclaw-20260928/BRIEF.md)). `out-s0` is not a formal release
+(no release file) — it is the arm this live run used. Both halves of the reference diagram now run
+live, on the same gateway shape: the school on a rented card, the distributor on nothing but the
+user's own Mac.
 
 ## What this is worth, measured
 

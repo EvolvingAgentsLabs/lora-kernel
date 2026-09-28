@@ -256,22 +256,50 @@ y cada chunk lleva `x_buffered: true` **en el payload** — no sólo en un comen
 cliente recibe SSE correcto y una respuesta correcta. Lo que no recibe es entrega
 incremental, que es latencia y no corrección.
 
-## 6. La escuela, un perfil de OpenClaw por rol
+## 6. Un solo gateway, una organización por proceso
 
-El gateway (`examples/school/gateway.py`) es en sí un endpoint compatible con OpenAI, así que el OpenClaw de cada rol
-apunta a él con **su propio token firmado como clave del proveedor** — el rol lo decide el token, nunca el id del modelo:
+El gateway (`examples/school/gateway.py`) es en sí un endpoint compatible con OpenAI, y **desde el
+2026-09-28 sirve una organización por proceso** — `--org school` o `--org distributor`, compartiendo
+la forma de roles/herramientas/almacén pero no el prompt con el que entrenó el miembro de cada
+organización: el corpus de la escuela termina en `SCOPE` y enseña `OUT OF SCOPE`; el de la
+distribuidora corre sus escrituras sin aprobación de un director, y hasta M10 nunca se abstuvo. El
+OpenClaw de cada rol apunta al gateway con **su propio token firmado como clave del proveedor** — el
+rol lo decide el token, nunca el id del modelo:
 
-    python -m examples.school.gateway --upstream <URL de vLLM> --member school-s0 \
+    python -m examples.school.gateway --upstream <URL de vLLM> --org school --member school-s0 \
         [--frontier-url https://api.openai.com/v1 --frontier-model <modelo>]    # la clave desde $FRONTIER_API_KEY
     ~/.openclaw/bin/openclaw --profile school-educador-north config patch \
         --file ~/.config/lora-kernel/openclaw/educador-north.json5
     ~/.openclaw/bin/openclaw --profile school-educador-north agent --local -m "¿Qué tiene en la agenda el alumno 1?"
 
-`python -m examples.school.live_openclaw` juega así toda la demo guionada y la puntúa con las mismas verificaciones.
-**[ran] 2026-09-26: 15/15 a través de OpenClaw 2026.9.4 con el modelo real (Gemma 4 E4B + `school-s0` en una L4) y Claude
-Haiku 4.5 como frontera** — el cableado pasó antes 15/15 con un sustituto ([`BRIEF`](../../results/LIVE-school-openclaw-20260926/BRIEF.md)). Algo que enseñó el primer turno en vivo:
-OpenClaw agrega su propio contexto interno como *último* mensaje de usuario y le pone fecha al pedido; el gateway lee el
-pedido de la persona dentro de eso (`runtime_request`).
+`python -m examples.school.live_openclaw --org school` juega así toda la demo guionada y la puntúa
+con las mismas verificaciones. **[ran] 2026-09-26: 15/15 a través de OpenClaw 2026.9.4 con el modelo
+real (Gemma 4 E4B + `school-s0` en una L4) y Claude Haiku 4.5 como frontera** — el cableado pasó antes
+15/15 con un sustituto ([`BRIEF`](../../results/LIVE-school-openclaw-20260926/BRIEF.md)). Algo que
+enseñó el primer turno en vivo: OpenClaw agrega su propio contexto interno como *último* mensaje de
+usuario y le pone fecha al pedido; el gateway lee el pedido de la persona dentro de eso
+(`runtime_request`).
+
+### La distribuidora, en vivo y local — `--org distributor`
+
+El mismo gateway, apuntado al perfil `edge` en vez de a una tarjeta alquilada
+([`SERVING.md`](SERVING.md)): llama.cpp sirviendo el E4B como Q8_0 con el LoRA propio de la
+distribuidora, en la misma máquina que corre OpenClaw — nada alquilado, nada por túnel.
+
+    llama-server -m gemma-4-E4B-it-Q8_0.gguf --lora lora-distributor-staff-out-s0-f16.gguf --port 8792 -c 8192 -ngl 99
+    python -m examples.school.gateway --org distributor --upstream http://localhost:8792 --member out-s0 \
+        --tokenizer google/gemma-4-E4B-it --port 8766 \
+        [--frontier-url https://api.anthropic.com/v1 --frontier-model claude-haiku-4-5 \
+         --frontier-key-env FRONTIER_API_KEY --frontier-budget-usd 1 --frontier-rates 1,5]
+    python -m examples.school.live_openclaw --org distributor --out live.json
+
+**[ran] 2026-09-28: 6/6 a través del OpenClaw real** — cinco turnos contestados local y el sexto, una
+nota de agradecimiento a proveedores que `out-s0` reconoce como `OUT OF SCOPE` (M10, retenidos 20/20),
+reenviado a **Claude Haiku 4.5**: 10.198 + 195 tokens, **$0,0112**
+([`BRIEF`](../../results/LIVE-distributor-openclaw-20260928/BRIEF.md)). `out-s0` no es una liberación
+formal (sin archivo de release) — es el brazo que usó esta corrida en vivo. Las dos mitades del
+diagrama de referencia ahora corren en vivo, sobre la misma forma de gateway: la escuela en una
+tarjeta alquilada, la distribuidora sin nada más que la propia Mac del usuario.
 
 ## Cuánto vale esto, medido
 
