@@ -43,8 +43,20 @@ from examples.common import approvals, tokens
 from examples.common import grounding as grounding_mod
 from examples.common.agent_loop import ToolSuite
 from examples.common.permissions import Denied
-from examples.school import roles as school_roles
-from examples.school import tools as school_tools
+
+# ONE GATEWAY, ONE ORGANISATION PER PROCESS (2026-09-28). The school and the distributor share the shape — roles, tools,
+# a store, seed users — but not the prompt their members were trained on: the school's corpus ends the role's prompt
+# with SCOPE and teaches `OUT OF SCOPE`; the distributor's (examples/distributor/generate_turns.py) is the role's prompt
+# alone and never abstains, and runs its writes without a director's approval, as training/harness/demo_org.scene does.
+# A member is served the way its corpus taught it (CLAUDE.md §3), so the organisation carries those two switches.
+ORGS = {"school": {"package": "examples.school", "scope": True, "approvals": True, "provider": "schoolgw"},
+        "distributor": {"package": "examples.distributor", "scope": False, "approvals": False, "provider": "distgw"}}
+
+
+def org_modules(org: str) -> dict:
+    import importlib
+    pkg = ORGS[org]["package"]
+    return {m: importlib.import_module(f"{pkg}.{m}") for m in ("roles", "tools", "db", "users")}
 
 SCOPE = ("Answer in the user's language, in one or two sentences, from what your tools returned. If a tool "
          "result says PENDING APPROVAL, tell the user it is waiting for a director. If the request is not "
@@ -79,10 +91,13 @@ def runtime_request(messages: list[dict]) -> str:
 
 
 class Gateway:
-    def __init__(self, conn, generate, frontier=None, log_path=None, max_calls: int = 4):
+    def __init__(self, conn, generate, frontier=None, log_path=None, max_calls: int = 4, org: str = "school"):
         """`generate(system, user) -> (gen(prefix) -> text, used() -> {prompt_tokens, completion_tokens})`."""
         self.conn, self.generate, self.frontier, self.log_path, self.max_calls = conn, generate, frontier, log_path, max_calls
-        self.queue, self.handoffs, self.events, self.lock = approvals.Queue(), [], [], threading.Lock()
+        self.org, mods = org, org_modules(org)
+        self.roles, self.tools = mods["roles"], mods["tools"]
+        self.queue = approvals.Queue() if ORGS[org]["approvals"] else None
+        self.handoffs, self.events, self.lock = [], [], threading.Lock()
 
     # ------------------------------------------------------------------ one request
     def turn(self, token: str, messages: list[dict], model: str = "auto") -> dict:
@@ -93,14 +108,15 @@ class Gateway:
         asked = model.split(":", 1)[1] if model.startswith("auto:") else None
         if asked and asked != claim.role:
             raise Denied(f"the token is a {claim.role}'s; the request asked to be served as {asked}")
-        role = school_roles.ROLES.get(claim.role)
+        role = self.roles.ROLES.get(claim.role)
         if role is None:
-            raise Denied(f"no agent role {claim.role!r} in this school")
+            raise Denied(f"no agent role {claim.role!r} in this {self.org}")
         request = runtime_request(messages)
-        schema = [t for t in school_tools.SCHEMA if t["function"]["name"] in role["tools"]]
+        schema = [t for t in self.tools.SCHEMA if t["function"]["name"] in role["tools"]]
         user = render_tools([{"role": "user", "content": request}], schema)[-1]["content"]
-        suite = ToolSuite(self.conn, claim, role["tools"], school_tools, self.queue)
-        gen, used = self.generate(f"{role['system_prompt']} {SCOPE}", user, suite.close)
+        suite = ToolSuite(self.conn, claim, role["tools"], self.tools, self.queue)
+        system = f"{role['system_prompt']} {SCOPE}" if ORGS[self.org]["scope"] else role["system_prompt"]
+        gen, used = self.generate(system, user, suite.close)
         chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
         final = (chain["spans"][-1]["text"] if chain["spans"] else "").strip()
         route, reply = "local", final
@@ -145,7 +161,7 @@ class Gateway:
 
         def execute(c, tool, args):
             with DB_LOCK:
-                return school_tools.answer(self.conn, c, tool, args)
+                return self.tools.answer(self.conn, c, tool, args)
         return self.queue.approve(item_id, claim, execute)
 
     def reject(self, token: str, item_id: int) -> None:
@@ -288,9 +304,9 @@ def serve(gw: Gateway, port: int = 8765) -> ThreadingHTTPServer:
 
 
 OPENCLAW_PATCH = """{{
-  models: {{ providers: {{ schoolgw: {{ baseUrl: "http://127.0.0.1:{port}/v1", api: "openai-completions", auth: "api-key",
-    apiKey: "{token}", models: [ {{ id: "auto", name: "school gateway — {user}" }} ] }} }} }},
-  agents: {{ defaults: {{ model: "schoolgw/auto" }} }}
+  models: {{ providers: {{ {prov}: {{ baseUrl: "http://127.0.0.1:{port}/v1", api: "openai-completions", auth: "api-key",
+    apiKey: "{token}", models: [ {{ id: "auto", name: "{org} gateway — {user}" }} ] }} }} }},
+  agents: {{ defaults: {{ model: "{prov}/auto" }} }}
 }}
 """
 
@@ -299,10 +315,10 @@ def main() -> int:
     import argparse
     import os
     from pathlib import Path
-    from examples.school import db, users
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--upstream", required=True, help="an OpenAI-compatible completions server serving the member (vLLM)")
-    ap.add_argument("--member", default="school-s0", help="the served name of the school-staff adapter")
+    ap.add_argument("--org", default="school", choices=sorted(ORGS), help="which organisation this gateway serves")
+    ap.add_argument("--member", default="school-s0", help="the served name of the organisation's staff adapter")
     ap.add_argument("--tokenizer", default=None, help="the base's tokenizer (defaults to family.SMALL); only its chat template")
     ap.add_argument("--port", type=int, default=8765)
     ap.add_argument("--frontier-url", default=None, help="e.g. https://api.openai.com/v1 — the `frontier` egress, made real")
@@ -310,7 +326,7 @@ def main() -> int:
     ap.add_argument("--frontier-key-env", default="FRONTIER_API_KEY", help="the env var holding the frontier key")
     ap.add_argument("--frontier-budget-usd", type=float, default=None, help="stop forwarding once this much is spent")
     ap.add_argument("--frontier-rates", default="0,0", help="$ per million input,output tokens, to price each call")
-    ap.add_argument("--log", default="examples/school/events.jsonl")
+    ap.add_argument("--log", default=None, help="default: examples/<org>/events.jsonl")
     ap.add_argument("--openclaw-dir", default=str(Path.home() / ".config/lora-kernel/openclaw"))
     a = ap.parse_args()
     from training.harness import accept_rank
@@ -326,15 +342,19 @@ def main() -> int:
             return 2
         frontier = frontier_client(a.frontier_url, key, a.frontier_model, a.frontier_budget_usd,
                                    tuple(float(x) for x in a.frontier_rates.split(",")))
+    mods = org_modules(a.org)
+    db, users = mods["db"], mods["users"]
     users.register_all()
-    gw = Gateway(db.build(), vllm_generator(a.member, tok), frontier=frontier, log_path=a.log)
+    gw = Gateway(db.build(), vllm_generator(a.member, tok), frontier=frontier, log_path=a.log or f"examples/{a.org}/events.jsonl",
+                 org=a.org)
     serve(gw, a.port)
     out = Path(a.openclaw_dir); out.mkdir(parents=True, exist_ok=True)
     for user_id, role, org in users.SEED_USERS:
         (out / f"{user_id}.json5").write_text(OPENCLAW_PATCH.format(port=a.port, token=tokens.issue(user_id, role, org, ttl=12 * 3600),
-                                                                    user=user_id))
-    (out / "director-north.token").write_text(tokens.issue("director-north", "director", "northgate", ttl=12 * 3600))
-    print(f"[gateway] :{a.port} · model {a.member} at {a.upstream} · frontier "
+                                                                    user=user_id, prov=ORGS[a.org]["provider"], org=a.org))
+    if a.org == "school":
+        (out / "director-north.token").write_text(tokens.issue("director-north", "director", "northgate", ttl=12 * 3600))
+    print(f"[gateway] {a.org} :{a.port} · model {a.member} at {a.upstream} · frontier "
           f"{a.frontier_model + ' at ' + a.frontier_url if frontier else 'NOT configured (frontier-egress roles say so)'}", flush=True)
     print(f"[gateway] one OpenClaw patch per user in {out} (each carries that user's signed token)", flush=True)
     try:
