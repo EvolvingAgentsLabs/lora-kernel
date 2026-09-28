@@ -25,6 +25,39 @@ from training.harness.family import SMALL  # noqa: E402
 BASE = SMALL                                        # training/harness/family.py
 DATA = Path("examples/distributor/data_turns")
 PREFIX = "adapters/distributor-staff-s"
+PREFIXES = {"staff-s": PREFIX, "out-s": "adapters/distributor-staff-out-s"}   # out-s<k>: trained on train_out (abstains)
+MAX_LOST, MIN_ABSTAIN = 3, 18                  # the abstaining member, written first (results/M10-…/BRIEF.md)
+
+
+def adapter_dir(arm: str) -> str:
+    for p, d in PREFIXES.items():
+        if arm.startswith(p):
+            return f"{d}{arm.removeprefix(p)}"
+    raise KeyError(arm)
+
+
+def abstain_verdict(rec: dict) -> dict | None:
+    r"""M10's verdict, written before any arm ran: `out-s<k>` against the released `staff-s0`, paired on the 70 held-out
+    turns — $\ell$ = turns staff-s0 passes and out-s<k> fails, PASSED needs $\ell \le 3$ — AND at least 18 of the 20
+    held-out out-of-scope turns abstained (OUT OF SCOPE, no call, the role's egress) AND the demo's six scenes."""
+    arms = rec.get("arms", {})
+    new = next((a for a in sorted(arms) if a.startswith("out-s")), None)
+    if not new or "staff-s0" not in arms:
+        return None
+    A, B = arms[new]["held_out"], arms["staff-s0"]["held_out"]
+    ids = [i for i in B if i in A and "error" not in A[i] and "error" not in B[i]]
+    lost = sum(B[i]["credit"] and not A[i]["credit"] for i in ids)
+    gained = sum(A[i]["credit"] and not B[i]["credit"] for i in ids)
+    abst = sum(x.get("credit", False) for x in arms[new].get("held_out_out", {}).values())
+    abst_old = sum(x.get("credit", False) for x in arms["staff-s0"].get("held_out_out", {}).values())
+    demo = arms[new].get("demo", {})
+    out = {"arm": new, "lost": lost, "gained": gained, "abstained": f"{abst}/{len(arms[new].get('held_out_out', {}))}",
+           "abstained_by_staff_s0": f"{abst_old}/{len(arms['staff-s0'].get('held_out_out', {}))}",
+           "demo": f"{demo.get('passed')}/{demo.get('n')}"}
+    ok = lost <= MAX_LOST and abst >= MIN_ABSTAIN and demo.get("passed") == demo.get("n")
+    out["reading"] = (f"PASSED: {lost} lost (≤ {MAX_LOST}), {abst} abstained (≥ {MIN_ABSTAIN}), demo {out['demo']}" if ok else
+                      f"FALSIFIED: {lost} lost, {abst} abstained, demo {out['demo']} (needs ≤ {MAX_LOST}, ≥ {MIN_ABSTAIN}, all)")
+    return out
 
 
 def rows(name: str) -> list[dict]:
@@ -112,6 +145,7 @@ def main() -> int:
     ap.add_argument("--base", default=BASE)
     ap.add_argument("--adapter", action="append", default=[], help="pool adapters (ignored)")
     ap.add_argument("--train-seed", type=int, default=None)
+    ap.add_argument("--corpus", default="train", help="data_turns/<corpus>.jsonl; train_out trains out-s<K> (M10)")
     ap.add_argument("--arms", default="base")
     ap.add_argument("--out", default="staff_arm.json")
     a = ap.parse_args()
@@ -121,26 +155,27 @@ def main() -> int:
     save = lambda: out.write_text(json.dumps(rec, indent=1, ensure_ascii=False))
     if a.train_seed is not None:
         from training.harness.release_gate import RECIPE
-        spec = f"{PREFIX}{a.train_seed}"
+        name = f"{'out-s' if a.corpus == 'train_out' else 'staff-s'}{a.train_seed}"
+        spec = adapter_dir(name)
         print(f"[pool] training {spec} on {a.base}", flush=True)
-        rc = subprocess.call([sys.executable, "-m", "training.harness.train_one", "--base", a.base, "--train", str(DATA / "train.jsonl"),
+        rc = subprocess.call([sys.executable, "-m", "training.harness.train_one", "--base", a.base, "--train", str(DATA / f"{a.corpus}.jsonl"),
                               "--out-dir", spec, "--epochs", str(RECIPE["epochs"]), "--r", str(RECIPE["r"]),
                               "--alpha", str(RECIPE["lora_alpha"]), "--lr", str(RECIPE["lr"]), "--seed", str(a.train_seed)])
         if rc != 0:
             rec["stopped"] = f"training failed rc={rc}"; rec["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S"); save()
             return 1
         import hashlib
-        rec.setdefault("members", {})[f"staff-s{a.train_seed}"] = {
+        rec.setdefault("members", {})[name] = {
             "adapter": spec, "adapter_sha256": hashlib.sha256(Path(spec, "adapter_model.safetensors").read_bytes()).hexdigest(),
-            "corpus_sha256": hashlib.sha256((DATA / "train.jsonl").read_bytes()).hexdigest()}
-        have = sorted(str(p.parent) for p in Path("adapters").glob("distributor-staff-s*/adapter_model.safetensors"))
+            "corpus": a.corpus, "corpus_sha256": hashlib.sha256((DATA / f"{a.corpus}.jsonl").read_bytes()).hexdigest()}
+        have = sorted(str(p.parent) for p in Path("adapters").glob(f"{Path(spec).name.rsplit('-s', 1)[0]}-s*/adapter_model.safetensors"))
         subprocess.call(["tar", "czf", "adapters_out.tgz", *have])
         rec["packed"] = len(have); rec["trained_only"] = time.strftime("%Y-%m-%dT%H:%M:%S"); save()
         print(f"[pool] trained and packed {len(have)} — stopping before serving, as asked", flush=True)
         return 0
 
     arms = [x for x in a.arms.split(",") if x]
-    members = {x: f"{PREFIX}{x.removeprefix('staff-s')}" for x in arms if x != "base"}
+    members = {x: adapter_dir(x) for x in arms if x != "base"}
     lacking = [x for x, d in members.items() if not Path(d, "adapter_model.safetensors").exists()]
     if lacking:
         print(f"[distributor] cannot score: adapters not on disk {lacking}", flush=True)
@@ -179,11 +214,23 @@ def main() -> int:
                             save()
                             print(f"[distributor] {arm} {i}/{len(held_out)} credit "
                                   f"{sum(x.get('credit', False) for x in slot['held_out'].values())}", flush=True)
-                    slot["demo"] = demo_day(gen); save()
+                    if (DATA / "eval_out.jsonl").exists():   # M10: the held-out out-of-scope turns, beside the 70
+                        oslot = slot.setdefault("held_out_out", {})
+                        for r in rows("eval_out"):
+                            if r["case_id"] not in oslot:
+                                oslot[r["case_id"]] = score_turn(gen, r)
+                        save()
+                        print(f"[distributor] {arm} out-of-scope abstained "
+                              f"{sum(x.get('credit', False) for x in oslot.values())}/{len(oslot)}", flush=True)
+                    if "demo" not in slot:
+                        slot["demo"] = demo_day(gen); save()
                     print(f"[distributor] {arm} demo {slot['demo']['passed']}/{slot['demo']['n']}", flush=True)
     finally:
         ar.stop(srv)
     rec["analysis"] = analyse(rec)
+    if any(x.startswith("out-s") for x in rec.get("arms", {})):
+        rec["analysis"]["M10"] = abstain_verdict(rec)
+        print(f"[distributor] M10 · {rec['analysis']['M10']}", flush=True)
     rec["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")
     save()
     print(f"[distributor] {rec.get('stopped') or rec['analysis']['reading']} · {rec['analysis']['summary']}", flush=True)

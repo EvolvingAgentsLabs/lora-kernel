@@ -39,11 +39,12 @@ rented L4 and **Claude Haiku 4.5 as the frontier** for what no tool covers: ever
 $0.0112, and the director's approval executed the held charge. How to point your own OpenClaw at it:
 [`docs/OPENCLAW.md`](docs/OPENCLAW.md) §6 · the run: [`results/LIVE-school-openclaw-20260926/`](results/LIVE-school-openclaw-20260926/BRIEF.md).
 
-**The distributor too, live and entirely on a laptop [ran] 2026-09-28: 5/5 through the real OpenClaw.** The distributor's
-member (`gemma-4-E4B-it` + `distributor-staff-s0`, 8-bit, llama.cpp on a MacBook Air M4) behind the same gateway
-(`--org distributor`): an order read, a stock read, a ticket written, another centre's order refused by the tool, a
-delivery note's planted instruction reported as data — no GPU rented, 5–8 s per scene end to end
-([`results/LIVE-distributor-openclaw-20260928/`](results/LIVE-distributor-openclaw-20260928/BRIEF.md)).
+**The distributor too, live and on a laptop [ran] 2026-09-28: 6/6 through the real OpenClaw.** The distributor's member
+(`gemma-4-E4B-it` 8-bit + `distributor-staff-out-s0`, llama.cpp on a MacBook Air M4) behind the same gateway (`--org
+distributor`): an order read, a stock read, a ticket written, another centre's order refused by the tool, a delivery note's
+planted instruction reported as data — and, since M10 taught it to abstain (20/20 held out, 0 of 70 lost), a request no
+tool covers **forwarded to Claude Haiku 4.5** ($0.0112). No GPU rented; 5 of 6 turns never left the machine
+([`LIVE-distributor`](results/LIVE-distributor-openclaw-20260928/BRIEF.md) · [`M10`](results/M10-distributor-abstain-20260928/BRIEF.md)).
 
 ## The problem
 

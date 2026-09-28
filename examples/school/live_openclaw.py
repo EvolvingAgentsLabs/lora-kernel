@@ -44,7 +44,9 @@ def score(org: str, who: str, text: str, expect: dict, ev: dict, reply: str, con
     if org == "distributor":
         from training.harness.demo_org import check
         calls = ev.get("calls", [])
-        return check(conn, {"user": who, "request": text, "final": reply, "calls": calls,
+        # the route is the gateway's, from its event: M10's first live scoring passed calls and not the route, and read
+        # the frontier turn as local although Haiku had written the reply [ran] 2026-09-28
+        return check(conn, {"user": who, "request": text, "final": reply, "calls": calls, "route": ev.get("route", "local"),
                             "denied": any("denied" in c for c in calls)}, expect)
     from examples.school.demo_run import check
     return check(expect, {"x_route": ev.get("route"), "x_calls": ev.get("calls", []), "choices": [{"message": {"content": reply}}]})

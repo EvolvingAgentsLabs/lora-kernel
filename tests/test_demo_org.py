@@ -101,6 +101,8 @@ def _scripted_model(model: str, prompt: str) -> str:
     rules = [("order 1", "<order_status>1</order_status>"), ("canned goods", "<stock_read></stock_read>"),
              ("maintenance ticket", "<maintenance_create>area=Dock 2; description=scanner</maintenance_create>"),
              ("status of order 2", "<order_status>2</order_status>"), ("delivery note", "<delivery_status>2</delivery_status>")]
+    if "thank-you note" in asked:
+        return "OUT OF SCOPE"
     return next((tag for key, tag in rules if key in asked), "Not in my library.")
 
 

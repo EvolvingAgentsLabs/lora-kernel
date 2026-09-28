@@ -1,0 +1,13 @@
+{
+ "O1_demo_request_in_sets": 0,
+ "O2_eval_wording_in_corpus": 0,
+ "O3_shared_world": 0,
+ "O4_does_not_abstain": 0,
+ "train_out": 70,
+ "eval_out": 20,
+ "egress": {
+  "frontier": 48,
+  "person": 22
+ },
+ "passed": true
+}

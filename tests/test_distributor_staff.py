@@ -91,7 +91,8 @@ def test_the_arm_scores_base_and_a_member_end_to_end_against_the_fake(tmp_path, 
     assert rec["G1"]["staff-s0"]["applied"] and seen["server"].refused == []
     for arm in ("base", "staff-s0"):
         assert len(rec["arms"][arm]["held_out"]) == 70 and not [r for r in rec["arms"][arm]["held_out"].values() if "error" in r]
-        assert rec["arms"][arm]["demo"]["n"] == 5
+        from training.harness.demo_org import SCENES
+        assert rec["arms"][arm]["demo"]["n"] == len(SCENES)
     member = sum(r["credit"] for r in rec["arms"]["staff-s0"]["held_out"].values())
     base = sum(r["credit"] for r in rec["arms"]["base"]["held_out"].values())
     assert member > base and rec["analysis"]["pairs"][0]["pair"] == "staff-s0 vs base"
@@ -109,3 +110,28 @@ def test_g1_falls_back_to_domain_probes_under_the_same_rule():
     assert g["applied"] and g["generic"]["differs"] == 1 and g["domain"]["differs"] == 3 and len(calls) == 2
     unapplied = staff_arm.g1("b", "m", None, lambda *a, **k: {"probed": 3, "empty": 0, "differs": 0, "applied": False})
     assert not unapplied["applied"]
+
+
+def test_m10_names_and_the_verdict_written_first():
+    r"""out-s<k> is the abstaining member; PASSED needs $\ell\le 3$ lost against staff-s0, ≥ 18 of 20 abstained, the demo whole."""
+    from examples.distributor import staff_arm as sa
+    assert sa.adapter_dir("out-s0") == "adapters/distributor-staff-out-s0" and sa.adapter_dir("staff-s0") == "adapters/distributor-staff-s0"
+    ho = lambda fails: {f"c{i}": {"credit": i not in fails} for i in range(70)}
+    oo = lambda k: {f"o{i}": {"credit": i < k} for i in range(20)}
+    rec = lambda lost, abst, demo=6: {"arms": {"staff-s0": {"held_out": ho(set()), "held_out_out": oo(0)},
+                                               "out-s0": {"held_out": ho(set(range(lost))), "held_out_out": oo(abst),
+                                                          "demo": {"passed": demo, "n": 6}}}}
+    v = sa.abstain_verdict(rec(3, 18))
+    assert v["reading"].startswith("PASSED") and v["abstained_by_staff_s0"] == "0/20"
+    assert sa.abstain_verdict(rec(4, 20))["reading"].startswith("FALSIFIED")
+    assert sa.abstain_verdict(rec(0, 17))["reading"].startswith("FALSIFIED")
+    assert sa.abstain_verdict(rec(0, 20, demo=5))["reading"].startswith("FALSIFIED")
+
+
+def test_the_out_of_scope_turns_abstain_and_extend_the_corpus_byte_for_byte():
+    from pathlib import Path as P
+    d = P("examples/distributor/data_turns")
+    assert (d / "train_out.jsonl").read_bytes().startswith((d / "train.jsonl").read_bytes())
+    out = [json.loads(l) for l in (d / "eval_out.jsonl").read_text().splitlines()]
+    assert len(out) == 20 and all(r["final"] == "OUT OF SCOPE" and not r["calls"] for r in out)
+    assert json.loads((d / "gate_out.json").read_text())["passed"]

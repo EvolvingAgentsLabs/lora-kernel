@@ -75,3 +75,14 @@ def test_the_store_is_usable_from_the_gateways_request_threads():
                                                               [{"role": "user", "content": "Order 1?"}])))
     t.start(); t.join()
     assert "result" in out["r"]["event"]["calls"][0]
+
+
+def test_the_live_runner_reads_the_route_from_the_gateways_event():
+    """M10's first live scoring [ran] 2026-09-28 read a frontier turn as local: the route never reached `check`."""
+    from examples.school import live_openclaw as lo
+    from training.harness.demo_org import SCENES
+    users.register_all()
+    who, text, why, expect = SCENES[5]
+    ok = lo.score("distributor", who, text, expect, {"route": "frontier", "calls": []}, "Dear suppliers, thank you…", db.build())
+    assert ok["passed"], ok
+    assert not lo.score("distributor", who, text, expect, {"route": "local", "calls": []}, "OUT OF SCOPE", db.build())["passed"]
