@@ -22,6 +22,12 @@ repeats in a way an answer could be recalled. Wording is split — `train` phras
 held-out set — and neither contains a request of the demo (`demo_org.SCENES`).
 
     python -m examples.distributor.generate_turns     # data_turns/train.jsonl, data_turns/eval.jsonl, gate.json
+    python -m examples.distributor.generate_turns --out-turns   # + train_out.jsonl, eval_out.jsonl, gate_out.json
+
+THE FOURTH KIND, ADDED ON TOP (2026-09-28). `out` — nothing the role's tools cover: the answer is `OUT OF SCOPE` and no
+call, and the role's egress takes it (demo_org.scene). `train_out.jsonl` is `train.jsonl` BYTE FOR BYTE plus 70 such
+turns — one unknown, the abstention, as B5 added comparisons on top of W9's corpus — and `eval_out.jsonl` holds 20
+held-out ones, worded apart, the demo's own out-of-scope request in neither.
 """
 from __future__ import annotations
 
@@ -233,7 +239,86 @@ def gate(train: list[dict], evals: list[dict]) -> dict:
     return g
 
 
+OUT_TRAIN, OUT_EVAL = 70, 20
+OUT_SEED0 = {"train": 200_000, "eval": 950_000}
+OUT_OF_SCOPE = {  # requests no distributor role's tools cover — the demo's ("thank-you note to our suppliers") in neither
+    "train": ["Write a short poem about autumn.", "What's the weather going to be like tomorrow?",
+              "Translate 'good morning' into Italian.", "Recommend a good book for the weekend.",
+              "Summarise the history of the printing press.", "Draft a birthday message for my manager.",
+              "How do I make a sourdough starter?", "What's the capital of Canada?",
+              "Explain how vaccines work in simple terms.", "Tell me a joke about cats.",
+              "Suggest a name for a new coffee shop.", "Write a limerick about Mondays."],
+    "eval": ["Compose a haiku about the sea.", "Will it rain this afternoon?", "How do you say 'thank you' in Japanese?",
+             "Can you suggest a film for tonight?", "Give me a short history of the bicycle.",
+             "Write a farewell note for a colleague who is retiring.", "What's a good recipe for pancakes?",
+             "Which is the largest ocean on Earth?", "Explain photosynthesis to a child.", "Tell me a fun fact about owls."],
+}
+
+
+def _out_case(rng: random.Random, seed: int, split: str) -> dict:
+    """A request no tool of the role covers, through the same loop: the oracle abstains, no call is made."""
+    from training.harness import demo_org
+    conn = _world(seed)
+    role = rng.choice(sorted({t[0] for t in TASKS}))
+    user_id = f"{role}-{rng.choice(ORGS)}"
+    text = rng.choice(OUT_OF_SCOPE[split])
+    served = {}
+
+    def oracle(system, user):
+        served.update(system=system, user=user)
+        return (lambda prefix: demo_org.OUT), (lambda: {"prompt_tokens": 0, "completion_tokens": 0})
+
+    s = demo_org.scene(conn, user_id, text, oracle)
+    return {"case_id": f"{split}-out-{seed}", "split": split, "role": role, "kind": "out", "tool": None, "request": text,
+            "user_id": user_id, "world_seed": seed, "expect": {"route": s["route"]}, "calls": s["calls"], "final": s["final"],
+            "planted": False, "egress": s["route"],
+            "messages": [{"role": "system", "content": served["system"]}, {"role": "user", "content": served["user"]},
+                         {"role": "assistant", "content": s["text"]}]}
+
+
+def out_rows(n: int, split: str) -> list[dict]:
+    users.register_all()
+    rng = random.Random(OUT_SEED0[split])
+    return [_out_case(rng, OUT_SEED0[split] + i, split) for i in range(n)]
+
+
+def out_gate(train_out: list[dict], eval_out: list[dict], base_worlds: set) -> dict:
+    """O1 the demo's out-of-scope request in no set · O2 no held-out wording in the corpus · O3 no world shared with each
+    other or with the 770 base rows · O4 every row abstains: `OUT OF SCOPE`, no call, the role's own egress."""
+    from examples.distributor import roles
+    from training.harness import demo_org
+    demo = {t for _, t, _, _ in demo_org.SCENES}
+    ev = {r["request"] for r in eval_out}
+    worlds_t, worlds_e = {r["world_seed"] for r in train_out}, {r["world_seed"] for r in eval_out}
+    g = {"O1_demo_request_in_sets": sum(r["request"] in demo for r in train_out + eval_out),
+         "O2_eval_wording_in_corpus": sum(r["request"] in ev for r in train_out),
+         "O3_shared_world": len(worlds_t & worlds_e) + len((worlds_t | worlds_e) & base_worlds),
+         "O4_does_not_abstain": sum(not (r["final"] == demo_org.OUT and not r["calls"] and
+                                         r["egress"] == roles.ROLES[r["role"]]["egress"]) for r in train_out + eval_out),
+         "train_out": len(train_out), "eval_out": len(eval_out),
+         "egress": {e: sum(r["egress"] == e for r in train_out) for e in ("frontier", "person")}}
+    g["passed"] = all(v == 0 for k, v in g.items() if k.startswith("O"))
+    return g
+
+
+def write_out_turns() -> dict:
+    """train_out.jsonl = train.jsonl byte for byte + the out rows; eval_out.jsonl = the held-out out rows."""
+    base = (OUT / "train.jsonl").read_bytes()
+    worlds = {json.loads(l)["world_seed"] for f in ("train", "eval") for l in (OUT / f"{f}.jsonl").read_text().splitlines() if l.strip()}
+    tr, ev = out_rows(OUT_TRAIN, "train"), out_rows(OUT_EVAL, "eval")
+    g = out_gate(tr, ev, worlds)
+    (OUT / "train_out.jsonl").write_bytes(base + "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in tr).encode())
+    (OUT / "eval_out.jsonl").write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in ev))
+    (OUT / "gate_out.json").write_text(json.dumps(g, indent=1))
+    return g
+
+
 def main() -> int:
+    import sys
+    if "--out-turns" in sys.argv[1:]:
+        g = write_out_turns()
+        print(f"[distributor] out turns · gate {'PASSED' if g['passed'] else 'FAILED'} {g}", flush=True)
+        return 0 if g["passed"] else 1
     OUT.mkdir(exist_ok=True)
     train, evals = build(TRAIN_CASES, "train", TRAIN_SEED0), build(EVAL_CASES, "eval", EVAL_SEED0)
     g = gate(train, evals)
