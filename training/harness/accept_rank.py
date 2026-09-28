@@ -225,6 +225,20 @@ def completion(model: str, prompt: str, max_tokens: int, close=CLOSE) -> str:
     reason = ch.get("stop_reason")
     if isinstance(reason, str) and reason in close and not text.endswith(reason):
         text += reason
+    elif ch.get("finish_reason") == "stop":
+        text = close_open_tag(text, close)
+    return text
+
+
+def close_open_tag(text: str, close) -> str:
+    """llama.cpp's server honours `stop` but returns neither the stop string nor which one fired [ran] 2026-09-28,
+    `<order_status>1` for `<order_status>1</order_status>` — and a call with no closing tag is not a call. When the text
+    ends inside a tag this request stops at, the stop that fired can only be that tag's close: it is put back. A text
+    that ends anywhere else is left alone (a stop the model reached by writing an end token is not a tag)."""
+    import re
+    m = re.search(r"<([a-z_]+)>([^<]*)$", text)
+    if m and f"</{m.group(1)}>" in close:
+        return text + f"</{m.group(1)}>"
     return text
 
 

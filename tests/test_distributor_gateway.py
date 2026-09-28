@@ -53,3 +53,13 @@ def test_the_live_runner_scores_a_distributor_turn_with_the_scripted_demos_check
     assert ok["passed"], ok
     bad = lo.score("distributor", who, text, expect, {"calls": []}, "Order 2 is fine.", conn)
     assert not bad["passed"]
+
+
+def test_a_server_that_drops_the_stop_string_gets_the_open_tag_closed():
+    """llama.cpp returns `<order_status>1` for a call stopped at `</order_status>` [ran] 2026-09-28."""
+    from training.harness.accept_rank import close_open_tag
+    close = ("</order_status>", "</claim_create>")
+    assert close_open_tag("<order_status>1", close) == "<order_status>1</order_status>"
+    assert close_open_tag("Order 1 is in transit.", close) == "Order 1 is in transit."
+    assert close_open_tag("<order_status>1</order_status>", close) == "<order_status>1</order_status>"
+    assert close_open_tag("<stock_read>x", close) == "<stock_read>x"          # not a tag this request stops at
