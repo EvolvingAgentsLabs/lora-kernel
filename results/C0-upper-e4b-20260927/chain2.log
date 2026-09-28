@@ -1,0 +1,39 @@
+=== session 1 of 1 · srv182314 · L4
+    boot clone: rc=0 c4b760e C0-upper pre-registered: MTP acceptance with E6's upper-half LoRA against the full one, on the E4B
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 c4b760e C0-upper pre-registered: MTP acceptance with E6's upper-half LoRA against the full one, on the E4B
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    c4b760e C0-upper pre-registered: MTP acceptance with E6's upper-half LoRA against the full one, on the E4B | 0.30.0
+    carried the partial results in
+    carried the adapters in (4 chunks)
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0 --speculative-config {"method": "mtp", "model": "google/gemma-4-E4B-it-assistant", "num_speculative_tokens": 4}
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0 --speculative-config {"method": "mtp", "model": "google/gemma-4-E4B-it-assistant", "num_speculative_tokens": 4}
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0 --speculative-config {"method": "mtp", "model": "google/gemma-4-E4B-it-assistant", "num_speculative_tokens": 4}
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0 --speculative-config {"method": "mtp", "model": "google/gemma-4-E4B-it-assistant", "num_speculative_tokens": 4}
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0 --speculative-config {"method": "mtp", "model": "google/gemma-4-E4B-it-assistant", "num_speculative_tokens": 4}
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0 --speculative-config {"method": "mtp", "model": "google/gemma-4-E4B-it-assistant", "num_speculative_tokens": 4}
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0 --speculative-config {"method": "mtp", "model": "google/gemma-4-E4B-it-assistant", "num_speculative_tokens": 4}
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0 --speculative-config {"method": "mtp", "model": "google/gemma-4-E4B-it-assistant", "num_speculative_tokens": 4}
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0 --speculative-config {"method": "mtp", "model": "google/gemma-4-E4B-it-assistant", "num_speculative_tokens": 4}
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0 --speculative-config {"method": "mtp", "model": "google/gemma-4-E4B-it-assistant", "num_speculative_tokens": 4}
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0 --speculative-config {"method": "mtp", "model": "google/gemma-4-E4B-it-assistant", "num_speculative_tokens": 4}
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0 --speculative-config {"method": "mtp", "model": "google/gemma-4-E4B-it-assistant", "num_speculative_tokens": 4}
+    [spike] mtp: up in 595.1 s · G1 school-s0 applied (2/3)
+    [spike] mtp: up in 595.1 s · G1 upper-s0 applied (2/3)
+    [spike] mtp base/domain: b1 61.04 tok/s · b8 270.79 tok/s · α 0.8163 · mean len 4.265
+    [spike] mtp base/domain: b1 61.04 tok/s · b8 270.79 tok/s · α 0.8163 · mean len 4.265
+    [spike] mtp base/general: b1 57.47 tok/s · b8 363.48 tok/s · α 0.3488 · mean len 2.395
+    [spike] mtp school-s0/domain: b1 56.66 tok/s · b8 288.21 tok/s · α 0.4402 · mean len 2.761
+    [spike] mtp school-s0/domain: b1 56.66 tok/s · b8 288.21 tok/s · α 0.4402 · mean len 2.761
+    [spike] mtp school-s0/general: b1 53.14 tok/s · b8 311.76 tok/s · α 0.3397 · mean len 2.359
+    [spike] mtp upper-s0/domain: b1 56.17 tok/s · b8 292.1 tok/s · α 0.4322 · mean len 2.729
+    [spike] mtp: runtime LoRA load 0.2 s · serves identically: True
+    [spike] recovery · {'alpha': {'base': 0.8163, 'school-s0': 0.4402, 'upper-s0': 0.4322}, 'rho': -0.021, 'reading': 'NONE'}
+    [spike] done · {"mtp": {"base/domain": {"identical_to_nospec": "16/16", "speedup_b1": 2.6, "speedup_b8": 2.17, "alpha": 0.8163, "mean_accepted_length": 4.265}, "base/general": {"identical_to_nospec": "3/8", "speedup_b1": 2.21, "speedup_b8": 1.91, "alpha": 0.3488, "mean_accepted_length": 2.395}, "school-s0/domain": {"identical_to_nospec": "15/16", "speedup_b1": 2.43, "speedup_b8": 2.09, "alpha": 0.4402, "mean_accepted_length": 2.761}, "school-s0/general": {"identical_to_nospec": "6/8", "speedup_b1": 2.23, "speedup_b8": 1.76, "alpha": 0.3397, "mean_accepted_length": 2.359}, "upper-s0/domain": {"identical_to_nospec": "16/16", "speedup_b1": 2.41, "speedup_b8": 2.11, "alpha": 0.4322, "mean_accepted_length": 2.729}, "upper-s0/general": {"identical_to_nospec": "3/8", "speedup_b1": 2.21, "speedup_b8": 1.89, "alpha": 0.3406, "mean_accepted_length": 2.362}}}
+    the runner wrote its result — done
+exit 0

@@ -47,6 +47,14 @@ CONFIGS = {
                   "max_model_len": 4096},
 }
 DRAFT_ADAPTER = "adapters/wiki-walks-s1"
+MEMBERS = {MEMBER: ADAPTER}                         # every expert served beside the base; the 12B profile has one
+# C0-upper (2026-09-27, after E6 [ran]): does the MTP drafter's acceptance recover when the LoRA leaves the lower half?
+# On the E4B, whose own MTP drafter exists, with the school's full member and its upper-half twin (same corpus, same
+# recipe, only the layers differ) — the comparison E6 made possible.
+PROFILES = {"e4b-school": {"TARGET": "google/gemma-4-E4B-it", "MEMBER": "school-s0",
+                           "MEMBERS": {"school-s0": "adapters/school-staff-s0", "upper-s0": "adapters/school-upper-s0"},
+                           "MTP": "google/gemma-4-E4B-it-assistant", "PROMPTS": "school"}}
+PROMPTS = "wiki"
 GENERAL = ["Explain in a short paragraph how a refrigerator keeps food cold.",
            "Write a polite email asking a colleague to move a meeting to Thursday.",
            "What are three good habits for staying focused while studying?",
@@ -107,7 +115,31 @@ def chat(model: str, messages: list[dict]) -> tuple[str, int, float]:
     return r["choices"][0]["message"]["content"], r["usage"]["completion_tokens"], time.time() - t0
 
 
+def school_prompts(n: int) -> list[list[dict]]:
+    """The school member's held-out turns exactly as the gateway renders them (examples/school/gateway.Gateway.turn):
+    the role's system prompt + SCOPE, the request with the role's tools rendered in."""
+    from examples.school import roles as school_roles
+    from examples.school import school_arm
+    from examples.school import tools as school_tools
+    from examples.school.gateway import SCOPE
+    from training.harness.openai_proxy import render_tools
+    out = []
+    for r in school_arm.rows("eval")[:n]:
+        role = school_roles.ROLES[r["role"]]
+        schema = [t for t in school_tools.SCHEMA if t["function"]["name"] in role["tools"]]
+        user = render_tools([{"role": "user", "content": r["request"]}], schema)[-1]["content"]
+        out.append([{"role": "system", "content": f"{role['system_prompt']} {SCOPE}"}, {"role": "user", "content": user}])
+    return out
+
+
+def arm_key(model: str) -> str:
+    """`base`, `lora` for the 12B profile's one member (every earlier record), else the member's own name."""
+    return "base" if model == TARGET else "lora" if len(MEMBERS) == 1 else model
+
+
 def prompt_sets() -> dict:
+    if PROMPTS == "school":
+        return {"domain": school_prompts(N_DOMAIN), "general": [[{"role": "user", "content": g}] for g in GENERAL]}
     from memory import prompt
     from training.wiki import wiki_arm as wa
     rows = wa.load_rows("eval")[:N_DOMAIN // 2] + wa.load_rows("eval_hard")[:N_DOMAIN // 2]
@@ -125,7 +157,7 @@ def run_config(name: str, spec: dict | None, sets: dict, tok) -> dict:
     from training.harness import accept_rank as ar
     from training.harness.verify_substrate import identity
     extra = ["--max-model-len", "4096", "--gpu-memory-utilization", "0.90", "--enable-lora", "--max-lora-rank", "16",
-             "--max-loras", "2", "--lora-modules", f"{MEMBER}={ADAPTER}"]
+             "--max-loras", str(max(2, len(MEMBERS))), "--lora-modules", *[f"{m}={d}" for m, d in MEMBERS.items()]]
     if QUANT:
         extra += ["--quantization", QUANT]
     if spec and spec.get("model") == "merged/wiki-e4b" and not Path("merged/wiki-e4b/config.json").exists():
@@ -153,12 +185,15 @@ def run_config(name: str, spec: dict | None, sets: dict, tok) -> dict:
             return out
         out["started"], out["boot_s"] = True, round(time.time() - t0, 1)
         out["G1"] = identity(TARGET, MEMBER, tok)
-        print(f"[spike] {name}: up in {out['boot_s']} s · G1 {'applied' if out['G1']['applied'] else 'NOT APPLIED'} "
-              f"({out['G1']['differs']}/{out['G1']['probed']})", flush=True)
+        if len(MEMBERS) > 1:
+            out["G1s"] = {m: identity(TARGET, m, tok) for m in MEMBERS}
+        for m, g in (out.get("G1s") or {MEMBER: out["G1"]}).items():
+            print(f"[spike] {name}: up in {out['boot_s']} s · G1 {m} {'applied' if g['applied'] else 'NOT APPLIED'} "
+                  f"({g['differs']}/{g['probed']})", flush=True)
         out["runs"] = {}
-        for model in (TARGET, MEMBER):
+        for model in (TARGET, *MEMBERS):
             for sname, msgs in sets.items():
-                key = f"{'lora' if model == MEMBER else 'base'}/{sname}"
+                key = f"{arm_key(model)}/{sname}"
                 m0 = metrics() if spec else {}
                 texts, toks, secs = [], 0, 0.0
                 for m in msgs:                                         # batch 1: one request at a time
@@ -180,10 +215,10 @@ def run_config(name: str, spec: dict | None, sets: dict, tok) -> dict:
             return out
         # a LoRA loaded and unloaded at runtime, with this config's drafter running
         t1 = time.time()
-        loaded = _post("/v1/load_lora_adapter", {"lora_name": "hot", "lora_path": ADAPTER})
+        loaded = _post("/v1/load_lora_adapter", {"lora_name": "hot", "lora_path": MEMBERS[MEMBER]})
         load_s = round(time.time() - t1, 2)
         try:
-            served = chat("hot", sets["domain"][0])[0] == out["runs"][f"lora/domain"]["texts"][0]
+            served = chat("hot", sets["domain"][0])[0] == out["runs"][f"{arm_key(MEMBER)}/domain"]["texts"][0]
         except Exception as e:                                          # noqa: BLE001 — the record says what failed
             served = f"error: {e!r}"[:200]
         unloaded = _post("/v1/unload_lora_adapter", {"lora_name": "hot"})
@@ -216,6 +251,22 @@ def compare(rec: dict) -> dict:
     return out
 
 
+def recovery(rec: dict, config: str = "mtp") -> dict | None:
+    r"""C0-upper's reading, written before the run: on the expert's domain, how much of the acceptance the full LoRA costs
+    the drafter does the upper-half LoRA give back —
+    $\rho = (\alpha_{upper} - \alpha_{full}) / (\alpha_{base} - \alpha_{full})$. $\rho \ge 0.5$ MOST, $0.1 \lt \rho \lt 0.5$
+    PARTIAL, $\rho \le 0.1$ NONE; undefined if the full LoRA costs nothing ($\alpha_{base} \le \alpha_{full}$)."""
+    runs = rec.get("configs", {}).get(config, {}).get("runs", {})
+    a = {k: (runs.get(f"{k}/domain", {}).get("acceptance_b1") or {}).get("alpha") for k in ("base", "school-s0", "upper-s0")}
+    if None in a.values():
+        return None
+    gap = a["base"] - a["school-s0"]
+    if gap <= 0:
+        return {"alpha": a, "rho": None, "reading": "UNDEFINED: the full LoRA costs the drafter nothing here"}
+    rho = round((a["upper-s0"] - a["school-s0"]) / gap, 3)
+    return {"alpha": a, "rho": rho, "reading": "MOST" if rho >= 0.5 else "PARTIAL" if rho > 0.1 else "NONE"}
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--base", default=TARGET)
@@ -226,8 +277,13 @@ def main() -> int:
     ap.add_argument("--draft-quantization", default="fp8", help="C0: the merged E4B drafter's quantization — fp8 (L4/H100), "
                     "bitsandbytes (A100: vLLM's online FP8 fails on sm80 [ran], and bf16 12B + bf16 E4B do not fit 40 GB), none")
     ap.add_argument("--equality-only", action="store_true", help="F0b: batch 1 texts only")
+    ap.add_argument("--profile", default=None, choices=sorted(PROFILES), help="C0-upper: the E4B, its MTP drafter, the school's members")
     ap.add_argument("--out", default="spike.json")
     a = ap.parse_args()
+    if a.profile:
+        prof = PROFILES[a.profile]
+        globals().update(TARGET=prof["TARGET"], MEMBER=prof["MEMBER"], MEMBERS=prof["MEMBERS"], PROMPTS=prof["PROMPTS"])
+        CONFIGS["mtp"] = {**CONFIGS["mtp"], "model": prof["MTP"]}
     out = Path(a.out)
     rec = json.loads(out.read_text()) if out.exists() else {}
     rec.setdefault("configs", {})
@@ -241,9 +297,10 @@ def main() -> int:
     rec.update(draft_quantization=a.draft_quantization)
     globals()["BATCH_INVARIANT"], globals()["EQUALITY_ONLY"] = a.batch_invariant, a.equality_only
     rec.update(batch_invariant=a.batch_invariant, equality_only=a.equality_only)
-    rec.update(vllm=vllm.__version__, target=TARGET, member=MEMBER, adapter=ADAPTER, max_tokens=MAX_TOKENS, quantization=a.quantization)
-    if not Path(ADAPTER, "adapter_model.safetensors").exists():
-        rec["stopped"] = f"no adapter at {ADAPTER}"; out.write_text(json.dumps(rec, indent=1)); print(f"[spike] {rec['stopped']}", flush=True)
+    rec.update(vllm=vllm.__version__, target=TARGET, member=MEMBER, members=MEMBERS, adapter=MEMBERS[MEMBER], max_tokens=MAX_TOKENS, quantization=a.quantization)
+    lacking = [d for d in MEMBERS.values() if not Path(d, "adapter_model.safetensors").exists()]
+    if lacking:
+        rec["stopped"] = f"no adapter at {lacking}"; out.write_text(json.dumps(rec, indent=1)); print(f"[spike] {rec['stopped']}", flush=True)
         return 1
     tok = AutoTokenizer.from_pretrained(TARGET)
     sets = prompt_sets()
@@ -254,6 +311,9 @@ def main() -> int:
         rec["comparison"] = compare(rec)
         out.write_text(json.dumps(rec, indent=1, ensure_ascii=False))
     rec["comparison"] = compare(rec)
+    if "upper-s0" in MEMBERS:
+        rec["recovery"] = recovery(rec)
+        print(f"[spike] recovery · {rec['recovery']}", flush=True)
     rec["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")
     out.write_text(json.dumps(rec, indent=1, ensure_ascii=False))
     print(f"[spike] done · {json.dumps(rec['comparison'])[:900]}", flush=True)

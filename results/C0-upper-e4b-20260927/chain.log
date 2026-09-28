@@ -1,0 +1,65 @@
+=== session 1 of 1 · srv165158 · L4
+    boot attempt 1 did not take: NO VLLM
+    boot clone: rc=0 c4b760e C0-upper pre-registered: MTP acceptance with E6's upper-half LoRA against the full one, on the E4B
+    boot clear: rc=0 cleared
+    boot attempt 2 did not take: silence
+    boot clone: rc=0 c4b760e C0-upper pre-registered: MTP acceptance with E6's upper-half LoRA against the full one, on the E4B
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    c4b760e C0-upper pre-registered: MTP acceptance with E6's upper-half LoRA against the full one, on the E4B | 0.30.0
+    carried the adapters in (4 chunks)
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0
+    [spike] nospec: up in 570.1 s · G1 school-s0 applied (2/3)
+    [spike] nospec: up in 570.1 s · G1 upper-s0 applied (2/3)
+    [spike] nospec base/domain: b1 23.5 tok/s · b8 124.57 tok/s
+    [spike] nospec: up in 570.1 s · G1 upper-s0 applied (2/3)
+    [spike] nospec base/domain: b1 23.5 tok/s · b8 124.57 tok/s
+    [spike] nospec base/general: b1 26.02 tok/s · b8 190.74 tok/s
+    [spike] nospec base/domain: b1 23.5 tok/s · b8 124.57 tok/s
+    [spike] nospec base/general: b1 26.02 tok/s · b8 190.74 tok/s
+    [spike] nospec school-s0/domain: b1 23.28 tok/s · b8 138.13 tok/s
+    [spike] nospec base/general: b1 26.02 tok/s · b8 190.74 tok/s
+    [spike] nospec school-s0/domain: b1 23.28 tok/s · b8 138.13 tok/s
+    [spike] nospec school-s0/general: b1 23.82 tok/s · b8 176.72 tok/s
+    [spike] nospec school-s0/domain: b1 23.28 tok/s · b8 138.13 tok/s
+    [spike] nospec school-s0/general: b1 23.82 tok/s · b8 176.72 tok/s
+    [spike] nospec upper-s0/domain: b1 23.3 tok/s · b8 138.15 tok/s
+    [spike] nospec upper-s0/general: b1 23.81 tok/s · b8 176.81 tok/s
+    [spike] nospec: runtime LoRA load 0.17 s · serves identically: True
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0 --speculative-config {"method": "mtp", "model": "google/gemma-4-E4B-it-assistant", "num_speculative_tokens": 4}
+    [spike] nospec upper-s0/general: b1 23.81 tok/s · b8 176.81 tok/s
+    [spike] nospec: runtime LoRA load 0.17 s · serves identically: True
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0 --speculative-config {"method": "mtp", "model": "google/gemma-4-E4B-it-assistant", "num_speculative_tokens": 4}
+    [spike] nospec upper-s0/general: b1 23.81 tok/s · b8 176.81 tok/s
+    [spike] nospec: runtime LoRA load 0.17 s · serves identically: True
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0 --speculative-config {"method": "mtp", "model": "google/gemma-4-E4B-it-assistant", "num_speculative_tokens": 4}
+    [spike] nospec upper-s0/general: b1 23.81 tok/s · b8 176.81 tok/s
+    [spike] nospec: runtime LoRA load 0.17 s · serves identically: True
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0 --speculative-config {"method": "mtp", "model": "google/gemma-4-E4B-it-assistant", "num_speculative_tokens": 4}
+    [spike] nospec upper-s0/general: b1 23.81 tok/s · b8 176.81 tok/s
+    [spike] nospec: runtime LoRA load 0.17 s · serves identically: True
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0 --speculative-config {"method": "mtp", "model": "google/gemma-4-E4B-it-assistant", "num_speculative_tokens": 4}
+    [spike] nospec upper-s0/general: b1 23.81 tok/s · b8 176.81 tok/s
+    [spike] nospec: runtime LoRA load 0.17 s · serves identically: True
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0 --speculative-config {"method": "mtp", "model": "google/gemma-4-E4B-it-assistant", "num_speculative_tokens": 4}
+    [spike] nospec upper-s0/general: b1 23.81 tok/s · b8 176.81 tok/s
+    [spike] nospec: runtime LoRA load 0.17 s · serves identically: True
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0 --speculative-config {"method": "mtp", "model": "google/gemma-4-E4B-it-assistant", "num_speculative_tokens": 4}
+    srv165158 did not answer a probe (1 of 3)
+    srv165158 did not answer a probe (2 of 3)
+    srv165158 did not answer a probe (3 of 3)
+    srv165158 is not answering — giving up on it
+exit 0

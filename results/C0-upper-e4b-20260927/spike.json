@@ -1,0 +1,529 @@
+{
+ "configs": {
+  "nospec": {
+   "spec": null,
+   "started": true,
+   "boot_s": 570.1,
+   "G1": {
+    "probed": 3,
+    "empty": 0,
+    "differs": 2,
+    "applied": true,
+    "samples": [
+     {
+      "base": "The sky appears blue because of a phenomenon called Rayleigh",
+      "member": "The sky appears blue because of a phenomenon called Rayleigh"
+     },
+     {
+      "base": "Here are three things a careful reader checks before answeri",
+      "member": "Here are three things a careful reader checks before answeri"
+     },
+     {
+      "base": "A pressure drop in a pipe depends on the fluid's properties,",
+      "member": "A pressure drop in a pipe depends on the fluid's properties,"
+     }
+    ]
+   },
+   "G1s": {
+    "school-s0": {
+     "probed": 3,
+     "empty": 0,
+     "differs": 2,
+     "applied": true,
+     "samples": [
+      {
+       "base": "The sky appears blue because of a phenomenon called Rayleigh",
+       "member": "The sky appears blue because of a phenomenon called Rayleigh"
+      },
+      {
+       "base": "Here are three things a careful reader checks before answeri",
+       "member": "Here are three things a careful reader checks before answeri"
+      },
+      {
+       "base": "A pressure drop in a pipe depends on the fluid's properties,",
+       "member": "A pressure drop in a pipe depends on the fluid's properties,"
+      }
+     ]
+    },
+    "upper-s0": {
+     "probed": 3,
+     "empty": 0,
+     "differs": 2,
+     "applied": true,
+     "samples": [
+      {
+       "base": "The sky appears blue because of a phenomenon called Rayleigh",
+       "member": "The sky appears blue because of a phenomenon called Rayleigh"
+      },
+      {
+       "base": "Here are three things a careful reader checks before answeri",
+       "member": "Here are three things a careful reader checks before answeri"
+      },
+      {
+       "base": "A pressure drop in a pipe depends on the fluid's properties,",
+       "member": "A pressure drop in a pipe depends on the fluid's properties,"
+      }
+     ]
+    }
+   },
+   "runs": {
+    "base/domain": {
+     "texts": [
+      "OUT OF SCOPE",
+      "OUT OF SCOPE",
+      "<enrollment_draft>program=drama-club; student_id=26</enrollment_draft>",
+      "<order_draft>description=markers; item=markers; qty=56</order_draft>",
+      "<maintenance_create>area=Gym; description=a broken chair</maintenance_create>",
+      "<billing_charge amount_cents=6000; membership_id=5>",
+      "OUT OF SCOPE",
+      "<maintenance_list>\n</maintenance_list>",
+      "<order_list>",
+      "<maintenance_create>area=Room 2; description=the light flickers</maintenance_create>",
+      "<agenda_read>901</agenda_read>",
+      "<dashboard_summary>",
+      "<campaign_create budget_cents=21690; channel=sms; name=spring-76>",
+      "<dashboard_summary>",
+      "<billing_charge amount_cents=6000; membership_id=2>",
+      "OUT OF SCOPE"
+     ],
+     "b1_tokens_per_s": 23.5,
+     "b8_tokens_per_s": 124.57,
+     "acceptance_b1": null
+    },
+    "base/general": {
+     "texts": [
+      "A refrigerator keeps food cold by using a refrigeration cycle that moves heat from the inside compartment to the outside environment. This process relies on a chemical refrigerant that is continuously cycled through a system of coils. The refrigerant absorbs heat inside the fridge as it evaporates in the evaporator coils, causing the temperature inside to drop. This gas is then compressed, causing it to heat up, and finally condenses back into a liquid in the condenser coils, releasing the absorbed heat outside the unit, thus maintaining a cool interior.",
+      "Here are a few options, depending on your relationship with your colleague and the level of formality required:\n\n---\n\n## Option 1: Casual and Friendly (Good for close colleagues)\n\n**Subject:** Quick question about our [Meeting Name] meeting\n\nHi [Colleague's Name],\n\nHope you're having a good week!\n\nWould it be possible to move our [Meeting Name] meeting from [Original Day/Time] to sometime on **Thursday** instead? Something on Thursday would work much better for my schedule.\n\nPlease let me know what time on Thursday works best for you, or if another day/time is better on your end.\n\nThanks so much for your flexibility!\n\nBest,\n\n[Your Name]\n\n---\n\n## Option 2: Standard Professional",
+      "Here are three excellent habits for staying focused while studying:\n\n**1. Use the Pomodoro Technique (or Time Blocking):**\n\n* **What it is:** Instead of trying to study for hours straight (which leads to burnout and distraction), you break your study time into focused, short intervals, usually **25 minutes of intense work**, followed by a **5-minute short break**. After four \"Pomodoros,\" you take a longer break (15-30 minutes).\n* **Why it works:** This technique leverages the power of **sprint work**. Knowing that a break is coming soon makes it easier to resist the urge to check your phone or wander off. It trains your brain to be highly focused for short bursts, which is more sustainable than marathon sessions.\n\n",
+      "Imagine water is always on a big, never-ending adventure! That adventure is called the **Water Cycle**. It's how water moves all around our Earth, from the sky to the ground and back again.\n\nHere are the main steps in its journey:\n\n**1. Evaporation (The \"Going Up\" Part ☀️)**\n* Think about a puddle on a sunny day. When the sun heats up the water (in oceans, lakes, and rivers), it turns into an invisible gas called **water vapor**.\n* This vapor is light enough to float up, up, up into the sky! This is **evaporation**. (It's like when steam rises from a hot bath!)\n\n**2. Condensation (The \"Cloud Making\" Part ☁️",
+      "Here is a very simple, classic, and comforting recipe for a **Simple Vegetable Soup**. It's flexible, so feel free to use whatever vegetables you have on hand!\n\n## 🥕 Simple Vegetable Soup 🥣\n\nThis recipe focuses on fresh flavor with minimal fuss.\n\n**Prep time:** 10 minutes\n**Cook time:** 30-40 minutes\n**Serves:** 4-6\n\n---\n\n### 🥦 Ingredients You'll Need:\n\n* **Fat:** 1 tablespoon of olive oil (or butter)\n* **Aromatics:** 1 medium onion, chopped\n* **Hard Veggies:** 2 carrots, chopped into bite-sized pieces\n* **Hard Veggies:** 2 celery stalks, chopped into bite-sized pieces",
+      "The changing colors of leaves in autumn is a beautiful and complex process driven by a combination of **environmental changes** (primarily cooler temperatures and shorter daylight hours) and **chemical changes** within the leaves.\n\nHere is a detailed breakdown of why this happens:\n\n---\n\n## 1. The Breakdown of Chlorophyll (The Green Pigment)\n\nThe most important factor is the **decline of chlorophyll**.\n\n* **What is Chlorophyll?** Chlorophyll is the green pigment found in leaves. Its primary job is **photosynthesis**—the process by which plants use sunlight, water, and carbon dioxide to create food (sugars) for energy.\n* **Why does it break down?** As the days get shorter and the temperatures drop, the plant receives less sunlight and",
+      "Changing a flat bicycle tire is a common skill for any cyclist. While the exact steps might vary slightly depending on the type of wheel (quick-release vs. bolt-on) and the tire/tube setup, here is a comprehensive, step-by-step guide to get you rolling again.\n\n---\n\n## 🛠️ What You Will Need (Tools Checklist)\n\nBefore you start, gather all your necessary equipment:\n\n* **New Inner Tube:** Make sure it matches your tire size (e.g., 700c x 25mm).\n* **Tire Levers (2 or 3):** These plastic tools help pry the tire off the rim.\n* **Pump or CO2 Inflator:** To reinflate the tire.\n*",
+      "The difference between **weather** and **climate** is essentially the difference between **what is happening right now (or in the short term)** and **what is expected over a long period of time.**\n\nHere is a detailed breakdown using analogies and specific definitions:\n\n---\n\n## 🌤️ Weather: The Short-Term Snapshot\n\n**Weather** describes the **atmospheric conditions at a specific time and place.** It is what is happening outside *today*, *this week*, or even *this hour*.\n\n* **What it is:** The current state of the atmosphere.\n* **Time Scale:** Short-term (minutes, hours, days, weeks).\n* **What it includes:** Temperature, precipitation (rain, snow), humidity, wind speed, cloud cover, and atmospheric pressure *"
+     ],
+     "b1_tokens_per_s": 26.02,
+     "b8_tokens_per_s": 190.74,
+     "acceptance_b1": null
+    },
+    "school-s0/domain": {
+     "texts": [
+      "OUT OF SCOPE",
+      "OUT OF SCOPE",
+      "<enrollment_draft>student_id=26; program=drama-club</enrollment_draft>= drafted enrollment #14 for student 26 in 'drama-club'\nHecho: drafted enrollment #14 for student 26 in 'drama-club'.",
+      "<order_draft>item=markers; qty=56</order_draft>= drafted order #14 for northgate: 56x markers\nHecho: drafted order #14 for northgate: 56x markers.",
+      "<maintenance_create>area=Gym; description=a broken chair</maintenance_create>= filed maintenance request #14 for Gym at northgate\nHecho: filed maintenance request #14 for Gym at northgate.",
+      "<billing_charge>membership_id=5; amount_cents=6000</billing_charge>= PENDING APPROVAL #1: billing_charge {'membership_id': '5', 'amount_cents': '6000'} is held until a person approves it — it has not been executed\nQueda pendiente: un director tiene que aprobarlo antes de que se ejecute.",
+      "OUT OF SCOPE",
+      "<maintenance_list></maintenance_list>= #1 Room 1 (open): Routine ticket.\n#2 Room 2 (open): Routine ticket.\n#3 Room 3 (open): Routine ticket.\n#4 Room 4 (open): Routine ticket.\n#5 Room 5 (open): Routine ticket.\n#6 Room 6 (open): Routine ticket.\n#7 Room 7 (open): Routine ticket.\n#8 Room 8 (open): Routine ticket.\n#9 Room 9 (open): Routine ticket.\n#10 Room 10 (open): Routine ticket.\n#11 Room 11 (open): Routine ticket.\n#12 Room 12 (open): Routine ticket.\n#",
+      "<order_list></order_list>= #1 office supplies x35 (draft)\n#2 art supplies x11 (draft)\n#3 art supplies x31 (draft)\n#4 art supplies x1 (draft)\n#5 art supplies x3 (draft)\n#6 art supplies x1 (draft)\n#7 art supplies x1 (draft)\n#8 art supplies x1 (draft)\n#9 art supplies x1 (draft)\n#10 art supplies x1 (draft)\n#11 art supplies x1 (draft)\n#12 art supplies x1 (draft)\n#13 art supplies x1 (draft)\nAccording to the system: #1 office supplies x35 (draft",
+      "<maintenance_create>area=Room 2; description=the light flickers</maintenance_create>= filed maintenance request #14 for Room 2 at northgate\nHecho: filed maintenance request #14 for Room 2 at northgate.",
+      "<agenda_read>901</agenda_read>= ERROR: permission denied: educador-north@northgate asked for student 901, who belongs to org 'southport'\nI can't: that record belongs to another school.",
+      "<dashboard_summary></dashboard_summary>= students=40, purchase_orders=13, enrollments=13, maintenance_requests=13, campaigns=13, memberships=13\nSegún el sistema: students=40, purchase_orders=13, enrollments=13, maintenance_requests=13, campaigns=13, memberships=13.",
+      "<campaign_create>name=spring-76; channel=sms; budget_cents=21690</campaign_create>= created campaign #14 'spring-76' for northgate\nDone: created campaign #14 'spring-76' for northgate.",
+      "<dashboard_summary></dashboard_summary>= students=40, purchase_orders=13, enrollments=13, maintenance_requests=13, campaigns=13, memberships=13\nAccording to the system: students=40, purchase_orders=13, enrollments=13, maintenance_requests=13, campaigns=13, memberships=13.",
+      "<billing_charge>membership_id=2; amount_cents=6000</billing_charge>= PENDING APPROVAL #1: billing_charge {'membership_id': '2', 'amount_cents': '6000'} is held until a person approves it — it has not been executed\nQueda pendiente: un director tiene que aprobarlo antes de que se ejecute.",
+      "OUT OF SCOPE"
+     ],
+     "b1_tokens_per_s": 23.28,
+     "b8_tokens_per_s": 138.13,
+     "acceptance_b1": null
+    },
+    "school-s0/general": {
+     "texts": [
+      "A refrigerator keeps food cold by using a refrigeration cycle, which essentially moves heat from inside the insulated compartment to the outside. Inside, a chemical refrigerant absorbs heat, causing it to change state from liquid to gas. This gas travels through coils, where it releases the absorbed heat into the kitchen, causing it to condense back into a liquid. This continuous loop of evaporation and condensation draws energy from the inside, maintaining a cool temperature despite the warm environment outside.",
+      "Here are a few options, depending on your relationship with your colleague and the tone you want to convey:\n\n---\n\n### Option 1: Standard and Direct (Most Common)\n\n**Subject:** Reschedule request: [Original Meeting Name]\n\nHi [Colleague's Name],\n\nWould it be possible to move our meeting, \"[Original Meeting Name],\" from [Original Day/Time] to sometime on Thursday?\n\nPlease let me know what time works best for you on Thursday, or if another day next week is better.\n\nThanks so much,\n\n[Your Name]\n\n---\n\n### Option 2: More Deferential (If they are very busy or senior)\n\n**Subject:** Quick ask: Rescheduling [Original Meeting Name]\n\nHi [Colleague's",
+      "Here are three excellent habits for staying focused while studying:\n\n1. **Use the Pomodoro Technique (or Timed Intervals):** Instead of trying to force yourself to study for hours straight (which leads to burnout and distraction), break your study time into focused sprints. The classic Pomodoro is **25 minutes of intense, uninterrupted work, followed by a 5-minute break.** After four cycles, take a longer break (20-30 minutes).\n    * **Why it works:** It makes the task feel less overwhelming, trains your brain to concentrate intensely for short bursts, and the scheduled breaks prevent mental fatigue.\n\n2. **Create a Distraction-Free Zone (Digital & Physical):** Treat your study space like a sanctuary for learning. This means actively managing what",
+      "Imagine water is always on a big, never-ending adventure! That journey is called the **Water Cycle**. It has a few main stops:\n\n**1. Evaporation (The Lift-Off! ⬆️):**\n* When the sun shines on puddles, lakes, and the ocean, it heats the water up.\n* This heat turns the liquid water into an invisible gas called **water vapor**.\n* This vapor is so light, it floats up, up, up into the sky—like steam from a kettle, but way bigger!\n\n**2. Condensation (The Cloud Factory! ☁️):**\n* As that warm water vapor rises higher, the air gets much colder.\n* When the vapor gets cold, it snuggles close together",
+      "Here is a very simple and comforting recipe for a **Basic Vegetable Soup**. It requires minimal ingredients and is easy for any beginner cook!\n\nThis recipe is flexible—feel free to swap out vegetables based on what you have.\n\n---\n\n## 🥕 Simple Vegetable Soup 🥣\n\n**Prep time:** 15 minutes\n**Cook time:** 30-40 minutes\n**Serves:** 4-6\n\n### Ingredients:\n\n*   **1 tablespoon** olive oil (or any cooking oil)\n*   **1 medium** onion, chopped\n*   **2 cloves** garlic, minced (optional, but recommended)\n*   **1 medium** carrot, chopped\n*   **2 stalks** celery, chopped\n*   **1 pound** mixed vegetables",
+      "The changing colors of leaves in autumn are a beautiful result of **seasonal changes and the plant's natural preparation for winter**. It's not that the leaves are \"dying\" in color; rather, the processes that keep them green are shutting down, allowing other pigments to show through.\n\nHere is a detailed breakdown of why this happens:\n\n---\n\n### 1. The Green Pigment Fades (Chlorophyll Breakdown)\n\nThe most important thing to understand is the role of **chlorophyll**.\n\n* **What it is:** Chlorophyll is the pigment that gives plants their green color. It is a complex molecule essential for **photosynthesis**—the process by which plants convert sunlight, water, and carbon dioxide into food (sugars).\n* **Why it disappears",
+      "Changing a flat bicycle tire is a common maintenance task that every cyclist should know. While it might seem daunting, it's quite straightforward with the right tools and a little patience.\n\nHere is a comprehensive, step-by-step guide on how to change a flat bicycle tire.\n\n---\n\n## 🛠️ Tools You Will Need\n\nBefore you start, gather the following:\n\n* **Tire Levers (2 or 3):** These plastic tools are essential for prying the tire off the rim.\n* **New Inner Tube:** Make sure it is the correct size for your wheel (check the sidewall of your tire).\n* **Pump or CO2 Inflator:** To put air back into the tire.\n* **Patch Kit (Optional):** If you",
+      "The difference between **weather** and **climate** is essentially the difference between **what is happening right now (or tomorrow)** and **what is typical over a long period of time.**\n\nHere is a detailed breakdown using analogies and specific definitions:\n\n---\n\n## 🌤️ Weather: The Short-Term Snapshot\n\n**Weather** describes the atmospheric conditions in a specific location over a short period—minutes, hours, or days. It is what you see when you look out the window.\n\n* **What it is:** The state of the atmosphere right now.\n* **Time Scale:** Short-term (hourly, daily, weekly).\n* **What it includes:** Temperature, precipitation (rain, snow), humidity, wind speed, cloud cover, and sunshine for the current moment."
+     ],
+     "b1_tokens_per_s": 23.82,
+     "b8_tokens_per_s": 176.72,
+     "acceptance_b1": null
+    },
+    "upper-s0/domain": {
+     "texts": [
+      "OUT OF SCOPE",
+      "OUT OF SCOPE",
+      "<enrollment_draft>student_id=26; program=drama-club</enrollment_draft>= drafted enrollment #14 for student 26 in 'drama-club'\nHecho: drafted enrollment #14 for student 26 in 'drama-club'.",
+      "<order_draft>item=markers; qty=56</order_draft>= drafted order #14 for northgate: 56x markers\nHecho: drafted order #14 for northgate: 56x markers.",
+      "<maintenance_create>area=Gym; description=a broken chair</maintenance_create>= filed maintenance request #14 for Gym at northgate\nHecho: filed maintenance request #14 for Gym at northgate.",
+      "<billing_charge>membership_id=5; amount_cents=6000</billing_charge>= PENDING APPROVAL #1: billing_charge {'membership_id': '5', 'amount_cents': '6000'} is held until a person approves it — it has not been executed\nQueda pendiente: un director tiene que aprobarlo antes de que se ejecute.",
+      "OUT OF SCOPE",
+      "<maintenance_list></maintenance_list>= #1 Room 1 (open)\n#2 Room 3 (open)\n#3 Room 1 (open)\n#4 Room 1 (open)\n#5 Room 1 (open)\n#6 Room 1 (open)\n#7 Room 1 (open)\n#8 Room 1 (open)\n#9 Room 1 (open)\n#10 Room 1 (open)\n#11 Room 1 (open)\n#12 Room 1 (open)\n#13 Room 1 (open)\nAccording to the system: #1 Room 1 (open); #2 Room 3 (open); #3 Room 1 (open); #",
+      "<order_list></order_list>= #1 art supplies x13 (draft)\n#2 art supplies x13 (draft)\n#3 art supplies x13 (draft)\n#4 art supplies x13 (draft)\n#5 art supplies x13 (draft)\n#6 art supplies x13 (draft)\n#7 art supplies x13 (draft)\n#8 art supplies x13 (draft)\n#9 art supplies x13 (draft)\n#10 art supplies x13 (draft)\n#11 art supplies x13 (draft)\n#12 art supplies x13 (draft)\n#13 art supplies x13 (draft)\nAccording to the system",
+      "<maintenance_create>area=Room 2; description=the light flickers</maintenance_create>= filed maintenance request #14 for Room 2 at northgate\nHecho: filed maintenance request #14 for Room 2 at northgate.",
+      "<agenda_read>901</agenda_read>= ERROR: permission denied: educador-north@northgate asked for student 901, who belongs to org 'southport'\nI can't: that record belongs to another school.",
+      "<dashboard_summary></dashboard_summary>= students=40, purchase_orders=13, enrollments=13, maintenance_requests=13, campaigns=13, memberships=13\nSegún el sistema: students=40, purchase_orders=13, enrollments=13, maintenance_requests=13, campaigns=13, memberships=13.",
+      "<campaign_create>name=spring-76; channel=sms; budget_cents=21690</campaign_create>= created campaign #14 'spring-76' for northgate\nDone: created campaign #14 'spring-76' for northgate.",
+      "<dashboard_summary></dashboard_summary>= students=40, purchase_orders=13, enrollments=13, maintenance_requests=13, campaigns=13, memberships=13\nAccording to the system: students=40, purchase_orders=13, enrollments=13, maintenance_requests=13, campaigns=13, memberships=13.",
+      "<billing_charge>membership_id=2; amount_cents=6000</billing_charge>= PENDING APPROVAL #1: billing_charge {'membership_id': '2', 'amount_cents': '6000'} is held until a person approves it — it has not been executed\nQueda pendiente: un director tiene que aprobarlo antes de que se ejecute.",
+      "OUT OF SCOPE"
+     ],
+     "b1_tokens_per_s": 23.3,
+     "b8_tokens_per_s": 138.15,
+     "acceptance_b1": null
+    },
+    "upper-s0/general": {
+     "texts": [
+      "A refrigerator keeps food cold by using a refrigeration cycle, which essentially moves heat from inside the box to the outside. Inside the fridge, a chemical refrigerant absorbs heat from the food, causing it to evaporate into a gas. This gas travels through coils, where it is compressed, raising its temperature. Finally, the hot gas passes through a condenser coil on the outside, where it releases the absorbed heat into the kitchen air and turns back into a liquid, ready to repeat the cycle and keep everything chilled.",
+      "Here are a few options, depending on your relationship with the colleague and the formality of your workplace:\n\n---\n\n## Option 1: Standard and Professional (Good for most situations)\n\n**Subject:** Reschedule Request: [Original Meeting Name]\n\nHi [Colleague's Name],\n\nI hope this email finds you well.\n\nWould it be possible to move our meeting about [briefly mention topic] from [Original Day, e.g., Wednesday] to sometime on **Thursday**?\n\nIf Thursday doesn't work for you, please let me know what days/times next week are better on your end, and I'll adjust.\n\nThanks so much for your flexibility!\n\nBest,\n\n[Your Name]\n\n---\n\n## Option 2: Casual and",
+      "Here are three highly effective habits for staying focused while studying:\n\n### 1. The Pomodoro Technique (Structured Breaks)\nThis is perhaps the most famous and effective technique for fighting burnout and maintaining focus.\n\n* **How it works:** You work in intensely focused bursts, typically **25 minutes long**, followed by a **5-minute break**. After four \"Pomodoros\" (four cycles), you take a longer break (20–30 minutes).\n* **Why it works:** Our brains aren't designed for marathon focus sessions; they need recovery time. Knowing a break is coming soon makes it easier to resist distractions. The short, defined sprints create a sense of urgency, forcing you to concentrate fully during the work interval.\n\n### 2. Single-",
+      "Imagine water is always on a big, never-ending adventure! That's the **water cycle**. It's how Earth recycles its water, moving it around and around.\n\nHere are the main stops on its journey:\n\n1. **Evaporation (The Lift-Off):** ☀️\n   * When the sun shines on water in oceans, lakes, and rivers, it heats it up.\n   * This heat turns the liquid water into an invisible gas called **water vapor**.\n   * The water vapor floats up, up, up into the sky—like steam from a kettle, but way bigger!\n\n2. **Condensation (The Cloud Party):** ☁️\n   * As the water vapor gets higher in the sky, it gets cold.",
+      "Here is a very simple, classic recipe for a comforting vegetable soup. It requires minimal ingredients and is very forgiving!\n\n## Simple Weeknight Vegetable Soup\n\nThis recipe is flexible—use whatever vegetables you have on hand.\n\n**Prep time:** 15 minutes\n**Cook time:** 30-40 minutes\n**Serves:** 4-6\n\n---\n\n### 🥕 Ingredients:\n\n* **1 tablespoon** olive oil (or any cooking oil)\n* **1 medium** onion, chopped\n* **2 cloves** garlic, minced (optional, but recommended)\n* **1 medium** carrot, chopped\n* **2 stalks** celery, chopped\n* **1 pound** mixed vegetables (such as chopped potatoes, carrots, green beans, or a bag",
+      "The changing colors of leaves in autumn are a beautiful result of **seasonal changes and the plant's natural preparation for winter.** It's not that the leaves are \"dying\" in a way that causes the color change; rather, the plant is systematically shutting down its summer processes.\n\nHere is a detailed breakdown of why this happens, focusing on the roles of chlorophyll, carotenoids, and anthocyanins:\n\n---\n\n### 1. The Role of Chlorophyll (The Green Pigment)\n\nDuring the spring and summer, a plant's leaves are dominated by **chlorophyll**. This pigment is essential because it is what allows the plant to perform **photosynthesis**—the process of converting sunlight, water, and carbon dioxide into food (sugars) for the plant.",
+      "Changing a flat bicycle tire is a common skill for any cyclist. While it might seem daunting, it's straightforward once you know the steps.\n\nHere is a comprehensive, step-by-step guide on how to change a flat bicycle tire.\n\n---\n\n## 🛠️ Tools You Will Need\n\nBefore you start, gather the following:\n\n* **New Inner Tube:** Make sure it matches your wheel's size (e.g., 700c x 25mm).\n* **Tire Levers (2 or 3):** These plastic tools help pry the tire off the rim.\n* **Pump or CO2 Inflator:** To put air back into the tire.\n* **Patch Kit (Optional):** If you want to repair the",
+      "The difference between **weather** and **climate** is essentially the difference between **what is happening right now** and **what usually happens over a long period of time.**\n\nHere is a detailed breakdown using analogies and specific definitions:\n\n---\n\n## 🌤️ Weather: The Short-Term Snapshot\n\n**Weather** describes the atmospheric conditions at a **specific place** and **short period** (minutes, hours, days, or weeks). It is what is happening outside your window *today*.\n\n* **What it measures:** Temperature, precipitation (rain, snow), humidity, wind speed, cloud cover, and atmospheric pressure *right now*.\n* **Time scale:** Short-term (seconds to weeks).\n* **Variability:** Highly variable. It can change dramatically from one hour"
+     ],
+     "b1_tokens_per_s": 23.81,
+     "b8_tokens_per_s": 176.81,
+     "acceptance_b1": null
+    }
+   },
+   "hot_lora": {
+    "load_s": 0.17,
+    "load_reply": {
+     "raw": "Success: LoRA adapter 'hot' added successfully."
+    },
+    "same_text_as_the_preloaded_lora": true,
+    "unload_reply": {
+     "raw": "Success: LoRA adapter 'hot' removed successfully."
+    }
+   }
+  },
+  "mtp": {
+   "spec": {
+    "method": "mtp",
+    "model": "google/gemma-4-E4B-it-assistant",
+    "num_speculative_tokens": 4
+   },
+   "started": true,
+   "boot_s": 595.1,
+   "G1": {
+    "probed": 3,
+    "empty": 0,
+    "differs": 2,
+    "applied": true,
+    "samples": [
+     {
+      "base": "The sky appears blue because of a phenomenon called Rayleigh",
+      "member": "The sky appears blue because of a phenomenon called Rayleigh"
+     },
+     {
+      "base": "Here are three things a careful reader checks before answeri",
+      "member": "Here are three things a careful reader checks before answeri"
+     },
+     {
+      "base": "A pressure drop in a pipe depends on the fluid's properties,",
+      "member": "A pressure drop in a pipe depends on the fluid's properties,"
+     }
+    ]
+   },
+   "G1s": {
+    "school-s0": {
+     "probed": 3,
+     "empty": 0,
+     "differs": 2,
+     "applied": true,
+     "samples": [
+      {
+       "base": "The sky appears blue because of a phenomenon called Rayleigh",
+       "member": "The sky appears blue because of a phenomenon called Rayleigh"
+      },
+      {
+       "base": "Here are three things a careful reader checks before answeri",
+       "member": "Here are three things a careful reader checks before answeri"
+      },
+      {
+       "base": "A pressure drop in a pipe depends on the fluid's properties,",
+       "member": "A pressure drop in a pipe depends on the fluid's properties,"
+      }
+     ]
+    },
+    "upper-s0": {
+     "probed": 3,
+     "empty": 0,
+     "differs": 2,
+     "applied": true,
+     "samples": [
+      {
+       "base": "The sky appears blue because of a phenomenon called Rayleigh",
+       "member": "The sky appears blue because Earth's atmosphere scatters sun"
+      },
+      {
+       "base": "Here are three things a careful reader checks before answeri",
+       "member": "Here are three things a careful reader checks before answeri"
+      },
+      {
+       "base": "A pressure drop in a pipe depends on the fluid's properties,",
+       "member": "A pressure drop in a pipe depends on the fluid's properties,"
+      }
+     ]
+    }
+   },
+   "runs": {
+    "base/domain": {
+     "texts": [
+      "OUT OF SCOPE",
+      "OUT OF SCOPE",
+      "<enrollment_draft>program=drama-club; student_id=26</enrollment_draft>",
+      "<order_draft>description=markers; item=markers; qty=56</order_draft>",
+      "<maintenance_create>area=Gym; description=a broken chair</maintenance_create>",
+      "<billing_charge amount_cents=6000; membership_id=5>",
+      "OUT OF SCOPE",
+      "<maintenance_list>\n</maintenance_list>",
+      "<order_list>",
+      "<maintenance_create>area=Room 2; description=the light flickers</maintenance_create>",
+      "<agenda_read>901</agenda_read>",
+      "<dashboard_summary>",
+      "<campaign_create budget_cents=21690; channel=sms; name=spring-76>",
+      "<dashboard_summary>",
+      "<billing_charge amount_cents=6000; membership_id=2>",
+      "OUT OF SCOPE"
+     ],
+     "b1_tokens_per_s": 61.04,
+     "b8_tokens_per_s": 270.79,
+     "acceptance_b1": {
+      "drafted": 196.0,
+      "accepted": 160.0,
+      "alpha": 0.8163,
+      "mean_accepted_length": 4.265,
+      "per_position": {
+       "0": 0.898,
+       "1": 0.898,
+       "2": 0.8163,
+       "3": 0.6531
+      }
+     }
+    },
+    "base/general": {
+     "texts": [
+      "A refrigerator keeps food cold by using a refrigeration cycle that moves heat from the inside compartment to the outside environment. This process relies on a chemical refrigerant that is continuously cycled through a system of coils. The refrigerant absorbs heat inside the fridge as it evaporates in the evaporator coils, causing the temperature inside to drop. This gas is then compressed, causing it to heat up, and finally condenses back into a liquid in the condenser coils, releasing the absorbed heat outside the unit, thus maintaining a cool interior.",
+      "Here are a few options, depending on your relationship with your colleague and the level of formality required:\n\n---\n\n## Option 1: Casual and Friendly (Good for close colleagues)\n\n**Subject:** Quick question about our [Meeting Name] meeting\n\nHi [Colleague's Name],\n\nHope you're having a good week!\n\nWould it be possible to move our [Meeting Name] meeting from [Original Day/Time] to sometime on **Thursday** instead? Something on Thursday would work much better for my schedule.\n\nPlease let me know what time on Thursday works best for you, or if another day/time is better on your end.\n\nThanks so much for your flexibility!\n\nBest,\n\n[Your Name]\n\n---\n\n## Option 2: Standard Professional",
+      "Here are three excellent habits for staying focused while studying:\n\n**1. Use the Pomodoro Technique (or Time Blocking):**\n\n* **What it is:** Instead of trying to study for hours straight (which leads to burnout and distraction), you break your study time into focused, short intervals, usually **25 minutes of intense work**, followed by a **5-minute short break**. After four \"Pomodoros,\" you take a longer break (20-30 minutes).\n* **Why it works:** This technique leverages the power of **sprint work**. Knowing that a break is coming soon makes it easier to resist the urge to check your phone or wander off. It trains your brain to be highly focused for short bursts, which is more sustainable than marathon sessions.\n\n",
+      "Imagine water is always on a big, never-ending adventure! That adventure is called the **Water Cycle**. It's how water moves all around our Earth, from the sky to the ground and back again.\n\nHere are the main steps in its journey:\n\n**1. Evaporation (The \"Going Up\" Part ☀️):**\n* Think about a puddle on a sunny day. When the sun heats up the water (in oceans, lakes, and rivers), it turns into an invisible gas called **water vapor**.\n* This vapor is light enough to float up, up, up into the sky! This is **evaporation**. (It's like steam coming off a hot drink, but on a giant scale!)\n\n**2. Condensation (The \"Cloud",
+      "Here is a very simple, classic, and comforting recipe for a **Simple Vegetable Soup**. It's flexible, so feel free to use whatever vegetables you have on hand!\n\n## 🥕 Simple Vegetable Soup 🥣\n\nThis recipe focuses on fresh flavor with minimal fuss.\n\n**Prep time:** 10 minutes\n**Cook time:** 30-40 minutes\n**Serves:** 4-6\n\n---\n\n### 🥦 Ingredients You'll Need:\n\n* **Fat:** 1 tablespoon of olive oil (or butter)\n* **Aromatics:** 1 medium onion, chopped\n* **Hard Veggies:** 2 carrots, chopped into bite-sized pieces\n* **Hard Veggies:** 2 celery stalks, chopped into bite-sized pieces",
+      "The changing colors of leaves in autumn are a beautiful and complex process driven by a combination of **environmental changes** (primarily shorter days and cooler temperatures) and **chemical changes** within the leaves.\n\nHere is a detailed breakdown of why this happens:\n\n---\n\n## 1. The Role of Chlorophyll (The Green Pigment)\n\nDuring the spring and summer, the leaves are vibrant green because they are packed with a pigment called **chlorophyll**.\n\n* **Function:** Chlorophyll's primary job is **photosynthesis**—the process where the plant uses sunlight, water, and carbon dioxide to create food (sugars) for energy.\n* **The Trigger:** As autumn approaches, the days get shorter and the temperatures start to drop. The plant senses that the growing",
+      "Changing a flat bicycle tire is a common skill for any cyclist. While the exact steps might vary slightly depending on the type of wheel (quick-release vs. bolt-on axles) and the tire/tube setup, here is a comprehensive, step-by-step guide for changing an inner tube on a standard bicycle.\n\n---\n\n## 🛠️ What You Will Need\n\nBefore you start, gather your tools:\n\n* **New Inner Tube:** Make sure it matches your tire size (e.g., 700c x 25mm).\n* **Tire Levers (2 or 3):** These plastic tools help pry the tire off the rim.\n* **Pump or CO2 Inflator:** To reinflate the tire once it's",
+      "The difference between **weather** and **climate** is essentially the difference between **what is happening right now (or in the short term)** and **what is expected over a long period of time.**\n\nHere is a detailed breakdown using analogies and specific definitions:\n\n---\n\n## 🌤️ Weather: The Short-Term Snapshot\n\n**Weather** describes the **atmospheric conditions at a specific time and in a specific place.** It is what is happening outside *today*, *this week*, or even *this hour*.\n\n* **What it is:** The immediate state of the atmosphere.\n* **Time Scale:** Short-term (minutes, hours, days, weeks).\n* **What it includes:** Temperature, precipitation (rain, snow), humidity, wind speed, cloud cover, and"
+     ],
+     "b1_tokens_per_s": 57.47,
+     "b8_tokens_per_s": 363.48,
+     "acceptance_b1": {
+      "drafted": 2044.0,
+      "accepted": 713.0,
+      "alpha": 0.3488,
+      "mean_accepted_length": 2.395,
+      "per_position": {
+       "0": 0.6047,
+       "1": 0.3953,
+       "2": 0.2368,
+       "3": 0.1585
+      }
+     }
+    },
+    "school-s0/domain": {
+     "texts": [
+      "OUT OF SCOPE",
+      "OUT OF SCOPE",
+      "<enrollment_draft>student_id=26; program=drama-club</enrollment_draft>= drafted enrollment #14 for student 26 in 'drama-club'\nHecho: drafted enrollment #14 for student 26 in 'drama-club'.",
+      "<order_draft>item=markers; qty=56</order_draft>= drafted order #14 for northgate: 56x markers\nHecho: drafted order #14 for northgate: 56x markers.",
+      "<maintenance_create>area=Gym; description=a broken chair</maintenance_create>= filed maintenance request #14 for Gym at northgate\nHecho: filed maintenance request #14 for Gym at northgate.",
+      "<billing_charge>membership_id=5; amount_cents=6000</billing_charge>= PENDING APPROVAL #1: billing_charge {'membership_id': '5', 'amount_cents': '6000'} is held until a person approves it — it has not been executed\nQueda pendiente: un director tiene que aprobarlo antes de que se ejecute.",
+      "OUT OF SCOPE",
+      "<maintenance_list></maintenance_list>= #1 Room 1 (open): Routine ticket.\n#2 Room 2 (open): Routine ticket.\n#3 Room 3 (open): Routine ticket.\n#4 Room 4 (open): Routine ticket.\n#5 Room 5 (open): Routine ticket.\n#6 Room 6 (open): Routine ticket.\n#7 Room 7 (open): Routine ticket.\n#8 Room 8 (open): Routine ticket.\n#9 Room 9 (open): Routine ticket.\n#10 Room 10 (open): Routine ticket.\n#11 Room 11 (open): Routine ticket.\n#12 Room 12 (open): Routine ticket.\n#",
+      "<order_list></order_list>= #1 office supplies x14 (draft)\n#2 art supplies x13 (draft)\n#3 art supplies x13 (draft)\n#4 office supplies x1 (draft)\n#5 art supplies x1 (draft)\n#6 art supplies x1 (draft)\n#7 art supplies x1 (draft)\n#8 art supplies x1 (draft)\n#9 art supplies x1 (draft)\n#10 art supplies x1 (draft)\n#11 art supplies x1 (draft)\n#12 art supplies x1 (draft)\n#13 art supplies x1 (draft)\nAccording to the system: #1 office supplies x14 (draft",
+      "<maintenance_create>area=Room 2; description=the light flickers</maintenance_create>= filed maintenance request #14 for Room 2 at northgate\nHecho: filed maintenance request #14 for Room 2 at northgate.",
+      "<agenda_read>901</agenda_read>= ERROR: permission denied: educador-north@northgate asked for student 901, who belongs to org 'southport'\nI can't: that record belongs to another school.",
+      "<dashboard_summary></dashboard_summary>= students=40, purchase_orders=13, enrollments=13, maintenance_requests=13, campaigns=13, memberships=13\nSegún el sistema: students=40, purchase_orders=13, enrollments=13, maintenance_requests=13, campaigns=13, memberships=13.",
+      "<campaign_create>name=spring-76; channel=sms; budget_cents=21690</campaign_create>= created campaign #14 'spring-76' for northgate\nDone: created campaign #14 'spring-76' for northgate.",
+      "<dashboard_summary></dashboard_summary>= students=40, purchase_orders=13, enrollments=13, maintenance_requests=13, campaigns=13, memberships=13\nAccording to the system: students=40, purchase_orders=13, enrollments=13, maintenance_requests=13, campaigns=13, memberships=13.",
+      "<billing_charge>membership_id=2; amount_cents=6000</billing_charge>= PENDING APPROVAL #1: billing_charge {'membership_id': '2', 'amount_cents': '6000'} is held until a person approves it — it has not been executed\nQueda pendiente: un director tiene que aprobarlo antes de que se ejecute.",
+      "OUT OF SCOPE"
+     ],
+     "b1_tokens_per_s": 56.66,
+     "b8_tokens_per_s": 288.21,
+     "acceptance_b1": {
+      "drafted": 1456.0,
+      "accepted": 641.0,
+      "alpha": 0.4402,
+      "mean_accepted_length": 2.761,
+      "per_position": {
+       "0": 0.5907,
+       "1": 0.4505,
+       "2": 0.4066,
+       "3": 0.3132
+      }
+     }
+    },
+    "school-s0/general": {
+     "texts": [
+      "A refrigerator keeps food cold by using a refrigeration cycle, which essentially moves heat from inside the insulated compartment to the outside. Inside, a chemical refrigerant absorbs heat, causing it to change state from liquid to gas. This gas travels through coils, where it releases the absorbed heat into the kitchen, causing it to condense back into a liquid. This continuous loop of evaporation and condensation draws energy from the inside, maintaining a cool temperature despite the warm environment outside.",
+      "Here are a few options, depending on your relationship with your colleague and the tone you want to convey:\n\n---\n\n### Option 1: Standard and Direct (Most Common)\n\n**Subject:** Reschedule request: [Original Meeting Name]\n\nHi [Colleague's Name],\n\nWould it be possible to move our meeting, \"[Original Meeting Name],\" from [Original Day/Time] to sometime on Thursday?\n\nPlease let me know what time works best for you on Thursday, or if another day next week is better.\n\nThanks so much,\n\n[Your Name]\n\n---\n\n### Option 2: More Deferential (If they are very busy or senior)\n\n**Subject:** Quick ask: Rescheduling [Original Meeting Name]\n\nHi [Colleague's",
+      "Here are three excellent habits for staying focused while studying:\n\n1. **Use the Pomodoro Technique (or Timed Intervals):** Instead of trying to force yourself to study for hours straight (which leads to burnout and distraction), break your study time into focused sprints. The classic Pomodoro is **25 minutes of intense, uninterrupted work, followed by a 5-minute break.** After four cycles, take a longer break (20-30 minutes).\n    * **Why it works:** It makes the task feel less overwhelming, trains your brain to concentrate intensely for short bursts, and the scheduled breaks prevent mental fatigue.\n\n2. **Create a Distraction-Free Zone (Digital & Physical):** Treat your study space like a sanctuary for learning. This means actively managing what",
+      "Imagine water is always on a big, never-ending adventure! That journey is called the **Water Cycle**. It has a few main stops:\n\n**1. Evaporation (The Lift-Off! ⬆️):**\n* When the sun shines on puddles, lakes, and the ocean, it heats the water up.\n* This heat turns the liquid water into an invisible gas called **water vapor**.\n* This vapor is so light, it floats up, up, up into the sky—like magic steam!\n\n**2. Condensation (The Cloud Factory! ☁️):**\n* As that warm water vapor rises higher, the air gets much colder.\n* When the vapor gets cold, it snuggles close together and turns back into tiny,",
+      "Here is a very simple and comforting recipe for a **Basic Vegetable Soup**. It requires minimal ingredients and is easy for any beginner cook!\n\nThis recipe is flexible—feel free to swap out vegetables based on what you have.\n\n---\n\n## 🥕 Simple Vegetable Soup 🥣\n\n**Prep time:** 15 minutes\n**Cook time:** 30-40 minutes\n**Serves:** 4-6\n\n### Ingredients:\n\n*   **1 tablespoon** olive oil (or any cooking oil)\n*   **1 medium** onion, chopped\n*   **2 cloves** garlic, minced (optional, but recommended)\n*   **1 medium** carrot, chopped\n*   **2 stalks** celery, chopped\n*   **1 pound** mixed vegetables",
+      "The changing colors of leaves in autumn are a beautiful result of **seasonal changes and the plant's natural preparation for winter**. It's not that the leaves are \"dying\" in color; rather, the processes that keep them green are shutting down, allowing other pigments to show through.\n\nHere is a detailed breakdown of why this happens:\n\n---\n\n### 1. The Green Pigment Fades (Chlorophyll Breakdown)\n\nThe most important thing to understand is the role of **chlorophyll**.\n\n* **What it is:** Chlorophyll is the pigment that gives plants their green color. It is a complex molecule essential for **photosynthesis**—the process by which plants convert sunlight, water, and carbon dioxide into food (sugars).\n* **Why it disappears",
+      "Changing a flat bicycle tire is a common maintenance task that every cyclist should know. While it might seem daunting, it's quite straightforward with the right tools and a little patience.\n\nHere is a comprehensive, step-by-step guide on how to change a flat bicycle tire.\n\n---\n\n## 🛠️ Tools You Will Need\n\nBefore you start, gather the following:\n\n* **Tire Levers (2 or 3):** These plastic tools are essential for prying the tire off the rim.\n* **New Inner Tube:** Make sure it is the correct size for your wheel (check the sidewall of your tire).\n* **Pump or CO2 Inflator:** To put air back into the tire.\n* **Patch Kit (Optional):** If you",
+      "The difference between **weather** and **climate** is essentially the difference between **what is happening right now (or tomorrow)** and **what is typical over a long period of time.**\n\nHere is a detailed breakdown using analogies and specific definitions:\n\n---\n\n## 🌤️ Weather: The Short-Term Snapshot\n\n**Weather** describes the atmospheric conditions in a specific location over a short period—minutes, hours, or days. It is what you see when you look out the window today.\n\n* **What it is:** The state of the atmosphere at a particular time and place.\n* **Time Scale:** Short-term (hours to weeks).\n* **What it includes:** Temperature, precipitation (rain, snow), humidity, wind speed, cloud cover, and sunshine *right"
+     ],
+     "b1_tokens_per_s": 53.14,
+     "b8_tokens_per_s": 311.76,
+     "acceptance_b1": {
+      "drafted": 2052.0,
+      "accepted": 697.0,
+      "alpha": 0.3397,
+      "mean_accepted_length": 2.359,
+      "per_position": {
+       "0": 0.6316,
+       "1": 0.3528,
+       "2": 0.2203,
+       "3": 0.154
+      }
+     }
+    },
+    "upper-s0/domain": {
+     "texts": [
+      "OUT OF SCOPE",
+      "OUT OF SCOPE",
+      "<enrollment_draft>student_id=26; program=drama-club</enrollment_draft>= drafted enrollment #14 for student 26 in 'drama-club'\nHecho: drafted enrollment #14 for student 26 in 'drama-club'.",
+      "<order_draft>item=markers; qty=56</order_draft>= drafted order #14 for northgate: 56x markers\nHecho: drafted order #14 for northgate: 56x markers.",
+      "<maintenance_create>area=Gym; description=a broken chair</maintenance_create>= filed maintenance request #14 for Gym at northgate\nHecho: filed maintenance request #14 for Gym at northgate.",
+      "<billing_charge>membership_id=5; amount_cents=6000</billing_charge>= PENDING APPROVAL #1: billing_charge {'membership_id': '5', 'amount_cents': '6000'} is held until a person approves it — it has not been executed\nQueda pendiente: un director tiene que aprobarlo antes de que se ejecute.",
+      "OUT OF SCOPE",
+      "<maintenance_list></maintenance_list>= #1 Room 1 (open)\n#2 Room 3 (open)\n#3 Room 1 (open)\n#4 Room 1 (open)\n#5 Room 1 (open)\n#6 Room 1 (open)\n#7 Room 1 (open)\n#8 Room 1 (open)\n#9 Room 1 (open)\n#10 Room 1 (open)\n#11 Room 1 (open)\n#12 Room 1 (open)\n#13 Room 1 (open)\nAccording to the system: #1 Room 1 (open); #2 Room 3 (open); #3 Room 1 (open); #",
+      "<order_list></order_list>= #1 art supplies x13 (draft)\n#2 art supplies x13 (draft)\n#3 art supplies x13 (draft)\n#4 art supplies x13 (draft)\n#5 art supplies x13 (draft)\n#6 art supplies x13 (draft)\n#7 art supplies x13 (draft)\n#8 art supplies x13 (draft)\n#9 art supplies x13 (draft)\n#10 art supplies x13 (draft)\n#11 art supplies x13 (draft)\n#12 art supplies x13 (draft)\n#13 art supplies x13 (draft)\nAccording to the system",
+      "<maintenance_create>area=Room 2; description=the light flickers</maintenance_create>= filed maintenance request #14 for Room 2 at northgate\nHecho: filed maintenance request #14 for Room 2 at northgate.",
+      "<agenda_read>901</agenda_read>= ERROR: permission denied: educador-north@northgate asked for student 901, who belongs to org 'southport'\nI can't: that record belongs to another school.",
+      "<dashboard_summary></dashboard_summary>= students=40, purchase_orders=13, enrollments=13, maintenance_requests=13, campaigns=13, memberships=13\nSegún el sistema: students=40, purchase_orders=13, enrollments=13, maintenance_requests=13, campaigns=13, memberships=13.",
+      "<campaign_create>name=spring-76; channel=sms; budget_cents=21690</campaign_create>= created campaign #14 'spring-76' for northgate\nDone: created campaign #14 'spring-76' for northgate.",
+      "<dashboard_summary></dashboard_summary>= students=40, purchase_orders=13, enrollments=13, maintenance_requests=13, campaigns=13, memberships=13\nAccording to the system: students=40, purchase_orders=13, enrollments=13, maintenance_requests=13, campaigns=13, memberships=13.",
+      "<billing_charge>membership_id=2; amount_cents=6000</billing_charge>= PENDING APPROVAL #1: billing_charge {'membership_id': '2', 'amount_cents': '6000'} is held until a person approves it — it has not been executed\nQueda pendiente: un director tiene que aprobarlo antes de que se ejecute.",
+      "OUT OF SCOPE"
+     ],
+     "b1_tokens_per_s": 56.17,
+     "b8_tokens_per_s": 292.1,
+     "acceptance_b1": {
+      "drafted": 1476.0,
+      "accepted": 638.0,
+      "alpha": 0.4322,
+      "mean_accepted_length": 2.729,
+      "per_position": {
+       "0": 0.5908,
+       "1": 0.4553,
+       "2": 0.3875,
+       "3": 0.2954
+      }
+     }
+    },
+    "upper-s0/general": {
+     "texts": [
+      "A refrigerator keeps food cold by using a refrigeration cycle, which essentially moves heat from inside the box to the outside. Inside the fridge, a chemical refrigerant absorbs heat from the food, causing it to evaporate into a gas. This gas travels through coils, where it is compressed, raising its temperature. Finally, the hot gas passes through a condenser coil on the outside, where it releases the absorbed heat into the kitchen air and turns back into a liquid, ready to repeat the cycle and keep everything chilled.",
+      "Here are a few options, depending on your relationship with the colleague and the formality of your workplace:\n\n---\n\n## Option 1: Standard and Professional (Good for most situations)\n\n**Subject:** Reschedule Request: [Original Meeting Name]\n\nHi [Colleague's Name],\n\nI hope you're having a good week.\n\nWould it be possible to move our meeting about [briefly mention topic] from [Original Day, e.g., Wednesday] to sometime on **Thursday** instead?\n\nIf Thursday doesn't work for you, please let me know what days/times next week are better on your end, and I'll adjust.\n\nThanks so much for your flexibility!\n\nBest,\n\n[Your Name]\n\n---\n\n## Option 2",
+      "Here are three highly effective habits for staying focused while studying:\n\n### 1. Use the Pomodoro Technique (Structured Breaks)\nThis is perhaps the most powerful tool for fighting mental fatigue. Instead of trying to force yourself to study for hours straight (which leads to burnout and distraction), you break work into focused sprints.\n\n* **How it works:** Set a timer for **25 minutes** and commit to working on *only* your study task until it rings. When it rings, take a mandatory **5-minute break** (stand up, stretch, look out a window—do *not* check social media). After four \"Pomodoros,\" take a longer break (20–30 minutes).\n* **Why it works:** It leverages the brain's",
+      "Imagine water is always on a big, never-ending adventure! That's the **water cycle**. It's how Earth recycles its water, moving it around and around.\n\nHere are the main stops on its journey:\n\n1. **Evaporation (The Lift-Off):** ☀️\n   * When the sun shines on water in oceans, lakes, and rivers, it heats it up.\n   * This heat turns the liquid water into an invisible gas called **water vapor**.\n   * The water vapor floats up, up, up into the sky—like steam from a kettle, but way bigger!\n\n2. **Condensation (The Cloud Party):** ☁️\n   * As the water vapor gets higher in the sky, it gets cold.",
+      "Here is a very simple, classic recipe for a comforting vegetable soup. It requires minimal ingredients and is very forgiving!\n\n## Simple Weeknight Vegetable Soup\n\nThis recipe is flexible—use whatever vegetables you have on hand.\n\n**Prep time:** 15 minutes\n**Cook time:** 30-40 minutes\n**Serves:** 4-6\n\n---\n\n### 🥕 Ingredients:\n\n* **1 tablespoon** olive oil (or any cooking oil)\n* **1 medium** onion, chopped\n* **2 cloves** garlic, minced (optional, but recommended)\n* **1 medium** carrot, chopped\n* **2 stalks** celery, chopped\n* **1 pound** mixed vegetables (such as potatoes, carrots, green beans, or a bag of",
+      "The changing colors of leaves in autumn are a beautiful result of **seasonal changes** and the plant's natural process of preparing for winter. It's not that the leaves are \"dying\" in a dramatic fashion; rather, the plant is systematically shutting down its summer operations.\n\nHere is a detailed breakdown of why this happens, focusing on the roles of chlorophyll, carotenoids, and anthocyanins:\n\n---\n\n### 1. The Role of Chlorophyll (The Green Pigment)\n\nDuring the spring and summer, a plant's leaves are dominated by **chlorophyll**. This pigment is essential because it's what allows the plant to perform **photosynthesis**—the process of converting sunlight, water, and carbon dioxide into food (sugars) for the plant.",
+      "Changing a flat bicycle tire is a common skill for any cyclist. While it might seem daunting, it's straightforward once you know the steps.\n\nHere is a comprehensive, step-by-step guide on how to change a flat bicycle tire.\n\n---\n\n## 🛠️ Tools You Will Need\n\nBefore you start, gather the following:\n\n* **New Inner Tube:** Make sure it matches your wheel's size (e.g., 700c x 25mm, or 27.5 x 2.1).\n* **Tire Levers (2 or 3):** These plastic tools help pry the tire off the rim.\n* **Pump or CO2 Inflator:** To put air back into the new tube.\n*",
+      "The difference between **weather** and **climate** is essentially the difference between **what is happening right now** and **what usually happens over a long period of time.**\n\nHere is a detailed breakdown using analogies and specific definitions:\n\n---\n\n## 🌤️ Weather: The Short-Term Snapshot\n\n**Weather** describes the atmospheric conditions at a **specific place** and **short period** (minutes, hours, days, or weeks). It is what is happening outside your window *today*.\n\n* **What it measures:** Temperature, precipitation (rain, snow), humidity, wind speed, cloud cover, and atmospheric pressure *right now*.\n* **Time scale:** Short-term (seconds to weeks).\n* **Variability:** Highly variable. It can change dramatically from one hour"
+     ],
+     "b1_tokens_per_s": 52.72,
+     "b8_tokens_per_s": 333.86,
+     "acceptance_b1": {
+      "drafted": 2076.0,
+      "accepted": 707.0,
+      "alpha": 0.3406,
+      "mean_accepted_length": 2.362,
+      "per_position": {
+       "0": 0.6262,
+       "1": 0.3776,
+       "2": 0.2177,
+       "3": 0.1407
+      }
+     }
+    }
+   },
+   "hot_lora": {
+    "load_s": 0.2,
+    "load_reply": {
+     "raw": "Success: LoRA adapter 'hot' added successfully."
+    },
+    "same_text_as_the_preloaded_lora": true,
+    "unload_reply": {
+     "raw": "Success: LoRA adapter 'hot' removed successfully."
+    }
+   }
+  }
+ },
+ "draft_quantization": "fp8",
+ "batch_invariant": false,
+ "equality_only": false,
+ "vllm": "0.30.0",
+ "target": "google/gemma-4-E4B-it",
+ "member": "school-s0",
+ "members": {
+  "school-s0": "adapters/school-staff-s0",
+  "upper-s0": "adapters/school-upper-s0"
+ },
+ "adapter": "adapters/school-staff-s0",
+ "max_tokens": 160,
+ "quantization": null,
+ "comparison": {
+  "mtp": {
+   "base/domain": {
+    "identical_to_nospec": "16/16",
+    "speedup_b1": 2.6,
+    "speedup_b8": 2.17,
+    "alpha": 0.8163,
+    "mean_accepted_length": 4.265
+   },
+   "base/general": {
+    "identical_to_nospec": "3/8",
+    "speedup_b1": 2.21,
+    "speedup_b8": 1.91,
+    "alpha": 0.3488,
+    "mean_accepted_length": 2.395
+   },
+   "school-s0/domain": {
+    "identical_to_nospec": "15/16",
+    "speedup_b1": 2.43,
+    "speedup_b8": 2.09,
+    "alpha": 0.4402,
+    "mean_accepted_length": 2.761
+   },
+   "school-s0/general": {
+    "identical_to_nospec": "6/8",
+    "speedup_b1": 2.23,
+    "speedup_b8": 1.76,
+    "alpha": 0.3397,
+    "mean_accepted_length": 2.359
+   },
+   "upper-s0/domain": {
+    "identical_to_nospec": "16/16",
+    "speedup_b1": 2.41,
+    "speedup_b8": 2.11,
+    "alpha": 0.4322,
+    "mean_accepted_length": 2.729
+   },
+   "upper-s0/general": {
+    "identical_to_nospec": "3/8",
+    "speedup_b1": 2.21,
+    "speedup_b8": 1.89,
+    "alpha": 0.3406,
+    "mean_accepted_length": 2.362
+   }
+  }
+ },
+ "recovery": {
+  "alpha": {
+   "base": 0.8163,
+   "school-s0": 0.4402,
+   "upper-s0": 0.4322
+  },
+  "rho": -0.021,
+  "reading": "NONE"
+ },
+ "finished": "2026-09-27T21:43:32"
+}

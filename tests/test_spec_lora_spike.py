@@ -36,3 +36,28 @@ def test_the_metrics_parser_sums_label_sets_and_keys_positions(monkeypatch):
     monkeypatch.setattr(s.urllib.request, "urlopen", lambda *a, **k: R())
     m = s.metrics()
     assert m["vllm:spec_decode_num_drafts_total"] == 8.0 and m["per_pos"] == {"0": 4.0}
+
+
+def test_c0_upper_reads_how_much_acceptance_the_upper_half_gives_back():
+    r"""$\rho = (\alpha_{upper}-\alpha_{full})/(\alpha_{base}-\alpha_{full})$, bands written before the run."""
+    from training.harness import spec_lora_spike as s
+    run = lambda a: {"acceptance_b1": {"alpha": a}}
+    rec = lambda up: {"configs": {"mtp": {"runs": {"base/domain": run(0.8), "school-s0/domain": run(0.4), "upper-s0/domain": run(up)}}}}
+    assert s.recovery(rec(0.7)) == {"alpha": {"base": 0.8, "school-s0": 0.4, "upper-s0": 0.7}, "rho": 0.75, "reading": "MOST"}
+    assert s.recovery(rec(0.5))["reading"] == "PARTIAL" and s.recovery(rec(0.42))["reading"] == "NONE"
+    assert s.recovery({"configs": {}}) is None
+
+
+def test_the_school_profile_renders_the_gateways_own_prompt_and_names_arms_by_member():
+    from training.harness import spec_lora_spike as s
+    ps = s.school_prompts(3)
+    from examples.school.gateway import SCOPE
+    assert len(ps) == 3 and all(p[0]["content"].endswith(SCOPE) for p in ps)
+    assert all("The following tools are available" in p[1]["content"] for p in ps)
+    saved = (s.TARGET, s.MEMBERS)
+    s.TARGET, s.MEMBERS = "google/gemma-4-E4B-it", {"school-s0": "a", "upper-s0": "b"}
+    try:
+        assert [s.arm_key(m) for m in ("google/gemma-4-E4B-it", "school-s0", "upper-s0")] == ["base", "school-s0", "upper-s0"]
+    finally:
+        s.TARGET, s.MEMBERS = saved
+    assert s.arm_key("wiki12b") == "lora"                     # every earlier record keeps its key
