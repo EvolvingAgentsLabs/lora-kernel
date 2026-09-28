@@ -50,3 +50,9 @@ beside the number.
 the result. A cache-off server is the attribution arm, bought only if Q1 or Q2 needs it.
 
 **Not in this run.** More than two adapters; batch sizes other than 1, 8 and 16; the 12B; the distributor member's accuracy.
+
+**Attempt 1 [ran] 2026-09-28: stopped at G1, before any number.** `staff-s0` did not show on the generic probes
+(`e5_attempt1_g1.json`). This is M9's known behaviour: a LoRA trained only on tool turns barely moves off-domain text.
+The runner now checks that member by the rule it was released under (`staff_arm.g1`: the generic probes, then three of its
+own domain requests under the same test). That is M9's redesign 1, applied here. E5's measurement is unchanged, and no
+reading was seen.

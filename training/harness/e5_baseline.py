@@ -165,7 +165,10 @@ def main() -> int:
     try:
         if not ar.wait_ready(srv, minutes=20):
             rec["stopped"] = "the server never came up"; save(); return 1
-        rec["G1"] = {m: identity(a.base, m, tok) for m in MEMBERS}
+        # The distributor member moves generic probes too little to show (M9's redesign 1 [ran]): its own rule, which
+        # falls back to three of its domain requests under the same test, is the one it was released under.
+        from examples.distributor import staff_arm
+        rec["G1"] = {m: (staff_arm.g1(a.base, m, tok, identity) if m == "staff-s0" else identity(a.base, m, tok)) for m in MEMBERS}
         print(f"[e5] G1 {({m: g['applied'] for m, g in rec['G1'].items()})}", flush=True)
         save()
         if not all(g["applied"] for g in rec["G1"].values()):

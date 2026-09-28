@@ -1,0 +1,30 @@
+=== session 1 of 2 · srv104805 · L4
+    boot clone: rc=0 5684fcd E5 pre-registered: the harness baseline with the engine counted
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 5684fcd E5 pre-registered: the harness baseline with the engine counted
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    boot attempt 2 did not take: silence
+    boot clone: rc=0 5684fcd E5 pre-registered: the harness baseline with the engine counted
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    5684fcd E5 pre-registered: the harness baseline with the engine counted | 0.30.0
+    carried the adapters in (6 chunks)
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 staff-s0=adapters/distributor-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 staff-s0=adapters/distributor-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 staff-s0=adapters/distributor-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 staff-s0=adapters/distributor-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 staff-s0=adapters/distributor-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 staff-s0=adapters/distributor-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 staff-s0=adapters/distributor-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 staff-s0=adapters/distributor-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 staff-s0=adapters/distributor-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 staff-s0=adapters/distributor-staff-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules school-s0=adapters/school-staff-s0 staff-s0=adapters/distributor-staff-s0
+    [e5] G1 {'school-s0': True, 'staff-s0': False}
