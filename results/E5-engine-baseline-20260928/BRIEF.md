@@ -56,3 +56,48 @@ the result. A cache-off server is the attribution arm, bought only if Q1 or Q2 n
 The runner now checks that member by the rule it was released under (`staff_arm.g1`: the generic probes, then three of its
 own domain requests under the same test). That is M9's redesign 1, applied here. E5's measurement is unchanged, and no
 reading was seen.
+
+## Result **[ran]** 2026-09-28 — Q1 **COSTS** (16.8×), Q2 **NOT FREE** as registered (but free wherever the whole prefix recurs), Q3 **CONTENTION** at the edge (0.88)
+
+One L4 session (attempt 2), vLLM 0.30, E4B bf16. G1: `school-s0` applied on the generic probes, `staff-s0` on its domain
+probes (M9's rule). `e5.json`, `chain.log`.
+
+| variant | prompt tokens | TTFT b1 (median) | tok/s b1 | tok/s b8 | prefix hit $h$ |
+|---|--:|--:|--:|--:|--:|
+| `pruned` | 216 | **0.10 s** | 23.1 | 131.8 | 0.59 |
+| `full` (54 tools after the request) | 7,395 | **1.70 s** | 12.4 | 107.9 | 0.51 |
+| `full_first` (54 tools before the request) | 7,395 | **1.69 s** | 15.4 | 118.2 | 0.72 |
+
+$h$ includes the batch-8 phase, which re-sends the same 16 prompts. The batch-1 TTFT counts each prompt once.
+
+**By the table written first:**
+- **Q1 = COSTS**: $r_1 = 16.8$.
+- **Q2 = NOT FREE**: $r_2 = 16.7$.
+- **Q3 = CONTENTION**: two adapters keep 0.88 of one adapter's throughput (196.9 vs 223.6 tok/s), just under 0.9. One burst
+  of 16, so this sits near the noise; the median TTFT was *lower* with two adapters (0.41 vs 0.48 s).
+
+**Accuracy, 70 held-out turns:** `pruned` **70/70**, `full` **39/70**. All 31 failures miss the check that the member made
+its tool call. In 28 the member made **no call at all** and wrote a reply (often inventing the tool's result, e.g. an
+`ERROR: permission denied` it never received). Only 1 of 31 called OpenClaw's tools, so this member does not copy tags off
+the block as P59's did. It stops calling its own.
+
+**Q2, read where it happens.** Per request in `full_first`:
+- the first request of each role pays **1.7 s**;
+- each request whose role already appeared (6 of 16: `it`, `cfo`, `dev`) has **0.09–0.11 s, equal to `pruned`**.
+
+My variant put the block after the role's system prompt and the role's own tools, so the shared prefix was per role, and
+the 16 turns mix roles. **The 7,205-token block is free once it sits inside a recurring prefix**; the registered median
+cannot show it, because most requests were a role's first. Said as measured: the verdict stands as registered, and the
+per-request data carry the finding.
+
+**What it means for the claims.**
+1. P59's "~7,956 vs ~77 tokens" is not only an accuracy point. **As served today, the unpruned block costs 17× the time
+   to first token with prefix caching on**, because the member's corpus puts it after the request. The review's premise
+   (a static block is free with a prefix cache) does not hold for this format. The docs citing the number now say so
+   (OPENCLAW, FOUNDATIONS §4.4).
+2. **Pruning stays the default for two independent reasons:** accuracy (70 → 39) and latency (0.10 → 1.70 s).
+3. **A format lever exists**: tools before everything that varies, including the role's system prompt. The per-request data
+   show that prefix is then free. It needs a corpus rendered that way and a retrained member; the pruned prompt is already
+   cheap, so there is no reason to buy it now.
+4. **Multi-LoRA:** 12 % of throughput at two adapters in one burst of 16. The reviewer's concern is real but small; a
+   longer run at more adapters would size it.
