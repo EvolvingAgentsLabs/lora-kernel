@@ -1,0 +1,44 @@
+=== session 1 of 1 · srv175848 · L4
+    boot clone: rc=0 aa2e309 W7 pre-registered: edit one statement after training; the answer must follow the library
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 aa2e309 W7 pre-registered: edit one statement after training; the answer must follow the library
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    aa2e309 W7 pre-registered: edit one statement after training; the answer must follow the library | 0.30.0
+    carried the adapters in (3 chunks)
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules wiki-v2=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules wiki-v2=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules wiki-v2=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules wiki-v2=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules wiki-v2=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules wiki-v2=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules wiki-v2=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules wiki-v2=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules wiki-v2=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules wiki-v2=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules wiki-v2=adapters/wiki-cmp-walks-s1
+    [w7] G1 applied (3/3)
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules wiki-v2=adapters/wiki-cmp-walks-s1
+    [w7] G1 applied (3/3)
+    [w7] control 10/40 · credit 9
+    [w7] control 10/40 · credit 9
+    [w7] control 20/40 · credit 19
+    [w7] control 30/40 · credit 29
+    [w7] control 20/40 · credit 19
+    [w7] control 30/40 · credit 29
+    [w7] control 40/40 · credit 38
+    [w7] control 40/40 · credit 38
+    [w7] edited 10/40 · credit 8 · stale 0
+    [w7] edited 20/40 · credit 18 · stale 0
+    [w7] edited 20/40 · credit 18 · stale 0
+    [w7] edited 30/40 · credit 28 · stale 0
+    [w7] edited 40/40 · credit 37 · stale 0
+    [w7] closedbook 30/40 · credit 0 · memory 1
+    [w7] closedbook 40/40 · credit 0 · memory 1
+    [w7] PASSED: 37 of 38 follow the edit, 0 stale — but the weights held the old value on only 1 (≤ 4): reading, not overruling · {"n": 40, "control": 38, "follows_on_control_right": 37, "edited_right": 37, "stale": 0, "memory": 1, "closedbook_n": 40}
+    the runner wrote its result — done
+exit 0
