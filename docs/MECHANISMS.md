@@ -434,8 +434,9 @@ applied to `history` and `harness` alone: **`harness` PASSED** — 1 dependent t
 11 gained, every right dependent turn fetched its value by key (53/53), and the flatness bar holds
 ($\bar p_3 = 710 \le 1.1 \times 745$). **`harness-noblock` is FALSIFIED** — without the rendered tool
 block the member calls no tool at all and states data it never read, because its corpus always trained it
-with the block present; that half of the idea would need its own corpus, not this one's. **The user has
-not yet chosen which reading stands** — this document states both, as instructed, rather than picking one.
+with the block present; that half of the idea would need its own corpus, not this one's. **The user's
+decision (2026-09-29): the per-arm reading stands** — `harness` PASSED, `harness-noblock` FALSIFIED —
+and the as-written VOID is kept as the record of that instrument error, not as the verdict.
 Design and the decisions behind it: [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md).
 
 ---
@@ -743,8 +744,9 @@ even though `history` and `harness` both scored 60/60 on exactly the same condit
 edit `h1_reading` and rerun it against the same data — that would be tuning the gate to the answer it
 already produced. Instead: the error is written into the brief itself, the run is read **per arm** with the
 unmodified code, and the two readings that result — `harness` **PASSED**, `harness-noblock` **FALSIFIED** —
-are both stated, with the choice of which reading stands over the whole run left explicitly to the user,
-not decided by whoever writes the document next.
+are both stated, with the choice of which reading stands over the whole run made explicitly by the user
+(2026-09-29: the per-arm reading stands, the as-written VOID kept as the instrument-error record), not
+decided by whoever writes the document next.
 
 **Evidence.** This is not a claim that needs a run of its own — it is the discipline every run cited
 elsewhere in this document was already held to: P58's malformed-call fix, P47's rule that a verdict is read

@@ -8,7 +8,8 @@ contra 4/54 sin ella — y también C1 (`results/C1-concurrency-20260929`, sin c
 mezclados mantienen 1,03× uno solo con 16 sesiones). H1 (`results/H1-workflow-harness-20260929`), la puntuación
 propia del harness, **tiene un resultado, leído de dos formas: `harness` 53/54 turnos dependientes, PASÓ contra
 su propio umbral; `harness-noblock` 0/60, FALSEADO. La propia compuerta de la corrida la anula tal como está
-escrita, y el usuario todavía no eligió qué lectura vale — §8.***
+escrita, y la decisión del usuario (2026-09-29): vale la lectura por brazo, el VOID tal como está escrito queda
+como el registro de ese error del instrumento — §8.***
 
 ## 1. La idea, en las palabras del usuario y en las nuestras
 
@@ -216,15 +217,17 @@ literalmente *entre* brazos en vez de *dentro* de cada uno, esa misma regla deja
 diseño del instrumento: la compuerta estaba pensada para descalificar un brazo roto, no uno que funciona al lado.
 **Tal como está escrita, H1 queda ANULADA.** Leída por brazo en cambio — que es como se enunciaron los umbrales del
 §5, cada uno contra sus propios números — `harness` **PASÓ** los cuatro umbrales y `harness-noblock` quedó
-**FALSEADO** en el primero. El código que aplica la compuerta no se cambió después de ver este resultado. **El
-usuario todavía no eligió qué lectura vale, y este documento enuncia las dos en vez de elegir una.**
+**FALSEADO** en el primero. El código que aplica la compuerta no se cambió después de ver este resultado. **La
+decisión del usuario (2026-09-29): vale la lectura por brazo** — `harness` PASÓ, `harness-noblock` quedó
+FALSEADO — **y el VOID tal como está escrito queda en este documento como el registro de ese error del
+instrumento, no como el veredicto. A partir de H2, el VOID se aplica por brazo.**
 
 **Cómo se lee ahora la decisión 2 del §6.** La decisión de correr los dos brazos fue correcta — es exactamente lo
 que sacó a la luz la brecha de corpus de arriba — pero la decisión 2 no anticipó que el corpus de
 `harness-noblock` necesitaba *enseñar* la condición sin bloque, no sólo omitir el bloque al evaluar. Ver la
 decisión 2 del §6 para la actualización en el lugar.
 
-**Siguiente paso.** A la espera de que el usuario elija la lectura: **H2**, el tracker de equipo tipo Jira +
+**Siguiente paso.** Con la lectura por brazo ya elegida: **H2**, el tracker de equipo tipo Jira +
 Confluence (`examples/tracker/`, **en construcción**, no construido todavía), donde las sesiones corran lo bastante
 largo como para que la propiedad de prompt plano de `harness` de verdad ahorre tokens contra un prompt `history`
 creciente, en vez de costar más por turno como acá.

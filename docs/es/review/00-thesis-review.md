@@ -136,7 +136,8 @@ miembro entrenado sobre esto de verdad lee y escribe la clave correcta en el pas
 resultado, leído de dos formas: `harness` (con el bloque de herramientas) 53/54 turnos dependientes
 contra el 43/54 de `history`, todos buscados por clave; `harness-noblock` 0/60, porque su corpus siempre
 tuvo el bloque. Leído por brazo, `harness` PASÓ y `harness-noblock` quedó FALSEADO; la propia compuerta
-de la corrida la anula tal como está escrita, y el usuario todavía no eligió qué lectura vale — ver
+de la corrida la anula tal como está escrita, y la decisión del usuario (2026-09-29) es la lectura por
+brazo, el VOID tal como está escrito queda como el registro de ese error del instrumento — ver
 [`harness-workflow-kv.md`](harness-workflow-kv.md) §8.
 
 ---

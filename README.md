@@ -171,8 +171,9 @@ no tool and states data it never read — its corpus was never trained without t
 both arms, the pre-registered gate (first turns ≥ 90% *in every arm*) is tripped by the no-block
 arm alone, which voids the run as written — an instrument design error, recorded, not one the code
 was changed to fix after seeing the result. Read per arm instead, the harness **PASSED** and
-harness-noblock **FALSIFIED**. **The user has not yet chosen which reading stands — this document
-states both, not one.** In these short (2–3 turn) sessions the harness pays roughly 2× the prompt
+harness-noblock **FALSIFIED**. **The user's decision (2026-09-29): the per-arm reading stands —
+harness PASSED, harness-noblock FALSIFIED; the as-written VOID is kept as the record of an
+instrument error, not as the verdict.** In these short (2–3 turn) sessions the harness pays roughly 2× the prompt
 tokens per turn (an extra get → call → put round-trip); the saving it is built for belongs to longer
 sessions, which is why a Jira-and-Confluence-like tracker domain (`examples/tracker/`) is being
 built for that case (H2) — **in construction, no results yet**
@@ -338,7 +339,8 @@ drafter that might close that gap is parked — it does not run at all yet (C0).
 carrying the conversation has an answer that reads two ways: **PASSED** by arm (53/54 dependent turns against
 history's 43/54, flat tokens, every right turn traced by key) but **VOID** as pre-registered, because the gate that
 was meant to guard every arm's first turns is tripped instead by the no-block control's own failure (0/60) — the user
-has not yet chosen which reading stands. A longer, more explicit tracker domain (a Jira-and-Confluence-like team tool,
+chose the per-arm reading (2026-09-29): harness PASSED, harness-noblock FALSIFIED, the as-written VOID kept as the
+record of that instrument error. A longer, more explicit tracker domain (a Jira-and-Confluence-like team tool,
 natural keys, long sessions — where the harness's token saving would show, H2) is **in construction**
 (`examples/tracker/`), synthetic only, with no results yet. The
 harness has not run live through OpenClaw, has not been measured on sessions longer than three turns, and its global

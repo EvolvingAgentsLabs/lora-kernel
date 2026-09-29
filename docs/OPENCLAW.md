@@ -321,8 +321,9 @@ without the tool block) scored **0/60** — its corpus always had the block, so 
 left the member calling nothing and stating data it never read. **As written the run is VOID**: the
 brief's gate voids an arm whose first turns fall under 90%, and applied across arms that lets
 `harness-noblock`'s collapse void the whole run — an instrument error, recorded, not fixed after the
-fact. **Read per arm, `harness` PASSED and `harness-noblock` FALSIFIED. The user has not yet chosen
-which reading stands — both are stated here.** See [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md)
+fact. **Read per arm, `harness` PASSED and `harness-noblock` FALSIFIED. The user's decision (2026-09-29):
+the per-arm reading stands, and the as-written VOID is kept as the record of that instrument error.**
+See [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md)
 §8 for the full table and the next step (a longer-session domain, H2).
 
 **H1 ran on vLLM (one L4), not through OpenClaw, and nothing about a live multi-turn run through

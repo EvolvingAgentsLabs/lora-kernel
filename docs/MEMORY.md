@@ -593,7 +593,8 @@ always had the block, so removing it at evaluation time left the member calling 
 data it never read — the fix is a corpus that drops the block in part of its rows, not attempted here.
 **Read as written, the run is VOID**: its own first-turns-≥-90%-or-void gate, applied across arms, lets
 `harness-noblock`'s collapse void the whole run — an instrument design error, recorded, the code not
-changed after the result. **Read per arm, `harness` PASSED and `harness-noblock` FALSIFIED. The user
-has not yet chosen which reading stands.** Next, pending that choice: a Jira + Confluence-like domain
+changed after the result. **Read per arm, `harness` PASSED and `harness-noblock` FALSIFIED. The user's
+decision (2026-09-29): the per-arm reading stands, the as-written VOID kept as the record of that
+instrument error.** Next: a Jira + Confluence-like domain
 (`examples/tracker/`, in construction) for sessions long enough that the token saving would show (H2).
 See [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §8.

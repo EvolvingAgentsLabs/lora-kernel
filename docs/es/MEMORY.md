@@ -606,7 +606,8 @@ enunciando datos que nunca leyó — la corrección es un corpus que saque el bl
 no intentado acá. **Leída tal como está escrita, la corrida queda ANULADA**: su propia compuerta de
 primeros-turnos-≥-90%-o-anulado, aplicada entre brazos, deja que el colapso de `harness-noblock` anule
 toda la corrida — un error de diseño del instrumento, registrado, sin cambiar el código después del
-resultado. **Leído por brazo, `harness` PASÓ y `harness-noblock` quedó FALSEADO. El usuario todavía no
-eligió qué lectura vale.** Sigue, a la espera de esa elección: un dominio tipo Jira + Confluence
+resultado. **Leído por brazo, `harness` PASÓ y `harness-noblock` quedó FALSEADO. La decisión del usuario
+(2026-09-29): vale la lectura por brazo, el VOID tal como está escrito queda como el registro de ese
+error del instrumento.** Sigue: un dominio tipo Jira + Confluence
 (`examples/tracker/`, en construcción) para sesiones lo bastante largas como para que se note el ahorro
 de tokens (H2). Ver [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §8.

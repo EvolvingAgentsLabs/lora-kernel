@@ -573,7 +573,8 @@ worked) and instead caught a different one: an arm that was never going to pass 
 Applied literally across three arms, one failing arm's 0% first-turn score voids the other two arms' real results.
 **Read as written, H1 is VOID; read per arm, `harness` PASSED and `harness-noblock` FALSIFIED — a VOID rule bought to
 guard a whole run has to be checked per arm, or a result that stands on its own is thrown out with one that does
-not.** The user has not chosen which reading stands, and this guide states both, not a merge of them. Design and
+not.** The user's decision (2026-09-29): the per-arm reading stands, and the as-written VOID is kept as the
+record of that instrument error, not as the verdict. Design and
 open decisions: [`review/harness-workflow-kv.md`](review/harness-workflow-kv.md); the mechanism behind
 `<get>`/`<put>` and the state line is in [`MECHANISMS.md`](MECHANISMS.md).
 
@@ -658,9 +659,9 @@ happened to us last week).
 | the model still makes things up | 3 of 12 answers caught by the filter | a corpus that teaches it to repeat only what the tool says |
 | the memory (library) inside a serving member | lives in `distributor-wiki@v2`, a separate member from the abstaining `out-s0` (M10) | merge them, or keep them apart by design — not yet decided |
 | a vLLM bf16 live run of the distributor | not run — the only local arm measured is llama.cpp Q8_0 (LIVE-distributor) | run it once a same-precision comparison against the edge is needed |
-| H1's result (the workflow harness) | **[ran] — split by reading.** Per arm: `harness` PASSED (53/54 vs 43/54, every right turn fetched by key); `harness-noblock` FALSIFIED (0/60). As written: **VOID** — the brief's first-turns rule voids across arms, an instrument error, recorded | the user chooses which reading stands, or a rerun with a per-arm VOID rule; either way, release the member only once that choice is made |
+| H1's result (the workflow harness) | **[ran] — the user's decision (2026-09-29): per arm.** Per arm: `harness` PASSED (53/54 vs 43/54, every right turn fetched by key); `harness-noblock` FALSIFIED (0/60). As written: **VOID**, superseded — the brief's first-turns rule voids across arms, an instrument error, kept as its record | release the member on the per-arm reading; VOID is per arm from H2 on |
 | a router inside the gateway's own path | not built — the role is still the route (§7.2) | build only once cross-role routing, not per-member abstention, is the open half |
-| the harness live through OpenClaw, multi-turn | not run — H1 measured it on the server profile only | repeat LIVE-distributor's pattern (§7.3) once the user picks H1's reading |
+| the harness live through OpenClaw, multi-turn | not run — H1 measured it on the server profile only | repeat LIVE-distributor's pattern (§7.3), now that H1's reading is chosen (per arm) |
 | sessions longer than 2–3 turns | not measured — MT0 and H1 both stop there | the proposed tracker domain (Jira/Confluence-like, longer workflows) would show it, if picked — not built |
 | the global cache trained on | built and tested (`opmemory.py`), not yet inside a training corpus | fold into H1's corpus or the next domain's |
 | real identity (Auth0), WhatsApp, installation | not built | after the above |

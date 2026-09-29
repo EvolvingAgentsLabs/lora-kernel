@@ -335,8 +335,9 @@ tuvo el bloque, así que sacarlo al momento de evaluar dejó al miembro sin llam
 datos que nunca leyó. **Tal como está escrita, la corrida queda ANULADA**: la compuerta del brief anula
 un brazo cuyos primeros turnos caen bajo el 90%, y aplicada entre brazos eso deja que el colapso de
 `harness-noblock` anule toda la corrida — un error de instrumento, registrado, no corregido después del
-hecho. **Leído por brazo, `harness` PASÓ y `harness-noblock` quedó FALSEADO. El usuario todavía no
-eligió qué lectura vale — acá se enuncian las dos.** Ver
+hecho. **Leído por brazo, `harness` PASÓ y `harness-noblock` quedó FALSEADO. La decisión del usuario
+(2026-09-29): vale la lectura por brazo, y el VOID tal como está escrito queda como el registro de ese
+error del instrumento.** Ver
 [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §8 para la tabla completa y el
 siguiente paso (un dominio de sesiones más largas, H2).
 

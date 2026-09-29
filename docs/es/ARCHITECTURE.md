@@ -151,7 +151,8 @@ herramienta y afirma datos que nunca leyó, porque su corpus nunca se entrenó s
 pre-registrada exigía que cada brazo — incluido ese control sin bloque — llegara a 90 % en los primeros turnos; la
 propia falla del control hace fallar la compuerta y anula la corrida tal como está escrita, un error de diseño del
 instrumento registrado acá en vez de corregido después de ver el resultado. Leído por brazo en cambio, el arnés
-**PASÓ** y harness-noblock quedó **FALSEADO**; **el usuario todavía no eligió qué lectura vale.** El ahorro para el
+**PASÓ** y harness-noblock quedó **FALSEADO**; **la decisión del usuario (2026-09-29): vale la lectura por brazo,
+el VOID tal como está escrito queda como el registro de ese error del instrumento.** El ahorro para el
 que está construido el arnés — un prompt plano en vez de una transcripción que crece — apenas se nota en 2–3 turnos
 (ahí el arnés paga más o menos 2× los tokens por turno, una ida y vuelta extra de get → llamada → put); se está
 probando después sobre sesiones más largas, con un dominio de seguimiento tipo Jira y Confluence
@@ -368,8 +369,9 @@ bloque de herramientas y las rutas de su biblioteca. Es un arnés *adentro* de c
 compuesto con uno de dominio — que es lo que dejó parado a `harness.lora`, donde la composición no se pudo medir
 limpiamente (P9, P13 **[ran]**). Extiende la lectura direccionada por clave de W9 (`<open>id§anchor</open>`) del
 conocimiento enciclopédico a la memoria operativa, y de sólo leer a leer *y* escribir. Si le gana a cargar la
-conversación es H1 (el §2 tiene los números): **PASÓ** por brazo, **ANULADO** tal como estaba pre-registrado — el
-usuario todavía no eligió qué lectura vale. Diseño y decisiones abiertas:
+conversación es H1 (el §2 tiene los números): **PASÓ** por brazo, **ANULADO** tal como estaba pre-registrado — la
+decisión del usuario (2026-09-29): vale la lectura por brazo, el VOID tal como está escrito queda como el registro
+de ese error del instrumento. Diseño y decisiones abiertas:
 [`review/harness-workflow-kv.md`](../review/harness-workflow-kv.md); cómo se conecta cada pieza acá de punta a
 punta: [`MECHANISMS.md`](MECHANISMS.md).
 

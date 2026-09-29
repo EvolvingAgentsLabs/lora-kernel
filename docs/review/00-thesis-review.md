@@ -133,8 +133,9 @@ conversation. What this section called "declared, versionable" is the hand-writt
 trained on it actually reads and writes the right key at the right step. It has a result, read two
 ways: `harness` (tool block kept) 53/54 dependent turns against `history`'s 43/54, every one fetched by
 key; `harness-noblock` 0/60, because its corpus always had the block. Read per arm, `harness` PASSED
-and `harness-noblock` FALSIFIED; the run's own gate voids it as written, and the user has not yet
-chosen which reading stands — see [`harness-workflow-kv.md`](harness-workflow-kv.md) §8.
+and `harness-noblock` FALSIFIED; the run's own gate voids it as written, and the user's decision
+(2026-09-29) is the per-arm reading, the as-written VOID kept as the record of that instrument
+error — see [`harness-workflow-kv.md`](harness-workflow-kv.md) §8.
 
 ---
 

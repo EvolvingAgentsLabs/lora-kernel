@@ -6,8 +6,9 @@ built and tested at zero GPU. MT0 (`results/MT0-multiturn-baseline-20260929`) ha
 turns with the conversation against 4/54 without — and so has C1 (`results/C1-concurrency-20260929`, no material
 contention, four members mixed keep 1.03× one at 16 sessions). H1 (`results/H1-workflow-harness-20260929`), the
 harness's own scoring, **has a result, read two ways: `harness` 53/54 dependent turns, PASSED against its
-own bar; `harness-noblock` 0/60, FALSIFIED. The run's own gate voids it as written, and the user has not
-yet chosen which reading stands — §8.***
+own bar; `harness-noblock` 0/60, FALSIFIED. The run's own gate voids it as written, and the user's
+decision (2026-09-29): the per-arm reading stands, the as-written VOID kept as the record of that
+instrument error — §8.***
 
 ## 1. The idea, in the user's words and in ours
 
@@ -204,14 +205,16 @@ each one, that same rule lets `harness-noblock`'s collapse (0 % first turns) voi
 included, which is an instrument design error: the gate was meant to disqualify a broken arm, not a working one
 sitting beside it. **As written, H1 is VOID.** Read per arm instead — which is how the bars in §5 were stated,
 each against its own numbers — `harness` **PASSED** every one of its four bars and `harness-noblock` **FALSIFIED**
-on the first. The code that applies the gate has not been changed after seeing this result. **The user has not yet
-chosen which reading stands, and this document states both rather than picking one.**
+on the first. The code that applies the gate has not been changed after seeing this result. **The user's decision
+(2026-09-29): the per-arm reading stands — `harness` PASSED, `harness-noblock` FALSIFIED — and the as-written
+VOID is kept in this document as the record of that instrument error, not as the verdict. From H2 on, VOID is
+applied per arm.**
 
 **How §6 decision 2 now reads.** The decision to run both arms was correct — it is exactly what surfaced the corpus
 gap above — but decision 2 did not anticipate that `harness-noblock`'s corpus would need to *teach* the
 no-block condition, not merely omit the block at test time. See §6 decision 2 for the update in place.
 
-**Next step.** Pending the user's choice of reading: **H2**, the Jira + Confluence-like team tracker
+**Next step.** With the per-arm reading chosen: **H2**, the Jira + Confluence-like team tracker
 (`examples/tracker/`, **in construction**, not built), where sessions run long enough for `harness`'s flat-prompt
 property to actually save tokens against a growing `history` prompt, rather than costing more of them per turn as
 here.

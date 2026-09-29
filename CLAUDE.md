@@ -64,9 +64,9 @@ el proyecto?"* **When in doubt, the next step is the one that puts a weight delt
   member**, not a composed adapter (what parked `harness.lora`). Its bar is MT0 **[ran]**: without the conversation 4/54
   dependent turns, with it 43/54 — but a reference written into free text is lost 8/10. H1 **[ran]**: the harness
   member resolves 53/54 against history's 43/54 (claims 10/10), every right turn fetched by key, a flat prompt — per arm
-  PASSED; the verdict as written is VOID because the brief's first-turns rule applied across arms and the no-block arm
-  scored 0/60 (a member never shown its tools undescribed does not know them). **A VOID rule is per arm** from now on; the
-  user has not chosen H1's reading. Design and decisions in `docs/review/harness-workflow-kv.md`; every mechanism explained
+  PASSED — **the user's decision, 2026-09-29, of the two readings recorded**; as written the verdict was VOID because
+  the brief's first-turns rule applied across arms and the no-block arm scored 0/60 (a member never shown its tools
+  undescribed does not know them) — an instrument error, kept on record. **A VOID rule is per arm** from now on. Design and decisions in `docs/review/harness-workflow-kv.md`; every mechanism explained
   in `docs/MECHANISMS.md`. The long-session test is the **team tracker** (`examples/tracker/`, Jira + Confluence-like,
   synthetic; H2). The gateway's
   default still reads only the last request; `history=True` is the naive arm, never the product.
