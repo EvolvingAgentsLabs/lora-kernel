@@ -139,14 +139,9 @@ patching one statement in the library after training (W7): the member follows th
 only 1 time in 40 — evidence for what this claim actually rests on: the route was learned, not the
 fact ([`results/W7-edit-after-training-20260927/`](results/W7-edit-after-training-20260927/BRIEF.md)).
 
-> **[ILLUSTRATION PLACEHOLDER — `docs/img/operational-memory.png`, 1200 × 627 (like `article-harness.png`)]**
-> *Two panels side by side, in the style of `article-harness.png`. LEFT, "the conversation in the prompt": a
-> specialist at a desk reads a paper scroll that gets visibly longer turn after turn (three turn markers on it);
-> they fill in a claim form whose field "order" is left EMPTY, the sentence "the seal on that order was broken"
-> copied as is. Counter: "43 / 54". RIGHT, "the keys in a memory": the same specialist reads only a small index
-> card, "state: customer_service/order_known · keys: order"; a drawer labelled "order = 58" is pulled open; the
-> claim form reads "order 58: the seal on that order was broken". Counter: "53 / 54". Title over the image: "Carry
-> the keys, not the conversation." No robots, no brains.*
+![Two panels. Left, the conversation in the prompt: a scroll growing turn after turn and a claim form whose order field is empty, 43 of 54. Right, the keys in a memory: one index card with the state and the key names, a drawer opened on order 58, and the claim form filled with it, 53 of 54. Title: carry the keys, not the conversation.](docs/img/operational-memory.png)
+
+*H1: fetching a value by key fixes what reading the history lost — the claim now names the order.*
 
 **Short-term operational memory, next to the library — built, [ran] in tests, not yet trained on**
 (`examples/common/opmemory.py`). The library above is what an expert *knows*; this is where a
@@ -192,20 +187,9 @@ built for that case (H2) — **in construction, no results yet**
 
 ## The request path
 
-> **[ILLUSTRATION PLACEHOLDER — `docs/img/request-path.png`, wide, ~1600 px]**
-> *A clean left-to-right flow in the house style, SEVEN stations on one line. 1 "agent — one per role (OpenClaw)". 2
-> "gateway — signed token → user · role · organisation", a small turnstile reading a badge. 3 NEW: "operational
-> memory" — a single index card fed into the next station, reading "state: receiving/assigned · keys: order", and
-> beside it two small drawers, "session" and "organisation", with a dial above them labelled "workflow state — moved
-> by the calls that ran". 4 "the role's expert — one small local model + its adapter", a desk with a thin coloured
-> spine leaning on a thick one; two short arrows go from the desk to the drawers, labelled `get` and `put`. 5
-> "tools, with the badge's permission": two small insets — a red stamp across a folder, "another organisation's
-> record — refused", and a paper clip holding a slip, "payment — held for a director". 6 "grounding — every line of
-> the reply must be in a tool's result": a sheet with one line crossed out, "invented". 7 "answer". From station 4 a
-> dashed branch, "out of scope", splits in two: one runs to a distant building, "frontier", the other to a person at
-> a desk, "staff". Under the whole line, a thin band: "log → dashboard: served here · sent on · held · replaced".
-> THE POINT: the conversation is NOT carried to the expert — only the one card and the drawers are. Labels in
-> English; spell every word correctly.*
+![One line of seven stations: an agent; the gateway reading a signed badge; the operational memory — one index card (state and key names) and two drawers, session and organisation, with a workflow dial; the role's small local expert, fetching and storing by key; tools run with the badge's permission, one record refused and a payment held; a sheet with an invented line crossed out; the answer. A dashed branch for out of scope leads to a distant building and to a person; a log band runs under everything.](docs/img/request-path.png)
+
+*The request path: the expert reads one card and the keys it needs, never the conversation; permission, holds and grounding are the gateway's.*
 
 ```mermaid
 flowchart LR
