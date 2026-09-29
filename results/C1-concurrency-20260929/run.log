@@ -1,0 +1,12 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 4096 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 4 --lora-modules school-s0=adapters/school-staff-s0 upper-s0=adapters/school-upper-s0 staff-s0=adapters/distributor-staff-s0 out-s0=adapters/distributor-staff-out-s0
+[load] reachable {'school-s0': True, 'upper-s0': True, 'staff-s0': True, 'out-s0': True}
+[load] K=1 A=1: 22.73 tok/s · TTFT p50 0.104 p95 0.114 s · latency p95 2.624 s · errors 0/4
+[load] K=8 A=1: 135.11 tok/s · TTFT p50 0.173 p95 0.191 s · latency p95 2.985 s · errors 0/32
+[load] K=8 A=4: 139.43 tok/s · TTFT p50 0.167 p95 0.205 s · latency p95 3.16 s · errors 0/32
+[load] K=16 A=1: 269.67 tok/s · TTFT p50 0.154 p95 0.163 s · latency p95 3.004 s · errors 0/64
+[load] K=16 A=2: 263.2 tok/s · TTFT p50 0.156 p95 0.212 s · latency p95 3.105 s · errors 0/64
+[load] K=16 A=4: 278.57 tok/s · TTFT p50 0.157 p95 0.166 s · latency p95 3.166 s · errors 0/64
+[load] K=32 A=1: 490.84 tok/s · TTFT p50 0.171 p95 0.273 s · latency p95 3.429 s · errors 0/128
+[load] K=32 A=4: 504.29 tok/s · TTFT p50 0.183 p95 0.235 s · latency p95 3.52 s · errors 0/128
+[load] {"contention": {"ratio_4_over_1_at_16": 1.033, "reading": "NO MATERIAL CONTENTION"}, "capacity": {"largest_k_four_adapters_p95_ttft_under_2s": 32}}

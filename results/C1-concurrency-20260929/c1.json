@@ -1,0 +1,108 @@
+{
+ "cells": [
+  {
+   "k": 1,
+   "adapters": 1,
+   "requests": 4,
+   "errors": 0,
+   "tps": 22.73,
+   "ttft_p50_s": 0.104,
+   "ttft_p95_s": 0.114,
+   "latency_p50_s": 0.281,
+   "latency_p95_s": 2.624
+  },
+  {
+   "k": 8,
+   "adapters": 1,
+   "requests": 32,
+   "errors": 0,
+   "tps": 135.11,
+   "ttft_p50_s": 0.173,
+   "ttft_p95_s": 0.191,
+   "latency_p50_s": 2.535,
+   "latency_p95_s": 2.985
+  },
+  {
+   "k": 8,
+   "adapters": 4,
+   "requests": 32,
+   "errors": 0,
+   "tps": 139.43,
+   "ttft_p50_s": 0.167,
+   "ttft_p95_s": 0.205,
+   "latency_p50_s": 2.38,
+   "latency_p95_s": 3.16
+  },
+  {
+   "k": 16,
+   "adapters": 1,
+   "requests": 64,
+   "errors": 0,
+   "tps": 269.67,
+   "ttft_p50_s": 0.154,
+   "ttft_p95_s": 0.163,
+   "latency_p50_s": 2.538,
+   "latency_p95_s": 3.004
+  },
+  {
+   "k": 16,
+   "adapters": 2,
+   "requests": 64,
+   "errors": 0,
+   "tps": 263.2,
+   "ttft_p50_s": 0.156,
+   "ttft_p95_s": 0.212,
+   "latency_p50_s": 2.611,
+   "latency_p95_s": 3.105
+  },
+  {
+   "k": 16,
+   "adapters": 4,
+   "requests": 64,
+   "errors": 0,
+   "tps": 278.57,
+   "ttft_p50_s": 0.157,
+   "ttft_p95_s": 0.166,
+   "latency_p50_s": 2.363,
+   "latency_p95_s": 3.166
+  },
+  {
+   "k": 32,
+   "adapters": 1,
+   "requests": 128,
+   "errors": 0,
+   "tps": 490.84,
+   "ttft_p50_s": 0.171,
+   "ttft_p95_s": 0.273,
+   "latency_p50_s": 2.836,
+   "latency_p95_s": 3.429
+  },
+  {
+   "k": 32,
+   "adapters": 4,
+   "requests": 128,
+   "errors": 0,
+   "tps": 504.29,
+   "ttft_p50_s": 0.183,
+   "ttft_p95_s": 0.235,
+   "latency_p50_s": 2.669,
+   "latency_p95_s": 3.52
+  }
+ ],
+ "reachable": {
+  "school-s0": true,
+  "upper-s0": true,
+  "staff-s0": true,
+  "out-s0": true
+ },
+ "reading": {
+  "contention": {
+   "ratio_4_over_1_at_16": 1.033,
+   "reading": "NO MATERIAL CONTENTION"
+  },
+  "capacity": {
+   "largest_k_four_adapters_p95_ttft_under_2s": 32
+  }
+ },
+ "finished": "2026-09-29T15:11:41"
+}
