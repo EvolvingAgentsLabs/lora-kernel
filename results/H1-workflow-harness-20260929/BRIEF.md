@@ -42,3 +42,48 @@ and the fallback in the design (the gateway writes the cache, §6.1) would be a 
 
 **Not in this run.** Sessions longer than three turns (the tracker domain, if the user approves it); the global cache
 across sessions (built and tested at zero GPU, not trained on); OpenClaw live.
+
+## Result **[ran]** 2026-09-29 — as written **VOID**; read per arm, **`harness` PASSED** (53/54 against 43/54) and **`harness-noblock` FALSIFIED** (0/60)
+
+T (L4): `wf-s0` trained on `train_harness.jsonl`, 1,397 rows. A first attempt was paused at the user's request mid-training
+(`T_attempt1_paused_by_user.log`) and relaunched from scratch. S (L4, vLLM 0.30): G1 applied for `out-s0` and `wf-s0`.
+`h1.json`.
+
+| | `history` (`out-s0`) | **`harness`** (`wf-s0`) | `harness-noblock` (`wf-s0`) |
+|---|--:|--:|--:|
+| first turns | 60/60 | 60/60 | **0/60** |
+| dependent turns | 43/54 (MT0's number, reproduced) | **53/54** | 0/54 |
+| — customer service ("a claim about that order") | 2/10 | **10/10** | 0/10 |
+| — dispatch | 12/14 | **14/14** | — |
+| — receiving / returns / purchasing | 10/10 · 10/10 · 9/10 | 10/10 · 10/10 · 9/10 | — |
+| independent control | 10/10 | 10/10 | 0/10 |
+| right dependent turns that fetched their value by key | — | **53/53** | — |
+| prompt tokens by turn position, $\bar p_1, \bar p_2, \bar p_3$ | 345, 428, 394 | 745, 726, 710 | 251, 119, 82 |
+
+**The verdict as written is VOID.** The BRIEF's first condition, "first turns ≥ 90 % in every arm, else VOID", is applied by
+`h1_reading` across all three arms, and `harness-noblock`'s 0/60 voids the whole run. **That was a design error in the
+instrument:** `harness-noblock` had its own pass condition, and a VOID was meant per arm. The error is recorded here and the
+code is not changed after the result.
+
+**Read per arm**, with `h1_reading` on `history` and `harness` alone (the same code, the no-block arm left out):
+- **`harness` PASSED**: $\ell = 1 \le 3$ lost against `history`, 11 gained; $\bar p_3 = 710 \le 1.1\ \bar p_1$ (flat); every
+  right dependent turn fetched its value by key (53/53).
+- **`harness-noblock` FALSIFIED**: 0/60, and 0/54 lost against `harness` would have needed ≤ 3.
+
+**Read where it happens.**
+1. **The failure MT0 found is gone.** The claims now carry the order the member fetched by key and what went wrong
+   (`order 58: The seal on that order was broken`): 10/10, where history got 2/10.
+2. **The one `harness` miss** (purchasing): the member `get`s `lowest_item` and reorders `bottled water`, not the lowest
+   item. The value it had stored in turn 1 was wrong; the fetch itself worked.
+3. **Without the tool block the member calls no tool at all and states data it never read** ("According to the system:
+   order 12 — picking, dock 3"). Trained only on prompts that carry the block, it does not know its tools without them.
+   That half of the idea needs a corpus that drops the block. Production keeps the block, and the grounding filter would
+   replace such a reply.
+4. **Tokens.** The harness's per-turn prompt is flat and `history`'s grows: +24 % at turn 2, and it would keep growing.
+   **In absolute terms the harness reads about twice as many prompt tokens per turn in these short sessions**, because a
+   turn takes more generation steps (`get` → call → `put` → answer) and this counter re-adds the prompt at each step. In
+   serving, the prefix cache reuses that shared prompt across a turn's steps; that was not measured here. The token
+   advantage belongs to longer sessions, which this suite does not have (the tracker domain's would).
+
+**Decision for the user:** whether to accept the per-arm reading as H1's verdict, with the instrument error recorded, or
+keep the VOID and rerun `history` against `harness` alone under the same code (one L4 session).
