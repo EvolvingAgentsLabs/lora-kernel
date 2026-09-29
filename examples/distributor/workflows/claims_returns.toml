@@ -1,0 +1,11 @@
+# claims and returns: the open returns are listed, then a return is filed on an order
+[workflow]
+name = "claims_returns"
+initial = "start"
+keys = ["order"]
+[states.start]
+on = { return_list = "listed", return_create = "filed" }
+[states.listed]
+on = { return_list = "listed", return_create = "filed" }
+[states.filed]
+on = { return_list = "listed", return_create = "filed" }

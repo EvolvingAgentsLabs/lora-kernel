@@ -1,0 +1,9 @@
+# receiving: an inbound order is put on a dock, and may be moved
+[workflow]
+name = "receiving"
+initial = "start"
+keys = ["order", "dock"]
+[states.start]
+on = { dock_assign = "assigned", dock_status = "start" }
+[states.assigned]
+on = { dock_assign = "assigned", dock_status = "assigned" }

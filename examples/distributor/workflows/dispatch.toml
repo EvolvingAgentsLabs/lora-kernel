@@ -1,0 +1,9 @@
+# dispatch: an order is looked up, then its delivery is followed
+[workflow]
+name = "dispatch"
+initial = "start"
+keys = ["order"]
+[states.start]
+on = { order_status = "tracking", delivery_status = "tracking" }
+[states.tracking]
+on = { order_status = "tracking", delivery_status = "tracking" }

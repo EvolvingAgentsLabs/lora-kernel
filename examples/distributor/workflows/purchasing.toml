@@ -1,0 +1,11 @@
+# purchasing: the stock is read, then an item is reordered
+[workflow]
+name = "purchasing"
+initial = "start"
+keys = ["lowest_item"]
+[states.start]
+on = { stock_read = "stock_read", stock_reorder = "reordered" }
+[states.stock_read]
+on = { stock_read = "stock_read", stock_reorder = "reordered" }
+[states.reordered]
+on = { stock_read = "stock_read", stock_reorder = "reordered" }
