@@ -389,16 +389,9 @@ serving now has two profiles: `server` is vLLM on Colab (every measurement and e
 
 ---
 
-> **[ILLUSTRATION PLACEHOLDER — `docs/img/tracker-domain.png`, wide, ~1600 px]**
-> *One wide diagram, house style. TOP LEFT, a kanban board with five columns — "To Do", "In Progress", "In Review",
-> "QA", "Done" — and small cards keyed "RD-169", "RD-313", "RD-354"; a bug card enters through a narrow gate
-> "Triage". A small stamp on an arrow that jumps two columns: "not allowed — the workflow refuses it". TOP RIGHT, a
-> shelf of wiki pages: "definition of done", "component owners", "release process", "bug policy", each page a list
-> of one-sentence slips. BOTTOM, a five-station session line for one developer: "show me RD-169" → "move it to
-> review" → "log 2 hours on it" → "who owns its component?" → "comment: ready for QA"; above each of stations 2–5 a
-> small drawer "issue" being opened (`get`), and at station 4 a second drawer "component" and a line to the
-> "component owners" page. Three roles as small silhouettes: "developer", "lead", "qa". Leave room in the bottom-
-> right corner for a counter to be added when H2 has its result.*
+![A kanban board from To Do to Done with keyed cards and a triage gate, a stamp refusing a move the workflow does not allow; a shelf of team pages; and a five-turn session of one developer where every later turn opens the drawer holding the issue's key.](docs/img/tracker-domain.png)
+
+*The team tracker: declared workflows the tool layer enforces, a space of one-sentence pages, and long sessions carried by key.*
 
 ## Run it
 
@@ -422,14 +415,9 @@ reason: `--prune` (its own tool surface — serving OpenClaw's full 54-tool bloc
 time-to-first-token and drops accuracy from 70/70 to 39/70, [E5](results/E5-engine-baseline-20260928/BRIEF.md)),
 `--member-prompt` (the prompt its corpus taught), `--auto` (the client names no model).
 
-> **[ILLUSTRATION PLACEHOLDER — `docs/img/runtimes.png`, wide, ~1600 px]**
-> *Two halves, one horizontal diagram, house style. LEFT, "server — measure and train, many users": a rented graphics
-> card in a small cloud, drawn as a bookshelf with one thick spine ("one resident model — vLLM") and FOUR thin
-> coloured spines ("school", "school upper", "distributor", "distributor abstains"); 32 small arrows arrive from
-> many users. A tag: "four adapters mixed in one batch — no contention". RIGHT, "edge — serve on your own machine":
-> a laptop, one user, a single thin spine being swapped for another with a small clock reading "3 ms"; a tag
-> "llama.cpp · 8-bit". A thin dashed line from the laptop to a distant building, "frontier — only what no tool
-> covers". Between the halves, a small bench with a notebook, "MLX — the research bench".*
+![Two halves. Left, server: a rented graphics card in a cloud with one thick spine and four thin adapter spines, many users arriving, four adapters in one batch with no contention. Right, edge: a laptop with one user and one thin spine swapped in three milliseconds, llama.cpp at 8 bits, a dashed line to the frontier. Between them, a small bench: MLX, the research bench.](docs/img/runtimes.png)
+
+*Two runtimes: vLLM on a rented card to measure, train and serve many; llama.cpp on your own machine to serve one.*
 
 **Running a member on your own machine — the `edge` profile, no GPU rented:**
 
