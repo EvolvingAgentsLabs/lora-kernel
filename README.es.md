@@ -186,8 +186,9 @@ datos que nunca leyó — su corpus nunca se entrenó sin el bloque. Leído a tr
 la compuerta pre-registrada (primeros turnos ≥ 90 % *en cada brazo*) la hace fallar sólo el brazo
 sin bloque, que anula la corrida tal como está escrita — un error de diseño del instrumento,
 registrado, no uno que se corrigió en el código después de ver el resultado. Leído por brazo en
-cambio, el arnés **PASÓ** y harness-noblock quedó **FALSEADO**. **El usuario todavía no eligió qué
-lectura vale — este documento afirma las dos, no una.** En estas sesiones cortas (2–3 turnos) el
+cambio, el arnés **PASÓ** y harness-noblock quedó **FALSEADO**. **La decisión del usuario (2026-09-29):
+vale la lectura por brazo — el arnés PASÓ, harness-noblock quedó FALSEADO; el VOID tal como está
+escrito queda como el registro de un error del instrumento, no como el veredicto.** En estas sesiones cortas (2–3 turnos) el
 arnés paga más o menos 2× los tokens de prompt por turno (una ida y vuelta extra de get → llamada →
 put); el ahorro para el que está construido pertenece a sesiones más largas, por lo que se está
 construyendo un dominio de seguimiento tipo Jira y Confluence (`examples/tracker/`) para ese caso
@@ -364,7 +365,8 @@ absoluto (C0). Si el arnés de flujo de trabajo le gana a cargar la conversació
 dos formas: **PASÓ** por brazo (53/54 turnos dependientes contra el 43/54 de `history`, tokens planos, cada turno
 correcto rastreado por clave) pero quedó **ANULADO** tal como estaba pre-registrado, porque la compuerta pensada
 para vigilar los primeros turnos de cada brazo la hace fallar la propia falla del control sin bloque (0/60) — el
-usuario todavía no eligió qué lectura vale. Se propone un dominio de seguimiento de tickets
+usuario eligió la lectura por brazo (2026-09-29): el arnés PASÓ, harness-noblock quedó FALSEADO, y el VOID tal
+como está escrito queda como el registro de ese error del instrumento. Se propone un dominio de seguimiento de tickets
 más largo y explícito (tipo Jira y Confluence, claves naturales, sesiones largas — donde se vería el ahorro de
 tokens del arnés, H2) que está **en construcción** (`examples/tracker/`), sólo sintético, todavía sin resultados.
 El arnés no corrió en vivo a través de OpenClaw, no se midió en sesiones de más de tres turnos, y su

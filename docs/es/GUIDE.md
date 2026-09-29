@@ -586,8 +586,9 @@ que también rompe lo que ya funcionaba) y en cambio atrapó otra distinta: un b
 herramientas para las que no fue entrenado. Aplicada al pie de la letra sobre tres brazos, el 0 % de primeros turnos
 de un brazo que falla anula los resultados reales de los otros dos. **Leída tal como fue escrita, H1 es VOID; leída
 por brazo, `harness` PASÓ y `harness-noblock` quedó FALSADO — una regla VOID comprada para cuidar toda una corrida
-tiene que revisarse por brazo, o un resultado que se sostiene solo se tira junto con uno que no.** El usuario todavía
-no eligió qué lectura vale, y esta guía asienta las dos, no una mezcla de ambas. Diseño y decisiones abiertas:
+tiene que revisarse por brazo, o un resultado que se sostiene solo se tira junto con uno que no.** La decisión del
+usuario (2026-09-29): vale la lectura por brazo, y el VOID tal como está escrito queda como el registro de ese
+error del instrumento, no como el veredicto. Diseño y decisiones abiertas:
 [`review/harness-workflow-kv.md`](../review/harness-workflow-kv.md); el mecanismo detrás de `<get>`/`<put>` y la línea
 de estado está en [`MECHANISMS.md`](MECHANISMS.md).
 
@@ -672,9 +673,9 @@ fijo en el corpus que se memoriza; un modelo sin el prompt con el que se entren�
 | el modelo todavía inventa | 3 de 12 respuestas las atrapa el filtro | un corpus que enseñe a repetir sólo lo que dice la herramienta |
 | la memoria (biblioteca) dentro de un miembro que sirve | vive en `distributor-wiki@v2`, un miembro separado del que abstiene, `out-s0` (M10) | juntarlos, o mantenerlos separados por diseño — todavía sin decidir |
 | una corrida en vivo de la distribuidora en vLLM bf16 | no corrida — el único brazo local medido es llama.cpp Q8_0 (LIVE-distributor) | correrla cuando haga falta una comparación a la misma precisión contra el edge |
-| el resultado de H1 (el arnés de workflow) | **[ran] — depende de la lectura.** Por brazo: `harness` PASÓ (53/54 contra 43/54, todo acierto buscado por clave); `harness-noblock` quedó FALSADO (0/60). Tal como fue escrita: **VOID** — la regla de primeros turnos del brief anula entre brazos, un error del instrumento, registrado | el usuario elige qué lectura vale, o se repite la corrida con una regla VOID por brazo; de cualquier forma, liberar el miembro sólo una vez hecha esa elección |
+| el resultado de H1 (el arnés de workflow) | **[ran] — la decisión del usuario (2026-09-29): por brazo.** Por brazo: `harness` PASÓ (53/54 contra 43/54, todo acierto buscado por clave); `harness-noblock` quedó FALSADO (0/60). Tal como fue escrita: **VOID**, superada — la regla de primeros turnos del brief anula entre brazos, un error del instrumento, queda como su registro | liberar el miembro con la lectura por brazo; el VOID es por brazo a partir de H2 |
 | un router adentro del propio camino del gateway | no construido — el rol sigue siendo la ruta (§7.2) | construirlo sólo cuando haga falta rutear entre roles, no la abstención por miembro |
-| el arnés en vivo por OpenClaw, multi-turno | no corrido — H1 sólo lo midió en el perfil de servidor | repetir el patrón de LIVE-distributor (§7.3) una vez que el usuario elija la lectura de H1 |
+| el arnés en vivo por OpenClaw, multi-turno | no corrido — H1 sólo lo midió en el perfil de servidor | repetir el patrón de LIVE-distributor (§7.3), ahora que la lectura de H1 está elegida (por brazo) |
 | sesiones de más de 2–3 turnos | no medidas — MT0 y H1 se quedan ahí los dos | el dominio de tracker propuesto (tipo Jira/Confluence, workflows más largos) lo mostraría, si se elige — no construido |
 | la caché global entrenada | construida y probada (`opmemory.py`), todavía no adentro de un corpus de entrenamiento | sumarla al corpus de H1 o al del próximo dominio |
 | identidad real (Auth0), WhatsApp, instalación | no construidos | después de lo anterior |

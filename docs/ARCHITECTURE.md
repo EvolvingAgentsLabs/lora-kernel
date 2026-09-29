@@ -141,7 +141,8 @@ tokens) where `history`'s keeps growing (345, 428, 394). The same corpus served 
 never trained without the block. The pre-registered gate required every arm — including that no-block control — to
 clear 90% on first turns; the control's own failure trips the gate and voids the run as written, an instrument
 design error recorded here rather than patched after seeing the result. Read per arm instead, the harness **PASSED**
-and harness-noblock **FALSIFIED**; **the user has not yet chosen which reading stands.** The saving the harness is
+and harness-noblock **FALSIFIED**; **the user's decision (2026-09-29): the per-arm reading stands, the as-written
+VOID kept as the record of that instrument error.** The saving the harness is
 built for — a flat prompt instead of a growing transcript — barely shows over 2–3 turns (the harness pays roughly 2×
 the tokens per turn there, one extra get → call → put round-trip); it is being tested next over longer sessions, on
 a Jira-and-Confluence-like tracker domain (`examples/tracker/`, H2) that is **in construction**, synthetic only, no
@@ -339,7 +340,8 @@ is a harness *inside* each member, not a second adapter composed with a domain o
 `harness.lora`, where composition could not be measured cleanly (P9, P13 **[ran]**). It extends W9's key-addressed
 reading (`<open>id§anchor</open>`) from encyclopedic knowledge to operational memory, and from reading alone to
 reading *and* writing. Whether it beats carrying the conversation is H1 (§2 has the numbers): **PASSED** per arm,
-**VOID** as pre-registered — the user has not chosen which reading stands. Design and open decisions:
+**VOID** as pre-registered — the user's decision (2026-09-29): per arm stands, the as-written VOID kept as the
+record of that instrument error. Design and open decisions:
 [`review/harness-workflow-kv.md`](review/harness-workflow-kv.md); how every piece here connects end to end:
 [`MECHANISMS.md`](MECHANISMS.md).
 

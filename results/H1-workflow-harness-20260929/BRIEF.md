@@ -87,3 +87,9 @@ code is not changed after the result.
 
 **Decision for the user:** whether to accept the per-arm reading as H1's verdict, with the instrument error recorded, or
 keep the VOID and rerun `history` against `harness` alone under the same code (one L4 session).
+
+## The user's decision (2026-09-29): **the per-arm reading stands — `harness` PASSED, `harness-noblock` FALSIFIED**
+
+Offered both readings, the user chose the per-arm one. The as-written VOID is kept above as the record of an instrument
+error: a first-turns rule meant to guard a comparison was applied across arms, so one failing arm voided two passing
+ones. From H2 on, a VOID is per arm (`examples/tracker/session_arm.reading`).

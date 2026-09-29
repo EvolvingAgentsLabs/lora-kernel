@@ -113,7 +113,8 @@ trabajo, no una segunda copia de él. H1 (`results/H1-workflow-harness-20260929/
 contra ella sobre vLLM (una L4): `harness` (con el bloque) alcanzó 53/54 turnos dependientes contra el
 43/54 de history; `harness-noblock` colapsó, por la razón de arriba. Leído por brazo, `harness` PASÓ y
 `harness-noblock` quedó FALSEADO, pero la propia compuerta de la corrida la anula tal como está escrita
-— el usuario todavía no eligió qué lectura vale. **El arnés todavía no corrió en vivo a través de
+— la decisión del usuario (2026-09-29): vale la lectura por brazo, el VOID tal como está escrito queda
+como el registro de ese error del instrumento. **El arnés todavía no corrió en vivo a través de
 OpenClaw**; ver [`OPENCLAW.md`](OPENCLAW.md) para la historia del multi-turno y
 `docs/review/harness-workflow-kv.md` §8 para el resultado completo y el siguiente paso.
 

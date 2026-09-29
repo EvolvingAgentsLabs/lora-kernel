@@ -474,8 +474,9 @@ cada turno dependiente correcto buscó su valor por clave (53/53), y la barra de
 ($\bar p_3 = 710 \le 1{,}1 \times 745$). **`harness-noblock` está FALSEADO** — sin el bloque de
 herramientas renderizado el miembro no llama a ninguna herramienta y declara datos que nunca leyó, porque
 su corpus siempre lo entrenó con el bloque presente; esa mitad de la idea necesitaría su propio corpus, no
-el de esta corrida. **El usuario todavía no eligió qué lectura vale** — este documento declara las dos,
-como se indicó, en vez de elegir una. Diseño y las decisiones detrás de él:
+el de esta corrida. **La decisión del usuario (2026-09-29): vale la lectura por brazo** — `harness` PASÓ,
+`harness-noblock` quedó FALSEADO — y el VOID tal como está escrito queda como el registro de ese error
+del instrumento, no como el veredicto. Diseño y las decisiones detrás de él:
 [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md).
 
 ---
@@ -806,8 +807,9 @@ anotaron los dos 60/60 en exactamente la misma condición. El arreglo no es edit
 re-correrlo contra los mismos datos — eso sería ajustar la compuerta a la respuesta que ya produjo. En
 cambio: el error se escribe en el propio brief, la corrida se lee **por brazo** con el código sin
 modificar, y las dos lecturas que resultan — `harness` **PASÓ**, `harness-noblock` **FALSEADO** — se
-declaran las dos, con la elección de cuál lectura vale para toda la corrida dejada explícitamente al
-usuario, no decidida por quien escriba el próximo documento.
+declaran las dos, con la elección de cuál lectura vale para toda la corrida hecha explícitamente por el
+usuario (2026-09-29: vale la lectura por brazo, el VOID tal como está escrito queda como el registro de
+ese error del instrumento), no decidida por quien escriba el próximo documento.
 
 **Evidencia.** Esto no es un reclamo que necesite su propia corrida — es la disciplina a la que ya estuvo
 sometida cada corrida citada en otra parte de este documento: el arreglo de llamada malformada de P58, la

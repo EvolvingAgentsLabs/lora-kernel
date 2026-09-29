@@ -106,7 +106,8 @@ together: history is the baseline the workflow harness is measured against, not 
 H1 (`results/H1-workflow-harness-20260929/`) scored both against it on vLLM (one L4): `harness` (the
 block kept) reached 53/54 dependent turns against history's 43/54; `harness-noblock` collapsed, for the
 reason above. Read per arm, `harness` PASSED and `harness-noblock` FALSIFIED, but the run's own gate
-voids it as written — the user has not yet chosen which reading stands. **The harness has not been run
+voids it as written — the user's decision (2026-09-29): the per-arm reading stands, the as-written VOID kept
+as the record of that instrument error. **The harness has not been run
 live through OpenClaw**; see [`OPENCLAW.md`](OPENCLAW.md) for the multi-turn story and
 `docs/review/harness-workflow-kv.md` §8 for the full result and the next step.
 
