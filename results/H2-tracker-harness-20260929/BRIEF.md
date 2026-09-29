@@ -53,3 +53,10 @@ over five turns, which is the cost the harness removes.
 
 **Not in this run.** A member trained on the same sessions in history format, the attribution arm, to be bought only if
 H2 passes and the question becomes *memory or training*; OpenClaw live; the global cache across sessions.
+
+**Scoring attempt 1 [ran] 2026-09-29: void, a transport fault; nothing was measured.** Every request of every arm, 420
+turns, came back `HTTP 400` (`h2_attempt1_void_http400.json`, `S_attempt1_void_http400.log`). Every configuration that had
+worked sent at most four stop sequences: the school's largest role has 4 tools, the distributor's harness 2 + `get`/`put`.
+A tracker role sends 5 to 8. `accept_rank.completion` now stops at the generic `</` when a role has more than four closing
+tags and puts the tag back (`close_open_tag`, as for llama.cpp); the error now carries the server's reason; a session with
+a transport error is played again on resume. The member (`tr-s0`) and the verdict are unchanged; scoring reruns.

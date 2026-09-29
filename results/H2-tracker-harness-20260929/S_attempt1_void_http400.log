@@ -1,0 +1,21 @@
+=== session 1 of 2 · srv161437 · L4
+    boot clone: rc=0 5c4dd35 H2 pre-registered: the workflow harness on long tracker sessions
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 5c4dd35 H2 pre-registered: the workflow harness on long tracker sessions
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    5c4dd35 H2 pre-registered: the workflow harness on long tracker sessions | 0.30.0
+    carried the adapters in (3 chunks)
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules tr-s0=adapters/tracker-wf-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules tr-s0=adapters/tracker-wf-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules tr-s0=adapters/tracker-wf-s0
+    [tracker] harness-noblock 60/60 · first 0/0 · dependent 0/0 · independent 0/0 · tokens {}
+    Traceback (most recent call last):
+    ValueError: max() iterable argument is empty
+=== session 2 of 2 · srv163226 · L4
+    boot clone: rc=0 5c4dd35 H2 pre-registered: the workflow harness on long tracker sessions
+    boot clear: rc=0 cleared

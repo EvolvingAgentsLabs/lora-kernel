@@ -59,6 +59,9 @@ def reading(rec: dict) -> dict:
     H = dep("harness")
     r, n = num(s["harness"]["dependent"])
     toks = s["harness"]["prompt_tokens_by_turn"]
+    if not toks or not n:
+        out["reading"] = "VOID: the harness arm scored no turn (every turn a transport error)"
+        return out
     last = max(toks)
     flat = toks[last] <= FLAT * toks[1]
     beats = None
@@ -137,8 +140,8 @@ def main() -> int:
             gen = vllm_generator(member or a.base, tok)
             slot = rec["arms"].setdefault(arm, {})
             for i, s in enumerate(sessions, 1):
-                if s["session_id"] in slot:
-                    continue
+                if s["session_id"] in slot and not any("error" in x for x in slot[s["session_id"]]["turns"]):
+                    continue                                 # resumed: a session with a transport error is played again
                 slot[s["session_id"]] = {"kind": s["kind"], "turns": gs.play(s, gen, **kw)}
                 if i % 10 == 0 or i == len(sessions):
                     save()

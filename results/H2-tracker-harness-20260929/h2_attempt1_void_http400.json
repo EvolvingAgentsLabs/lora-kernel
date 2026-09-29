@@ -1,0 +1,4290 @@
+{
+ "arms": {
+  "base-history": {
+   "tr-eval-970000": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "Can you pull up RD-131?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 1 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: ready for QA",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970001": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Password reset email never arrives",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Bruno.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's on the sprint board?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Show the new bug again.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970002": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Pull up RD-146.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: ready for QA",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970003": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "Can you pull up RD-114?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 1 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Whose component is that?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: verified on staging",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970004": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "We have a new bug: Search misses accented names",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Assign that one to Carla.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's on the sprint board?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Show the new bug again.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970007": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Pull up HW-210.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Put a comment on it: ready for QA",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970008": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of RD-128?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Now move it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Record 2 hours against it.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Leave a note on it: needs a follow-up ticket",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970009": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Login loops on Safari",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Ana.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970010": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Pull up HW-34.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "It works — mark it done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970011": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "Can you pull up RD-10?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Now move it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Record 1 hours against it.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: ready for QA",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970012": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "We have a new bug: Search misses accented names",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Ana.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970013": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Pull up RD-113.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: needs a follow-up ticket",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970014": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of HW-13?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 2 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Leave a note on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970015": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "We have a new bug: Export hangs after 10,000 rows",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Diego.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's our rule for critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's on the sprint board?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Show the new bug again.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970016": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Pull up HW-178.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Put a comment on it: needs a follow-up ticket",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970017": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "Can you pull up HW-160?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 2 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970018": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Invoice PDF shows the wrong total",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Bruno.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's on the sprint board?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970019": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-332.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: needs a follow-up ticket",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970020": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "Can you pull up HW-109?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Now move it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 3 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Whose component is that?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Leave a note on it: needs a follow-up ticket",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970021": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "We have a new bug: Password reset email never arrives",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Ana.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970022": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-264.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: needs a follow-up ticket",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970023": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of RD-208?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 2 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Whose component is that?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: looks good to me",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970024": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "We have a new bug: Password reset email never arrives",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Assign that one to Elena.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970025": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-337.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970026": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of RD-112?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Now move it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Record 3 hours against it.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Whose component is that?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: looks good to me",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970027": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "We have a new bug: Export hangs after 10,000 rows",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Gabriela.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's our rule for critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's on the sprint board?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970030": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-141.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: needs a follow-up ticket",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970031": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "Can you pull up RD-151?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 4 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970032": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Export hangs after 10,000 rows",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Assign that one to Diego.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's on the sprint board?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970033": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-14.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970034": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of RD-133?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Now move it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Record 2 hours against it.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: ready for QA",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970035": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Login loops on Safari",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Ana.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's our rule for critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970036": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see HW-126.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "It works — mark it done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Put a comment on it: ready for QA",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970037": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of RD-120?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Now move it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 2 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Whose component is that?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Leave a note on it: verified on staging",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970038": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Login loops on Safari",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Assign that one to Bruno.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's our rule for critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Show the new bug again.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970039": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-260.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "It works — mark it done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Put a comment on it: verified on staging",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970040": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of HW-121?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Now move it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 2 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Leave a note on it: ready for QA",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970041": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Login loops on Safari",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Assign that one to Bruno.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's our rule for critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Show the new bug again.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970043": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-386.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "It works — mark it done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970044": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of HW-133?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 2 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Whose component is that?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: verified on staging",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970045": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Login loops on Safari",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Assign that one to Irene.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's our rule for critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970047": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Pull up RD-161.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "It works — mark it done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: verified on staging",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970048": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of RD-151?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Record 2 hours against it.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Whose component is that?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: looks good to me",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970049": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Invoice PDF shows the wrong total",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Ana.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's our rule for critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970050": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see HW-154.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970051": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of RD-180?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Record 1 hours against it.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Leave a note on it: looks good to me",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970052": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Search misses accented names",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Assign that one to Elena.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's our rule for critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970053": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Pull up RD-131.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: looks good to me",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970054": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "Can you pull up HW-229?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Now move it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Record 2 hours against it.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Whose component is that?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Leave a note on it: verified on staging",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970055": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Login loops on Safari",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Assign that one to Carla.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970056": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-362.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "It works — mark it done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970057": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of RD-147?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Record 2 hours against it.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Whose component is that?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Leave a note on it: ready for QA",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970058": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "We have a new bug: Search misses accented names",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Diego.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970059": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-172.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "It works — mark it done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Put a comment on it: looks good to me",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970060": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "Can you pull up HW-126?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 3 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: looks good to me",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970061": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Search misses accented names",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Hugo.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's our rule for critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970062": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-201.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "It works — mark it done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: looks good to me",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970063": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "Can you pull up RD-152?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Now move it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 1 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: ready for QA",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970064": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Invoice PDF shows the wrong total",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Carla.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Show the new bug again.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970065": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see HW-344.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   }
+  },
+  "harness": {
+   "tr-eval-970000": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "Can you pull up RD-131?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 1 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: ready for QA",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970001": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Password reset email never arrives",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Bruno.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's on the sprint board?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Show the new bug again.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970002": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Pull up RD-146.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: ready for QA",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970003": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "Can you pull up RD-114?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 1 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Whose component is that?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: verified on staging",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970004": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "We have a new bug: Search misses accented names",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Assign that one to Carla.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's on the sprint board?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Show the new bug again.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970007": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Pull up HW-210.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Put a comment on it: ready for QA",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970008": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of RD-128?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Now move it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Record 2 hours against it.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Leave a note on it: needs a follow-up ticket",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970009": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Login loops on Safari",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Ana.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970010": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Pull up HW-34.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "It works — mark it done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970011": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "Can you pull up RD-10?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Now move it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Record 1 hours against it.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: ready for QA",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970012": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "We have a new bug: Search misses accented names",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Ana.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970013": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Pull up RD-113.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: needs a follow-up ticket",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970014": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of HW-13?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 2 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Leave a note on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970015": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "We have a new bug: Export hangs after 10,000 rows",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Diego.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's our rule for critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's on the sprint board?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Show the new bug again.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970016": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Pull up HW-178.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Put a comment on it: needs a follow-up ticket",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970017": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "Can you pull up HW-160?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 2 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970018": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Invoice PDF shows the wrong total",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Bruno.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's on the sprint board?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970019": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-332.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: needs a follow-up ticket",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970020": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "Can you pull up HW-109?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Now move it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 3 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Whose component is that?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Leave a note on it: needs a follow-up ticket",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970021": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "We have a new bug: Password reset email never arrives",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Ana.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970022": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-264.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: needs a follow-up ticket",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970023": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of RD-208?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 2 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Whose component is that?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: looks good to me",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970024": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "We have a new bug: Password reset email never arrives",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Assign that one to Elena.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970025": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-337.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970026": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of RD-112?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Now move it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Record 3 hours against it.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Whose component is that?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: looks good to me",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970027": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "We have a new bug: Export hangs after 10,000 rows",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Gabriela.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's our rule for critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's on the sprint board?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970030": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-141.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: needs a follow-up ticket",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970031": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "Can you pull up RD-151?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 4 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970032": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Export hangs after 10,000 rows",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Assign that one to Diego.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's on the sprint board?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970033": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-14.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970034": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of RD-133?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Now move it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Record 2 hours against it.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: ready for QA",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970035": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Login loops on Safari",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Ana.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's our rule for critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970036": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see HW-126.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "It works — mark it done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Put a comment on it: ready for QA",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970037": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of RD-120?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Now move it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 2 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Whose component is that?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Leave a note on it: verified on staging",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970038": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Login loops on Safari",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Assign that one to Bruno.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's our rule for critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Show the new bug again.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970039": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-260.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "It works — mark it done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Put a comment on it: verified on staging",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970040": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of HW-121?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Now move it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 2 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Leave a note on it: ready for QA",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970041": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Login loops on Safari",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Assign that one to Bruno.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's our rule for critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Show the new bug again.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970043": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-386.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "It works — mark it done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970044": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of HW-133?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 2 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Whose component is that?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: verified on staging",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970045": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Login loops on Safari",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Assign that one to Irene.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's our rule for critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970047": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Pull up RD-161.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "It works — mark it done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: verified on staging",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970048": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of RD-151?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Record 2 hours against it.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Whose component is that?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: looks good to me",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970049": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Invoice PDF shows the wrong total",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Ana.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's our rule for critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970050": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see HW-154.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970051": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of RD-180?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Record 1 hours against it.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Leave a note on it: looks good to me",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970052": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Search misses accented names",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Assign that one to Elena.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's our rule for critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970053": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Pull up RD-131.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: looks good to me",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970054": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "Can you pull up HW-229?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Now move it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Record 2 hours against it.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Whose component is that?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Leave a note on it: verified on staging",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970055": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Login loops on Safari",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Assign that one to Carla.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970056": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-362.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "It works — mark it done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970057": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of RD-147?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Record 2 hours against it.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Whose component is that?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Leave a note on it: ready for QA",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970058": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "We have a new bug: Search misses accented names",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Diego.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970059": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-172.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "It works — mark it done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Put a comment on it: looks good to me",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970060": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "Can you pull up HW-126?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 3 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: looks good to me",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970061": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Search misses accented names",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Hugo.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's our rule for critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970062": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-201.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "It works — mark it done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: looks good to me",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970063": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "Can you pull up RD-152?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Now move it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 1 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: ready for QA",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970064": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Invoice PDF shows the wrong total",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Carla.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Show the new bug again.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970065": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see HW-344.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   }
+  },
+  "harness-noblock": {
+   "tr-eval-970000": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "Can you pull up RD-131?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 1 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: ready for QA",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970001": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Password reset email never arrives",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Bruno.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's on the sprint board?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Show the new bug again.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970002": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Pull up RD-146.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: ready for QA",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970003": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "Can you pull up RD-114?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 1 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Whose component is that?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: verified on staging",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970004": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "We have a new bug: Search misses accented names",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Assign that one to Carla.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's on the sprint board?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Show the new bug again.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970007": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Pull up HW-210.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Put a comment on it: ready for QA",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970008": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of RD-128?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Now move it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Record 2 hours against it.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Leave a note on it: needs a follow-up ticket",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970009": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Login loops on Safari",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Ana.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970010": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Pull up HW-34.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "It works — mark it done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970011": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "Can you pull up RD-10?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Now move it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Record 1 hours against it.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: ready for QA",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970012": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "We have a new bug: Search misses accented names",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Ana.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970013": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Pull up RD-113.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: needs a follow-up ticket",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970014": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of HW-13?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 2 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Leave a note on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970015": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "We have a new bug: Export hangs after 10,000 rows",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Diego.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's our rule for critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's on the sprint board?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Show the new bug again.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970016": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Pull up HW-178.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Put a comment on it: needs a follow-up ticket",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970017": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "Can you pull up HW-160?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 2 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970018": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Invoice PDF shows the wrong total",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Bruno.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's on the sprint board?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970019": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-332.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: needs a follow-up ticket",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970020": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "Can you pull up HW-109?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Now move it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 3 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Whose component is that?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Leave a note on it: needs a follow-up ticket",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970021": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "We have a new bug: Password reset email never arrives",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Ana.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970022": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-264.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: needs a follow-up ticket",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970023": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of RD-208?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 2 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Whose component is that?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: looks good to me",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970024": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "We have a new bug: Password reset email never arrives",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Assign that one to Elena.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970025": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-337.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970026": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of RD-112?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Now move it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Record 3 hours against it.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Whose component is that?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: looks good to me",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970027": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "We have a new bug: Export hangs after 10,000 rows",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Gabriela.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's our rule for critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's on the sprint board?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970030": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-141.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: needs a follow-up ticket",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970031": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "Can you pull up RD-151?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 4 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970032": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Export hangs after 10,000 rows",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Assign that one to Diego.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's on the sprint board?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970033": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-14.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970034": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of RD-133?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Now move it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Record 2 hours against it.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: ready for QA",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970035": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Login loops on Safari",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Ana.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's our rule for critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970036": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see HW-126.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "It works — mark it done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Put a comment on it: ready for QA",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970037": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of RD-120?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Now move it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 2 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Whose component is that?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Leave a note on it: verified on staging",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970038": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Login loops on Safari",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Assign that one to Bruno.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's our rule for critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Show the new bug again.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970039": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-260.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "It works — mark it done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Put a comment on it: verified on staging",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970040": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of HW-121?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Now move it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 2 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Leave a note on it: ready for QA",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970041": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Login loops on Safari",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Assign that one to Bruno.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's our rule for critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Show the new bug again.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970043": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-386.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "It works — mark it done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970044": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of HW-133?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 2 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Whose component is that?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: verified on staging",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970045": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Login loops on Safari",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Assign that one to Irene.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's our rule for critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970047": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Pull up RD-161.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "It works — mark it done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: verified on staging",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970048": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of RD-151?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Record 2 hours against it.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Whose component is that?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: looks good to me",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970049": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Invoice PDF shows the wrong total",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Ana.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's our rule for critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970050": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see HW-154.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970051": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of RD-180?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Record 1 hours against it.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Leave a note on it: looks good to me",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970052": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Search misses accented names",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Assign that one to Elena.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's our rule for critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970053": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Pull up RD-131.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Where do tests have to pass before done?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: looks good to me",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970054": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "Can you pull up HW-229?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Now move it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Record 2 hours against it.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Whose component is that?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Leave a note on it: verified on staging",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970055": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Login loops on Safari",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Assign that one to Carla.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970056": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-362.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "It works — mark it done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970057": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "What's the state of RD-147?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Record 2 hours against it.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Whose component is that?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Leave a note on it: ready for QA",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970058": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "We have a new bug: Search misses accented names",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Diego.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970059": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-172.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "It works — mark it done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Put a comment on it: looks good to me",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970060": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "Can you pull up HW-126?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Please change it to in progress.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 3 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: looks good to me",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970061": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Search misses accented names",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Hugo.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's our rule for critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Pull up the bug you created.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970062": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see RD-201.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "It works — mark it done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: looks good to me",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970063": {
+    "kind": "developer",
+    "turns": [
+     {
+      "request": "Can you pull up RD-152?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Now move it to in review.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "I spent 1 hours on it, log that.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Who is the owner of its component?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Write this on it: ready for QA",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970064": {
+    "kind": "lead",
+    "turns": [
+     {
+      "request": "File a bug: Invoice PDF shows the wrong total",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Hand it to Carla.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What does the policy say about critical bugs?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Give me the sprint status.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Show the new bug again.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   },
+   "tr-eval-970065": {
+    "kind": "qa",
+    "turns": [
+     {
+      "request": "Let me see HW-344.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Looks good, close it as done.",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "What's the done rule for tests?",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     },
+     {
+      "request": "Note on it: tested with a large account",
+      "error": "<HTTPError 400: 'Bad Request'>"
+     }
+    ]
+   }
+  }
+ },
+ "G1": {
+  "probed": 3,
+  "empty": 0,
+  "differs": 2,
+  "applied": true,
+  "samples": [
+   {
+    "base": "The sky appears blue because of a phenomenon called Rayleigh",
+    "member": "The sky appears blue because of a phenomenon called Rayleigh"
+   },
+   {
+    "base": "Here are three things a careful reader checks before answeri",
+    "member": "Here are three things a careful reader checks before answeri"
+   },
+   {
+    "base": "A pressure drop in a pipe depends on the fluid's properties,",
+    "member": "A pressure drop in a pipe depends on the fluid's properties,"
+   }
+  ]
+ }
+}

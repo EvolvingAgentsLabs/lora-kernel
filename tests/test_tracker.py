@@ -116,3 +116,26 @@ def test_h2_reading_voids_per_arm_and_needs_accuracy_a_pair_and_flatness():
     assert sa.reading(rec)["reading"].startswith("FALSIFIED")
     rec["arms"]["harness"] = arm(30)
     assert sa.reading(rec)["reading"].startswith("FALSIFIED")
+
+
+def test_more_closing_tags_than_the_server_takes_stop_at_the_generic_close(monkeypatch):
+    """vLLM 0.30 refused every request with more than 4 stop sequences [ran] H2 attempt 1: the request stops at "</" and
+    the tag the text is inside of is put back."""
+    from training.harness import accept_rank as ar
+    sent = {}
+
+    def post(path, body, timeout=300):
+        sent.update(body)
+        return {"choices": [{"text": "<issue_get>RD-12</", "finish_reason": "stop"}]}
+    monkeypatch.setattr(ar, "post", post)
+    close = tuple(f"</{n}>" for n in ("issue_get", "issue_search", "issue_transition", "issue_comment", "worklog_add", "get"))
+    assert ar.completion("m", "p", 40, close) == "<issue_get>RD-12</issue_get>" and sent["stop"] == ["</"]
+    few = close[:3]
+    monkeypatch.setattr(ar, "post", lambda path, body, timeout=300: sent.update(body) or {"choices": [{"text": "Done.", "finish_reason": "stop"}]})
+    assert ar.completion("m", "p", 40, few) == "Done." and sent["stop"] == list(few)
+
+
+def test_a_run_of_transport_errors_reads_void_not_a_crash():
+    from examples.tracker import session_arm as sa
+    err = {"s0": {"kind": "developer", "turns": [{"request": "x", "error": "HTTP 400"}]}}
+    assert sa.reading({"arms": {"harness": err, "base-history": err}})["reading"].startswith("VOID")
