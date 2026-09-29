@@ -535,16 +535,47 @@ a shared protocol adapter composed with a domain one is what `harness.lora` trie
 composition could not be measured cleanly. Teaching the same habit inside each member's own corpus is a different bet
 on the same idea, not a retry of the one that failed.
 
-**What H1 will measure.** `results/H1-workflow-harness-20260929` (**pre-registered, running — no result yet**) trains
-a member on MT0's corpus plus harness turns and compares three arms on MT0's own 60 sessions: `history` (the baseline
-above), `harness` (the one-line context, tool block kept) and `harness-noblock` (the same, without restating the
-tools in the prompt — testing whether the member knows them well enough not to need reminding). It passes only if the
-harness loses no more than 3 of the 54 dependent turns `history` gets right, keeps prompt tokens flat as the session
-grows (turn 3 no more than 1.1× turn 1, where `history` keeps climbing), holds first turns at 90% or better, and — the
-check this design adds — every dependent turn answered right also fetched its value from the right key, not from a
-lucky guess. Design and open decisions: [`review/harness-workflow-kv.md`](review/harness-workflow-kv.md). Until H1
-lands, whether a LoRA can operate a workflow's keys the way it navigates a library is a claim under test, not a
-result.
+**What H1 measured, and what it shows. [ran]** `results/H1-workflow-harness-20260929` trained a member (`wf-s0`) on
+MT0's corpus plus 627 harness turns and compared three arms on MT0's own 60 sessions: `history` (the baseline above),
+`harness` (the one-line context, tool block kept) and `harness-noblock` (the same, without restating the tools in the
+prompt). **`harness`: 53 of 54 dependent turns, against `history`'s 43/54** (1 lost, 11 gained), prompt tokens flat by
+turn position, and — the check this design adds — every right dependent turn fetched its value from the right key,
+53 of 53. **`harness-noblock`: 0 of 60.**
+
+*Why fetching by key fixes what history could not.* §7.4's MT0 result split on how a reference reaches the reply: a
+copied reference resolves through history, a reference the model has to **compose into free text** does not (a claim
+about "that order" filed with no order number, 8 of 10). `<get>order</get>` removes that step entirely — the order
+number enters the call as the value the store returns, not as something the model has to notice in the transcript
+and retype. Customer-service claims, MT0's worst case (2/10 with history), go to **10/10** under the harness, and
+every one names the order it fetched. The mechanism is not "the model got better at reading history"; it is that
+reading history is no longer the path the value travels on.
+
+*Why the no-block arm falls to zero, not to something worse than `history`.* `harness-noblock` never saw its own
+tools left undescribed **in training** — its corpus, like every corpus in this repository, always carried the tool
+block. Removing the block at serving time is not a harder version of the same task; it is a different prompt from
+the one the member was shown, and the member does what an expert always does off its corpus (§7.2, §8.6): it calls
+nothing and states data it never read. **A corpus teaches the prompt it is served, not a prompt it might later be
+served.** This is the same lesson as E5's pruning result and P59's "an unknown surface is extrapolation," now on the
+harness's own tool block rather than a runtime's.
+
+*Why the token count is higher, in these short sessions.* Per turn, `harness` reads roughly **2× the prompt tokens**
+of `history` on turn 1 (745 against 345, §8.9 FOUNDATIONS) — not because the context line is longer than a short
+transcript, but because answering now takes more **generation steps**: get → tool call → put → answer, where
+`history` writes the answer directly. That cost is real and is not hidden; what is not yet measured is how much of
+it prefix caching would absorb, since the get/call/put scaffold recurs turn to turn the way §3.6's shared prefix
+does. The harness's token argument is about **growth**, not about the per-turn floor: `history`'s prompt keeps
+climbing with the session (§8.9), the harness's does not — and that advantage only shows up once sessions run longer
+than MT0's two or three turns.
+
+*The lesson about VOID, independent of either number.* The brief's stopping rule — first turns at 90% or better in
+every arm, or the run is VOID — was written to catch one failure (a broken harness that also breaks what already
+worked) and instead caught a different one: an arm that was never going to pass on tools it was not trained to use.
+Applied literally across three arms, one failing arm's 0% first-turn score voids the other two arms' real results.
+**Read as written, H1 is VOID; read per arm, `harness` PASSED and `harness-noblock` FALSIFIED — a VOID rule bought to
+guard a whole run has to be checked per arm, or a result that stands on its own is thrown out with one that does
+not.** The user has not chosen which reading stands, and this guide states both, not a merge of them. Design and
+open decisions: [`review/harness-workflow-kv.md`](review/harness-workflow-kv.md); the mechanism behind
+`<get>`/`<put>` and the state line is in [`MECHANISMS.md`](MECHANISMS.md).
 
 ---
 
@@ -627,9 +658,9 @@ happened to us last week).
 | the model still makes things up | 3 of 12 answers caught by the filter | a corpus that teaches it to repeat only what the tool says |
 | the memory (library) inside a serving member | lives in `distributor-wiki@v2`, a separate member from the abstaining `out-s0` (M10) | merge them, or keep them apart by design — not yet decided |
 | a vLLM bf16 live run of the distributor | not run — the only local arm measured is llama.cpp Q8_0 (LIVE-distributor) | run it once a same-precision comparison against the edge is needed |
-| H1's result (the workflow harness) | **pre-registered, running** [ran] — no result yet | read the run before claiming the harness holds; release the member only if it passes |
+| H1's result (the workflow harness) | **[ran] — split by reading.** Per arm: `harness` PASSED (53/54 vs 43/54, every right turn fetched by key); `harness-noblock` FALSIFIED (0/60). As written: **VOID** — the brief's first-turns rule voids across arms, an instrument error, recorded | the user chooses which reading stands, or a rerun with a per-arm VOID rule; either way, release the member only once that choice is made |
 | a router inside the gateway's own path | not built — the role is still the route (§7.2) | build only once cross-role routing, not per-member abstention, is the open half |
-| the harness live through OpenClaw, multi-turn | not run — H1 first measures it on the server profile | repeat LIVE-distributor's pattern (§7.3) once H1 passes |
+| the harness live through OpenClaw, multi-turn | not run — H1 measured it on the server profile only | repeat LIVE-distributor's pattern (§7.3) once the user picks H1's reading |
 | sessions longer than 2–3 turns | not measured — MT0 and H1 both stop there | the proposed tracker domain (Jira/Confluence-like, longer workflows) would show it, if picked — not built |
 | the global cache trained on | built and tested (`opmemory.py`), not yet inside a training corpus | fold into H1's corpus or the next domain's |
 | real identity (Auth0), WhatsApp, installation | not built | after the above |

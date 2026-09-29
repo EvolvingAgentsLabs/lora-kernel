@@ -306,19 +306,30 @@ into an argument (receiving 10/10, returns 10/10, purchasing 9/10, dispatch 12/1
 resolve one that has to be written into free text** — a claim about "that order" is filed with no order
 number in 8 of 10 customer-service turns.
 
-**The harness this design is built to replace `history=True` with — designed, H1 running, no result
-yet.** Instead of the conversation, `Gateway(memory=, workflows=)` (`examples/common/opmemory.py`,
+**The harness this design is built to replace `history=True` with — H1 has a result, read two ways.**
+Instead of the conversation, `Gateway(memory=, workflows=)` (`examples/common/opmemory.py`,
 [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md)) renders one context line — the
 role's workflow state and the **names** of the keys a session's cache holds — and the member fetches
 and stores values by key (`<get>`/`<put>`) only in the step that needs them, closing exactly the
 failure `history=True` leaves open: a claim that needs the order number gets it from the cache, not
-from the model's own reading of the transcript. `results/H1-workflow-harness-20260929/` is
-pre-registered and **running — do not read a verdict here, none exists yet.**
+from the model's own reading of the transcript. `results/H1-workflow-harness-20260929/` scored two
+arms against `history` on MT0's 60 held-out sessions: `harness` (the tool block kept) reached **53/54**
+dependent turns against history's 43/54, naming the order fetched by key in all 10 customer-service
+claims (history: 2/10), with every right dependent turn fetched by key (53/53) and a flat prompt
+(745/726/710 tokens across turns 1–3, against history's 345/428/394); `harness-noblock` (the same,
+without the tool block) scored **0/60** — its corpus always had the block, so removing it at test time
+left the member calling nothing and stating data it never read. **As written the run is VOID**: the
+brief's gate voids an arm whose first turns fall under 90%, and applied across arms that lets
+`harness-noblock`'s collapse void the whole run — an instrument error, recorded, not fixed after the
+fact. **Read per arm, `harness` PASSED and `harness-noblock` FALSIFIED. The user has not yet chosen
+which reading stands — both are stated here.** See [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md)
+§8 for the full table and the next step (a longer-session domain, H2).
 
-**Nothing about a live multi-turn run through OpenClaw exists yet.** Every live run on this page —
-school 15/15, distributor 6/6 — is single-turn: one request, one reply, no earlier turn to resolve. A
-live multi-turn demo is the last step of the order in `docs/review/harness-workflow-kv.md` §7, after H1
-passes.
+**H1 ran on vLLM (one L4), not through OpenClaw, and nothing about a live multi-turn run through
+OpenClaw exists yet.** Every live run on this page — school 15/15, distributor 6/6 — is single-turn:
+one request, one reply, no earlier turn to resolve. A live multi-turn demo, through OpenClaw, is the
+last step of the order in `docs/review/harness-workflow-kv.md` §7, once the user has chosen which of
+H1's two readings stands.
 
 ## What this is worth, measured
 

@@ -580,6 +580,20 @@ This is the same division the library draws between content and navigation (§3 
 [`KNOWLEDGE-TRAJECTORIES.md`](KNOWLEDGE-TRAJECTORIES.md)), one level up: the operational memory holds a
 conversation's live values, the library holds a subdomain's standing knowledge, and in both cases **the
 weights hold only the route to a key**, never the value behind it. Design and the decisions taken with
-it are in [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md); it is **built and
-tested at zero GPU — not yet trained on** (H1, running, `results/H1-workflow-harness-20260929/`, no
-result yet).
+it are in [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md); it is now **trained on
+and scored** (H1, `results/H1-workflow-harness-20260929/`, on vLLM). Against MT0's `history` baseline
+on 60 held-out sessions, `harness` (the tool block kept) reaches **53/54** dependent turns (history
+43/54), names the order fetched by key in all 10 customer-service claims (history 2/10), and every
+right dependent turn fetched its value by key (53/53), with a flat prompt across turns (745/726/710
+tokens against history's 345/428/394 — in these short sessions the harness spends roughly 2× the
+per-turn tokens of a single reply, since a `get`/call/`put` cycle costs more generation steps than an
+answer alone; prefix caching would reuse most of it, not measured; the token *advantage* belongs to
+longer sessions). `harness-noblock` (the same, without the tool block) reaches **0/60**: its corpus
+always had the block, so removing it at evaluation time left the member calling no tool and stating
+data it never read — the fix is a corpus that drops the block in part of its rows, not attempted here.
+**Read as written, the run is VOID**: its own first-turns-≥-90%-or-void gate, applied across arms, lets
+`harness-noblock`'s collapse void the whole run — an instrument design error, recorded, the code not
+changed after the result. **Read per arm, `harness` PASSED and `harness-noblock` FALSIFIED. The user
+has not yet chosen which reading stands.** Next, pending that choice: a Jira + Confluence-like domain
+(`examples/tracker/`, in construction) for sessions long enough that the token saving would show (H2).
+See [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §8.

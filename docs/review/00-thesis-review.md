@@ -129,8 +129,12 @@ four decisions the user approved in
 other half this section did not yet have: a short-term operational memory, read and written by key, so
 a member reads one context line (`state: <workflow>/<state> · keys: <names>`) instead of the
 conversation. What this section called "declared, versionable" is the hand-written half; **H1**
-(`results/H1-workflow-harness-20260929/`, running, no result yet) tests the half that has to be
-*learned* — whether a member trained on it actually reads and writes the right key at the right step.
+(`results/H1-workflow-harness-20260929/`) tests the half that has to be *learned* — whether a member
+trained on it actually reads and writes the right key at the right step. It has a result, read two
+ways: `harness` (tool block kept) 53/54 dependent turns against `history`'s 43/54, every one fetched by
+key; `harness-noblock` 0/60, because its corpus always had the block. Read per arm, `harness` PASSED
+and `harness-noblock` FALSIFIED; the run's own gate voids it as written, and the user has not yet
+chosen which reading stands — see [`harness-workflow-kv.md`](harness-workflow-kv.md) §8.
 
 ---
 
