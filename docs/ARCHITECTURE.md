@@ -318,14 +318,9 @@ every note through exactly that.
 benchmark it lost to lexical search, and `evolving-memory`'s dual index changed nothing **[read]** —
 or that compressing the radar to a small dimension costs nothing. Both are arms with a flat baseline.
 
-> **[ILLUSTRATION PLACEHOLDER — `docs/img/operational-memory.png`, 1200 × 627 (like `article-harness.png`)]**
-> *Two panels side by side, in the style of `article-harness.png`. LEFT, "the conversation in the prompt": a
-> specialist at a desk reads a paper scroll that gets visibly longer turn after turn (three turn markers on it);
-> they fill in a claim form whose field "order" is left EMPTY, the sentence "the seal on that order was broken"
-> copied as is. Counter: "43 / 54". RIGHT, "the keys in a memory": the same specialist reads only a small index
-> card, "state: customer_service/order_known · keys: order"; a drawer labelled "order = 58" is pulled open; the
-> claim form reads "order 58: the seal on that order was broken". Counter: "53 / 54". Title over the image: "Carry
-> the keys, not the conversation." No robots, no brains.*
+![Two panels. Left, the conversation in the prompt: a scroll growing turn after turn and a claim form whose order field is empty, 43 of 54. Right, the keys in a memory: one index card with the state and the key names, a drawer opened on order 58, and the claim form filled with it, 53 of 54. Title: carry the keys, not the conversation.](img/operational-memory.png)
+
+*H1: fetching a value by key fixes what reading the history lost — the claim now names the order.*
 
 **Beside the library, not instead of it.** The library above holds knowledge — encyclopedic and operational — that a
 member navigates by key: content that changes rarely, edited by a person rather than by the conversation. The

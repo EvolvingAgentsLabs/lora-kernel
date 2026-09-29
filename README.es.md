@@ -150,11 +150,9 @@ recitan el valor viejo sólo 1 vez de 40 — evidencia de lo que esta afirmació
 se aprendió la ruta, no el hecho
 ([`results/W7-edit-after-training-20260927/`](results/W7-edit-after-training-20260927/BRIEF.md)).
 
-> **[MARCADOR DE ILUSTRACIÓN — `docs/img/operational-memory.png`, 1200 × 627 (like `article-harness.png`)]**
-> *Dos paneles. IZQUIERDA, "la conversación en el prompt": un rollo que se alarga turno a turno y un formulario de
-> reclamo con el campo "order" VACÍO; contador "43 / 54". DERECHA, "las claves en una memoria": sólo una ficha
-> "state: customer_service/order_known · keys: order", un cajón abierto "order = 58" y el reclamo "order 58: the
-> seal on that order was broken"; contador "53 / 54". Título: "Carry the keys, not the conversation."*
+![Dos paneles. Izquierda, la conversación en el prompt: un rollo que crece turno a turno y un formulario de reclamo con el campo de pedido vacío, 43 de 54. Derecha, las claves en una memoria: una ficha con el estado y los nombres de claves, un cajón abierto en el pedido 58 y el reclamo completado con él, 53 de 54. Título: llevar las claves, no la conversación.](docs/img/operational-memory.png)
+
+*H1: traer un valor por clave arregla lo que leer el historial perdía — el reclamo ahora nombra el pedido.*
 
 **Memoria operativa de corto plazo, junto a la biblioteca — construida, [ran] en tests, todavía sin
 entrenar** (`examples/common/opmemory.py`). La biblioteca de arriba es lo que un experto *sabe*;
@@ -205,14 +203,9 @@ construyendo un dominio de seguimiento tipo Jira y Confluence (`examples/tracker
 
 ## El camino del pedido
 
-> **[MARCADOR DE ILUSTRACIÓN — `docs/img/request-path.png`, wide, ~1600 px]**
-> *Un flujo limpio de izquierda a derecha, SIETE estaciones en una línea: agente; gateway con credencial firmada;
-> NUEVA — memoria operativa: una sola ficha "state: receiving/assigned · keys: order" que entra al experto, dos
-> cajones "session" y "organisation" y un dial "estado del flujo — lo mueven las llamadas que corrieron"; el experto
-> del rol, con flechas `get` y `put` hacia los cajones; herramientas con el permiso de la credencial (un registro
-> ajeno rechazado, un pago retenido); anclaje (una línea inventada tachada); respuesta. Rama punteada "fuera de
-> alcance" a la frontera y a una persona; banda de log debajo. LO CENTRAL: al experto no llega la conversación, sólo
-> la ficha y los cajones.*
+![Una línea de siete estaciones: un agente; el gateway que lee una credencial firmada; la memoria operativa — una ficha (estado y nombres de claves) y dos cajones, sesión y organización, con un dial de flujo; el experto local chico del rol, que busca y guarda por clave; herramientas con el permiso de la credencial, un registro rechazado y un pago retenido; una hoja con una línea inventada tachada; la respuesta. Una rama punteada para lo que está fuera de alcance lleva a un edificio lejano y a una persona; una banda de log corre debajo de todo.](docs/img/request-path.png)
+
+*El camino del pedido: el experto lee una ficha y las claves que necesita, nunca la conversación; permiso, retenciones y anclaje son del gateway.*
 
 ```mermaid
 flowchart LR
