@@ -673,14 +673,9 @@ space with this router, and does not serve it yet.
 
 ## 15. Runtimes: server and edge
 
-> **[ILLUSTRATION PLACEHOLDER — `docs/img/runtimes.png`, wide, ~1600 px]**
-> *Two halves, one horizontal diagram, house style. LEFT, "server — measure and train, many users": a rented graphics
-> card in a small cloud, drawn as a bookshelf with one thick spine ("one resident model — vLLM") and FOUR thin
-> coloured spines ("school", "school upper", "distributor", "distributor abstains"); 32 small arrows arrive from
-> many users. A tag: "four adapters mixed in one batch — no contention". RIGHT, "edge — serve on your own machine":
-> a laptop, one user, a single thin spine being swapped for another with a small clock reading "3 ms"; a tag
-> "llama.cpp · 8-bit". A thin dashed line from the laptop to a distant building, "frontier — only what no tool
-> covers". Between the halves, a small bench with a notebook, "MLX — the research bench".*
+![Two halves. Left, server: a rented graphics card in a cloud with one thick spine and four thin adapter spines, many users arriving, four adapters in one batch with no contention. Right, edge: a laptop with one user and one thin spine swapped in three milliseconds, llama.cpp at 8 bits, a dashed line to the frontier. Between them, a small bench: MLX, the research bench.](img/runtimes.png)
+
+*Two runtimes: vLLM on a rented card to measure, train and serve many; llama.cpp on your own machine to serve one.*
 
 **What.** Two serving profiles, named explicitly by the user's decision (2026-09-28), for two different
 jobs: **`server`** is where every measurement and every training run in this repository happens;

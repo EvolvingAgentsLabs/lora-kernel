@@ -731,12 +731,9 @@ compartir su espacio de embeddings con este router, y todavía no lo sirve.
 
 ## 15. Runtimes: server y edge
 
-> **[MARCADOR DE ILUSTRACIÓN — `docs/img/runtimes.png`, wide, ~1600 px]**
-> *Dos mitades. IZQUIERDA, "server — medir y entrenar, muchos usuarios": una placa alquilada en una nube, un lomo
-> grueso (vLLM) y CUATRO lomos finos de adaptadores, 32 flechas de usuarios, "cuatro adaptadores en un lote — sin
-> contención". DERECHA, "edge — servir en la máquina propia": una notebook, un usuario, un lomo que se cambia en "3
-> ms", "llama.cpp · 8 bits", una línea punteada a la frontera. En el medio, un banco con un cuaderno: "MLX — banco
-> de investigación".*
+![Dos mitades. Izquierda, server: una placa alquilada en una nube con un lomo grueso y cuatro lomos finos de adaptadores, muchos usuarios, cuatro adaptadores en un lote sin contención. Derecha, edge: una notebook con un usuario y un lomo fino que se cambia en tres milisegundos, llama.cpp en 8 bits, una línea punteada a la frontera. En el medio, un banco chico: MLX, el banco de investigación.](../img/runtimes.png)
+
+*Dos runtimes: vLLM en una placa alquilada para medir, entrenar y servir a muchos; llama.cpp en tu propia máquina para servir a uno.*
 
 **Qué.** Dos perfiles de servido, nombrados explícitamente por la decisión del usuario (2026-09-28), para
 dos trabajos distintos: **`server`** es donde pasa cada medición y cada corrida de entrenamiento de este
