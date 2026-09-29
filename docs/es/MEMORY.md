@@ -557,6 +557,12 @@ región a un procedimiento sobre el que el experto nunca entrenó.
 
 ## 11. La memoria operativa de corto plazo — al lado de la biblioteca (diseño del usuario, 2026-09-29)
 
+> **[MARCADOR DE ILUSTRACIÓN — `docs/img/operational-memory.png`, 1200 × 627 (like `article-harness.png`)]**
+> *Dos paneles. IZQUIERDA, "la conversación en el prompt": un rollo que se alarga turno a turno y un formulario de
+> reclamo con el campo "order" VACÍO; contador "43 / 54". DERECHA, "las claves en una memoria": sólo una ficha
+> "state: customer_service/order_known · keys: order", un cajón abierto "order = 58" y el reclamo "order 58: the
+> seal on that order was broken"; contador "53 / 54". Título: "Carry the keys, not the conversation."*
+
 Las cinco piezas de arriba son la **biblioteca**: markdown que el experto de un subdominio navega,
 enciclopédico u operativo, guardado en git y leído por clave (§1.6). Un miembro de flujo de trabajo
 necesita un segundo tipo de memoria que la biblioteca no guarda: **el estado vivo de una conversación**

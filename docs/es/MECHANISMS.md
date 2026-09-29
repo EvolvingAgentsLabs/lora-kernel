@@ -9,6 +9,12 @@ medido **[ran]** con su directorio de corrida, o, honestamente, su estado si tod
 [`ARCHITECTURE.md`](../ARCHITECTURE.md) es el mapa del sistema entero; este documento son las dieciocho
 cosas de ese mapa, una por una.
 
+> **[MARCADOR DE ILUSTRACIÓN — `docs/img/mechanisms-map.png`, tall, ~1200 × 1600]**
+> *Un mapa de subte: la línea principal es el camino de un pedido (agente, identidad, gateway, memoria operativa,
+> flujo, experto, herramientas, aprobaciones, anclaje, respuesta), con ramales a la frontera, a la biblioteca y al
+> router; depósitos "server" y "edge"; un desvío "decodificación especulativa"; cada estación con su número de
+> sección §1–§17.*
+
 ## Contenido
 
 1. [El camino de un pedido, de punta a punta](#1-el-camino-de-un-pedido-de-punta-a-punta)
@@ -683,6 +689,13 @@ compartir su espacio de embeddings con este router, y todavía no lo sirve.
 ---
 
 ## 15. Runtimes: server y edge
+
+> **[MARCADOR DE ILUSTRACIÓN — `docs/img/runtimes.png`, wide, ~1600 px]**
+> *Dos mitades. IZQUIERDA, "server — medir y entrenar, muchos usuarios": una placa alquilada en una nube, un lomo
+> grueso (vLLM) y CUATRO lomos finos de adaptadores, 32 flechas de usuarios, "cuatro adaptadores en un lote — sin
+> contención". DERECHA, "edge — servir en la máquina propia": una notebook, un usuario, un lomo que se cambia en "3
+> ms", "llama.cpp · 8 bits", una línea punteada a la frontera. En el medio, un banco con un cuaderno: "MLX — banco
+> de investigación".*
 
 **Qué.** Dos perfiles de servido, nombrados explícitamente por la decisión del usuario (2026-09-28), para
 dos trabajos distintos: **`server`** es donde pasa cada medición y cada corrida de entrenamiento de este

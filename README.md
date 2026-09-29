@@ -139,6 +139,15 @@ patching one statement in the library after training (W7): the member follows th
 only 1 time in 40 — evidence for what this claim actually rests on: the route was learned, not the
 fact ([`results/W7-edit-after-training-20260927/`](results/W7-edit-after-training-20260927/BRIEF.md)).
 
+> **[ILLUSTRATION PLACEHOLDER — `docs/img/operational-memory.png`, 1200 × 627 (like `article-harness.png`)]**
+> *Two panels side by side, in the style of `article-harness.png`. LEFT, "the conversation in the prompt": a
+> specialist at a desk reads a paper scroll that gets visibly longer turn after turn (three turn markers on it);
+> they fill in a claim form whose field "order" is left EMPTY, the sentence "the seal on that order was broken"
+> copied as is. Counter: "43 / 54". RIGHT, "the keys in a memory": the same specialist reads only a small index
+> card, "state: customer_service/order_known · keys: order"; a drawer labelled "order = 58" is pulled open; the
+> claim form reads "order 58: the seal on that order was broken". Counter: "53 / 54". Title over the image: "Carry
+> the keys, not the conversation." No robots, no brains.*
+
 **Short-term operational memory, next to the library — built, [ran] in tests, not yet trained on**
 (`examples/common/opmemory.py`). The library above is what an expert *knows*; this is where a
 workflow keeps its *live* state: a session cache keyed by (organisation, user, session) and a
@@ -183,9 +192,20 @@ built for that case (H2) — **in construction, no results yet**
 
 ## The request path
 
-![One line of six stations: an agent; the gateway reading a signed badge; the role's small local expert; tools run with the badge's permission, one record refused and a payment held; a sheet with an invented line crossed out; the answer. A dashed branch for out of scope leads to a distant building and to a person; a log band runs under everything.](docs/img/request-path.png)
-
-*The path of a request: identity from a token, permission in the tools, a person for payments, and no line shown that a tool did not return.*
+> **[ILLUSTRATION PLACEHOLDER — `docs/img/request-path.png`, wide, ~1600 px]**
+> *A clean left-to-right flow in the house style, SEVEN stations on one line. 1 "agent — one per role (OpenClaw)". 2
+> "gateway — signed token → user · role · organisation", a small turnstile reading a badge. 3 NEW: "operational
+> memory" — a single index card fed into the next station, reading "state: receiving/assigned · keys: order", and
+> beside it two small drawers, "session" and "organisation", with a dial above them labelled "workflow state — moved
+> by the calls that ran". 4 "the role's expert — one small local model + its adapter", a desk with a thin coloured
+> spine leaning on a thick one; two short arrows go from the desk to the drawers, labelled `get` and `put`. 5
+> "tools, with the badge's permission": two small insets — a red stamp across a folder, "another organisation's
+> record — refused", and a paper clip holding a slip, "payment — held for a director". 6 "grounding — every line of
+> the reply must be in a tool's result": a sheet with one line crossed out, "invented". 7 "answer". From station 4 a
+> dashed branch, "out of scope", splits in two: one runs to a distant building, "frontier", the other to a person at
+> a desk, "staff". Under the whole line, a thin band: "log → dashboard: served here · sent on · held · replaced".
+> THE POINT: the conversation is NOT carried to the expert — only the one card and the drawers are. Labels in
+> English; spell every word correctly.*
 
 ```mermaid
 flowchart LR
@@ -365,6 +385,17 @@ serving now has two profiles: `server` is vLLM on Colab (every measurement and e
 
 ---
 
+> **[ILLUSTRATION PLACEHOLDER — `docs/img/tracker-domain.png`, wide, ~1600 px]**
+> *One wide diagram, house style. TOP LEFT, a kanban board with five columns — "To Do", "In Progress", "In Review",
+> "QA", "Done" — and small cards keyed "RD-169", "RD-313", "RD-354"; a bug card enters through a narrow gate
+> "Triage". A small stamp on an arrow that jumps two columns: "not allowed — the workflow refuses it". TOP RIGHT, a
+> shelf of wiki pages: "definition of done", "component owners", "release process", "bug policy", each page a list
+> of one-sentence slips. BOTTOM, a five-station session line for one developer: "show me RD-169" → "move it to
+> review" → "log 2 hours on it" → "who owns its component?" → "comment: ready for QA"; above each of stations 2–5 a
+> small drawer "issue" being opened (`get`), and at station 4 a second drawer "component" and a line to the
+> "component owners" page. Three roles as small silhouettes: "developer", "lead", "qa". Leave room in the bottom-
+> right corner for a counter to be added when H2 has its result.*
+
 ## Run it
 
 ```bash
@@ -386,6 +417,15 @@ Serving the pool to an agent, the proxy's flags and the substrate gate:
 reason: `--prune` (its own tool surface — serving OpenClaw's full 54-tool block instead costs 16.8×
 time-to-first-token and drops accuracy from 70/70 to 39/70, [E5](results/E5-engine-baseline-20260928/BRIEF.md)),
 `--member-prompt` (the prompt its corpus taught), `--auto` (the client names no model).
+
+> **[ILLUSTRATION PLACEHOLDER — `docs/img/runtimes.png`, wide, ~1600 px]**
+> *Two halves, one horizontal diagram, house style. LEFT, "server — measure and train, many users": a rented graphics
+> card in a small cloud, drawn as a bookshelf with one thick spine ("one resident model — vLLM") and FOUR thin
+> coloured spines ("school", "school upper", "distributor", "distributor abstains"); 32 small arrows arrive from
+> many users. A tag: "four adapters mixed in one batch — no contention". RIGHT, "edge — serve on your own machine":
+> a laptop, one user, a single thin spine being swapped for another with a small clock reading "3 ms"; a tag
+> "llama.cpp · 8-bit". A thin dashed line from the laptop to a distant building, "frontier — only what no tool
+> covers". Between the halves, a small bench with a notebook, "MLX — the research bench".*
 
 **Running a member on your own machine — the `edge` profile, no GPU rented:**
 

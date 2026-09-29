@@ -8,6 +8,14 @@ the run that forced the design, not a preference — and its **evidence**: a mea
 with its run directory, or, honestly, its status if nothing has measured it yet. [`ARCHITECTURE.md`](ARCHITECTURE.md)
 is the map of the whole system; this document is the eighteen things on it, one at a time.
 
+> **[ILLUSTRATION PLACEHOLDER — `docs/img/mechanisms-map.png`, tall, ~1200 × 1600]**
+> *A subway map in the house style: one main line, "a request's path", with stations in order — agent, identity,
+> gateway, operational memory, workflow, expert (LoRA), tool layer, approvals, grounding, answer — and branch lines:
+> "out of scope → frontier / person", "library (pages of statements)", "router". Two depots at the edges: "server
+> (vLLM, Colab)" and "edge (llama.cpp, your machine)"; a siding "speculative decoding". A legend strip at the
+> bottom: "corpora and gates · release gate · measurement discipline". Each station labelled with its section number
+> in MECHANISMS.md (§1–§17).*
+
 ## Contents
 
 1. [The request path end to end](#1-the-request-path-end-to-end)
@@ -629,6 +637,15 @@ space with this router, and does not serve it yet.
 ---
 
 ## 15. Runtimes: server and edge
+
+> **[ILLUSTRATION PLACEHOLDER — `docs/img/runtimes.png`, wide, ~1600 px]**
+> *Two halves, one horizontal diagram, house style. LEFT, "server — measure and train, many users": a rented graphics
+> card in a small cloud, drawn as a bookshelf with one thick spine ("one resident model — vLLM") and FOUR thin
+> coloured spines ("school", "school upper", "distributor", "distributor abstains"); 32 small arrows arrive from
+> many users. A tag: "four adapters mixed in one batch — no contention". RIGHT, "edge — serve on your own machine":
+> a laptop, one user, a single thin spine being swapped for another with a small clock reading "3 ms"; a tag
+> "llama.cpp · 8-bit". A thin dashed line from the laptop to a distant building, "frontier — only what no tool
+> covers". Between the halves, a small bench with a notebook, "MLX — the research bench".*
 
 **What.** Two serving profiles, named explicitly by the user's decision (2026-09-28), for two different
 jobs: **`server`** is where every measurement and every training run in this repository happens;
