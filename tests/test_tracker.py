@@ -87,3 +87,32 @@ def test_a_long_session_through_the_gateway_carries_the_issue_by_key():
     assert all(e["calls"][0] == {"tool": "get", "args": {"body": "issue"}, "result": k} for e in events[1:])
     assert "status in_review" in tools.issue_get(conn, mock_auth.issue_claim("developer-riverdev"), k)
     assert events[2]["calls"][1]["result"].startswith(f"logged 2h on {k}")
+
+
+def test_the_long_session_suite_is_the_gated_one_and_the_oracle_solves_it_both_ways():
+    import json
+    from pathlib import Path
+    from examples.tracker import generate_sessions as gs
+    g = json.loads(Path("examples/tracker/data_sessions/gate.json").read_text())
+    assert g["passed"] and g["turns"]["eval_dependent"] >= 150
+    sess = [json.loads(l) for l in Path("examples/tracker/data_sessions/eval.jsonl").read_text().splitlines()][:6]
+    for s in sess:
+        for block in (True, False):
+            assert all(t["right"] for t in gs.play(s, gs.harness_oracle(s), harness=True, tool_block=block)), (s["kind"], block)
+    h = json.loads(Path("examples/tracker/data_sessions/gate_harness.json").read_text())
+    assert h["rows_without_tool_block"] >= h["rows"] // 4 and h["rows_with_get"] > 500
+
+
+def test_h2_reading_voids_per_arm_and_needs_accuracy_a_pair_and_flatness():
+    from examples.tracker import session_arm as sa
+
+    def arm(right, first=True, p5=500):
+        return {f"s{j}": {"kind": "developer", "turns": [{"right": first, "depends": False, "prompt_tokens": 500, "calls": []}] +
+                          [{"right": j < right, "depends": True, "prompt_tokens": p5, "calls": []} for _ in range(4)]} for j in range(40)}
+    rec = {"arms": {"base-history": arm(10), "harness": arm(38), "harness-noblock": arm(0, first=False)}}
+    r = sa.reading(rec)
+    assert r["void_arms"] == ["harness-noblock"] and r["reading"].startswith("PASSED") and r["noblock"]["reading"].startswith("VOID")
+    rec["arms"]["harness"] = arm(38, p5=700)
+    assert sa.reading(rec)["reading"].startswith("FALSIFIED")
+    rec["arms"]["harness"] = arm(30)
+    assert sa.reading(rec)["reading"].startswith("FALSIFIED")

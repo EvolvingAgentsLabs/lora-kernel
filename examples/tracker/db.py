@@ -59,7 +59,8 @@ def world(seed: int, path: str = ":memory:") -> sqlite3.Connection:
     for i, (org, name, prefix) in enumerate(ORGS):
         conn.execute("insert into orgs values (?, ?, ?)", (org, name, prefix))
         other = ORGS[1 - i][0]
-        names = r.sample([f"{f} {l}" for f in FIRST for l in LAST], 6)
+        # first names unique within a team: "assign it to Ana" must name one person (the gate's first run found two Anas)
+        names = [f"{f} {r.choice(LAST)}" for f in r.sample(FIRST, 6)]
         for n, role in zip(names, ["developer", "developer", "developer", "lead", "qa", "qa"]):
             conn.execute("insert into people (org_id, name, role) values (?, ?, ?)", (org, n, role))
         sprint_no = r.randint(8, 30)

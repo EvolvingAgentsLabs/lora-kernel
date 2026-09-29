@@ -1,0 +1,6 @@
+{
+ "rows": 1400,
+ "rows_without_tool_block": 400,
+ "rows_with_get": 800,
+ "rows_with_put": 300
+}
