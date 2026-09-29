@@ -1,0 +1,22 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules out-s0=adapters/distributor-staff-out-s0 wf-s0=adapters/distributor-staff-wf-s0
+[session] G1 {'out-s0': True, 'wf-s0': True}
+[session] history 10/60 · first 10/10 · dependent 7/9 · independent 1/1 · tokens {1: 346, 2: 431}
+[session] history 20/60 · first 20/20 · dependent 14/18 · independent 3/3 · tokens {1: 343, 2: 425, 3: 461}
+[session] history 30/60 · first 30/30 · dependent 22/27 · independent 5/5 · tokens {1: 345, 2: 428, 3: 456}
+[session] history 40/60 · first 40/40 · dependent 29/36 · independent 6/6 · tokens {1: 345, 2: 428, 3: 456}
+[session] history 50/60 · first 50/50 · dependent 36/45 · independent 8/8 · tokens {1: 344, 2: 427, 3: 455}
+[session] history 60/60 · first 60/60 · dependent 43/54 · independent 10/10 · tokens {1: 345, 2: 428, 3: 394}
+[session] harness 10/60 · first 10/10 · dependent 8/9 · independent 1/1 · tokens {1: 766, 2: 744}
+[session] harness 20/60 · first 20/20 · dependent 17/18 · independent 3/3 · tokens {1: 746, 2: 728, 3: 710}
+[session] harness 30/60 · first 30/30 · dependent 26/27 · independent 5/5 · tokens {1: 745, 2: 726, 3: 710}
+[session] harness 40/60 · first 40/40 · dependent 35/36 · independent 6/6 · tokens {1: 750, 2: 730, 3: 710}
+[session] harness 50/60 · first 50/50 · dependent 44/45 · independent 8/8 · tokens {1: 745, 2: 727, 3: 710}
+[session] harness 60/60 · first 60/60 · dependent 53/54 · independent 10/10 · tokens {1: 745, 2: 726, 3: 710}
+[session] harness-noblock 10/60 · first 0/10 · dependent 0/9 · independent 0/1 · tokens {1: 225, 2: 179}
+[session] harness-noblock 20/60 · first 0/20 · dependent 0/18 · independent 0/3 · tokens {1: 231, 2: 134, 3: 83}
+[session] harness-noblock 30/60 · first 0/30 · dependent 0/27 · independent 0/5 · tokens {1: 207, 2: 119, 3: 84}
+[session] harness-noblock 40/60 · first 0/40 · dependent 0/36 · independent 0/6 · tokens {1: 229, 2: 112, 3: 84}
+[session] harness-noblock 50/60 · first 0/50 · dependent 0/45 · independent 0/8 · tokens {1: 256, 2: 107, 3: 83}
+[session] harness-noblock 60/60 · first 0/60 · dependent 0/54 · independent 0/10 · tokens {1: 251, 2: 119, 3: 82}
+[session] VOID: harness-noblock gets 0/60 first turns
