@@ -1,0 +1,11 @@
+# customer service: an order is looked up, and a claim about it may be filed
+[workflow]
+name = "customer_service"
+initial = "start"
+keys = ["order"]
+[states.start]
+on = { order_status = "order_known", claim_create = "claim_filed" }
+[states.order_known]
+on = { order_status = "order_known", claim_create = "claim_filed" }
+[states.claim_filed]
+on = { order_status = "order_known", claim_create = "claim_filed" }

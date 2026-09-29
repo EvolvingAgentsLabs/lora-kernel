@@ -290,6 +290,36 @@ to **Claude Haiku 4.5**: 10,198 + 195 tokens, **$0.0112**
 live, on the same gateway shape: the school on a rented card, the distributor on nothing but the
 user's own Mac.
 
+### Multi-turn through the gateway — `history=True` today, the workflow harness next
+
+**The gateway used to drop the conversation.** Every turn above reads `runtime_request` — the person's
+last message, pulled out of OpenClaw's own envelope — and nothing earlier: "move it to dock 5" arrived
+with no "it" to resolve. **OpenClaw itself already sends the whole conversation** on every turn, in
+that same envelope; the gap was the gateway discarding everything but the last message, not the client
+withholding it.
+
+`Gateway(history=True)` renders every earlier request and reply before the current one — the naive way
+to carry a conversation, and the arm it is measured against **[ran]** `results/MT0-multiturn-baseline-20260929/`:
+`out-s0` on 60 held-out distributor sessions (124 turns, 54 whose argument comes only from an earlier
+turn). Without history, 4/54; with it, **43/54 (79.6 %)**. It resolves a reference it can copy straight
+into an argument (receiving 10/10, returns 10/10, purchasing 9/10, dispatch 12/14); **it does not
+resolve one that has to be written into free text** — a claim about "that order" is filed with no order
+number in 8 of 10 customer-service turns.
+
+**The harness this design is built to replace `history=True` with — designed, H1 running, no result
+yet.** Instead of the conversation, `Gateway(memory=, workflows=)` (`examples/common/opmemory.py`,
+[`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md)) renders one context line — the
+role's workflow state and the **names** of the keys a session's cache holds — and the member fetches
+and stores values by key (`<get>`/`<put>`) only in the step that needs them, closing exactly the
+failure `history=True` leaves open: a claim that needs the order number gets it from the cache, not
+from the model's own reading of the transcript. `results/H1-workflow-harness-20260929/` is
+pre-registered and **running — do not read a verdict here, none exists yet.**
+
+**Nothing about a live multi-turn run through OpenClaw exists yet.** Every live run on this page —
+school 15/15, distributor 6/6 — is single-turn: one request, one reply, no earlier turn to resolve. A
+live multi-turn demo is the last step of the order in `docs/review/harness-workflow-kv.md` §7, after H1
+passes.
+
 ## What this is worth, measured
 
 | | delivered | leaves the machine |

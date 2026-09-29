@@ -126,6 +126,21 @@ accidente. Las dos organizaciones difieren a propósito, no por omisión: el mie
 no declarada en el system prompt — y sus escrituras corren sin aprobación de un director, una decisión de política de
 esa organización y sus roles, no un hueco en el mecanismo de aprobaciones de arriba.
 
+**El gateway lleva el estado de una sesión, no su transcripción — diseñado, H1 corriendo.** La corrección ingenua
+para multi-turno es `Gateway(history=True)`: repetir la conversación para que una referencia a un turno anterior
+("llevalo al andén 5") tenga a qué referirse. **[ran] MT0** (`results/MT0-multiturn-baseline-20260929`, 60 sesiones
+held-out de la distribuidora, 124 turnos, 54 dependientes de un turno anterior) lo mide: sin la conversación, 4 de 54
+turnos dependientes se resuelven — los turnos independientes de la historia puntúan 60 de 60 en los dos brazos, así
+que la brecha es específica de lo que depende de un turno anterior, no una regresión general. Con la conversación, 43
+de 54 (79,6 %), al borde del margen que da esta corrección: resuelve una referencia copiada directo a un argumento
+(recepción 10/10, devoluciones 10/10, compras 9/10, despacho 12/14) pero no una escrita en texto libre — un reclamo
+sobre "ese pedido" se archiva sin el número de pedido 8 de 10 veces (atención al cliente 2/10) — y los tokens siguen
+creciendo con la sesión (+24 % en el turno 2). La alternativa en diseño, `Gateway(memory=, workflows=, tool_block=)`,
+reemplaza la transcripción por una línea — `state: <workflow>/<state> · keys: <nombres>` — respaldada por la memoria
+operativa (§4). **H1** (`results/H1-workflow-harness-20260929`, pre-registrado, corriendo — sin resultado todavía) es
+la medición de si un miembro entrenado sostiene las 43 respuestas correctas de `history` mientras mantiene los tokens
+planos.
+
 **La abstención vive en el corpus, por miembro, no en un segundo modelo delante. [ran] M10:** el miembro de la
 distribuidora se entrena sobre `train_out` — sus 700 turnos habituales byte a byte, más 70 turnos `OUT OF SCOPE`
 sacados de la propia política de salida del rol. Contra el miembro sin ellos, nada de lo ya aprendido retrocede (0 de
@@ -169,6 +184,14 @@ grande + LoRA le gana al chico + LoRA donde el chico tiene margen?) y después u
 
 **Dónde corre.** El pool chico se sirve desde una sola L4. La mitad grande, `gemma-4-12B-it`, se sirve en bf16
 desde una A100 (B3, B4) y está dimensionada para una Mac mini; ~~un 27B es trabajo de A100 en 4 bits~~.
+
+**Una sola L4 sirve a varios miembros a la vez sin contención. [ran] C1** (`results/C1-concurrency-20260929`, vLLM
+0.30, cuatro miembros mezclados — `school-s0`, `upper-s0`, `staff-s0`, `out-s0`): 16 sesiones repartidas entre los
+cuatro adapters llegan a 278,6 tok/s contra 269,7 tok/s de las mismas 16 sesiones sobre un solo adapter (1,03×); 32
+sesiones entre los cuatro llegan a 504 tok/s, TTFT p95 0,24 s, 0 errores de 128 pedidos; el rendimiento escala casi
+linealmente de una sesión a 32 (22,7 → 135 → 270 → 500 tok/s), con el techo todavía por encima de 32. Esto reemplaza
+la lectura de una sola ráfaga de E5, 0,88 — ese número valía al límite de una ráfaga de 16, no a la escala que
+producen varias sesiones concurrentes de verdad.
 
 **Dos perfiles de runtime nombran esta división explícitamente, decisión del usuario del 2026-09-28.** **`server`** es
 vLLM en Colab — toda corrida de entrenamiento y toda medición, el par incluido. **`edge`** es **llama.cpp en la propia
@@ -293,6 +316,32 @@ M7 brazo 0b — y la memoria entrega cada nota exactamente por ese canal.
 workspace le perdió a la búsqueda léxica en un benchmark anterior, y el índice dual de
 `evolving-memory` no cambió nada **[read]** — o que comprimir el radar a una dimensión chica no
 cueste nada. Los dos son brazos con una línea base plana.
+
+**Al lado de la biblioteca, no en su lugar.** La biblioteca de arriba guarda conocimiento — enciclopédico y
+operativo — que un miembro navega por clave: contenido que cambia poco, editado por una persona y no por la
+conversación. La **memoria operativa** guarda lo contrario: el estado vivo de un workflow o de una conversación, que
+cambia cada turno y muere cuando el gateway se cierra. Las dos se leen por clave; los pesos guardan la ruta a cada
+una, nunca el contenido de ninguna.
+
+**La memoria operativa — construida [ran] en tests, todavía no entrenada** (`examples/common/opmemory.py`): una
+caché de SESIÓN indexada por (organización, usuario, sesión) y una caché GLOBAL por organización (`global.<clave>`),
+servida por la capa de herramientas igual que cualquier herramienta del dominio y acotada por la misma credencial
+firmada que ya mantiene las filas de un tenant fuera del alcance de otro (§2) — ninguna clave cruza una organización
+ni un usuario. Las claves se validan, los valores están topeados en 500 caracteres, cada escritura queda registrada.
+Los workflows están declarados, no son neuronales — un archivo TOML por rol
+(`examples/distributor/workflows/*.toml`, seis roles, dos o tres estados cada uno) — y el estado avanza sólo con las
+llamadas que la capa de herramientas realmente corrió; el modelo nunca lo fija, y sólo lo lee en la línea de contexto
+del §2.
+
+**El arnés de workflow es la parte aprendida del miembro en esto — diseñado, H1 corriendo.** Lo que se entrena no es
+la caché, que queda fuera de los pesos igual que la biblioteca, sino el *hábito* de operarla: para su dominio, los
+workflows como máquinas de estado, sus herramientas y cómo llamarlas, y las claves bajo las que vive el contexto de
+una sesión — un solo corpus, adentro del miembro, de la misma forma en que un miembro ya aprende su bloque de
+herramientas y las rutas de su biblioteca. Es un arnés *adentro* de cada miembro, no un segundo adaptador compuesto
+con uno de dominio — que es lo que dejó parado a `harness.lora`, donde la composición no se pudo medir limpiamente
+(P9, P13 **[ran]**). Extiende la lectura direccionada por clave de W9 (`<open>id§anchor</open>`) del conocimiento
+enciclopédico a la memoria operativa, y de sólo leer a leer *y* escribir. Diseño y decisiones abiertas:
+[`review/harness-workflow-kv.md`](../review/harness-workflow-kv.md).
 
 ## 5. El contrato de liberación
 

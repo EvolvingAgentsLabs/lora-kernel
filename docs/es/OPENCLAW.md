@@ -301,6 +301,38 @@ formal (sin archivo de release) — es el brazo que usó esta corrida en vivo. L
 diagrama de referencia ahora corren en vivo, sobre la misma forma de gateway: la escuela en una
 tarjeta alquilada, la distribuidora sin nada más que la propia Mac del usuario.
 
+### Multi-turno a través del gateway — hoy `history=True`, después el arnés de flujos de trabajo
+
+**El gateway solía descartar la conversación.** Todos los turnos de arriba leen `runtime_request` — el
+último mensaje de la persona, extraído del sobre propio de OpenClaw — y nada anterior: "muévelo al
+muelle 5" llegaba sin "lo" que resolver. **OpenClaw ya envía toda la conversación** en cada turno, en
+ese mismo sobre; el hueco era el gateway descartando todo menos el último mensaje, no el cliente
+reteniéndolo.
+
+`Gateway(history=True)` renderiza cada pedido y respuesta anterior antes del actual — la manera
+ingenua de cargar una conversación, y el brazo contra el que se mide **[ran]**
+`results/MT0-multiturn-baseline-20260929/`: `out-s0` sobre 60 sesiones retenidas de la distribuidora
+(124 turnos, 54 cuyo argumento viene sólo de un turno anterior). Sin history, 4/54; con ella,
+**43/54 (79,6 %)**. Resuelve una referencia que puede copiar directo a un argumento (recepción 10/10,
+devoluciones 10/10, compras 9/10, despacho 12/14); **no resuelve una que tiene que escribirse en texto
+libre** — un reclamo sobre "ese pedido" se archiva sin número de pedido en 8 de 10 turnos de atención
+al cliente.
+
+**El arnés que este diseño busca poner en el lugar de `history=True` — diseñado, H1 corriendo, sin
+resultado todavía.** En vez de la conversación, `Gateway(memory=, workflows=)`
+(`examples/common/opmemory.py`, [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md))
+renderiza una línea de contexto — el estado del flujo de trabajo del rol y los **nombres** de las
+claves que guarda la caché de una sesión — y el miembro busca y guarda valores por clave
+(`<get>`/`<put>`) sólo en el paso que los necesita, cerrando exactamente la falla que `history=True`
+deja abierta: un reclamo que necesita el número de pedido lo obtiene de la caché, no de la lectura
+propia del modelo sobre la transcripción. `results/H1-workflow-harness-20260929/` está
+pre-registrado y **corriendo — no leer un veredicto acá, no existe ninguno todavía.**
+
+**No existe todavía ninguna corrida multi-turno en vivo a través de OpenClaw.** Toda corrida en vivo de
+esta página — escuela 15/15, distribuidora 6/6 — es de un solo turno: un pedido, una respuesta, ningún
+turno anterior que resolver. Una demo multi-turno en vivo es el último paso del orden en
+`docs/review/harness-workflow-kv.md` §7, después de que H1 pase.
+
 ## Cuánto vale esto, medido
 
 | | entrega | sale de la máquina |

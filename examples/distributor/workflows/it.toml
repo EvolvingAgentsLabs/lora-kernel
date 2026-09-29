@@ -1,0 +1,9 @@
+# it: a maintenance ticket is filed, and the open ones may be listed
+[workflow]
+name = "it"
+initial = "start"
+keys = ["ticket_area"]
+[states.start]
+on = { maintenance_create = "ticket_filed", maintenance_list = "start" }
+[states.ticket_filed]
+on = { maintenance_create = "ticket_filed", maintenance_list = "ticket_filed" }

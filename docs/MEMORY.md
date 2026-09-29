@@ -547,3 +547,39 @@ own. Served inline: **90 of 90**, 79 : 0 paired, no evaluated case in its corpus
 what it reads, when it reads it the way it was taught**, and this memory delivers everything through
 exactly that channel. What remains unproven is the claim itself — W5: that a library extends the
 region to a procedure the expert never trained on.
+
+## 11. The short-term operational memory — beside the library (the user's design, 2026-09-29)
+
+The five pieces above are the **library**: markdown a subdomain's expert navigates, encyclopedic or
+operational, held in git and read by key (§1.6). A workflow member needs a second kind of memory the
+library does not hold: **the live state of one conversation** — an order id the person named two turns
+ago, a dock number just assigned — which is not a fact about the subdomain, only about this session.
+
+**Why.** Without the conversation the member cannot resolve such a reference at all — 4 of 54 dependent
+turns on a held-out distributor suite; carrying the whole conversation in the prompt
+(`Gateway(history=True)`) resolves 43 of 54, but loses exactly the reference that has to be *written*,
+not copied — a claim about "that order" filed with no order number, 8 of 10 times **[ran]** MT0
+(`results/MT0-multiturn-baseline-20260929/`). Growing the prompt with every turn is also the wrong
+shape for the library's own design goal: a flat context regardless of how long the session runs.
+
+**The short-term operational memory** (`examples/common/opmemory.py`) answers both problems the way the
+library answers navigation — by key, never by re-reading everything. A **session cache**, keyed by
+(organisation, user, session), and a **global cache**, one per organisation (`global.<key>`), served by
+the tool layer exactly like any other tool: bounded by the signed claim, so a key never crosses an
+organisation or a user; keys validated; values capped at 500 characters; every write logged. It is **in
+memory and dies with the gateway** — short-term by design, never a system of record.
+
+A **workflow** (`examples/<org>/workflows/*.toml`) is the state machine a role's tasks move through —
+states, the calls that move between them, the keys the workflow uses — declared, not neural, advanced
+by the calls the tool layer *ran*, never set by the model. Per turn the member reads one line instead of
+the conversation: `state: <workflow>/<state> · keys: <names>` — the state and the key **names**, never
+their values — and fetches or stores a value only in the step that needs it: `<get>order</get>`,
+`<put>dock=5</put>`.
+
+This is the same division the library draws between content and navigation (§3 of
+[`KNOWLEDGE-TRAJECTORIES.md`](KNOWLEDGE-TRAJECTORIES.md)), one level up: the operational memory holds a
+conversation's live values, the library holds a subdomain's standing knowledge, and in both cases **the
+weights hold only the route to a key**, never the value behind it. Design and the decisions taken with
+it are in [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md); it is **built and
+tested at zero GPU — not yet trained on** (H1, running, `results/H1-workflow-harness-20260929/`, no
+result yet).

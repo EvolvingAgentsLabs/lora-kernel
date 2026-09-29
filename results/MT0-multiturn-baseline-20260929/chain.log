@@ -1,0 +1,32 @@
+=== session 1 of 2 · srv112049 · L4
+    boot clone: rc=0 6ef6b4e MT0 pre-registered: the multi-turn baseline before the workflow harness
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 22bfb47 harness design: Spanish mirror; the inline formula survives GitHub's renderer
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    22bfb47 harness design: Spanish mirror; the inline formula survives GitHub's renderer | 0.30.0
+    carried the adapters in (3 chunks)
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules out-s0=adapters/distributor-staff-out-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules out-s0=adapters/distributor-staff-out-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules out-s0=adapters/distributor-staff-out-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules out-s0=adapters/distributor-staff-out-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules out-s0=adapters/distributor-staff-out-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules out-s0=adapters/distributor-staff-out-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules out-s0=adapters/distributor-staff-out-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules out-s0=adapters/distributor-staff-out-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules out-s0=adapters/distributor-staff-out-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules out-s0=adapters/distributor-staff-out-s0
+    [session] G1 out-s0: applied
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules out-s0=adapters/distributor-staff-out-s0
+    [session] G1 out-s0: applied
+    [session] last 10/60 · first 10/10 · dependent 2/9 · independent 1/1 · tokens {1: 346, 2: 410}
+    [session] last 10/60 · first 10/10 · dependent 2/9 · independent 1/1 · tokens {1: 346, 2: 410}
+    [session] last 20/60 · first 20/20 · dependent 3/18 · independent 3/3 · tokens {1: 343, 2: 390, 3: 302}
+    [session] last 30/60 · first 30/30 · dependent 3/27 · independent 5/5 · tokens {1: 345, 2: 375, 3: 303}
+    the runner wrote its result — done
+=== already decided — no further sessions
+exit 0

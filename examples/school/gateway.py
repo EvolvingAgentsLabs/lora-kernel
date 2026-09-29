@@ -77,6 +77,19 @@ _STAMP = re.compile(r"^\[[A-Z][a-z]{2} \d{4}-\d{2}-\d{2} \d{2}:\d{2}[^\]]*\]\s*"
 _RUNTIME_FOOTER = re.compile(r"\n+Runtime: agent=.*\Z", re.S)
 
 
+def earlier_turns(messages: list[dict]) -> list[dict]:
+    """The conversation before the person's last request, as plain chat turns: each earlier request read the way
+    `runtime_request` reads the last one, each assistant reply as it was shown. Tool blocks are not repeated."""
+    last = max((i for i, m in enumerate(messages) if m.get("role") == "user" and runtime_request([m])), default=None)
+    out = []
+    for m in messages[:last] if last is not None else []:
+        if m.get("role") == "user" and (text := runtime_request([m])):
+            out.append({"role": "user", "content": text})
+        elif m.get("role") == "assistant" and (text := _text(m.get("content")).strip()):
+            out.append({"role": "assistant", "content": text})
+    return out
+
+
 def runtime_request(messages: list[dict]) -> str:
     """The person's request, out of what a live runtime sends. OpenClaw [ran] 2026-09-26 appends a user message of its
     own internal context AFTER the request, stamps the request `[Sat 2026-09-26 20:41 GMT-3] …` and may add a
@@ -91,16 +104,26 @@ def runtime_request(messages: list[dict]) -> str:
 
 
 class Gateway:
-    def __init__(self, conn, generate, frontier=None, log_path=None, max_calls: int = 4, org: str = "school"):
+    def __init__(self, conn, generate, frontier=None, log_path=None, max_calls: int = 4, org: str = "school",
+                 history: bool = False, memory=None, workflows: dict | None = None, tool_block: bool = True):
         """`generate(system, user) -> (gen(prefix) -> text, used() -> {prompt_tokens, completion_tokens})`."""
         self.conn, self.generate, self.frontier, self.log_path, self.max_calls = conn, generate, frontier, log_path, max_calls
+        # HISTORY (MT0, 2026-09-29): by default a turn sees only the person's last request — every earlier turn is
+        # dropped, so "move it to dock 5" has no "it". `history=True` renders the earlier requests and replies before
+        # it, the naive multi-turn baseline the workflow harness is measured against (docs/review/harness-workflow-kv.md).
+        self.history = history
+        # THE WORKFLOW HARNESS (docs/review/harness-workflow-kv.md): with `memory` (opmemory.OpMemory) a turn reads one
+        # context line — the role's workflow state and the key NAMES of its session and organisation caches — and the
+        # member fetches and stores values with `get` / `put`; `workflows` maps a role to its declared state machine.
+        self.memory, self.workflows = memory, workflows or {}
+        self.tool_block = tool_block          # H1's `harness-noblock`: the member is trusted to know its tools
         self.org, mods = org, org_modules(org)
         self.roles, self.tools = mods["roles"], mods["tools"]
         self.queue = approvals.Queue() if ORGS[org]["approvals"] else None
         self.handoffs, self.events, self.lock = [], [], threading.Lock()
 
     # ------------------------------------------------------------------ one request
-    def turn(self, token: str, messages: list[dict], model: str = "auto") -> dict:
+    def turn(self, token: str, messages: list[dict], model: str = "auto", session: str | None = None) -> dict:
         from training.harness.accept_rank import run_chain
         from training.harness.openai_proxy import render_tools
         t0 = time.time()
@@ -113,12 +136,21 @@ class Gateway:
             raise Denied(f"no agent role {claim.role!r} in this {self.org}")
         request = runtime_request(messages)
         schema = [t for t in self.tools.SCHEMA if t["function"]["name"] in role["tools"]]
-        user = render_tools([{"role": "user", "content": request}], schema)[-1]["content"]
-        suite = ToolSuite(self.conn, claim, role["tools"], self.tools, self.queue)
+        names, session = list(role["tools"]), session or claim.user_id
+        workflow = self.workflows.get(claim.role)
+        if self.memory is not None:
+            from examples.common import opmemory
+            names, schema = names + list(opmemory.VERBS), schema + opmemory.SCHEMA
+            request = f"{opmemory.context_line(self.memory, claim, session, workflow)}\n{request}"
+        user = render_tools([{"role": "user", "content": request}], schema)[-1]["content"] if self.tool_block else request
+        suite = ToolSuite(self.conn, claim, names, self.tools, self.queue, memory=self.memory, session=session)
         system = f"{role['system_prompt']} {SCOPE}" if ORGS[self.org]["scope"] else role["system_prompt"]
-        gen, used = self.generate(system, user, suite.close)
+        earlier = earlier_turns(messages) if self.history else []
+        gen, used = (self.generate(system, user, suite.close, history=earlier) if earlier
+                     else self.generate(system, user, suite.close))
         chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
         final = (chain["spans"][-1]["text"] if chain["spans"] else "").strip()
+        state = workflow.advance(self.memory, claim, session, suite.calls) if (self.memory is not None and workflow) else None
         route, reply = "local", final
         if OUT in final.upper():
             if role["egress"] == "frontier":
@@ -140,7 +172,8 @@ class Gateway:
             reply = grounding_mod.redact(reply)
         ev = {"at": time.strftime("%Y-%m-%dT%H:%M:%S"), "user": claim.user_id, "role": claim.role, "org": claim.org_id,
               "route": route, "grounding": grounding, "calls": suite.calls, "denied": sum("denied" in c for c in suite.calls),
-              "held": sum("held" in c for c in suite.calls), "latency_s": round(time.time() - t0, 2), **used()}
+              "held": sum("held" in c for c in suite.calls), "latency_s": round(time.time() - t0, 2),
+              **({"session": session, "state": state} if self.memory is not None else {}), **used()}
         with self.lock:
             self.events.append(ev)
             if self.log_path:
@@ -191,8 +224,8 @@ def vllm_generator(model: str, tok, max_tokens: int = 160):
     """`Gateway`'s `generate`, over an OpenAI-compatible completions server (vLLM, or the fake)."""
     from training.harness.accept_rank import completion
 
-    def generate(system: str, user: str, close: tuple):
-        head = tok.apply_chat_template([{"role": "system", "content": system}, {"role": "user", "content": user}],
+    def generate(system: str, user: str, close: tuple, history: list[dict] | None = None):
+        head = tok.apply_chat_template([{"role": "system", "content": system}, *(history or []), {"role": "user", "content": user}],
                                        tokenize=False, add_generation_prompt=True, enable_thinking=False)
         used = {"prompt_tokens": 0, "completion_tokens": 0}
 

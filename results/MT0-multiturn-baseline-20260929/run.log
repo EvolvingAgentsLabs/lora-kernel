@@ -1,0 +1,16 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules out-s0=adapters/distributor-staff-out-s0
+[session] G1 out-s0: applied
+[session] last 10/60 · first 10/10 · dependent 2/9 · independent 1/1 · tokens {1: 346, 2: 410}
+[session] last 20/60 · first 20/20 · dependent 3/18 · independent 3/3 · tokens {1: 343, 2: 390, 3: 302}
+[session] last 30/60 · first 30/30 · dependent 3/27 · independent 5/5 · tokens {1: 345, 2: 375, 3: 303}
+[session] last 40/60 · first 40/40 · dependent 3/36 · independent 6/6 · tokens {1: 345, 2: 375, 3: 303}
+[session] last 50/60 · first 50/50 · dependent 4/45 · independent 8/8 · tokens {1: 344, 2: 375, 3: 303}
+[session] last 60/60 · first 60/60 · dependent 4/54 · independent 10/10 · tokens {1: 345, 2: 376, 3: 303}
+[session] history 10/60 · first 10/10 · dependent 7/9 · independent 1/1 · tokens {1: 346, 2: 431}
+[session] history 20/60 · first 20/20 · dependent 13/18 · independent 3/3 · tokens {1: 343, 2: 425, 3: 461}
+[session] history 30/60 · first 30/30 · dependent 22/27 · independent 5/5 · tokens {1: 345, 2: 428, 3: 456}
+[session] history 40/60 · first 40/40 · dependent 29/36 · independent 6/6 · tokens {1: 345, 2: 428, 3: 456}
+[session] history 50/60 · first 50/50 · dependent 36/45 · independent 8/8 · tokens {1: 344, 2: 427, 3: 455}
+[session] history 60/60 · first 60/60 · dependent 43/54 · independent 10/10 · tokens {1: 345, 2: 428, 3: 394}
+[session] HEADROOM: dependent turns 4/54 with the last request only, 43/54 with history

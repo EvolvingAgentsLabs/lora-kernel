@@ -25,7 +25,9 @@ from training.harness.family import SMALL  # noqa: E402
 BASE = SMALL                                        # training/harness/family.py
 DATA = Path("examples/distributor/data_turns")
 PREFIX = "adapters/distributor-staff-s"
-PREFIXES = {"staff-s": PREFIX, "out-s": "adapters/distributor-staff-out-s"}   # out-s<k>: trained on train_out (abstains)
+PREFIXES = {"staff-s": PREFIX, "out-s": "adapters/distributor-staff-out-s",   # out-s<k>: trained on train_out (abstains)
+            "wf-s": "adapters/distributor-staff-wf-s"}                    # wf-s<k>: train_harness (the workflow harness)
+CORPUS_PREFIX = {"train": "staff-s", "train_out": "out-s", "train_harness": "wf-s"}
 MAX_LOST, MIN_ABSTAIN = 3, 18                  # the abstaining member, written first (results/M10-…/BRIEF.md)
 
 
@@ -155,7 +157,7 @@ def main() -> int:
     save = lambda: out.write_text(json.dumps(rec, indent=1, ensure_ascii=False))
     if a.train_seed is not None:
         from training.harness.release_gate import RECIPE
-        name = f"{'out-s' if a.corpus == 'train_out' else 'staff-s'}{a.train_seed}"
+        name = f"{CORPUS_PREFIX.get(a.corpus, 'staff-s')}{a.train_seed}"
         spec = adapter_dir(name)
         print(f"[pool] training {spec} on {a.base}", flush=True)
         rc = subprocess.call([sys.executable, "-m", "training.harness.train_one", "--base", a.base, "--train", str(DATA / f"{a.corpus}.jsonl"),

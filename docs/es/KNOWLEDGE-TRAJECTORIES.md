@@ -32,6 +32,14 @@ control, una trayectoria por ellas hace lo que hace el harness de un agente — 
 un prompt fijo y un loop escrito a mano, y pasa a ser tres cosas separables: contenido editable,
 flujo de control editable, y una forma aprendida de recorrerlos.
 
+**Extendido desde entonces, 2026-09-29 [ran].** La misma lectura direccionada por clave que este
+documento propone para una biblioteca (`<open>id§anchor</open>`, §3.4) es hoy también la forma en que un
+miembro lee *y escribe* el estado propio de una conversación: un arnés de flujos de trabajo
+(`examples/common/opmemory.py`, [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md))
+indexa los valores vivos de una sesión — un id de pedido, un número de muelle — de la misma manera en
+que una página indexa un enunciado, y un miembro busca (`<get>`) o guarda (`<put>`) uno sólo en el paso
+que lo necesita, en vez de releer la conversación. MT0 y H1 lo miden; ver [`MEMORY.md`](MEMORY.md) §11.
+
 ## 2. Lo que ya está medido, y tiene que restringir el diseño
 
 | # | hallazgo | número | corrida |

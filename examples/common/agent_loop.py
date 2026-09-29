@@ -35,8 +35,10 @@ def parse_args(schema: list[dict], name: str, body: str) -> dict:
 class ToolSuite:
     """`run_chain`'s suite: `tools` is a domain module (`examples.school.tools`, `examples.distributor.tools`)."""
 
-    def __init__(self, conn, claim, names: list[str], tools, queue=None):
+    def __init__(self, conn, claim, names: list[str], tools, queue=None, memory=None, session: str | None = None):
         self.conn, self.claim, self.names, self.tools, self.queue = conn, claim, names, tools, queue
+        # the short-term operational memory (examples/common/opmemory.py): `get` / `put` served beside the domain's tools
+        self.memory, self.session = memory, session or claim.user_id
         self.close = tuple(f"</{n}>" for n in names)
         self.tag = re.compile(r"<(" + "|".join(map(re.escape, names)) + r")>([^<]*)</\1>")
         self.positional: dict = {}
@@ -46,6 +48,15 @@ class ToolSuite:
         from training.email.tools import ToolError
         from .approvals import NEEDS_APPROVAL
         from .permissions import Denied
+        if self.memory is not None and name in ("get", "put"):
+            from .opmemory import MemoryError
+            try:
+                out = self.memory.answer(self.claim, self.session, name, raw)
+            except MemoryError as e:
+                self.calls.append({"tool": name, "args": {"body": raw.strip()}, "error": str(e)})
+                raise ToolError(str(e))
+            self.calls.append({"tool": name, "args": {"body": raw.strip()}, "result": out})
+            return out
         args = parse_args(self.tools.SCHEMA, name, raw)
         if self.queue is not None and name in NEEDS_APPROVAL:
             out = self.queue.hold(self.claim, name, args)

@@ -426,6 +426,33 @@ of one adapter's solo throughput (contention at the edge, measured over one burs
 16); pruning the tool block to the member's own stays the default on both accuracy and
 latency.
 
+### 5.6 Multi-adapter throughput under load, steady rather than a burst (C1)
+
+§5.2's cost model says a request under adapter $i$ costs one shared $xW$ plus a thin, batched pair of
+rank-$r$ terms — cheap beside the shared weight read (§2.3–2.4). If that holds under real load, and
+not only in the single-burst reading of §5.5's own contention line, mixing $A$ different adapters in one
+batch should cost close to nothing against serving the same $K$ sessions on one adapter alone. Define
+the ratio at a fixed session count $K$:
+
+```math
+r_A(K) = \frac{\mathrm{tps}(K\ \text{sessions},\ A\ \text{adapters mixed})}{\mathrm{tps}(K\ \text{sessions},\ 1\ \text{adapter})},
+```
+
+with $\mathrm{tps}$ the server's aggregate generated tokens/s. **NO MATERIAL CONTENTION** iff $r_A \ge 0.8$
+— the bar fixed in the brief before the run, the same bar §5.5's own single burst was read against.
+
+**Measured [ran] `results/C1-concurrency-20260929`.** Four members (`school-s0`, `upper-s0`, `staff-s0`,
+`out-s0`) on one L4, `google/gemma-4-E4B-it` bf16, $K \in \lbrace 1, 8, 16, 32\rbrace$ sessions, each session round-robin
+across the adapters in play: $r_4(16) = 278.6 / 269.7 = 1.03$ — **above the 0.8 bar, and above 1**, so mixing
+four adapters costs nothing measurable against one at this load. §2.4's near-linear scaling in the number of
+concurrent sequences holds across the whole run and is not an artefact of a single adapter: total throughput
+goes **22.7 → 135.1 → 278.6 → 504.3 tok/s** for $K = 1, 8, 16, 32$ (four-adapter cells), each within noise of
+its one-adapter counterpart (269.7, 490.8 at $K=16, 32$). TTFT stays low throughout (p95 **0.24 s** at $K=32$,
+an eighth of the 2 s budget fixed in the brief), 0 errors of 128 requests, and the ceiling is above 32 —
+not reached. **This supersedes E5's 0.88** ([`RECORD.md`](RECORD.md) §2): that number came from one burst of
+16 requests, inside the spread of a single measurement, not from a curve — the failure §9.4 and §1.1 both
+warn against, reading one draw as the rate.
+
 ---
 
 ## 6. Speculative decoding
@@ -833,6 +860,62 @@ routing per request replaces the label by a classifier and can lose only by its
 misroutes, so the two are compared on the same cases and the gate is a tie with zero
 misroutes. **[ran]** P62: by region 0.775, by request 0.775, misroutes 0 (§11).
 
+### 8.9 Multi-turn dependent accuracy, and the flat-context condition (MT0, H1)
+
+A conversation is a sequence of turns $x_1,\dots,x_n$; turn $i$ is **dependent** when the right call's
+argument is a value the user named, or a tool returned, on an earlier turn $j\lt i$ and $x_i$ itself does
+not contain it. For a set $D$ of dependent turns and an arm $a$ (what the gateway renders on a turn),
+
+```math
+A_{\text{dep}}(a) = \frac{1}{|D|}\sum_{x\in D} \mathbf 1[\,\text{answer}_a(x)\text{ correct}\,].
+```
+
+**Measured [ran] `results/MT0-multiturn-baseline-20260929`**, $|D| = 54$: reading only the last
+request, $A_{\text{dep}}(\text{last}) = 4/54$ — without the conversation the referent does not exist,
+and the 4 are chance on a three-item choice. Carrying every earlier turn in the prompt,
+$A_{\text{dep}}(\text{history}) = 43/54$ (79.6%): it resolves a reference it only has to **copy** into
+an argument (32/34) but not one it must **write into free text** — a claim about "that order" filed
+with no order number, 8 of 10 times. That split — copied into a call versus composed into prose — is
+what the workflow harness's `get`/`put` targets: the value is fetched by key into the call, not left to
+the model's own reading of the history.
+
+**Prompt length by turn position, and why one arm is flat by construction.** Let $\bar p_i^a$ be the mean
+rendered prompt length at turn $i$, over sessions that reach it. Under `history`, turn $i$'s prompt
+carries every earlier turn's request and reply, so
+
+```math
+\bar p_i^{\text{history}} \;\approx\; \bar p_1 + \sum_{j=1}^{i-1} \ell_j = O(i),
+```
+
+with $\ell_j$ the rendered length of turn $j$ — genuinely growing in the number of turns, whatever their
+content. The workflow harness instead renders one line, `state: <workflow>/<state> · keys: <names>`,
+whose length is bounded by the number of keys and the state's own name — properties of the **domain's**
+workflow, fixed once the TOML is written, not of **how many turns** the conversation has had:
+
+```math
+\bar p_i^{\text{harness}} \;\approx\; \bar p_1 + O(1) \quad\text{in } i,
+```
+
+the same order as `last` (the arm above that fails on accuracy), but without losing the referent, because the
+value itself lives in the operational-memory cache and is fetched by key rather than carried in the
+prompt. **H1's flatness condition** operationalises the contrast: with $\bar p_1,\bar p_2,\bar p_3$ the
+mean prompt tokens at the first three turn positions,
+
+```math
+\bar p_3 \;\le\; 1.1\ \bar p_1
+```
+
+is the bar a harness arm must clear — at most 10 % growth by the third turn, distinguishing genuine
+$O(1)$ behaviour (a small change from state-name length) from an implementation that quietly re-injects
+growing content. **Measured [ran] MT0**, the two arms this bar is set against: $\bar p_1,\bar p_2,\bar
+p_3 = 345, 376, 303$ for `last` and $345, 428, 394$ for `history` — the growth `history` shows even in a
+two-to-three-turn suite (+24 % at turn 2, $\bar p_2/\bar p_1 = 1.24$) is exactly the term §2.4's batching
+argument does not touch: a longer prompt is a longer prefill (§2.1) on every turn, for every session,
+whether or not the GPU is otherwise idle. **H1** (`results/H1-workflow-harness-20260929`) trains a member
+that reads the harness's one-line context instead of `history`'s growing one and measures both
+$A_{\text{dep}}$ against the 43/54 bar above and $\bar p_3/\bar p_1$ against 1.1 — **pre-registered,
+running, no result yet.**
+
 ## 9. Statistics used, and only these
 
 ### 9.1 The majority bar
@@ -995,3 +1078,6 @@ milestone 3 trains the large half; milestone 4 measures §7.1's inequality.
 | §6.7 | **on llama.cpp/Metal the drafter is not cheap**: Gemma's MTP *slows* the 12B, 0.52× with the LoRA on its domain, 0.66–0.87× otherwise — §6.4's $c$, not $\alpha$, is what moved | MAC2 `results/MAC2-llamacpp-20260927/BRIEF.md` |
 | §8.7 | **abstention inside a member**: $\ell = 0$ of 70, caught 20/20 against `staff-s0`'s 0/20, demo 6/6; live, the abstained turn reaches Claude Haiku 4.5, $0.0112 | M10 `results/M10-distributor-abstain-20260928/BRIEF.md` |
 | §8.8 | **editing the library after training**: follow 37/38, stale 0, closed-book 1/40 | W7 `results/W7-edit-after-training-20260927/BRIEF.md` |
+| §8.9 | **dependent-turn accuracy without and with history**: $A_{\text{dep}}$(last) 4/54, $A_{\text{dep}}$(history) 43/54; prompt tokens $\bar p_1,\bar p_2,\bar p_3$ = 345/376/303 (last), 345/428/394 (history) | MT0 `results/MT0-multiturn-baseline-20260929/BRIEF.md` |
+| §5.6 | **multi-adapter throughput ratio**: $r_4(16) = 278.6/269.7 = 1.03$, NO MATERIAL CONTENTION; near-linear 22.7 → 135.1 → 278.6 → 504.3 tok/s for K = 1, 8, 16, 32; p95 TTFT 0.24 s at K = 32, 0 errors of 128 | C1 `results/C1-concurrency-20260929/BRIEF.md` |
+| §8.9 | **the workflow harness against MT0's history arm and the flatness bar $\bar p_3 \le 1.1\ \bar p_1$** | H1 `results/H1-workflow-harness-20260929/BRIEF.md` — **pre-registered, running, no result yet** |

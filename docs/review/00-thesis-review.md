@@ -121,6 +121,17 @@ Today's loop is already an FSM, just written in code rather than declared:
 What it buys: making explicit and versionable what is code today, with tools per phase already measured (P59). I would write it
 in `docs/review/harness-fsm-spec.md` only if you approve this Phase 0.
 
+**Built since, 2026-09-29 [ran].** The FSM this section describes is no longer only a proposal:
+`examples/<org>/workflows/*.toml` declares each role's states and the calls that move between them
+(TOML, not YAML — `tomllib` is in the standard library, so the format adds no dependency, one of the
+four decisions the user approved in
+[`harness-workflow-kv.md`](harness-workflow-kv.md) §6), and `examples/common/opmemory.py` gives it the
+other half this section did not yet have: a short-term operational memory, read and written by key, so
+a member reads one context line (`state: <workflow>/<state> · keys: <names>`) instead of the
+conversation. What this section called "declared, versionable" is the hand-written half; **H1**
+(`results/H1-workflow-harness-20260929/`, running, no result yet) tests the half that has to be
+*learned* — whether a member trained on it actually reads and writes the right key at the right step.
+
 ---
 
 ## 5. Proposal for Phase 1
