@@ -1,0 +1,16 @@
+{
+ "S1_eval_wording_in_train": 0,
+ "S2_shared_world": 0,
+ "S3_oracle_fails_a_turn": 0,
+ "S4_dependent_turn_self_contained": 0,
+ "sessions": {
+  "train": 300,
+  "eval": 60
+ },
+ "turns": {
+  "eval": 280,
+  "eval_dependent": 160
+ },
+ "passed": true,
+ "S5_eval_wording_not_fresh": 0
+}
