@@ -1,7 +1,12 @@
 # El harness de flujo de trabajo — un miembro que conoce el flujo, las herramientas y las claves (diseño para revisión, 2026-09-29)
 
-*La idea del usuario, 2026-09-29, como spec para revisar antes de escribir ningún corpus. Nada de esto está implementado. MT0
-(`results/MT0-multiturn-baseline-20260929`) mide la línea de base contra la que se compara.*
+*La idea del usuario, 2026-09-29. **Estado, 2026-09-29: aprobada y construida.** El usuario aprobó las cuatro decisiones
+del §6 tal como se propusieron; la memoria (`examples/common/opmemory.py`) y sus flujos de trabajo en TOML
+(`examples/<org>/workflows/*.toml`) están construidos y testeados a costo cero de GPU. MT0
+(`results/MT0-multiturn-baseline-20260929`) ya corrió — hay margen, 43/54 turnos dependientes con la conversación
+contra 4/54 sin ella — y también C1 (`results/C1-concurrency-20260929`, sin contención material, cuatro miembros
+mezclados mantienen 1,03× uno solo con 16 sesiones). H1 (`results/H1-workflow-harness-20260929`), la puntuación
+propia del harness, está **corriendo — sin resultado todavía.***
 
 ## 1. La idea, en las palabras del usuario y en las nuestras
 
@@ -63,17 +68,21 @@ Lo que el gateway renderiza en cada turno, en vez de la conversación:
 Las claves se listan sin sus valores, que quedan en la caché. No hay historial y, en un brazo, **sin bloque de
 herramientas**: el miembro conoce sus herramientas porque su corpus se las enseñó (§4).
 
-### 3.3 La máquina de estados, declarada, no neuronal
+### 3.3 La máquina de estados, declarada, no neuronal — TOML, no YAML **[ran]**
 
-Un archivo por flujo de trabajo (`examples/distributor/workflows/receiving.yaml`), cargado por el gateway. Esta es la
-FSM que propuso la revisión de tesis (`00-thesis-review.md` §4), ahora con un trabajo:
+Un archivo por flujo de trabajo (`examples/distributor/workflows/receiving.toml`), cargado por el gateway. Esta es la
+FSM que propuso la revisión de tesis (`00-thesis-review.md` §4), ahora con un trabajo. **Construida en TOML, no en
+YAML** (decisión 4 del §6): `tomllib` está en la biblioteca estándar, así que el formato no agrega dependencia.
 
-```yaml
-workflow: receiving
-states:
-  start:     {on: {dock_assign: assigned}}
-  assigned:  {on: {dock_assign: assigned, dock_status: assigned}}
-keys: [order, dock]
+```toml
+[workflow]
+name = "receiving"
+initial = "start"
+keys = ["order", "dock"]
+[states.start]
+on = { dock_assign = "assigned", dock_status = "start" }
+[states.assigned]
+on = { dock_assign = "assigned", dock_status = "assigned" }
 ```
 
 El gateway avanza el estado a partir de las llamadas que ejecutó la capa de herramientas. El modelo nunca lo fija, y
@@ -123,18 +132,33 @@ Brazos, sobre las 60 sesiones retenidas de MT0:
 que no haga falta describirlas. Los tokens caen todavía más. Pasa si pierde no más de 3 de los turnos dependientes
 contra `harness`.
 
-## 6. Decisiones para el usuario antes de escribir ningún corpus
+## 6. Decisiones para el usuario — aprobadas el 2026-09-29, las cuatro tal como se propusieron
 
 1. **Quién escribe la caché.** (a) El modelo, con `put`, como dice la idea: el LoRA conoce las claves. (b) El gateway,
-   que guarda las entidades de cada llamada bajo claves convencionales, de modo que el modelo sólo hace `get`. (a) es
-   la idea; (b) es más simple y elimina una forma de fallar. La propuesta es (a), con (b) como resguardo si los `put`s
-   resultan poco confiables.
-2. **El bloque de herramientas.** Se mantiene en `harness` y se saca en `harness-noblock`, como arriba.
-3. **El dominio.** Los seis roles de la distribuidora, donde corre MT0. La escuela sigue si H1 pasa.
-4. **Los flujos de trabajo.** Declarados en YAML (§3.3), un archivo por rol, con dos o tres estados cada uno al
-   principio.
+   que guarda las entidades de cada llamada bajo claves convencionales, de modo que el modelo sólo hace `get`.
+   **Aprobada: (a)**, con (b) como resguardo si los `put`s resultan poco confiables.
+2. **El bloque de herramientas.** Se mantiene en `harness` y se saca en `harness-noblock`. **Aprobada**, los dos brazos
+   corren en H1.
+3. **El dominio.** Los seis roles de la distribuidora, donde corre MT0. **Aprobada: la distribuidora primero**; la
+   escuela sigue si H1 pasa.
+4. **Los flujos de trabajo.** ~~Declarados en YAML~~ **declarados en TOML** (§3.3) — aprobada porque `tomllib` está en
+   la biblioteca estándar y YAML no: un archivo por rol, con dos o tres estados cada uno al principio, exactamente como
+   se construyó (`examples/distributor/workflows/*.toml`).
 
 ## 7. Orden
 
-MT0 (corriendo) → esta revisión → corpus y su compuerta (costo cero de GPU) → entrenamiento (una L4) → puntuación de H1
-(una L4) → si pasa, la demo en vivo con OpenClaw en la máquina del usuario, multi-turno.
+~~MT0 (corriendo) → esta revisión → corpus y su compuerta (costo cero de GPU) → entrenamiento (una L4) → puntuación de
+H1 (una L4) → si pasa, la demo en vivo con OpenClaw en la máquina del usuario, multi-turno.~~
+
+**Tal como corrió, 2026-09-29:** MT0 **[ran]** (hay margen: 43/54 turnos dependientes con la conversación, 4/54 sin
+ella) → esta revisión, aprobada → corpus y su compuerta, costo cero de GPU, pasada → entrenamiento, una L4 (`wf-s0`)
+→ **C1 [ran]** (concurrencia, comprada el mismo día sobre el mismo tipo de sesión L4, sin necesitar entrenamiento
+propio: cuatro miembros mezclados no cuestan throughput contra uno solo, 1,03× con 16 sesiones, 504 tok/s con 32) →
+**puntuación de H1, una L4 — corriendo ahora, sin resultado todavía** → si pasa, la demo en vivo con OpenClaw en la
+máquina del usuario, multi-turno.
+
+**Sigue, a decisión del usuario.** Un segundo dominio para probar el harness donde las sesiones corran lo bastante
+largo como para que se note el ahorro de tokens — se propone **H2: un tracker de equipo tipo Jira + Confluence**
+(flujos de trabajo explícitos y más largos: To Do → In Progress → In Review → QA → Done, bugs a través de Triage;
+claves naturales como `PROJ-123`; páginas con forma de Confluence como biblioteca). Mundos sintéticos únicamente, como
+en todo lo demás acá. **No construido — a la espera de la decisión del usuario.**

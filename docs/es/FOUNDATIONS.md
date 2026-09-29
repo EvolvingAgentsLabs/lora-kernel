@@ -441,6 +441,36 @@ adaptador solo (contención en el edge, medida sobre una ráfaga de 16); podar e
 de herramientas al del miembro sigue siendo el default tanto en exactitud como en
 latencia.
 
+### 5.6 Throughput con varios adaptadores bajo carga, estable en vez de una ráfaga (C1)
+
+El modelo de costo del §5.2 dice que un pedido bajo el adaptador $i$ cuesta un $xW$ compartido más un
+par de términos finos de rango $r$, en batch — barato al lado de la lectura de pesos compartida (§2.3–2.4).
+Si eso se sostiene bajo carga real, y no sólo en la lectura de una sola ráfaga de la línea de contención
+del propio §5.5, mezclar $A$ adaptadores distintos en un mismo batch debería costar casi nada contra
+servir las mismas $K$ sesiones con un solo adaptador. Se define el cociente a una cantidad fija de
+sesiones $K$:
+
+```math
+r_A(K) = \frac{\mathrm{tps}(K\ \text{sesiones},\ A\ \text{adaptadores mezclados})}{\mathrm{tps}(K\ \text{sesiones},\ 1\ \text{adaptador})},
+```
+
+con $\mathrm{tps}$ los tokens/s generados agregados del servidor. **NO MATERIAL CONTENTION** si y sólo
+si $r_A \ge 0,8$ — la vara fijada en el brief antes de la corrida, la misma vara contra la que se leyó la
+propia ráfaga única del §5.5.
+
+**Medido [ran] `results/C1-concurrency-20260929`.** Cuatro miembros (`school-s0`, `upper-s0`, `staff-s0`,
+`out-s0`) en una L4, `google/gemma-4-E4B-it` bf16, $K \in \lbrace 1, 8, 16, 32\rbrace$ sesiones, cada sesión
+rotando entre los adaptadores en juego: $r_4(16) = 278,6 / 269,7 = 1,03$ — **por encima de la vara de 0,8,
+y por encima de 1**, así que mezclar cuatro adaptadores no cuesta nada medible contra uno solo a esta carga.
+El escalado casi lineal del §2.4 en la cantidad de secuencias simultáneas se sostiene en toda la corrida
+y no es un artefacto de un solo adaptador: el throughput total va **22,7 → 135,1 → 278,6 → 504,3 tok/s**
+para $K = 1, 8, 16, 32$ (celdas de cuatro adaptadores), cada una dentro del ruido de su contraparte de un
+solo adaptador (269,7, 490,8 en $K=16, 32$). El TTFT se mantiene bajo en todo el rango (p95 **0,24 s** en
+$K=32$, un octavo del presupuesto de 2 s fijado en el brief), 0 errores de 128 pedidos, y el techo está
+por encima de 32 — no se alcanzó. **Esto reemplaza el 0,88 de E5** ([`RECORD.md`](RECORD.md) §2): ese
+número venía de una sola ráfaga de 16 pedidos, dentro del margen de una medición única, no de una curva —
+la falla contra la que avisan tanto el §9.4 como el §1.1: leer una sola tirada como la tasa.
+
 ---
 
 ## 6. Decodificación especulativa
@@ -858,6 +888,66 @@ perder por sus mal ruteados, así que las dos se comparan sobre los mismos casos
 compuerta es un empate con cero mal ruteados. **[ran]** P62: por región 0,775, por
 request 0,775, mal ruteados 0 (§11).
 
+### 8.9 Exactitud en turnos dependientes multi-turno, y la condición de contexto plano (MT0, H1)
+
+Una conversación es una secuencia de turnos $x_1,\dots,x_n$; el turno $i$ es **dependiente** cuando el
+argumento de la llamada correcta es un valor que el usuario nombró, o que devolvió una herramienta, en
+un turno anterior $j\lt i$ y $x_i$ mismo no lo contiene. Para un conjunto $D$ de turnos dependientes y
+un brazo $a$ (lo que el gateway le muestra al modelo en un turno),
+
+```math
+A_{\text{dep}}(a) = \frac{1}{|D|}\sum_{x\in D} \mathbf 1[\,\text{respuesta}_a(x)\text{ correcta}\,].
+```
+
+**Medido [ran] `results/MT0-multiturn-baseline-20260929`**, $|D| = 54$: leyendo sólo el último pedido,
+$A_{\text{dep}}(\text{last}) = 4/54$ — sin la conversación el referente no existe, y los 4 son azar sobre
+una elección de tres ítems. Cargando cada turno anterior en el prompt, $A_{\text{dep}}(\text{history}) =
+43/54$ (79,6%): resuelve una referencia que sólo tiene que **copiar** en un argumento (32/34) pero no una
+que tiene que **escribir en texto libre** — un reclamo sobre "ese pedido" se presenta sin número de
+pedido, 8 de 10 veces. Esa división — copiado en una llamada contra compuesto en prosa — es exactamente
+lo que apunta el `get`/`put` del harness de flujo: el valor se busca por clave hacia la llamada, no se
+deja a la lectura que el modelo haga del historial.
+
+**Longitud del prompt por posición de turno, y por qué un brazo es plano por construcción.** Sea
+$\bar p_i^a$ la longitud media del prompt renderizado en el turno $i$, sobre las sesiones que llegan a
+él. Bajo `history`, el prompt del turno $i$ lleva el pedido y la respuesta de cada turno anterior, así
+que
+
+```math
+\bar p_i^{\text{history}} \;\approx\; \bar p_1 + \sum_{j=1}^{i-1} \ell_j = O(i),
+```
+
+con $\ell_j$ la longitud renderizada del turno $j$ — creciendo de verdad con la cantidad de turnos,
+cualquiera sea su contenido. El harness de flujo en cambio renderiza una sola línea, `state:
+<workflow>/<state> · keys: <names>`, cuya longitud está acotada por la cantidad de claves y el nombre
+del estado — propiedades del flujo **del dominio**, fijadas una vez escrito el TOML, no de **cuántos
+turnos** lleva la conversación:
+
+```math
+\bar p_i^{\text{harness}} \;\approx\; \bar p_1 + O(1) \quad\text{en } i,
+```
+
+el mismo orden que `last` (el brazo de arriba que falla en exactitud), pero sin perder el referente,
+porque el valor mismo vive en la caché de la memoria operativa y se busca por clave en vez de llevarse
+en el prompt. **La condición de planitud de H1** vuelve operativo el contraste: con $\bar p_1,\bar
+p_2,\bar p_3$ los tokens medios de prompt en las primeras tres posiciones de turno,
+
+```math
+\bar p_3 \;\le\; 1,1\ \bar p_1
+```
+
+es la vara que un brazo de harness tiene que cruzar — a lo sumo 10 % de crecimiento para el tercer
+turno, distinguiendo un comportamiento $O(1)$ genuino (un cambio chico por la longitud del nombre del
+estado) de una implementación que en secreto reinyecta contenido creciente. **Medido [ran] MT0**, los dos
+brazos contra los que se fija esta vara: $\bar p_1,\bar p_2,\bar p_3 = 345, 376, 303$ para `last` y $345,
+428, 394$ para `history` — el crecimiento que `history` muestra aun en una suite de dos a tres turnos
+(+24 % en el turno 2, $\bar p_2/\bar p_1 = 1,24$) es exactamente el término que el argumento de batching
+del §2.4 no toca: un prompt más largo es un prefill más largo (§2.1) en cada turno, para cada sesión,
+esté o no la GPU ociosa por lo demás. **H1** (`results/H1-workflow-harness-20260929`) entrena un miembro
+que lee la línea de contexto de una sola línea del harness en vez de la creciente de `history` y mide
+tanto $A_{\text{dep}}$ contra la vara de 43/54 de arriba como $\bar p_3/\bar p_1$ contra 1,1 —
+**pre-registrado, corriendo, todavía sin resultado.**
+
 ## 9. Estadística usada, y sólo esta
 
 ### 9.1 La barra de clase mayoritaria
@@ -1024,3 +1114,6 @@ entrena la mitad grande; el hito 4 mide la desigualdad de §7.1.
 | §6.7 | **sobre llama.cpp/Metal el drafter no es barato**: el MTP de Gemma *enlentece* al 12B, 0,52× con el LoRA en su dominio, 0,66–0,87× en el resto — se movió la $c$ del §6.4, no la $\alpha$ | MAC2 `results/MAC2-llamacpp-20260927/BRIEF.md` |
 | §8.7 | **abstención dentro de un miembro**: $\ell = 0$ de 70, atrapado 20/20 contra el 0/20 de `staff-s0`, demo 6/6; en vivo, el turno abstenido llega a Claude Haiku 4.5, $0,0112 | M10 `results/M10-distributor-abstain-20260928/BRIEF.md` |
 | §8.8 | **editar la biblioteca después de entrenar**: sigue 37/38, stale 0, a libro cerrado 1/40 | W7 `results/W7-edit-after-training-20260927/BRIEF.md` |
+| §8.9 | **exactitud en turnos dependientes sin y con historial**: $A_{\text{dep}}$(last) 4/54, $A_{\text{dep}}$(history) 43/54; tokens de prompt $\bar p_1,\bar p_2,\bar p_3$ = 345/376/303 (last), 345/428/394 (history) | MT0 `results/MT0-multiturn-baseline-20260929/BRIEF.md` |
+| §5.6 | **cociente de throughput con varios adaptadores**: $r_4(16) = 278,6/269,7 = 1,03$, NO MATERIAL CONTENTION; casi lineal 22,7 → 135,1 → 278,6 → 504,3 tok/s para K = 1, 8, 16, 32; TTFT p95 0,24 s en K = 32, 0 errores de 128 | C1 `results/C1-concurrency-20260929/BRIEF.md` |
+| §8.9 | **el harness de flujo contra el brazo con historial de MT0 y la vara de planitud $\bar p_3 \le 1,1\ \bar p_1$** | H1 `results/H1-workflow-harness-20260929/BRIEF.md` — **pre-registrado, corriendo, todavía sin resultado** |

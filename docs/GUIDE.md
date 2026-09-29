@@ -254,6 +254,14 @@ expert, the common part ($xW$) is computed once for all of them and each one's c
 "gather" the $A_i, B_i$ of each request. vLLM does it with `--enable-lora --lora-modules name=path`, and the request
 picks its expert with the `model` field. See [`FOUNDATIONS.md`](FOUNDATIONS.md) §5.2.
 
+**Does mixing experts in one server cost anything? [ran] C1** (`results/C1-concurrency-20260929`, one L4, vLLM 0.30,
+four members mixed — `school-s0`, `upper-s0`, `staff-s0`, `out-s0`): no material contention. 16 sessions split across
+the four adapters reach 278.6 tok/s against 269.7 tok/s for the same 16 sessions on one adapter alone (1.03×); 32
+sessions across the four reach 504 tok/s, p95 time-to-first-token 0.24 s, 0 errors of 128 requests; throughput scales
+near-linearly from 1 to 32 concurrent sessions (22.7 → 135 → 270 → 500 tok/s), and the ceiling still sits above 32.
+This supersedes §3.6's E5 reading of 0.88 for two LoRAs sharing a batch — that number held at the edge of one burst of
+16; C1 is the same question at the scale a live gateway would actually see.
+
 ### 5.5 Hot switching: what it really means
 
 There are three different things called "switching LoRA":
@@ -487,6 +495,57 @@ forwarded to **Claude Haiku 4.5** through the gateway's frontier exit: 10,198 + 
 a formal release (no release file yet) — the live run is a demonstration of the egress path, not a claim that the
 member has passed the gate.
 
+### 7.4 Multi-turn and memory: why carrying the conversation is not the fix
+
+A gateway that reads only the last request has no way to resolve "move it to dock 5" if "it" was named two turns
+earlier — the reference has nothing to point at in that one message. The obvious repair is to hand the model the
+whole conversation: `Gateway(history=True)`.
+
+**Why that is still the naive baseline. [ran] MT0** (`results/MT0-multiturn-baseline-20260929`): on 60 held-out
+distributor sessions (124 turns, 54 of them dependent on an earlier turn), a member with no conversation gets 4 of 54
+dependent turns right — and even that is chance: the 4 all land in purchasing, whose 4/10 is no better than guessing,
+while the other 44 dependent turns, outside purchasing, score 0. The same member given the conversation gets 43 of 54
+(79.6%) — a real gain, and this is not a general fix for a broken member: independent first turns score 60 of 60 in
+both arms. But look at *where* the 11 misses cluster: a reference copied straight into a tool argument is resolved
+well (receiving 10/10, returns 10/10, purchasing 9/10, dispatch 12/14); a reference that only shows up in free text —
+a customer-service reply that says "that order" without ever restating the order number — is filed wrong 8 of 10
+times. **[read]**: the model can read the history; it does not reliably use it to restate a fact the reply needs but
+the person did not repeat. And the fix does not stay cheap either way: tokens grow with the session even over two or
+three turns (+24% by turn 2) — a shape that keeps getting worse as sessions get longer, which is exactly the case a
+production gateway has to serve.
+
+**What a KV operational memory is.** Instead of replaying the conversation, keep what a session has learned — an
+order id, a dock number — in a small cache outside the prompt, addressed by name, the same way the library in §7.1 is
+addressed by key: `<get>order</get>` returns a value, `<put>dock=5</put>` stores one. Each turn the model sees one
+line instead of a transcript: `state: receiving/assigned · keys: order, dock` — the workflow's current state and the
+*names* of the keys holding something, never the values. The state is not the model's to decide: it advances only
+when the tool layer actually runs a call — the same discipline §7.3's gateway already applies to permissions and
+grounding, now applied to what "the current step" means. **[ran] in tests, not yet trained on**
+(`examples/common/opmemory.py`): a session cache scoped to (organisation, user, session) plus a per-organisation
+global cache, served by the tool layer like any other tool and bounded by the same signed claim already described in
+§7.3 — no key crosses a tenant or a user.
+
+**How a LoRA could learn to operate it.** §7.1 showed a LoRA learning to *read* a library by key — search, open,
+cite. The workflow harness under design asks for a second habit on the same footing: which workflow a session is in,
+which tool its current state calls for, and which key holds the value that call needs — reading with `<get>`, and now
+also writing with `<put>`. Nothing about *values* is trained in: the cache stays outside the weights and is written at
+runtime, never memorised, exactly as the library is never memorised (§7.1). And it is trained *inside* the member,
+next to its tools and its corpus, not as a second adapter stacked on top. **[read]**: that choice is not incidental —
+a shared protocol adapter composed with a domain one is what `harness.lora` tried, and what got parked because the
+composition could not be measured cleanly. Teaching the same habit inside each member's own corpus is a different bet
+on the same idea, not a retry of the one that failed.
+
+**What H1 will measure.** `results/H1-workflow-harness-20260929` (**pre-registered, running — no result yet**) trains
+a member on MT0's corpus plus harness turns and compares three arms on MT0's own 60 sessions: `history` (the baseline
+above), `harness` (the one-line context, tool block kept) and `harness-noblock` (the same, without restating the
+tools in the prompt — testing whether the member knows them well enough not to need reminding). It passes only if the
+harness loses no more than 3 of the 54 dependent turns `history` gets right, keeps prompt tokens flat as the session
+grows (turn 3 no more than 1.1× turn 1, where `history` keeps climbing), holds first turns at 90% or better, and — the
+check this design adds — every dependent turn answered right also fetched its value from the right key, not from a
+lucky guess. Design and open decisions: [`review/harness-workflow-kv.md`](review/harness-workflow-kv.md). Until H1
+lands, whether a LoRA can operate a workflow's keys the way it navigates a library is a claim under test, not a
+result.
+
 ---
 
 ## 8. How we measure (and why this way)
@@ -568,7 +627,11 @@ happened to us last week).
 | the model still makes things up | 3 of 12 answers caught by the filter | a corpus that teaches it to repeat only what the tool says |
 | the memory (library) inside a serving member | lives in `distributor-wiki@v2`, a separate member from the abstaining `out-s0` (M10) | merge them, or keep them apart by design — not yet decided |
 | a vLLM bf16 live run of the distributor | not run — the only local arm measured is llama.cpp Q8_0 (LIVE-distributor) | run it once a same-precision comparison against the edge is needed |
-| multi-turn sessions and concurrency against the gateway | never measured | after the above |
+| H1's result (the workflow harness) | **pre-registered, running** [ran] — no result yet | read the run before claiming the harness holds; release the member only if it passes |
+| a router inside the gateway's own path | not built — the role is still the route (§7.2) | build only once cross-role routing, not per-member abstention, is the open half |
+| the harness live through OpenClaw, multi-turn | not run — H1 first measures it on the server profile | repeat LIVE-distributor's pattern (§7.3) once H1 passes |
+| sessions longer than 2–3 turns | not measured — MT0 and H1 both stop there | the proposed tracker domain (Jira/Confluence-like, longer workflows) would show it, if picked — not built |
+| the global cache trained on | built and tested (`opmemory.py`), not yet inside a training corpus | fold into H1's corpus or the next domain's |
 | real identity (Auth0), WhatsApp, installation | not built | after the above |
 
 ---
@@ -619,5 +682,5 @@ al. 2023 (speculative decoding) · Chen et al. 2023 (Punica) · Sheng et al. 202
   [mlx-optiq — Gemma 4 speculative decoding on Apple Silicon](https://mlx-optiq.com/blog/gemma-spec-decoding)
 
 **Our runs [ran]:** [`RECORD.md`](RECORD.md) lists them all; the ones in this guide: W9, B1–B5, M8, M9,
-DEMO-school-diagram, LIVE-school-openclaw, E1, F0, C0, C0-upper, E6, MAC2, W7, E5, LIVE-distributor and M10, each in
-`results/` with its `BRIEF.md`.
+DEMO-school-diagram, LIVE-school-openclaw, E1, F0, C0, C0-upper, E6, MAC2, W7, E5, LIVE-distributor, M10, MT0, C1 and
+H1, each in `results/` with its `BRIEF.md`.

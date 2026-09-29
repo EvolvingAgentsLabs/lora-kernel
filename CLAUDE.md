@@ -55,6 +55,18 @@ el proyecto?"* **When in doubt, the next step is the one that puts a weight delt
   first — Gemma's leaves less than Qwen's (it walks W9 untrained 19/40 where Qwen walks 0/40). The large half of a pair on Gemma is `gemma-4-12B-it` (B2 **[ran]**: one id space, LoRA served); its LoRA raises
   acceptance of E4B drafts α 0.871 → 0.898 (B4 **[ran]**), and buys no accuracy: taught comparisons, the E4B alone does 37/40 (B3, B5 **[ran]**). Speculative decoding with a LoRA on the 12B runs in vLLM with Gemma's own MTP drafter: 1.7–2.1× with the LoRA on, 2.7× without (F0 **[ran]**, FP8, output identity not yet established); 1.92× in bf16 on an A100 (C0 **[ran]**); on the E4B with its own MTP drafter 2.4× with the LoRA on (C0-upper **[ran]**). The LoRA halves the drafter's acceptance on its domain (0.8 → 0.4, both sizes), confining the LoRA to the upper layers gives none of it back (ρ = −0.02, C0-upper **[ran]**), and on the Mac the MTP drafter slows the 12B (MAC2 **[ran]**): an aligned drafter is the open lever. ~~The family is Qwen 3.x and that is decided … Gemma 4 is the named alternative and is
   blocked at PEFT **[ran]** P29.~~ Do not shop for other bases; run `lora_matrix` against a candidate instead.
+- **Multi-turn goes through a short-term operational memory, not through the prompt — the user's design, 2026-09-29.**
+  `examples/common/opmemory.py`: a session cache (organisation, user, session) and an organisation cache (`global.<key>`),
+  served by the tool layer as `<get>key</get>` / `<put>key=value</put>`, bounded by the claim, every write logged;
+  workflows declared in TOML (`examples/<org>/workflows/`), advanced by the calls that ran, never by the model. A member
+  served with it (`Gateway(memory=, workflows=)`) reads one line — `state: <workflow>/<state> · keys: <names>` — instead of
+  the conversation, and learns in its corpus the workflow, its tools and the keys: **the workflow harness, inside each
+  member**, not a composed adapter (what parked `harness.lora`). Its bar is MT0 **[ran]**: without the conversation 4/54
+  dependent turns, with it 43/54 — but a reference written into free text is lost 8/10. H1 measures the harness
+  (`results/H1-workflow-harness-20260929`); design and decisions in `docs/review/harness-workflow-kv.md`. The gateway's
+  default still reads only the last request; `history=True` is the naive arm, never the product.
+- **One L4 serves several members at once without contention** (C1 **[ran]**: four adapters mixed keep 1.03× one adapter's
+  throughput at 16 sessions; 32 sessions at p95 TTFT 0.24 s, 0 errors). Do not design around LoRA-mixing cost on vLLM.
 - **The frontier is a permanent component**, `google/gemini-3.8-flash` through the same
   client the members use — in the live runs, **Claude Haiku 4.5** through the gateway's `--frontier-*` flags, the key
   in `~/.config/lora-kernel/frontier.env` (never in a flag, a log or a commit), under a spend cap. A member reaches it only

@@ -554,3 +554,43 @@ propio. Servido inline: **90 de 90**, 79 : 0 pareado, ningún caso evaluado en s
 lo que lee, cuando lo lee de la forma en que se le enseñó**, y esta memoria entrega todo a través de
 exactamente ese canal. Lo que queda sin probar es la afirmación misma — W5: que una biblioteca extiende la
 región a un procedimiento sobre el que el experto nunca entrenó.
+
+## 11. La memoria operativa de corto plazo — al lado de la biblioteca (diseño del usuario, 2026-09-29)
+
+Las cinco piezas de arriba son la **biblioteca**: markdown que el experto de un subdominio navega,
+enciclopédico u operativo, guardado en git y leído por clave (§1.6). Un miembro de flujo de trabajo
+necesita un segundo tipo de memoria que la biblioteca no guarda: **el estado vivo de una conversación**
+— un id de pedido que la persona nombró dos turnos atrás, un número de muelle recién asignado — que no
+es un hecho del subdominio, sólo de esta sesión.
+
+**Por qué.** Sin la conversación el miembro no puede resolver esa referencia en absoluto — 4 de 54
+turnos dependientes en una suite retenida de la distribuidora; llevar toda la conversación en el prompt
+(`Gateway(history=True)`) resuelve 43 de 54, pero pierde exactamente la referencia que hay que
+*escribir*, no copiar — un reclamo sobre "ese pedido" archivado sin número de pedido, 8 de 10 veces
+**[ran]** MT0 (`results/MT0-multiturn-baseline-20260929/`). Hacer crecer el prompt en cada turno es
+también la forma equivocada para el propio objetivo de diseño de la biblioteca: un contexto plano sin
+importar cuánto dure la sesión.
+
+**La memoria operativa de corto plazo** (`examples/common/opmemory.py`) responde los dos problemas de
+la misma manera en que la biblioteca responde la navegación — por clave, nunca releyendo todo. Una
+**caché de sesión**, indexada por (organización, usuario, sesión), y una **caché global**, una por
+organización (`global.<key>`), servida por la capa de herramientas exactamente como cualquier otra
+herramienta: acotada por el claim firmado, así que una clave nunca cruza de organización o de usuario;
+claves validadas; valores acotados a 500 caracteres; cada escritura logueada. Está **en memoria y muere
+con el gateway** — de corto plazo por diseño, nunca un sistema de registro.
+
+Un **flujo de trabajo** (`examples/<org>/workflows/*.toml`) es la máquina de estados por la que se
+mueven las tareas de un rol — estados, las llamadas que mueven entre ellos, las claves que usa el flujo
+de trabajo — declarado, no neuronal, avanzado por las llamadas que la capa de herramientas *ejecutó*,
+nunca fijado por el modelo. Por turno el miembro lee una línea en vez de la conversación: `state:
+<workflow>/<state> · keys: <names>` — el estado y los **nombres** de las claves, nunca sus valores — y
+busca o guarda un valor sólo en el paso que lo necesita: `<get>order</get>`, `<put>dock=5</put>`.
+
+Es la misma división que la biblioteca traza entre contenido y navegación (§3 de
+[`KNOWLEDGE-TRAJECTORIES.md`](KNOWLEDGE-TRAJECTORIES.md)), un nivel más arriba: la memoria operativa
+guarda los valores vivos de una conversación, la biblioteca guarda el conocimiento estable de un
+subdominio, y en los dos casos **los pesos guardan sólo la ruta a una clave**, nunca el valor detrás de
+ella. El diseño y las decisiones tomadas con él están en
+[`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md); está **construida y testeada a
+costo cero de GPU — todavía no entrenada sobre ella** (H1, corriendo,
+`results/H1-workflow-harness-20260929/`, sin resultado todavía).

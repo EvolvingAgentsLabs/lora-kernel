@@ -139,6 +139,30 @@ patching one statement in the library after training (W7): the member follows th
 only 1 time in 40 — evidence for what this claim actually rests on: the route was learned, not the
 fact ([`results/W7-edit-after-training-20260927/`](results/W7-edit-after-training-20260927/BRIEF.md)).
 
+**Short-term operational memory, next to the library — built, [ran] in tests, not yet trained on**
+(`examples/common/opmemory.py`). The library above is what an expert *knows*; this is where a
+workflow keeps its *live* state: a session cache keyed by (organisation, user, session) and a
+global cache per organisation (`global.<key>`), served by the tool layer exactly like any other
+tool — bounded by the signed claim, so no key ever crosses an organisation or a user — keys
+validated, values capped at 500 characters, every write logged. It lives in memory and dies with
+the gateway, short-term by design. A workflow is declared, not neural: one TOML file per role
+(`examples/distributor/workflows/*.toml`, six roles, two or three states each), advanced only by
+the calls the tool layer *ran* — the model never sets the state, only reads it. Served with
+`Gateway(memory=, workflows=, tool_block=)`, a turn's whole context becomes one line —
+`state: <workflow>/<state> · keys: <names>` — instead of the conversation, and the model fetches
+(`<get>key</get>`) or stores (`<put>key=value</put>`) a value only in the step that needs it.
+
+**The workflow harness — the user's idea, 2026-09-29, designed [spec], H1 running.** For a
+subdomain, a member learns in its weights the domain's workflows, its tools, and the *keys* of
+that operational memory — never the values, never the conversation, so the prompt stays flat as a
+session grows. What lands in the corpus is the same choreography as the library above, extended
+from reading (`<open>id§anchor</open>`) to reading *and writing* operational state. It is a harness
+inside each member, one corpus — not a separate adapter composed with a domain one, which is what
+parked the earlier `harness.lora` (composition could not be measured cleanly, P9/P13). Full design:
+[`docs/review/harness-workflow-kv.md`](docs/review/harness-workflow-kv.md). Whether it beats
+carrying the conversation is H1, running now — no result yet
+([`results/H1-workflow-harness-20260929/`](results/H1-workflow-harness-20260929/BRIEF.md)).
+
 ---
 
 ## The request path
@@ -272,12 +296,36 @@ pointer hot-swap 2.9 µs). Use the **Q8_0** GGUF of the E4B, not Q4_0 — the sm
 order id in llama.cpp's own prompt cache, as the live distributor run below found
 ([`results/MAC2-llamacpp-20260927/`](results/MAC2-llamacpp-20260927/BRIEF.md)).
 
+**Multi-turn has headroom, at the edge [ran] (MT0).** A later turn that refers back — "move it to
+dock 5", "file a claim about that order" — has no referent under today's gateway, which reads only
+the last request: over 60 held-out distributor sessions (124 turns, 54 dependent on an earlier
+turn), it resolves 4 of 54 of them, and that 4 is chance (purchasing only). Carrying the
+conversation (`Gateway(history=True)`, the naive baseline) gets 43 of 54 (79.6 %): it resolves a
+reference it only has to copy into an argument (receiving 10/10, returns 10/10, purchasing 9/10,
+dispatch 12/14) but not one it has to write into free text — a claim about "that order" is filed
+with no order number 8 of 10 times (customer service 2/10). First turns are 60/60 in both arms, and
+context grows little over two or three turns (+24 % at turn 2)
+([`results/MT0-multiturn-baseline-20260929/`](results/MT0-multiturn-baseline-20260929/BRIEF.md)).
+
+**One card serves several members at once, no material contention [ran] (C1).** One L4, vLLM 0.30,
+four members mixed in the same batch (school, upper-layers, staff, out-of-scope): 16 sessions
+across four adapters keep 1.03× the throughput of 16 sessions on one adapter (278.6 vs 269.7
+tok/s); 32 sessions across four adapters reach 504 tok/s at a p95 time-to-first-token of 0.24 s
+with zero errors over 128 requests; throughput scales near-linearly, 22.7 → 135 → 270 → 500 tok/s
+for 1 → 8 → 16 → 32 sessions, and the ceiling sits above 32 — not reached. Supersedes E5's
+single-burst 0.88 ([`results/C1-concurrency-20260929/`](results/C1-concurrency-20260929/BRIEF.md)).
+
 **Not solved yet.** The router is still a keyword dictionary — its two learned replacements are both measured and
 neither passes **[ran]** milestone 2. The small models still invent: in the school demo the gateway replaced 2 of 5
 local replies with the tools' own text — caught, counted, never shown, but not cured. Speculative decoding with a LoRA
 expert runs for real (F0, C0, above), but its output is not yet shown identical to plain decoding, and the aligned
-drafter that might close that gap is parked — it does not run at all yet (C0). Multi-turn sessions and concurrency
-against the gateway have never been measured. The memory's library lives only in `distributor-wiki@v2`, a separate
+drafter that might close that gap is parked — it does not run at all yet (C0). Whether the workflow harness beats
+carrying the conversation is not yet known — H1 is running, and no result is stated here until it lands. A longer,
+more explicit tracker domain (a Jira-and-Confluence-like team tool, natural keys, long sessions — where the harness's
+token saving would show) is proposed as what to build it on next, pending the user's decision, and is not built. The
+harness has not run live through OpenClaw, has not been measured on sessions longer than three turns, and its global
+cache — built and unit-tested — is not yet trained on in any corpus. The memory's library lives only in
+`distributor-wiki@v2`, a separate
 member — no serving member carries its own library yet. The distributor's live run above is llama.cpp only; nobody
 has run the pair through vLLM bf16 as a live demo yet. No real traffic has been measured anywhere in this repository yet.
 

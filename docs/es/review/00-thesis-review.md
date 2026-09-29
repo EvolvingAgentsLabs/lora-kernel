@@ -123,6 +123,18 @@ El bucle de hoy ya es una FSM, sólo que escrita en código y no declarada:
 Qué gana: hacer explícito y versionable lo que hoy es código, con herramientas por fase ya medidas (P59). La escribiría en
 `docs/review/harness-fsm-spec.md` sólo si aprobás esta Fase 0.
 
+**Construido desde entonces, 2026-09-29 [ran].** La FSM que describe esta sección ya no es sólo una propuesta:
+`examples/<org>/workflows/*.toml` declara los estados de cada rol y las llamadas que mueven entre ellos
+(TOML, no YAML — `tomllib` está en la biblioteca estándar, así que el formato no agrega dependencia, una
+de las cuatro decisiones que el usuario aprobó en
+[`harness-workflow-kv.md`](harness-workflow-kv.md) §6), y `examples/common/opmemory.py` le da la otra
+mitad que a esta sección todavía le faltaba: una memoria operativa de corto plazo, leída y escrita por
+clave, de modo que un miembro lee una línea de contexto (`state: <workflow>/<state> · keys: <names>`) en
+vez de la conversación. Lo que esta sección llamó "declarado, versionable" es la mitad escrita a mano;
+**H1** (`results/H1-workflow-harness-20260929/`, corriendo, sin resultado todavía) prueba la mitad que
+tiene que ser *aprendida* — si un miembro entrenado sobre esto de verdad lee y escribe la clave correcta
+en el paso correcto.
+
 ---
 
 ## 5. Propuesta para la Fase 1

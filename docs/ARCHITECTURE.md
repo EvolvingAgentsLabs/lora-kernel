@@ -119,6 +119,20 @@ the distributor's member is served its **own corpus prompt**, with no SCOPE line
 the corpus itself (below), not stated in the system prompt — and its writes run without a director's approval, a
 policy choice for that organisation's roles, not a gap in the approvals mechanism above.
 
+**The gateway carries a session's state, not its transcript — designed, H1 running.** The naive fix for multi-turn is
+`Gateway(history=True)`: replay the conversation so a reference to an earlier turn ("move it to dock 5") has a
+referent. **[ran] MT0** (`results/MT0-multiturn-baseline-20260929`, 60 held-out distributor sessions, 124 turns, 54
+dependent on an earlier turn) measures it: without the conversation, 4 of 54 dependent turns resolve — first turns,
+independent of history, score 60 of 60 in both arms, so the gap is specific to what depends on an earlier turn, not a
+general regression. With the conversation, 43 of 54 (79.6%), at the edge of the headroom this fix has to give: it
+resolves a reference copied straight into an argument (receiving 10/10, returns 10/10, purchasing 9/10, dispatch
+12/14) but not one written into free text — a claim about "that order" is filed without the order number 8 of 10
+(customer service 2/10) — and tokens keep growing with the session (+24% by turn 2). The alternative under design,
+`Gateway(memory=, workflows=, tool_block=)`, replaces the transcript with one line — `state: <workflow>/<state> ·
+keys: <names>` — backed by the operational memory (§4). **H1** (`results/H1-workflow-harness-20260929`,
+pre-registered, running — no result yet) is the measurement of whether a trained member holds `history`'s 43 right
+answers while keeping tokens flat.
+
 **Abstention lives in the corpus, per member, not in a second model in front of it. [ran] M10:** the distributor's
 member is trained on `train_out` — its usual 700 turns byte for byte, plus 70 `OUT OF SCOPE` turns drawn from the
 role's own egress policy. Against the member without them, nothing already learned regresses (0 of 70 held-out) and
@@ -157,6 +171,14 @@ all. The pair is first a **quality** device (does large + LoRA beat small + LoRA
 small one has headroom) and then a **speculative** one (does the matched LoRA raise α).
 
 **Where it runs.** The small pool is served from one L4. The large half, `gemma-4-12B-it`, is served in bf16 from one A100 (B3, B4) and is sized for a Mac mini; ~~a 27B is A100 work in 4-bit~~.
+
+**One L4 serves several members at once without contention. [ran] C1** (`results/C1-concurrency-20260929`, vLLM
+0.30, four members mixed — `school-s0`, `upper-s0`, `staff-s0`, `out-s0`): 16 sessions split across the four adapters
+reach 278.6 tok/s against 269.7 tok/s for the same 16 sessions on one adapter alone (1.03×); 32 sessions across the
+four reach 504 tok/s, p95 time-to-first-token 0.24 s, 0 errors of 128 requests; throughput scales near-linearly from
+one session to 32 (22.7 → 135 → 270 → 500 tok/s), with the ceiling still above 32. This supersedes E5's single-burst
+reading of 0.88 — that number held at the edge of one burst of 16, not at the scale several concurrent sessions
+actually produce.
 
 **Two runtime profiles name this split explicitly, the user's decision 2026-09-28.** **`server`** is vLLM on Colab —
 every training run and every measurement, the pair included. **`edge`** is **llama.cpp on the user's own machine**,
@@ -270,6 +292,29 @@ every note through exactly that.
 **What is not assumed.** That a hierarchy beats a flat search — in this workspace's earlier memory
 benchmark it lost to lexical search, and `evolving-memory`'s dual index changed nothing **[read]** —
 or that compressing the radar to a small dimension costs nothing. Both are arms with a flat baseline.
+
+**Beside the library, not instead of it.** The library above holds knowledge — encyclopedic and operational — that a
+member navigates by key: content that changes rarely, edited by a person rather than by the conversation. The
+**operational memory** holds the opposite kind of thing: the live state of a workflow or a conversation, changing
+every turn and gone when the gateway exits. Both are read by key; the weights hold the route to each, never the
+content of either.
+
+**The operational memory — built [ran] in tests, not yet trained on** (`examples/common/opmemory.py`): a SESSION
+cache keyed by (organisation, user, session) and a GLOBAL cache per organisation (`global.<key>`), served by the tool
+layer exactly like any domain tool and bounded by the same signed claim that already keeps one tenant's rows out of
+another's reach (§2) — no key crosses an organisation or a user. Keys are validated, values capped at 500 characters,
+every write logged. Workflows are declared, not neural — one TOML file per role
+(`examples/distributor/workflows/*.toml`, six roles, two to three states each) — and the state advances only from the
+calls the tool layer actually ran; the model never sets it, and reads it only in the one-line context of §2.
+
+**The workflow harness is the member's learned part of this — designed, H1 running.** What is trained is not the
+cache, which stays outside the weights exactly as the library does, but the *habit* of operating it: for its domain,
+the workflows as state machines, its tools and how to call them, and the keys under which a session's context lives —
+one corpus, inside the member, the way a member already learns its tool block and its library's routes. It is a
+harness *inside* each member, not a second adapter composed with a domain one — which is what parked `harness.lora`,
+where composition could not be measured cleanly (P9, P13 **[ran]**). It extends W9's key-addressed reading
+(`<open>id§anchor</open>`) from encyclopedic knowledge to operational memory, and from reading alone to reading *and*
+writing. Design and open decisions: [`review/harness-workflow-kv.md`](review/harness-workflow-kv.md).
 
 ## 5. The release contract
 

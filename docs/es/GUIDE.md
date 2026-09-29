@@ -256,6 +256,15 @@ la parte común ($xW$) se calcula una sola vez para todos y la corrección de ca
 "juntan" los $A_i, B_i$ de cada pedido. vLLM lo hace con `--enable-lora --lora-modules nombre=ruta`, y el pedido elige
 su experto con el campo `model`. Ver [`FOUNDATIONS.md`](FOUNDATIONS.md) §5.2.
 
+**¿Mezclar expertos en un mismo servidor cuesta algo? [ran] C1** (`results/C1-concurrency-20260929`, una L4, vLLM
+0.30, cuatro miembros mezclados — `school-s0`, `upper-s0`, `staff-s0`, `out-s0`): sin contención material. 16
+sesiones repartidas entre los cuatro adapters llegan a 278,6 tok/s contra 269,7 tok/s de las mismas 16 sesiones sobre
+un solo adapter (1,03×); 32 sesiones entre los cuatro llegan a 504 tok/s, TTFT p95 0,24 s, 0 errores de 128 pedidos;
+el rendimiento escala casi linealmente de 1 a 32 sesiones concurrentes (22,7 → 135 → 270 → 500 tok/s), y el techo
+todavía está por encima de 32. Esto reemplaza la lectura de E5 en §3.6, 0,88 para dos LoRA compartiendo un lote — ese
+número valía al límite de una ráfaga de 16; C1 es la misma pregunta a la escala que un gateway en vivo vería de
+verdad.
+
 ### 5.5 Cambio en caliente: qué significa de verdad
 
 Hay tres cosas distintas que se llaman "cambio de LoRA":
@@ -494,6 +503,61 @@ fuera de alcance — reenviado a **Claude Haiku 4.5** a través de la salida a f
 $0,0112. Ese miembro no es un release formal (todavía no tiene archivo de release) — la corrida en vivo es una
 demostración del camino de salida, no una afirmación de que el miembro pasó la compuerta.
 
+### 7.4 Multi-turno y memoria: por qué cargar la conversación no es la solución
+
+Un gateway que sólo lee el último pedido no tiene cómo resolver "llevalo al andén 5" si "lo" se nombró dos turnos
+antes — la referencia no tiene a qué apuntar en ese único mensaje. La reparación obvia es darle al modelo toda la
+conversación: `Gateway(history=True)`.
+
+**Por qué eso sigue siendo la línea base ingenua. [ran] MT0** (`results/MT0-multiturn-baseline-20260929`): sobre 60
+sesiones held-out de la distribuidora (124 turnos, 54 dependientes de un turno anterior), un miembro sin conversación
+acierta 4 de 54 turnos dependientes — y hasta eso es azar: los 4 caen en compras, cuyo 4/10 no es mejor que adivinar,
+mientras los otros 44 turnos dependientes, fuera de compras, puntúan 0. El mismo miembro con la conversación acierta
+43 de 54 (79,6 %) — una ganancia real, y esto no es arreglar un miembro roto en general: los turnos independientes,
+sin historia, puntúan 60 de 60 en los dos brazos. Pero mirá dónde se agrupan los 11 errores: una referencia copiada
+directo a un argumento de herramienta se resuelve bien (recepción 10/10, devoluciones 10/10, compras 9/10, despacho
+12/14); una referencia que sólo aparece en texto libre — una respuesta de atención al cliente que dice "ese pedido"
+sin volver a nombrar el número — se archiva mal 8 de 10 veces. **[read]**: el modelo puede leer la historia; no la usa
+de forma confiable para reponer un dato que la respuesta necesita pero que la persona no repitió. Y la corrección
+tampoco sale barata: los tokens crecen con la sesión incluso en dos o tres turnos (+24 % en el turno 2) — una forma
+que empeora a medida que las sesiones se alargan, justo el caso que un gateway de producción tiene que atender.
+
+**Qué es una memoria operativa por clave.** En vez de repetir la conversación, guardar lo que una sesión ya aprendió
+— un id de pedido, un número de andén — en una caché chica fuera del prompt, direccionada por nombre, de la misma
+forma en que la biblioteca del §7.1 se direcciona por clave: `<get>order</get>` devuelve un valor, `<put>dock=5</put>`
+guarda uno. Cada turno el modelo ve una línea en vez de una transcripción: `state: receiving/assigned · keys: order,
+dock` — el estado actual del workflow y los *nombres* de las claves que tienen algo guardado, nunca los valores. El
+estado no lo decide el modelo: avanza sólo cuando la capa de herramientas efectivamente corre una llamada — la misma
+disciplina que el gateway del §7.3 ya aplica a permisos y anclaje, ahora aplicada a qué significa "el paso actual".
+**[ran] en tests, todavía no entrenada** (`examples/common/opmemory.py`): una caché de sesión acotada a (organización,
+usuario, sesión) más una caché global por organización, servida por la capa de herramientas como cualquier otra
+herramienta y acotada por la misma credencial firmada ya descripta en el §7.3 — ninguna clave cruza un tenant ni un
+usuario.
+
+**Cómo podría un LoRA aprender a operarla.** El §7.1 mostró a un LoRA aprendiendo a *leer* una biblioteca por clave —
+buscar, abrir, citar. El arnés de workflow en diseño pide un segundo hábito sobre la misma base: en qué workflow está
+una sesión, qué herramienta pide su estado actual, y qué clave tiene el valor que esa llamada necesita — leyendo con
+`<get>`, y ahora también escribiendo con `<put>`. Nada de los *valores* se entrena adentro: la caché queda fuera de
+los pesos y se escribe en tiempo de ejecución, nunca se memoriza, igual que la biblioteca nunca se memoriza (§7.1). Y
+se entrena *adentro* del miembro, al lado de sus herramientas y su corpus, no como un segundo adaptador apilado
+encima. **[read]**: esa elección no es incidental — un adaptador de protocolo compartido compuesto con uno de dominio
+es lo que probó `harness.lora`, y lo que quedó parado porque la composición no se pudo medir limpiamente. Enseñar el
+mismo hábito adentro del corpus propio de cada miembro es una apuesta distinta sobre la misma idea, no un reintento de
+la que falló.
+
+**Qué va a medir H1.** `results/H1-workflow-harness-20260929` (**pre-registrado, corriendo — sin resultado todavía**)
+entrena un miembro sobre el corpus de MT0 más turnos de arnés y compara tres brazos sobre las mismas 60 sesiones de
+MT0: `history` (la línea base de arriba), `harness` (el contexto de una línea, con el bloque de herramientas) y
+`harness-noblock` (lo mismo, sin repetir las herramientas en el prompt — probando si el miembro las conoce lo
+bastante bien como para no necesitar el recordatorio). Pasa sólo si el arnés pierde no más de 3 de los 54 turnos
+dependientes que `history` acierta, mantiene los tokens del prompt planos a medida que crece la sesión (el turno 3 no
+más de 1,1× el turno 1, donde `history` sigue subiendo), sostiene los turnos independientes en 90 % o más, y — el
+chequeo que agrega este diseño — todo turno dependiente contestado bien también buscó su valor por la clave correcta,
+no por una adivinanza con suerte. Diseño y decisiones abiertas:
+[`review/harness-workflow-kv.md`](../review/harness-workflow-kv.md). Hasta que H1 aterrice, que un LoRA pueda operar
+las claves de un workflow de la misma forma en que navega una biblioteca es una afirmación bajo prueba, no un
+resultado.
+
 ---
 
 ## 8. Cómo medimos (y por qué así)
@@ -575,7 +639,11 @@ fijo en el corpus que se memoriza; un modelo sin el prompt con el que se entren�
 | el modelo todavía inventa | 3 de 12 respuestas las atrapa el filtro | un corpus que enseñe a repetir sólo lo que dice la herramienta |
 | la memoria (biblioteca) dentro de un miembro que sirve | vive en `distributor-wiki@v2`, un miembro separado del que abstiene, `out-s0` (M10) | juntarlos, o mantenerlos separados por diseño — todavía sin decidir |
 | una corrida en vivo de la distribuidora en vLLM bf16 | no corrida — el único brazo local medido es llama.cpp Q8_0 (LIVE-distributor) | correrla cuando haga falta una comparación a la misma precisión contra el edge |
-| sesiones de varios turnos y concurrencia contra el gateway | nunca medidas | después de lo anterior |
+| el resultado de H1 (el arnés de workflow) | **pre-registrado, corriendo** [ran] — sin resultado todavía | leer la corrida antes de afirmar que el arnés se sostiene; liberar el miembro sólo si pasa |
+| un router adentro del propio camino del gateway | no construido — el rol sigue siendo la ruta (§7.2) | construirlo sólo cuando haga falta rutear entre roles, no la abstención por miembro |
+| el arnés en vivo por OpenClaw, multi-turno | no corrido — H1 lo mide primero en el perfil de servidor | repetir el patrón de LIVE-distributor (§7.3) una vez que H1 pase |
+| sesiones de más de 2–3 turnos | no medidas — MT0 y H1 se quedan ahí los dos | el dominio de tracker propuesto (tipo Jira/Confluence, workflows más largos) lo mostraría, si se elige — no construido |
+| la caché global entrenada | construida y probada (`opmemory.py`), todavía no adentro de un corpus de entrenamiento | sumarla al corpus de H1 o al del próximo dominio |
 | identidad real (Auth0), WhatsApp, instalación | no construidos | después de lo anterior |
 
 ---
@@ -626,5 +694,5 @@ fijo en el corpus que se memoriza; un modelo sin el prompt con el que se entren�
   [mlx-optiq — especulativa de Gemma 4 en Apple Silicon](https://mlx-optiq.com/blog/gemma-spec-decoding)
 
 **Nuestras corridas [ran]:** [`RECORD.md`](RECORD.md) las lista todas; las de esta guía: W9, B1–B5, M8, M9, DEMO-school-diagram,
-LIVE-school-openclaw, E1, F0, C0, C0-upper, E6, MAC2, W7, E5, LIVE-distributor y M10, cada una en `results/` con su
-`BRIEF.md`.
+LIVE-school-openclaw, E1, F0, C0, C0-upper, E6, MAC2, W7, E5, LIVE-distributor, M10, MT0, C1 y H1, cada una en
+`results/` con su `BRIEF.md`.

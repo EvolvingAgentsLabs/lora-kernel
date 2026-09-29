@@ -1,7 +1,11 @@
 # The workflow harness — a member that knows the workflow, the tools and the keys (design for review, 2026-09-29)
 
-*The user's idea, 2026-09-29, as a spec to review before any corpus is written. Nothing here is implemented. MT0
-(`results/MT0-multiturn-baseline-20260929`) measures the baseline it is compared with.*
+*The user's idea, 2026-09-29. **Status, 2026-09-29: approved and built.** The user approved all four §6 decisions as
+proposed; the memory (`examples/common/opmemory.py`) and its TOML workflows (`examples/<org>/workflows/*.toml`) are
+built and tested at zero GPU. MT0 (`results/MT0-multiturn-baseline-20260929`) has run — headroom, 43/54 dependent
+turns with the conversation against 4/54 without — and so has C1 (`results/C1-concurrency-20260929`, no material
+contention, four members mixed keep 1.03× one at 16 sessions). H1 (`results/H1-workflow-harness-20260929`), the
+harness's own scoring, is **running — no result yet.***
 
 ## 1. The idea, in the user's words and in ours
 
@@ -62,17 +66,21 @@ What the gateway renders on each turn, instead of the conversation:
 The keys are listed without their values, which stay in the cache. There is no history and, in one arm, **no tool
 block**: the member knows its tools because its corpus taught them (§4).
 
-### 3.3 The state machine, declared, not neural
+### 3.3 The state machine, declared, not neural — TOML, not YAML **[ran]**
 
-One file per workflow (`examples/distributor/workflows/receiving.yaml`), loaded by the gateway. This is the FSM the thesis
-review proposed (`00-thesis-review.md` §4), now with a job:
+One file per workflow (`examples/distributor/workflows/receiving.toml`), loaded by the gateway. This is the FSM the thesis
+review proposed (`00-thesis-review.md` §4), now with a job. **Built as TOML, not YAML** (§6 decision 4): `tomllib` is in
+the standard library, so the format adds no dependency.
 
-```yaml
-workflow: receiving
-states:
-  start:     {on: {dock_assign: assigned}}
-  assigned:  {on: {dock_assign: assigned, dock_status: assigned}}
-keys: [order, dock]
+```toml
+[workflow]
+name = "receiving"
+initial = "start"
+keys = ["order", "dock"]
+[states.start]
+on = { dock_assign = "assigned", dock_status = "start" }
+[states.assigned]
+on = { dock_assign = "assigned", dock_status = "assigned" }
 ```
 
 The gateway advances the state from the calls the tool layer ran. The model never sets it, and only reads it in the
@@ -119,16 +127,30 @@ Arms, on MT0's 60 held-out sessions:
 `harness-noblock` answers the second half of the idea: that the member knows its tools well enough that they need not be
 described. Tokens fall further. It passes if it loses no more than 3 of the dependent turns to `harness`.
 
-## 6. Decisions for the user before any corpus is written
+## 6. Decisions for the user — approved 2026-09-29, all four as proposed
 
 1. **Who writes the cache.** (a) The model, with `put`, as the idea says: the LoRA knows the keys. (b) The gateway, which
-   stores each call's entities under conventional keys, so the model only `get`s. (a) is the idea; (b) is simpler and
-   removes one way to fail. The proposal is (a), with (b) as the fallback if `put`s turn out unreliable.
-2. **The tool block.** Keep it in `harness` and remove it in `harness-noblock`, as above.
-3. **The domain.** The distributor's six roles, where MT0 runs. The school follows if H1 passes.
-4. **The workflows.** Declared in YAML (§3.3), one file per role, with two or three states each at first.
+   stores each call's entities under conventional keys, so the model only `get`s. **Approved: (a)**, with (b) kept as the
+   fallback if `put`s turn out unreliable.
+2. **The tool block.** Keep it in `harness` and remove it in `harness-noblock`. **Approved**, both arms run in H1.
+3. **The domain.** The distributor's six roles, where MT0 runs. **Approved: distributor first**; the school follows if H1
+   passes.
+4. **The workflows.** ~~Declared in YAML~~ **declared in TOML** (§3.3) — approved because `tomllib` is in the standard
+   library and YAML is not: one file per role, with two or three states each at first, exactly as built
+   (`examples/distributor/workflows/*.toml`).
 
 ## 7. Order
 
-MT0 (running) → this review → corpus and its gate (zero GPU) → training (one L4) → H1 scoring (one L4) → if it passes,
-the live demo with OpenClaw on the user's machine, multi-turn.
+~~MT0 (running) → this review → corpus and its gate (zero GPU) → training (one L4) → H1 scoring (one L4) → if it
+passes, the live demo with OpenClaw on the user's machine, multi-turn.~~
+
+**As run, 2026-09-29:** MT0 **[ran]** (headroom: 43/54 dependent turns with the conversation, 4/54 without) → this
+review, approved → corpus and its gate, zero GPU, passed → training, one L4 (`wf-s0`) → **C1 [ran]** (concurrency,
+bought the same day on the same kind of L4 session, needing no training of its own: four members mixed cost no
+throughput against one, 1.03× at 16 sessions, 504 tok/s at 32) → **H1 scoring, one L4 — running now, no result
+yet** → if it passes, the live demo with OpenClaw on the user's machine, multi-turn.
+
+**Next, pending the user.** A second domain to test the harness where sessions run long enough for the token saving
+to show — proposed **H2: a Jira + Confluence-like team tracker** (explicit, longer workflows: To Do → In Progress →
+In Review → QA → Done, bugs through Triage; natural keys such as `PROJ-123`; Confluence-shaped pages as the library).
+Synthetic worlds only, as everywhere here. **Not built — awaiting the user's decision.**

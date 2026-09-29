@@ -150,6 +150,33 @@ recitan el valor viejo sólo 1 vez de 40 — evidencia de lo que esta afirmació
 se aprendió la ruta, no el hecho
 ([`results/W7-edit-after-training-20260927/`](results/W7-edit-after-training-20260927/BRIEF.md)).
 
+**Memoria operativa de corto plazo, junto a la biblioteca — construida, [ran] en tests, todavía sin
+entrenar** (`examples/common/opmemory.py`). La biblioteca de arriba es lo que un experto *sabe*;
+acá vive el estado *vivo* de un flujo de trabajo: una caché de sesión indexada por (organización,
+usuario, sesión) y una caché global por organización (`global.<clave>`), servida por la capa de
+herramientas exactamente como cualquier otra herramienta — acotada por la credencial firmada, de
+modo que ninguna clave cruza organización ni usuario — claves validadas, valores topeados a 500
+caracteres, cada escritura registrada. Vive en memoria y muere con el gateway, de corto plazo por
+diseño. Un flujo de trabajo se declara, no es neuronal: un archivo TOML por rol
+(`examples/distributor/workflows/*.toml`, seis roles, dos o tres estados cada uno), avanzado sólo
+por las llamadas que la capa de herramientas *corrió* — el modelo nunca fija el estado, sólo lo
+lee. Servido con `Gateway(memory=, workflows=, tool_block=)`, todo el contexto de un turno se
+vuelve una línea — `state: <flujo>/<estado> · keys: <nombres>` — en lugar de la conversación, y el
+modelo busca (`<get>clave</get>`) o guarda (`<put>clave=valor</put>`) un valor sólo en el paso que
+lo necesita.
+
+**El arnés de flujo de trabajo — la idea del usuario, 2026-09-29, diseñada [spec], H1 corriendo.**
+Para un subdominio, un miembro aprende en sus pesos los flujos de trabajo del dominio, sus
+herramientas, y las *claves* de esa memoria operativa — nunca los valores, nunca la conversación,
+así que el prompt queda plano a medida que crece una sesión. Lo que termina en el corpus es la
+misma coreografía que la biblioteca de arriba, extendida de leer (`<open>id§ancla</open>`) a leer
+*y escribir* estado operativo. Es un arnés adentro de cada miembro, un solo corpus — no un
+adaptador separado compuesto con uno de dominio, que fue lo que dejó en pausa al `harness.lora`
+anterior (la composición no se pudo medir limpio, P9/P13). Diseño completo:
+[`docs/review/harness-workflow-kv.md`](docs/review/harness-workflow-kv.md). Si le gana a cargar la
+conversación es H1, corriendo ahora — todavía sin resultado
+([`results/H1-workflow-harness-20260929/`](results/H1-workflow-harness-20260929/BRIEF.md)).
+
 ---
 
 ## El camino del pedido
@@ -289,14 +316,40 @@ GGUF **Q8_0** del E4B, no Q4_0 — el cuant más chico invierte el id de orden e
 prompt de llama.cpp, como encontró la corrida en vivo de la distribuidora más abajo
 ([`results/MAC2-llamacpp-20260927/`](results/MAC2-llamacpp-20260927/BRIEF.md)).
 
+**El multi-turno tiene margen, al filo [ran] (MT0).** Un turno posterior que hace referencia hacia
+atrás — "movelo al muelle 5", "cargá un reclamo sobre ese pedido" — no tiene referente bajo el
+gateway de hoy, que sólo lee el último pedido: sobre 60 sesiones retenidas de la distribuidora (124
+turnos, 54 dependientes de un turno anterior), resuelve 4 de 54, y ese 4 es azar (sólo compras).
+Cargar la conversación (`Gateway(history=True)`, el brazo ingenuo) llega a 43 de 54 (79,6 %):
+resuelve una referencia que sólo tiene que copiar dentro de un argumento (recepción 10/10,
+devoluciones 10/10, compras 9/10, despacho 12/14) pero no la que tiene que escribir en texto libre
+— un reclamo sobre "ese pedido" se carga sin número de pedido 8 de 10 veces (atención al cliente
+2/10). Los primeros turnos son 60/60 en los dos brazos, y el contexto crece poco en dos o tres
+turnos (+24 % en el turno 2)
+([`results/MT0-multiturn-baseline-20260929/`](results/MT0-multiturn-baseline-20260929/BRIEF.md)).
+
+**Una sola placa sirve a varios miembros a la vez, sin contención material [ran] (C1).** Una L4,
+vLLM 0.30, cuatro miembros mezclados en el mismo lote (escuela, capas de arriba, personal, fuera de
+alcance): 16 sesiones sobre cuatro adaptadores mantienen 1,03× el throughput de 16 sesiones sobre
+uno solo (278,6 contra 269,7 tok/s); 32 sesiones sobre cuatro adaptadores llegan a 504 tok/s con un
+p95 de time-to-first-token de 0,24 s y cero errores sobre 128 pedidos; el throughput escala casi
+lineal, 22,7 → 135 → 270 → 500 tok/s para 1 → 8 → 16 → 32 sesiones, y el techo está por encima de 32
+— no se alcanzó. Reemplaza el 0,88 de una sola ráfaga de E5
+([`results/C1-concurrency-20260929/`](results/C1-concurrency-20260929/BRIEF.md)).
+
 **Todavía sin resolver.** El router sigue siendo un diccionario de palabras clave — sus dos
 reemplazos aprendidos ya están medidos y ninguno pasa **[ran]** hito 2. Los modelos chicos todavía
 inventan: en la demo de la escuela el gateway reemplazó 2 de 5 respuestas locales por el texto
 propio de las herramientas — atrapado, contado, nunca mostrado, pero no curado. La decodificación especulativa con un
 experto LoRA corre de verdad (F0, C0, arriba), pero todavía no está mostrado que su salida sea idéntica a la
 decodificación normal, y el drafter alineado que podría cerrar esa brecha está en pausa — todavía no corre en
-absoluto (C0). Nunca se midieron sesiones multi-turno ni concurrencia contra el gateway. La biblioteca de la memoria
-vive sólo en `distributor-wiki@v2`, un miembro aparte — ningún miembro servido lleva su propia biblioteca todavía.
+absoluto (C0). Todavía no se sabe si el arnés de flujo de trabajo le gana a cargar la conversación — H1 está
+corriendo, y acá no se afirma ningún resultado hasta que llegue. Se propone un dominio de seguimiento de tickets
+más largo y explícito (tipo Jira y Confluence, claves naturales, sesiones largas — donde se vería el ahorro de
+tokens del arnés) como lo próximo para construirlo, pendiente de la decisión del usuario, y todavía no está
+construido. El arnés no corrió en vivo a través de OpenClaw, no se midió en sesiones de más de tres turnos, y su
+caché global — construida y probada con tests unitarios — todavía no se entrenó en ningún corpus. La biblioteca de
+la memoria vive sólo en `distributor-wiki@v2`, un miembro aparte — ningún miembro servido lleva su propia biblioteca todavía.
 La corrida en vivo de la distribuidora de arriba es sólo llama.cpp; todavía nadie corrió el par a través de vLLM
 bf16 como demo en vivo. Todavía no se midió tráfico real en ningún lugar de este repositorio.
 

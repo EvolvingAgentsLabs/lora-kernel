@@ -73,9 +73,38 @@ tok/s, beside accuracy falling 70/70 → 39/70 **[ran]** `results/E5-engine-base
 the whole prefix recurred instead, the same block cost nothing (0.09–0.11 s) — **the cache is beaten
 by the order the corpus put things in, not by the block's size.**
 
-**Two LoRAs in one batch keep 0.88 of one's own throughput.** A burst of 16 requests split across two
+~~**Two LoRAs in one batch keep 0.88 of one's own throughput.** A burst of 16 requests split across two
 adapters served together loses 12% against serving the same 16 apart — contention, not a wall, and
-worth pricing before sizing one server for more than one member at a time **[ran]** E5.
+worth pricing before sizing one server for more than one member at a time **[ran]** E5.~~
+
+**Superseded — C1 [ran] 2026-09-29: under steady load, four members mixed cost no throughput against
+one.** E5's 0.88 was one burst of 16 requests; C1 (`training/harness/load_test.py`, one L4, vLLM 0.30,
+`google/gemma-4-E4B-it` bf16, four members: `school-s0`, `upper-s0`, `staff-s0`, `out-s0`) ran the same
+question as a curve. At 16 concurrent sessions, four adapters mixed deliver **278.6 tok/s** against
+**269.7 tok/s** for one adapter alone — a ratio of **1.03**, against a contention bar of 0.8. At 32
+sessions, four adapters reach **504.3 tok/s** at **p95 time-to-first-token 0.24 s** and **0 errors of
+128** requests. Throughput scales near-linearly with sessions (22.7 → 135 → 270 → 500 tok/s for 1 → 8 →
+16 → 32), and the ceiling sits above 32 sessions, not reached
+[`results/C1-concurrency-20260929/BRIEF.md`](../results/C1-concurrency-20260929/BRIEF.md). **Not
+measured:** more than four adapters, sessions past 32, the gateway's own overhead, longer generations.
+
+## The gateway's serving options: `history=`, `memory=`, `workflows=`, `tool_block=`
+
+`examples/school/gateway.py`'s `Gateway` is the pool's second front door — one organisation per process,
+walked through end to end in [`OPENCLAW.md`](OPENCLAW.md) §6. Four constructor options decide what a
+turn reads, beside the role's own prompt and tools:
+
+| option | default | what it does |
+|---|---|---|
+| `history=True` | `False` | renders every earlier request and reply before the current one — the naive way to carry a multi-turn conversation, `out-s0`'s `history` arm in MT0 below |
+| `memory=<OpMemory>` | `None` | turns on the workflow harness (`examples/common/opmemory.py`): a turn reads one context line — the role's workflow state and the key **names** of its session and organisation caches, never their values — and the member fetches (`<get>`) or stores (`<put>`) a value only in the step that needs it |
+| `workflows={role: Workflow}` | `{}` | maps a role to its declared state machine (`examples/<org>/workflows/*.toml`); the gateway advances the state from the calls the tool layer **ran**, never from the model |
+| `tool_block=False` | `True` | drops the rendered tool surface from the turn — the member trusted to know its tools from its corpus alone (H1's `harness-noblock` arm) |
+
+`history=True` and `memory=…` answer the same problem two different ways and are not meant to run
+together: history is the baseline the workflow harness is measured against, not a second copy of it —
+see [`OPENCLAW.md`](OPENCLAW.md) for the multi-turn story and `docs/review/harness-workflow-kv.md` for
+the harness's design.
 
 ## The base has to be one vLLM actually applies adapters to — check, do not assume
 

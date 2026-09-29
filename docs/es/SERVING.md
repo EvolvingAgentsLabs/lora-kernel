@@ -76,10 +76,41 @@ exactitud cayendo 70/70 → 39/70 **[ran]** `results/E5-engine-baseline-20260928
 entero se repitió en cambio, el mismo bloque no costó nada (0,09–0,11 s) — **la caché la vence el
 orden en que el corpus puso las cosas, no el tamaño del bloque.**
 
-**Dos LoRAs en un mismo batch se quedan con 0,88 del throughput de uno solo.** Una ráfaga de 16
+~~**Dos LoRAs en un mismo batch se quedan con 0,88 del throughput de uno solo.** Una ráfaga de 16
 pedidos repartida entre dos adaptadores servidos juntos pierde 12% contra servir los mismos 16 por
 separado — contención, no una pared, y vale la pena tarifarla antes de dimensionar un servidor para
-más de un miembro a la vez **[ran]** E5.
+más de un miembro a la vez **[ran]** E5.~~
+
+**Superada — C1 [ran] 2026-09-29: bajo carga sostenida, cuatro miembros mezclados no cuestan
+throughput contra uno solo.** El 0,88 de E5 era una sola ráfaga de 16 pedidos; C1
+(`training/harness/load_test.py`, una L4, vLLM 0.30, `google/gemma-4-E4B-it` bf16, cuatro miembros:
+`school-s0`, `upper-s0`, `staff-s0`, `out-s0`) corrió la misma pregunta como una curva. Con 16
+sesiones concurrentes, cuatro adaptadores mezclados entregan **278,6 tok/s** contra **269,7 tok/s**
+de un solo adaptador — una razón de **1,03**, contra una barra de contención de 0,8. Con 32
+sesiones, cuatro adaptadores llegan a **504,3 tok/s** con **p95 de tiempo al primer token 0,24 s** y
+**0 errores de 128** pedidos. El throughput escala casi linealmente con las sesiones (22,7 → 135 →
+270 → 500 tok/s para 1 → 8 → 16 → 32), y el techo está por encima de 32 sesiones, no alcanzado
+[`results/C1-concurrency-20260929/BRIEF.md`](../../results/C1-concurrency-20260929/BRIEF.md). **No
+medido:** más de cuatro adaptadores, sesiones más allá de 32, el overhead propio del gateway,
+generaciones más largas.
+
+## Las opciones de servido del gateway: `history=`, `memory=`, `workflows=`, `tool_block=`
+
+`examples/school/gateway.py`'s `Gateway` es la segunda puerta de entrada del pool — una organización
+por proceso, recorrida de punta a punta en [`OPENCLAW.md`](OPENCLAW.md) §6. Cuatro opciones del
+constructor deciden qué lee un turno, además del prompt y las herramientas propias del rol:
+
+| opción | por defecto | qué hace |
+|---|---|---|
+| `history=True` | `False` | renderiza cada pedido y respuesta anterior antes del actual — la forma ingenua de cargar una conversación multi-turno, el brazo `history` de `out-s0` en MT0 más abajo |
+| `memory=<OpMemory>` | `None` | activa el arnés de flujos de trabajo (`examples/common/opmemory.py`): un turno lee una línea de contexto — el estado del flujo de trabajo del rol y los **nombres** de las claves de sus cachés de sesión y de organización, nunca sus valores — y el miembro busca (`<get>`) o guarda (`<put>`) un valor sólo en el paso que lo necesita |
+| `workflows={role: Workflow}` | `{}` | mapea un rol a su máquina de estados declarada (`examples/<org>/workflows/*.toml`); el gateway avanza el estado por las llamadas que la capa de herramientas **ejecutó**, nunca por el modelo |
+| `tool_block=False` | `True` | quita la superficie de herramientas renderizada del turno — el miembro confía en conocer sus herramientas por su propio corpus (el brazo `harness-noblock` de H1) |
+
+`history=True` y `memory=…` responden el mismo problema de dos maneras distintas y no están
+pensadas para correr juntas: history es la línea de base contra la que se mide el arnés de flujos de
+trabajo, no una segunda copia de él — ver [`OPENCLAW.md`](OPENCLAW.md) para la historia del
+multi-turno y `docs/review/harness-workflow-kv.md` para el diseño del arnés.
 
 ## La base tiene que ser una a la que vLLM realmente le aplique adaptadores — se chequea, no se supone
 

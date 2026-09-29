@@ -32,6 +32,14 @@ flow, a trajectory through them does what an agent harness does — so the harne
 fixed prompt and a hand-written loop, and becomes three separable things: editable content,
 editable control flow, and a learned way of walking them.
 
+**Extended since, 2026-09-29 [ran].** The same key-addressed reading this document proposes for a
+library (`<open>id§anchor</open>`, §3.4) is now also how a member reads *and writes* a conversation's
+own state: a workflow harness (`examples/common/opmemory.py`,
+[`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md)) keys a session's live values — an
+order id, a dock number — the same way a page keys a statement, and a member fetches (`<get>`) or stores
+(`<put>`) one only in the step that needs it, instead of re-reading the conversation. MT0 and H1 measure
+it; see [`MEMORY.md`](MEMORY.md) §11.
+
 ## 2. What is already measured, and must constrain the design
 
 | # | finding | number | run |
