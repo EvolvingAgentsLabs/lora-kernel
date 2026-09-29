@@ -105,7 +105,7 @@ def runtime_request(messages: list[dict]) -> str:
 
 class Gateway:
     def __init__(self, conn, generate, frontier=None, log_path=None, max_calls: int = 4, org: str = "school",
-                 history: bool = False, memory=None, workflows: dict | None = None):
+                 history: bool = False, memory=None, workflows: dict | None = None, tool_block: bool = True):
         """`generate(system, user) -> (gen(prefix) -> text, used() -> {prompt_tokens, completion_tokens})`."""
         self.conn, self.generate, self.frontier, self.log_path, self.max_calls = conn, generate, frontier, log_path, max_calls
         # HISTORY (MT0, 2026-09-29): by default a turn sees only the person's last request — every earlier turn is
@@ -116,6 +116,7 @@ class Gateway:
         # context line — the role's workflow state and the key NAMES of its session and organisation caches — and the
         # member fetches and stores values with `get` / `put`; `workflows` maps a role to its declared state machine.
         self.memory, self.workflows = memory, workflows or {}
+        self.tool_block = tool_block          # H1's `harness-noblock`: the member is trusted to know its tools
         self.org, mods = org, org_modules(org)
         self.roles, self.tools = mods["roles"], mods["tools"]
         self.queue = approvals.Queue() if ORGS[org]["approvals"] else None
@@ -141,7 +142,7 @@ class Gateway:
             from examples.common import opmemory
             names, schema = names + list(opmemory.VERBS), schema + opmemory.SCHEMA
             request = f"{opmemory.context_line(self.memory, claim, session, workflow)}\n{request}"
-        user = render_tools([{"role": "user", "content": request}], schema)[-1]["content"]
+        user = render_tools([{"role": "user", "content": request}], schema)[-1]["content"] if self.tool_block else request
         suite = ToolSuite(self.conn, claim, names, self.tools, self.queue, memory=self.memory, session=session)
         system = f"{role['system_prompt']} {SCOPE}" if ORGS[self.org]["scope"] else role["system_prompt"]
         earlier = earlier_turns(messages) if self.history else []

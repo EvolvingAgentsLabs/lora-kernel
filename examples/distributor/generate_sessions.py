@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import json
 import random
+import re
 from pathlib import Path
 
 from examples.distributor import generate_turns as gt
@@ -149,19 +150,96 @@ def oracle_generate(sess: dict):
     return generate
 
 
-def play(sess: dict, generate, history: bool) -> list[dict]:
-    """One session through the gateway: each turn appended to the conversation, the reply shown appended after it."""
+# THE WORKFLOW HARNESS (docs/review/harness-workflow-kv.md): what each first turn stores for later steps, and which key a
+# dependent turn fetches — the member learns these from the corpus; the gateway only serves `get` / `put`.
+PUTS = {"dispatch": "order", "customer_service": "order", "receiving": "order", "claims_returns": "order",
+        "purchasing": "lowest_item"}
+WORKFLOWS = Path(__file__).parent / "workflows"
+
+
+def workflows() -> dict:
+    from examples.common.opmemory import Workflow
+    return {f.stem: Workflow.load(f) for f in sorted(WORKFLOWS.glob("*.toml"))}
+
+
+def _stored_value(sess: dict, turn_i: int) -> str | None:
+    """What the first turn stores: the order it is about, or the lowest item its stock result shows."""
+    t = sess["turns"][0]
+    key = PUTS.get(sess["kind"])
+    if not key or turn_i != 0:
+        return None
+    if key == "lowest_item":
+        return str(sess["turns"][1]["args"]["item"]) if len(sess["turns"]) > 1 else None
+    if sess["kind"] == "claims_returns":
+        return str(sess["turns"][1]["args"]["order_id"]) if len(sess["turns"]) > 1 else None
+    return str(t["args"]["order_id"])
+
+
+def complaint(request: str) -> str:
+    """What went wrong, out of a claim request: "…crushed — file a claim…" → "…crushed"; "…: two boxes are missing." →
+    "two boxes are missing"."""
+    text = request.split(": ", 1)[1] if ": " in request else request.split(" — ")[0].split(", please")[0]
+    return text.strip().rstrip(".")
+
+
+def harness_oracle(sess: dict):
+    """The oracle's trajectory under the harness: a first turn makes its call and `put`s what a later step needs; a
+    dependent turn `get`s it, then makes its call. The answer restates the call's result, as every corpus does."""
+    key = PUTS.get(sess["kind"])
+    turn_no = {"i": -1}
+
+    def generate(system, user, close, history=None):
+        turn_no["i"] += 1
+        i = turn_no["i"]
+        turn = sess["turns"][i]
+        args = {k.rstrip("~"): (f"order {v}" if k == "description~" and str(v).isdigit() else v) for k, v in turn["args"].items()}
+        if turn["tool"] == "return_create":
+            args["reason"] = next(x for x in gt.REASONS if x.startswith(turn["args"]["reason~"]))
+        if turn["tool"] == "maintenance_create":
+            args["description"] = next(x for x in gt.PROBLEMS if turn["args"]["description~"] in x)
+        if turn["tool"] == "claim_create":                # a claim names the order (from the cache) AND what went wrong
+            args["description"] = f"order {turn['args']['description~']}: {complaint(turn['request'])}"
+        steps = []
+        if turn["depends"] and key:
+            steps.append(f"<get>{key}</get>")
+        steps.append(gt._tag(turn["tool"], args))
+        if (v := _stored_value(sess, i)) is not None:
+            steps.append(f"<put>{key}={v}</put>")
+
+        def gen(prefix: str) -> str:
+            done = prefix.count("</")
+            if done < len(steps):
+                return steps[done]
+            m = re.search(rf"</{turn['tool']}>= (.*?)(?=\n<|\Z)", prefix, re.S)
+            result = m.group(1).strip() if m else ""
+            return gt._answer("write" if turn["tool"].endswith(("_create", "_assign", "_reorder")) else "read", result)
+        return gen, lambda: {"prompt_tokens": 0, "completion_tokens": 0}
+    return generate
+
+
+def play(sess: dict, generate, history: bool = False, harness: bool = False, tool_block: bool = True,
+         capture: list | None = None) -> list[dict]:
+    """One session through the gateway: each turn appended to the conversation, the reply shown appended after it.
+    `harness=True` serves the operational memory and the role's workflow instead of the conversation; `capture` collects
+    what the model was served per turn (system, user) and the walk it wrote — a corpus row."""
     from examples.common import tokens
+    from examples.common.opmemory import OpMemory
     from examples.distributor import users
     from examples.school.gateway import Gateway
     users.register_all()
-    gw = Gateway(gt._world(sess["world_seed"]), generate, org="distributor", history=history)
+    served = {}
+
+    def spy(system, user, close, history=None):
+        served.update(system=system, user=user)
+        return generate(system, user, close, history) if history else generate(system, user, close)
+    gw = Gateway(gt._world(sess["world_seed"]), spy, org="distributor", history=history,
+                 memory=OpMemory() if harness else None, workflows=workflows() if harness else None, tool_block=tool_block)
     token = tokens.issue(sess["user_id"], sess["role"], sess["org"])
     messages, out = [], []
     for t in sess["turns"]:
         messages.append({"role": "user", "content": t["request"]})
         try:
-            r = gw.turn(token, messages)
+            r = gw.turn(token, messages, session=sess["session_id"])
         except Exception as e:                                   # transport — never folded into a score
             out.append({"request": t["request"], "error": repr(e)[:160]})
             messages.append({"role": "assistant", "content": ""})
@@ -170,6 +248,8 @@ def play(sess: dict, generate, history: bool) -> list[dict]:
         out.append({"request": t["request"], "tool": t["tool"], "depends": t["depends"], "right": turn_right(ev["calls"], t),
                     "calls": ev["calls"], "route": r["route"], "reply": r["reply"][:300], "walk": r["walk"][-400:],
                     "prompt_tokens": ev.get("prompt_tokens", 0), "completion_tokens": ev.get("completion_tokens", 0)})
+        if capture is not None:
+            capture.append({"system": served["system"], "user": served["user"], "walk": r["walk"]})
         messages.append({"role": "assistant", "content": r["reply"]})
     return out
 
@@ -197,7 +277,46 @@ def gate(train: list[dict], evals: list[dict]) -> dict:
     return g
 
 
+def harness_rows(sessions: list[dict]) -> tuple[list[dict], int]:
+    """Every turn of every session, as the harness serves it, with the oracle's walk: (corpus rows, sessions not right)."""
+    rows, bad = [], 0
+    for s in sessions:
+        cap: list = []
+        res = play(s, harness_oracle(s), harness=True, capture=cap)
+        ok = all(x.get("right") for x in res) and all(
+            any(c["tool"] == "get" and "result" in c for c in x["calls"]) for x in res if x.get("depends") and PUTS.get(s["kind"]))
+        bad += not ok
+        rows += [{"case_id": f"{s['session_id']}-t{i}", "kind": s["kind"], "turn": i, "depends": s["turns"][i]["depends"],
+                  "messages": [{"role": "system", "content": c["system"]}, {"role": "user", "content": c["user"]},
+                               {"role": "assistant", "content": c["walk"]}]} for i, c in enumerate(cap)]
+    return rows, bad
+
+
+def write_harness_corpus() -> dict:
+    """data_turns/train_harness.jsonl = M10's train_out.jsonl BYTE FOR BYTE + every turn of the 300 training sessions as
+    the harness serves them. Gate H1: every oracle session right through the memory, every dependent turn fetched by key."""
+    train = [json.loads(l) for l in (OUT / "train.jsonl").read_text().splitlines() if l.strip()]
+    evals = [json.loads(l) for l in (OUT / "eval.jsonl").read_text().splitlines() if l.strip()]
+    rows, bad_t = harness_rows(train)
+    _, bad_e = harness_rows(evals)
+    turns_dir = Path(__file__).parent / "data_turns"
+    base = (turns_dir / "train_out.jsonl").read_bytes()
+    (turns_dir / "train_harness.jsonl").write_bytes(base + "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows).encode())
+    g = {"H1_oracle_train_sessions_not_right": bad_t, "H2_oracle_eval_sessions_not_right": bad_e,
+         "harness_rows": len(rows), "base_rows": base.count(b"\n"),
+         "rows_with_get": sum("<get>" in r["messages"][2]["content"] for r in rows),
+         "rows_with_put": sum("<put>" in r["messages"][2]["content"] for r in rows)}
+    g["passed"] = g["H1_oracle_train_sessions_not_right"] == 0 and g["H2_oracle_eval_sessions_not_right"] == 0
+    (OUT / "gate_harness.json").write_text(json.dumps(g, indent=1))
+    return g
+
+
 def main() -> int:
+    import sys
+    if "--harness-corpus" in sys.argv[1:]:
+        g = write_harness_corpus()
+        print(f"[sessions] harness corpus · gate {'PASSED' if g['passed'] else 'FAILED'} {g}", flush=True)
+        return 0 if g["passed"] else 1
     OUT.mkdir(exist_ok=True)
     train, evals = build("train"), build("eval")
     g = gate(train, evals)

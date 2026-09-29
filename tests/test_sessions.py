@@ -53,3 +53,38 @@ def test_the_reading_bands_written_first():
     assert sa.reading(_rec(58, 30))["reading"].startswith("HEADROOM")
     assert sa.reading(_rec(58, 50))["reading"].startswith("NO ACCURACY HEADROOM")
     assert sa.reading(_rec(50, 50))["reading"].startswith("VOID")
+
+
+def test_the_harness_oracle_resolves_every_session_by_key_with_and_without_the_tool_block():
+    for s in SESS[:12]:
+        for block in (True, False):
+            cap = []
+            res = gs.play(s, gs.harness_oracle(s), harness=True, tool_block=block, capture=cap)
+            assert all(t["right"] for t in res), (s["kind"], block)
+            assert cap[0]["user"].startswith(f"state: {s['kind']}/start · keys: (none)")
+            assert ("The following tools are available" in cap[0]["user"]) == block
+            if len(res) > 1 and gs.PUTS.get(s["kind"]):
+                assert "Put order" not in cap[1]["user"] and "keys: " in cap[1]["user"] and gs.PUTS[s["kind"]] in cap[1]["user"]
+
+
+def test_the_harness_corpus_extends_m10s_byte_for_byte_and_teaches_both_verbs():
+    d = Path("examples/distributor/data_turns")
+    assert (d / "train_harness.jsonl").read_bytes().startswith((d / "train_out.jsonl").read_bytes())
+    g = json.loads(Path("examples/distributor/data_sessions/gate_harness.json").read_text())
+    assert g["passed"] and g["rows_with_get"] > 200 and g["rows_with_put"] > 200
+
+
+def test_h1_reading_written_first():
+    def arm(right_dep, p3=300, first=True):
+        return {f"s{j}": {"kind": "receiving", "turns": [
+            {"right": first, "depends": False, "calls": [], "prompt_tokens": 300},
+            {"right": j < right_dep, "depends": True, "prompt_tokens": 320 if p3 else 0,
+             "calls": [{"tool": "get", "result": "41"}] if j < right_dep else []},
+            {"right": True, "depends": True, "prompt_tokens": p3, "calls": [{"tool": "get", "result": "41"}]}]} for j in range(20)}
+    rec = {"arms": {"history": arm(18), "harness": arm(16), "harness-noblock": arm(15)}}
+    r = sa.h1_reading(rec)
+    assert r["lost"] == 2 and r["reading"].startswith("PASSED") and r["noblock"]["reading"] == "PASSED"
+    rec["arms"]["harness"] = arm(14)
+    assert sa.h1_reading(rec)["reading"].startswith("FALSIFIED")
+    rec["arms"]["harness"] = arm(18, p3=400)
+    assert sa.h1_reading(rec)["flat"] is False and sa.h1_reading(rec)["reading"].startswith("FALSIFIED")

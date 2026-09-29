@@ -1,0 +1,9 @@
+{
+ "H1_oracle_train_sessions_not_right": 0,
+ "H2_oracle_eval_sessions_not_right": 0,
+ "harness_rows": 627,
+ "base_rows": 770,
+ "rows_with_get": 277,
+ "rows_with_put": 250,
+ "passed": true
+}
