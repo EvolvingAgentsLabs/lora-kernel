@@ -1,0 +1,9 @@
+# QA's session: an issue under test is passed on or sent back with a comment
+[workflow]
+name = "qa"
+initial = "start"
+keys = ["issue"]
+[states.start]
+on = { issue_get = "testing", issue_search = "start", issue_transition = "testing" }
+[states.testing]
+on = { issue_get = "testing", issue_transition = "testing", issue_comment = "testing", issue_search = "start" }

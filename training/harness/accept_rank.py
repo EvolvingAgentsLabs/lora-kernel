@@ -181,8 +181,13 @@ def post(path: str, payload: dict, timeout: int = 300) -> dict:
     req = urllib.request.Request(HOST + path, method="POST",
                                  data=json.dumps(payload).encode(),
                                  headers={"Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=timeout) as r:
-        return json.load(r)
+    try:
+        with urllib.request.urlopen(req, timeout=timeout) as r:
+            return json.load(r)
+    except urllib.error.HTTPError as e:
+        # the server's own reason, not a bare status: H2's first scoring recorded 420 turns of "HTTP Error 400" and
+        # nothing else [ran] 2026-09-29
+        raise RuntimeError(f"HTTP {e.code} from {path}: {e.read().decode(errors='replace')[:300]}") from None
 
 
 def serve(model: str, extra: list[str]) -> subprocess.Popen:
@@ -214,12 +219,23 @@ def stop(proc) -> None:
         proc.kill()
 
 
+MAX_STOPS = 4    # vLLM 0.30's OpenAI server refused every request with more stop sequences [ran] H2 attempt 1, 2026-09-29
+
+
 def completion(model: str, prompt: str, max_tokens: int, close=CLOSE) -> str:
+    # MORE CLOSING TAGS THAN THE SERVER TAKES: every tracker role has 5–8 (its tools + get/put), and all 420 turns of H2's
+    # first scoring came back 400. Stop at the generic "</" a closing tag starts with, and put the tag back from what the
+    # text is inside of (close_open_tag, as for llama.cpp's dropped stop string) — the same tag the model was writing.
+    many = len(close) > MAX_STOPS
     r = post("/v1/completions", {
         "model": model, "prompt": prompt, "temperature": 0, "max_tokens": max_tokens,
-        "stop": list(close), "include_stop_str_in_output": True})
+        "stop": ["</"] if many else list(close), "include_stop_str_in_output": True})
     ch = r["choices"][0]
     text = ch.get("text") or ""
+    if many:
+        if text.endswith("</"):
+            text = close_open_tag(text[:-2], close)
+        return text
     # BELT AND BRACES ON THE STOP STRING. If the server honoured `stop` but not
     # `include_stop_str_in_output`, `stop_reason` still names the tag it stopped at.
     reason = ch.get("stop_reason")

@@ -1,0 +1,10 @@
+# a story's lifecycle — the tool layer refuses any move not listed (as Jira's workflow scheme does)
+[workflow]
+name = "story"
+initial = "todo"
+[transitions]
+todo = ["in_progress"]
+in_progress = ["in_review", "todo"]
+in_review = ["qa", "in_progress"]
+qa = ["done", "in_progress"]
+done = ["in_progress"]

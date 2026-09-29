@@ -50,7 +50,9 @@ from examples.common.permissions import Denied
 # alone and never abstains, and runs its writes without a director's approval, as training/harness/demo_org.scene does.
 # A member is served the way its corpus taught it (CLAUDE.md §3), so the organisation carries those two switches.
 ORGS = {"school": {"package": "examples.school", "scope": True, "approvals": True, "provider": "schoolgw"},
-        "distributor": {"package": "examples.distributor", "scope": False, "approvals": False, "provider": "distgw"}}
+        "distributor": {"package": "examples.distributor", "scope": False, "approvals": False, "provider": "distgw"},
+        # the team tracker (Jira + Confluence-like, 2026-09-29): served its role's prompt; writes run as its tools allow
+        "tracker": {"package": "examples.tracker", "scope": False, "approvals": False, "provider": "trackgw"}}
 
 
 def org_modules(org: str) -> dict:
