@@ -1,0 +1,11 @@
+# a bug's lifecycle: it is triaged before anyone works on it
+[workflow]
+name = "bug"
+initial = "triage"
+[transitions]
+triage = ["todo", "wont_fix"]
+todo = ["in_progress"]
+in_progress = ["in_review", "todo"]
+in_review = ["done", "in_progress"]
+done = ["in_progress"]
+wont_fix = ["triage"]

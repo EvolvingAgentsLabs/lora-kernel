@@ -1,0 +1,11 @@
+# the lead's session: the board is read, an issue created or picked, and assigned
+[workflow]
+name = "lead"
+initial = "start"
+keys = ["issue", "person"]
+[states.start]
+on = { sprint_board = "planning", issue_search = "planning", issue_create = "on_issue", issue_get = "on_issue" }
+[states.planning]
+on = { sprint_board = "planning", issue_search = "planning", issue_create = "on_issue", issue_get = "on_issue" }
+[states.on_issue]
+on = { issue_assign = "on_issue", issue_get = "on_issue", issue_create = "on_issue", sprint_board = "planning" }

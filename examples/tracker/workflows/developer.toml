@@ -1,0 +1,9 @@
+# the developer's session: an issue is taken up, worked through its lifecycle, time logged — the keys the harness keeps
+[workflow]
+name = "developer"
+initial = "start"
+keys = ["issue", "status"]
+[states.start]
+on = { issue_get = "on_issue", issue_search = "start", issue_transition = "on_issue", worklog_add = "on_issue" }
+[states.on_issue]
+on = { issue_get = "on_issue", issue_transition = "on_issue", issue_comment = "on_issue", worklog_add = "on_issue", issue_search = "start" }
