@@ -9,11 +9,9 @@ medido **[ran]** con su directorio de corrida, o, honestamente, su estado si tod
 [`ARCHITECTURE.md`](../ARCHITECTURE.md) es el mapa del sistema entero; este documento son las dieciocho
 cosas de ese mapa, una por una.
 
-> **[MARCADOR DE ILUSTRACIÓN — `docs/img/mechanisms-map.png`, tall, ~1200 × 1600]**
-> *Un mapa de subte: la línea principal es el camino de un pedido (agente, identidad, gateway, memoria operativa,
-> flujo, experto, herramientas, aprobaciones, anclaje, respuesta), con ramales a la frontera, a la biblioteca y al
-> router; depósitos "server" y "edge"; un desvío "decodificación especulativa"; cada estación con su número de
-> sección §1–§17.*
+![Un mapa de subte: la línea principal es el camino de un pedido — agente, identidad, gateway, memoria operativa, flujo, experto, capa de herramientas, aprobaciones, anclaje, respuesta — con ramales a la frontera y a una persona, a la biblioteca y al router, dos depósitos para los runtimes server y edge, y un desvío para la decodificación especulativa.](../img/mechanisms-map.png)
+
+*Todos los mecanismos en una línea. Los números cuentan las estaciones en el orden en que las recorre un pedido, no las secciones de este documento — que son: camino del pedido §1, identidad §2, capa de herramientas §3, anclaje §4, aprobaciones §5, fuera de alcance §6, memoria operativa §8, flujo §9, experto (el harness) §10, biblioteca §11, router §14, server y edge §15, decodificación especulativa §16, corpus, compuerta de release y medición §12, §13, §17.*
 
 ## Contenido
 

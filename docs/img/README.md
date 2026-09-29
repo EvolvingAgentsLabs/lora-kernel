@@ -25,11 +25,11 @@ English in both language versions.
 | `core-1-0.png` | wide, ~1600 px | ✅ **in** | `README.md`, `README.es.md` |
 | `memory-five-pieces.png` | wide, ~1600 px | ✅ **in** | `docs/MEMORY.md`, `docs/es/MEMORY.md`, `docs/ARCHITECTURE.md`, `docs/es/ARCHITECTURE.md` |
 | `memory-walkthrough.png` | tall, ~1200 × 1600 | ✅ **in (v2, 2026-09-26)** | `README.md`, `README.es.md`, `docs/MEMORY.md`, `docs/es/MEMORY.md` |
-| `request-path.png` | wide, ~1600 px | ⏳ **wanted (v3, 2026-09-29)** — v2 withdrawn to `withdrawn/request-path-v2.png`: it had no operational memory | `README.md`, `README.es.md` |
-| `operational-memory.png` | 1200 × 627 | ⏳ **wanted (new, 2026-09-29)** | `README.md`, `docs/ARCHITECTURE.md`, `docs/MEMORY.md`, `docs/GUIDE.md`, `docs/review/harness-workflow-kv.md` (+ each `es` mirror) |
-| `runtimes.png` | wide, ~1600 px | ⏳ **wanted (new, 2026-09-29)** | `README.md`, `docs/SERVING.md`, `docs/MECHANISMS.md` (+ `es`) |
-| `tracker-domain.png` | wide, ~1600 px | ⏳ **wanted (new, 2026-09-29)** — leave room for H2's counter | `README.md`, `README.es.md` |
-| `mechanisms-map.png` | tall, ~1200 × 1600 | ⏳ **wanted (new, 2026-09-29, optional)** | `docs/MECHANISMS.md`, `docs/es/MECHANISMS.md` |
+| `request-path.png` | wide, ~1600 px | ✅ v3 placed 2026-09-29 — v2 withdrawn to `withdrawn/request-path-v2.png`: it had no operational memory | `README.md`, `README.es.md` |
+| `operational-memory.png` | 1200 × 627 | ✅ placed 2026-09-29 | `README.md`, `docs/ARCHITECTURE.md`, `docs/MEMORY.md`, `docs/GUIDE.md`, `docs/review/harness-workflow-kv.md` (+ each `es` mirror) |
+| `runtimes.png` | wide, ~1600 px | ✅ placed 2026-09-29 | `README.md`, `docs/SERVING.md`, `docs/MECHANISMS.md` (+ `es`) |
+| `tracker-domain.png` | wide, ~1600 px | ✅ placed 2026-09-29 — the counter box is empty until H2 has its reading | `README.md`, `README.es.md` |
+| `mechanisms-map.png` | wide, ~1900 px | ✅ placed 2026-09-29 (badges number stations, not sections — the caption maps them) | `docs/MECHANISMS.md`, `docs/es/MECHANISMS.md` |
 | `demo-escuela-preview.gif`, `demo-escuela-poster.png` | 960 px GIF · 1280 px PNG | ✅ **in** — cut from `docs/video/demo-escuela.mp4` by ffmpeg, not drawn (`video/README.md`) | not embedded — the READMEs play the video itself (a GitHub attachment of the same MP4); kept for sharing where video does not play |
 | `solution-architecture.png` | wide, ~1600 px | ✅ **in** | `README.md`, `README.es.md`, `docs/articles/2026-09-it-was-the-harness.md`, `docs/articles/2026-09-era-el-arnes.es.md` (cover) |
 
