@@ -497,6 +497,15 @@ member has passed the gate.
 
 ### 7.4 Multi-turn and memory: why carrying the conversation is not the fix
 
+> **[ILLUSTRATION PLACEHOLDER — `docs/img/operational-memory.png`, 1200 × 627 (like `article-harness.png`)]**
+> *Two panels side by side, in the style of `article-harness.png`. LEFT, "the conversation in the prompt": a
+> specialist at a desk reads a paper scroll that gets visibly longer turn after turn (three turn markers on it);
+> they fill in a claim form whose field "order" is left EMPTY, the sentence "the seal on that order was broken"
+> copied as is. Counter: "43 / 54". RIGHT, "the keys in a memory": the same specialist reads only a small index
+> card, "state: customer_service/order_known · keys: order"; a drawer labelled "order = 58" is pulled open; the
+> claim form reads "order 58: the seal on that order was broken". Counter: "53 / 54". Title over the image: "Carry
+> the keys, not the conversation." No robots, no brains.*
+
 A gateway that reads only the last request has no way to resolve "move it to dock 5" if "it" was named two turns
 earlier — the reference has nothing to point at in that one message. The obvious repair is to hand the model the
 whole conversation: `Gateway(history=True)`.

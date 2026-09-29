@@ -150,6 +150,12 @@ recitan el valor viejo sólo 1 vez de 40 — evidencia de lo que esta afirmació
 se aprendió la ruta, no el hecho
 ([`results/W7-edit-after-training-20260927/`](results/W7-edit-after-training-20260927/BRIEF.md)).
 
+> **[MARCADOR DE ILUSTRACIÓN — `docs/img/operational-memory.png`, 1200 × 627 (like `article-harness.png`)]**
+> *Dos paneles. IZQUIERDA, "la conversación en el prompt": un rollo que se alarga turno a turno y un formulario de
+> reclamo con el campo "order" VACÍO; contador "43 / 54". DERECHA, "las claves en una memoria": sólo una ficha
+> "state: customer_service/order_known · keys: order", un cajón abierto "order = 58" y el reclamo "order 58: the
+> seal on that order was broken"; contador "53 / 54". Título: "Carry the keys, not the conversation."*
+
 **Memoria operativa de corto plazo, junto a la biblioteca — construida, [ran] en tests, todavía sin
 entrenar** (`examples/common/opmemory.py`). La biblioteca de arriba es lo que un experto *sabe*;
 acá vive el estado *vivo* de un flujo de trabajo: una caché de sesión indexada por (organización,
@@ -199,9 +205,14 @@ construyendo un dominio de seguimiento tipo Jira y Confluence (`examples/tracker
 
 ## El camino del pedido
 
-![Una línea de seis estaciones: un agente; el gateway que lee una credencial firmada; el experto local chico del rol; herramientas con el permiso de la credencial, un registro rechazado y un pago retenido; una hoja con una línea inventada tachada; la respuesta. Una rama punteada para lo que está fuera de alcance lleva a un edificio lejano y a una persona; una banda de registro corre debajo de todo.](docs/img/request-path.png)
-
-*El camino de un pedido: identidad desde un token, permiso en las herramientas, una persona para los pagos, y ninguna línea que una herramienta no haya devuelto.*
+> **[MARCADOR DE ILUSTRACIÓN — `docs/img/request-path.png`, wide, ~1600 px]**
+> *Un flujo limpio de izquierda a derecha, SIETE estaciones en una línea: agente; gateway con credencial firmada;
+> NUEVA — memoria operativa: una sola ficha "state: receiving/assigned · keys: order" que entra al experto, dos
+> cajones "session" y "organisation" y un dial "estado del flujo — lo mueven las llamadas que corrieron"; el experto
+> del rol, con flechas `get` y `put` hacia los cajones; herramientas con el permiso de la credencial (un registro
+> ajeno rechazado, un pago retenido); anclaje (una línea inventada tachada); respuesta. Rama punteada "fuera de
+> alcance" a la frontera y a una persona; banda de log debajo. LO CENTRAL: al experto no llega la conversación, sólo
+> la ficha y los cajones.*
 
 ```mermaid
 flowchart LR
@@ -392,6 +403,13 @@ arriba).
 
 ---
 
+> **[MARCADOR DE ILUSTRACIÓN — `docs/img/tracker-domain.png`, wide, ~1600 px]**
+> *Un diagrama ancho: un tablero kanban (To Do → In Progress → In Review → QA → Done, con tarjetas RD-169…; un bug
+> entra por "Triage"; un sello "no permitido — el flujo lo rechaza"), una estantería de páginas (definición de
+> terminado, dueños de componentes, proceso de release, política de bugs) y una sesión de cinco turnos de un
+> desarrollador donde cada turno abre el cajón "issue" (`get`) y el cuarto además "component" hacia la página de
+> dueños. Espacio abajo a la derecha para el contador de H2.*
+
 ## Correrlo
 
 ```bash
@@ -415,6 +433,13 @@ completo de 54 herramientas de OpenClaw en su lugar cuesta 16,8× en time-to-fir
 precisión de 70/70 a 39/70, [E5](results/E5-engine-baseline-20260928/BRIEF.md)),
 `--member-prompt` (el prompt que le enseñó su corpus), `--auto` (el cliente no nombra
 modelo).
+
+> **[MARCADOR DE ILUSTRACIÓN — `docs/img/runtimes.png`, wide, ~1600 px]**
+> *Dos mitades. IZQUIERDA, "server — medir y entrenar, muchos usuarios": una placa alquilada en una nube, un lomo
+> grueso (vLLM) y CUATRO lomos finos de adaptadores, 32 flechas de usuarios, "cuatro adaptadores en un lote — sin
+> contención". DERECHA, "edge — servir en la máquina propia": una notebook, un usuario, un lomo que se cambia en "3
+> ms", "llama.cpp · 8 bits", una línea punteada a la frontera. En el medio, un banco con un cuaderno: "MLX — banco
+> de investigación".*
 
 **Correr un miembro en la máquina propia — el perfil `edge`, sin alquilar GPU:**
 

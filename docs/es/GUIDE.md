@@ -505,6 +505,12 @@ demostración del camino de salida, no una afirmación de que el miembro pasó l
 
 ### 7.4 Multi-turno y memoria: por qué cargar la conversación no es la solución
 
+> **[MARCADOR DE ILUSTRACIÓN — `docs/img/operational-memory.png`, 1200 × 627 (like `article-harness.png`)]**
+> *Dos paneles. IZQUIERDA, "la conversación en el prompt": un rollo que se alarga turno a turno y un formulario de
+> reclamo con el campo "order" VACÍO; contador "43 / 54". DERECHA, "las claves en una memoria": sólo una ficha
+> "state: customer_service/order_known · keys: order", un cajón abierto "order = 58" y el reclamo "order 58: the
+> seal on that order was broken"; contador "53 / 54". Título: "Carry the keys, not the conversation."*
+
 Un gateway que sólo lee el último pedido no tiene cómo resolver "llevalo al andén 5" si "lo" se nombró dos turnos
 antes — la referencia no tiene a qué apuntar en ese único mensaje. La reparación obvia es darle al modelo toda la
 conversación: `Gateway(history=True)`.

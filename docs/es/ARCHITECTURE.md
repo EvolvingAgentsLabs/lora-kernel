@@ -345,6 +345,12 @@ workspace le perdió a la búsqueda léxica en un benchmark anterior, y el índi
 `evolving-memory` no cambió nada **[read]** — o que comprimir el radar a una dimensión chica no
 cueste nada. Los dos son brazos con una línea base plana.
 
+> **[MARCADOR DE ILUSTRACIÓN — `docs/img/operational-memory.png`, 1200 × 627 (like `article-harness.png`)]**
+> *Dos paneles. IZQUIERDA, "la conversación en el prompt": un rollo que se alarga turno a turno y un formulario de
+> reclamo con el campo "order" VACÍO; contador "43 / 54". DERECHA, "las claves en una memoria": sólo una ficha
+> "state: customer_service/order_known · keys: order", un cajón abierto "order = 58" y el reclamo "order 58: the
+> seal on that order was broken"; contador "53 / 54". Título: "Carry the keys, not the conversation."*
+
 **Al lado de la biblioteca, no en su lugar.** La biblioteca de arriba guarda conocimiento — enciclopédico y
 operativo — que un miembro navega por clave: contenido que cambia poco, editado por una persona y no por la
 conversación. La **memoria operativa** guarda lo contrario: el estado vivo de un workflow o de una conversación, que

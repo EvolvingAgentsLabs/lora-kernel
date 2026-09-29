@@ -15,6 +15,8 @@ colours, no gradients, no glow. **No robots, no brains, no glowing neural nets**
 pieces of the memory are not neural, and the pictures should say so. Labels *inside* an image stay in
 English in both language versions.
 
+**Withdrawn 2026-09-29:** `request-path.png` v2 (moved to `withdrawn/request-path-v2.png`): it shows the path without the short-term operational memory, which is now the heart of a multi-turn request (H1 [ran]). Its placeholder is back in both READMEs; the v3 brief is below, with four new pictures.
+
 | file | size | status | used in |
 |---|---|---|---|
 | `hero.png` | 1600 × 640 asked · 1983 × 793 delivered | ✅ **in** | `README.md`, `README.es.md` |
@@ -23,11 +25,35 @@ English in both language versions.
 | `core-1-0.png` | wide, ~1600 px | ✅ **in** | `README.md`, `README.es.md` |
 | `memory-five-pieces.png` | wide, ~1600 px | ✅ **in** | `docs/MEMORY.md`, `docs/es/MEMORY.md`, `docs/ARCHITECTURE.md`, `docs/es/ARCHITECTURE.md` |
 | `memory-walkthrough.png` | tall, ~1200 × 1600 | ✅ **in (v2, 2026-09-26)** | `README.md`, `README.es.md`, `docs/MEMORY.md`, `docs/es/MEMORY.md` |
-| `request-path.png` | wide, ~1600 px | ✅ **in (v2, 2026-09-26)** | `README.md`, `README.es.md` |
+| `request-path.png` | wide, ~1600 px | ⏳ **wanted (v3, 2026-09-29)** — v2 withdrawn to `withdrawn/request-path-v2.png`: it had no operational memory | `README.md`, `README.es.md` |
+| `operational-memory.png` | 1200 × 627 | ⏳ **wanted (new, 2026-09-29)** | `README.md`, `docs/ARCHITECTURE.md`, `docs/MEMORY.md`, `docs/GUIDE.md`, `docs/review/harness-workflow-kv.md` (+ each `es` mirror) |
+| `runtimes.png` | wide, ~1600 px | ⏳ **wanted (new, 2026-09-29)** | `README.md`, `docs/SERVING.md`, `docs/MECHANISMS.md` (+ `es`) |
+| `tracker-domain.png` | wide, ~1600 px | ⏳ **wanted (new, 2026-09-29)** — leave room for H2's counter | `README.md`, `README.es.md` |
+| `mechanisms-map.png` | tall, ~1200 × 1600 | ⏳ **wanted (new, 2026-09-29, optional)** | `docs/MECHANISMS.md`, `docs/es/MECHANISMS.md` |
 | `demo-escuela-preview.gif`, `demo-escuela-poster.png` | 960 px GIF · 1280 px PNG | ✅ **in** — cut from `docs/video/demo-escuela.mp4` by ffmpeg, not drawn (`video/README.md`) | not embedded — the READMEs play the video itself (a GitHub attachment of the same MP4); kept for sharing where video does not play |
 | `solution-architecture.png` | wide, ~1600 px | ✅ **in** | `README.md`, `README.es.md`, `docs/articles/2026-09-it-was-the-harness.md`, `docs/articles/2026-09-era-el-arnes.es.md` (cover) |
 
 ## Briefs
+
+### `request-path.png` — v3, with the operational memory
+
+A clean left-to-right flow in the house style, SEVEN stations on one line. 1 "agent — one per role (OpenClaw)". 2 "gateway — signed token → user · role · organisation", a small turnstile reading a badge. 3 NEW: "operational memory" — a single index card fed into the next station, reading "state: receiving/assigned · keys: order", and beside it two small drawers, "session" and "organisation", with a dial above them labelled "workflow state — moved by the calls that ran". 4 "the role's expert — one small local model + its adapter", a desk with a thin coloured spine leaning on a thick one; two short arrows go from the desk to the drawers, labelled `get` and `put`. 5 "tools, with the badge's permission": two small insets — a red stamp across a folder, "another organisation's record — refused", and a paper clip holding a slip, "payment — held for a director". 6 "grounding — every line of the reply must be in a tool's result": a sheet with one line crossed out, "invented". 7 "answer". From station 4 a dashed branch, "out of scope", splits in two: one runs to a distant building, "frontier", the other to a person at a desk, "staff". Under the whole line, a thin band: "log → dashboard: served here · sent on · held · replaced". THE POINT: the conversation is NOT carried to the expert — only the one card and the drawers are. Labels in English; spell every word correctly.
+
+### `operational-memory.png` — carry the keys, not the conversation
+
+Two panels side by side, in the style of `article-harness.png`. LEFT, "the conversation in the prompt": a specialist at a desk reads a paper scroll that gets visibly longer turn after turn (three turn markers on it); they fill in a claim form whose field "order" is left EMPTY, the sentence "the seal on that order was broken" copied as is. Counter: "43 / 54". RIGHT, "the keys in a memory": the same specialist reads only a small index card, "state: customer_service/order_known · keys: order"; a drawer labelled "order = 58" is pulled open; the claim form reads "order 58: the seal on that order was broken". Counter: "53 / 54". Title over the image: "Carry the keys, not the conversation." No robots, no brains.
+
+### `runtimes.png` — server and edge
+
+Two halves, one horizontal diagram, house style. LEFT, "server — measure and train, many users": a rented graphics card in a small cloud, drawn as a bookshelf with one thick spine ("one resident model — vLLM") and FOUR thin coloured spines ("school", "school upper", "distributor", "distributor abstains"); 32 small arrows arrive from many users. A tag: "four adapters mixed in one batch — no contention". RIGHT, "edge — serve on your own machine": a laptop, one user, a single thin spine being swapped for another with a small clock reading "3 ms"; a tag "llama.cpp · 8-bit". A thin dashed line from the laptop to a distant building, "frontier — only what no tool covers". Between the halves, a small bench with a notebook, "MLX — the research bench".
+
+### `tracker-domain.png` — the team tracker (H2)
+
+One wide diagram, house style. TOP LEFT, a kanban board with five columns — "To Do", "In Progress", "In Review", "QA", "Done" — and small cards keyed "RD-169", "RD-313", "RD-354"; a bug card enters through a narrow gate "Triage". A small stamp on an arrow that jumps two columns: "not allowed — the workflow refuses it". TOP RIGHT, a shelf of wiki pages: "definition of done", "component owners", "release process", "bug policy", each page a list of one-sentence slips. BOTTOM, a five-station session line for one developer: "show me RD-169" → "move it to review" → "log 2 hours on it" → "who owns its component?" → "comment: ready for QA"; above each of stations 2–5 a small drawer "issue" being opened (`get`), and at station 4 a second drawer "component" and a line to the "component owners" page. Three roles as small silhouettes: "developer", "lead", "qa". Leave room in the bottom-right corner for a counter to be added when H2 has its result.
+
+### `mechanisms-map.png` — every mechanism on one line (optional)
+
+A subway map in the house style: one main line, "a request's path", with stations in order — agent, identity, gateway, operational memory, workflow, expert (LoRA), tool layer, approvals, grounding, answer — and branch lines: "out of scope → frontier / person", "library (pages of statements)", "router". Two depots at the edges: "server (vLLM, Colab)" and "edge (llama.cpp, your machine)"; a siding "speculative decoding". A legend strip at the bottom: "corpora and gates · release gate · measurement discipline". Each station labelled with its section number in MECHANISMS.md (§1–§17).
 
 ### `article-harness.png`
 
@@ -59,16 +85,6 @@ with a green check under panel 6: "citation checked — the walk opened this sen
 page is a list of one-sentence slips, the links live inside the sentences, and the answer names the slip it rests on.
 No robots, no brains.
 
-### `request-path.png` — v2, through the gateway
-
-A clean left-to-right flow in the house style, six stations on one line. 1 "agent — one per role (OpenClaw)". 2 "gateway —
-signed token → user · role · school", drawn as a small turnstile reading a badge. 3 "the role's expert — one small local
-model + its adapter", a desk with a thin coloured spine leaning on a thick one. 4 "tools, with the badge's permission":
-two small insets — a red stamp across a folder, "another school's record — refused", and a paper clip holding a slip,
-"payment — held for a director". 5 "grounding — every line of the reply must be in a tool's result": a sheet with one
-line crossed out, "invented". 6 "answer". From station 3 a dashed branch, "out of scope", splits in two: one runs to a
-distant building, "frontier", the other to a person at a desk, "staff". Under the whole line, a thin band: "log →
-dashboard: served here · sent on · held · replaced". Labels in English; spell every word correctly.
 
 ### `solution-architecture.png`
 
