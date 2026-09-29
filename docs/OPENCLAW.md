@@ -323,14 +323,22 @@ brief's gate voids an arm whose first turns fall under 90%, and applied across a
 `harness-noblock`'s collapse void the whole run — an instrument error, recorded, not fixed after the
 fact. **Read per arm, `harness` PASSED and `harness-noblock` FALSIFIED. The user's decision (2026-09-29):
 the per-arm reading stands, and the as-written VOID is kept as the record of that instrument error.**
-See [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md)
-§8 for the full table and the next step (a longer-session domain, H2).
+See [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §8 for the full table.
 
-**H1 ran on vLLM (one L4), not through OpenClaw, and nothing about a live multi-turn run through
+**[ran] H2** ran the same harness next, on a longer-session domain built for it: a Jira + Confluence-like
+team tracker (`examples/tracker/`), five-turn sessions rather than two or three.
+`results/H2-tracker-harness-20260929/` scores `harness` at **146/160** dependent turns (91.3%) with a
+flat prompt across all five turns ($\bar p_5 \le 1.1\ \bar p_1$), but the untrained `base-history`
+baseline's own 44/60 first turns trip the same per-arm VOID rule that fixed H1 — voiding a baseline whose
+low score *is* the headroom being measured, not a defect, makes the pre-registered comparison unreadable,
+so **the run reads FALSIFIED as written, not VOID**. Descriptively, 142 of 160 favour `harness` against 0.
+Decision pending the user, as it was for H1: [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §9.
+
+**Both H1 and H2 ran on vLLM (one L4), not through OpenClaw, and nothing about a live multi-turn run through
 OpenClaw exists yet.** Every live run on this page — school 15/15, distributor 6/6 — is single-turn:
 one request, one reply, no earlier turn to resolve. A live multi-turn demo, through OpenClaw, is the
-last step of the order in `docs/review/harness-workflow-kv.md` §7, once the user has chosen which of
-H1's two readings stands.
+last step of the order in `docs/review/harness-workflow-kv.md` §7, and now waits on H2's reading rather
+than H1's, which is resolved.
 
 ## What this is worth, measured
 

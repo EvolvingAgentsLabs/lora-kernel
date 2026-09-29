@@ -967,8 +967,34 @@ $A_{\text{dep}} = 0/60$: un prompt desconocido, no uno más difícil (§8.1, §8
 propia corrida — exactitud de primeros turnos $\ge 0,90$ en *todos* los brazos o la corrida es VOID — se
 escribió para cuidar toda la comparación y en cambio dejó que la falla de un brazo anulara el resultado
 real de los otros dos; leída por brazo y no tal como fue escrita, `harness` pasa las varas de esta sección
-y `harness-noblock` no.** Qué lectura usa la compuerta de liberación es una decisión abierta del usuario,
-no de esta sección.
+y `harness-noblock` no.** La decisión del usuario (2026-09-29): vale la lectura por brazo para la compuerta
+de liberación — `harness` PASÓ, `harness-noblock` quedó FALSEADO — y el VOID tal como está escrito queda
+como el registro de ese error del instrumento.
+
+**Medido [ran] H2** (`results/H2-tracker-harness-20260929`), el mismo arnés sobre un segundo dominio
+construido para eso (un tracker de equipo tipo Jira + Confluence), 60 sesiones largas retenidas,
+$|D| = 160$ turnos dependientes, 60 primeros turnos, 60 turnos independientes. Acá las sesiones corren
+cinco turnos en vez de dos o tres, así que la condición de planitud se enuncia sobre cinco: con
+$\bar p_1,\dots,\bar p_5$ el promedio de tokens de prompt en las primeras cinco posiciones de turno,
+
+```math
+\bar p_5 \;\le\; 1.1\ \bar p_1
+```
+
+es la barra contra la que se lee esta corrida. $A_{\text{dep}}(\text{harness}) = 146/160$ (91,3%), contra
+un umbral del 90%, con $\bar p_1,\dots,\bar p_5 = 1613, 1223, 1011, 1149, 1274$ — $\bar p_5/\bar p_1 =
+0,790 \le 1,1$, plano (de hecho cayendo, a medida que el andamiaje get/put se amortiza una vez que el
+propio estado del flujo de trabajo se asienta). La línea de base sin entrenar `base-history` (Gemma 4 E4B
+puro, la conversación en el prompt) puntúa $A_{\text{dep}} = 4/160$ y sus propios primeros turnos, 44/60,
+caen bajo el umbral del 90%; aplicar la regla de VOID por brazo que estableció H1 vuelve ilegible la
+comparación pre-registrada "`harness` le gana a `base-history`", así que **H2 se lee FALSEADA tal como
+está escrita, no ANULADA** — anular a una línea de base sin entrenar cuyo bajo puntaje en primeros turnos
+*es* el margen que se está midiendo es un error de instrumento más angosto que el de H1, registrado en vez
+de parchado. Descriptivamente, sobre los mismos 160 turnos dependientes: **142 : 0** a favor de `harness`,
+$p\lt 10^{-40}$ por la prueba de signo exacta del §9.2 — enunciado porque no cuesta nada enunciarlo, no
+ofrecido como sustituto del veredicto pre-registrado que su brazo anulado vuelve ilegible. Decisión
+pendiente para el usuario, como con H1: aceptar las condiciones legibles como el veredicto de H2, o
+repetir la corrida con la regla por brazo restringida a los miembros entrenados.
 
 ## 9. Estadística usada, y sólo esta
 
@@ -1139,3 +1165,4 @@ entrena la mitad grande; el hito 4 mide la desigualdad de §7.1.
 | §8.9 | **exactitud en turnos dependientes sin y con historial**: $A_{\text{dep}}$(last) 4/54, $A_{\text{dep}}$(history) 43/54; tokens de prompt $\bar p_1,\bar p_2,\bar p_3$ = 345/376/303 (last), 345/428/394 (history) | MT0 `results/MT0-multiturn-baseline-20260929/BRIEF.md` |
 | §5.6 | **cociente de throughput con varios adaptadores**: $r_4(16) = 278,6/269,7 = 1,03$, NO MATERIAL CONTENTION; casi lineal 22,7 → 135,1 → 278,6 → 504,3 tok/s para K = 1, 8, 16, 32; TTFT p95 0,24 s en K = 32, 0 errores de 128 | C1 `results/C1-concurrency-20260929/BRIEF.md` |
 | §8.9 | **el harness de flujo contra el brazo con historial de MT0 y la vara de planitud $\bar p_3 \le 1,1\ \bar p_1$**: $A_{\text{dep}}$(harness) 53/54 contra 43/54, 11 : 1 emparejado ($p\approx0,006$); $\bar p_1,\bar p_2,\bar p_3$ = 745/726/710, plano; `harness-noblock` 0/60. Tal como fue escrita VOID (la regla de primeros turnos anula entre brazos); leída por brazo, `harness` PASÓ y `harness-noblock` quedó FALSADO — la decisión del usuario (2026-09-29): vale la lectura por brazo, el VOID tal como está escrito queda como el registro de ese error del instrumento | H1 `results/H1-workflow-harness-20260929/BRIEF.md` |
+| §8.9 | **el mismo harness sobre un dominio de tracker de cinco turnos, la vara de planitud $\bar p_5 \le 1,1\ \bar p_1$**: $A_{\text{dep}}$(harness) 146/160 (91,3%) contra un umbral del 90%; $\bar p_1,\dots,\bar p_5$ = 1613/1223/1011/1149/1274, plano; `base-history` 4/160, sus propios primeros turnos 44/60 lo anulan bajo la regla por brazo de H1, lo que vuelve ilegible la comparación pre-registrada — se lee FALSEADA tal como está escrita, no ANULADA; descriptivo pareado 142 : 0, $p\lt 10^{-40}$ (brazo anulado, no un veredicto sustituto); decisión pendiente del usuario | H2 `results/H2-tracker-harness-20260929/BRIEF.md` |

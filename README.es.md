@@ -194,10 +194,27 @@ cambio, el arnés **PASÓ** y harness-noblock quedó **FALSEADO**. **La decisió
 vale la lectura por brazo — el arnés PASÓ, harness-noblock quedó FALSEADO; el VOID tal como está
 escrito queda como el registro de un error del instrumento, no como el veredicto.** En estas sesiones cortas (2–3 turnos) el
 arnés paga más o menos 2× los tokens de prompt por turno (una ida y vuelta extra de get → llamada →
-put); el ahorro para el que está construido pertenece a sesiones más largas, por lo que se está
-construyendo un dominio de seguimiento tipo Jira y Confluence (`examples/tracker/`) para ese caso
-(H2) — **en construcción, todavía sin resultados**
+put); el ahorro para el que está construido pertenece a sesiones más largas, por lo que se construyó
+un dominio de seguimiento tipo Jira y Confluence (`examples/tracker/`) para ese caso
 ([`results/H1-workflow-harness-20260929/`](results/H1-workflow-harness-20260929/BRIEF.md)).
+
+**H2 ya tiene un resultado, sobre el dominio de seguimiento, y se lee de dos formas [ran] 2026-09-29.**
+60 sesiones largas retenidas, 160 turnos dependientes: el arnés llega a **146 de 160 (91,3 %)**, por
+encima de la barra de 90 %, plano en las cinco vueltas (p̄ 1613, 1223, 1011, 1149, 1274 — se cumple
+p̄5 ≤ 1,1 p̄1); descriptivamente, pareado contra `base-history` sobre los mismos 160 turnos, **142 : 0**.
+El propio `base-history` saca 44 de 60 en primeros turnos, dispara la misma regla de VOID por brazo
+que dispararía un tratamiento roto, y anula la comparación — una regla pensada para atrapar un
+tratamiento a mitad de entrenar atrapó en cambio a un base sin entrenar cuya falla *es* el margen, así
+que el "le gana a base-history" pre-registrado se lee **FALSEADO tal como está escrito**.
+`harness-noblock` (el bloque de herramientas sacado al servir) llega a 80 de 160, aprendiendo las
+colas de developer y QA (20/20, entera) pero sin nada de la cola de lead (0/20) — una mejora sobre el
+0/60 de H1, todavía debajo de la barra. De las 14 fallas dependientes que le quedan al brazo del
+arnés, todas de QA: 10 son un chequeo que puede fallar mientras la capacidad funciona — "¿dónde
+tienen que pasar los tests?" lee la página `definition-of-done` entera en vez del anchor citado
+`#tests`, y el enunciado está en lo que leyó (medir fraseo, registrado, no aflojado); las otras 4 son
+el comentario final de QA, una falla genuina. **El usuario todavía no eligió entre las condiciones
+legibles de arriba y una nueva corrida con la regla por brazo acotada a los miembros entrenados**
+([`results/H2-tracker-harness-20260929/`](results/H2-tracker-harness-20260929/BRIEF.md)).
 
 ---
 
@@ -370,11 +387,16 @@ dos formas: **PASÓ** por brazo (53/54 turnos dependientes contra el 43/54 de `h
 correcto rastreado por clave) pero quedó **ANULADO** tal como estaba pre-registrado, porque la compuerta pensada
 para vigilar los primeros turnos de cada brazo la hace fallar la propia falla del control sin bloque (0/60) — el
 usuario eligió la lectura por brazo (2026-09-29): el arnés PASÓ, harness-noblock quedó FALSEADO, y el VOID tal
-como está escrito queda como el registro de ese error del instrumento. Se propone un dominio de seguimiento de tickets
-más largo y explícito (tipo Jira y Confluence, claves naturales, sesiones largas — donde se vería el ahorro de
-tokens del arnés, H2) que está **en construcción** (`examples/tracker/`), sólo sintético, todavía sin resultados.
-El arnés no corrió en vivo a través de OpenClaw, no se midió en sesiones de más de tres turnos, y su
-caché global — construida y probada con tests unitarios — todavía no se entrenó en ningún corpus. La biblioteca de
+como está escrito queda como el registro de ese error del instrumento. Sobre el dominio de seguimiento
+más largo y explícito construido para ese caso (tipo Jira y Confluence, claves naturales, sesiones largas —
+`examples/tracker/`, sólo sintético), el arnés llega a **146/160 (91,3 %)** turnos dependientes y a tokens
+planos en las cinco vueltas, pero queda **FALSEADO tal como está escrito**: el control `base-history` sin
+entrenar falla sus propios primeros turnos (44/60) y dispara la regla de VOID por brazo pensada para un
+tratamiento roto, anulando la comparación que existía para hacer — una segunda instancia del mismo error
+de instrumento, y el usuario todavía no eligió entre las condiciones legibles (146/160, plano, descriptivo
+142:0) y una nueva corrida (H2, arriba).
+El arnés no corrió en vivo a través de OpenClaw, y su
+caché global — construida y probada con tests unitarios — todavía no se entrenó en ningún corpus fuera del dominio de seguimiento. La biblioteca de
 la memoria vive sólo en `distributor-wiki@v2`, un miembro aparte — ningún miembro servido lleva su propia biblioteca todavía.
 La corrida en vivo de la distribuidora de arriba es sólo llama.cpp; todavía nadie corrió el par a través de vLLM
 bf16 como demo en vivo. Todavía no se midió tráfico real en ningún lugar de este repositorio.

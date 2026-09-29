@@ -338,15 +338,24 @@ un brazo cuyos primeros turnos caen bajo el 90%, y aplicada entre brazos eso dej
 hecho. **Leído por brazo, `harness` PASÓ y `harness-noblock` quedó FALSEADO. La decisión del usuario
 (2026-09-29): vale la lectura por brazo, y el VOID tal como está escrito queda como el registro de ese
 error del instrumento.** Ver
-[`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §8 para la tabla completa y el
-siguiente paso (un dominio de sesiones más largas, H2).
+[`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §8 para la tabla completa.
 
-**H1 corrió sobre vLLM (una L4), no a través de OpenClaw, y todavía no existe ninguna corrida
-multi-turno en vivo a través de OpenClaw.** Toda corrida en vivo de esta página — escuela 15/15,
+**[ran] H2** corrió el mismo arnés después, sobre un dominio de sesiones más largas construido para eso:
+un tracker de equipo tipo Jira + Confluence (`examples/tracker/`), sesiones de cinco turnos en vez de dos
+o tres. `results/H2-tracker-harness-20260929/` puntúa a `harness` en **146/160** turnos dependientes
+(91,3 %) con un prompt plano en los cinco turnos ($\bar p_5 \le 1.1\ \bar p_1$), pero la línea de base sin
+entrenar `base-history` dispara con sus propios 44/60 primeros turnos la misma regla de VOID por brazo que
+arregló a H1 — anular a una línea de base cuyo bajo puntaje *es* el margen que se mide, no un defecto,
+vuelve ilegible la comparación pre-registrada, así que **la corrida se lee FALSEADA tal como está escrita,
+no ANULADA**. Descriptivamente, 142 de 160 favorecen a `harness` contra 0. Decisión pendiente del usuario,
+como lo fue para H1: [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §9.
+
+**Tanto H1 como H2 corrieron sobre vLLM (una L4), no a través de OpenClaw, y todavía no existe ninguna
+corrida multi-turno en vivo a través de OpenClaw.** Toda corrida en vivo de esta página — escuela 15/15,
 distribuidora 6/6 — es de un solo turno: un pedido, una respuesta, ningún turno anterior que resolver.
 Una demo multi-turno en vivo, a través de OpenClaw, es el último paso del orden en
-`docs/review/harness-workflow-kv.md` §7, una vez que el usuario elija cuál de las dos lecturas de H1
-vale.
+`docs/review/harness-workflow-kv.md` §7, y ahora espera a la lectura de H2 en vez de a la de H1, que ya
+está resuelta.
 
 ## Cuánto vale esto, medido
 

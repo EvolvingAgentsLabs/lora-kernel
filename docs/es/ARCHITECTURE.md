@@ -154,9 +154,14 @@ instrumento registrado acá en vez de corregido después de ver el resultado. Le
 **PASÓ** y harness-noblock quedó **FALSEADO**; **la decisión del usuario (2026-09-29): vale la lectura por brazo,
 el VOID tal como está escrito queda como el registro de ese error del instrumento.** El ahorro para el
 que está construido el arnés — un prompt plano en vez de una transcripción que crece — apenas se nota en 2–3 turnos
-(ahí el arnés paga más o menos 2× los tokens por turno, una ida y vuelta extra de get → llamada → put); se está
-probando después sobre sesiones más largas, con un dominio de seguimiento tipo Jira y Confluence
-(`examples/tracker/`, H2) que está **en construcción**, sólo sintético, todavía sin resultados.
+(ahí el arnés paga más o menos 2× los tokens por turno, una ida y vuelta extra de get → llamada → put); sobre cinco
+turnos, en un dominio de seguimiento tipo Jira y Confluence (`examples/tracker/`, **[ran] H2**,
+`results/H2-tracker-harness-20260929`), se sostiene — 146 de 160 turnos dependientes (91,3 %), prompt plano en los
+cinco ($\bar p_5 \le 1.1\ \bar p_1$) — pero la corrida se lee FALSEADA tal como está escrita en vez de ANULADA: el
+propio puntaje bajo en primeros turnos de la línea de base sin entrenar `base-history`, 44 de 60, dispara la misma
+regla por brazo que arregló a H1, lo que vuelve ilegible la afirmación pre-registrada "le gana a `base-history`" en
+vez de falsa. Descriptivamente, pareado sobre los mismos 160 turnos, 142 : 0 a favor del arnés. Lectura pendiente
+del usuario, como lo fue para H1: `docs/review/harness-workflow-kv.md` §9.
 
 **Cómo se conectan los mecanismos en un turno, ahora que el arnés tiene un resultado.** El gateway lee la línea de
 contexto del pedido — `state: <workflow>/<state> · keys: <nombres>` — en vez de la transcripción; el rol nombra al
@@ -355,7 +360,7 @@ conversación. La **memoria operativa** guarda lo contrario: el estado vivo de u
 cambia cada turno y muere cuando el gateway se cierra. Las dos se leen por clave; los pesos guardan la ruta a cada
 una, nunca el contenido de ninguna.
 
-**La memoria operativa — construida [ran] en tests, todavía no entrenada** (`examples/common/opmemory.py`): una
+**La memoria operativa — construida [ran] en tests, y entrenada por dos miembros desde entonces** (`examples/common/opmemory.py`): una
 caché de SESIÓN indexada por (organización, usuario, sesión) y una caché GLOBAL por organización (`global.<clave>`),
 servida por la capa de herramientas igual que cualquier herramienta del dominio y acotada por la misma credencial
 firmada que ya mantiene las filas de un tenant fuera del alcance de otro (§2) — ninguna clave cruza una organización
@@ -376,7 +381,7 @@ conocimiento enciclopédico a la memoria operativa, y de sólo leer a leer *y* e
 conversación es H1 (el §2 tiene los números): **PASÓ** por brazo, **ANULADO** tal como estaba pre-registrado — la
 decisión del usuario (2026-09-29): vale la lectura por brazo, el VOID tal como está escrito queda como el registro
 de ese error del instrumento. Diseño y decisiones abiertas:
-[`review/harness-workflow-kv.md`](../review/harness-workflow-kv.md); cómo se conecta cada pieza acá de punta a
+[`review/harness-workflow-kv.md`](review/harness-workflow-kv.md); cómo se conecta cada pieza acá de punta a
 punta: [`MECHANISMS.md`](MECHANISMS.md).
 
 ## 5. El contrato de liberación

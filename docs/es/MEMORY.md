@@ -612,6 +612,12 @@ primeros-turnos-≥-90%-o-anulado, aplicada entre brazos, deja que el colapso de
 toda la corrida — un error de diseño del instrumento, registrado, sin cambiar el código después del
 resultado. **Leído por brazo, `harness` PASÓ y `harness-noblock` quedó FALSEADO. La decisión del usuario
 (2026-09-29): vale la lectura por brazo, el VOID tal como está escrito queda como el registro de ese
-error del instrumento.** Sigue: un dominio tipo Jira + Confluence
-(`examples/tracker/`, en construcción) para sesiones lo bastante largas como para que se note el ahorro
-de tokens (H2). Ver [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §8.
+error del instrumento.** **[ran] H2**, el mismo arnés sobre un dominio tipo Jira + Confluence
+(`examples/tracker/`) con sesiones de cinco turnos, lo bastante largas como para que se note el ahorro de
+tokens: `results/H2-tracker-harness-20260929/` puntúa a `harness` en **146/160** turnos dependientes
+(91,3 %) con un prompt plano en los cinco turnos ($\bar p_5 \le 1.1\ \bar p_1$), pero la línea de base sin
+entrenar `base-history` dispara con sus propios 44/60 primeros turnos la misma regla por brazo que arregló
+a H1, lo que vuelve ilegible la comparación pre-registrada "le gana a `base-history`" — la corrida se lee
+**FALSEADA tal como está escrita, no ANULADA**. Descriptivamente, 142 de 160 favorecen a `harness` contra
+0. Decisión pendiente del usuario, como lo fue para H1.
+Ver [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §§8–9.

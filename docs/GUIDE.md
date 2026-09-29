@@ -524,8 +524,8 @@ addressed by key: `<get>order</get>` returns a value, `<put>dock=5</put>` stores
 line instead of a transcript: `state: receiving/assigned · keys: order, dock` — the workflow's current state and the
 *names* of the keys holding something, never the values. The state is not the model's to decide: it advances only
 when the tool layer actually runs a call — the same discipline §7.3's gateway already applies to permissions and
-grounding, now applied to what "the current step" means. **[ran] in tests, not yet trained on**
-(`examples/common/opmemory.py`): a session cache scoped to (organisation, user, session) plus a per-organisation
+grounding, now applied to what "the current step" means. **[ran] in tests, and since trained on by two
+members** (`examples/common/opmemory.py`): a session cache scoped to (organisation, user, session) plus a per-organisation
 global cache, served by the tool layer like any other tool and bounded by the same signed claim already described in
 §7.3 — no key crosses a tenant or a user.
 
@@ -578,8 +578,14 @@ Applied literally across three arms, one failing arm's 0% first-turn score voids
 **Read as written, H1 is VOID; read per arm, `harness` PASSED and `harness-noblock` FALSIFIED — a VOID rule bought to
 guard a whole run has to be checked per arm, or a result that stands on its own is thrown out with one that does
 not.** The user's decision (2026-09-29): the per-arm reading stands, and the as-written VOID is kept as the
-record of that instrument error, not as the verdict. Design and
-open decisions: [`review/harness-workflow-kv.md`](review/harness-workflow-kv.md); the mechanism behind
+record of that instrument error, not as the verdict. **[ran] H2**, the same harness on a five-turn team-tracker
+domain (`results/H2-tracker-harness-20260929`): `harness` holds 146 of 160 dependent turns (91.3%) with a flat
+prompt across all five turns, but the run reads **FALSIFIED as written, not VOID** — the untrained
+`base-history` baseline's own 44/60 first turns trip the same per-arm rule that fixed H1, and voiding an
+*untrained* baseline whose low score is its whole point makes the comparison unreadable rather than false.
+Descriptively, 142 of 160 favour the harness against 0. A second, narrower instance of the same lesson:
+**a per-arm VOID applies to trained members, not to a baseline whose failure IS the headroom.** Design and
+open decisions: [`review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §§8–9; the mechanism behind
 `<get>`/`<put>` and the state line is in [`MECHANISMS.md`](MECHANISMS.md).
 
 ---
@@ -664,10 +670,11 @@ happened to us last week).
 | the memory (library) inside a serving member | lives in `distributor-wiki@v2`, a separate member from the abstaining `out-s0` (M10) | merge them, or keep them apart by design — not yet decided |
 | a vLLM bf16 live run of the distributor | not run — the only local arm measured is llama.cpp Q8_0 (LIVE-distributor) | run it once a same-precision comparison against the edge is needed |
 | H1's result (the workflow harness) | **[ran] — the user's decision (2026-09-29): per arm.** Per arm: `harness` PASSED (53/54 vs 43/54, every right turn fetched by key); `harness-noblock` FALSIFIED (0/60). As written: **VOID**, superseded — the brief's first-turns rule voids across arms, an instrument error, kept as its record | release the member on the per-arm reading; VOID is per arm from H2 on |
+| H2's result (the harness on a five-turn domain) | **[ran]** `results/H2-tracker-harness-20260929`: `harness` 146/160 dependent (91.3%), flat prompt over five turns; `base-history` 4/160, its own 44/60 first turns void it under the per-arm rule, so the pre-registered comparison is unreadable — reads **FALSIFIED as written**, descriptive 142:0 alongside it | decision pending the user, as for H1: accept the readable conditions, or rerun with VOID restricted to trained members (`review/harness-workflow-kv.md` §9) |
 | a router inside the gateway's own path | not built — the role is still the route (§7.2) | build only once cross-role routing, not per-member abstention, is the open half |
-| the harness live through OpenClaw, multi-turn | not run — H1 measured it on the server profile only | repeat LIVE-distributor's pattern (§7.3), now that H1's reading is chosen (per arm) |
-| sessions longer than 2–3 turns | not measured — MT0 and H1 both stop there | the proposed tracker domain (Jira/Confluence-like, longer workflows) would show it, if picked — not built |
-| the global cache trained on | built and tested (`opmemory.py`), not yet inside a training corpus | fold into H1's corpus or the next domain's |
+| the harness live through OpenClaw, multi-turn | not run — H1 and H2 both measured it on the server profile only | repeat LIVE-distributor's pattern (§7.3), now that both readings are pending or chosen |
+| sessions longer than 2–3 turns | **[ran] H2**: the team tracker (`examples/tracker/`) runs five-turn sessions and the flat-prompt property holds ($\bar p_5 \le 1.1\ \bar p_1$) | reading pending the user (row above) |
+| the global cache trained on | **[ran]**: built, tested, and trained inside two members' own corpora (`wf-s0`, H1; `tr-s0`, H2) | — |
 | real identity (Auth0), WhatsApp, installation | not built | after the above |
 
 ---

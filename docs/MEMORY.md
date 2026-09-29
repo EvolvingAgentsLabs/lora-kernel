@@ -599,6 +599,11 @@ data it never read — the fix is a corpus that drops the block in part of its r
 `harness-noblock`'s collapse void the whole run — an instrument design error, recorded, the code not
 changed after the result. **Read per arm, `harness` PASSED and `harness-noblock` FALSIFIED. The user's
 decision (2026-09-29): the per-arm reading stands, the as-written VOID kept as the record of that
-instrument error.** Next: a Jira + Confluence-like domain
-(`examples/tracker/`, in construction) for sessions long enough that the token saving would show (H2).
-See [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §8.
+instrument error.** **[ran] H2**, the same harness on a Jira + Confluence-like domain
+(`examples/tracker/`) with five-turn sessions long enough for the token saving to show:
+`results/H2-tracker-harness-20260929/` scores `harness` at **146/160** dependent turns (91.3%) with a
+flat prompt across all five turns ($\bar p_5 \le 1.1\ \bar p_1$), but the untrained `base-history`
+baseline's own 44/60 first turns trip the same per-arm rule that fixed H1, making the pre-registered
+"beats `base-history`" comparison unreadable — the run reads **FALSIFIED as written, not VOID**.
+Descriptively, 142 of 160 favour `harness` against 0. Decision pending the user, as it was for H1.
+See [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §§8–9.
