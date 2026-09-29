@@ -4,7 +4,8 @@ El sistema tal como está diseñado el 2026-09-19, estado al 2026-09-20. Lo que 
 medido lleva la marca **[ran]**; lo que está diseñado y no construido, lo dice. Dónde se ubica
 dentro de una organización entera, y qué falta para que sea un framework genérico, está en el §9 y
 en [`FRAMEWORK.md`](FRAMEWORK.md). Las mediciones detrás de cada elección están en
-[`RECORD.md`](RECORD.md); el orden de trabajo está en [`PLAN.md`](PLAN.md).
+[`RECORD.md`](RECORD.md); el orden de trabajo está en [`PLAN.md`](PLAN.md). Cómo se conecta cada
+mecanismo nombrado abajo, turno por turno, está en [`MECHANISMS.md`](MECHANISMS.md).
 
 ## 1. Un hecho, cuatro componentes — y qué es la versión 1.0
 
@@ -126,20 +127,47 @@ accidente. Las dos organizaciones difieren a propósito, no por omisión: el mie
 no declarada en el system prompt — y sus escrituras corren sin aprobación de un director, una decisión de política de
 esa organización y sus roles, no un hueco en el mecanismo de aprobaciones de arriba.
 
-**El gateway lleva el estado de una sesión, no su transcripción — diseñado, H1 corriendo.** La corrección ingenua
-para multi-turno es `Gateway(history=True)`: repetir la conversación para que una referencia a un turno anterior
-("llevalo al andén 5") tenga a qué referirse. **[ran] MT0** (`results/MT0-multiturn-baseline-20260929`, 60 sesiones
-held-out de la distribuidora, 124 turnos, 54 dependientes de un turno anterior) lo mide: sin la conversación, 4 de 54
-turnos dependientes se resuelven — los turnos independientes de la historia puntúan 60 de 60 en los dos brazos, así
-que la brecha es específica de lo que depende de un turno anterior, no una regresión general. Con la conversación, 43
-de 54 (79,6 %), al borde del margen que da esta corrección: resuelve una referencia copiada directo a un argumento
-(recepción 10/10, devoluciones 10/10, compras 9/10, despacho 12/14) pero no una escrita en texto libre — un reclamo
-sobre "ese pedido" se archiva sin el número de pedido 8 de 10 veces (atención al cliente 2/10) — y los tokens siguen
-creciendo con la sesión (+24 % en el turno 2). La alternativa en diseño, `Gateway(memory=, workflows=, tool_block=)`,
-reemplaza la transcripción por una línea — `state: <workflow>/<state> · keys: <nombres>` — respaldada por la memoria
-operativa (§4). **H1** (`results/H1-workflow-harness-20260929`, pre-registrado, corriendo — sin resultado todavía) es
-la medición de si un miembro entrenado sostiene las 43 respuestas correctas de `history` mientras mantiene los tokens
-planos.
+**El gateway lleva el estado de una sesión, no su transcripción — H1 ya tiene un resultado, que se lee de dos
+formas [ran].** La corrección ingenua para multi-turno es `Gateway(history=True)`: repetir la conversación para que
+una referencia a un turno anterior ("llevalo al andén 5") tenga a qué referirse. **[ran] MT0**
+(`results/MT0-multiturn-baseline-20260929`, 60 sesiones held-out de la distribuidora, 124 turnos, 54 dependientes de
+un turno anterior) lo mide: sin la conversación, 4 de 54 turnos dependientes se resuelven — los turnos independientes
+de la historia puntúan 60 de 60 en los dos brazos, así que la brecha es específica de lo que depende de un turno
+anterior, no una regresión general. Con la conversación, 43 de 54 (79,6 %), al borde del margen que da esta
+corrección: resuelve una referencia copiada directo a un argumento (recepción 10/10, devoluciones 10/10, compras
+9/10, despacho 12/14) pero no una escrita en texto libre — un reclamo sobre "ese pedido" se archiva sin el número de
+pedido 8 de 10 veces (atención al cliente 2/10) — y los tokens siguen creciendo con la sesión (+24 % en el turno 2).
+La alternativa, `Gateway(memory=, workflows=, tool_block=)`, reemplaza la transcripción por una línea — `state:
+<workflow>/<state> · keys: <nombres>` — respaldada por la memoria operativa (§4), y ahora está medida, no sólo
+diseñada.
+
+**[ran] H1** (`results/H1-workflow-harness-20260929`, pre-registrado, sobre 60 de las sesiones de MT0): el brazo del
+arnés (`wf-s0` + la memoria operativa) sostiene 53 de 54 turnos dependientes — 1 perdido contra `history`, 11
+ganados — nombrando el pedido buscado por clave en cada afirmación de atención al cliente (10/10 contra el 2/10 de
+`history`), despacho 14/14, y rastreando cada uno de los 53 turnos correctos hasta un `<get>` por clave (53/53); el
+prompt en sí queda plano por turno (745, 726, 710 tokens) donde el de `history` sigue creciendo (345, 428, 394). El
+mismo corpus servido sin el bloque de herramientas (`harness-noblock`) saca 0 de 60: el miembro no llama a ninguna
+herramienta y afirma datos que nunca leyó, porque su corpus nunca se entrenó sin el bloque. La compuerta
+pre-registrada exigía que cada brazo — incluido ese control sin bloque — llegara a 90 % en los primeros turnos; la
+propia falla del control hace fallar la compuerta y anula la corrida tal como está escrita, un error de diseño del
+instrumento registrado acá en vez de corregido después de ver el resultado. Leído por brazo en cambio, el arnés
+**PASÓ** y harness-noblock quedó **FALSEADO**; **la decisión del usuario (2026-09-29): vale la lectura por brazo,
+el VOID tal como está escrito queda como el registro de ese error del instrumento.** El ahorro para el
+que está construido el arnés — un prompt plano en vez de una transcripción que crece — apenas se nota en 2–3 turnos
+(ahí el arnés paga más o menos 2× los tokens por turno, una ida y vuelta extra de get → llamada → put); se está
+probando después sobre sesiones más largas, con un dominio de seguimiento tipo Jira y Confluence
+(`examples/tracker/`, H2) que está **en construcción**, sólo sintético, todavía sin resultados.
+
+**Cómo se conectan los mecanismos en un turno, ahora que el arnés tiene un resultado.** El gateway lee la línea de
+contexto del pedido — `state: <workflow>/<state> · keys: <nombres>` — en vez de la transcripción; el rol nombra al
+miembro (§1) que lo sirve; la coreografía entrenada del miembro busca `<get>clave</get>` o guarda
+`<put>clave=valor</put>` contra la memoria operativa justo donde un paso necesita un valor, a través de la misma capa
+de herramientas por la que corre una herramienta de dominio bajo la credencial firmada de quien llama (la tabla del
+§2); cada llamada que la capa de herramientas realmente *corrió* — no una que el modelo sólo propuso — avanza la
+máquina de estados declarada del workflow, que el modelo sólo vuelve a leer en el turno siguiente; y la respuesta se
+chequea contra resultados reales de herramientas por la capa de anclaje antes de llegar al cliente, la misma
+compuerta que reemplazó 2 de 5 líneas inventadas en la demo de la escuela, ahora vigilando también una línea cuya
+única fuente puede ser un valor recién buscado por clave.
 
 **La abstención vive en el corpus, por miembro, no en un segundo modelo delante. [ran] M10:** el miembro de la
 distribuidora se entrena sobre `train_out` — sus 700 turnos habituales byte a byte, más 70 turnos `OUT OF SCOPE`
@@ -317,6 +345,12 @@ workspace le perdió a la búsqueda léxica en un benchmark anterior, y el índi
 `evolving-memory` no cambió nada **[read]** — o que comprimir el radar a una dimensión chica no
 cueste nada. Los dos son brazos con una línea base plana.
 
+> **[MARCADOR DE ILUSTRACIÓN — `docs/img/operational-memory.png`, 1200 × 627 (like `article-harness.png`)]**
+> *Dos paneles. IZQUIERDA, "la conversación en el prompt": un rollo que se alarga turno a turno y un formulario de
+> reclamo con el campo "order" VACÍO; contador "43 / 54". DERECHA, "las claves en una memoria": sólo una ficha
+> "state: customer_service/order_known · keys: order", un cajón abierto "order = 58" y el reclamo "order 58: the
+> seal on that order was broken"; contador "53 / 54". Título: "Carry the keys, not the conversation."*
+
 **Al lado de la biblioteca, no en su lugar.** La biblioteca de arriba guarda conocimiento — enciclopédico y
 operativo — que un miembro navega por clave: contenido que cambia poco, editado por una persona y no por la
 conversación. La **memoria operativa** guarda lo contrario: el estado vivo de un workflow o de una conversación, que
@@ -333,15 +367,19 @@ Los workflows están declarados, no son neuronales — un archivo TOML por rol
 llamadas que la capa de herramientas realmente corrió; el modelo nunca lo fija, y sólo lo lee en la línea de contexto
 del §2.
 
-**El arnés de workflow es la parte aprendida del miembro en esto — diseñado, H1 corriendo.** Lo que se entrena no es
-la caché, que queda fuera de los pesos igual que la biblioteca, sino el *hábito* de operarla: para su dominio, los
-workflows como máquinas de estado, sus herramientas y cómo llamarlas, y las claves bajo las que vive el contexto de
-una sesión — un solo corpus, adentro del miembro, de la misma forma en que un miembro ya aprende su bloque de
-herramientas y las rutas de su biblioteca. Es un arnés *adentro* de cada miembro, no un segundo adaptador compuesto
-con uno de dominio — que es lo que dejó parado a `harness.lora`, donde la composición no se pudo medir limpiamente
-(P9, P13 **[ran]**). Extiende la lectura direccionada por clave de W9 (`<open>id§anchor</open>`) del conocimiento
-enciclopédico a la memoria operativa, y de sólo leer a leer *y* escribir. Diseño y decisiones abiertas:
-[`review/harness-workflow-kv.md`](../review/harness-workflow-kv.md).
+**El arnés de workflow es la parte aprendida del miembro en esto — [ran] H1, se lee de dos formas (§2).** Lo que se
+entrena no es la caché, que queda fuera de los pesos igual que la biblioteca, sino el *hábito* de operarla: para su
+dominio, los workflows como máquinas de estado, sus herramientas y cómo llamarlas, y las claves bajo las que vive el
+contexto de una sesión — un solo corpus, adentro del miembro, de la misma forma en que un miembro ya aprende su
+bloque de herramientas y las rutas de su biblioteca. Es un arnés *adentro* de cada miembro, no un segundo adaptador
+compuesto con uno de dominio — que es lo que dejó parado a `harness.lora`, donde la composición no se pudo medir
+limpiamente (P9, P13 **[ran]**). Extiende la lectura direccionada por clave de W9 (`<open>id§anchor</open>`) del
+conocimiento enciclopédico a la memoria operativa, y de sólo leer a leer *y* escribir. Si le gana a cargar la
+conversación es H1 (el §2 tiene los números): **PASÓ** por brazo, **ANULADO** tal como estaba pre-registrado — la
+decisión del usuario (2026-09-29): vale la lectura por brazo, el VOID tal como está escrito queda como el registro
+de ese error del instrumento. Diseño y decisiones abiertas:
+[`review/harness-workflow-kv.md`](../review/harness-workflow-kv.md); cómo se conecta cada pieza acá de punta a
+punta: [`MECHANISMS.md`](MECHANISMS.md).
 
 ## 5. El contrato de liberación
 

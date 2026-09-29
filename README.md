@@ -139,6 +139,15 @@ patching one statement in the library after training (W7): the member follows th
 only 1 time in 40 — evidence for what this claim actually rests on: the route was learned, not the
 fact ([`results/W7-edit-after-training-20260927/`](results/W7-edit-after-training-20260927/BRIEF.md)).
 
+> **[ILLUSTRATION PLACEHOLDER — `docs/img/operational-memory.png`, 1200 × 627 (like `article-harness.png`)]**
+> *Two panels side by side, in the style of `article-harness.png`. LEFT, "the conversation in the prompt": a
+> specialist at a desk reads a paper scroll that gets visibly longer turn after turn (three turn markers on it);
+> they fill in a claim form whose field "order" is left EMPTY, the sentence "the seal on that order was broken"
+> copied as is. Counter: "43 / 54". RIGHT, "the keys in a memory": the same specialist reads only a small index
+> card, "state: customer_service/order_known · keys: order"; a drawer labelled "order = 58" is pulled open; the
+> claim form reads "order 58: the seal on that order was broken". Counter: "53 / 54". Title over the image: "Carry
+> the keys, not the conversation." No robots, no brains.*
+
 **Short-term operational memory, next to the library — built, [ran] in tests, not yet trained on**
 (`examples/common/opmemory.py`). The library above is what an expert *knows*; this is where a
 workflow keeps its *live* state: a session cache keyed by (organisation, user, session) and a
@@ -152,24 +161,51 @@ the calls the tool layer *ran* — the model never sets the state, only reads it
 `state: <workflow>/<state> · keys: <names>` — instead of the conversation, and the model fetches
 (`<get>key</get>`) or stores (`<put>key=value</put>`) a value only in the step that needs it.
 
-**The workflow harness — the user's idea, 2026-09-29, designed [spec], H1 running.** For a
+**The workflow harness — the user's idea, 2026-09-29, designed [spec].** For a
 subdomain, a member learns in its weights the domain's workflows, its tools, and the *keys* of
 that operational memory — never the values, never the conversation, so the prompt stays flat as a
 session grows. What lands in the corpus is the same choreography as the library above, extended
 from reading (`<open>id§anchor</open>`) to reading *and writing* operational state. It is a harness
 inside each member, one corpus — not a separate adapter composed with a domain one, which is what
 parked the earlier `harness.lora` (composition could not be measured cleanly, P9/P13). Full design:
-[`docs/review/harness-workflow-kv.md`](docs/review/harness-workflow-kv.md). Whether it beats
-carrying the conversation is H1, running now — no result yet
+[`docs/review/harness-workflow-kv.md`](docs/review/harness-workflow-kv.md).
+
+**H1 has a result, and it reads two ways [ran].** Against `history`'s 43 of 54 dependent turns, the
+harness arm (`wf-s0` + the operational memory) gets 53 of 54 — 1 lost, 11 gained — with
+customer-service claims now naming the order fetched by key (10/10 against history's 2/10),
+dispatch 14/14, and every one of the 53 right turns traced to a `<get>` by key (53/53); the prompt
+itself stays flat per turn (745, 726, 710 tokens) where history's keeps growing (345, 428, 394). The
+same corpus without the tool block (`harness-noblock`) scores 0 of 60: without it the member calls
+no tool and states data it never read — its corpus was never trained without the block. Read across
+both arms, the pre-registered gate (first turns ≥ 90% *in every arm*) is tripped by the no-block
+arm alone, which voids the run as written — an instrument design error, recorded, not one the code
+was changed to fix after seeing the result. Read per arm instead, the harness **PASSED** and
+harness-noblock **FALSIFIED**. **The user's decision (2026-09-29): the per-arm reading stands —
+harness PASSED, harness-noblock FALSIFIED; the as-written VOID is kept as the record of an
+instrument error, not as the verdict.** In these short (2–3 turn) sessions the harness pays roughly 2× the prompt
+tokens per turn (an extra get → call → put round-trip); the saving it is built for belongs to longer
+sessions, which is why a Jira-and-Confluence-like tracker domain (`examples/tracker/`) is being
+built for that case (H2) — **in construction, no results yet**
 ([`results/H1-workflow-harness-20260929/`](results/H1-workflow-harness-20260929/BRIEF.md)).
 
 ---
 
 ## The request path
 
-![One line of six stations: an agent; the gateway reading a signed badge; the role's small local expert; tools run with the badge's permission, one record refused and a payment held; a sheet with an invented line crossed out; the answer. A dashed branch for out of scope leads to a distant building and to a person; a log band runs under everything.](docs/img/request-path.png)
-
-*The path of a request: identity from a token, permission in the tools, a person for payments, and no line shown that a tool did not return.*
+> **[ILLUSTRATION PLACEHOLDER — `docs/img/request-path.png`, wide, ~1600 px]**
+> *A clean left-to-right flow in the house style, SEVEN stations on one line. 1 "agent — one per role (OpenClaw)". 2
+> "gateway — signed token → user · role · organisation", a small turnstile reading a badge. 3 NEW: "operational
+> memory" — a single index card fed into the next station, reading "state: receiving/assigned · keys: order", and
+> beside it two small drawers, "session" and "organisation", with a dial above them labelled "workflow state — moved
+> by the calls that ran". 4 "the role's expert — one small local model + its adapter", a desk with a thin coloured
+> spine leaning on a thick one; two short arrows go from the desk to the drawers, labelled `get` and `put`. 5
+> "tools, with the badge's permission": two small insets — a red stamp across a folder, "another organisation's
+> record — refused", and a paper clip holding a slip, "payment — held for a director". 6 "grounding — every line of
+> the reply must be in a tool's result": a sheet with one line crossed out, "invented". 7 "answer". From station 4 a
+> dashed branch, "out of scope", splits in two: one runs to a distant building, "frontier", the other to a person at
+> a desk, "staff". Under the whole line, a thin band: "log → dashboard: served here · sent on · held · replaced".
+> THE POINT: the conversation is NOT carried to the expert — only the one card and the drawers are. Labels in
+> English; spell every word correctly.*
 
 ```mermaid
 flowchart LR
@@ -320,9 +356,13 @@ neither passes **[ran]** milestone 2. The small models still invent: in the scho
 local replies with the tools' own text — caught, counted, never shown, but not cured. Speculative decoding with a LoRA
 expert runs for real (F0, C0, above), but its output is not yet shown identical to plain decoding, and the aligned
 drafter that might close that gap is parked — it does not run at all yet (C0). Whether the workflow harness beats
-carrying the conversation is not yet known — H1 is running, and no result is stated here until it lands. A longer,
-more explicit tracker domain (a Jira-and-Confluence-like team tool, natural keys, long sessions — where the harness's
-token saving would show) is proposed as what to build it on next, pending the user's decision, and is not built. The
+carrying the conversation has an answer that reads two ways: **PASSED** by arm (53/54 dependent turns against
+history's 43/54, flat tokens, every right turn traced by key) but **VOID** as pre-registered, because the gate that
+was meant to guard every arm's first turns is tripped instead by the no-block control's own failure (0/60) — the user
+chose the per-arm reading (2026-09-29): harness PASSED, harness-noblock FALSIFIED, the as-written VOID kept as the
+record of that instrument error. A longer, more explicit tracker domain (a Jira-and-Confluence-like team tool,
+natural keys, long sessions — where the harness's token saving would show, H2) is **in construction**
+(`examples/tracker/`), synthetic only, with no results yet. The
 harness has not run live through OpenClaw, has not been measured on sessions longer than three turns, and its global
 cache — built and unit-tested — is not yet trained on in any corpus. The memory's library lives only in
 `distributor-wiki@v2`, a separate
@@ -345,6 +385,17 @@ serving now has two profiles: `server` is vLLM on Colab (every measurement and e
 
 ---
 
+> **[ILLUSTRATION PLACEHOLDER — `docs/img/tracker-domain.png`, wide, ~1600 px]**
+> *One wide diagram, house style. TOP LEFT, a kanban board with five columns — "To Do", "In Progress", "In Review",
+> "QA", "Done" — and small cards keyed "RD-169", "RD-313", "RD-354"; a bug card enters through a narrow gate
+> "Triage". A small stamp on an arrow that jumps two columns: "not allowed — the workflow refuses it". TOP RIGHT, a
+> shelf of wiki pages: "definition of done", "component owners", "release process", "bug policy", each page a list
+> of one-sentence slips. BOTTOM, a five-station session line for one developer: "show me RD-169" → "move it to
+> review" → "log 2 hours on it" → "who owns its component?" → "comment: ready for QA"; above each of stations 2–5 a
+> small drawer "issue" being opened (`get`), and at station 4 a second drawer "component" and a line to the
+> "component owners" page. Three roles as small silhouettes: "developer", "lead", "qa". Leave room in the bottom-
+> right corner for a counter to be added when H2 has its result.*
+
 ## Run it
 
 ```bash
@@ -366,6 +417,15 @@ Serving the pool to an agent, the proxy's flags and the substrate gate:
 reason: `--prune` (its own tool surface — serving OpenClaw's full 54-tool block instead costs 16.8×
 time-to-first-token and drops accuracy from 70/70 to 39/70, [E5](results/E5-engine-baseline-20260928/BRIEF.md)),
 `--member-prompt` (the prompt its corpus taught), `--auto` (the client names no model).
+
+> **[ILLUSTRATION PLACEHOLDER — `docs/img/runtimes.png`, wide, ~1600 px]**
+> *Two halves, one horizontal diagram, house style. LEFT, "server — measure and train, many users": a rented graphics
+> card in a small cloud, drawn as a bookshelf with one thick spine ("one resident model — vLLM") and FOUR thin
+> coloured spines ("school", "school upper", "distributor", "distributor abstains"); 32 small arrows arrive from
+> many users. A tag: "four adapters mixed in one batch — no contention". RIGHT, "edge — serve on your own machine":
+> a laptop, one user, a single thin spine being swapped for another with a small clock reading "3 ms"; a tag
+> "llama.cpp · 8-bit". A thin dashed line from the laptop to a distant building, "frontier — only what no tool
+> covers". Between the halves, a small bench with a notebook, "MLX — the research bench".*
 
 **Running a member on your own machine — the `edge` profile, no GPU rented:**
 
@@ -411,6 +471,7 @@ exactly how the live distributor demo above runs, member and all
 |---|---|
 | [`docs/GUIDE.md`](docs/GUIDE.md) | **start here if you want to understand it** — a guide for people: how a model generates text, llama.cpp, vLLM and MLX, quantisation, LoRA, speculative decoding (draft model, MTP, EAGLE), serving many experts, the memory, the gateway, how we measure, and what has been unlocked so far |
 | [`docs/MEMORY.md`](docs/MEMORY.md) | **the memory, as it will be built** — library, radar, three verbs, the LoRA's habit, the referee; build order for 1.0 |
+| [`docs/MECHANISMS.md`](docs/MECHANISMS.md) | **how every mechanism works** — a request's path through the gateway, the operational memory and the workflow harness, mechanism by mechanism |
 | [`docs/KNOWLEDGE-TRAJECTORIES.md`](docs/KNOWLEDGE-TRAJECTORIES.md) | the *why* behind it, self-contained, written to be reviewed by other models: ten findings, five strategies, ten questions |
 | [`docs/FRAMEWORK.md`](docs/FRAMEWORK.md) | **state and gaps, self-contained, written to be reviewed by other models** — what works, what does not, and what is missing for this to be a generic framework for an organisation with one agent per role |
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | the system: experts, router, memory, runtime, the pair, the frontier — and where it sits in an organisation (§9) |

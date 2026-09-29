@@ -30,6 +30,15 @@ Point the agent at `http://127.0.0.1:8001/v1` and set `model` to `kernel` or
 
 ## The edge profile: llama.cpp on your own machine, beside `server`
 
+> **[ILLUSTRATION PLACEHOLDER — `docs/img/runtimes.png`, wide, ~1600 px]**
+> *Two halves, one horizontal diagram, house style. LEFT, "server — measure and train, many users": a rented graphics
+> card in a small cloud, drawn as a bookshelf with one thick spine ("one resident model — vLLM") and FOUR thin
+> coloured spines ("school", "school upper", "distributor", "distributor abstains"); 32 small arrows arrive from
+> many users. A tag: "four adapters mixed in one batch — no contention". RIGHT, "edge — serve on your own machine":
+> a laptop, one user, a single thin spine being swapped for another with a small clock reading "3 ms"; a tag
+> "llama.cpp · 8-bit". A thin dashed line from the laptop to a distant building, "frontier — only what no tool
+> covers". Between the halves, a small bench with a notebook, "MLX — the research bench".*
+
 Everything above is the **`server`** profile: vLLM on Colab, and every measurement and training run
 in this repository goes through it. **`edge`** is a second profile, decided 2026-09-28, for serving
 one already-released member to a live agent runtime on the machine that runs it — no rented card,
@@ -99,12 +108,17 @@ turn reads, beside the role's own prompt and tools:
 | `history=True` | `False` | renders every earlier request and reply before the current one — the naive way to carry a multi-turn conversation, `out-s0`'s `history` arm in MT0 below |
 | `memory=<OpMemory>` | `None` | turns on the workflow harness (`examples/common/opmemory.py`): a turn reads one context line — the role's workflow state and the key **names** of its session and organisation caches, never their values — and the member fetches (`<get>`) or stores (`<put>`) a value only in the step that needs it |
 | `workflows={role: Workflow}` | `{}` | maps a role to its declared state machine (`examples/<org>/workflows/*.toml`); the gateway advances the state from the calls the tool layer **ran**, never from the model |
-| `tool_block=False` | `True` | drops the rendered tool surface from the turn — the member trusted to know its tools from its corpus alone (H1's `harness-noblock` arm) |
+| `tool_block=False` | `True` | drops the rendered tool surface from the turn — the member trusted to know its tools from its corpus alone (H1's `harness-noblock` arm, **0/60**: its corpus always had the block, so removing it at test time left it calling nothing) |
 
 `history=True` and `memory=…` answer the same problem two different ways and are not meant to run
-together: history is the baseline the workflow harness is measured against, not a second copy of it —
-see [`OPENCLAW.md`](OPENCLAW.md) for the multi-turn story and `docs/review/harness-workflow-kv.md` for
-the harness's design.
+together: history is the baseline the workflow harness is measured against, not a second copy of it.
+H1 (`results/H1-workflow-harness-20260929/`) scored both against it on vLLM (one L4): `harness` (the
+block kept) reached 53/54 dependent turns against history's 43/54; `harness-noblock` collapsed, for the
+reason above. Read per arm, `harness` PASSED and `harness-noblock` FALSIFIED, but the run's own gate
+voids it as written — the user's decision (2026-09-29): the per-arm reading stands, the as-written VOID kept
+as the record of that instrument error. **The harness has not been run
+live through OpenClaw**; see [`OPENCLAW.md`](OPENCLAW.md) for the multi-turn story and
+`docs/review/harness-workflow-kv.md` §8 for the full result and the next step.
 
 ## The base has to be one vLLM actually applies adapters to — check, do not assume
 

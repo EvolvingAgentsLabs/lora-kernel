@@ -3,7 +3,8 @@
 The system as designed on 2026-09-19, state as of 2026-09-20. What is built and measured is marked
 **[ran]**; what is designed and not built says so. Where it sits in a whole organisation, and what is
 missing for it to be a generic framework, is §9 and [`FRAMEWORK.md`](FRAMEWORK.md). The measurements behind every choice are in
-[`RECORD.md`](RECORD.md); the order of work is [`PLAN.md`](PLAN.md).
+[`RECORD.md`](RECORD.md); the order of work is [`PLAN.md`](PLAN.md). How every mechanism named below
+connects, turn by turn, is [`MECHANISMS.md`](MECHANISMS.md).
 
 ## 1. One fact, four components — and what version 1.0 is
 
@@ -119,19 +120,43 @@ the distributor's member is served its **own corpus prompt**, with no SCOPE line
 the corpus itself (below), not stated in the system prompt — and its writes run without a director's approval, a
 policy choice for that organisation's roles, not a gap in the approvals mechanism above.
 
-**The gateway carries a session's state, not its transcript — designed, H1 running.** The naive fix for multi-turn is
-`Gateway(history=True)`: replay the conversation so a reference to an earlier turn ("move it to dock 5") has a
-referent. **[ran] MT0** (`results/MT0-multiturn-baseline-20260929`, 60 held-out distributor sessions, 124 turns, 54
-dependent on an earlier turn) measures it: without the conversation, 4 of 54 dependent turns resolve — first turns,
-independent of history, score 60 of 60 in both arms, so the gap is specific to what depends on an earlier turn, not a
-general regression. With the conversation, 43 of 54 (79.6%), at the edge of the headroom this fix has to give: it
-resolves a reference copied straight into an argument (receiving 10/10, returns 10/10, purchasing 9/10, dispatch
-12/14) but not one written into free text — a claim about "that order" is filed without the order number 8 of 10
-(customer service 2/10) — and tokens keep growing with the session (+24% by turn 2). The alternative under design,
+**The gateway carries a session's state, not its transcript — H1 has a result, read two ways [ran].** The naive fix
+for multi-turn is `Gateway(history=True)`: replay the conversation so a reference to an earlier turn ("move it to
+dock 5") has a referent. **[ran] MT0** (`results/MT0-multiturn-baseline-20260929`, 60 held-out distributor sessions,
+124 turns, 54 dependent on an earlier turn) measures it: without the conversation, 4 of 54 dependent turns resolve —
+first turns, independent of history, score 60 of 60 in both arms, so the gap is specific to what depends on an
+earlier turn, not a general regression. With the conversation, 43 of 54 (79.6%), at the edge of the headroom this fix
+has to give: it resolves a reference copied straight into an argument (receiving 10/10, returns 10/10, purchasing
+9/10, dispatch 12/14) but not one written into free text — a claim about "that order" is filed without the order
+number 8 of 10 (customer service 2/10) — and tokens keep growing with the session (+24% by turn 2). The alternative,
 `Gateway(memory=, workflows=, tool_block=)`, replaces the transcript with one line — `state: <workflow>/<state> ·
-keys: <names>` — backed by the operational memory (§4). **H1** (`results/H1-workflow-harness-20260929`,
-pre-registered, running — no result yet) is the measurement of whether a trained member holds `history`'s 43 right
-answers while keeping tokens flat.
+keys: <names>` — backed by the operational memory (§4), and is now measured rather than only designed.
+
+**[ran] H1** (`results/H1-workflow-harness-20260929`, pre-registered, 60 of MT0's sessions): the harness arm
+(`wf-s0` + the operational memory) holds 53 of 54 dependent turns — 1 lost against `history`, 11 gained — naming the
+order fetched by key in every customer-service claim (10/10 against `history`'s 2/10), dispatch 14/14, and tracing
+every one of the 53 right turns to a `<get>` by key (53/53); the prompt itself stays flat per turn (745, 726, 710
+tokens) where `history`'s keeps growing (345, 428, 394). The same corpus served without the tool block
+(`harness-noblock`) scores 0 of 60: the member calls no tool and states data it never read, because its corpus was
+never trained without the block. The pre-registered gate required every arm — including that no-block control — to
+clear 90% on first turns; the control's own failure trips the gate and voids the run as written, an instrument
+design error recorded here rather than patched after seeing the result. Read per arm instead, the harness **PASSED**
+and harness-noblock **FALSIFIED**; **the user's decision (2026-09-29): the per-arm reading stands, the as-written
+VOID kept as the record of that instrument error.** The saving the harness is
+built for — a flat prompt instead of a growing transcript — barely shows over 2–3 turns (the harness pays roughly 2×
+the tokens per turn there, one extra get → call → put round-trip); it is being tested next over longer sessions, on
+a Jira-and-Confluence-like tracker domain (`examples/tracker/`, H2) that is **in construction**, synthetic only, no
+results yet.
+
+**How the mechanisms connect on one turn, now that the harness has a result.** The gateway reads the request's
+context line — `state: <workflow>/<state> · keys: <names>` — instead of the transcript; the role names the member
+(§1) to serve it; the member's trained choreography reaches for `<get>key</get>` or `<put>key=value</put>` against
+the operational memory exactly where a step needs a value, through the same tool layer that runs a domain tool under
+the caller's signed claim (§2's table); every call the tool layer actually *ran* — not one the model merely
+proposed — advances the workflow's declared state machine, which the model only ever reads back next turn; and the
+reply is checked against real tool results by the grounding layer before it reaches the client, the same gate that
+replaced 2 of 5 invented lines in the school demo, now also guarding a line whose only source may be a value just
+fetched by key.
 
 **Abstention lives in the corpus, per member, not in a second model in front of it. [ran] M10:** the distributor's
 member is trained on `train_out` — its usual 700 turns byte for byte, plus 70 `OUT OF SCOPE` turns drawn from the
@@ -293,6 +318,15 @@ every note through exactly that.
 benchmark it lost to lexical search, and `evolving-memory`'s dual index changed nothing **[read]** —
 or that compressing the radar to a small dimension costs nothing. Both are arms with a flat baseline.
 
+> **[ILLUSTRATION PLACEHOLDER — `docs/img/operational-memory.png`, 1200 × 627 (like `article-harness.png`)]**
+> *Two panels side by side, in the style of `article-harness.png`. LEFT, "the conversation in the prompt": a
+> specialist at a desk reads a paper scroll that gets visibly longer turn after turn (three turn markers on it);
+> they fill in a claim form whose field "order" is left EMPTY, the sentence "the seal on that order was broken"
+> copied as is. Counter: "43 / 54". RIGHT, "the keys in a memory": the same specialist reads only a small index
+> card, "state: customer_service/order_known · keys: order"; a drawer labelled "order = 58" is pulled open; the
+> claim form reads "order 58: the seal on that order was broken". Counter: "53 / 54". Title over the image: "Carry
+> the keys, not the conversation." No robots, no brains.*
+
 **Beside the library, not instead of it.** The library above holds knowledge — encyclopedic and operational — that a
 member navigates by key: content that changes rarely, edited by a person rather than by the conversation. The
 **operational memory** holds the opposite kind of thing: the live state of a workflow or a conversation, changing
@@ -307,14 +341,18 @@ every write logged. Workflows are declared, not neural — one TOML file per rol
 (`examples/distributor/workflows/*.toml`, six roles, two to three states each) — and the state advances only from the
 calls the tool layer actually ran; the model never sets it, and reads it only in the one-line context of §2.
 
-**The workflow harness is the member's learned part of this — designed, H1 running.** What is trained is not the
-cache, which stays outside the weights exactly as the library does, but the *habit* of operating it: for its domain,
-the workflows as state machines, its tools and how to call them, and the keys under which a session's context lives —
-one corpus, inside the member, the way a member already learns its tool block and its library's routes. It is a
-harness *inside* each member, not a second adapter composed with a domain one — which is what parked `harness.lora`,
-where composition could not be measured cleanly (P9, P13 **[ran]**). It extends W9's key-addressed reading
-(`<open>id§anchor</open>`) from encyclopedic knowledge to operational memory, and from reading alone to reading *and*
-writing. Design and open decisions: [`review/harness-workflow-kv.md`](review/harness-workflow-kv.md).
+**The workflow harness is the member's learned part of this — [ran] H1, read two ways (§2).** What is trained is not
+the cache, which stays outside the weights exactly as the library does, but the *habit* of operating it: for its
+domain, the workflows as state machines, its tools and how to call them, and the keys under which a session's context
+lives — one corpus, inside the member, the way a member already learns its tool block and its library's routes. It
+is a harness *inside* each member, not a second adapter composed with a domain one — which is what parked
+`harness.lora`, where composition could not be measured cleanly (P9, P13 **[ran]**). It extends W9's key-addressed
+reading (`<open>id§anchor</open>`) from encyclopedic knowledge to operational memory, and from reading alone to
+reading *and* writing. Whether it beats carrying the conversation is H1 (§2 has the numbers): **PASSED** per arm,
+**VOID** as pre-registered — the user's decision (2026-09-29): per arm stands, the as-written VOID kept as the
+record of that instrument error. Design and open decisions:
+[`review/harness-workflow-kv.md`](review/harness-workflow-kv.md); how every piece here connects end to end:
+[`MECHANISMS.md`](MECHANISMS.md).
 
 ## 5. The release contract
 

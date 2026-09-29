@@ -30,6 +30,13 @@ Apuntá el agente a `http://127.0.0.1:8001/v1` y poné `model` en `kernel` o `do
 
 ## El perfil edge: llama.cpp en tu propia máquina, al lado de `server`
 
+> **[MARCADOR DE ILUSTRACIÓN — `docs/img/runtimes.png`, wide, ~1600 px]**
+> *Dos mitades. IZQUIERDA, "server — medir y entrenar, muchos usuarios": una placa alquilada en una nube, un lomo
+> grueso (vLLM) y CUATRO lomos finos de adaptadores, 32 flechas de usuarios, "cuatro adaptadores en un lote — sin
+> contención". DERECHA, "edge — servir en la máquina propia": una notebook, un usuario, un lomo que se cambia en "3
+> ms", "llama.cpp · 8 bits", una línea punteada a la frontera. En el medio, un banco con un cuaderno: "MLX — banco
+> de investigación".*
+
 Todo lo de arriba es el perfil **`server`**: vLLM en Colab, y por ahí pasa cada medición y cada
 entrenamiento de este repositorio. **`edge`** es un segundo perfil, decidido el 2026-09-28, para
 servir un miembro ya liberado a un runtime de agentes en vivo, en la máquina que lo corre — sin
@@ -105,12 +112,18 @@ constructor deciden qué lee un turno, además del prompt y las herramientas pro
 | `history=True` | `False` | renderiza cada pedido y respuesta anterior antes del actual — la forma ingenua de cargar una conversación multi-turno, el brazo `history` de `out-s0` en MT0 más abajo |
 | `memory=<OpMemory>` | `None` | activa el arnés de flujos de trabajo (`examples/common/opmemory.py`): un turno lee una línea de contexto — el estado del flujo de trabajo del rol y los **nombres** de las claves de sus cachés de sesión y de organización, nunca sus valores — y el miembro busca (`<get>`) o guarda (`<put>`) un valor sólo en el paso que lo necesita |
 | `workflows={role: Workflow}` | `{}` | mapea un rol a su máquina de estados declarada (`examples/<org>/workflows/*.toml`); el gateway avanza el estado por las llamadas que la capa de herramientas **ejecutó**, nunca por el modelo |
-| `tool_block=False` | `True` | quita la superficie de herramientas renderizada del turno — el miembro confía en conocer sus herramientas por su propio corpus (el brazo `harness-noblock` de H1) |
+| `tool_block=False` | `True` | quita la superficie de herramientas renderizada del turno — el miembro confía en conocer sus herramientas por su propio corpus (el brazo `harness-noblock` de H1, **0/60**: su corpus siempre tuvo el bloque, así que sacarlo al evaluar lo dejó sin llamar nada) |
 
 `history=True` y `memory=…` responden el mismo problema de dos maneras distintas y no están
 pensadas para correr juntas: history es la línea de base contra la que se mide el arnés de flujos de
-trabajo, no una segunda copia de él — ver [`OPENCLAW.md`](OPENCLAW.md) para la historia del
-multi-turno y `docs/review/harness-workflow-kv.md` para el diseño del arnés.
+trabajo, no una segunda copia de él. H1 (`results/H1-workflow-harness-20260929/`) puntuó los dos brazos
+contra ella sobre vLLM (una L4): `harness` (con el bloque) alcanzó 53/54 turnos dependientes contra el
+43/54 de history; `harness-noblock` colapsó, por la razón de arriba. Leído por brazo, `harness` PASÓ y
+`harness-noblock` quedó FALSEADO, pero la propia compuerta de la corrida la anula tal como está escrita
+— la decisión del usuario (2026-09-29): vale la lectura por brazo, el VOID tal como está escrito queda
+como el registro de ese error del instrumento. **El arnés todavía no corrió en vivo a través de
+OpenClaw**; ver [`OPENCLAW.md`](OPENCLAW.md) para la historia del multi-turno y
+`docs/review/harness-workflow-kv.md` §8 para el resultado completo y el siguiente paso.
 
 ## La base tiene que ser una a la que vLLM realmente le aplique adaptadores — se chequea, no se supone
 

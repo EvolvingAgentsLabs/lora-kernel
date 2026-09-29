@@ -37,8 +37,12 @@ library (`<open>id§anchor</open>`, §3.4) is now also how a member reads *and w
 own state: a workflow harness (`examples/common/opmemory.py`,
 [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md)) keys a session's live values — an
 order id, a dock number — the same way a page keys a statement, and a member fetches (`<get>`) or stores
-(`<put>`) one only in the step that needs it, instead of re-reading the conversation. MT0 and H1 measure
-it; see [`MEMORY.md`](MEMORY.md) §11.
+(`<put>`) one only in the step that needs it, instead of re-reading the conversation. MT0 measured the
+naive `history=True` baseline (43/54 dependent turns); H1 scored the harness itself against it —
+`harness` 53/54, `harness-noblock` 0/60, read per arm as PASSED and FALSIFIED, with the run void as
+written and the user's decision (2026-09-29) choosing the per-arm reading, the as-written VOID kept as
+the record of that instrument error; see [`MEMORY.md`](MEMORY.md) §11 and
+[`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §8 for the full result.
 
 ## 2. What is already measured, and must constrain the design
 

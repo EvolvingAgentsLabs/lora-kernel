@@ -550,6 +550,15 @@ region to a procedure the expert never trained on.
 
 ## 11. The short-term operational memory — beside the library (the user's design, 2026-09-29)
 
+> **[ILLUSTRATION PLACEHOLDER — `docs/img/operational-memory.png`, 1200 × 627 (like `article-harness.png`)]**
+> *Two panels side by side, in the style of `article-harness.png`. LEFT, "the conversation in the prompt": a
+> specialist at a desk reads a paper scroll that gets visibly longer turn after turn (three turn markers on it);
+> they fill in a claim form whose field "order" is left EMPTY, the sentence "the seal on that order was broken"
+> copied as is. Counter: "43 / 54". RIGHT, "the keys in a memory": the same specialist reads only a small index
+> card, "state: customer_service/order_known · keys: order"; a drawer labelled "order = 58" is pulled open; the
+> claim form reads "order 58: the seal on that order was broken". Counter: "53 / 54". Title over the image: "Carry
+> the keys, not the conversation." No robots, no brains.*
+
 The five pieces above are the **library**: markdown a subdomain's expert navigates, encyclopedic or
 operational, held in git and read by key (§1.6). A workflow member needs a second kind of memory the
 library does not hold: **the live state of one conversation** — an order id the person named two turns
@@ -580,6 +589,21 @@ This is the same division the library draws between content and navigation (§3 
 [`KNOWLEDGE-TRAJECTORIES.md`](KNOWLEDGE-TRAJECTORIES.md)), one level up: the operational memory holds a
 conversation's live values, the library holds a subdomain's standing knowledge, and in both cases **the
 weights hold only the route to a key**, never the value behind it. Design and the decisions taken with
-it are in [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md); it is **built and
-tested at zero GPU — not yet trained on** (H1, running, `results/H1-workflow-harness-20260929/`, no
-result yet).
+it are in [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md); it is now **trained on
+and scored** (H1, `results/H1-workflow-harness-20260929/`, on vLLM). Against MT0's `history` baseline
+on 60 held-out sessions, `harness` (the tool block kept) reaches **53/54** dependent turns (history
+43/54), names the order fetched by key in all 10 customer-service claims (history 2/10), and every
+right dependent turn fetched its value by key (53/53), with a flat prompt across turns (745/726/710
+tokens against history's 345/428/394 — in these short sessions the harness spends roughly 2× the
+per-turn tokens of a single reply, since a `get`/call/`put` cycle costs more generation steps than an
+answer alone; prefix caching would reuse most of it, not measured; the token *advantage* belongs to
+longer sessions). `harness-noblock` (the same, without the tool block) reaches **0/60**: its corpus
+always had the block, so removing it at evaluation time left the member calling no tool and stating
+data it never read — the fix is a corpus that drops the block in part of its rows, not attempted here.
+**Read as written, the run is VOID**: its own first-turns-≥-90%-or-void gate, applied across arms, lets
+`harness-noblock`'s collapse void the whole run — an instrument design error, recorded, the code not
+changed after the result. **Read per arm, `harness` PASSED and `harness-noblock` FALSIFIED. The user's
+decision (2026-09-29): the per-arm reading stands, the as-written VOID kept as the record of that
+instrument error.** Next: a Jira + Confluence-like domain
+(`examples/tracker/`, in construction) for sessions long enough that the token saving would show (H2).
+See [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §8.

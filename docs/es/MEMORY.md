@@ -557,6 +557,12 @@ región a un procedimiento sobre el que el experto nunca entrenó.
 
 ## 11. La memoria operativa de corto plazo — al lado de la biblioteca (diseño del usuario, 2026-09-29)
 
+> **[MARCADOR DE ILUSTRACIÓN — `docs/img/operational-memory.png`, 1200 × 627 (like `article-harness.png`)]**
+> *Dos paneles. IZQUIERDA, "la conversación en el prompt": un rollo que se alarga turno a turno y un formulario de
+> reclamo con el campo "order" VACÍO; contador "43 / 54". DERECHA, "las claves en una memoria": sólo una ficha
+> "state: customer_service/order_known · keys: order", un cajón abierto "order = 58" y el reclamo "order 58: the
+> seal on that order was broken"; contador "53 / 54". Título: "Carry the keys, not the conversation."*
+
 Las cinco piezas de arriba son la **biblioteca**: markdown que el experto de un subdominio navega,
 enciclopédico u operativo, guardado en git y leído por clave (§1.6). Un miembro de flujo de trabajo
 necesita un segundo tipo de memoria que la biblioteca no guarda: **el estado vivo de una conversación**
@@ -591,6 +597,23 @@ Es la misma división que la biblioteca traza entre contenido y navegación (§3
 guarda los valores vivos de una conversación, la biblioteca guarda el conocimiento estable de un
 subdominio, y en los dos casos **los pesos guardan sólo la ruta a una clave**, nunca el valor detrás de
 ella. El diseño y las decisiones tomadas con él están en
-[`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md); está **construida y testeada a
-costo cero de GPU — todavía no entrenada sobre ella** (H1, corriendo,
-`results/H1-workflow-harness-20260929/`, sin resultado todavía).
+[`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md); ahora está **entrenada y
+puntuada** (H1, `results/H1-workflow-harness-20260929/`, sobre vLLM). Contra la línea de base `history`
+de MT0 sobre 60 sesiones retenidas, `harness` (con el bloque de herramientas) llega a **53/54** turnos
+dependientes (history 43/54), nombra el pedido buscado por clave en los 10 reclamos de atención al
+cliente (history 2/10), y cada turno dependiente correcto buscó su valor por clave (53/53), con un
+prompt plano en los turnos (745/726/710 tokens contra 345/428/394 de history — en estas sesiones
+cortas el arnés gasta aproximadamente 2× los tokens por turno de una respuesta sola, porque un ciclo de
+`get`/llamada/`put` cuesta más pasos de generación que una respuesta directa; el cacheo de prefijo
+reusaría la mayor parte, no medido; la ventaja de tokens pertenece a sesiones más largas).
+`harness-noblock` (lo mismo, sin el bloque de herramientas) llega a **0/60**: su corpus siempre tuvo el
+bloque, así que sacarlo al momento de evaluar dejó al miembro sin llamar ninguna herramienta y
+enunciando datos que nunca leyó — la corrección es un corpus que saque el bloque en parte de sus filas,
+no intentado acá. **Leída tal como está escrita, la corrida queda ANULADA**: su propia compuerta de
+primeros-turnos-≥-90%-o-anulado, aplicada entre brazos, deja que el colapso de `harness-noblock` anule
+toda la corrida — un error de diseño del instrumento, registrado, sin cambiar el código después del
+resultado. **Leído por brazo, `harness` PASÓ y `harness-noblock` quedó FALSEADO. La decisión del usuario
+(2026-09-29): vale la lectura por brazo, el VOID tal como está escrito queda como el registro de ese
+error del instrumento.** Sigue: un dominio tipo Jira + Confluence
+(`examples/tracker/`, en construcción) para sesiones lo bastante largas como para que se note el ahorro
+de tokens (H2). Ver [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §8.

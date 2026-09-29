@@ -150,6 +150,12 @@ recitan el valor viejo sólo 1 vez de 40 — evidencia de lo que esta afirmació
 se aprendió la ruta, no el hecho
 ([`results/W7-edit-after-training-20260927/`](results/W7-edit-after-training-20260927/BRIEF.md)).
 
+> **[MARCADOR DE ILUSTRACIÓN — `docs/img/operational-memory.png`, 1200 × 627 (like `article-harness.png`)]**
+> *Dos paneles. IZQUIERDA, "la conversación en el prompt": un rollo que se alarga turno a turno y un formulario de
+> reclamo con el campo "order" VACÍO; contador "43 / 54". DERECHA, "las claves en una memoria": sólo una ficha
+> "state: customer_service/order_known · keys: order", un cajón abierto "order = 58" y el reclamo "order 58: the
+> seal on that order was broken"; contador "53 / 54". Título: "Carry the keys, not the conversation."*
+
 **Memoria operativa de corto plazo, junto a la biblioteca — construida, [ran] en tests, todavía sin
 entrenar** (`examples/common/opmemory.py`). La biblioteca de arriba es lo que un experto *sabe*;
 acá vive el estado *vivo* de un flujo de trabajo: una caché de sesión indexada por (organización,
@@ -165,7 +171,7 @@ vuelve una línea — `state: <flujo>/<estado> · keys: <nombres>` — en lugar 
 modelo busca (`<get>clave</get>`) o guarda (`<put>clave=valor</put>`) un valor sólo en el paso que
 lo necesita.
 
-**El arnés de flujo de trabajo — la idea del usuario, 2026-09-29, diseñada [spec], H1 corriendo.**
+**El arnés de flujo de trabajo — la idea del usuario, 2026-09-29, diseñada [spec].**
 Para un subdominio, un miembro aprende en sus pesos los flujos de trabajo del dominio, sus
 herramientas, y las *claves* de esa memoria operativa — nunca los valores, nunca la conversación,
 así que el prompt queda plano a medida que crece una sesión. Lo que termina en el corpus es la
@@ -173,17 +179,40 @@ misma coreografía que la biblioteca de arriba, extendida de leer (`<open>id§an
 *y escribir* estado operativo. Es un arnés adentro de cada miembro, un solo corpus — no un
 adaptador separado compuesto con uno de dominio, que fue lo que dejó en pausa al `harness.lora`
 anterior (la composición no se pudo medir limpio, P9/P13). Diseño completo:
-[`docs/review/harness-workflow-kv.md`](docs/review/harness-workflow-kv.md). Si le gana a cargar la
-conversación es H1, corriendo ahora — todavía sin resultado
+[`docs/review/harness-workflow-kv.md`](docs/review/harness-workflow-kv.md).
+
+**H1 ya tiene un resultado, y se lee de dos formas [ran].** Contra los 43 de 54 turnos dependientes
+de `history`, el brazo del arnés (`wf-s0` + la memoria operativa) llega a 53 de 54 — 1 perdido, 11
+ganados — con las afirmaciones de atención al cliente que ahora nombran el pedido buscado por clave
+(10/10 contra el 2/10 de `history`), despacho 14/14, y cada uno de los 53 turnos correctos rastreado
+hasta un `<get>` por clave (53/53); el prompt en sí queda plano por turno (745, 726, 710 tokens)
+donde el de `history` sigue creciendo (345, 428, 394). El mismo corpus sin el bloque de herramientas
+(`harness-noblock`) saca 0 de 60: sin el bloque el miembro no llama a ninguna herramienta y afirma
+datos que nunca leyó — su corpus nunca se entrenó sin el bloque. Leído a través de los dos brazos,
+la compuerta pre-registrada (primeros turnos ≥ 90 % *en cada brazo*) la hace fallar sólo el brazo
+sin bloque, que anula la corrida tal como está escrita — un error de diseño del instrumento,
+registrado, no uno que se corrigió en el código después de ver el resultado. Leído por brazo en
+cambio, el arnés **PASÓ** y harness-noblock quedó **FALSEADO**. **La decisión del usuario (2026-09-29):
+vale la lectura por brazo — el arnés PASÓ, harness-noblock quedó FALSEADO; el VOID tal como está
+escrito queda como el registro de un error del instrumento, no como el veredicto.** En estas sesiones cortas (2–3 turnos) el
+arnés paga más o menos 2× los tokens de prompt por turno (una ida y vuelta extra de get → llamada →
+put); el ahorro para el que está construido pertenece a sesiones más largas, por lo que se está
+construyendo un dominio de seguimiento tipo Jira y Confluence (`examples/tracker/`) para ese caso
+(H2) — **en construcción, todavía sin resultados**
 ([`results/H1-workflow-harness-20260929/`](results/H1-workflow-harness-20260929/BRIEF.md)).
 
 ---
 
 ## El camino del pedido
 
-![Una línea de seis estaciones: un agente; el gateway que lee una credencial firmada; el experto local chico del rol; herramientas con el permiso de la credencial, un registro rechazado y un pago retenido; una hoja con una línea inventada tachada; la respuesta. Una rama punteada para lo que está fuera de alcance lleva a un edificio lejano y a una persona; una banda de registro corre debajo de todo.](docs/img/request-path.png)
-
-*El camino de un pedido: identidad desde un token, permiso en las herramientas, una persona para los pagos, y ninguna línea que una herramienta no haya devuelto.*
+> **[MARCADOR DE ILUSTRACIÓN — `docs/img/request-path.png`, wide, ~1600 px]**
+> *Un flujo limpio de izquierda a derecha, SIETE estaciones en una línea: agente; gateway con credencial firmada;
+> NUEVA — memoria operativa: una sola ficha "state: receiving/assigned · keys: order" que entra al experto, dos
+> cajones "session" y "organisation" y un dial "estado del flujo — lo mueven las llamadas que corrieron"; el experto
+> del rol, con flechas `get` y `put` hacia los cajones; herramientas con el permiso de la credencial (un registro
+> ajeno rechazado, un pago retenido); anclaje (una línea inventada tachada); respuesta. Rama punteada "fuera de
+> alcance" a la frontera y a una persona; banda de log debajo. LO CENTRAL: al experto no llega la conversación, sólo
+> la ficha y los cajones.*
 
 ```mermaid
 flowchart LR
@@ -343,11 +372,15 @@ inventan: en la demo de la escuela el gateway reemplazó 2 de 5 respuestas local
 propio de las herramientas — atrapado, contado, nunca mostrado, pero no curado. La decodificación especulativa con un
 experto LoRA corre de verdad (F0, C0, arriba), pero todavía no está mostrado que su salida sea idéntica a la
 decodificación normal, y el drafter alineado que podría cerrar esa brecha está en pausa — todavía no corre en
-absoluto (C0). Todavía no se sabe si el arnés de flujo de trabajo le gana a cargar la conversación — H1 está
-corriendo, y acá no se afirma ningún resultado hasta que llegue. Se propone un dominio de seguimiento de tickets
+absoluto (C0). Si el arnés de flujo de trabajo le gana a cargar la conversación tiene una respuesta que se lee de
+dos formas: **PASÓ** por brazo (53/54 turnos dependientes contra el 43/54 de `history`, tokens planos, cada turno
+correcto rastreado por clave) pero quedó **ANULADO** tal como estaba pre-registrado, porque la compuerta pensada
+para vigilar los primeros turnos de cada brazo la hace fallar la propia falla del control sin bloque (0/60) — el
+usuario eligió la lectura por brazo (2026-09-29): el arnés PASÓ, harness-noblock quedó FALSEADO, y el VOID tal
+como está escrito queda como el registro de ese error del instrumento. Se propone un dominio de seguimiento de tickets
 más largo y explícito (tipo Jira y Confluence, claves naturales, sesiones largas — donde se vería el ahorro de
-tokens del arnés) como lo próximo para construirlo, pendiente de la decisión del usuario, y todavía no está
-construido. El arnés no corrió en vivo a través de OpenClaw, no se midió en sesiones de más de tres turnos, y su
+tokens del arnés, H2) que está **en construcción** (`examples/tracker/`), sólo sintético, todavía sin resultados.
+El arnés no corrió en vivo a través de OpenClaw, no se midió en sesiones de más de tres turnos, y su
 caché global — construida y probada con tests unitarios — todavía no se entrenó en ningún corpus. La biblioteca de
 la memoria vive sólo en `distributor-wiki@v2`, un miembro aparte — ningún miembro servido lleva su propia biblioteca todavía.
 La corrida en vivo de la distribuidora de arriba es sólo llama.cpp; todavía nadie corrió el par a través de vLLM
@@ -369,6 +402,13 @@ entrenamiento); `edge` es llama.cpp en la máquina propia del usuario, decidido 
 arriba).
 
 ---
+
+> **[MARCADOR DE ILUSTRACIÓN — `docs/img/tracker-domain.png`, wide, ~1600 px]**
+> *Un diagrama ancho: un tablero kanban (To Do → In Progress → In Review → QA → Done, con tarjetas RD-169…; un bug
+> entra por "Triage"; un sello "no permitido — el flujo lo rechaza"), una estantería de páginas (definición de
+> terminado, dueños de componentes, proceso de release, política de bugs) y una sesión de cinco turnos de un
+> desarrollador donde cada turno abre el cajón "issue" (`get`) y el cuarto además "component" hacia la página de
+> dueños. Espacio abajo a la derecha para el contador de H2.*
 
 ## Correrlo
 
@@ -393,6 +433,13 @@ completo de 54 herramientas de OpenClaw en su lugar cuesta 16,8× en time-to-fir
 precisión de 70/70 a 39/70, [E5](results/E5-engine-baseline-20260928/BRIEF.md)),
 `--member-prompt` (el prompt que le enseñó su corpus), `--auto` (el cliente no nombra
 modelo).
+
+> **[MARCADOR DE ILUSTRACIÓN — `docs/img/runtimes.png`, wide, ~1600 px]**
+> *Dos mitades. IZQUIERDA, "server — medir y entrenar, muchos usuarios": una placa alquilada en una nube, un lomo
+> grueso (vLLM) y CUATRO lomos finos de adaptadores, 32 flechas de usuarios, "cuatro adaptadores en un lote — sin
+> contención". DERECHA, "edge — servir en la máquina propia": una notebook, un usuario, un lomo que se cambia en "3
+> ms", "llama.cpp · 8 bits", una línea punteada a la frontera. En el medio, un banco con un cuaderno: "MLX — banco
+> de investigación".*
 
 **Correr un miembro en la máquina propia — el perfil `edge`, sin alquilar GPU:**
 
@@ -438,6 +485,7 @@ Así corre exactamente la demo en vivo de la distribuidora de arriba, miembro in
 |---|---|
 | [`docs/es/GUIDE.md`](docs/es/GUIDE.md) | **empezá acá si querés entenderlo** — una guía para personas: cómo genera texto un modelo, llama.cpp, vLLM y MLX, cuantización, LoRA, decodificación especulativa (modelo borrador, MTP, EAGLE), servir muchos expertos, la memoria, el gateway, cómo medimos y qué se fue desbloqueando |
 | [`docs/es/MEMORY.md`](docs/es/MEMORY.md) | **la memoria, tal como se va a construir** — biblioteca, radar, tres verbos, el hábito del LoRA, el árbitro; orden de construcción para la 1.0 |
+| [`docs/es/MECHANISMS.md`](docs/es/MECHANISMS.md) | **cómo funciona cada mecanismo** — el camino de un pedido a través del gateway, la memoria operativa y el arnés de flujo de trabajo, mecanismo por mecanismo |
 | [`docs/es/KNOWLEDGE-TRAJECTORIES.md`](docs/es/KNOWLEDGE-TRAJECTORIES.md) | el *por qué* detrás de todo esto, autocontenido, escrito para que lo revisen otros modelos: diez hallazgos, cinco estrategias, diez preguntas |
 | [`docs/es/FRAMEWORK.md`](docs/es/FRAMEWORK.md) | **estado y brechas, autocontenido, escrito para que lo revisen otros modelos** — qué funciona, qué no, y qué falta para que esto sea un framework genérico para una organización con un agente por rol |
 | [`docs/es/ARCHITECTURE.md`](docs/es/ARCHITECTURE.md) | el sistema: expertos, router, memoria, runtime, el par, la frontera — y dónde se ubica dentro de una organización (§9) |

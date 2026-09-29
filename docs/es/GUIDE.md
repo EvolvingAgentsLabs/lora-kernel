@@ -505,6 +505,12 @@ demostración del camino de salida, no una afirmación de que el miembro pasó l
 
 ### 7.4 Multi-turno y memoria: por qué cargar la conversación no es la solución
 
+> **[MARCADOR DE ILUSTRACIÓN — `docs/img/operational-memory.png`, 1200 × 627 (like `article-harness.png`)]**
+> *Dos paneles. IZQUIERDA, "la conversación en el prompt": un rollo que se alarga turno a turno y un formulario de
+> reclamo con el campo "order" VACÍO; contador "43 / 54". DERECHA, "las claves en una memoria": sólo una ficha
+> "state: customer_service/order_known · keys: order", un cajón abierto "order = 58" y el reclamo "order 58: the
+> seal on that order was broken"; contador "53 / 54". Título: "Carry the keys, not the conversation."*
+
 Un gateway que sólo lee el último pedido no tiene cómo resolver "llevalo al andén 5" si "lo" se nombró dos turnos
 antes — la referencia no tiene a qué apuntar en ese único mensaje. La reparación obvia es darle al modelo toda la
 conversación: `Gateway(history=True)`.
@@ -545,18 +551,52 @@ es lo que probó `harness.lora`, y lo que quedó parado porque la composición n
 mismo hábito adentro del corpus propio de cada miembro es una apuesta distinta sobre la misma idea, no un reintento de
 la que falló.
 
-**Qué va a medir H1.** `results/H1-workflow-harness-20260929` (**pre-registrado, corriendo — sin resultado todavía**)
-entrena un miembro sobre el corpus de MT0 más turnos de arnés y compara tres brazos sobre las mismas 60 sesiones de
-MT0: `history` (la línea base de arriba), `harness` (el contexto de una línea, con el bloque de herramientas) y
-`harness-noblock` (lo mismo, sin repetir las herramientas en el prompt — probando si el miembro las conoce lo
-bastante bien como para no necesitar el recordatorio). Pasa sólo si el arnés pierde no más de 3 de los 54 turnos
-dependientes que `history` acierta, mantiene los tokens del prompt planos a medida que crece la sesión (el turno 3 no
-más de 1,1× el turno 1, donde `history` sigue subiendo), sostiene los turnos independientes en 90 % o más, y — el
-chequeo que agrega este diseño — todo turno dependiente contestado bien también buscó su valor por la clave correcta,
-no por una adivinanza con suerte. Diseño y decisiones abiertas:
-[`review/harness-workflow-kv.md`](../review/harness-workflow-kv.md). Hasta que H1 aterrice, que un LoRA pueda operar
-las claves de un workflow de la misma forma en que navega una biblioteca es una afirmación bajo prueba, no un
-resultado.
+**Qué midió H1, y qué muestra. [ran]** `results/H1-workflow-harness-20260929` entrenó un miembro (`wf-s0`) sobre el
+corpus de MT0 más 627 turnos de arnés y comparó tres brazos sobre las mismas 60 sesiones de MT0: `history` (la línea
+base de arriba), `harness` (el contexto de una línea, con el bloque de herramientas) y `harness-noblock` (lo mismo,
+sin repetir las herramientas en el prompt). **`harness`: 53 de 54 turnos dependientes, contra los 43/54 de
+`history`** (1 perdido, 11 ganados), tokens de prompt planos por posición de turno, y — el chequeo que agrega este
+diseño — todo turno dependiente contestado bien también buscó su valor por la clave correcta, 53 de 53.
+**`harness-noblock`: 0 de 60.**
+
+*Por qué buscar por clave arregla lo que la historia no pudo.* El resultado de MT0 del §7.4 se partía según cómo la
+referencia llega a la respuesta: una referencia copiada se resuelve con la historia, una que el modelo tiene que
+**componer en texto libre** no (un reclamo sobre "ese pedido" archivado sin número de pedido, 8 de 10). `<get>order</get>`
+saca ese paso por completo — el número de pedido entra a la llamada como el valor que devuelve el almacén, no como
+algo que el modelo tiene que notar en la transcripción y volver a escribir. Los reclamos de atención al cliente, el
+peor caso de MT0 (2/10 con historia), pasan a **10/10** con el arnés, y cada uno nombra el pedido que buscó. El
+mecanismo no es "el modelo mejoró leyendo la historia"; es que leer la historia deja de ser el camino por el que
+viaja el valor.
+
+*Por qué el brazo sin bloque cae a cero, no a algo peor que `history`.* `harness-noblock` nunca vio sus propias
+herramientas sin describir **en el entrenamiento** — su corpus, como todo corpus de este repositorio, siempre llevó
+el bloque de herramientas. Sacar el bloque en el momento de servir no es una versión más difícil de la misma tarea;
+es un prompt distinto al que se le mostró al miembro, y el miembro hace lo que hace todo experto fuera de su corpus
+(§7.2, §8.6): no llama nada y afirma datos que nunca leyó. **Un corpus enseña el prompt con el que se lo sirve, no
+uno con el que podría servírselo después.** Es la misma lección del resultado de poda de E5 y de "una superficie
+desconocida es extrapolación" de P59, ahora sobre el bloque de herramientas propio del arnés y no sobre el de un
+runtime.
+
+*Por qué el conteo de tokens es más alto, en estas sesiones cortas.* Por turno, `harness` lee aproximadamente **2× los
+tokens de prompt** de `history` en el turno 1 (745 contra 345, §8.9 de FOUNDATIONS) — no porque la línea de contexto
+sea más larga que una transcripción corta, sino porque contestar ahora exige más **pasos de generación**: get →
+llamada → put → respuesta, donde `history` escribe la respuesta directo. Ese costo es real y no está escondido; lo
+que todavía no se mide es cuánto de eso absorbería el caché de prefijo, ya que el andamiaje get/call/put se repite de
+turno en turno de la misma forma que el prefijo compartido del §3.6. El argumento de tokens del arnés es sobre el
+**crecimiento**, no sobre el piso por turno: el prompt de `history` sigue subiendo con la sesión (§8.9), el del arnés
+no — y esa ventaja sólo se ve una vez que las sesiones duran más que los dos o tres turnos de MT0.
+
+*La lección sobre VOID, independiente de cualquiera de los dos números.* La regla de corte del brief — primeros
+turnos en 90 % o más en todos los brazos, o la corrida es VOID — se escribió para atrapar una falla (un arnés roto
+que también rompe lo que ya funcionaba) y en cambio atrapó otra distinta: un brazo que nunca iba a pasar con
+herramientas para las que no fue entrenado. Aplicada al pie de la letra sobre tres brazos, el 0 % de primeros turnos
+de un brazo que falla anula los resultados reales de los otros dos. **Leída tal como fue escrita, H1 es VOID; leída
+por brazo, `harness` PASÓ y `harness-noblock` quedó FALSADO — una regla VOID comprada para cuidar toda una corrida
+tiene que revisarse por brazo, o un resultado que se sostiene solo se tira junto con uno que no.** La decisión del
+usuario (2026-09-29): vale la lectura por brazo, y el VOID tal como está escrito queda como el registro de ese
+error del instrumento, no como el veredicto. Diseño y decisiones abiertas:
+[`review/harness-workflow-kv.md`](../review/harness-workflow-kv.md); el mecanismo detrás de `<get>`/`<put>` y la línea
+de estado está en [`MECHANISMS.md`](MECHANISMS.md).
 
 ---
 
@@ -639,9 +679,9 @@ fijo en el corpus que se memoriza; un modelo sin el prompt con el que se entren�
 | el modelo todavía inventa | 3 de 12 respuestas las atrapa el filtro | un corpus que enseñe a repetir sólo lo que dice la herramienta |
 | la memoria (biblioteca) dentro de un miembro que sirve | vive en `distributor-wiki@v2`, un miembro separado del que abstiene, `out-s0` (M10) | juntarlos, o mantenerlos separados por diseño — todavía sin decidir |
 | una corrida en vivo de la distribuidora en vLLM bf16 | no corrida — el único brazo local medido es llama.cpp Q8_0 (LIVE-distributor) | correrla cuando haga falta una comparación a la misma precisión contra el edge |
-| el resultado de H1 (el arnés de workflow) | **pre-registrado, corriendo** [ran] — sin resultado todavía | leer la corrida antes de afirmar que el arnés se sostiene; liberar el miembro sólo si pasa |
+| el resultado de H1 (el arnés de workflow) | **[ran] — la decisión del usuario (2026-09-29): por brazo.** Por brazo: `harness` PASÓ (53/54 contra 43/54, todo acierto buscado por clave); `harness-noblock` quedó FALSADO (0/60). Tal como fue escrita: **VOID**, superada — la regla de primeros turnos del brief anula entre brazos, un error del instrumento, queda como su registro | liberar el miembro con la lectura por brazo; el VOID es por brazo a partir de H2 |
 | un router adentro del propio camino del gateway | no construido — el rol sigue siendo la ruta (§7.2) | construirlo sólo cuando haga falta rutear entre roles, no la abstención por miembro |
-| el arnés en vivo por OpenClaw, multi-turno | no corrido — H1 lo mide primero en el perfil de servidor | repetir el patrón de LIVE-distributor (§7.3) una vez que H1 pase |
+| el arnés en vivo por OpenClaw, multi-turno | no corrido — H1 sólo lo midió en el perfil de servidor | repetir el patrón de LIVE-distributor (§7.3), ahora que la lectura de H1 está elegida (por brazo) |
 | sesiones de más de 2–3 turnos | no medidas — MT0 y H1 se quedan ahí los dos | el dominio de tracker propuesto (tipo Jira/Confluence, workflows más largos) lo mostraría, si se elige — no construido |
 | la caché global entrenada | construida y probada (`opmemory.py`), todavía no adentro de un corpus de entrenamiento | sumarla al corpus de H1 o al del próximo dominio |
 | identidad real (Auth0), WhatsApp, instalación | no construidos | después de lo anterior |

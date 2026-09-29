@@ -62,10 +62,10 @@ TEXT = {
                '*Una pregunta, de punta a punta: páginas de enunciados de una oración, enlaces dentro de las oraciones, una respuesta que nombra la oración en que se apoya.*'),
     },
     "request-path.png": {
-        "en": ("One line of six stations: an agent; the gateway reading a signed badge; the role's small local expert; tools run with the badge's permission, one record refused and a payment held; a sheet with an invented line crossed out; the answer. A dashed branch for out of scope leads to a distant building and to a person; a log band runs under everything.",
-               '*The path of a request: identity from a token, permission in the tools, a person for payments, and no line shown that a tool did not return.*'),
-        "es": ('Una línea de seis estaciones: un agente; el gateway que lee una credencial firmada; el experto local chico del rol; herramientas con el permiso de la credencial, un registro rechazado y un pago retenido; una hoja con una línea inventada tachada; la respuesta. Una rama punteada para lo que está fuera de alcance lleva a un edificio lejano y a una persona; una banda de registro corre debajo de todo.',
-               '*El camino de un pedido: identidad desde un token, permiso en las herramientas, una persona para los pagos, y ninguna línea que una herramienta no haya devuelto.*'),
+        "en": ("One line of seven stations: an agent; the gateway reading a signed badge; the operational memory — one index card (state and key names) and two drawers, session and organisation, with a workflow dial; the role's small local expert, fetching and storing by key; tools run with the badge's permission, one record refused and a payment held; a sheet with an invented line crossed out; the answer. A dashed branch for out of scope leads to a distant building and to a person; a log band runs under everything.",
+               "*The request path: the expert reads one card and the keys it needs, never the conversation; permission, holds and grounding are the gateway's.*"),
+        "es": ('Una línea de siete estaciones: un agente; el gateway que lee una credencial firmada; la memoria operativa — una ficha (estado y nombres de claves) y dos cajones, sesión y organización, con un dial de flujo; el experto local chico del rol, que busca y guarda por clave; herramientas con el permiso de la credencial, un registro rechazado y un pago retenido; una hoja con una línea inventada tachada; la respuesta. Una rama punteada para lo que está fuera de alcance lleva a un edificio lejano y a una persona; una banda de log corre debajo de todo.',
+               '*El camino del pedido: el experto lee una ficha y las claves que necesita, nunca la conversación; permiso, retenciones y anclaje son del gateway.*'),
     },
     "article-harness.png": {
         "en": ("Two panels. Left: a specialist posts a query through a slot and the answer comes back through "
@@ -87,6 +87,30 @@ TEXT = {
                "residente y un lomo fino de color por grupo, cada uno con su fichero de dos cajones. Una línea "
                "punteada sale hacia la frontera.",
                "*Muchos grupos, una sola máquina — y cada grupo con su especialista y su biblioteca.*"),
+    },
+    "operational-memory.png": {
+        "en": ('Two panels. Left, the conversation in the prompt: a scroll growing turn after turn and a claim form whose order field is empty, 43 of 54. Right, the keys in a memory: one index card with the state and the key names, a drawer opened on order 58, and the claim form filled with it, 53 of 54. Title: carry the keys, not the conversation.',
+               '*H1: fetching a value by key fixes what reading the history lost — the claim now names the order.*'),
+        "es": ('Dos paneles. Izquierda, la conversación en el prompt: un rollo que crece turno a turno y un formulario de reclamo con el campo de pedido vacío, 43 de 54. Derecha, las claves en una memoria: una ficha con el estado y los nombres de claves, un cajón abierto en el pedido 58 y el reclamo completado con él, 53 de 54. Título: llevar las claves, no la conversación.',
+               '*H1: traer un valor por clave arregla lo que leer el historial perdía — el reclamo ahora nombra el pedido.*'),
+    },
+    "runtimes.png": {
+        "en": ('Two halves. Left, server: a rented graphics card in a cloud with one thick spine and four thin adapter spines, many users arriving, four adapters in one batch with no contention. Right, edge: a laptop with one user and one thin spine swapped in three milliseconds, llama.cpp at 8 bits, a dashed line to the frontier. Between them, a small bench: MLX, the research bench.',
+               '*Two runtimes: vLLM on a rented card to measure, train and serve many; llama.cpp on your own machine to serve one.*'),
+        "es": ('Dos mitades. Izquierda, server: una placa alquilada en una nube con un lomo grueso y cuatro lomos finos de adaptadores, muchos usuarios, cuatro adaptadores en un lote sin contención. Derecha, edge: una notebook con un usuario y un lomo fino que se cambia en tres milisegundos, llama.cpp en 8 bits, una línea punteada a la frontera. En el medio, un banco chico: MLX, el banco de investigación.',
+               '*Dos runtimes: vLLM en una placa alquilada para medir, entrenar y servir a muchos; llama.cpp en tu propia máquina para servir a uno.*'),
+    },
+    "tracker-domain.png": {
+        "en": ("A kanban board from To Do to Done with keyed cards and a triage gate, a stamp refusing a move the workflow does not allow; a shelf of team pages; and a five-turn session of one developer where every later turn opens the drawer holding the issue's key.",
+               '*The team tracker: declared workflows the tool layer enforces, a space of one-sentence pages, and long sessions carried by key.*'),
+        "es": ('Un tablero kanban de To Do a Done con tarjetas con clave y una compuerta de triage, un sello que rechaza un movimiento que el flujo no permite; una estantería de páginas del equipo; y una sesión de cinco turnos de un desarrollador donde cada turno posterior abre el cajón con la clave del issue.',
+               '*El tracker del equipo: flujos declarados que la capa de herramientas hace cumplir, un espacio de páginas de una oración, y sesiones largas llevadas por clave.*'),
+    },
+    "mechanisms-map.png": {
+        "en": ("A subway map: the main line is a request's path — agent, identity, gateway, operational memory, workflow, expert, tool layer, approvals, grounding, answer — with branch lines to the frontier and a person, the library and the router, two depots for the server and the edge runtimes, and a siding for speculative decoding.",
+               '*Every mechanism on one line; each station is a section of this document.*'),
+        "es": ('Un mapa de subte: la línea principal es el camino de un pedido — agente, identidad, gateway, memoria operativa, flujo, experto, capa de herramientas, aprobaciones, anclaje, respuesta — con ramales a la frontera y a una persona, a la biblioteca y al router, dos depósitos para los runtimes server y edge, y un desvío para la decodificación especulativa.',
+               '*Todos los mecanismos en una línea; cada estación es una sección de este documento.*'),
     },
 }
 
