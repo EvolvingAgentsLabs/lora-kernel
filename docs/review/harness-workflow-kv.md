@@ -156,14 +156,17 @@ passes, the live demo with OpenClaw on the user's machine, multi-turn.~~
 review, approved → corpus and its gate, zero GPU, passed → training, one L4 (`wf-s0`) → **C1 [ran]** (concurrency,
 bought the same day on the same kind of L4 session, needing no training of its own: four members mixed cost no
 throughput against one, 1.03× at 16 sessions, 504 tok/s at 32) → **H1 scored, one L4 — result in, read two ways,
-§8** → the live demo with OpenClaw on the user's machine, multi-turn, waits on the user's choice between H1's two
-readings (§8).
+resolved: the user's decision (2026-09-29), the per-arm reading stands** (§8) → **H2 built and scored the same
+day** on the team tracker (`examples/tracker/`), `training/harness/accept_rank.py`'s stop-sequence fix required
+first (attempt 1 void on a vLLM transport error, not a scoring one) — result in, as written FALSIFIED, the
+reading still pending the user (§9) → the live demo with OpenClaw on the user's machine, multi-turn, still
+waits, now on H2's reading rather than H1's.
 
-**Next, pending the user.** A second domain to test the harness where sessions run long enough for the token saving
-to show — proposed **H2: a Jira + Confluence-like team tracker** (explicit, longer workflows: To Do → In Progress →
-In Review → QA → Done, bugs through Triage; natural keys such as `PROJ-123`; Confluence-shaped pages as the library).
-Synthetic worlds only, as everywhere here. **In construction** (`examples/tracker/`) — the user's instruction,
-2026-09-29, alongside H1's result (§8).
+**Next, pending the user.** H2 ran on a second domain, built to let sessions run long enough for the token saving
+to show: **the team tracker** (`examples/tracker/`, built and scored 2026-09-29) — a Jira + Confluence-like tool,
+explicit longer workflows (To Do → In Progress → In Review → QA → Done for stories, Triage for bugs), natural keys
+such as `RD-123`/`HW-123`, and Confluence-shaped pages read by `page` or `page#anchor` as the library. Synthetic
+worlds only, as everywhere here. Result, both readings, and the pending decision: §9.
 
 ## 8. Result (H1)
 
@@ -219,6 +222,66 @@ gap above — but decision 2 did not anticipate that `harness-noblock`'s corpus 
 no-block condition, not merely omit the block at test time. See §6 decision 2 for the update in place.
 
 **Next step.** With the per-arm reading chosen: **H2**, the Jira + Confluence-like team tracker
-(`examples/tracker/`, **in construction**, not built), where sessions run long enough for `harness`'s flat-prompt
-property to actually save tokens against a growing `history` prompt, rather than costing more of them per turn as
-here.
+(`examples/tracker/`), where sessions run long enough for `harness`'s flat-prompt property to actually hold
+across five turns rather than the two or three measured here. Built and scored the same day; result in §9.
+
+## 9. Result (H2)
+
+`results/H2-tracker-harness-20260929/`, on vLLM (one L4), on 60 held-out long tracker sessions (160 dependent
+turns, 60 first turns, 60 independent turns):
+
+| arm | first turns | dependent turns | independent turns | prompt tokens (turns 1–5) | reading |
+|---|---|---|---|---|---|
+| `base-history` (bare Gemma 4 E4B, conversation in the prompt) | 44/60 (< 90 %) | 4/160 | — | — | void by the first-turns rule; the pre-registered "beats `base-history`" comparison is unreadable |
+| `harness` (`tr-s0` + operational memory + workflow) | **60/60** | **146/160 (91.3 %)** | 50/60 | 1613/1223/1011/1149/1274 (flat: $\bar p_5 \le 1.1\ \bar p_1$ holds) | reads ≥ its own 90 % bar, on the readable conditions |
+| `harness-noblock` (tool block removed at serving) | 40/60 (< 90 %) | 80/160 | — | — | void by the same rule; learned **in part** — developer lane and QA lane whole, lead lane missing |
+
+**As written, H2 is FALSIFIED — not VOID, and the difference is the point.** §5's stopping rule was rewritten
+after H1, on the user's own instruction (§8: "from H2 on, VOID is applied per arm"), precisely so one arm's
+failure could not erase the other two's real result. It did that: `harness`'s own 146/160 is read on its own
+terms, not voided by `base-history`'s collapse. But the rule then did something its author had not anticipated a
+**second** time: **applying the same per-arm VOID to an *untrained* baseline throws away the comparison that
+baseline exists to provide.** `base-history` is bare Gemma 4 E4B, never trained on the tracker's workflows or
+tools, reading the raw conversation; its first-turn accuracy (44/60) is not a broken instrument — it **is** the
+headroom `harness` is measured against. It gets `issue_get` right (40/40, a lookup the conversation already
+states) and almost nothing that needs more than reading the last message back (`issue_create` 4/20, every
+transition 0/40, every page read 0/60). Voiding it as though it were a failed trained arm makes the
+pre-registered claim "`harness` beats `base-history`" unreadable — `None`, by the scoring code — and an
+unreadable pre-registered claim is what the code reports as **FALSIFIED**. **The lesson: the per-arm first-turns
+VOID rule applies to trained members, not to an untrained baseline whose failure IS the headroom.**
+
+**Descriptively — paired on the same 160 dependent turns, arm void: 142 : 0 favouring `harness`, exact two-sided
+sign test $p \lt  10^{-40}$.** This is not a substitute for the pre-registered verdict — a readable comparison
+between two scored arms is exactly what the void takes away — but it is the same 160 turns, scored the same
+way, stated here rather than hidden because it is inconvenient to the as-written result.
+
+**`harness-noblock` learned in part, unlike H1's 0/60.** Without the rendered tool block, the developer lane
+(transitions and comments, 20/20) and the whole QA lane score correctly, but the lead lane is missing entirely
+(`issue_create`/`issue_assign`/`issue_get`, 0/20). This corpus, unlike H1's, put some training rows through
+without the block, and it shows: the member did not collapse uniformly — it kept exactly the roles its own
+corpus had shown it working blockless.
+
+**The 14 misses inside `harness`'s 146/160, all QA.** (a) "Where must tests pass?" reads the whole
+`definition-of-done` page instead of citing `#tests`, 10 of 20 times — the statement is inside what it read, so
+a check for the anchor can fail while the capability that matters (finding the right fact) works: **this is
+measuring phrasing**, recorded here rather than loosened. (b) QA's final comment, 6 of 20: the member re-reads
+the issue instead of commenting, or attempts a transition the workflow refuses (`done → in_review`) — a genuine
+miss, not a phrasing artefact.
+
+**Tokens.** `harness` reads roughly **2.5×** `base-history`'s tokens per turn — more generation steps plus the
+rendered block — and `base-history` is flat too, for the opposite reason: it writes almost nothing to carry
+forward, so there is little for the conversation to grow by.
+
+**Attempt 1 was void on a transport error, not a scoring one.** vLLM 0.30 refuses any request carrying more
+than four stop sequences (HTTP 400); the tracker's tool surface closes more than four distinct tags, so every
+turn of the first attempt failed in transit (`h2_attempt1_void_http400.json`). The fix, in
+`training/harness/accept_rank.py` (`MAX_STOPS = 4`): past that many closing tags the request sends one generic
+stop, `"</"`, and `close_open_tag` rebuilds the specific tag from what the text was left inside of — the same
+function llama.cpp needed for a different reason (`docs/MECHANISMS.md` §3, §15). The resume path now replays
+any session that hit a transport error, and the reading guards against crediting an arm with no scored turn.
+
+**Decision pending for the user, as it was for H1.** (1) Accept the readable conditions as H2's verdict —
+`harness` 146/160 ≥ its 90 % bar, flat prompt across five turns, the descriptive 142 : 0 pairing — with both
+instrument errors recorded on this page; or (2) keep FALSIFIED-as-written and rerun with the per-arm VOID rule
+restricted to trained members, and the QA anchor check counting a page read that contains the cited statement
+even when the anchor itself was not addressed.

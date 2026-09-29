@@ -68,7 +68,11 @@ el proyecto?"* **When in doubt, the next step is the one that puts a weight delt
   the brief's first-turns rule applied across arms and the no-block arm scored 0/60 (a member never shown its tools
   undescribed does not know them) — an instrument error, kept on record. **A VOID rule is per arm** from now on. Design and decisions in `docs/review/harness-workflow-kv.md`; every mechanism explained
   in `docs/MECHANISMS.md`. The long-session test is the **team tracker** (`examples/tracker/`, Jira + Confluence-like,
-  synthetic; H2). The gateway's
+  synthetic; H2 **[ran]** 2026-09-29: harness 146/160, 91.3 %, flat prompt, descriptively 142:0 — **as written
+  FALSIFIED**, because `base-history`'s own broken first turns, 44/60, tripped the same per-arm VOID rule and voided
+  the comparison instead of the treatment; **the lesson, not yet applied: a per-arm first-turns VOID guards a trained
+  member against a mid-training failure, and must not be asked of an untrained baseline whose failure is the
+  headroom** — user's reading still pending). The gateway's
   default still reads only the last request; `history=True` is the naive arm, never the product.
 - **One L4 serves several members at once without contention** (C1 **[ran]**: four adapters mixed keep 1.03× one adapter's
   throughput at 16 sessions; 32 sessions at p95 TTFT 0.24 s, 0 errors). Do not design around LoRA-mixing cost on vLLM.

@@ -933,8 +933,32 @@ although always present in training), scores $A_{\text{dep}} = 0/60$: an unfamil
 one (§8.1, §8.6). **The run's own stopping rule — first-turn accuracy $\ge 0.90$ in *every* arm or the run
 is VOID — was written to guard the whole comparison and instead let one arm's failure void the other
 two's real result; read per arm rather than as written, `harness` passes this section's bars and
-`harness-noblock` does not.** Which reading the release gate uses is the user's open choice, not this
-section's.
+`harness-noblock` does not.** The user's decision (2026-09-29): the per-arm reading stands for the release
+gate — `harness` PASSED, `harness-noblock` FALSIFIED — and the as-written VOID is kept as the record of
+that instrument error.
+
+**Measured [ran] H2** (`results/H2-tracker-harness-20260929`), the same harness on a second domain built
+for it (a Jira + Confluence-like team tracker), 60 held-out long sessions, $|D| = 160$ dependent turns,
+60 first turns, 60 independent turns. Sessions here run five turns rather than two or three, so the
+flatness condition is stated over five: with $\bar p_1,\dots,\bar p_5$ the mean prompt tokens at the first
+five turn positions,
+
+```math
+\bar p_5 \;\le\; 1.1\ \bar p_1
+```
+
+is the bar this run is read against. $A_{\text{dep}}(\text{harness}) = 146/160$ (91.3%), against a 90%
+bar, with $\bar p_1,\dots,\bar p_5 = 1613, 1223, 1011, 1149, 1274$ — $\bar p_5/\bar p_1 = 0.790 \le 1.1$,
+flat (in fact falling, as the get/put scaffold amortises once the workflow's own state settles). The
+untrained baseline `base-history` (bare Gemma 4 E4B, the conversation in the prompt) scores
+$A_{\text{dep}} = 4/160$ and its own first turns 44/60 fall under the 90% bar; applying the per-arm VOID
+rule H1 established makes the pre-registered "`harness` beats `base-history`" comparison unreadable, so
+**H2 reads FALSIFIED as written, not VOID** — voiding an untrained baseline whose low first-turn score
+*is* the headroom being measured is a narrower instrument error than H1's, recorded rather than patched.
+Descriptively, on the same 160 dependent turns: **142 : 0** favouring `harness`, $p\lt 10^{-40}$ by §9.2's
+exact sign test — stated because it costs nothing to state, not offered as a substitute for the
+pre-registered verdict its void arm makes unreadable. Decision pending for the user, as for H1: accept the
+readable conditions as H2's verdict, or rerun with the per-arm rule restricted to trained members.
 
 ## 9. Statistics used, and only these
 
@@ -1101,3 +1125,4 @@ milestone 3 trains the large half; milestone 4 measures §7.1's inequality.
 | §8.9 | **dependent-turn accuracy without and with history**: $A_{\text{dep}}$(last) 4/54, $A_{\text{dep}}$(history) 43/54; prompt tokens $\bar p_1,\bar p_2,\bar p_3$ = 345/376/303 (last), 345/428/394 (history) | MT0 `results/MT0-multiturn-baseline-20260929/BRIEF.md` |
 | §5.6 | **multi-adapter throughput ratio**: $r_4(16) = 278.6/269.7 = 1.03$, NO MATERIAL CONTENTION; near-linear 22.7 → 135.1 → 278.6 → 504.3 tok/s for K = 1, 8, 16, 32; p95 TTFT 0.24 s at K = 32, 0 errors of 128 | C1 `results/C1-concurrency-20260929/BRIEF.md` |
 | §8.9 | **the workflow harness against MT0's history arm and the flatness bar $\bar p_3 \le 1.1\ \bar p_1$**: $A_{\text{dep}}$(harness) 53/54 vs 43/54, 11 : 1 paired ($p\approx0.006$); $\bar p_1,\bar p_2,\bar p_3$ = 745/726/710, flat; `harness-noblock` 0/60. As written VOID (the first-turns rule voids across arms); read per arm, `harness` PASSED and `harness-noblock` FALSIFIED — the user's decision (2026-09-29): per arm stands, the as-written VOID kept as the instrument-error record | H1 `results/H1-workflow-harness-20260929/BRIEF.md` |
+| §8.9 | **the same harness on a five-turn tracker domain, the flatness bar $\bar p_5 \le 1.1\ \bar p_1$**: $A_{\text{dep}}$(harness) 146/160 (91.3%) against a 90% bar; $\bar p_1,\dots,\bar p_5$ = 1613/1223/1011/1149/1274, flat; `base-history` 4/160, its own first turns 44/60 void it under H1's per-arm rule, making the pre-registered comparison unreadable — reads FALSIFIED as written, not VOID; descriptive paired 142 : 0, $p\lt 10^{-40}$ (arm void, not a substitute verdict); decision pending the user | H2 `results/H2-tracker-harness-20260929/BRIEF.md` |

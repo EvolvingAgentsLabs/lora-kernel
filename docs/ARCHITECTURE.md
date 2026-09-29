@@ -144,9 +144,13 @@ design error recorded here rather than patched after seeing the result. Read per
 and harness-noblock **FALSIFIED**; **the user's decision (2026-09-29): the per-arm reading stands, the as-written
 VOID kept as the record of that instrument error.** The saving the harness is
 built for — a flat prompt instead of a growing transcript — barely shows over 2–3 turns (the harness pays roughly 2×
-the tokens per turn there, one extra get → call → put round-trip); it is being tested next over longer sessions, on
-a Jira-and-Confluence-like tracker domain (`examples/tracker/`, H2) that is **in construction**, synthetic only, no
-results yet.
+the tokens per turn there, one extra get → call → put round-trip); over five turns on a Jira-and-Confluence-like
+tracker domain (`examples/tracker/`, **[ran] H2**, `results/H2-tracker-harness-20260929`), it holds — 146 of 160
+dependent turns (91.3%), flat prompt across all five ($\bar p_5 \le 1.1\ \bar p_1$) — but the run reads FALSIFIED
+as written rather than VOID: the untrained `base-history` baseline's own low first-turn score, 44 of 60, trips the
+same per-arm rule that fixed H1, which makes the pre-registered "beats `base-history`" claim unreadable rather than
+false. Descriptively, paired on the same 160 turns, 142 : 0 favour the harness. Reading pending the user, as it was
+for H1: `docs/review/harness-workflow-kv.md` §9.
 
 **How the mechanisms connect on one turn, now that the harness has a result.** The gateway reads the request's
 context line — `state: <workflow>/<state> · keys: <names>` — instead of the transcript; the role names the member
@@ -328,7 +332,7 @@ member navigates by key: content that changes rarely, edited by a person rather 
 every turn and gone when the gateway exits. Both are read by key; the weights hold the route to each, never the
 content of either.
 
-**The operational memory — built [ran] in tests, not yet trained on** (`examples/common/opmemory.py`): a SESSION
+**The operational memory — built [ran] in tests, and trained on by two members since** (`examples/common/opmemory.py`): a SESSION
 cache keyed by (organisation, user, session) and a GLOBAL cache per organisation (`global.<key>`), served by the tool
 layer exactly like any domain tool and bounded by the same signed claim that already keeps one tenant's rows out of
 another's reach (§2) — no key crosses an organisation or a user. Keys are validated, values capped at 500 characters,

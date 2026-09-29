@@ -422,6 +422,18 @@ nunca escribe `wf_<name>` directamente (`opmemory.SCHEMA` solo ofrece `get`/`put
 modelo). Bajo un corpus real, si el *miembro* lee correctamente el estado de un flujo de trabajo y llama a
 la herramienta correcta a partir de él es el H1 de §10.
 
+**Una tercera organización lleva la misma declaración más lejos.** `examples/tracker/` (construido,
+sintético — todavía sin liberación) es una herramienta de equipo tipo Jira + Confluence, al lado de la
+escuela y la distribuidora: dos organizaciones por semilla (`riverdev`, prefijo `RD-`; `harborworks`,
+prefijo `HW-`) construidas por `world(seed)`, con un equipo de demostración fijo de `build()`. Sus flujos
+de trabajo de issues se declaran de la misma manera idéntica, un TOML por tipo de issue —
+`issue_workflows/story.toml`, `bug.toml` — y **se hacen cumplir en la capa de herramientas exactamente
+como arriba**: una transición que el flujo de trabajo no permite se rechaza sea lo que sea que el modelo
+pidió, nunca simplemente narrada. Sus roles (`developer`, `lead`, `qa`) llevan cada uno su propio TOML de
+flujo de trabajo para la memoria operacional (§8), y su herramienta `page_read` toma una `page` o un
+`page#anchor` — el enunciado atómico direccionado directamente, la misma unidad con la que la biblioteca
+del §11 se indexa.
+
 ---
 
 ## 10. El arnés de flujo de trabajo
@@ -484,6 +496,35 @@ el de esta corrida. **La decisión del usuario (2026-09-29): vale la lectura por
 `harness-noblock` quedó FALSEADO — y el VOID tal como está escrito queda como el registro de ese error
 del instrumento, no como el veredicto. Diseño y las decisiones detrás de él:
 [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md).
+
+**Evidencia — [ran] H2**, `results/H2-tracker-harness-20260929/BRIEF.md`: el mismo arnés sobre el tracker
+de equipo (§9), 60 sesiones largas retenidas, 160 turnos dependientes, 60 primeros, 60 independientes.
+`harness` (`tr-s0` + memoria operacional + flujo de trabajo) puntúa primeros turnos **60/60**,
+dependientes **146/160 (91,3%)** contra un umbral de 90%, independientes 50/60, con el prompt por turno
+plano a lo largo de cinco turnos — $\bar p_1,\dots,\bar p_5 = 1613, 1223, 1011, 1149, 1274$, así que se
+sostiene $\bar p_5 \le 1.1\ \bar p_1$. `base-history` (Gemma 4 E4B sin entrenar, la conversación en el
+prompt) acierta `issue_get` (40/40) y casi nada más — dependientes 4/160 — y sus propios primeros turnos,
+44/60, caen bajo el umbral del 90%; anularlo con la misma regla por brazo que arregló a H1 vuelve ilegible
+la afirmación pre-registrada "`harness` le gana a `base-history`", así que **la corrida se lee FALSEADA
+tal como está escrita, no ANULADA**. Descriptivamente, pareado sobre los mismos 160 turnos dependientes:
+**142 : 0** a favor de `harness`, prueba de signo exacta $p\lt 10^{-40}$ — enunciada, no sustituida por el
+veredicto pre-registrado, porque el brazo contra el que se compara está anulado. `harness-noblock`
+(bloque de herramientas sacado al servir) puntúa dependientes 80/160 y aprende **en parte** esta vez — el
+carril de developer y el carril entero de QA, pero no el `issue_create`/`issue_assign`/`issue_get` del
+carril de lead (0/20) — a diferencia del 0/60 uniforme de H1, porque este corpus dejó pasar algunas filas
+de entrenamiento sin el bloque. Los 14 errores dentro de los 146/160 de `harness` son todos de QA: diez
+leen la página entera `definition-of-done` en vez de citar su ancla `#tests` — el enunciado está dentro
+de lo que leyó, así que esta verificación puede fallar mientras la capacidad funciona, lo cual mide
+fraseo (§17) — y seis relean el issue o intentan una transición rechazada en vez del comentario de
+cierre, un error genuino. **Un segundo error de instrumento de la familia de H1**: la regla de VOID por
+brazo, escrita para que un brazo roto no borrara el resultado real de otro, esta vez anuló a una línea de
+base *sin entrenar* cuyo bajo puntaje en primeros turnos ES su margen, no un defecto — ver §17. El
+intento 1 de esta corrida quedó anulado por un error de transporte, no de puntuación (el límite de
+secuencias de parada del §15); el arreglo es el `MAX_STOPS` de
+`training/harness/accept_rank.py`. **Decisión pendiente para el usuario**: leer la corrida sobre sus
+condiciones legibles (146/160, plano, 142:0) como el veredicto de H2, o mantener FALSEADA-tal-como-está-
+escrita y repetirla con la regla por brazo restringida a los miembros entrenados. Resultado completo y
+las dos lecturas: [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §9.
 
 ---
 
@@ -726,6 +767,16 @@ contabilidad de `docs/SERVING.md` es explícita en que lo que sirve `server` via
 viaja a una API de frontera — `edge` es el único arreglo donde nada salvo la base y el adaptador sale
 jamás de la máquina.
 
+**vLLM 0.30 también rechaza demasiadas secuencias de parada, no solo deja caer una.** El propio endpoint
+OpenAI de `server` devuelve HTTP 400 ante cualquier pedido que lleve más de cuatro strings de `stop` —
+cada turno de una superficie de herramientas que cierra más de cuatro etiquetas distintas falla en
+tránsito, no en el puntaje (**[ran]** intento 1 de H2, `h2_attempt1_void_http400.json`). El arreglo, el
+`MAX_STOPS = 4` de `training/harness/accept_rank.py`: pasadas esas tantas etiquetas de cierre, el pedido
+envía una sola parada genérica, `"</"`, y `close_open_tag` reconstruye la etiqueta específica a partir de
+dentro de qué texto quedó una vez que el servidor para ahí — **la misma función que necesitó `edge` con
+llama.cpp arriba**, por la razón opuesta (ahí el servidor deja caer el string de parada que honró; acá se
+niega a aceptar más de cuatro), y el mismo arreglo en los dos casos.
+
 **Evidencia.** **[ran] C1** (`results/C1-concurrency-20260929/BRIEF.md`, `server`): cuatro miembros
 mezclados en un L4 llegan a **278,6 tok/s** contra **269,7 tok/s** de un solo adaptador a 16 sesiones
 concurrentes (1,03×, sin contención material), **504,3 tok/s** a 32 sesiones, p95 de tiempo al primer
@@ -824,9 +875,27 @@ declaran las dos, con la elección de cuál lectura vale para toda la corrida he
 usuario (2026-09-29: vale la lectura por brazo, el VOID tal como está escrito queda como el registro de
 ese error del instrumento), no decidida por quien escriba el próximo documento.
 
+**H2 (§10) encontró el límite de ese mismo arreglo.** Leer VOID por brazo, en vez de a través de todos los
+brazos, fue el arreglo de H1 — y funcionó para `harness` contra `harness-noblock`. Pero aplicado sin
+excepción anuló a `base-history`, una línea de base *sin entrenar* cuyo propósito entero es fallar: su bajo
+puntaje en primeros turnos es el margen contra el que se mide `harness`, no un renderizado roto. **La regla
+que necesita el instrumento es más angosta que la que se le dio: un VOID por brazo en primeros turnos
+aplica a miembros entrenados, no a una línea de base sin entrenar cuyo fracaso ES el margen.** El resultado
+queda registrado como FALSEADO-tal-como-está-escrito, con el pareo descriptivo enunciado al lado, exactamente
+como el VOID de H1 quedó registrado al lado de su lectura por brazo — la compuerta no se editó después de
+ver el resultado.
+
+**Una verificación que puede fallar mientras la capacidad funciona mide fraseo, no el mecanismo.** Los
+errores de QA de H2 incluyen diez casos que leen la página entera `definition-of-done` en vez de citar su
+ancla `#tests` específicamente — el enunciado que preguntaba la pregunta está dentro de lo que el miembro
+leyó, así que una verificación del ancla falla exactamente en los casos donde la capacidad de fondo
+(encontrar el hecho correcto) tuvo éxito. El error queda registrado, no aflojado hasta convertirlo en un
+acierto, ni tampoco usado para afirmar que la capacidad falta.
+
 **Evidencia.** Esto no es un reclamo que necesite su propia corrida — es la disciplina a la que ya estuvo
 sometida cada corrida citada en otra parte de este documento: el arreglo de llamada malformada de P58, la
 regla de P47 de que un veredicto se lee de un archivo y nunca de un código de salida
 (`docs/SUBSTRATE-GATE.md`), el chequeo de holgura de M10 sobre `staff-s0` antes de acreditar la abstención
-de `out-s0`, y el propio error de instrumento registrado de H1, arriba, son cuatro instancias de la misma
-regla dentro de este repositorio, no cuatro reglas distintas.
+de `out-s0`, el propio error de instrumento registrado de H1, y el arreglo más angosto de H2 a la misma
+regla, arriba, son cinco instancias de la misma disciplina dentro de este repositorio, no cinco reglas
+distintas.

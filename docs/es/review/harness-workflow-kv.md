@@ -162,15 +162,19 @@ H1 (una L4) → si pasa, la demo en vivo con OpenClaw en la máquina del usuario
 ella) → esta revisión, aprobada → corpus y su compuerta, costo cero de GPU, pasada → entrenamiento, una L4 (`wf-s0`)
 → **C1 [ran]** (concurrencia, comprada el mismo día sobre el mismo tipo de sesión L4, sin necesitar entrenamiento
 propio: cuatro miembros mezclados no cuestan throughput contra uno solo, 1,03× con 16 sesiones, 504 tok/s con 32) →
-**H1 puntuado, una L4 — resultado adentro, leído de dos formas, §8** → la demo en vivo con OpenClaw en la máquina
-del usuario, multi-turno, espera a que el usuario elija entre las dos lecturas de H1 (§8).
+**H1 puntuado, una L4 — resultado adentro, leído de dos formas, resuelto: decisión del usuario (2026-09-29), vale
+la lectura por brazo** (§8) → **H2 construido y puntuado el mismo día** sobre el tracker de equipo
+(`examples/tracker/`), con el arreglo de secuencias de parada de `training/harness/accept_rank.py` como
+requisito previo (intento 1 anulado por un error de transporte de vLLM, no de puntuación) — resultado adentro,
+tal como está escrito FALSEADO, la lectura todavía pendiente del usuario (§9) → la demo en vivo con OpenClaw en
+la máquina del usuario, multi-turno, sigue esperando, ahora a la lectura de H2 en vez de a la de H1.
 
-**Sigue, a decisión del usuario.** Un segundo dominio para probar el harness donde las sesiones corran lo bastante
-largo como para que se note el ahorro de tokens — se propone **H2: un tracker de equipo tipo Jira + Confluence**
-(flujos de trabajo explícitos y más largos: To Do → In Progress → In Review → QA → Done, bugs a través de Triage;
-claves naturales como `PROJ-123`; páginas con forma de Confluence como biblioteca). Mundos sintéticos únicamente, como
-en todo lo demás acá. **En construcción** (`examples/tracker/`) — instrucción del usuario, 2026-09-29, junto con el
-resultado de H1 (§8).
+**Sigue, a decisión del usuario.** H2 corrió sobre un segundo dominio, construido para que las sesiones corran lo
+bastante largo como para que se note el ahorro de tokens: **el tracker de equipo** (`examples/tracker/`,
+construido y puntuado el 2026-09-29) — una herramienta tipo Jira + Confluence, con flujos de trabajo explícitos
+y más largos (To Do → In Progress → In Review → QA → Done para historias, Triage para bugs), claves naturales
+como `RD-123`/`HW-123`, y páginas con forma de Confluence como biblioteca, leídas por `page` o `page#anchor`.
+Mundos sintéticos únicamente, como en todo lo demás acá. Resultado, las dos lecturas y la decisión pendiente: §9.
 
 ## 8. Resultado (H1)
 
@@ -231,7 +235,73 @@ que sacó a la luz la brecha de corpus de arriba — pero la decisión 2 no anti
 `harness-noblock` necesitaba *enseñar* la condición sin bloque, no sólo omitir el bloque al evaluar. Ver la
 decisión 2 del §6 para la actualización en el lugar.
 
-**Siguiente paso.** Con la lectura por brazo ya elegida: **H2**, el tracker de equipo tipo Jira +
-Confluence (`examples/tracker/`, **en construcción**, no construido todavía), donde las sesiones corran lo bastante
-largo como para que la propiedad de prompt plano de `harness` de verdad ahorre tokens contra un prompt `history`
-creciente, en vez de costar más por turno como acá.
+**Siguiente paso.** Con la lectura por brazo ya elegida: **H2**, el tracker de equipo tipo Jira + Confluence
+(`examples/tracker/`), donde las sesiones corran lo bastante largo como para que la propiedad de prompt plano de
+`harness` de verdad se sostenga a lo largo de cinco turnos en vez de los dos o tres medidos acá. Construido y
+puntuado el mismo día; resultado en el §9.
+
+## 9. Resultado (H2)
+
+`results/H2-tracker-harness-20260929/`, sobre vLLM (una L4), sobre 60 sesiones largas retenidas del tracker (160
+turnos dependientes, 60 primeros turnos, 60 turnos independientes):
+
+| brazo | primeros turnos | turnos dependientes | turnos independientes | tokens de prompt (turnos 1–5) | lectura |
+|---|---|---|---|---|---|
+| `base-history` (Gemma 4 E4B sin entrenar, con la conversación en el prompt) | 44/60 (< 90 %) | 4/160 | — | — | anulado por la regla de primeros turnos; la comparación pre-registrada "`harness` le gana a `base-history`" queda ilegible |
+| `harness` (`tr-s0` + memoria operativa + flujo de trabajo) | **60/60** | **146/160 (91,3 %)** | 50/60 | 1613/1223/1011/1149/1274 (plano: se sostiene $\bar p_5 \le 1.1\ \bar p_1$) | lee ≥ su propio umbral de 90 %, en las condiciones legibles |
+| `harness-noblock` (sin bloque de herramientas al servir) | 40/60 (< 90 %) | 80/160 | — | — | anulado por la misma regla; aprendió **en parte** — el carril de developer y el carril entero de QA, falta el carril de lead |
+
+**Tal como está escrita, H2 queda FALSEADA — no ANULADA, y la diferencia es el punto.** La regla de corte del §5
+se reescribió después de H1, por instrucción del propio usuario (§8: "a partir de H2, el VOID se aplica por
+brazo"), precisamente para que el fracaso de un brazo no borrara el resultado real de los otros dos. Eso
+funcionó: el propio 146/160 de `harness` se lee en sus propios términos, no anulado por el colapso de
+`base-history`. Pero la regla hizo algo que su autor no había anticipado por **segunda** vez: **aplicar el mismo
+VOID por brazo a una línea de base *sin entrenar* tira la comparación que esa línea de base existe para dar.**
+`base-history` es Gemma 4 E4B sin entrenar en absoluto sobre los flujos de trabajo ni las herramientas del
+tracker, leyendo la conversación cruda; su exactitud en primeros turnos (44/60) no es un instrumento roto — **es**
+el margen contra el que se mide `harness`. Acierta `issue_get` (40/40, una búsqueda que la conversación ya
+enuncia) y casi nada que necesite más que leer de vuelta el último mensaje (`issue_create` 4/20, cada transición
+0/40, cada lectura de página 0/60). Anularla como si fuera un brazo entrenado que falló vuelve ilegible la
+afirmación pre-registrada "`harness` le gana a `base-history`" — `None`, según el código de puntuación — y una
+afirmación pre-registrada ilegible es lo que el código informa como **FALSEADA**. **La lección: la regla de VOID
+por brazo en primeros turnos aplica a miembros entrenados, no a una línea de base sin entrenar cuyo fracaso ES
+el margen.**
+
+**Descriptivamente — pareado sobre los mismos 160 turnos dependientes, brazo anulado: 142 : 0 a favor de
+`harness`, prueba de signo exacta de dos colas $p \lt  10^{-40}$.** Esto no sustituye al veredicto pre-registrado —
+una comparación legible entre dos brazos puntuados es exactamente lo que el anulado quita — pero son los mismos
+160 turnos, puntuados de la misma forma, enunciados acá en vez de escondidos porque resulten inconvenientes para
+el resultado tal como está escrito.
+
+**`harness-noblock` aprendió en parte, a diferencia del 0/60 de H1.** Sin el bloque de herramientas renderizado,
+el carril de developer (transiciones y comentarios, 20/20) y el carril entero de QA puntúan bien, pero el carril
+de lead falta por completo (`issue_create`/`issue_assign`/`issue_get`, 0/20). Este corpus, a diferencia del de H1,
+dejó pasar algunas filas de entrenamiento sin el bloque, y se nota: el miembro no colapsó de manera uniforme —
+mantuvo exactamente los roles que su propio corpus le había mostrado funcionando sin bloque.
+
+**Los 14 errores dentro de los 146/160 de `harness`, todos de QA.** (a) "¿Dónde tienen que pasar los tests?" lee
+la página entera `definition-of-done` en vez de citar `#tests`, 10 de 20 veces — el enunciado está dentro de lo
+que leyó, así que una verificación del ancla puede fallar mientras la capacidad que importa (encontrar el hecho
+correcto) funciona: **esto mide fraseo**, registrado acá en vez de aflojado. (b) El comentario final de QA, 6 de
+20: el miembro relee el issue en vez de comentar, o intenta una transición que el flujo de trabajo rechaza
+(`done → in_review`) — un error genuino, no un artefacto de fraseo.
+
+**Tokens.** `harness` lee aproximadamente **2,5×** los tokens por turno de `base-history` — más pasos de
+generación más el bloque renderizado — y `base-history` también es plano, por la razón opuesta: escribe casi
+nada para llevar adelante, así que hay poco de donde crezca la conversación.
+
+**El intento 1 quedó anulado por un error de transporte, no de puntuación.** vLLM 0.30 rechaza cualquier pedido
+que lleve más de cuatro secuencias de parada (HTTP 400); la superficie de herramientas del tracker cierra más de
+cuatro etiquetas distintas, así que cada turno del primer intento falló en tránsito
+(`h2_attempt1_void_http400.json`). El arreglo, en `training/harness/accept_rank.py` (`MAX_STOPS = 4`): pasadas
+esas tantas etiquetas de cierre, el pedido envía una sola parada genérica, `"</"`, y `close_open_tag` reconstruye
+la etiqueta específica a partir de dentro de qué texto quedó el corte — la misma función que necesitó llama.cpp
+por otra razón (`docs/MECHANISMS.md` §3, §15). El camino de reanudación ahora repite cualquier sesión que haya
+tenido un error de transporte, y la lectura se cuida de acreditar a un brazo sin ningún turno puntuado.
+
+**Decisión pendiente para el usuario, como lo fue para H1.** (1) Aceptar las condiciones legibles como el
+veredicto de H2 — `harness` 146/160 ≥ su propio umbral de 90 %, prompt plano a lo largo de cinco turnos, el
+pareo descriptivo 142 : 0 — con los dos errores de instrumento registrados en esta página; o (2) mantener
+FALSEADA-tal-como-está-escrita y repetir la corrida con la regla de VOID por brazo restringida a los miembros
+entrenados, y la verificación del ancla de QA contando una lectura de página que contenga el enunciado citado
+aunque el ancla en sí no haya sido consultada.

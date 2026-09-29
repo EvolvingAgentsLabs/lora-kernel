@@ -179,9 +179,25 @@ harness-noblock **FALSIFIED**. **The user's decision (2026-09-29): the per-arm r
 harness PASSED, harness-noblock FALSIFIED; the as-written VOID is kept as the record of an
 instrument error, not as the verdict.** In these short (2–3 turn) sessions the harness pays roughly 2× the prompt
 tokens per turn (an extra get → call → put round-trip); the saving it is built for belongs to longer
-sessions, which is why a Jira-and-Confluence-like tracker domain (`examples/tracker/`) is being
-built for that case (H2) — **in construction, no results yet**
+sessions, which is why a Jira-and-Confluence-like tracker domain (`examples/tracker/`) was built for
+that case
 ([`results/H1-workflow-harness-20260929/`](results/H1-workflow-harness-20260929/BRIEF.md)).
+
+**H2 has a result, on the tracker domain, and it reads two ways [ran] 2026-09-29.** 60 held-out long
+sessions, 160 dependent turns: the harness gets **146 of 160 (91.3 %)**, above the 90 % bar, flat
+over five turns (p̄ 1613, 1223, 1011, 1149, 1274 — p̄5 ≤ 1.1 p̄1 holds); descriptively, paired against
+`base-history` on the same 160 turns, **142 : 0**. `base-history` itself scores 44 of 60 on first
+turns, trips the same per-arm VOID rule as a broken treatment would, and voids the comparison — a
+rule meant to catch a treatment mid-training instead caught an untrained baseline whose failure *is*
+the headroom, so the pre-registered "beats base-history" reads **FALSIFIED as written**. `harness-noblock`
+(the tool block removed at serving) reaches 80 of 160, learning the developer and QA lanes (20/20,
+whole) but missing the lead lane entirely (0/20) — an improvement on H1's 0/60, still short of the
+bar. Of the 14 dependent misses left in the harness arm, all QA: 10 are a check that can fail while
+the capability works — "where must tests pass?" reads the whole `definition-of-done` page instead of
+the cited `#tests` anchor, and the statement is in what it read (measuring phrasing, recorded, not
+loosened); the other 4 are the final QA comment, a genuine miss. **The user has not yet chosen
+between the readable conditions above and a rerun with the per-arm rule scoped to trained members**
+([`results/H2-tracker-harness-20260929/`](results/H2-tracker-harness-20260929/BRIEF.md)).
 
 ---
 
@@ -344,11 +360,15 @@ carrying the conversation has an answer that reads two ways: **PASSED** by arm (
 history's 43/54, flat tokens, every right turn traced by key) but **VOID** as pre-registered, because the gate that
 was meant to guard every arm's first turns is tripped instead by the no-block control's own failure (0/60) — the user
 chose the per-arm reading (2026-09-29): harness PASSED, harness-noblock FALSIFIED, the as-written VOID kept as the
-record of that instrument error. A longer, more explicit tracker domain (a Jira-and-Confluence-like team tool,
-natural keys, long sessions — where the harness's token saving would show, H2) is **in construction**
-(`examples/tracker/`), synthetic only, with no results yet. The
-harness has not run live through OpenClaw, has not been measured on sessions longer than three turns, and its global
-cache — built and unit-tested — is not yet trained on in any corpus. The memory's library lives only in
+record of that instrument error. On the longer, more explicit tracker domain built for that case (a
+Jira-and-Confluence-like team tool, natural keys, long sessions — `examples/tracker/`, synthetic
+only), the harness reaches **146/160 (91.3 %)** dependent turns and flat tokens over five turns, but
+**FALSIFIED as written**: the untrained `base-history` control fails its own first turns (44/60) and
+trips the per-arm VOID rule meant for a broken treatment, voiding the comparison it existed to make —
+a second instance of the same instrument error, and the user has not yet chosen between the readable
+conditions (146/160, flat, descriptive 142:0) and a rerun (H2, above). The
+harness has not run live through OpenClaw, and its global
+cache — built and unit-tested — is not yet trained on in any corpus outside the tracker domain. The memory's library lives only in
 `distributor-wiki@v2`, a separate
 member — no serving member carries its own library yet. The distributor's live run above is llama.cpp only; nobody
 has run the pair through vLLM bf16 as a live demo yet. No real traffic has been measured anywhere in this repository yet.

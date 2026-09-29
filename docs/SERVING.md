@@ -68,6 +68,14 @@ way vLLM's does, and a live turn ran on past it inventing text; the fix is clien
 (`accept_rank.close_open_tag`) **[ran]** LIVE-distributor. Anyone reusing `edge` needs that same
 patch, not just the same command line.
 
+**vLLM has the opposite failure at the same seam: it refuses too many stop sequences outright.** A tool
+surface that closes more than four distinct tags gets every request rejected with HTTP 400 on vLLM 0.30's
+OpenAI endpoint — a transport error, not a scoring one, and it voided the first attempt at H2 wholesale
+**[ran]** `h2_attempt1_void_http400.json`. The fix, `training/harness/accept_rank.py`'s `MAX_STOPS = 4`:
+past that many closing tags the request sends one generic stop, `"</"`, and the same `close_open_tag`
+above rebuilds the specific tag from what the text was left inside of. One function, both engines, for
+opposite reasons.
+
 ## What live serving costs: order beats size, and two adapters are not twice the cost
 
 Two findings from the same run price the engine itself, on `server` and `edge` alike, because both
@@ -100,8 +108,10 @@ measured:** more than four adapters, sessions past 32, the gateway's own overhea
 ## The gateway's serving options: `history=`, `memory=`, `workflows=`, `tool_block=`
 
 `examples/school/gateway.py`'s `Gateway` is the pool's second front door — one organisation per process,
-walked through end to end in [`OPENCLAW.md`](OPENCLAW.md) §6. Four constructor options decide what a
-turn reads, beside the role's own prompt and tools:
+walked through end to end in [`OPENCLAW.md`](OPENCLAW.md) §6. Three organisations are registered in
+`ORGS` and selected with `--org`: `school`, `distributor`, and, since 2026-09-29, `tracker`
+(`examples/tracker`, a Jira + Confluence-like team tool — see `docs/MECHANISMS.md` §9). Four constructor
+options decide what a turn reads, beside the role's own prompt and tools:
 
 | option | default | what it does |
 |---|---|---|
@@ -116,9 +126,11 @@ H1 (`results/H1-workflow-harness-20260929/`) scored both against it on vLLM (one
 block kept) reached 53/54 dependent turns against history's 43/54; `harness-noblock` collapsed, for the
 reason above. Read per arm, `harness` PASSED and `harness-noblock` FALSIFIED, but the run's own gate
 voids it as written — the user's decision (2026-09-29): the per-arm reading stands, the as-written VOID kept
-as the record of that instrument error. **The harness has not been run
+as the record of that instrument error. A second run, **H2** on the `tracker` organisation above, found the
+same rule mis-applied a second way — voiding an untrained baseline rather than a broken arm — and reads
+FALSIFIED as written, with the reading still pending the user. **The harness has not been run
 live through OpenClaw**; see [`OPENCLAW.md`](OPENCLAW.md) for the multi-turn story and
-`docs/review/harness-workflow-kv.md` §8 for the full result and the next step.
+`docs/review/harness-workflow-kv.md` §§8–9 for the full results and the pending decision.
 
 ## The base has to be one vLLM actually applies adapters to — check, do not assume
 

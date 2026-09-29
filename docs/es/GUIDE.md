@@ -533,7 +533,7 @@ guarda uno. Cada turno el modelo ve una línea en vez de una transcripción: `st
 dock` — el estado actual del workflow y los *nombres* de las claves que tienen algo guardado, nunca los valores. El
 estado no lo decide el modelo: avanza sólo cuando la capa de herramientas efectivamente corre una llamada — la misma
 disciplina que el gateway del §7.3 ya aplica a permisos y anclaje, ahora aplicada a qué significa "el paso actual".
-**[ran] en tests, todavía no entrenada** (`examples/common/opmemory.py`): una caché de sesión acotada a (organización,
+**[ran] en tests, y entrenada desde entonces por dos miembros** (`examples/common/opmemory.py`): una caché de sesión acotada a (organización,
 usuario, sesión) más una caché global por organización, servida por la capa de herramientas como cualquier otra
 herramienta y acotada por la misma credencial firmada ya descripta en el §7.3 — ninguna clave cruza un tenant ni un
 usuario.
@@ -592,9 +592,16 @@ de un brazo que falla anula los resultados reales de los otros dos. **Leída tal
 por brazo, `harness` PASÓ y `harness-noblock` quedó FALSADO — una regla VOID comprada para cuidar toda una corrida
 tiene que revisarse por brazo, o un resultado que se sostiene solo se tira junto con uno que no.** La decisión del
 usuario (2026-09-29): vale la lectura por brazo, y el VOID tal como está escrito queda como el registro de ese
-error del instrumento, no como el veredicto. Diseño y decisiones abiertas:
-[`review/harness-workflow-kv.md`](../review/harness-workflow-kv.md); el mecanismo detrás de `<get>`/`<put>` y la línea
-de estado está en [`MECHANISMS.md`](MECHANISMS.md).
+error del instrumento, no como el veredicto. **[ran] H2**, el mismo arnés sobre un dominio de tracker de equipo
+de cinco turnos (`results/H2-tracker-harness-20260929`): `harness` sostiene 146 de 160 turnos dependientes
+(91,3 %) con un prompt plano en los cinco turnos, pero la corrida se lee **FALSEADA tal como está escrita, no
+ANULADA** — los propios 44/60 primeros turnos de la línea de base sin entrenar `base-history` disparan la misma
+regla por brazo que arregló a H1, y anular a una línea de base *sin entrenar* cuyo bajo puntaje es todo su punto
+vuelve ilegible la comparación en vez de falsa. Descriptivamente, 142 de 160 favorecen al arnés contra 0. Una
+segunda instancia, más angosta, de la misma lección: **un VOID por brazo aplica a miembros entrenados, no a una
+línea de base cuyo fracaso ES el margen.** Diseño y decisiones abiertas:
+[`review/harness-workflow-kv.md`](../review/harness-workflow-kv.md) §§8–9; el mecanismo detrás de `<get>`/`<put>`
+y la línea de estado está en [`MECHANISMS.md`](MECHANISMS.md).
 
 ---
 
@@ -678,10 +685,11 @@ fijo en el corpus que se memoriza; un modelo sin el prompt con el que se entren�
 | la memoria (biblioteca) dentro de un miembro que sirve | vive en `distributor-wiki@v2`, un miembro separado del que abstiene, `out-s0` (M10) | juntarlos, o mantenerlos separados por diseño — todavía sin decidir |
 | una corrida en vivo de la distribuidora en vLLM bf16 | no corrida — el único brazo local medido es llama.cpp Q8_0 (LIVE-distributor) | correrla cuando haga falta una comparación a la misma precisión contra el edge |
 | el resultado de H1 (el arnés de workflow) | **[ran] — la decisión del usuario (2026-09-29): por brazo.** Por brazo: `harness` PASÓ (53/54 contra 43/54, todo acierto buscado por clave); `harness-noblock` quedó FALSADO (0/60). Tal como fue escrita: **VOID**, superada — la regla de primeros turnos del brief anula entre brazos, un error del instrumento, queda como su registro | liberar el miembro con la lectura por brazo; el VOID es por brazo a partir de H2 |
+| el resultado de H2 (el arnés sobre un dominio de cinco turnos) | **[ran]** `results/H2-tracker-harness-20260929`: `harness` 146/160 dependientes (91,3 %), prompt plano en los cinco turnos; `base-history` 4/160, sus propios 44/60 primeros turnos lo anulan bajo la regla por brazo, así que la comparación pre-registrada queda ilegible — se lee **FALSEADA tal como está escrita**, descriptivo 142:0 al lado | decisión pendiente del usuario, como para H1: aceptar las condiciones legibles, o repetir con el VOID restringido a los miembros entrenados (`review/harness-workflow-kv.md` §9) |
 | un router adentro del propio camino del gateway | no construido — el rol sigue siendo la ruta (§7.2) | construirlo sólo cuando haga falta rutear entre roles, no la abstención por miembro |
-| el arnés en vivo por OpenClaw, multi-turno | no corrido — H1 sólo lo midió en el perfil de servidor | repetir el patrón de LIVE-distributor (§7.3), ahora que la lectura de H1 está elegida (por brazo) |
-| sesiones de más de 2–3 turnos | no medidas — MT0 y H1 se quedan ahí los dos | el dominio de tracker propuesto (tipo Jira/Confluence, workflows más largos) lo mostraría, si se elige — no construido |
-| la caché global entrenada | construida y probada (`opmemory.py`), todavía no adentro de un corpus de entrenamiento | sumarla al corpus de H1 o al del próximo dominio |
+| el arnés en vivo por OpenClaw, multi-turno | no corrido — H1 y H2 sólo lo midieron en el perfil de servidor | repetir el patrón de LIVE-distributor (§7.3), ahora que las dos lecturas están elegidas o pendientes |
+| sesiones de más de 2–3 turnos | **[ran] H2**: el tracker de equipo (`examples/tracker/`) corre sesiones de cinco turnos y la propiedad de prompt plano se sostiene ($\bar p_5 \le 1.1\ \bar p_1$) | decisión pendiente del usuario (fila de arriba) |
+| la caché global entrenada | **[ran]**: construida, probada, y entrenada dentro de los corpus propios de dos miembros (`wf-s0`, H1; `tr-s0`, H2) | — |
 | identidad real (Auth0), WhatsApp, instalación | no construidos | después de lo anterior |
 
 ---

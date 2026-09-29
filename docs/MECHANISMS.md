@@ -389,6 +389,16 @@ calls per role; a call that fails or is denied does not advance the state; the m
 `Gateway.turn` is what writes the workflow key, not the model's own `<put>`). Under a real corpus, whether
 the *member* correctly reads a workflow's state and calls the right tool from it is §10's H1.
 
+**A third organisation carries the same declaration forward.** `examples/tracker/` (built, synthetic —
+no release yet) is a Jira + Confluence-like team tool, beside the school and the distributor: two
+organisations per seed (`riverdev`, prefix `RD-`; `harborworks`, prefix `HW-`) built by `world(seed)`,
+with a fixed demo team from `build()`. Its issue workflows are declared the identical way, one TOML per
+issue type — `issue_workflows/story.toml`, `bug.toml` — and **enforced by the tool layer exactly as
+above**: a transition the workflow does not allow is refused whatever the model asked, never merely
+narrated. Its roles (`developer`, `lead`, `qa`) each carry their own workflow TOML for the operational
+memory (§8), and its `page_read` tool takes a `page` or a `page#anchor` — the atomic statement addressed
+directly, the same unit §11's library is keyed by.
+
 ---
 
 ## 10. The workflow harness
@@ -446,6 +456,31 @@ with the block present; that half of the idea would need its own corpus, not thi
 decision (2026-09-29): the per-arm reading stands** — `harness` PASSED, `harness-noblock` FALSIFIED —
 and the as-written VOID is kept as the record of that instrument error, not as the verdict.
 Design and the decisions behind it: [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md).
+
+**Evidence — [ran] H2**, `results/H2-tracker-harness-20260929/BRIEF.md`: the same harness on the team
+tracker (§9), 60 held-out long sessions, 160 dependent turns, 60 first, 60 independent. `harness` (`tr-s0`
++ operational memory + workflow) scores first turns **60/60**, dependent **146/160 (91.3%)** against a
+90% bar, independent 50/60, with the per-turn prompt flat over five turns (1613, 1223, 1011, 1149, 1274
+tokens), so $\bar p_5 \le 1.1\ \bar p_1$ holds. `base-history` (bare Gemma 4 E4B,
+the conversation in the prompt) gets `issue_get` right (40/40) and almost nothing else — dependent 4/160
+— and its own first turns, 44/60, fall under the 90% bar; voiding it by the same per-arm rule that fixed
+H1 makes the pre-registered "`harness` beats `base-history`" unreadable, so **the run reads FALSIFIED as
+written, not VOID**. Descriptively, paired on the same 160 dependent turns: **142 : 0** favouring
+`harness`, exact sign test $p\lt 10^{-40}$ — stated, not substituted for the pre-registered verdict, because
+the arm it compares against is void. `harness-noblock` (tool block dropped at serving) scores dependent
+80/160 and learns **in part** this time — the developer lane and the whole QA lane, but not the lead
+lane's `issue_create`/`issue_assign`/`issue_get` (0/20) — unlike H1's uniform 0/60, because this corpus
+put some training rows through without the block. The 14 misses inside `harness`'s 146/160 are all QA:
+ten read the whole `definition-of-done` page rather than citing its `#tests` anchor — the statement is in
+what it read, so this check can fail while the capability works, which is measuring phrasing (§17) — and
+six re-read the issue or attempt a refused transition instead of the closing comment, a genuine miss.
+**A second instrument error of H1's family**: the per-arm VOID rule, written to stop one broken arm from
+erasing another's real result, this time voided an *untrained* baseline whose low first-turn score IS its
+headroom, not a defect — see §17. Attempt 1 of this run was void on a transport error, not a scoring one
+(§15's stop-sequence limit); the fix is `training/harness/accept_rank.py`'s `MAX_STOPS`. **Decision
+pending for the user**: read the run on its readable conditions (146/160, flat, 142:0) as H2's verdict, or
+keep FALSIFIED-as-written and rerun with the per-arm rule restricted to trained members. Full result and
+both readings: [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §9.
 
 ---
 
@@ -674,6 +709,15 @@ exists because the reference deployment's second half — the distributor — ru
 `server` serves travels to Colab and what it does not travels to a frontier API — `edge` is the one
 arrangement where nothing but the base and the adapter ever leaves the machine.
 
+**vLLM 0.30 also refuses too many stop sequences, not just a dropped one.** `server`'s own OpenAI endpoint
+returns HTTP 400 on any request carrying more than four `stop` strings — every turn of a tool surface that
+closes more than four distinct tags fails in transit, not in scoring (**[ran]** H2 attempt 1,
+`h2_attempt1_void_http400.json`). The fix, `training/harness/accept_rank.py`'s `MAX_STOPS = 4`: past that
+many closing tags, the request sends one generic stop, `"</"`, and `close_open_tag` rebuilds the specific
+tag from what the text was left inside of once the server stops there — **the same function `edge`'s
+llama.cpp needed above**, for the opposite reason (there the server drops the stop string it honoured;
+here it refuses to accept more than four of them), and the same fix either way.
+
 **Evidence.** **[ran] C1** (`results/C1-concurrency-20260929/BRIEF.md`, `server`): four members mixed on
 one L4 reach **278.6 tok/s** against **269.7 tok/s** for one adapter alone at 16 concurrent sessions
 (1.03×, no material contention), **504.3 tok/s** at 32 sessions, p95 time-to-first-token **0.24 s**, 0
@@ -765,8 +809,24 @@ are both stated, with the choice of which reading stands over the whole run made
 (2026-09-29: the per-arm reading stands, the as-written VOID kept as the instrument-error record), not
 decided by whoever writes the document next.
 
+**H2 (§10) found the boundary of that same fix.** Reading VOID per arm, rather than across all arms, is
+what H1's fix was — and it worked for `harness` against `harness-noblock`. But applied without exception it
+voided `base-history`, an *untrained* baseline whose whole purpose is to fail: its low first-turn score is
+the headroom `harness` is measured against, not a broken rendering. **The rule the instrument needs is
+narrower than the one it was given: a per-arm first-turns VOID applies to trained members, not to an
+untrained baseline whose failure IS the headroom.** The result is recorded as FALSIFIED-as-written, with
+the descriptive pairing stated beside it, exactly as H1's VOID was recorded beside its per-arm reading — the
+gate was not edited after seeing the result.
+
+**A check that can fail while the capability works is measuring phrasing, not the mechanism.** H2's QA
+misses include ten cases that read the whole `definition-of-done` page rather than citing its `#tests`
+anchor specifically — the statement the question asked about is inside what the member read, so a check
+for the anchor fails on exactly the cases where the underlying capability (find the right fact) succeeded.
+The miss is recorded, not loosened into a pass, and not used to claim the capability is missing either.
+
 **Evidence.** This is not a claim that needs a run of its own — it is the discipline every run cited
 elsewhere in this document was already held to: P58's malformed-call fix, P47's rule that a verdict is read
 from a file and never from an exit code (`docs/SUBSTRATE-GATE.md`), M10's headroom check on `staff-s0`
-before crediting `out-s0`'s abstention, and H1's own recorded instrument error, above, are four instances
-of the same rule inside this repository, not four different rules.
+before crediting `out-s0`'s abstention, H1's own recorded instrument error, and H2's narrower fix to the
+same rule, above, are five instances of the same discipline inside this repository, not five different
+rules.

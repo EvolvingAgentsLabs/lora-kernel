@@ -68,6 +68,14 @@ propia del miembro como sí lo hace la de vLLM, y un turno en vivo siguió de la
 el arreglo es del lado del cliente, no un flag (`accept_rank.close_open_tag`) **[ran]**
 LIVE-distributor. Quien reuse `edge` necesita ese mismo parche, no sólo la misma línea de comandos.
 
+**vLLM tiene la falla opuesta en el mismo lugar: rechaza de plano demasiadas secuencias de parada.** Una
+superficie de herramientas que cierra más de cuatro etiquetas distintas hace que cada pedido se rechace
+con HTTP 400 en el endpoint OpenAI de vLLM 0.30 — un error de transporte, no de puntuación, y anuló de
+lleno el primer intento de H2 **[ran]** `h2_attempt1_void_http400.json`. El arreglo, el `MAX_STOPS = 4` de
+`training/harness/accept_rank.py`: pasadas esas tantas etiquetas de cierre, el pedido envía una sola
+parada genérica, `"</"`, y el mismo `close_open_tag` de arriba reconstruye la etiqueta específica a partir
+de dentro de qué texto quedó. Una sola función, los dos motores, por razones opuestas.
+
 ## Cuánto cuesta servir en vivo: el orden le gana al tamaño, y dos adaptadores no cuestan el doble
 
 Dos hallazgos de la misma corrida ponen precio al motor mismo, en `server` y en `edge` por igual,
@@ -104,8 +112,11 @@ generaciones más largas.
 ## Las opciones de servido del gateway: `history=`, `memory=`, `workflows=`, `tool_block=`
 
 `examples/school/gateway.py`'s `Gateway` es la segunda puerta de entrada del pool — una organización
-por proceso, recorrida de punta a punta en [`OPENCLAW.md`](OPENCLAW.md) §6. Cuatro opciones del
-constructor deciden qué lee un turno, además del prompt y las herramientas propias del rol:
+por proceso, recorrida de punta a punta en [`OPENCLAW.md`](OPENCLAW.md) §6. Hay tres organizaciones
+registradas en `ORGS` y se eligen con `--org`: `school`, `distributor`, y, desde el 2026-09-29,
+`tracker` (`examples/tracker`, una herramienta de equipo tipo Jira + Confluence — ver
+`docs/MECHANISMS.md` §9). Cuatro opciones del constructor deciden qué lee un turno, además del
+prompt y las herramientas propias del rol:
 
 | opción | por defecto | qué hace |
 |---|---|---|
@@ -121,9 +132,12 @@ contra ella sobre vLLM (una L4): `harness` (con el bloque) alcanzó 53/54 turnos
 43/54 de history; `harness-noblock` colapsó, por la razón de arriba. Leído por brazo, `harness` PASÓ y
 `harness-noblock` quedó FALSEADO, pero la propia compuerta de la corrida la anula tal como está escrita
 — la decisión del usuario (2026-09-29): vale la lectura por brazo, el VOID tal como está escrito queda
-como el registro de ese error del instrumento. **El arnés todavía no corrió en vivo a través de
-OpenClaw**; ver [`OPENCLAW.md`](OPENCLAW.md) para la historia del multi-turno y
-`docs/review/harness-workflow-kv.md` §8 para el resultado completo y el siguiente paso.
+como el registro de ese error del instrumento. Una segunda corrida, **H2** sobre la organización
+`tracker` de arriba, encontró la misma regla mal aplicada de otra forma — anuló a una línea de base sin
+entrenar en vez de a un brazo roto — y se lee FALSEADA tal como está escrita, con la lectura todavía
+pendiente del usuario. **El arnés todavía no corrió en vivo a través de OpenClaw**; ver
+[`OPENCLAW.md`](OPENCLAW.md) para la historia del multi-turno y
+`docs/review/harness-workflow-kv.md` §§8–9 para los resultados completos y la decisión pendiente.
 
 ## La base tiene que ser una a la que vLLM realmente le aplique adaptadores — se chequea, no se supone
 
