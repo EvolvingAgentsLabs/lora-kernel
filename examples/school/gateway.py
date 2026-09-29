@@ -77,6 +77,19 @@ _STAMP = re.compile(r"^\[[A-Z][a-z]{2} \d{4}-\d{2}-\d{2} \d{2}:\d{2}[^\]]*\]\s*"
 _RUNTIME_FOOTER = re.compile(r"\n+Runtime: agent=.*\Z", re.S)
 
 
+def earlier_turns(messages: list[dict]) -> list[dict]:
+    """The conversation before the person's last request, as plain chat turns: each earlier request read the way
+    `runtime_request` reads the last one, each assistant reply as it was shown. Tool blocks are not repeated."""
+    last = max((i for i, m in enumerate(messages) if m.get("role") == "user" and runtime_request([m])), default=None)
+    out = []
+    for m in messages[:last] if last is not None else []:
+        if m.get("role") == "user" and (text := runtime_request([m])):
+            out.append({"role": "user", "content": text})
+        elif m.get("role") == "assistant" and (text := _text(m.get("content")).strip()):
+            out.append({"role": "assistant", "content": text})
+    return out
+
+
 def runtime_request(messages: list[dict]) -> str:
     """The person's request, out of what a live runtime sends. OpenClaw [ran] 2026-09-26 appends a user message of its
     own internal context AFTER the request, stamps the request `[Sat 2026-09-26 20:41 GMT-3] …` and may add a
@@ -91,9 +104,14 @@ def runtime_request(messages: list[dict]) -> str:
 
 
 class Gateway:
-    def __init__(self, conn, generate, frontier=None, log_path=None, max_calls: int = 4, org: str = "school"):
+    def __init__(self, conn, generate, frontier=None, log_path=None, max_calls: int = 4, org: str = "school",
+                 history: bool = False):
         """`generate(system, user) -> (gen(prefix) -> text, used() -> {prompt_tokens, completion_tokens})`."""
         self.conn, self.generate, self.frontier, self.log_path, self.max_calls = conn, generate, frontier, log_path, max_calls
+        # HISTORY (MT0, 2026-09-29): by default a turn sees only the person's last request — every earlier turn is
+        # dropped, so "move it to dock 5" has no "it". `history=True` renders the earlier requests and replies before
+        # it, the naive multi-turn baseline the workflow harness is measured against (docs/review/harness-workflow-kv.md).
+        self.history = history
         self.org, mods = org, org_modules(org)
         self.roles, self.tools = mods["roles"], mods["tools"]
         self.queue = approvals.Queue() if ORGS[org]["approvals"] else None
@@ -116,7 +134,9 @@ class Gateway:
         user = render_tools([{"role": "user", "content": request}], schema)[-1]["content"]
         suite = ToolSuite(self.conn, claim, role["tools"], self.tools, self.queue)
         system = f"{role['system_prompt']} {SCOPE}" if ORGS[self.org]["scope"] else role["system_prompt"]
-        gen, used = self.generate(system, user, suite.close)
+        earlier = earlier_turns(messages) if self.history else []
+        gen, used = (self.generate(system, user, suite.close, history=earlier) if earlier
+                     else self.generate(system, user, suite.close))
         chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
         final = (chain["spans"][-1]["text"] if chain["spans"] else "").strip()
         route, reply = "local", final
@@ -191,8 +211,8 @@ def vllm_generator(model: str, tok, max_tokens: int = 160):
     """`Gateway`'s `generate`, over an OpenAI-compatible completions server (vLLM, or the fake)."""
     from training.harness.accept_rank import completion
 
-    def generate(system: str, user: str, close: tuple):
-        head = tok.apply_chat_template([{"role": "system", "content": system}, {"role": "user", "content": user}],
+    def generate(system: str, user: str, close: tuple, history: list[dict] | None = None):
+        head = tok.apply_chat_template([{"role": "system", "content": system}, *(history or []), {"role": "user", "content": user}],
                                        tokenize=False, add_generation_prompt=True, enable_thinking=False)
         used = {"prompt_tokens": 0, "completion_tokens": 0}
 
