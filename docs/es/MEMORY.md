@@ -591,6 +591,22 @@ Es la misma división que la biblioteca traza entre contenido y navegación (§3
 guarda los valores vivos de una conversación, la biblioteca guarda el conocimiento estable de un
 subdominio, y en los dos casos **los pesos guardan sólo la ruta a una clave**, nunca el valor detrás de
 ella. El diseño y las decisiones tomadas con él están en
-[`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md); está **construida y testeada a
-costo cero de GPU — todavía no entrenada sobre ella** (H1, corriendo,
-`results/H1-workflow-harness-20260929/`, sin resultado todavía).
+[`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md); ahora está **entrenada y
+puntuada** (H1, `results/H1-workflow-harness-20260929/`, sobre vLLM). Contra la línea de base `history`
+de MT0 sobre 60 sesiones retenidas, `harness` (con el bloque de herramientas) llega a **53/54** turnos
+dependientes (history 43/54), nombra el pedido buscado por clave en los 10 reclamos de atención al
+cliente (history 2/10), y cada turno dependiente correcto buscó su valor por clave (53/53), con un
+prompt plano en los turnos (745/726/710 tokens contra 345/428/394 de history — en estas sesiones
+cortas el arnés gasta aproximadamente 2× los tokens por turno de una respuesta sola, porque un ciclo de
+`get`/llamada/`put` cuesta más pasos de generación que una respuesta directa; el cacheo de prefijo
+reusaría la mayor parte, no medido; la ventaja de tokens pertenece a sesiones más largas).
+`harness-noblock` (lo mismo, sin el bloque de herramientas) llega a **0/60**: su corpus siempre tuvo el
+bloque, así que sacarlo al momento de evaluar dejó al miembro sin llamar ninguna herramienta y
+enunciando datos que nunca leyó — la corrección es un corpus que saque el bloque en parte de sus filas,
+no intentado acá. **Leída tal como está escrita, la corrida queda ANULADA**: su propia compuerta de
+primeros-turnos-≥-90%-o-anulado, aplicada entre brazos, deja que el colapso de `harness-noblock` anule
+toda la corrida — un error de diseño del instrumento, registrado, sin cambiar el código después del
+resultado. **Leído por brazo, `harness` PASÓ y `harness-noblock` quedó FALSEADO. El usuario todavía no
+eligió qué lectura vale.** Sigue, a la espera de esa elección: un dominio tipo Jira + Confluence
+(`examples/tracker/`, en construcción) para sesiones lo bastante largas como para que se note el ahorro
+de tokens (H2). Ver [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §8.

@@ -152,15 +152,30 @@ the calls the tool layer *ran* — the model never sets the state, only reads it
 `state: <workflow>/<state> · keys: <names>` — instead of the conversation, and the model fetches
 (`<get>key</get>`) or stores (`<put>key=value</put>`) a value only in the step that needs it.
 
-**The workflow harness — the user's idea, 2026-09-29, designed [spec], H1 running.** For a
+**The workflow harness — the user's idea, 2026-09-29, designed [spec].** For a
 subdomain, a member learns in its weights the domain's workflows, its tools, and the *keys* of
 that operational memory — never the values, never the conversation, so the prompt stays flat as a
 session grows. What lands in the corpus is the same choreography as the library above, extended
 from reading (`<open>id§anchor</open>`) to reading *and writing* operational state. It is a harness
 inside each member, one corpus — not a separate adapter composed with a domain one, which is what
 parked the earlier `harness.lora` (composition could not be measured cleanly, P9/P13). Full design:
-[`docs/review/harness-workflow-kv.md`](docs/review/harness-workflow-kv.md). Whether it beats
-carrying the conversation is H1, running now — no result yet
+[`docs/review/harness-workflow-kv.md`](docs/review/harness-workflow-kv.md).
+
+**H1 has a result, and it reads two ways [ran].** Against `history`'s 43 of 54 dependent turns, the
+harness arm (`wf-s0` + the operational memory) gets 53 of 54 — 1 lost, 11 gained — with
+customer-service claims now naming the order fetched by key (10/10 against history's 2/10),
+dispatch 14/14, and every one of the 53 right turns traced to a `<get>` by key (53/53); the prompt
+itself stays flat per turn (745, 726, 710 tokens) where history's keeps growing (345, 428, 394). The
+same corpus without the tool block (`harness-noblock`) scores 0 of 60: without it the member calls
+no tool and states data it never read — its corpus was never trained without the block. Read across
+both arms, the pre-registered gate (first turns ≥ 90% *in every arm*) is tripped by the no-block
+arm alone, which voids the run as written — an instrument design error, recorded, not one the code
+was changed to fix after seeing the result. Read per arm instead, the harness **PASSED** and
+harness-noblock **FALSIFIED**. **The user has not yet chosen which reading stands — this document
+states both, not one.** In these short (2–3 turn) sessions the harness pays roughly 2× the prompt
+tokens per turn (an extra get → call → put round-trip); the saving it is built for belongs to longer
+sessions, which is why a Jira-and-Confluence-like tracker domain (`examples/tracker/`) is being
+built for that case (H2) — **in construction, no results yet**
 ([`results/H1-workflow-harness-20260929/`](results/H1-workflow-harness-20260929/BRIEF.md)).
 
 ---
@@ -320,9 +335,12 @@ neither passes **[ran]** milestone 2. The small models still invent: in the scho
 local replies with the tools' own text — caught, counted, never shown, but not cured. Speculative decoding with a LoRA
 expert runs for real (F0, C0, above), but its output is not yet shown identical to plain decoding, and the aligned
 drafter that might close that gap is parked — it does not run at all yet (C0). Whether the workflow harness beats
-carrying the conversation is not yet known — H1 is running, and no result is stated here until it lands. A longer,
-more explicit tracker domain (a Jira-and-Confluence-like team tool, natural keys, long sessions — where the harness's
-token saving would show) is proposed as what to build it on next, pending the user's decision, and is not built. The
+carrying the conversation has an answer that reads two ways: **PASSED** by arm (53/54 dependent turns against
+history's 43/54, flat tokens, every right turn traced by key) but **VOID** as pre-registered, because the gate that
+was meant to guard every arm's first turns is tripped instead by the no-block control's own failure (0/60) — the user
+has not yet chosen which reading stands. A longer, more explicit tracker domain (a Jira-and-Confluence-like team tool,
+natural keys, long sessions — where the harness's token saving would show, H2) is **in construction**
+(`examples/tracker/`), synthetic only, with no results yet. The
 harness has not run live through OpenClaw, has not been measured on sessions longer than three turns, and its global
 cache — built and unit-tested — is not yet trained on in any corpus. The memory's library lives only in
 `distributor-wiki@v2`, a separate
@@ -411,6 +429,7 @@ exactly how the live distributor demo above runs, member and all
 |---|---|
 | [`docs/GUIDE.md`](docs/GUIDE.md) | **start here if you want to understand it** — a guide for people: how a model generates text, llama.cpp, vLLM and MLX, quantisation, LoRA, speculative decoding (draft model, MTP, EAGLE), serving many experts, the memory, the gateway, how we measure, and what has been unlocked so far |
 | [`docs/MEMORY.md`](docs/MEMORY.md) | **the memory, as it will be built** — library, radar, three verbs, the LoRA's habit, the referee; build order for 1.0 |
+| [`docs/MECHANISMS.md`](docs/MECHANISMS.md) | **how every mechanism works** — a request's path through the gateway, the operational memory and the workflow harness, mechanism by mechanism |
 | [`docs/KNOWLEDGE-TRAJECTORIES.md`](docs/KNOWLEDGE-TRAJECTORIES.md) | the *why* behind it, self-contained, written to be reviewed by other models: ten findings, five strategies, ten questions |
 | [`docs/FRAMEWORK.md`](docs/FRAMEWORK.md) | **state and gaps, self-contained, written to be reviewed by other models** — what works, what does not, and what is missing for this to be a generic framework for an organisation with one agent per role |
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | the system: experts, router, memory, runtime, the pair, the frontier — and where it sits in an organisation (§9) |

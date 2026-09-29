@@ -943,10 +943,32 @@ brazos contra los que se fija esta vara: $\bar p_1,\bar p_2,\bar p_3 = 345, 376,
 428, 394$ para `history` — el crecimiento que `history` muestra aun en una suite de dos a tres turnos
 (+24 % en el turno 2, $\bar p_2/\bar p_1 = 1,24$) es exactamente el término que el argumento de batching
 del §2.4 no toca: un prompt más largo es un prefill más largo (§2.1) en cada turno, para cada sesión,
-esté o no la GPU ociosa por lo demás. **H1** (`results/H1-workflow-harness-20260929`) entrena un miembro
-que lee la línea de contexto de una sola línea del harness en vez de la creciente de `history` y mide
-tanto $A_{\text{dep}}$ contra la vara de 43/54 de arriba como $\bar p_3/\bar p_1$ contra 1,1 —
-**pre-registrado, corriendo, todavía sin resultado.**
+esté o no la GPU ociosa por lo demás.
+
+**Medido [ran] H1** (`results/H1-workflow-harness-20260929`): un miembro (`wf-s0`) entrenado para leer la
+línea de contexto del harness en vez de la creciente de `history`, sobre las mismas 60 sesiones de MT0.
+$A_{\text{dep}}(\text{harness}) = 53/54$ contra $A_{\text{dep}}(\text{history}) = 43/54$ — un turno perdido,
+once ganados, un conteo de pares discordantes de $11 : 1$ a favor de `harness` ($n_d = 12$, $p \approx
+0,006$ por el sign test exacto del §9.2) — y los 53 turnos dependientes bien contestados buscaron su valor
+en el almacén por clave, ninguno leyéndolo de la transcripción. La vara de planitud se cumple por
+construcción: $\bar p_1,\bar p_2,\bar p_3 = 745, 726, 710$, así que $\bar p_3/\bar p_1 = 0,953 \le 1,1$,
+plano y no sólo acotado — la longitud de la línea de contexto sigue el estado propio del workflow y los
+nombres de las claves, no la cantidad de turnos. Estos valores de $\bar p$ son **más altos que los de
+cualquiera de los dos brazos de MT0** (745 contra los 345 de `history` en el turno 1) porque el harness
+gasta más **pasos de generación** por turno — un `<get>` y su resultado, la llamada a la herramienta, un
+`<put>` y su confirmación, y recién la respuesta — donde `last`/`history` escriben la respuesta directo;
+el costo del prefill del §2.1 se paga una vez por paso, así que más pasos con un piso por turno plano es
+un costo real que esta medición asienta en vez de esconder. Lo que no asienta: cuánto de ese andamiaje
+get/call/put repetido absorbería un caché de prefijo (§3.6) entre turnos — no medido acá, y la razón por
+la que el argumento de *tokens* del harness es para sesiones más largas que los dos o tres turnos de MT0,
+aunque su argumento de *exactitud* ya se sostenga a esa longitud. Un cuarto brazo, `harness-noblock` (el
+mismo corpus, el bloque de herramientas retirado al servir aunque siempre presente al entrenar), puntúa
+$A_{\text{dep}} = 0/60$: un prompt desconocido, no uno más difícil (§8.1, §8.6). **La regla de corte de la
+propia corrida — exactitud de primeros turnos $\ge 0,90$ en *todos* los brazos o la corrida es VOID — se
+escribió para cuidar toda la comparación y en cambio dejó que la falla de un brazo anulara el resultado
+real de los otros dos; leída por brazo y no tal como fue escrita, `harness` pasa las varas de esta sección
+y `harness-noblock` no.** Qué lectura usa la compuerta de liberación es una decisión abierta del usuario,
+no de esta sección.
 
 ## 9. Estadística usada, y sólo esta
 
@@ -1116,4 +1138,4 @@ entrena la mitad grande; el hito 4 mide la desigualdad de §7.1.
 | §8.8 | **editar la biblioteca después de entrenar**: sigue 37/38, stale 0, a libro cerrado 1/40 | W7 `results/W7-edit-after-training-20260927/BRIEF.md` |
 | §8.9 | **exactitud en turnos dependientes sin y con historial**: $A_{\text{dep}}$(last) 4/54, $A_{\text{dep}}$(history) 43/54; tokens de prompt $\bar p_1,\bar p_2,\bar p_3$ = 345/376/303 (last), 345/428/394 (history) | MT0 `results/MT0-multiturn-baseline-20260929/BRIEF.md` |
 | §5.6 | **cociente de throughput con varios adaptadores**: $r_4(16) = 278,6/269,7 = 1,03$, NO MATERIAL CONTENTION; casi lineal 22,7 → 135,1 → 278,6 → 504,3 tok/s para K = 1, 8, 16, 32; TTFT p95 0,24 s en K = 32, 0 errores de 128 | C1 `results/C1-concurrency-20260929/BRIEF.md` |
-| §8.9 | **el harness de flujo contra el brazo con historial de MT0 y la vara de planitud $\bar p_3 \le 1,1\ \bar p_1$** | H1 `results/H1-workflow-harness-20260929/BRIEF.md` — **pre-registrado, corriendo, todavía sin resultado** |
+| §8.9 | **el harness de flujo contra el brazo con historial de MT0 y la vara de planitud $\bar p_3 \le 1,1\ \bar p_1$**: $A_{\text{dep}}$(harness) 53/54 contra 43/54, 11 : 1 emparejado ($p\approx0,006$); $\bar p_1,\bar p_2,\bar p_3$ = 745/726/710, plano; `harness-noblock` 0/60. Tal como fue escrita VOID (la regla de primeros turnos anula entre brazos); leída por brazo, `harness` PASÓ y `harness-noblock` quedó FALSADO — el usuario todavía no eligió qué lectura vale | H1 `results/H1-workflow-harness-20260929/BRIEF.md` |

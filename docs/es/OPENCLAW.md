@@ -318,20 +318,34 @@ devoluciones 10/10, compras 9/10, despacho 12/14); **no resuelve una que tiene q
 libre** — un reclamo sobre "ese pedido" se archiva sin número de pedido en 8 de 10 turnos de atención
 al cliente.
 
-**El arnés que este diseño busca poner en el lugar de `history=True` — diseñado, H1 corriendo, sin
-resultado todavía.** En vez de la conversación, `Gateway(memory=, workflows=)`
+**El arnés que este diseño busca poner en el lugar de `history=True` — H1 tiene un resultado, leído de
+dos formas.** En vez de la conversación, `Gateway(memory=, workflows=)`
 (`examples/common/opmemory.py`, [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md))
 renderiza una línea de contexto — el estado del flujo de trabajo del rol y los **nombres** de las
 claves que guarda la caché de una sesión — y el miembro busca y guarda valores por clave
 (`<get>`/`<put>`) sólo en el paso que los necesita, cerrando exactamente la falla que `history=True`
 deja abierta: un reclamo que necesita el número de pedido lo obtiene de la caché, no de la lectura
-propia del modelo sobre la transcripción. `results/H1-workflow-harness-20260929/` está
-pre-registrado y **corriendo — no leer un veredicto acá, no existe ninguno todavía.**
+propia del modelo sobre la transcripción. `results/H1-workflow-harness-20260929/` puntuó dos brazos
+contra `history` sobre las 60 sesiones retenidas de MT0: `harness` (con el bloque de herramientas)
+alcanzó **53/54** turnos dependientes contra el 43/54 de history, nombrando el pedido buscado por clave
+en los 10 reclamos de atención al cliente (history: 2/10), con cada turno dependiente correcto buscado
+por clave (53/53) y un prompt plano (745/726/710 tokens en los turnos 1–3, contra 345/428/394 de
+history); `harness-noblock` (lo mismo, sin el bloque de herramientas) dio **0/60** — su corpus siempre
+tuvo el bloque, así que sacarlo al momento de evaluar dejó al miembro sin llamar nada y enunciando
+datos que nunca leyó. **Tal como está escrita, la corrida queda ANULADA**: la compuerta del brief anula
+un brazo cuyos primeros turnos caen bajo el 90%, y aplicada entre brazos eso deja que el colapso de
+`harness-noblock` anule toda la corrida — un error de instrumento, registrado, no corregido después del
+hecho. **Leído por brazo, `harness` PASÓ y `harness-noblock` quedó FALSEADO. El usuario todavía no
+eligió qué lectura vale — acá se enuncian las dos.** Ver
+[`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §8 para la tabla completa y el
+siguiente paso (un dominio de sesiones más largas, H2).
 
-**No existe todavía ninguna corrida multi-turno en vivo a través de OpenClaw.** Toda corrida en vivo de
-esta página — escuela 15/15, distribuidora 6/6 — es de un solo turno: un pedido, una respuesta, ningún
-turno anterior que resolver. Una demo multi-turno en vivo es el último paso del orden en
-`docs/review/harness-workflow-kv.md` §7, después de que H1 pase.
+**H1 corrió sobre vLLM (una L4), no a través de OpenClaw, y todavía no existe ninguna corrida
+multi-turno en vivo a través de OpenClaw.** Toda corrida en vivo de esta página — escuela 15/15,
+distribuidora 6/6 — es de un solo turno: un pedido, una respuesta, ningún turno anterior que resolver.
+Una demo multi-turno en vivo, a través de OpenClaw, es el último paso del orden en
+`docs/review/harness-workflow-kv.md` §7, una vez que el usuario elija cuál de las dos lecturas de H1
+vale.
 
 ## Cuánto vale esto, medido
 

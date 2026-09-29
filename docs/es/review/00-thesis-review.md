@@ -131,9 +131,13 @@ de las cuatro decisiones que el usuario aprobó en
 mitad que a esta sección todavía le faltaba: una memoria operativa de corto plazo, leída y escrita por
 clave, de modo que un miembro lee una línea de contexto (`state: <workflow>/<state> · keys: <names>`) en
 vez de la conversación. Lo que esta sección llamó "declarado, versionable" es la mitad escrita a mano;
-**H1** (`results/H1-workflow-harness-20260929/`, corriendo, sin resultado todavía) prueba la mitad que
-tiene que ser *aprendida* — si un miembro entrenado sobre esto de verdad lee y escribe la clave correcta
-en el paso correcto.
+**H1** (`results/H1-workflow-harness-20260929/`) prueba la mitad que tiene que ser *aprendida* — si un
+miembro entrenado sobre esto de verdad lee y escribe la clave correcta en el paso correcto. Tiene un
+resultado, leído de dos formas: `harness` (con el bloque de herramientas) 53/54 turnos dependientes
+contra el 43/54 de `history`, todos buscados por clave; `harness-noblock` 0/60, porque su corpus siempre
+tuvo el bloque. Leído por brazo, `harness` PASÓ y `harness-noblock` quedó FALSEADO; la propia compuerta
+de la corrida la anula tal como está escrita, y el usuario todavía no eligió qué lectura vale — ver
+[`harness-workflow-kv.md`](harness-workflow-kv.md) §8.
 
 ---
 

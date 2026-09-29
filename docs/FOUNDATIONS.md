@@ -911,10 +911,30 @@ growing content. **Measured [ran] MT0**, the two arms this bar is set against: $
 p_3 = 345, 376, 303$ for `last` and $345, 428, 394$ for `history` — the growth `history` shows even in a
 two-to-three-turn suite (+24 % at turn 2, $\bar p_2/\bar p_1 = 1.24$) is exactly the term §2.4's batching
 argument does not touch: a longer prompt is a longer prefill (§2.1) on every turn, for every session,
-whether or not the GPU is otherwise idle. **H1** (`results/H1-workflow-harness-20260929`) trains a member
-that reads the harness's one-line context instead of `history`'s growing one and measures both
-$A_{\text{dep}}$ against the 43/54 bar above and $\bar p_3/\bar p_1$ against 1.1 — **pre-registered,
-running, no result yet.**
+whether or not the GPU is otherwise idle.
+
+**Measured [ran] H1** (`results/H1-workflow-harness-20260929`): a member (`wf-s0`) trained to read the
+harness's one-line context instead of `history`'s growing one, on MT0's own 60 sessions.
+$A_{\text{dep}}(\text{harness}) = 53/54$ against $A_{\text{dep}}(\text{history}) = 43/54$ — one turn lost,
+eleven gained, a discordant pair count of $11 : 1$ favouring `harness` ($n_d = 12$, $p \approx 0.006$ by
+§9.2's exact sign test) — and every one of the 53 right dependent turns fetched its value from the store
+by key, not from the model's own reading of the transcript. The flatness bar holds by construction:
+$\bar p_1,\bar p_2,\bar p_3 = 745, 726, 710$, so $\bar p_3/\bar p_1 = 0.953 \le 1.1$, flat rather than
+merely bounded — the context line's length tracks the workflow's own state and key names, not the turn
+count. These $\bar p$ values are **higher than either MT0 arm's** (745 against `history`'s 345 at turn 1)
+because the harness spends more **generation steps** per turn — a `<get>` and its result, the tool call,
+a `<put>` and its confirmation, then the answer — where `last`/`history` write the answer directly; §2.1's
+prefill cost is paid once per step, so more steps at a flat per-turn floor is a real cost this measurement
+states rather than hides. What it does not state: how much of that repeated get/call/put scaffold a
+prefix cache (§3.6) would absorb across turns — not measured here, and the reason the harness's *token*
+case is for sessions longer than MT0's two or three turns, even though its *accuracy* case already holds
+at that length. A fourth arm, `harness-noblock` (the same corpus, tool block withheld at serving time
+although always present in training), scores $A_{\text{dep}} = 0/60$: an unfamiliar prompt, not a harder
+one (§8.1, §8.6). **The run's own stopping rule — first-turn accuracy $\ge 0.90$ in *every* arm or the run
+is VOID — was written to guard the whole comparison and instead let one arm's failure void the other
+two's real result; read per arm rather than as written, `harness` passes this section's bars and
+`harness-noblock` does not.** Which reading the release gate uses is the user's open choice, not this
+section's.
 
 ## 9. Statistics used, and only these
 
@@ -1080,4 +1100,4 @@ milestone 3 trains the large half; milestone 4 measures §7.1's inequality.
 | §8.8 | **editing the library after training**: follow 37/38, stale 0, closed-book 1/40 | W7 `results/W7-edit-after-training-20260927/BRIEF.md` |
 | §8.9 | **dependent-turn accuracy without and with history**: $A_{\text{dep}}$(last) 4/54, $A_{\text{dep}}$(history) 43/54; prompt tokens $\bar p_1,\bar p_2,\bar p_3$ = 345/376/303 (last), 345/428/394 (history) | MT0 `results/MT0-multiturn-baseline-20260929/BRIEF.md` |
 | §5.6 | **multi-adapter throughput ratio**: $r_4(16) = 278.6/269.7 = 1.03$, NO MATERIAL CONTENTION; near-linear 22.7 → 135.1 → 278.6 → 504.3 tok/s for K = 1, 8, 16, 32; p95 TTFT 0.24 s at K = 32, 0 errors of 128 | C1 `results/C1-concurrency-20260929/BRIEF.md` |
-| §8.9 | **the workflow harness against MT0's history arm and the flatness bar $\bar p_3 \le 1.1\ \bar p_1$** | H1 `results/H1-workflow-harness-20260929/BRIEF.md` — **pre-registered, running, no result yet** |
+| §8.9 | **the workflow harness against MT0's history arm and the flatness bar $\bar p_3 \le 1.1\ \bar p_1$**: $A_{\text{dep}}$(harness) 53/54 vs 43/54, 11 : 1 paired ($p\approx0.006$); $\bar p_1,\bar p_2,\bar p_3$ = 745/726/710, flat; `harness-noblock` 0/60. As written VOID (the first-turns rule voids across arms); read per arm, `harness` PASSED and `harness-noblock` FALSIFIED — the user has not chosen which reading stands | H1 `results/H1-workflow-harness-20260929/BRIEF.md` |

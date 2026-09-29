@@ -38,7 +38,11 @@ miembro lee *y escribe* el estado propio de una conversación: un arnés de fluj
 (`examples/common/opmemory.py`, [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md))
 indexa los valores vivos de una sesión — un id de pedido, un número de muelle — de la misma manera en
 que una página indexa un enunciado, y un miembro busca (`<get>`) o guarda (`<put>`) uno sólo en el paso
-que lo necesita, en vez de releer la conversación. MT0 y H1 lo miden; ver [`MEMORY.md`](MEMORY.md) §11.
+que lo necesita, en vez de releer la conversación. MT0 midió la línea de base ingenua `history=True`
+(43/54 turnos dependientes); H1 puntuó el arnés en sí mismo contra ella — `harness` 53/54,
+`harness-noblock` 0/60, leído por brazo como PASÓ y FALSEADO, con la corrida anulada tal como está
+escrita y el usuario todavía sin elegir qué lectura vale; ver [`MEMORY.md`](MEMORY.md) §11 y
+[`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §8 para el resultado completo.
 
 ## 2. Lo que ya está medido, y tiene que restringir el diseño
 
