@@ -112,7 +112,7 @@ Arms, on MT0's 60 held-out sessions:
 | condition | bar |
 |---|---|
 | dependent turns right, `harness` against `history` | not worse by more than 3 of 54 (paired) |
-| prompt tokens on turn 3 against turn 1, `harness` | $\bar p_3 \le 1.1\,\bar p_1$: flat, where `history` grows |
+| prompt tokens on turn 3 against turn 1, `harness` | $\bar p_3 \le 1.1\ \bar p_1$: flat, where `history` grows |
 | first turns | ≥ 90 % in every arm, or the arm is void |
 | cache operations | every `get` that the right call depends on resolves to the right value, checked in the tool layer's record |
 
