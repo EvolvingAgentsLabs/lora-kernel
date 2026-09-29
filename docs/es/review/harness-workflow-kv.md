@@ -166,15 +166,24 @@ propio: cuatro miembros mezclados no cuestan throughput contra uno solo, 1,03× 
 la lectura por brazo** (§8) → **H2 construido y puntuado el mismo día** sobre el tracker de equipo
 (`examples/tracker/`), con el arreglo de secuencias de parada de `training/harness/accept_rank.py` como
 requisito previo (intento 1 anulado por un error de transporte de vLLM, no de puntuación) — resultado adentro,
-tal como está escrito FALSEADO, la lectura todavía pendiente del usuario (§9) → la demo en vivo con OpenClaw en
-la máquina del usuario, multi-turno, sigue esperando, ahora a la lectura de H2 en vez de a la de H1.
+tal como está escrito FALSEADO, **decisión del usuario (2026-09-29): lectura 1, el arnés PASÓ sobre las
+condiciones legibles** (§9) → dos correcciones leídas después en los registros de H2 (la lectura "aprendido en
+parte" de lo-sin-bloque era un error de aliasing del corpus; la falla del comentario final de QA es un solo
+fraseo de la evaluación) → **H3 pre-registrado y corriendo** sobre un segundo corpus de tracker que arregla las
+dos, `tr-s1` contra `tr-s0` sobre una suite fresca retenida
+([`../../../results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../../results/H3-tracker-corpus-v2-20260929/BRIEF.md))
+→ la demo en vivo con OpenClaw en
+la máquina del usuario, multi-turno, sigue esperando, ahora al resultado de H3.
 
-**Sigue, a decisión del usuario.** H2 corrió sobre un segundo dominio, construido para que las sesiones corran lo
+**Sigue, corriendo.** H2 corrió sobre un segundo dominio, construido para que las sesiones corran lo
 bastante largo como para que se note el ahorro de tokens: **el tracker de equipo** (`examples/tracker/`,
 construido y puntuado el 2026-09-29) — una herramienta tipo Jira + Confluence, con flujos de trabajo explícitos
 y más largos (To Do → In Progress → In Review → QA → Done para historias, Triage para bugs), claves naturales
 como `RD-123`/`HW-123`, y páginas con forma de Confluence como biblioteca, leídas por `page` o `page#anchor`.
-Mundos sintéticos únicamente, como en todo lo demás acá. Resultado, las dos lecturas y la decisión pendiente: §9.
+Mundos sintéticos únicamente, como en todo lo demás acá. Resultado, las dos lecturas y la decisión del usuario:
+§9. **H3**, su sucesor, entrena `tr-s1` sobre un segundo corpus que arregla las dos correcciones de H2 y lo mide
+contra `tr-s0` sobre una suite fresca retenida — pre-registrado y corriendo, todavía sin resultado
+([`../../../results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
 
 ## 8. Resultado (H1)
 
@@ -249,7 +258,7 @@ turnos dependientes, 60 primeros turnos, 60 turnos independientes):
 |---|---|---|---|---|---|
 | `base-history` (Gemma 4 E4B sin entrenar, con la conversación en el prompt) | 44/60 (< 90 %) | 4/160 | — | — | anulado por la regla de primeros turnos; la comparación pre-registrada "`harness` le gana a `base-history`" queda ilegible |
 | `harness` (`tr-s0` + memoria operativa + flujo de trabajo) | **60/60** | **146/160 (91,3 %)** | 50/60 | 1613/1223/1011/1149/1274 (plano: se sostiene $\bar p_5 \le 1.1\ \bar p_1$) | lee ≥ su propio umbral de 90 %, en las condiciones legibles |
-| `harness-noblock` (sin bloque de herramientas al servir) | 40/60 (< 90 %) | 80/160 | — | — | anulado por la misma regla; aprendió **en parte** — el carril de developer y el carril entero de QA, falta el carril de lead |
+| `harness-noblock` (sin bloque de herramientas al servir) | 40/60 (< 90 %) | 80/160 | — | — | anulado por la misma regla; un error de aliasing del corpus, no aprendizaje parcial — el carril de QA entero, faltan los carriles de lead/developer |
 
 **Tal como está escrita, H2 queda FALSEADA — no ANULADA, y la diferencia es el punto.** La regla de corte del §5
 se reescribió después de H1, por instrucción del propio usuario (§8: "a partir de H2, el VOID se aplica por
@@ -273,18 +282,17 @@ una comparación legible entre dos brazos puntuados es exactamente lo que el anu
 160 turnos, puntuados de la misma forma, enunciados acá en vez de escondidos porque resulten inconvenientes para
 el resultado tal como está escrito.
 
-**`harness-noblock` aprendió en parte, a diferencia del 0/60 de H1.** Sin el bloque de herramientas renderizado,
-el carril de developer (transiciones y comentarios, 20/20) y el carril entero de QA puntúan bien, pero el carril
-de lead falta por completo (`issue_create`/`issue_assign`/`issue_get`, 0/20). Este corpus, a diferencia del de H1,
-dejó pasar algunas filas de entrenamiento sin el bloque, y se nota: el miembro no colapsó de manera uniforme —
-mantuvo exactamente los roles que su propio corpus le había mostrado funcionando sin bloque.
+**Los 80/160 de `harness-noblock` se leyeron como "aprendido en parte"; era un error de aliasing del corpus,
+no aprendizaje parcial.** `--harness-corpus` elegía su tercio sin bloque con `j % 3 == 2`, y los roles rotan con
+el mismo `% 3` — **las 400 filas de entrenamiento sin bloque eran todas de QA.** El miembro no aprendió
+lo-sin-bloque de forma parcial: lo aprendió exactamente en el rol que se le mostró — el carril de QA entero
+(80/80 sin bloque), el carril de lead nunca mostrado (0/20 salvo `sprint_board`, una llamada sin argumento), el
+carril de developer igual, 0/20. Dos módulos que comparten período generan aliasing si no se chequea; leído
+después en `rows_without_tool_block_by_kind` de `gate_harness.json`. Este corpus, a diferencia del de H1, dejó
+pasar algunas filas de entrenamiento sin el bloque — el error de aliasing está en *cuáles* filas, no en si hubo
+alguna.
 
-**Los 14 errores dentro de los 146/160 de `harness`, todos de QA.** (a) "¿Dónde tienen que pasar los tests?" lee
-la página entera `definition-of-done` en vez de citar `#tests`, 10 de 20 veces — el enunciado está dentro de lo
-que leyó, así que una verificación del ancla puede fallar mientras la capacidad que importa (encontrar el hecho
-correcto) funciona: **esto mide fraseo**, registrado acá en vez de aflojado. (b) El comentario final de QA, 6 de
-20: el miembro relee el issue en vez de comentar, o intenta una transición que el flujo de trabajo rechaza
-(`done → in_review`) — un error genuino, no un artefacto de fraseo.
+**Dónde falla `harness`, todo en QA.** (a) Las 14 fallas dependientes son un mismo turno, el comentario final de QA, 6 de 20: el miembro relee el issue en vez de comentar, o intenta una transición que el flujo de trabajo rechaza (`done → in_review`). Una falla real, sobre un solo fraseo de la evaluación: *"Note on it: …"* 1/15 contra *"Put a comment on it: …"* 5/5. (b) Entre los turnos independientes (50/60), "¿Dónde tienen que pasar los tests?" lee la página entera `definition-of-done` en vez de citar `#tests`, 10 de 20 veces — el enunciado está dentro de lo que leyó, así que una verificación del ancla puede fallar mientras la capacidad que importa (encontrar el hecho correcto) funciona: **esto mide fraseo**, registrado acá en vez de aflojado.
 
 **Tokens.** `harness` lee aproximadamente **2,5×** los tokens por turno de `base-history` — más pasos de
 generación más el bloque renderizado — y `base-history` también es plano, por la razón opuesta: escribe casi
@@ -299,9 +307,23 @@ la etiqueta específica a partir de dentro de qué texto quedó el corte — la 
 por otra razón (`docs/MECHANISMS.md` §3, §15). El camino de reanudación ahora repite cualquier sesión que haya
 tenido un error de transporte, y la lectura se cuida de acreditar a un brazo sin ningún turno puntuado.
 
-**Decisión pendiente para el usuario, como lo fue para H1.** (1) Aceptar las condiciones legibles como el
-veredicto de H2 — `harness` 146/160 ≥ su propio umbral de 90 %, prompt plano a lo largo de cinco turnos, el
-pareo descriptivo 142 : 0 — con los dos errores de instrumento registrados en esta página; o (2) mantener
-FALSEADA-tal-como-está-escrita y repetir la corrida con la regla de VOID por brazo restringida a los miembros
-entrenados, y la verificación del ancla de QA contando una lectura de página que contenga el enunciado citado
-aunque el ancla en sí no haya sido consultada.
+**La decisión del usuario, 2026-09-29, como lo fue para H1: lectura 1.** El veredicto de H2 son las condiciones
+legibles — `harness` **PASÓ**, 146/160 ≥ su propio umbral de 90 %, prompt plano a lo largo de cinco turnos, el
+pareo descriptivo 142 : 0. FALSEADA-tal-como-está-escrita queda en el registro con los dos errores de
+instrumento de esta página (el VOID por brazo pedido a una línea de base sin entrenar, y el chequeo del ancla
+que midió fraseo). No se repitió: ningún cambio de regla podía mover a `base-history` de 4/160.
+
+**Dos correcciones leídas después en los registros de H2 [ran] (ningún número de arriba cambia):** la lectura
+"aprendido en parte" de lo-sin-bloque era un error de aliasing del corpus (arriba), y la falla del comentario
+final de QA es un solo fraseo de la evaluación (arriba). Las dos son contra lo que entrena H3.
+
+**H3 está pre-registrado y corriendo.** `tr-s1`, entrenado sobre un segundo corpus de tracker que amplía el
+fraseo de entrenamiento en dos variantes por turno en cada rol y da a cada rol un tercio parejo sin bloque,
+medido contra `tr-s0` — nuestro propio miembro anterior, no el base pelado — sobre una suite fresca retenida
+(mundos nuevos, fraseo que ni el entrenamiento ni la evaluación de H2 usaron). Evaluador `turn_right_h3` fijado
+antes de la corrida (un turno de página#anchor es correcto cuando una lectura de página devolvió el enunciado).
+Barras: H3a necesita que `s1-harness` llegue a ≥ 90 % dependiente, una mejora pareada sobre `s0-harness` (prueba
+de signo exacta, $p \lt 0,05$), perdiendo ≤ 3 turnos, y tokens planos — salvo que `s0-harness` ya esté en ≥ 95 %
+sobre la suite fresca, en cuyo caso H3a se informa como SIN MARGEN. H3b necesita que `s1-noblock` pierda ≤ 8
+turnos dependientes contra `s1-harness`, por rol. Todavía sin resultado:
+[`../../../results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../../results/H3-tracker-corpus-v2-20260929/BRIEF.md).

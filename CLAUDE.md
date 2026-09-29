@@ -70,9 +70,16 @@ el proyecto?"* **When in doubt, the next step is the one that puts a weight delt
   in `docs/MECHANISMS.md`. The long-session test is the **team tracker** (`examples/tracker/`, Jira + Confluence-like,
   synthetic; H2 **[ran]** 2026-09-29: harness 146/160, 91.3 %, flat prompt, descriptively 142:0 — **as written
   FALSIFIED**, because `base-history`'s own broken first turns, 44/60, tripped the same per-arm VOID rule and voided
-  the comparison instead of the treatment; **the lesson, not yet applied: a per-arm first-turns VOID guards a trained
-  member against a mid-training failure, and must not be asked of an untrained baseline whose failure is the
-  headroom** — user's reading still pending). The gateway's
+  the comparison instead of the treatment; **the lesson: a per-arm first-turns VOID guards a trained member against a
+  mid-training failure, and must not be asked of an untrained baseline whose failure is the headroom** — **the user's
+  decision, 2026-09-29: reading 1, the harness PASSED on the readable conditions; FALSIFIED-as-written stays on
+  record with its two instrument errors (the per-arm VOID and the anchor check below).** Not rerun: no rule change
+  could move a baseline at 4/160. `harness-noblock` (80/160) is a corpus bug, not partial learning: the block-less
+  third was rendered by `j % 3 == 2`, the same modulus the roles rotate on, so all 400 block-less rows were QA's —
+  the member learned block-less exactly the role it was shown (QA 80/80; lead/developer 0/20, lead's one exception
+  `sprint_board`, a call with no argument). QA's final-comment miss (6/20) is one eval phrasing ("Note on it: …" 1/15
+  vs "Put a comment on it: …" 5/5). **H3 is pre-registered and running**: `tr-s1` on a second corpus against `tr-s0`
+  on a fresh held-out suite (`results/H3-tracker-corpus-v2-20260929/BRIEF.md`). The gateway's
   default still reads only the last request; `history=True` is the naive arm, never the product.
 - **One L4 serves several members at once without contention** (C1 **[ran]**: four adapters mixed keep 1.03× one adapter's
   throughput at 16 sessions; 32 sessions at p95 TTFT 0.24 s, 0 errors). Do not design around LoRA-mixing cost on vLLM.

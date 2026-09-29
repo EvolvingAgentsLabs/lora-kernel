@@ -597,9 +597,18 @@ de cinco turnos (`results/H2-tracker-harness-20260929`): `harness` sostiene 146 
 (91,3 %) con un prompt plano en los cinco turnos, pero la corrida se lee **FALSEADA tal como está escrita, no
 ANULADA** — los propios 44/60 primeros turnos de la línea de base sin entrenar `base-history` disparan la misma
 regla por brazo que arregló a H1, y anular a una línea de base *sin entrenar* cuyo bajo puntaje es todo su punto
-vuelve ilegible la comparación en vez de falsa. Descriptivamente, 142 de 160 favorecen al arnés contra 0. Una
+vuelve ilegible la comparación en vez de falsa, una segunda instancia que queda en el registro. Descriptivamente,
+142 de 160 favorecen al arnés contra 0. Una
 segunda instancia, más angosta, de la misma lección: **un VOID por brazo aplica a miembros entrenados, no a una
-línea de base cuyo fracaso ES el margen.** Diseño y decisiones abiertas:
+línea de base cuyo fracaso ES el margen.** **La decisión del usuario (2026-09-29), como para H1: lectura 1** —
+las condiciones legibles son el veredicto de H2, `harness` **PASÓ**; FALSEADO-tal-como-está-escrito queda en el
+registro con sus dos errores de instrumento (el VOID por brazo y el chequeo de anchor). `harness-noblock`
+(80/160) se leyó primero como "aprendido en parte"; eso era un error del corpus — su tercio sin bloque
+compartía módulo (`% 3`) con la rotación de roles, así que las filas sin bloque eran todas de QA — no un
+aprendizaje parcial. **H3 está pre-registrado y corriendo**: `tr-s1`, entrenado sobre un corpus que arregla las
+dos correcciones, contra `tr-s0` sobre una suite fresca retenida
+([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
+Diseño y decisiones abiertas:
 [`review/harness-workflow-kv.md`](../review/harness-workflow-kv.md) §§8–9; el mecanismo detrás de `<get>`/`<put>`
 y la línea de estado está en [`MECHANISMS.md`](MECHANISMS.md).
 
@@ -685,10 +694,10 @@ fijo en el corpus que se memoriza; un modelo sin el prompt con el que se entren�
 | la memoria (biblioteca) dentro de un miembro que sirve | vive en `distributor-wiki@v2`, un miembro separado del que abstiene, `out-s0` (M10) | juntarlos, o mantenerlos separados por diseño — todavía sin decidir |
 | una corrida en vivo de la distribuidora en vLLM bf16 | no corrida — el único brazo local medido es llama.cpp Q8_0 (LIVE-distributor) | correrla cuando haga falta una comparación a la misma precisión contra el edge |
 | el resultado de H1 (el arnés de workflow) | **[ran] — la decisión del usuario (2026-09-29): por brazo.** Por brazo: `harness` PASÓ (53/54 contra 43/54, todo acierto buscado por clave); `harness-noblock` quedó FALSADO (0/60). Tal como fue escrita: **VOID**, superada — la regla de primeros turnos del brief anula entre brazos, un error del instrumento, queda como su registro | liberar el miembro con la lectura por brazo; el VOID es por brazo a partir de H2 |
-| el resultado de H2 (el arnés sobre un dominio de cinco turnos) | **[ran]** `results/H2-tracker-harness-20260929`: `harness` 146/160 dependientes (91,3 %), prompt plano en los cinco turnos; `base-history` 4/160, sus propios 44/60 primeros turnos lo anulan bajo la regla por brazo, así que la comparación pre-registrada queda ilegible — se lee **FALSEADA tal como está escrita**, descriptivo 142:0 al lado | decisión pendiente del usuario, como para H1: aceptar las condiciones legibles, o repetir con el VOID restringido a los miembros entrenados (`review/harness-workflow-kv.md` §9) |
+| el resultado de H2 (el arnés sobre un dominio de cinco turnos) | **[ran] — la decisión del usuario (2026-09-29): lectura 1.** `results/H2-tracker-harness-20260929`: `harness` 146/160 dependientes (91,3 %), prompt plano en los cinco turnos; `base-history` 4/160, sus propios 44/60 primeros turnos lo anulan bajo la regla por brazo, así que la comparación pre-registrada queda ilegible — tal como está escrita **FALSEADA**, en el registro junto con ese y el error de instrumento del chequeo de anchor; las condiciones legibles son el veredicto de H2, `harness` **PASÓ**, descriptivo 142:0 al lado | H3 pre-registrado y corriendo: `tr-s1` sobre un segundo corpus contra `tr-s0`, suite fresca retenida ([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../results/H3-tracker-corpus-v2-20260929/BRIEF.md)) |
 | un router adentro del propio camino del gateway | no construido — el rol sigue siendo la ruta (§7.2) | construirlo sólo cuando haga falta rutear entre roles, no la abstención por miembro |
-| el arnés en vivo por OpenClaw, multi-turno | no corrido — H1 y H2 sólo lo midieron en el perfil de servidor | repetir el patrón de LIVE-distributor (§7.3), ahora que las dos lecturas están elegidas o pendientes |
-| sesiones de más de 2–3 turnos | **[ran] H2**: el tracker de equipo (`examples/tracker/`) corre sesiones de cinco turnos y la propiedad de prompt plano se sostiene ($\bar p_5 \le 1.1\ \bar p_1$) | decisión pendiente del usuario (fila de arriba) |
+| el arnés en vivo por OpenClaw, multi-turno | no corrido — H1 y H2 sólo lo midieron en el perfil de servidor | repetir el patrón de LIVE-distributor (§7.3), ahora que las dos lecturas están elegidas y H3 está corriendo |
+| sesiones de más de 2–3 turnos | **[ran] H2**: el tracker de equipo (`examples/tracker/`) corre sesiones de cinco turnos y la propiedad de prompt plano se sostiene ($\bar p_5 \le 1.1\ \bar p_1$) | lectura elegida (fila de arriba); H3 mide el segundo corpus sobre una suite fresca |
 | la caché global entrenada | **[ran]**: construida, probada, y entrenada dentro de los corpus propios de dos miembros (`wf-s0`, H1; `tr-s0`, H2) | — |
 | identidad real (Auth0), WhatsApp, instalación | no construidos | después de lo anterior |
 

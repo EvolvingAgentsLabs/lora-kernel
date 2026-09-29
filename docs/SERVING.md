@@ -123,9 +123,15 @@ reason above. Read per arm, `harness` PASSED and `harness-noblock` FALSIFIED, bu
 voids it as written — the user's decision (2026-09-29): the per-arm reading stands, the as-written VOID kept
 as the record of that instrument error. A second run, **H2** on the `tracker` organisation above, found the
 same rule mis-applied a second way — voiding an untrained baseline rather than a broken arm — and reads
-FALSIFIED as written, with the reading still pending the user. **The harness has not been run
+FALSIFIED as written, kept on record with that and the anchor-check instrument error. **The user's
+decision (2026-09-29), as for H1: reading 1** — the readable conditions are H2's verdict, `harness`
+**PASSED** (146/160, flat, descriptively 142:0). `harness-noblock` (80/160) is a corpus bug, not partial
+learning — its block-less third shared a modulus (`% 3`) with the role rotation, so all block-less rows
+were QA's. **H3 is pre-registered and running**: `tr-s1` against `tr-s0` on a fresh held-out suite
+([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
+**The harness has not been run
 live through OpenClaw**; see [`OPENCLAW.md`](OPENCLAW.md) for the multi-turn story and
-`docs/review/harness-workflow-kv.md` §§8–9 for the full results and the pending decision.
+`docs/review/harness-workflow-kv.md` §§8–9 for the full results and the chosen readings.
 
 ## The base has to be one vLLM actually applies adapters to — check, do not assume
 

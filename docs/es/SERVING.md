@@ -131,10 +131,16 @@ contra ella sobre vLLM (una L4): `harness` (con el bloque) alcanzó 53/54 turnos
 — la decisión del usuario (2026-09-29): vale la lectura por brazo, el VOID tal como está escrito queda
 como el registro de ese error del instrumento. Una segunda corrida, **H2** sobre la organización
 `tracker` de arriba, encontró la misma regla mal aplicada de otra forma — anuló a una línea de base sin
-entrenar en vez de a un brazo roto — y se lee FALSEADA tal como está escrita, con la lectura todavía
-pendiente del usuario. **El arnés todavía no corrió en vivo a través de OpenClaw**; ver
+entrenar en vez de a un brazo roto — y se lee FALSEADA tal como está escrita, en el registro con ese y el
+error de instrumento del chequeo de anchor. **La decisión del usuario (2026-09-29), como para H1: lectura
+1** — las condiciones legibles son el veredicto de H2, `harness` **PASÓ** (146/160, plano, descriptivo
+142:0). `harness-noblock` (80/160) es un error del corpus, no un aprendizaje parcial — su tercio sin
+bloque compartía módulo (`% 3`) con la rotación de roles, así que las filas sin bloque eran todas de QA.
+**H3 está pre-registrado y corriendo**: `tr-s1` contra `tr-s0` sobre una suite fresca retenida
+([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
+**El arnés todavía no corrió en vivo a través de OpenClaw**; ver
 [`OPENCLAW.md`](OPENCLAW.md) para la historia del multi-turno y
-`docs/review/harness-workflow-kv.md` §§8–9 para los resultados completos y la decisión pendiente.
+`docs/review/harness-workflow-kv.md` §§8–9 para los resultados completos y las lecturas elegidas.
 
 ## La base tiene que ser una a la que vLLM realmente le aplique adaptadores — se chequea, no se supone
 

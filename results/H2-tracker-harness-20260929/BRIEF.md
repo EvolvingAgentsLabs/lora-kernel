@@ -103,3 +103,16 @@ Scoring attempt 2, one L4, vLLM 0.30, `tr-s0`. G1 applied. `h2.json`, `S_chain.l
 over the base), with the void comparison and the anchor check recorded as instrument errors; or keep "FALSIFIED as written"
 and rerun with a baseline that can be read (the per-arm rule applied only to trained members, and the anchor check
 counting a page read that contains the statement).
+
+**The user's decision, 2026-09-29: reading 1.** H2's verdict is the readable conditions — **the harness PASSED:** 146/160
+dependent (≥ 90 %), flat over five turns, descriptively 142 : 0 over the bare base. "FALSIFIED as written" stays on record,
+with its two instrument errors: the per-arm VOID asked of an untrained baseline, and the anchor check that measured
+phrasing. Not rerun: no rule could move a baseline at 4/160.
+
+**Two corrections, read afterwards in the records [ran] (no number above changes):**
+- *Block-less "learned in part" was the corpus, not the member.* `--harness-corpus` rendered its block-less third by
+  `j % 3 == 2`, and the roles rotate by `% 3`: all 400 block-less rows were QA's. The member learned block-less exactly
+  the role it was shown (QA 80/80); the lead's lane was never shown (`gate_harness.json`, `rows_without_tool_block_by_kind`).
+- *QA's final comment (6/20) is one phrasing:* "Note on it: …" 1/15, "Put a comment on it: …" 5/5.
+
+Both are what H3 trains against ([`../H3-tracker-corpus-v2-20260929/BRIEF.md`](../H3-tracker-corpus-v2-20260929/BRIEF.md)).

@@ -158,15 +158,23 @@ bought the same day on the same kind of L4 session, needing no training of its o
 throughput against one, 1.03× at 16 sessions, 504 tok/s at 32) → **H1 scored, one L4 — result in, read two ways,
 resolved: the user's decision (2026-09-29), the per-arm reading stands** (§8) → **H2 built and scored the same
 day** on the team tracker (`examples/tracker/`), `training/harness/accept_rank.py`'s stop-sequence fix required
-first (attempt 1 void on a vLLM transport error, not a scoring one) — result in, as written FALSIFIED, the
-reading still pending the user (§9) → the live demo with OpenClaw on the user's machine, multi-turn, still
-waits, now on H2's reading rather than H1's.
+first (attempt 1 void on a vLLM transport error, not a scoring one) — result in, as written FALSIFIED, **the
+user's decision (2026-09-29): reading 1, the harness PASSED on the readable conditions** (§9) → two corrections
+read afterwards in H2's records (the block-less "learned in part" reading was a corpus aliasing bug; the QA
+final-comment miss is one eval phrasing) → **H3 pre-registered and running** on a second tracker corpus that
+fixes both, `tr-s1` against `tr-s0` on a fresh held-out suite
+([`../../results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../results/H3-tracker-corpus-v2-20260929/BRIEF.md))
+→ the live demo with OpenClaw on the user's machine, multi-turn, still
+waits, now on H3's result.
 
-**Next, pending the user.** H2 ran on a second domain, built to let sessions run long enough for the token saving
+**Next, running.** H2 ran on a second domain, built to let sessions run long enough for the token saving
 to show: **the team tracker** (`examples/tracker/`, built and scored 2026-09-29) — a Jira + Confluence-like tool,
 explicit longer workflows (To Do → In Progress → In Review → QA → Done for stories, Triage for bugs), natural keys
 such as `RD-123`/`HW-123`, and Confluence-shaped pages read by `page` or `page#anchor` as the library. Synthetic
-worlds only, as everywhere here. Result, both readings, and the pending decision: §9.
+worlds only, as everywhere here. Result, both readings, and the user's decision: §9. **H3**, its successor,
+trains `tr-s1` on a second corpus that fixes H2's two corrections and measures it against `tr-s0` on a fresh
+held-out suite — pre-registered and running, no result yet
+([`../../results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
 
 ## 8. Result (H1)
 
@@ -234,7 +242,7 @@ turns, 60 first turns, 60 independent turns):
 |---|---|---|---|---|---|
 | `base-history` (bare Gemma 4 E4B, conversation in the prompt) | 44/60 (< 90 %) | 4/160 | — | — | void by the first-turns rule; the pre-registered "beats `base-history`" comparison is unreadable |
 | `harness` (`tr-s0` + operational memory + workflow) | **60/60** | **146/160 (91.3 %)** | 50/60 | 1613/1223/1011/1149/1274 (flat: $\bar p_5 \le 1.1\ \bar p_1$ holds) | reads ≥ its own 90 % bar, on the readable conditions |
-| `harness-noblock` (tool block removed at serving) | 40/60 (< 90 %) | 80/160 | — | — | void by the same rule; learned **in part** — developer lane and QA lane whole, lead lane missing |
+| `harness-noblock` (tool block removed at serving) | 40/60 (< 90 %) | 80/160 | — | — | void by the same rule; a corpus aliasing bug, not partial learning — QA lane whole, lead/developer lanes missing |
 
 **As written, H2 is FALSIFIED — not VOID, and the difference is the point.** §5's stopping rule was rewritten
 after H1, on the user's own instruction (§8: "from H2 on, VOID is applied per arm"), precisely so one arm's
@@ -255,18 +263,16 @@ sign test $p \lt  10^{-40}$.** This is not a substitute for the pre-registered v
 between two scored arms is exactly what the void takes away — but it is the same 160 turns, scored the same
 way, stated here rather than hidden because it is inconvenient to the as-written result.
 
-**`harness-noblock` learned in part, unlike H1's 0/60.** Without the rendered tool block, the developer lane
-(transitions and comments, 20/20) and the whole QA lane score correctly, but the lead lane is missing entirely
-(`issue_create`/`issue_assign`/`issue_get`, 0/20). This corpus, unlike H1's, put some training rows through
-without the block, and it shows: the member did not collapse uniformly — it kept exactly the roles its own
-corpus had shown it working blockless.
+**`harness-noblock`'s 80/160 was read as "learned in part"; it was a corpus aliasing bug, not partial
+learning.** `--harness-corpus` chose its block-less third by `j % 3 == 2`, and roles rotate by the same `% 3` —
+**all 400 block-less training rows were QA's.** The member did not learn block-less partially: it learned it
+exactly the role it was shown — QA's lane whole (80/80 block-less), the lead's lane never shown (0/20 except
+`sprint_board`, a call with no argument), the developer's lane likewise 0/20. Two moduli sharing a period alias
+unless checked; read afterwards in `gate_harness.json`'s `rows_without_tool_block_by_kind`. This corpus, unlike
+H1's, put some training rows through without the block — the aliasing bug is in *which* rows, not in whether any
+were.
 
-**The 14 misses inside `harness`'s 146/160, all QA.** (a) "Where must tests pass?" reads the whole
-`definition-of-done` page instead of citing `#tests`, 10 of 20 times — the statement is inside what it read, so
-a check for the anchor can fail while the capability that matters (finding the right fact) works: **this is
-measuring phrasing**, recorded here rather than loosened. (b) QA's final comment, 6 of 20: the member re-reads
-the issue instead of commenting, or attempts a transition the workflow refuses (`done → in_review`) — a genuine
-miss, not a phrasing artefact.
+**Where `harness` misses, all QA.** (a) The 14 dependent misses are one turn, QA's final comment, 6 of 20: the member re-reads the issue instead of commenting, or attempts a transition the workflow refuses (`done → in_review`). A real miss, on one eval phrasing: *"Note on it: …"* 1/15 against *"Put a comment on it: …"* 5/5. (b) Among the independent turns (50/60), "Where must tests pass?" reads the whole `definition-of-done` page instead of citing `#tests`, 10 of 20 times — the statement is inside what it read, so a check for the anchor can fail while the capability that matters (finding the right fact) works: **this is measuring phrasing**, recorded here rather than loosened.
 
 **Tokens.** `harness` reads roughly **2.5×** `base-history`'s tokens per turn — more generation steps plus the
 rendered block — and `base-history` is flat too, for the opposite reason: it writes almost nothing to carry
@@ -280,8 +286,22 @@ stop, `"</"`, and `close_open_tag` rebuilds the specific tag from what the text 
 function llama.cpp needed for a different reason (`docs/MECHANISMS.md` §3, §15). The resume path now replays
 any session that hit a transport error, and the reading guards against crediting an arm with no scored turn.
 
-**Decision pending for the user, as it was for H1.** (1) Accept the readable conditions as H2's verdict —
-`harness` 146/160 ≥ its 90 % bar, flat prompt across five turns, the descriptive 142 : 0 pairing — with both
-instrument errors recorded on this page; or (2) keep FALSIFIED-as-written and rerun with the per-arm VOID rule
-restricted to trained members, and the QA anchor check counting a page read that contains the cited statement
-even when the anchor itself was not addressed.
+**The user's decision, 2026-09-29, as it was for H1: reading 1.** H2's verdict is the readable conditions —
+`harness` **PASSED**, 146/160 ≥ its 90 % bar, flat prompt across five turns, the descriptive 142 : 0 pairing.
+FALSIFIED-as-written stays on record with both instrument errors on this page (the per-arm VOID asked of an
+untrained baseline, and the anchor check that measured phrasing). Not rerun: no rule change could move
+`base-history` off 4/160.
+
+**Two corrections read afterwards in H2's records [ran] (no number above changes):** the block-less "learned in
+part" reading was a corpus aliasing bug (above), and QA's final-comment miss is one eval phrasing (above). Both
+are what H3 trains against.
+
+**H3 is pre-registered and running.** `tr-s1`, trained on a second tracker corpus that widens the training
+wording by two phrasings per turn in every role and gives each role an even block-less third, measured against
+`tr-s0` — our own previous member, not the bare base — on a fresh held-out suite (new worlds, wording neither
+training nor H2's eval used). Scorer `turn_right_h3` fixed before the run (a page#anchor turn is right when a
+page read returned the statement). Bars: H3a needs `s1-harness` ≥ 90 % dependent, a paired improvement over
+`s0-harness` (exact sign test, $p \lt 0.05$), losing ≤ 3 turns, and flat tokens — unless `s0-harness` already sits
+at ≥ 95 % on the fresh suite, in which case H3a is reported as NO HEADROOM. H3b needs `s1-noblock` to lose ≤ 8
+dependent turns to `s1-harness`, by role. No result yet:
+[`../../results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../results/H3-tracker-corpus-v2-20260929/BRIEF.md).

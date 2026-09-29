@@ -461,22 +461,24 @@ tokens), so $\bar p_5 \le 1.1\ \bar p_1$ holds. `base-history` (bare Gemma 4 E4B
 the conversation in the prompt) gets `issue_get` right (40/40) and almost nothing else — dependent 4/160
 — and its own first turns, 44/60, fall under the 90% bar; voiding it by the same per-arm rule that fixed
 H1 makes the pre-registered "`harness` beats `base-history`" unreadable, so **the run reads FALSIFIED as
-written, not VOID**. Descriptively, paired on the same 160 dependent turns: **142 : 0** favouring
+written, not VOID**, and stays on record with that instrument error and the anchor check's (below).
+Descriptively, paired on the same 160 dependent turns: **142 : 0** favouring
 `harness`, exact sign test $p\lt 10^{-40}$ — stated, not substituted for the pre-registered verdict, because
-the arm it compares against is void. `harness-noblock` (tool block dropped at serving) scores dependent
-80/160 and learns **in part** this time — the developer lane and the whole QA lane, but not the lead
-lane's `issue_create`/`issue_assign`/`issue_get` (0/20) — unlike H1's uniform 0/60, because this corpus
-put some training rows through without the block. The 14 misses inside `harness`'s 146/160 are all QA:
-ten read the whole `definition-of-done` page rather than citing its `#tests` anchor — the statement is in
-what it read, so this check can fail while the capability works, which is measuring phrasing (§17) — and
-six re-read the issue or attempt a refused transition instead of the closing comment, a genuine miss.
-**A second instrument error of H1's family**: the per-arm VOID rule, written to stop one broken arm from
-erasing another's real result, this time voided an *untrained* baseline whose low first-turn score IS its
-headroom, not a defect — see §17. Attempt 1 of this run was void on a transport error, not a scoring one
-(§15's stop-sequence limit); the fix is `training/harness/accept_rank.py`'s `MAX_STOPS`. **Decision
-pending for the user**: read the run on its readable conditions (146/160, flat, 142:0) as H2's verdict, or
-keep FALSIFIED-as-written and rerun with the per-arm rule restricted to trained members. Full result and
-both readings: [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §9.
+the arm it compares against is void. **The user's decision (2026-09-29): reading 1** — the readable
+conditions are H2's verdict, `harness` **PASSED**. `harness-noblock` (tool block dropped at serving) scores
+dependent 80/160 — read at first as "learned **in part**" (the developer lane and the whole QA lane, but
+not the lead lane's `issue_create`/`issue_assign`/`issue_get`, 0/20), but that reading was a corpus bug,
+not partial learning: `--harness-corpus` rendered its block-less third by `j % 3 == 2`, the same modulus
+the roles rotate on, so all 400 block-less training rows were QA's — the member learned block-less
+exactly the role it was shown (QA 80/80; lead/developer 0/20, lead's one exception `sprint_board`, a call
+with no argument). In `harness`, the 14 dependent misses are all one turn, QA's final comment (6/20): the member re-reads the issue or tries a refused transition instead of commenting — a real miss, on one eval phrasing ("Note on it: …" 1/15 vs "Put a comment on it: …" 5/5); separately, 10 of the 60 independent turns (50/60) are the anchor check — "where must tests pass?" reads the whole `definition-of-done` page instead of `#tests`, and the statement is in what it read (measuring phrasing, recorded, not loosened). **A second instrument error of H1's family**: the per-arm VOID rule, written to
+stop one broken arm from erasing another's real result, this time voided an *untrained* baseline whose
+low first-turn score IS its headroom, not a defect — see §17. Attempt 1 of this run was void on a
+transport error, not a scoring one (§15's stop-sequence limit); the fix is
+`training/harness/accept_rank.py`'s `MAX_STOPS`. **H3 is pre-registered and running**: `tr-s1`, trained on
+a second corpus that fixes both corrections above, against `tr-s0` on a fresh held-out suite
+([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
+Full result and both readings: [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §9.
 
 ---
 
@@ -807,7 +809,9 @@ the headroom `harness` is measured against, not a broken rendering. **The rule t
 narrower than the one it was given: a per-arm first-turns VOID applies to trained members, not to an
 untrained baseline whose failure IS the headroom.** The result is recorded as FALSIFIED-as-written, with
 the descriptive pairing stated beside it, exactly as H1's VOID was recorded beside its per-arm reading — the
-gate was not edited after seeing the result.
+gate was not edited after seeing the result. **The user's decision (2026-09-29), as for H1: reading 1** —
+the readable conditions are H2's verdict, `harness` PASSED — with FALSIFIED-as-written kept on record
+alongside its two instrument errors, not superseded by it.
 
 **A check that can fail while the capability works is measuring phrasing, not the mechanism.** H2's QA
 misses include ten cases that read the whole `definition-of-done` page rather than citing its `#tests`

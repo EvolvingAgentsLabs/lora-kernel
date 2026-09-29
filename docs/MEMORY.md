@@ -604,6 +604,12 @@ instrument error.** **[ran] H2**, the same harness on a Jira + Confluence-like d
 `results/H2-tracker-harness-20260929/` scores `harness` at **146/160** dependent turns (91.3%) with a
 flat prompt across all five turns ($\bar p_5 \le 1.1\ \bar p_1$), but the untrained `base-history`
 baseline's own 44/60 first turns trip the same per-arm rule that fixed H1, making the pre-registered
-"beats `base-history`" comparison unreadable — the run reads **FALSIFIED as written, not VOID**.
-Descriptively, 142 of 160 favour `harness` against 0. Decision pending the user, as it was for H1.
+"beats `base-history`" comparison unreadable — the run reads **FALSIFIED as written, not VOID**, kept
+on record with that and the anchor-check instrument error. Descriptively, 142 of 160 favour `harness`
+against 0. **The user's decision (2026-09-29), as for H1: reading 1** — the readable conditions are
+H2's verdict, `harness` **PASSED**. `harness-noblock` (80/160) was first read as "learned in part";
+that was a corpus bug (its block-less third shared a modulus with the role rotation, so all block-less
+rows were QA's), not partial learning. **H3 is pre-registered and running**: `tr-s1` against `tr-s0` on
+a fresh held-out suite
+([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
 See [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §§8–9.

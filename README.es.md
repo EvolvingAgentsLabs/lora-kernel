@@ -198,22 +198,26 @@ put); el ahorro para el que está construido pertenece a sesiones más largas, p
 un dominio de seguimiento tipo Jira y Confluence (`examples/tracker/`) para ese caso
 ([`results/H1-workflow-harness-20260929/`](results/H1-workflow-harness-20260929/BRIEF.md)).
 
-**H2 ya tiene un resultado, sobre el dominio de seguimiento, y se lee de dos formas [ran] 2026-09-29.**
-60 sesiones largas retenidas, 160 turnos dependientes: el arnés llega a **146 de 160 (91,3 %)**, por
-encima de la barra de 90 %, plano en las cinco vueltas (p̄ 1613, 1223, 1011, 1149, 1274 — se cumple
-p̄5 ≤ 1,1 p̄1); descriptivamente, pareado contra `base-history` sobre los mismos 160 turnos, **142 : 0**.
-El propio `base-history` saca 44 de 60 en primeros turnos, dispara la misma regla de VOID por brazo
-que dispararía un tratamiento roto, y anula la comparación — una regla pensada para atrapar un
-tratamiento a mitad de entrenar atrapó en cambio a un base sin entrenar cuya falla *es* el margen, así
-que el "le gana a base-history" pre-registrado se lee **FALSEADO tal como está escrito**.
-`harness-noblock` (el bloque de herramientas sacado al servir) llega a 80 de 160, aprendiendo las
-colas de developer y QA (20/20, entera) pero sin nada de la cola de lead (0/20) — una mejora sobre el
-0/60 de H1, todavía debajo de la barra. De las 14 fallas dependientes que le quedan al brazo del
-arnés, todas de QA: 10 son un chequeo que puede fallar mientras la capacidad funciona — "¿dónde
-tienen que pasar los tests?" lee la página `definition-of-done` entera en vez del anchor citado
-`#tests`, y el enunciado está en lo que leyó (medir fraseo, registrado, no aflojado); las otras 4 son
-el comentario final de QA, una falla genuina. **El usuario todavía no eligió entre las condiciones
-legibles de arriba y una nueva corrida con la regla por brazo acotada a los miembros entrenados**
+**H2 ya tiene un resultado, sobre el dominio de seguimiento, y la decisión del usuario (2026-09-29) lo
+lee como lectura 1.** 60 sesiones largas retenidas, 160 turnos dependientes: el arnés llega a **146 de
+160 (91,3 %)**, por encima de la barra de 90 %, plano en las cinco vueltas (p̄ 1613, 1223, 1011, 1149,
+1274 — se cumple p̄5 ≤ 1,1 p̄1); descriptivamente, pareado contra `base-history` sobre los mismos 160
+turnos, **142 : 0**. El propio `base-history` saca 44 de 60 en primeros turnos, dispara la misma regla
+de VOID por brazo que dispararía un tratamiento roto, y anula la comparación — una regla pensada para
+atrapar un tratamiento a mitad de entrenar atrapó en cambio a un base sin entrenar cuya falla *es* el
+margen, así que el "le gana a base-history" pre-registrado se lee **FALSEADO tal como está escrito**, y
+queda en el registro con esos dos errores de instrumento (el VOID por brazo pedido a un base sin
+entrenar, y el chequeo del anchor de abajo). **La decisión del usuario: lectura 1 — las condiciones
+legibles son el veredicto de H2, el arnés PASÓ.** No se repitió: ningún cambio de regla podía mover un
+base en 4/160. `harness-noblock` (el bloque de herramientas sacado al servir) llega a 80 de 160 — un
+error del corpus, no un aprendizaje parcial: el generador armó el tercio sin bloque con el mismo
+módulo (`% 3`) con el que rotan los roles, así que las 400 filas sin bloque eran de QA, y el miembro
+aprendió lo-sin-bloque exactamente en el rol que se le mostró (cola de QA 80/80; colas de lead y
+developer 0/20, la única excepción de lead `sprint_board`, una llamada sin argumento) — todavía debajo
+de la barra. En el brazo del arnés las 14 fallas dependientes son todas un mismo turno, el comentario final de QA (6/20): el miembro relee el issue o intenta una transición rechazada en vez de comentar — una falla real, sobre un solo fraseo de la evaluación ("Note on it: …" 1/15 contra "Put a comment on it: …" 5/5); aparte, 10 de los 60 turnos independientes (50/60) son el chequeo del ancla — "¿dónde tienen que pasar los tests?" lee la página entera `definition-of-done` en vez de `#tests`, y el enunciado está en lo que leyó (mide fraseo, registrado, no aflojado). **H3 está
+pre-registrado y corriendo**, `tr-s1` entrenado sobre un segundo corpus contra `tr-s0` sobre una
+suite fresca retenida
+([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](results/H3-tracker-corpus-v2-20260929/BRIEF.md))
 ([`results/H2-tracker-harness-20260929/`](results/H2-tracker-harness-20260929/BRIEF.md)).
 
 ---
@@ -393,8 +397,9 @@ más largo y explícito construido para ese caso (tipo Jira y Confluence, claves
 planos en las cinco vueltas, pero queda **FALSEADO tal como está escrito**: el control `base-history` sin
 entrenar falla sus propios primeros turnos (44/60) y dispara la regla de VOID por brazo pensada para un
 tratamiento roto, anulando la comparación que existía para hacer — una segunda instancia del mismo error
-de instrumento, y el usuario todavía no eligió entre las condiciones legibles (146/160, plano, descriptivo
-142:0) y una nueva corrida (H2, arriba).
+de instrumento, que queda en el registro. **La decisión del usuario: lectura 1 — las condiciones legibles
+(146/160, plano, descriptivo 142:0) son el veredicto de H2** (H2, arriba); H3 entrena contra las dos
+correcciones de H2 y está pre-registrado y corriendo.
 El arnés no corrió en vivo a través de OpenClaw, y su
 caché global — construida y probada con tests unitarios — todavía no se entrenó en ningún corpus fuera del dominio de seguimiento. La biblioteca de
 la memoria vive sólo en `distributor-wiki@v2`, un miembro aparte — ningún miembro servido lleva su propia biblioteca todavía.
