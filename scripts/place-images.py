@@ -108,9 +108,9 @@ TEXT = {
     },
     "mechanisms-map.png": {
         "en": ("A subway map: the main line is a request's path — agent, identity, gateway, operational memory, workflow, expert, tool layer, approvals, grounding, answer — with branch lines to the frontier and a person, the library and the router, two depots for the server and the edge runtimes, and a siding for speculative decoding.",
-               '*Every mechanism on one line; each station is a section of this document.*'),
+               '*Every mechanism on one line. The badges number the stations in the order a request meets them, not this document\'s sections — those are: request path §1, identity §2, tool layer §3, grounding §4, approvals §5, out of scope §6, operational memory §8, workflow §9, expert (the harness) §10, library §11, router §14, server and edge §15, speculative decoding §16, corpora, release gate and measurement §12, §13, §17.*'),
         "es": ('Un mapa de subte: la línea principal es el camino de un pedido — agente, identidad, gateway, memoria operativa, flujo, experto, capa de herramientas, aprobaciones, anclaje, respuesta — con ramales a la frontera y a una persona, a la biblioteca y al router, dos depósitos para los runtimes server y edge, y un desvío para la decodificación especulativa.',
-               '*Todos los mecanismos en una línea; cada estación es una sección de este documento.*'),
+               '*Todos los mecanismos en una línea. Los números cuentan las estaciones en el orden en que las recorre un pedido, no las secciones de este documento — que son: camino del pedido §1, identidad §2, capa de herramientas §3, anclaje §4, aprobaciones §5, fuera de alcance §6, memoria operativa §8, flujo §9, experto (el harness) §10, biblioteca §11, router §14, server y edge §15, decodificación especulativa §16, corpus, compuerta de release y medición §12, §13, §17.*'),
     },
 }
 

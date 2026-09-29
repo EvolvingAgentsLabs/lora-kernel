@@ -8,13 +8,9 @@ the run that forced the design, not a preference — and its **evidence**: a mea
 with its run directory, or, honestly, its status if nothing has measured it yet. [`ARCHITECTURE.md`](ARCHITECTURE.md)
 is the map of the whole system; this document is the eighteen things on it, one at a time.
 
-> **[ILLUSTRATION PLACEHOLDER — `docs/img/mechanisms-map.png`, tall, ~1200 × 1600]**
-> *A subway map in the house style: one main line, "a request's path", with stations in order — agent, identity,
-> gateway, operational memory, workflow, expert (LoRA), tool layer, approvals, grounding, answer — and branch lines:
-> "out of scope → frontier / person", "library (pages of statements)", "router". Two depots at the edges: "server
-> (vLLM, Colab)" and "edge (llama.cpp, your machine)"; a siding "speculative decoding". A legend strip at the
-> bottom: "corpora and gates · release gate · measurement discipline". Each station labelled with its section number
-> in MECHANISMS.md (§1–§17).*
+![A subway map: the main line is a request's path — agent, identity, gateway, operational memory, workflow, expert, tool layer, approvals, grounding, answer — with branch lines to the frontier and a person, the library and the router, two depots for the server and the edge runtimes, and a siding for speculative decoding.](img/mechanisms-map.png)
+
+*Every mechanism on one line. The badges number the stations in the order a request meets them, not this document's sections — those are: request path §1, identity §2, tool layer §3, grounding §4, approvals §5, out of scope §6, operational memory §8, workflow §9, expert (the harness) §10, library §11, router §14, server and edge §15, speculative decoding §16, corpora, release gate and measurement §12, §13, §17.*
 
 ## Contents
 
