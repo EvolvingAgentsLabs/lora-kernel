@@ -53,6 +53,7 @@ MAX_MODEL_LEN = 8192
 NOLIB_BAR, ENOUGH, READS_BAR = 0.10, 0.85, 0.70
 SEEDS = (0, 1)
 ARMS = ("nolib", "base-reads", "base-walks")
+FULLTEXT: dict = {}          # one BM25 index per library, built once (REAL1's `+entry` arms)
 
 
 class ContextExhausted(RuntimeError):
@@ -128,6 +129,13 @@ def run_case(lib: Library, row: dict, arm: str, gen_for) -> dict:
             final, chain = gen_for(prompt.SYSTEM_WIKI_READS, user, False)(""), None
         else:
             conv = conversation(lib, row)
+            if arm.endswith("+entry"):
+                from memory.runtime import FullText
+                conv.searcher = FULLTEXT.setdefault(id(lib), FullText(lib))
+                # REAL0's mitigation (results/REAL1-entry-20260930): the first search is the question's, on every shelf,
+                # and an empty search falls back to every shelf — the runtime's, not the member's
+                conv.first_query, conv.entry_all_shelves, conv.fallback = row["question"], True, True
+                rec["entry"] = "question, every shelf, full-text search, fallback"
             final, conv, chain = walk(lib, row, gen_for(prompt.SYSTEM_WIKI, prompt.user_text_wiki(row["question"]), True), conv)
     except ContextExhausted as e:
         return {**rec, "state": "context", "credit": False, "value_right": False, "detail": str(e)[:120]}
@@ -215,7 +223,9 @@ def analyse(arms: dict, rows: list[dict]) -> dict:
     out = {"slices": {k: len(v) for k, v in sl.items()},
            "summary": {a: {k: summarise(r, ids) for k, ids in sl.items()} for a, r in arms.items()}, "pairs": {}}
     duels = [("base-reads", "base-walks")] + [(a, "base-walks") for a in arms if a.startswith("withlib")] \
-        + [(a, "base-reads") for a in arms if a.startswith("withlib")]
+        + [(a, "base-reads") for a in arms if a.startswith("withlib")] \
+        + [(a, "base-walks+entry") for a in arms if a.startswith("withlib") and a.endswith("+entry")] \
+        + [(a, a.removesuffix("+entry")) for a in arms if a.endswith("+entry")]
     for k in ("headline", "all", "hops-2", "hops-3"):
         out["pairs"][k] = [pair(arms[a], arms[b], sl[k], f"{a} vs {b}") for a, b in duels if a in arms and b in arms]
     return out
@@ -357,7 +367,8 @@ def main() -> int:
         return 0
 
     arms = [x for x in a.arms.split(",") if x]
-    members = {x: f"{a.member_prefix}{x.removeprefix('withlib-s')}" for x in arms if x.startswith("withlib-s")}
+    members = {x.removesuffix("+entry"): f"{a.member_prefix}{x.removesuffix('+entry').removeprefix('withlib-s')}"
+               for x in arms if x.startswith("withlib-s")}
     lacking = [x for x, d in members.items() if not Path(d, "adapter_model.safetensors").exists()]
     if lacking:
         print(f"[wiki] cannot score: adapters not on disk {lacking}", flush=True)
@@ -388,7 +399,8 @@ def main() -> int:
         print(f"[wiki] {arm}: {len(todo)} to run, {len(rows) - len(todo)} resumed", flush=True)
         gen_for, t0, n = gen_for_model(model), time.time(), 0
         with ThreadPoolExecutor(max_workers=a.concurrency) as ex:
-            for f in as_completed([ex.submit(run_case, lib, r, "base-walks" if arm.startswith("withlib") else arm, gen_for) for r in todo]):
+            kind = ("base-walks" + ("+entry" if arm.endswith("+entry") else "")) if arm.startswith("withlib") else arm
+            for f in as_completed([ex.submit(run_case, lib, r, kind, gen_for) for r in todo]):
                 x = f.result(); slot[x["id"]] = x; n += 1
                 if n % 10 == 0 or n == len(todo):
                     save()
@@ -415,7 +427,7 @@ def main() -> int:
                 rec["stopped"] = "G1: an adapter is not applied"
             else:
                 for arm in arms:               # nolib FIRST: it is the gate on the whole set
-                    run(arm, served_model(arm, members, a.base))
+                    run(arm, served_model(arm.removesuffix("+entry"), members, a.base))
     finally:
         stop(srv)
     scored = {x: v for x, v in rec["arms"].items()}

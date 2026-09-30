@@ -239,3 +239,32 @@ def test_the_real_library_is_its_sources_ingested_verbatim(tmp_path):
     for n in notes:
         assert (Path("knowledge") / (n.id + ".md")).read_text() == n.serialise(), n.id
     assert {f[0] for f in lint("knowledge/logistics-regs")} <= {"statement-tokens", "statement-sentence"}
+
+
+def test_the_entry_is_the_questions_on_every_shelf_and_an_empty_search_falls_back():
+    """REAL0's failure, replayed: the member's first search names the harness shelf with a memorised query. Under the
+    entry (`first_query` + `entry_all_shelves`) it runs on the question, on every shelf; with `fallback` a later empty
+    search on a named shelf is run on every shelf and says so. Without them: 0 notes, as REAL0 recorded."""
+    from memory.notes import Library
+    from memory.runtime import Conversation
+    lib = Library.load("knowledge/logistics-regs")
+    q = "How long must a carrier keep its training records?"
+    plain = Conversation(lib)
+    assert plain.answer("search", " shelf=harness>approve a supplier invoice payment").startswith("0 notes")
+    entry = Conversation(lib, first_query=q, entry_all_shelves=True, fallback=True)
+    first = entry.answer("search", " shelf=harness>approve a supplier invoice payment")
+    assert not first.startswith("0 notes") and ("1.912" in first or "1.910" in first)
+    later = entry.answer("search", " shelf=harness>record retention")
+    assert later.startswith("0 notes on harness; on every shelf,") and "1.912" in later
+
+
+def test_full_text_search_finds_the_real_pages_a_title_search_misses():
+    """REAL0's library: a person's question shares few words with a regulation's section title, so `Lexical` (when/what)
+    misses the page; `FullText` (BM25 over the statements) finds it. Held on two frozen questions."""
+    from memory.notes import Library
+    from memory.runtime import FullText, Lexical
+    lib = Library.load("knowledge/logistics-regs")
+    q = "When does a forklift count as unattended if the driver can still see it?"
+    assert "logistics-regs/wiki/1910-178" not in Lexical(lib).search(q, None, 3)
+    assert "logistics-regs/wiki/1910-178" in FullText(lib).search(q, None, 3)
+    assert FullText(lib).search(q, None, 3) == FullText(lib).search(q, None, 3)
