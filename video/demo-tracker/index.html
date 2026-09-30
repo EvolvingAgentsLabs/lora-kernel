@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>lora-kernel — demo del tracker de equipo</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <!--
+      Every request, tool call, reply and number on screen is copied from ONE recorded run:
+      results/LIVE-tracker-openclaw-20260930/live.json and events.jsonl (14/14, dependent 8/8, Gemma 4 E4B Q8_0 + tr-s1,
+      llama.cpp on the user's Mac, through OpenClaw 2026.9.4, 2026-09-30). Nothing is re-enacted or invented.
+      Latencies are the gateway's own `latency_s` for that turn's event; "estado" is the event's `state` after the turn.
+      Long results and replies are cut at a word and marked "…"; nothing is reworded.
+      The memory line's shape ("state: … · keys: …") is examples/common/opmemory.context_line — the events do not log
+      the line itself, so the video shows only its shape, never a value it did not record.
+    -->
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body { width: 1920px; height: 1080px; overflow: hidden; background: #f4efe4; }
+      #root {
+        position: relative; width: 100%; height: 100%; overflow: hidden;
+        font-family: ui-sans-serif, system-ui, sans-serif; color: #1d2a24; background: #f4efe4;
+      }
+      .clip { width: 100%; height: 100%; padding: 80px 120px 110px; display: flex; flex-direction: column; justify-content: center; }
+      .serif { font-family: ui-serif, serif; }
+      .mono { font-family: ui-monospace, monospace; }
+      .kicker { font-size: 26px; letter-spacing: 0.18em; text-transform: uppercase; color: #2f6b4f; font-weight: 700; }
+      .h1 { font-size: 80px; line-height: 1.05; font-weight: 700; letter-spacing: -0.02em; max-width: 1600px; }
+      .h2 { font-size: 58px; line-height: 1.1; font-weight: 700; letter-spacing: -0.01em; max-width: 1600px; }
+      .h3 { font-size: 40px; line-height: 1.12; font-weight: 700; letter-spacing: -0.01em; max-width: 1680px; }
+      .lead { font-size: 34px; line-height: 1.4; color: #3d4b44; max-width: 1500px; }
+      .quote { font-size: 46px; font-weight: 700; color: #c8622e; margin-top: 34px; }
+      .quote span { font-size: 30px; font-weight: 500; color: #6b766f; margin-left: 18px; }
+      .rule { width: 160px; height: 6px; background: #c8622e; display: block; margin: 32px 0; }
+      .foot { position: absolute; left: 120px; right: 120px; bottom: 50px; font-size: 22px; color: #6b766f; display: flex; justify-content: space-between; }
+
+      /* the system */
+      .flow { display: flex; align-items: stretch; gap: 26px; margin-top: 50px; }
+      .box { background: #fffdf8; border: 3px solid #1d2a24; border-radius: 18px; padding: 26px 26px; font-size: 27px; line-height: 1.35; flex: 1; }
+      .box b { display: block; font-size: 32px; margin-bottom: 10px; }
+      .box code { font-family: ui-monospace, monospace; font-size: 22px; background: #f6e3d7; color: #8a3d15; padding: 2px 8px; border-radius: 6px; }
+      .box.green { border-color: #2f6b4f; }
+      .box.orange { border-color: #c8622e; }
+      .arrow { align-self: center; font-size: 54px; color: #2f6b4f; flex: 0 0 auto; }
+      .roles { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+      .pill { display: inline-block; padding: 6px 14px; border-radius: 999px; background: #e7efe9; color: #1d4a36; font-size: 22px; font-weight: 600; }
+      .pill.o { background: #f6e3d7; color: #8a3d15; }
+      .pill.g { background: #e2e2dc; color: #3d4b44; }
+      .egress { display: flex; gap: 26px; margin-top: 30px; font-size: 26px; color: #3d4b44; }
+
+      /* a session: one row per turn */
+      .sess { padding: 36px 100px 36px; justify-content: center; }
+      .shead { display: flex; align-items: baseline; gap: 22px; margin-top: 8px; font-size: 22px; color: #6b766f; }
+      .rows { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+      .row { display: grid; grid-template-columns: 158px 310px 1fr 440px; gap: 18px; align-items: center;
+             background: #fffdf8; border: 3px solid #cfd6cf; border-radius: 16px; padding: 10px 16px; }
+      .row.dep { border-color: #c8622e; }
+      .row .n { font-size: 34px; font-weight: 800; color: #2f6b4f; display: flex; flex-direction: column; gap: 6px; }
+      .row .tag { font-size: 16px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #8a3d15; background: #f6e3d7; border-radius: 999px; padding: 4px 10px; align-self: flex-start; }
+      .row .ask { background: #1d2a24; color: #f4efe4; border-radius: 18px 18px 6px 18px; padding: 10px 16px; font-size: 24px; line-height: 1.25; }
+      .row .calls { display: flex; flex-direction: column; gap: 5px; font-size: 18px; line-height: 1.3; }
+      .row .c { background: #eef1ec; border-left: 5px solid #2f6b4f; padding: 4px 10px; border-radius: 6px; }
+      .row .c.mem { background: #f8eadf; border-left-color: #c8622e; }
+      .row .c.mem b { color: #8a3d15; }
+      .row .rep { display: flex; flex-direction: column; gap: 6px; }
+      .row .reply { background: #e7efe9; border-radius: 18px 18px 18px 6px; padding: 8px 14px; font-size: 19px; line-height: 1.3; }
+      .row .meta { font-size: 17px; color: #6b766f; }
+      .callout { margin-top: 14px; font-size: 26px; line-height: 1.3; color: #1d2a24;
+                 background: #fffdf8; border: 3px solid #c8622e; border-radius: 14px; padding: 12px 22px; }
+      .callout b { color: #8a3d15; }
+
+      /* the score */
+      .score { display: grid; grid-template-columns: 1.05fr 1fr; gap: 60px; margin-top: 30px; align-items: center; }
+      .big { font-size: 260px; font-weight: 800; line-height: 1; color: #2f6b4f; letter-spacing: -0.04em; }
+      .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+      .stat { background: #fffdf8; border: 3px solid #1d2a24; border-radius: 16px; padding: 20px 22px; }
+      .stat .n { font-size: 56px; font-weight: 800; line-height: 1; }
+      .stat .l { font-size: 22px; color: #3d4b44; margin-top: 8px; line-height: 1.3; }
+
+      /* the honest end */
+      .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-top: 30px; }
+      .col h3 { font-size: 46px; margin-bottom: 24px; }
+      .col li { font-size: 31px; line-height: 1.38; margin: 0 0 16px 36px; color: #1d2a24; }
+      .url { margin-top: 44px; font-size: 50px; font-weight: 700; color: #2f6b4f; }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="76" data-width="1920" data-height="1080">
+
+      <!-- 1 · title ------------------------------------------------------------------------------------------ -->
+      <section id="s1" class="clip" data-start="0" data-duration="7" data-track-index="0" style="justify-content:center">
+        <div id="s1-k" class="kicker">lora-kernel · demo grabada</div>
+        <div id="s1-t" class="h1 serif" style="margin-top:24px">Un tracker de equipo, tipo Jira + Confluence, atendido por un modelo chico en una laptop</div>
+        <span id="s1-r" class="rule"></span>
+        <div id="s1-l" class="lead">Gemma 4 E4B + su LoRA <b class="mono">tr-s1</b>, con llama.cpp en una Mac, detrás de OpenClaw. En el prompt no viaja la conversación: sólo una línea de estado y las claves.</div>
+        <div id="s1-q" class="quote serif">Llevar las claves, no la conversación.<span>carry the keys, not the conversation</span></div>
+        <div class="foot"><span>Corrida del 2026-09-30 · 14 de 14 turnos</span><span>Equipo sintético · todo lo que aparece es de la corrida real</span></div>
+      </section>
+
+      <!-- 2 · the system -------------------------------------------------------------------------------------- -->
+      <section id="s2" class="clip" data-start="7" data-duration="10" data-track-index="0">
+        <div class="kicker">El sistema</div>
+        <div id="s2-t" class="h2 serif" style="margin-top:14px">Un agente real por rol. Detrás, un modelo local que no ve el historial.</div>
+        <div class="flow">
+          <div id="s2-b1" class="box"><b>Agentes (OpenClaw 2026.9.4)</b>uno por rol, cada uno con su propia sesión<div class="roles"><span class="pill">lead</span><span class="pill">developer</span><span class="pill">qa</span></div></div>
+          <div id="s2-a1" class="arrow">→</div>
+          <div id="s2-b2" class="box orange"><b>Gateway + memoria operativa</b>En vez de la conversación, una línea:<br /><code>state: … · keys: …</code><br />y dos verbos, <code>get</code> y <code>put</code>. Sin bloque de herramientas.</div>
+          <div id="s2-a2" class="arrow">→</div>
+          <div id="s2-b3" class="box green"><b>El experto del rol</b>Gemma 4 E4B (Q8_0) + LoRA <span class="mono">tr-s1</span>, llama.cpp en una Mac M4 de 16 GB.</div>
+          <div id="s2-a3" class="arrow">→</div>
+          <div id="s2-b4" class="box"><b>Las herramientas del tracker</b>issues, transiciones, horas, comentarios, el tablero del sprint y las páginas del wiki.</div>
+        </div>
+        <div id="s2-e" class="egress"><span class="pill g">los 14 turnos servidos localmente · nada a la frontera</span><span class="pill g">cada turno, un evento en el log del gateway</span></div>
+      </section>
+
+      <!-- 3 · lead ------------------------------------------------------------------------------------------------ -->
+      <section id="s3" class="clip sess" data-start="17" data-duration="14" data-track-index="0">
+        <div class="kicker">Sesión 1 de 3 · lead · 5 turnos</div>
+        <div class="h3 serif" style="margin-top:10px">Reporta un bug, lo asigna, consulta la política y el sprint, y lo vuelve a traer.</div>
+        <div class="shead"><span class="pill">lead</span><span class="mono">--session-id live-lead-harborworks-083307</span><span>pedido · llamadas que corrió el gateway · respuesta</span></div>
+        <div class="rows">
+          <div id="r0-0" class="row">
+            <div class="n">1</div>
+            <div class="ask">Please report a bug — Invoice PDF shows the wrong total</div>
+            <div class="calls mono"><div class="c"><b>issue_create</b>(type=bug, summary=Invoice PDF shows the wrong total) → created HW-398 [bug] Invoice PDF shows the wrong total</div><div class="c mem"><b>put</b>(&quot;issue=HW-398&quot;) → stored issue</div></div>
+            <div class="rep"><div class="reply">According to the system: created HW-398 [bug] Invoice PDF shows the wrong total; stored issue.</div><div class="meta">4,0 s · 410 tokens de prompt · estado on_issue</div></div>
+          </div>
+          <div id="r0-1" class="row dep">
+            <div class="n">2<span class="tag">dependiente</span></div>
+            <div class="ask">Let Ana own it.</div>
+            <div class="calls mono"><div class="c mem"><b>get</b>(&quot;issue&quot;) → HW-398</div><div class="c"><b>issue_assign</b>(key=HW-398, person=Ana) → assigned HW-398 to Ana Luna</div></div>
+            <div class="rep"><div class="reply">According to the system: HW-398; assigned HW-398 to Ana Luna.</div><div class="meta">3,04 s · 357 tokens de prompt · estado on_issue</div></div>
+          </div>
+          <div id="r0-2" class="row">
+            <div class="n">3</div>
+            <div class="ask">Critical bugs — what&#x27;s the policy?</div>
+            <div class="calls mono"><div class="c"><b>page_read</b>(ref=bug-policy#critical) → [bug-policy#critical] A critical bug is triaged within 8 hours and assigned the …</div></div>
+            <div class="rep"><div class="reply">According to the system: [bug-policy#critical] A critical bug is triaged within 8 hours and assigned the same …</div><div class="meta">3,24 s · 247 tokens de prompt · estado on_issue</div></div>
+          </div>
+          <div id="r0-3" class="row">
+            <div class="n">4</div>
+            <div class="ask">How is the current sprint going?</div>
+            <div class="calls mono"><div class="c"><b>sprint_board</b>() → Sprint 23: done 4 issues (20 pts); in_progress 1 issues (2 pts); in_review 6 issues …</div></div>
+            <div class="rep"><div class="reply">According to the system: Sprint 23: done 4 issues (20 pts); in_progress 1 issues (2 pts); in_review 6 issues …</div><div class="meta">5,14 s · 276 tokens de prompt · estado planning</div></div>
+          </div>
+          <div id="r0-4" class="row dep">
+            <div class="n">5<span class="tag">dependiente</span></div>
+            <div class="ask">Bring back the bug you just filed.</div>
+            <div class="calls mono"><div class="c mem"><b>get</b>(&quot;issue&quot;) → HW-398</div><div class="c"><b>issue_get</b>(key=HW-398) → HW-398 [bug] Invoice PDF shows the wrong total — status triage · assignee Ana Luna …</div></div>
+            <div class="rep"><div class="reply">According to the system: HW-398; HW-398 [bug] Invoice PDF shows the wrong total — status triage · assignee …</div><div class="meta">4,52 s · 384 tokens de prompt · estado on_issue</div></div>
+          </div>
+        </div>
+        <div id="s3-co" class="callout">«Let Ana own it.» no nombra el issue, y el modelo no ve el turno anterior: lo lee de la memoria, <b>get("issue") → HW-398</b>, y asigna.</div>
+      </section>
+
+      <!-- 4 · developer ------------------------------------------------------------------------------------------ -->
+      <section id="s4" class="clip sess" data-start="31" data-duration="14" data-track-index="0">
+        <div class="kicker">Sesión 2 de 3 · developer · 5 turnos</div>
+        <div class="h3 serif" style="margin-top:10px">Abre un issue y guarda dos claves; los cuatro turnos siguientes dicen sólo «it».</div>
+        <div class="shead"><span class="pill">developer</span><span class="mono">--session-id live-developer-harborworks-083307</span><span>pedido · llamadas que corrió el gateway · respuesta</span></div>
+        <div class="rows">
+          <div id="r1-0" class="row">
+            <div class="n">1</div>
+            <div class="ask">Details on HW-245?</div>
+            <div class="calls mono"><div class="c"><b>issue_get</b>(key=HW-245) → HW-245 [story] Add reports export to CSV — status in_progress · assignee Ana Luna …</div><div class="c mem"><b>put</b>(&quot;issue=HW-245&quot;) → stored issue</div><div class="c mem"><b>put</b>(&quot;component=reports&quot;) → stored component</div></div>
+            <div class="rep"><div class="reply">According to the system: HW-245 [story] Add reports export to CSV — status in_progress · assignee Ana Luna …</div><div class="meta">7,37 s · 656 tokens de prompt · estado on_issue</div></div>
+          </div>
+          <div id="r1-1" class="row dep">
+            <div class="n">2<span class="tag">dependiente</span></div>
+            <div class="ask">Transition it to in review.</div>
+            <div class="calls mono"><div class="c mem"><b>get</b>(&quot;issue&quot;) → HW-245</div><div class="c"><b>issue_transition</b>(key=HW-245, status=in_review) → moved HW-245 from in_progress to in_review</div></div>
+            <div class="rep"><div class="reply">According to the system: HW-245; moved HW-245 from in_progress to in_review.</div><div class="meta">3,62 s · 379 tokens de prompt · estado on_issue</div></div>
+          </div>
+          <div id="r1-2" class="row dep">
+            <div class="n">3<span class="tag">dependiente</span></div>
+            <div class="ask">Track 3h against it.</div>
+            <div class="calls mono"><div class="c mem"><b>get</b>(&quot;issue&quot;) → HW-245</div><div class="c"><b>worklog_add</b>(key=HW-245, hours=3) → logged 3h on HW-245 (total 3h)</div></div>
+            <div class="rep"><div class="reply">According to the system: HW-245; logged 3h on HW-245 (total 3h).</div><div class="meta">3,61 s · 384 tokens de prompt · estado on_issue</div></div>
+          </div>
+          <div id="r1-3" class="row dep">
+            <div class="n">4<span class="tag">dependiente</span></div>
+            <div class="ask">Its component — who owns it?</div>
+            <div class="calls mono"><div class="c mem"><b>get</b>(&quot;component&quot;) → reports</div><div class="c"><b>page_read</b>(ref=components#reports) → [components#reports] The reports component is owned by Irene Ortiz.</div></div>
+            <div class="rep"><div class="reply">According to the system: reports; [components#reports] The reports component is owned by Irene Ortiz..</div><div class="meta">2,98 s · 364 tokens de prompt · estado on_issue</div></div>
+          </div>
+          <div id="r1-4" class="row dep">
+            <div class="n">5<span class="tag">dependiente</span></div>
+            <div class="ask">Annotate it: tested with a large account</div>
+            <div class="calls mono"><div class="c mem"><b>get</b>(&quot;issue&quot;) → HW-245</div><div class="c"><b>issue_comment</b>(key=HW-245, text=tested with a large account) → commented on HW-245 (#14)</div></div>
+            <div class="rep"><div class="reply">According to the system: HW-245; commented on HW-245 (#14).</div><div class="meta">3,47 s · 387 tokens de prompt · estado on_issue</div></div>
+          </div>
+        </div>
+        <div id="s4-co" class="callout">«Its component — who owns it?»: <b>get("component") → reports</b>, y de ahí a la página <b>components#reports</b> → Irene Ortiz.</div>
+      </section>
+
+      <!-- 5 · qa ------------------------------------------------------------------------------------------------ -->
+      <section id="s5" class="clip sess" data-start="45" data-duration="11" data-track-index="0">
+        <div class="kicker">Sesión 3 de 3 · qa · 4 turnos</div>
+        <div class="h3 serif" style="margin-top:10px">Revisa un issue, lo da por terminado, lee el criterio de «done» y comenta.</div>
+        <div class="shead"><span class="pill">qa</span><span class="mono">--session-id live-qa-harborworks-083307</span><span>pedido · llamadas que corrió el gateway · respuesta</span></div>
+        <div class="rows">
+          <div id="r2-0" class="row">
+            <div class="n">1</div>
+            <div class="ask">What does HW-254 look like?</div>
+            <div class="calls mono"><div class="c"><b>issue_get</b>(key=HW-254) → HW-254 [story] Show search history in the dashboard — status qa · assignee Walter …</div><div class="c mem"><b>put</b>(&quot;issue=HW-254&quot;) → stored issue</div></div>
+            <div class="rep"><div class="reply">According to the system: HW-254 [story] Show search history in the dashboard — status qa · assignee Walter …</div><div class="meta">6,35 s · 444 tokens de prompt · estado testing</div></div>
+          </div>
+          <div id="r2-1" class="row dep">
+            <div class="n">2<span class="tag">dependiente</span></div>
+            <div class="ask">QA passed, it&#x27;s done.</div>
+            <div class="calls mono"><div class="c mem"><b>get</b>(&quot;issue&quot;) → HW-254</div><div class="c"><b>issue_transition</b>(key=HW-254, status=done) → moved HW-254 from qa to done</div></div>
+            <div class="rep"><div class="reply">According to the system: HW-254; moved HW-254 from qa to done.</div><div class="meta">3,24 s · 352 tokens de prompt · estado testing</div></div>
+          </div>
+          <div id="r2-2" class="row">
+            <div class="n">3</div>
+            <div class="ask">Done criteria for tests?</div>
+            <div class="calls mono"><div class="c"><b>page_read</b>(ref=definition-of-done#tests) → [definition-of-done#tests] An issue is done only when its tests pass on CI.</div></div>
+            <div class="rep"><div class="reply">According to the system: [definition-of-done#tests] An issue is done only when its tests pass on CI..</div><div class="meta">3,69 s · 229 tokens de prompt · estado testing</div></div>
+          </div>
+          <div id="r2-3" class="row dep">
+            <div class="n">4<span class="tag">dependiente</span></div>
+            <div class="ask">Remark on it: tested with a large account</div>
+            <div class="calls mono"><div class="c mem"><b>get</b>(&quot;issue&quot;) → HW-254</div><div class="c"><b>issue_comment</b>(key=HW-254, text=tested with a large account) → commented on HW-254 (#15)</div></div>
+            <div class="rep"><div class="reply">According to the system: HW-254; commented on HW-254 (#15).</div><div class="meta">4,95 s · 360 tokens de prompt · estado testing</div></div>
+          </div>
+        </div>
+        <div id="s5-co" class="callout">«QA passed, it's done.»: <b>get("issue") → HW-254</b>, y la transición qa → done por clave.</div>
+      </section>
+
+      <!-- 6 · the score ---------------------------------------------------------------------------------------- -->
+      <section id="s6" class="clip" data-start="56" data-duration="10" data-track-index="0">
+        <div class="kicker">El resultado de la corrida</div>
+        <div class="score">
+          <div>
+            <div id="s6-big" class="big">14/14</div>
+            <div class="lead" style="margin-top:44px">turnos bien, en tres sesiones: lead 5/5, developer 5/5, qa 4/4. Umbral fijado antes de correr: todos los dependientes y al menos 13 de 14.</div>
+          </div>
+          <div class="stats">
+            <div id="s6-a" class="stat"><div class="n">8/8</div><div class="l">turnos dependientes — resueltos por clave, con <span class="mono">get</span></div></div>
+            <div id="s6-b" class="stat"><div class="n">3,7 s</div><div class="l">mediana de latencia del gateway por turno (máx. 7,4 s)</div></div>
+            <div id="s6-c" class="stat"><div class="n">~370</div><div class="l">tokens de prompt por turno (mediana 371, máx. 656)</div></div>
+            <div id="s6-d" class="stat"><div class="n">0</div><div class="l">errores o rechazos de herramientas · sin bloque de herramientas</div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 7 · what it is, and what it is not --------------------------------------------------------------------- -->
+      <section id="s7" class="clip" data-start="66" data-duration="10" data-track-index="0">
+        <div class="kicker">Dicho claro</div>
+        <div class="cols">
+          <div id="s7-c1" class="col"><h3 class="serif">Lo que es</h3><ul>
+            <li>Una corrida real, grabada, en una laptop, a través de un runtime de agentes real.</li>
+            <li>Sesiones de 4 y 5 turnos llevadas por clave: una línea de estado, sin conversación, sin esquema de herramientas.</li>
+          </ul></div>
+          <div id="s7-c2" class="col"><h3 class="serif">Lo que no es</h3><ul>
+            <li>Una tasa: una pasada, una sesión por rol — una demostración con umbral.</li>
+            <li>La tasa es H3: <b>158/160</b> con bloque, <b>156/160</b> sin bloque, sobre una suite retenida nueva:<br /><span class="mono" style="font-size:24px; white-space:nowrap">results/H3-tracker-corpus-v2-20260929</span></li>
+            <li>Datos reales: el equipo es sintético.</li>
+          </ul></div>
+        </div>
+        <div id="s7-u" class="url mono">github.com/EvolvingAgentsLabs/lora-kernel</div>
+      </section>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const up = (sel, at, d = 0.6) => tl.fromTo(sel, { opacity: 0, y: 36 }, { opacity: 1, y: 0, duration: d, ease: "power3.out" }, at);
+      const dim = (sels, at) => tl.to(sels, { opacity: 0.3, duration: 0.5, ease: "power1.out" }, at);
+
+      // 1
+      up("#s1-k", 0.3); up("#s1-t", 0.6, 0.8);
+      tl.fromTo("#s1-r", { scaleX: 0, transformOrigin: "left center" }, { scaleX: 1, duration: 0.6, ease: "power2.out" }, 1.4);
+      up("#s1-l", 1.8); up("#s1-q", 3.0);
+      // 2
+      up("#s2-t", 7.3); ["#s2-b1", "#s2-a1", "#s2-b2", "#s2-a2", "#s2-b3", "#s2-a3", "#s2-b4"].forEach((s, i) => up(s, 8.0 + i * 0.55, 0.5));
+      up("#s2-e", 12.4);
+      // 3 · lead — turns 2 and 5 depend on the memory
+      [0, 1, 2, 3, 4].forEach((i) => up(`#r0-${i}`, 17.8 + i * 1.6, 0.5));
+      up("#s3-co", 25.8); dim(["#r0-0", "#r0-2", "#r0-3"], 26.6);
+      // 4 · developer — the component owner
+      [0, 1, 2, 3, 4].forEach((i) => up(`#r1-${i}`, 31.8 + i * 1.6, 0.5));
+      up("#s4-co", 39.8); dim(["#r1-0", "#r1-1", "#r1-2", "#r1-4"], 40.6);
+      // 5 · qa
+      [0, 1, 2, 3].forEach((i) => up(`#r2-${i}`, 45.6 + i * 1.4, 0.5));
+      up("#s5-co", 51.6); dim(["#r2-0", "#r2-2", "#r2-3"], 52.4);
+      // 6
+      tl.fromTo("#s6-big", { opacity: 0, scale: 0.8 }, { opacity: 1, scale: 1, duration: 0.8, ease: "back.out(1.6)" }, 56.3);
+      ["#s6-a", "#s6-b", "#s6-c", "#s6-d"].forEach((s, i) => up(s, 57.4 + i * 0.6, 0.5));
+      // 7
+      up("#s7-c1", 66.4); up("#s7-c2", 67.6); up("#s7-u", 69.4);
+
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>

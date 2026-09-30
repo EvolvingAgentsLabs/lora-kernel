@@ -33,6 +33,10 @@ copied from one recorded run — [`results/DEMO-school-diagram-20260926/`](resul
 Gemma 4 E4B + a school-staff LoRA behind the gateway. Synthetic schools; identity, payments and monitoring are demo stand-ins.
 The video is HTML rendered with [HyperFrames](https://github.com/heygen-com/hyperframes): [`video/demo-escuela/`](video/README.md).
 
+**And the team tracker, multi-turn, on a laptop (76 s): [the MP4 (2.4 MB)](docs/video/demo-tracker.mp4)** · in Spanish · three
+sessions through OpenClaw, Gemma 4 E4B + `tr-s1` on llama.cpp, carrying the keys, not the conversation — every turn copied from
+[`results/LIVE-tracker-openclaw-20260930/`](results/LIVE-tracker-openclaw-20260930/BRIEF.md), **14/14**, dependent 8/8 · [`video/demo-tracker/`](video/README.md).
+
 **And live, not only scripted [ran] 2026-09-26: 15/15 through the real OpenClaw.** The same scenes sent by OpenClaw 2026.9.4
 itself — one profile per role, each holding its signed token as the provider key — to the gateway, with the member on a
 rented L4 and **Claude Haiku 4.5 as the frontier** for what no tool covers: every scene passes, the one frontier turn cost
