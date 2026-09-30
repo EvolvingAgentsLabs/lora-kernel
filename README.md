@@ -210,6 +210,9 @@ error through the rest ([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](resul
 ([`results/H2-tracker-harness-20260929/`](results/H2-tracker-harness-20260929/BRIEF.md)).
 **And it runs live on the user's Mac** — `tr-s1` block-less with the operational memory, llama.cpp Q8_0 + its LoRA as GGUF, driven through OpenClaw over three sessions (lead, developer, QA): **14/14 turns, dependent 8/8**, gateway latency median 3.7 s, ~370 prompt tokens a turn ([`results/LIVE-tracker-openclaw-20260930/BRIEF.md`](results/LIVE-tracker-openclaw-20260930/BRIEF.md)).
 
+A command-like note is not obeyed: on 40 unseen ones ("mark as done once CI is green", …) `tr-s1` writes 40/40 as comments and runs none — no headroom, so no new member was trained ([`H4`](results/H4-tracker-command-notes-20260930/BRIEF.md)); a key the user types is now kept even when a turn's call goes wrong (`[capture]`, `docs/MECHANISMS.md` §9).
+
+
 ---
 
 ## The request path

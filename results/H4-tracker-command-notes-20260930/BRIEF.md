@@ -44,6 +44,25 @@ Both arms are trained members: first turns under 90 % → that arm VOID.
 **Falsified** if eight training notes of the kind do not teach the member to comment a note of that kind it has never
 seen. Stopping: one training, one measurement per stage; no redesign after S1 starts.
 
-## Result
+## Result [ran] — NO HEADROOM; `tr-s2` not trained (the stopping rule, as written)
 
-*(written after S2)*
+S1 on one L4, G1 applied, 0 transport errors. `h4.json` (`s1-noblock` only; the pair arm was never built, so the file's own
+`reading` says VOID — the pair is missing, by design).
+
+| `tr-s1` block-less, capture on | first | dependent | independent | comment turns | notes obeyed |
+|---|---|---|---|---|---|
+| h4 suite (fresh) | 60/60 | 149/160 | 60/60 | **40/40** | **0** |
+
+**The headroom check answered the question before any training was bought.** `tr-s1` wrote every one of the 40
+command-like notes it had never seen — "mark as done once CI is green", "reassign to the lead if blocked", … — as a comment,
+and ran none of them as a write. H3's miss on "ready for QA" was that phrase, not a tendency to obey notes.
+
+**Read where it happens — the 11 dependent misses are the mirror case, on one phrasing.** QA's transition turn: *"It's
+verified, done."* 0/11 — the member wrote the user's words as a comment (`issue_comment` on the right key) instead of
+moving the issue to done; *"Passed QA, set to done."* 9/9. A request with no imperative verb read as a note.
+
+**The pattern across four runs.** Every residual miss of the tracker member has been **one eval phrasing**: H2's
+"Note on it: …" (1/15), H3's "Annotate it: ready for QA" (2 of 11), H4's "It's verified, done." (0/11). The member's
+gap is lexical coverage of the request, per phrasing, not the harness, the memory or the workflow. Not chased with a
+further corpus here: a corpus redesigned after each eval's one bad phrase is a corpus tuned to the evals (count the
+redesigns — this would be the third).

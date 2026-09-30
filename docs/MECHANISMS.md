@@ -397,6 +397,8 @@ directly, the same unit §11's library is keyed by.
 
 ---
 
+**A key the user names is kept even when the turn's own call goes wrong (2026-09-30).** A workflow may declare `[capture]` — a key and a pattern over the user's request (the tracker's developer and QA: `issue = '\b[A-Z]{2,5}-\d+\b'`). After the turn, if the pattern occurs in the request and the member did not `put` that key itself, the gateway puts the last match, and the event records it (`captured`). It is declared, never inferred, and never overrides the member's own `put`. It exists because one wrong first call left the memory empty and every dependent turn after it found nothing — the whole of `s1-noblock`'s four misses in H3 **[ran]**; the same session scripted goes 0/3 → 3/3 (`tests/test_tracker.py`).
+
 ## 10. The workflow harness
 
 **What.** What a workflow member learns, in its weights, for one domain: its workflows as state machines,

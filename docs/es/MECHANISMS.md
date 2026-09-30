@@ -434,6 +434,8 @@ del §11 se indexa.
 
 ---
 
+**Una clave que nombra el usuario se conserva aunque la llamada del propio turno salga mal (2026-09-30).** Un flujo puede declarar `[capture]` — una clave y un patrón sobre el pedido del usuario (el developer y QA del tracker: `issue = '\b[A-Z]{2,5}-\d+\b'`). Después del turno, si el patrón aparece en el pedido y el miembro no hizo `put` de esa clave él mismo, el gateway guarda la última coincidencia, y el evento lo registra (`captured`). Se declara, nunca se infiere, y nunca pisa el `put` del miembro. Existe porque una primera llamada equivocada dejó la memoria vacía y cada turno dependiente posterior no encontró nada — las cuatro fallas de `s1-noblock` en H3 **[ran]**; la misma sesión, guionada, pasa de 0/3 a 3/3 (`tests/test_tracker.py`).
+
 ## 10. El arnés de flujo de trabajo
 
 **Qué.** Lo que aprende un miembro de flujo de trabajo, en sus pesos, para un dominio: sus flujos de
