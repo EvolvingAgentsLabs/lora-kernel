@@ -237,6 +237,8 @@ error en cascada por el resto
 
 Una nota con forma de orden no se obedece: sobre 40 nunca vistas ("mark as done once CI is green", …) `tr-s1` escribe 40/40 como comentarios y no ejecuta ninguna — sin margen, así que no se entrenó un miembro nuevo ([`H4`](results/H4-tracker-command-notes-20260930/BRIEF.md)); una clave que escribe el usuario ahora se conserva aunque la llamada de un turno salga mal (`[capture]`, `docs/MECHANISMS.md` §9).
 
+**El recorrido de la memoria todavía no se transfiere a documentos reales** — sobre una biblioteca ingerida textual de regulaciones de EE. UU., `distributor-wiki@v2` saca 0/25 de varios saltos (el base sin entrenar con los enunciados correctos abiertos: 22/25): busca con consultas memorizadas de su mundo de entrenamiento generado y nunca abre una página ([`REAL0`](results/REAL0-real-library-20260930/BRIEF.md)).
+
 
 ---
 

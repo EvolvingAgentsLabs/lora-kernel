@@ -1,0 +1,48 @@
+=== session 1 of 2 · srv123104 · L4
+    boot clone: rc=0 d1f1f2c REAL0 pre-registered: a real library, ingested verbatim from US regulations, and 40 frozen questions
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 d1f1f2c REAL0 pre-registered: a real library, ingested verbatim from US regulations, and 40 frozen questions
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    d1f1f2c REAL0 pre-registered: a real library, ingested verbatim from US regulations, and 40 frozen questions | 0.30.0
+    carried the adapters in (3 chunks)
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/wiki-cmp-walks-s1
+    srv123104 did not answer a probe (1 of 3)
+    srv123104 did not answer a probe (2 of 3)
+    srv123104 did not answer a probe (3 of 3)
+    srv123104 is not answering — giving up on it
+=== session 2 of 2 · srv133458 · L4
+    boot clone: rc=0 d1f1f2c REAL0 pre-registered: a real library, ingested verbatim from US regulations, and 40 frozen questions
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 d1f1f2c REAL0 pre-registered: a real library, ingested verbatim from US regulations, and 40 frozen questions
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    d1f1f2c REAL0 pre-registered: a real library, ingested verbatim from US regulations, and 40 frozen questions | 0.30.0
+    carried the partial results in
+    carried the adapters in (3 chunks)
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/wiki-cmp-walks-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/wiki-cmp-walks-s1
+    [wiki] base-reads 30/40 credit 29 value-right 29 errors 0 6s
+    [wiki] base-reads 40/40 credit 37 value-right 37 errors 0 7s
+    [wiki] base-walks: 40 to run, 0 resumed
+    [wiki] headline · withlib-s1 vs base-walks: tie (0:1, p=1.0)
+    [wiki] headline · withlib-s1 vs base-reads: REGRESSION (0:22, p=0.0)
+    [wiki] NAVIGATION IS THE GAP: base-reads 88% vs base-walks 4%, improvement (21:0, p=0.0) — train the trajectory LoRA, 2 seeds
+    the runner wrote its result — done
+exit 0

@@ -218,6 +218,8 @@ error through the rest ([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](resul
 
 A command-like note is not obeyed: on 40 unseen ones ("mark as done once CI is green", …) `tr-s1` writes 40/40 as comments and runs none — no headroom, so no new member was trained ([`H4`](results/H4-tracker-command-notes-20260930/BRIEF.md)); a key the user types is now kept even when a turn's call goes wrong (`[capture]`, `docs/MECHANISMS.md` §9).
 
+**The memory's walk does not yet transfer to real documents** — on a library ingested verbatim from US regulations, `distributor-wiki@v2` scores 0/25 multi-hop (the untrained base with the right statements open: 22/25): it searches with queries memorised from its generated training world and never opens a page ([`REAL0`](results/REAL0-real-library-20260930/BRIEF.md)).
+
 
 ---
 

@@ -85,6 +85,11 @@ def grade(row: dict, reply: str, conv=None) -> dict:
     holds = c["verified"] and all(_has(c.get("text", ""), t) for t in row["check"]["tokens"])
     if c["verified"] and not holds:
         c["why"] = "the cited statement does not hold the value"
+    # STRICT CITATION, opt-in per row (`check.cite == "support"`): on real documents a value like "12 months" sits in a
+    # dozen statements, so "the cited statement holds the value" passes a walk that cited the wrong one. There the
+    # citation must BE the supporting statement (REAL0's brief; W9's rows do not set it and grade as before).
+    if holds and row["check"].get("cite") == "support" and c["cited"] != list(row["support"]):
+        holds, c["why"] = False, "the cited statement holds the value but is not the one the question asks about"
     state = "right" if (ok and holds) else ("unverified" if ok else "wrong")
     return {"state": state, "value_right": ok, "verified": bool(holds), "cited": c["cited"],
             "why": None if holds else c.get("why"), "supporting": list(row["support"]) if row.get("support") else None,

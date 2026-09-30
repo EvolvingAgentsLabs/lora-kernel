@@ -60,7 +60,10 @@ class ContextExhausted(RuntimeError):
 
 
 def load_rows(name: str = "eval") -> list[dict]:
-    return [json.loads(l) for l in (DATA / f"{name}.jsonl").read_text().splitlines() if l.strip()]
+    """`eval` → training/wiki/data/eval.jsonl; a path (with a `/` or `.jsonl`) is read as given — the real-documents
+    library's questions live beside its run (results/REAL0-…/questions.jsonl)."""
+    f = Path(name) if ("/" in name or name.endswith(".jsonl")) else DATA / f"{name}.jsonl"
+    return [json.loads(l) for l in f.read_text().splitlines() if l.strip()]
 
 
 def conversation(lib: Library, row: dict) -> Conversation:
@@ -280,7 +283,8 @@ def main() -> int:
     ap.add_argument("--max-tokens", type=int, default=120)
     ap.add_argument("--max-tokens-plain", type=int, default=160)
     ap.add_argument("--concurrency", type=int, default=8)
-    ap.add_argument("--rows", default="eval", help="which question set: eval (W9) or eval_hard (B3's comparisons)")
+    ap.add_argument("--rows", default="eval", help="which question set: eval (W9) or eval_hard (B3's comparisons), or a path")
+    ap.add_argument("--library", default=str(LIBRARY), help="the library walked (REAL0: knowledge/logistics-regs, real documents)")
     ap.add_argument("--member-prefix", default="adapters/wiki-walks-s", help="where withlib-s<k> lives (B3: adapters/wiki12b-walks-s)")
     ap.add_argument("--corpus", default="train", help="training/wiki/data/<corpus>.jsonl to train on (B5: train_cmp, W9's plus comparisons)")
     ap.add_argument("--out", default="wiki_arm.json")
@@ -295,7 +299,7 @@ def main() -> int:
         rec["arms"].update({k: v for k, v in more["arms"].items() if k.startswith("withlib-s")})
         rec["G1"] = {**rec.get("G1", {}), **more.get("G1", {})}
         rec["scoring_from"] = a.combine
-        rec["analysis"] = analyse(rec["arms"], load_rows("eval"))
+        rec["analysis"] = analyse(rec["arms"], load_rows(a.rows))
         rec["verdict"] = verdict(rec)
         Path(a.out).write_text(json.dumps(rec, indent=1, ensure_ascii=False))
         for p in rec["analysis"]["pairs"]["headline"]:
@@ -305,9 +309,9 @@ def main() -> int:
     out = Path(a.out); out.parent.mkdir(parents=True, exist_ok=True)
     rec = json.loads(out.read_text()) if out.exists() else {}
     rec.update(base=a.base, started=rec.get("started") or time.strftime("%Y-%m-%dT%H:%M:%S"), grader="training.wiki.grade",
-               library=str(LIBRARY), eval_world=wd.EVAL_SEED)
+               library=str(a.library), eval_world=wd.EVAL_SEED)
     rec.setdefault("arms", {})
-    lib = Library.load(LIBRARY)
+    lib = Library.load(a.library)
     rows = load_rows(a.rows)
 
     def save():
