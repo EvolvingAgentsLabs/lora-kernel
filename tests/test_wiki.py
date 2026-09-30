@@ -208,3 +208,34 @@ def test_a_member_is_served_under_its_lora_name_never_its_path():
     members = {"withlib-s0": "adapters/wiki-walks-s0"}
     assert wa.served_model("withlib-s0", members, wa.BASE) == "withlib-s0"
     assert wa.served_model("base-walks", members, wa.BASE) == wa.BASE
+
+
+def test_strict_citation_rejects_the_wrong_statement_that_holds_the_same_value():
+    """REAL0: on real documents "12 months" sits in a dozen statements. With `check.cite == "support"` a walk that opened
+    and cited another 12-month paragraph is `unverified`, not `right`; without it (W9's rows) it would pass."""
+    from types import SimpleNamespace
+    from training.wiki import grade as gr
+    texts = {("p/1-912", "c"): "(c) Carriers must retain training records for a period of 12 months.",
+             ("p/1-912", "d"): "(d) Any person must retain other written agreements for a period of 12 months."}
+    conv = SimpleNamespace(shown={"a1b": "p/1-912"}, statements=set(texts), lib={"p/1-912": None},
+                           _statement_text=lambda note, anchor: texts[("p/1-912", anchor)])
+    row = {"question": "How long must we keep a driver's training record?", "support": ["p/1-912", "c"],
+           "check": {"kind": "value", "tokens": ["12"], "cite": "support"}}
+    assert gr.grade(row, "12 months [a1b§c]", conv)["state"] == "right"
+    assert gr.grade(row, "12 months [a1b§d]", conv)["state"] == "unverified"
+    loose = {**row, "check": {"kind": "value", "tokens": ["12"]}}
+    assert gr.grade(loose, "12 months [a1b§d]", conv)["state"] == "right"
+
+
+def test_the_real_library_is_its_sources_ingested_verbatim(tmp_path):
+    """knowledge/logistics-regs is exactly what memory/ingest.py makes of the eCFR XML committed beside REAL0 — no page
+    edited by hand — and every link it wrote resolves."""
+    from pathlib import Path
+    from memory import ingest
+    from memory.lint import lint
+    src = sorted(Path("results/REAL0-real-library-20260930/sources").glob("*.xml"))
+    notes = ingest.ingest(src, "logistics-regs")
+    assert len(notes) == 20
+    for n in notes:
+        assert (Path("knowledge") / (n.id + ".md")).read_text() == n.serialise(), n.id
+    assert {f[0] for f in lint("knowledge/logistics-regs")} <= {"statement-tokens", "statement-sentence"}
