@@ -94,6 +94,46 @@ class Lexical:
         return [i for _, i in sorted(scored)[:k]]
 
 
+@dataclass
+class FullText:
+    r"""Full-text search: Okapi BM25 over a note's statements (its body), plus a flat bonus per query word in its
+    `when`/`what`. Standard parameters, $k_1 = 1.2$, $b = 0.75$, never tuned on a question set.
+
+    WHY (REAL0 [ran]): an ingested real page's `when`/`what` is its section title, and a person's question shares few
+    words with a regulation's title — `Lexical` found the page a walk starts on for 5 of 36 questions, the supporting
+    page for 10. The words are in the statements: BM25 over them finds the start 34/36 and the support 32/36 (k = 3).
+    Deterministic: ties break on the note id.
+
+    $$\mathrm{score}(n\mid q)=\sum_{w\in q} \mathrm{idf}(w)\,\frac{f_{w,n}(k_1+1)}{f_{w,n}+k_1\,(1-b+b\,|n|/\overline{|n|})}
+      + 2\,\bigl|q\cap(\mathrm{when}\cup\mathrm{what})\bigr|,\qquad \mathrm{idf}(w)=\ln\!\Bigl(1+\frac{N-\mathrm{df}_w+0.5}{\mathrm{df}_w+0.5}\Bigr)$$
+    """
+    lib: Library
+    k1: float = 1.2
+    b: float = 0.75
+
+    def __post_init__(self):
+        from collections import Counter
+        self._head = {i: _words(n.when) | _words(n.what) for i, n in self.lib.notes.items()}
+        self._body = {i: Counter(w for st in statements_of(n.body)[0] for w in _words(st.text)) if n.is_page
+                      else Counter(_words(n.body)) for i, n in self.lib.notes.items()}
+        self._len = {i: sum(c.values()) or 1 for i, c in self._body.items()}
+        self._avg = sum(self._len.values()) / max(1, len(self._len))
+        self._df = Counter(w for i in self._body for w in set(self._body[i]) | self._head[i])
+
+    def search(self, query: str, shelf: str | None = None, k: int = K) -> list[str]:
+        import math
+        q, n_docs, scored = _words(query), len(self._body), []
+        for i, note in self.lib.notes.items():
+            if shelf and note.shelf != shelf:
+                continue
+            f, norm = self._body[i], self.k1 * (1 - self.b + self.b * self._len[i] / self._avg)
+            s = sum(math.log(1 + (n_docs - self._df[w] + 0.5) / (self._df[w] + 0.5)) * f[w] * (self.k1 + 1) / (f[w] + norm)
+                    for w in q if f[w]) + 2.0 * len(q & self._head[i])
+            if s > 0:
+                scored.append((-s, i))
+        return [i for _, i in sorted(scored)[:k]]
+
+
 def split_call(raw: str) -> tuple[str | None, str]:
     """` shelf=wiki>drip rate` → ("wiki", "drip rate");  `>k3f` → (None, "k3f")."""
     head, _, body = raw.partition(">")
@@ -119,6 +159,19 @@ class Conversation:
     # 9 of 11 misses, where the statement lists the needed note 16 of 16. None: the expert's query, as
     # trained. One unknown, measured in results/M7-W5e-first-search-20260923.
     first_query: str | None = None
+    # THE ENTRY IS THE QUESTION'S, ON EVERY SHELF (REAL0 [ran]): on a library it was not trained on, a trajectory
+    # member searched the harness shelf with a query memorised from its generated world in 40 of 40 walks, found nothing
+    # and never opened a page. `entry_all_shelves` runs `first_query` on every shelf, whatever shelf the model named.
+    entry_all_shelves: bool = False
+    # AN EMPTY SEARCH SAYS WHERE ELSE TO LOOK. `fallback`: a search on a named shelf that finds nothing is run on every
+    # shelf, and the result says so — "0 notes on harness; on every shelf:" — instead of a bare "0 notes".
+    fallback: bool = False
+    # A PAGE OPENS WITH ITS STATEMENTS' TEXT (REAL2). On a real document the anchors are the paragraphs' own labels —
+    # `§a-2`, `§h` — and a contents list of labels gives the model nothing to choose by: with the entry fixed, walks reached
+    # the supporting page 17/25 and opened the supporting statement 2–6/25 [ran] REAL1. `page_text` renders every
+    # statement under its anchor (links as `[id] Title`); each counts as read for the citation, not against the budget.
+    page_text: bool = False
+    implicit: int = 0
 
     shown: dict[str, str] = field(default_factory=dict)      # opaque → library id
     opaque: dict[str, str] = field(default_factory=dict)     # library id → opaque
@@ -187,13 +240,19 @@ class Conversation:
         written = None
         if self.first_query is not None and self.searches == 0:
             written, query = query, self.first_query
+            if self.entry_all_shelves:
+                shelf = None
         if not query:
             return self._error("empty", "an empty search", "search")
         if self.searches >= self.max_searches:
             return self._end("search budget", "search")
         self.searches += 1
         ids = self.searcher.search(query, shelf, K)
-        lines = [f"{len(ids)} note{'s' if len(ids) != 1 else ''}"]
+        head = None
+        if not ids and shelf and self.fallback:
+            ids = self.searcher.search(query, None, K)
+            head = f"0 notes on {shelf}; on every shelf, {len(ids)} note{'s' if len(ids) != 1 else ''}"
+        lines = [head or f"{len(ids)} note{'s' if len(ids) != 1 else ''}"]
         for i in ids:
             n = self.lib[i]
             lines.append(f"  [{self._id(i)}] {n.kind} · {n.title} — when: {n.when}")
@@ -214,11 +273,15 @@ class Conversation:
         if not v.ok:
             first = " ".join(self._id(m) for m in v.missing)
             return self._violation(f"requires {first} first", "requires", shown, note=note.id)
-        if len(self.opened) + len(self.statements) >= self.max_opens:
+        if len(self.opened) + len(self.statements) - self.implicit >= self.max_opens:
             return self._end("open budget", "open")
         self.opened.append(note.id)
         case = (self.case or {}).get(note.id)
         text = self._render(note, case)
+        if self.page_text and note.is_page:
+            for st in note.statements:
+                if (note.id, st.anchor) not in self.statements:
+                    self.statements.append((note.id, st.anchor)); self.implicit += 1
         self._log("open", shown, note=note.id, guard="ok", tokens=count_tokens(text),
                   slots={k: [val, layer] for k, (val, layer) in resolve(note, self.site, case).items()
                          if k in shown_slots(note, self.site)})
@@ -235,7 +298,7 @@ class Conversation:
         text = self._statement_text(note, anchor)
         if text is None:
             return self._error("section", f"no section §{anchor} on {shown}", "open")
-        if len(self.opened) + len(self.statements) >= self.max_opens:
+        if len(self.opened) + len(self.statements) - self.implicit >= self.max_opens:
             return self._end("open budget", "open")
         self.statements.append((note.id, anchor))
         self._log("open", f"{shown}§{anchor}", note=note.id, anchor=anchor, guard="ok", tokens=count_tokens(text))
@@ -251,6 +314,9 @@ class Conversation:
 
     def _render(self, note: Note, case: dict | None) -> str:
         if note.is_page:
+            if self.page_text:
+                body = "\n".join(f"  §{st.anchor} {self._statement_text(note, st.anchor)}" for st in note.statements)
+                return f"{note.title} — {note.what}\n{body}"
             anchors = " · ".join(f"§{st.anchor}" for st in note.statements)
             return f"{note.title} — {note.what}\n  sections {anchors}"
         body = render(note, self.site, case)
