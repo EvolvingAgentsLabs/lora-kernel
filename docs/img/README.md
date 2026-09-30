@@ -31,6 +31,7 @@ English in both language versions.
 | `tracker-domain.png` | wide, ~1600 px | ✅ placed 2026-09-29 — the counter box is empty until H2 has its reading | `README.md`, `README.es.md` |
 | `mechanisms-map.png` | wide, ~1900 px | ✅ placed 2026-09-29 (badges number stations, not sections — the caption maps them) | `docs/MECHANISMS.md`, `docs/es/MECHANISMS.md` |
 | `demo-escuela-preview.gif`, `demo-escuela-poster.png` | 960 px GIF · 1280 px PNG | ✅ **in** — cut from `docs/video/demo-escuela.mp4` by ffmpeg, not drawn (`video/README.md`) | not embedded — the READMEs play the video itself (a GitHub attachment of the same MP4); kept for sharing where video does not play |
+| `demo-tracker-preview.gif`, `demo-tracker-poster.png` | 960 px GIF · 1280 px PNG | ✅ **in** — cut from `docs/video/demo-tracker.mp4` by ffmpeg, not drawn (`video/README.md`) | not embedded — the READMEs link the MP4 itself; kept for sharing where video does not play |
 | `solution-architecture.png` | wide, ~1600 px | ✅ **in** | `README.md`, `README.es.md`, `docs/articles/2026-09-it-was-the-harness.md`, `docs/articles/2026-09-era-el-arnes.es.md` (cover) |
 
 ## Briefs
