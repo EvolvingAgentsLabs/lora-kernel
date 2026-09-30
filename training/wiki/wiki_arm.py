@@ -129,13 +129,17 @@ def run_case(lib: Library, row: dict, arm: str, gen_for) -> dict:
             final, chain = gen_for(prompt.SYSTEM_WIKI_READS, user, False)(""), None
         else:
             conv = conversation(lib, row)
-            if arm.endswith("+entry"):
+            flags = set(arm.split("+")[1:])
+            if flags & {"entry", "page"}:
                 from memory.runtime import FullText
                 conv.searcher = FULLTEXT.setdefault(id(lib), FullText(lib))
                 # REAL0's mitigation (results/REAL1-entry-20260930): the first search is the question's, on every shelf,
                 # and an empty search falls back to every shelf — the runtime's, not the member's
                 conv.first_query, conv.entry_all_shelves, conv.fallback = row["question"], True, True
                 rec["entry"] = "question, every shelf, full-text search, fallback"
+            if "page" in flags:
+                conv.page_text = True                # REAL2: a page opens with its statements' text
+                rec["page_text"] = True
             final, conv, chain = walk(lib, row, gen_for(prompt.SYSTEM_WIKI, prompt.user_text_wiki(row["question"]), True), conv)
     except ContextExhausted as e:
         return {**rec, "state": "context", "credit": False, "value_right": False, "detail": str(e)[:120]}
@@ -224,8 +228,8 @@ def analyse(arms: dict, rows: list[dict]) -> dict:
            "summary": {a: {k: summarise(r, ids) for k, ids in sl.items()} for a, r in arms.items()}, "pairs": {}}
     duels = [("base-reads", "base-walks")] + [(a, "base-walks") for a in arms if a.startswith("withlib")] \
         + [(a, "base-reads") for a in arms if a.startswith("withlib")] \
-        + [(a, "base-walks+entry") for a in arms if a.startswith("withlib") and a.endswith("+entry")] \
-        + [(a, a.removesuffix("+entry")) for a in arms if a.endswith("+entry")]
+        + [(a, "base-walks" + a[len(a.split("+")[0]):]) for a in arms if a.startswith("withlib") and "+" in a] \
+        + [(a, a.split("+")[0]) for a in arms if "+" in a]
     for k in ("headline", "all", "hops-2", "hops-3"):
         out["pairs"][k] = [pair(arms[a], arms[b], sl[k], f"{a} vs {b}") for a, b in duels if a in arms and b in arms]
     return out
@@ -284,6 +288,7 @@ def served_model(arm: str, members: dict, base: str) -> str:
 
 # ------------------------------------------------------------------ the session
 def main() -> int:
+    global MAX_MODEL_LEN
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--base", default=BASE)
     ap.add_argument("--adapter", action="append", default=[], help="pool adapters (ignored)")
@@ -294,12 +299,14 @@ def main() -> int:
     ap.add_argument("--max-tokens-plain", type=int, default=160)
     ap.add_argument("--concurrency", type=int, default=8)
     ap.add_argument("--rows", default="eval", help="which question set: eval (W9) or eval_hard (B3's comparisons), or a path")
+    ap.add_argument("--max-model-len", type=int, default=MAX_MODEL_LEN, help="REAL2: a real page opened whole can be 7k tokens")
     ap.add_argument("--library", default=str(LIBRARY), help="the library walked (REAL0: knowledge/logistics-regs, real documents)")
     ap.add_argument("--member-prefix", default="adapters/wiki-walks-s", help="where withlib-s<k> lives (B3: adapters/wiki12b-walks-s)")
     ap.add_argument("--corpus", default="train", help="training/wiki/data/<corpus>.jsonl to train on (B5: train_cmp, W9's plus comparisons)")
     ap.add_argument("--out", default="wiki_arm.json")
     ap.add_argument("--combine", default=None, help="zero GPU: add this file's scored arms to --out's and re-read the verdict")
     a = ap.parse_args()
+    MAX_MODEL_LEN = a.max_model_len
     if a.combine:
         # THE SCORING SESSION'S ARMS BESIDE STAGE 1'S, READ BY THE SAME `analyse` AND `verdict`. The
         # bare base was scored in stage 1's session; pairing across sessions carries vLLM's spread,
@@ -367,7 +374,7 @@ def main() -> int:
         return 0
 
     arms = [x for x in a.arms.split(",") if x]
-    members = {x.removesuffix("+entry"): f"{a.member_prefix}{x.removesuffix('+entry').removeprefix('withlib-s')}"
+    members = {x.split("+")[0]: f"{a.member_prefix}{x.split('+')[0].removeprefix('withlib-s')}"
                for x in arms if x.startswith("withlib-s")}
     lacking = [x for x, d in members.items() if not Path(d, "adapter_model.safetensors").exists()]
     if lacking:
@@ -399,7 +406,7 @@ def main() -> int:
         print(f"[wiki] {arm}: {len(todo)} to run, {len(rows) - len(todo)} resumed", flush=True)
         gen_for, t0, n = gen_for_model(model), time.time(), 0
         with ThreadPoolExecutor(max_workers=a.concurrency) as ex:
-            kind = ("base-walks" + ("+entry" if arm.endswith("+entry") else "")) if arm.startswith("withlib") else arm
+            kind = ("base-walks" + arm[len(arm.split("+")[0]):]) if arm.startswith("withlib") else arm
             for f in as_completed([ex.submit(run_case, lib, r, kind, gen_for) for r in todo]):
                 x = f.result(); slot[x["id"]] = x; n += 1
                 if n % 10 == 0 or n == len(todo):
@@ -427,7 +434,7 @@ def main() -> int:
                 rec["stopped"] = "G1: an adapter is not applied"
             else:
                 for arm in arms:               # nolib FIRST: it is the gate on the whole set
-                    run(arm, served_model(arm.removesuffix("+entry"), members, a.base))
+                    run(arm, served_model(arm.split("+")[0], members, a.base))
     finally:
         stop(srv)
     scored = {x: v for x, v in rec["arms"].items()}

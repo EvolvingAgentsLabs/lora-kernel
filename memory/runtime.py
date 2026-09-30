@@ -166,6 +166,12 @@ class Conversation:
     # AN EMPTY SEARCH SAYS WHERE ELSE TO LOOK. `fallback`: a search on a named shelf that finds nothing is run on every
     # shelf, and the result says so — "0 notes on harness; on every shelf:" — instead of a bare "0 notes".
     fallback: bool = False
+    # A PAGE OPENS WITH ITS STATEMENTS' TEXT (REAL2). On a real document the anchors are the paragraphs' own labels —
+    # `§a-2`, `§h` — and a contents list of labels gives the model nothing to choose by: with the entry fixed, walks reached
+    # the supporting page 17/25 and opened the supporting statement 2–6/25 [ran] REAL1. `page_text` renders every
+    # statement under its anchor (links as `[id] Title`); each counts as read for the citation, not against the budget.
+    page_text: bool = False
+    implicit: int = 0
 
     shown: dict[str, str] = field(default_factory=dict)      # opaque → library id
     opaque: dict[str, str] = field(default_factory=dict)     # library id → opaque
@@ -267,11 +273,15 @@ class Conversation:
         if not v.ok:
             first = " ".join(self._id(m) for m in v.missing)
             return self._violation(f"requires {first} first", "requires", shown, note=note.id)
-        if len(self.opened) + len(self.statements) >= self.max_opens:
+        if len(self.opened) + len(self.statements) - self.implicit >= self.max_opens:
             return self._end("open budget", "open")
         self.opened.append(note.id)
         case = (self.case or {}).get(note.id)
         text = self._render(note, case)
+        if self.page_text and note.is_page:
+            for st in note.statements:
+                if (note.id, st.anchor) not in self.statements:
+                    self.statements.append((note.id, st.anchor)); self.implicit += 1
         self._log("open", shown, note=note.id, guard="ok", tokens=count_tokens(text),
                   slots={k: [val, layer] for k, (val, layer) in resolve(note, self.site, case).items()
                          if k in shown_slots(note, self.site)})
@@ -288,7 +298,7 @@ class Conversation:
         text = self._statement_text(note, anchor)
         if text is None:
             return self._error("section", f"no section §{anchor} on {shown}", "open")
-        if len(self.opened) + len(self.statements) >= self.max_opens:
+        if len(self.opened) + len(self.statements) - self.implicit >= self.max_opens:
             return self._end("open budget", "open")
         self.statements.append((note.id, anchor))
         self._log("open", f"{shown}§{anchor}", note=note.id, anchor=anchor, guard="ok", tokens=count_tokens(text))
@@ -304,6 +314,9 @@ class Conversation:
 
     def _render(self, note: Note, case: dict | None) -> str:
         if note.is_page:
+            if self.page_text:
+                body = "\n".join(f"  §{st.anchor} {self._statement_text(note, st.anchor)}" for st in note.statements)
+                return f"{note.title} — {note.what}\n{body}"
             anchors = " · ".join(f"§{st.anchor}" for st in note.statements)
             return f"{note.title} — {note.what}\n  sections {anchors}"
         body = render(note, self.site, case)

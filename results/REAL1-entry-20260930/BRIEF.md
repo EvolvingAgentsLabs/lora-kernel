@@ -45,6 +45,25 @@ instrument, and it is what M2/M3 will be measured on.
 
 One session; no change to the entry, the searcher or the bars after it starts.
 
-## Result
+## Result [ran] — THE ENTRY DOES NOT HELP (the member); the section is the new gap
 
-*(written after S)*
+One L4 session (boot attempts 1–2 silent, 3 took), 0 errors. `real1.json`. The runner's printed verdict (`NOTHING
+SCORED`) is W9's and does not apply.
+
+| arm | headline (25) | one-hop (11) | none (4) | all (40) |
+|---|---|---|---|---|
+| `withlib-s1+entry` | **1** (value-right 2) | 0 | 3 | 4 |
+| `base-walks+entry` | **4** (value-right 8) | 2 | 4 | 10 |
+| REAL0 `withlib-s1` / `base-walks` | 0 / 1 | | | 4 / 2 |
+| REAL0 `base-reads` (ceiling) | 22 | | | 37 |
+
+- **Verdict:** `withlib-s1+entry` 1/25 against REAL0's 0/25 — no improvement: **THE ENTRY DOES NOT HELP** (for the
+  member). Beside: `withlib-s1+entry` vs `base-walks+entry` a tie (1 : 4, $p = 0.375$).
+- **Read where it happens — the entry works, the section does not.** Both arms now open pages in 40/40 walks and reach
+  the supporting page in **17/25** headline walks, but open **the supporting statement** in only **2/25** (member) and
+  **6/25** (base). The contents list a page shows is its anchors — on a regulation, paragraph labels (`§a-2`, `§h`) that
+  name nothing. Choosing a section is choosing blind. (The member also still refuses 23/40 after reading a wrong section.)
+- Zero-GPU checks beside it: descriptive anchors from a paragraph's first words let a word-overlap chooser pick the
+  supporting section 5–7/25; statement-level BM25 puts it in the top 3 for 11/25 — neither closes it alone.
+
+**Next: REAL2** — the page opens with its statements' text (the second and last runtime variant).

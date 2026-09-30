@@ -268,3 +268,21 @@ def test_full_text_search_finds_the_real_pages_a_title_search_misses():
     assert "logistics-regs/wiki/1910-178" not in Lexical(lib).search(q, None, 3)
     assert "logistics-regs/wiki/1910-178" in FullText(lib).search(q, None, 3)
     assert FullText(lib).search(q, None, 3) == FullText(lib).search(q, None, 3)
+
+
+def test_a_page_opens_with_its_statements_and_they_count_as_read():
+    """REAL2's runtime: with `page_text` a page shows every statement under its anchor, and a citation of any of them
+    verifies; the budget counts the page open, not its statements."""
+    from memory.notes import Library
+    from memory.runtime import Conversation
+    lib = Library.load("knowledge/logistics-regs")
+    c = Conversation(lib, page_text=True)
+    res = c.answer("search", ">record retention shippers carriers")
+    shown = next(k for k, v in c.shown.items() if v == "logistics-regs/wiki/1-912")
+    page = c.answer("open", f">{shown}")
+    assert "§c (c) Carriers must retain training records" in page and ("logistics-regs/wiki/1-912", "c") in c.statements
+    assert len(c.opened) + len(c.statements) - c.implicit == 1
+    plain = Conversation(lib)
+    plain.answer("search", ">record retention shippers carriers")
+    s2 = next(k for k, v in plain.shown.items() if v == "logistics-regs/wiki/1-912")
+    assert "sections §a · §a-1" in plain.answer("open", f">{s2}") and not plain.statements
