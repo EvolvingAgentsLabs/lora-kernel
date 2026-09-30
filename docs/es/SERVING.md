@@ -122,6 +122,8 @@ prompt y las herramientas propias del rol:
 | `workflows={role: Workflow}` | `{}` | mapea un rol a su máquina de estados declarada (`examples/<org>/workflows/*.toml`); el gateway avanza el estado por las llamadas que la capa de herramientas **ejecutó**, nunca por el modelo |
 | `tool_block=False` | `True` | quita la superficie de herramientas renderizada del turno — el miembro confía en conocer sus herramientas por su propio corpus (el brazo `harness-noblock` de H1, **0/60**: su corpus siempre tuvo el bloque, así que sacarlo al evaluar lo dejó sin llamar nada) |
 
+Desde la línea de comandos (2026-09-30): `--memory` enciende la memoria operativa con los workflows declarados de la organización (`examples/<org>/workflows/*.toml`), `--no-tool-block` fija `tool_block=False`, `--max-calls N` acota las llamadas a herramientas de un turno. La sesión de la memoria es el header `X-Session-Id` del cliente o el campo `user` del pedido, si no una por token (`tests/test_tracker.py`: dos sesiones de un mismo usuario no comparten una clave). El miembro del tracker se sirve así en vivo en [`results/LIVE-tracker-openclaw-20260930/BRIEF.md`](../../results/LIVE-tracker-openclaw-20260930/BRIEF.md) — pre-registrado, todavía no corrido.
+
 `history=True` y `memory=…` responden el mismo problema de dos maneras distintas y no están
 pensadas para correr juntas: history es la línea de base contra la que se mide el arnés de flujos de
 trabajo, no una segunda copia de él. H1 (`results/H1-workflow-harness-20260929/`) puntuó los dos brazos

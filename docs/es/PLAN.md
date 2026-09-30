@@ -738,6 +738,7 @@ Las cuatro que deciden la forma de un paso:
 
 ## 5. Historia
 
+- **2026-09-30** — **LIVE-tracker pre-registrado** ([`BRIEF`](../../results/LIVE-tracker-openclaw-20260930/BRIEF.md)): `tr-s1` sin bloque con la memoria operativa, en el `edge` (llama.cpp, Q8_0 + su LoRA como GGUF, convertido), manejado por OpenClaw en tres sesiones (lead, developer, QA; 14 turnos, 8 dependientes) sobre el propio store del gateway. Barra: todos los turnos dependientes bien y ≥ 13/14. El gateway ganó `--memory`, `--no-tool-block`, `--max-calls` y un id de sesión por cliente (`X-Session-Id`). Corre en la máquina del usuario después de la pausa.
 - **2026-09-29** — **H3 [ran]: el segundo corpus del miembro del tracker le gana al primero, las dos barras PASARON.**
   `tr-s1` entrena sobre un segundo corpus (`generate_sessions --suite h3`) que amplía el fraseo de entrenamiento en dos
   variantes por turno en cada rol y da a cada rol un tercio parejo sin bloque (165/165/132 filas), arreglando las dos

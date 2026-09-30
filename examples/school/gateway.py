@@ -324,7 +324,10 @@ def serve(gw: Gateway, port: int = 8765) -> ThreadingHTTPServer:
                 return self._guard(lambda: (gw.reject(self._token(), i), self._send(200, {"rejected": i}))[1])
             if self.path == "/v1/chat/completions":
                 def run():
-                    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto")
+                    # the operational memory's session key: the client's own session id if it sends one (OpenClaw's
+                    # `user` field or an X-Session-Id header), else one session per token
+                    sid = self.headers.get("X-Session-Id") or body.get("user") or None
+                    out = gw.turn(self._token(), body.get("messages") or [], body.get("model") or "auto", session=sid)
                     res = {"object": "chat.completion", "model": body.get("model"),
                            "choices": [{"index": 0, "finish_reason": "stop",
                                         "message": {"role": "assistant", "content": out["reply"]}}],
@@ -362,6 +365,11 @@ def main() -> int:
     ap.add_argument("--frontier-budget-usd", type=float, default=None, help="stop forwarding once this much is spent")
     ap.add_argument("--frontier-rates", default="0,0", help="$ per million input,output tokens, to price each call")
     ap.add_argument("--log", default=None, help="default: examples/<org>/events.jsonl")
+    ap.add_argument("--memory", action="store_true", help="serve with the short-term operational memory and the org's "
+                    "declared workflows (examples/<org>/workflows/*.toml) — for a member trained on the harness")
+    ap.add_argument("--no-tool-block", action="store_true", help="omit the tool block from the prompt — for a member "
+                    "trained block-less (H3b [ran]: tr-s1 156/160 at a third of the tokens)")
+    ap.add_argument("--max-calls", type=int, default=4)
     ap.add_argument("--openclaw-dir", default=str(Path.home() / ".config/lora-kernel/openclaw"))
     a = ap.parse_args()
     from training.harness import accept_rank
@@ -380,8 +388,13 @@ def main() -> int:
     mods = org_modules(a.org)
     db, users = mods["db"], mods["users"]
     users.register_all()
+    memory = wf = None
+    if a.memory:
+        from examples.common.opmemory import OpMemory, Workflow
+        memory = OpMemory()
+        wf = {f.stem: Workflow.load(f) for f in sorted((Path("examples") / a.org / "workflows").glob("*.toml"))}
     gw = Gateway(db.build(), vllm_generator(a.member, tok), frontier=frontier, log_path=a.log or f"examples/{a.org}/events.jsonl",
-                 org=a.org)
+                 org=a.org, memory=memory, workflows=wf, tool_block=not a.no_tool_block, max_calls=a.max_calls)
     serve(gw, a.port)
     out = Path(a.openclaw_dir); out.mkdir(parents=True, exist_ok=True)
     for user_id, role, org in users.SEED_USERS:
@@ -389,7 +402,8 @@ def main() -> int:
                                                                     user=user_id, prov=ORGS[a.org]["provider"], org=a.org))
     if a.org == "school":
         (out / "director-north.token").write_text(tokens.issue("director-north", "director", "northgate", ttl=12 * 3600))
-    print(f"[gateway] {a.org} :{a.port} · model {a.member} at {a.upstream} · frontier "
+    print(f"[gateway] {a.org} :{a.port} · model {a.member} at {a.upstream} · memory {'on (' + ', '.join(wf) + ')' if wf else 'off'} · "
+          f"tool block {'off' if a.no_tool_block else 'on'} · frontier "
           f"{a.frontier_model + ' at ' + a.frontier_url if frontier else 'NOT configured (frontier-egress roles say so)'}", flush=True)
     print(f"[gateway] one OpenClaw patch per user in {out} (each carries that user's signed token)", flush=True)
     try:

@@ -184,3 +184,62 @@ def test_h3_reading_needs_headroom_a_paired_improvement_and_every_role_blockless
     assert h3.reading(rec)["h3b"].startswith("FALSIFIED")
     rec["arms"]["s1-noblock"] = arm([4], first=False)
     assert h3.reading(rec)["h3b"].startswith("VOID")
+
+
+def test_the_http_gateway_keeps_one_memory_per_client_session():
+    """The live path (`gateway --memory`): each OpenAI request carries its session id (X-Session-Id), and a key `put` in
+    one session is found by the next request of the SAME session only — two sessions of one user do not share it."""
+    import json
+    import urllib.request
+    from examples.common.opmemory import OpMemory, Workflow
+    from examples.school.gateway import Gateway, serve
+    users.register_all()
+    conn = db.world(4321)
+    k = _story(conn, "in_progress")
+    got = []
+
+    def generate(system, user, close, history=None):
+        first = "keys: issue" not in user.split("\n", 1)[0]
+        steps = iter([f"<issue_get>{k}</issue_get>", f"<put>issue={k}</put>", "Here it is."] if first else ["<get>issue</get>", "Found."])
+        got.append(first)
+        return (lambda prefix: next(steps)), (lambda: {"prompt_tokens": 1, "completion_tokens": 1})
+    gw = Gateway(conn, generate, org="tracker", memory=OpMemory(), tool_block=False,
+                 workflows={"developer": Workflow.load("examples/tracker/workflows/developer.toml")})
+    srv = serve(gw, 0)
+    port, tok = srv.server_address[1], tokens.issue("developer-riverdev", "developer", "riverdev")
+
+    def ask(text, sid):
+        req = urllib.request.Request(f"http://127.0.0.1:{port}/v1/chat/completions", method="POST",
+                                     data=json.dumps({"messages": [{"role": "user", "content": text}]}).encode(),
+                                     headers={"Authorization": f"Bearer {tok}", "X-Session-Id": sid, "Content-Type": "application/json"})
+        return json.loads(urllib.request.urlopen(req).read())
+    try:
+        ask(f"Show me {k}.", "s-a")
+        ask("Move it to review.", "s-a")
+        ask("Hello.", "s-b")
+    finally:
+        srv.shutdown()
+    assert got == [True, False, True]       # s-a's second turn saw its key; s-b started empty
+
+
+def test_the_live_sessions_are_solvable_on_the_served_store_in_order():
+    """live_tracker's three sessions, played in its order on ONE store (as the live gateway holds one), by the harness
+    oracle, block-less: every turn right — so a live miss is the runtime's or the member's, never the script's."""
+    from examples.common import tokens as tk
+    from examples.common.opmemory import OpMemory
+    from examples.school.gateway import Gateway
+    from examples.tracker import generate_sessions as gs
+    from examples.tracker import live_tracker as lt
+    users.register_all()
+    conn = db.build()
+    ss = lt.sessions()
+    assert [s["kind"] for s in ss] == ["lead", "developer", "qa"] and all(s["user_id"] in {u for u, _, _ in users.SEED_USERS} for s in ss)
+    for s in ss:
+        gen = gs.harness_oracle(s)
+        gw = Gateway(conn, gen, org="tracker", memory=OpMemory(), workflows=gs.workflows(), tool_block=False, max_calls=6)
+        msgs = []
+        for t in s["turns"]:
+            msgs.append({"role": "user", "content": t["request"]})
+            ev = gw.turn(tk.issue(s["user_id"], s["role"], s["org"]), msgs, session=s["session_id"])["event"]
+            assert gs.turn_right_h3(ev["calls"], t), (s["kind"], t["request"], ev["calls"])
+            msgs.append({"role": "assistant", "content": "ok"})

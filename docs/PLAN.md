@@ -680,6 +680,7 @@ that decide the shape of a step:
 
 ## 5. History
 
+- **2026-09-30** — **LIVE-tracker pre-registered** ([`BRIEF`](../results/LIVE-tracker-openclaw-20260930/BRIEF.md)): `tr-s1` block-less with the operational memory, on the `edge` (llama.cpp, Q8_0 + its LoRA as GGUF, converted), driven by OpenClaw over three sessions (lead, developer, QA; 14 turns, 8 dependent) on the gateway's own store. Bar: every dependent turn right and ≥ 13/14. The gateway gained `--memory`, `--no-tool-block`, `--max-calls` and a session id per client (`X-Session-Id`). Runs on the user's machine after the break.
 - **2026-09-29** — **H3 [ran]: the tracker member's second corpus beats its first, both bars PASSED.** `tr-s1` trains
   on a second corpus (`generate_sessions --suite h3`) that widens the training wording by two phrasings per turn in
   every role and gives each role an even block-less third (165/165/132 rows), fixing H2's two corrections (the
