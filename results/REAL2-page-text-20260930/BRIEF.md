@@ -31,6 +31,26 @@ unseen question set before it is called the best.**
 - **SHORT** — under 18/25 for both → the corpus (M2, then M3).
 - Beside: `withlib-s1+page` vs `base-walks+page` (paired).
 
-## Result
+## Result [ran] — SHORT for both arms: the runtime alone does not close it
 
-*(written after S)*
+One L4 session, 0 errors, no context exhaustion. `real2.json` (the runner's `NOTHING SCORED` is W9's verdict).
+
+| arm | headline (25) | value-right | one-hop (11) | all (40) | reached the supporting page |
+|---|---|---|---|---|---|
+| `base-walks+page` | **7** | 12 | 3 | 13 | 24/25 |
+| `withlib-s1+page` | **5** | 8 | 0 | 8 | 24/25 |
+| REAL1 (`+entry`) base / member | 4 / 1 | | | 10 / 4 | 17/25 |
+| REAL0 `base-reads` (ceiling) | 22 | | | 37 | — |
+
+- **Verdict: SHORT** — neither arm reaches 18/25. Beside: member vs base a tie (1 : 3, $p = 0.625$); the trajectory LoRA
+  adds nothing on real text under any runtime tried.
+- **Read where it happens.** The door and the page are now right (24/25 walks read the supporting page). What is lost:
+  **no citation** — the model states a value but writes no `[id§anchor]` (base 12 of 18 misses, member 16 of 20); and
+  reading the right paragraph among a page's 10–27 (value-right 12/25 against `base-reads`' 22/25, where only the
+  supporting statements were shown).
+- **Across REAL0 → REAL2 the base moved 1 → 4 → 7 and the member 0 → 1 → 5**: every runtime step helps, none is enough.
+
+**As fixed in REAL2's brief, the runtime variants stop here** (two redesigns on one question set). Next is the corpus:
+M2 (queries from the question, paraphrased recipe titles, a gate on repeated search strings) and M3 (walks over
+ingested real documents — including the citation on a page read whole — trained on one document family and measured on
+another), each with its own brief, and the winner confirmed on an unseen question set.
