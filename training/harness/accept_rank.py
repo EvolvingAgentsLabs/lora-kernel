@@ -233,8 +233,10 @@ def completion(model: str, prompt: str, max_tokens: int, close=CLOSE) -> str:
     ch = r["choices"][0]
     text = ch.get("text") or ""
     if many:
-        if text.endswith("</"):
+        if text.endswith("</"):                               # vLLM: the stop string handed back
             text = close_open_tag(text[:-2], close)
+        elif ch.get("finish_reason") == "stop":               # llama.cpp: the stop string dropped [ran] LIVE-tracker attempt 1
+            text = close_open_tag(text, close)
         return text
     # BELT AND BRACES ON THE STOP STRING. If the server honoured `stop` but not
     # `include_stop_str_in_output`, `stop_reason` still names the tag it stopped at.

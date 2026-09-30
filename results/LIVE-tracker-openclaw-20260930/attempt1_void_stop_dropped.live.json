@@ -1,0 +1,79 @@
+{
+ "org": "tracker",
+ "runtime": "OpenClaw 2026.9.4 (3a9d69d)",
+ "started": "2026-09-30T08:31:46",
+ "sessions": [
+  {
+   "session_id": "live-lead-harborworks",
+   "kind": "lead",
+   "user": "lead-harborworks",
+   "turns": [
+    {
+     "request": "Please report a bug — Invoice PDF shows the wrong total",
+     "tool": "issue_create",
+     "depends": false,
+     "right": false,
+     "calls": [],
+     "route": "local",
+     "reply": "<issue_create>type=bug; summary=Invoice PDF shows the wrong total",
+     "turns_seen": 1,
+     "runtime_s": 5.7,
+     "gateway_latency_s": 1.7,
+     "prompt_tokens": 106
+    },
+    {
+     "request": "Let Ana own it.",
+     "tool": "issue_assign",
+     "depends": true,
+     "right": false,
+     "calls": [],
+     "route": "local",
+     "reply": "<get>issue",
+     "turns_seen": 1,
+     "runtime_s": 3.9,
+     "gateway_latency_s": 0.78,
+     "prompt_tokens": 100
+    },
+    {
+     "request": "Critical bugs — what's the policy?",
+     "tool": "page_read",
+     "depends": false,
+     "right": false,
+     "calls": [],
+     "route": "local",
+     "reply": "<page_read>bug-policy#critical",
+     "turns_seen": 1,
+     "runtime_s": 5.51,
+     "gateway_latency_s": 1.3,
+     "prompt_tokens": 104
+    },
+    {
+     "request": "How is the current sprint going?",
+     "tool": "sprint_board",
+     "depends": false,
+     "right": false,
+     "calls": [],
+     "route": "local",
+     "reply": "<sprint_board>",
+     "turns_seen": 1,
+     "runtime_s": 4.37,
+     "gateway_latency_s": 0.88,
+     "prompt_tokens": 102
+    },
+    {
+     "request": "Bring back the bug you just filed.",
+     "tool": "issue_get",
+     "depends": true,
+     "right": false,
+     "calls": [],
+     "route": "local",
+     "reply": "<get>issue",
+     "turns_seen": 1,
+     "runtime_s": 4.5,
+     "gateway_latency_s": 0.8,
+     "prompt_tokens": 103
+    }
+   ]
+  }
+ ]
+}

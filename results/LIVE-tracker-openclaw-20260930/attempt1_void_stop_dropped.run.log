@@ -1,0 +1,5 @@
+[live] lead t1: FAIL issue_create · '<issue_create>type=bug; summary=Invoice PDF shows the wrong total'
+[live] lead t2: FAIL issue_assign · '<get>issue'
+[live] lead t3: FAIL page_read · '<page_read>bug-policy#critical'
+[live] lead t4: FAIL sprint_board · '<sprint_board>'
+[live] lead t5: FAIL issue_get · '<get>issue'

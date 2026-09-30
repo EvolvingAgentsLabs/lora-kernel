@@ -25,7 +25,7 @@ from examples.tracker import db
 from examples.tracker import generate_sessions as gs
 
 
-def sessions() -> list[dict]:
+def sessions(run: str = "") -> list[dict]:
     """One session per role on the demo team's world: H3's fresh wording, the plan computed on `db.build()` itself, so the
     key the lead's bug will get and the issues the developer and QA open are the ones the served store holds. Order:
     lead first (it creates the next key), then developer, then QA — none touches another's issue."""
@@ -34,7 +34,8 @@ def sessions() -> list[dict]:
         s = gs.session(db.DEMO_SEED, "eval", kind, "h3")
         if s is None:
             raise SystemExit(f"the demo world has no issue for a {kind} session")
-        out.append({**s, "session_id": f"live-{kind}-{s['org']}"})
+        # a fresh OpenClaw session per run: OpenClaw keeps a session's conversation, and a rerun must not inherit it
+        out.append({**s, "session_id": f"live-{kind}-{s['org']}" + (f"-{run}" if run else "")})
     return out
 
 
@@ -50,7 +51,7 @@ def main() -> int:
     rec = {"org": "tracker", "runtime": subprocess.run([a.openclaw, "--version"], capture_output=True, text=True).stdout.strip(),
            "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "sessions": []}
     out = Path(a.out); out.parent.mkdir(parents=True, exist_ok=True)
-    for s in sessions():
+    for s in sessions(time.strftime("%H%M%S")):
         profile = f"tracker-{s['user_id']}"
         subprocess.run([a.openclaw, "--profile", profile, "config", "patch", "--file", str(Path(a.patches) / f"{s['user_id']}.json5")],
                        capture_output=True, text=True, check=True)
