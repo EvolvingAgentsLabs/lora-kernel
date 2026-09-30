@@ -227,6 +227,7 @@ herramientas); las 4 fallas del brazo sin bloque son una sola sesión cuyo prime
 error en cascada por el resto
 ([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](results/H3-tracker-corpus-v2-20260929/BRIEF.md))
 ([`results/H2-tracker-harness-20260929/`](results/H2-tracker-harness-20260929/BRIEF.md)).
+**Y corre en vivo en la Mac del usuario** — `tr-s1` sin bloque con la memoria operativa, llama.cpp Q8_0 + su LoRA como GGUF, manejado por OpenClaw en tres sesiones (lead, developer, QA): **14/14 turnos, dependientes 8/8**, latencia del gateway mediana 3,7 s, ~370 tokens de prompt por turno ([`results/LIVE-tracker-openclaw-20260930/BRIEF.md`](results/LIVE-tracker-openclaw-20260930/BRIEF.md)).
 
 ---
 
@@ -411,7 +412,7 @@ dos correcciones de H2, tiene un resultado [ran]:** `tr-s1` 158/160 contra `tr-s
 suite fresca, pareado 11:0, p = 0,00098 (**H3a PASÓ**); lo-sin-bloque **ahora funciona, en cada rol** —
 156/160 (97,5 %), developer 76/80, lead 40/40, QA 40/40, a más o menos un tercio de los tokens de
 prompt por turno (**H3b PASÓ**) — el miembro sin bloque es el contexto compacto que pedía el diseño.
-El arnés no corrió en vivo a través de OpenClaw, y su
+El arnés ya corrió en vivo a través de OpenClaw en la Mac del usuario (LIVE-tracker, 14/14); su
 caché global — construida y probada con tests unitarios — todavía no se entrenó en ningún corpus fuera del dominio de seguimiento. La biblioteca de
 la memoria vive sólo en `distributor-wiki@v2`, un miembro aparte — ningún miembro servido lleva su propia biblioteca todavía.
 La corrida en vivo de la distribuidora de arriba es sólo llama.cpp; todavía nadie corrió el par a través de vLLM

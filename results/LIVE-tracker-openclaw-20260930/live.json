@@ -1,0 +1,415 @@
+{
+ "org": "tracker",
+ "runtime": "OpenClaw 2026.9.4 (3a9d69d)",
+ "started": "2026-09-30T08:33:07",
+ "sessions": [
+  {
+   "session_id": "live-lead-harborworks-083307",
+   "kind": "lead",
+   "user": "lead-harborworks",
+   "turns": [
+    {
+     "request": "Please report a bug — Invoice PDF shows the wrong total",
+     "tool": "issue_create",
+     "depends": false,
+     "right": true,
+     "calls": [
+      {
+       "tool": "issue_create",
+       "args": {
+        "type": "bug",
+        "summary": "Invoice PDF shows the wrong total"
+       },
+       "result": "created HW-398 [bug] Invoice PDF shows the wrong total"
+      },
+      {
+       "tool": "put",
+       "args": {
+        "body": "issue=HW-398"
+       },
+       "result": "stored issue"
+      }
+     ],
+     "route": "local",
+     "reply": "According to the system: created HW-398 [bug] Invoice PDF shows the wrong total; stored issue.",
+     "turns_seen": 1,
+     "runtime_s": 7.6,
+     "gateway_latency_s": 4.0,
+     "prompt_tokens": 410
+    },
+    {
+     "request": "Let Ana own it.",
+     "tool": "issue_assign",
+     "depends": true,
+     "right": true,
+     "calls": [
+      {
+       "tool": "get",
+       "args": {
+        "body": "issue"
+       },
+       "result": "HW-398"
+      },
+      {
+       "tool": "issue_assign",
+       "args": {
+        "key": "HW-398",
+        "person": "Ana"
+       },
+       "result": "assigned HW-398 to Ana Luna"
+      }
+     ],
+     "route": "local",
+     "reply": "According to the system: HW-398; assigned HW-398 to Ana Luna.",
+     "turns_seen": 1,
+     "runtime_s": 6.75,
+     "gateway_latency_s": 3.04,
+     "prompt_tokens": 357
+    },
+    {
+     "request": "Critical bugs — what's the policy?",
+     "tool": "page_read",
+     "depends": false,
+     "right": true,
+     "calls": [
+      {
+       "tool": "page_read",
+       "args": {
+        "ref": "bug-policy#critical"
+       },
+       "result": "[bug-policy#critical] A critical bug is triaged within 8 hours and assigned the same day."
+      }
+     ],
+     "route": "local",
+     "reply": "According to the system: [bug-policy#critical] A critical bug is triaged within 8 hours and assigned the same day..",
+     "turns_seen": 1,
+     "runtime_s": 6.4,
+     "gateway_latency_s": 3.24,
+     "prompt_tokens": 247
+    },
+    {
+     "request": "How is the current sprint going?",
+     "tool": "sprint_board",
+     "depends": false,
+     "right": true,
+     "calls": [
+      {
+       "tool": "sprint_board",
+       "args": {},
+       "result": "Sprint 23: done 4 issues (20 pts); in_progress 1 issues (2 pts); in_review 6 issues (19 pts); qa 1 issues (8 pts); todo 2 issues (4 pts); triage 4 issues (16 pts)"
+      }
+     ],
+     "route": "local",
+     "reply": "According to the system: Sprint 23: done 4 issues (20 pts); in_progress 1 issues (2 pts); in_review 6 issues (19 pts); qa 1 issues (8 pts); todo 2 issues (4 pts); triage 4 issues (16 pts).",
+     "turns_seen": 1,
+     "runtime_s": 8.21,
+     "gateway_latency_s": 5.14,
+     "prompt_tokens": 276
+    },
+    {
+     "request": "Bring back the bug you just filed.",
+     "tool": "issue_get",
+     "depends": true,
+     "right": true,
+     "calls": [
+      {
+       "tool": "get",
+       "args": {
+        "body": "issue"
+       },
+       "result": "HW-398"
+      },
+      {
+       "tool": "issue_get",
+       "args": {
+        "key": "HW-398"
+       },
+       "result": "HW-398 [bug] Invoice PDF shows the wrong total — status triage · assignee Ana Luna · Sprint 23 · 1 pts · medium · None\nlogged 0h"
+      }
+     ],
+     "route": "local",
+     "reply": "According to the system: HW-398; HW-398 [bug] Invoice PDF shows the wrong total — status triage · assignee Ana Luna · Sprint 23 · 1 pts · medium · None; logged 0h.",
+     "turns_seen": 1,
+     "runtime_s": 7.7,
+     "gateway_latency_s": 4.52,
+     "prompt_tokens": 384
+    }
+   ]
+  },
+  {
+   "session_id": "live-developer-harborworks-083307",
+   "kind": "developer",
+   "user": "developer-harborworks",
+   "turns": [
+    {
+     "request": "Details on HW-245?",
+     "tool": "issue_get",
+     "depends": false,
+     "right": true,
+     "calls": [
+      {
+       "tool": "issue_get",
+       "args": {
+        "key": "HW-245"
+       },
+       "result": "HW-245 [story] Add reports export to CSV — status in_progress · assignee Ana Luna · Sprint 23 · 2 pts · low · reports\nlogged 0h"
+      },
+      {
+       "tool": "put",
+       "args": {
+        "body": "issue=HW-245"
+       },
+       "result": "stored issue"
+      },
+      {
+       "tool": "put",
+       "args": {
+        "body": "component=reports"
+       },
+       "result": "stored component"
+      }
+     ],
+     "route": "local",
+     "reply": "According to the system: HW-245 [story] Add reports export to CSV — status in_progress · assignee Ana Luna · Sprint 23 · 2 pts · low · reports; logged 0h; stored issue; stored component.",
+     "turns_seen": 1,
+     "runtime_s": 10.85,
+     "gateway_latency_s": 7.37,
+     "prompt_tokens": 656
+    },
+    {
+     "request": "Transition it to in review.",
+     "tool": "issue_transition",
+     "depends": true,
+     "right": true,
+     "calls": [
+      {
+       "tool": "get",
+       "args": {
+        "body": "issue"
+       },
+       "result": "HW-245"
+      },
+      {
+       "tool": "issue_transition",
+       "args": {
+        "key": "HW-245",
+        "status": "in_review"
+       },
+       "result": "moved HW-245 from in_progress to in_review"
+      }
+     ],
+     "route": "local",
+     "reply": "According to the system: HW-245; moved HW-245 from in_progress to in_review.",
+     "turns_seen": 1,
+     "runtime_s": 7.12,
+     "gateway_latency_s": 3.62,
+     "prompt_tokens": 379
+    },
+    {
+     "request": "Track 3h against it.",
+     "tool": "worklog_add",
+     "depends": true,
+     "right": true,
+     "calls": [
+      {
+       "tool": "get",
+       "args": {
+        "body": "issue"
+       },
+       "result": "HW-245"
+      },
+      {
+       "tool": "worklog_add",
+       "args": {
+        "key": "HW-245",
+        "hours": "3"
+       },
+       "result": "logged 3h on HW-245 (total 3h)"
+      }
+     ],
+     "route": "local",
+     "reply": "According to the system: HW-245; logged 3h on HW-245 (total 3h).",
+     "turns_seen": 1,
+     "runtime_s": 6.77,
+     "gateway_latency_s": 3.61,
+     "prompt_tokens": 384
+    },
+    {
+     "request": "Its component — who owns it?",
+     "tool": "page_read",
+     "depends": true,
+     "right": true,
+     "calls": [
+      {
+       "tool": "get",
+       "args": {
+        "body": "component"
+       },
+       "result": "reports"
+      },
+      {
+       "tool": "page_read",
+       "args": {
+        "ref": "components#reports"
+       },
+       "result": "[components#reports] The reports component is owned by Irene Ortiz."
+      }
+     ],
+     "route": "local",
+     "reply": "According to the system: reports; [components#reports] The reports component is owned by Irene Ortiz..",
+     "turns_seen": 1,
+     "runtime_s": 6.08,
+     "gateway_latency_s": 2.98,
+     "prompt_tokens": 364
+    },
+    {
+     "request": "Annotate it: tested with a large account",
+     "tool": "issue_comment",
+     "depends": true,
+     "right": true,
+     "calls": [
+      {
+       "tool": "get",
+       "args": {
+        "body": "issue"
+       },
+       "result": "HW-245"
+      },
+      {
+       "tool": "issue_comment",
+       "args": {
+        "key": "HW-245",
+        "text": "tested with a large account"
+       },
+       "result": "commented on HW-245 (#14)"
+      }
+     ],
+     "route": "local",
+     "reply": "According to the system: HW-245; commented on HW-245 (#14).",
+     "turns_seen": 1,
+     "runtime_s": 7.19,
+     "gateway_latency_s": 3.47,
+     "prompt_tokens": 387
+    }
+   ]
+  },
+  {
+   "session_id": "live-qa-harborworks-083307",
+   "kind": "qa",
+   "user": "qa-harborworks",
+   "turns": [
+    {
+     "request": "What does HW-254 look like?",
+     "tool": "issue_get",
+     "depends": false,
+     "right": true,
+     "calls": [
+      {
+       "tool": "issue_get",
+       "args": {
+        "key": "HW-254"
+       },
+       "result": "HW-254 [story] Show search history in the dashboard — status qa · assignee Walter Molina · Sprint 23 · 8 pts · low · search\nlogged 0h"
+      },
+      {
+       "tool": "put",
+       "args": {
+        "body": "issue=HW-254"
+       },
+       "result": "stored issue"
+      }
+     ],
+     "route": "local",
+     "reply": "According to the system: HW-254 [story] Show search history in the dashboard — status qa · assignee Walter Molina · Sprint 23 · 8 pts · low · search; logged 0h; stored issue.",
+     "turns_seen": 1,
+     "runtime_s": 9.53,
+     "gateway_latency_s": 6.35,
+     "prompt_tokens": 444
+    },
+    {
+     "request": "QA passed, it's done.",
+     "tool": "issue_transition",
+     "depends": true,
+     "right": true,
+     "calls": [
+      {
+       "tool": "get",
+       "args": {
+        "body": "issue"
+       },
+       "result": "HW-254"
+      },
+      {
+       "tool": "issue_transition",
+       "args": {
+        "key": "HW-254",
+        "status": "done"
+       },
+       "result": "moved HW-254 from qa to done"
+      }
+     ],
+     "route": "local",
+     "reply": "According to the system: HW-254; moved HW-254 from qa to done.",
+     "turns_seen": 1,
+     "runtime_s": 7.75,
+     "gateway_latency_s": 3.24,
+     "prompt_tokens": 352
+    },
+    {
+     "request": "Done criteria for tests?",
+     "tool": "page_read",
+     "depends": false,
+     "right": true,
+     "calls": [
+      {
+       "tool": "page_read",
+       "args": {
+        "ref": "definition-of-done#tests"
+       },
+       "result": "[definition-of-done#tests] An issue is done only when its tests pass on CI."
+      }
+     ],
+     "route": "local",
+     "reply": "According to the system: [definition-of-done#tests] An issue is done only when its tests pass on CI..",
+     "turns_seen": 1,
+     "runtime_s": 8.41,
+     "gateway_latency_s": 3.69,
+     "prompt_tokens": 229
+    },
+    {
+     "request": "Remark on it: tested with a large account",
+     "tool": "issue_comment",
+     "depends": true,
+     "right": true,
+     "calls": [
+      {
+       "tool": "get",
+       "args": {
+        "body": "issue"
+       },
+       "result": "HW-254"
+      },
+      {
+       "tool": "issue_comment",
+       "args": {
+        "key": "HW-254",
+        "text": "tested with a large account"
+       },
+       "result": "commented on HW-254 (#15)"
+      }
+     ],
+     "route": "local",
+     "reply": "According to the system: HW-254; commented on HW-254 (#15).",
+     "turns_seen": 1,
+     "runtime_s": 30.59,
+     "gateway_latency_s": 4.95,
+     "prompt_tokens": 360
+    }
+   ]
+  }
+ ],
+ "passed": 14,
+ "turns": 14,
+ "dependent": "8/8",
+ "finished": "2026-09-30T08:35:22"
+}

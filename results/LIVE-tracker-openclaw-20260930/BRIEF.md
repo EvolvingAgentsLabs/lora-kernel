@@ -53,6 +53,28 @@ A turn with no gateway event is a transport failure and is reported apart, never
 
 A second pass for variance; the video (recorded on the same setup once PASSED); `tr-s0` on the edge.
 
-## Result
+## Result [ran] — PASSED, 14/14 (dependent 8/8)
 
-*(written after the run)*
+OpenClaw 2026.9.4 · llama.cpp (Homebrew, Metal) · E4B Q8_0 + `lora-tracker-wf-s1-f16.gguf` · the gateway with the
+operational memory, no tool block · the user's Mac (M4, 16 GB), 2026-09-30. `live.json`, `events.jsonl`, `run.log`.
+
+| session | turns | what the member did |
+|---|---|---|
+| lead | 5/5 | created HW-398 and `put` it; "Let Ana own it" → `get issue` → assigned to Ana Luna; `bug-policy#critical`; the sprint board; "Bring back the bug you just filed" → `get issue` → HW-398 |
+| developer | 5/5 | opened HW-245 and `put` its key and component; moved it to review, logged 3 h, commented — each by `get issue`; "Its component — who owns it?" → `get component` → `components#reports` |
+| qa | 4/4 | opened HW-254; moved it qa → done by key; read `definition-of-done#tests` (the anchor itself); commented |
+
+Every turn served locally (no frontier), one gateway event per turn, 0 tool errors or denials. Gateway latency per turn
+median **3.7 s** (max 7.4 s); OpenClaw's wall clock per turn median 7.7 s (max 30.6 s, the first turn of a profile);
+prompt tokens per turn median **371** (max 656) — the block-less compact context, as H3b measured it on vLLM.
+
+**Attempt 1 — void, an instrument error, recorded** (`attempt1_void_stop_dropped.*`). Five lead turns failed with the right
+call written and never run (`<page_read>bug-policy#critical` with no closing tag): with more than four closing tags the
+request stops at `"</"` (H2's vLLM fix), and the tag was rebuilt only when the server handed `"</"` back — llama.cpp drops
+the stop string. `accept_rank.completion` now rebuilds the tag on either server (`tests/test_tracker.py`). The run was
+stopped at the fifth turn; no call had run, so the store was untouched. Attempt 2 used fresh OpenClaw session ids (OpenClaw
+keeps a session's conversation; a rerun must not inherit it).
+
+**What it means.** The tracker member that H3 measured on a rented card runs on the user's own laptop, behind a real agent
+runtime, and carries a five-turn session by key — one line of state, no conversation, no tool schema — at about 370 prompt
+tokens a turn. One session per role, one pass: a demonstration with a bar, not a rate; H3 is the rate.

@@ -130,6 +130,11 @@ def test_more_closing_tags_than_the_server_takes_stop_at_the_generic_close(monke
     monkeypatch.setattr(ar, "post", post)
     close = tuple(f"</{n}>" for n in ("issue_get", "issue_search", "issue_transition", "issue_comment", "worklog_add", "get"))
     assert ar.completion("m", "p", 40, close) == "<issue_get>RD-12</issue_get>" and sent["stop"] == ["</"]
+    # llama.cpp drops the stop string: the text ends inside the tag, and the tag is still put back [ran] LIVE-tracker attempt 1
+    monkeypatch.setattr(ar, "post", lambda path, body, timeout=300: {"choices": [{"text": "<page_read>bug-policy#critical", "finish_reason": "stop"}]})
+    assert ar.completion("m", "p", 40, close + ("</page_read>",)) == "<page_read>bug-policy#critical</page_read>"
+    monkeypatch.setattr(ar, "post", lambda path, body, timeout=300: {"choices": [{"text": "It is done.", "finish_reason": "stop"}]})
+    assert ar.completion("m", "p", 40, close) == "It is done."
     few = close[:3]
     monkeypatch.setattr(ar, "post", lambda path, body, timeout=300: sent.update(body) or {"choices": [{"text": "Done.", "finish_reason": "stop"}]})
     assert ar.completion("m", "p", 40, few) == "Done." and sent["stop"] == list(few)

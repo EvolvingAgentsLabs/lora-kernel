@@ -208,6 +208,7 @@ PASSED**: the block-less member is the compact context the design asked for. Rea
 refused by the tool layer); the block-less arm's 4 misses are one session whose first turn cascades an
 error through the rest ([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](results/H3-tracker-corpus-v2-20260929/BRIEF.md))
 ([`results/H2-tracker-harness-20260929/`](results/H2-tracker-harness-20260929/BRIEF.md)).
+**And it runs live on the user's Mac** — `tr-s1` block-less with the operational memory, llama.cpp Q8_0 + its LoRA as GGUF, driven through OpenClaw over three sessions (lead, developer, QA): **14/14 turns, dependent 8/8**, gateway latency median 3.7 s, ~370 prompt tokens a turn ([`results/LIVE-tracker-openclaw-20260930/BRIEF.md`](results/LIVE-tracker-openclaw-20260930/BRIEF.md)).
 
 ---
 
@@ -381,7 +382,7 @@ against H2's two corrections, has a result [ran]:** `tr-s1` 158/160 against `tr-
 suite, 11:0 paired, p = 0.00098 (**H3a PASSED**); block-less **now works, every role** — 156/160
 (97.5 %), developer 76/80, lead 40/40, QA 40/40, at about a third of the prompt tokens per turn
 (**H3b PASSED**) — the block-less member is the compact context the design asked for. The
-harness has not run live through OpenClaw, and its global
+harness has run live through OpenClaw on the user's Mac (LIVE-tracker, 14/14); its global
 cache — built and unit-tested — is not yet trained on in any corpus outside the tracker domain. The memory's library lives only in
 `distributor-wiki@v2`, a separate
 member — no serving member carries its own library yet. The distributor's live run above is llama.cpp only; nobody
