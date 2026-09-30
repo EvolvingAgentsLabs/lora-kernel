@@ -82,14 +82,17 @@ def reading(rec: dict) -> dict:
     return out
 
 
-def main() -> int:
-    ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+def main(argv=None, *, doc=__doc__, data=None, members=None, arm_spec=None, read=None, train_member="tr-s1",
+         default_arms="s0-harness,s1-harness,s1-noblock", default_out="h3.json", tag="tracker3") -> int:
+    """H3's runner; H4 (examples/tracker/h4_arm.py) calls it with its own suite, members, arms and reading."""
+    data, members, arm_spec, read = data or DATA, members or MEMBERS, arm_spec or ARM_SPEC, read or reading
+    ap = argparse.ArgumentParser(description=doc, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--base", default=BASE)
     ap.add_argument("--adapter", action="append", default=[], help="pool adapters (ignored)")
     ap.add_argument("--train-seed", type=int, default=None)
-    ap.add_argument("--arms", default="s0-harness,s1-harness,s1-noblock")
-    ap.add_argument("--out", default="h3.json")
-    a = ap.parse_args()
+    ap.add_argument("--arms", default=default_arms)
+    ap.add_argument("--out", default=default_out)
+    a = ap.parse_args(argv)
     out = Path(a.out)
     rec = json.loads(out.read_text()) if out.exists() else {}
     rec.setdefault("arms", {})
@@ -97,8 +100,8 @@ def main() -> int:
     if a.train_seed is not None:
         import hashlib
         from training.harness.release_gate import RECIPE
-        corpus, adapter = DATA / "train_harness.jsonl", MEMBERS["tr-s1"]
-        print(f"[tracker3] training {adapter} on {a.base} from {corpus}", flush=True)
+        corpus, adapter = data / "train_harness.jsonl", members[train_member]
+        print(f"[{tag}] training {adapter} on {a.base} from {corpus}", flush=True)
         rc = subprocess.call([sys.executable, "-m", "training.harness.train_one", "--base", a.base, "--train", str(corpus),
                               "--out-dir", adapter, "--epochs", str(RECIPE["epochs"]), "--r", str(RECIPE["r"]),
                               "--alpha", str(RECIPE["lora_alpha"]), "--lr", str(RECIPE["lr"]), "--seed", str(a.train_seed)])
@@ -109,9 +112,9 @@ def main() -> int:
                          "adapter_sha256": hashlib.sha256(Path(adapter, "adapter_model.safetensors").read_bytes()).hexdigest()}
         subprocess.call(["tar", "czf", "adapters_out.tgz", adapter])
         rec["trained_only"] = time.strftime("%Y-%m-%dT%H:%M:%S"); save()
-        print("[tracker3] trained and packed — stopping before serving, as asked", flush=True)
+        print(f"[{tag}] trained and packed — stopping before serving, as asked", flush=True)
         return 0
-    sessions = [json.loads(l) for l in (DATA / "eval.jsonl").read_text().splitlines() if l.strip()]
+    sessions = [json.loads(l) for l in (data / "eval.jsonl").read_text().splitlines() if l.strip()]
     arms = [x for x in a.arms.split(",") if x]
     from transformers import AutoTokenizer
     from examples.school.gateway import vllm_generator
@@ -119,19 +122,19 @@ def main() -> int:
     from training.harness import accept_rank as ar
     from training.harness.verify_substrate import identity
     tok = AutoTokenizer.from_pretrained(a.base)
-    served = {m: MEMBERS[m] for m in dict.fromkeys(ARM_SPEC[x][0] for x in arms)}
+    served = {m: members[m] for m in dict.fromkeys(arm_spec[x][0] for x in arms)}
     srv = ar.serve(a.base, ["--max-model-len", "8192", "--gpu-memory-utilization", "0.90", "--enable-lora", "--max-lora-rank", "16",
                             "--max-loras", str(len(served)), "--lora-modules", *[f"{m}={d}" for m, d in served.items()]])
     try:
         if not ar.wait_ready(srv, minutes=20):
             rec["stopped"] = "the server never came up"; save(); return 1
         rec["G1s"] = {m: identity(a.base, m, tok) for m in served}
-        print(f"[tracker3] G1 {({m: g['applied'] for m, g in rec['G1s'].items()})}", flush=True)
+        print(f"[{tag}] G1 {({m: g['applied'] for m, g in rec['G1s'].items()})}", flush=True)
         save()
         if not all(g["applied"] for g in rec["G1s"].values()):
             rec["stopped"] = "G1: a member is not applied"; save(); return 1
         for arm in arms:
-            member, kw = ARM_SPEC[arm]
+            member, kw = arm_spec[arm]
             gen = vllm_generator(member, tok)
             slot = rec["arms"].setdefault(arm, {})
             for i, s in enumerate(sessions, 1):
@@ -141,14 +144,14 @@ def main() -> int:
                 if i % 10 == 0 or i == len(sessions):
                     save()
                     sm = summarise(list(slot.values()))
-                    print(f"[tracker3] {arm} {i}/{len(sessions)} · first {sm['first']} · dependent {sm['dependent']} · "
+                    print(f"[{tag}] {arm} {i}/{len(sessions)} · first {sm['first']} · dependent {sm['dependent']} · "
                           f"independent {sm['independent']} · errors {sm['errors']} · tokens {sm['prompt_tokens_by_turn']}", flush=True)
     finally:
         ar.stop(srv)
-    rec["reading"] = reading(rec)
+    rec["reading"] = read(rec)
     rec["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")
     save()
-    print(f"[tracker3] {rec['reading']['reading']}", flush=True)
+    print(f"[{tag}] {rec['reading']['reading']}", flush=True)
     return 0
 
 

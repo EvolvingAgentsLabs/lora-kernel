@@ -106,13 +106,29 @@ class Workflow:
     initial: str
     states: dict[str, dict[str, str]] = field(default_factory=dict)
     keys: list[str] = field(default_factory=list)
+    capture: dict[str, str] = field(default_factory=dict)     # key → regex over the user's request ([capture] in the TOML)
 
     @classmethod
     def load(cls, path: str | Path) -> "Workflow":
         d = tomllib.loads(Path(path).read_text())
         w = d["workflow"]
         return cls(name=w["name"], initial=w["initial"], keys=list(w.get("keys", [])),
-                   states={s: dict(v.get("on", {})) for s, v in d.get("states", {}).items()})
+                   states={s: dict(v.get("on", {})) for s, v in d.get("states", {}).items()},
+                   capture=dict(d.get("capture", {})))
+
+    def captured(self, memory: OpMemory, claim, session: str, request: str, calls: list[dict]) -> dict[str, str]:
+        r"""A key the USER named, kept even when the turn's call went wrong. After the turn, for each `[capture]` key whose
+        pattern occurs in the request: if the member did not `put` that key itself this turn, the gateway puts the last
+        match. Without it one wrong first call leaves the memory empty and every dependent turn after it finds nothing —
+        4 of `s1-noblock`'s 4 misses were one such session [ran] H3. Declared, never inferred; logged like any write."""
+        put_now = {str(c.get("args", {}).get("body", "")).split("=", 1)[0].strip() for c in calls if c.get("tool") == "put" and "result" in c}
+        out = {}
+        for key, pattern in self.capture.items():
+            found = re.findall(pattern, request or "")
+            if found and key not in put_now:
+                memory.put(claim, session, key, found[-1])
+                out[key] = found[-1]
+        return out
 
     def state(self, memory: OpMemory, claim, session: str) -> str:
         try:
