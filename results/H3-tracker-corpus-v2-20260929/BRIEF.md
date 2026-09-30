@@ -69,6 +69,40 @@ passes. H2's eval with `tr-s1` — its wording is no longer held out from the de
 - **T attempt 2 on an A100** — same recipe, same corpus, same seed, bf16 on both cards; the card changes the arithmetic's
   order, not the recipe. Stated here before it runs. S stays on an L4, as H2's.
 
-## Result
+## Result [ran] — H3a PASSED, H3b PASSED
 
-*(written after S)*
+T attempt 2 on an A100 (seed 0, 1,400 rows, 264 steps, ~32 min); S on one L4 session, G1 both members applied, 0 transport
+errors, no arm void. `h3.json`, `train_tr_s1.json` (corpus and adapter sha256).
+
+| arm | first | dependent | independent | $\bar p_1 \ldots \bar p_5$ |
+|---|---|---|---|---|
+| `s0-harness` (`tr-s0`, H2's member) | 60/60 | **147/160** (91.9 %) | 49/60 | 1619 · 1221 · 967 · 1090 · 1275 |
+| `s1-harness` (`tr-s1`) | 60/60 | **158/160** (98.8 %) | 60/60 | 1465 · 1219 · 958 · 1086 · 1275 |
+| `s1-noblock` (`tr-s1`, no tool block) | 59/60 | **156/160** (97.5 %) | 60/60 | 503 · 359 · 285 · 326 · 380 |
+
+- **Headroom:** `tr-s0` at 147/160 is under the 95 % ceiling — the comparison is readable. It is H2's number again
+  (146/160) on a suite it had never seen phrased: the fresh suite is not easier.
+- **H3a PASSED:** `tr-s1` 158/160 against `tr-s0` 147/160 on the same turns, **11 : 0**, exact sign test $p = 0.00098$,
+  **0 lost**, flat ($\bar p_5 = 1275 \le 1.1 \cdot 1465$).
+- **H3b PASSED:** block-less loses **4** dependent turns to the block (bar 8) — developer 76/80, lead 40/40, QA 40/40. H2's
+  block-less, whose rows were all QA's, got 80/160. It reads **~3× fewer prompt tokens** per turn (285–503 against 958–1465).
+
+**Read where it happens.**
+1. `tr-s0`'s 13 dependent misses: the developer's component owner (10/20 — "Who do I ask about its component?" / "Its
+   component — who owns it?"), one developer comment, two QA comments. On the fresh wording QA's comment is 18/20: H2's
+   6/20 was the one phrasing.
+2. `tr-s1`'s 2 misses are one case: *"Annotate it: ready for QA"* — the note's text read as an instruction, and it tries
+   `issue_transition → qa`, which the tool layer refuses. A real miss, new: text **inside** an argument taken as a command.
+3. `s1-noblock`'s 4 dependent misses are **one session**: its first turn, "Details on RD-220?", called `page_read`
+   (`components#rd-220`) instead of `issue_get`; nothing was `put`, and the four dependent turns found an empty memory
+   (`get issue` → `no key issue`). A first-turn error cascades — the harness's failure mode, not reference resolution.
+4. The anchor-by-result scorer credited 9 turns of `tr-s0` (independent, QA's "where must tests pass?"), 0 of `tr-s1`: it
+   does not carry H3a, which is decided on dependent turns.
+
+**Not bought:** the attribution arm (`s0-noblock` on the fresh suite). H2's gate already names the cause — `tr-s0` saw no
+block-less row outside QA — so the arm would price a number whose reason is on disk.
+
+**What it means.** The member is its corpus: widening the wording per turn and rendering a block-less third of every role
+took the tracker member to 158/160 with the block and 156/160 without it, on turns no corpus and no designer had seen
+phrased. The block-less member is the compact context the user's design asked for — one line of state, the keys, no tool
+schema — at a third of the tokens.
