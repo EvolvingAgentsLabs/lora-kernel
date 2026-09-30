@@ -161,19 +161,20 @@ day** on the team tracker (`examples/tracker/`), `training/harness/accept_rank.p
 first (attempt 1 void on a vLLM transport error, not a scoring one) — result in, as written FALSIFIED, **the
 user's decision (2026-09-29): reading 1, the harness PASSED on the readable conditions** (§9) → two corrections
 read afterwards in H2's records (the block-less "learned in part" reading was a corpus aliasing bug; the QA
-final-comment miss is one eval phrasing) → **H3 pre-registered and running** on a second tracker corpus that
-fixes both, `tr-s1` against `tr-s0` on a fresh held-out suite
+final-comment miss is one eval phrasing) → **H3 [ran], both bars PASSED** on a second tracker corpus that fixes
+both: `tr-s1` 158/160 against `tr-s0` 147/160 on a fresh held-out suite (paired 11:0, $p = 0.00098$), and
+block-less now holds every role, 156/160, at about a third of the prompt tokens
 ([`../../results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../results/H3-tracker-corpus-v2-20260929/BRIEF.md))
 → the live demo with OpenClaw on the user's machine, multi-turn, still
-waits, now on H3's result.
+waits, now on repeating LIVE-distributor's pattern with the harness member.
 
-**Next, running.** H2 ran on a second domain, built to let sessions run long enough for the token saving
+**Done.** H2 ran on a second domain, built to let sessions run long enough for the token saving
 to show: **the team tracker** (`examples/tracker/`, built and scored 2026-09-29) — a Jira + Confluence-like tool,
 explicit longer workflows (To Do → In Progress → In Review → QA → Done for stories, Triage for bugs), natural keys
 such as `RD-123`/`HW-123`, and Confluence-shaped pages read by `page` or `page#anchor` as the library. Synthetic
 worlds only, as everywhere here. Result, both readings, and the user's decision: §9. **H3**, its successor,
 trains `tr-s1` on a second corpus that fixes H2's two corrections and measures it against `tr-s0` on a fresh
-held-out suite — pre-registered and running, no result yet
+held-out suite — **[ran]**, both H3a and H3b PASSED
 ([`../../results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
 
 ## 8. Result (H1)
@@ -296,12 +297,46 @@ untrained baseline, and the anchor check that measured phrasing). Not rerun: no 
 part" reading was a corpus aliasing bug (above), and QA's final-comment miss is one eval phrasing (above). Both
 are what H3 trains against.
 
-**H3 is pre-registered and running.** `tr-s1`, trained on a second tracker corpus that widens the training
-wording by two phrasings per turn in every role and gives each role an even block-less third, measured against
-`tr-s0` — our own previous member, not the bare base — on a fresh held-out suite (new worlds, wording neither
-training nor H2's eval used). Scorer `turn_right_h3` fixed before the run (a page#anchor turn is right when a
-page read returned the statement). Bars: H3a needs `s1-harness` ≥ 90 % dependent, a paired improvement over
-`s0-harness` (exact sign test, $p \lt 0.05$), losing ≤ 3 turns, and flat tokens — unless `s0-harness` already sits
-at ≥ 95 % on the fresh suite, in which case H3a is reported as NO HEADROOM. H3b needs `s1-noblock` to lose ≤ 8
-dependent turns to `s1-harness`, by role. No result yet:
-[`../../results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../results/H3-tracker-corpus-v2-20260929/BRIEF.md).
+**H3 [ran], 2026-09-29: both bars PASSED.** `tr-s1`, trained on a second tracker corpus that widens the
+training wording by two phrasings per turn in every role and gives each role an even block-less third,
+measured against `tr-s0` — our own previous member, not the bare base — on a fresh held-out suite (new
+worlds, wording neither training nor H2's eval used). Scorer `turn_right_h3` fixed before the run (a
+page#anchor turn is right when a page read returned the statement); rescored against H2's own records it
+changes no dependent count.
+
+| arm | first turns | dependent turns | independent turns | prompt tokens (turns 1–5) | reading |
+|---|---|---|---|---|---|
+| `s0-harness` (`tr-s0`, H2's member, fresh suite) | 60/60 | **147/160 (91.9 %)** | 49/60 | 1619/1221/967/1090/1275 | under the 95 % ceiling — headroom holds, the comparison is readable |
+| `s1-harness` (`tr-s1`) | 60/60 | **158/160 (98.8 %)** | 60/60 | 1465/1219/958/1086/1275 (flat) | paired 11:0 against `s0-harness`, exact sign test $p = 0.00098$, 0 lost — **H3a PASSED** |
+| `s1-noblock` (`tr-s1`, tool block removed at serving) | 59/60 | **156/160 (97.5 %)** | 60/60 | 503/359/285/326/380 (~⅓ the tokens) | loses 4 of `s1-harness`'s dependent turns (bar 8), every role above it — **H3b PASSED** |
+
+**H3a PASSED:** `s1-harness` 158/160 against `s0-harness`'s 147/160 on the same turns, 11 discordant pairs all
+one way, 0 lost. For $n = 11$ the exact two-sided sign test is $p = 2\cdot 2^{-11} \approx 0.00098$, and the
+run is flat: $\bar p_5 = 1275 \le 1.1\cdot\bar p_1 = 1.1\cdot 1465$. `s0-harness`'s 13 dependent misses on the
+fresh suite are the developer's component owner (10/20, a note shape the corpus never showed two phrasings
+of), one developer comment, two QA comments — on the fresh wording QA's own comment is 18/20, so H2's 6/20 was
+the one phrasing, confirmed here rather than merely inferred.
+
+**H3b PASSED, and it is the result the block-less arm was missing.** `s1-noblock` loses only 4 dependent turns
+to the block, by role: developer 76/80, lead 40/40, QA 40/40 — H2's block-less, whose 400 training rows were
+all QA's, scored 80/160 with lead and developer at 0/20. Prompt tokens fall to about a third (285–503 against
+958–1465): the block-less member is the compact context the user's design asked for — one line of state, the
+keys, no tool schema — at a third of the cost.
+
+**Two failure modes read where they happen, new here.** `tr-s1`'s 2 dependent misses are one case: *"Annotate
+it: ready for QA"* — the note's own text is read as an instruction and the member tries `issue_transition →
+qa`, refused by the tool layer. Text **inside an argument** taken as a command. `s1-noblock`'s 4 dependent
+misses are one session: its first turn, "Details on RD-220?", calls `page_read` (`components#rd-220`) instead
+of `issue_get`; nothing is `put`, and the next four dependent turns find an empty memory (`get issue` → `no
+key issue`) — a **first-turn error cascading** through the session, the harness's own failure mode, not a
+reference-resolution miss.
+
+**An informal "anchor-by-result" scorer does not carry the verdict.** Credit any turn whose *result* contains
+the fact, whichever tool produced it: it credits 9 of `s0-harness`'s independent turns (QA's "where must tests
+pass?", reading the whole page) and 0 of `s1-harness`'s. It rewards reading more than asked, not using the
+workflow correctly, so it is reported and not used to decide H3a — H3a is decided on dependent turns.
+
+**Not bought.** The attribution arm (`s0-noblock` on the fresh suite, to split the wording fix from the role
+fix) — H2's gate already names the cause (`tr-s0` saw no block-less row outside QA), so the arm would price a
+number whose reason is already on disk
+([`../../results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).

@@ -127,7 +127,10 @@ FALSIFIED as written, kept on record with that and the anchor-check instrument e
 decision (2026-09-29), as for H1: reading 1** — the readable conditions are H2's verdict, `harness`
 **PASSED** (146/160, flat, descriptively 142:0). `harness-noblock` (80/160) is a corpus bug, not partial
 learning — its block-less third shared a modulus (`% 3`) with the role rotation, so all block-less rows
-were QA's. **H3 is pre-registered and running**: `tr-s1` against `tr-s0` on a fresh held-out suite
+were QA's. **H3 [ran], both bars PASSED**: `tr-s1`, trained on a second corpus (wording widened per turn
+in every role, an even block-less third of each role), beats `tr-s0` 158/160 against 147/160 on a fresh
+held-out suite (paired 11:0, $p = 0.00098$, flat), and without the tool block holds 156/160 across every
+role at about a third of the prompt tokens — the compact-context member now works
 ([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
 **The harness has not been run
 live through OpenClaw**; see [`OPENCLAW.md`](OPENCLAW.md) for the multi-turn story and

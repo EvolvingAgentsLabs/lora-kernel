@@ -475,8 +475,17 @@ with no argument). In `harness`, the 14 dependent misses are all one turn, QA's 
 stop one broken arm from erasing another's real result, this time voided an *untrained* baseline whose
 low first-turn score IS its headroom, not a defect — see §17. Attempt 1 of this run was void on a
 transport error, not a scoring one (§15's stop-sequence limit); the fix is
-`training/harness/accept_rank.py`'s `MAX_STOPS`. **H3 is pre-registered and running**: `tr-s1`, trained on
-a second corpus that fixes both corrections above, against `tr-s0` on a fresh held-out suite
+`training/harness/accept_rank.py`'s `MAX_STOPS`. **H3 has a result [ran]:** `tr-s1`, trained on a second
+corpus that fixes both corrections above (wording widened per turn in every role, a block-less third of
+each role), against `tr-s0` on a fresh held-out suite. Headroom holds first — `s0-harness` 147/160
+(91.9%), under the 95% ceiling — then **H3a PASSED**: `s1-harness` 158/160 (98.8%) against `s0-harness`,
+paired 11:0, exact sign test $p = 0.00098$, 0 lost, flat ($\bar p_5 = 1275 \le 1.1\cdot 1465$). **H3b
+PASSED**: without the tool block, `s1-noblock` 156/160 (97.5%), every role above the bar (developer
+76/80, lead 40/40, QA 40/40) — the aliasing bug above is fixed — at about a third of the prompt tokens
+per turn. Two failure modes read where they happen, new here: `tr-s1`'s 2 misses are one case, the
+note's own text read as a command (`issue_transition → qa`, refused by the tool layer); `s1-noblock`'s 4
+misses are one session whose first turn calls the wrong tool and the next four dependent turns find an
+empty memory — a first-turn error cascading through the session
 ([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
 Full result and both readings: [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §9.
 
@@ -818,6 +827,16 @@ misses include ten cases that read the whole `definition-of-done` page rather th
 anchor specifically — the statement the question asked about is inside what the member read, so a check
 for the anchor fails on exactly the cases where the underlying capability (find the right fact) succeeded.
 The miss is recorded, not loosened into a pass, and not used to claim the capability is missing either.
+
+**H3 (§10) fixed the anchor check and priced a scorer that still does not carry the verdict.** `turn_right_h3`
+scores a page read as right when the returned text contains the cited statement, closing the previous
+paragraph's gap; applied to H2's own records it changes no dependent count, so the fix did not move a
+number it was not meant to move. A separate, informal "anchor-by-result" scorer — credit any turn whose
+result *contains* the fact, whichever tool produced it — was tried beside it and credits 9 of `tr-s0`'s
+independent turns and 0 of `tr-s1`'s: it rewards a member for reading more than it was asked, not for using
+the workflow correctly, so it is reported and not used to decide H3a. The per-arm VOID rule (§10) applied
+cleanly here — every trained arm (`s0-harness`, `s1-harness`, `s1-noblock`) cleared 90% of first turns, so
+no instrument error recurred on this run.
 
 **Evidence.** This is not a claim that needs a run of its own — it is the discipline every run cited
 elsewhere in this document was already held to: P58's malformed-call fix, P47's rule that a verdict is read

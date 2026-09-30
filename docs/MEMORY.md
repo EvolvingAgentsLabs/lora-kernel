@@ -609,7 +609,9 @@ on record with that and the anchor-check instrument error. Descriptively, 142 of
 against 0. **The user's decision (2026-09-29), as for H1: reading 1** — the readable conditions are
 H2's verdict, `harness` **PASSED**. `harness-noblock` (80/160) was first read as "learned in part";
 that was a corpus bug (its block-less third shared a modulus with the role rotation, so all block-less
-rows were QA's), not partial learning. **H3 is pre-registered and running**: `tr-s1` against `tr-s0` on
-a fresh held-out suite
+rows were QA's), not partial learning. **H3 [ran], both bars PASSED**: `tr-s1`, trained on a second
+corpus (wording widened per turn in every role, an even block-less third of each role), beats `tr-s0`
+158/160 against 147/160 on a fresh held-out suite (paired 11:0, $p = 0.00098$, flat), and without the
+tool block holds 156/160 across every role at about a third of the prompt tokens
 ([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
 See [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §§8–9.

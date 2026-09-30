@@ -197,9 +197,16 @@ a baseline at 4/160. `harness-noblock` (the tool block removed at serving) reach
 corpus bug, not partial learning: the generator rendered the block-less third by the same modulus
 (`% 3`) the roles rotate on, so all 400 block-less rows were QA's, and the member learned block-less
 exactly the role it was shown (QA lane 80/80; lead and developer lanes 0/20, lead's only exception
-`sprint_board`, a call with no argument) — still short of the bar. In the harness arm the 14 dependent misses are all one turn, QA's final comment (6/20): the member re-reads the issue or tries a refused transition instead of commenting — a real miss, on one eval phrasing ("Note on it: …" 1/15 vs "Put a comment on it: …" 5/5); separately, 10 of the 60 independent turns (50/60) are the anchor check — "where must tests pass?" reads the whole `definition-of-done` page instead of `#tests`, and the statement is in what it read (measuring phrasing, recorded, not loosened). **H3 is
-pre-registered and running**, `tr-s1` trained on a second corpus against `tr-s0` on a fresh held-out
-suite ([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](results/H3-tracker-corpus-v2-20260929/BRIEF.md))
+`sprint_board`, a call with no argument) — still short of the bar. In the harness arm the 14 dependent misses are all one turn, QA's final comment (6/20): the member re-reads the issue or tries a refused transition instead of commenting — a real miss, on one eval phrasing ("Note on it: …" 1/15 vs "Put a comment on it: …" 5/5); separately, 10 of the 60 independent turns (50/60) are the anchor check — "where must tests pass?" reads the whole `definition-of-done` page instead of `#tests`, and the statement is in what it read (measuring phrasing, recorded, not loosened). **H3 has a result [ran]:**
+trained on a second corpus — wording widened by two phrasings per turn in every role, a block-less
+third of each role — `tr-s1` scores 158/160 dependent (98.8 %) on a fresh held-out suite against
+`tr-s0`'s 147/160 on the same turns, paired 11:0, exact sign test p = 0.00098, 0 lost, flat prompt —
+**H3a PASSED**. Served without the tool block, `tr-s1` scores 156/160 (97.5 %), every role above the
+bar (developer 76/80, lead 40/40, QA 40/40), at about a third of the prompt tokens per turn — **H3b
+PASSED**: the block-less member is the compact context the design asked for. Read where they happen:
+`tr-s1`'s 2 misses are one case, the note's own text taken as a command (`issue_transition → qa`,
+refused by the tool layer); the block-less arm's 4 misses are one session whose first turn cascades an
+error through the rest ([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](results/H3-tracker-corpus-v2-20260929/BRIEF.md))
 ([`results/H2-tracker-harness-20260929/`](results/H2-tracker-harness-20260929/BRIEF.md)).
 
 ---
@@ -369,8 +376,11 @@ only), the harness reaches **146/160 (91.3 %)** dependent turns and flat tokens 
 **FALSIFIED as written**: the untrained `base-history` control fails its own first turns (44/60) and
 trips the per-arm VOID rule meant for a broken treatment, voiding the comparison it existed to make —
 a second instance of the same instrument error, kept on record. **The user's decision: reading 1 —
-the readable conditions (146/160, flat, descriptive 142:0) are H2's verdict** (H2, above); H3 trains
-against H2's two corrections and is pre-registered and running. The
+the readable conditions (146/160, flat, descriptive 142:0) are H2's verdict** (H2, above). **H3, trained
+against H2's two corrections, has a result [ran]:** `tr-s1` 158/160 against `tr-s0` 147/160 on a fresh
+suite, 11:0 paired, p = 0.00098 (**H3a PASSED**); block-less **now works, every role** — 156/160
+(97.5 %), developer 76/80, lead 40/40, QA 40/40, at about a third of the prompt tokens per turn
+(**H3b PASSED**) — the block-less member is the compact context the design asked for. The
 harness has not run live through OpenClaw, and its global
 cache — built and unit-tested — is not yet trained on in any corpus outside the tracker domain. The memory's library lives only in
 `distributor-wiki@v2`, a separate

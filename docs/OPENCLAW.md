@@ -337,14 +337,17 @@ instrument error. Descriptively, 142 of 160 favour `harness` against 0.
 `harness` **PASSED**: [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §9.
 `harness-noblock` (80/160) was first read as "learned in part"; that was a corpus bug — its block-less
 third shared a modulus with the role rotation, so all block-less rows were QA's — not partial learning.
-**H3 is pre-registered and running**: `tr-s1` against `tr-s0` on a fresh held-out suite
+**H3 [ran], both bars PASSED**: `tr-s1`, trained on a second corpus (wording widened per turn in every
+role, an even block-less third of each role), beats `tr-s0` 158/160 against 147/160 on the same fresh
+suite (paired 11:0, $p = 0.00098$, flat), and without the tool block holds 156/160 across every role at
+about a third of the prompt tokens
 ([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
 
 **Both H1 and H2 ran on vLLM (one L4), not through OpenClaw, and nothing about a live multi-turn run through
 OpenClaw exists yet.** Every live run on this page — school 15/15, distributor 6/6 — is single-turn:
 one request, one reply, no earlier turn to resolve. A live multi-turn demo, through OpenClaw, is the
-last step of the order in `docs/review/harness-workflow-kv.md` §7, and now waits on H3's result rather
-than on either reading, both of which are resolved.
+last step of the order in `docs/review/harness-workflow-kv.md` §7, and now that H3 has a result, repeating
+LIVE-distributor's pattern with the harness member is what remains.
 
 ## What this is worth, measured
 

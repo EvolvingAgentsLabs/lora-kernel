@@ -169,20 +169,22 @@ requisito previo (intento 1 anulado por un error de transporte de vLLM, no de pu
 tal como está escrito FALSEADO, **decisión del usuario (2026-09-29): lectura 1, el arnés PASÓ sobre las
 condiciones legibles** (§9) → dos correcciones leídas después en los registros de H2 (la lectura "aprendido en
 parte" de lo-sin-bloque era un error de aliasing del corpus; la falla del comentario final de QA es un solo
-fraseo de la evaluación) → **H3 pre-registrado y corriendo** sobre un segundo corpus de tracker que arregla las
-dos, `tr-s1` contra `tr-s0` sobre una suite fresca retenida
+fraseo de la evaluación) → **H3 [ran], las dos barras PASARON** sobre un segundo corpus de tracker que arregla
+las dos: `tr-s1` 158/160 contra `tr-s0` 147/160 sobre una suite fresca retenida (pareado 11:0, $p = 0,00098$), y
+lo-sin-bloque ahora aguanta en cada rol, 156/160, a más o menos un tercio de los tokens de prompt
 ([`../../../results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../../results/H3-tracker-corpus-v2-20260929/BRIEF.md))
 → la demo en vivo con OpenClaw en
-la máquina del usuario, multi-turno, sigue esperando, ahora al resultado de H3.
+la máquina del usuario, multi-turno, sigue esperando, ahora a repetir el patrón de LIVE-distributor con el
+miembro del arnés.
 
-**Sigue, corriendo.** H2 corrió sobre un segundo dominio, construido para que las sesiones corran lo
+**Hecho.** H2 corrió sobre un segundo dominio, construido para que las sesiones corran lo
 bastante largo como para que se note el ahorro de tokens: **el tracker de equipo** (`examples/tracker/`,
 construido y puntuado el 2026-09-29) — una herramienta tipo Jira + Confluence, con flujos de trabajo explícitos
 y más largos (To Do → In Progress → In Review → QA → Done para historias, Triage para bugs), claves naturales
 como `RD-123`/`HW-123`, y páginas con forma de Confluence como biblioteca, leídas por `page` o `page#anchor`.
 Mundos sintéticos únicamente, como en todo lo demás acá. Resultado, las dos lecturas y la decisión del usuario:
 §9. **H3**, su sucesor, entrena `tr-s1` sobre un segundo corpus que arregla las dos correcciones de H2 y lo mide
-contra `tr-s0` sobre una suite fresca retenida — pre-registrado y corriendo, todavía sin resultado
+contra `tr-s0` sobre una suite fresca retenida — **[ran]**, H3a y H3b PASARON las dos
 ([`../../../results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
 
 ## 8. Resultado (H1)
@@ -317,13 +319,48 @@ que midió fraseo). No se repitió: ningún cambio de regla podía mover a `base
 "aprendido en parte" de lo-sin-bloque era un error de aliasing del corpus (arriba), y la falla del comentario
 final de QA es un solo fraseo de la evaluación (arriba). Las dos son contra lo que entrena H3.
 
-**H3 está pre-registrado y corriendo.** `tr-s1`, entrenado sobre un segundo corpus de tracker que amplía el
-fraseo de entrenamiento en dos variantes por turno en cada rol y da a cada rol un tercio parejo sin bloque,
-medido contra `tr-s0` — nuestro propio miembro anterior, no el base pelado — sobre una suite fresca retenida
-(mundos nuevos, fraseo que ni el entrenamiento ni la evaluación de H2 usaron). Evaluador `turn_right_h3` fijado
-antes de la corrida (un turno de página#anchor es correcto cuando una lectura de página devolvió el enunciado).
-Barras: H3a necesita que `s1-harness` llegue a ≥ 90 % dependiente, una mejora pareada sobre `s0-harness` (prueba
-de signo exacta, $p \lt 0,05$), perdiendo ≤ 3 turnos, y tokens planos — salvo que `s0-harness` ya esté en ≥ 95 %
-sobre la suite fresca, en cuyo caso H3a se informa como SIN MARGEN. H3b necesita que `s1-noblock` pierda ≤ 8
-turnos dependientes contra `s1-harness`, por rol. Todavía sin resultado:
-[`../../../results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../../results/H3-tracker-corpus-v2-20260929/BRIEF.md).
+**H3 [ran], 2026-09-29: las dos barras PASARON.** `tr-s1`, entrenado sobre un segundo corpus de tracker que
+amplía el fraseo de entrenamiento en dos variantes por turno en cada rol y da a cada rol un tercio parejo sin
+bloque, medido contra `tr-s0` — nuestro propio miembro anterior, no el base pelado — sobre una suite fresca
+retenida (mundos nuevos, fraseo que ni el entrenamiento ni la evaluación de H2 usaron). Evaluador `turn_right_h3`
+fijado antes de la corrida (un turno de página#anchor es correcto cuando una lectura de página devolvió el
+enunciado); repuntuando los registros de H2 con él no cambia ningún conteo dependiente.
+
+| brazo | primeros turnos | turnos dependientes | turnos independientes | tokens de prompt (turnos 1–5) | lectura |
+|---|---|---|---|---|---|
+| `s0-harness` (`tr-s0`, el miembro de H2, suite fresca) | 60/60 | **147/160 (91,9 %)** | 49/60 | 1619/1221/967/1090/1275 | bajo el techo del 95 % — hay margen, la comparación es legible |
+| `s1-harness` (`tr-s1`) | 60/60 | **158/160 (98,8 %)** | 60/60 | 1465/1219/958/1086/1275 (plano) | pareado 11:0 contra `s0-harness`, prueba de signo exacta $p = 0,00098$, 0 perdidos — **H3a PASÓ** |
+| `s1-noblock` (`tr-s1`, bloque de herramientas sacado al servir) | 59/60 | **156/160 (97,5 %)** | 60/60 | 503/359/285/326/380 (~⅓ de los tokens) | pierde 4 de los turnos dependientes de `s1-harness` (barra 8), cada rol por encima — **H3b PASÓ** |
+
+**H3a PASÓ:** `s1-harness` 158/160 contra los 147/160 de `s0-harness` sobre los mismos turnos, 11 pares
+discordantes todos a favor de un lado, 0 perdidos. Para $n = 11$ la prueba de signo exacta de dos colas es
+$p = 2\cdot 2^{-11} \approx 0,00098$, y la corrida es plana: $\bar p_5 = 1275 \le 1,1\cdot\bar p_1 = 1,1\cdot
+1465$. Las 13 fallas dependientes de `s0-harness` sobre la suite fresca son el dueño del componente del
+developer (10/20, una forma de nota que el corpus nunca mostró en dos fraseos), un comentario de developer, dos
+comentarios de QA — sobre el fraseo fresco el propio comentario de QA es 18/20, así que el 6/20 de H2 era el
+único fraseo, confirmado acá en vez de sólo inferido.
+
+**H3b PASÓ, y es el resultado que le faltaba al brazo sin bloque.** `s1-noblock` pierde sólo 4 turnos
+dependientes contra el bloque, por rol: developer 76/80, lead 40/40, QA 40/40 — lo-sin-bloque de H2, cuyas 400
+filas de entrenamiento eran todas de QA, sacó 80/160 con lead y developer en 0/20. Los tokens de prompt caen a
+más o menos un tercio (285–503 contra 958–1465): el miembro sin bloque es el contexto compacto que pedía el
+diseño del usuario — una línea de estado, las claves, sin esquema de herramientas — a un tercio del costo.
+
+**Dos fallas nuevas se leen donde ocurren.** Las 2 fallas dependientes de `tr-s1` son un solo caso: *"Annotate
+it: ready for QA"* — el texto de la propia nota se lee como una instrucción y el miembro intenta
+`issue_transition → qa`, rechazada por la capa de herramientas. Texto **dentro de un argumento** tomado como
+una orden. Las 4 fallas dependientes de `s1-noblock` son una sola sesión: su primer turno, "Details on
+RD-220?", llama a `page_read` (`components#rd-220`) en vez de `issue_get`; no se `put`ea nada, y los cuatro
+turnos dependientes siguientes encuentran una memoria vacía (`get issue` → `no key issue`) — un **error del
+primer turno en cascada** por la sesión, la propia falla del arnés, no una falla de resolución de referencias.
+
+**Un scorer informal "ancla-por-resultado" no carga el veredicto.** Acreditar cualquier turno cuyo *resultado*
+contenga el hecho, sin importar qué herramienta lo produjo: acredita 9 de los turnos independientes de
+`s0-harness` (el "¿dónde tienen que pasar los tests?" de QA, leyendo la página entera) y 0 de los de
+`s1-harness`. Premia leer más de lo pedido, no usar bien el workflow, así que se reporta y no se usa para
+decidir H3a — H3a se decide sobre turnos dependientes.
+
+**No comprado.** El brazo de atribución (`s0-noblock` sobre la suite fresca, para separar el arreglo de fraseo
+del arreglo de rol) — la compuerta de H2 ya nombra la causa (`tr-s0` no vio ninguna fila sin bloque fuera de
+QA), así que el brazo tasaría un número cuya razón ya está en disco
+([`../../../results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).

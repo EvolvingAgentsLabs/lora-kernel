@@ -623,7 +623,10 @@ chequeo de anchor. Descriptivamente, 142 de 160 favorecen a `harness` contra
 0. **La decisión del usuario (2026-09-29), como para H1: lectura 1** — las condiciones legibles son el
 veredicto de H2, `harness` **PASÓ**. `harness-noblock` (80/160) se leyó primero como "aprendido en
 parte"; era un error del corpus (su tercio sin bloque compartía módulo con la rotación de roles, así que
-las filas sin bloque eran todas de QA), no un aprendizaje parcial. **H3 está pre-registrado y corriendo**:
-`tr-s1` contra `tr-s0` sobre una suite fresca retenida
+las filas sin bloque eran todas de QA), no un aprendizaje parcial. **H3 [ran], las dos barras PASARON**:
+`tr-s1`, entrenado sobre un segundo corpus (fraseo ampliado por turno en cada rol, un tercio parejo sin
+bloque de cada rol), le gana a `tr-s0` 158/160 contra 147/160 sobre una suite fresca retenida (pareado
+11:0, $p = 0,00098$, plano), y sin el bloque de herramientas sostiene 156/160 en cada rol a más o menos
+un tercio de los tokens de prompt
 ([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
 Ver [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §§8–9.

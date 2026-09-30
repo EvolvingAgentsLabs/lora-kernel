@@ -154,7 +154,11 @@ same 160 turns, 142 : 0 favour the harness. **The user's decision (2026-09-29): 
 are H2's verdict, the harness PASSED**, as it was for H1: `docs/review/harness-workflow-kv.md` §9. `harness-noblock`
 (80/160) is a corpus bug, not partial learning — the block-less third was rendered by the same modulus (`% 3`) the
 roles rotate on, so all 400 block-less rows were QA's, and the member learned block-less exactly the role it was
-shown. **H3 is pre-registered and running**, `tr-s1` against `tr-s0` on a fresh held-out suite
+shown. **H3 [ran], both bars PASSED**: `tr-s1`, trained on a second corpus (wording widened per turn in
+every role, an even block-less third of each role), beats `tr-s0` 158/160 against 147/160 on a fresh
+held-out suite (paired 11:0, $p = 0.00098$, flat) and, without the tool block, holds 156/160 across every
+role at about a third of the prompt tokens — the block-less member is now the compact context the design
+asked for
 ([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
 
 **How the mechanisms connect on one turn, now that the harness has a result.** The gateway reads the request's

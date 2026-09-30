@@ -353,16 +353,18 @@ no ANULADA**, en el registro con ese y el error de instrumento del chequeo de an
 veredicto de H2, `harness` **PASÓ**: [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md)
 §9. `harness-noblock` (80/160) se leyó primero como "aprendido en parte"; era un error del corpus — su
 tercio sin bloque compartía módulo con la rotación de roles, así que las filas sin bloque eran todas de
-QA — no un aprendizaje parcial. **H3 está pre-registrado y corriendo**: `tr-s1` contra `tr-s0` sobre una
-suite fresca retenida
+QA — no un aprendizaje parcial. **H3 [ran], las dos barras PASARON**: `tr-s1`, entrenado sobre un segundo
+corpus (fraseo ampliado por turno en cada rol, un tercio parejo sin bloque de cada rol), le gana a
+`tr-s0` 158/160 contra 147/160 sobre la misma suite fresca (pareado 11:0, $p = 0,00098$, plano), y sin el
+bloque de herramientas sostiene 156/160 en cada rol a más o menos un tercio de los tokens de prompt
 ([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
 
 **Tanto H1 como H2 corrieron sobre vLLM (una L4), no a través de OpenClaw, y todavía no existe ninguna
 corrida multi-turno en vivo a través de OpenClaw.** Toda corrida en vivo de esta página — escuela 15/15,
 distribuidora 6/6 — es de un solo turno: un pedido, una respuesta, ningún turno anterior que resolver.
 Una demo multi-turno en vivo, a través de OpenClaw, es el último paso del orden en
-`docs/review/harness-workflow-kv.md` §7, y ahora espera al resultado de H3 en vez de a cualquiera de las
-dos lecturas, ambas ya resueltas.
+`docs/review/harness-workflow-kv.md` §7, y ahora que H3 tiene un resultado, lo que queda es repetir el
+patrón de LIVE-distributor con el miembro del arnés.
 
 ## Cuánto vale esto, medido
 
