@@ -61,6 +61,14 @@ such and H3b stands alone.
 The attribution arm (`s0-noblock` on the fresh suite, to split the role fix from the wording fix) — bought only if H3b
 passes. H2's eval with `tr-s1` — its wording is no longer held out from the designer.
 
+## Run log
+
+- **T attempt 1 (L4), 2026-09-29 19:58–20:59 — ended by Colab's sixty-minute cap** at step 114/264 of training: the boot took
+  ~37 min (attempt 1 silent, attempt 2 installed), training needs ~50 min on an L4 (H2's `tr-s0`: 50 min, which fit only
+  because its boot was short). Nothing scored; `T_attempt1_L4_ttl.log`.
+- **T attempt 2 on an A100** — same recipe, same corpus, same seed, bf16 on both cards; the card changes the arithmetic's
+  order, not the recipe. Stated here before it runs. S stays on an L4, as H2's.
+
 ## Result
 
 *(written after S)*
