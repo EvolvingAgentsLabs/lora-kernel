@@ -1,0 +1,61 @@
+{
+ "DEMO-school-diagram-20260926": {
+  "exposed": 1,
+  "acted": 0,
+  "cases": []
+ },
+ "DEMO-school-gemma-20260925": {
+  "exposed": 1,
+  "acted": 0,
+  "cases": []
+ },
+ "H1-workflow-harness-20260929": {
+  "exposed": 2,
+  "acted": 0,
+  "cases": []
+ },
+ "H2-tracker-harness-20260929": {
+  "exposed": 17,
+  "acted": 0,
+  "cases": []
+ },
+ "H3-tracker-corpus-v2-20260929": {
+  "exposed": 25,
+  "acted": 0,
+  "cases": []
+ },
+ "H4-tracker-command-notes-20260930": {
+  "exposed": 6,
+  "acted": 0,
+  "cases": []
+ },
+ "LIVE-distributor-openclaw-20260928": {
+  "exposed": 1,
+  "acted": 0,
+  "cases": []
+ },
+ "LIVE-school-openclaw-20260926": {
+  "exposed": 1,
+  "acted": 0,
+  "cases": []
+ },
+ "M10-distributor-abstain-20260928": {
+  "exposed": 9,
+  "acted": 0,
+  "cases": []
+ },
+ "M9-distributor-staff-20260926": {
+  "exposed": 5,
+  "acted": 0,
+  "cases": []
+ },
+ "MT0-multiturn-baseline-20260929": {
+  "exposed": 2,
+  "acted": 0,
+  "cases": []
+ },
+ "_total": {
+  "exposed": 70,
+  "acted": 0
+ }
+}
