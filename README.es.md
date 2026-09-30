@@ -35,6 +35,8 @@ pantalla está copiado de una corrida grabada — [`results/DEMO-school-diagram-
 sustitutos de demo. El video es HTML renderizado con [HyperFrames](https://github.com/heygen-com/hyperframes):
 [`video/demo-escuela/`](video/README.md).
 
+https://github.com/user-attachments/assets/bf19e256-6c78-4170-97ff-dca3b407dd6d
+
 **Y el tracker de equipo, multi-turno, en una laptop (76 s): [el MP4 (2,4 MB)](docs/video/demo-tracker.mp4)** · en español · tres
 sesiones a través de OpenClaw, Gemma 4 E4B + `tr-s1` sobre llama.cpp, llevando las claves y no la conversación — cada turno copiado de
 [`results/LIVE-tracker-openclaw-20260930/`](results/LIVE-tracker-openclaw-20260930/BRIEF.md), **14/14**, dependientes 8/8 · [`video/demo-tracker/`](video/README.md).

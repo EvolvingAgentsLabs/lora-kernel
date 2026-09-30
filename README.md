@@ -33,6 +33,8 @@ copied from one recorded run — [`results/DEMO-school-diagram-20260926/`](resul
 Gemma 4 E4B + a school-staff LoRA behind the gateway. Synthetic schools; identity, payments and monitoring are demo stand-ins.
 The video is HTML rendered with [HyperFrames](https://github.com/heygen-com/hyperframes): [`video/demo-escuela/`](video/README.md).
 
+https://github.com/user-attachments/assets/bf19e256-6c78-4170-97ff-dca3b407dd6d
+
 **And the team tracker, multi-turn, on a laptop (76 s): [the MP4 (2.4 MB)](docs/video/demo-tracker.mp4)** · in Spanish · three
 sessions through OpenClaw, Gemma 4 E4B + `tr-s1` on llama.cpp, carrying the keys, not the conversation — every turn copied from
 [`results/LIVE-tracker-openclaw-20260930/`](results/LIVE-tracker-openclaw-20260930/BRIEF.md), **14/14**, dependent 8/8 · [`video/demo-tracker/`](video/README.md).
