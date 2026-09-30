@@ -235,6 +235,9 @@ error en cascada por el resto
 ([`results/H2-tracker-harness-20260929/`](results/H2-tracker-harness-20260929/BRIEF.md)).
 **Y corre en vivo en la Mac del usuario** — `tr-s1` sin bloque con la memoria operativa, llama.cpp Q8_0 + su LoRA como GGUF, manejado por OpenClaw en tres sesiones (lead, developer, QA): **14/14 turnos, dependientes 8/8**, latencia del gateway mediana 3,7 s, ~370 tokens de prompt por turno ([`results/LIVE-tracker-openclaw-20260930/BRIEF.md`](results/LIVE-tracker-openclaw-20260930/BRIEF.md)).
 
+Una nota con forma de orden no se obedece: sobre 40 nunca vistas ("mark as done once CI is green", …) `tr-s1` escribe 40/40 como comentarios y no ejecuta ninguna — sin margen, así que no se entrenó un miembro nuevo ([`H4`](results/H4-tracker-command-notes-20260930/BRIEF.md)); una clave que escribe el usuario ahora se conserva aunque la llamada de un turno salga mal (`[capture]`, `docs/MECHANISMS.md` §9).
+
+
 ---
 
 ## El camino del pedido

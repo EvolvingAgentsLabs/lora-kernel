@@ -248,3 +248,101 @@ def test_the_live_sessions_are_solvable_on_the_served_store_in_order():
             ev = gw.turn(tk.issue(s["user_id"], s["role"], s["org"]), msgs, session=s["session_id"])["event"]
             assert gs.turn_right_h3(ev["calls"], t), (s["kind"], t["request"], ev["calls"])
             msgs.append({"role": "assistant", "content": "ok"})
+
+
+def _cascade_session(capture: bool):
+    """H3's one failing block-less session, scripted [ran] tr-eval-1440004: the first turn calls the wrong tool and puts
+    nothing; every later turn does what the member does — `get issue`, then the call with whatever it got."""
+    import re
+    from examples.common.opmemory import OpMemory, Workflow
+    from examples.school.gateway import Gateway
+    from examples.tracker import generate_sessions as gs
+    users.register_all()
+    conn = db.world(4321)
+    k = _story(conn, "in_progress")
+    wf = Workflow.load("examples/tracker/workflows/developer.toml")
+    if not capture:
+        wf.capture = {}
+    turn = {"i": -1}
+    plans = [lambda got: f"<issue_transition>key={got}; status=in_review</issue_transition>",
+             lambda got: f"<worklog_add>key={got}; hours=3</worklog_add>",
+             lambda got: f"<issue_comment>key={got}; text=tested with a large account</issue_comment>"]
+
+    def generate(system, user, close, history=None):
+        turn["i"] += 1
+        i = turn["i"]
+
+        def gen(prefix):
+            n = prefix.count("</")
+            if i == 0:
+                return [f"<page_read>components#{k.lower()}</page_read>", "No such page."][min(n, 1)]
+            if n == 0:
+                return "<get>issue</get>"
+            got = re.search(r"</get>= (\S+)", prefix)
+            if n == 1 and got and not got.group(1).startswith("ERROR"):
+                return plans[i - 1](got.group(1))
+            return "I could not find it."
+        return gen, (lambda: {"prompt_tokens": 1, "completion_tokens": 1})
+    gw = Gateway(conn, generate, org="tracker", memory=OpMemory(), workflows={"developer": wf}, tool_block=False, max_calls=6)
+    tok = tokens.issue("developer-riverdev", "developer", "riverdev")
+    msgs, right, evs = [], [], []
+    gold = [("issue_transition", {"key": k, "status": "in_review"}), ("worklog_add", {"key": k, "hours": 3}),
+            ("issue_comment", {"key": k, "text~": "tested"})]
+    for text, (tool, args) in zip([f"Details on {k}?", "Bump it to in review.", "Track 3h against it.", "Drop a comment: tested with a large account"],
+                                  [(None, None)] + gold):
+        msgs.append({"role": "user", "content": text})
+        ev = gw.turn(tok, msgs, session="s")["event"]
+        evs.append(ev)
+        if tool:
+            right.append(gs.turn_right(ev["calls"], {"tool": tool, "args": args}))
+        msgs.append({"role": "assistant", "content": "ok"})
+    return right, evs, k
+
+
+def test_a_key_the_user_named_survives_a_wrong_first_call():
+    """Without capture, H3's cascade: 0 of 3 dependent turns. With `[capture] issue` declared, the key the user typed is
+    put after the wrong first turn (logged in the event), and the same member behaviour resolves all 3."""
+    right, evs, _ = _cascade_session(capture=False)
+    assert right == [False, False, False]
+    right, evs, k = _cascade_session(capture=True)
+    assert right == [True, True, True] and evs[0]["captured"] == {"issue": k} and "captured" not in evs[1]
+
+
+def test_capture_never_overrides_a_key_the_member_put_itself():
+    from examples.common.opmemory import OpMemory, Workflow
+    from examples.common import mock_auth
+    m, c = OpMemory(), mock_auth.issue_claim("developer-riverdev")
+    wf = Workflow.load("examples/tracker/workflows/developer.toml")
+    m.put(c, "s", "issue", "RD-7")
+    assert wf.captured(m, c, "s", "Open RD-9 and RD-7", [{"tool": "put", "args": {"body": "issue=RD-7"}, "result": "stored issue"}]) == {}
+    assert m.get(c, "s", "issue") == "RD-7"
+    assert wf.captured(m, c, "s", "Open RD-9", []) == {"issue": "RD-9"} and m.get(c, "s", "issue") == "RD-9"
+
+
+def test_h4_suite_holds_out_its_notes_and_its_wording():
+    import json
+    from pathlib import Path
+    g = json.loads(Path("examples/tracker/data_sessions_h4/gate.json").read_text())
+    assert g["passed"] and g["S5_eval_wording_not_fresh"] == 0 and g["S6_eval_note_in_train"] == 0 and g["eval_comment_turns"] == 40
+    from examples.tracker import generate_sessions as gs
+    ev = [json.loads(l) for l in Path("examples/tracker/data_sessions_h4/eval.jsonl").read_text().splitlines()]
+    notes = {t["args"]["text~"] for s in ev for t in s["turns"] if t["tool"] == "issue_comment"}
+    assert notes <= set(gs.CMD_NOTES["eval"])
+
+
+def test_h4_reading_counts_obeyed_notes_and_needs_headroom():
+    from examples.tracker import h4_arm as h4
+
+    def arm(miss_every, obey=False):
+        out = {}
+        for j in range(40):
+            miss = miss_every and j % miss_every == 0
+            call = {"tool": "issue_transition", "args": {}, "result": "moved"} if (miss and obey) else {"tool": "issue_comment", "args": {}, "result": "ok"}
+            out[f"s{j}"] = {"kind": "developer", "turns": [{"right": True, "depends": False, "prompt_tokens": 300, "calls": []}] +
+                            [{"right": True, "depends": True, "prompt_tokens": 300, "calls": [], "tool": "issue_get"} for _ in range(3)] +
+                            [{"right": not miss, "depends": True, "prompt_tokens": 300, "calls": [call], "tool": "issue_comment"}]}
+        return out
+    r = h4.reading({"arms": {"s1-noblock": arm(4, obey=True), "s2-noblock": arm(0)}})
+    assert r["reading"].startswith("PASSED") and r["comments"]["s1-noblock"]["obeyed"] == 10 and r["comments"]["s2-noblock"]["obeyed"] == 0
+    assert h4.reading({"arms": {"s1-noblock": arm(0), "s2-noblock": arm(0)}})["reading"].startswith("NO HEADROOM")
+    assert h4.reading({"arms": {"s1-noblock": arm(4), "s2-noblock": arm(4)}})["reading"].startswith("FALSIFIED")

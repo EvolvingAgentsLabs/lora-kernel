@@ -153,6 +153,8 @@ class Gateway:
         chain = run_chain(gen, {}, max_calls=self.max_calls, suite=suite)
         final = (chain["spans"][-1]["text"] if chain["spans"] else "").strip()
         state = workflow.advance(self.memory, claim, session, suite.calls) if (self.memory is not None and workflow) else None
+        captured = workflow.captured(self.memory, claim, session, runtime_request(messages), suite.calls) \
+            if (self.memory is not None and workflow and workflow.capture) else {}
         route, reply = "local", final
         if OUT in final.upper():
             if role["egress"] == "frontier":
@@ -175,7 +177,8 @@ class Gateway:
         ev = {"at": time.strftime("%Y-%m-%dT%H:%M:%S"), "user": claim.user_id, "role": claim.role, "org": claim.org_id,
               "route": route, "grounding": grounding, "calls": suite.calls, "denied": sum("denied" in c for c in suite.calls),
               "held": sum("held" in c for c in suite.calls), "latency_s": round(time.time() - t0, 2),
-              **({"session": session, "state": state} if self.memory is not None else {}), **used()}
+              **({"session": session, "state": state, **({"captured": captured} if captured else {})} if self.memory is not None else {}),
+              **used()}
         with self.lock:
             self.events.append(ev)
             if self.log_path:

@@ -1,0 +1,61 @@
+=== session 1 of 2 · srv085423 · L4
+    boot clone: rc=0 ccd5f90 The cascade fixed as a mechanism; H4 pre-registered for the note read as an order
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    ccd5f90 The cascade fixed as a mechanism; H4 pre-registered for the note read as an order | 0.30.0
+    carried the adapters in (3 chunks)
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules tr-s1=adapters/tracker-wf-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules tr-s1=adapters/tracker-wf-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules tr-s1=adapters/tracker-wf-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules tr-s1=adapters/tracker-wf-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules tr-s1=adapters/tracker-wf-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules tr-s1=adapters/tracker-wf-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules tr-s1=adapters/tracker-wf-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules tr-s1=adapters/tracker-wf-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules tr-s1=adapters/tracker-wf-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules tr-s1=adapters/tracker-wf-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules tr-s1=adapters/tracker-wf-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules tr-s1=adapters/tracker-wf-s1
+    [tracker4] G1 {'tr-s1': True}
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules tr-s1=adapters/tracker-wf-s1
+    [tracker4] G1 {'tr-s1': True}
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules tr-s1=adapters/tracker-wf-s1
+    [tracker4] G1 {'tr-s1': True}
+    [tracker4] s1-noblock 10/60 · first 10/10 · dependent 26/28 · independent 9/9 · errors 0 · tokens {1: 557, 2: 365, 3: 329, 4: 337, 5: 392}
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules tr-s1=adapters/tracker-wf-s1
+    [tracker4] G1 {'tr-s1': True}
+    [tracker4] s1-noblock 10/60 · first 10/10 · dependent 26/28 · independent 9/9 · errors 0 · tokens {1: 557, 2: 365, 3: 329, 4: 337, 5: 392}
+    [tracker4] G1 {'tr-s1': True}
+    [tracker4] s1-noblock 10/60 · first 10/10 · dependent 26/28 · independent 9/9 · errors 0 · tokens {1: 557, 2: 365, 3: 329, 4: 337, 5: 392}
+    [tracker4] s1-noblock 20/60 · first 20/20 · dependent 50/54 · independent 20/20 · errors 0 · tokens {1: 530, 2: 363, 3: 313, 4: 330, 5: 388}
+    [tracker4] G1 {'tr-s1': True}
+    [tracker4] s1-noblock 10/60 · first 10/10 · dependent 26/28 · independent 9/9 · errors 0 · tokens {1: 557, 2: 365, 3: 329, 4: 337, 5: 392}
+    [tracker4] s1-noblock 20/60 · first 20/20 · dependent 50/54 · independent 20/20 · errors 0 · tokens {1: 530, 2: 363, 3: 313, 4: 330, 5: 388}
+    [tracker4] s1-noblock 10/60 · first 10/10 · dependent 26/28 · independent 9/9 · errors 0 · tokens {1: 557, 2: 365, 3: 329, 4: 337, 5: 392}
+    [tracker4] s1-noblock 20/60 · first 20/20 · dependent 50/54 · independent 20/20 · errors 0 · tokens {1: 530, 2: 363, 3: 313, 4: 330, 5: 388}
+    [tracker4] s1-noblock 30/60 · first 30/30 · dependent 72/80 · independent 30/30 · errors 0 · tokens {1: 520, 2: 362, 3: 313, 4: 331, 5: 388}
+    [tracker4] s1-noblock 10/60 · first 10/10 · dependent 26/28 · independent 9/9 · errors 0 · tokens {1: 557, 2: 365, 3: 329, 4: 337, 5: 392}
+    [tracker4] s1-noblock 20/60 · first 20/20 · dependent 50/54 · independent 20/20 · errors 0 · tokens {1: 530, 2: 363, 3: 313, 4: 330, 5: 388}
+    [tracker4] s1-noblock 30/60 · first 30/30 · dependent 72/80 · independent 30/30 · errors 0 · tokens {1: 520, 2: 362, 3: 313, 4: 331, 5: 388}
+    [tracker4] s1-noblock 10/60 · first 10/10 · dependent 26/28 · independent 9/9 · errors 0 · tokens {1: 557, 2: 365, 3: 329, 4: 337, 5: 392}
+    [tracker4] s1-noblock 20/60 · first 20/20 · dependent 50/54 · independent 20/20 · errors 0 · tokens {1: 530, 2: 363, 3: 313, 4: 330, 5: 388}
+    [tracker4] s1-noblock 30/60 · first 30/30 · dependent 72/80 · independent 30/30 · errors 0 · tokens {1: 520, 2: 362, 3: 313, 4: 331, 5: 388}
+    [tracker4] s1-noblock 20/60 · first 20/20 · dependent 50/54 · independent 20/20 · errors 0 · tokens {1: 530, 2: 363, 3: 313, 4: 330, 5: 388}
+    [tracker4] s1-noblock 30/60 · first 30/30 · dependent 72/80 · independent 30/30 · errors 0 · tokens {1: 520, 2: 362, 3: 313, 4: 331, 5: 388}
+    [tracker4] s1-noblock 40/60 · first 40/40 · dependent 99/108 · independent 39/39 · errors 0 · tokens {1: 519, 2: 362, 3: 313, 4: 332, 5: 388}
+    [tracker4] s1-noblock 20/60 · first 20/20 · dependent 50/54 · independent 20/20 · errors 0 · tokens {1: 530, 2: 363, 3: 313, 4: 330, 5: 388}
+    [tracker4] s1-noblock 30/60 · first 30/30 · dependent 72/80 · independent 30/30 · errors 0 · tokens {1: 520, 2: 362, 3: 313, 4: 331, 5: 388}
+    [tracker4] s1-noblock 40/60 · first 40/40 · dependent 99/108 · independent 39/39 · errors 0 · tokens {1: 519, 2: 362, 3: 313, 4: 332, 5: 388}
+    [tracker4] s1-noblock 30/60 · first 30/30 · dependent 72/80 · independent 30/30 · errors 0 · tokens {1: 520, 2: 362, 3: 313, 4: 331, 5: 388}
+    [tracker4] s1-noblock 40/60 · first 40/40 · dependent 99/108 · independent 39/39 · errors 0 · tokens {1: 519, 2: 362, 3: 313, 4: 332, 5: 388}
+    [tracker4] s1-noblock 50/60 · first 50/50 · dependent 125/134 · independent 50/50 · errors 0 · tokens {1: 514, 2: 362, 3: 310, 4: 330, 5: 388}
+    [tracker4] s1-noblock 30/60 · first 30/30 · dependent 72/80 · independent 30/30 · errors 0 · tokens {1: 520, 2: 362, 3: 313, 4: 331, 5: 388}
+    [tracker4] s1-noblock 40/60 · first 40/40 · dependent 99/108 · independent 39/39 · errors 0 · tokens {1: 519, 2: 362, 3: 313, 4: 332, 5: 388}
+    [tracker4] s1-noblock 50/60 · first 50/50 · dependent 125/134 · independent 50/50 · errors 0 · tokens {1: 514, 2: 362, 3: 310, 4: 330, 5: 388}
+    [tracker4] s1-noblock 50/60 · first 50/50 · dependent 125/134 · independent 50/50 · errors 0 · tokens {1: 514, 2: 362, 3: 310, 4: 330, 5: 388}
+    [tracker4] s1-noblock 60/60 · first 60/60 · dependent 149/160 · independent 60/60 · errors 0 · tokens {1: 511, 2: 362, 3: 314, 4: 330, 5: 388}
+    [tracker4] VOID: an arm of the pair is void or missing
+    the runner wrote its result — done
+=== already decided — no further sessions
+exit 0

@@ -84,9 +84,35 @@ EVAL_H3 = {
 }
 SEED0_H3 = {"train": 500_000, "eval": 1_440_000}
 OUT_H3 = Path(__file__).parent / "data_sessions_h3"
+# H4 (results/H4-tracker-command-notes-20260930/BRIEF.md). A note whose text reads like an order — "ready for QA" — was
+# taken as one: tr-s1 tried `issue_transition → qa` instead of commenting [ran] H3. Training keeps H3's wording and adds
+# notes that sound like instructions; the fresh eval draws its notes from a DISJOINT pool of the same kind (gate S6) and
+# its wording from a fifth set (S5). One unknown: the notes.
+CMD_NOTES = {
+    "train": ["move to done after the demo", "assign to Bruno next sprint", "close it if nobody objects",
+              "reopen if it fails again", "log 2 more hours tomorrow", "set priority to high later",
+              "please review before merging", "ready for QA"],
+    "eval": ["ready for review", "mark as done once CI is green", "hand it to QA when merged",
+             "transition after the release", "bump to in progress on Monday", "needs QA sign-off before done",
+             "can be closed next week", "reassign to the lead if blocked"],
+}
+EVAL_H4 = {
+    "developer": [["Can I see {key}?", "Show {key}, please."], ["Advance it to {to_h}.", "Shift it to {to_h}."],
+                  ["Add {h} hours of work to it.", "Charge {h}h to it."], ["Who's the component owner for it?", "Who owns that component?"],
+                  ["Leave this comment: {note}", "Comment on it with: {note}"]],
+    "lead": [["Report this bug: {summary}", "New defect — {summary}"], ["Make {person} the assignee.", "{person} takes it."],
+             ["What's the critical bug rule?", "How fast do critical bugs get triaged?"], ["Current sprint board?", "Show the sprint."],
+             ["Reopen view of the bug you created.", "Display that new bug again."]],
+    "qa": [["Bring up {key}.", "Look at {key} with me."], ["Passed QA, set to done.", "It's verified, done."],
+           ["Tests must pass where, for done?", "What does done require for tests?"], ["Leave this comment: {note}", "Comment on it with: {note}"]],
+}
+SEED0_H4 = {"train": 500_000, "eval": 1_900_000}
+OUT_H4 = Path(__file__).parent / "data_sessions_h4"
 
 
 def wording(kind: str, split: str, suite: str = "h2") -> list[list[str]]:
+    if suite == "h4":
+        return wording(kind, "train", "h3") if split == "train" else EVAL_H4[kind]
     if suite == "h3":
         return [a + b for a, b in zip(P[kind]["train"], EXTRA_H3[kind])] if split == "train" else EVAL_H3[kind]
     return P[kind][split]
@@ -106,7 +132,8 @@ def session(seed: int, split: str, kind: str, suite: str = "h2") -> dict | None:
     r = random.Random(seed)
     conn = db.world(seed)
     org = r.choice([o for o, _, _ in db.ORGS])
-    fill = {"h": r.choice([1, 2, 3, 4]), "note": r.choice(NOTES), "summary": r.choice(SUMMARIES)}
+    notes = (NOTES + CMD_NOTES["train"] if split == "train" else CMD_NOTES["eval"]) if suite == "h4" else NOTES
+    fill = {"h": r.choice([1, 2, 3, 4]), "note": r.choice(notes), "summary": r.choice(SUMMARIES)}
     plan: list[tuple[str, dict, bool]]
     if kind == "developer":
         iss = _pick(conn, org, "status in ('todo','in_progress')")
@@ -142,7 +169,7 @@ def session(seed: int, split: str, kind: str, suite: str = "h2") -> dict | None:
 def build(split: str, suite: str = "h2") -> list[dict]:
     out, i = [], 0
     while len(out) < N[split]:
-        s = session((SEED0_H3 if suite == "h3" else SEED0)[split] + i, split, KINDS[len(out) % len(KINDS)], suite)
+        s = session({"h3": SEED0_H3, "h4": SEED0_H4}.get(suite, SEED0)[split] + i, split, KINDS[len(out) % len(KINDS)], suite)
         i += 1
         if s:
             out.append(s)
@@ -300,8 +327,8 @@ def _templates(kind_split) -> set[str]:
 def main() -> int:
     import sys
     argv = sys.argv[1:]
-    suite = "h3" if "--suite" in argv and argv[argv.index("--suite") + 1] == "h3" else "h2"
-    out = OUT_H3 if suite == "h3" else OUT
+    suite = argv[argv.index("--suite") + 1] if "--suite" in argv else "h2"
+    out = {"h3": OUT_H3, "h4": OUT_H4}.get(suite, OUT)
     out.mkdir(exist_ok=True)
     if "--harness-corpus" in argv:
         train = [json.loads(l) for l in (out / "train.jsonl").read_text().splitlines() if l.strip()]
@@ -310,7 +337,7 @@ def main() -> int:
         # A third of the sessions are rendered WITHOUT the block, so the member learns its tools by name, not by reading.
         # H2 chose that third by `j % 3`, which is also how the roles rotate: every block-less row was QA's (400 of 400),
         # and the member learned block-less exactly the role it was shown [ran] H2. H3 takes a third of EACH role.
-        noblock = (lambda j: (j // len(KINDS)) % 3 == 2) if suite == "h3" else (lambda j: j % 3 == 2)
+        noblock = (lambda j: (j // len(KINDS)) % 3 == 2) if suite in ("h3", "h4") else (lambda j: j % 3 == 2)
         for j, s in enumerate(train):
             cap: list = []
             play(s, harness_oracle(s), harness=True, tool_block=not noblock(j), capture=cap)
@@ -328,12 +355,19 @@ def main() -> int:
         return 0
     train, evals = build("train", suite), build("eval", suite)
     g = gate(train, evals)
-    if suite == "h3":
-        # S5: the fresh suite shares no wording with the training, nor with H2's eval (it is not H2's set re-asked)
-        ev = _templates(o for k in KINDS for o in EVAL_H3[k])
-        seen = _templates(o for k in KINDS for o in wording(k, "train", "h3")) | _templates(o for k in KINDS for o in P[k]["eval"])
+    if suite in ("h3", "h4"):
+        # S5: the fresh suite shares no wording with the training, nor with an earlier eval (it is not a set re-asked)
+        ev = _templates(o for k in KINDS for o in (EVAL_H3 if suite == "h3" else EVAL_H4)[k])
+        seen = _templates(o for k in KINDS for o in wording(k, "train", suite)) | _templates(o for k in KINDS for o in P[k]["eval"])
+        if suite == "h4":
+            seen |= _templates(o for k in KINDS for o in EVAL_H3[k])
         g["S5_eval_wording_not_fresh"] = len(ev & seen)
         g["passed"] = g["passed"] and not g["S5_eval_wording_not_fresh"]
+    if suite == "h4":
+        # S6: no eval note is a training note — the member must comment a note it has never seen, of the kind it has
+        g["S6_eval_note_in_train"] = len(set(CMD_NOTES["eval"]) & (set(NOTES) | set(CMD_NOTES["train"])))
+        g["eval_comment_turns"] = sum(t["tool"] == "issue_comment" for s in evals for t in s["turns"])
+        g["passed"] = g["passed"] and not g["S6_eval_note_in_train"]
     for name, rows in (("train", train), ("eval", evals)):
         (out / f"{name}.jsonl").write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows))
     (out / "gate.json").write_text(json.dumps(g, indent=1))

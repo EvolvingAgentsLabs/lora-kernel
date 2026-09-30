@@ -7,3 +7,7 @@ keys = ["issue"]
 on = { issue_get = "testing", issue_search = "start", issue_transition = "testing" }
 [states.testing]
 on = { issue_get = "testing", issue_transition = "testing", issue_comment = "testing", issue_search = "start" }
+
+# a key the user names is kept even when the turn's own call goes wrong (opmemory.Workflow.captured) — H3's cascade
+[capture]
+issue = '\b[A-Z]{2,5}-\d+\b'
