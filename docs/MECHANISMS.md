@@ -227,6 +227,8 @@ organisation's roles, not a gap in this mechanism.
 
 ---
 
+**What waits for a person survives a restart (2026-09-30).** With a state directory (`Gateway(state_dir=…)`, `--state-dir`, default `examples/<org>/state`) the queue appends every step to `approvals.jsonl` — `held`, `executing`, `approved` / `rejected` — and the handoffs to `handoffs.jsonl`; both are read back on start. `executing` is written before the tool runs, so a process that dies mid-charge comes back with that request `interrupted`: listed for the approver, never run again on its own, only rejectable — a held write executes at most once, with the requester's scope (`tests/test_persistence_egress.py`). The operational memory stays ephemeral (§8); only what waits for a person persists.
+
 ## 6. Abstention and egress
 
 **What.** A request a role's tools do not cover is not answered with a guess. The model states
@@ -260,6 +262,8 @@ frontier exit to **Claude Haiku 4.5**: **10,198 + 195 tokens, $0.0112**. `out-s0
 release** — no release file (§13) — it is the arm this live run used.
 
 ---
+
+**The process's egress is closed to its configured hosts (2026-09-30).** The rule above governs what the *model* decides; `examples/common/egress.py` governs what the *process* can reach. The gateway installs it before anything loads: `socket.getaddrinfo` and `socket.socket.connect` refuse any host outside the member's server, the frontier's host (if configured) and loopback — the DNS lookup included, so a refused name is never even resolved — and each attempt is appended to the event log as `{"egress": "denied", …}`. The first thing it found was the gateway's own start-up: loading the tokenizer asks the model hub over the network, so the gateway now sets `HF_HUB_OFFLINE` and reads it from the local cache (a smoke start: 0 denials). `--open-egress` turns it off for development. It is a guard of this process — a subprocess or a C extension is outside it; the operating system's firewall is the deployment's layer.
 
 ## 7. Pruning the tool surface
 

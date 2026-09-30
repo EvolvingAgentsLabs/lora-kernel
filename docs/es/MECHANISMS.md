@@ -248,6 +248,8 @@ en este mecanismo.
 
 ---
 
+**Lo que espera a una persona sobrevive a un reinicio (2026-09-30).** Con un directorio de estado (`Gateway(state_dir=…)`, `--state-dir`, por defecto `examples/<org>/state`) la cola agrega cada paso a `approvals.jsonl` — `held`, `executing`, `approved` / `rejected` — y los handoffs a `handoffs.jsonl`; los dos se releen al arrancar. `executing` se escribe antes de que corra la herramienta, así que un proceso que muere a mitad de un cobro vuelve con ese pedido `interrupted`: listado para quien aprueba, nunca re-ejecutado solo, sólo rechazable — una escritura retenida se ejecuta como mucho una vez, con el alcance de quien la pidió (`tests/test_persistence_egress.py`). La memoria operativa sigue siendo efímera (§8); sólo persiste lo que espera a una persona.
+
 ## 6. Abstención y salida
 
 **Qué.** Un pedido que las herramientas de un rol no cubren no se responde con una adivinanza. El modelo
@@ -284,6 +286,8 @@ gateway a **Claude Haiku 4.5**: **10.198 + 195 tokens, US$0,0112**. `out-s0` **n
 formal** — sin archivo de liberación (§13) — es el brazo que usó esta corrida en vivo.
 
 ---
+
+**La salida de red del proceso está cerrada a sus hosts configurados (2026-09-30).** La regla de arriba gobierna lo que decide el *modelo*; `examples/common/egress.py` gobierna a qué puede llegar el *proceso*. El gateway la instala antes de cargar nada: `socket.getaddrinfo` y `socket.socket.connect` rechazan cualquier host fuera del servidor del miembro, el host de la frontera (si está configurada) y loopback — la consulta DNS incluida, así que un nombre rechazado ni siquiera se resuelve — y cada intento se agrega al log de eventos como `{"egress": "denied", …}`. Lo primero que encontró fue el propio arranque del gateway: cargar el tokenizer consulta el hub de modelos por la red, así que el gateway ahora fija `HF_HUB_OFFLINE` y lo lee de la caché local (un arranque de humo: 0 rechazos). `--open-egress` lo apaga para desarrollo. Es una guarda de este proceso — un subproceso o una extensión en C quedan afuera; el firewall del sistema operativo es la capa del despliegue.
 
 ## 7. Podar la superficie de herramientas
 

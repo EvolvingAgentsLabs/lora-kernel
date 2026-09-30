@@ -37,6 +37,7 @@ import re
 import threading
 import time
 import urllib.request
+from pathlib import Path
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 from examples.common import approvals, tokens
@@ -107,7 +108,8 @@ def runtime_request(messages: list[dict]) -> str:
 
 class Gateway:
     def __init__(self, conn, generate, frontier=None, log_path=None, max_calls: int = 4, org: str = "school",
-                 history: bool = False, memory=None, workflows: dict | None = None, tool_block: bool = True):
+                 history: bool = False, memory=None, workflows: dict | None = None, tool_block: bool = True,
+                 state_dir: str | None = None):
         """`generate(system, user) -> (gen(prefix) -> text, used() -> {prompt_tokens, completion_tokens})`."""
         self.conn, self.generate, self.frontier, self.log_path, self.max_calls = conn, generate, frontier, log_path, max_calls
         # HISTORY (MT0, 2026-09-29): by default a turn sees only the person's last request — every earlier turn is
@@ -121,8 +123,14 @@ class Gateway:
         self.tool_block = tool_block          # H1's `harness-noblock`: the member is trusted to know its tools
         self.org, mods = org, org_modules(org)
         self.roles, self.tools = mods["roles"], mods["tools"]
-        self.queue = approvals.Queue() if ORGS[org]["approvals"] else None
+        # WHAT WAITS FOR A PERSON SURVIVES A RESTART (`state_dir`): the approval queue's journal and the handoffs, appended
+        # as they happen and read back on start. Without it both live only in this process — a held charge is lost with it.
+        self.state_dir = Path(state_dir) if state_dir else None
+        self.queue = approvals.Queue(journal=str(self.state_dir / "approvals.jsonl") if self.state_dir else None) \
+            if ORGS[org]["approvals"] else None
         self.handoffs, self.events, self.lock = [], [], threading.Lock()
+        if self.state_dir and (self.state_dir / "handoffs.jsonl").exists():
+            self.handoffs = [json.loads(l) for l in (self.state_dir / "handoffs.jsonl").read_text().splitlines() if l.strip()]
 
     # ------------------------------------------------------------------ one request
     def turn(self, token: str, messages: list[dict], model: str = "auto", session: str | None = None) -> dict:
@@ -164,7 +172,12 @@ class Gateway:
             else:
                 route = "person"
                 with self.lock:
-                    self.handoffs.append({"id": len(self.handoffs) + 1, "user": claim.user_id, "org": claim.org_id, "request": request})
+                    h = {"id": len(self.handoffs) + 1, "user": claim.user_id, "org": claim.org_id, "request": request}
+                    self.handoffs.append(h)
+                    if self.state_dir:
+                        self.state_dir.mkdir(parents=True, exist_ok=True)
+                        with open(self.state_dir / "handoffs.jsonl", "a") as f:
+                            f.write(json.dumps(h, ensure_ascii=False) + "\n")
                 reply = "This needs a member of staff; it has been passed to a person."
         grounding = "no_result"
         if route == "local":
@@ -373,13 +386,29 @@ def main() -> int:
     ap.add_argument("--no-tool-block", action="store_true", help="omit the tool block from the prompt — for a member "
                     "trained block-less (H3b [ran]: tr-s1 156/160 at a third of the tokens)")
     ap.add_argument("--max-calls", type=int, default=4)
+    ap.add_argument("--state-dir", default=None, help="where what waits for a person persists (approvals journal, "
+                    "handoffs) — default examples/<org>/state; 'none' keeps it in memory")
+    ap.add_argument("--open-egress", action="store_true", help="do NOT close the process's network egress to the "
+                    "configured hosts (examples/common/egress.py) — for development only")
     ap.add_argument("--openclaw-dir", default=str(Path.home() / ".config/lora-kernel/openclaw"))
     a = ap.parse_args()
+    log = a.log or f"examples/{a.org}/events.jsonl"
+    if not a.open_egress:
+        # EGRESS CLOSED BEFORE ANYTHING LOADS: the member's server and the frontier, nothing else. The tokenizer comes from
+        # the local cache — without these two variables loading it asks the model hub over the network.
+        os.environ["HF_HUB_OFFLINE"] = os.environ["TRANSFORMERS_OFFLINE"] = "1"
+        from examples.common import egress
+        egress.install(egress.hosts_of(a.upstream, a.frontier_url), log=log)
     from training.harness import accept_rank
     from training.harness.family import SMALL
     from transformers import AutoTokenizer
     accept_rank.HOST = a.upstream.rstrip("/")
-    tok = AutoTokenizer.from_pretrained(a.tokenizer or SMALL)
+    try:
+        tok = AutoTokenizer.from_pretrained(a.tokenizer or SMALL)
+    except OSError as e:
+        print(f"[gateway] the tokenizer is not in the local cache and egress is closed: {e}\n"
+              f"[gateway] fetch it once (huggingface-cli download {a.tokenizer or SMALL}) or pass --open-egress", flush=True)
+        return 2
     frontier = None
     if a.frontier_url:
         key = os.environ.get(a.frontier_key_env)
@@ -396,8 +425,9 @@ def main() -> int:
         from examples.common.opmemory import OpMemory, Workflow
         memory = OpMemory()
         wf = {f.stem: Workflow.load(f) for f in sorted((Path("examples") / a.org / "workflows").glob("*.toml"))}
-    gw = Gateway(db.build(), vllm_generator(a.member, tok), frontier=frontier, log_path=a.log or f"examples/{a.org}/events.jsonl",
-                 org=a.org, memory=memory, workflows=wf, tool_block=not a.no_tool_block, max_calls=a.max_calls)
+    state = None if (a.state_dir or "").lower() == "none" else (a.state_dir or f"examples/{a.org}/state")
+    gw = Gateway(db.build(), vllm_generator(a.member, tok), frontier=frontier, log_path=log,
+                 org=a.org, memory=memory, workflows=wf, tool_block=not a.no_tool_block, max_calls=a.max_calls, state_dir=state)
     serve(gw, a.port)
     out = Path(a.openclaw_dir); out.mkdir(parents=True, exist_ok=True)
     for user_id, role, org in users.SEED_USERS:
@@ -406,7 +436,8 @@ def main() -> int:
     if a.org == "school":
         (out / "director-north.token").write_text(tokens.issue("director-north", "director", "northgate", ttl=12 * 3600))
     print(f"[gateway] {a.org} :{a.port} · model {a.member} at {a.upstream} · memory {'on (' + ', '.join(wf) + ')' if wf else 'off'} · "
-          f"tool block {'off' if a.no_tool_block else 'on'} · frontier "
+          f"tool block {'off' if a.no_tool_block else 'on'} · egress {'OPEN' if a.open_egress else 'closed to the configured hosts'} · "
+          f"state {state or 'in memory'} · frontier "
           f"{a.frontier_model + ' at ' + a.frontier_url if frontier else 'NOT configured (frontier-egress roles say so)'}", flush=True)
     print(f"[gateway] one OpenClaw patch per user in {out} (each carries that user's signed token)", flush=True)
     try:

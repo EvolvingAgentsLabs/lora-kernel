@@ -13,3 +13,7 @@ results/**/adapters.zip
 results/*/adapters.tgz
 training/data/root/
 results/*/adapters_out.tgz
+
+# a gateway's live state and event log (what waits for a person; per deployment, never committed)
+examples/*/state/
+examples/*/events.jsonl
