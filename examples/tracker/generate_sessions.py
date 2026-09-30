@@ -56,6 +56,42 @@ P = {
                  ["What's the done rule for tests?", "Where do tests have to pass before done?"],
                  ["Put a comment on it: {note}", "Note on it: {note}"]]},
 }
+# H3 (results/H3-tracker-corpus-v2-20260929/BRIEF.md). Training wording widened by two phrasings per turn in every role —
+# not only where H2 missed — written before training and without reading a model's output; and a FRESH held-out suite,
+# `eval` of suite h3: new worlds and wording that neither the training nor H2's eval uses (gate S5). H2's files and
+# wording are untouched, so H2 reproduces from them.
+EXTRA_H3 = {
+    "developer": [["{key}, please.", "I need the details of {key}."], ["Mark it {to_h}.", "It can go to {to_h} now."],
+                  ["{h}h on it, please log it.", "Add {h} hours to its worklog."],
+                  ["Who's responsible for its component?", "Find the owner of that issue's component."],
+                  ["Comment: {note}", "Please write on it: {note}"]],
+    "lead": [["New bug: {summary}", "Log a bug for this: {summary}"], ["{person} should take it.", "Put {person} on it."],
+             ["Remind me of the critical-bug rule.", "What's the triage time for a critical bug?"],
+             ["Sprint board, please.", "Where does the sprint stand?"], ["Open the bug you filed again.", "Show me that bug again."]],
+    "qa": [["{key}, please.", "I'm testing {key} — show it."], ["All checks pass, move it to done.", "Done — transition it."],
+           ["Where do tests need to pass for an issue to be done?", "What's the testing requirement in the definition of done?"],
+           ["Comment: {note}", "Please write on it: {note}"]],
+}
+EVAL_H3 = {
+    "developer": [["Look up {key} for me.", "Details on {key}?"], ["Transition it to {to_h}.", "Bump it to {to_h}."],
+                  ["Book {h} hours on it.", "Track {h}h against it."], ["Who do I ask about its component?", "Its component — who owns it?"],
+                  ["Annotate it: {note}", "Drop a comment: {note}"]],
+    "lead": [["Raise a bug: {summary}", "Please report a bug — {summary}"], ["Let {person} own it.", "Route it to {person}."],
+             ["How do we handle critical bugs?", "Critical bugs — what's the policy?"], ["Board status?", "How is the current sprint going?"],
+             ["Bring back the bug you just filed.", "Let me see that bug once more."]],
+    "qa": [["Fetch {key}.", "What does {key} look like?"], ["QA passed, it's done.", "Close it out as done."],
+           ["Where should tests pass before we call it done?", "Done criteria for tests?"], ["Annotate it: {note}", "Remark on it: {note}"]],
+}
+SEED0_H3 = {"train": 500_000, "eval": 1_440_000}
+OUT_H3 = Path(__file__).parent / "data_sessions_h3"
+
+
+def wording(kind: str, split: str, suite: str = "h2") -> list[list[str]]:
+    if suite == "h3":
+        return [a + b for a, b in zip(P[kind]["train"], EXTRA_H3[kind])] if split == "train" else EVAL_H3[kind]
+    return P[kind][split]
+
+
 NOTES = ["ready for QA", "verified on staging", "needs a follow-up ticket", "tested with a large account", "looks good to me"]
 SUMMARIES = ["Login loops on Safari", "Invoice PDF shows the wrong total", "Search misses accented names",
              "Password reset email never arrives", "Export hangs after 10,000 rows"]
@@ -66,7 +102,7 @@ def _pick(conn, org: str, where: str) -> dict | None:
     return dict(r[0]) if r else None
 
 
-def session(seed: int, split: str, kind: str) -> dict | None:
+def session(seed: int, split: str, kind: str, suite: str = "h2") -> dict | None:
     r = random.Random(seed)
     conn = db.world(seed)
     org = r.choice([o for o, _, _ in db.ORGS])
@@ -98,15 +134,15 @@ def session(seed: int, split: str, kind: str) -> dict | None:
         plan = [("issue_get", {"key": iss["key"]}, False), ("issue_transition", {"key": iss["key"], "status": "done"}, True),
                 ("page_read", {"ref": "definition-of-done#tests"}, False), ("issue_comment", {"key": iss["key"], "text~": fill["note"]}, True)]
     turns = [{"request": r.choice(options).format(**fill), "tool": tool, "args": args, "depends": dep}
-             for options, (tool, args, dep) in zip(P[kind][split], plan)]
+             for options, (tool, args, dep) in zip(wording(kind, split, suite), plan)]
     return {"session_id": f"tr-{split}-{seed}", "split": split, "kind": kind, "role": kind, "org": org,
             "user_id": f"{kind}-{org}", "world_seed": seed, "turns": turns}
 
 
-def build(split: str) -> list[dict]:
+def build(split: str, suite: str = "h2") -> list[dict]:
     out, i = [], 0
     while len(out) < N[split]:
-        s = session(SEED0[split] + i, split, KINDS[len(out) % len(KINDS)])
+        s = session((SEED0_H3 if suite == "h3" else SEED0)[split] + i, split, KINDS[len(out) % len(KINDS)], suite)
         i += 1
         if s:
             out.append(s)
@@ -119,6 +155,17 @@ def turn_right(calls: list[dict], turn: dict) -> bool:
                                re.sub(r"\.0$|h$", "", str(v).strip()) if k == "hours" else v) for k, v in (c.get("args") or {}).items()}}
             for c in calls]
     return any(call_matches(c, turn["tool"], {k: (str(v) if k != "status" else v) for k, v in want.items()}) for c in norm)
+
+
+def turn_right_h3(calls: list[dict], turn: dict) -> bool:
+    """H3's scorer, fixed in its brief before the run. As `turn_right`, except a turn that needs one statement of a page
+    (`page#anchor`) is right when a page read RETURNED that statement: H2 scored reading the whole page as a miss while the
+    statement sat in what was read — a check that could fail while the capability worked [ran] H2."""
+    ref = str(turn["args"].get("ref", ""))
+    if turn["tool"] == "page_read" and "#" in ref:
+        return any(c.get("tool") == "page_read" and "error" not in c and "denied" not in c
+                   and f"[{ref.lower()}]" in str(c.get("result", "")).lower() for c in calls)
+    return turn_right(calls, turn)
 
 
 # ----------------------------------------------------------------------------------------------- the harness
@@ -193,7 +240,7 @@ def _answer(result: str) -> str:
 
 
 def play(sess: dict, generate, history: bool = False, harness: bool = False, tool_block: bool = True,
-         capture: list | None = None) -> list[dict]:
+         capture: list | None = None, scorer=None) -> list[dict]:
     """One session through the gateway (`--org tracker`), as examples/distributor/generate_sessions.play."""
     from examples.common import tokens
     from examples.common.opmemory import OpMemory
@@ -218,7 +265,7 @@ def play(sess: dict, generate, history: bool = False, harness: bool = False, too
             messages.append({"role": "assistant", "content": ""})
             continue
         ev = r["event"]
-        out.append({"request": t["request"], "tool": t["tool"], "depends": t["depends"], "right": turn_right(ev["calls"], t),
+        out.append({"request": t["request"], "tool": t["tool"], "depends": t["depends"], "right": (scorer or turn_right)(ev["calls"], t),
                     "calls": ev["calls"], "route": r["route"], "reply": r["reply"][:300], "walk": r["walk"][-500:],
                     "prompt_tokens": ev.get("prompt_tokens", 0), "completion_tokens": ev.get("completion_tokens", 0)})
         if capture is not None:
@@ -246,33 +293,51 @@ def gate(train: list[dict], evals: list[dict]) -> dict:
     return g
 
 
+def _templates(kind_split) -> set[str]:
+    return {o for opts in kind_split for o in opts}
+
+
 def main() -> int:
     import sys
-    OUT.mkdir(exist_ok=True)
-    if "--harness-corpus" in sys.argv[1:]:
-        train = [json.loads(l) for l in (OUT / "train.jsonl").read_text().splitlines() if l.strip()]
+    argv = sys.argv[1:]
+    suite = "h3" if "--suite" in argv and argv[argv.index("--suite") + 1] == "h3" else "h2"
+    out = OUT_H3 if suite == "h3" else OUT
+    out.mkdir(exist_ok=True)
+    if "--harness-corpus" in argv:
+        train = [json.loads(l) for l in (out / "train.jsonl").read_text().splitlines() if l.strip()]
         rows = []
         # H1's lesson [ran]: a member trained only on prompts that carry the tool block calls no tool without it (0/60).
         # A third of the sessions are rendered WITHOUT the block, so the member learns its tools by name, not by reading.
+        # H2 chose that third by `j % 3`, which is also how the roles rotate: every block-less row was QA's (400 of 400),
+        # and the member learned block-less exactly the role it was shown [ran] H2. H3 takes a third of EACH role.
+        noblock = (lambda j: (j // len(KINDS)) % 3 == 2) if suite == "h3" else (lambda j: j % 3 == 2)
         for j, s in enumerate(train):
             cap: list = []
-            play(s, harness_oracle(s), harness=True, tool_block=(j % 3 != 2), capture=cap)
+            play(s, harness_oracle(s), harness=True, tool_block=not noblock(j), capture=cap)
             rows += [{"case_id": f"{s['session_id']}-t{i}", "kind": s["kind"], "turn": i, "depends": s["turns"][i]["depends"],
                       "messages": [{"role": "system", "content": c["system"]}, {"role": "user", "content": c["user"]},
                                    {"role": "assistant", "content": c["walk"]}]} for i, c in enumerate(cap)]
-        (OUT / "train_harness.jsonl").write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows))
-        g = {"rows": len(rows), "rows_without_tool_block": sum("The following tools are available" not in r["messages"][1]["content"] for r in rows),
+        (out / "train_harness.jsonl").write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows))
+        bare = [r for r in rows if "The following tools are available" not in r["messages"][1]["content"]]
+        g = {"rows": len(rows), "rows_without_tool_block": len(bare),
+             "rows_without_tool_block_by_kind": {k: sum(r["kind"] == k for r in bare) for k in KINDS},
              "rows_with_get": sum("<get>" in r["messages"][2]["content"] for r in rows),
              "rows_with_put": sum("<put>" in r["messages"][2]["content"] for r in rows)}
-        (OUT / "gate_harness.json").write_text(json.dumps(g, indent=1))
+        (out / "gate_harness.json").write_text(json.dumps(g, indent=1))
         print(f"[tracker] harness corpus {g}", flush=True)
         return 0
-    train, evals = build("train"), build("eval")
+    train, evals = build("train", suite), build("eval", suite)
     g = gate(train, evals)
+    if suite == "h3":
+        # S5: the fresh suite shares no wording with the training, nor with H2's eval (it is not H2's set re-asked)
+        ev = _templates(o for k in KINDS for o in EVAL_H3[k])
+        seen = _templates(o for k in KINDS for o in wording(k, "train", "h3")) | _templates(o for k in KINDS for o in P[k]["eval"])
+        g["S5_eval_wording_not_fresh"] = len(ev & seen)
+        g["passed"] = g["passed"] and not g["S5_eval_wording_not_fresh"]
     for name, rows in (("train", train), ("eval", evals)):
-        (OUT / f"{name}.jsonl").write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows))
-    (OUT / "gate.json").write_text(json.dumps(g, indent=1))
-    print(f"[tracker] sessions gate {'PASSED' if g['passed'] else 'FAILED'} {g}", flush=True)
+        (out / f"{name}.jsonl").write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows))
+    (out / "gate.json").write_text(json.dumps(g, indent=1))
+    print(f"[tracker] sessions gate ({suite}) {'PASSED' if g['passed'] else 'FAILED'} {g}", flush=True)
     return 0 if g["passed"] else 1
 
 

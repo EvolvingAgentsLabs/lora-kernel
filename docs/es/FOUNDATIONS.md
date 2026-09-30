@@ -992,9 +992,31 @@ está escrita, no ANULADA** — anular a una línea de base sin entrenar cuyo ba
 *es* el margen que se está midiendo es un error de instrumento más angosto que el de H1, registrado en vez
 de parchado. Descriptivamente, sobre los mismos 160 turnos dependientes: **142 : 0** a favor de `harness`,
 $p\lt 10^{-40}$ por la prueba de signo exacta del §9.2 — enunciado porque no cuesta nada enunciarlo, no
-ofrecido como sustituto del veredicto pre-registrado que su brazo anulado vuelve ilegible. Decisión
-pendiente para el usuario, como con H1: aceptar las condiciones legibles como el veredicto de H2, o
-repetir la corrida con la regla por brazo restringida a los miembros entrenados.
+ofrecido como sustituto del veredicto pre-registrado que su brazo anulado vuelve ilegible. **La decisión
+del usuario (2026-09-29), como para H1: lectura 1** — las condiciones legibles de arriba son el veredicto
+de H2, `harness` **PASÓ**; FALSEADO-tal-como-está-escrito queda en el registro con sus dos errores de
+instrumento (el VOID por brazo de arriba y el chequeo de anchor de abajo). No se repitió: ningún cambio de
+regla podía mover un base en $4/160$. `harness-noblock` ($80/160$) se leyó primero como "aprendido en
+parte"; esa lectura era un error del corpus, no un aprendizaje parcial — su tercio sin bloque compartía el
+módulo (`% 3`) con el que rotan los roles, así que las 400 filas de entrenamiento sin bloque eran de QA, y
+el miembro aprendió lo-sin-bloque exactamente en el rol que se le mostró (QA 80/80; lead/developer 0/20,
+la única excepción de lead `sprint_board`, una llamada sin argumento). En `harness`, las 14 fallas dependientes son todas un mismo turno, el comentario final de QA (6/20): el miembro relee el issue o intenta una transición rechazada en vez de comentar — una falla real, sobre un solo fraseo de la evaluación ("Note on it: …" 1/15 contra "Put a comment on it: …" 5/5); aparte, 10 de los 60 turnos independientes (50/60) son el chequeo del ancla — "¿dónde tienen que pasar los tests?" lee la página entera `definition-of-done` en vez de `#tests`, y el enunciado está en lo que leyó (mide fraseo, registrado, no aflojado). **H3 tiene un resultado [ran]:**
+`tr-s1`, entrenado sobre un corpus que arregla las dos correcciones (fraseo ampliado en dos versiones por
+turno en cada rol, un tercio sin bloque de cada rol), contra `tr-s0` sobre una suite fresca retenida. El
+margen se sostiene primero — `s0-harness` 147/160 (91,9%), bajo el techo del 95%, así que la suite fresca
+no es más fácil que la de H2. **H3a PASÓ:** `s1-harness` 158/160 (98,8%) contra `s0-harness` sobre los
+mismos turnos, 11 pares discordantes todos a favor de un lado, 0 perdidos. Para $n=11$ la prueba de signo
+exacta de dos colas es $p = 2\cdot 2^{-11} \approx 0,00098$ — la prueba del §9.2, aplicada acá — y la
+corrida es plana, $\bar p_5 = 1275 \le 1,1\cdot\bar p_1 = 1,1\cdot 1465$. **H3b PASÓ:** `s1-noblock`
+156/160 (97,5%), perdiendo sólo 4 de los turnos dependientes que `s1-harness` acierta — bajo la barra de
+8 — cada rol por encima — developer 76/80, lead 40/40, QA 40/40 — a más o menos un tercio de los tokens
+de prompt por turno (p̄ ≈ 285–503 contra 958–1465); lo-sin-bloque de H2, todas filas de QA, había sido
+80/160. Leído donde ocurre: las 2 fallas de `tr-s1` son un solo caso, el texto de la propia nota leído
+como una orden (`issue_transition → qa`, rechazada por la capa de herramientas); las 4 fallas de
+`s1-noblock` son una sola sesión cuyo primer turno llama a la herramienta equivocada, no pone nada, y los
+cuatro turnos dependientes siguientes encuentran una memoria vacía — un error del primer turno en cascada
+por la sesión
+([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
 
 ## 9. Estadística usada, y sólo esta
 
@@ -1165,4 +1187,5 @@ entrena la mitad grande; el hito 4 mide la desigualdad de §7.1.
 | §8.9 | **exactitud en turnos dependientes sin y con historial**: $A_{\text{dep}}$(last) 4/54, $A_{\text{dep}}$(history) 43/54; tokens de prompt $\bar p_1,\bar p_2,\bar p_3$ = 345/376/303 (last), 345/428/394 (history) | MT0 `results/MT0-multiturn-baseline-20260929/BRIEF.md` |
 | §5.6 | **cociente de throughput con varios adaptadores**: $r_4(16) = 278,6/269,7 = 1,03$, NO MATERIAL CONTENTION; casi lineal 22,7 → 135,1 → 278,6 → 504,3 tok/s para K = 1, 8, 16, 32; TTFT p95 0,24 s en K = 32, 0 errores de 128 | C1 `results/C1-concurrency-20260929/BRIEF.md` |
 | §8.9 | **el harness de flujo contra el brazo con historial de MT0 y la vara de planitud $\bar p_3 \le 1,1\ \bar p_1$**: $A_{\text{dep}}$(harness) 53/54 contra 43/54, 11 : 1 emparejado ($p\approx0,006$); $\bar p_1,\bar p_2,\bar p_3$ = 745/726/710, plano; `harness-noblock` 0/60. Tal como fue escrita VOID (la regla de primeros turnos anula entre brazos); leída por brazo, `harness` PASÓ y `harness-noblock` quedó FALSADO — la decisión del usuario (2026-09-29): vale la lectura por brazo, el VOID tal como está escrito queda como el registro de ese error del instrumento | H1 `results/H1-workflow-harness-20260929/BRIEF.md` |
-| §8.9 | **el mismo harness sobre un dominio de tracker de cinco turnos, la vara de planitud $\bar p_5 \le 1,1\ \bar p_1$**: $A_{\text{dep}}$(harness) 146/160 (91,3%) contra un umbral del 90%; $\bar p_1,\dots,\bar p_5$ = 1613/1223/1011/1149/1274, plano; `base-history` 4/160, sus propios primeros turnos 44/60 lo anulan bajo la regla por brazo de H1, lo que vuelve ilegible la comparación pre-registrada — se lee FALSEADA tal como está escrita, no ANULADA; descriptivo pareado 142 : 0, $p\lt 10^{-40}$ (brazo anulado, no un veredicto sustituto); decisión pendiente del usuario | H2 `results/H2-tracker-harness-20260929/BRIEF.md` |
+| §8.9 | **el mismo harness sobre un dominio de tracker de cinco turnos, la vara de planitud $\bar p_5 \le 1,1\ \bar p_1$**: $A_{\text{dep}}$(harness) 146/160 (91,3%) contra un umbral del 90%; $\bar p_1,\dots,\bar p_5$ = 1613/1223/1011/1149/1274, plano; `base-history` 4/160, sus propios primeros turnos 44/60 lo anulan bajo la regla por brazo de H1, lo que vuelve ilegible la comparación pre-registrada — se lee FALSEADA tal como está escrita, no ANULADA, en el registro con ese y el error de instrumento del chequeo de anchor; descriptivo pareado 142 : 0, $p\lt 10^{-40}$ (brazo anulado, no un veredicto sustituto); **la decisión del usuario (2026-09-29): lectura 1** — las condiciones legibles son el veredicto de H2, `harness` PASÓ. `harness-noblock` 80/160 es un error del corpus (un aliasing `% 3` entre el tercio sin bloque y la rotación de roles), no un aprendizaje parcial | H2 `results/H2-tracker-harness-20260929/BRIEF.md` |
+| §8.9 | **H3 [ran], las dos barras PASARON**: `tr-s1` (entrenado sobre un segundo corpus que amplía el fraseo por turno/rol y da a cada rol un tercio parejo sin bloque) 158/160 contra `tr-s0` 147/160 sobre una suite fresca retenida, pareado 11:0, prueba de signo exacta $p=2\cdot2^{-11}\approx0,00098$, plano; `s1-noblock` 156/160, perdiendo 4 de 8 turnos contra el bloque, cada rol por encima de la barra, más o menos un tercio de los tokens de prompt | H3 [`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../results/H3-tracker-corpus-v2-20260929/BRIEF.md) |

@@ -149,8 +149,17 @@ tracker domain (`examples/tracker/`, **[ran] H2**, `results/H2-tracker-harness-2
 dependent turns (91.3%), flat prompt across all five ($\bar p_5 \le 1.1\ \bar p_1$) — but the run reads FALSIFIED
 as written rather than VOID: the untrained `base-history` baseline's own low first-turn score, 44 of 60, trips the
 same per-arm rule that fixed H1, which makes the pre-registered "beats `base-history`" claim unreadable rather than
-false. Descriptively, paired on the same 160 turns, 142 : 0 favour the harness. Reading pending the user, as it was
-for H1: `docs/review/harness-workflow-kv.md` §9.
+false, and stays on record with that instrument error and the anchor check's (below). Descriptively, paired on the
+same 160 turns, 142 : 0 favour the harness. **The user's decision (2026-09-29): reading 1 — the readable conditions
+are H2's verdict, the harness PASSED**, as it was for H1: `docs/review/harness-workflow-kv.md` §9. `harness-noblock`
+(80/160) is a corpus bug, not partial learning — the block-less third was rendered by the same modulus (`% 3`) the
+roles rotate on, so all 400 block-less rows were QA's, and the member learned block-less exactly the role it was
+shown. **H3 [ran], both bars PASSED**: `tr-s1`, trained on a second corpus (wording widened per turn in
+every role, an even block-less third of each role), beats `tr-s0` 158/160 against 147/160 on a fresh
+held-out suite (paired 11:0, $p = 0.00098$, flat) and, without the tool block, holds 156/160 across every
+role at about a third of the prompt tokens — the block-less member is now the compact context the design
+asked for
+([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
 
 **How the mechanisms connect on one turn, now that the harness has a result.** The gateway reads the request's
 context line — `state: <workflow>/<state> · keys: <names>` — instead of the transcript; the role names the member

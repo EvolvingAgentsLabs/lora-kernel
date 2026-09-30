@@ -582,9 +582,20 @@ record of that instrument error, not as the verdict. **[ran] H2**, the same harn
 domain (`results/H2-tracker-harness-20260929`): `harness` holds 146 of 160 dependent turns (91.3%) with a flat
 prompt across all five turns, but the run reads **FALSIFIED as written, not VOID** — the untrained
 `base-history` baseline's own 44/60 first turns trip the same per-arm rule that fixed H1, and voiding an
-*untrained* baseline whose low score is its whole point makes the comparison unreadable rather than false.
-Descriptively, 142 of 160 favour the harness against 0. A second, narrower instance of the same lesson:
-**a per-arm VOID applies to trained members, not to a baseline whose failure IS the headroom.** Design and
+*untrained* baseline whose low score is its whole point makes the comparison unreadable rather than false, a
+second instance kept on record. Descriptively, 142 of 160 favour the harness against 0. A second, narrower
+instance of the same lesson: **a per-arm VOID applies to trained members, not to a baseline whose failure IS
+the headroom.** **The user's decision (2026-09-29), as for H1: reading 1** — the readable conditions are
+H2's verdict, `harness` **PASSED**; FALSIFIED-as-written stays on record with its two instrument errors (the
+per-arm VOID and the anchor check). `harness-noblock` (80/160) was first read as "learned in part"; that was
+a corpus bug — its block-less third shared a modulus (`% 3`) with the role rotation, so all block-less rows
+were QA's — not partial learning. **H3 [ran], both bars PASSED**: `tr-s1`, trained on a corpus that fixes
+both corrections (wording widened per turn in every role, an even block-less third of each role), beats
+`tr-s0` 158/160 against 147/160 on a fresh held-out suite (paired 11:0, $p = 0.00098$, flat), and without
+the tool block holds 156/160 across every role at about a third of the prompt tokens — block-less is no
+longer QA-only
+([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
+Design and
 open decisions: [`review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §§8–9; the mechanism behind
 `<get>`/`<put>` and the state line is in [`MECHANISMS.md`](MECHANISMS.md).
 
@@ -670,10 +681,11 @@ happened to us last week).
 | the memory (library) inside a serving member | lives in `distributor-wiki@v2`, a separate member from the abstaining `out-s0` (M10) | merge them, or keep them apart by design — not yet decided |
 | a vLLM bf16 live run of the distributor | not run — the only local arm measured is llama.cpp Q8_0 (LIVE-distributor) | run it once a same-precision comparison against the edge is needed |
 | H1's result (the workflow harness) | **[ran] — the user's decision (2026-09-29): per arm.** Per arm: `harness` PASSED (53/54 vs 43/54, every right turn fetched by key); `harness-noblock` FALSIFIED (0/60). As written: **VOID**, superseded — the brief's first-turns rule voids across arms, an instrument error, kept as its record | release the member on the per-arm reading; VOID is per arm from H2 on |
-| H2's result (the harness on a five-turn domain) | **[ran]** `results/H2-tracker-harness-20260929`: `harness` 146/160 dependent (91.3%), flat prompt over five turns; `base-history` 4/160, its own 44/60 first turns void it under the per-arm rule, so the pre-registered comparison is unreadable — reads **FALSIFIED as written**, descriptive 142:0 alongside it | decision pending the user, as for H1: accept the readable conditions, or rerun with VOID restricted to trained members (`review/harness-workflow-kv.md` §9) |
+| H2's result (the harness on a five-turn domain) | **[ran] — the user's decision (2026-09-29): reading 1.** `results/H2-tracker-harness-20260929`: `harness` 146/160 dependent (91.3%), flat prompt over five turns; `base-history` 4/160, its own 44/60 first turns void it under the per-arm rule, so the pre-registered comparison is unreadable — as written **FALSIFIED**, kept on record with that and the anchor-check instrument error; the readable conditions are H2's verdict, `harness` **PASSED**, descriptive 142:0 alongside it | H3's result is below (next row) |
+| H3's result (a second tracker corpus, block-less now answered) | **[ran] — both bars PASSED.** `results/H3-tracker-corpus-v2-20260929`: `s1-harness` 158/160 dependent (98.8%) against `s0-harness` 147/160, paired 11:0, exact sign test $p = 0.00098$, flat — **H3a PASSED**; without the tool block, `s1-noblock` 156/160 (97.5%), every role above the bar (developer 76/80, lead 40/40, QA 40/40), about a third of the prompt tokens — **H3b PASSED**, closing the block-less-is-QA-only gap H2 left open | the live demo through OpenClaw (row below); the attribution arm (`s0-noblock` on the fresh suite) not bought, the cause already on disk |
 | a router inside the gateway's own path | not built — the role is still the route (§7.2) | build only once cross-role routing, not per-member abstention, is the open half |
-| the harness live through OpenClaw, multi-turn | not run — H1 and H2 both measured it on the server profile only | repeat LIVE-distributor's pattern (§7.3), now that both readings are pending or chosen |
-| sessions longer than 2–3 turns | **[ran] H2**: the team tracker (`examples/tracker/`) runs five-turn sessions and the flat-prompt property holds ($\bar p_5 \le 1.1\ \bar p_1$) | reading pending the user (row above) |
+| the harness live through OpenClaw, multi-turn | not run — H1 and H2 both measured it on the server profile only | repeat LIVE-distributor's pattern (§7.3), now that both readings are chosen and H3 has a result |
+| sessions longer than 2–3 turns | **[ran] H2, H3**: the team tracker (`examples/tracker/`) runs five-turn sessions and the flat-prompt property holds ($\bar p_5 \le 1.1\ \bar p_1$) on both corpora | reading chosen (row above); H3's second corpus is measured (row above) |
 | the global cache trained on | **[ran]**: built, tested, and trained inside two members' own corpora (`wf-s0`, H1; `tr-s0`, H2) | — |
 | real identity (Auth0), WhatsApp, installation | not built | after the above |
 

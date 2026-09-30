@@ -160,8 +160,18 @@ turnos, en un dominio de seguimiento tipo Jira y Confluence (`examples/tracker/`
 cinco ($\bar p_5 \le 1.1\ \bar p_1$) — pero la corrida se lee FALSEADA tal como está escrita en vez de ANULADA: el
 propio puntaje bajo en primeros turnos de la línea de base sin entrenar `base-history`, 44 de 60, dispara la misma
 regla por brazo que arregló a H1, lo que vuelve ilegible la afirmación pre-registrada "le gana a `base-history`" en
-vez de falsa. Descriptivamente, pareado sobre los mismos 160 turnos, 142 : 0 a favor del arnés. Lectura pendiente
-del usuario, como lo fue para H1: `docs/review/harness-workflow-kv.md` §9.
+vez de falsa, y queda en el registro con ese error de instrumento y el del chequeo del anchor (abajo).
+Descriptivamente, pareado sobre los mismos 160 turnos, 142 : 0 a favor del arnés. **La decisión del usuario
+(2026-09-29): lectura 1 — las condiciones legibles son el veredicto de H2, el arnés PASÓ**, como fue para H1:
+`docs/review/harness-workflow-kv.md` §9. `harness-noblock` (80/160) es un error del corpus, no un aprendizaje
+parcial — el tercio sin bloque se armó con el mismo módulo (`% 3`) con el que rotan los roles, así que las 400 filas
+sin bloque eran de QA, y el miembro aprendió lo-sin-bloque exactamente en el rol que se le mostró. **H3 [ran],
+las dos barras PASARON**: `tr-s1`, entrenado sobre un segundo corpus (fraseo ampliado por turno en cada rol,
+un tercio parejo sin bloque de cada rol), le gana a `tr-s0` 158/160 contra 147/160 sobre una suite fresca
+retenida (pareado 11:0, $p = 0,00098$, plano) y, sin el bloque de herramientas, sostiene 156/160 en cada rol
+a más o menos un tercio de los tokens de prompt — el miembro sin bloque es ahora el contexto compacto que
+pedía el diseño
+([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
 
 **Cómo se conectan los mecanismos en un turno, ahora que el arnés tiene un resultado.** El gateway lee la línea de
 contexto del pedido — `state: <workflow>/<state> · keys: <nombres>` — en vez de la transcripción; el rol nombra al

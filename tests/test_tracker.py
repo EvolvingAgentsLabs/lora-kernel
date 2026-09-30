@@ -139,3 +139,48 @@ def test_a_run_of_transport_errors_reads_void_not_a_crash():
     from examples.tracker import session_arm as sa
     err = {"s0": {"kind": "developer", "turns": [{"request": "x", "error": "HTTP 400"}]}}
     assert sa.reading({"arms": {"harness": err, "base-history": err}})["reading"].startswith("VOID")
+
+
+def test_h3_suite_is_fresh_and_its_blockless_rows_cover_every_role():
+    """H3's suite: gated like H2's plus S5 (no eval wording seen in training or in H2's eval); H2's own corpus took its
+    block-less third by `j % 3`, the roles' own rotation, so all 400 block-less rows were QA's [ran] H2 — H3's covers each role."""
+    import json
+    from pathlib import Path
+    g = json.loads(Path("examples/tracker/data_sessions_h3/gate.json").read_text())
+    assert g["passed"] and g["S5_eval_wording_not_fresh"] == 0 and g["turns"]["eval_dependent"] == 160
+    h = json.loads(Path("examples/tracker/data_sessions_h3/gate_harness.json").read_text())
+    assert all(n >= 100 for n in h["rows_without_tool_block_by_kind"].values())
+    h2 = json.loads(Path("examples/tracker/data_sessions/gate_harness.json").read_text())
+    assert h2["rows_without_tool_block_by_kind"] == {"developer": 0, "lead": 0, "qa": 400}
+
+
+def test_h3_scorer_counts_a_page_read_that_returned_the_statement():
+    from examples.tracker import generate_sessions as gs
+    turn = {"tool": "page_read", "args": {"ref": "definition-of-done#tests"}, "depends": False}
+    whole = [{"tool": "page_read", "args": {"ref": "definition-of-done"},
+              "result": "[definition-of-done#tests] An issue is done only when its tests pass on CI.\n[definition-of-done#review] …"}]
+    assert not gs.turn_right(whole, turn) and gs.turn_right_h3(whole, turn)
+    other = [{"tool": "page_read", "args": {"ref": "release-process"}, "result": "[release-process#cutoff] …"}]
+    assert not gs.turn_right_h3(other, turn)
+    assert gs.turn_right_h3([{"tool": "issue_get", "args": {"key": "RD-1"}}], {"tool": "issue_get", "args": {"key": "RD-1"}, "depends": False})
+
+
+def test_h3_reading_needs_headroom_a_paired_improvement_and_every_role_blockless():
+    from examples.tracker import h3_arm as h3
+
+    def arm(right, first=True, kinds=("developer", "lead", "qa")):
+        return {f"s{j}": {"kind": kinds[j % len(kinds)], "turns": [{"right": first, "depends": False, "prompt_tokens": 500, "calls": []}] +
+                          [{"right": k < right[j % len(right)], "depends": True, "prompt_tokens": 500, "calls": []} for k in range(4)]}
+                for j in range(40)}
+    # s0 misses turn 4 in a third of sessions; s1 gets everything → improvement
+    rec = {"arms": {"s0-harness": arm([4, 4, 3]), "s1-harness": arm([4]), "s1-noblock": arm([4])}}
+    r = h3.reading(rec)
+    assert r["h3a"].startswith("PASSED") and r["h3b"].startswith("PASSED"), r
+    rec["arms"]["s0-harness"] = arm([4])
+    assert h3.reading(rec)["h3a"].startswith("NO HEADROOM")
+    rec["arms"]["s0-harness"], rec["arms"]["s1-harness"] = arm([4, 4, 3]), arm([4, 4, 3])
+    assert h3.reading(rec)["h3a"].startswith("FALSIFIED")
+    rec["arms"]["s1-noblock"] = arm([4, 0, 4])
+    assert h3.reading(rec)["h3b"].startswith("FALSIFIED")
+    rec["arms"]["s1-noblock"] = arm([4], first=False)
+    assert h3.reading(rec)["h3b"].startswith("VOID")

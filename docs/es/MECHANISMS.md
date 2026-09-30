@@ -504,24 +504,37 @@ sostiene $\bar p_5 \le 1.1\ \bar p_1$. `base-history` (Gemma 4 E4B sin entrenar,
 prompt) acierta `issue_get` (40/40) y casi nada más — dependientes 4/160 — y sus propios primeros turnos,
 44/60, caen bajo el umbral del 90%; anularlo con la misma regla por brazo que arregló a H1 vuelve ilegible
 la afirmación pre-registrada "`harness` le gana a `base-history`", así que **la corrida se lee FALSEADA
-tal como está escrita, no ANULADA**. Descriptivamente, pareado sobre los mismos 160 turnos dependientes:
+tal como está escrita, no ANULADA**, y queda en el registro con ese error de instrumento y el del
+chequeo de anchor (abajo). Descriptivamente, pareado sobre los mismos 160 turnos dependientes:
 **142 : 0** a favor de `harness`, prueba de signo exacta $p\lt 10^{-40}$ — enunciada, no sustituida por el
-veredicto pre-registrado, porque el brazo contra el que se compara está anulado. `harness-noblock`
-(bloque de herramientas sacado al servir) puntúa dependientes 80/160 y aprende **en parte** esta vez — el
-carril de developer y el carril entero de QA, pero no el `issue_create`/`issue_assign`/`issue_get` del
-carril de lead (0/20) — a diferencia del 0/60 uniforme de H1, porque este corpus dejó pasar algunas filas
-de entrenamiento sin el bloque. Los 14 errores dentro de los 146/160 de `harness` son todos de QA: diez
-leen la página entera `definition-of-done` en vez de citar su ancla `#tests` — el enunciado está dentro
-de lo que leyó, así que esta verificación puede fallar mientras la capacidad funciona, lo cual mide
-fraseo (§17) — y seis relean el issue o intentan una transición rechazada en vez del comentario de
-cierre, un error genuino. **Un segundo error de instrumento de la familia de H1**: la regla de VOID por
+veredicto pre-registrado, porque el brazo contra el que se compara está anulado. **La decisión del usuario
+(2026-09-29): lectura 1** — las condiciones legibles son el veredicto de H2, `harness` **PASÓ**.
+`harness-noblock` (bloque de herramientas sacado al servir) puntúa dependientes 80/160 — leído al
+principio como "aprendido **en parte**" (el carril de developer y el carril entero de QA, pero no el
+`issue_create`/`issue_assign`/`issue_get` del carril de lead, 0/20), pero esa lectura era un error del
+corpus, no un aprendizaje parcial: `--harness-corpus` armó su tercio sin bloque con `j % 3 == 2`, el
+mismo módulo con el que rotan los roles, así que las 400 filas de entrenamiento sin bloque eran todas de
+QA — el miembro aprendió lo-sin-bloque exactamente en el rol que se le mostró (QA 80/80; lead/developer
+0/20, la única excepción de lead `sprint_board`, una llamada sin argumento). En `harness`, las 14 fallas dependientes son todas un mismo turno, el comentario final de QA (6/20): el miembro relee el issue o intenta una transición rechazada en vez de comentar — una falla real, sobre un solo fraseo de la evaluación ("Note on it: …" 1/15 contra "Put a comment on it: …" 5/5); aparte, 10 de los 60 turnos independientes (50/60) son el chequeo del ancla — "¿dónde tienen que pasar los tests?" lee la página entera `definition-of-done` en vez de `#tests`, y el enunciado está en lo que leyó (mide fraseo, registrado, no aflojado). **Un segundo error de instrumento
+de la familia de H1**: la regla de VOID por
 brazo, escrita para que un brazo roto no borrara el resultado real de otro, esta vez anuló a una línea de
 base *sin entrenar* cuyo bajo puntaje en primeros turnos ES su margen, no un defecto — ver §17. El
 intento 1 de esta corrida quedó anulado por un error de transporte, no de puntuación (el límite de
 secuencias de parada del §15); el arreglo es el `MAX_STOPS` de
-`training/harness/accept_rank.py`. **Decisión pendiente para el usuario**: leer la corrida sobre sus
-condiciones legibles (146/160, plano, 142:0) como el veredicto de H2, o mantener FALSEADA-tal-como-está-
-escrita y repetirla con la regla por brazo restringida a los miembros entrenados. Resultado completo y
+`training/harness/accept_rank.py`. **H3 tiene un resultado [ran]:** `tr-s1`, entrenado sobre un segundo
+corpus que arregla las dos correcciones de arriba (fraseo ampliado por turno en cada rol, un tercio sin
+bloque de cada rol), contra `tr-s0` sobre una suite fresca retenida. El margen se sostiene primero —
+`s0-harness` 147/160 (91,9%), bajo el techo del 95% — y después **H3a PASÓ**: `s1-harness` 158/160
+(98,8%) contra `s0-harness`, pareado 11:0, prueba de signo exacta $p = 0,00098$, 0 perdidos, plano
+($\bar p_5 = 1275 \le 1,1\cdot 1465$). **H3b PASÓ**: sin el bloque de herramientas, `s1-noblock` 156/160
+(97,5%), cada rol por encima de la barra (developer 76/80, lead 40/40, QA 40/40) — el error de aliasing
+de arriba queda arreglado — a más o menos un tercio de los tokens de prompt por turno. Dos fallas se leen
+donde ocurren, nuevas acá: las 2 fallas de `tr-s1` son un solo caso, el texto de la propia nota leído
+como una orden (`issue_transition → qa`, rechazada por la capa de herramientas); las 4 fallas de
+`s1-noblock` son una sola sesión cuyo primer turno llama a la herramienta equivocada y los cuatro turnos
+dependientes siguientes encuentran una memoria vacía — un error del primer turno en cascada por la sesión
+([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
+Resultado completo y
 las dos lecturas: [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §9.
 
 ---
@@ -878,7 +891,9 @@ que necesita el instrumento es más angosta que la que se le dio: un VOID por br
 aplica a miembros entrenados, no a una línea de base sin entrenar cuyo fracaso ES el margen.** El resultado
 queda registrado como FALSEADO-tal-como-está-escrito, con el pareo descriptivo enunciado al lado, exactamente
 como el VOID de H1 quedó registrado al lado de su lectura por brazo — la compuerta no se editó después de
-ver el resultado.
+ver el resultado. **La decisión del usuario (2026-09-29), como para H1: lectura 1** — las condiciones
+legibles son el veredicto de H2, `harness` PASÓ — con FALSEADO-tal-como-está-escrito en el registro junto a
+sus dos errores de instrumento, no reemplazado por él.
 
 **Una verificación que puede fallar mientras la capacidad funciona mide fraseo, no el mecanismo.** Los
 errores de QA de H2 incluyen diez casos que leen la página entera `definition-of-done` en vez de citar su
@@ -886,6 +901,17 @@ ancla `#tests` específicamente — el enunciado que preguntaba la pregunta est�
 leyó, así que una verificación del ancla falla exactamente en los casos donde la capacidad de fondo
 (encontrar el hecho correcto) tuvo éxito. El error queda registrado, no aflojado hasta convertirlo en un
 acierto, ni tampoco usado para afirmar que la capacidad falta.
+
+**H3 (§10) arregló el chequeo del ancla y tasó un scorer que todavía no carga el veredicto.**
+`turn_right_h3` puntúa una lectura de página como correcta cuando el texto devuelto contiene el enunciado
+citado, cerrando la brecha del párrafo anterior; aplicado a los propios registros de H2 no cambia ningún
+conteo dependiente, así que el arreglo no movió un número que no debía mover. Un scorer informal aparte,
+"ancla-por-resultado" — acreditar cualquier turno cuyo resultado *contenga* el hecho, sin importar qué
+herramienta lo produjo — se probó al lado y acredita 9 de los turnos independientes de `tr-s0` y 0 de los
+de `tr-s1`: premia a un miembro por leer más de lo que se le pidió, no por usar bien el workflow, así que
+se reporta y no se usa para decidir H3a. La regla de VOID por brazo (§10) se aplicó sin sobresaltos acá —
+cada brazo entrenado (`s0-harness`, `s1-harness`, `s1-noblock`) superó el 90% de primeros turnos, así que
+no se repitió ningún error de instrumento en esta corrida.
 
 **Evidencia.** Esto no es un reclamo que necesite su propia corrida — es la disciplina a la que ya estuvo
 sometida cada corrida citada en otra parte de este documento: el arreglo de llamada malformada de P58, la

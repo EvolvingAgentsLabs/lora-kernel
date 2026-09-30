@@ -347,15 +347,24 @@ o tres. `results/H2-tracker-harness-20260929/` puntúa a `harness` en **146/160*
 entrenar `base-history` dispara con sus propios 44/60 primeros turnos la misma regla de VOID por brazo que
 arregló a H1 — anular a una línea de base cuyo bajo puntaje *es* el margen que se mide, no un defecto,
 vuelve ilegible la comparación pre-registrada, así que **la corrida se lee FALSEADA tal como está escrita,
-no ANULADA**. Descriptivamente, 142 de 160 favorecen a `harness` contra 0. Decisión pendiente del usuario,
-como lo fue para H1: [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §9.
+no ANULADA**, en el registro con ese y el error de instrumento del chequeo de anchor. Descriptivamente,
+142 de 160 favorecen a `harness` contra 0.
+**La decisión del usuario (2026-09-29), como para H1: lectura 1** — las condiciones legibles son el
+veredicto de H2, `harness` **PASÓ**: [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md)
+§9. `harness-noblock` (80/160) se leyó primero como "aprendido en parte"; era un error del corpus — su
+tercio sin bloque compartía módulo con la rotación de roles, así que las filas sin bloque eran todas de
+QA — no un aprendizaje parcial. **H3 [ran], las dos barras PASARON**: `tr-s1`, entrenado sobre un segundo
+corpus (fraseo ampliado por turno en cada rol, un tercio parejo sin bloque de cada rol), le gana a
+`tr-s0` 158/160 contra 147/160 sobre la misma suite fresca (pareado 11:0, $p = 0,00098$, plano), y sin el
+bloque de herramientas sostiene 156/160 en cada rol a más o menos un tercio de los tokens de prompt
+([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
 
 **Tanto H1 como H2 corrieron sobre vLLM (una L4), no a través de OpenClaw, y todavía no existe ninguna
 corrida multi-turno en vivo a través de OpenClaw.** Toda corrida en vivo de esta página — escuela 15/15,
 distribuidora 6/6 — es de un solo turno: un pedido, una respuesta, ningún turno anterior que resolver.
 Una demo multi-turno en vivo, a través de OpenClaw, es el último paso del orden en
-`docs/review/harness-workflow-kv.md` §7, y ahora espera a la lectura de H2 en vez de a la de H1, que ya
-está resuelta.
+`docs/review/harness-workflow-kv.md` §7, y ahora que H3 tiene un resultado, lo que queda es repetir el
+patrón de LIVE-distributor con el miembro del arnés.
 
 ## Cuánto vale esto, medido
 
