@@ -84,6 +84,37 @@ and `nolib`'s value-right rate (the gate).
 One L4 session. No question edited after the first model answer; no redesign of the library after S starts. If the
 headline has fewer than 20 multi-hop rows, the brief is re-issued before running, not after.
 
-## Result
+## Result [ran] — DOES NOT GENERALISE (not VOID)
 
-*(written after S)*
+Session 2 of 2 on an L4 (session 1 was ended by Colab's sixty-minute cap while the laptop slept; nothing had been
+scored); G1 applied; 0 errors. `real0.json`.
+
+| arm | headline (25, multi-hop) | one-hop (11) | none (4) | all (40) |
+|---|---|---|---|---|
+| `nolib` (closed book) | 0 | 0 (value-right 1) | 0 | 0 |
+| `base-reads` (the right statements open) | **22** | 11 | 4 | **37** |
+| `base-walks` (untrained, the verbs) | 1 | 0 | 1 | 2 |
+| `withlib-s1` (`distributor-wiki@v2`) | **0** | 0 | 4 | 4 |
+
+- **Gate:** `nolib` 0/25 — the values are not in the weights; the run reads.
+- **Verdict: `withlib-s1` vs `base-walks` on the headline — a tie (0 : 1, $p = 1.0$): DOES NOT GENERALISE.**
+- Beside it: `base-reads` 22/25 — the regulation's long paragraphs are **read** well once open; the gap is entirely
+  navigation (`base-reads` vs `base-walks` 21 : 0).
+
+**Read where it happens — the member never entered the library.** In **40 of 40** walks its first act was a search of
+the **harness shelf** with a query from its training world — *"approve a supplier invoice payment"* (7),
+*"deliver a pallet of goods"* (5), *"approve a supplier contract"* (4), *"goods arrived damaged or wrong item claim"* (4),
+… — the first of those occurs **61 times in its corpus** (`train_cmp.jsonl`). This library has no harness shelf: 0
+notes, `Not in my library.`, and **it opened no page in any of the 40 walks**. Its 4 credited rows are the 4 the library
+cannot answer — credit for refusing, not for walking.
+
+**What it means.** The trajectory LoRA learned **the generator's library** — its shelves, its recipe vocabulary, the
+queries its corpus repeated — not the habit of searching for the question's own terms. It is M2's lesson (*a model of
+a generated corpus learns the generator*) measured on the memory: W9's 35/40 and B5's 37/40 were walks over a world
+the generator shaped, and they do not transfer to text the generator did not write. The untrained base walks the real
+library (it opens pages, 13 empty finals and 17 refusals) but reads the wrong statements; the reading is there
+(`base-reads` 37/40), the navigation is not, in either model.
+
+**Not concluded here.** That navigation cannot be learned for real documents: the corpus never showed the member one.
+The next test is the one this points to — a trajectory corpus written over **ingested** real documents, trained on one
+document family and measured on another it never saw — with its own brief.

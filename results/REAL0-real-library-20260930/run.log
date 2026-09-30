@@ -1,0 +1,27 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/wiki-cmp-walks-s1
+[pool] G1 withlib-s1: applied
+[wiki] nolib: 40 to run, 0 resumed
+[wiki] nolib 10/40 credit 0 value-right 1 errors 0 1s
+[wiki] nolib 20/40 credit 0 value-right 1 errors 0 2s
+[wiki] nolib 30/40 credit 0 value-right 1 errors 0 3s
+[wiki] nolib 40/40 credit 0 value-right 1 errors 0 4s
+[wiki] base-reads: 40 to run, 0 resumed
+[wiki] base-reads 10/40 credit 10 value-right 10 errors 0 2s
+[wiki] base-reads 20/40 credit 20 value-right 20 errors 0 4s
+[wiki] base-reads 30/40 credit 29 value-right 29 errors 0 6s
+[wiki] base-reads 40/40 credit 37 value-right 37 errors 0 7s
+[wiki] base-walks: 40 to run, 0 resumed
+[wiki] base-walks 10/40 credit 0 value-right 0 errors 0 6s
+[wiki] base-walks 20/40 credit 1 value-right 3 errors 0 13s
+[wiki] base-walks 30/40 credit 1 value-right 3 errors 0 18s
+[wiki] base-walks 40/40 credit 2 value-right 4 errors 0 25s
+[wiki] withlib-s1: 40 to run, 0 resumed
+[wiki] withlib-s1 10/40 credit 0 value-right 0 errors 0 3s
+[wiki] withlib-s1 20/40 credit 0 value-right 0 errors 0 4s
+[wiki] withlib-s1 30/40 credit 0 value-right 0 errors 0 6s
+[wiki] withlib-s1 40/40 credit 4 value-right 4 errors 0 7s
+[wiki] headline · base-reads vs base-walks: improvement (21:0, p=0.0)
+[wiki] headline · withlib-s1 vs base-walks: tie (0:1, p=1.0)
+[wiki] headline · withlib-s1 vs base-reads: REGRESSION (0:22, p=0.0)
+[wiki] NAVIGATION IS THE GAP: base-reads 88% vs base-walks 4%, improvement (21:0, p=0.0) — train the trajectory LoRA, 2 seeds
