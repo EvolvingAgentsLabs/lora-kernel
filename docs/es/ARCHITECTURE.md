@@ -438,9 +438,13 @@ son largos y la pérdida de texto completo queda donde son cortos
 `examples/library/serve.py` pone a `real-none-s0` detrás de un endpoint compatible con OpenAI sobre llama.cpp,
 corriendo exactamente este runtime (entrada de texto completo, fallback, texto de página) con la salida de red
 cerrada al servidor del modelo ([`LIVE-library`](../../results/LIVE-library-20261001/BRIEF.md), el refuerzo del §2 de
-arriba). **Abierto:** la precisión de la citación cuando un valor se repite entre enlaces — REAL5 la encontró (15/25
-sobre una tercera familia densa en enlaces, bajo la barra de 70 %), el arreglo de un solo salto de REAL6 la dejó sin
-cambios (FALSIFIED), y los recorridos con señuelo entre enlaces de REAL7 están pre-registrados y corriendo
+arriba). **Abierto, y la línea de corpus sobre esto se detiene acá:** la precisión de la citación cuando un valor se
+repite entre enlaces — REAL5 la encontró (15/25 sobre una tercera familia densa en enlaces, bajo la barra de 70 %),
+el arreglo de un solo salto de REAL6 la dejó sin cambios (FALSIFIED), y los recorridos con señuelo entre enlaces de
+REAL7 tampoco cambiaron nada — `real-link-s0` empata con `real-none-s0` 13/21 sobre el titular sin gemelos de REAL5
+(4:4, bajo la barra de ≥ 15/21), **FALSEADO**; por la regla de contar rediseños, dos cambios de corpus sobre esta
+citación alcanzan y un tercero no se compra. Lo que podría moverla no es otro corpus sino un chequeo del runtime
+que rechace una cita cuya página el recorrido no terminó, medido sobre un conjunto fresco
 ([`REAL5`](../../results/REAL5-third-family-20261001/BRIEF.md), [`REAL6`](../../results/REAL6-citation-20261001/BRIEF.md),
 [`REAL7`](../../results/REAL7-crosslink-20261001/BRIEF.md)).
 

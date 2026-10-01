@@ -1039,8 +1039,13 @@ question's plan names as support:
 only 15/25 — 3 of the 5 losses cite another statement holding the same repeated number (§11). REAL6
 **[ran]** trained one-hop repeated-value choices and left it unchanged (15/25, a tie): the remaining
 misses are multi-hop rows cited at the wrong end of a link, a shape that corpus never contained.
-REAL7 (pre-registered, running) trains exactly that shape — a decoy holding the same number at a
-link's start, the answer at its end.
+REAL7 **[ran]** trained exactly that shape — a decoy holding the same number at a link's start, the
+answer at its end — and it changed nothing either: on REAL5's twin-free headline, `real-link-s0` ties
+`real-none-s0` 13/21 (4:4 paired, $p=1.0$), under the ≥ 15/21 bar, though the value is right more often
+(22 against 20) — **FALSIFIED**. Two corpus changes aimed at this citation (REAL6, REAL7) have now
+changed nothing; by the rule on counting redesigns this corpus line on the citation stops here. What a
+third pass would need is not a corpus but a mechanism — a runtime check that rejects a citation whose
+page the walk did not end on — measured on a fresh set.
 
 **Paired sign tests on this line (§9.2's test, applied here):**
 
@@ -1230,4 +1235,4 @@ milestone 3 trains the large half; milestone 4 measures §7.1's inequality.
 | §8.10 | **REAL5 — transfers to a third, link-dense family (EPA 40 CFR 112); the citation is the shortfall**: `real-none-s0` 15/25 (60 %) against `base-walks+page` 2/25, 13 : 0, $p=0.00024$; value-right 20/25; refusals 5/5 — **PARTIAL**, under the 70 % bar on strict citation alone | REAL5 [`results/REAL5-third-family-20261001/BRIEF.md`](../results/REAL5-third-family-20261001/BRIEF.md) |
 | §8.10 | **REAL6 — one-hop repeated-value training does not fix a multi-hop citation**: `real-cite-s0` 15/25 against `real-none-s0` 15/25, tied 1 : 1; the remaining miscitations are multi-hop rows cited at the wrong end of a link, a shape the 50-row corpus never contained — **FALSIFIED** | REAL6 [`results/REAL6-citation-20261001/BRIEF.md`](../results/REAL6-citation-20261001/BRIEF.md) |
 | §8.10 | **H5 — the span-masked loss is not the default recipe**: with the tool block shown to both, `tr-s3` (span-masked) 140/160 dependent turns against `tr-s1` (whole-text) 160/160, paired 0 : 20 on one phrasing family (`type=defect` vs `type=bug`) — regression, so the span-masked loss stays scoped to long tool results (real pages); short-result members keep §4.4's whole-text loss | H5 [`results/H5-span-loss-tracker-20261001/BRIEF.md`](../results/H5-span-loss-tracker-20261001/BRIEF.md) |
-| §8.10 | **REAL7 — running (pre-registered)**: cross-link decoy walks (the answer at a link's end, the same number as a decoy at its start), training family extended with 49 CFR 390/392/393/397; verdict on REAL5's twin-free headline (21 rows, `real-none-s0` baseline 13/21), bar ≥ 15/21 — no result yet | REAL7 [`results/REAL7-crosslink-20261001/BRIEF.md`](../results/REAL7-crosslink-20261001/BRIEF.md) |
+| §8.10 | **REAL7 — FALSIFIED**: cross-link decoy walks (the answer at a link's end, the same number as a decoy at its start), training family extended with 49 CFR 390/392/393/397; on REAL5's twin-free headline `real-link-s0` ties `real-none-s0` 13/21 (4:4, $p=1.0$), under the ≥ 15/21 bar — value-right 22 vs 20, same-value miscitations 2 vs 2, refusals 5/5 both, REAL4 guard not bought; two corpus changes on this citation now changed nothing, the corpus line stops | REAL7 [`results/REAL7-crosslink-20261001/BRIEF.md`](../results/REAL7-crosslink-20261001/BRIEF.md) |

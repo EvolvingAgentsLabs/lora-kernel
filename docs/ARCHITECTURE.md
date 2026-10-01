@@ -401,9 +401,13 @@ member 0:20 on one phrasing, so it stays the recipe where tool results are long 
 they are short ([`H5`](../results/H5-span-loss-tracker-20261001/BRIEF.md)). Served the way the product would serve
 it, `examples/library/serve.py` puts `real-none-s0` behind an OpenAI-compatible endpoint on llama.cpp, running
 exactly this runtime (full-text entry, fallback, page text) with egress closed to the model server
-([`LIVE-library`](../results/LIVE-library-20261001/BRIEF.md), §2's hardening above). **Open:** citation precision
-when a value repeats across a link — REAL5 found it (15/25 on a third, link-dense family, under the 70% bar), REAL6's
-one-hop fix left it unchanged (FALSIFIED), and REAL7's cross-link decoy walks are pre-registered and running
+([`LIVE-library`](../results/LIVE-library-20261001/BRIEF.md), §2's hardening above). **Open, and the corpus line on it
+now stops:** citation precision when a value repeats across a link — REAL5 found it (15/25 on a third, link-dense
+family, under the 70% bar), REAL6's one-hop fix left it unchanged (FALSIFIED), and REAL7's cross-link decoy walks
+changed nothing either — `real-link-s0` ties `real-none-s0` 13/21 on REAL5's twin-free headline (4:4, under the
+≥ 15/21 bar), **FALSIFIED**; by the rule on counting redesigns, two corpus changes on this citation are enough and
+a third is not bought. What might move it next is a runtime check that rejects a citation whose page the walk did
+not end on, measured on a fresh set
 ([`REAL5`](../results/REAL5-third-family-20261001/BRIEF.md), [`REAL6`](../results/REAL6-citation-20261001/BRIEF.md),
 [`REAL7`](../results/REAL7-crosslink-20261001/BRIEF.md)).
 

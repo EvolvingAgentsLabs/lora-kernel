@@ -25,7 +25,10 @@ del 70 % — porque un valor que se repite entre sentencias a veces se cita a la
 PARCIAL**). Entrenar elecciones de valor repetido de un salto no lo corrige: las fallas restantes son filas de
 varios saltos citadas en el extremo equivocado de un enlace, una forma que ese corpus nunca contuvo (**REAL6
 [ran], FALSEADO**). Entrenar exactamente esa forma — un señuelo con el mismo número al inicio de un enlace, la
-respuesta en su extremo — es **REAL7, en curso** (pre-registrado, veredicto sobre el titular sin gemelos de REAL5).
+respuesta en su extremo — tampoco cambió nada: **REAL7 [ran], FALSEADO** — `real-link-s0` empata con
+`real-none-s0` 13/21 sobre el titular sin gemelos (4:4, bajo la barra de ≥ 15/21); por la regla de contar
+rediseños esta línea de corpus sobre la citación se detiene acá, y lo que podría moverla no es otro corpus
+sino un chequeo del runtime sobre la propia citación.
 
 Cinco piezas:
 

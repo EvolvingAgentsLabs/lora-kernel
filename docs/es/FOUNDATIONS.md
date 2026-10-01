@@ -1082,8 +1082,14 @@ sea exactamente la sentencia que el plan de la pregunta nombra como soporte:
 cita estricta sólo 15/25 — 3 de las 5 pérdidas citan otra sentencia que tiene el mismo número repetido
 (§11). REAL6 **[ran]** entrenó elecciones de valor repetido de un salto y lo dejó sin cambios (15/25,
 empate): las fallas restantes son filas de varios saltos citadas en el extremo equivocado de un
-enlace, una forma que ese corpus nunca contuvo. REAL7 (pre-registrado, en curso) entrena exactamente
-esa forma — un señuelo con el mismo número al inicio de un enlace, la respuesta en su extremo.
+enlace, una forma que ese corpus nunca contuvo. REAL7 **[ran]** entrenó exactamente esa forma — un
+señuelo con el mismo número al inicio de un enlace, la respuesta en su extremo — y tampoco cambió
+nada: sobre el titular sin gemelos de REAL5, `real-link-s0` empata con `real-none-s0` 13/21 (4:4
+pareado, $p=1,0$), bajo la barra de ≥ 15/21, aunque el valor es correcto más seguido (22 contra 20) —
+**FALSEADO**. Dos cambios de corpus apuntados a esta citación (REAL6, REAL7) ya no cambiaron nada; por
+la regla de contar rediseños esta línea de corpus sobre la citación se detiene acá. Lo que necesitaría
+un tercer intento no es un corpus sino un mecanismo — un chequeo del runtime que rechace una cita cuya
+página el recorrido no terminó — medido sobre un conjunto fresco.
 
 **Tests de signos pareados sobre esta línea (el test de §9.2, aplicado aquí):**
 
@@ -1277,4 +1283,4 @@ entrena la mitad grande; el hito 4 mide la desigualdad de §7.1.
 | §8.10 | **REAL5 — transfiere a una tercera familia densa en enlaces (EPA 40 CFR 112); la cita es el faltante**: `real-none-s0` 15/25 (60 %) contra `base-walks+page` 2/25, 13 : 0, $p=0,00024$; valor correcto 20/25; negativas 5/5 — **PARCIAL**, bajo la barra del 70 % sólo por la cita estricta | REAL5 [`results/REAL5-third-family-20261001/BRIEF.md`](../../results/REAL5-third-family-20261001/BRIEF.md) |
 | §8.10 | **REAL6 — entrenar valor repetido de un salto no corrige una cita de varios saltos**: `real-cite-s0` 15/25 contra `real-none-s0` 15/25, empate 1 : 1; las citas erróneas restantes son filas de varios saltos citadas en el extremo equivocado de un enlace, una forma que el corpus de 50 filas nunca contuvo — **FALSEADO** | REAL6 [`results/REAL6-citation-20261001/BRIEF.md`](../../results/REAL6-citation-20261001/BRIEF.md) |
 | §8.10 | **H5 — la pérdida con máscara de tramos no es la receta por defecto**: con el bloque de herramienta mostrado a ambos, `tr-s3` (máscara de tramos) 140/160 turnos dependientes contra `tr-s1` (texto completo) 160/160, pareado 0 : 20 sobre una familia de frases (`type=defect` vs `type=bug`) — regresión, así que la pérdida con máscara de tramos se queda acotada a resultados de herramienta largos (páginas reales); los miembros de resultados cortos conservan la pérdida de texto completo de §4.4 | H5 [`results/H5-span-loss-tracker-20261001/BRIEF.md`](../../results/H5-span-loss-tracker-20261001/BRIEF.md) |
-| §8.10 | **REAL7 — en curso (pre-registrado)**: caminatas señuelo de enlace cruzado (la respuesta en el extremo de un enlace, el mismo número como señuelo en su inicio), familia de entrenamiento extendida con 49 CFR 390/392/393/397; veredicto sobre el titular sin gemelos de REAL5 (21 filas, base `real-none-s0` 13/21), barra ≥ 15/21 — sin resultado todavía | REAL7 [`results/REAL7-crosslink-20261001/BRIEF.md`](../../results/REAL7-crosslink-20261001/BRIEF.md) |
+| §8.10 | **REAL7 — FALSEADO**: caminatas señuelo de enlace cruzado (la respuesta en el extremo de un enlace, el mismo número como señuelo en su inicio), familia de entrenamiento extendida con 49 CFR 390/392/393/397; sobre el titular sin gemelos de REAL5, `real-link-s0` empata con `real-none-s0` 13/21 (4:4, $p=1,0$), bajo la barra de ≥ 15/21 — valor correcto 22 vs 20, citas erróneas de mismo valor 2 vs 2, negativas 5/5 en ambos, el guardia de REAL4 no se compró; dos cambios de corpus sobre esta citación ya no cambiaron nada, la línea de corpus se detiene | REAL7 [`results/REAL7-crosslink-20261001/BRIEF.md`](../../results/REAL7-crosslink-20261001/BRIEF.md) |

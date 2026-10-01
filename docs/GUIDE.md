@@ -483,7 +483,9 @@ accepted as the real-document member, and it is what `examples/library/serve.py`
 ([`LIVE-library`](../results/LIVE-library-20261001/BRIEF.md)). Carried to a third, link-denser family, the same
 member stays well above the untrained base (15/25 against 2/25) but falls short of the citation bar: most of what it
 gets wrong is citing a *different* statement that happens to hold the same number as the one asked — a problem the
-walk does not have and the citation does, open as REAL7 runs
+walk does not have and the citation does. A second corpus aimed straight at that shape (REAL7, decoys across the
+link) changed nothing either — tied 13/21 on the twin-free headline, **FALSIFIED** — so this corpus line on the
+citation stops; what might move it next is a check in the runtime itself, not a third corpus
 ([`REAL5`](../results/REAL5-third-family-20261001/BRIEF.md)–[`REAL7`](../results/REAL7-crosslink-20261001/BRIEF.md)).
 And the fix that made real documents learnable — loss on the model's own spans only — is not free everywhere: tried
 on a short-result member (the team tracker, §7.4's domain), it *regresses* one phrasing 0 of 20 against the ordinary
@@ -736,7 +738,7 @@ happened to us last week).
 | the span-masked loss as the default training recipe | **[ran] H5 — narrowed, not adopted everywhere**: it regresses a short-result member 0 of 20 on one phrasing against the whole-text loss; it stays the recipe only where results are long (real pages, REAL3) | `CLAUDE.md` §3's rule written to say so |
 | sessions longer than 2–3 turns | **[ran] H2, H3**: the team tracker (`examples/tracker/`) runs five-turn sessions and the flat-prompt property holds ($\bar p_5 \le 1.1\ \bar p_1$) on both corpora | reading chosen (row above); H3's second corpus is measured (row above) |
 | the global cache trained on | **[ran]**: built, tested, and trained inside two members' own corpora (`wf-s0`, H1; `tr-s0`, H2) | — |
-| real-document citation when a value repeats across a link | **[ran] REAL5 PARTIAL (15/25, under the 70% bar), REAL6 FALSIFIED (one-hop fix leaves it unchanged, 15/25)**: the misses are multi-hop rows cited at the wrong end of a link | REAL7, pre-registered and running — cross-link decoy walks, verdict on REAL5's twin-free headline |
+| real-document citation when a value repeats across a link | **[ran] REAL5 PARTIAL (15/25, under the 70% bar), REAL6 FALSIFIED (one-hop fix leaves it unchanged, 15/25), REAL7 FALSIFIED (cross-link decoys tie 13/21 on the twin-free headline)**: two corpus changes aimed at this citation changed nothing; the misses are multi-hop rows cited at the wrong end of a link | not another corpus — a runtime check that rejects a citation whose page the walk did not end on, measured on a fresh set |
 | the real-document member served as the product would serve it | **[ran, built]** `examples/library/serve.py` + an OpenClaw driver, tested offline; the first live run paused — another session's `llama-server` held the GPU memory it needs | free the GPU, run it (LIVE-library) |
 | a planted instruction in a tool result changing what a member does | **[ran] INJ0 — no headroom**: 70 exposed across every recorded turn, 0 acted on it | not built — nothing on these suites for it to fix |
 | real identity (Auth0), WhatsApp, installation | not built | after the above |

@@ -595,9 +595,13 @@ walk, is the open item **[ran]** REAL5.
 share a value — the shape REAL5's misses looked like from the answer side — left the citation unchanged,
 15/25 against 15/25, a tie **[ran]** REAL6: read where it happens, most of the remaining miscitations are
 *multi-hop* rows cited at the wrong end of a link (the member cites the page the walk is still on, not the
-one the chain ends on), a shape the one-hop corpus never contained. **REAL7** (pre-registered, running)
-trains exactly that shape — a decoy holding the same number at a link's start, the answer at its end,
-verdict on REAL5's twin-free headline (21 rows, baseline 13/21); no result at the time of writing.
+one the chain ends on), a shape the one-hop corpus never contained. **REAL7 [ran]** trained exactly that
+shape — a decoy holding the same number at a link's start, the answer at its end — and it changed
+nothing either: on REAL5's twin-free headline, `real-link-s0` ties `real-none-s0` 13/21 (4:4 paired,
+$p=1.0$), under the ≥ 15/21 bar, though the value is right more often (22 against 20) — **FALSIFIED**.
+Two corpus changes aimed at this citation (REAL6, REAL7) have now changed nothing; by the rule on
+counting redesigns this corpus line on the citation stops here — what might move it next is a runtime
+check that rejects a citation whose page the walk did not end on, not another corpus.
 
 **Where results are short, the whole-text loss stays.** H5 asked whether the span-masked loss should
 become the recipe for every member, not only where tool results are long: trained byte for byte on the
