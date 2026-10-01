@@ -16,7 +16,7 @@ trajectory learned on a generator's world does not carry to a real one (`distrib
 opens a page — **REAL0 [ran]**); trained instead on walks over real documents of **another** family and with the
 loss masked to the model's own spans, it does transfer — 18/23 fresh headline against the base's 9/23 (**REAL3
 [ran]**, both seeds), and refusal is then trainable the same way (**REAL4 [ran]**, as written FALSIFIED on the
-headline cost by one row, pending the user's reading).
+headline cost by one row; the user accepted the reading that refusal is fixed and the cost is noise, 2026-10-01).
 
 Five pieces:
 

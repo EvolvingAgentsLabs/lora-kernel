@@ -1,0 +1,13 @@
+=== session 1 of 2 · srv130642 · L4
+    boot clone: rc=0 3254077 chain_serve: upload adapters in 16 MB chunks — a 48 MB chunk hit Colab's 408 timeout on a slow uplink (0.2 MB/s measured)
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 3254077 chain_serve: upload adapters in 16 MB chunks — a 48 MB chunk hit Colab's 408 timeout on a slow uplink (0.2 MB/s measured)
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    3254077 chain_serve: upload adapters in 16 MB chunks — a 48 MB chunk hit Colab's 408 timeout on a slow uplink (0.2 MB/s measured) | 0.30.0
+    chunk part_ae did not upload
+    adapters did not upload
+exit 1

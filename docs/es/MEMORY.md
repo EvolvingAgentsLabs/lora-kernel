@@ -17,7 +17,7 @@ de un generador no se traslada a uno real (`distributor-wiki@v2` sin cambios, 0/
 **REAL0 [ran]**); entrenada en cambio sobre recorridos de documentos reales de **otra** familia y con la pérdida
 con máscara sobre los propios tramos del modelo, sí transfiere — 18/23 en el titular fresco contra el 9/23 del
 base (**REAL3 [ran]**, las dos semillas), y la negativa se vuelve entrenable del mismo modo (**REAL4 [ran]**,
-tal como está escrito FALSIFIED en el costo del titular por una fila, pendiente la lectura del usuario).
+tal como está escrito FALSIFIED en el costo del titular por una fila; el usuario aceptó la lectura de que la negativa está arreglada y el costo es ruido, 2026-10-01).
 
 Cinco piezas:
 

@@ -80,11 +80,17 @@ open_session () {  # open_session SECONDS GPU NAME
 upload_big () {  # upload_big SESSION LOCAL REMOTE
   local S="$1" src="$2" dst="$3"
   local dir; dir=$(mktemp -d)
-  split -b 48m "$src" "$dir/part_"
+  # 16 MB, not 48: on a slow uplink (~0.2 MB/s, 2026-10-01) a 48 MB chunk ran past Colab's request timeout (408) [ran]
+  split -b 16m "$src" "$dir/part_"
   local n=0
   for f in "$dir"/part_*; do
-    tmo 600 colab upload -s "$S" "$f" "/content/_up_$(basename "$f")" >/dev/null 2>&1 || {
-      echo "    chunk $(basename "$f") did not upload"; rm -rf "$dir"; return 1; }
+    # a chunk is retried: on a slow, uneven uplink one chunk in a few times out where the next try passes [ran] 2026-10-01
+    local ok=""
+    for t in 1 2 3 4; do
+      tmo 600 colab upload -s "$S" "$f" "/content/_up_$(basename "$f")" >/dev/null 2>&1 && { ok=1; break; }
+      echo "    chunk $(basename "$f") try $t did not upload — retrying"; sleep 5
+    done
+    [ -n "$ok" ] || { echo "    chunk $(basename "$f") did not upload"; rm -rf "$dir"; return 1; }
     n=$((n + 1))
   done
   rm -rf "$dir"
@@ -245,7 +251,7 @@ print(subprocess.run(
     # showed as silence for its whole length and could not have been stopped
     # early [ran] 2026-09-14. Fifth time a log held the answer and a filter
     # kept it out, so tests/test_chain_scripts.py now checks the two agree.
-    "grep -E '(serve|gate|tiny|native|matrix|run|arm|resume|cost|domain|P24|sweep|depth|fluids|sim|pool|judge|conf|shim|tunnel|3p|read|skip|train|loss|corpora|draft|desk|zero|code|rank|substrate|release|attr|sim|awq|tiny|precision|kb|route|live|radar|bill|school|wiki|demo|pair|gate|embed|frontier|gateway|live|distributor|spike|merge|e6|w7|e5|session|load|tracker|tracker3|tracker4)\\]|"
+    "grep -E '(serve|gate|tiny|native|matrix|run|arm|resume|cost|domain|P24|sweep|depth|fluids|sim|pool|judge|conf|shim|tunnel|3p|read|skip|train|loss|corpora|draft|desk|zero|code|rank|substrate|release|attr|sim|awq|tiny|precision|kb|route|live|radar|bill|school|wiki|demo|pair|gate|embed|frontier|gateway|live|distributor|spike|merge|e6|w7|e5|session|load|tracker|tracker3|tracker4|tracker5)\\]|"
     "passed [0-9]+|clears the gate|prompts/s|Traceback|[Ee]rror|OutOfMemory|Killed|"
     # THE TRAINER'S ONLY SIGN OF LIFE IS ITS STEP BAR. `loss]` above has never matched: this
     # harness's Trainer prints no loss line at all — zero in M1's logs, zero in arm 0c's 114 steps

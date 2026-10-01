@@ -1,0 +1,9 @@
+{
+ "arms": {},
+ "member": {
+  "adapter": "adapters/tracker-wf-s3",
+  "corpus_sha256": "5edd33eb7743da2fce3c8236e836f1bae1cde1e86b38577af8e556237e9b51b4",
+  "adapter_sha256": "668ee82aef706bfdb6c119bfd7866ef969513a25b60a6cde42b70e9d5881c2ca"
+ },
+ "trained_only": "2026-10-01T15:29:00"
+}

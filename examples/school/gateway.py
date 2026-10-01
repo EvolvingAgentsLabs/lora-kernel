@@ -197,7 +197,9 @@ class Gateway:
             if self.log_path:
                 with open(self.log_path, "a") as f:
                     f.write(json.dumps(ev, ensure_ascii=False) + "\n")
-        return {"reply": reply, "route": route, "walk": chain["text"], "event": ev}
+        return {"reply": reply, "route": route, "walk": chain["text"], "event": ev,
+                # what the MODEL wrote, as [start, end) of `walk` — a corpus trains on these, not on the tools' results
+                "spans": [[sp["at"], sp["at"] + len(sp["text"])] for sp in chain["spans"] if sp["text"]]}
 
     # ------------------------------------------------------------------ a person's side
     def _director(self, token: str):

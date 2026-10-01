@@ -623,6 +623,24 @@ tramo** — entrenar sólo los propios tags del modelo y su respuesta citada, nu
 del runtime — lo arregla: 18/23 contra el 9/23 del base sin entrenar sobre un set fresco de varios saltos,
 las dos semillas **[ran]** REAL3; la misma receta con 27 recorridos sin respuesta agregados enseña entonces
 la negativa, 15/16, a un costo en el titular cuya lectura el usuario todavía no saldó **[ran]** REAL4.
+El mismo miembro, sin cambios, recorre una tercera familia elegida por la propiedad opuesta — enlaces
+densos, 9,7 por página contra los 22 totales de la segunda familia — en **15/25 (60 %)**, bajo la barra
+de 70 %, pero a 7× el base sin entrenar (13 : 0, $p = 0{,}00024$) y negativas 5/5; de las filas perdidas,
+la mayoría cita un enunciado que tiene el mismo número que el preguntado, no la página equivocada — la
+citación estricta sobre valores repetidos, no el recorrido, es el ítem abierto **[ran]** REAL5.
+
+**Donde los resultados son cortos, la pérdida sobre el texto entero se queda.** H5 preguntó si la pérdida
+con máscara de tramo debía volverse la receta de todo miembro, no sólo donde los resultados de
+herramienta son largos: entrenada byte por byte sobre el corpus de arnés del tracker (§10) con la
+pérdida restringida a los propios tramos del modelo, el miembro regresa los turnos dependientes
+**0 : 20** contra la pérdida sobre el texto entero — incluso con el bloque de herramientas puesto de
+nuevo delante de los dos, así que la brecha no es un bloque que la pérdida sobre el texto entero hubiera
+memorizado; lo que la pérdida sobre el texto entero carga en cambio es el vocabulario del dominio,
+repetido a lo largo de los pedidos y resultados sobre los que también entrenó **[ran]** H5. La receta
+ahora se parte por el largo de lo que devuelven las herramientas de un miembro: con máscara de tramo
+donde es largo (páginas reales, REAL3, 1/23 → 18/23), sobre el texto entero donde es corto (el tracker,
+H5). Existe un endpoint en vivo para esta biblioteca — `examples/library/serve.py`, con un driver de
+OpenClaw — probado offline; todavía no corrió en vivo.
 
 ---
 

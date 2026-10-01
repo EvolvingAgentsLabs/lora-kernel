@@ -1,0 +1,11 @@
+{
+ "rows": 1400,
+ "rows_without_tool_block": 462,
+ "rows_without_tool_block_by_kind": {
+  "developer": 165,
+  "lead": 165,
+  "qa": 132
+ },
+ "rows_with_get": 800,
+ "rows_with_put": 300
+}

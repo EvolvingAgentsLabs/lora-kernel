@@ -1,0 +1,117 @@
+=== session 1 of 2 · srv152113 · L4
+    boot clone: rc=0 55dc073 REAL5 [ran]: PARTIAL — real-none-s0 15/25 multi-hop on a third, link-dense family (EPA 40 CFR 112) against the base's 2/25 (13:0), refusals 5/5; value
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 55dc073 REAL5 [ran]: PARTIAL — real-none-s0 15/25 multi-hop on a third, link-dense family (EPA 40 CFR 112) against the base's 2/25 (13:0), refusals 5/5; value
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    55dc073 REAL5 [ran]: PARTIAL — real-none-s0 15/25 multi-hop on a third, link-dense family (EPA 40 CFR 112) against the base's 2/25 (13:0), refusals 5/5; value-right 20/25, the loss is the strict citation among repeated values | 0.30.0
+    carried the adapters in (16 chunks)
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules tr-s1=adapters/tracker-wf-s1 tr-s3=adapters/tracker-wf-s3
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules tr-s1=adapters/tracker-wf-s1 tr-s3=adapters/tracker-wf-s3
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules tr-s1=adapters/tracker-wf-s1 tr-s3=adapters/tracker-wf-s3
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules tr-s1=adapters/tracker-wf-s1 tr-s3=adapters/tracker-wf-s3
+    [tracker5] G1 {'tr-s1': True, 'tr-s3': True}
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules tr-s1=adapters/tracker-wf-s1 tr-s3=adapters/tracker-wf-s3
+    [tracker5] G1 {'tr-s1': True, 'tr-s3': True}
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules tr-s1=adapters/tracker-wf-s1 tr-s3=adapters/tracker-wf-s3
+    [tracker5] G1 {'tr-s1': True, 'tr-s3': True}
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules tr-s1=adapters/tracker-wf-s1 tr-s3=adapters/tracker-wf-s3
+    [tracker5] G1 {'tr-s1': True, 'tr-s3': True}
+    [tracker5] s1-harness 10/60 · first 10/10 · dependent 28/28 · independent 9/9 · errors 0 · tokens {1: 1513, 2: 1223, 3: 990, 4: 1106, 5: 1281}
+    [tracker5] G1 {'tr-s1': True, 'tr-s3': True}
+    [tracker5] s1-harness 10/60 · first 10/10 · dependent 28/28 · independent 9/9 · errors 0 · tokens {1: 1513, 2: 1223, 3: 990, 4: 1106, 5: 1281}
+    [tracker5] s1-harness 20/60 · first 20/20 · dependent 54/54 · independent 20/20 · errors 0 · tokens {1: 1483, 2: 1223, 3: 969, 4: 1086, 5: 1279}
+    [tracker5] G1 {'tr-s1': True, 'tr-s3': True}
+    [tracker5] s1-harness 10/60 · first 10/10 · dependent 28/28 · independent 9/9 · errors 0 · tokens {1: 1513, 2: 1223, 3: 990, 4: 1106, 5: 1281}
+    [tracker5] s1-harness 20/60 · first 20/20 · dependent 54/54 · independent 20/20 · errors 0 · tokens {1: 1483, 2: 1223, 3: 969, 4: 1086, 5: 1279}
+    [tracker5] s1-harness 10/60 · first 10/10 · dependent 28/28 · independent 9/9 · errors 0 · tokens {1: 1513, 2: 1223, 3: 990, 4: 1106, 5: 1281}
+    [tracker5] s1-harness 20/60 · first 20/20 · dependent 54/54 · independent 20/20 · errors 0 · tokens {1: 1483, 2: 1223, 3: 969, 4: 1086, 5: 1279}
+    [tracker5] s1-harness 30/60 · first 30/30 · dependent 80/80 · independent 30/30 · errors 0 · tokens {1: 1468, 2: 1219, 3: 959, 4: 1089, 5: 1279}
+    [tracker5] s1-harness 10/60 · first 10/10 · dependent 28/28 · independent 9/9 · errors 0 · tokens {1: 1513, 2: 1223, 3: 990, 4: 1106, 5: 1281}
+    [tracker5] s1-harness 20/60 · first 20/20 · dependent 54/54 · independent 20/20 · errors 0 · tokens {1: 1483, 2: 1223, 3: 969, 4: 1086, 5: 1279}
+    [tracker5] s1-harness 30/60 · first 30/30 · dependent 80/80 · independent 30/30 · errors 0 · tokens {1: 1468, 2: 1219, 3: 959, 4: 1089, 5: 1279}
+    [tracker5] s1-harness 20/60 · first 20/20 · dependent 54/54 · independent 20/20 · errors 0 · tokens {1: 1483, 2: 1223, 3: 969, 4: 1086, 5: 1279}
+    [tracker5] s1-harness 30/60 · first 30/30 · dependent 80/80 · independent 30/30 · errors 0 · tokens {1: 1468, 2: 1219, 3: 959, 4: 1089, 5: 1279}
+    [tracker5] s1-harness 40/60 · first 40/40 · dependent 108/108 · independent 39/39 · errors 0 · tokens {1: 1474, 2: 1219, 3: 966, 4: 1093, 5: 1278}
+    [tracker5] s1-harness 20/60 · first 20/20 · dependent 54/54 · independent 20/20 · errors 0 · tokens {1: 1483, 2: 1223, 3: 969, 4: 1086, 5: 1279}
+    [tracker5] s1-harness 30/60 · first 30/30 · dependent 80/80 · independent 30/30 · errors 0 · tokens {1: 1468, 2: 1219, 3: 959, 4: 1089, 5: 1279}
+    [tracker5] s1-harness 40/60 · first 40/40 · dependent 108/108 · independent 39/39 · errors 0 · tokens {1: 1474, 2: 1219, 3: 966, 4: 1093, 5: 1278}
+    [tracker5] s1-harness 30/60 · first 30/30 · dependent 80/80 · independent 30/30 · errors 0 · tokens {1: 1468, 2: 1219, 3: 959, 4: 1089, 5: 1279}
+    [tracker5] s1-harness 40/60 · first 40/40 · dependent 108/108 · independent 39/39 · errors 0 · tokens {1: 1474, 2: 1219, 3: 966, 4: 1093, 5: 1278}
+    [tracker5] s1-harness 50/60 · first 50/50 · dependent 134/134 · independent 50/50 · errors 0 · tokens {1: 1469, 2: 1220, 3: 962, 4: 1087, 5: 1279}
+    [tracker5] s1-harness 30/60 · first 30/30 · dependent 80/80 · independent 30/30 · errors 0 · tokens {1: 1468, 2: 1219, 3: 959, 4: 1089, 5: 1279}
+    [tracker5] s1-harness 40/60 · first 40/40 · dependent 108/108 · independent 39/39 · errors 0 · tokens {1: 1474, 2: 1219, 3: 966, 4: 1093, 5: 1278}
+    [tracker5] s1-harness 50/60 · first 50/50 · dependent 134/134 · independent 50/50 · errors 0 · tokens {1: 1469, 2: 1220, 3: 962, 4: 1087, 5: 1279}
+    [tracker5] s1-harness 40/60 · first 40/40 · dependent 108/108 · independent 39/39 · errors 0 · tokens {1: 1474, 2: 1219, 3: 966, 4: 1093, 5: 1278}
+    [tracker5] s1-harness 50/60 · first 50/50 · dependent 134/134 · independent 50/50 · errors 0 · tokens {1: 1469, 2: 1220, 3: 962, 4: 1087, 5: 1279}
+    [tracker5] s1-harness 60/60 · first 60/60 · dependent 160/160 · independent 60/60 · errors 0 · tokens {1: 1463, 2: 1219, 3: 958, 4: 1088, 5: 1279}
+    [tracker5] s1-harness 40/60 · first 40/40 · dependent 108/108 · independent 39/39 · errors 0 · tokens {1: 1474, 2: 1219, 3: 966, 4: 1093, 5: 1278}
+    [tracker5] s1-harness 50/60 · first 50/50 · dependent 134/134 · independent 50/50 · errors 0 · tokens {1: 1469, 2: 1220, 3: 962, 4: 1087, 5: 1279}
+    [tracker5] s1-harness 60/60 · first 60/60 · dependent 160/160 · independent 60/60 · errors 0 · tokens {1: 1463, 2: 1219, 3: 958, 4: 1088, 5: 1279}
+    [tracker5] s1-harness 40/60 · first 40/40 · dependent 108/108 · independent 39/39 · errors 0 · tokens {1: 1474, 2: 1219, 3: 966, 4: 1093, 5: 1278}
+    [tracker5] s1-harness 50/60 · first 50/50 · dependent 134/134 · independent 50/50 · errors 0 · tokens {1: 1469, 2: 1220, 3: 962, 4: 1087, 5: 1279}
+    [tracker5] s1-harness 60/60 · first 60/60 · dependent 160/160 · independent 60/60 · errors 0 · tokens {1: 1463, 2: 1219, 3: 958, 4: 1088, 5: 1279}
+    [tracker5] s1-harness 40/60 · first 40/40 · dependent 108/108 · independent 39/39 · errors 0 · tokens {1: 1474, 2: 1219, 3: 966, 4: 1093, 5: 1278}
+    [tracker5] s1-harness 50/60 · first 50/50 · dependent 134/134 · independent 50/50 · errors 0 · tokens {1: 1469, 2: 1220, 3: 962, 4: 1087, 5: 1279}
+    [tracker5] s1-harness 60/60 · first 60/60 · dependent 160/160 · independent 60/60 · errors 0 · tokens {1: 1463, 2: 1219, 3: 958, 4: 1088, 5: 1279}
+    [tracker5] s1-harness 40/60 · first 40/40 · dependent 108/108 · independent 39/39 · errors 0 · tokens {1: 1474, 2: 1219, 3: 966, 4: 1093, 5: 1278}
+    [tracker5] s1-harness 50/60 · first 50/50 · dependent 134/134 · independent 50/50 · errors 0 · tokens {1: 1469, 2: 1220, 3: 962, 4: 1087, 5: 1279}
+    [tracker5] s1-harness 60/60 · first 60/60 · dependent 160/160 · independent 60/60 · errors 0 · tokens {1: 1463, 2: 1219, 3: 958, 4: 1088, 5: 1279}
+    [tracker5] s1-harness 50/60 · first 50/50 · dependent 134/134 · independent 50/50 · errors 0 · tokens {1: 1469, 2: 1220, 3: 962, 4: 1087, 5: 1279}
+    [tracker5] s1-harness 60/60 · first 60/60 · dependent 160/160 · independent 60/60 · errors 0 · tokens {1: 1463, 2: 1219, 3: 958, 4: 1088, 5: 1279}
+    [tracker5] s3-harness 10/60 · first 8/10 · dependent 24/28 · independent 9/9 · errors 0 · tokens {1: 1508, 2: 1224, 3: 989, 4: 1104, 5: 1274}
+    [tracker5] s1-harness 50/60 · first 50/50 · dependent 134/134 · independent 50/50 · errors 0 · tokens {1: 1469, 2: 1220, 3: 962, 4: 1087, 5: 1279}
+    [tracker5] s1-harness 60/60 · first 60/60 · dependent 160/160 · independent 60/60 · errors 0 · tokens {1: 1463, 2: 1219, 3: 958, 4: 1088, 5: 1279}
+    [tracker5] s3-harness 10/60 · first 8/10 · dependent 24/28 · independent 9/9 · errors 0 · tokens {1: 1508, 2: 1224, 3: 989, 4: 1104, 5: 1274}
+    [tracker5] s1-harness 50/60 · first 50/50 · dependent 134/134 · independent 50/50 · errors 0 · tokens {1: 1469, 2: 1220, 3: 962, 4: 1087, 5: 1279}
+    [tracker5] s1-harness 60/60 · first 60/60 · dependent 160/160 · independent 60/60 · errors 0 · tokens {1: 1463, 2: 1219, 3: 958, 4: 1088, 5: 1279}
+    [tracker5] s3-harness 10/60 · first 8/10 · dependent 24/28 · independent 9/9 · errors 0 · tokens {1: 1508, 2: 1224, 3: 989, 4: 1104, 5: 1274}
+    [tracker5] s1-harness 50/60 · first 50/50 · dependent 134/134 · independent 50/50 · errors 0 · tokens {1: 1469, 2: 1220, 3: 962, 4: 1087, 5: 1279}
+    [tracker5] s1-harness 60/60 · first 60/60 · dependent 160/160 · independent 60/60 · errors 0 · tokens {1: 1463, 2: 1219, 3: 958, 4: 1088, 5: 1279}
+    [tracker5] s3-harness 10/60 · first 8/10 · dependent 24/28 · independent 9/9 · errors 0 · tokens {1: 1508, 2: 1224, 3: 989, 4: 1104, 5: 1274}
+    [tracker5] s1-harness 60/60 · first 60/60 · dependent 160/160 · independent 60/60 · errors 0 · tokens {1: 1463, 2: 1219, 3: 958, 4: 1088, 5: 1279}
+    [tracker5] s3-harness 10/60 · first 8/10 · dependent 24/28 · independent 9/9 · errors 0 · tokens {1: 1508, 2: 1224, 3: 989, 4: 1104, 5: 1274}
+    [tracker5] s3-harness 20/60 · first 16/20 · dependent 46/54 · independent 20/20 · errors 0 · tokens {1: 1478, 2: 1223, 3: 968, 4: 1084, 5: 1272}
+    [tracker5] s1-harness 60/60 · first 60/60 · dependent 160/160 · independent 60/60 · errors 0 · tokens {1: 1463, 2: 1219, 3: 958, 4: 1088, 5: 1279}
+    [tracker5] s3-harness 10/60 · first 8/10 · dependent 24/28 · independent 9/9 · errors 0 · tokens {1: 1508, 2: 1224, 3: 989, 4: 1104, 5: 1274}
+    [tracker5] s3-harness 20/60 · first 16/20 · dependent 46/54 · independent 20/20 · errors 0 · tokens {1: 1478, 2: 1223, 3: 968, 4: 1084, 5: 1272}
+    [tracker5] s3-harness 10/60 · first 8/10 · dependent 24/28 · independent 9/9 · errors 0 · tokens {1: 1508, 2: 1224, 3: 989, 4: 1104, 5: 1274}
+    [tracker5] s3-harness 20/60 · first 16/20 · dependent 46/54 · independent 20/20 · errors 0 · tokens {1: 1478, 2: 1223, 3: 968, 4: 1084, 5: 1272}
+    [tracker5] s3-harness 30/60 · first 25/30 · dependent 70/80 · independent 30/30 · errors 0 · tokens {1: 1463, 2: 1219, 3: 958, 4: 1087, 5: 1273}
+    [tracker5] s3-harness 10/60 · first 8/10 · dependent 24/28 · independent 9/9 · errors 0 · tokens {1: 1508, 2: 1224, 3: 989, 4: 1104, 5: 1274}
+    [tracker5] s3-harness 20/60 · first 16/20 · dependent 46/54 · independent 20/20 · errors 0 · tokens {1: 1478, 2: 1223, 3: 968, 4: 1084, 5: 1272}
+    [tracker5] s3-harness 30/60 · first 25/30 · dependent 70/80 · independent 30/30 · errors 0 · tokens {1: 1463, 2: 1219, 3: 958, 4: 1087, 5: 1273}
+    [tracker5] s3-harness 20/60 · first 16/20 · dependent 46/54 · independent 20/20 · errors 0 · tokens {1: 1478, 2: 1223, 3: 968, 4: 1084, 5: 1272}
+    [tracker5] s3-harness 30/60 · first 25/30 · dependent 70/80 · independent 30/30 · errors 0 · tokens {1: 1463, 2: 1219, 3: 958, 4: 1087, 5: 1273}
+    [tracker5] s3-harness 40/60 · first 34/40 · dependent 96/108 · independent 39/39 · errors 0 · tokens {1: 1468, 2: 1219, 3: 966, 4: 1092, 5: 1273}
+    [tracker5] s3-harness 20/60 · first 16/20 · dependent 46/54 · independent 20/20 · errors 0 · tokens {1: 1478, 2: 1223, 3: 968, 4: 1084, 5: 1272}
+    [tracker5] s3-harness 30/60 · first 25/30 · dependent 70/80 · independent 30/30 · errors 0 · tokens {1: 1463, 2: 1219, 3: 958, 4: 1087, 5: 1273}
+    [tracker5] s3-harness 40/60 · first 34/40 · dependent 96/108 · independent 39/39 · errors 0 · tokens {1: 1468, 2: 1219, 3: 966, 4: 1092, 5: 1273}
+    [tracker5] s3-harness 20/60 · first 16/20 · dependent 46/54 · independent 20/20 · errors 0 · tokens {1: 1478, 2: 1223, 3: 968, 4: 1084, 5: 1272}
+    [tracker5] s3-harness 30/60 · first 25/30 · dependent 70/80 · independent 30/30 · errors 0 · tokens {1: 1463, 2: 1219, 3: 958, 4: 1087, 5: 1273}
+    [tracker5] s3-harness 40/60 · first 34/40 · dependent 96/108 · independent 39/39 · errors 0 · tokens {1: 1468, 2: 1219, 3: 966, 4: 1092, 5: 1273}
+    [tracker5] s3-harness 20/60 · first 16/20 · dependent 46/54 · independent 20/20 · errors 0 · tokens {1: 1478, 2: 1223, 3: 968, 4: 1084, 5: 1272}
+    [tracker5] s3-harness 30/60 · first 25/30 · dependent 70/80 · independent 30/30 · errors 0 · tokens {1: 1463, 2: 1219, 3: 958, 4: 1087, 5: 1273}
+    [tracker5] s3-harness 40/60 · first 34/40 · dependent 96/108 · independent 39/39 · errors 0 · tokens {1: 1468, 2: 1219, 3: 966, 4: 1092, 5: 1273}
+    [tracker5] s3-harness 30/60 · first 25/30 · dependent 70/80 · independent 30/30 · errors 0 · tokens {1: 1463, 2: 1219, 3: 958, 4: 1087, 5: 1273}
+    [tracker5] s3-harness 40/60 · first 34/40 · dependent 96/108 · independent 39/39 · errors 0 · tokens {1: 1468, 2: 1219, 3: 966, 4: 1092, 5: 1273}
+    [tracker5] s3-harness 50/60 · first 42/50 · dependent 118/134 · independent 50/50 · errors 0 · tokens {1: 1462, 2: 1220, 3: 962, 4: 1086, 5: 1273}
+    [tracker5] s3-harness 30/60 · first 25/30 · dependent 70/80 · independent 30/30 · errors 0 · tokens {1: 1463, 2: 1219, 3: 958, 4: 1087, 5: 1273}
+    [tracker5] s3-harness 40/60 · first 34/40 · dependent 96/108 · independent 39/39 · errors 0 · tokens {1: 1468, 2: 1219, 3: 966, 4: 1092, 5: 1273}
+    [tracker5] s3-harness 50/60 · first 42/50 · dependent 118/134 · independent 50/50 · errors 0 · tokens {1: 1462, 2: 1220, 3: 962, 4: 1086, 5: 1273}
+    [tracker5] s3-harness 30/60 · first 25/30 · dependent 70/80 · independent 30/30 · errors 0 · tokens {1: 1463, 2: 1219, 3: 958, 4: 1087, 5: 1273}
+    [tracker5] s3-harness 40/60 · first 34/40 · dependent 96/108 · independent 39/39 · errors 0 · tokens {1: 1468, 2: 1219, 3: 966, 4: 1092, 5: 1273}
+    [tracker5] s3-harness 50/60 · first 42/50 · dependent 118/134 · independent 50/50 · errors 0 · tokens {1: 1462, 2: 1220, 3: 962, 4: 1086, 5: 1273}
+    [tracker5] s3-harness 30/60 · first 25/30 · dependent 70/80 · independent 30/30 · errors 0 · tokens {1: 1463, 2: 1219, 3: 958, 4: 1087, 5: 1273}
+    [tracker5] s3-harness 40/60 · first 34/40 · dependent 96/108 · independent 39/39 · errors 0 · tokens {1: 1468, 2: 1219, 3: 966, 4: 1092, 5: 1273}
+    [tracker5] s3-harness 50/60 · first 42/50 · dependent 118/134 · independent 50/50 · errors 0 · tokens {1: 1462, 2: 1220, 3: 962, 4: 1086, 5: 1273}
+    [tracker5] s3-harness 50/60 · first 42/50 · dependent 118/134 · independent 50/50 · errors 0 · tokens {1: 1462, 2: 1220, 3: 962, 4: 1086, 5: 1273}
+    [tracker5] s3-harness 60/60 · first 50/60 · dependent 140/160 · independent 60/60 · errors 0 · tokens {1: 1456, 2: 1219, 3: 958, 4: 1087, 5: 1272}
+    [tracker5] VOID: an arm is void or missing
+    the runner wrote its result — done
+=== already decided — no further sessions
+exit 0
