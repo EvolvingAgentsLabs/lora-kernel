@@ -118,5 +118,9 @@ scored on one L4, G1 applied (domain probes), 0 errors. `real3_fresh.json`.
 - The base here is 9/23; in this brief's first scoring session it was 7/23 on the same rows — vLLM's spread, the reason a
   verdict is read beside the paired test.
 
+**Beside it, REAL0's set (comparability; its failures had been read) [ran]** `real3_real0set.json`: `real-spans-s0` **18/25**
+multi-hop against the base's 7/25 (14 : 3, $p = 0.0127$), one-hop 10/11, refusals 0/4. On the rows where this line began,
+the member went from `distributor-wiki@v2`'s 0/25 (REAL0) to 18/25 — against a reading ceiling of 22/25.
+
 **Owed, in order:** the second seed of this recipe (W5e: two draws can disagree); then the refusal fix — unanswerable
 questions in the corpus — measured as its own change.
