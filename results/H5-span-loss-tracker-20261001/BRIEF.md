@@ -50,3 +50,22 @@ the loss on the tool descriptions.
 **The attribution arm, bought because there is an effect:** `tr-s3` **with** the tool block (`s3-harness`) against
 `tr-s1` with it (`s1-harness`), same suite, no training — if `tr-s3` recovers the lead's turns with the block in front of
 it, the hypothesis holds. Queued after REAL5.
+
+### The attribution arm [ran] — the hypothesis is refuted; the whole-text loss stays for short-result members
+
+`h5_block.json`, one L4, G1 applied, 0 errors. With the tool block in front of both members:
+
+| arm (with the block) | first | dependent | independent |
+|---|---|---|---|
+| `tr-s1` (whole-text loss) | 60/60 | **160/160** | 60/60 |
+| `tr-s3` (span-masked loss) | 50/60 | 140/160 | 60/60 |
+
+`tr-s3` still writes `type=defect` for *"New defect — …"* in 10 of 10 sessions **with the enum on the page** — so it is
+not a tool block the whole-text loss had memorised. Paired on the dependent turns, `tr-s3` against `tr-s1`: **0 : 20,
+REGRESSION**. What the whole-text loss gives a short-result member is something wider — the requests and the results it
+also trained on (`created RD-395 [bug] …`, hundreds of times) carry the domain's vocabulary — and the span-masked loss loses
+it. Which part does is not measured here.
+
+**The decision this run serves, read as the brief set it (WORSE):** the span-masked loss is **not** the default. It is
+the recipe where tool results are long (real pages: REAL3, 1/23 → 18/23); members with short results keep the whole-text
+loss (here it costs 0 : 20 on one phrasing family). `CLAUDE.md` §3's rule is narrowed to say so.

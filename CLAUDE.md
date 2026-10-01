@@ -146,7 +146,9 @@ These are not style. Each was paid for; [`docs/RECORD.md`](docs/RECORD.md) §4 h
   serve with `--prune --member-prompt`, and measure a member under any other prompt as a
   different arm, never as the member.
 - **A trajectory corpus over generated text teaches the generator; and a loss on the whole
-  walk teaches the tool results — train only the model's spans** (REAL0, REAL3 **[ran]**).
+  walk teaches the tool results — train only the model's spans** where the tool results are long (REAL0, REAL3 **[ran]**);
+  where they are short lines the whole-text loss stays: span-masking a tracker member cost 0 : 20 on one phrasing family,
+  with or without the tool block (H5 **[ran]**).
 
 **During the run**
 - **Buy arms in sequence, never as a grid.** The arm that can kill the hypothesis first;

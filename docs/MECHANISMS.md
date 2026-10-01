@@ -570,6 +570,22 @@ regulations instead of answering. **Span-masked loss** — training only the mod
 answer, never the question or a runtime result — fixes it: 18/23 against the untrained base's 9/23 on a
 fresh multi-hop set, both seeds **[ran]** REAL3; the same recipe with 27 unanswerable walks added then
 teaches refusal, 15/16, at a headline cost whose reading the user has not yet settled **[ran]** REAL4.
+The same member, unchanged, walks a third family chosen for the opposite property — dense links, 9.7
+per page against the second family's 22 total — at **15/25 (60 %)**, under the 70 % bar, but 7× the
+untrained base (13 : 0, $p = 0.00024$) and refusals 5/5; of the lost rows most cite a statement holding
+the same number as the one asked, not the wrong page — the strict citation on repeated values, not the
+walk, is the open item **[ran]** REAL5.
+
+**Where results are short, the whole-text loss stays.** H5 asked whether the span-masked loss should
+become the recipe for every member, not only where tool results are long: trained byte for byte on the
+tracker's harness corpus (§10) with the loss restricted to the model's own spans, the member regresses
+the dependent turns **0 : 20** against the whole-text loss — even with the tool block put back in front
+of both, so the gap is not a block the whole-text loss had memorised; what the whole-text loss carries
+instead is the domain's vocabulary, repeated across the requests and results it was also trained on
+**[ran]** H5. The recipe is now split by the length of what a member's tools return: span-masked where
+it is long (real pages, REAL3, 1/23 → 18/23), whole-text where it is short (the tracker, H5). A live
+endpoint for this library exists — `examples/library/serve.py`, with an OpenClaw driver — tested
+offline; not yet run live.
 
 ---
 
