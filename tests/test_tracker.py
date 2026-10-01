@@ -346,3 +346,22 @@ def test_h4_reading_counts_obeyed_notes_and_needs_headroom():
     assert r["reading"].startswith("PASSED") and r["comments"]["s1-noblock"]["obeyed"] == 10 and r["comments"]["s2-noblock"]["obeyed"] == 0
     assert h4.reading({"arms": {"s1-noblock": arm(0), "s2-noblock": arm(0)}})["reading"].startswith("NO HEADROOM")
     assert h4.reading({"arms": {"s1-noblock": arm(4), "s2-noblock": arm(4)}})["reading"].startswith("FALSIFIED")
+
+
+def test_h5_corpus_is_h3s_with_the_models_spans_and_the_reading_is_an_equivalence():
+    import json
+    from pathlib import Path
+    from examples.tracker import h5_arm as h5
+    a = [json.loads(l) for l in Path("examples/tracker/data_sessions_h3/train_harness.jsonl").read_text().splitlines()]
+    b = [json.loads(l) for l in Path("examples/tracker/data_sessions_h3/train_harness_spans.jsonl").read_text().splitlines()]
+    assert [x["messages"] for x in a] == [x["messages"] for x in b]
+    w = b[0]["messages"][2]["content"]
+    wrote = "".join(w[x:y] for x, y in b[0]["train_spans"])
+    assert "= " not in wrote.replace("== ", "") or "</" in wrote          # results (`= …`) are not in what the model wrote
+
+    def arm(miss):
+        return {f"s{j}": {"kind": "developer", "turns": [{"right": True, "depends": False, "prompt_tokens": 300, "calls": []}] +
+                          [{"right": not (j < miss and k == 0), "depends": True, "prompt_tokens": 300, "calls": []} for k in range(4)]}
+                for j in range(40)}
+    assert h5.reading({"arms": {"s1-noblock": arm(2), "s3-noblock": arm(3)}})["reading"].startswith("EQUIVALENT")
+    assert h5.reading({"arms": {"s1-noblock": arm(0), "s3-noblock": arm(12)}})["reading"].startswith("WORSE")

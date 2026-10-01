@@ -296,7 +296,7 @@ def play(sess: dict, generate, history: bool = False, harness: bool = False, too
                     "calls": ev["calls"], "route": r["route"], "reply": r["reply"][:300], "walk": r["walk"][-500:],
                     "prompt_tokens": ev.get("prompt_tokens", 0), "completion_tokens": ev.get("completion_tokens", 0)})
         if capture is not None:
-            capture.append({"system": served["system"], "user": served["user"], "walk": r["walk"]})
+            capture.append({"system": served["system"], "user": served["user"], "walk": r["walk"], "spans": r.get("spans", [])})
         messages.append({"role": "assistant", "content": r["reply"]})
     return out
 
@@ -343,14 +343,17 @@ def main() -> int:
             play(s, harness_oracle(s), harness=True, tool_block=not noblock(j), capture=cap)
             rows += [{"case_id": f"{s['session_id']}-t{i}", "kind": s["kind"], "turn": i, "depends": s["turns"][i]["depends"],
                       "messages": [{"role": "system", "content": c["system"]}, {"role": "user", "content": c["user"]},
-                                   {"role": "assistant", "content": c["walk"]}]} for i, c in enumerate(cap)]
-        (out / "train_harness.jsonl").write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows))
+                                   {"role": "assistant", "content": c["walk"]}],
+                      **({"train_spans": c["spans"]} if "--spans" in argv else {})} for i, c in enumerate(cap)]
+        # H5: `--spans` records what the model wrote, for the span-masked loss (REAL3 [ran]); H2/H3's files stay as trained
+        (out / ("train_harness_spans.jsonl" if "--spans" in argv else "train_harness.jsonl")).write_text(
+            "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows))
         bare = [r for r in rows if "The following tools are available" not in r["messages"][1]["content"]]
         g = {"rows": len(rows), "rows_without_tool_block": len(bare),
              "rows_without_tool_block_by_kind": {k: sum(r["kind"] == k for r in bare) for k in KINDS},
              "rows_with_get": sum("<get>" in r["messages"][2]["content"] for r in rows),
              "rows_with_put": sum("<put>" in r["messages"][2]["content"] for r in rows)}
-        (out / "gate_harness.json").write_text(json.dumps(g, indent=1))
+        (out / ("gate_harness_spans.json" if "--spans" in argv else "gate_harness.json")).write_text(json.dumps(g, indent=1))
         print(f"[tracker] harness corpus {g}", flush=True)
         return 0
     train, evals = build("train", suite), build("eval", suite)

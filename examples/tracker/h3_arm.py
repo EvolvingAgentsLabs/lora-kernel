@@ -83,7 +83,8 @@ def reading(rec: dict) -> dict:
 
 
 def main(argv=None, *, doc=__doc__, data=None, members=None, arm_spec=None, read=None, train_member="tr-s1",
-         default_arms="s0-harness,s1-harness,s1-noblock", default_out="h3.json", tag="tracker3") -> int:
+         default_arms="s0-harness,s1-harness,s1-noblock", default_out="h3.json", tag="tracker3",
+         corpus_file="train_harness.jsonl", eval_data=None) -> int:
     """H3's runner; H4 (examples/tracker/h4_arm.py) calls it with its own suite, members, arms and reading."""
     data, members, arm_spec, read = data or DATA, members or MEMBERS, arm_spec or ARM_SPEC, read or reading
     ap = argparse.ArgumentParser(description=doc, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -100,7 +101,7 @@ def main(argv=None, *, doc=__doc__, data=None, members=None, arm_spec=None, read
     if a.train_seed is not None:
         import hashlib
         from training.harness.release_gate import RECIPE
-        corpus, adapter = data / "train_harness.jsonl", members[train_member]
+        corpus, adapter = data / corpus_file, members[train_member]
         print(f"[{tag}] training {adapter} on {a.base} from {corpus}", flush=True)
         rc = subprocess.call([sys.executable, "-m", "training.harness.train_one", "--base", a.base, "--train", str(corpus),
                               "--out-dir", adapter, "--epochs", str(RECIPE["epochs"]), "--r", str(RECIPE["r"]),
@@ -114,7 +115,7 @@ def main(argv=None, *, doc=__doc__, data=None, members=None, arm_spec=None, read
         rec["trained_only"] = time.strftime("%Y-%m-%dT%H:%M:%S"); save()
         print(f"[{tag}] trained and packed — stopping before serving, as asked", flush=True)
         return 0
-    sessions = [json.loads(l) for l in (data / "eval.jsonl").read_text().splitlines() if l.strip()]
+    sessions = [json.loads(l) for l in ((eval_data or data) / "eval.jsonl").read_text().splitlines() if l.strip()]
     arms = [x for x in a.arms.split(",") if x]
     from transformers import AutoTokenizer
     from examples.school.gateway import vllm_generator
