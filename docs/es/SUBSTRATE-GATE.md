@@ -64,6 +64,19 @@ cada uno; G2 `email-full` responde con **1 llamada**, `fluids-full` responde sin
 superficie podada no le ofrece herramienta de inbox, que es la forma correcta; G3
 `stop_reason: '3'`. `results/P56-substrate-20260917/verdict.json`.
 
+## Estado actual, 2026-10-01 — la línea de biblioteca real
+
+Las tres verificaciones de la compuerta (G1–G3) son sobre *servir* un miembro correctamente; no chequean
+si su corpus o su pérdida fueron la receta correcta. REAL3 **[ran]** encontró una falla que esta compuerta
+no puede ver ni debería intentar ver: `real-walks-s0` se sirvió, alcanzó sus herramientas y nunca dejó de
+diferir de la base de la manera que C18 marcaría — estaba **applied**, y aun así escribió texto de
+reglamento en vez de una respuesta citada, porque la pérdida de entrenamiento (no el sustrato de serving)
+estaba puesta sobre todo el recorrido. El arreglo (pérdida con máscara de tramo) es una decisión de tiempo
+de entrenamiento; el trabajo de esta compuerta termina en confirmar que el adaptador resultante en verdad
+se sirve. El endpoint en vivo de la biblioteca (`examples/library/serve.py`, probado offline) va a
+necesitar pasar las mismas verificaciones G1–G3 antes de cualquier corrida en vivo, igual que lo hizo el
+miembro `edge` del tracker (LIVE-tracker **[ran]**).
+
 ## Su lugar en el plan
 
 - **La Fase 0 ✅ es la entrada de todas las demás.**

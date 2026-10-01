@@ -359,12 +359,44 @@ corpus (fraseo ampliado por turno en cada rol, un tercio parejo sin bloque de ca
 bloque de herramientas sostiene 156/160 en cada rol a más o menos un tercio de los tokens de prompt
 ([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
 
-**Tanto H1 como H2 corrieron sobre vLLM (una L4), no a través de OpenClaw, y todavía no existe ninguna
-corrida multi-turno en vivo a través de OpenClaw.** Toda corrida en vivo de esta página — escuela 15/15,
-distribuidora 6/6 — es de un solo turno: un pedido, una respuesta, ningún turno anterior que resolver.
-Una demo multi-turno en vivo, a través de OpenClaw, es el último paso del orden en
-`docs/review/harness-workflow-kv.md` §7, y ahora que H3 tiene un resultado, lo que queda es repetir el
-patrón de LIVE-distributor con el miembro del arnés.
+**H1 y H2 corrieron sobre vLLM (una L4), no a través de OpenClaw — el miembro de H3 ya se corrió en vivo,
+multi-turno, el último paso de ese orden.** `tr-s1` (el miembro sin bloque de H3, con la memoria operativa y la
+captura de claves) servido por llama.cpp en la propia Mac del usuario, el mismo arreglo `edge` que LIVE-distributor,
+manejado por OpenClaw en **tres sesiones separadas** (lead, developer, QA): **14 de 14 turnos, dependientes 8 de 8**,
+latencia del gateway mediana 3,7 s, ~370 tokens de prompt por turno — la propiedad de prompt plano para la que está
+construido cargar claves en vez de la conversación se sostiene sobre un cliente real, no sólo sobre un replay
+([`LIVE-tracker`](../../results/LIVE-tracker-openclaw-20260930/BRIEF.md)). Toda otra corrida en vivo de esta página —
+escuela 15/15, distribuidora 6/6 — sigue siendo de un solo turno: un pedido, una respuesta, ningún turno anterior
+que resolver; ésta es la primera en llevar estado *a través* de turnos en vivo.
+
+## 7. La biblioteca, como proveedor de OpenClaw — una corrida en vivo en pausa
+
+[`examples/library/serve.py`](../../examples/library/serve.py) ([`SERVING.md`](SERVING.md)) es una *segunda* puerta
+de entrada, al lado del gateway: un endpoint compatible con OpenAI que corre a `real-none-s0` (el miembro de
+documentos reales aceptado después de REAL4, [`ARCHITECTURE.md`](ARCHITECTURE.md) §4) sobre el runtime de REAL4, en
+llama.cpp. Apuntarle OpenClaw es registrarlo como proveedor como cualquier otro, porque el endpoint escribe el
+parche solo al arrancar:
+
+    llama-server -m gemma-4-E4B-it-Q8_0.gguf --lora lora-real-none-s0-f16.gguf --port 8793 -c 12288 -b 512 -ngl 99
+    python -m examples.library.serve --library knowledge/logistics-regs --upstream http://127.0.0.1:8793 --port 8766 \
+        --openclaw-patch ~/.config/lora-kernel/openclaw/library-reader.json5
+
+    ~/.openclaw/bin/openclaw --profile lorakernel config patch \
+        --file ~/.config/lora-kernel/openclaw/library-reader.json5
+    ~/.openclaw/bin/openclaw --profile lorakernel agent --local -m "How long must a logistics carrier keep a driver's record of duty status?"
+
+La respuesta es la contestación del miembro con su citación renderizada como `[título de página §ancla]`, o
+`Not in my library.` si la biblioteca no tiene nada que decir — `real-none-s0` se entrenó para preferir eso antes que
+una adivinanza (§7.1 de [`GUIDE.md`](GUIDE.md), [`REAL4`](../../results/REAL4-refusal-20260930/BRIEF.md)).
+
+**La corrida en vivo está construida y probada offline, y su primer intento contra el servidor real quedó en pausa
+en vez de terminar.** `examples/library/live_library.py` manda las propias 52 preguntas de REAL4 por `openclaw agent
+--local`, una sesión fresca por cada una, y califica el propio registro de recorrido del endpoint como lo hizo
+REAL4 — valor y citación estricta. El driver y el camino de calificación están ejercitados contra un sustituto; el
+primer intento contra el servidor real de llama.cpp en la Mac del usuario no llegó a un resultado, porque otra sesión
+ya tenía el `llama-server` reteniendo la memoria de GPU que esta necesita
+([`LIVE-library`](../../results/LIVE-library-20261001/BRIEF.md)). **En pausa por un recurso, no refutada**: nada del
+endpoint, del parche o del driver falló — el próximo intento es liberar esa memoria primero.
 
 ## Cuánto vale esto, medido
 

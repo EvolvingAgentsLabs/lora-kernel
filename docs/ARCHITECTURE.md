@@ -120,6 +120,22 @@ the distributor's member is served its **own corpus prompt**, with no SCOPE line
 the corpus itself (below), not stated in the system prompt — and its writes run without a director's approval, a
 policy choice for that organisation's roles, not a gap in the approvals mechanism above.
 
+**What waits for a person survives a restart, and the process cannot reach outside its own hosts [ran] (#310).** With
+a state directory (`Gateway(state_dir=…)`, `--state-dir`) the approvals queue journals every step — `held`,
+`executing`, `approved` / `rejected` — to `approvals.jsonl`, and the handoffs to `handoffs.jsonl`; both are read back
+on start. `executing` is written before the tool runs, so a process that dies mid-charge comes back with that request
+`interrupted`: listed for the approver, never run again on its own, only rejectable — a held write executes at most
+once, with the requester's own scope. Beside it, `examples/common/egress.py` governs what the *process* can reach,
+not what the model decides: `socket.getaddrinfo` and `socket.socket.connect` refuse any host outside the member's
+server, the frontier's host (if configured) and loopback — the DNS lookup included, so a refused name is never even
+resolved — with `--open-egress` the escape hatch for development. The first thing it found was the gateway's own
+start-up asking the model hub over the network to load the tokenizer; the gateway now sets `HF_HUB_OFFLINE` and reads
+it from the local cache. **Headroom for the next step was checked before building it, not after:** every recorded
+turn across three domains and both serving engines replayed, 70 exposed a planted instruction in a tool result, 0
+acted on it — no unasked write, no reach into another organisation — so wrapping foreign material in its own fence,
+the proposed change, is not built; there is nothing on these suites for it to fix
+([`INJ0`](../results/INJ0-planted-headroom-20260930/BRIEF.md)).
+
 **The gateway carries a session's state, not its transcript — H1 has a result, read two ways [ran].** The naive fix
 for multi-turn is `Gateway(history=True)`: replay the conversation so a reference to an earlier turn ("move it to
 dock 5") has a referent. **[ran] MT0** (`results/MT0-multiturn-baseline-20260929`, 60 held-out distributor sessions,
@@ -361,6 +377,35 @@ reading *and* writing. Whether it beats carrying the conversation is H1 (§2 has
 record of that instrument error. Design and open decisions:
 [`review/harness-workflow-kv.md`](review/harness-workflow-kv.md); how every piece here connects end to end:
 [`MECHANISMS.md`](MECHANISMS.md).
+
+**The real-document path — every piece of §4 against a library nobody generated.** `memory/ingest.py` turns an
+official document (the eCFR's own XML, public domain) into the library's own shape mechanically, with no statement
+reworded: one SECTION becomes one page, one PARAGRAPH becomes one statement anchored by its own label path
+(`(b)(3)(ii)` → `§b-3-ii`), and a cross-reference inside the ingest becomes a link where the regulation put it — the
+content moves, the member does not. The first library built this way broke navigation: `distributor-wiki@v2`, trained
+only on a generated world, searched with queries memorised from that world and never opened a page, 0/25 multi-hop
+([`REAL0`](../results/REAL0-real-library-20260930/BRIEF.md)). Closing that gap took no retraining, only the runtime
+reading more of what it is given: `memory.runtime.FullText` (BM25 over a note's statements, not its title) as the
+entry on every shelf with the question's own words, a `fallback` to every shelf when a named one returns nothing, and
+`page_text` rendering a page's statements under their own anchors instead of a bare contents list — together closing
+most of the gap with no retraining, to 24/25
+([`REAL1`](../results/REAL1-entry-20260930/BRIEF.md)–[`REAL2`](../results/REAL2-page-text-20260930/BRIEF.md)). What
+needed a new member is the corpus: walks over real documents of another family, with the loss restricted to the
+model's own spans (`training/s4_train.py`'s span-masked loss — the whole-text loss, the recipe every earlier member
+used, taught a LoRA to write the regulation instead of answering it, 1/23) and, once refusal was added as 27
+unanswerable walks, the member the user accepted, `real-none-s0` — 18/23 (78%) on a fresh multi-hop set against the
+untrained base's 9/23, 15/16 refusals, 0 false refusals
+([`REAL3`](../results/REAL3-real-corpus-20260930/BRIEF.md), [`REAL4`](../results/REAL4-refusal-20260930/BRIEF.md)).
+That span-masked loss is not the new default for every member, checked on the tracker's: it regresses a short-result
+member 0:20 on one phrasing, so it stays the recipe where tool results are long and the whole-text loss stays where
+they are short ([`H5`](../results/H5-span-loss-tracker-20261001/BRIEF.md)). Served the way the product would serve
+it, `examples/library/serve.py` puts `real-none-s0` behind an OpenAI-compatible endpoint on llama.cpp, running
+exactly this runtime (full-text entry, fallback, page text) with egress closed to the model server
+([`LIVE-library`](../results/LIVE-library-20261001/BRIEF.md), §2's hardening above). **Open:** citation precision
+when a value repeats across a link — REAL5 found it (15/25 on a third, link-dense family, under the 70% bar), REAL6's
+one-hop fix left it unchanged (FALSIFIED), and REAL7's cross-link decoy walks are pre-registered and running
+([`REAL5`](../results/REAL5-third-family-20261001/BRIEF.md), [`REAL6`](../results/REAL6-citation-20261001/BRIEF.md),
+[`REAL7`](../results/REAL7-crosslink-20261001/BRIEF.md)).
 
 ## 5. The release contract
 

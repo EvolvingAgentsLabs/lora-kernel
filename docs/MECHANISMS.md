@@ -193,6 +193,18 @@ local replies on demo day; the user saw neither invented line. **[ran]** the sch
 scenes both carry a planted instruction in a real record (a delivery note, a maintenance description) and
 both are reported as data, never obeyed, in the scripted and the live runs alike.
 
+**Is there headroom for more than redaction — would a member ever act on a planted instruction?**
+**[ran] INJ0** (`results/INJ0-planted-headroom-20260930/BRIEF.md`), a zero-GPU replay over every recorded
+turn in `results/`: of **70** turns exposed to a planted instruction (the tracker's H1–H4, the
+distributor's M9/M10, the school's demos, both live runs), **0 acted** — no member ran a write or reached
+for another organisation's records because a tool result told it to; what the planted text reaches is the
+reply, and `redact` removes it there. The proposed change this headroom check was written to gate — wrap
+every piece of foreign material a member reads, with provenance and a byte cap, and teach it in the corpus
+— **is not built**: there is nothing on these suites for it to move. The caveat travels with the number:
+only the two planted phrasings the stores use, and whatever `_INJECTION` matches, are counted; a suite
+built to provoke obedience (varied phrasings, an in-tenant write the role may legitimately make) could
+still find headroom this one does not.
+
 ---
 
 ## 5. Approvals and holds
@@ -569,12 +581,23 @@ the whole walk, and a walk over real pages read whole is ~97 % page tokens, so t
 regulations instead of answering. **Span-masked loss** — training only the model's own tags and its cited
 answer, never the question or a runtime result — fixes it: 18/23 against the untrained base's 9/23 on a
 fresh multi-hop set, both seeds **[ran]** REAL3; the same recipe with 27 unanswerable walks added then
-teaches refusal, 15/16, at a headline cost whose reading the user has not yet settled **[ran]** REAL4.
+teaches refusal, 15/16 (5/6 adjacent, 0 false refusals of 36), at a headline cost that fails the brief's
+own bar by one row — a tie, 2 : 3, inside the member's own run-to-run spread; the user's decision
+(2026-10-01) reads the refusal as fixed and the cost as noise, and `real-none-s0` is the real-document
+member served next **[ran]** REAL4.
 The same member, unchanged, walks a third family chosen for the opposite property — dense links, 9.7
 per page against the second family's 22 total — at **15/25 (60 %)**, under the 70 % bar, but 7× the
 untrained base (13 : 0, $p = 0.00024$) and refusals 5/5; of the lost rows most cite a statement holding
 the same number as the one asked, not the wrong page — the strict citation on repeated values, not the
 walk, is the open item **[ran]** REAL5.
+
+**The repeated-value fix does not transfer by itself.** Training one-hop choices among statements that
+share a value — the shape REAL5's misses looked like from the answer side — left the citation unchanged,
+15/25 against 15/25, a tie **[ran]** REAL6: read where it happens, most of the remaining miscitations are
+*multi-hop* rows cited at the wrong end of a link (the member cites the page the walk is still on, not the
+one the chain ends on), a shape the one-hop corpus never contained. **REAL7** (pre-registered, running)
+trains exactly that shape — a decoy holding the same number at a link's start, the answer at its end,
+verdict on REAL5's twin-free headline (21 rows, baseline 13/21); no result at the time of writing.
 
 **Where results are short, the whole-text loss stays.** H5 asked whether the span-masked loss should
 become the recipe for every member, not only where tool results are long: trained byte for byte on the

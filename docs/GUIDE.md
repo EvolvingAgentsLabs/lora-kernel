@@ -447,6 +447,49 @@ without the note in front of it, the weights still answer with the *old* value o
 value it usually only reads — reading, not the library overruling memory, and a reminder that "the LoRA does not
 memorize facts" is a matter of degree measured here, not an architectural guarantee.
 
+**What a "real library" is, and why the generated one did not prepare the member for it.** Every library above — the
+wiki of W9, `distributor-wiki@v2` — was generated: a script writes the pages, so it can also write fresh constants
+into them every world, which is what forced the model to read rather than recite. A **real library** is the opposite
+kind of object: an actual regulation (the U.S. Code of Federal Regulations, as the government's own eCFR publishes
+it), turned into the same page-of-statements shape *mechanically* — one section per page, one paragraph per statement,
+cross-references becoming links exactly where the regulation put them (`memory/ingest.py`) — with no one rewording a
+sentence to make it easier to search. Put the generated world's member in front of it and the walk fails outright:
+`distributor-wiki@v2` scored **0 of 25** multi-hop questions, because it searched with the exact query shapes its
+generated world had trained into it and the real pages' titles share almost no words with a person's question
+([`REAL0`](../results/REAL0-real-library-20260930/BRIEF.md)). **It had learned the generator, not the library.**
+
+**How the member learned to walk real regulations instead.** Two kinds of fix, bought in that order because the
+cheaper one was tried first. The **runtime** fix costs no retraining: search the question's own words on every
+shelf rather than trust the model's learned query, fall back to every shelf when a named one returns nothing, and
+show a page's statements under their own anchors instead of a bare list of section numbers — together these closed
+most of the gap, to 24/25, with the same, untouched adapter
+([`REAL1`](../results/REAL1-entry-20260930/BRIEF.md)–[`REAL2`](../results/REAL2-page-text-20260930/BRIEF.md)). The
+**training** fix needed a new corpus: walks over real documents of a *different* regulatory family than any question
+is asked about, so the member cannot have memorised the answer, with the loss restricted to the model's own
+spans — a bug, not a design choice, made this the fix: training had always put the loss on the *whole* turn,
+including every page the runtime showed, and a real page read whole is page tokens almost entirely, so the first
+attempt at this simply learned to copy the regulation back, 1 of 23. Masking the loss to what the model itself
+writes gave **18 of 23 (78%)** on a fresh, harder question set, against the untrained base's 9 of 23
+([`REAL3`](../results/REAL3-real-corpus-20260930/BRIEF.md)).
+
+**What refusal means here, and why it had to be trained rather than assumed.** A member that always answers is wrong
+exactly when a library has no answer to give — and the member above had never been shown that case, so it answered
+every one of 4 unanswerable test questions anyway. The fix is the same shape as everything else in this design:
+not a rule bolted on top, but more of the corpus — 27 walks whose library genuinely holds no answer, ending in
+`Not in my library.` rather than a guess. Trained on them, the member refuses 15 of 16 held-out unanswerable
+questions while still answering 0 false refusals of 36 it can answer
+([`REAL4`](../results/REAL4-refusal-20260930/BRIEF.md)) — this member, **`real-none-s0`**, is the one the user
+accepted as the real-document member, and it is what `examples/library/serve.py` now serves
+([`LIVE-library`](../results/LIVE-library-20261001/BRIEF.md)). Carried to a third, link-denser family, the same
+member stays well above the untrained base (15/25 against 2/25) but falls short of the citation bar: most of what it
+gets wrong is citing a *different* statement that happens to hold the same number as the one asked — a problem the
+walk does not have and the citation does, open as REAL7 runs
+([`REAL5`](../results/REAL5-third-family-20261001/BRIEF.md)–[`REAL7`](../results/REAL7-crosslink-20261001/BRIEF.md)).
+And the fix that made real documents learnable — loss on the model's own spans only — is not free everywhere: tried
+on a short-result member (the team tracker, §7.4's domain), it *regresses* one phrasing 0 of 20 against the ordinary
+whole-text loss, so it is the recipe only where the pages being read are long, not a new default
+([`H5`](../results/H5-span-loss-tracker-20261001/BRIEF.md)).
+
 ### 7.2 The router and the frontier
 
 Deciding *which expert* handles a request is a classifier that also has to be able to say "none". We tried an n-gram
@@ -663,6 +706,10 @@ happened to us last week).
 | 2026-09-26 | the distributor with its own expert, 5/5 | M9 **[ran]** |
 | 2026-09-27 | **speculative decoding with an expert LoRA on the 12B, in a server** | F0 **[ran]** |
 | 2026-09-28 | the distributor served on the edge (llama.cpp, the user's own machine), abstaining correctly to the frontier, live through OpenClaw | LIVE-distributor, M10 **[ran]** |
+| 2026-09-29 | the team tracker running live through OpenClaw, multi-turn, keys carried across three sessions | LIVE-tracker, 14/14, dependent 8/8 **[ran]** |
+| 2026-09-30 | the memory's walk transfers to real documents of a family the member never trained on, once the loss is masked to its own spans | REAL3, 18/23 against the untrained base's 9/23 **[ran]** |
+| 2026-09-30 | the real-document member learns to refuse what its library cannot answer | REAL4, 15/16 refused, 0 false refusals of 36 **[ran]** |
+| 2026-09-30 | the gateway survives a restart without re-running a held charge, and its own process cannot reach outside its configured hosts | #310 **[ran]** |
 
 ---
 
@@ -684,9 +731,14 @@ happened to us last week).
 | H2's result (the harness on a five-turn domain) | **[ran] — the user's decision (2026-09-29): reading 1.** `results/H2-tracker-harness-20260929`: `harness` 146/160 dependent (91.3%), flat prompt over five turns; `base-history` 4/160, its own 44/60 first turns void it under the per-arm rule, so the pre-registered comparison is unreadable — as written **FALSIFIED**, kept on record with that and the anchor-check instrument error; the readable conditions are H2's verdict, `harness` **PASSED**, descriptive 142:0 alongside it | H3's result is below (next row) |
 | H3's result (a second tracker corpus, block-less now answered) | **[ran] — both bars PASSED.** `results/H3-tracker-corpus-v2-20260929`: `s1-harness` 158/160 dependent (98.8%) against `s0-harness` 147/160, paired 11:0, exact sign test $p = 0.00098$, flat — **H3a PASSED**; without the tool block, `s1-noblock` 156/160 (97.5%), every role above the bar (developer 76/80, lead 40/40, QA 40/40), about a third of the prompt tokens — **H3b PASSED**, closing the block-less-is-QA-only gap H2 left open | the live demo through OpenClaw (row below); the attribution arm (`s0-noblock` on the fresh suite) not bought, the cause already on disk |
 | a router inside the gateway's own path | not built — the role is still the route (§7.2) | build only once cross-role routing, not per-member abstention, is the open half |
-| the harness live through OpenClaw, multi-turn | not run — H1 and H2 both measured it on the server profile only | repeat LIVE-distributor's pattern (§7.3), now that both readings are chosen and H3 has a result |
+| the harness live through OpenClaw, multi-turn | **[ran]**: `tr-s1` block-less with the operational memory, llama.cpp on the user's own Mac, three sessions (lead, developer, QA) — 14/14 turns, dependent 8/8, ~370 prompt tokens a turn | — |
+| a command-like note obeyed, not just filed as a comment | **[ran] H4 — no headroom**: on 40 fresh command-shaped notes `tr-s1` writes all 40 as comments and runs none; every residual miss across H2–H4 has been one eval phrasing, not the harness | not chased — a third corpus redesign for one phrasing is not bought |
+| the span-masked loss as the default training recipe | **[ran] H5 — narrowed, not adopted everywhere**: it regresses a short-result member 0 of 20 on one phrasing against the whole-text loss; it stays the recipe only where results are long (real pages, REAL3) | `CLAUDE.md` §3's rule written to say so |
 | sessions longer than 2–3 turns | **[ran] H2, H3**: the team tracker (`examples/tracker/`) runs five-turn sessions and the flat-prompt property holds ($\bar p_5 \le 1.1\ \bar p_1$) on both corpora | reading chosen (row above); H3's second corpus is measured (row above) |
 | the global cache trained on | **[ran]**: built, tested, and trained inside two members' own corpora (`wf-s0`, H1; `tr-s0`, H2) | — |
+| real-document citation when a value repeats across a link | **[ran] REAL5 PARTIAL (15/25, under the 70% bar), REAL6 FALSIFIED (one-hop fix leaves it unchanged, 15/25)**: the misses are multi-hop rows cited at the wrong end of a link | REAL7, pre-registered and running — cross-link decoy walks, verdict on REAL5's twin-free headline |
+| the real-document member served as the product would serve it | **[ran, built]** `examples/library/serve.py` + an OpenClaw driver, tested offline; the first live run paused — another session's `llama-server` held the GPU memory it needs | free the GPU, run it (LIVE-library) |
+| a planted instruction in a tool result changing what a member does | **[ran] INJ0 — no headroom**: 70 exposed across every recorded turn, 0 acted on it | not built — nothing on these suites for it to fix |
 | real identity (Auth0), WhatsApp, installation | not built | after the above |
 
 ---

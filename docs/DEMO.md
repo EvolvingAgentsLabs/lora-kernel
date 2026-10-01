@@ -22,6 +22,17 @@ it ran live, 40 turns, all local **[ran]** P63. Since then both halves of the re
 run live: the school, 15/15 (`results/LIVE-school-openclaw-20260926/`), and the distributor, 6/6, on
 nothing rented — the E4B and its own LoRA served through llama.cpp on the machine running OpenClaw
 itself, one turn forwarded to Claude Haiku 4.5 for $0.0112 **[ran]** `results/LIVE-distributor-openclaw-20260928/`.
+A third organisation now runs the same way: the team tracker's block-less workflow harness, live on
+the user's own machine through OpenClaw, **14/14 turns, 8/8 dependent** **[ran]**
+`results/LIVE-tracker-openclaw-20260930/`.
+
+**Current status, 2026-10-01 — the real-library line.** Minute 4 below (atomic statements, cited
+answers) was measured on an invented wiki; whether the same memory carries to a real library ingested
+verbatim is now its own line of runs, `REAL0` through `REAL7` ([`MEMORY.md`](MEMORY.md) §1.6,
+[`FOUNDATIONS.md`](FOUNDATIONS.md) §8.10): a generated world does not transfer (0/25), real-document
+walks with the loss masked to the model's own spans do (18/23), and partially to a third, link-dense
+family (15/25) — none of this is in the five-minute walkthrough yet. A live endpoint for it
+(`examples/library/serve.py`) is built and tested offline, not yet run live.
 
 ## 1. The five minutes
 
