@@ -1,0 +1,34 @@
+{
+ "G1_eval_library_in_corpus": 0,
+ "G2_eval_question_in_corpus": 0,
+ "G3_not_verified": 0,
+ "G4_value_in_question": 0,
+ "G5_over_window": 0,
+ "G6_repeated_opening": 0,
+ "rows": 363,
+ "two_hop": 110,
+ "max_tokens": 3884,
+ "top_openings": [
+  [
+   "how often do we",
+   7
+  ],
+  [
+   "what's the deadline for",
+   7
+  ],
+  [
+   "how long does a",
+   7
+  ],
+  [
+   "how long do we",
+   7
+  ],
+  [
+   "how many days do",
+   7
+  ]
+ ],
+ "passed": true
+}
