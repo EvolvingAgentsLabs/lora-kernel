@@ -84,8 +84,13 @@ upload_big () {  # upload_big SESSION LOCAL REMOTE
   split -b 16m "$src" "$dir/part_"
   local n=0
   for f in "$dir"/part_*; do
-    tmo 600 colab upload -s "$S" "$f" "/content/_up_$(basename "$f")" >/dev/null 2>&1 || {
-      echo "    chunk $(basename "$f") did not upload"; rm -rf "$dir"; return 1; }
+    # a chunk is retried: on a slow, uneven uplink one chunk in a few times out where the next try passes [ran] 2026-10-01
+    local ok=""
+    for t in 1 2 3 4; do
+      tmo 600 colab upload -s "$S" "$f" "/content/_up_$(basename "$f")" >/dev/null 2>&1 && { ok=1; break; }
+      echo "    chunk $(basename "$f") try $t did not upload — retrying"; sleep 5
+    done
+    [ -n "$ok" ] || { echo "    chunk $(basename "$f") did not upload"; rm -rf "$dir"; return 1; }
     n=$((n + 1))
   done
   rm -rf "$dir"
