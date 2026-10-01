@@ -210,6 +210,19 @@ las escenas de demo de la escuela y de la distribuidora traen las dos una instru
 registro real (una nota de entrega, una descripción de mantenimiento) y las dos se reportan como dato,
 nunca obedecidas, tanto en las corridas guionadas como en las en vivo.
 
+**¿Hay margen para algo más que la redacción — alguna vez un miembro actuaría sobre una instrucción
+plantada?** **[ran] INJ0** (`results/INJ0-planted-headroom-20260930/BRIEF.md`), una repetición a GPU cero
+sobre cada turno registrado en `results/`: de **70** turnos expuestos a una instrucción plantada (H1–H4 del
+tracker, M9/M10 de la distribuidora, las demos de la escuela, las dos corridas en vivo), **0 actuaron** —
+ningún miembro hizo una escritura ni buscó los registros de otra organización porque un resultado de
+herramienta se lo pidiera; lo que la instrucción plantada alcanza es la respuesta, y `redact` la quita ahí.
+El cambio propuesto que este chequeo de margen fue escrito para filtrar — envolver cada pieza de material
+ajeno que un miembro lee, con procedencia y un tope de bytes, y enseñarlo en el corpus — **no está
+construido**: no hay nada en estas suites para que lo mueva. La salvedad viaja con el número: sólo se
+cuentan las dos frases plantadas que usan las tiendas, y lo que `_INJECTION` empareja; una suite construida
+para provocar obediencia (frases variadas, una escritura dentro del propio tenant que el rol podría hacer
+legítimamente) todavía podría encontrar margen que ésta no encuentra.
+
 ---
 
 ## 5. Aprobaciones y retenciones
@@ -622,12 +635,25 @@ página, así que el LoRA aprendió a escribir regulaciones en vez de contestar.
 tramo** — entrenar sólo los propios tags del modelo y su respuesta citada, nunca la pregunta ni un resultado
 del runtime — lo arregla: 18/23 contra el 9/23 del base sin entrenar sobre un set fresco de varios saltos,
 las dos semillas **[ran]** REAL3; la misma receta con 27 recorridos sin respuesta agregados enseña entonces
-la negativa, 15/16, a un costo en el titular cuya lectura el usuario todavía no saldó **[ran]** REAL4.
+la negativa, 15/16 (5/6 adyacentes, 0 negativas falsas de 36), a un costo en el titular que falla la
+propia barra del brief por una fila — un empate, 2 : 3, dentro de la propia dispersión de corrida a
+corrida del miembro; la decisión del usuario (2026-10-01) lee la negativa como corregida y el costo como
+ruido, y `real-none-s0` es el miembro de documento real que se sirve a continuación **[ran]** REAL4.
 El mismo miembro, sin cambios, recorre una tercera familia elegida por la propiedad opuesta — enlaces
 densos, 9,7 por página contra los 22 totales de la segunda familia — en **15/25 (60 %)**, bajo la barra
 de 70 %, pero a 7× el base sin entrenar (13 : 0, $p = 0{,}00024$) y negativas 5/5; de las filas perdidas,
 la mayoría cita un enunciado que tiene el mismo número que el preguntado, no la página equivocada — la
 citación estricta sobre valores repetidos, no el recorrido, es el ítem abierto **[ran]** REAL5.
+
+**El arreglo de valor repetido no transfiere por sí solo.** Entrenar elecciones de un salto entre
+enunciados que comparten un valor — la forma a la que se parecían las fallas de REAL5 vistas desde la
+respuesta — dejó la citación sin cambios, 15/25 contra 15/25, un empate **[ran]** REAL6: leído donde
+ocurre, la mayoría de las citas erróneas restantes son filas de **varios saltos** citadas en el extremo
+equivocado de un enlace (el miembro cita la página en la que el recorrido todavía está, no aquella en la
+que termina la cadena), una forma que el corpus de un salto nunca contuvo. **REAL7** (pre-registrado, en
+curso) entrena exactamente esa forma — un señuelo con el mismo número al inicio de un enlace, la
+respuesta en su extremo —, veredicto sobre el titular sin gemelos de REAL5 (21 filas, base 13/21); sin
+resultado al momento de escribir esto.
 
 **Donde los resultados son cortos, la pérdida sobre el texto entero se queda.** H5 preguntó si la pérdida
 con máscara de tramo debía volverse la receta de todo miembro, no sólo donde los resultados de

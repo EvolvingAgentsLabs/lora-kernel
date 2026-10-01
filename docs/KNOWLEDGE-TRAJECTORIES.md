@@ -42,7 +42,22 @@ naive `history=True` baseline (43/54 dependent turns); H1 scored the harness its
 `harness` 53/54, `harness-noblock` 0/60, read per arm as PASSED and FALSIFIED, with the run void as
 written and the user's decision (2026-09-29) choosing the per-arm reading, the as-written VOID kept as
 the record of that instrument error; see [`MEMORY.md`](MEMORY.md) §11 and
-[`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §8 for the full result.
+[`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §8 for the full result. **The
+workflow harness also serves live**, block-less, on the user's own Mac through a real agent runtime
+(OpenClaw, llama.cpp): 14/14 turns, 8/8 dependent **[ran]** `results/LIVE-tracker-openclaw-20260930/BRIEF.md`.
+
+**Current status, 2026-10-01 — the real-library line (REAL0→REAL5).** §9 below already names the open
+question this design leaves unanswered — *"that anything measured on a generated suite transfers to a
+real one"* — and it is now measured, on the same atomic-statement library this document specifies. A
+trajectory member trained on a generated world does not enter a real library at all (0/25, never opens
+a page, **REAL0 [ran]**); the runtime's own fixes — full-text entry on every shelf, pages opened with
+their statements (§3.4's verbs, unchanged) — repair reaching the page, not the citation on it
+(**REAL1–REAL2 [ran]**); trained instead on walks over real documents of another family, with the loss
+restricted to the model's own spans (§5's corpus rules, extended by one: mask the tool results), the
+policy transfers — 18/23 against the untrained base's 9/23 (**REAL3 [ran]**), refusal is then trainable
+the same way (**REAL4 [ran]**), and the transfer holds, partially, on a third family with denser links
+(15/25, under the citation bar, **REAL5 [ran]**). See [`MEMORY.md`](MEMORY.md) §1.6 and §8.10 of
+[`FOUNDATIONS.md`](FOUNDATIONS.md) for the full line, including what came after (REAL6, REAL7).
 
 ## 2. What is already measured, and must constrain the design
 

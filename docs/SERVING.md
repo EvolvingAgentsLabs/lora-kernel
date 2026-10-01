@@ -71,6 +71,46 @@ past that many closing tags the request sends one generic stop, `"</"`, and the 
 above rebuilds the specific tag from what the text was left inside of. One function, both engines, for
 opposite reasons.
 
+## The library endpoint: the real-document member as an OpenAI-compatible server
+
+`examples/library/serve.py` serves `real-none-s0` — the member accepted after REAL4
+([`ARCHITECTURE.md`](ARCHITECTURE.md) §4) — the way an agent runtime would actually talk to it: one process, one
+library, REAL4's own runtime (the question's full text as the first search on every shelf, a fallback to every
+shelf, pages opened with their statements). It is the `edge` profile above plus the memory's runtime in front of it,
+not a third thing.
+
+    llama-server -m gemma-4-E4B-it-Q8_0.gguf --lora lora-real-none-s0-f16.gguf --port 8793 -c 16384 -ngl 99
+    python -m examples.library.serve --library knowledge/logistics-regs --upstream http://127.0.0.1:8793 --port 8766
+
+**On a 16 GB Mac, size the context down and clear the GPU first.** `-c 16384` is what REAL4's own questions were
+measured against, but a 16 GB machine does not have 16,384 tokens of context to spare *and* the rest of the stack:
+use **`-c 12288 -b 512`**, and make sure nothing else is holding GPU memory before starting `llama-server` — the
+first live attempt here paused for exactly this reason, another session's `llama-server` already holding the memory
+this one needed ([`LIVE-library`](../results/LIVE-library-20261001/BRIEF.md)). Q8_0, not Q4_0, for the same reason
+as every other member on `edge` — the prompt-cache order-id flip above.
+
+**The egress rule is the same as the gateway's (§6 of [`OPENCLAW.md`](OPENCLAW.md), [`MECHANISMS.md`](MECHANISMS.md)
+§6): closed by default.** `serve.py` installs `examples.common.egress` before anything else loads, allowed only to
+the `llama-server` upstream and loopback, with `HF_HUB_OFFLINE`/`TRANSFORMERS_OFFLINE` set so loading the tokenizer
+never reaches the model hub — the same hardening the gateway got from #310, applied to this second front door.
+
+**Pointing OpenClaw at it is a provider, not a patched agent.** The endpoint writes its own OpenClaw patch on start
+(`--openclaw-patch`, default `~/.config/lora-kernel/openclaw/library-reader.json5`):
+
+    {
+      models: { providers: { library: { baseUrl: "http://127.0.0.1:{port}/v1", api: "openai-completions",
+        auth: "api-key", apiKey: "local", models: [ { id: "auto", name: "regulations library — real-none-s0" } ] } } },
+      agents: { defaults: { model: "library/auto" } }
+    }
+
+One request in, one walk out: the reply carries the answer with its citation rendered as `[page title §anchor]`, or
+`Not in my library.`, and the response's own `x_walk` field carries the whole walk — ids shown, statements opened —
+so a driver can grade the citation exactly as the measurement did, rather than re-parsing the reply text.
+`examples/library/live_library.py` is that driver: it sends REAL4's 52 questions through `openclaw agent --local`,
+one fresh session each, and grades the endpoint's own walk record with REAL4's grader. **Built and tested offline;
+the first run against the real server paused before it produced a result** — see
+[`OPENCLAW.md`](OPENCLAW.md) for how it is pointed at a running OpenClaw instance.
+
 ## What live serving costs: order beats size, and two adapters are not twice the cost
 
 Two findings from the same run price the engine itself, on `server` and `edge` alike, because both
@@ -134,9 +174,10 @@ in every role, an even block-less third of each role), beats `tr-s0` 158/160 aga
 held-out suite (paired 11:0, $p = 0.00098$, flat), and without the tool block holds 156/160 across every
 role at about a third of the prompt tokens — the compact-context member now works
 ([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
-**The harness has not been run
-live through OpenClaw**; see [`OPENCLAW.md`](OPENCLAW.md) for the multi-turn story and
-`docs/review/harness-workflow-kv.md` §§8–9 for the full results and the chosen readings.
+**The harness has since run live through OpenClaw**: `tr-s1` block-less, on `edge` (llama.cpp on the user's own
+Mac), over three sessions (lead, developer, QA) — 14 of 14 turns, dependent 8 of 8
+([`LIVE-tracker`](../results/LIVE-tracker-openclaw-20260930/BRIEF.md)); see [`OPENCLAW.md`](OPENCLAW.md) for the
+multi-turn story and `docs/review/harness-workflow-kv.md` §§8–9 for the full results and the chosen readings.
 
 ## The base has to be one vLLM actually applies adapters to — check, do not assume
 

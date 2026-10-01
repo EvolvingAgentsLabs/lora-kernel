@@ -25,6 +25,18 @@ corrieron en vivo las dos mitades del diagrama de referencia: la escuela, 15/15
 (`results/LIVE-school-openclaw-20260926/`), y la distribuidora, 6/6, sin nada alquilado — el E4B y su
 propio LoRA servidos por llama.cpp en la misma máquina que corre OpenClaw, un turno reenviado a Claude
 Haiku 4.5 por $0,0112 **[ran]** `results/LIVE-distributor-openclaw-20260928/`.
+Una tercera organización corre ahora de la misma manera: el arnés de flujo de trabajo sin bloque del
+tracker de equipo, en vivo en la propia máquina del usuario por OpenClaw, **14/14 turnos, 8/8
+dependientes** **[ran]** `results/LIVE-tracker-openclaw-20260930/`.
+
+**Estado actual, 2026-10-01 — la línea de biblioteca real.** El minuto 4 de abajo (enunciados atómicos,
+respuestas citadas) se midió sobre una wiki inventada; si esa misma memoria se traslada a una biblioteca
+real ingerida textualmente es hoy su propia línea de corridas, `REAL0` a `REAL7` ([`MEMORY.md`](MEMORY.md)
+§1.6, [`FOUNDATIONS.md`](FOUNDATIONS.md) §8.10): un mundo generado no transfiere (0/25), los recorridos de
+documentos reales con la pérdida enmascarada sobre los propios tramos del modelo sí (18/23), y en parte a
+una tercera familia densa en enlaces (15/25) — nada de esto está todavía en el recorrido de cinco minutos.
+Un endpoint en vivo para ella (`examples/library/serve.py`) está construido y probado offline, todavía no
+corrido en vivo.
 
 ## 1. Los cinco minutos
 

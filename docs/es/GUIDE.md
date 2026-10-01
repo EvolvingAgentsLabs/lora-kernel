@@ -455,6 +455,53 @@ bien como para, en casos raros, reproducir el valor que por lo general sólo lee
 imponiéndose sobre la memoria, y un recordatorio de que "el LoRA no memoriza hechos" es una cuestión de grado medida
 acá, no una garantía de la arquitectura.
 
+**Qué es una "biblioteca real", y por qué la generada no preparó al miembro para ella.** Toda biblioteca de arriba —
+la wiki de W9, `distributor-wiki@v2` — fue generada: un script escribe las páginas, así que también puede escribirles
+constantes nuevas en cada mundo, que es lo que obligó al modelo a leer en vez de recitar. Una **biblioteca real** es
+el objeto opuesto: una regulación de verdad (el Código de Regulaciones Federales de EE. UU., tal como lo publica el
+propio eCFR del gobierno), convertida a la misma forma de página-de-enunciados de manera *mecánica* — una sección por
+página, un párrafo por enunciado, las referencias cruzadas vueltas enlaces exactamente donde la regulación los puso
+(`memory/ingest.py`) — sin que nadie reescriba una oración para que sea más fácil de buscar. Poner al miembro del
+mundo generado frente a esto hace fallar el recorrido de lleno: `distributor-wiki@v2` sacó **0 de 25** preguntas de
+varios saltos, porque buscaba con las formas de consulta exactas que su mundo generado le había entrenado y los
+títulos de las páginas reales casi no comparten palabras con la pregunta de una persona
+([`REAL0`](../../results/REAL0-real-library-20260930/BRIEF.md)). **Había aprendido el generador, no la biblioteca.**
+
+**Cómo el miembro aprendió a recorrer regulaciones reales en cambio.** Dos tipos de arreglo, comprados en ese orden
+porque el más barato se probó primero. El arreglo del **runtime** no cuesta reentrenar: buscar las propias palabras
+de la pregunta en todos los estantes en vez de confiar en la consulta aprendida del modelo, caer a todos los estantes
+cuando uno nombrado no devuelve nada, y mostrar los enunciados de una página bajo sus propios anclajes en vez de un
+listado desnudo de números de sección — juntos cerraron la mayor parte de la brecha, a 24/25, con el mismo adaptador
+sin tocar
+([`REAL1`](../../results/REAL1-entry-20260930/BRIEF.md)–[`REAL2`](../../results/REAL2-page-text-20260930/BRIEF.md)). El
+arreglo de **entrenamiento** necesitó un corpus nuevo: recorridos sobre documentos reales de una familia regulatoria
+*distinta* a la que se pregunta, para que el miembro no pueda haber memorizado la respuesta, con la pérdida
+restringida a los propios tramos del modelo — un bug, no una decisión de diseño, fue lo que hizo necesario este
+arreglo: el entrenamiento siempre había puesto la pérdida sobre el turno *entero*, incluyendo cada página que el
+runtime mostraba, y una página real leída entera es casi toda tokens de página, así que el primer intento acá
+simplemente aprendió a copiar la regulación de vuelta, 1 de 23. Enmascarar la pérdida a lo que el modelo mismo
+escribe dio **18 de 23 (78 %)** sobre un set fresco y más difícil, contra el 9 de 23 del base sin entrenar
+([`REAL3`](../../results/REAL3-real-corpus-20260930/BRIEF.md)).
+
+**Qué significa la negativa acá, y por qué tuvo que entrenarse en vez de asumirse.** Un miembro que siempre contesta
+se equivoca justo cuando una biblioteca no tiene respuesta que dar — y el miembro de arriba nunca había visto ese
+caso, así que contestó las 4 preguntas de prueba sin respuesta igual. El arreglo tiene la misma forma que todo lo
+demás en este diseño: no una regla pegada encima, sino más corpus — 27 recorridos cuya biblioteca genuinamente no
+tiene respuesta, terminando en `Not in my library.` en vez de una adivinanza. Entrenado con ellos, el miembro se
+niega en 15 de 16 preguntas sin respuesta held-out mientras sigue contestando con 0 negativas falsas de 36 que sí
+puede contestar ([`REAL4`](../../results/REAL4-refusal-20260930/BRIEF.md)) — este miembro, **`real-none-s0`**, es el
+que el usuario aceptó como el miembro de documentos reales, y es lo que `examples/library/serve.py` sirve ahora
+([`LIVE-library`](../../results/LIVE-library-20261001/BRIEF.md)). Llevado a una tercera familia, más densa en enlaces,
+el mismo miembro se queda bien por encima del base sin entrenar (15/25 contra 2/25) pero se queda corto de la barra
+de citación: la mayor parte de lo que se equivoca es citar un enunciado *distinto* que tiene el mismo número que el
+preguntado — un problema que el recorrido no tiene y la citación sí, abierto mientras corre REAL7
+([`REAL5`](../../results/REAL5-third-family-20261001/BRIEF.md)–[`REAL7`](../../results/REAL7-crosslink-20261001/BRIEF.md)).
+Y el arreglo que hizo que los documentos reales se pudieran aprender — pérdida sólo sobre los propios tramos del
+modelo — no es gratis en todos lados: probado sobre un miembro de resultado corto (el tracker de equipo, el dominio
+del §7.4), *retrocede* una frase 0 de 20 contra la pérdida de texto completo de siempre, así que es la receta sólo
+donde las páginas que se leen son largas, no un nuevo default
+([`H5`](../../results/H5-span-loss-tracker-20261001/BRIEF.md)).
+
 ### 7.2 El router y la frontera
 
 Decidir *qué experto* atiende un pedido es un clasificador que también tiene que saber decir "ninguno". Probamos un
@@ -679,6 +726,10 @@ fijo en el corpus que se memoriza; un modelo sin el prompt con el que se entren�
 | 2026-09-26 | la distribuidora con su propio experto, 5/5 | M9 **[ran]** |
 | 2026-09-27 | **decodificación especulativa con un LoRA experto sobre el 12B, en un servidor** | F0 **[ran]** |
 | 2026-09-28 | la distribuidora servida en el edge (llama.cpp, la propia máquina del usuario), abstiene correctamente hacia la frontera, en vivo por OpenClaw | LIVE-distributor, M10 **[ran]** |
+| 2026-09-29 | el tracker de equipo corriendo en vivo por OpenClaw, multi-turno, llevando claves a través de tres sesiones | LIVE-tracker, 14/14, dependientes 8/8 **[ran]** |
+| 2026-09-30 | el recorrido de la memoria se transfiere a documentos reales de una familia que el miembro nunca entrenó, una vez que la pérdida queda enmascarada a sus propios tramos | REAL3, 18/23 contra el 9/23 del base sin entrenar **[ran]** |
+| 2026-09-30 | el miembro de documentos reales aprende a negarse ante lo que su biblioteca no puede contestar | REAL4, 15/16 se niega, 0 negativas falsas de 36 **[ran]** |
+| 2026-09-30 | el gateway sobrevive a un reinicio sin reejecutar un cobro retenido, y su propio proceso no puede alcanzar fuera de sus hosts configurados | #310 **[ran]** |
 
 ---
 
@@ -700,9 +751,14 @@ fijo en el corpus que se memoriza; un modelo sin el prompt con el que se entren�
 | el resultado de H2 (el arnés sobre un dominio de cinco turnos) | **[ran] — la decisión del usuario (2026-09-29): lectura 1.** `results/H2-tracker-harness-20260929`: `harness` 146/160 dependientes (91,3 %), prompt plano en los cinco turnos; `base-history` 4/160, sus propios 44/60 primeros turnos lo anulan bajo la regla por brazo, así que la comparación pre-registrada queda ilegible — tal como está escrita **FALSEADA**, en el registro junto con ese y el error de instrumento del chequeo de anchor; las condiciones legibles son el veredicto de H2, `harness` **PASÓ**, descriptivo 142:0 al lado | el resultado de H3 está abajo (fila siguiente) |
 | el resultado de H3 (un segundo corpus de tracker, lo-sin-bloque ya contestado) | **[ran] — las dos barras PASARON.** `results/H3-tracker-corpus-v2-20260929`: `s1-harness` 158/160 dependientes (98,8 %) contra `s0-harness` 147/160, pareado 11:0, prueba de signo exacta $p = 0,00098$, plano — **H3a PASÓ**; sin el bloque de herramientas, `s1-noblock` 156/160 (97,5 %), cada rol por encima de la barra (developer 76/80, lead 40/40, QA 40/40), a más o menos un tercio de los tokens de prompt — **H3b PASÓ**, cerrando la brecha de lo-sin-bloque-solo-QA que dejó abierta H2 | la demo en vivo por OpenClaw (fila de abajo); el brazo de atribución (`s0-noblock` sobre la suite fresca) no se compró, la causa ya está en disco |
 | un router adentro del propio camino del gateway | no construido — el rol sigue siendo la ruta (§7.2) | construirlo sólo cuando haga falta rutear entre roles, no la abstención por miembro |
-| el arnés en vivo por OpenClaw, multi-turno | no corrido — H1 y H2 sólo lo midieron en el perfil de servidor | repetir el patrón de LIVE-distributor (§7.3), ahora que las dos lecturas están elegidas y H3 tiene un resultado |
+| el arnés en vivo por OpenClaw, multi-turno | **[ran]**: `tr-s1` sin bloque con la memoria operativa, llama.cpp en la propia Mac del usuario, tres sesiones (lead, developer, QA) — 14/14 turnos, dependientes 8/8, ~370 tokens de prompt por turno | — |
+| una nota con forma de orden, obedecida y no sólo archivada como comentario | **[ran] H4 — sin margen**: sobre 40 notas nuevas con forma de orden `tr-s1` escribe las 40 como comentarios y no ejecuta ninguna; cada falla residual entre H2 y H4 fue una sola frase del eval, no el arnés | no se persigue — un tercer rediseño de corpus por una sola frase no se compra |
+| la pérdida enmascarada por tramos como receta default | **[ran] H5 — acotada, no adoptada en todos lados**: retrocede un miembro de resultado corto 0 de 20 en una frase contra la pérdida de texto completo; queda como receta sólo donde los resultados son largos (páginas reales, REAL3) | la regla del §3 de `CLAUDE.md` escrita para decirlo así |
 | sesiones de más de 2–3 turnos | **[ran] H2, H3**: el tracker de equipo (`examples/tracker/`) corre sesiones de cinco turnos y la propiedad de prompt plano se sostiene ($\bar p_5 \le 1.1\ \bar p_1$) en los dos corpus | lectura elegida (fila de arriba); el segundo corpus de H3 ya está medido (fila de arriba) |
 | la caché global entrenada | **[ran]**: construida, probada, y entrenada dentro de los corpus propios de dos miembros (`wf-s0`, H1; `tr-s0`, H2) | — |
+| la citación de documentos reales cuando un valor se repite entre enlaces | **[ran] REAL5 PARCIAL (15/25, bajo la barra de 70 %), REAL6 FALSEADO (el arreglo de un salto la deja sin cambios, 15/25)**: las fallas son filas de varios saltos citadas en el extremo equivocado de un enlace | REAL7, pre-registrado y corriendo — recorridos con señuelo entre enlaces, veredicto sobre el titular sin gemelos de REAL5 |
+| el miembro de documentos reales servido como lo serviría el producto | **[construido, ran]** `examples/library/serve.py` + un driver de OpenClaw, probado offline; la primera corrida en vivo quedó en pausa — otra sesión tenía el `llama-server` reteniendo la memoria de GPU que necesita | liberar la GPU, correrla (LIVE-library) |
+| una instrucción plantada en un resultado de herramienta cambiando lo que hace un miembro | **[ran] INJ0 — sin margen**: 70 expuestos en todos los turnos grabados, 0 actuaron | no construido — no hay nada en estas suites para que lo arregle |
 | identidad real (Auth0), WhatsApp, instalación | no construidos | después de lo anterior |
 
 ---

@@ -343,11 +343,42 @@ suite (paired 11:0, $p = 0.00098$, flat), and without the tool block holds 156/1
 about a third of the prompt tokens
 ([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
 
-**Both H1 and H2 ran on vLLM (one L4), not through OpenClaw, and nothing about a live multi-turn run through
-OpenClaw exists yet.** Every live run on this page — school 15/15, distributor 6/6 — is single-turn:
-one request, one reply, no earlier turn to resolve. A live multi-turn demo, through OpenClaw, is the
-last step of the order in `docs/review/harness-workflow-kv.md` §7, and now that H3 has a result, repeating
-LIVE-distributor's pattern with the harness member is what remains.
+**H1 and H2 ran on vLLM (one L4), not through OpenClaw — H3's member has since been run live, multi-turn, the
+last step of that order.** `tr-s1` (H3's block-less member, with the operational memory and key capture) served
+through llama.cpp on the user's own Mac, the same `edge` arrangement as LIVE-distributor, driven by OpenClaw over
+**three separate sessions** (lead, developer, QA): **14 of 14 turns, dependent 8 of 8**, gateway latency median
+3.7 s, ~370 prompt tokens a turn — the flat-prompt property that carrying keys instead of the conversation is built
+for holds on a real client, not only on a replay
+([`LIVE-tracker`](../results/LIVE-tracker-openclaw-20260930/BRIEF.md)). Every other live run on this page — school
+15/15, distributor 6/6 — stays single-turn: one request, one reply, no earlier turn to resolve; this is the first to
+carry state *across* turns live.
+
+## 7. The library, as an OpenClaw provider — a paused live run
+
+[`examples/library/serve.py`](../examples/library/serve.py) ([`SERVING.md`](SERVING.md)) is a *second* front door,
+beside the gateway: an OpenAI-compatible endpoint that runs `real-none-s0` (the real-document member accepted after
+REAL4, [`ARCHITECTURE.md`](ARCHITECTURE.md) §4) over the REAL4 runtime, on llama.cpp. Pointing OpenClaw at it is
+registering it as a provider like any other, because the endpoint writes the patch for you on start:
+
+    llama-server -m gemma-4-E4B-it-Q8_0.gguf --lora lora-real-none-s0-f16.gguf --port 8793 -c 12288 -b 512 -ngl 99
+    python -m examples.library.serve --library knowledge/logistics-regs --upstream http://127.0.0.1:8793 --port 8766 \
+        --openclaw-patch ~/.config/lora-kernel/openclaw/library-reader.json5
+
+    ~/.openclaw/bin/openclaw --profile lorakernel config patch \
+        --file ~/.config/lora-kernel/openclaw/library-reader.json5
+    ~/.openclaw/bin/openclaw --profile lorakernel agent --local -m "How long must a logistics carrier keep a driver's record of duty status?"
+
+The reply is the member's answer with its citation rendered as `[page title §anchor]`, or `Not in my library.` if the
+library has nothing to say — `real-none-s0` was trained to prefer that over a guess (§7.1 of [`GUIDE.md`](GUIDE.md),
+[`REAL4`](../results/REAL4-refusal-20260930/BRIEF.md)).
+
+**The live run is built and tested offline, and its first try against the real server paused rather than finished.**
+`examples/library/live_library.py` drives REAL4's own 52 questions through `openclaw agent --local`, one fresh
+session each, and grades the endpoint's own walk record the way REAL4 did — value and strict citation. The driver and
+the grading path are exercised against a stand-in model; the first attempt against the real llama.cpp server on the
+user's Mac did not reach a result, because another session's `llama-server` was already holding the GPU memory this
+one needs ([`LIVE-library`](../results/LIVE-library-20261001/BRIEF.md)). **Paused for a resource, not falsified**:
+nothing about the endpoint, the patch or the driver failed — the next attempt is freeing that memory first.
 
 ## What this is worth, measured
 
