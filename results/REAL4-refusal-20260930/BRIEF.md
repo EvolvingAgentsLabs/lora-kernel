@@ -61,3 +61,7 @@ for both members, 0 errors. `real4.json`.
   these rows in two sessions — the cost bar was set tighter than vLLM's own run-to-run spread on this member. The reading
   that the numbers support is stated, not adopted: refusal is fixed and the headline cost is indistinguishable from noise.
   Which reading stands is the user's decision, as H1's and H2's were.
+
+**The user's decision, 2026-10-01: the refusal is fixed and REAL4 stands.** Refusals 15/16 with no false refusal, and the
+headline cost a tie inside vLLM's spread; "FALSIFIED as written" (the cost bar, by one row) stays on record.
+**`real-none-s0` is the real-document member** — the one served next (LIVE-library).
