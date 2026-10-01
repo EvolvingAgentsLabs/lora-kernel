@@ -1,0 +1,29 @@
+=== session 1 of 2 · srv194821 · L4
+    boot clone: rc=0 2e3ad25 REAL7 pre-registered: cross-link decoy walks — the answer at the end of a link, the same number at its start
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    2e3ad25 REAL7 pre-registered: cross-link decoy walks — the answer at the end of a link, the same number at its start | 0.30.0
+    carried the adapters in (16 chunks)
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/real7-s0 withlib-s1=adapters/real7-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/real7-s0 withlib-s1=adapters/real7-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/real7-s0 withlib-s1=adapters/real7-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/real7-s0 withlib-s1=adapters/real7-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/real7-s0 withlib-s1=adapters/real7-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/real7-s0 withlib-s1=adapters/real7-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/real7-s0 withlib-s1=adapters/real7-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/real7-s0 withlib-s1=adapters/real7-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/real7-s0 withlib-s1=adapters/real7-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/real7-s0 withlib-s1=adapters/real7-s1
+    [pool] G1 withlib-s0: applied
+    [pool] G1 withlib-s1: applied
+    [wiki] withlib-s0+page: 40 to run, 0 resumed
+    [wiki] withlib-s0+page 30/40 credit 19 value-right 24 errors 0 41s
+    [wiki] withlib-s0+page 40/40 credit 28 value-right 33 errors 0 52s
+    [wiki] withlib-s1+page: 40 to run, 0 resumed
+    [wiki] withlib-s1+page 30/40 credit 22 value-right 28 errors 0 49s
+    [wiki] withlib-s1+page 40/40 credit 30 value-right 37 errors 0 62s
+    [wiki] NOTHING SCORED
+    the runner wrote its result — done
+=== already decided — no further sessions
+exit 0

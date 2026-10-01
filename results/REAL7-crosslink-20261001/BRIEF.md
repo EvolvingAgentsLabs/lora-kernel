@@ -33,6 +33,22 @@ cannot separate twins by reading. **The verdict is read on the twin-free headlin
 - **FALSIFIED** — otherwise, the failing clause named. **Caveat said now:** REAL5's failures have been read twice; the
   corpus is built on training documents only, by a model that never saw REAL5.
 
-## Result
+## Result [ran] — FALSIFIED: the citation is unchanged; the corpus line on this question stops here
 
-*(written after S)*
+T on an A100 (418 rows, span-masked, 81 steps); S1 on one L4, G1 applied for both, 0 errors. `real7_real5.json`. **The REAL4
+guard was not bought** (no effect on REAL5, as the brief set it).
+
+| on REAL5 | twin-free headline (21) | headline (25) | value-right | same-value miscitations | refusals (5) | all (40) |
+|---|---|---|---|---|---|---|
+| `real-none-s0` (previous) | **13** | 15 | 20 | 2 | 5 | 28 |
+| `real-link-s0` | **13** | 16 | 22 | 2 | 5 | 30 |
+
+Paired on the twin-free headline a tie, **4 : 4**, $p = 1.0$ — under the 15/21 bar. The baseline reproduced REAL5 exactly
+(28/40, 15/25). The value is right more often (22 against 20) and the citation is not.
+
+**Two corpus changes aimed at this citation have now changed nothing** (REAL6: one-hop repeated values; REAL7: decoys across
+a link). By the rule on counting redesigns, a third corpus redesign on the same question set would be looking for the
+result; this line stops. What stands: `real-none-s0` with the runtime cites the supporting statement on 13/21 twin-free
+multi-hop rows of a third family (value right 20/25), refuses 5/5 — the measured level. What might move it is not another
+corpus on these rows: a different mechanism (a citation check in the runtime that rejects a citation whose page the walk
+did not end on), measured on a **fresh** set.

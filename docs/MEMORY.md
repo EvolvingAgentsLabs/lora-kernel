@@ -23,7 +23,10 @@ partly: against EPA 40 CFR 112's dense links the member still beats the base 7×
 is sometimes cited to the wrong one (**REAL5 [ran], PARTIAL**). Training one-hop repeated-value choices does not
 fix that: the remaining misses are multi-hop rows cited at the wrong end of a link, a shape that corpus never
 contained (**REAL6 [ran], FALSIFIED**). Training exactly that shape — a decoy holding the same number at a link's
-start, the answer at its end — is **REAL7, running** (pre-registered, verdict on REAL5's twin-free headline).
+start, the answer at its end — changed nothing either: **REAL7 [ran], FALSIFIED** — `real-link-s0` ties
+`real-none-s0` 13/21 on the twin-free headline (4:4, under the ≥ 15/21 bar); by the rule on counting redesigns
+this corpus line on the citation stops here, and what might move it next is a runtime check on the citation
+itself, not another corpus.
 
 Five pieces:
 

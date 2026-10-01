@@ -650,10 +650,14 @@ enunciados que comparten un valor — la forma a la que se parecían las fallas 
 respuesta — dejó la citación sin cambios, 15/25 contra 15/25, un empate **[ran]** REAL6: leído donde
 ocurre, la mayoría de las citas erróneas restantes son filas de **varios saltos** citadas en el extremo
 equivocado de un enlace (el miembro cita la página en la que el recorrido todavía está, no aquella en la
-que termina la cadena), una forma que el corpus de un salto nunca contuvo. **REAL7** (pre-registrado, en
-curso) entrena exactamente esa forma — un señuelo con el mismo número al inicio de un enlace, la
-respuesta en su extremo —, veredicto sobre el titular sin gemelos de REAL5 (21 filas, base 13/21); sin
-resultado al momento de escribir esto.
+que termina la cadena), una forma que el corpus de un salto nunca contuvo. **REAL7 [ran]** entrenó
+exactamente esa forma — un señuelo con el mismo número al inicio de un enlace, la respuesta en su
+extremo — y tampoco cambió nada: sobre el titular sin gemelos de REAL5, `real-link-s0` empata con
+`real-none-s0` 13/21 (4:4 pareado, $p=1,0$), bajo la barra de ≥ 15/21, aunque el valor es correcto más
+seguido (22 contra 20) — **FALSEADO**. Dos cambios de corpus apuntados a esta citación (REAL6, REAL7)
+ya no cambiaron nada; por la regla de contar rediseños esta línea de corpus sobre la citación se
+detiene acá — lo que podría moverla no es otro corpus sino un chequeo del runtime que rechace una cita
+cuya página el recorrido no terminó.
 
 **Donde los resultados son cortos, la pérdida sobre el texto entero se queda.** H5 preguntó si la pérdida
 con máscara de tramo debía volverse la receta de todo miembro, no sólo donde los resultados de
