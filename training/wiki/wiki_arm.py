@@ -429,7 +429,14 @@ def main() -> int:
             rec["stopped"] = "the base never came up"
         else:
             for x in members:
-                rec.setdefault("G1", {})[x] = identity(a.base, x, tok)
+                g = identity(a.base, x, tok)
+                if not g["applied"]:
+                    # THE DOMAIN PROBES, UNDER THE SAME RULE (2 of 3 differ, none empty) — M9's redesign [ran]: a LoRA trained
+                    # on one narrow shape can leave off-domain text almost untouched (REAL3's `real-walks-s0`, 54 steps,
+                    # changed 1 of 3 generic probes). A member vLLM did not apply serves the base's text on these too.
+                    dom = identity(a.base, x, tok, probes=[prompt.user_text_wiki(r["question"]) for r in rows[:3]])
+                    g = {"generic": g, "domain": dom, "applied": dom["applied"]}
+                rec.setdefault("G1", {})[x] = g
                 print(f"[pool] G1 {x}: {'applied' if rec['G1'][x]['applied'] else 'NOT APPLIED'}", flush=True)
             save()
             if any(not rec["G1"][x]["applied"] for x in members):

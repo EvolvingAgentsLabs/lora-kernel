@@ -76,6 +76,15 @@ answers and reference answers.
 One training (A100, one session), one scoring (L4). No change to the corpus, the gate, the questions or the bars after
 training starts. A second seed is bought only if M3 WORKS (W5e: two draws of one recipe can disagree).
 
+## Run log
+
+- **T [ran]:** `real-walks-s0` trained on an A100 (284 rows, 3 epochs, 54 steps, window 4,096); adapter home.
+- **S1 attempt 1 — stopped by G1, nothing scored.** vLLM's identity probe (three generic prompts) saw the adapter change 1
+  of 3 — a narrow, short training leaves off-domain text almost untouched. **Instrument redesign, before any score:** the
+  G1 falls back to three domain probes (the evaluation rows' own questions, as the member is served) under the same rule
+  — M9's redesign of 2026-09-26 for the same reason. A member vLLM did not apply serves the base's text on those too.
+  S2 was stopped before it booted. This is the first redesign of REAL3's instrument.
+
 ## Result
 
 *(written after S)*

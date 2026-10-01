@@ -1,0 +1,50 @@
+=== session 1 of 1 · srv215153 · A100
+    boot clone: rc=0 3a95913 REAL3 pre-registered: a trajectory corpus over real documents, a family the evaluation never sees (M3)
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 3a95913 REAL3 pre-registered: a trajectory corpus over real documents, a family the evaluation never sees (M3)
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    3a95913 REAL3 pre-registered: a trajectory corpus over real documents, a family the evaluation never sees (M3) | 0.30.0
+    this module trains its own adapter — nothing to carry in
+    runner started (launch 1)
+    [train] adapters/real-walks-s0 from 284 examples
+    W1001 00:58:39.039000 5654 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W1001 00:58:39.079000 5654 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [train] adapters/real-walks-s0 from 284 examples
+    W1001 00:58:39.039000 5654 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W1001 00:58:39.079000 5654 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    Dropping fully masked examples from train dataset: 100%|██████████| 284/284 [00:00<00:00, 611.19 examples/s]
+    Dropping fully masked examples from train dataset: 100%|██████████| 284/284 [00:00<00:00, 609.66 examples/s]
+      0%|          | 0/54 [00:00<?, ?it/s]
+     31%|███▏      | 17/54 [06:06<12:51, 20.84s/it]
+     33%|███▎      | 18/54 [06:21<11:24, 19.01s/it]
+     35%|███▌      | 19/54 [06:43<11:42, 20.08s/it]
+     37%|███▋      | 20/54 [07:02<11:09, 19.69s/it]
+     39%|███▉      | 21/54 [07:23<11:06, 20.20s/it]
+     41%|████      | 22/54 [07:45<11:00, 20.63s/it]
+     41%|████      | 22/54 [07:45<11:00, 20.63s/it]
+     43%|████▎     | 23/54 [08:07<10:54, 21.12s/it]
+     44%|████▍     | 24/54 [08:27<10:22, 20.75s/it]
+     44%|████▍     | 24/54 [08:27<10:22, 20.75s/it]
+     46%|████▋     | 25/54 [08:51<10:23, 21.51s/it]
+     48%|████▊     | 26/54 [09:17<10:41, 22.90s/it]
+     50%|█████     | 27/54 [09:34<09:31, 21.16s/it]
+     52%|█████▏    | 28/54 [09:55<09:07, 21.07s/it]
+     54%|█████▎    | 29/54 [10:18<09:04, 21.79s/it]
+     56%|█████▌    | 30/54 [10:43<09:04, 22.70s/it]
+     56%|█████▌    | 30/54 [10:43<09:04, 22.70s/it]
+     57%|█████▋    | 31/54 [11:01<08:13, 21.47s/it]
+     59%|█████▉    | 32/54 [11:22<07:45, 21.14s/it]
+     61%|██████    | 33/54 [11:43<07:24, 21.16s/it]
+     63%|██████▎   | 34/54 [12:02<06:51, 20.57s/it]
+     63%|██████▎   | 34/54 [12:02<06:51, 20.57s/it]
+     65%|██████▍   | 35/54 [12:24<06:39, 21.03s/it]
+     67%|██████▋   | 36/54 [12:38<05:38, 18.79s/it]
+     69%|██████▊   | 37/54 [12:59<05:30, 19.47s/it]
+     70%|███████   | 38/54 [13:20<05:19, 19.98s/it]
+     72%|███████▏  | 39/54 [13:40<04:57, 19.85s/it]
+    adapters home: 1 packed
+    the runner wrote its result — done
+exit 0
