@@ -80,7 +80,8 @@ open_session () {  # open_session SECONDS GPU NAME
 upload_big () {  # upload_big SESSION LOCAL REMOTE
   local S="$1" src="$2" dst="$3"
   local dir; dir=$(mktemp -d)
-  split -b 48m "$src" "$dir/part_"
+  # 16 MB, not 48: on a slow uplink (~0.2 MB/s, 2026-10-01) a 48 MB chunk ran past Colab's request timeout (408) [ran]
+  split -b 16m "$src" "$dir/part_"
   local n=0
   for f in "$dir"/part_*; do
     tmo 600 colab upload -s "$S" "$f" "/content/_up_$(basename "$f")" >/dev/null 2>&1 || {
