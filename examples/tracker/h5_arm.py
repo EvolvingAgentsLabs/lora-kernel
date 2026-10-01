@@ -16,7 +16,9 @@ from examples.tracker.session_arm import summarise
 DATA = Path("examples/tracker/data_sessions_h4")
 MEMBERS = {"tr-s1": "adapters/tracker-wf-s1", "tr-s3": "adapters/tracker-wf-s3"}
 ARM_SPEC = {"s1-noblock": ("tr-s1", {"harness": True, "tool_block": False}),
-            "s3-noblock": ("tr-s3", {"harness": True, "tool_block": False})}
+            "s3-noblock": ("tr-s3", {"harness": True, "tool_block": False}),
+            # H5's attribution arms (after its VOID): the same members WITH the tool block
+            "s1-harness": ("tr-s1", {"harness": True}), "s3-harness": ("tr-s3", {"harness": True})}
 TIE_BAND = 3
 
 
