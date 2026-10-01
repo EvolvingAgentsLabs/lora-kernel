@@ -1,0 +1,5 @@
+=== session 1 of 2 · srv180852 · L4
+NO SESSION: the backend gave no L4 (rc=1) — quota or entitlement, not an outage; nothing was started. A T4 is not a substitute.
+ReadTimeout: HTTPSConnectionPool(host='colab.research.google.com', port=443): 
+Read timed out. (read timeout=120)
+exit 3

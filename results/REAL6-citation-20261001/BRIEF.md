@@ -33,6 +33,28 @@ value), not those rows. A fresh set would be the cleaner verdict; REAL5's is use
 - **NO COST** — on REAL4's set, paired against `real-none-s0`: headline loses ≤ 2, refusals ≥ 13/16.
 - **PASSED** = both; else FALSIFIED with the part that failed named.
 
-## Result
+## Result [ran] — FALSIFIED: the citation is unchanged (and why)
 
-*(written after S)*
+T on an A100 (363 rows, span-masked); S1 on an L4 after one refused card (Colab had no L4; retried 10 min later), G1 applied,
+0 errors. `real6_real5.json`. **S2 (the REAL4 guard) was stopped before it booted: a flat verdict makes the guard moot.**
+
+| on REAL5 (40 CFR 112) | headline (25) | value-right | cited another statement holding the value | refusals (5) | all (40) |
+|---|---|---|---|---|---|
+| `real-none-s0` (previous) | 15 | 19 | 2 | 5 | 28 |
+| `real-cite-s0` | 15 | 21 | 3 | 4 | 25 |
+
+Paired on the headline a tie, 1 : 1. **CITATION FIXED fails on every clause** (15 < 18; wrong same-value citations 3, not
+fewer; refusals 4/5 holds).
+
+**Read where it happens — the corpus trained the wrong shape.** Of the same-value miscitations (both members), most are
+**multi-hop rows cited at the wrong end of the chain**: the question leads from one page through a link to another, both
+pages hold the number, and the member cites the statement on the page it is already on (the middle of the walk) instead of
+the one the chain ends on (112.6 ↔ 112.3, 112.4 ↔ 112.1, 112.3 ↔ 112.5). The 50 repeated-value walks were all **one-hop**
+— the choice among same-value statements on one page or the next search — not the choice of which end of a link to cite.
+**One row is an instrument limit:** 112.7§d-1 and 112.9§d-3-i are the same sentence word for word ("An oil spill
+contingency plan following the provisions of part 109 of this chapter"); no reading separates them, so the strict
+citation measures the path there, not the statement.
+
+**What it points to, not bought here:** repeated values placed **across a link** in two-hop training walks — the answer at
+the chain's end, a decoy with the same number at its start — and a gate that drops evaluation rows whose supporting
+statement has a word-for-word twin elsewhere in the library.

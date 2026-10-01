@@ -1,0 +1,35 @@
+=== session 1 of 2 · srv182053 · L4
+    boot clone: rc=0 6f3d438 REAL6 pre-registered: repeated-value questions teach the citation (REAL5 lost 3 of 5 to a statement holding the same number)
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 6f3d438 REAL6 pre-registered: repeated-value questions teach the citation (REAL5 lost 3 of 5 to a statement holding the same number)
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    6f3d438 REAL6 pre-registered: repeated-value questions teach the citation (REAL5 lost 3 of 5 to a statement holding the same number) | 0.30.0
+    chunk part_an try 1 did not upload — retrying
+    carried the adapters in (16 chunks)
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/real6-s0 withlib-s1=adapters/real6-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/real6-s0 withlib-s1=adapters/real6-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/real6-s0 withlib-s1=adapters/real6-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/real6-s0 withlib-s1=adapters/real6-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/real6-s0 withlib-s1=adapters/real6-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/real6-s0 withlib-s1=adapters/real6-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/real6-s0 withlib-s1=adapters/real6-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/real6-s0 withlib-s1=adapters/real6-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/real6-s0 withlib-s1=adapters/real6-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/real6-s0 withlib-s1=adapters/real6-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/real6-s0 withlib-s1=adapters/real6-s1
+    [pool] G1 withlib-s0: applied
+    [wiki] withlib-s0+page 10/40 credit 8 value-right 8 errors 0 14s
+    [wiki] withlib-s0+page 20/40 credit 12 value-right 15 errors 0 27s
+    [wiki] withlib-s0+page 30/40 credit 19 value-right 23 errors 0 40s
+    [wiki] withlib-s1+page 10/40 credit 6 value-right 8 errors 0 16s
+    [wiki] withlib-s1+page 20/40 credit 11 value-right 16 errors 0 30s
+    [wiki] withlib-s1+page 30/40 credit 17 value-right 25 errors 0 40s
+    [wiki] withlib-s1+page 30/40 credit 17 value-right 25 errors 0 40s
+    [wiki] withlib-s1+page 40/40 credit 25 value-right 33 errors 0 57s
+    [wiki] NOTHING SCORED
+    the runner wrote its result — done
