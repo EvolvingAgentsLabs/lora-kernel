@@ -96,7 +96,7 @@ training starts. A second seed is bought only if M3 WORKS (W5e: two draws of one
   tags and its cited answer; system, question and every runtime result masked. Measured on the same fresh set. This is a
   change to the treatment after a failed result, recorded as such: attempt 1's number stands for its recipe.
 
-## Result [ran] — M3 WORKS (seed 0; the second seed is owed)
+## Result [ran] — M3 WORKS, both seeds
 
 `real-spans-s0` (span-masked loss: 18,241 trained tokens of 552,495 — 3.3 % of each walk is the model's), A100, 54 steps;
 scored on one L4, G1 applied (domain probes), 0 errors. `real3_fresh.json`.
@@ -122,5 +122,9 @@ scored on one L4, G1 applied (domain probes), 0 errors. `real3_fresh.json`.
 multi-hop against the base's 7/25 (14 : 3, $p = 0.0127$), one-hop 10/11, refusals 0/4. On the rows where this line began,
 the member went from `distributor-wiki@v2`'s 0/25 (REAL0) to 18/25 — against a reading ceiling of 22/25.
 
-**Owed, in order:** the second seed of this recipe (W5e: two draws can disagree); then the refusal fix — unanswerable
+**The second seed [ran]** (`real-spans-s1`, same corpus and recipe, `real3_fresh_s1.json`): **17/23** headline (74 %),
+against the base **9 : 1**, $p = 0.0215$; against seed 0 a tie (2 : 3). Both draws pass the bar — the effect is the
+recipe's, not one draw's. Refusals 0/4 again: the regression is the corpus's, as diagnosed.
+
+**Owed:** ~~the second seed~~ (done, above); the refusal fix — unanswerable
 questions in the corpus — measured as its own change.
