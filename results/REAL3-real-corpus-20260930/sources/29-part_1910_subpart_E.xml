@@ -1,0 +1,224 @@
+<?xml version="1.0"?>
+<DIV6 N="E" TYPE="SUBPART" hierarchy_metadata="{&amp;quot;path&amp;quot;:&amp;quot;/on/_SUBSTITUTE_DATE_/title-29/part-1910/subpart-E&amp;quot;,&amp;quot;citation&amp;quot;:&amp;quot;29 CFR Part 1910 Subpart E&amp;quot;}">
+<HEAD>Subpart E&#x2014;Exit Routes and Emergency Planning</HEAD>
+<AUTH>
+<HED>Authority:</HED><PSPACE>29 U.S.C. 653, 655, 657; Secretary of Labor's Order No. 12-71 (36 FR 8754), 8-76 (41 FR 25059), 9-83 (48 FR 35736), 1-90 (55 FR 9033), 6-96 (62 FR 111), 3-2000 (65 FR 50017), 5-2002 (67 FR 65008), 5-2007 (72 FR 31160), or 4-2010 (75 FR 55355), as applicable; and 29 CFR 1911.
+</PSPACE></AUTH>
+<DIV8 N="1910.33" TYPE="SECTION" hierarchy_metadata="{&quot;path&quot;:&quot;/on/_SUBSTITUTE_DATE_/title-29/section-1910.33&quot;,&quot;citation&quot;:&quot;29 CFR 1910.33&quot;}">
+<HEAD>&#xA7; 1910.33 Table of contents.</HEAD>
+<P>This section lists the sections and paragraph headings contained in &#xA7;&#xA7; 1910.34 through 1910.39.</P>
+<EXTRACT>
+<HD2>&#xA7; 1910.34 Coverage and definitions.
+</HD2>
+<FP-2>(a) Every employer is covered.
+</FP-2>
+<FP-2>(b) Exit routes are covered.
+</FP-2>
+<FP-2>(c) Definitions.
+</FP-2>
+<HD2>&#xA7; 1910.35 Compliance with Alternate Exit Route Codes.
+</HD2>
+<HD2>&#xA7; 1910.36 Design and construction requirements for exit routes.
+</HD2>
+<FP-2>(a) Basic requirements.
+</FP-2>
+<FP-2>(b) The number of exit routes must be adequate.
+</FP-2>
+<FP-2>(c) Exit discharge.
+</FP-2>
+<FP-2>(d) An exit door must be unlocked.
+</FP-2>
+<FP-2>(e) A side-hinged exit door must be used.
+</FP-2>
+<FP-2>(f) The capacity of an exit route must be adequate.
+</FP-2>
+<FP-2>(g) An exit route must meet minimum height and width requirements.
+</FP-2>
+<FP-2>(h) An outdoor exit route is permitted.
+</FP-2>
+<HD2>&#xA7; 1910.37 Maintenance, safeguards, and operational features for exit routes.
+</HD2>
+<FP-2>(a) The danger to employees must be minimized.
+</FP-2>
+<FP-2>(b) Lighting and marking must be adequate and appropriate.
+</FP-2>
+<FP-2>(c) The fire retardant properties of paints or solutions must be maintained.
+</FP-2>
+<FP-2>(d) Exit routes must be maintained during construction, repairs, or alterations.
+</FP-2>
+<FP-2>(e) An employee alarm system must be operable.
+</FP-2>
+<HD2>&#xA7; 1910.38 Emergency action plans.
+</HD2>
+<FP-2>(a) Application.
+</FP-2>
+<FP-2>(b) Written and oral emergency action plans.
+</FP-2>
+<FP-2>(c) Minimum elements of an emergency action plan.
+</FP-2>
+<FP-2>(d) Employee alarm system.
+</FP-2>
+<FP-2>(e) Training.
+</FP-2>
+<FP-2>(f) Review of emergency action plan.
+</FP-2>
+<HD2>&#xA7; 1910.39 Fire prevention plans.
+</HD2>
+<FP-2>(a) Application.
+</FP-2>
+<FP-2>(b) Written and oral fire prevention plans.
+</FP-2>
+<FP-2>(c) Minimum elements of a fire prevention plan.
+</FP-2>
+<FP-2>(d) Employee information.</FP-2></EXTRACT>
+<CITA TYPE="N">[67 FR 67961, Nov. 7, 2002, as amended at 76 FR 33606, June 8, 2011]
+</CITA>
+</DIV8>
+
+<DIV8 N="1910.34" TYPE="SECTION" hierarchy_metadata="{&quot;path&quot;:&quot;/on/_SUBSTITUTE_DATE_/title-29/section-1910.34&quot;,&quot;citation&quot;:&quot;29 CFR 1910.34&quot;}">
+<HEAD>&#xA7; 1910.34 Coverage and definitions.</HEAD>
+<P>(a) <I>Every employer is covered.</I> Sections 1910.34 through 1910.39 apply to workplaces in general industry except mobile workplaces such as vehicles or vessels.</P>
+<P>(b) <I>Exits routes are covered.</I> The rules in &#xA7;&#xA7; 1910.34 through 1910.39 cover the minimum requirements for exit routes that employers must provide in their workplace so that employees may evacuate the workplace safely during an emergency. Sections 1910.34 through 1910.39 also cover the minimum requirements for emergency action plans and fire prevention plans.</P>
+<P>(c) <I>Definitions.</I></P>
+<P><I>Electroluminescent</I> means a light-emitting capacitor. Alternating current excites phosphor atoms when placed between the electrically conductive surfaces to produce light. This light source is typically contained inside the device.</P>
+<P><I>Exit</I> means that portion of an exit route that is generally separated from other areas to provide a protected way of travel to the exit discharge. An example of an exit is a two-hour fire resistance-rated enclosed stairway that leads from the fifth floor of an office building to the outside of the building.</P>
+<P><I>Exit access</I> means that portion of an exit route that leads to an exit. An example of an exit access is a corridor on the fifth floor of an office building that leads to a two-hour fire resistance-rated enclosed stairway (the Exit).</P>
+<P><I>Exit discharge</I> means the part of the exit route that leads directly outside or to a street, walkway, refuge area, public way, or open space with access to the outside. An example of an exit discharge is a door at the bottom of a two-hour fire resistance-rated enclosed stairway that discharges to a place of safety outside the building.</P>
+<P><I>Exit route</I> means a continuous and unobstructed path of exit travel from any point within a workplace to a place of safety (including refuge areas). An exit route consists of three parts: The exit access; the exit; and, the exit discharge. (An exit route includes all vertical and horizontal areas along the route.)</P>
+<P><I>High hazard area</I> means an area inside a workplace in which operations include high hazard materials, processes, or contents.</P>
+<P><I>Occupant load</I> means the total number of persons that may occupy a workplace or portion of a workplace at any one time. The occupant load of a workplace is calculated by dividing the gross floor area of the workplace or portion of the workplace by the occupant load factor for that particular type of workplace occupancy. Information regarding the &#x201C;Occupant load&#x201D; is located in NFPA 101-2009, Life Safety Code, and in IFC-2009, International Fire Code (incorporated by reference, see &#xA7; 1910.6).</P>
+<P><I>Refuge area</I> means either:</P>
+<P>(1) A space along an exit route that is protected from the effects of fire by separation from other spaces within the building by a barrier with at least a one-hour fire resistance-rating; or</P>
+<P>(2) A floor with at least two spaces, separated from each other by smoke-resistant partitions, in a building protected throughout by an automatic sprinkler system that complies with &#xA7; 1910.159 of this part.</P>
+<P><I>Self-luminous</I> means a light source that is illuminated by a self-contained power source (<I>e.g.,</I> tritium) and that operates independently from external power sources. Batteries are not acceptable self-contained power sources. The light source is typically contained inside the device.</P>
+<CITA TYPE="N">[67 FR 67961, Nov. 7, 2002, as amended at 76 FR 33606, June 8, 2011]
+</CITA>
+</DIV8>
+
+<DIV8 N="1910.35" TYPE="SECTION" hierarchy_metadata="{&quot;path&quot;:&quot;/on/_SUBSTITUTE_DATE_/title-29/section-1910.35&quot;,&quot;citation&quot;:&quot;29 CFR 1910.35&quot;}">
+<HEAD>&#xA7; 1910.35 Compliance with alternate exit-route codes.</HEAD>
+<P>OSHA will deem an employer demonstrating compliance with the exit-route provisions of NFPA 101, Life Safety Code, 2009 edition, or the exit-route provisions of the International Fire Code, 2009 edition, to be in compliance with the corresponding requirements in &#xA7;&#xA7; 1910.34, 1910.36, and 1910.37 (incorporated by reference, see section &#xA7; 1910.6).</P>
+<CITA TYPE="N">[76 FR 33606, June 8, 2011]
+</CITA>
+</DIV8>
+
+<DIV8 N="1910.36" TYPE="SECTION" hierarchy_metadata="{&quot;path&quot;:&quot;/on/_SUBSTITUTE_DATE_/title-29/section-1910.36&quot;,&quot;citation&quot;:&quot;29 CFR 1910.36&quot;}">
+<HEAD>&#xA7; 1910.36 Design and construction requirements for exit routes.</HEAD>
+<P>(a) <I>Basic requirements.</I> Exit routes must meet the following design and construction requirements:</P>
+<P>(1) <I>An exit route must be permanent.</I> Each exit route must be a permanent part of the workplace.</P>
+<P>(2) <I>An exit must be separated by fire resistant materials.</I> Construction materials used to separate an exit from other parts of the workplace must have a one-hour fire resistance-rating if the exit connects three or fewer stories and a two-hour fire resistance-rating if the exit connects four or more stories.</P>
+<P>(3) <I>Openings into an exit must be limited.</I> An exit is permitted to have only those openings necessary to allow access to the exit from occupied areas of the workplace, or to the exit discharge. An opening into an exit must be protected by a self-closing fire door that remains closed or automatically closes in an emergency upon the sounding of a fire alarm or employee alarm system. Each fire door, including its frame and hardware, must be listed or approved by a nationally recognized testing laboratory. Section 1910.155(c)(3)(iv)(A) of this part defines &#x201C;listed&#x201D; and &#xA7; 1910.7 of this part defines a &#x201C;nationally recognized testing laboratory.&#x201D;</P>
+<P>(b) <I>The number of exit routes must be adequate</I>&#x2014;(1) <I>Two exit routes.</I> At least two exit routes must be available in a workplace to permit prompt evacuation of employees and other building occupants during an emergency, except as allowed in paragraph (b)(3) of this section. The exit routes must be located as far away as practical from each other so that if one exit route is blocked by fire or smoke, employees can evacuate using the second exit route.</P>
+<P>(2) <I>More than two exit routes.</I> More than two exit routes must be available in a workplace if the number of employees, the size of the building, its occupancy, or the arrangement of the workplace is such that all employees would not be able to evacuate safely during an emergency.</P>
+<P>(3) <I>A single exit route.</I> A single exit route is permitted where the number of employees, the size of the building, its occupancy, or the arrangement of the workplace is such that all employees would be able to evacuate safely during an emergency.</P>
+<NOTE>
+<HED> Note to paragraph (<E T="01">b</E>) of this section:</HED>
+<P>For assistance in determining the number of exit routes necessary for your workplace, consult NFPA 101-2009, Life Safety Code, or IFC-2009, International Fire Code (incorporated by reference, see &#xA7; 1910.6).</P></NOTE>
+<P>(c) <I>Exit discharge.</I> (1) Each exit discharge must lead directly outside or to a street, walkway, refuge area, public way, or open space with access to the outside.</P>
+<P>(2) The street, walkway, refuge area, public way, or open space to which an exit discharge leads must be large enough to accommodate the building occupants likely to use the exit route.</P>
+<P>(3) Exit stairs that continue beyond the level on which the exit discharge is located must be interrupted at that level by doors, partitions, or other effective means that clearly indicate the direction of travel leading to the exit discharge.</P>
+<P>(d) <I>An exit door must be unlocked.</I> (1) Employees must be able to open an exit route door from the inside at all times without keys, tools, or special knowledge. A device such as a panic bar that locks only from the outside is permitted on exit discharge doors.</P>
+<P>(2) Exit route doors must be free of any device or alarm that could restrict emergency use of the exit route if the device or alarm fails.</P>
+<P>(3) An exit route door may be locked from the inside only in mental, penal, or correctional facilities and then only if supervisory personnel are continuously on duty and the employer has a plan to remove occupants from the facility during an emergency.</P>
+<P>(e) <I>A side-hinged exit door must be used.</I> (1) A side-hinged door must be used to connect any room to an exit route.</P>
+<P>(2) The door that connects any room to an exit route must swing out in the direction of exit travel if the room is designed to be occupied by more than 50 people or if the room is a high hazard area (<I>i.e.,</I> contains contents that are likely to burn with extreme rapidity or explode).</P>
+<P>(f) <I>The capacity of an exit route must be adequate.</I> (1) Exit routes must support the maximum permitted occupant load for each floor served.</P>
+<P>(2) The capacity of an exit route may not decrease in the direction of exit route travel to the exit discharge.</P>
+<NOTE>
+<HED> Note to paragraph (<E T="01">f</E>) of this section:</HED>
+<P>Information regarding the &#x201C;Occupant load&#x201D; is located in NFPA 101-2009, Life Safety Code, and in IFC-2009, International Fire Code (incorporated by reference, see &#xA7; 1910.6).</P></NOTE>
+<P>(g) <I>An exit route must meet minimum height and width requirements.</I> (1) The ceiling of an exit route must be at least seven feet six inches (2.3 m) high. Any projection from the ceiling must not reach a point less than six feet eight inches (2.0 m) from the floor.</P>
+<P>(2) An exit access must be at least 28 inches (71.1 cm) wide at all points. Where there is only one exit access leading to an exit or exit discharge, the width of the exit and exit discharge must be at least equal to the width of the exit access.</P>
+<P>(3) The width of an exit route must be sufficient to accommodate the maximum permitted occupant load of each floor served by the exit route.</P>
+<P>(4) Objects that project into the exit route must not reduce the width of the exit route to less than the minimum width requirements for exit routes.</P>
+<P>(h) <I>An outdoor exit route is permitted.</I> Each outdoor exit route must meet the minimum height and width requirements for indoor exit routes and must also meet the following requirements:</P>
+<P>(1) The outdoor exit route must have guardrails to protect unenclosed sides if a fall hazard exists;</P>
+<P>(2) The outdoor exit route must be covered if snow or ice is likely to accumulate along the route, unless the employer can demonstrate that any snow or ice accumulation will be removed before it presents a slipping hazard;</P>
+<P>(3) The outdoor exit route must be reasonably straight and have smooth, solid, substantially level walkways; and</P>
+<P>(4) The outdoor exit route must not have a dead-end that is longer than 20 feet (6.2 m).</P>
+<CITA TYPE="N">[67 FR 67961, Nov. 7, 2002, as amended at 76 FR 33606, June 8, 2011]
+</CITA>
+</DIV8>
+
+<DIV8 N="1910.37" TYPE="SECTION" hierarchy_metadata="{&quot;path&quot;:&quot;/on/_SUBSTITUTE_DATE_/title-29/section-1910.37&quot;,&quot;citation&quot;:&quot;29 CFR 1910.37&quot;}">
+<HEAD>&#xA7; 1910.37 Maintenance, safeguards, and operational features for exit routes.</HEAD>
+<P>(a) <I>The danger to employees must be minimized.</I> (1) Exit routes must be kept free of explosive or highly flammable furnishings or other decorations.</P>
+<P>(2) Exit routes must be arranged so that employees will not have to travel toward a high hazard area, unless the path of travel is effectively shielded from the high hazard area by suitable partitions or other physical barriers.</P>
+<P>(3) Exit routes must be free and unobstructed. No materials or equipment may be placed, either permanently or temporarily, within the exit route. The exit access must not go through a room that can be locked, such as a bathroom, to reach an exit or exit discharge, nor may it lead into a dead-end corridor. Stairs or a ramp must be provided where the exit route is not substantially level.</P>
+<P>(4) Safeguards designed to protect employees during an emergency (<I>e.g.,</I> sprinkler systems, alarm systems, fire doors, exit lighting) must be in proper working order at all times.</P>
+<P>(b) <I>Lighting and marking must be adequate and appropriate.</I> (1) Each exit route must be adequately lighted so that an employee with normal vision can see along the exit route.</P>
+<P>(2) Each exit must be clearly visible and marked by a sign reading &#x201C;Exit.&#x201D;</P>
+<P>(3) Each exit route door must be free of decorations or signs that obscure the visibility of the exit route door.</P>
+<P>(4) If the direction of travel to the exit or exit discharge is not immediately apparent, signs must be posted along the exit access indicating the direction of travel to the nearest exit and exit discharge. Additionally, the line-of-sight to an exit sign must clearly be visible at all times.</P>
+<P>(5) Each doorway or passage along an exit access that could be mistaken for an exit must be marked &#x201C;Not an Exit&#x201D; or similar designation, or be identified by a sign indicating its actual use (<I>e.g.,</I> closet).</P>
+<P>(6) Each exit sign must be illuminated to a surface value of at least five foot-candles (54 lux) by a reliable light source and be distinctive in color. Self-luminous or electroluminescent signs that have a minimum luminance surface value of at least .06 footlamberts (0.21 cd/m
+<SU>2</SU>) are permitted.</P>
+<P>(7) Each exit sign must have the word &#x201C;Exit&#x201D; in plainly legible letters not less than six inches (15.2 cm) high, with the principal strokes of the letters in the word &#x201C;Exit&#x201D; not less than three-fourths of an inch (1.9 cm) wide.</P>
+<P>(c) <I>The fire retardant properties of paints or solutions must be maintained.</I> Fire retardant paints or solutions must be renewed as often as necessary to maintain their fire retardant properties.</P>
+<P>(d) <I>Exit routes must be maintained during construction, repairs, or alterations.</I> (1) During new construction, employees must not occupy a workplace until the exit routes required by this subpart are completed and ready for employee use for the portion of the workplace they occupy.</P>
+<P>(2) During repairs or alterations, employees must not occupy a workplace unless the exit routes required by this subpart are available and existing fire protections are maintained, or until alternate fire protection is furnished that provides an equivalent level of safety.</P>
+<P>(3) Employees must not be exposed to hazards of flammable or explosive substances or equipment used during construction, repairs, or alterations, that are beyond the normal permissible conditions in the workplace, or that would impede exiting the workplace.</P>
+<P>(e) <I>An employee alarm system must be operable.</I> Employers must install and maintain an operable employee alarm system that has a distinctive signal to warn employees of fire or other emergencies, unless employees can promptly see or smell a fire or other hazard in time to provide adequate warning to them. The employee alarm system must comply with &#xA7; 1910.165.</P>
+<CITA TYPE="N">[67 FR 67961, Nov. 7, 2002]
+</CITA>
+</DIV8>
+
+<DIV8 N="1910.38" TYPE="SECTION" hierarchy_metadata="{&quot;path&quot;:&quot;/on/_SUBSTITUTE_DATE_/title-29/section-1910.38&quot;,&quot;citation&quot;:&quot;29 CFR 1910.38&quot;}">
+<HEAD>&#xA7; 1910.38 Emergency action plans.</HEAD>
+<P>(a) <I>Application.</I> An employer must have an emergency action plan whenever an OSHA standard in this part requires one. The requirements in this section apply to each such emergency action plan.</P>
+<P>(b) <I>Written and oral emergency action plans.</I> An emergency action plan must be in writing, kept in the workplace, and available to employees for review. However, an employer with 10 or fewer employees may communicate the plan orally to employees.</P>
+<P>(c) <I>Minimum elements of an emergency action plan.</I> An emergency action plan must include at a minimum:</P>
+<P>(1) Procedures for reporting a fire or other emergency;</P>
+<P>(2) Procedures for emergency evacuation, including type of evacuation and exit route assignments;</P>
+<P>(3) Procedures to be followed by employees who remain to operate critical plant operations before they evacuate;</P>
+<P>(4) Procedures to account for all employees after evacuation;</P>
+<P>(5) Procedures to be followed by employees performing rescue or medical duties; and</P>
+<P>(6) The name or job title of every employee who may be contacted by employees who need more information about the plan or an explanation of their duties under the plan.</P>
+<P>(d) <I>Employee alarm system.</I> An employer must have and maintain an employee alarm system. The employee alarm system must use a distinctive signal for each purpose and comply with the requirements in &#xA7; 1910.165.</P>
+<P>(e) <I>Training.</I> An employer must designate and train employees to assist in a safe and orderly evacuation of other employees.</P>
+<P>(f) <I>Review of emergency action plan.</I> An employer must review the emergency action plan with each employee covered by the plan:</P>
+<P>(1) When the plan is developed or the employee is assigned initially to a job;</P>
+<P>(2) When the employee's responsibilities under the plan change; and</P>
+<P>(3) When the plan is changed.</P>
+<CITA TYPE="N">[67 FR 67961, Nov. 7, 2002]
+</CITA>
+</DIV8>
+
+<DIV8 N="1910.39" TYPE="SECTION" hierarchy_metadata="{&quot;path&quot;:&quot;/on/_SUBSTITUTE_DATE_/title-29/section-1910.39&quot;,&quot;citation&quot;:&quot;29 CFR 1910.39&quot;}">
+<HEAD>&#xA7; 1910.39 Fire prevention plans.</HEAD>
+<P>(a) <I>Application.</I> An employer must have a fire prevention plan when an OSHA standard in this part requires one. The requirements in this section apply to each such fire prevention plan.</P>
+<P>(b) <I>Written and oral fire prevention plans.</I> A fire prevention plan must be in writing, be kept in the workplace, and be made available to employees for review. However, an employer with 10 or fewer employees may communicate the plan orally to employees.</P>
+<P>(c) <I>Minimum elements of a fire prevention plan.</I> A fire prevention plan must include:</P>
+<P>(1) A list of all major fire hazards, proper handling and storage procedures for hazardous materials, potential ignition sources and their control, and the type of fire protection equipment necessary to control each major hazard;</P>
+<P>(2) Procedures to control accumulations of flammable and combustible waste materials;</P>
+<P>(3) Procedures for regular maintenance of safeguards installed on heat-producing equipment to prevent the accidental ignition of combustible materials;</P>
+<P>(4) The name or job title of employees responsible for maintaining equipment to prevent or control sources of ignition or fires; and</P>
+<P>(5) The name or job title of employees responsible for the control of fuel source hazards.</P>
+<P>(d) <I>Employee information.</I> An employer must inform employees upon initial assignment to a job of the fire hazards to which they are exposed. An employer must also review with each employee those parts of the fire prevention plan necessary for self-protection.</P>
+<CITA TYPE="N">[67 FR 67961, Nov. 7, 2002]
+</CITA>
+</DIV8>
+
+<DIV9 N="Appendix to Subpart E of Part 1910" TYPE="APPENDIX" hierarchy_metadata="{&quot;path&quot;:&quot;/on/_SUBSTITUTE_DATE_/title-29/part-1910/appendix-Appendix to Subpart E of Part 1910&quot;,&quot;citation&quot;:&quot;Appendix to Subpart E of Part 1910, Title 29&quot;}">
+<HEAD>Appendix to Subpart E of Part 1910&#x2014;Exit Routes, Emergency Action Plans, and Fire Prevention Plans
+</HEAD>
+<P>This appendix serves as a nonmandatory guideline to assist employers in complying with the appropriate requirements of subpart E.</P>
+<HD2>&#xA7; 1910.38 Employee emergency plans.
+</HD2>
+<P>1. <I>Emergency action plan elements.</I> The emergency action plan should address emergencies that the employer may reasonably expect in the workplace. Examples are: fire; toxic chemical releases; hurricanes; tornadoes; blizzards; floods; and others. The elements of the emergency action plan presented in paragraph 1910.38(c) can be supplemented by the following to more effectively achieve employee safety and health in an emergency. The employer should list in detail the procedures to be taken by those employees who have been selected to remain behind to care for essential plant operations until their evacuation becomes absolutely necessary. Essential plant operations may include the monitoring of plant power supplies, water supplies, and other essential services which cannot be shut down for every emergency alarm. Essential plant operations may also include chemical or manufacturing processes which must be shut down in stages or steps where certain employees must be present to assure that safe shut down procedures are completed.</P>
+<P>The use of floor plans or workplace maps which clearly show the emergency escape routes should be included in the emergency action plan. Color coding will aid employees in determining their route assignments.</P>
+<P>The employer should also develop and explain in detail what rescue and medical first aid duties are to be performed and by whom. All employees are to be told what actions they are to take in these emergency situations that the employer anticipates may occur in the workplace.</P>
+<P>2. <I>Emergency evacuation.</I> At the time of an emergency, employees should know what type of evacuation is necessary and what their role is in carrying out the plan. In some cases where the emergency is very grave, total and immediate evacuation of all employees is necessary. In other emergencies, a partial evacuation of nonessential employees with a delayed evacuation of others may be necessary for continued plant operation. In some cases, only those employees in the immediate area of the fire may be expected to evacuate or move to a safe area such as when a local application fire suppression system discharge employee alarm is sounded. Employees must be sure that they know what is expected of them in all such emergency possibilities which have been planned in order to provide assurance of their safety from fire or other emergency.</P>
+<P>The designation of refuge or safe areas for evacuation should be determined and identified in the plan. In a building divided into fire zones by fire walls, the refuge area may still be within the same building but in a different zone from where the emergency occurs.</P>
+<P>Exterior refuge or safe areas may include parking lots, open fields or streets which are located away from the site of the emergency and which provide sufficient space to accommodate the employees. Employees should be instructed to move away from the exit discharge doors of the building, and to avoid congregating close to the building where they may hamper emergency operations.</P>
+<P>3. <I>Emergency action plan training.</I> The employer should assure that an adequate number of employees are available at all times during working hours to act as evacuation wardens so that employees can be swiftly moved from the danger location to the safe areas. Generally, one warden for each twenty employees in the workplace should be able to provide adequate guidance and instruction at the time of a fire emergency. The employees selected or who volunteer to serve as wardens should be trained in the complete workplace layout and the various alternative escape routes from the workplace. All wardens and fellow employees should be made aware of handicapped employees who may need extra assistance, such as using the buddy system, and of hazardous areas to be avoided during emergencies. Before leaving, wardens should check rooms and other enclosed spaces in the workplace for employees who may be trapped or otherwise unable to evacuate the area.</P>
+<P>After the desired degree of evacuation is completed, the wardens should be able to account for or otherwise verify that all employees are in the safe areas.</P>
+<P>In buildings with several places of employment, employers are encouraged to coordinate their plans with the other employers in the building. A building-wide or standardized plan for the whole building is acceptable provided that the employers inform their respective employees of their duties and responsibilities under the plan. The standardized plan need not be kept by each employer in the multi-employer building, provided there is an accessible location within the building where the plan can be reviewed by affected employees. When multi-employer building-wide plans are not feasible, employers should coordinate their plans with the other employers within the building to assure that conflicts and confusion are avoided during times of emergencies. In multi-story buildings where more than one employer is on a single floor, it is essential that these employers coordinate their plans with each other to avoid conflicts and confusion.</P>
+<P>4. <I>Fire prevention housekeeping.</I> The standard calls for the control of accumulations of flammable and combustible waste materials.</P>
+<P>It is the intent of this standard to assure that hazardous accumulations of combustible waste materials are controlled so that a fast developing fire, rapid spread of toxic smoke, or an explosion will not occur. This does not necessarily mean that each room has to be swept each day. Employers and employees should be aware of the hazardous properties of materials in their workplaces, and the degree of hazard each poses. Certainly oil soaked rags have to be treated differently than general paper trash in office areas. However, large accumulations of waste paper or corrugated boxes, etc., can pose a significant fire hazard. Accumulations of materials which can cause large fires or generate dense smoke that are easily ignited or may start from spontaneous combustion, are the types of materials with which this standard is concerned. Such combustible materials may be easily ignited by matches, welder's sparks, cigarettes and similar low level energy ignition sources.</P>
+<P>5. <I>Maintenance of equipment under the fire prevention plan.</I> Certain equipment is often installed in workplaces to control heat sources or to detect fuel leaks. An example is a temperature limit switch often found on deep-fat food fryers found in restaurants. There may be similar switches for high temperature dip tanks, or flame failure and flashback arrester devices on furnaces and similar heat producing equipment. If these devices are not properly maintained or if they become inoperative, a definite fire hazard exists. Again employees and supervisors should be aware of the specific type of control devices on equipment involved with combustible materials in the workplace and should make sure, through periodic inspection or testing, that these controls are operable. Manufacturers' recommendations should be followed to assure proper maintenance procedures.</P>
+<CITA TYPE="N">[45 FR 60714, Sept. 12, 1980]
+</CITA>
+</DIV9>
+
+</DIV6>

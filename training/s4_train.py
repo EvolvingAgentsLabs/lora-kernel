@@ -168,6 +168,69 @@ def adapter_layers(names) -> list[int]:
     return sorted({int(m.group(1)) for n in names for m in [re.search(r"\.layers\.(\d+)\.", n)] if m})
 
 
+def span_labels(tok, messages: list[dict], spans: list[list[int]], max_len: int) -> dict:
+    r"""Token ids for the whole conversation and labels only on the characters the MODEL wrote.
+
+    `spans` are [start, end) offsets inside the last (assistant) message's content — the chain's own spans, everything
+    between them being the runtime's results. A token is trained iff it overlaps a span; system, user and
+    every result are -100. REAL3 attempt 1 [ran]: with the loss on the whole walk, real pages read whole (~90 % of the
+    tokens) taught the LoRA to write regulation text instead of answering."""
+    text = tok.apply_chat_template(messages, tokenize=False)
+    content = messages[-1]["content"]
+    base_at = text.rindex(content)
+    marks = [(base_at + a, base_at + b) for a, b in spans]
+    enc = tok(text, return_offsets_mapping=True, add_special_tokens=False, truncation=True, max_length=max_len)
+    # a token is trained if it OVERLAPS what the model wrote: a closing tag's `>` and the result's `=` merge into one token,
+    # and a model that writes it still writes the closing tag (the stop fires on the text)
+    labels = [tid if any(s < b and e > a and e > s for a, b in marks) else -100
+              for tid, (s, e) in zip(enc["input_ids"], enc["offset_mapping"])]
+    return {"input_ids": enc["input_ids"], "attention_mask": enc["attention_mask"], "labels": labels}
+
+
+def _train_on_spans(model, tok, rows: list[dict], out_dir: str, args):
+    """The same LoRA and schedule as `train_adapter`, with the loss masked to the model's own spans (`span_labels`)."""
+    from datasets import Dataset
+    from peft import LoraConfig, get_peft_model
+    from transformers import Trainer, TrainingArguments
+    data = [span_labels(tok, r["messages"], r["train_spans"], args.max_seq) for r in rows]
+    data = [d for d in data if any(x != -100 for x in d["labels"])]
+    print(f"[train] span-masked: {len(data)} rows, {sum(sum(x != -100 for x in d['labels']) for d in data)} trained tokens "
+          f"of {sum(len(d['labels']) for d in data)}", flush=True)
+    model.gradient_checkpointing_enable()
+    model.enable_input_require_grads()
+    model.config.use_cache = False
+    targets = args.targets.split(",")
+    k = layers_from(getattr(args, "layers_from", None), n_layers(model))
+    if k:
+        targets = layer_regex(targets, range(k, n_layers(model)))
+    peft_model = get_peft_model(model, LoraConfig(
+        r=args.r, lora_alpha=args.alpha, lora_dropout=0.05, bias="none", task_type="CAUSAL_LM",
+        target_modules=targets, exclude_modules=towers_to_exclude(model)))
+    peft_model.print_trainable_parameters()
+    pad = tok.pad_token_id if tok.pad_token_id is not None else tok.eos_token_id
+
+    def collate(batch):
+        import torch
+        n = max(len(b["input_ids"]) for b in batch)
+        ids = torch.full((len(batch), n), pad, dtype=torch.long)
+        att = torch.zeros((len(batch), n), dtype=torch.long)
+        lab = torch.full((len(batch), n), -100, dtype=torch.long)
+        for i, b in enumerate(batch):
+            m = len(b["input_ids"])
+            ids[i, :m], att[i, :m], lab[i, :m] = torch.tensor(b["input_ids"]), 1, torch.tensor(b["labels"])
+        return {"input_ids": ids, "attention_mask": att, "labels": lab}
+    Trainer(model=peft_model, train_dataset=Dataset.from_list(data), data_collator=collate,
+            args=TrainingArguments(output_dir=out_dir, num_train_epochs=args.epochs,
+                                   per_device_train_batch_size=args.batch, gradient_accumulation_steps=args.accum,
+                                   learning_rate=args.lr, logging_steps=10, seed=args.seed, report_to=[],
+                                   save_strategy="no", bf16=precision()[1], fp16=precision()[2],
+                                   gradient_checkpointing=True, remove_unused_columns=False)).train()
+    peft_model.save_pretrained(out_dir)
+    peft_model.gradient_checkpointing_disable()
+    peft_model.config.use_cache = True
+    return peft_model, tok
+
+
 def train_adapter(base: str, rows: list[dict], out_dir: str, args):
     """A fresh base per adapter.
 
@@ -180,6 +243,8 @@ def train_adapter(base: str, rows: list[dict], out_dir: str, args):
     from trl import SFTConfig, SFTTrainer
 
     model, tok = load_base(base, args.four_bit)
+    if rows and all("train_spans" in r for r in rows):
+        return _train_on_spans(model, tok, rows, out_dir, args)
     texts = []
     for r in rows:
         try:

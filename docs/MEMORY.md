@@ -11,7 +11,12 @@ explanation it implements is the user's, 2026-09-19. Status markers as everywher
 measured in this repository, **[read]** read in source or a paper, **[spec]** decided and not yet
 built. W1–W5e, W8 and W9 are built and measured, §10 says what each showed; **§1.6, atomic statements — the
 user's design of 2026-09-24 — PASSED W9 [ran] 2026-09-25**: a trajectory LoRA walks it 35/40 where the untrained base
-walks 0/40 (Gemma 4 E4B: 38/40).
+walks 0/40 (Gemma 4 E4B: 38/40). **On real documents, this is a thesis about the loss, not about the library:** a
+trajectory learned on a generator's world does not carry to a real one (`distributor-wiki@v2` unchanged, 0/25, never
+opens a page — **REAL0 [ran]**); trained instead on walks over real documents of **another** family and with the
+loss masked to the model's own spans, it does transfer — 18/23 fresh headline against the base's 9/23 (**REAL3
+[ran]**, both seeds), and refusal is then trainable the same way (**REAL4 [ran]**, as written FALSIFIED on the
+headline cost by one row, pending the user's reading).
 
 Five pieces:
 

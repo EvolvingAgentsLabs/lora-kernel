@@ -1,0 +1,24 @@
+=== session 1 of 2 · srv233152 · L4
+    boot clone: rc=0 2e6b885 REAL3 attempt 1 [ran]: the member wrote regulation pages instead of answering (1/23) — the loss covered the runtime's results; attempt 2 trains only t
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    2e6b885 REAL3 attempt 1 [ran]: the member wrote regulation pages instead of answering (1/23) — the loss covered the runtime's results; attempt 2 trains only the model's spans | 0.30.0
+    carried the adapters in (3 chunks)
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-spans-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-spans-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-spans-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-spans-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-spans-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-spans-s0
+    [pool] G1 withlib-s0: applied
+    [wiki] base-walks+page: 40 to run, 0 resumed
+    [wiki] withlib-s0+page 10/40 credit 6 value-right 8 errors 0 22s
+    [wiki] withlib-s0+page 20/40 credit 14 value-right 17 errors 0 32s
+    [wiki] withlib-s0+page 30/40 credit 22 value-right 26 errors 0 39s
+    [wiki] withlib-s0+page 40/40 credit 26 value-right 31 errors 0 62s
+    [wiki] headline · withlib-s0+page vs base-walks+page: improvement (10:1, p=0.01172)
+    [wiki] NOTHING SCORED
+    the runner wrote its result — done
+=== already decided — no further sessions
+exit 0

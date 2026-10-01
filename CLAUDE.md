@@ -145,6 +145,8 @@ These are not style. Each was paid for; [`docs/RECORD.md`](docs/RECORD.md) §4 h
   `render_tools`; the copy is what drifted. **A member is its corpus — block and prompt:**
   serve with `--prune --member-prompt`, and measure a member under any other prompt as a
   different arm, never as the member.
+- **A trajectory corpus over generated text teaches the generator; and a loss on the whole
+  walk teaches the tool results — train only the model's spans** (REAL0, REAL3 **[ran]**).
 
 **During the run**
 - **Buy arms in sequence, never as a grid.** The arm that can kill the hypothesis first;

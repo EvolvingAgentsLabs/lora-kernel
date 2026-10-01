@@ -1,0 +1,28 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/real4-s0 withlib-s1=adapters/real4-s1
+[pool] G1 withlib-s0: applied
+[pool] G1 withlib-s1: applied
+[wiki] base-walks+page: 52 to run, 0 resumed
+[wiki] base-walks+page 10/52 credit 2 value-right 2 errors 0 23s
+[wiki] base-walks+page 20/52 credit 5 value-right 6 errors 0 32s
+[wiki] base-walks+page 30/52 credit 8 value-right 11 errors 0 40s
+[wiki] base-walks+page 40/52 credit 15 value-right 18 errors 0 53s
+[wiki] base-walks+page 50/52 credit 22 value-right 25 errors 0 65s
+[wiki] base-walks+page 52/52 credit 23 value-right 26 errors 0 67s
+[wiki] withlib-s0+page: 52 to run, 0 resumed
+[wiki] withlib-s0+page 10/52 credit 5 value-right 8 errors 0 22s
+[wiki] withlib-s0+page 20/52 credit 13 value-right 17 errors 0 32s
+[wiki] withlib-s0+page 30/52 credit 20 value-right 25 errors 0 39s
+[wiki] withlib-s0+page 40/52 credit 24 value-right 30 errors 0 74s
+[wiki] withlib-s0+page 50/52 credit 24 value-right 30 errors 0 105s
+[wiki] withlib-s0+page 52/52 credit 24 value-right 30 errors 0 110s
+[wiki] withlib-s1+page: 52 to run, 0 resumed
+[wiki] withlib-s1+page 10/52 credit 5 value-right 5 errors 0 21s
+[wiki] withlib-s1+page 20/52 credit 12 value-right 14 errors 0 27s
+[wiki] withlib-s1+page 30/52 credit 20 value-right 24 errors 0 35s
+[wiki] withlib-s1+page 40/52 credit 27 value-right 32 errors 0 44s
+[wiki] withlib-s1+page 50/52 credit 36 value-right 41 errors 0 54s
+[wiki] withlib-s1+page 52/52 credit 38 value-right 43 errors 0 55s
+[wiki] headline · withlib-s0+page vs base-walks+page: improvement (9:0, p=0.00391)
+[wiki] headline · withlib-s1+page vs base-walks+page: improvement (9:1, p=0.02148)
+[wiki] NOTHING SCORED

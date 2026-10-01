@@ -1,0 +1,30 @@
+{
+ "base": "google/gemma-4-E4B-it",
+ "started": "2026-10-01T00:58:27",
+ "grader": "training.wiki.grade",
+ "library": "knowledge/distributor-wiki",
+ "eval_world": 20260924,
+ "arms": {},
+ "members": {
+  "withlib-s0": {
+   "adapter": "adapters/real-walks-s0",
+   "seed": 0,
+   "recipe": {
+    "r": 16,
+    "lora_alpha": 32,
+    "epochs": 3,
+    "lr": 0.0002,
+    "batch": 2,
+    "accum": 8,
+    "max_seq": 1536,
+    "seed": 0,
+    "targets": "q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"
+   },
+   "adapter_sha256": "c23d7d3b19970eb3ec439f6e1dae699a8fac73b5cd1bc8a83fc26f74c859cfc0",
+   "corpus": "train_real.jsonl",
+   "corpus_sha256": "42926380fcb7314d0ea7f811d662db4feab75488ed6bd9d593965c0f61dd2416"
+  }
+ },
+ "packed": 1,
+ "trained_only": "2026-10-01T01:19:16"
+}

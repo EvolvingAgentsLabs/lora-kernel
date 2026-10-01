@@ -1,0 +1,32 @@
+=== session 1 of 2 · srv004403 · L4
+    boot clone: rc=0 3a9c5a0 REAL3 beside: on REAL0's set real-spans-s0 18/25 multi-hop against the base's 7/25 (14:3) — from 0/25 where the line began
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 3a9c5a0 REAL3 beside: on REAL0's set real-spans-s0 18/25 multi-hop against the base's 7/25 (14:3) — from 0/25 where the line began
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    3a9c5a0 REAL3 beside: on REAL0's set real-spans-s0 18/25 multi-hop against the base's 7/25 (14:3) — from 0/25 where the line began | 0.30.0
+    carried the adapters in (3 chunks)
+    launch 1 did not take: no run.log on the VM — relaunching
+    runner started (launch 2)
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/real-spans-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/real-spans-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/real-spans-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/real-spans-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/real-spans-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/real-spans-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/real-spans-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/real-spans-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/real-spans-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/real-spans-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s1=adapters/real-spans-s1
+    [pool] G1 withlib-s1: applied
+    [wiki] withlib-s1+page: 40 to run, 0 resumed
+    [wiki] withlib-s1+page 30/40 credit 18 value-right 22 errors 0 43s
+    [wiki] withlib-s1+page 40/40 credit 22 value-right 27 errors 0 70s
+    [wiki] NOTHING SCORED
+    the runner wrote its result — done
+=== already decided — no further sessions
+exit 0

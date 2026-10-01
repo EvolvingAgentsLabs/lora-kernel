@@ -1,0 +1,59 @@
+{
+ "base": "google/gemma-4-E4B-it",
+ "started": "2026-10-01T01:28:34",
+ "grader": "training.wiki.grade",
+ "library": "knowledge/logistics-regs",
+ "eval_world": 20260924,
+ "arms": {},
+ "G1": {
+  "withlib-s0": {
+   "probed": 3,
+   "empty": 0,
+   "differs": 1,
+   "applied": false,
+   "samples": [
+    {
+     "base": "The sky appears blue because of a phenomenon called Rayleigh",
+     "member": "The sky appears blue because of a phenomenon called Rayleigh"
+    },
+    {
+     "base": "Here are three things a careful reader checks before answeri",
+     "member": "Here are three things a careful reader checks before answeri"
+    },
+    {
+     "base": "A pressure drop in a pipe depends on the fluid's properties,",
+     "member": "A pressure drop in a pipe depends on the fluid's properties,"
+    }
+   ]
+  }
+ },
+ "stopped": "G1: an adapter is not applied",
+ "analysis": {
+  "slices": {
+   "headline": 23,
+   "all": 40,
+   "none": 4,
+   "hops-1": 13,
+   "hops-2": 19,
+   "hops-3": 4,
+   "block-E1": 0,
+   "block-E2": 0,
+   "block-E3": 0,
+   "block-O1": 0,
+   "block-O2": 0,
+   "block-O3": 0
+  },
+  "summary": {},
+  "pairs": {
+   "headline": [],
+   "all": [],
+   "hops-2": [],
+   "hops-3": []
+  }
+ },
+ "verdict": {
+  "decided": false,
+  "reading": "NOTHING SCORED"
+ },
+ "finished": "2026-10-01T01:37:41"
+}
