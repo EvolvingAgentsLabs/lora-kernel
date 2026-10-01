@@ -299,6 +299,7 @@ def main() -> int:
     ap.add_argument("--max-tokens-plain", type=int, default=160)
     ap.add_argument("--concurrency", type=int, default=8)
     ap.add_argument("--rows", default="eval", help="which question set: eval (W9) or eval_hard (B3's comparisons), or a path")
+    ap.add_argument("--max-seq", type=int, default=1536, help="the trainer's window (REAL3's real-page walks: 4096)")
     ap.add_argument("--max-model-len", type=int, default=MAX_MODEL_LEN, help="REAL2: a real page opened whole can be 7k tokens")
     ap.add_argument("--library", default=str(LIBRARY), help="the library walked (REAL0: knowledge/logistics-regs, real documents)")
     ap.add_argument("--member-prefix", default="adapters/wiki-walks-s", help="where withlib-s<k> lives (B3: adapters/wiki12b-walks-s)")
@@ -356,7 +357,8 @@ def main() -> int:
             print(f"[pool] training {spec} on {a.base} from {corpus}", flush=True)
             rc = subprocess.call([sys.executable, "-m", "training.harness.train_one", "--base", a.base, "--train", str(corpus),
                                   "--out-dir", spec, "--epochs", str(RECIPE["epochs"]), "--r", str(RECIPE["r"]),
-                                  "--alpha", str(RECIPE["lora_alpha"]), "--lr", str(RECIPE["lr"]), "--seed", str(a.train_seed)])
+                                  "--alpha", str(RECIPE["lora_alpha"]), "--lr", str(RECIPE["lr"]), "--seed", str(a.train_seed),
+                                  "--max-seq", str(a.max_seq)])
             if rc != 0:
                 rec["stopped"] = f"training {spec} failed rc={rc}"; rec["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S"); save()
                 print(f"[pool] {rec['stopped']}", flush=True)

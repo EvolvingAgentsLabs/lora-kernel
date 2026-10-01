@@ -38,6 +38,9 @@ def main() -> int:
     # disagreed with the original on 25 of 67 rows [ran]: the GPU is not deterministic, so a seed
     # prices the draw only beside that noise, never instead of it.
     ap.add_argument("--seed", type=int, default=0)
+    # REAL3: a real page read whole runs to ~4k tokens; the window is the corpus's, and a longer one trains one row at a
+    # time with twice the accumulation — the same 16 rows per step
+    ap.add_argument("--max-seq", type=int, default=1536)
     ap.add_argument("--layers-from", default=None, help="E6: a LoRA on decoder layers k…N-1 only — 'half' or k")
     a = ap.parse_args()
 
@@ -46,8 +49,8 @@ def main() -> int:
     rows = [json.loads(line) for line in open(a.train) if line.strip()]
     print(f"[train] {a.out_dir} from {len(rows)} examples", flush=True)
     model, tok = train_adapter(a.base, rows, a.out_dir, SimpleNamespace(
-        epochs=a.epochs, r=a.r, alpha=a.alpha, lr=a.lr, batch=2, accum=8,
-        max_seq=1536, seed=a.seed, four_bit=False, layers_from=a.layers_from,
+        epochs=a.epochs, r=a.r, alpha=a.alpha, lr=a.lr, batch=1 if a.max_seq > 2048 else 2, accum=16 if a.max_seq > 2048 else 8,
+        max_seq=a.max_seq, seed=a.seed, four_bit=False, layers_from=a.layers_from,
         targets="q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"))
     if a.layers_from:
         from training.s4_train import layers_from, n_layers
