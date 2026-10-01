@@ -605,6 +605,25 @@ sin la página delante, los pesos todavía responden con el valor viejo 1 de 40 
 aprendió la *ruta* lo bastante bien como para reproducir ocasionalmente lo que normalmente solo lee, lo
 que acota en vez de eliminar el riesgo que la separación entre contenido y pesos busca cerrar.
 
+**Documentos reales.** `memory/ingest.py` convierte una fuente real (regulaciones federales de EE. UU.,
+eCFR) en la biblioteca, textual — sin wiki inventada. Sobre una biblioteca ingerida así apareció primero el
+punto débil del diseño anterior: la consulta de `<search>` que entrenó el miembro está memorizada de su
+propio mundo de entrenamiento, así que nunca abre ninguna página, 0 de 25 **[ran]** REAL0. El runtime
+responde a eso sin reentrenar: el texto completo de la pregunta es la **primera** entrada, probada en
+**todos los estantes** (`FullText`, BM25 sobre los enunciados), con un **fallback** al texto literal del
+runtime cuando una búsqueda no devuelve nada, y una página abierta con sus enunciados adjuntos como
+`page_text` en vez de sólo su lista de secciones — juntos llevan un recorrido a la página que sostiene la
+respuesta 24/25, contra un techo de lectura de 22 **[ran]** REAL1–REAL2.
+
+Entrenar sobre páginas reales necesitó un arreglo más. Un corpus de trayectorias sobre documentos reales de
+una familia que la evaluación nunca ve, recorrido por este mismo runtime, sacó 1 de 23 la primera vez — la
+pérdida caía sobre todo el recorrido, y un recorrido sobre páginas reales leídas enteras es ~97 % tokens de
+página, así que el LoRA aprendió a escribir regulaciones en vez de contestar. La **pérdida con máscara de
+tramo** — entrenar sólo los propios tags del modelo y su respuesta citada, nunca la pregunta ni un resultado
+del runtime — lo arregla: 18/23 contra el 9/23 del base sin entrenar sobre un set fresco de varios saltos,
+las dos semillas **[ran]** REAL3; la misma receta con 27 recorridos sin respuesta agregados enseña entonces
+la negativa, 15/16, a un costo en el titular cuya lectura el usuario todavía no saldó **[ran]** REAL4.
+
 ---
 
 ## 12. Los corpus y sus compuertas

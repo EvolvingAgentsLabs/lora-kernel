@@ -554,6 +554,23 @@ still answer with the old value 1 of 40 times — not zero: the member learned t
 occasionally reproduce what it usually only reads, which bounds rather than removes the risk the split
 between content and weights is meant to close.
 
+**Real documents.** `memory/ingest.py` turns a real source (US federal regulations, eCFR) into the library
+verbatim — no invented wiki. On a library ingested this way the earlier design's weak point showed first:
+the member's trained `<search>` query is memorised from its own training world, so it never opens a page at
+all, 0 of 25 **[ran]** REAL0. The runtime answers that without retraining: the question's own full text is
+the **first** entry, tried on **every shelf** (`FullText`, BM25 over statements), with a **fallback** to the
+runtime's own literal text when a search returns nothing, and a page opened with its statements attached as
+`page_text` instead of only its section list — together these take a walk to the supporting page 24/25,
+against a reading ceiling of 22 **[ran]** REAL1–REAL2.
+
+Training on real pages needed one more fix. A trajectory corpus over real documents of a family the
+evaluation never sees, walked through this same runtime, scored 1 of 23 the first time — the loss sat on
+the whole walk, and a walk over real pages read whole is ~97 % page tokens, so the LoRA learned to write
+regulations instead of answering. **Span-masked loss** — training only the model's own tags and its cited
+answer, never the question or a runtime result — fixes it: 18/23 against the untrained base's 9/23 on a
+fresh multi-hop set, both seeds **[ran]** REAL3; the same recipe with 27 unanswerable walks added then
+teaches refusal, 15/16, at a headline cost whose reading the user has not yet settled **[ran]** REAL4.
+
 ---
 
 ## 12. Corpora and their gates

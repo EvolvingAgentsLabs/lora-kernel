@@ -11,7 +11,13 @@ explicación que implementa es la del usuario, 2026-09-19. Marcadores de estado 
 medido en este repositorio, **[read]** leído en el código fuente o en un paper, **[spec]** decidido y todavía no
 construido. W1–W5e, W8 y W9 están construidos y medidos, el §10 dice qué mostró cada uno; **el §1.6,
 los enunciados atómicos — el diseño del usuario del 2026-09-24 — PASÓ W9 [ran] 2026-09-25**: un LoRA
-de trayectoria la camina 35/40 donde el base sin entrenar camina 0/40 (Gemma 4 E4B: 38/40).
+de trayectoria la camina 35/40 donde el base sin entrenar camina 0/40 (Gemma 4 E4B: 38/40). **Sobre documentos
+reales, esto es una tesis sobre la pérdida, no sobre la biblioteca:** una trayectoria aprendida sobre el mundo
+de un generador no se traslada a uno real (`distributor-wiki@v2` sin cambios, 0/25, nunca abre una página —
+**REAL0 [ran]**); entrenada en cambio sobre recorridos de documentos reales de **otra** familia y con la pérdida
+con máscara sobre los propios tramos del modelo, sí transfiere — 18/23 en el titular fresco contra el 9/23 del
+base (**REAL3 [ran]**, las dos semillas), y la negativa se vuelve entrenable del mismo modo (**REAL4 [ran]**,
+tal como está escrito FALSIFIED en el costo del titular por una fila, pendiente la lectura del usuario).
 
 Cinco piezas:
 
