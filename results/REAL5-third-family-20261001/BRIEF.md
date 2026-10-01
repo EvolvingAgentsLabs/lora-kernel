@@ -26,6 +26,18 @@ training and the first evaluation family. One reserved section has no paragraphs
 40 rows: ≥ 25 multi-hop on distinct (statement, question) pairs, ~10 one-hop, 5 the library cannot answer (2 adjacent);
 oracle 40/40 before freezing; at most 2 rows whose answer is one of SPCC's famous thresholds (marked `famous`).
 
+### As frozen (2026-10-01, before any model answered) — and its limits
+
+40 rows (`make_questions.py`): 10 one-hop, 19 two-hop, 6 three-hop, 5 unanswerable (2 adjacent: a state UST registration
+fee, a tank-truck placard); **headline 25, all 25 (statement, question) pairs and support statements distinct**; support
+spread over 11 pages (112.20 eight headline rows, 112.3 and 112.8 three or four each). Oracle 40/40 verified, 0 refused
+(`zero_gpu.json`); no digit in any question; every hop a real link; no token in an earlier opened statement; the search of
+every plan ranks its start page strictly first. One `famous` row (1,320 gallons), one-hop — outside the headline.
+**Limits, stated now:** comma-formatted values are checked as the regulation writes them (`2,100`) — a model writing
+`2100` is graded wrong, both arms alike; one row's link can be skipped (the search also shows the target page); values
+repeat across statements (60 days ×6) — only the strict citation separates them; two plan searches name a section number
+(plans only, never a question); thin pages push support toward 112.20 and 112.1.
+
 ## Verdict (fixed here), on the headline
 
 - **VOID** — `nolib` value-right on > 10 % of the headline.
