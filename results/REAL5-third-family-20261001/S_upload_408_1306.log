@@ -1,0 +1,13 @@
+=== session 1 of 2 · srv124307 · L4
+    boot clone: rc=0 179e3f9 REAL5: 40 questions on 40 CFR 112 frozen before any model answer (headline 25 distinct chains, oracle 40/40); limits in the brief
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 179e3f9 REAL5: 40 questions on 40 CFR 112 frozen before any model answer (headline 25 distinct chains, oracle 40/40); limits in the brief
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    179e3f9 REAL5: 40 questions on 40 CFR 112 frozen before any model answer (headline 25 distinct chains, oracle 40/40); limits in the brief | 0.30.0
+    chunk part_aa did not upload
+    adapters did not upload
+exit 1

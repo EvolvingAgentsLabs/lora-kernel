@@ -47,6 +47,22 @@ repeat across statements (60 days ×6) — only the strict citation separates th
 - **DOES NOT TRANSFER** — no improvement over the base.
 - Beside: one-hop; the `famous` rows apart.
 
-## Result
+## Result [ran] — PARTIAL as written: a large transfer, under the 70 % bar on the strict citation
 
-*(written after S)*
+One L4 session after two failed uploads (48 MB chunks, 0.2 MB/s uplink; the chain now sends 16 MB chunks with retries),
+0 errors. `real5.json`.
+
+| arm | headline (25) | value-right | 1-hop (10) | 3-hop (6) | refusals (5) | all (40) |
+|---|---|---|---|---|---|---|
+| **`real-none-s0`** | **15** (60 %) | **20** | 8 | 4 | **5** | **28** |
+| `base-walks+page` | 2 | 5 | 2 | 1 | 3 | 7 |
+| `nolib` | 0 | 1 | 0 | 0 | 2 | 2 |
+
+- **Gate:** `nolib` value-right 1/25 (4 %) — Part 112 is not in the weights; the run reads.
+- **Against the base:** an improvement, **13 : 0**, $p = 0.00024$; refusals **5/5** (bar 4), one false refusal of 35.
+- **Verdict as written: PARTIAL** — 15/25 = 60 %, under the 70 % bar. The member walks a third family, of another
+  agency and subject, with dense links, at 7× the untrained base.
+- **Read where it happens — the citation, not the walk.** The value is right on 20/25; of the 5 lost, 3 cite a statement
+  that holds the same number but is not the one asked about (this library repeats values — "60 days" on six statements —
+  and the strict citation counts the statement, not the number), 2 cite one that does not hold it. Three more are wrong
+  values, one has no citation.
