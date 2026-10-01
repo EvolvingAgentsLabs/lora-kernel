@@ -236,14 +236,91 @@ def build_repeated(max_group: int = 12) -> list[dict]:
     return out
 
 
+ASK_CROSSLINK = """A reader starts on the FIRST page; its statement §{via} links to the SECOND page. The value "{value}" appears on
+BOTH pages — on the first page in the statements marked DECOY, and on the second page in the TARGET statement(s). Write ONE
+question for each TARGET statement, as a person at a trucking company, a food plant or a warehouse would ask, that only that
+TARGET statement answers: start from the FIRST page's situation (what the linking statement is about) and ask for the detail
+that only the SECOND page holds, so a careless reader would stop on the first page and cite the DECOY. Never quote a section
+number or anchor; never put the value in the question.
+Return only JSON: a list of objects {{"question": ..., "anchor": ..., "value": ...}} — `anchor` of the TARGET statement as
+written, `value` the exact span from it.
+
+FIRST {first}
+LINKING §{via} {link_text}
+DECOY (first page, same value — must NOT be cited):
+{decoys}
+
+SECOND {second}
+TARGET (second page — the answer):
+{targets}"""
+
+
+_REF = re.compile(r"(§\s*)?\b\d+\.\d+[\w()]*|\bparts?\s+\d+|\[\[[^\]]+\]\]|\(\w{1,4}\)", re.I)
+
+
+def decoy_numbers(text: str) -> set[str]:
+    """Numbers of two digits or more a reader could cite — quantities, dates, amounts — never a section reference, a part
+    number, a link or a paragraph label. REAL5's same-value miscitations were days, dates and amounts alike."""
+    return {x for x in re.findall(r"\b\d[\d,]{1,}\b", _REF.sub(" ", text)) if len(x.replace(",", "")) >= 2}
+
+
+def build_crosslink(per_edge: int = 3, roots: tuple = ("knowledge/regs-train", "knowledge/regs-train2"),
+                    max_tokens: int = 2000) -> list[dict]:
+    """REAL7: two-hop walks whose answer sits at the END of a link while the same quantity also sits at its START — REAL6
+    [ran]: the miscitations were multi-hop rows cited at the wrong end of a link, and REAL6's corpus taught one-hop choices.
+    Kept only if the value is in the target statement, in a statement of the first page (the decoy), and not in the ask."""
+    key, out = _key(), []
+    clean = lambda t: re.sub(r"\[\[[^\]]+\]\]", "§", t)
+    for root in roots:
+      lib = Library.load(root)
+      for a in lib.notes.values():
+        if count_tokens(a.body) > max_tokens:
+            continue
+        a_sts = statements_of(a.body)[0]
+        for st in a_sts:
+            for t in dict.fromkeys(re.findall(r"\[\[([^\]]+)\]\]", st.text)):
+                if t not in lib.notes or t == a.id or count_tokens(lib.notes[t].body) > max_tokens:
+                    continue
+                b = lib.notes[t]
+                for value in sorted(set().union(*[decoy_numbers(x.text) for x in a_sts]) & set().union(*[decoy_numbers(x.text) for x in statements_of(b.body)[0]])):
+                    decoys = [x for x in a_sts if value in decoy_numbers(x.text)][:3]
+                    targets = [x for x in statements_of(b.body)[0] if value in decoy_numbers(x.text)][:per_edge]
+                    prompt = ASK_CROSSLINK.format(
+                        via=st.anchor, value=value, first=f"PAGE {a.title}", link_text=clean(st.text)[:600],
+                        decoys="\n".join(f"§{x.anchor} {clean(x.text)[:400]}" for x in decoys), second=f"PAGE {b.title}",
+                        targets="\n".join(f"§{x.anchor} {clean(x.text)[:500]}" for x in targets))
+                    for q in ask(prompt, key):
+                        v = valid(q, a, b)
+                        if v and any(all(_has_num(x.text, tk) for tk in v["tokens"]) for x in decoys):
+                            out.append({**v, "hops": 2, "pages": [a.id, b.id], "support": [b.id, v["anchor"]],
+                                        "via": [a.id, st.anchor], "decoy": [a.id, decoys[0].anchor], "lib": root})
+    seen, kept = set(), []
+    for q in out:
+        if q["question"].lower() not in seen:
+            seen.add(q["question"].lower()); kept.append(q)
+    print(f"[realcorpus] cross-link questions: {len(kept)} · ${_spent['usd']:.2f}", flush=True)
+    return kept
+
+
+def _has_num(text: str, token: str) -> bool:
+    from training.wiki import grade as gr
+    return gr._has(_LABEL.sub(" ", text), token)
+
+
 def walk_rows(questions: list[dict]) -> list[dict]:
     from memory import prompt
     from memory.runtime import FullText
     from training.wiki import grade as gr
     from training.wiki import wiki_arm as wa
-    lib = Library.load(LIB)
-    ft, rows = FullText(lib), []
+    libs: dict = {}
+
+    def lib_of(root):
+        if root not in libs:
+            L = Library.load(root); libs[root] = (L, FullText(L))
+        return libs[root]
+    rows = []
     for i, q in enumerate(questions):
+        lib, ft = lib_of(q.get("lib", str(LIB)))
         plan = [["search", "wiki", q["question"]]]
         if q.get("none"):
             # read the best page the entry shows, find nothing, refuse — a refusal is a reading, not a reflex
@@ -305,6 +382,7 @@ def main() -> int:
     ap.add_argument("--walks", action="store_true")
     ap.add_argument("--with-none", action="store_true", help="REAL4: add unanswerable questions → train_real_none.jsonl")
     ap.add_argument("--with-repeated", action="store_true", help="REAL6: also add repeated-value questions → train_real_cite.jsonl")
+    ap.add_argument("--with-crosslink", action="store_true", help="REAL7: REAL4's corpus + cross-link decoy walks → train_real_link.jsonl")
     a = ap.parse_args()
     DATA.mkdir(parents=True, exist_ok=True)
     if a.questions:
@@ -319,6 +397,11 @@ def main() -> int:
             if not nf.exists():
                 nf.write_text("".join(json.dumps(q, ensure_ascii=False) + "\n" for q in build_none()))
             qs, name = qs + [json.loads(l) for l in nf.read_text().splitlines() if l.strip()], "train_real_none"
+        if a.with_crosslink:
+            cf = DATA / "real_crosslink_questions.jsonl"
+            if not cf.exists():
+                cf.write_text("".join(json.dumps(q, ensure_ascii=False) + "\n" for q in build_crosslink()))
+            qs, name = qs + [json.loads(l) for l in cf.read_text().splitlines() if l.strip()], "train_real_link"
         if a.with_repeated:
             rf = DATA / "real_repeated_questions.jsonl"
             if not rf.exists():
