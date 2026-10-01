@@ -40,6 +40,24 @@ one session serves both; their sha256 are recorded in REAL3's and this run's tra
 - **PASSED** = both. **A refusal bought with answers** (fixed, but the headline cost exceeds the bar) is FALSIFIED as a
   recipe, and said so.
 
-## Result
+## Result [ran] — refusal FIXED; as written FALSIFIED on the cost bar, by one row
 
-*(written after S)*
+`real-none-s0` trained on an A100 (315 rows, span-masked: 19,454 trained tokens of 594,798); one L4 session, G1 applied
+for both members, 0 errors. `real4.json`.
+
+| arm | headline (23) | refusals (16) | adjacent (6) | one-hop (13) | all (52) |
+|---|---|---|---|---|---|
+| **`real-none-s0`** | **16** (69.6 %) | **15** | **5** | 7 | **38** |
+| `real-spans-s0` (our previous version) | 17 | 0 | 0 | 7 | 24 |
+| `base-walks+page` | 8 | 12 | 4 | 3 | 23 |
+
+- **REFUSAL FIXED:** 15/16 unanswerable refused (bar 13) and 5/6 of the adjacent ones (bar 4) — questions on topics the
+  member was trained on but this library does not hold. **No false refusal:** `Not in my library.` on 0 of the 36
+  answerable rows.
+- **AT NO COST — not met, by one row on each clause:** against `real-spans-s0` on the headline it loses **3** rows it
+  answered (bar ≤ 2) and gains 2, ending at **16/23 = 69.6 %** (bar ≥ 70 %). **As written: FALSIFIED** — "a refusal bought
+  with answers".
+- **Beside it, not folded in:** the pair is a tie, 2 : 3, $p = 1.0$; and `real-spans-s0` itself scored 18/23 and 17/23 on
+  these rows in two sessions — the cost bar was set tighter than vLLM's own run-to-run spread on this member. The reading
+  that the numbers support is stated, not adopted: refusal is fixed and the headline cost is indistinguishable from noise.
+  Which reading stands is the user's decision, as H1's and H2's were.
