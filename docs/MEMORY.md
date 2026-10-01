@@ -16,7 +16,14 @@ trajectory learned on a generator's world does not carry to a real one (`distrib
 opens a page — **REAL0 [ran]**); trained instead on walks over real documents of **another** family and with the
 loss masked to the model's own spans, it does transfer — 18/23 fresh headline against the base's 9/23 (**REAL3
 [ran]**, both seeds), and refusal is then trainable the same way (**REAL4 [ran]**, as written FALSIFIED on the
-headline cost by one row; the user accepted the reading that refusal is fixed and the cost is noise, 2026-10-01).
+headline cost by one row; the user accepted the reading that refusal is fixed and the cost is noise, 2026-10-01) —
+**`real-none-s0` is the real-document member, served next.** Transfer holds on a third family too, but only
+partly: against EPA 40 CFR 112's dense links the member still beats the base 7× (13:0, $p=0.00024$) and refuses
+5/5, but the strict citation lands at 15/25 — under the 70 % bar, because a value that repeats across statements
+is sometimes cited to the wrong one (**REAL5 [ran], PARTIAL**). Training one-hop repeated-value choices does not
+fix that: the remaining misses are multi-hop rows cited at the wrong end of a link, a shape that corpus never
+contained (**REAL6 [ran], FALSIFIED**). Training exactly that shape — a decoy holding the same number at a link's
+start, the answer at its end — is **REAL7, running** (pre-registered, verdict on REAL5's twin-free headline).
 
 Five pieces:
 

@@ -17,7 +17,15 @@ de un generador no se traslada a uno real (`distributor-wiki@v2` sin cambios, 0/
 **REAL0 [ran]**); entrenada en cambio sobre recorridos de documentos reales de **otra** familia y con la pérdida
 con máscara sobre los propios tramos del modelo, sí transfiere — 18/23 en el titular fresco contra el 9/23 del
 base (**REAL3 [ran]**, las dos semillas), y la negativa se vuelve entrenable del mismo modo (**REAL4 [ran]**,
-tal como está escrito FALSIFIED en el costo del titular por una fila; el usuario aceptó la lectura de que la negativa está arreglada y el costo es ruido, 2026-10-01).
+tal como está escrito FALSIFIED en el costo del titular por una fila; el usuario aceptó la lectura de que la negativa está arreglada y el costo es ruido, 2026-10-01) —
+**`real-none-s0` es el miembro de documento real, el que se sirve a continuación.** La transferencia se sostiene
+también sobre una tercera familia, pero sólo en parte: contra los enlaces densos de la EPA 40 CFR 112 el miembro
+sigue ganándole 7× al base (13:0, $p=0,00024$) y se niega 5/5, pero la cita estricta cae en 15/25 — bajo la barra
+del 70 % — porque un valor que se repite entre sentencias a veces se cita a la equivocada (**REAL5 [ran],
+PARCIAL**). Entrenar elecciones de valor repetido de un salto no lo corrige: las fallas restantes son filas de
+varios saltos citadas en el extremo equivocado de un enlace, una forma que ese corpus nunca contuvo (**REAL6
+[ran], FALSEADO**). Entrenar exactamente esa forma — un señuelo con el mismo número al inicio de un enlace, la
+respuesta en su extremo — es **REAL7, en curso** (pre-registrado, veredicto sobre el titular sin gemelos de REAL5).
 
 Cinco piezas:
 

@@ -44,6 +44,24 @@ que lo necesita, en vez de releer la conversación. MT0 midió la línea de base
 escrita y la decisión del usuario (2026-09-29) a favor de la lectura por brazo, quedando el VOID tal
 como está escrito como el registro de ese error del instrumento; ver [`MEMORY.md`](MEMORY.md) §11 y
 [`docs/review/harness-workflow-kv.md`](review/harness-workflow-kv.md) §8 para el resultado completo.
+**El arnés de flujo de trabajo también sirve en vivo**, sin bloque, en la propia Mac del usuario a
+través de un runtime de agente real (OpenClaw, llama.cpp): 14/14 turnos, 8/8 dependientes **[ran]**
+`results/LIVE-tracker-openclaw-20260930/BRIEF.md`.
+
+**Estado actual, 2026-10-01 — la línea de biblioteca real (REAL0→REAL5).** El §9 de abajo ya nombra la
+pregunta abierta que este diseño deja sin responder — *"que algo medido sobre una suite generada
+transfiera a una real"* — y hoy está medida, sobre la misma biblioteca de enunciados atómicos que este
+documento especifica. Un miembro de trayectoria entrenado sobre un mundo generado no entra para nada a
+una biblioteca real (0/25, nunca abre una página, **REAL0 [ran]**); los propios arreglos del runtime —
+entrada de texto completo en cada estante, páginas abiertas con sus enunciados (los verbos de §3.4, sin
+cambios) — reparan llegar a la página, no la cita sobre ella (**REAL1–REAL2 [ran]**); entrenada en
+cambio sobre recorridos de documentos reales de otra familia, con la pérdida restringida a los propios
+tramos del modelo (las reglas de corpus del §5, extendidas por una: enmascarar los resultados de
+herramienta), la política transfiere — 18/23 contra el 9/23 del base sin entrenar (**REAL3 [ran]**), la
+negativa se vuelve entrenable del mismo modo (**REAL4 [ran]**), y la transferencia se sostiene, en
+parte, sobre una tercera familia con enlaces más densos (15/25, bajo la barra de citación, **REAL5
+[ran]**). Ver el §1.6 de [`MEMORY.md`](MEMORY.md) y el §8.10 de [`FOUNDATIONS.md`](FOUNDATIONS.md) para
+la línea completa, incluyendo lo que vino después (REAL6, REAL7).
 
 ## 2. Lo que ya está medido, y tiene que restringir el diseño
 

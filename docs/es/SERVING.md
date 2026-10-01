@@ -73,6 +73,49 @@ lleno el primer intento de H2 **[ran]** `h2_attempt1_void_http400.json`. El arre
 parada genérica, `"</"`, y el mismo `close_open_tag` de arriba reconstruye la etiqueta específica a partir
 de dentro de qué texto quedó. Una sola función, los dos motores, por razones opuestas.
 
+## El endpoint de la biblioteca: el miembro de documentos reales como servidor compatible con OpenAI
+
+`examples/library/serve.py` sirve a `real-none-s0` — el miembro aceptado después de REAL4
+([`ARCHITECTURE.md`](ARCHITECTURE.md) §4) — de la forma en que un runtime de agentes realmente le hablaría: un
+proceso, una biblioteca, el propio runtime de REAL4 (el texto completo de la pregunta como primera búsqueda en todos
+los estantes, un fallback a todos los estantes, páginas abiertas con sus enunciados). Es el perfil `edge` de arriba
+más el runtime de la memoria delante, no una tercera cosa.
+
+    llama-server -m gemma-4-E4B-it-Q8_0.gguf --lora lora-real-none-s0-f16.gguf --port 8793 -c 16384 -ngl 99
+    python -m examples.library.serve --library knowledge/logistics-regs --upstream http://127.0.0.1:8793 --port 8766
+
+**En una Mac de 16 GB, achicar el contexto y limpiar la GPU primero.** `-c 16384` es contra lo que se midieron las
+propias preguntas de REAL4, pero una máquina de 16 GB no tiene 16.384 tokens de contexto de sobra *y* el resto de la
+pila: usar **`-c 12288 -b 512`**, y asegurarse de que nada más esté reteniendo memoria de GPU antes de arrancar
+`llama-server` — el primer intento en vivo acá quedó en pausa exactamente por esto, otra sesión ya tenía el
+`llama-server` reteniendo la memoria que esta necesitaba ([`LIVE-library`](../../results/LIVE-library-20261001/BRIEF.md)).
+Q8_0, no Q4_0, por la misma razón que cualquier otro miembro en `edge` — el vuelco del order-id del caché de prompt
+de arriba.
+
+**La regla de salida de red es la misma del gateway (§6 de [`OPENCLAW.md`](OPENCLAW.md), [`MECHANISMS.md`](MECHANISMS.md)
+§6): cerrada por default.** `serve.py` instala `examples.common.egress` antes de que cargue cualquier otra cosa,
+permitido sólo hacia el upstream de `llama-server` y loopback, con `HF_HUB_OFFLINE`/`TRANSFORMERS_OFFLINE` fijados
+para que cargar el tokenizador nunca llegue al hub de modelos — el mismo refuerzo que el gateway consiguió con el
+#310, aplicado a esta segunda puerta de entrada.
+
+**Apuntarle OpenClaw es registrar un proveedor, no parchear un agente.** El endpoint escribe su propio parche de
+OpenClaw al arrancar (`--openclaw-patch`, default `~/.config/lora-kernel/openclaw/library-reader.json5`):
+
+    {
+      models: { providers: { library: { baseUrl: "http://127.0.0.1:{port}/v1", api: "openai-completions",
+        auth: "api-key", apiKey: "local", models: [ { id: "auto", name: "regulations library — real-none-s0" } ] } } },
+      agents: { defaults: { model: "library/auto" } }
+    }
+
+Un pedido entra, un recorrido sale: la respuesta lleva la contestación con su citación renderizada como
+`[título de página §ancla]`, o `Not in my library.`, y el propio campo `x_walk` de la respuesta lleva todo el
+recorrido — ids mostrados, enunciados abiertos — así que un driver puede calificar la citación exactamente como lo
+hizo la medición, en vez de volver a parsear el texto de la respuesta. `examples/library/live_library.py` es ese
+driver: manda las 52 preguntas de REAL4 por `openclaw agent --local`, una sesión fresca por cada una, y califica el
+propio registro de recorrido del endpoint con el calificador de REAL4. **Construido y probado offline; la primera
+corrida contra el servidor real quedó en pausa antes de producir un resultado** — ver [`OPENCLAW.md`](OPENCLAW.md)
+sobre cómo apuntarlo a una instancia de OpenClaw corriendo.
+
 ## Cuánto cuesta servir en vivo: el orden le gana al tamaño, y dos adaptadores no cuestan el doble
 
 Dos hallazgos de la misma corrida ponen precio al motor mismo, en `server` y en `edge` por igual,
@@ -144,9 +187,11 @@ sobre una suite fresca retenida (pareado 11:0, $p = 0,00098$, plano), y sin el b
 sostiene 156/160 en cada rol a más o menos un tercio de los tokens de prompt — el miembro de contexto
 compacto ahora funciona
 ([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
-**El arnés todavía no corrió en vivo a través de OpenClaw**; ver
-[`OPENCLAW.md`](OPENCLAW.md) para la historia del multi-turno y
-`docs/review/harness-workflow-kv.md` §§8–9 para los resultados completos y las lecturas elegidas.
+**El arnés desde entonces corrió en vivo a través de OpenClaw**: `tr-s1` sin bloque, en `edge` (llama.cpp en la
+propia Mac del usuario), en tres sesiones (lead, developer, QA) — 14 de 14 turnos, dependientes 8 de 8
+([`LIVE-tracker`](../../results/LIVE-tracker-openclaw-20260930/BRIEF.md)); ver [`OPENCLAW.md`](OPENCLAW.md) para la
+historia del multi-turno y `docs/review/harness-workflow-kv.md` §§8–9 para los resultados completos y las lecturas
+elegidas.
 
 ## La base tiene que ser una a la que vLLM realmente le aplique adaptadores — se chequea, no se supone
 

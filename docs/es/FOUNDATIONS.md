@@ -1018,6 +1018,87 @@ cuatro turnos dependientes siguientes encuentran una memoria vacía — un error
 por la sesión
 ([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
 
+### 8.10 La línea de biblioteca real: entrada, pérdida y cita (REAL0–REAL7)
+
+REAL0 **[ran]** encontró la falla que "el contenido se extrae por caso" de §8.6 no descarta por sí
+sola: un miembro de trayectoria entrenado sobre una biblioteca *generada* nunca entra a una real — en
+40 de 40 caminatas su primer acto es una búsqueda del estante del harness con una consulta de su
+propio mundo de entrenamiento, y no abre ni una página en ninguna. Arreglarlo toca tres lugares: cómo
+una pregunta encuentra una página, sobre qué se toma la pérdida de entrenamiento, y qué acepta el
+calificador como cita.
+
+**Entrada — BM25 de texto completo sobre las sentencias de una nota.** `memory.runtime.FullText`
+reemplaza la coincidencia léxica de la pregunta contra el título de una nota por Okapi BM25 sobre el
+cuerpo de la nota (sus sentencias), más un bono plano por cada palabra que la pregunta comparte con el
+`when`/`what` de la nota:
+
+```math
+\mathrm{score}(n\mid q)=\sum_{w\in q} \mathrm{idf}(w)\,\frac{f_{w,n}(k_1+1)}{f_{w,n}+k_1\,(1-b+b\,|n|/\overline{|n|})}
+  + 2\,\bigl|q\cap(\mathrm{when}\cup\mathrm{what})\bigr|,\qquad \mathrm{idf}(w)=\ln\!\Bigl(1+\frac{N-\mathrm{df}_w+0.5}{\mathrm{df}_w+0.5}\Bigr)
+```
+
+con $k_1=1,2$, $b=0,75$ — los valores estándar, nunca ajustados sobre un conjunto de preguntas; los
+empates se rompen por el id de la nota. **Por qué (REAL0 [ran]):** el `when`/`what` de un reglamento
+ingerido es el título de su sección, y la pregunta de una persona comparte pocas palabras con él — una
+coincidencia léxica sólo por título encontró la página de inicio de una caminata en 5 de 36
+preguntas, la página de soporte en 10; BM25 sobre las sentencias encuentra la página de inicio 34/36 y
+el soporte 32/36 (REAL1–2 **[ran]**, $k=3$). Bajo esta entrada más páginas abiertas con sus
+sentencias (`page_text`), el puntaje del titular de la base sin entrenar sobre el conjunto de REAL0
+sube 1 → 4 → 7 de 25 a través de REAL0–REAL2; el miembro del mundo generado se queda en 0 → 1 → 5 — la
+entrada repara llegar a la página, nunca la cita sobre ella.
+
+**La pérdida — sólo los tramos propios del modelo.** El objetivo de §4.4 suma la entropía cruzada
+sobre "el tramo del asistente", que para un turno de chat corto es la respuesta entera. Una caminata de
+trayectoria sobre una página real leída entera es sobre todo *esa página*: REAL3 **[ran]** encontró
+que `training/s4_train.py` sumaba la pérdida sobre todo el texto renderizado — sistema, pregunta y
+cada resultado de herramienta — así que en un corpus donde los resultados son largos el adaptador
+aprende a escribir el resultado, no a responder desde él (`real-walks-s0` escribió párrafos de
+reglamento después de una página, 1/23). La corrección restringe la suma a $S$, los tramos que el
+propio modelo escribe — sus etiquetas y su respuesta citada, nunca un resultado de herramienta, una
+pregunta o el texto del sistema — una restricción estricta de la $\mathcal L(A,B)$ de §4.4:
+
+```math
+\mathcal{L} = \sum_{t \in S} -\log p_{\theta+\Delta}(x_t \mid x_{<t}), \qquad S = \{\,t : x_t \in \text{los tramos propios del modelo}\,\}
+```
+
+**Medido [ran] REAL3:** de 552.495 tokens en el corpus de caminatas, 18.241 (3,3 %) son del modelo —
+entrenar sólo sobre ellos convierte 1/23 en 18/23 (§11 más abajo). **Esta no es la receta por
+defecto para todo miembro:** H5 **[ran]** encontró que le cuesta a un miembro de resultados cortos una
+familia de frases completa (§11) — la pérdida con máscara de tramos es la receta sólo donde los
+resultados de herramienta son largos (páginas reales: REAL3); donde son líneas cortas (el rastreador
+de equipo), se queda la pérdida de texto completo de §4.4.
+
+**La cita — la sentencia de soporte misma, no cualquier sentencia que tenga el valor.** Un valor se
+repite a través de una biblioteca real ("12" ocurre en 12 sentencias sólo en la biblioteca de REAL0),
+así que una caminata puede tener el valor correcto y citar el párrafo equivocado. La regla estricta
+del calificador, opcional por fila (`check.cite = "support"`, `grade.py`), exige que la nota citada
+sea exactamente la sentencia que el plan de la pregunta nombra como soporte:
+
+```math
+\mathrm{cite\_ok}(x) = \mathbf{1}\big[\,\mathrm{cited}(x) = \mathrm{support}(x)\,\big], \qquad \text{más estricto que } \mathbf{1}\big[\,\mathrm{value}(x) \in \mathrm{statement}(\mathrm{cited}(x))\,\big]
+```
+
+**Medido [ran] REAL5:** sobre una tercera familia densa en enlaces, el valor es correcto 20/25 pero la
+cita estricta sólo 15/25 — 3 de las 5 pérdidas citan otra sentencia que tiene el mismo número repetido
+(§11). REAL6 **[ran]** entrenó elecciones de valor repetido de un salto y lo dejó sin cambios (15/25,
+empate): las fallas restantes son filas de varios saltos citadas en el extremo equivocado de un
+enlace, una forma que ese corpus nunca contuvo. REAL7 (pre-registrado, en curso) entrena exactamente
+esa forma — un señuelo con el mismo número al inicio de un enlace, la respuesta en su extremo.
+
+**Tests de signos pareados sobre esta línea (el test de §9.2, aplicado aquí):**
+
+| corrida | par | discordantes | $p$ |
+|---|---|---|---|
+| REAL3 (semilla 0, titular fresco) | `real-spans-s0` vs `base-walks+page` | 10 : 1 | 0,0117 |
+| REAL3 (semilla 1, titular fresco) | `real-spans-s1` vs `base-walks+page` | 9 : 1 | 0,0215 |
+| REAL5 (titular, tercera familia) | `real-none-s0` vs `base-walks+page` | 13 : 0 | 0,00024 |
+| H5 (turnos dependientes, bloque de herramienta mostrado) | `tr-s3` (máscara de tramos) vs `tr-s1` (texto completo) | 0 : 20 | regresión |
+
+Las primeras tres dicen que la pérdida con máscara de tramos transfiere navegación y cita a través de
+familias de documentos que nunca vio. La última dice que no es un sustituto gratuito de la pérdida de
+texto completo donde los resultados son cortos — un miembro entrenado en la forma en que se sirve
+(§4.4) todavía necesita la pérdida sobre los tokens que esa forma en verdad le exige producir.
+
 ## 9. Estadística usada, y sólo esta
 
 ### 9.1 La barra de clase mayoritaria
@@ -1189,3 +1270,11 @@ entrena la mitad grande; el hito 4 mide la desigualdad de §7.1.
 | §8.9 | **el harness de flujo contra el brazo con historial de MT0 y la vara de planitud $\bar p_3 \le 1,1\ \bar p_1$**: $A_{\text{dep}}$(harness) 53/54 contra 43/54, 11 : 1 emparejado ($p\approx0,006$); $\bar p_1,\bar p_2,\bar p_3$ = 745/726/710, plano; `harness-noblock` 0/60. Tal como fue escrita VOID (la regla de primeros turnos anula entre brazos); leída por brazo, `harness` PASÓ y `harness-noblock` quedó FALSADO — la decisión del usuario (2026-09-29): vale la lectura por brazo, el VOID tal como está escrito queda como el registro de ese error del instrumento | H1 `results/H1-workflow-harness-20260929/BRIEF.md` |
 | §8.9 | **el mismo harness sobre un dominio de tracker de cinco turnos, la vara de planitud $\bar p_5 \le 1,1\ \bar p_1$**: $A_{\text{dep}}$(harness) 146/160 (91,3%) contra un umbral del 90%; $\bar p_1,\dots,\bar p_5$ = 1613/1223/1011/1149/1274, plano; `base-history` 4/160, sus propios primeros turnos 44/60 lo anulan bajo la regla por brazo de H1, lo que vuelve ilegible la comparación pre-registrada — se lee FALSEADA tal como está escrita, no ANULADA, en el registro con ese y el error de instrumento del chequeo de anchor; descriptivo pareado 142 : 0, $p\lt 10^{-40}$ (brazo anulado, no un veredicto sustituto); **la decisión del usuario (2026-09-29): lectura 1** — las condiciones legibles son el veredicto de H2, `harness` PASÓ. `harness-noblock` 80/160 es un error del corpus (un aliasing `% 3` entre el tercio sin bloque y la rotación de roles), no un aprendizaje parcial | H2 `results/H2-tracker-harness-20260929/BRIEF.md` |
 | §8.9 | **H3 [ran], las dos barras PASARON**: `tr-s1` (entrenado sobre un segundo corpus que amplía el fraseo por turno/rol y da a cada rol un tercio parejo sin bloque) 158/160 contra `tr-s0` 147/160 sobre una suite fresca retenida, pareado 11:0, prueba de signo exacta $p=2\cdot2^{-11}\approx0,00098$, plano; `s1-noblock` 156/160, perdiendo 4 de 8 turnos contra el bloque, cada rol por encima de la barra, más o menos un tercio de los tokens de prompt | H3 [`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../results/H3-tracker-corpus-v2-20260929/BRIEF.md) |
+| §8.10 | **REAL0 — un miembro de mundo generado nunca entra a una biblioteca real**: `nolib` 0/25 (compuerta — los valores no están en los pesos); `base-reads` 22/25 (el techo de lectura); `base-walks` 1/25; `withlib-s1` (`distributor-wiki@v2`) 0/25, empatado contra `base-walks` ($p=1,0$) — **NO GENERALIZA**; en 40 de 40 caminatas su primera búsqueda es una consulta de su propio mundo de entrenamiento, 0 páginas abiertas | REAL0 [`results/REAL0-real-library-20260930/BRIEF.md`](../../results/REAL0-real-library-20260930/BRIEF.md) |
+| §8.10 | **REAL1–2 — la entrada BM25 + page_text reparan llegar a la página, no la cita**: el titular de la base sin entrenar 1 → 4 → 7 de 25 a través de REAL0–REAL2; `distributor-wiki@v2` 0 → 1 → 5; la página de soporte se alcanza 24/25 | REAL1 [`results/REAL1-entry-20260930/BRIEF.md`](../../results/REAL1-entry-20260930/BRIEF.md), REAL2 [`results/REAL2-page-text-20260930/BRIEF.md`](../../results/REAL2-page-text-20260930/BRIEF.md) |
+| §8.10 | **REAL3 — pérdida con máscara de tramos, M3 FUNCIONA sobre una familia de documentos nunca entrenada, dos semillas**: `real-spans-s0` 18/23 (78 %) contra `base-walks+page` 9/23, 10 : 1, $p=0,0117$; semilla 1 `real-spans-s1` 17/23 (74 %), 9 : 1, $p=0,0215$; intento 1 (pérdida de texto completo, antes de la corrección) `real-walks-s0` 1/23 — la falla leída, luego nombrada | REAL3 [`results/REAL3-real-corpus-20260930/BRIEF.md`](../../results/REAL3-real-corpus-20260930/BRIEF.md) |
+| §8.10 | **REAL4 — la negativa es entrenable**: `real-none-s0` se niega en 15/16 filas sin respuesta (barra 13) y 5/6 de las adyacentes por tema, 0 negativas falsas de 36; contra `real-spans-s0` el costo en el titular es un empate dentro de la propia dispersión de corrida a corrida de vLLM (16/23 vs 17/23, 2 : 3, $p=1,0$) — **NEGATIVA CORREGIDA**, aceptado por el usuario como el miembro de documento real (2026-10-01) | REAL4 [`results/REAL4-refusal-20260930/BRIEF.md`](../../results/REAL4-refusal-20260930/BRIEF.md) |
+| §8.10 | **REAL5 — transfiere a una tercera familia densa en enlaces (EPA 40 CFR 112); la cita es el faltante**: `real-none-s0` 15/25 (60 %) contra `base-walks+page` 2/25, 13 : 0, $p=0,00024$; valor correcto 20/25; negativas 5/5 — **PARCIAL**, bajo la barra del 70 % sólo por la cita estricta | REAL5 [`results/REAL5-third-family-20261001/BRIEF.md`](../../results/REAL5-third-family-20261001/BRIEF.md) |
+| §8.10 | **REAL6 — entrenar valor repetido de un salto no corrige una cita de varios saltos**: `real-cite-s0` 15/25 contra `real-none-s0` 15/25, empate 1 : 1; las citas erróneas restantes son filas de varios saltos citadas en el extremo equivocado de un enlace, una forma que el corpus de 50 filas nunca contuvo — **FALSEADO** | REAL6 [`results/REAL6-citation-20261001/BRIEF.md`](../../results/REAL6-citation-20261001/BRIEF.md) |
+| §8.10 | **H5 — la pérdida con máscara de tramos no es la receta por defecto**: con el bloque de herramienta mostrado a ambos, `tr-s3` (máscara de tramos) 140/160 turnos dependientes contra `tr-s1` (texto completo) 160/160, pareado 0 : 20 sobre una familia de frases (`type=defect` vs `type=bug`) — regresión, así que la pérdida con máscara de tramos se queda acotada a resultados de herramienta largos (páginas reales); los miembros de resultados cortos conservan la pérdida de texto completo de §4.4 | H5 [`results/H5-span-loss-tracker-20261001/BRIEF.md`](../../results/H5-span-loss-tracker-20261001/BRIEF.md) |
+| §8.10 | **REAL7 — en curso (pre-registrado)**: caminatas señuelo de enlace cruzado (la respuesta en el extremo de un enlace, el mismo número como señuelo en su inicio), familia de entrenamiento extendida con 49 CFR 390/392/393/397; veredicto sobre el titular sin gemelos de REAL5 (21 filas, base `real-none-s0` 13/21), barra ≥ 15/21 — sin resultado todavía | REAL7 [`results/REAL7-crosslink-20261001/BRIEF.md`](../../results/REAL7-crosslink-20261001/BRIEF.md) |

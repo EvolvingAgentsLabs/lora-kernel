@@ -127,6 +127,23 @@ accidente. Las dos organizaciones difieren a propósito, no por omisión: el mie
 no declarada en el system prompt — y sus escrituras corren sin aprobación de un director, una decisión de política de
 esa organización y sus roles, no un hueco en el mecanismo de aprobaciones de arriba.
 
+**Lo que espera a una persona sobrevive a un reinicio, y el proceso no puede alcanzar fuera de sus propios hosts [ran]
+(#310).** Con un directorio de estado (`Gateway(state_dir=…)`, `--state-dir`) la cola de aprobaciones deja un diario de
+cada paso — `held`, `executing`, `approved` / `rejected` — en `approvals.jsonl`, y las derivaciones en
+`handoffs.jsonl`; los dos se releen al arrancar. `executing` se escribe antes de que corra la herramienta, así que un
+proceso que muere a mitad de un cobro vuelve con ese pedido `interrupted`: listado para quien aprueba, nunca
+reejecutado por sí solo, solo rechazable — una escritura retenida se ejecuta a lo sumo una vez, con el alcance de
+quien la pidió. Al lado, `examples/common/egress.py` gobierna lo que puede alcanzar el *proceso*, no lo que decide el
+modelo: `socket.getaddrinfo` y `socket.socket.connect` rechazan cualquier host fuera del servidor del miembro, el host
+de la frontera (si está configurado) y loopback — incluida la resolución DNS, así que un nombre rechazado nunca llega
+a resolverse — con `--open-egress` como válvula de escape para desarrollo. Lo primero que encontró fue el propio
+arranque del gateway pidiéndole algo al hub de modelos por red para cargar el tokenizador; el gateway ahora fija
+`HF_HUB_OFFLINE` y lo lee del caché local. **El margen para el próximo paso se comprobó antes de construirlo, no
+después:** cada turno grabado en tres dominios y los dos motores de servido, repasado — 70 expuestos a una instrucción
+plantada en un resultado de herramienta, 0 actuaron — ninguna escritura no pedida, ningún alcance a otra organización
+— así que envolver material ajeno en su propia cerca, el cambio propuesto, no está construido; no hay nada en estas
+suites para que lo arregle ([`INJ0`](../../results/INJ0-planted-headroom-20260930/BRIEF.md)).
+
 **El gateway lleva el estado de una sesión, no su transcripción — H1 ya tiene un resultado, que se lee de dos
 formas [ran].** La corrección ingenua para multi-turno es `Gateway(history=True)`: repetir la conversación para que
 una referencia a un turno anterior ("llevalo al andén 5") tenga a qué referirse. **[ran] MT0**
@@ -393,6 +410,39 @@ decisión del usuario (2026-09-29): vale la lectura por brazo, el VOID tal como 
 de ese error del instrumento. Diseño y decisiones abiertas:
 [`review/harness-workflow-kv.md`](review/harness-workflow-kv.md); cómo se conecta cada pieza acá de punta a
 punta: [`MECHANISMS.md`](MECHANISMS.md).
+
+**El camino de documentos reales — cada pieza del §4 contra una biblioteca que nadie generó.** `memory/ingest.py`
+convierte un documento oficial (el XML del propio eCFR, de dominio público) a la forma de la biblioteca de manera
+mecánica, sin reescribir ningún enunciado: una SECCIÓN se vuelve una página, un PÁRRAFO se vuelve un enunciado
+anclado por su propio camino de etiqueta (`(b)(3)(ii)` → `§b-3-ii`), y una referencia cruzada adentro de la ingesta
+se vuelve un enlace donde la regulación lo puso — el contenido se mueve, el miembro no. La primera biblioteca armada
+así rompió la navegación: `distributor-wiki@v2`, entrenado sólo sobre un mundo generado, buscaba con consultas
+memorizadas de ese mundo y nunca abría una página, 0/25 de varios saltos
+([`REAL0`](../../results/REAL0-real-library-20260930/BRIEF.md)). Cerrar esa brecha no necesitó reentrenar, sólo que el
+runtime leyera más de lo que se le da: `memory.runtime.FullText` (BM25 sobre los enunciados de una nota, no su
+título) como entrada en todos los estantes con las propias palabras de la pregunta, un `fallback` a todos los
+estantes cuando uno nombrado no devuelve nada, y `page_text` que renderiza los enunciados de una página bajo sus
+propios anclajes en lugar de un índice desnudo — juntos cerraron la mayor parte de la brecha sin reentrenar, a 24/25
+([`REAL1`](../../results/REAL1-entry-20260930/BRIEF.md)–[`REAL2`](../../results/REAL2-page-text-20260930/BRIEF.md)). Lo
+que sí necesitó un miembro nuevo fue el corpus: recorridos sobre documentos reales de otra familia, con la pérdida
+restringida a los propios tramos del modelo (la pérdida enmascarada por tramos de `training/s4_train.py` — la
+pérdida de texto completo, la receta de todo miembro anterior, le enseñaba a un LoRA a escribir la regulación en vez
+de contestarla, 1/23) y, una vez agregada la negativa como 27 recorridos sin respuesta, el miembro que aceptó el
+usuario, `real-none-s0` — 18/23 (78 %) sobre un set fresco de varios saltos contra el 9/23 del base sin entrenar,
+15/16 negativas, 0 negativas falsas
+([`REAL3`](../../results/REAL3-real-corpus-20260930/BRIEF.md), [`REAL4`](../../results/REAL4-refusal-20260930/BRIEF.md)).
+Esa pérdida enmascarada por tramos no es el nuevo default para todo miembro, comprobado sobre el del tracker: retrocede
+0:20 en un miembro de resultado corto sobre una frase, así que queda como receta donde los resultados de herramienta
+son largos y la pérdida de texto completo queda donde son cortos
+([`H5`](../../results/H5-span-loss-tracker-20261001/BRIEF.md)). Servido como lo serviría el producto,
+`examples/library/serve.py` pone a `real-none-s0` detrás de un endpoint compatible con OpenAI sobre llama.cpp,
+corriendo exactamente este runtime (entrada de texto completo, fallback, texto de página) con la salida de red
+cerrada al servidor del modelo ([`LIVE-library`](../../results/LIVE-library-20261001/BRIEF.md), el refuerzo del §2 de
+arriba). **Abierto:** la precisión de la citación cuando un valor se repite entre enlaces — REAL5 la encontró (15/25
+sobre una tercera familia densa en enlaces, bajo la barra de 70 %), el arreglo de un solo salto de REAL6 la dejó sin
+cambios (FALSIFIED), y los recorridos con señuelo entre enlaces de REAL7 están pre-registrados y corriendo
+([`REAL5`](../../results/REAL5-third-family-20261001/BRIEF.md), [`REAL6`](../../results/REAL6-citation-20261001/BRIEF.md),
+[`REAL7`](../../results/REAL7-crosslink-20261001/BRIEF.md)).
 
 ## 5. El contrato de liberación
 

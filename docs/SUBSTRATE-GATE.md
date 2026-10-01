@@ -61,6 +61,17 @@ G2 `email-full` answers with **1 tool call**, `fluids-full` answers with none �
 surface offers it no inbox tool, which is the right shape; G3 `stop_reason: '3'`.
 `results/P56-substrate-20260917/verdict.json`.
 
+## Current status, 2026-10-01 — the real-library line
+
+The gate's three checks (G1–G3) are about *serving* a member correctly; they do not check whether its
+corpus or its loss was the right recipe. REAL3 **[ran]** found a defect this gate cannot see and no gate
+should be asked to: `real-walks-s0` served, answered its tools and never differed from the base in a way
+C18 would flag — it was **applied**, and still wrote regulation text instead of a cited answer, because
+the training loss (not the serving substrate) sat on the whole walk. The fix (span-masked loss) is a
+training-time decision; this gate's job stops at confirming the resulting adapter is actually served.
+The live library endpoint (`examples/library/serve.py`, tested offline) will need to clear the same G1–G3
+checks before any live run, exactly as the tracker's `edge` member did (LIVE-tracker **[ran]**).
+
 ## Its place in the plan
 
 - **Phase 0 ✅ is the entry to every other phase.**

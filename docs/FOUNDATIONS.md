@@ -980,6 +980,82 @@ first turn calls the wrong tool, puts nothing, and the next four dependent turns
 a first-turn error cascading through the session
 ([`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../results/H3-tracker-corpus-v2-20260929/BRIEF.md)).
 
+### 8.10 The real-library line: entry, loss and citation (REAL0–REAL7)
+
+REAL0 **[ran]** found the failure §8.6's "content drawn per case" does not by itself rule out: a
+trajectory member trained on a *generated* library never enters a real one — in 40 of 40 walks its
+first act is a search of the harness shelf with a query from its own training world, and it opens no
+page in any of them. Fixing that touches three places: how a question finds a page, what the
+training loss is taken over, and what the grader accepts as a citation.
+
+**Entry — full-text BM25 over a note's statements.** `memory.runtime.FullText` replaces a lexical
+match of the question against a note's title with Okapi BM25 over the note's own body (its
+statements), plus a flat bonus for words the question shares with the note's `when`/`what`:
+
+```math
+\mathrm{score}(n\mid q)=\sum_{w\in q} \mathrm{idf}(w)\,\frac{f_{w,n}(k_1+1)}{f_{w,n}+k_1\,(1-b+b\,|n|/\overline{|n|})}
+  + 2\,\bigl|q\cap(\mathrm{when}\cup\mathrm{what})\bigr|,\qquad \mathrm{idf}(w)=\ln\!\Bigl(1+\frac{N-\mathrm{df}_w+0.5}{\mathrm{df}_w+0.5}\Bigr)
+```
+
+with $k_1=1.2$, $b=0.75$ — the standard values, never tuned on a question set; ties break on the
+note id. **Why (REAL0 [ran]):** an ingested regulation's `when`/`what` is its section title, and a
+person's question shares few words with it — a title-only lexical match found the page a walk starts
+on for 5 of 36 questions, the supporting page for 10; BM25 over the statements finds the start page
+34/36 and the support 32/36 (REAL1–2 **[ran]**, $k=3$). Under this entry plus pages opened with their
+statements (`page_text`), the untrained base's headline score on REAL0's set rises 1 → 4 → 7 of 25
+across REAL0–REAL2; the generated-world member stays at 0 → 1 → 5 — the entry repairs reaching the
+page, never the citation on it.
+
+**The loss — only the model's own spans.** §4.4's objective sums the cross-entropy over "the
+assistant span", which for a short chat turn is the whole reply. A trajectory walk over a real page
+read whole is mostly *that page*: REAL3 **[ran]** found `training/s4_train.py` summing the loss over
+the whole rendered text — system, question and every tool result — so on a corpus where results are
+long the adapter learns to write the result, not to answer from it (`real-walks-s0` wrote regulation
+paragraphs after a page, 1/23). The fix restricts the sum to $S$, the spans the model itself writes —
+its tags and its cited answer, never a tool result, a question or the system text — a strict
+restriction of §4.4's $\mathcal L(A,B)$:
+
+```math
+\mathcal{L} = \sum_{t \in S} -\log p_{\theta+\Delta}(x_t \mid x_{<t}), \qquad S = \{\,t : x_t \in \text{the model's own written spans}\,\}
+```
+
+**Measured [ran] REAL3:** of 552,495 tokens in the walk corpus, 18,241 (3.3 %) are the model's —
+training on just them turns 1/23 into 18/23 (§11 below). **This is not the default recipe for every
+member:** H5 **[ran]** found it costs a short-result member a whole phrasing family (§11) — the
+span-masked loss is the recipe only where tool results are long (real pages: REAL3); where they are
+short lines (the team tracker), §4.4's whole-text loss stays.
+
+**The citation — the supporting statement itself, not merely a statement holding the value.** A
+value repeats across a real library ("12" occurs in 12 statements of REAL0's library alone), so a
+walk can hold the right value and cite the wrong paragraph. The grader's strict rule, opt-in per row
+(`check.cite = "support"`, `grade.py`), requires the cited note to be exactly the statement the
+question's plan names as support:
+
+```math
+\mathrm{cite\_ok}(x) = \mathbf{1}\big[\,\mathrm{cited}(x) = \mathrm{support}(x)\,\big], \qquad \text{stricter than } \mathbf{1}\big[\,\mathrm{value}(x) \in \mathrm{statement}(\mathrm{cited}(x))\,\big]
+```
+
+**Measured [ran] REAL5:** on a link-dense third family, value-right is 20/25 but the strict citation
+only 15/25 — 3 of the 5 losses cite another statement holding the same repeated number (§11). REAL6
+**[ran]** trained one-hop repeated-value choices and left it unchanged (15/25, a tie): the remaining
+misses are multi-hop rows cited at the wrong end of a link, a shape that corpus never contained.
+REAL7 (pre-registered, running) trains exactly that shape — a decoy holding the same number at a
+link's start, the answer at its end.
+
+**Paired sign tests on this line (§9.2's test, applied here):**
+
+| run | pair | discordant | $p$ |
+|---|---|---|---|
+| REAL3 (seed 0, fresh headline) | `real-spans-s0` vs `base-walks+page` | 10 : 1 | 0.0117 |
+| REAL3 (seed 1, fresh headline) | `real-spans-s1` vs `base-walks+page` | 9 : 1 | 0.0215 |
+| REAL5 (headline, third family) | `real-none-s0` vs `base-walks+page` | 13 : 0 | 0.00024 |
+| H5 (dependent turns, tool block shown) | `tr-s3` (span-masked) vs `tr-s1` (whole-text) | 0 : 20 | regression |
+
+The first three say the span-masked loss transfers navigation and citation across document families
+it never saw. The last says it is not a free substitute for the whole-text loss where results are
+short — a member trained in the shape it is served (§4.4) still needs the loss over the tokens that
+shape actually requires it to produce.
+
 ## 9. Statistics used, and only these
 
 ### 9.1 The majority bar
@@ -1147,3 +1223,11 @@ milestone 3 trains the large half; milestone 4 measures §7.1's inequality.
 | §8.9 | **the workflow harness against MT0's history arm and the flatness bar $\bar p_3 \le 1.1\ \bar p_1$**: $A_{\text{dep}}$(harness) 53/54 vs 43/54, 11 : 1 paired ($p\approx0.006$); $\bar p_1,\bar p_2,\bar p_3$ = 745/726/710, flat; `harness-noblock` 0/60. As written VOID (the first-turns rule voids across arms); read per arm, `harness` PASSED and `harness-noblock` FALSIFIED — the user's decision (2026-09-29): per arm stands, the as-written VOID kept as the instrument-error record | H1 `results/H1-workflow-harness-20260929/BRIEF.md` |
 | §8.9 | **the same harness on a five-turn tracker domain, the flatness bar $\bar p_5 \le 1.1\ \bar p_1$**: $A_{\text{dep}}$(harness) 146/160 (91.3%) against a 90% bar; $\bar p_1,\dots,\bar p_5$ = 1613/1223/1011/1149/1274, flat; `base-history` 4/160, its own first turns 44/60 void it under H1's per-arm rule, making the pre-registered comparison unreadable — reads FALSIFIED as written, not VOID, kept on record with that and the anchor-check instrument error; descriptive paired 142 : 0, $p\lt 10^{-40}$ (arm void, not a substitute verdict); **the user's decision (2026-09-29): reading 1** — the readable conditions are H2's verdict, `harness` PASSED. `harness-noblock` 80/160 is a corpus bug (a `% 3` aliasing between the block-less third and the role rotation), not partial learning | H2 `results/H2-tracker-harness-20260929/BRIEF.md` |
 | §8.9 | **H3 [ran], both bars PASSED**: `tr-s1` (trained on a second corpus that widens wording per turn/role and gives each role an even block-less third) 158/160 against `tr-s0` 147/160 on a fresh held-out suite, paired 11:0, exact sign test $p=2\cdot2^{-11}\approx0.00098$, flat; `s1-noblock` 156/160, losing 4 of 8 turns to the block, every role above the bar, about a third of the prompt tokens | H3 [`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../results/H3-tracker-corpus-v2-20260929/BRIEF.md) |
+| §8.10 | **REAL0 — a generated-world member never enters a real library**: `nolib` 0/25 (gate — values not in the weights); `base-reads` 22/25 (the reading ceiling); `base-walks` 1/25; `withlib-s1` (`distributor-wiki@v2`) 0/25, tied against `base-walks` ($p=1.0$) — **DOES NOT GENERALISE**; in 40 of 40 walks its first search is a query from its own training world, 0 pages opened | REAL0 [`results/REAL0-real-library-20260930/BRIEF.md`](../results/REAL0-real-library-20260930/BRIEF.md) |
+| §8.10 | **REAL1–2 — BM25 entry + page_text repair reaching the page, not the citation**: untrained base's headline 1 → 4 → 7 of 25 across REAL0–REAL2; `distributor-wiki@v2` 0 → 1 → 5; the supporting page is reached 24/25 | REAL1 [`results/REAL1-entry-20260930/BRIEF.md`](../results/REAL1-entry-20260930/BRIEF.md), REAL2 [`results/REAL2-page-text-20260930/BRIEF.md`](../results/REAL2-page-text-20260930/BRIEF.md) |
+| §8.10 | **REAL3 — span-masked loss, M3 WORKS on a document family never trained on, two seeds**: `real-spans-s0` 18/23 (78 %) against `base-walks+page` 9/23, 10 : 1, $p=0.0117$; seed 1 `real-spans-s1` 17/23 (74 %), 9 : 1, $p=0.0215$; attempt 1 (whole-text loss, pre-fix) `real-walks-s0` 1/23 — the defect read, then named | REAL3 [`results/REAL3-real-corpus-20260930/BRIEF.md`](../results/REAL3-real-corpus-20260930/BRIEF.md) |
+| §8.10 | **REAL4 — refusal is trainable**: `real-none-s0` refuses 15/16 unanswerable rows (bar 13) and 5/6 topically adjacent ones, 0 false refusals of 36; against `real-spans-s0` the headline cost is a tie inside vLLM's own run-to-run spread (16/23 vs 17/23, 2 : 3, $p=1.0$) — **REFUSAL FIXED**, accepted by the user as the real-document member (2026-10-01) | REAL4 [`results/REAL4-refusal-20260930/BRIEF.md`](../results/REAL4-refusal-20260930/BRIEF.md) |
+| §8.10 | **REAL5 — transfers to a third, link-dense family (EPA 40 CFR 112); the citation is the shortfall**: `real-none-s0` 15/25 (60 %) against `base-walks+page` 2/25, 13 : 0, $p=0.00024$; value-right 20/25; refusals 5/5 — **PARTIAL**, under the 70 % bar on strict citation alone | REAL5 [`results/REAL5-third-family-20261001/BRIEF.md`](../results/REAL5-third-family-20261001/BRIEF.md) |
+| §8.10 | **REAL6 — one-hop repeated-value training does not fix a multi-hop citation**: `real-cite-s0` 15/25 against `real-none-s0` 15/25, tied 1 : 1; the remaining miscitations are multi-hop rows cited at the wrong end of a link, a shape the 50-row corpus never contained — **FALSIFIED** | REAL6 [`results/REAL6-citation-20261001/BRIEF.md`](../results/REAL6-citation-20261001/BRIEF.md) |
+| §8.10 | **H5 — the span-masked loss is not the default recipe**: with the tool block shown to both, `tr-s3` (span-masked) 140/160 dependent turns against `tr-s1` (whole-text) 160/160, paired 0 : 20 on one phrasing family (`type=defect` vs `type=bug`) — regression, so the span-masked loss stays scoped to long tool results (real pages); short-result members keep §4.4's whole-text loss | H5 [`results/H5-span-loss-tracker-20261001/BRIEF.md`](../results/H5-span-loss-tracker-20261001/BRIEF.md) |
+| §8.10 | **REAL7 — running (pre-registered)**: cross-link decoy walks (the answer at a link's end, the same number as a decoy at its start), training family extended with 49 CFR 390/392/393/397; verdict on REAL5's twin-free headline (21 rows, `real-none-s0` baseline 13/21), bar ≥ 15/21 — no result yet | REAL7 [`results/REAL7-crosslink-20261001/BRIEF.md`](../results/REAL7-crosslink-20261001/BRIEF.md) |
