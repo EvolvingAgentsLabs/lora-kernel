@@ -85,6 +85,17 @@ training starts. A second seed is bought only if M3 WORKS (W5e: two draws of one
   — M9's redesign of 2026-09-26 for the same reason. A member vLLM did not apply serves the base's text on those too.
   S2 was stopped before it booted. This is the first redesign of REAL3's instrument.
 
+- **S1 attempt 2 [ran] — `real-walks-s0` (attempt 1 of the recipe): 1/23 headline, against the base's 7/23** (`attempt1_real3_fresh.json`;
+  all rows: member 1/40, base 12/40; G1 applied on the domain probes). **Read where it happens: the member writes
+  regulation text instead of answering** — after a page it continues `§q-14 (14) The employer shall …`, `§q-15`, `§q-16`,
+  repeated, never a cited answer (`no citation`). **The cause is the trainer, not transfer:** `training/s4_train.py` puts
+  the loss on the whole text — system, question, and the runtime's results — and in a walk over real pages read whole the
+  pages are ~90 % of the tokens, so the LoRA learned to write regulations. Every member before trained the same way; W9's
+  results were short lines, and it never showed. S2 (REAL0's set) was stopped: it would measure the same defect.
+- **The recipe, attempt 2 — `real-spans-s0` (the treatment changes, the instrument does not): the loss only on what the model writes** — its
+  tags and its cited answer; system, question and every runtime result masked. Measured on the same fresh set. This is a
+  change to the treatment after a failed result, recorded as such: attempt 1's number stands for its recipe.
+
 ## Result
 
 *(written after S)*

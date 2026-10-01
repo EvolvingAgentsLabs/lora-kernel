@@ -186,7 +186,10 @@ def walk_rows(questions: list[dict]) -> list[dict]:
         except KeyError:                                 # a page no search shows: the walk cannot reach it — dropped
             continue
         g = gr.grade(row, final, conv)
+        # WHAT THE MODEL WROTE, as character spans of the assistant turn — the loss goes there and nowhere else
+        # (REAL3 attempt 1 [ran]: a loss on the whole walk taught the LoRA to write the regulation pages it was shown)
         rows.append({**row, "grade": g["state"], "refused": chain["refused"],
+                     "train_spans": [[sp["at"], sp["at"] + len(sp["text"])] for sp in chain["spans"] if sp["text"]],
                      "messages": [{"role": "system", "content": prompt.SYSTEM_WIKI},
                                   {"role": "user", "content": prompt.user_text_wiki(q["question"])},
                                   {"role": "assistant", "content": chain["text"]}]})

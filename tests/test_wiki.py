@@ -286,3 +286,29 @@ def test_a_page_opens_with_its_statements_and_they_count_as_read():
     plain.answer("search", ">record retention shippers carriers")
     s2 = next(k for k, v in plain.shown.items() if v == "logistics-regs/wiki/1-912")
     assert "sections §a · §a-1" in plain.answer("open", f">{s2}") and not plain.statements
+
+
+def test_span_labels_train_only_what_the_model_wrote():
+    """REAL3 attempt 2's recipe: on a real walk the trained tokens are the model's own spans — tags and the cited answer —
+    and none of the runtime's results (the page text that attempt 1's LoRA learned to write instead of answering)."""
+    import json
+    import os
+    from pathlib import Path
+    pytest.importorskip("transformers")
+    os.environ.setdefault("HF_HUB_OFFLINE", "1")
+    from transformers import AutoTokenizer
+    try:
+        tok = AutoTokenizer.from_pretrained("google/gemma-4-E4B-it")
+    except OSError:
+        pytest.skip("tokenizer not cached")
+    from training.s4_train import span_labels
+    row = next(json.loads(l) for l in Path("training/wiki/data/train_real.jsonl").read_text().splitlines() if '"hops": 2' in l)
+    d = span_labels(tok, row["messages"], row["train_spans"], 4096)
+    trained = tok.decode([t for t, l in zip(d["input_ids"], d["labels"]) if l != -100])
+    wrote = "".join(row["messages"][2]["content"][a:b] for a, b in row["train_spans"])
+    import re
+    strip = lambda t: re.sub(r"\s|=", "", t)
+    assert strip(wrote) in strip(trained) and len(strip(trained)) < len(strip(wrote)) + 20 * len(row["train_spans"])
+    assert "<open>" in trained and "§" in trained.splitlines()[-1]
+    assert "= 3 notes" not in trained and "The prospective employer" not in trained
+    assert sum(l != -100 for l in d["labels"]) < 0.25 * len(d["labels"])
