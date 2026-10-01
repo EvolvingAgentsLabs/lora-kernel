@@ -96,6 +96,27 @@ training starts. A second seed is bought only if M3 WORKS (W5e: two draws of one
   tags and its cited answer; system, question and every runtime result masked. Measured on the same fresh set. This is a
   change to the treatment after a failed result, recorded as such: attempt 1's number stands for its recipe.
 
-## Result
+## Result [ran] — M3 WORKS (seed 0; the second seed is owed)
 
-*(written after S)*
+`real-spans-s0` (span-masked loss: 18,241 trained tokens of 552,495 — 3.3 % of each walk is the model's), A100, 54 steps;
+scored on one L4, G1 applied (domain probes), 0 errors. `real3_fresh.json`.
+
+| arm (REAL2's runtime, `+page`) | headline (23) | value-right | 1-hop (13) | 2-hop (19) | 3-hop (4) | none (4) | all (40) |
+|---|---|---|---|---|---|---|---|
+| **`real-spans-s0`** | **18** (78 %) | 20 | 8 | 15 | 3 | **0** | 26 |
+| `base-walks+page` | 9 | 12 | 3 | 7 | 2 | 3 | 15 |
+| `real-walks-s0` (attempt 1, whole-text loss) | 1 | 2 | 0 | | | 0 | 1 |
+
+- **Verdict: M3 WORKS** — 18/23 ≥ 70 %, and paired against the untrained base on the same rows **10 : 1**, exact sign
+  test $p = 0.0117$. Navigation and citation on real pages are learnable from walks over **another** document family.
+- **Pre-registered slices:** without the three rows closest to a REAL0 question 16/20 against 8/20; quantity answers 6/8
+  against 4/8; reference answers 12/15 against 5/15. The effect is in every slice.
+- **Read where it happens.** The base's misses are mostly a missing citation (9 of 14); the member's are 5, spread.
+- **A regression, reported beside the verdict: the member never refuses.** On the 4 questions the library cannot answer
+  it scores **0/4** (the base 3/4) — it answers something. The corpus held no unanswerable question, so it taught none. A
+  member that never says `Not in my library.` invents; that is fixed before this member is served, not after.
+- The base here is 9/23; in this brief's first scoring session it was 7/23 on the same rows — vLLM's spread, the reason a
+  verdict is read beside the paired test.
+
+**Owed, in order:** the second seed of this recipe (W5e: two draws can disagree); then the refusal fix — unanswerable
+questions in the corpus — measured as its own change.

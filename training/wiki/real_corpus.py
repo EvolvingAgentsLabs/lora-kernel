@@ -162,6 +162,34 @@ def build_questions() -> list[dict]:
     return kept
 
 
+NONE_TOPICS = ["cargo liability insurance minimums", "customs duties on imported pallets", "payroll tax deposits",
+               "workers' compensation premiums", "food label nutrition facts formatting", "hazardous materials placards",
+               "trademark registration", "overtime pay rates", "pesticide residue tolerances", "railcar demurrage fees",
+               "fuel tax reporting", "forklift dealer warranties", "warehouse property tax", "export licenses",
+               "driver union contracts", "refrigerant handling certification"]
+ASK_NONE = """Write {n} short questions a person at a trucking company, a food plant or a warehouse might ask about: {topic}.
+They must sound like real operational questions with a specific answer (a number, a deadline, an amount). Return only
+JSON: a list of objects {{"question": ..., "keywords": [three distinctive words of the question's topic]}}."""
+
+
+def build_none(per_topic: int = 10) -> list[dict]:
+    """Questions the library cannot answer — REAL3 [ran]: a corpus with none taught a member that never refuses (0/4).
+    Mechanical check: a question is kept only if none of its topic keywords occurs anywhere in the training library."""
+    lib, key, out = Library.load(LIB), _key(), []
+    text = " ".join(n.body.lower() + " " + n.title.lower() for n in lib.notes.values())
+    for topic in NONE_TOPICS:
+        for q in ask(ASK_NONE.format(n=per_topic, topic=topic), key):
+            try:
+                question, kws = str(q["question"]).strip(), [str(k).lower() for k in q["keywords"]][:3]
+            except (KeyError, TypeError):
+                continue
+            if question.endswith("?") and kws and not any(k in text for k in kws) and not re.search(r"\d", question):
+                out.append({"question": question, "answer": "Not in my library.", "hops": 0, "pages": [], "support": None,
+                            "tokens": [], "none": True, "keywords": kws})
+    print(f"[realcorpus] none: {len(out)} questions · ${_spent['usd']:.2f}", flush=True)
+    return out
+
+
 def walk_rows(questions: list[dict]) -> list[dict]:
     from memory import prompt
     from memory.runtime import FullText
@@ -171,12 +199,22 @@ def walk_rows(questions: list[dict]) -> list[dict]:
     ft, rows = FullText(lib), []
     for i, q in enumerate(questions):
         plan = [["search", "wiki", q["question"]]]
-        if q["pages"][0] not in ft.search(q["question"], None, 3):
+        if q.get("none"):
+            # read the best page the entry shows, find nothing, refuse — a refusal is a reading, not a reflex
+            top = ft.search(q["question"], None, 3)
+            if not top:
+                continue
+            plan.append(["open", top[0]])
+            row = {"case_id": f"real3-train-none-{i}", "world": 0, "family": "none", "block": "none", "hops": 0,
+                   "shelf": "wiki", "question": q["question"], "plan": plan, "support": None, "answer": "Not in my library.",
+                   "check": {"kind": "none", "tokens": []}}
+        elif q["pages"][0] not in ft.search(q["question"], None, 3):
             # the question's entry does not show the page: the walk searches again, for the page by its title — a second
             # search a served walk may write too (the runtime substitutes only the first)
             plan.append(["search", "wiki", lib.notes[q["pages"][0]].title])
-        plan += [["open", p] for p in q["pages"]]
-        row = {"case_id": f"real3-train-{i}", "world": 0, "family": f"real-{q['hops']}hop", "block": "R",
+        if not q.get("none"):
+          plan += [["open", p] for p in q["pages"]]
+          row = {"case_id": f"real3-train-{i}", "world": 0, "family": f"real-{q['hops']}hop", "block": "R",
                "hops": q["hops"], "shelf": "wiki", "question": q["question"], "plan": plan, "support": q["support"],
                "answer": q["answer"], "check": {"kind": "value", "tokens": q["tokens"], "cite": "support"}}
         conv = wa.conversation(lib, row)
@@ -202,7 +240,7 @@ def gate(rows: list[dict], eval_files: list[Path]) -> dict:
     eval_q = {r["question"].lower() for r in evals}
     eval_libs = {r["support"][0].split("/")[0] for r in evals if r.get("support")}
     openers = Counter(" ".join(r["question"].lower().split()[:4]) for r in rows)
-    g = {"G1_eval_library_in_corpus": sum(r["support"][0].split("/")[0] in eval_libs for r in rows),
+    g = {"G1_eval_library_in_corpus": sum(bool(r.get("support")) and r["support"][0].split("/")[0] in eval_libs for r in rows),
          "G2_eval_question_in_corpus": sum(r["question"].lower() in eval_q for r in rows),
          "G3_not_verified": sum(r["grade"] != "right" or r["refused"] for r in rows),
          "G4_value_in_question": sum(any(gr._has(r["question"], t) for t in r["check"]["tokens"]) for r in rows),
@@ -219,6 +257,7 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--questions", action="store_true")
     ap.add_argument("--walks", action="store_true")
+    ap.add_argument("--with-none", action="store_true", help="REAL4: add unanswerable questions → train_real_none.jsonl")
     a = ap.parse_args()
     DATA.mkdir(parents=True, exist_ok=True)
     if a.questions:
@@ -227,6 +266,12 @@ def main() -> int:
         print(f"[realcorpus] {len(qs)} questions ({sum(q['hops'] == 2 for q in qs)} two-hop) · spent ${_spent['usd']:.2f}", flush=True)
     if a.walks:
         qs = [json.loads(l) for l in (DATA / "real_questions.jsonl").read_text().splitlines() if l.strip()]
+        name = "train_real"
+        if a.with_none:
+            nf = DATA / "real_none_questions.jsonl"
+            if not nf.exists():
+                nf.write_text("".join(json.dumps(q, ensure_ascii=False) + "\n" for q in build_none()))
+            qs, name = qs + [json.loads(l) for l in nf.read_text().splitlines() if l.strip()], "train_real_none"
         rows = [r for r in walk_rows(qs) if r["grade"] == "right" and not r["refused"]
                 and count_tokens(r["messages"][1]["content"] + r["messages"][2]["content"]) < WINDOW]
         random.Random(20260930).shuffle(rows)
@@ -242,8 +287,8 @@ def main() -> int:
                 break
             rows = kept
         g = gate(rows, [Path("results/REAL0-real-library-20260930/questions.jsonl"), Path("results/REAL3-real-corpus-20260930/questions.jsonl")])
-        (DATA / "train_real.jsonl").write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows))
-        (DATA / "gate_real.json").write_text(json.dumps(g, indent=1))
+        (DATA / f"{name}.jsonl").write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows))
+        (DATA / f"gate_{name.removeprefix('train_')}.json").write_text(json.dumps(g, indent=1))
         print(f"[realcorpus] walks {'PASSED' if g['passed'] else 'FAILED'} {g}", flush=True)
         return 0 if g["passed"] else 1
     return 0
