@@ -1,0 +1,105 @@
+=== session 1 of 1 · srv173846 · A100
+    boot clone: rc=0 6f3d438 REAL6 pre-registered: repeated-value questions teach the citation (REAL5 lost 3 of 5 to a statement holding the same number)
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 6f3d438 REAL6 pre-registered: repeated-value questions teach the citation (REAL5 lost 3 of 5 to a statement holding the same number)
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    6f3d438 REAL6 pre-registered: repeated-value questions teach the citation (REAL5 lost 3 of 5 to a statement holding the same number) | 0.30.0
+    this module trains its own adapter — nothing to carry in
+    runner started (launch 1)
+    [train] adapters/real-cite-s0 from 363 examples
+    W1001 20:45:12.265000 10515 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W1001 20:45:12.306000 10515 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [train] adapters/real-cite-s0 from 363 examples
+    W1001 20:45:12.265000 10515 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W1001 20:45:12.306000 10515 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [train] span-masked: 363 rows, 22339 trained tokens of 664359
+      0%|          | 0/69 [00:00<?, ?it/s][W1001 20:46:32.074467986 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 4294967296 bytes (free: 2291597312, total: 42405855232).
+      1%|▏         | 1/69 [00:23<26:35, 23.46s/it]
+      3%|▎         | 2/69 [00:44<24:52, 22.27s/it]
+      4%|▍         | 3/69 [01:02<22:12, 20.20s/it]
+      6%|▌         | 4/69 [01:20<20:53, 19.29s/it]
+      6%|▌         | 4/69 [01:20<20:53, 19.29s/it]
+      7%|▋         | 5/69 [01:36<19:23, 18.17s/it]
+      9%|▊         | 6/69 [01:56<19:45, 18.82s/it]
+     10%|█         | 7/69 [02:13<18:43, 18.12s/it]
+     12%|█▏        | 8/69 [02:33<18:59, 18.68s/it]
+     13%|█▎        | 9/69 [02:52<18:43, 18.72s/it]
+     14%|█▍        | 10/69 [03:10<18:17, 18.61s/it]
+     14%|█▍        | 10/69 [03:10<18:17, 18.61s/it]
+     16%|█▌        | 11/69 [03:27<17:28, 18.07s/it]
+     17%|█▋        | 12/69 [03:48<17:55, 18.86s/it]
+     19%|█▉        | 13/69 [04:05<17:18, 18.55s/it]
+     20%|██        | 14/69 [04:25<17:22, 18.95s/it]
+     20%|██        | 14/69 [04:25<17:22, 18.95s/it]
+     22%|██▏       | 15/69 [04:45<17:10, 19.08s/it]
+     23%|██▎       | 16/69 [05:07<17:38, 19.96s/it]
+     25%|██▍       | 17/69 [05:26<17:06, 19.75s/it]
+     26%|██▌       | 18/69 [05:43<16:09, 19.02s/it]
+     28%|██▊       | 19/69 [06:01<15:34, 18.69s/it]
+     29%|██▉       | 20/69 [06:19<15:08, 18.55s/it]
+     29%|██▉       | 20/69 [06:19<15:08, 18.55s/it]
+     30%|███       | 21/69 [06:39<15:06, 18.89s/it]
+     32%|███▏      | 22/69 [06:57<14:37, 18.68s/it]
+     33%|███▎      | 23/69 [07:09<12:39, 16.51s/it]
+     35%|███▍      | 24/69 [07:26<12:33, 16.74s/it]
+     36%|███▌      | 25/69 [07:44<12:36, 17.20s/it]
+     38%|███▊      | 26/69 [08:03<12:37, 17.62s/it]
+     39%|███▉      | 27/69 [08:21<12:32, 17.92s/it]
+     42%|████▏     | 29/69 [08:55<11:29, 17.23s/it]
+     43%|████▎     | 30/69 [09:14<11:39, 17.94s/it]
+     43%|████▎     | 30/69 [09:14<11:39, 17.94s/it]
+     43%|████▎     | 30/69 [09:14<11:39, 17.94s/it]
+     45%|████▍     | 31/69 [09:37<12:11, 19.26s/it]
+     46%|████▋     | 32/69 [09:58<12:19, 19.98s/it]
+     46%|████▋     | 32/69 [09:58<12:19, 19.98s/it]
+     48%|████▊     | 33/69 [10:20<12:22, 20.62s/it]
+     49%|████▉     | 34/69 [10:39<11:38, 19.95s/it]
+     51%|█████     | 35/69 [10:59<11:17, 19.92s/it]
+     52%|█████▏    | 36/69 [11:17<10:43, 19.51s/it]
+     54%|█████▎    | 37/69 [11:36<10:18, 19.32s/it]
+     54%|█████▎    | 37/69 [11:36<10:18, 19.32s/it]
+     55%|█████▌    | 38/69 [11:55<09:52, 19.13s/it]
+     57%|█████▋    | 39/69 [12:11<09:08, 18.29s/it]
+     58%|█████▊    | 40/69 [12:31<09:07, 18.89s/it]
+     58%|█████▊    | 40/69 [12:31<09:07, 18.89s/it]
+     59%|█████▉    | 41/69 [12:55<09:25, 20.20s/it]
+     61%|██████    | 42/69 [13:13<08:50, 19.64s/it]
+     62%|██████▏   | 43/69 [13:29<08:02, 18.55s/it]
+     64%|██████▍   | 44/69 [13:46<07:32, 18.11s/it]
+     65%|██████▌   | 45/69 [14:02<07:01, 17.56s/it]
+     67%|██████▋   | 46/69 [14:15<06:09, 16.06s/it]
+     68%|██████▊   | 47/69 [14:34<06:13, 17.00s/it]
+     71%|███████   | 49/69 [15:13<06:03, 18.19s/it]
+     72%|███████▏  | 50/69 [15:30<05:42, 18.03s/it]
+     72%|███████▏  | 50/69 [15:30<05:42, 18.03s/it]
+     72%|███████▏  | 50/69 [15:30<05:42, 18.03s/it]
+     74%|███████▍  | 51/69 [15:48<05:24, 18.00s/it]
+     75%|███████▌  | 52/69 [16:06<05:03, 17.85s/it]
+     77%|███████▋  | 53/69 [16:27<05:02, 18.89s/it]
+     78%|███████▊  | 54/69 [16:45<04:39, 18.63s/it]
+     80%|███████▉  | 55/69 [17:01<04:09, 17.83s/it]
+     80%|███████▉  | 55/69 [17:01<04:09, 17.83s/it]
+     81%|████████  | 56/69 [17:18<03:48, 17.60s/it]
+     83%|████████▎ | 57/69 [17:38<03:40, 18.40s/it]
+     86%|████████▌ | 59/69 [18:18<03:09, 18.97s/it]
+     87%|████████▋ | 60/69 [18:37<02:51, 19.02s/it]
+     87%|████████▋ | 60/69 [18:37<02:51, 19.02s/it]
+     87%|████████▋ | 60/69 [18:37<02:51, 19.02s/it]
+     88%|████████▊ | 61/69 [18:55<02:30, 18.81s/it]
+     90%|████████▉ | 62/69 [19:16<02:15, 19.36s/it]
+     91%|█████████▏| 63/69 [19:33<01:52, 18.72s/it]
+     93%|█████████▎| 64/69 [19:54<01:37, 19.54s/it]
+     94%|█████████▍| 65/69 [20:16<01:21, 20.26s/it]
+     94%|█████████▍| 65/69 [20:16<01:21, 20.26s/it]
+     96%|█████████▌| 66/69 [20:35<00:59, 19.72s/it]
+     97%|█████████▋| 67/69 [20:52<00:37, 18.91s/it]
+    [train] named for serving: {'base': 'google/gemma-4-E4B-it', 'architecture': 'Gemma4ForConditionalGeneration', 'renamed': True, 'src': 'adapters/real-cite-s0', 'dst': 'adapters/real-cite-s0.renamed', 'moved': 0, 'before': {'tensors': 516, 'land_on_text_stack': 516}, 'after': {'tensors': 516, 'land_on_text_stack': 516}}
+    [train] done
+    [pool] trained and packed 1 — stopping before serving, as asked
+    adapters home: 1 packed
+    the runner wrote its result — done
+exit 0

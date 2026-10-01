@@ -190,6 +190,52 @@ def build_none(per_topic: int = 10) -> list[dict]:
     return out
 
 
+REPEATED = re.compile(r"\b(\d[\d,]*(?:\.\d+)?)\s+(hours?|days?|months?|years?|minutes?|feet|inches|pounds|percent|miles|"
+                      r"calendar days|working days)\b", re.I)
+ASK_REPEATED = """The same value — "{value}" — appears in each of these statements of a regulation. Write ONE question for EACH
+statement, asked as a person at a trucking company, a food plant or a warehouse would, that ONLY that statement answers:
+describe the situation that statement is about so a reader must pick that statement and not another one with the same
+value. Never quote a section number or anchor; never put the value in the question.
+Return only JSON: a list of objects {{"question": ..., "anchor": ..., "page": ..., "value": ...}} — `page` and `anchor`
+exactly as written before each statement, `value` the exact span from that statement.
+
+{statements}"""
+
+
+def build_repeated(max_group: int = 12) -> list[dict]:
+    """REAL6: questions whose value occurs in several statements, so only the right citation is right — REAL5 [ran] lost
+    3 of its 5 citations to another statement holding the same number. Kept only if the value is in the named statement,
+    not in the question, AND in at least one OTHER statement of the library (the row must exercise the choice)."""
+    from collections import defaultdict
+    lib, key, out = Library.load(LIB), _key(), []
+    groups = defaultdict(list)
+    for n in lib.notes.values():
+        if count_tokens(n.body) > MAX_PAGE_TOKENS:
+            continue
+        for st in statements_of(n.body)[0]:
+            for m in REPEATED.finditer(_LABEL.sub(" ", st.text)):
+                groups[(m.group(1), m.group(2).lower().rstrip("s"))].append((n, st))
+    for (num, unit), members in groups.items():
+        uniq = list({(n.id, st.anchor): (n, st) for n, st in members}.values())
+        if len(uniq) < 2:
+            continue
+        random.Random(f"{num}{unit}").shuffle(uniq)
+        shown = uniq[:max_group]
+        text = "\n\n".join(f"PAGE {n.id} — {n.title}\n§{st.anchor} {re.sub(r'\[\[[^\]]+\]\]', '§', st.text)}" for n, st in shown)
+        for q in ask(ASK_REPEATED.format(value=f"{num} {unit}", statements=text), key):
+            page = str(q.get("page", "")).strip()
+            if page not in lib.notes:
+                continue
+            v = valid(q, lib.notes[page], lib.notes[page])
+            if not v:
+                continue
+            others = sum(1 for n, st in uniq if (n.id, st.anchor) != (page, v["anchor"]))
+            if others:
+                out.append({**v, "hops": 1, "pages": [page], "support": [page, v["anchor"]], "repeated": others + 1})
+    print(f"[realcorpus] repeated-value questions: {len(out)} · ${_spent['usd']:.2f}", flush=True)
+    return out
+
+
 def walk_rows(questions: list[dict]) -> list[dict]:
     from memory import prompt
     from memory.runtime import FullText
@@ -258,6 +304,7 @@ def main() -> int:
     ap.add_argument("--questions", action="store_true")
     ap.add_argument("--walks", action="store_true")
     ap.add_argument("--with-none", action="store_true", help="REAL4: add unanswerable questions → train_real_none.jsonl")
+    ap.add_argument("--with-repeated", action="store_true", help="REAL6: also add repeated-value questions → train_real_cite.jsonl")
     a = ap.parse_args()
     DATA.mkdir(parents=True, exist_ok=True)
     if a.questions:
@@ -272,6 +319,11 @@ def main() -> int:
             if not nf.exists():
                 nf.write_text("".join(json.dumps(q, ensure_ascii=False) + "\n" for q in build_none()))
             qs, name = qs + [json.loads(l) for l in nf.read_text().splitlines() if l.strip()], "train_real_none"
+        if a.with_repeated:
+            rf = DATA / "real_repeated_questions.jsonl"
+            if not rf.exists():
+                rf.write_text("".join(json.dumps(q, ensure_ascii=False) + "\n" for q in build_repeated()))
+            qs, name = qs + [json.loads(l) for l in rf.read_text().splitlines() if l.strip()], "train_real_cite"
         rows = [r for r in walk_rows(qs) if r["grade"] == "right" and not r["refused"]
                 and count_tokens(r["messages"][1]["content"] + r["messages"][2]["content"]) < WINDOW]
         random.Random(20260930).shuffle(rows)
