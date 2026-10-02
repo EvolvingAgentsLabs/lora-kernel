@@ -34,6 +34,16 @@ fallback, pages with their statements; no page budget).
 alone by an agent that read no model output; no supporting statement REAL5 used; target 14 one-hop, 26 two-hop,
 4 three-hop, 8 the library cannot answer; strict citation (`cite = "support"`); oracle n/n at zero GPU before freezing.
 
+### The set as frozen (2026-10-02, before any model sees it)
+
+52 rows: 14 one-hop, 26 two-hop, 4 three-hop, 8 the library cannot answer (4 adjacent, 4 unrelated) — **headline 30**;
+oracle 52/52, refused 0, floor headline 0/30 (`zero_gpu.json`). Written blind (library pages, REAL5's script as
+template, the grader's source). **Limits, stated now:** four statements serve two rows each (a one-hop and a two-hop row
+asking different numbers) — the library holds 40 usable numbered statements outside REAL5's; some values recur across
+statements (August 30, 1994 four times, July 31, 2000 three, part 109 three) — exactly the case the check cannot catch;
+three near-duplicate 112-12 statements were left out (a strict citation there would be a coin toss); one token is "1"
+of "1 million gallons".
+
 ## Arms (one session, paired on the same rows)
 
 | arm | what |
