@@ -57,6 +57,28 @@ Two scoring sessions (one per set); k, the temperature, the sets and the bars do
   (gain 1, new wrong 2, 5 resampled); they are not the verdict, and the bars, k, temperature and sets do not move. Both
   sets are rerun from scratch. **This is the first change to BOK0's instrument.**
 
-## Result
+## Result [ran] — BOK HELPS as written; read, a tie that dilutes what is delivered
 
-*(written after the run)*
+Attempt 2, both sets from scratch, one L4 session each, G1 applied, 0 errors (`bok0_cite0.json`, `bok0_real4.json`,
+`verdict.json` by `read.py`).
+
+| | rows resampled | extra walks | gain | new wrong | right delivered (walk 1 → chosen) | delivered |
+|---|---|---|---|---|---|---|
+| CITE0's set (`spcc-regs`) | 7 | 16 | 1 | **3** | 33 → 34 | 45 → 49 |
+| REAL4's set (`logistics-regs`) | 9 | 23 | 3 | 0 | 39 → 42 | 43 → 46 |
+| **pooled** | **16** | **39** | **4** | **3** | **72 → 76** | **88 → 95** |
+
+- **Verdict as written: BOK HELPS** — gain 4 > new wrong 3, exact sign test $p = 1.0$; not BOK WORKS (needs
+  $p \lt 0.05$ and gain ≥ 5). The two sets disagree (1 : 3 and 3 : 0).
+- **Read: the trap the brief named, measured.** A first walk that passes the gate is right 72 of 88 times (82 %); a
+  resampled walk that passes it is right 4 of 7 (57 %). Sampling until the gate passes searches for a line the gate
+  accepts, and the gate cannot see the one thing that is then wrong — the cited statement holds the number but is not
+  the one asked about (all 3 new wrong are that). Under selection pressure the gate's precision drops.
+- **The gate's first false block:** a resampled walk (`real3-duty-electronic-28`, walk 4) was right by the grader and
+  failed the gate — its answer wrote the section number `1.908`, which the cited statement does not print. In GATE0's
+  532 first walks this never happened; it is one row, recorded.
+- **Where the extra walks go:** 9 of the 16 resampled rows fail every walk the same way (no answer line, or a citation
+  without `§section`) — the member's habit, not chance; sampling at 0.7 does not move it.
+- **Meaning for the product:** not turned on. +4 right for 39 extra walks and 3 wrong answers delivered where "could not
+  verify" was is a worse trade than the gate alone. The lever these rows point to is the member's own habit (citing
+  `[id]` without `§section`, ending with no line), which only its corpus can change.

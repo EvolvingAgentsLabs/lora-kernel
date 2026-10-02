@@ -1,0 +1,37 @@
+=== session 1 of 1 · srv175618 · L4
+    boot clone: rc=0 e3494a1 BOK0: a walk 1 that ran out of context is resampled, as the brief says — attempt 1 stopped, both sets rerun
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 e3494a1 BOK0: a walk 1 that ran out of context is resampled, as the brief says — attempt 1 stopped, both sets rerun
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    e3494a1 BOK0: a walk 1 that ran out of context is resampled, as the brief says — attempt 1 stopped, both sets rerun | 0.30.0
+    carried the adapters in (8 chunks)
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-none-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-none-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-none-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-none-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-none-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-none-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-none-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-none-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-none-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-none-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-none-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-none-s0
+    [pool] G1 withlib-s0: applied
+    [wiki] withlib-s0+page+k4: 52 to run, 0 resumed
+    [wiki] withlib-s0+page+k4: 52 to run, 0 resumed
+    [wiki] withlib-s0+page+k4 10/52 credit 8 value-right 9 errors 0 36s
+    [wiki] withlib-s0+page+k4 20/52 credit 15 value-right 17 errors 0 63s
+    [wiki] withlib-s0+page+k4 30/52 credit 21 value-right 23 errors 0 87s
+    [wiki] withlib-s0+page+k4 40/52 credit 27 value-right 33 errors 0 108s
+    [wiki] withlib-s0+page+k4 50/52 credit 34 value-right 41 errors 0 127s
+    [wiki] withlib-s0+page+k4 50/52 credit 34 value-right 41 errors 0 127s
+    [wiki] withlib-s0+page+k4 52/52 credit 34 value-right 41 errors 0 150s
+    [wiki] NOTHING SCORED
+    the runner wrote its result — done
+exit 0
