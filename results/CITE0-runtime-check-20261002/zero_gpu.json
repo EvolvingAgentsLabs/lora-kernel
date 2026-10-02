@@ -1,0 +1,30 @@
+{
+ "base": "google/gemma-4-E4B-it",
+ "started": "2026-10-02T07:51:01",
+ "grader": "training.wiki.grade",
+ "library": "knowledge/spcc-regs",
+ "eval_world": 20260924,
+ "arms": {},
+ "zero_gpu": {
+  "n": 52,
+  "headline": 30,
+  "oracle_credit": 52,
+  "oracle_refused": 0,
+  "floor_headline": 0,
+  "floor_all": 2,
+  "slices": {
+   "headline": 30,
+   "all": 52,
+   "none": 8,
+   "hops-1": 14,
+   "hops-2": 26,
+   "hops-3": 4,
+   "block-E1": 0,
+   "block-E2": 0,
+   "block-E3": 0,
+   "block-O1": 0,
+   "block-O2": 0,
+   "block-O3": 0
+  }
+ }
+}

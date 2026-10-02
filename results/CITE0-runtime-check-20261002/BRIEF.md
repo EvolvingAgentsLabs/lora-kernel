@@ -34,6 +34,16 @@ fallback, pages with their statements; no page budget).
 alone by an agent that read no model output; no supporting statement REAL5 used; target 14 one-hop, 26 two-hop,
 4 three-hop, 8 the library cannot answer; strict citation (`cite = "support"`); oracle n/n at zero GPU before freezing.
 
+### The set as frozen (2026-10-02, before any model sees it)
+
+52 rows: 14 one-hop, 26 two-hop, 4 three-hop, 8 the library cannot answer (4 adjacent, 4 unrelated) — **headline 30**;
+oracle 52/52, refused 0, floor headline 0/30 (`zero_gpu.json`). Written blind (library pages, REAL5's script as
+template, the grader's source). **Limits, stated now:** four statements serve two rows each (a one-hop and a two-hop row
+asking different numbers) — the library holds 40 usable numbered statements outside REAL5's; some values recur across
+statements (August 30, 1994 four times, July 31, 2000 three, part 109 three) — exactly the case the check cannot catch;
+three near-duplicate 112-12 statements were left out (a strict citation there would be a coin toss); one token is "1"
+of "1 million gallons".
+
 ## Arms (one session, paired on the same rows)
 
 | arm | what |
@@ -59,6 +69,26 @@ One scoring session; the check, the set and the bars do not change after the set
 than 5 rows the verdict cannot reach $p \lt 0.05$ and is reported as **NOT ENOUGH FIRES** — not rerun on a larger set
 written to make it fire.
 
-## Result
+## Result [ran] — FALSIFIED: the check finds bad citations, and the member cannot repair them
 
-*(written after the run)*
+One L4 session, 2026-10-02 07:52 → 08:16, G1 applied, 0 errors (`cite0.json`, `verdict.json` by `read.py`).
+
+| arm | headline (30) | one-hop (14) | refusals (8) | all (52) |
+|---|---|---|---|---|
+| `withlib-s0+page` (baseline) | 18 | 8 | 6 | 32 |
+| `withlib-s0+page+check` | 19 | 8 | 6 | 33 |
+
+- **Verdict: FALSIFIED** — the check fired on **6** rows (≥ 5, so the verdict is readable); **converted 0, broken 0**. The
+  arm pair is 1 : 0 ($p = 1.0$), and the one row that differs is a context overflow in the baseline, not a fired row.
+- **Read where it happens — what the member did after `= ERROR: citation`:** on 3 of 6 it did the right thing first —
+  opened the page the error named — and then still ended without a verified line; once it retreated to
+  `Not in my library.`; once it repeated the refused line word for word (`[zkh§112.9(c)(2)]` — a section number written
+  as an anchor); once it wrote two `= …` results itself, an invented error and an invented answer (P43's stray results).
+  The member was never shown a refused citation in its corpus; a 4B does not follow what it merely reads (P61).
+- **What the check is, measured: a detector with no false alarm.** Every one of the 6 refused lines was already not
+  right (6/6), as offline on LIVE-library2's walks (9/9 misses, 0 of 37 right). Across both sets: **15 fires, 0 on a right
+  answer.** It catches 6 of the baseline's 20 misses here; the largest remaining class (7) is the one it cannot see — a
+  statement that holds the value but is not the one asked about.
+- **Not rerun** (stopping condition). The next use of the check is the one this run measured it fit for: **a gate, not
+  a hint** — a line that fails it is not delivered as an answer (the runtime says the library could not verify one, or
+  forwards to the frontier), which on these two sets would have removed 15 wrong answers and 0 right ones.

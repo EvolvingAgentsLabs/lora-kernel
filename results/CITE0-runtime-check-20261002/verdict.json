@@ -1,0 +1,35 @@
+{
+ "reading": "FALSIFIED",
+ "fired": 6,
+ "fired_by_reason": {
+  "i8r\u00a7c-4-i": 1,
+  "no": 2,
+  "xrc\u00a7fii-a-b": 1,
+  "5sf\u00a7f-3": 1,
+  "7y2\u00a7d-2": 1
+ },
+ "converted": 0,
+ "broken": 0,
+ "within_p": 1.0,
+ "arms_paired": "1:0",
+ "arms_p": 1.0,
+ "all": {
+  "withlib-s0+page": "32/52",
+  "withlib-s0+page+check": "33/52"
+ },
+ "headline": {
+  "withlib-s0+page": "18/30",
+  "withlib-s0+page+check": "19/30"
+ },
+ "one_hop": {
+  "withlib-s0+page": "8/14",
+  "withlib-s0+page+check": "8/14"
+ },
+ "refusals": {
+  "withlib-s0+page": "6/8",
+  "withlib-s0+page+check": "6/8"
+ },
+ "lost": [],
+ "converted_ids": [],
+ "broken_ids": []
+}
