@@ -59,6 +59,25 @@ citation fails the strict check; a few single-digit tokens ("2", "4", "1"); a fe
 
 One scoring session; N, the set and the bars do not change after the set is frozen.
 
-## Result
+## Result [ran] — PAGE TOP HELPS: 34/44 against 30/44, paired 6 : 2, and a third of the text
 
-*(written after the run)*
+One L4 session, G1 applied, 0 errors (`page0.json`, `verdict.json` by `read.py`).
+
+| arm | answerable (44) | multi-hop (30) | one-hop (14) | refusals (8) | same-page wrong statement | walk text |
+|---|---|---|---|---|---|---|
+| `withlib-s0+page` | 30 | 23 | 7 | 7 | 8 | 778,701 chars |
+| `withlib-s0+page+top8` | **34** | 24 | **10** | 7 | 6 | **241,981 chars** |
+
+- **Verdict as written: PAGE TOP HELPS** — 6 wins, 2 losses, exact sign test $p = 0.29$; not WORKS ($p \lt 0.05$).
+  Refusals unchanged.
+- **Read where it happens — the 6 wins are two different repairs:** **3** rows where the baseline ran out of the
+  16,384-token context (pages of 97–134 statements read whole) and the top-8 page fit; **3** rows where the baseline
+  cited the wrong statement or the wrong value and the top-8 page led to the supporting one — the failure this was for
+  (same-page wrong statements 8 → 6). One win (`vsqg-sqg-17`) is a row whose needed intermediate statement top-8 hid: the
+  member reached the answer anyway.
+- **The 2 losses** are rows the baseline had right; neither had its needed statement hidden (one ends with no citation,
+  one cites another statement) — the member choosing differently among fewer statements.
+- **Cost:** the walks carry **3.2× less text** (241,981 against 778,701 characters), and the arm ran in 38 s against 72 s.
+- **Not WORKS, and so not adopted on this run alone.** What it shows: on real pages, the question's best 8 statements
+  are enough for this member — it loses nothing measurable (6 : 2) for a third of the context, and it removes the
+  context overflows outright.

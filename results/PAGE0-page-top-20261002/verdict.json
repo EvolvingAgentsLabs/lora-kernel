@@ -1,0 +1,27 @@
+{
+ "reading": "PAGE TOP HELPS",
+ "paired": "6:2",
+ "p": 0.2891,
+ "answerable": {
+  "withlib-s0+page": "30/44",
+  "withlib-s0+page+top8": "34/44"
+ },
+ "multi_hop": {
+  "withlib-s0+page": "23/30",
+  "withlib-s0+page+top8": "24/30"
+ },
+ "one_hop": {
+  "withlib-s0+page": "7/14",
+  "withlib-s0+page+top8": "10/14"
+ },
+ "refusals": {
+  "withlib-s0+page": "7/8",
+  "withlib-s0+page+top8": "7/8"
+ },
+ "same_page_wrong_statement": {
+  "withlib-s0+page": 8,
+  "withlib-s0+page+top8": 6
+ },
+ "rows_whose_needed_statement_top8_hides": 2,
+ "lost": []
+}
