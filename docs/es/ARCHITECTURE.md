@@ -456,10 +456,15 @@ repite entre enlaces — REAL5 la encontró (15/25 sobre una tercera familia den
 el arreglo de un solo salto de REAL6 la dejó sin cambios (FALSIFIED), y los recorridos con señuelo entre enlaces de
 REAL7 tampoco cambiaron nada — `real-link-s0` empata con `real-none-s0` 13/21 sobre el titular sin gemelos de REAL5
 (4:4, bajo la barra de ≥ 15/21), **FALSEADO**; por la regla de contar rediseños, dos cambios de corpus sobre esta
-citación alcanzan y un tercero no se compra. Lo que podría moverla no es otro corpus sino un chequeo del runtime
-que rechace una cita cuya página el recorrido no terminó, medido sobre un conjunto fresco
+citación alcanzan y un tercero no se compra. Ese chequeo del runtime se construyó y se midió a continuación:
+`Conversation.cite_check` lee sólo el propio registro del referí (ids mostrados, enunciados abiertos, su texto,
+nunca la respuesta) y rechaza una línea final una vez, con el motivo, antes de que salga; sobre un conjunto
+fresco de 52 filas de una tercera familia disparó en 6 filas, **convertidas 0, rotas 0** — **FALSEADO como
+pista**, un detector sin falsa alarma (15 disparos, 0 sobre una respuesta correcta, entre este conjunto y el de
+LIVE-library2) que un miembro de 4B no puede aprovechar. Lo próximo es como **compuerta**, no como pista — una
+línea que no la pasa no se entrega
 ([`REAL5`](../../results/REAL5-third-family-20261001/BRIEF.md), [`REAL6`](../../results/REAL6-citation-20261001/BRIEF.md),
-[`REAL7`](../../results/REAL7-crosslink-20261001/BRIEF.md)).
+[`REAL7`](../../results/REAL7-crosslink-20261001/BRIEF.md), [`CITE0`](../../results/CITE0-runtime-check-20261002/BRIEF.md)).
 
 ## 5. El contrato de liberación
 

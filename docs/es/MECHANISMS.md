@@ -689,6 +689,27 @@ el puntaje no las sigue, **SIN CAMBIO** contra el 38/52 de vLLM; las tres gananc
 le costaba el borde, la única pérdida nueva es el presupuesto mostrando el enunciado que mejor empareja con la
 pregunta a una pregunta que la biblioteca no puede contestar **[ran]** LIVE-library2.
 
+**El chequeo del runtime sobre la citación, construido y medido: encuentra las malas y el miembro no las
+repara.** `memory.runtime.Conversation.cite_check` (`check_final`) lee sólo el propio registro del referí —
+los ids mostrados, los enunciados abiertos, el propio texto de cada enunciado — nunca la respuesta correcta:
+una línea final pasa si y sólo si es `Not in my library.` o cita `[o§a]` donde $o$ es un id mostrado,
+$(\mathrm{id}(o),a)$ es un enunciado abierto, y todo número que la línea afirma es un número que ese
+enunciado tiene —
+$\text{pass}(\ell)\iff \ell=\texttt{Not in my library.}\;\lor\;\bigl(\ell\text{ cita }[o\S a],\,o\in\text{mostrados},\,
+(\mathrm{id}(o),a)\in\text{abiertos},\,\mathrm{nums}(\ell)\subseteq\mathrm{nums}(\text{enunciado})\bigr)$. Una
+línea que falla se responde una vez con un error que nombra por qué, y el recorrido sigue dentro del mismo
+presupuesto de llamadas; una segunda línea que falla queda tal cual. Sobre un conjunto fresco de 52 filas de
+una tercera familia (40 CFR 112, escrito a ciegas después de congelar el diseño), el chequeo disparó en 6 filas
+y **convertidas 0, rotas 0** — **FALSEADO como pista**: que le digan por qué falla su cita no hace que el
+miembro escriba una mejor (en 3 de 6 reabrió la página correcta y aun así falló, una vez se replegó a una
+negativa, una vez repitió la línea señalada, una vez inventó un resultado). Lo que es, medido: un detector sin
+falsa alarma — toda línea disparada ya estaba mal (6/6), y entre este conjunto y el repaso offline de
+LIVE-library2, **15 disparos, 0 sobre una respuesta correcta**. Su punto ciego es el mismo de REAL5–REAL7: un
+enunciado que tiene el valor preguntado pero no es el que la pregunta quiere decir, 7 de las 20 fallas que
+quedan acá **[ran]** CITE0. No se repite (la condición de parada): el próximo uso es como **compuerta**, no
+como pista — una línea que no la pasa no se entrega, el runtime responde que la biblioteca no pudo verificar
+una cita, o la reenvía a la frontera.
+
 ---
 
 ## 12. Los corpus y sus compuertas

@@ -629,6 +629,25 @@ zero and the score does not follow, **NO CHANGE** against vLLM's 38/52; the thre
 had cost, the one new loss is the budget showing a question's best-matching statement to a question the library
 cannot answer **[ran]** LIVE-library2.
 
+**The runtime check on the citation, built and measured: it finds the bad ones and the member cannot repair
+them.** `memory.runtime.Conversation.cite_check` (`check_final`) reads only the referee's own record — the ids
+shown, the statements opened, each statement's own text — never the answer key: a final line passes iff it is
+`Not in my library.` or it cites `[o§a]` where $o$ is a shown id, $(\mathrm{id}(o),a)$ is an opened statement,
+and every number the line states is a number that statement holds —
+$\text{pass}(\ell)\iff \ell=\texttt{Not in my library.}\;\lor\;\bigl(\ell\text{ cites }[o\S a],\,o\in\text{shown},\,
+(\mathrm{id}(o),a)\in\text{opened},\,\mathrm{nums}(\ell)\subseteq\mathrm{nums}(\text{stmt})\bigr)$. A line that
+fails is answered once with an error naming why and the walk continues inside the same call budget; a second
+failing line stands as it is. On a fresh 52-row set over a third family (40 CFR 112, written blind after the
+design froze), the check fired on 6 rows and **converted 0, broken 0** — **FALSIFIED as a hint**: told why its
+citation fails, the member does not write a better one (on 3 of 6 it reopened the right page and still failed,
+once retreated to a refusal, once repeated the flagged line, once invented a result). What it is, measured: a
+detector with no false alarm — every fired line was already not right (6/6), and across this set and
+LIVE-library2's offline replay, **15 fires, 0 on a right answer**. Its blind spot is REAL5–REAL7's own: a
+statement holding the value asked but not the one the question means, 7 of the 20 remaining misses here
+**[ran]** CITE0. Not rerun (the stopping condition): the next use is as a **gate**, not a hint — a line that
+fails it is not delivered, the runtime answering that the library could not verify a citation, or forwarding
+to the frontier instead.
+
 ---
 
 ## 12. Corpora and their gates

@@ -417,10 +417,14 @@ now stops:** citation precision when a value repeats across a link — REAL5 fou
 family, under the 70% bar), REAL6's one-hop fix left it unchanged (FALSIFIED), and REAL7's cross-link decoy walks
 changed nothing either — `real-link-s0` ties `real-none-s0` 13/21 on REAL5's twin-free headline (4:4, under the
 ≥ 15/21 bar), **FALSIFIED**; by the rule on counting redesigns, two corpus changes on this citation are enough and
-a third is not bought. What might move it next is a runtime check that rejects a citation whose page the walk did
-not end on, measured on a fresh set
+a third is not bought. That runtime check was built and measured next: `Conversation.cite_check` reads only the
+referee's own record (ids shown, statements opened, their text, never the answer) and refuses a final line once
+with the reason, before it leaves; on a fresh 52-row set over a third family it fired on 6 rows, **converted 0,
+broken 0** — **FALSIFIED as a hint**, a detector with no false alarm (15 fires, 0 on a right answer, across this
+set and LIVE-library2's) that a 4B member cannot act on. It moves next as a **gate**, not a hint — a line that
+fails it is not delivered
 ([`REAL5`](../results/REAL5-third-family-20261001/BRIEF.md), [`REAL6`](../results/REAL6-citation-20261001/BRIEF.md),
-[`REAL7`](../results/REAL7-crosslink-20261001/BRIEF.md)).
+[`REAL7`](../results/REAL7-crosslink-20261001/BRIEF.md), [`CITE0`](../results/CITE0-runtime-check-20261002/BRIEF.md)).
 
 ## 5. The release contract
 
