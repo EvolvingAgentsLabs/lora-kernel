@@ -131,3 +131,103 @@ def test_the_citation_check_reads_the_numbers_against_the_cited_statement():
     assert "does not hold 99999" in chain["text"]
     conv, chain = _walk_with(lib, row, ["Not in my library."])
     assert "ERROR: citation" not in chain["text"]
+
+
+def test_the_gate_withholds_an_unverifiable_answer_and_delivers_a_verified_one():
+    """GATE0: the walk is unchanged; a final line whose citation fails is replaced by `UNVERIFIED`, one that verifies
+    leaves as it is, and a refusal is never gated."""
+    from examples.library import serve
+    from memory.notes import Library
+    from memory.runtime import FullText
+    lib = Library.load("knowledge/logistics-regs")
+    row = next(r for r in _rows() if r["support"] and r["hops"] == 1 and r["support"][1] == "h-2-i")
+    good = serve.walk(lib, FullText(lib), row["question"], _scripted(row, row["support"][1]), cite_gate=True)
+    assert good["gated"] is None and "[1910.178 §h-2-i]" in good["reply"]
+    bad = serve.walk(lib, FullText(lib), row["question"], _scripted(row, "zz"), cite_gate=True)
+    assert bad["gated"] and bad["reply"] == serve.UNVERIFIED and bad["final"].endswith("§zz]")
+    off = serve.walk(lib, FullText(lib), row["question"], _scripted(row, "zz"))
+    assert off["gated"] is None and off["reply"] != serve.UNVERIFIED
+
+
+def test_citation_problem_ignores_the_digits_of_a_links_opaque_id():
+    from memory.runtime import citation_problem
+    opened = {("p", "a")}
+    text = lambda nid, a: "Keep it 30 days; see [5sf] Records."
+    assert citation_problem("30 days [k3f§a]", {"k3f": "p"}.get, opened, text) is None
+    assert citation_problem("5 days [k3f§a]", {"k3f": "p"}.get, opened, text) == "k3f§a does not hold 5"
+    assert citation_problem("Not in my library.", {}.get, set(), text) is None
+
+
+def test_a_walk_that_raises_still_answers_so_the_runtime_does_not_resend():
+    """LIVE-library [ran] 2026-10-01: a walk that raised (context overflow) closed the socket with no response; OpenClaw
+    logged `Connection error.` (phase before_message_stream_start) and re-sent the turn as `[Queued user message …]` up
+    to five times. The endpoint now answers 200 with `NO_ANSWER` — streamed or not — and logs the walk with its error:
+    requests sent = 1 per turn, walks logged = requests answered."""
+    import urllib.request
+    from examples.library import serve
+
+    def broken(system, user):
+        def gen(prefix):
+            raise RuntimeError("HTTP 400 from /v1/completions: exceeds the available context size")
+        return gen
+    import tempfile
+    log = Path(tempfile.mkdtemp()) / "walks.jsonl"
+    srv = serve.serve(None, None, broken, 0, str(log))
+    try:
+        port = srv.server_address[1]
+        for stream in (False, True):
+            body = json.dumps({"model": "auto", "stream": stream,
+                               "messages": [{"role": "user", "content": "How wide must an exit route be?"}]}).encode()
+            req = urllib.request.Request(f"http://127.0.0.1:{port}/v1/chat/completions", body, {"Content-Type": "application/json"})
+            with urllib.request.urlopen(req, timeout=10) as r:
+                assert r.status == 200
+                raw = r.read().decode()
+            if stream:
+                chunk = json.loads(raw.split("data: ", 1)[1].split("\n", 1)[0])
+                assert chunk["choices"][0]["delta"]["content"] == serve.NO_ANSWER and raw.rstrip().endswith("data: [DONE]")
+            else:
+                assert json.loads(raw)["choices"][0]["message"]["content"] == serve.NO_ANSWER
+    finally:
+        srv.shutdown()
+    evs = [json.loads(l) for l in log.read_text().splitlines()]
+    assert len(evs) == 2 and all(e["error"].startswith("RuntimeError") and e["final"] == "" for e in evs)
+
+
+def test_a_turn_that_hangs_after_its_run_ended_is_cut_after_the_grace():
+    """The held turn [ran] 2026-10-02 had printed its reply and its run-ended line, then never exited. The driver returns
+    GRACE_S after that line — not at the timeout — with the reply, and the hung process is gone."""
+    import sys
+    import time
+    from examples.library.live_library import GRACE_S, run_turn
+    code = ("import sys, time\nprint('Not in my library.')\n"
+            "print('[agents/agent-command] [agent] run 92ec ended with stopReason=stop'); sys.stdout.flush(); time.sleep(60)\n")
+    t0 = time.time()
+    out, timed_out = run_turn([sys.executable, "-c", code], timeout=30)
+    assert not timed_out and time.time() - t0 < GRACE_S + 4 and out.splitlines()[0] == "Not in my library."
+
+
+def test_a_held_turn_is_killed_whole_and_its_reply_kept():
+    """The driver's timeout used to kill only the launcher; its detached child kept the stdout pipe and lived on (three
+    LIVE-library2 orphans, hours later). A turn that printed its reply and then hangs — here a child that forks a
+    sleeper holding stdout, then hangs itself — returns at the timeout with the reply, and leaves no process behind."""
+    import os
+    import sys
+    import time
+    from examples.library.live_library import run_turn
+    code = ("import subprocess, sys, time\n"
+            "p = subprocess.Popen(['sleep', '60'])\n"
+            "print(p.pid); print('Not in my library.'); sys.stdout.flush(); time.sleep(60)\n")
+    t0 = time.time()
+    out, timed_out = run_turn([sys.executable, "-c", code], timeout=2)
+    assert timed_out and time.time() - t0 < 8
+    pid, reply = out.split()[0], out.splitlines()[1]
+    assert reply == "Not in my library."
+    time.sleep(0.2)
+    try:
+        os.kill(int(pid), 0)
+        alive = True
+    except ProcessLookupError:
+        alive = False
+    assert not alive
+    out, timed_out = run_turn([sys.executable, "-c", "print('ok')"], timeout=10)
+    assert out.strip() == "ok" and not timed_out

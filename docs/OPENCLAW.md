@@ -395,8 +395,22 @@ refusals 14/16, one-hop 7/13 — against this run's 36/52 and REAL4 on vLLM bf16
 (two overflowing walks, one with no walk recorded); the one new loss, `none-9`, is the budget putting a question's
 best-matching statement in view of a question the library cannot answer. OpenClaw held a finished turn past the
 endpoint's own answer on 3 rows — one of them past the driver's 600 s timeout, which stopped the run's first part
-until the driver was fixed to catch it and resume. **Owed, not done**: why OpenClaw holds a finished turn
+until the driver was fixed to catch it and resume. ~~**Owed, not done**: why OpenClaw holds a finished turn~~
 ([`LIVE-library2`](../results/LIVE-library2-20261002/BRIEF.md)).
+
+**Found and fixed, 2026-10-02: node held inside its own exit, and the driver now stops waiting for one that may
+never come.** `sample`, run against the three LIVE-library2 holds, found every one already inside
+`process.exit()` after a successful run — the endpoint's own answer, delay and format play no part, and a V8
+flag tried against the exit itself did not separate from chance on a stub (0/12 vs 3/15). `examples/library/live_library.run_turn`
+now starts the turn in its own process group and returns once OpenClaw's own run-ended line has printed and
+`GRACE_S` (2 s) has passed, or at the timeout — either way the whole group is killed, so nothing is left
+running; the old driver's `subprocess.run` left exactly these held processes as orphans for hours. Verified on
+real OpenClaw against a model-less stub: 20 turns, ~7 s each, 0 timeouts, 0 orphans. Separately, `serve.py` now
+always answers a walk that raises (`NO_ANSWER`, the error logged beside it) instead of closing the socket with
+no response — the old behaviour is what made OpenClaw read a timeout as a transport failure and re-send the
+turn wrapped as `[Queued user message …]`, which is where LIVE-library's own envelope rows and its 119 s
+no-walk row came from [read: OpenClaw's own `Connection error` log before the re-send, per the commit message
+and `tests/test_library_live.py`'s `test_a_walk_that_raises_still_answers_so_the_runtime_does_not_resend`].
 
 ## What this is worth, measured
 

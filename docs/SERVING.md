@@ -130,6 +130,25 @@ context overflows (4 before), **0** envelopes (3 before), paired against this ru
 written: **NO CHANGE** — 0 overflows but 37 < 38, not REGRESSED
 ([`LIVE-library2`](../results/LIVE-library2-20261002/BRIEF.md)).
 
+**The endpoint always answers, even when the walk itself raises.** A context overflow or a dead upstream used
+to close the socket with no response; OpenClaw read that as a transport failure and re-sent the turn wrapped
+in its own `[Queued user message from a previous active turn …]` envelope — up to five times, none of them
+logged. `serve.py`'s handler now catches the exception and answers 200 with `NO_ANSWER`, the error logged
+beside the walk: one request in, one answer out, whichever way the walk ends.
+
+**`--cite-gate`: the citation check as a gate, off by default.** `memory.runtime.Conversation.final_problem`
+is the same check CITE0 measured as a hint (`citation_problem`, reading only the referee's own record: the
+ids shown, the statements opened, their own text), applied once to the walk's final line; behind
+`--cite-gate` a line that fails it is not delivered — the reply becomes `UNVERIFIED` ("The library could not
+verify an answer to this — its citation does not check out.") instead of the walk's own text, forwarding to a
+configured frontier where one exists. The walk itself does not change; the gate reads the same record
+`cite_check` already wrote. Replayed exactly over 14 held-out `+page` arms of REAL3–REAL7 (532 walks, two
+libraries): 0 of 275 right answers blocked, 86 of 165 not-right answers blocked (52.1%), 0 of 11 answers to
+unanswerable questions delivered, precision 0.625 → 0.777 — GATE WORKS by the brief's own bar. The honest
+remainder: of the 86 blocked, 43 held the right value under a citation that fails (43 of 347 correct values
+withheld, 12.4%) — whether that trade is worth it for a given deployment is a product decision, which is why
+it ships off ([`GATE0`](../results/GATE0-cite-gate-20261002/BRIEF.md)).
+
 ## What live serving costs: order beats size, and two adapters are not twice the cost
 
 Two findings from the same run price the engine itself, on `server` and `edge` alike, because both
