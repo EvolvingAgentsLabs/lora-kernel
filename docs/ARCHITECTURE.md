@@ -553,6 +553,59 @@ split a role's answer policy needs — runs first: it is cheaper and the next st
 declare a policy they have no measured value for. Full reading, phase by phase: [`FRAMEWORK.md`](FRAMEWORK.md)
 §9; the plan entry: [`PLAN.md`](PLAN.md) §0.
 
+## 10. Design principles
+
+Four principles the sections above already instantiate, stated once, each tied to the run and the
+rule it rests on.
+
+**1. A member is a learned procedure, not a store.** What a LoRA holds is a dynamic — state →
+transformation → next state: search, open, follow a link, cite — and the library holds the content.
+§4's trajectory $\pi(x) = (n_1,\dots,n_T)$ ([`FOUNDATIONS.md`](FOUNDATIONS.md) §8.6) is the formal
+form of this: the weights are the policy choosing $q_t$ and which candidate to open, never the
+content $n(x)$ itself, so $I(\text{answer}; \text{weights} \mid \text{policy}) = 0$ for the
+looked-up part. **[ran] REAL3:** trained on walks over one real regulation family with the loss
+restricted to the model's own spans, `real-spans-s0` cites on a family it never saw, 18/23 against
+the untrained base's 9/23, both seeds
+([`results/REAL3-real-corpus-20260930/BRIEF.md`](../results/REAL3-real-corpus-20260930/BRIEF.md)).
+The condition is in the word *real*: **[ran] REAL0**, the same architecture trained on a *generated*
+world learned the generator instead of the dynamic — its first act in 40 of 40 real-library walks is
+a search with a query from its own training world, and it opens no page in any of them, 0/25
+([`results/REAL0-real-library-20260930/BRIEF.md`](../results/REAL0-real-library-20260930/BRIEF.md)).
+
+**2. The division of labour this architecture already has.** The router decides which corpus a
+request falls in and abstains to the frontier when it falls in none (§2); the members hold the
+learned procedure per subdomain (§1, §3); the library holds the content (§4); the referee and
+runtime check what can be checked without the answer key — a citation, a `requires` link, a tool
+result (§2, §4); the frontier answers what falls in no corpus. This is a short mapping of §1–§9, not
+a new design: naming it once here is so a future piece is placed by asking which of these five it
+extends, rather than invented beside them.
+
+**3. An evaluation acts on the system; it advises the member only if its corpus taught it to take
+that advice.** Let $\mathrm{pass}(\ell)$ hold for a walk's final line $\ell$ exactly when the
+runtime's citation check (`memory.runtime.citation_problem`, §4 above) returns nothing wrong with
+it. **[ran] CITE0:** handed back to the member as a hint — told which statement its citation fails
+and why — the check repairs 0 of 6 wrong answers; a small model does not follow what it merely reads
+(P61, §4)
+([`results/CITE0-runtime-check-20261002/BRIEF.md`](../results/CITE0-runtime-check-20261002/BRIEF.md)).
+**[ran] GATE0:** the same check applied to the runtime instead — $\mathrm{deliver}(\ell) \Leftrightarrow \mathrm{pass}(\ell)$ (`Conversation.final_problem`), withholding `UNVERIFIED` rather
+than retrying — withholds 86 of 165 not-right answers and 0 of 275 right ones, at a stated cost (43
+of 347 right values withheld under a failing citation); on by default since the user's 2026-10-02
+decision
+([`results/GATE0-cite-gate-20261002/BRIEF.md`](../results/GATE0-cite-gate-20261002/BRIEF.md)). The
+rule general to both: a check's verdict goes to the *runtime* — gate, select, forward to the
+frontier — and reaches the *member* only through what its corpus taught it, never as a live hint.
+
+**4. Compute at test time, under the gate.** More walks, and the gate — not the model — chooses
+among them: deliver the first of $k$ walks whose final line passes, $\mathrm{deliver} = \ell_{i^\star}$ where $i^\star = \min\lbrace \ i \le k : \mathrm{pass}(\ell_i)\ \rbrace$, withholding only if none of
+the $k$ does. Walk 1 greedy, exactly the served arm, is the baseline in the same record, so vLLM's
+own run-to-run spread cannot make or hide the effect. **[ran, running] BOK0:** pre-registered,
+pooling CITE0's and REAL4's 52-row sets; falsified unless the gain in right answers (a walk the gate
+would have withheld, now right) exceeds the new wrong ones it lets through, exact sign test
+$p\lt 0.05$ and gain $\ge 5$ — the trap named before the run is that the gate overlaps the grader (both
+read what was shown and opened), so every gain is graded strictly against whether the citation is
+the *supporting* statement, not merely one holding the value. No result yet
+([`results/BOK0-best-of-k-20261002/BRIEF.md`](../results/BOK0-best-of-k-20261002/BRIEF.md)).
+
 **The code-only half is built [ran] 2026-09-21** (`examples/`): `school/`, the user's own named main
 case, all seven roles the reference diagram draws — `dev`, `trainee`, `marketing`, `educador`,
 `compras`, `cfo`, `it` — thirteen tools, two tenants, an adversarial suite at **0 leaks**, both

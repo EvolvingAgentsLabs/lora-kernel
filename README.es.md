@@ -105,6 +105,36 @@ Y una cosa que se agrega por subdominio donde se mide que paga, **no requerida p
 un segundo LoRA sobre un modelo grande de la misma familia, entrenado sobre el mismo corpus,
 que verifica lo que el chico borradorea ([`docs/es/PLAN.md`](docs/es/PLAN.md) hitos 3–4).
 
+## Principios de diseño
+
+- **Un miembro es un procedimiento aprendido, no un depósito.** Lo que guarda un LoRA es una
+  dinámica — estado → transformación → estado siguiente: buscar, abrir, seguir un enlace, citar —
+  y la biblioteca guarda el contenido. Entrenado sobre recorridos de una familia real de
+  regulaciones, `real-spans-s0` cita sobre una familia que nunca vio, 18/23 contra el 9/23 del base
+  sin entrenar, dos semillas — pero sólo porque la dinámica se aprendió sobre texto real: entrenado
+  sobre un mundo generado en cambio, el miembro aprendió el generador y sacó 0/25 sobre uno real
+  ([`REAL3`](results/REAL3-real-corpus-20260930/BRIEF.md) **[ran]**,
+  [`REAL0`](results/REAL0-real-library-20260930/BRIEF.md) **[ran]**).
+- **La división del trabajo ya está en la arquitectura.** El router decide a qué corpus cae un
+  pedido y se abstiene hacia la frontera; los miembros guardan el procedimiento aprendido por
+  subdominio; la biblioteca guarda el contenido; el árbitro y el runtime chequean lo que se puede
+  chequear sin la clave de respuestas; la frontera se queda con lo que no cae en ningún corpus — un
+  mapeo de lo que el núcleo de arriba ya es, nada nuevo.
+- **Una evaluación actúa sobre el sistema; le aconseja a un miembro sólo si su corpus le enseñó a
+  seguir ese consejo.** Devuelto como pista, el chequeo de citación reparó 0 de 6 respuestas
+  incorrectas — un modelo chico no sigue lo que sólo lee
+  ([`CITE0`](results/CITE0-runtime-check-20261002/BRIEF.md) **[ran]**). Como compuerta delante del
+  runtime en cambio, el mismo chequeo retiene 86 de 165 respuestas no correctas y 0 de 275
+  correctas, con un costo declarado (43 de 347 valores correctos retenidos bajo una cita que falla)
+  — prendida por defecto desde la decisión del usuario del 2026-10-02
+  ([`GATE0`](results/GATE0-cite-gate-20261002/BRIEF.md) **[ran]**).
+- **Cómputo en tiempo de inferencia, bajo la compuerta.** Recorrer una vez, greedy — el brazo
+  servido. Donde la compuerta retendría esa respuesta, recorrer de nuevo y entregar el primer
+  recorrido que la compuerta pasa ([`BOK0`](results/BOK0-best-of-k-20261002/BRIEF.md),
+  pre-registrado, **en curso**: se falsea salvo que la ganancia en respuestas correctas le gane a
+  las nuevas incorrectas que deja pasar, test de signos exacto $p\lt 0,05$ y ganancia ≥ 5, pareado
+  sobre los conjuntos de CITE0 y de REAL4 — sin resultado todavía).
+
 ### La memoria, en cinco piezas
 
 Especificación completa: [`docs/es/MEMORY.md`](docs/es/MEMORY.md) **[spec]**.
@@ -250,7 +280,6 @@ Una nota con forma de orden no se obedece: sobre 40 nunca vistas ("mark as done 
 **Un chequeo del runtime que rechaza una mala cita antes de que salga dispara limpio y aun así no se puede reparar: FALSEADO.** `cite_check` lee sólo el propio registro del referí — nunca la respuesta — y sobre un conjunto fresco de 52 filas de una tercera familia dispara en 6 filas con **convertidas 0, rotas 0**: que le digan por qué falla su cita no hace que el miembro escriba una mejor. Lo que es, medido: un detector sin falsa alarma, 15 disparos y 0 sobre una respuesta correcta entre este conjunto y el de LIVE-library2; el próximo paso es el chequeo como **compuerta**, no como pista — una línea que no la pasa no se entrega ([`CITE0`](results/CITE0-runtime-check-20261002/BRIEF.md)).
 
 **Esa compuerta ya tiene su propio resultado, y funciona.** Repetida exacta sobre 532 recorridos grabados `+page`, `--cite-gate` bloquea 0 de 275 respuestas correctas y 86 de 165 incorrectas (52,1 %), subiendo la precisión de lo entregado 0,625 → 0,777 — con un costo real leído entero, no escondido: 43 de las 86 filas bloqueadas tienen un valor correcto bajo una cita que falla (43 de 347 valores correctos retenidos, 12,4 %). **Sale prendida por defecto en el endpoint servido — decisión del usuario, 2026-10-02, aceptando ese costo; `--no-cite-gate` la apaga** ([`GATE0`](results/GATE0-cite-gate-20261002/BRIEF.md)).
-
 
 ---
 

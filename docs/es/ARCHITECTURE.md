@@ -608,6 +608,65 @@ lectura/escritura que necesita la política de respuesta de un rol — corre pri
 paso siguiente ya declara una política sin valor medido. Lectura completa, fase por fase:
 [`FRAMEWORK.md`](FRAMEWORK.md) §9; la entrada del plan: [`PLAN.md`](PLAN.md) §0.
 
+## 10. Principios de diseño
+
+Cuatro principios que las secciones de arriba ya instancian, dichos una vez, cada uno atado a la
+corrida y a la regla en la que se apoya.
+
+**1. Un miembro es un procedimiento aprendido, no un depósito.** Lo que guarda un LoRA es una
+dinámica — estado → transformación → estado siguiente: buscar, abrir, seguir un enlace, citar — y la
+biblioteca guarda el contenido. La trayectoria $\pi(x) = (n_1,\dots,n_T)$ del §4
+([`FOUNDATIONS.md`](FOUNDATIONS.md) §8.6) es la forma formal de esto: los pesos son la política que
+elige $q_t$ y qué candidato abrir, nunca el contenido $n(x)$ mismo, así que
+$I(\text{respuesta}; \text{pesos} \mid \text{política}) = 0$ para la parte buscada. **[ran] REAL3:**
+entrenado sobre recorridos de una familia real de regulaciones con la pérdida restringida a los
+propios tramos del modelo, `real-spans-s0` cita sobre una familia que nunca vio, 18/23 contra el
+9/23 del base sin entrenar, las dos semillas
+([`results/REAL3-real-corpus-20260930/BRIEF.md`](../../results/REAL3-real-corpus-20260930/BRIEF.md)).
+La condición está en la palabra *real*: **[ran] REAL0**, la misma arquitectura entrenada sobre un
+mundo *generado* aprendió el generador en vez de la dinámica — su primer acto en 40 de 40 recorridos
+sobre la biblioteca real es una búsqueda con una consulta de su propio mundo de entrenamiento, y no
+abre ninguna página en ninguno de ellos, 0/25
+([`results/REAL0-real-library-20260930/BRIEF.md`](../../results/REAL0-real-library-20260930/BRIEF.md)).
+
+**2. La división del trabajo que esta arquitectura ya tiene.** El router decide a qué corpus cae un
+pedido y se abstiene hacia la frontera cuando no cae en ninguno (§2); los miembros guardan el
+procedimiento aprendido por subdominio (§1, §3); la biblioteca guarda el contenido (§4); el árbitro
+y el runtime chequean lo que se puede chequear sin la clave de respuestas — una cita, un enlace
+`requires`, un resultado de herramienta (§2, §4); la frontera contesta lo que no cae en ningún
+corpus. Esto es un mapeo corto del §1–§9, no un diseño nuevo: nombrarlo acá una vez es para que una
+pieza futura se ubique preguntando a cuál de estas cinco extiende, en vez de inventarse al lado.
+
+**3. Una evaluación actúa sobre el sistema; le aconseja al miembro sólo si su corpus le enseñó a
+seguir ese consejo.** Sea $\mathrm{pass}(\ell)$ cierto para la línea final $\ell$ de un recorrido
+exactamente cuando el chequeo de citación del runtime (`memory.runtime.citation_problem`, §4 de
+arriba) no le encuentra ningún problema. **[ran]
+CITE0:** devuelto al miembro como pista — diciéndole qué enunciado falla su cita y por qué — el
+chequeo repara 0 de 6 respuestas incorrectas; un modelo chico no sigue lo que sólo lee (P61, §4)
+([`results/CITE0-runtime-check-20261002/BRIEF.md`](../../results/CITE0-runtime-check-20261002/BRIEF.md)).
+**[ran] GATE0:** el mismo chequeo aplicado al runtime en cambio — $\mathrm{deliver}(\ell) \Leftrightarrow \mathrm{pass}(\ell)$ (`Conversation.final_problem`), reteniendo `UNVERIFIED` en vez
+de reintentar — retiene 86 de 165 respuestas no correctas y 0 de 275 correctas, con un costo
+declarado (43 de 347 valores correctos retenidos bajo una cita que falla); prendida por defecto
+desde la decisión del usuario del 2026-10-02
+([`results/GATE0-cite-gate-20261002/BRIEF.md`](../../results/GATE0-cite-gate-20261002/BRIEF.md)). La
+regla general a las dos: el veredicto de un chequeo va al *runtime* — compuerta, selección, reenvío
+a la frontera — y llega al *miembro* sólo a través de lo que le enseñó su corpus, nunca como pista en
+vivo.
+
+**4. Cómputo en tiempo de inferencia, bajo la compuerta.** Más recorridos, y es la compuerta — no el
+modelo — la que elige entre ellos: entregar el primero de $k$ recorridos cuya línea final pasa,
+$\mathrm{deliver} = \ell_{i^\star}$ donde $i^\star = \min\lbrace \ i \le k : \mathrm{pass}(\ell_i)\ \rbrace$,
+reteniendo sólo si ninguno de los $k$ pasa. El recorrido 1, greedy, exactamente el brazo servido, es
+la línea base en el mismo registro, así que el propio desvío de corrida a corrida de vLLM no puede
+crear ni esconder el efecto. **[ran, en curso] BOK0:** pre-registrado, pareando los conjuntos de 52
+filas de CITE0 y de REAL4; se falsea salvo que la ganancia en respuestas correctas (un recorrido que
+la compuerta hubiera retenido, ahora correcto) supere a las nuevas incorrectas que deja pasar, test
+de signos exacto $p\lt 0,05$ y ganancia $\ge 5$ — la trampa nombrada antes de correr es que la compuerta
+se superpone con el evaluador (los dos leen lo mostrado y lo abierto), así que toda ganancia se
+califica estrictamente contra si la cita es el enunciado *de soporte*, no sólo uno que tenga el
+valor. Sin resultado todavía
+([`results/BOK0-best-of-k-20261002/BRIEF.md`](../../results/BOK0-best-of-k-20261002/BRIEF.md)).
+
 **La mitad de sólo código ya está construida [ran] 2026-09-21** (`examples/`): `school/`, el caso
 principal nombrado por el propio usuario, con los siete roles que dibuja el diagrama de referencia —
 `dev`, `trainee`, `marketing`, `educador`, `compras`, `cfo`, `it` — trece herramientas, dos

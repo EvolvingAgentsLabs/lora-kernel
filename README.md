@@ -100,6 +100,33 @@ And one thing that attaches per subdomain where it is measured to pay, **not req
 second LoRA on a large model of the same family, trained on the same corpus, that verifies what the
 small one drafts ([`docs/PLAN.md`](docs/PLAN.md) milestones 3–4).
 
+## Design principles
+
+- **A member is a learned procedure, not a store.** What a LoRA holds is a dynamic — state →
+  transformation → next state: search, open, follow a link, cite — and the library holds the
+  content. Trained on walks over one real regulation family, `real-spans-s0` cites on a family it
+  never saw, 18/23 against the untrained base's 9/23, two seeds — but only because the dynamic was
+  learned over real text: trained on a generated world instead, the member learned the generator and
+  scored 0/25 on a real one ([`REAL3`](results/REAL3-real-corpus-20260930/BRIEF.md) **[ran]**,
+  [`REAL0`](results/REAL0-real-library-20260930/BRIEF.md) **[ran]**).
+- **The division of labour is already in the architecture.** The router decides which corpus a
+  request falls in and abstains to the frontier; the members hold the learned procedure per
+  subdomain; the library holds the content; the referee and runtime check what can be checked
+  without the answer key; the frontier takes what falls in no corpus — a mapping of what the core
+  above already is, nothing new.
+- **An evaluation acts on the system; it advises a member only if its corpus taught it to take that
+  advice.** Handed back as a hint, the citation check repaired 0 of 6 wrong answers — a small model
+  does not follow what it merely reads ([`CITE0`](results/CITE0-runtime-check-20261002/BRIEF.md)
+  **[ran]**). As a gate in front of the runtime instead, the same check withholds 86 of 165 not-right
+  answers and 0 of 275 right ones, at a stated cost (43 of 347 right values withheld under a failing
+  citation) — on by default since the user's 2026-10-02 decision
+  ([`GATE0`](results/GATE0-cite-gate-20261002/BRIEF.md) **[ran]**).
+- **Compute at test time, under the gate.** Walk once, greedy — the served arm. Where the gate would
+  withhold that answer, walk again and deliver the first walk the gate passes
+  ([`BOK0`](results/BOK0-best-of-k-20261002/BRIEF.md), pre-registered, **running**: falsified unless
+  the gain in right answers beats the new wrong ones it lets through, exact sign test $p\lt 0.05$ and
+  gain ≥ 5, pooled over CITE0's and REAL4's sets — no result yet).
+
 ### The memory, in five pieces
 
 Full specification: [`docs/MEMORY.md`](docs/MEMORY.md) **[spec]**.
@@ -231,7 +258,6 @@ A command-like note is not obeyed: on 40 unseen ones ("mark as done once CI is g
 **A runtime check that rejects a bad citation before it leaves fires clean and still cannot be repaired: FALSIFIED.** `cite_check` reads only the referee's own record — never the answer — and on a fresh 52-row set over a third family it fires on 6 rows with **converted 0, broken 0**: told why its citation fails, the member does not write a better one. What it is, measured: a detector with no false alarm, 15 fires and 0 on a right answer across this set and LIVE-library2's; the next step is the check as a **gate**, not a hint — a line that fails it is not delivered ([`CITE0`](results/CITE0-runtime-check-20261002/BRIEF.md)).
 
 **That gate has a result of its own, and it works.** Replayed exactly on 532 recorded `+page` walks, `--cite-gate` blocks 0 of 275 right answers and 86 of 165 not-right ones (52.1%), raising delivered precision 0.625 → 0.777 — at a real cost read in full, not hidden: 43 of the 86 blocked rows hold a right value under a citation that fails (43 of 347 correct values withheld, 12.4%). **It ships on by default in the served endpoint — the user's decision, 2026-10-02, accepting that cost; `--no-cite-gate` turns it off** ([`GATE0`](results/GATE0-cite-gate-20261002/BRIEF.md)).
-
 
 ---
 
