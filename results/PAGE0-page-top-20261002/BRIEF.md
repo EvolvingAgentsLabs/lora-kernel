@@ -30,6 +30,14 @@ generators of hazardous waste), ingested verbatim from the eCFR (`sources/40-par
 statements, 162 links; pages up to 134 statements. Questions written blind after this brief (`questions.jsonl`,
 `make_questions.py`), oracle n/n at zero GPU before freezing.
 
+### The set as frozen (2026-10-02, before any model sees it)
+
+52 rows on `hazwaste-regs`: 14 one-hop, 26 two-hop, 4 three-hop, 8 the library cannot answer (4 adjacent, 4 unrelated)
+— **headline 30**; oracle 52/52, refused 0, floors 0 (`zero_gpu.json`). Written blind (library pages, the CITE0/REAL5
+scripts as template). No supporting statement repeats; 10 of 14 one-hop supports sit on pages of 40+ statements, 11 of
+26 two-hop. **Limits, stated now:** two values recur in a second statement (a phone number, "12 months") — a twin
+citation fails the strict check; a few single-digit tokens ("2", "4", "1"); a few two-hop links are thin in meaning.
+
 ## Arms (one session, paired on the same rows)
 
 | arm | what |
