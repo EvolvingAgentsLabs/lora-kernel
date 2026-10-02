@@ -710,6 +710,29 @@ quedan acá **[ran]** CITE0. No se repite (la condición de parada): el próximo
 como pista — una línea que no la pasa no se entrega, el runtime responde que la biblioteca no pudo verificar
 una cita, o la reenvía a la frontera.
 
+**El chequeo pasa a ser compuerta: una respuesta que el referí no puede verificar no se entrega — GATE0
+[ran].** `memory.runtime.Conversation.final_problem` es `citation_problem` aplicado una vez a la propia línea
+final del recorrido — la misma función que usa `check_final` como pista, ahora leída sin escribir nada de
+vuelta. Detrás de `examples/library/serve.py --cite-gate` (apagada por defecto) una línea que no la pasa nunca
+llega a quien llama: la respuesta pasa a ser `UNVERIFIED` ("The library could not verify an answer to this —
+its citation does not check out."), reenviando a una frontera donde haya una configurada; el recorrido mismo
+no cambia. Un cambio declarado al chequeo para este uso: a un id opaco de enlace (`5sf`, al azar por
+conversación) se le quitan los dígitos antes de leer los propios números del enunciado, para que no se
+confundan con los del enunciado — el cambio sólo puede hacer que el chequeo dispare *más*. Como la compuerta
+nunca toca el recorrido, repetir exactamente los brazos `+page` grabados de CITE0 y de REAL3–REAL7 **es** la
+corrida con compuerta: 14 brazos dejados afuera, 532 recorridos con línea final, dos bibliotecas — respuestas
+correctas entregadas **275/275** (0 bloqueadas), filas respondibles no correctas entregadas **79/165** (86
+bloqueadas, 52,1 %), respuestas a preguntas sin respuesta entregadas **0/11** (11 bloqueadas), precisión de lo
+entregado **0,625 → 0,777** — cumple la propia barra de LA COMPUERTA FUNCIONA del brief (≤ 1 % de correctas
+perdidas, ≥ 15 % de incorrectas atrapadas). La lectura honesta: "0 correctas bloqueadas" en gran parte repite
+la propia definición de `right` del evaluador (ya exige las tres condiciones que `citation_problem` también
+chequea antes de la regla de los números); lo medido es el 52 % de captura. Por valor y no por fila el costo
+es real: de las 86 filas bloqueadas, 43 tenían el valor incorrecto y 43 tenían el valor correcto bajo una cita
+que falla — 43 de 347 valores correctos retenidos (12,4 %), la precisión de valor entregado sube 78,9 % →
+85,9 % en vez del 0,625 → 0,777 a nivel de fila. Si un número correcto pero no verificable vale más que una
+negativa es una decisión de producto, que le queda al usuario: la compuerta sale **apagada por defecto**
+**[ran]** GATE0.
+
 ---
 
 ## 12. Los corpus y sus compuertas

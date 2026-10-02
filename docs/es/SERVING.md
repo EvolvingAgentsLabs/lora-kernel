@@ -138,6 +138,28 @@ presupuesto de página de arriba, las mismas 52 preguntas: **37/52** — titular
 sobres (3 antes), pareado contra esta corrida **3 : 2** ($p = 1,0$). Veredicto tal como está escrito: **SIN CAMBIO**
 — 0 desbordes pero 37 < 38, no REGRESADO ([`LIVE-library2`](../../results/LIVE-library2-20261002/BRIEF.md)).
 
+**El endpoint siempre responde, aunque el recorrido mismo lance una excepción.** Un desborde de contexto o un
+upstream caído solían cerrar el socket sin respuesta; OpenClaw leía eso como una falla de transporte y
+reenviaba el turno envuelto en su propio sobre `[Queued user message from a previous active turn …]` — hasta
+cinco veces, ninguna registrada. El handler de `serve.py` ahora atrapa la excepción y responde 200 con
+`NO_ANSWER`, el error registrado al lado del recorrido: una solicitud entra, una respuesta sale, sin importar
+cómo termine el recorrido.
+
+**`--cite-gate`: el chequeo de citación como compuerta, apagado por defecto.**
+`memory.runtime.Conversation.final_problem` es el mismo chequeo que CITE0 midió como pista
+(`citation_problem`, que lee sólo el propio registro del referí: los ids mostrados, los enunciados abiertos,
+su propio texto), aplicado una vez a la línea final del recorrido; detrás de `--cite-gate` una línea que no la
+pasa no se entrega — la respuesta pasa a ser `UNVERIFIED` ("The library could not verify an answer to this —
+its citation does not check out.") en vez del propio texto del recorrido, reenviando a una frontera
+configurada donde exista una. El recorrido mismo no cambia; la compuerta lee el mismo registro que ya escribía
+`cite_check`. Repetido exacto sobre 14 brazos `+page` dejados afuera de REAL3–REAL7 (532 recorridos, dos
+bibliotecas): 0 de 275 respuestas correctas bloqueadas, 86 de 165 respuestas incorrectas bloqueadas (52,1 %),
+0 de 11 respuestas a preguntas sin respuesta entregadas, precisión 0,625 → 0,777 — LA COMPUERTA FUNCIONA según
+la propia barra del brief. Lo que queda, dicho con honestidad: de las 86 bloqueadas, 43 tenían el valor
+correcto bajo una cita que falla (43 de 347 valores correctos retenidos, 12,4 %) — si ese intercambio vale la
+pena para un despliegue dado es una decisión de producto, por lo que sale apagada
+([`GATE0`](../../results/GATE0-cite-gate-20261002/BRIEF.md)).
+
 ## Cuánto cuesta servir en vivo: el orden le gana al tamaño, y dos adaptadores no cuestan el doble
 
 Dos hallazgos de la misma corrida ponen precio al motor mismo, en `server` y en `edge` por igual,

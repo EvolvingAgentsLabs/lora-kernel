@@ -414,9 +414,25 @@ tres ganancias son exactamente las filas que le costaba el borde (dos recorridos
 grabado); la única pérdida nueva, `none-9`, es el presupuesto poniendo a la vista el enunciado que mejor empareja con
 la pregunta de una pregunta que la biblioteca no puede contestar. OpenClaw retuvo un turno ya terminado más allá de
 la propia respuesta del endpoint en 3 filas — una de ellas más allá del timeout de 600 s del driver, que detuvo la
-primera parte de la corrida hasta que el driver se arregló para atraparlo y reanudar. **Pendiente, no hecho**: por
-qué OpenClaw retiene un turno terminado
+primera parte de la corrida hasta que el driver se arregló para atraparlo y reanudar. ~~**Pendiente, no hecho**: por
+qué OpenClaw retiene un turno terminado~~
 ([`LIVE-library2`](../../results/LIVE-library2-20261002/BRIEF.md)).
+
+**Encontrado y resuelto, 2026-10-02: node quedaba retenido adentro de su propia salida, y el driver ahora deja de
+esperar una que puede no llegar nunca.** `sample`, corrido contra las tres retenciones de LIVE-library2, encontró
+a las tres ya adentro de `process.exit()` después de una corrida exitosa — la propia respuesta, demora y formato
+del endpoint no tienen ninguna parte, y un flag de V8 probado contra la salida misma no se separó del azar sobre
+un stub (0/12 contra 3/15). `examples/library/live_library.run_turn` ahora arranca el turno en su propio grupo de
+procesos y vuelve una vez que se imprimió la propia línea de fin de corrida de OpenClaw y pasó `GRACE_S` (2 s), o
+en el timeout — de cualquier forma se mata el grupo entero, así que no queda nada corriendo; el `subprocess.run`
+del driver viejo dejaba exactamente estos procesos retenidos como huérfanos durante horas. Verificado contra el
+OpenClaw real sobre un stub sin modelo: 20 turnos, ~7 s cada uno, 0 timeouts, 0 huérfanos. Aparte, `serve.py` ahora
+siempre responde a un recorrido que lanza una excepción (`NO_ANSWER`, el error registrado al lado) en vez de
+cerrar el socket sin respuesta — el comportamiento viejo era lo que hacía que OpenClaw leyera un timeout como una
+falla de transporte y reenviara el turno envuelto como `[Queued user message …]`, de donde salían las propias
+filas de sobre de LIVE-library y su fila de 119 s sin recorrido [read: el propio registro de `Connection error` de
+OpenClaw antes del reenvío, según el mensaje del commit y `test_a_walk_that_raises_still_answers_so_the_runtime_does_not_resend`
+de `tests/test_library_live.py`].
 
 ## Cuánto vale esto, medido
 
