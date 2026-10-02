@@ -95,6 +95,15 @@ recorridos que desbordan 12.288 tokens tras abrir entera una página larga, leí
 Q8_0, no Q4_0, por la misma razón que cualquier otro miembro en `edge` — el vuelco del order-id del caché de prompt
 de arriba.
 
+**Una página larga es la otra mitad del mismo límite de contexto, y ahora tiene su propio presupuesto.**
+`--page-budget` (default **2.500** tokens Gemma) acota con qué abre una página: por encima del presupuesto,
+`memory.runtime.Conversation` muestra los propios enunciados de la página en orden BM25 contra la pregunta hasta
+gastar el presupuesto, en orden del documento, y después lista el resto como anclas abribles (`id§ancla`) — sólo
+los enunciados mostrados cuentan como leídos. En esta biblioteca sólo 29 CFR 1910.178 (7.389 tokens entera) lo
+supera, a 2.452–2.558 tokens después. Elegido offline, antes de cualquier recorrido: de 1.500 a 3.500 de presupuesto
+los 8 enunciados que necesitan los recorridos oráculo de REAL4 en esa página se mantienen 8/8
+([`LIVE-library2`](../../results/LIVE-library2-20261002/BRIEF.md)).
+
 **La regla de salida de red es la misma del gateway (§6 de [`OPENCLAW.md`](OPENCLAW.md), [`MECHANISMS.md`](MECHANISMS.md)
 §6): cerrada por default.** `serve.py` instala `examples.common.egress` antes de que cargue cualquier otra cosa,
 permitido sólo hacia el upstream de `llama-server` y loopback, con `HF_HUB_OFFLINE`/`TRANSFORMERS_OFFLINE` fijados
@@ -120,6 +129,14 @@ corrido de punta a punta sobre el servidor real: PASÓ** — 36/52 contra el 38/
 16/23 y negativas 15/16 exactos, un salto 5/13), 22,5 minutos, 2026-10-01
 ([`LIVE-library`](../../results/LIVE-library-20261001/BRIEF.md)) — ver [`OPENCLAW.md`](OPENCLAW.md)
 sobre cómo apuntarlo a una instancia de OpenClaw corriendo.
+
+**Una corrida de seguimiento reparó las dos pérdidas del borde y leyó SIN CAMBIO.** OpenClaw también reenvía una
+pregunta lenta envuelta en su propio sobre de mensaje encolado, sobre el que corría la primera búsqueda del runtime;
+`examples/school/gateway.runtime_request` ahora lo quita antes de que el runtime lea la pregunta. Con eso y el
+presupuesto de página de arriba, las mismas 52 preguntas: **37/52** — titular 16/23, negativas 14/16, un salto 7/13
+— contra el 36/52 de esta corrida y el 38/52 de REAL4 sobre vLLM; **0** desbordes de contexto (4 antes), **0**
+sobres (3 antes), pareado contra esta corrida **3 : 2** ($p = 1,0$). Veredicto tal como está escrito: **SIN CAMBIO**
+— 0 desbordes pero 37 < 38, no REGRESADO ([`LIVE-library2`](../../results/LIVE-library2-20261002/BRIEF.md)).
 
 ## Cuánto cuesta servir en vivo: el orden le gana al tamaño, y dos adaptadores no cuestan el doble
 

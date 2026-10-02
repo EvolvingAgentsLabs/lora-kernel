@@ -91,6 +91,14 @@ vLLM's 38/52, headline and refusals exact) — the four losses it costs are walk
 opening a long page whole, read where they happen, not as the member's ([`LIVE-library`](../results/LIVE-library-20261001/BRIEF.md)).
 Q8_0, not Q4_0, for the same reason as every other member on `edge` — the prompt-cache order-id flip above.
 
+**A long page is the other half of that same context limit, and it now has its own budget.** `--page-budget`
+(default **2,500** Gemma tokens) caps what a page opens with: over the budget, `memory.runtime.Conversation`
+shows the page's own statements in BM25 order against the question until the budget is spent, in document order,
+then lists the rest as openable anchors (`id§anchor`) — only the shown statements count as read. On this library
+only 29 CFR 1910.178 (7,389 tokens whole) exceeds it, down to 2,452–2,558 tokens after. Chosen offline, before any
+walk: at any budget from 1,500 to 3,500 the 8 statements REAL4's oracle walks need on that page stay 8/8
+([`LIVE-library2`](../results/LIVE-library2-20261002/BRIEF.md)).
+
 **The egress rule is the same as the gateway's (§6 of [`OPENCLAW.md`](OPENCLAW.md), [`MECHANISMS.md`](MECHANISMS.md)
 §6): closed by default.** `serve.py` installs `examples.common.egress` before anything else loads, allowed only to
 the `llama-server` upstream and loopback, with `HF_HUB_OFFLINE`/`TRANSFORMERS_OFFLINE` set so loading the tokenizer
@@ -113,6 +121,14 @@ one fresh session each, and grades the endpoint's own walk record with REAL4's g
 now run end to end on the real server: PASSED** — 36/52 against REAL4 on vLLM bf16's 38/52 (headline 16/23 and
 refusals 15/16 match exactly, one-hop 5/13), 22.5 minutes, 2026-10-01 ([`LIVE-library`](../results/LIVE-library-20261001/BRIEF.md))
 — see [`OPENCLAW.md`](OPENCLAW.md) for how it is pointed at a running OpenClaw instance.
+
+**A follow-up run repaired both edge losses and read NO CHANGE.** OpenClaw also re-sends a slow question wrapped in
+its own queued-message envelope, which the runtime's first search then ran on; `examples/school/gateway.runtime_request`
+now strips it before the runtime reads the question. With that and the page budget above, the same 52 questions:
+**37/52** — headline 16/23, refusals 14/16, one-hop 7/13 — against this run's 36/52 and REAL4 on vLLM's 38/52; **0**
+context overflows (4 before), **0** envelopes (3 before), paired against this run **3 : 2** ($p = 1.0$). Verdict as
+written: **NO CHANGE** — 0 overflows but 37 < 38, not REGRESSED
+([`LIVE-library2`](../results/LIVE-library2-20261002/BRIEF.md)).
 
 ## What live serving costs: order beats size, and two adapters are not twice the cost
 

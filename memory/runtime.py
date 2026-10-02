@@ -171,6 +171,20 @@ class Conversation:
     # the supporting page 17/25 and opened the supporting statement 2–6/25 [ran] REAL1. `page_text` renders every
     # statement under its anchor (links as `[id] Title`); each counts as read for the citation, not against the budget.
     page_text: bool = False
+    # A LONG PAGE OPENS WITH THE STATEMENTS THE QUESTION NAMES (LIVE-library [ran]): 29 CFR 1910.178 reads ~6,900 tokens
+    # whole, and on the Mac's 12,288-token context 4 of 52 walks overflowed after opening it. With `page_budget` a page
+    # whose text exceeds it shows its statements in BM25 order against `first_query` (the question) until the budget,
+    # in document order, then the anchors left out — each still openable as `id§anchor`. Only the shown ones count as
+    # read. Offline [ran]: at 1,500–3,500 the 8 statements REAL4's walks need on that page are all kept.
+    page_budget: int | None = None
+    # THE CITATION IS CHECKED BEFORE THE ANSWER LEAVES (LIVE-library2 [ran], offline over its 52 walks): of 15 misses, 9
+    # end on a line the referee can reject without knowing the answer — no `[id§section]`, an id never shown, a statement
+    # never opened, or a number the cited statement does not hold — and of 37 right answers, none does. With
+    # `cite_check`, such a final line is answered once with `= ERROR: citation — …` and the walk goes on; a second final
+    # line stands as it is. It cannot catch a statement that holds the number but is not the one asked about.
+    cite_check: bool = False
+    cite_checks: int = 0
+    checked: dict | None = None
     implicit: int = 0
 
     shown: dict[str, str] = field(default_factory=dict)      # opaque → library id
@@ -279,8 +293,9 @@ class Conversation:
         case = (self.case or {}).get(note.id)
         text = self._render(note, case)
         if self.page_text and note.is_page:
+            shown_here = self._page_selection(note)
             for st in note.statements:
-                if (note.id, st.anchor) not in self.statements:
+                if st.anchor in shown_here and (note.id, st.anchor) not in self.statements:
                     self.statements.append((note.id, st.anchor)); self.implicit += 1
         self._log("open", shown, note=note.id, guard="ok", tokens=count_tokens(text),
                   slots={k: [val, layer] for k, (val, layer) in resolve(note, self.site, case).items()
@@ -312,11 +327,39 @@ class Conversation:
             return None
         return LINK.sub(lambda m: f"[{self._id(m.group(1))}] {self.lib[m.group(1)].title}", st.text)
 
+    def _page_selection(self, note: Note) -> set[str]:
+        """The anchors a page opens with: all of them, or — over `page_budget` — the question's best by BM25 within the page,
+        $k_1 = 1.2$, $b = 0.75$ as `FullText`, taken in score order while the statements and the list of the rest fit."""
+        import math
+        from collections import Counter
+        lines = {st.anchor: f"  §{st.anchor} {self._statement_text(note, st.anchor)}" for st in note.statements}
+        if not self.page_budget or count_tokens("\n".join(lines.values())) <= self.page_budget:
+            return set(lines)
+        docs = {a: Counter(_words(t)) for a, t in lines.items()}
+        n, df = len(docs), Counter(w for d in docs.values() for w in d)
+        avg = sum(sum(d.values()) for d in docs.values()) / n
+        q = _words(self.first_query or "")
+
+        def score(a):
+            d = docs[a]; norm = 1.2 * (0.25 + 0.75 * sum(d.values()) / avg)
+            return sum(math.log(1 + (n - df[w] + 0.5) / (df[w] + 0.5)) * d[w] * 2.2 / (d[w] + norm) for w in q if d[w])
+        order = sorted(lines, key=lambda a: (-score(a), [st.anchor for st in note.statements].index(a)))
+        keep, used = set(), sum(count_tokens(f" · §{a}") for a in lines) + 20       # the list of the rest, at most
+        for a in order:
+            if used + count_tokens(lines[a]) <= self.page_budget:
+                keep.add(a); used += count_tokens(lines[a])
+        return keep
+
     def _render(self, note: Note, case: dict | None) -> str:
         if note.is_page:
             if self.page_text:
-                body = "\n".join(f"  §{st.anchor} {self._statement_text(note, st.anchor)}" for st in note.statements)
-                return f"{note.title} — {note.what}\n{body}"
+                keep = self._page_selection(note)
+                body = "\n".join(f"  §{st.anchor} {self._statement_text(note, st.anchor)}" for st in note.statements
+                                 if st.anchor in keep)
+                rest = [st.anchor for st in note.statements if st.anchor not in keep]
+                more = (f"\n  {len(rest)} more sections, not shown — open {self._id(note.id)}§<section> to read one: "
+                        + " · ".join(f"§{a}" for a in rest)) if rest else ""
+                return f"{note.title} — {note.what}\n{body}{more}"
             anchors = " · ".join(f"§{st.anchor}" for st in note.statements)
             return f"{note.title} — {note.what}\n  sections {anchors}"
         body = render(note, self.site, case)
@@ -371,9 +414,45 @@ class Conversation:
         """§5.4: one JSON line per command."""
         return "\n".join(json.dumps(l, ensure_ascii=False) for l in self.log)
 
+    def check_final(self, text: str) -> str | None:
+        r"""`cite_check`: why a final line cannot be verified, or None. Without the answer key — the referee's own record:
+        a line passes iff it is `Not in my library.`, or it cites $[o\S a]$ with $o$ shown, $(\mathrm{id}(o), a)$ opened,
+        and $\mathrm{nums}(\text{line}) \subseteq \mathrm{nums}(\text{statement})$ (the citation's own label aside)."""
+        if not self.cite_check or self.cite_checks >= 1 or self.ended:
+            return None
+        lines = [l.strip() for l in text.strip().splitlines() if l.strip()]
+        line = lines[-1] if lines else ""
+        if "not in my library" in line.lower():
+            return None
+        self.cite_checks += 1
+        self.checked = {"line": line, "statements": list(self.statements)}      # what the line was, as the check saw it
+        how = "end with one line: the answer and [id§section] of a statement you opened that holds it — or Not in my library."
+        cites = list(_CITE.finditer(line))
+        if not line:
+            return f"citation — no answer line; {how}"
+        if not cites:
+            return f"citation — no [id§section] on the answer line; {how}"
+        shown, anchor = cites[-1].group(1), cites[-1].group(2)
+        if shown not in self.shown:
+            return f"citation — {shown} was never shown in this conversation; {how}"
+        nid = self.shown[shown]
+        if (nid, anchor) not in self.statements:
+            return f"citation — {shown}§{anchor} was not opened; {how}"
+        text_ = self._statement_text(self.lib[nid], anchor) or ""
+        nums = lambda t: {n.lstrip("0") or "0" for n in re.findall(r"\d+", t)}
+        missing = sorted(nums(_CITE.sub(" ", line)) - nums(text_))
+        if missing:
+            return f"citation — {shown}§{anchor} does not hold {', '.join(missing)}; {how}"
+        self.cite_checks -= 1                       # a line that passes has not used the one check
+        self.checked = None
+        return None
+
     @property
     def answered(self) -> bool:
         return self.ended is None
+
+
+_CITE = re.compile(r"\[([a-z0-9]{3})§([a-z0-9][a-z0-9-]*)\]")
 
 
 class ChainSuite:
@@ -400,6 +479,9 @@ class ChainSuite:
     def parse(self, text: str):
         """The final span is the answer — unless the referee ended the task: then *not answered*."""
         return text.strip() if self.conv.answered and text.strip() else None
+
+    def check_final(self, text: str) -> str | None:
+        return self.conv.check_final(text)
 
     def wrap(self, gen):
         """A cut walk generates nothing more: the loop sees an empty, tag-less chunk and stops."""

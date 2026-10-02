@@ -207,3 +207,16 @@ def test_the_frontier_stops_forwarding_at_its_budget(monkeypatch):
     assert ask([{"role": "user", "content": "a"}]) == "ok" and ask.spent["usd"] == 0.9
     assert ask([{"role": "user", "content": "b"}]) == "ok" and ask.spent["usd"] == 1.8
     assert "budget" in ask([{"role": "user", "content": "c"}]) and len(calls) == 2
+
+
+def test_openclaw_queued_envelope_is_stripped():
+    """OpenClaw re-sends an interrupted turn as `[Queued user message …]\n<request>\n\nContinue the current task …`;
+    the request is what the runtime searches on [ran] LIVE-library."""
+    from examples.school.gateway import runtime_request
+    q = "Our lift trucks must bear the testing laboratory's approval mark. Which paragraph provides for that marking?"
+    env = ("[Queued user message from a previous active turn; preserved as context only. Continue with the active prompt "
+           f"below.]\n{q}\n\nContinue the current task from the existing transcript, preserving completed work. If an "
+           "action was interrupted, inspect its state before deciding whether to retry it.")
+    assert runtime_request([{"role": "user", "content": env}]) == q
+    plain = "Continue the current task from the existing transcript is a phrase, not an envelope."
+    assert runtime_request([{"role": "user", "content": plain}]) == plain

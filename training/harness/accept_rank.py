@@ -148,7 +148,15 @@ def run_chain(gen, inbox: dict, max_calls: int = 6, suite=None) -> dict:
         spans.append({"at": len(out), "text": chunk})
         out += chunk
         if cut is None:
-            break
+            # A SUITE MAY REFUSE A FINAL LINE ONCE (`Conversation.cite_check`): the reason is written as a result and
+            # the walk continues, within the same call budget
+            why = suite.check_final(chunk) if suite is not None and hasattr(suite, "check_final") else None
+            if why is None or calls >= max_calls:
+                break
+            calls += 1
+            refused += 1
+            out += ("" if out.endswith("\n") else "\n") + f"= ERROR: {why}\n"
+            continue
         calls += 1
         matches = list(tag.finditer(out))
         # A CLOSING TAG WITH NO CANONICAL OPENING is a malformed call, not a crash.

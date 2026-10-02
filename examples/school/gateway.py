@@ -78,6 +78,11 @@ def _text(content) -> str:
 _RUNTIME_CONTEXT = re.compile(r"<<<BEGIN_OPENCLAW_INTERNAL_CONTEXT>>>.*?<<<END_OPENCLAW_INTERNAL_CONTEXT>>>", re.S)
 _STAMP = re.compile(r"^\[[A-Z][a-z]{2} \d{4}-\d{2}-\d{2} \d{2}:\d{2}[^\]]*\]\s*")
 _RUNTIME_FOOTER = re.compile(r"\n+Runtime: agent=.*\Z", re.S)
+# OpenClaw re-sends a request whose turn it judged interrupted (a slow walk) inside an envelope of its own — a header
+# naming it a queued message and a trailer asking to continue the task [ran] LIVE-library, 3 of 52 questions; the
+# runtime's first full-text search then ran on the envelope's words.
+_QUEUED = re.compile(r"\A\[Queued user message from a previous active turn[^\]]*\]\s*")
+_CONTINUE = re.compile(r"\s*Continue the current task from the existing transcript\b.*\Z", re.S)
 
 
 def earlier_turns(messages: list[dict]) -> list[dict]:
@@ -101,6 +106,7 @@ def runtime_request(messages: list[dict]) -> str:
         if m.get("role") != "user":
             continue
         text = _RUNTIME_FOOTER.sub("", _STAMP.sub("", _RUNTIME_CONTEXT.sub("", _text(m.get("content"))).strip())).strip()
+        text = _CONTINUE.sub("", _QUEUED.sub("", text)).strip() if _QUEUED.match(text) else text
         if text:
             return text
     return ""

@@ -575,6 +575,14 @@ runtime's own literal text when a search returns nothing, and a page opened with
 `page_text` instead of only its section list — together these take a walk to the supporting page 24/25,
 against a reading ceiling of 22 **[ran]** REAL1–REAL2.
 
+**A long page needs a budget of its own, on the edge's own context.** `page_text` opens a page whole; on the Mac's
+12,288-token context, 29 CFR 1910.178 read whole (7,389 Gemma tokens) overflowed 4 of 52 live walks **[ran]**
+LIVE-library. `Conversation.page_budget` caps it: a page whose text exceeds the budget shows its statements in BM25
+order against the question (the same scoring as `FullText`'s entry, §1 above) until the budget is spent, in document
+order, then the rest as openable anchors (`id§anchor`) — only the shown statements count as read. Served at **2,500**
+tokens by `examples/library/serve.py --page-budget`, fixed offline before any walk ran: at any budget from 1,500 to
+3,500 the 8 statements REAL4's oracle walks need on that page stay 8/8.
+
 Training on real pages needed one more fix. A trajectory corpus over real documents of a family the
 evaluation never sees, walked through this same runtime, scored 1 of 23 the first time — the loss sat on
 the whole walk, and a walk over real pages read whole is ~97 % page tokens, so the LoRA learned to write
@@ -611,8 +619,15 @@ of both, so the gap is not a block the whole-text loss had memorised; what the w
 instead is the domain's vocabulary, repeated across the requests and results it was also trained on
 **[ran]** H5. The recipe is now split by the length of what a member's tools return: span-masked where
 it is long (real pages, REAL3, 1/23 → 18/23), whole-text where it is short (the tracker, H5). A live
-endpoint for this library exists — `examples/library/serve.py`, with an OpenClaw driver — tested
-offline; not yet run live.
+endpoint for this library — `examples/library/serve.py`, with an OpenClaw driver — ran end to end on the user's
+own Mac: **36/52** against REAL4 on vLLM bf16's 38/52, headline and refusals matching exactly, every loss the
+edge's own (4 context overflows on a long page opened whole, 3 of OpenClaw's own queued-message envelope reaching
+the runtime's first search) **[ran]** LIVE-library. A follow-up run repaired both: `examples/school/gateway.runtime_request`
+strips the envelope, and the `page_budget` mechanism above opens the long page instead of overflowing it — 0
+overflows, 0 envelopes, **37/52**, paired against the first run 3 : 2 ($p = 1.0$): the edge's own losses measure at
+zero and the score does not follow, **NO CHANGE** against vLLM's 38/52; the three wins are exactly the rows the edge
+had cost, the one new loss is the budget showing a question's best-matching statement to a question the library
+cannot answer **[ran]** LIVE-library2.
 
 ---
 

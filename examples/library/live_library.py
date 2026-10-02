@@ -36,6 +36,7 @@ def main() -> int:
     ap.add_argument("--openclaw", default=str(OPENCLAW))
     ap.add_argument("--timeout", type=int, default=600)
     ap.add_argument("--out", required=True)
+    ap.add_argument("--resume", action="store_true", help="keep the rows already in --out and run the rest")
     a = ap.parse_args()
     from memory.notes import Library
     lib = Library.load(a.library)
@@ -45,18 +46,30 @@ def main() -> int:
     out.parent.mkdir(parents=True, exist_ok=True)
     rec = {"runtime": subprocess.run([a.openclaw, "--version"], capture_output=True, text=True).stdout.strip(),
            "started": time.strftime("%Y-%m-%dT%H:%M:%S"), "rows": []}
+    if a.resume and out.exists():
+        rec = json.loads(out.read_text()); rec.setdefault("resumed", []).append(time.strftime("%Y-%m-%dT%H:%M:%S"))
+    done = {x["id"] for x in rec["rows"]}
     stamp = time.strftime("%H%M%S")
     for r in rows:
+        if r["case_id"] in done:
+            continue
         seen = len(log.read_text().splitlines()) if log.exists() else 0
         t0 = time.time()
-        p = subprocess.run([a.openclaw, "--profile", "library-reader", "agent", "--local", "--session-id", f"lib-{r['case_id']}-{stamp}",
-                            "-m", r["question"]], capture_output=True, text=True, timeout=a.timeout)
+        # OpenClaw can hold a turn after the endpoint has answered [ran] LIVE-library2, row 32: the walk landed in 25 s and
+        # the agent sat 600 s; the row is graded on the walk, as every row is, and flagged — the driver does not stop
+        try:
+            p = subprocess.run([a.openclaw, "--profile", "library-reader", "agent", "--local", "--session-id",
+                                f"lib-{r['case_id']}-{stamp}", "-m", r["question"]], capture_output=True, text=True, timeout=a.timeout)
+            timed_out = False
+        except subprocess.TimeoutExpired as e:
+            p, timed_out = SimpleNamespace(stdout=(e.stdout or b"").decode(errors="replace") if isinstance(e.stdout, bytes) else (e.stdout or "")), True
         new = [json.loads(l) for l in log.read_text().splitlines()[seen:]] if log.exists() else []
         ev = next((e for e in reversed(new) if e["question"].strip() == r["question"].strip()), new[-1] if new else None)
         g = grade_walk(lib, r, ev) if ev else {"state": "no-walk"}
         rec["rows"].append({"id": r["case_id"], "hops": r["hops"], "kind": r["check"]["kind"], "state": g["state"],
                             "right": g["state"] == "right", "reply": reply_of(p.stdout)[:300], "walks_seen": len(new),
-                            "runtime_s": round(time.time() - t0, 2), "endpoint_latency_s": ev and ev.get("latency_s")})
+                            "runtime_s": round(time.time() - t0, 2), "endpoint_latency_s": ev and ev.get("latency_s"),
+                            "openclaw_timeout": timed_out})
         out.write_text(json.dumps(rec, indent=1, ensure_ascii=False))
         print(f"[live] {r['case_id']}: {g['state']} · {reply_of(p.stdout)[:80]!r}", flush=True)
     R = rec["rows"]

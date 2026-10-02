@@ -403,7 +403,16 @@ it, `examples/library/serve.py` puts `real-none-s0` behind an OpenAI-compatible 
 12,288 on a 16 GB Mac), running exactly this runtime (full-text entry, fallback, page text) with egress closed to the
 model server, driven through OpenClaw: **36/52 on REAL4's questions, PASSED** against the 38/52 measured on vLLM bf16
 — headline and refusals match exactly, the loss is one-hop and reads as the edge's own context limit, not the
-member's ([`LIVE-library`](../results/LIVE-library-20261001/BRIEF.md), §2's hardening above). **Open, and the corpus line on it
+member's ([`LIVE-library`](../results/LIVE-library-20261001/BRIEF.md), §2's hardening above). A follow-up run
+repaired both edge losses it names: `examples/school/gateway.runtime_request` strips OpenClaw's own queued-message
+envelope before the runtime reads the question, and the runtime's `Conversation.page_budget` opens a page over
+budget (served at 2,500 tokens) with the question's best-matching statements by BM25 within the page, in document
+order, until the budget — the rest left as openable anchors, only the shown ones read. On the same 52 questions:
+**37/52** — headline 16/23, refusals 14/16, one-hop 7/13 — against this run's 36/52 and vLLM's 38/52; **0** context
+overflows (4 before), **0** envelopes (3 before), paired against LIVE-library 3:2 ($p = 1.0$) — **NO CHANGE as
+written**, 0 overflows but 37 < 38, not REGRESSED; the three wins are exactly the rows the edge had cost, the one
+new loss is the budget showing a question's best-matching statement to a question the library cannot answer
+([`LIVE-library2`](../results/LIVE-library2-20261002/BRIEF.md)). **Open, and the corpus line on it
 now stops:** citation precision when a value repeats across a link — REAL5 found it (15/25 on a third, link-dense
 family, under the 70% bar), REAL6's one-hop fix left it unchanged (FALSIFIED), and REAL7's cross-link decoy walks
 changed nothing either — `real-link-s0` ties `real-none-s0` 13/21 on REAL5's twin-free headline (4:4, under the

@@ -628,6 +628,15 @@ runtime cuando una búsqueda no devuelve nada, y una página abierta con sus enu
 `page_text` en vez de sólo su lista de secciones — juntos llevan un recorrido a la página que sostiene la
 respuesta 24/25, contra un techo de lectura de 22 **[ran]** REAL1–REAL2.
 
+**Una página larga necesita su propio presupuesto, sobre el propio contexto del borde.** `page_text` abre una
+página entera; sobre el contexto de 12.288 tokens de la Mac, 29 CFR 1910.178 leída entera (7.389 tokens Gemma)
+desbordó 4 de 52 recorridos en vivo **[ran]** LIVE-library. `Conversation.page_budget` lo acota: una página cuyo
+texto supera el presupuesto muestra sus enunciados en orden BM25 contra la pregunta (la misma puntuación que la
+entrada de `FullText`, §1 de arriba) hasta gastar el presupuesto, en orden del documento, y después el resto como
+anclas abribles (`id§ancla`) — sólo los enunciados mostrados cuentan como leídos. Servido en **2.500** tokens por
+`examples/library/serve.py --page-budget`, fijado offline antes de correr ningún recorrido: de 1.500 a 3.500 de
+presupuesto los 8 enunciados que necesitan los recorridos oráculo de REAL4 en esa página se mantienen 8/8.
+
 Entrenar sobre páginas reales necesitó un arreglo más. Un corpus de trayectorias sobre documentos reales de
 una familia que la evaluación nunca ve, recorrido por este mismo runtime, sacó 1 de 23 la primera vez — la
 pérdida caía sobre todo el recorrido, y un recorrido sobre páginas reales leídas enteras es ~97 % tokens de
@@ -669,8 +678,16 @@ memorizado; lo que la pérdida sobre el texto entero carga en cambio es el vocab
 repetido a lo largo de los pedidos y resultados sobre los que también entrenó **[ran]** H5. La receta
 ahora se parte por el largo de lo que devuelven las herramientas de un miembro: con máscara de tramo
 donde es largo (páginas reales, REAL3, 1/23 → 18/23), sobre el texto entero donde es corto (el tracker,
-H5). Existe un endpoint en vivo para esta biblioteca — `examples/library/serve.py`, con un driver de
-OpenClaw — probado offline; todavía no corrió en vivo.
+H5). Un endpoint en vivo para esta biblioteca — `examples/library/serve.py`, con un driver de OpenClaw —
+corrió de punta a punta sobre la propia Mac del usuario: **36/52** contra el 38/52 de REAL4 sobre vLLM bf16,
+titular y negativas exactos, cada pérdida propia del borde (4 desbordes de contexto al abrir entera una página
+larga, 3 del propio sobre de mensaje encolado de OpenClaw llegando a la primera búsqueda del runtime) **[ran]**
+LIVE-library. Una corrida de seguimiento reparó las dos: `examples/school/gateway.runtime_request` quita el
+sobre, y el mecanismo `page_budget` de arriba abre la página larga en vez de desbordarla — 0 desbordes, 0 sobres,
+**37/52**, pareado contra la primera corrida 3 : 2 ($p = 1,0$): las pérdidas propias del borde se miden en cero y
+el puntaje no las sigue, **SIN CAMBIO** contra el 38/52 de vLLM; las tres ganancias son exactamente las filas que
+le costaba el borde, la única pérdida nueva es el presupuesto mostrando el enunciado que mejor empareja con la
+pregunta a una pregunta que la biblioteca no puede contestar **[ran]** LIVE-library2.
 
 ---
 
