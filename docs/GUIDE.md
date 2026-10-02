@@ -479,7 +479,9 @@ not a rule bolted on top, but more of the corpus — 27 walks whose library genu
 `Not in my library.` rather than a guess. Trained on them, the member refuses 15 of 16 held-out unanswerable
 questions while still answering 0 false refusals of 36 it can answer
 ([`REAL4`](../results/REAL4-refusal-20260930/BRIEF.md)) — this member, **`real-none-s0`**, is the one the user
-accepted as the real-document member, and it is what `examples/library/serve.py` now serves
+accepted as the real-document member, and it is what `examples/library/serve.py` now serves — live, through
+OpenClaw on the user's Mac, at **36/52 against REAL4 on vLLM bf16's 38/52** (headline 16/23 and refusals 15/16
+exact, one-hop 5/13): **PASSED**, the losses reading as the edge's own context limit
 ([`LIVE-library`](../results/LIVE-library-20261001/BRIEF.md)). Carried to a third, link-denser family, the same
 member stays well above the untrained base (15/25 against 2/25) but falls short of the citation bar: most of what it
 gets wrong is citing a *different* statement that happens to hold the same number as the one asked — a problem the
@@ -739,7 +741,7 @@ happened to us last week).
 | sessions longer than 2–3 turns | **[ran] H2, H3**: the team tracker (`examples/tracker/`) runs five-turn sessions and the flat-prompt property holds ($\bar p_5 \le 1.1\ \bar p_1$) on both corpora | reading chosen (row above); H3's second corpus is measured (row above) |
 | the global cache trained on | **[ran]**: built, tested, and trained inside two members' own corpora (`wf-s0`, H1; `tr-s0`, H2) | — |
 | real-document citation when a value repeats across a link | **[ran] REAL5 PARTIAL (15/25, under the 70% bar), REAL6 FALSIFIED (one-hop fix leaves it unchanged, 15/25), REAL7 FALSIFIED (cross-link decoys tie 13/21 on the twin-free headline)**: two corpus changes aimed at this citation changed nothing; the misses are multi-hop rows cited at the wrong end of a link | not another corpus — a runtime check that rejects a citation whose page the walk did not end on, measured on a fresh set |
-| the real-document member served as the product would serve it | **[ran, built]** `examples/library/serve.py` + an OpenClaw driver, tested offline; the first live run paused — another session's `llama-server` held the GPU memory it needs | free the GPU, run it (LIVE-library) |
+| the real-document member served as the product would serve it | **[ran] PASSED**: `examples/library/serve.py` + an OpenClaw driver, 36/52 against REAL4 on vLLM bf16's 38/52 — headline 16/23 and refusals 15/16 exact, one-hop 5/13; every loss is the edge's (context overflow on a long page, one OpenClaw timeout, OpenClaw's queued-message envelope on three slow questions) | strip OpenClaw's queued-message envelope before the runtime reads the question; a page budget so a long page fits a 12k context |
 | a planted instruction in a tool result changing what a member does | **[ran] INJ0 — no headroom**: 70 exposed across every recorded turn, 0 acted on it | not built — nothing on these suites for it to fix |
 | real identity (Auth0), WhatsApp, installation | not built | after the above |
 

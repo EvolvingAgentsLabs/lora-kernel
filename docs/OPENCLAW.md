@@ -353,14 +353,14 @@ for holds on a real client, not only on a replay
 15/15, distributor 6/6 — stays single-turn: one request, one reply, no earlier turn to resolve; this is the first to
 carry state *across* turns live.
 
-## 7. The library, as an OpenClaw provider — a paused live run
+## 7. The library, as an OpenClaw provider — a live run, PASSED
 
 [`examples/library/serve.py`](../examples/library/serve.py) ([`SERVING.md`](SERVING.md)) is a *second* front door,
 beside the gateway: an OpenAI-compatible endpoint that runs `real-none-s0` (the real-document member accepted after
 REAL4, [`ARCHITECTURE.md`](ARCHITECTURE.md) §4) over the REAL4 runtime, on llama.cpp. Pointing OpenClaw at it is
 registering it as a provider like any other, because the endpoint writes the patch for you on start:
 
-    llama-server -m gemma-4-E4B-it-Q8_0.gguf --lora lora-real-none-s0-f16.gguf --port 8793 -c 12288 -b 512 -ngl 99
+    llama-server -m gemma-4-E4B-it-Q8_0.gguf --lora lora-real-none-s0-f16.gguf --port 8793 -c 12288 -b 512 -ub 512 -ngl 99
     python -m examples.library.serve --library knowledge/logistics-regs --upstream http://127.0.0.1:8793 --port 8766 \
         --openclaw-patch ~/.config/lora-kernel/openclaw/library-reader.json5
 
@@ -372,13 +372,16 @@ The reply is the member's answer with its citation rendered as `[page title §an
 library has nothing to say — `real-none-s0` was trained to prefer that over a guess (§7.1 of [`GUIDE.md`](GUIDE.md),
 [`REAL4`](../results/REAL4-refusal-20260930/BRIEF.md)).
 
-**The live run is built and tested offline, and its first try against the real server paused rather than finished.**
-`examples/library/live_library.py` drives REAL4's own 52 questions through `openclaw agent --local`, one fresh
-session each, and grades the endpoint's own walk record the way REAL4 did — value and strict citation. The driver and
-the grading path are exercised against a stand-in model; the first attempt against the real llama.cpp server on the
-user's Mac did not reach a result, because another session's `llama-server` was already holding the GPU memory this
-one needs ([`LIVE-library`](../results/LIVE-library-20261001/BRIEF.md)). **Paused for a resource, not falsified**:
-nothing about the endpoint, the patch or the driver failed — the next attempt is freeing that memory first.
+**The live run is built, tested offline, and now run end to end on the real server — PASSED.**
+`examples/library/live_library.py` drove REAL4's own 52 questions through `openclaw agent --local` (OpenClaw
+2026.9.4), one fresh session each, and graded the endpoint's own walk record the way REAL4 did — value and strict
+citation. On the user's Mac, context sized down to **12,288** (16,384 ran out of memory), 22.5 minutes: **36/52** —
+headline 16/23, refusals 15/16, one-hop 5/13 — against REAL4 on vLLM bf16's 38/52 (16/23, 15/16, 7/13): **PASSED**
+(bar ≥ 34, refusals ≥ 13, headline ≥ 14), the headline and the refusals matching the measured arm exactly. Every loss
+reads as the edge's: 4 walks overflowed the 12,288-token context after opening a ~7k-token page whole, one question
+timed out with no walk recorded, three slow questions were re-sent wrapped in OpenClaw's own queued-message envelope
+([`LIVE-library`](../results/LIVE-library-20261001/BRIEF.md)). **Owed, not done**: stripping that envelope before the
+runtime reads the question, and a page budget so a long page fits a 12k context.
 
 ## What this is worth, measured
 
