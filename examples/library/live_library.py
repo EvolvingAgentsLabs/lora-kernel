@@ -10,12 +10,57 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import re
+import signal
 import subprocess
 import time
 from pathlib import Path
 from types import SimpleNamespace
 
 from examples.school.live_openclaw import OPENCLAW, reply_of
+
+# THE HOLD IS NODE'S, AT EXIT [ran] 2026-10-02: every held `agent --local` had already logged its run ended
+# (`stopReason=stop`) within 0.2 s of the reply, and `sample` found all three LIVE-library2 holds still inside
+# process.exit() hours later — V8 joining its platform workers. Our endpoint's answer, delay and format play no part. The
+# cause inside node is not fixed here (a V8 flag tried against it did not separate from chance on a stub, 0/12 vs 3/15);
+# the driver stops waiting for an exit that may never come: once OpenClaw prints that its run ended, the reply is
+# complete — the turn's whole process group is killed after a short grace, and on a timeout. The launcher re-spawns node
+# with inherited stdio, so a held grandchild used to keep the pipe open and outlive the driver as an orphan.
+DONE = re.compile(r"\] run \S+ ended with stopReason=")
+GRACE_S = 2.0
+
+
+def run_turn(argv: list[str], timeout: float, env: dict | None = None) -> tuple[str, bool]:
+    """(stdout, timed_out). The turn runs in its own process group; it ends when the process exits, or GRACE_S after
+    the run-ended line, or at `timeout` — the last two kill the group whole, so nothing outlives the row."""
+    import threading
+    p = subprocess.Popen(argv, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, text=True, start_new_session=True,
+                         env={**os.environ, "OPENCLAW_NO_RESPAWN": "1", **(env or {})})
+    lines, done_at = [], []
+
+    def read():
+        for line in p.stdout:
+            lines.append(line)
+            if not done_at and DONE.search(line):
+                done_at.append(time.time())
+    t = threading.Thread(target=read, daemon=True)
+    t.start()
+    t0, timed_out = time.time(), False
+    while p.poll() is None:
+        if done_at and time.time() - done_at[0] >= GRACE_S:
+            break
+        if time.time() - t0 >= timeout:
+            timed_out = True
+            break
+        time.sleep(0.1)
+    if p.poll() is None:
+        try:
+            os.killpg(p.pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+    t.join(timeout=2)
+    return "".join(lines), timed_out
 
 
 def grade_walk(lib, row: dict, ev: dict) -> dict:
@@ -56,13 +101,11 @@ def main() -> int:
         seen = len(log.read_text().splitlines()) if log.exists() else 0
         t0 = time.time()
         # OpenClaw can hold a turn after the endpoint has answered [ran] LIVE-library2, row 32: the walk landed in 25 s and
-        # the agent sat 600 s; the row is graded on the walk, as every row is, and flagged — the driver does not stop
-        try:
-            p = subprocess.run([a.openclaw, "--profile", "library-reader", "agent", "--local", "--session-id",
-                                f"lib-{r['case_id']}-{stamp}", "-m", r["question"]], capture_output=True, text=True, timeout=a.timeout)
-            timed_out = False
-        except subprocess.TimeoutExpired as e:
-            p, timed_out = SimpleNamespace(stdout=(e.stdout or b"").decode(errors="replace") if isinstance(e.stdout, bytes) else (e.stdout or "")), True
+        # the agent sat 600 s — node held in its own exit (see DONE); the row is graded on the walk, as every
+        # row is, and flagged — the driver does not stop
+        stdout, timed_out = run_turn([a.openclaw, "--profile", "library-reader", "agent", "--local",
+                                      "--session-id", f"lib-{r['case_id']}-{stamp}", "-m", r["question"]], a.timeout)
+        p = SimpleNamespace(stdout=stdout)
         new = [json.loads(l) for l in log.read_text().splitlines()[seen:]] if log.exists() else []
         ev = next((e for e in reversed(new) if e["question"].strip() == r["question"].strip()), new[-1] if new else None)
         g = grade_walk(lib, r, ev) if ev else {"state": "no-walk"}

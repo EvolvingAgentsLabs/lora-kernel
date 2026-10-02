@@ -92,7 +92,14 @@ def serve(lib, searcher, generate, port: int, log: str | None, page_budget: int 
             body = json.loads(self.rfile.read(int(self.headers.get("Content-Length") or 0)) or b"{}")
             question = runtime_request(body.get("messages") or [])
             t0 = time.time()
-            w = walk(lib, searcher, question, generate, page_budget, cite_check, cite_gate)
+            # A WALK THAT RAISES STILL ANSWERS. An exception here used to close the socket with no response; OpenClaw
+            # reads that as a transport failure and re-sends the turn wrapped as "[Queued user message from a previous
+            # active turn …]" — up to five times, none of them logged [ran] LIVE-library row 07: 119 s, no walk recorded
+            try:
+                w = walk(lib, searcher, question, generate, page_budget, cite_check, cite_gate)
+            except Exception as e:                                          # context overflow, a dead upstream
+                w = {"final": "", "reply": NO_ANSWER, "text": "", "gated": None, "shown": {}, "statements": [],
+                     "ended": False, "error": f"{type(e).__name__}: {e}"[:500]}
             ev = {"at": time.strftime("%Y-%m-%dT%H:%M:%S"), "question": question, "latency_s": round(time.time() - t0, 2), **w}
             if log:
                 with lock, open(log, "a") as f:
