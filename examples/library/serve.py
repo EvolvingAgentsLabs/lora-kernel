@@ -23,9 +23,11 @@ from pathlib import Path
 
 CITE = re.compile(r"\[([a-z0-9]{3})§([a-z0-9][a-z0-9-]*)\]")
 NO_ANSWER = "The library walk ended without an answer — try again or ask more narrowly."
+UNVERIFIED = "The library could not verify an answer to this — its citation does not check out."
 
 
-def walk(lib, searcher, question: str, generate, page_budget: int | None = None, cite_check: bool = False) -> dict:
+def walk(lib, searcher, question: str, generate, page_budget: int | None = None, cite_check: bool = False,
+         cite_gate: bool = False) -> dict:
     """One question through the REAL4 runtime. `generate(system, user)` returns `gen(prefix) -> text`."""
     from memory import prompt
     from memory.runtime import ChainSuite, Conversation
@@ -44,8 +46,12 @@ def walk(lib, searcher, question: str, generate, page_budget: int | None = None,
     # a walk with no final line failed (context overflow, a dead upstream) — it is not a refusal, and the user is told so
     # [ran] LIVE-library: 6 of 51 walks, every one shown as `Not in my library.` until this line
     reply = CITE.sub(human, line) if line else NO_ANSWER
+    # THE GATE (GATE0): an answer whose citation the referee cannot verify is not delivered — the walk is unchanged
+    gated = conv.final_problem(line) if cite_gate and line else None
+    if gated:
+        reply = UNVERIFIED
     return {"final": line, "reply": reply, "text": chain["text"],
-            "shown": dict(conv.shown), "statements": [list(s) for s in conv.statements], "ended": conv.ended}
+            "gated": gated, "shown": dict(conv.shown), "statements": [list(s) for s in conv.statements], "ended": conv.ended}
 
 
 def llama_generator(tok, budget: int = 120):              # wiki_arm --max-tokens, as measured
@@ -59,7 +65,8 @@ def llama_generator(tok, budget: int = 120):              # wiki_arm --max-token
     return generate
 
 
-def serve(lib, searcher, generate, port: int, log: str | None, page_budget: int | None = None, cite_check: bool = False):
+def serve(lib, searcher, generate, port: int, log: str | None, page_budget: int | None = None, cite_check: bool = False,
+          cite_gate: bool = False):
     lock = threading.Lock()
 
     class H(BaseHTTPRequestHandler):
@@ -85,7 +92,7 @@ def serve(lib, searcher, generate, port: int, log: str | None, page_budget: int 
             body = json.loads(self.rfile.read(int(self.headers.get("Content-Length") or 0)) or b"{}")
             question = runtime_request(body.get("messages") or [])
             t0 = time.time()
-            w = walk(lib, searcher, question, generate, page_budget, cite_check)
+            w = walk(lib, searcher, question, generate, page_budget, cite_check, cite_gate)
             ev = {"at": time.strftime("%Y-%m-%dT%H:%M:%S"), "question": question, "latency_s": round(time.time() - t0, 2), **w}
             if log:
                 with lock, open(log, "a") as f:
@@ -122,6 +129,7 @@ def main() -> int:
     ap.add_argument("--tokenizer", default="google/gemma-4-E4B-it")
     ap.add_argument("--port", type=int, default=8766)
     ap.add_argument("--log", default=None)
+    ap.add_argument("--cite-gate", action="store_true", help="do not deliver an answer whose citation fails (GATE0)")
     ap.add_argument("--cite-check", action="store_true", help="refuse an unverifiable final line once (CITE0)")
     ap.add_argument("--page-budget", type=int, default=2500,
                     help="a page over this many tokens opens with the question's best statements (0: whole, as REAL4)")
@@ -136,7 +144,7 @@ def main() -> int:
     from transformers import AutoTokenizer
     accept_rank.HOST = a.upstream.rstrip("/")
     lib = Library.load(a.library)
-    serve(lib, FullText(lib), llama_generator(AutoTokenizer.from_pretrained(a.tokenizer)), a.port, a.log, a.page_budget or None, a.cite_check)
+    serve(lib, FullText(lib), llama_generator(AutoTokenizer.from_pretrained(a.tokenizer)), a.port, a.log, a.page_budget or None, a.cite_check, a.cite_gate)
     Path(a.openclaw_patch).parent.mkdir(parents=True, exist_ok=True)
     Path(a.openclaw_patch).write_text(OPENCLAW_PATCH.format(port=a.port))
     print(f"[library] {a.library} · {len(lib.notes)} pages · member at {a.upstream} · :{a.port} · egress closed · "

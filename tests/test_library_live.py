@@ -131,3 +131,28 @@ def test_the_citation_check_reads_the_numbers_against_the_cited_statement():
     assert "does not hold 99999" in chain["text"]
     conv, chain = _walk_with(lib, row, ["Not in my library."])
     assert "ERROR: citation" not in chain["text"]
+
+
+def test_the_gate_withholds_an_unverifiable_answer_and_delivers_a_verified_one():
+    """GATE0: the walk is unchanged; a final line whose citation fails is replaced by `UNVERIFIED`, one that verifies
+    leaves as it is, and a refusal is never gated."""
+    from examples.library import serve
+    from memory.notes import Library
+    from memory.runtime import FullText
+    lib = Library.load("knowledge/logistics-regs")
+    row = next(r for r in _rows() if r["support"] and r["hops"] == 1 and r["support"][1] == "h-2-i")
+    good = serve.walk(lib, FullText(lib), row["question"], _scripted(row, row["support"][1]), cite_gate=True)
+    assert good["gated"] is None and "[1910.178 §h-2-i]" in good["reply"]
+    bad = serve.walk(lib, FullText(lib), row["question"], _scripted(row, "zz"), cite_gate=True)
+    assert bad["gated"] and bad["reply"] == serve.UNVERIFIED and bad["final"].endswith("§zz]")
+    off = serve.walk(lib, FullText(lib), row["question"], _scripted(row, "zz"))
+    assert off["gated"] is None and off["reply"] != serve.UNVERIFIED
+
+
+def test_citation_problem_ignores_the_digits_of_a_links_opaque_id():
+    from memory.runtime import citation_problem
+    opened = {("p", "a")}
+    text = lambda nid, a: "Keep it 30 days; see [5sf] Records."
+    assert citation_problem("30 days [k3f§a]", {"k3f": "p"}.get, opened, text) is None
+    assert citation_problem("5 days [k3f§a]", {"k3f": "p"}.get, opened, text) == "k3f§a does not hold 5"
+    assert citation_problem("Not in my library.", {}.get, set(), text) is None

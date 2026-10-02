@@ -414,38 +414,25 @@ class Conversation:
         """§5.4: one JSON line per command."""
         return "\n".join(json.dumps(l, ensure_ascii=False) for l in self.log)
 
+    def final_problem(self, text: str) -> str | None:
+        """Why the final line of `text` cannot be verified from this conversation's own record, or None (GATE0's gate)."""
+        lines = [l.strip() for l in text.strip().splitlines() if l.strip()]
+        return citation_problem(lines[-1] if lines else "", self.shown.get, set(self.statements),
+                                lambda nid, a: self._statement_text(self.lib[nid], a))
+
     def check_final(self, text: str) -> str | None:
-        r"""`cite_check`: why a final line cannot be verified, or None. Without the answer key — the referee's own record:
-        a line passes iff it is `Not in my library.`, or it cites $[o\S a]$ with $o$ shown, $(\mathrm{id}(o), a)$ opened,
-        and $\mathrm{nums}(\text{line}) \subseteq \mathrm{nums}(\text{statement})$ (the citation's own label aside)."""
+        r"""`cite_check`: the reason of `citation_problem`, written back to the member once (CITE0: as a hint it repaired 0
+        of 6 — the gate, `final_problem`, is the use that survived)."""
         if not self.cite_check or self.cite_checks >= 1 or self.ended:
             return None
-        lines = [l.strip() for l in text.strip().splitlines() if l.strip()]
-        line = lines[-1] if lines else ""
-        if "not in my library" in line.lower():
+        why = self.final_problem(text)
+        if why is None:
             return None
+        lines = [l.strip() for l in text.strip().splitlines() if l.strip()]
         self.cite_checks += 1
-        self.checked = {"line": line, "statements": list(self.statements)}      # what the line was, as the check saw it
-        how = "end with one line: the answer and [id§section] of a statement you opened that holds it — or Not in my library."
-        cites = list(_CITE.finditer(line))
-        if not line:
-            return f"citation — no answer line; {how}"
-        if not cites:
-            return f"citation — no [id§section] on the answer line; {how}"
-        shown, anchor = cites[-1].group(1), cites[-1].group(2)
-        if shown not in self.shown:
-            return f"citation — {shown} was never shown in this conversation; {how}"
-        nid = self.shown[shown]
-        if (nid, anchor) not in self.statements:
-            return f"citation — {shown}§{anchor} was not opened; {how}"
-        text_ = self._statement_text(self.lib[nid], anchor) or ""
-        nums = lambda t: {n.lstrip("0") or "0" for n in re.findall(r"\d+", t)}
-        missing = sorted(nums(_CITE.sub(" ", line)) - nums(text_))
-        if missing:
-            return f"citation — {shown}§{anchor} does not hold {', '.join(missing)}; {how}"
-        self.cite_checks -= 1                       # a line that passes has not used the one check
-        self.checked = None
-        return None
+        self.checked = {"line": lines[-1] if lines else "", "statements": list(self.statements)}
+        return (f"citation — {why}; end with one line: the answer and [id§section] of a statement you opened that holds it"
+                " — or Not in my library.")
 
     @property
     def answered(self) -> bool:
@@ -453,6 +440,35 @@ class Conversation:
 
 
 _CITE = re.compile(r"\[([a-z0-9]{3})§([a-z0-9][a-z0-9-]*)\]")
+_OPAQUE = re.compile(r"\[[a-z0-9]{3}\]")
+
+
+def citation_problem(line: str, resolve, opened: set, text_of) -> str | None:
+    r"""Why a final line cannot be verified — without the answer key, from the referee's own record — or None.
+
+    A line passes iff it is `Not in my library.`, or it cites $[o\S a]$ with $\mathrm{resolve}(o)$ defined,
+    $(\mathrm{resolve}(o), a) \in \text{opened}$ and $\mathrm{nums}(\text{line}) \subseteq \mathrm{nums}(\text{statement})$, the
+    citation's own label aside and the statement's link ids removed (an opaque id's digit is not the statement's —
+    GATE0's one declared change). `resolve(shown) -> library id | None`; `text_of(id, anchor) -> str | None`.
+    Measured: 15 fires, 0 on a right answer, on LIVE-library2 and CITE0 [ran]."""
+    if "not in my library" in line.lower():
+        return None
+    if not line:
+        return "no answer line"
+    cites = list(_CITE.finditer(line))
+    if not cites:
+        return "no [id§section] on the answer line"
+    shown, anchor = cites[-1].group(1), cites[-1].group(2)
+    nid = resolve(shown)
+    if nid is None:
+        return f"{shown} was never shown in this conversation"
+    if (nid, anchor) not in opened:
+        return f"{shown}§{anchor} was not opened"
+    nums = lambda t: {n.lstrip("0") or "0" for n in re.findall(r"\d+", t)}
+    missing = sorted(nums(_CITE.sub(" ", line)) - nums(_OPAQUE.sub(" ", text_of(nid, anchor) or "")))
+    if missing:
+        return f"{shown}§{anchor} does not hold {', '.join(missing)}"
+    return None
 
 
 class ChainSuite:
