@@ -399,9 +399,11 @@ untrained base's 9/23, 15/16 refusals, 0 false refusals
 That span-masked loss is not the new default for every member, checked on the tracker's: it regresses a short-result
 member 0:20 on one phrasing, so it stays the recipe where tool results are long and the whole-text loss stays where
 they are short ([`H5`](../results/H5-span-loss-tracker-20261001/BRIEF.md)). Served the way the product would serve
-it, `examples/library/serve.py` puts `real-none-s0` behind an OpenAI-compatible endpoint on llama.cpp, running
-exactly this runtime (full-text entry, fallback, page text) with egress closed to the model server
-([`LIVE-library`](../results/LIVE-library-20261001/BRIEF.md), §2's hardening above). **Open, and the corpus line on it
+it, `examples/library/serve.py` puts `real-none-s0` behind an OpenAI-compatible endpoint on llama.cpp (context
+12,288 on a 16 GB Mac), running exactly this runtime (full-text entry, fallback, page text) with egress closed to the
+model server, driven through OpenClaw: **36/52 on REAL4's questions, PASSED** against the 38/52 measured on vLLM bf16
+— headline and refusals match exactly, the loss is one-hop and reads as the edge's own context limit, not the
+member's ([`LIVE-library`](../results/LIVE-library-20261001/BRIEF.md), §2's hardening above). **Open, and the corpus line on it
 now stops:** citation precision when a value repeats across a link — REAL5 found it (15/25 on a third, link-dense
 family, under the 70% bar), REAL6's one-hop fix left it unchanged (FALSIFIED), and REAL7's cross-link decoy walks
 changed nothing either — `real-link-s0` ties `real-none-s0` 13/21 on REAL5's twin-free headline (4:4, under the

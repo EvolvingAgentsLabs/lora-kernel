@@ -79,15 +79,17 @@ library, REAL4's own runtime (the question's full text as the first search on ev
 shelf, pages opened with their statements). It is the `edge` profile above plus the memory's runtime in front of it,
 not a third thing.
 
-    llama-server -m gemma-4-E4B-it-Q8_0.gguf --lora lora-real-none-s0-f16.gguf --port 8793 -c 16384 -ngl 99
+    llama-server -m gemma-4-E4B-it-Q8_0.gguf --lora lora-real-none-s0-f16.gguf --port 8793 -c 12288 -b 512 -ub 512 -ngl 99
     python -m examples.library.serve --library knowledge/logistics-regs --upstream http://127.0.0.1:8793 --port 8766
 
-**On a 16 GB Mac, size the context down and clear the GPU first.** `-c 16384` is what REAL4's own questions were
-measured against, but a 16 GB machine does not have 16,384 tokens of context to spare *and* the rest of the stack:
-use **`-c 12288 -b 512`**, and make sure nothing else is holding GPU memory before starting `llama-server` — the
-first live attempt here paused for exactly this reason, another session's `llama-server` already holding the memory
-this one needed ([`LIVE-library`](../results/LIVE-library-20261001/BRIEF.md)). Q8_0, not Q4_0, for the same reason
-as every other member on `edge` — the prompt-cache order-id flip above.
+**On a 16 GB Mac, size the context down and clear the GPU first.** 16,384 is what REAL4's own questions were
+measured against on vLLM, but a 16 GB machine does not have 16,384 tokens of context to spare *and* the rest of the
+stack: use **`-c 12288 -b 512 -ub 512`**, and make sure nothing else is holding GPU memory before starting
+`llama-server` — the first live attempt here ran out of memory for exactly this reason, another session's
+`llama-server` already holding ~8 GB; the second attempt, at 12,288, ran end to end and **PASSED** (36/52 against
+vLLM's 38/52, headline and refusals exact) — the four losses it costs are walks that overflow 12,288 tokens after
+opening a long page whole, read where they happen, not as the member's ([`LIVE-library`](../results/LIVE-library-20261001/BRIEF.md)).
+Q8_0, not Q4_0, for the same reason as every other member on `edge` — the prompt-cache order-id flip above.
 
 **The egress rule is the same as the gateway's (§6 of [`OPENCLAW.md`](OPENCLAW.md), [`MECHANISMS.md`](MECHANISMS.md)
 §6): closed by default.** `serve.py` installs `examples.common.egress` before anything else loads, allowed only to
@@ -107,9 +109,10 @@ One request in, one walk out: the reply carries the answer with its citation ren
 `Not in my library.`, and the response's own `x_walk` field carries the whole walk — ids shown, statements opened —
 so a driver can grade the citation exactly as the measurement did, rather than re-parsing the reply text.
 `examples/library/live_library.py` is that driver: it sends REAL4's 52 questions through `openclaw agent --local`,
-one fresh session each, and grades the endpoint's own walk record with REAL4's grader. **Built and tested offline;
-the first run against the real server paused before it produced a result** — see
-[`OPENCLAW.md`](OPENCLAW.md) for how it is pointed at a running OpenClaw instance.
+one fresh session each, and grades the endpoint's own walk record with REAL4's grader. **Built, tested offline, and
+now run end to end on the real server: PASSED** — 36/52 against REAL4 on vLLM bf16's 38/52 (headline 16/23 and
+refusals 15/16 match exactly, one-hop 5/13), 22.5 minutes, 2026-10-01 ([`LIVE-library`](../results/LIVE-library-20261001/BRIEF.md))
+— see [`OPENCLAW.md`](OPENCLAW.md) for how it is pointed at a running OpenClaw instance.
 
 ## What live serving costs: order beats size, and two adapters are not twice the cost
 

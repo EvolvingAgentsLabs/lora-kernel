@@ -369,7 +369,7 @@ construido cargar claves en vez de la conversación se sostiene sobre un cliente
 escuela 15/15, distribuidora 6/6 — sigue siendo de un solo turno: un pedido, una respuesta, ningún turno anterior
 que resolver; ésta es la primera en llevar estado *a través* de turnos en vivo.
 
-## 7. La biblioteca, como proveedor de OpenClaw — una corrida en vivo en pausa
+## 7. La biblioteca, como proveedor de OpenClaw — una corrida en vivo, PASÓ
 
 [`examples/library/serve.py`](../../examples/library/serve.py) ([`SERVING.md`](SERVING.md)) es una *segunda* puerta
 de entrada, al lado del gateway: un endpoint compatible con OpenAI que corre a `real-none-s0` (el miembro de
@@ -377,7 +377,7 @@ documentos reales aceptado después de REAL4, [`ARCHITECTURE.md`](ARCHITECTURE.m
 llama.cpp. Apuntarle OpenClaw es registrarlo como proveedor como cualquier otro, porque el endpoint escribe el
 parche solo al arrancar:
 
-    llama-server -m gemma-4-E4B-it-Q8_0.gguf --lora lora-real-none-s0-f16.gguf --port 8793 -c 12288 -b 512 -ngl 99
+    llama-server -m gemma-4-E4B-it-Q8_0.gguf --lora lora-real-none-s0-f16.gguf --port 8793 -c 12288 -b 512 -ub 512 -ngl 99
     python -m examples.library.serve --library knowledge/logistics-regs --upstream http://127.0.0.1:8793 --port 8766 \
         --openclaw-patch ~/.config/lora-kernel/openclaw/library-reader.json5
 
@@ -389,14 +389,17 @@ La respuesta es la contestación del miembro con su citación renderizada como `
 `Not in my library.` si la biblioteca no tiene nada que decir — `real-none-s0` se entrenó para preferir eso antes que
 una adivinanza (§7.1 de [`GUIDE.md`](GUIDE.md), [`REAL4`](../../results/REAL4-refusal-20260930/BRIEF.md)).
 
-**La corrida en vivo está construida y probada offline, y su primer intento contra el servidor real quedó en pausa
-en vez de terminar.** `examples/library/live_library.py` manda las propias 52 preguntas de REAL4 por `openclaw agent
---local`, una sesión fresca por cada una, y califica el propio registro de recorrido del endpoint como lo hizo
-REAL4 — valor y citación estricta. El driver y el camino de calificación están ejercitados contra un sustituto; el
-primer intento contra el servidor real de llama.cpp en la Mac del usuario no llegó a un resultado, porque otra sesión
-ya tenía el `llama-server` reteniendo la memoria de GPU que esta necesita
-([`LIVE-library`](../../results/LIVE-library-20261001/BRIEF.md)). **En pausa por un recurso, no refutada**: nada del
-endpoint, del parche o del driver falló — el próximo intento es liberar esa memoria primero.
+**La corrida en vivo está construida, probada offline, y ahora corrida de punta a punta sobre el servidor real — PASÓ.**
+`examples/library/live_library.py` mandó las propias 52 preguntas de REAL4 por `openclaw agent --local` (OpenClaw
+2026.9.4), una sesión fresca por cada una, y calificó el propio registro de recorrido del endpoint como lo hizo
+REAL4 — valor y citación estricta. En la Mac del usuario, con el contexto achicado a **12.288** (16.384 se quedó sin
+memoria), 22,5 minutos: **36/52** — titular 16/23, negativas 15/16, un salto 5/13 — contra el 38/52 de REAL4 sobre
+vLLM bf16 (16/23, 15/16, 7/13): **PASÓ** (barra ≥ 34, negativas ≥ 13, titular ≥ 14), con el titular y las negativas
+empatando exactamente con el brazo medido. Cada pérdida se lee como del borde: 4 recorridos desbordaron el contexto
+de 12.288 tokens tras abrir entera una página de ~7k tokens, una pregunta hizo timeout sin recorrido grabado, tres
+preguntas lentas se reenviaron envueltas en el propio sobre de mensaje encolado de OpenClaw
+([`LIVE-library`](../../results/LIVE-library-20261001/BRIEF.md)). **Pendiente, no hecho**: quitar ese sobre antes de
+que el runtime lea la pregunta, y un presupuesto de página para que una página larga entre en un contexto de 12k.
 
 ## Cuánto vale esto, medido
 

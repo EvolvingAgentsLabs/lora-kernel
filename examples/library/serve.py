@@ -7,7 +7,7 @@ llama.cpp — searches, opens, follows links and ends with one line: the answer 
 `Not in my library.` The reply shows that line with the citation rendered as the page's title and anchor, and the
 response carries the walk (`x_walk`) so a driver can grade the citation the way the measurement did.
 
-    llama-server -m gemma-4-E4B-it-Q8_0.gguf --lora lora-real-none-s0-f16.gguf --port 8793 -c 16384 -ngl 99
+    llama-server -m gemma-4-E4B-it-Q8_0.gguf --lora lora-real-none-s0-f16.gguf --port 8793 -c 12288 -b 512 -ub 512 -ngl 99   # 16,384 ran out of memory on a 16 GB Mac
     python -m examples.library.serve --library knowledge/logistics-regs --upstream http://127.0.0.1:8793 --port 8766
 """
 from __future__ import annotations
@@ -22,6 +22,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 CITE = re.compile(r"\[([a-z0-9]{3})§([a-z0-9][a-z0-9-]*)\]")
+NO_ANSWER = "The library walk ended without an answer — try again or ask more narrowly."
 
 
 def walk(lib, searcher, question: str, generate) -> dict:
@@ -39,7 +40,10 @@ def walk(lib, searcher, question: str, generate) -> dict:
     def human(m):
         nid = conv.shown.get(m.group(1))
         return f"[{lib[nid].title.split(' ', 1)[0]} §{m.group(2)}]" if nid else m.group(0)
-    return {"final": line, "reply": CITE.sub(human, line) or "Not in my library.", "text": chain["text"],
+    # a walk with no final line failed (context overflow, a dead upstream) — it is not a refusal, and the user is told so
+    # [ran] LIVE-library: 6 of 51 walks, every one shown as `Not in my library.` until this line
+    reply = CITE.sub(human, line) if line else NO_ANSWER
+    return {"final": line, "reply": reply, "text": chain["text"],
             "shown": dict(conv.shown), "statements": [list(s) for s in conv.statements], "ended": conv.ended}
 
 

@@ -81,14 +81,17 @@ proceso, una biblioteca, el propio runtime de REAL4 (el texto completo de la pre
 los estantes, un fallback a todos los estantes, páginas abiertas con sus enunciados). Es el perfil `edge` de arriba
 más el runtime de la memoria delante, no una tercera cosa.
 
-    llama-server -m gemma-4-E4B-it-Q8_0.gguf --lora lora-real-none-s0-f16.gguf --port 8793 -c 16384 -ngl 99
+    llama-server -m gemma-4-E4B-it-Q8_0.gguf --lora lora-real-none-s0-f16.gguf --port 8793 -c 12288 -b 512 -ub 512 -ngl 99
     python -m examples.library.serve --library knowledge/logistics-regs --upstream http://127.0.0.1:8793 --port 8766
 
-**En una Mac de 16 GB, achicar el contexto y limpiar la GPU primero.** `-c 16384` es contra lo que se midieron las
-propias preguntas de REAL4, pero una máquina de 16 GB no tiene 16.384 tokens de contexto de sobra *y* el resto de la
-pila: usar **`-c 12288 -b 512`**, y asegurarse de que nada más esté reteniendo memoria de GPU antes de arrancar
-`llama-server` — el primer intento en vivo acá quedó en pausa exactamente por esto, otra sesión ya tenía el
-`llama-server` reteniendo la memoria que esta necesitaba ([`LIVE-library`](../../results/LIVE-library-20261001/BRIEF.md)).
+**En una Mac de 16 GB, achicar el contexto y limpiar la GPU primero.** 16.384 es contra lo que se midieron las
+propias preguntas de REAL4 sobre vLLM, pero una máquina de 16 GB no tiene 16.384 tokens de contexto de sobra *y* el
+resto de la pila: usar **`-c 12288 -b 512 -ub 512`**, y asegurarse de que nada más esté reteniendo memoria de GPU
+antes de arrancar `llama-server` — el primer intento en vivo acá se quedó sin memoria exactamente por esto, otra
+sesión ya tenía el `llama-server` reteniendo ~8 GB; el segundo intento, a 12.288, corrió de punta a punta y
+**PASÓ** (36/52 contra el 38/52 de vLLM, titular y negativas exactos) — las cuatro pérdidas que cuesta son
+recorridos que desbordan 12.288 tokens tras abrir entera una página larga, leídas donde ocurren, no como del miembro
+([`LIVE-library`](../../results/LIVE-library-20261001/BRIEF.md)).
 Q8_0, no Q4_0, por la misma razón que cualquier otro miembro en `edge` — el vuelco del order-id del caché de prompt
 de arriba.
 
@@ -112,8 +115,10 @@ Un pedido entra, un recorrido sale: la respuesta lleva la contestación con su c
 recorrido — ids mostrados, enunciados abiertos — así que un driver puede calificar la citación exactamente como lo
 hizo la medición, en vez de volver a parsear el texto de la respuesta. `examples/library/live_library.py` es ese
 driver: manda las 52 preguntas de REAL4 por `openclaw agent --local`, una sesión fresca por cada una, y califica el
-propio registro de recorrido del endpoint con el calificador de REAL4. **Construido y probado offline; la primera
-corrida contra el servidor real quedó en pausa antes de producir un resultado** — ver [`OPENCLAW.md`](OPENCLAW.md)
+propio registro de recorrido del endpoint con el calificador de REAL4. **Construido, probado offline, y ahora
+corrido de punta a punta sobre el servidor real: PASÓ** — 36/52 contra el 38/52 de REAL4 sobre vLLM bf16 (titular
+16/23 y negativas 15/16 exactos, un salto 5/13), 22,5 minutos, 2026-10-01
+([`LIVE-library`](../../results/LIVE-library-20261001/BRIEF.md)) — ver [`OPENCLAW.md`](OPENCLAW.md)
 sobre cómo apuntarlo a una instancia de OpenClaw corriendo.
 
 ## Cuánto cuesta servir en vivo: el orden le gana al tamaño, y dos adaptadores no cuestan el doble

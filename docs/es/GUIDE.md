@@ -490,8 +490,10 @@ demás en este diseño: no una regla pegada encima, sino más corpus — 27 reco
 tiene respuesta, terminando en `Not in my library.` en vez de una adivinanza. Entrenado con ellos, el miembro se
 niega en 15 de 16 preguntas sin respuesta held-out mientras sigue contestando con 0 negativas falsas de 36 que sí
 puede contestar ([`REAL4`](../../results/REAL4-refusal-20260930/BRIEF.md)) — este miembro, **`real-none-s0`**, es el
-que el usuario aceptó como el miembro de documentos reales, y es lo que `examples/library/serve.py` sirve ahora
-([`LIVE-library`](../../results/LIVE-library-20261001/BRIEF.md)). Llevado a una tercera familia, más densa en enlaces,
+que el usuario aceptó como el miembro de documentos reales, y es lo que `examples/library/serve.py` sirve ahora —
+en vivo, por OpenClaw en la Mac del usuario, a **36/52 contra el 38/52 de REAL4 sobre vLLM bf16** (titular 16/23 y
+negativas 15/16 exactos, un salto 5/13): **PASÓ**, con las pérdidas leyéndose como el propio límite de contexto
+del borde ([`LIVE-library`](../../results/LIVE-library-20261001/BRIEF.md)). Llevado a una tercera familia, más densa en enlaces,
 el mismo miembro se queda bien por encima del base sin entrenar (15/25 contra 2/25) pero se queda corto de la barra
 de citación: la mayor parte de lo que se equivoca es citar un enunciado *distinto* que tiene el mismo número que el
 preguntado — un problema que el recorrido no tiene y la citación sí. Un segundo corpus apuntado exactamente a esa
@@ -760,7 +762,7 @@ fijo en el corpus que se memoriza; un modelo sin el prompt con el que se entren�
 | sesiones de más de 2–3 turnos | **[ran] H2, H3**: el tracker de equipo (`examples/tracker/`) corre sesiones de cinco turnos y la propiedad de prompt plano se sostiene ($\bar p_5 \le 1.1\ \bar p_1$) en los dos corpus | lectura elegida (fila de arriba); el segundo corpus de H3 ya está medido (fila de arriba) |
 | la caché global entrenada | **[ran]**: construida, probada, y entrenada dentro de los corpus propios de dos miembros (`wf-s0`, H1; `tr-s0`, H2) | — |
 | la citación de documentos reales cuando un valor se repite entre enlaces | **[ran] REAL5 PARCIAL (15/25, bajo la barra de 70 %), REAL6 FALSEADO (el arreglo de un salto la deja sin cambios, 15/25), REAL7 FALSEADO (los señuelos entre enlaces empatan 13/21 sobre el titular sin gemelos)**: dos cambios de corpus apuntados a esta citación no cambiaron nada; las fallas son filas de varios saltos citadas en el extremo equivocado de un enlace | no otro corpus — un chequeo del runtime que rechace una cita cuya página el recorrido no terminó, medido sobre un conjunto fresco |
-| el miembro de documentos reales servido como lo serviría el producto | **[construido, ran]** `examples/library/serve.py` + un driver de OpenClaw, probado offline; la primera corrida en vivo quedó en pausa — otra sesión tenía el `llama-server` reteniendo la memoria de GPU que necesita | liberar la GPU, correrla (LIVE-library) |
+| el miembro de documentos reales servido como lo serviría el producto | **[ran] PASÓ**: `examples/library/serve.py` + un driver de OpenClaw, 36/52 contra el 38/52 de REAL4 sobre vLLM bf16 — titular 16/23 y negativas 15/16 exactos, un salto 5/13; cada pérdida es del borde (desborde de contexto en una página larga, un timeout de OpenClaw, el sobre de mensaje encolado de OpenClaw en tres preguntas lentas) | quitar el sobre de mensaje encolado de OpenClaw antes de que el runtime lea la pregunta; un presupuesto de página para que una página larga entre en un contexto de 12k |
 | una instrucción plantada en un resultado de herramienta cambiando lo que hace un miembro | **[ran] INJ0 — sin margen**: 70 expuestos en todos los turnos grabados, 0 actuaron | no construido — no hay nada en estas suites para que lo arregle |
 | identidad real (Auth0), WhatsApp, instalación | no construidos | después de lo anterior |
 

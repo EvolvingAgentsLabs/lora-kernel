@@ -435,9 +435,12 @@ Esa pérdida enmascarada por tramos no es el nuevo default para todo miembro, co
 0:20 en un miembro de resultado corto sobre una frase, así que queda como receta donde los resultados de herramienta
 son largos y la pérdida de texto completo queda donde son cortos
 ([`H5`](../../results/H5-span-loss-tracker-20261001/BRIEF.md)). Servido como lo serviría el producto,
-`examples/library/serve.py` pone a `real-none-s0` detrás de un endpoint compatible con OpenAI sobre llama.cpp,
-corriendo exactamente este runtime (entrada de texto completo, fallback, texto de página) con la salida de red
-cerrada al servidor del modelo ([`LIVE-library`](../../results/LIVE-library-20261001/BRIEF.md), el refuerzo del §2 de
+`examples/library/serve.py` pone a `real-none-s0` detrás de un endpoint compatible con OpenAI sobre llama.cpp
+(contexto 12.288 en una Mac de 16 GB), corriendo exactamente este runtime (entrada de texto completo, fallback,
+texto de página) con la salida de red cerrada al servidor del modelo, manejado por OpenClaw: **36/52 sobre las
+preguntas de REAL4, PASÓ** contra el 38/52 medido sobre vLLM bf16 — el titular y las negativas empatan exactamente,
+la pérdida es de un salto y se lee como el propio límite de contexto del borde, no del miembro
+([`LIVE-library`](../../results/LIVE-library-20261001/BRIEF.md), el refuerzo del §2 de
 arriba). **Abierto, y la línea de corpus sobre esto se detiene acá:** la precisión de la citación cuando un valor se
 repite entre enlaces — REAL5 la encontró (15/25 sobre una tercera familia densa en enlaces, bajo la barra de 70 %),
 el arreglo de un solo salto de REAL6 la dejó sin cambios (FALSIFIED), y los recorridos con señuelo entre enlaces de

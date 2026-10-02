@@ -1,0 +1,71 @@
+[library] knowledge/logistics-regs · 20 pages · member at http://127.0.0.1:8793 · :8766 · egress closed · OpenClaw patch /Users/agustinazwiener/.config/lora-kernel/openclaw/library-reader.json5
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 57560)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/library/serve.py", line 83, in do_POST
+    w = walk(lib, searcher, question, generate)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/library/serve.py", line 35, in walk
+    chain = run_chain(suite.wrap(generate(prompt.SYSTEM_WIKI, prompt.user_text_wiki(question))), {}, max_calls=24, suite=suite)          # wiki_arm.MAX_CALLS, as measured
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 137, in run_chain
+    chunk = gen(out)
+            ^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/memory/runtime.py", line 406, in <lambda>
+    return lambda prefix: "" if self.conv.ended else gen(prefix)
+                                                     ^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/library/serve.py", line 53, in <lambda>
+    return lambda prefix: completion("member", head + prefix, budget, ChainSuite.close)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 230, in completion
+    r = post("/v1/completions", {
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 190, in post
+    raise RuntimeError(f"HTTP {e.code} from {path}: {e.read().decode(errors='replace')[:300]}") from None
+RuntimeError: HTTP 500 from /v1/completions: {"error":{"code":500,"message":"Compute error.","type":"server_error"}}
+----------------------------------------
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 57609)
+Traceback (most recent call last):
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 697, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 362, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/socketserver.py", line 766, in __init__
+    self.handle()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 440, in handle
+    self.handle_one_request()
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/http/server.py", line 428, in handle_one_request
+    method()
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/library/serve.py", line 83, in do_POST
+    w = walk(lib, searcher, question, generate)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/library/serve.py", line 35, in walk
+    chain = run_chain(suite.wrap(generate(prompt.SYSTEM_WIKI, prompt.user_text_wiki(question))), {}, max_calls=24, suite=suite)          # wiki_arm.MAX_CALLS, as measured
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 137, in run_chain
+    chunk = gen(out)
+            ^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/memory/runtime.py", line 406, in <lambda>
+    return lambda prefix: "" if self.conv.ended else gen(prefix)
+                                                     ^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/library/serve.py", line 53, in <lambda>
+    return lambda prefix: completion("member", head + prefix, budget, ChainSuite.close)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 230, in completion
+    r = post("/v1/completions", {
+        ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/training/harness/accept_rank.py", line 190, in post
+    raise RuntimeError(f"HTTP {e.code} from {path}: {e.read().decode(errors='replace')[:300]}") from None
+RuntimeError: HTTP 500 from /v1/completions: {"error":{"code":500,"message":"Compute error.","type":"server_error"}}
+----------------------------------------

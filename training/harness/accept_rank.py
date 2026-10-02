@@ -254,7 +254,8 @@ def close_open_tag(text: str, close) -> str:
     ends inside a tag this request stops at, the stop that fired can only be that tag's close: it is put back. A text
     that ends anywhere else is left alone (a stop the model reached by writing an end token is not a tag)."""
     import re
-    m = re.search(r"<([a-z_]+)>([^<]*)$", text)
+    # a tag may carry attributes — the library's `<search shelf=wiki>` [ran] LIVE-library's first smoke test, 2026-10-01
+    m = re.search(r"<([a-z_]+)(?:\s[^<>]*)?>([^<]*)$", text)
     if m and f"</{m.group(1)}>" in close:
         return text + f"</{m.group(1)}>"
     return text

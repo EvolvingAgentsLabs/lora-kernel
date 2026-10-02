@@ -37,3 +37,28 @@ def test_the_endpoint_walk_is_graded_like_the_measurement():
     assert "§" in ev["reply"] and "[1910.178 §h-2-i]" in ev["reply"]
     wrong = serve.walk(lib, FullText(lib), row["question"], _scripted(row, "zz"))
     assert grade_walk(lib, row, wrong)["state"] != "right"
+
+
+def test_a_dropped_stop_string_is_put_back_on_a_tag_with_attributes():
+    """llama.cpp drops the stop string; `close_open_tag` puts the closing tag back — also on `<search shelf=wiki>`, which the
+    first live smoke test returned unclosed (no search ran)."""
+    from training.harness.accept_rank import close_open_tag
+    from memory.runtime import ChainSuite
+    assert close_open_tag("<search shelf=wiki>How long must a carrier keep its training records?", ChainSuite.close) \
+        == "<search shelf=wiki>How long must a carrier keep its training records?</search>"
+    assert close_open_tag("<open>k3f§pack", ChainSuite.close) == "<open>k3f§pack</open>"
+    assert close_open_tag("The answer is 12 months [k3f§c]", ChainSuite.close) == "The answer is 12 months [k3f§c]"
+
+
+def test_a_walk_with_no_answer_is_not_shown_as_a_refusal():
+    """A walk that ends with no line (LIVE-library: the context overflowed on a long page) is a failure, not a refusal —
+    the reply says so, and the grade (on the final line) does not count it as `Not in my library.`"""
+    from examples.library import serve
+    from examples.library.live_library import grade_walk
+    from memory.notes import Library
+    from memory.runtime import FullText
+    lib = Library.load("knowledge/logistics-regs")
+    row = next(r for r in _rows() if r["check"]["kind"] == "none")
+    ev = serve.walk(lib, FullText(lib), row["question"], lambda system, user: (lambda prefix: ""))
+    assert ev["final"] == "" and ev["reply"] == serve.NO_ANSWER
+    assert grade_walk(lib, row, ev)["state"] != "right"
