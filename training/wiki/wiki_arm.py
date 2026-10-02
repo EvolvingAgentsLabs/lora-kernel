@@ -85,6 +85,8 @@ def oracle_gen(row: dict, conv: Conversation):
             st = plan[done]
             if st[0] == "search":
                 return f"<search shelf={st[1]}>{st[2]}</search>"
+            if st[0] == "raw":                       # FMT0: a mistaken open, verbatim — the runtime answers it with an ERROR
+                return f"<open>{st[1]}</open>"
             o = conv.opaque[st[1]]
             return f"<open>{o}§{st[2]}</open>" if len(st) == 3 else f"<open>{o}</open>"
         if row["check"]["kind"] == "none":
@@ -146,6 +148,9 @@ def run_case(lib: Library, row: dict, arm: str, gen_for) -> dict:
                 if top:
                     conv.page_top = top              # PAGE0: a page opens with the question's best `top` statements
                     rec["page_top"] = top
+                if "recover" in flags:
+                    conv.guard.mode = "recover"      # FMT0: a violation is written inline, the walk goes on (MEMORY.md §5.3)
+                    rec["guard"] = "recover"
                 if "check" in flags:
                     conv.cite_check = True               # CITE0: a final line the referee cannot verify is refused once
                     rec["cite_check"] = True

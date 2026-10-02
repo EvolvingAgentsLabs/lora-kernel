@@ -307,7 +307,30 @@ def _has_num(text: str, token: str) -> bool:
     return gr._has(_LABEL.sub(" ", text), token)
 
 
-def walk_rows(questions: list[dict]) -> list[dict]:
+def fmt_plan(lib, q: dict, plan: list, page_top: int | None, inject: bool) -> tuple[list, str | None]:
+    """FMT0: REAL4's walk for the page form the member is served with. Under `page_top` a page opens with the question's
+    best statements; when the statement a walk needs — the link it follows (`via`) or the one it cites — is not among
+    them, the walk opens it as `id§section`. With `inject`, the walk first opens the page's own section number as if it
+    were an id — the mistake LIVE-library and CITE0 saw (`<open>20</open>`, `<open>1910.7</open>`) — reads the ERROR, and
+    goes on; that open is returned so its span can be kept out of the loss (the recovery is taught, not the mistake)."""
+    from memory.runtime import Conversation
+    view = Conversation(lib, page_text=True, page_top=page_top, first_query=q["question"]) if page_top else None
+    hidden = lambda pg, an: view is not None and an not in view._page_selection(lib[pg])
+    out, bad = [], None
+    for st in plan:
+        out.append(st)
+        if st[0] == "search" and inject and bad is None and not q.get("none"):
+            bad = lib[q["pages"][0]].title.split(" ", 1)[0]
+            out.append(["raw", bad])
+        if st[0] == "open" and len(st) == 2 and not q.get("none"):
+            if q.get("via") and st[1] == q["via"][0] and hidden(*q["via"]):
+                out.append(["open", *q["via"]])
+            if st[1] == q["support"][0] and hidden(*q["support"]):
+                out.append(["open", *q["support"]])
+    return out, (f"<open>{bad}</open>" if bad else None)
+
+
+def walk_rows(questions: list[dict], page_top: int | None = None, inject_every: int = 0) -> list[dict]:
     from memory import prompt
     from memory.runtime import FullText
     from training.wiki import grade as gr
@@ -340,8 +363,16 @@ def walk_rows(questions: list[dict]) -> list[dict]:
           row = {"case_id": f"real3-train-{i}", "world": 0, "family": f"real-{q['hops']}hop", "block": "R",
                "hops": q["hops"], "shelf": "wiki", "question": q["question"], "plan": plan, "support": q["support"],
                "answer": q["answer"], "check": {"kind": "value", "tokens": q["tokens"], "cite": "support"}}
+        bad = None
+        if page_top or inject_every:
+            row["plan"], bad = fmt_plan(lib, q, row["plan"], page_top, bool(inject_every) and i % inject_every == 0)
         conv = wa.conversation(lib, row)
         conv.searcher, conv.first_query, conv.entry_all_shelves, conv.fallback, conv.page_text = ft, q["question"], True, True, True
+        conv.page_top = page_top
+        if bad is not None:
+            # the guard's `recover` mode (docs/MEMORY.md §5.3): the violation is written inline and the walk goes on —
+            # `strict` ends it, which is what LIVE-library's "no line after an ERROR" walks were [ran] (FMT0's diagnosis)
+            conv.guard.mode = "recover"
         try:
             final, conv, chain = wa.walk(lib, row, wa.oracle_gen(row, conv), conv)
         except KeyError:                                 # a page no search shows: the walk cannot reach it — dropped
@@ -349,8 +380,9 @@ def walk_rows(questions: list[dict]) -> list[dict]:
         g = gr.grade(row, final, conv)
         # WHAT THE MODEL WROTE, as character spans of the assistant turn — the loss goes there and nowhere else
         # (REAL3 attempt 1 [ran]: a loss on the whole walk taught the LoRA to write the regulation pages it was shown)
-        rows.append({**row, "grade": g["state"], "refused": chain["refused"],
-                     "train_spans": [[sp["at"], sp["at"] + len(sp["text"])] for sp in chain["spans"] if sp["text"]],
+        rows.append({**row, "grade": g["state"], "refused": chain["refused"] - (bad is not None), "injected": bad,
+                     "train_spans": [[sp["at"], sp["at"] + len(sp["text"])] for sp in chain["spans"]
+                                     if sp["text"] and sp["text"] != bad],
                      "messages": [{"role": "system", "content": prompt.SYSTEM_WIKI},
                                   {"role": "user", "content": prompt.user_text_wiki(q["question"])},
                                   {"role": "assistant", "content": chain["text"]}]})
@@ -382,6 +414,9 @@ def main() -> int:
     ap.add_argument("--walks", action="store_true")
     ap.add_argument("--with-none", action="store_true", help="REAL4: add unanswerable questions → train_real_none.jsonl")
     ap.add_argument("--with-repeated", action="store_true", help="REAL6: also add repeated-value questions → train_real_cite.jsonl")
+    ap.add_argument("--with-format", action="store_true",
+                    help="FMT0: REAL4's corpus walked under page_top=8 (hidden statements opened as id§section) and one walk "
+                         "in three recovering from a mistaken open → train_real_fmt.jsonl")
     ap.add_argument("--with-crosslink", action="store_true", help="REAL7: REAL4's corpus + cross-link decoy walks → train_real_link.jsonl")
     a = ap.parse_args()
     DATA.mkdir(parents=True, exist_ok=True)
@@ -407,7 +442,9 @@ def main() -> int:
             if not rf.exists():
                 rf.write_text("".join(json.dumps(q, ensure_ascii=False) + "\n" for q in build_repeated()))
             qs, name = qs + [json.loads(l) for l in rf.read_text().splitlines() if l.strip()], "train_real_cite"
-        rows = [r for r in walk_rows(qs) if r["grade"] == "right" and not r["refused"]
+        if a.with_format:
+            name = "train_real_fmt"
+        rows = [r for r in walk_rows(qs, *((8, 3) if a.with_format else ())) if r["grade"] == "right" and not r["refused"]
                 and count_tokens(r["messages"][1]["content"] + r["messages"][2]["content"]) < WINDOW]
         random.Random(20260930).shuffle(rows)
         # G6 AS A FILTER, NOT A LOOSER BAR: the question-writing model repeats its openings ("how often do we" 23 of 316 in
@@ -421,7 +458,14 @@ def main() -> int:
             if len(kept) == len(rows) and all(c <= max(3, MAX_SHARE * len(kept)) for c in seen.values()):
                 break
             rows = kept
-        g = gate(rows, [Path("results/REAL0-real-library-20260930/questions.jsonl"), Path("results/REAL3-real-corpus-20260930/questions.jsonl")])
+        g = gate(rows, [Path("results/REAL0-real-library-20260930/questions.jsonl"), Path("results/REAL3-real-corpus-20260930/questions.jsonl"),
+                        # every set measured since — G1/G2 keep their libraries and questions out (FMT0 is scored on PAGE0's)
+                        Path("results/REAL4-refusal-20260930/questions.jsonl"), Path("results/REAL5-third-family-20261001/questions.jsonl"),
+                        Path("results/CITE0-runtime-check-20261002/questions.jsonl"), Path("results/PAGE0-page-top-20261002/questions.jsonl")])
+        if a.with_format:
+            g["FMT_injected"] = sum(bool(r.get("injected")) for r in rows)
+            g["FMT_section_opens"] = sum(r["messages"][2]["content"].count("§") and "<open>" in r["messages"][2]["content"]
+                                         and bool(__import__("re").search(r"<open>[a-z0-9]{3}§", r["messages"][2]["content"])) for r in rows)
         (DATA / f"{name}.jsonl").write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows))
         (DATA / f"gate_{name.removeprefix('train_')}.json").write_text(json.dumps(g, indent=1))
         print(f"[realcorpus] walks {'PASSED' if g['passed'] else 'FAILED'} {g}", flush=True)

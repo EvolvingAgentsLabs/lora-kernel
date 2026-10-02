@@ -27,12 +27,13 @@ UNVERIFIED = "The library could not verify an answer to this — its citation do
 
 
 def walk(lib, searcher, question: str, generate, page_budget: int | None = None, cite_check: bool = False,
-         cite_gate: bool = False, page_top: int | None = None) -> dict:
+         cite_gate: bool = False, page_top: int | None = None,
+         guard: str = "strict") -> dict:
     """One question through the REAL4 runtime. `generate(system, user)` returns `gen(prefix) -> text`."""
     from memory import prompt
     from memory.runtime import ChainSuite, Conversation
     from training.harness.accept_rank import run_chain
-    conv = Conversation(lib, seed=zlib.crc32(question.encode()), mode="strict", log_content=True, max_opens=24,
+    conv = Conversation(lib, seed=zlib.crc32(question.encode()), mode=guard, log_content=True, max_opens=24,
                         searcher=searcher, first_query=question, entry_all_shelves=True, fallback=True, page_text=True,
                         page_budget=page_budget, cite_check=cite_check, page_top=page_top)
     suite = ChainSuite(conv)
@@ -66,7 +67,7 @@ def llama_generator(tok, budget: int = 120):              # wiki_arm --max-token
 
 
 def serve(lib, searcher, generate, port: int, log: str | None, page_budget: int | None = None, cite_check: bool = False,
-          cite_gate: bool = False):
+          cite_gate: bool = False, page_top: int | None = None, guard: str = "strict"):
     lock = threading.Lock()
 
     class H(BaseHTTPRequestHandler):
@@ -96,7 +97,7 @@ def serve(lib, searcher, generate, port: int, log: str | None, page_budget: int 
             # reads that as a transport failure and re-sends the turn wrapped as "[Queued user message from a previous
             # active turn …]" — up to five times, none of them logged [ran] LIVE-library row 07: 119 s, no walk recorded
             try:
-                w = walk(lib, searcher, question, generate, page_budget, cite_check, cite_gate)
+                w = walk(lib, searcher, question, generate, page_budget, cite_check, cite_gate, page_top, guard)
             except Exception as e:                                          # context overflow, a dead upstream
                 w = {"final": "", "reply": NO_ANSWER, "text": "", "gated": None, "shown": {}, "statements": [],
                      "ended": False, "error": f"{type(e).__name__}: {e}"[:500]}
@@ -141,6 +142,10 @@ def main() -> int:
     ap.add_argument("--cite-gate", action=argparse.BooleanOptionalAction, default=True,
                     help="do not deliver an answer whose citation fails (GATE0); --no-cite-gate to deliver it anyway")
     ap.add_argument("--cite-check", action="store_true", help="refuse an unverifiable final line once (CITE0)")
+    # THE SERVED PAGE FORM — the user's decision, 2026-10-02, on PAGE0 [ran]: a page opens with the question's best 8
+    ap.add_argument("--page-top", type=int, default=8, help="a page opens with the question's best N statements (0: whole)")
+    ap.add_argument("--guard", choices=("strict", "recover"), default="strict",
+                    help="strict: a violation ends the walk; recover: it is written inline and the walk goes on (FMT0)")
     ap.add_argument("--page-budget", type=int, default=2500,
                     help="a page over this many tokens opens with the question's best statements (0: whole, as REAL4)")
     ap.add_argument("--openclaw-patch", default=str(Path.home() / ".config/lora-kernel/openclaw/library-reader.json5"))
@@ -154,7 +159,8 @@ def main() -> int:
     from transformers import AutoTokenizer
     accept_rank.HOST = a.upstream.rstrip("/")
     lib = Library.load(a.library)
-    serve(lib, FullText(lib), llama_generator(AutoTokenizer.from_pretrained(a.tokenizer)), a.port, a.log, a.page_budget or None, a.cite_check, a.cite_gate)
+    serve(lib, FullText(lib), llama_generator(AutoTokenizer.from_pretrained(a.tokenizer)), a.port, a.log, a.page_budget or None, a.cite_check, a.cite_gate,
+          a.page_top or None, a.guard)
     Path(a.openclaw_patch).parent.mkdir(parents=True, exist_ok=True)
     Path(a.openclaw_patch).write_text(OPENCLAW_PATCH.format(port=a.port))
     print(f"[library] {a.library} · {len(lib.notes)} pages · member at {a.upstream} · :{a.port} · egress closed · "
