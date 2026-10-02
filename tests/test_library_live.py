@@ -231,3 +231,23 @@ def test_a_held_turn_is_killed_whole_and_its_reply_kept():
     assert not alive
     out, timed_out = run_turn([sys.executable, "-c", "print('ok')"], timeout=10)
     assert out.strip() == "ok" and not timed_out
+
+
+def test_best_of_k_delivers_the_first_walk_the_gate_passes_and_keeps_walk_one_as_the_baseline():
+    """BOK0: walk 1 is greedy (the baseline, in the same record); only when the gate would withhold it are more walks
+    sampled; the first that passes is delivered, and every walk is graded."""
+    from memory.notes import Library
+    from training.wiki import wiki_arm
+    lib = Library.load("knowledge/logistics-regs")
+    row = next(r for r in _rows() if r["support"] and r["hops"] == 1 and r["support"][1] == "h-2-i")
+    seeds = []
+
+    def gen_for(system, user, walking, temperature=0.0, seed=None):
+        seeds.append(seed)
+        return _scripted(row, row["support"][1] if seed == 2 else "zz")(system, user)
+    rec = wiki_arm.run_case(lib, row, "withlib-s0+page+k4", gen_for)
+    assert [w["gated"] is None for w in rec["bok"]["walks"]] == [False, False, True]
+    assert rec["bok"]["selected"] == 2 and rec["state"] == "right" and seeds == [None, 1, 2]
+    assert rec["bok"]["walks"][0]["state"] != "right"
+    once = wiki_arm.run_case(lib, row, "withlib-s0+page+k4", lambda s, u, w, **kw: _scripted(row, row["support"][1])(s, u))
+    assert len(once["bok"]["walks"]) == 1 and once["bok"]["selected"] == 0
