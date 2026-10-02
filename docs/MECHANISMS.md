@@ -651,7 +651,7 @@ to the frontier instead.
 **The check becomes a gate: an answer the referee cannot verify is not delivered — GATE0 [ran].**
 `memory.runtime.Conversation.final_problem` is `citation_problem` applied once to the walk's own final line —
 the same function `check_final` uses as a hint, now read without writing anything back. Behind
-`examples/library/serve.py --cite-gate` (off by default) a line that fails it never reaches the caller: the
+`examples/library/serve.py --cite-gate` (on by default) a line that fails it never reaches the caller: the
 reply becomes `UNVERIFIED` ("The library could not verify an answer to this — its citation does not check
 out."), forwarding to a frontier where one is configured; the walk itself is unchanged. One declared change
 to the check for this use: a link's opaque id (`5sf`, random per conversation) has its digits removed before
@@ -666,7 +666,8 @@ three conditions `citation_problem` also checks before the numbers rule); the me
 catch. By value rather than by row the cost is real: of the 86 blocked rows, 43 held the wrong value and 43
 held the right value under a citation that fails — 43 of 347 correct values withheld (12.4%), delivered-value
 accuracy rising 78.9% → 85.9% instead of the row-level 0.625 → 0.777. Whether an uncheckable right number is
-worth more than a refusal is a product decision, left to the user: the gate ships **off by default**
+worth more than a refusal was a product decision for the user: **it ships on by default — the user's
+decision, 2026-10-02, accepting the 43-of-347 cost; `--no-cite-gate` turns it off**
 **[ran]** GATE0.
 
 ---

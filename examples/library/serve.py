@@ -136,7 +136,10 @@ def main() -> int:
     ap.add_argument("--tokenizer", default="google/gemma-4-E4B-it")
     ap.add_argument("--port", type=int, default=8766)
     ap.add_argument("--log", default=None)
-    ap.add_argument("--cite-gate", action="store_true", help="do not deliver an answer whose citation fails (GATE0)")
+    # ON BY DEFAULT — the user's decision, 2026-10-02, on GATE0 [ran]: only what the referee can verify is delivered
+    # (0 of 275 right answers withheld; 43 of 347 right values under a failing citation are, the cost accepted)
+    ap.add_argument("--cite-gate", action=argparse.BooleanOptionalAction, default=True,
+                    help="do not deliver an answer whose citation fails (GATE0); --no-cite-gate to deliver it anyway")
     ap.add_argument("--cite-check", action="store_true", help="refuse an unverifiable final line once (CITE0)")
     ap.add_argument("--page-budget", type=int, default=2500,
                     help="a page over this many tokens opens with the question's best statements (0: whole, as REAL4)")
@@ -155,7 +158,7 @@ def main() -> int:
     Path(a.openclaw_patch).parent.mkdir(parents=True, exist_ok=True)
     Path(a.openclaw_patch).write_text(OPENCLAW_PATCH.format(port=a.port))
     print(f"[library] {a.library} · {len(lib.notes)} pages · member at {a.upstream} · :{a.port} · egress closed · "
-          f"page budget {a.page_budget or 'none'} · OpenClaw patch {a.openclaw_patch}", flush=True)
+          f"page budget {a.page_budget or 'none'} · cite gate {'on' if a.cite_gate else 'off'} · OpenClaw patch {a.openclaw_patch}", flush=True)
     try:
         while True:
             time.sleep(3600)
