@@ -230,14 +230,15 @@ def stop(proc) -> None:
 MAX_STOPS = 4    # vLLM 0.30's OpenAI server refused every request with more stop sequences [ran] H2 attempt 1, 2026-09-29
 
 
-def completion(model: str, prompt: str, max_tokens: int, close=CLOSE) -> str:
+def completion(model: str, prompt: str, max_tokens: int, close=CLOSE, temperature: float = 0.0, seed: int | None = None) -> str:
     # MORE CLOSING TAGS THAN THE SERVER TAKES: every tracker role has 5–8 (its tools + get/put), and all 420 turns of H2's
     # first scoring came back 400. Stop at the generic "</" a closing tag starts with, and put the tag back from what the
     # text is inside of (close_open_tag, as for llama.cpp's dropped stop string) — the same tag the model was writing.
     many = len(close) > MAX_STOPS
     r = post("/v1/completions", {
-        "model": model, "prompt": prompt, "temperature": 0, "max_tokens": max_tokens,
-        "stop": ["</"] if many else list(close), "include_stop_str_in_output": True})
+        "model": model, "prompt": prompt, "temperature": temperature, "max_tokens": max_tokens,
+        "stop": ["</"] if many else list(close), "include_stop_str_in_output": True,
+        **({"seed": seed} if seed is not None else {})})
     ch = r["choices"][0]
     text = ch.get("text") or ""
     if many:

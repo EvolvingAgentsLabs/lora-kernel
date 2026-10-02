@@ -28,6 +28,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import subprocess
 import sys
 import time
@@ -128,22 +129,37 @@ def run_case(lib: Library, row: dict, arm: str, gen_for) -> dict:
             user, conv = oracle_sections(lib, row)
             final, chain = gen_for(prompt.SYSTEM_WIKI_READS, user, False)(""), None
         else:
-            conv = conversation(lib, row)
             flags = set(arm.split("+")[1:])
-            if flags & {"entry", "page"}:
-                from memory.runtime import FullText
-                conv.searcher = FULLTEXT.setdefault(id(lib), FullText(lib))
-                # REAL0's mitigation (results/REAL1-entry-20260930): the first search is the question's, on every shelf,
-                # and an empty search falls back to every shelf — the runtime's, not the member's
-                conv.first_query, conv.entry_all_shelves, conv.fallback = row["question"], True, True
-                rec["entry"] = "question, every shelf, full-text search, fallback"
-            if "page" in flags:
-                conv.page_text = True                # REAL2: a page opens with its statements' text
-                rec["page_text"] = True
-            if "check" in flags:
-                conv.cite_check = True               # CITE0: a final line the referee cannot verify is refused once
-                rec["cite_check"] = True
-            final, conv, chain = walk(lib, row, gen_for(prompt.SYSTEM_WIKI, prompt.user_text_wiki(row["question"]), True), conv)
+
+            def setup(conv):
+                if flags & {"entry", "page"}:
+                    from memory.runtime import FullText
+                    conv.searcher = FULLTEXT.setdefault(id(lib), FullText(lib))
+                    # REAL0's mitigation (results/REAL1-entry-20260930): the first search is the question's, on every
+                    # shelf, and an empty search falls back to every shelf — the runtime's, not the member's
+                    conv.first_query, conv.entry_all_shelves, conv.fallback = row["question"], True, True
+                    rec["entry"] = "question, every shelf, full-text search, fallback"
+                if "page" in flags:
+                    conv.page_text = True                # REAL2: a page opens with its statements' text
+                    rec["page_text"] = True
+                if "check" in flags:
+                    conv.cite_check = True               # CITE0: a final line the referee cannot verify is refused once
+                    rec["cite_check"] = True
+                return conv
+            k = next((int(f[1:]) for f in flags if re.fullmatch(r"k\d+", f)), 1)
+            try:
+                final, conv, chain = walk(lib, row, gen_for(prompt.SYSTEM_WIKI, prompt.user_text_wiki(row["question"]),
+                                                            True), setup(conversation(lib, row)))
+            except ContextExhausted:
+                # BOK0's brief resamples a walk 1 with no final line — a context overflow is one [ran] BOK0 attempt 1:
+                # 2 rows left the arm before best_of_k ever saw them
+                if k <= 1:
+                    raise
+                final = conv = chain = None
+            if k > 1:
+                final, conv, chain = best_of_k(lib, row, k, gen_for, setup, final, conv, chain, rec)
+                if final is None:
+                    return {**rec, "state": "context", "credit": False, "value_right": False}
     except ContextExhausted as e:
         return {**rec, "state": "context", "credit": False, "value_right": False, "detail": str(e)[:120]}
     except Exception as e:                                   # transport — never folded into a score
@@ -165,9 +181,40 @@ def run_case(lib: Library, row: dict, arm: str, gen_for) -> dict:
     return rec
 
 
+# ------------------------------------------------------------------ BOK0: more walks, the gate chooses
+SAMPLE_T = 0.7
+
+
+def best_of_k(lib, row, k, gen_for, setup, final, conv, chain, rec):
+    """BOK0: the greedy walk first — exactly the arm without `+k` — and only if the gate (`Conversation.final_problem`)
+    would withhold its answer, up to k−1 more walks sampled at `SAMPLE_T` (seeds 1…k−1); the first whose final line passes
+    is delivered, else nothing is. Every walk is graded and kept in `rec["bok"]`, so walk 1 *is* the baseline, paired in
+    the same record, untouched by vLLM's run-to-run spread."""
+    def judged(f, c):
+        line = gr.final_line(f)
+        return {"state": gr.grade(row, f, c)["state"], "gated": (c.final_problem(line) if line else "no answer line"),
+                "line": line[-200:]}
+    walks = [judged(final, conv) if final is not None else {"state": "context", "gated": "context", "line": ""}]
+    chosen = (final, conv, chain) if walks[0]["gated"] is None else None
+    for i in range(1, k):
+        if chosen is not None:
+            break
+        try:
+            f, c, ch = walk(lib, row, gen_for(prompt.SYSTEM_WIKI, prompt.user_text_wiki(row["question"]), True,
+                                              temperature=SAMPLE_T, seed=i), setup(conversation(lib, row)))
+        except ContextExhausted:
+            walks.append({"state": "context", "gated": "context", "line": ""})
+            continue
+        walks.append(judged(f, c))
+        if walks[-1]["gated"] is None:
+            chosen = (f, c, ch)
+    rec["bok"] = {"k": k, "walks": walks, "selected": next((i for i, w in enumerate(walks) if w["gated"] is None), None)}
+    return chosen if chosen is not None else (final, conv, chain)
+
+
 # ------------------------------------------------------------------ zero GPU
 def scripted(policy):
-    return lambda system, user, walking: policy(user, walking)
+    return lambda system, user, walking, **_: policy(user, walking)
 
 
 def floor_policy(user: str, walking: bool):
@@ -398,7 +445,7 @@ def main() -> int:
     tok = AutoTokenizer.from_pretrained(a.base)
 
     def gen_for_model(model: str):
-        def gen_for(system: str, user: str, walking: bool):
+        def gen_for(system: str, user: str, walking: bool, temperature: float = 0.0, seed: int | None = None):
             close, budget = (ChainSuite.close, a.max_tokens) if walking else ((), a.max_tokens_plain)
             head = tok.apply_chat_template([{"role": "system", "content": system}, {"role": "user", "content": user}],
                                            tokenize=False, add_generation_prompt=True, enable_thinking=False)
@@ -407,7 +454,7 @@ def main() -> int:
                 n = len(tok(head + prefix)["input_ids"])
                 if n + budget > MAX_MODEL_LEN:
                     raise ContextExhausted(f"{n} prompt tokens + {budget} > {MAX_MODEL_LEN}")
-                return completion(model, head + prefix, budget, close)
+                return completion(model, head + prefix, budget, close, temperature, seed)
             return gen
         return gen_for
 

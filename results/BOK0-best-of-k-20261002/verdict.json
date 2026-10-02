@@ -1,0 +1,39 @@
+{
+ "reading": "BOK HELPS",
+ "sign_p": 1.0,
+ "pooled": {
+  "gain": 4,
+  "new_wrong": 3,
+  "resampled": 16,
+  "extra_walks": 39,
+  "right_before": 72,
+  "right_after": 76,
+  "delivered_before": 88,
+  "delivered_after": 95,
+  "lost": 0
+ },
+ "per_set": {
+  "cite0": {
+   "gain": 1,
+   "new_wrong": 3,
+   "resampled": 7,
+   "extra_walks": 16,
+   "right_before": 33,
+   "right_after": 34,
+   "delivered_before": 45,
+   "delivered_after": 49,
+   "lost": 0
+  },
+  "real4": {
+   "gain": 3,
+   "new_wrong": 0,
+   "resampled": 9,
+   "extra_walks": 23,
+   "right_before": 39,
+   "right_after": 42,
+   "delivered_before": 43,
+   "delivered_after": 46,
+   "lost": 0
+  }
+ }
+}
