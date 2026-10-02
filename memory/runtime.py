@@ -171,6 +171,12 @@ class Conversation:
     # the supporting page 17/25 and opened the supporting statement 2–6/25 [ran] REAL1. `page_text` renders every
     # statement under its anchor (links as `[id] Title`); each counts as read for the citation, not against the budget.
     page_text: bool = False
+    # A LONG PAGE OPENS WITH THE STATEMENTS THE QUESTION NAMES (LIVE-library [ran]): 29 CFR 1910.178 reads ~6,900 tokens
+    # whole, and on the Mac's 12,288-token context 4 of 52 walks overflowed after opening it. With `page_budget` a page
+    # whose text exceeds it shows its statements in BM25 order against `first_query` (the question) until the budget,
+    # in document order, then the anchors left out — each still openable as `id§anchor`. Only the shown ones count as
+    # read. Offline [ran]: at 1,500–3,500 the 8 statements REAL4's walks need on that page are all kept.
+    page_budget: int | None = None
     implicit: int = 0
 
     shown: dict[str, str] = field(default_factory=dict)      # opaque → library id
@@ -279,8 +285,9 @@ class Conversation:
         case = (self.case or {}).get(note.id)
         text = self._render(note, case)
         if self.page_text and note.is_page:
+            shown_here = self._page_selection(note)
             for st in note.statements:
-                if (note.id, st.anchor) not in self.statements:
+                if st.anchor in shown_here and (note.id, st.anchor) not in self.statements:
                     self.statements.append((note.id, st.anchor)); self.implicit += 1
         self._log("open", shown, note=note.id, guard="ok", tokens=count_tokens(text),
                   slots={k: [val, layer] for k, (val, layer) in resolve(note, self.site, case).items()
@@ -312,11 +319,39 @@ class Conversation:
             return None
         return LINK.sub(lambda m: f"[{self._id(m.group(1))}] {self.lib[m.group(1)].title}", st.text)
 
+    def _page_selection(self, note: Note) -> set[str]:
+        """The anchors a page opens with: all of them, or — over `page_budget` — the question's best by BM25 within the page,
+        $k_1 = 1.2$, $b = 0.75$ as `FullText`, taken in score order while the statements and the list of the rest fit."""
+        import math
+        from collections import Counter
+        lines = {st.anchor: f"  §{st.anchor} {self._statement_text(note, st.anchor)}" for st in note.statements}
+        if not self.page_budget or count_tokens("\n".join(lines.values())) <= self.page_budget:
+            return set(lines)
+        docs = {a: Counter(_words(t)) for a, t in lines.items()}
+        n, df = len(docs), Counter(w for d in docs.values() for w in d)
+        avg = sum(sum(d.values()) for d in docs.values()) / n
+        q = _words(self.first_query or "")
+
+        def score(a):
+            d = docs[a]; norm = 1.2 * (0.25 + 0.75 * sum(d.values()) / avg)
+            return sum(math.log(1 + (n - df[w] + 0.5) / (df[w] + 0.5)) * d[w] * 2.2 / (d[w] + norm) for w in q if d[w])
+        order = sorted(lines, key=lambda a: (-score(a), [st.anchor for st in note.statements].index(a)))
+        keep, used = set(), sum(count_tokens(f" · §{a}") for a in lines) + 20       # the list of the rest, at most
+        for a in order:
+            if used + count_tokens(lines[a]) <= self.page_budget:
+                keep.add(a); used += count_tokens(lines[a])
+        return keep
+
     def _render(self, note: Note, case: dict | None) -> str:
         if note.is_page:
             if self.page_text:
-                body = "\n".join(f"  §{st.anchor} {self._statement_text(note, st.anchor)}" for st in note.statements)
-                return f"{note.title} — {note.what}\n{body}"
+                keep = self._page_selection(note)
+                body = "\n".join(f"  §{st.anchor} {self._statement_text(note, st.anchor)}" for st in note.statements
+                                 if st.anchor in keep)
+                rest = [st.anchor for st in note.statements if st.anchor not in keep]
+                more = (f"\n  {len(rest)} more sections, not shown — open {self._id(note.id)}§<section> to read one: "
+                        + " · ".join(f"§{a}" for a in rest)) if rest else ""
+                return f"{note.title} — {note.what}\n{body}{more}"
             anchors = " · ".join(f"§{st.anchor}" for st in note.statements)
             return f"{note.title} — {note.what}\n  sections {anchors}"
         body = render(note, self.site, case)

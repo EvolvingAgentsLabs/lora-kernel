@@ -1,0 +1,51 @@
+[live] real3-one-hop-00: right · 'NFPA Flammable and Combustible Liquids Code (NFPA No. 30-1969) [1910.178 §f]'
+[live] real3-one-hop-01: right · 'NFPA Storage and Handling of Liquefied Petroleum Gases (NFPA No. 58-1969) [1910.'
+[live] real3-one-hop-02: wrong · '§h-2-i [1910.178 §h-2-i]'
+[live] real3-one-hop-03: wrong · 'kvc§a-3 [kvc]'
+[live] real3-one-hop-04: right · '§1910.7 [1910.178 §a-7]'
+[live] real3-one-hop-05: wrong · 'Not in my library.'
+[live] real3-one-hop-06: right · '§1910.6 [1910.178 §a-2]'
+[live] real3-one-hop-07: right · '25 ft. [1910.178 §m-5-iii]'
+[live] real3-one-hop-08: right · 'section 301(hh) [1.902 §text-2]'
+[live] real3-one-hop-09: wrong · 'section 402(a)(1), (2), and (4) [1.906 §a]'
+[live] real3-one-hop-10: unverified · '§ 10.30 Petition for waiver of requirement [84a§10.30]'
+[live] real3-one-hop-11: wrong · 'The library walk ended without an answer — try again or ask more narrowly.'
+[live] real3-one-hop-12: right · '§10.30(h)(3) [1.924 §b]'
+[live] real3-coverage-defs-13: right · '40 hours [1.904 §text-2]'
+[live] real3-coverage-defs-14: right · '52 weeks [1.904 §text-2]'
+[live] real3-coverage-defs-15: right · '3-year period [1.904 §non-covered-business]'
+[live] real3-coverage-defs-16: right · 'section 201(qq) [1.904 §cross-contact]'
+[live] real3-coverage-defs-17: right · 'section 409(h)(6) [1.904 §transportation-operations]'
+[live] real3-coverage-defs-18: unverified · '§ 1.227 Definitions [kvx]'
+[live] real3-coverage-defs-19: right · 'section 201 [1.904 §text]'
+[live] real3-defs-coverage-20: right · 'section 801(d)(3) [1.900 §b-2]'
+[live] real3-defs-coverage-21: right · '21 U.S.C. 601 [1.900 §b-3]'
+[live] real3-defs-coverage-22: right · '21 U.S.C. 451 et seq. [1.900 §b-3]'
+[live] real3-defs-coverage-23: right · '21 U.S.C. 1031 [1.900 §b-3]'
+[live] real3-defs-coverage-24: unverified · '§ 1.227 Food facilities [1.904 §farm]'
+[live] real3-defs-coverage-25: right · '21 CFR parts 1, 117, 118, 225, 507, and 589 [1.900 §a]'
+[live] real3-duty-vehicles-26: right · 'section 402(a) [1.906 §a]'
+[live] real3-duty-electronic-27: unverified · '§ 11.3(b)(6) [q2m] 1.908 What requirements apply to transportation operations?'
+[live] real3-duty-electronic-28: unverified · '§ 11.3('
+[live] real3-duty-electronic-29: right · 'part 11 [1.912 §h]'
+[live] real3-duty-agreement-30: right · '12 months [1.912 §a-2]'
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/library/live_library.py", line 73, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel/examples/library/live_library.py", line 52, in main
+    p = subprocess.run([a.openclaw, "--profile", "library-reader", "agent", "--local", "--session-id", f"lib-{r['case_id']}-{stamp}",
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 550, in run
+    stdout, stderr = process.communicate(input, timeout=timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 1209, in communicate
+    stdout, stderr = self._communicate(input, endtime, timeout)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 2116, in _communicate
+    self._check_timeout(endtime, orig_timeout, stdout, stderr)
+  File "/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/subprocess.py", line 1253, in _check_timeout
+    raise TimeoutExpired(
+subprocess.TimeoutExpired: Command '['/Users/agustinazwiener/.openclaw/bin/openclaw', '--profile', 'library-reader', 'agent', '--local', '--session-id', 'lib-real3-duty-agreement-31-070253', '-m', 'Our carrier keeps our chilled loads at temperature under a written agreement with us, the shipper. For how long after the agreement is no longer in use must we keep it?']' timed out after 600 seconds

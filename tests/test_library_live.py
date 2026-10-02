@@ -62,3 +62,20 @@ def test_a_walk_with_no_answer_is_not_shown_as_a_refusal():
     ev = serve.walk(lib, FullText(lib), row["question"], lambda system, user: (lambda prefix: ""))
     assert ev["final"] == "" and ev["reply"] == serve.NO_ANSWER
     assert grade_walk(lib, row, ev)["state"] != "right"
+
+
+def test_a_long_page_opens_with_the_questions_statements_within_budget():
+    """`page_budget`: 1910.178 (~6,900 tokens whole) opens under the budget with the supporting statement among the shown
+    ones, the rest listed by anchor; a short page opens whole, as REAL4 measured it."""
+    from memory.notes import Library, count_tokens
+    from memory.runtime import Conversation
+    lib = Library.load("knowledge/logistics-regs")
+    row = next(r for r in _rows() if r["support"] and r["support"][0].endswith("1910-178"))
+    page = lib[row["support"][0]]
+    conv = Conversation(lib, page_text=True, page_budget=2500, first_query=row["question"])
+    text = conv._render(page, None)
+    assert count_tokens(text) <= 2600 and f"§{row['support'][1]} " in text and "more sections, not shown" in text
+    whole = Conversation(lib, page_text=True, first_query=row["question"])._render(page, None)
+    assert count_tokens(whole) > 6000
+    short = lib["logistics-regs/wiki/1-906"]
+    assert conv._render(short, None) == Conversation(lib, page_text=True)._render(short, None)
