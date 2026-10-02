@@ -426,7 +426,7 @@ fails it is not delivered
 ([`REAL5`](../results/REAL5-third-family-20261001/BRIEF.md), [`REAL6`](../results/REAL6-citation-20261001/BRIEF.md),
 [`REAL7`](../results/REAL7-crosslink-20261001/BRIEF.md), [`CITE0`](../results/CITE0-runtime-check-20261002/BRIEF.md)).
 **That gate is now built and measured: GATE WORKS.** Beside `cite_check`, `Conversation.final_problem`
-(`memory.runtime.citation_problem`, served as `examples/library/serve.py --cite-gate`, off by default) applies
+(`memory.runtime.citation_problem`, served as `examples/library/serve.py --cite-gate`, on by default) applies
 the same check to the walk's own final line and withholds the reply instead of retrying — `UNVERIFIED` instead
 of the line, forwarding to a frontier where one is configured; the walk itself is unchanged, so replaying the
 recorded `+page` arms of REAL3–REAL7 exactly **is** the gated run. 14 held-out arms, 532 walks, two libraries:
@@ -434,8 +434,8 @@ recorded `+page` arms of REAL3–REAL7 exactly **is** the gated run. 14 held-out
 answers to unanswerable questions delivered, delivered precision **0.625 → 0.777** — clears the brief's own
 bar (≤1% right lost, ≥15% not-right caught). The cost the headline hides: of the 86 blocked, 43 held the wrong
 value and 43 held the right value under a citation that fails — by value the gate withholds 43 of 347 correct
-values (12.4%), raising delivered-value accuracy 78.9% → 85.9% instead of the row-level number. Whether that
-trade is worth it is the user's product decision; it ships off by default
+values (12.4%), raising delivered-value accuracy 78.9% → 85.9% instead of the row-level number. **It ships on
+by default — the user's decision, 2026-10-02, accepting that cost; `--no-cite-gate` turns it off**
 ([`GATE0`](../results/GATE0-cite-gate-20261002/BRIEF.md)).
 
 ## 5. The release contract

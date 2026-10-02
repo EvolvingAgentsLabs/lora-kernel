@@ -145,7 +145,7 @@ cinco veces, ninguna registrada. El handler de `serve.py` ahora atrapa la excepc
 `NO_ANSWER`, el error registrado al lado del recorrido: una solicitud entra, una respuesta sale, sin importar
 cómo termine el recorrido.
 
-**`--cite-gate`: el chequeo de citación como compuerta, apagado por defecto.**
+**`--cite-gate`: el chequeo de citación como compuerta, prendida por defecto.**
 `memory.runtime.Conversation.final_problem` es el mismo chequeo que CITE0 midió como pista
 (`citation_problem`, que lee sólo el propio registro del referí: los ids mostrados, los enunciados abiertos,
 su propio texto), aplicado una vez a la línea final del recorrido; detrás de `--cite-gate` una línea que no la
@@ -156,8 +156,8 @@ configurada donde exista una. El recorrido mismo no cambia; la compuerta lee el 
 bibliotecas): 0 de 275 respuestas correctas bloqueadas, 86 de 165 respuestas incorrectas bloqueadas (52,1 %),
 0 de 11 respuestas a preguntas sin respuesta entregadas, precisión 0,625 → 0,777 — LA COMPUERTA FUNCIONA según
 la propia barra del brief. Lo que queda, dicho con honestidad: de las 86 bloqueadas, 43 tenían el valor
-correcto bajo una cita que falla (43 de 347 valores correctos retenidos, 12,4 %) — si ese intercambio vale la
-pena para un despliegue dado es una decisión de producto, por lo que sale apagada
+correcto bajo una cita que falla (43 de 347 valores correctos retenidos, 12,4 %) — **sale prendida por
+defecto, decisión del usuario del 2026-10-02 que acepta ese costo; `--no-cite-gate` la apaga**
 ([`GATE0`](../../results/GATE0-cite-gate-20261002/BRIEF.md)).
 
 ## Cuánto cuesta servir en vivo: el orden le gana al tamaño, y dos adaptadores no cuestan el doble

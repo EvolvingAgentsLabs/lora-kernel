@@ -713,7 +713,7 @@ una cita, o la reenvía a la frontera.
 **El chequeo pasa a ser compuerta: una respuesta que el referí no puede verificar no se entrega — GATE0
 [ran].** `memory.runtime.Conversation.final_problem` es `citation_problem` aplicado una vez a la propia línea
 final del recorrido — la misma función que usa `check_final` como pista, ahora leída sin escribir nada de
-vuelta. Detrás de `examples/library/serve.py --cite-gate` (apagada por defecto) una línea que no la pasa nunca
+vuelta. Detrás de `examples/library/serve.py --cite-gate` (prendida por defecto) una línea que no la pasa nunca
 llega a quien llama: la respuesta pasa a ser `UNVERIFIED` ("The library could not verify an answer to this —
 its citation does not check out."), reenviando a una frontera donde haya una configurada; el recorrido mismo
 no cambia. Un cambio declarado al chequeo para este uso: a un id opaco de enlace (`5sf`, al azar por
@@ -730,7 +730,8 @@ chequea antes de la regla de los números); lo medido es el 52 % de captura. Por
 es real: de las 86 filas bloqueadas, 43 tenían el valor incorrecto y 43 tenían el valor correcto bajo una cita
 que falla — 43 de 347 valores correctos retenidos (12,4 %), la precisión de valor entregado sube 78,9 % →
 85,9 % en vez del 0,625 → 0,777 a nivel de fila. Si un número correcto pero no verificable vale más que una
-negativa es una decisión de producto, que le queda al usuario: la compuerta sale **apagada por defecto**
+negativa era una decisión de producto para el usuario: **sale prendida por defecto — decisión del usuario,
+2026-10-02, aceptando el costo de 43 de 347; `--no-cite-gate` la apaga**
 **[ran]** GATE0.
 
 ---

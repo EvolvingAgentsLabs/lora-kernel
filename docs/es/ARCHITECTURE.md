@@ -467,7 +467,7 @@ línea que no la pasa no se entrega
 [`REAL7`](../../results/REAL7-crosslink-20261001/BRIEF.md), [`CITE0`](../../results/CITE0-runtime-check-20261002/BRIEF.md)).
 **Esa compuerta ya está construida y medida: LA COMPUERTA FUNCIONA.** Al lado de `cite_check`,
 `Conversation.final_problem` (`memory.runtime.citation_problem`, servida como
-`examples/library/serve.py --cite-gate`, apagada por defecto) aplica el mismo chequeo a la propia línea final
+`examples/library/serve.py --cite-gate`, prendida por defecto) aplica el mismo chequeo a la propia línea final
 del recorrido y retiene la respuesta en vez de reintentar — `UNVERIFIED` en vez de la línea, reenviando a una
 frontera donde haya una configurada; el recorrido mismo no cambia, así que repetir exactamente los brazos
 `+page` grabados de REAL3–REAL7 **es** la corrida con compuerta. 14 brazos dejados afuera, 532 recorridos, dos
@@ -476,8 +476,8 @@ bloqueadas (52,1 %), **0 de 11** respuestas a preguntas sin respuesta entregadas
 **0,625 → 0,777** — cumple la propia barra del brief (≤ 1 % de correctas perdidas, ≥ 15 % de incorrectas
 atrapadas). El costo que el titular esconde: de las 86 bloqueadas, 43 tenían el valor incorrecto y 43 tenían
 el valor correcto bajo una cita que falla — por valor la compuerta retiene 43 de 347 valores correctos
-(12,4 %), subiendo la precisión de valor entregado 78,9 % → 85,9 % en vez del número a nivel de fila. Si ese
-intercambio vale la pena es decisión de producto del usuario; sale apagada por defecto
+(12,4 %), subiendo la precisión de valor entregado 78,9 % → 85,9 % en vez del número a nivel de fila. **Sale
+prendida por defecto — decisión del usuario, 2026-10-02, aceptando ese costo; `--no-cite-gate` la apaga**
 ([`GATE0`](../../results/GATE0-cite-gate-20261002/BRIEF.md)).
 
 ## 5. El contrato de liberación
