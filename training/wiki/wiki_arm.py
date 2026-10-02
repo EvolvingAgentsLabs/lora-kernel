@@ -142,6 +142,10 @@ def run_case(lib: Library, row: dict, arm: str, gen_for) -> dict:
                 if "page" in flags:
                     conv.page_text = True                # REAL2: a page opens with its statements' text
                     rec["page_text"] = True
+                top = next((int(f[3:]) for f in flags if re.fullmatch(r"top\d+", f)), None)
+                if top:
+                    conv.page_top = top              # PAGE0: a page opens with the question's best `top` statements
+                    rec["page_top"] = top
                 if "check" in flags:
                     conv.cite_check = True               # CITE0: a final line the referee cannot verify is refused once
                     rec["cite_check"] = True

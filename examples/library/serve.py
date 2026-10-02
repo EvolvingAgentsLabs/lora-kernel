@@ -27,14 +27,14 @@ UNVERIFIED = "The library could not verify an answer to this — its citation do
 
 
 def walk(lib, searcher, question: str, generate, page_budget: int | None = None, cite_check: bool = False,
-         cite_gate: bool = False) -> dict:
+         cite_gate: bool = False, page_top: int | None = None) -> dict:
     """One question through the REAL4 runtime. `generate(system, user)` returns `gen(prefix) -> text`."""
     from memory import prompt
     from memory.runtime import ChainSuite, Conversation
     from training.harness.accept_rank import run_chain
     conv = Conversation(lib, seed=zlib.crc32(question.encode()), mode="strict", log_content=True, max_opens=24,
                         searcher=searcher, first_query=question, entry_all_shelves=True, fallback=True, page_text=True,
-                        page_budget=page_budget, cite_check=cite_check)
+                        page_budget=page_budget, cite_check=cite_check, page_top=page_top)
     suite = ChainSuite(conv)
     chain = run_chain(suite.wrap(generate(prompt.SYSTEM_WIKI, prompt.user_text_wiki(question))), {}, max_calls=24, suite=suite)          # wiki_arm.MAX_CALLS, as measured
     final = (chain["spans"][-1]["text"] if chain["spans"] else "").strip()
