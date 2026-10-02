@@ -658,13 +658,25 @@ modelo — la que elige entre ellos: entregar el primero de $k$ recorridos cuya 
 $\mathrm{deliver} = \ell_{i^\star}$ donde $i^\star = \min\lbrace \ i \le k : \mathrm{pass}(\ell_i)\ \rbrace$,
 reteniendo sólo si ninguno de los $k$ pasa. El recorrido 1, greedy, exactamente el brazo servido, es
 la línea base en el mismo registro, así que el propio desvío de corrida a corrida de vLLM no puede
-crear ni esconder el efecto. **[ran, en curso] BOK0:** pre-registrado, pareando los conjuntos de 52
-filas de CITE0 y de REAL4; se falsea salvo que la ganancia en respuestas correctas (un recorrido que
-la compuerta hubiera retenido, ahora correcto) supere a las nuevas incorrectas que deja pasar, test
-de signos exacto $p\lt 0,05$ y ganancia $\ge 5$ — la trampa nombrada antes de correr es que la compuerta
-se superpone con el evaluador (los dos leen lo mostrado y lo abierto), así que toda ganancia se
-califica estrictamente contra si la cita es el enunciado *de soporte*, no sólo uno que tenga el
-valor. Sin resultado todavía
+crear ni esconder el efecto. **[ran] BOK0: AYUDA tal como está escrito, no alcanza para prenderlo.**
+Pareado sobre los conjuntos de 52 filas de CITE0 y de REAL4 (16 filas remuestreadas, 39 recorridos de
+más): ganancia 4 (un recorrido que la compuerta hubiera retenido, ahora correcto) contra 3 nuevas
+incorrectas (un recorrido que la compuerta hubiera retenido, entregado y todavía incorrecto) —
+ganancia > nuevas incorrectas pero test de signos exacto $p = 1,0$, por debajo de BOK WORKS ($p\lt 0,05$
+y ganancia $\ge 5$); lo correcto entregado subió de 72 → 76 sobre 88 → 95 entregadas. La trampa
+nombrada antes de correr, medida: la compuerta se superpone con el evaluador, así que toda ganancia
+se califica estrictamente contra si la cita es el enunciado *de soporte*, no sólo uno que tenga el
+valor — y es justo ahí donde muerde la presión de selección. Un recorrido que pasa la compuerta a la
+primera es correcto 72 de 88 veces (82 %); uno que sólo pasa tras remuestrear es correcto 4 de 7
+(57 %) — muestrear hasta que la compuerta acepte una línea encuentra una cita que la compuerta no
+distingue de la correcta, y las 3 filas nuevas incorrectas son exactamente esa falla. Queda
+registrado un falso bloqueo de la compuerta (una respuesta correcta cuyo propio número de sección,
+`1.908`, el enunciado citado no imprime — el primero en 532 primeros recorridos calificados bajo
+GATE0). 9 de las 16 filas remuestreadas fallan todos sus recorridos de la misma manera (sin línea
+final, o una cita sin `§sección`) — el hábito propio del miembro, que sólo su corpus puede mover. **No
+se prende.** (El intento 1 se detuvo antes de calificar y encontró un hueco de implementación — un
+recorrido 1 que desbordó el contexto dejó el brazo antes de que el remuestreo lo viera; arreglado,
+las dos corridas se repitieron desde cero para este resultado.)
 ([`results/BOK0-best-of-k-20261002/BRIEF.md`](../../results/BOK0-best-of-k-20261002/BRIEF.md)).
 
 **La mitad de sólo código ya está construida [ran] 2026-09-21** (`examples/`): `school/`, el caso

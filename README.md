@@ -121,11 +121,15 @@ small one drafts ([`docs/PLAN.md`](docs/PLAN.md) milestones 3–4).
   answers and 0 of 275 right ones, at a stated cost (43 of 347 right values withheld under a failing
   citation) — on by default since the user's 2026-10-02 decision
   ([`GATE0`](results/GATE0-cite-gate-20261002/BRIEF.md) **[ran]**).
-- **Compute at test time, under the gate.** Walk once, greedy — the served arm. Where the gate would
-  withhold that answer, walk again and deliver the first walk the gate passes
-  ([`BOK0`](results/BOK0-best-of-k-20261002/BRIEF.md), pre-registered, **running**: falsified unless
-  the gain in right answers beats the new wrong ones it lets through, exact sign test $p\lt 0.05$ and
-  gain ≥ 5, pooled over CITE0's and REAL4's sets — no result yet).
+- **Compute at test time, under the gate — BOK HELPS, not enough to turn on.** Walk once, greedy —
+  the served arm. Where the gate would withhold that answer, walk again and deliver the first walk
+  the gate passes: pooled over CITE0's and REAL4's 52-row sets, 16 rows resampled, gain 4 (walk 1
+  wrong, resample right) against new wrong 3 (walk 1 withheld, resample still wrong) — gain > new
+  wrong but exact sign test $p = 1.0$, short of BOK WORKS' gain ≥ 5. Read: a first walk that passes
+  the gate is right 72/88 (82%), a resampled one that passes it only 4/7 (57%) — sampling until the
+  gate passes finds a citation it accepts, not necessarily the one the question asks about, which is
+  exactly what every new-wrong row does. **Not turned on**
+  ([`BOK0`](results/BOK0-best-of-k-20261002/BRIEF.md) **[ran]**).
 
 ### The memory, in five pieces
 

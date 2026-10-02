@@ -128,12 +128,16 @@ que verifica lo que el chico borradorea ([`docs/es/PLAN.md`](docs/es/PLAN.md) hi
   correctas, con un costo declarado (43 de 347 valores correctos retenidos bajo una cita que falla)
   — prendida por defecto desde la decisión del usuario del 2026-10-02
   ([`GATE0`](results/GATE0-cite-gate-20261002/BRIEF.md) **[ran]**).
-- **Cómputo en tiempo de inferencia, bajo la compuerta.** Recorrer una vez, greedy — el brazo
-  servido. Donde la compuerta retendría esa respuesta, recorrer de nuevo y entregar el primer
-  recorrido que la compuerta pasa ([`BOK0`](results/BOK0-best-of-k-20261002/BRIEF.md),
-  pre-registrado, **en curso**: se falsea salvo que la ganancia en respuestas correctas le gane a
-  las nuevas incorrectas que deja pasar, test de signos exacto $p\lt 0,05$ y ganancia ≥ 5, pareado
-  sobre los conjuntos de CITE0 y de REAL4 — sin resultado todavía).
+- **Cómputo en tiempo de inferencia, bajo la compuerta — AYUDA, no alcanza para prenderlo.** Recorrer
+  una vez, greedy — el brazo servido. Donde la compuerta retendría esa respuesta, recorrer de nuevo y
+  entregar el primer recorrido que la compuerta pasa: pareado sobre los conjuntos de 52 filas de
+  CITE0 y de REAL4, 16 filas remuestreadas, ganancia 4 (recorrido 1 incorrecto, el remuestreo
+  correcto) contra 3 nuevas incorrectas (recorrido 1 retenido, el remuestreo sigue incorrecto) —
+  ganancia > nuevas incorrectas pero test de signos exacto $p = 1,0$, por debajo de BOK WORKS (ganancia
+  ≥ 5). Lectura: un recorrido 1 que pasa la compuerta es correcto 72/88 (82 %), uno remuestreado que la
+  pasa sólo 4/7 (57 %) — muestrear hasta que la compuerta pase encuentra una cita que ella acepta, no
+  necesariamente la que la pregunta pide, que es exactamente lo que hace cada fila nueva incorrecta.
+  **No se prende** ([`BOK0`](results/BOK0-best-of-k-20261002/BRIEF.md) **[ran]**).
 
 ### La memoria, en cinco piezas
 

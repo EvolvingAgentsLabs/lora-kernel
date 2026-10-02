@@ -598,12 +598,22 @@ frontier — and reaches the *member* only through what its corpus taught it, ne
 **4. Compute at test time, under the gate.** More walks, and the gate — not the model — chooses
 among them: deliver the first of $k$ walks whose final line passes, $\mathrm{deliver} = \ell_{i^\star}$ where $i^\star = \min\lbrace \ i \le k : \mathrm{pass}(\ell_i)\ \rbrace$, withholding only if none of
 the $k$ does. Walk 1 greedy, exactly the served arm, is the baseline in the same record, so vLLM's
-own run-to-run spread cannot make or hide the effect. **[ran, running] BOK0:** pre-registered,
-pooling CITE0's and REAL4's 52-row sets; falsified unless the gain in right answers (a walk the gate
-would have withheld, now right) exceeds the new wrong ones it lets through, exact sign test
-$p\lt 0.05$ and gain $\ge 5$ — the trap named before the run is that the gate overlaps the grader (both
-read what was shown and opened), so every gain is graded strictly against whether the citation is
-the *supporting* statement, not merely one holding the value. No result yet
+own run-to-run spread cannot make or hide the effect. **[ran] BOK0: BOK HELPS as written, not enough
+to turn on.** Pooled over CITE0's and REAL4's 52-row sets (16 rows resampled, 39 extra walks): gain 4
+(a walk the gate would have withheld, now right) against new wrong 3 (a walk the gate would have
+withheld, delivered and still wrong) — gain > new wrong but exact sign test $p = 1.0$, short of BOK
+WORKS' $p\lt 0.05$ and gain $\ge 5$; right delivered rose 72 → 76 of 88 → 95 delivered. The trap named
+before the run, measured: the gate overlaps the grader, so every gain is graded strictly against
+whether the citation is the *supporting* statement, not merely one holding the value — and that is
+exactly where selection pressure bites. A walk that passes the gate on the first try is right 72 of
+88 times (82%); a walk that only passes after resampling is right 4 of 7 (57%) — sampling until the
+gate accepts a line finds a citation the gate cannot distinguish from the right one, and all 3 new
+wrong rows are that failure. One gate false block is on record (a right answer whose own section
+number, `1.908`, the cited statement does not print — the first in 532 first walks graded under
+GATE0). 9 of the 16 resampled rows fail every walk the same way (no final line, or a citation with no
+`§section`) — the member's own habit, which only its corpus can move. **Not turned on.** (Attempt 1
+was stopped before scoring and surfaced an implementation gap — a walk 1 that overflowed context left
+the arm before resampling saw it; fixed, both sets rerun from scratch for this result.)
 ([`results/BOK0-best-of-k-20261002/BRIEF.md`](../results/BOK0-best-of-k-20261002/BRIEF.md)).
 
 **The code-only half is built [ran] 2026-09-21** (`examples/`): `school/`, the user's own named main
