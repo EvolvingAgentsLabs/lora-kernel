@@ -441,7 +441,17 @@ texto de página) con la salida de red cerrada al servidor del modelo, manejado 
 preguntas de REAL4, PASÓ** contra el 38/52 medido sobre vLLM bf16 — el titular y las negativas empatan exactamente,
 la pérdida es de un salto y se lee como el propio límite de contexto del borde, no del miembro
 ([`LIVE-library`](../../results/LIVE-library-20261001/BRIEF.md), el refuerzo del §2 de
-arriba). **Abierto, y la línea de corpus sobre esto se detiene acá:** la precisión de la citación cuando un valor se
+arriba). Una corrida de seguimiento reparó las dos pérdidas del borde que nombra: `examples/school/gateway.runtime_request`
+quita el propio sobre de mensaje encolado de OpenClaw antes de que el runtime lea la pregunta, y el
+`Conversation.page_budget` del runtime abre una página que supera el presupuesto (servido en 2.500 tokens) con los
+enunciados que mejor empareja la pregunta por BM25 dentro de la página, en orden del documento, hasta el
+presupuesto — el resto queda como anclas abribles, sólo las mostradas se leen. Sobre las mismas 52 preguntas:
+**37/52** — titular 16/23, negativas 14/16, un salto 7/13 — contra el 36/52 de esta corrida y el 38/52 de vLLM;
+**0** desbordes de contexto (4 antes), **0** sobres (3 antes), pareado contra LIVE-library 3:2 ($p = 1,0$) —
+**SIN CAMBIO tal como está escrito**, 0 desbordes pero 37 < 38, no REGRESADO; las tres ganancias son exactamente las
+filas que le costaba el borde, la única pérdida nueva es el presupuesto mostrando el enunciado que mejor empareja
+con la pregunta a una pregunta que la biblioteca no puede contestar
+([`LIVE-library2`](../../results/LIVE-library2-20261002/BRIEF.md)). **Abierto, y la línea de corpus sobre esto se detiene acá:** la precisión de la citación cuando un valor se
 repite entre enlaces — REAL5 la encontró (15/25 sobre una tercera familia densa en enlaces, bajo la barra de 70 %),
 el arreglo de un solo salto de REAL6 la dejó sin cambios (FALSIFIED), y los recorridos con señuelo entre enlaces de
 REAL7 tampoco cambiaron nada — `real-link-s0` empata con `real-none-s0` 13/21 sobre el titular sin gemelos de REAL5

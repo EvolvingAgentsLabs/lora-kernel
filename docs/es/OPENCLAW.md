@@ -398,8 +398,25 @@ vLLM bf16 (16/23, 15/16, 7/13): **PASÓ** (barra ≥ 34, negativas ≥ 13, titul
 empatando exactamente con el brazo medido. Cada pérdida se lee como del borde: 4 recorridos desbordaron el contexto
 de 12.288 tokens tras abrir entera una página de ~7k tokens, una pregunta hizo timeout sin recorrido grabado, tres
 preguntas lentas se reenviaron envueltas en el propio sobre de mensaje encolado de OpenClaw
-([`LIVE-library`](../../results/LIVE-library-20261001/BRIEF.md)). **Pendiente, no hecho**: quitar ese sobre antes de
-que el runtime lea la pregunta, y un presupuesto de página para que una página larga entre en un contexto de 12k.
+([`LIVE-library`](../../results/LIVE-library-20261001/BRIEF.md)). ~~**Pendiente, no hecho**: quitar ese sobre antes de
+que el runtime lea la pregunta, y un presupuesto de página para que una página larga entre en un contexto de 12k.~~
+
+**Los dos ya están construidos, y una corrida de seguimiento los leyó donde ocurren: SIN CAMBIO, 37/52.**
+`examples/school/gateway.runtime_request` quita el sobre antes de que el runtime lea la pregunta (test
+`test_openclaw_queued_envelope_is_stripped`), y `memory.runtime.Conversation.page_budget` (servido en **2.500**
+tokens por `examples/library/serve.py --page-budget`) abre una página que supera ese presupuesto con sus enunciados
+en orden BM25 contra la pregunta hasta el presupuesto, dejando el resto como anclas abribles, `id§ancla` — sólo las
+mostradas cuentan como leídas. En esta biblioteca sólo 29 CFR 1910.178 lo supera. Las mismas 52 preguntas, corridas
+de nuevo: **37/52** — titular 16/23, negativas 14/16, un salto 7/13 — contra el 36/52 de esta corrida y el 38/52 de
+REAL4 sobre vLLM bf16; **0** desbordes de contexto (4 antes) y **0** sobres (3 antes), pareado contra LIVE-library
+**3 : 2** ($p = 1,0$). Veredicto tal como está escrito: **SIN CAMBIO** — 0 desbordes pero 37 < 38, no REGRESADO. Las
+tres ganancias son exactamente las filas que le costaba el borde (dos recorridos que desbordaban, uno sin recorrido
+grabado); la única pérdida nueva, `none-9`, es el presupuesto poniendo a la vista el enunciado que mejor empareja con
+la pregunta de una pregunta que la biblioteca no puede contestar. OpenClaw retuvo un turno ya terminado más allá de
+la propia respuesta del endpoint en 3 filas — una de ellas más allá del timeout de 600 s del driver, que detuvo la
+primera parte de la corrida hasta que el driver se arregló para atraparlo y reanudar. **Pendiente, no hecho**: por
+qué OpenClaw retiene un turno terminado
+([`LIVE-library2`](../../results/LIVE-library2-20261002/BRIEF.md)).
 
 ## Cuánto vale esto, medido
 

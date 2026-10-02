@@ -380,8 +380,23 @@ headline 16/23, refusals 15/16, one-hop 5/13 — against REAL4 on vLLM bf16's 38
 (bar ≥ 34, refusals ≥ 13, headline ≥ 14), the headline and the refusals matching the measured arm exactly. Every loss
 reads as the edge's: 4 walks overflowed the 12,288-token context after opening a ~7k-token page whole, one question
 timed out with no walk recorded, three slow questions were re-sent wrapped in OpenClaw's own queued-message envelope
-([`LIVE-library`](../results/LIVE-library-20261001/BRIEF.md)). **Owed, not done**: stripping that envelope before the
-runtime reads the question, and a page budget so a long page fits a 12k context.
+([`LIVE-library`](../results/LIVE-library-20261001/BRIEF.md)). ~~**Owed, not done**: stripping that envelope before the
+runtime reads the question, and a page budget so a long page fits a 12k context.~~
+
+**Both are now built, and a follow-up run read them where they happen: NO CHANGE, 37/52.**
+`examples/school/gateway.runtime_request` strips the envelope before the runtime reads the question (test
+`test_openclaw_queued_envelope_is_stripped`), and `memory.runtime.Conversation.page_budget` (served at **2,500**
+tokens by `examples/library/serve.py --page-budget`) opens a page over that budget with its statements in BM25 order
+against the question until the budget, the rest left as openable anchors, `id§anchor` — only the shown ones count as
+read. On this library only 29 CFR 1910.178 exceeds it. The same 52 questions, run again: **37/52** — headline 16/23,
+refusals 14/16, one-hop 7/13 — against this run's 36/52 and REAL4 on vLLM bf16's 38/52; **0** context overflows
+(4 before) and **0** envelopes (3 before), paired against LIVE-library **3 : 2** ($p = 1.0$). Verdict as written:
+**NO CHANGE** — 0 overflows but 37 < 38, not REGRESSED. The three wins are exactly the rows the edge had cost
+(two overflowing walks, one with no walk recorded); the one new loss, `none-9`, is the budget putting a question's
+best-matching statement in view of a question the library cannot answer. OpenClaw held a finished turn past the
+endpoint's own answer on 3 rows — one of them past the driver's 600 s timeout, which stopped the run's first part
+until the driver was fixed to catch it and resume. **Owed, not done**: why OpenClaw holds a finished turn
+([`LIVE-library2`](../results/LIVE-library2-20261002/BRIEF.md)).
 
 ## What this is worth, measured
 
