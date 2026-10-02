@@ -140,6 +140,9 @@ def run_case(lib: Library, row: dict, arm: str, gen_for) -> dict:
             if "page" in flags:
                 conv.page_text = True                # REAL2: a page opens with its statements' text
                 rec["page_text"] = True
+            if "check" in flags:
+                conv.cite_check = True               # CITE0: a final line the referee cannot verify is refused once
+                rec["cite_check"] = True
             final, conv, chain = walk(lib, row, gen_for(prompt.SYSTEM_WIKI, prompt.user_text_wiki(row["question"]), True), conv)
     except ContextExhausted as e:
         return {**rec, "state": "context", "credit": False, "value_right": False, "detail": str(e)[:120]}
@@ -147,6 +150,12 @@ def run_case(lib: Library, row: dict, arm: str, gen_for) -> dict:
         return {**rec, "error": repr(e)[:160]}
     g = gr.grade(row, final, conv)
     rec.update(g, credit=g["state"] == "right", final=final[-300:])
+    if conv is not None and getattr(conv, "checked", None):
+        # CITE0's within-walk attribution: the refused line graded as the check saw it — same walk, before and after
+        from types import SimpleNamespace
+        view = SimpleNamespace(shown=conv.shown, statements=set(map(tuple, conv.checked["statements"])), lib=conv.lib,
+                               _statement_text=conv._statement_text)
+        rec["pre_check"] = {"state": gr.grade(row, conv.checked["line"], view)["state"], "line": conv.checked["line"][-200:]}
     if chain is not None:
         rec.update(calls=chain["calls"], refused=chain["refused"], malformed=chain["malformed"], ran_out=chain["ran_out"],
                    ended=conv.ended, errors=dict(conv.errors), opened_pages=len(conv.opened),

@@ -79,3 +79,55 @@ def test_a_long_page_opens_with_the_questions_statements_within_budget():
     assert count_tokens(whole) > 6000
     short = lib["logistics-regs/wiki/1-906"]
     assert conv._render(short, None) == Conversation(lib, page_text=True)._render(short, None)
+
+
+def _walk_with(lib, row, finals, cite_check=True):
+    """A scripted member that searches, opens the supporting page, then writes `finals` in turn as its final lines."""
+    from memory.runtime import ChainSuite, Conversation, FullText
+    from training.harness.accept_rank import run_chain
+    conv = Conversation(lib, mode="strict", max_opens=24, searcher=FullText(lib), first_query=row["question"],
+                        entry_all_shelves=True, fallback=True, page_text=True, cite_check=cite_check)
+    left = list(finals)
+
+    def gen(prefix):
+        if "<search" not in prefix:
+            return "<search shelf=wiki>x</search>"
+        if "<open>" not in prefix:
+            title = row["support"][0].rsplit("/", 1)[1].replace("-", ".")
+            return "<open>" + re.search(r"\[([a-z0-9]{3})\] page · " + re.escape(title) + r" ", prefix).group(1) + "</open>"
+        sid = re.search(r"<open>([a-z0-9]{3})</open>", prefix).group(1)
+        return left.pop(0).format(sid=sid) if left else ""
+    chain = run_chain(ChainSuite(conv).wrap(gen), {}, max_calls=24, suite=ChainSuite(conv))
+    return conv, chain
+
+
+def test_the_citation_check_refuses_an_unverifiable_final_line_once():
+    """CITE0's mechanism: `[id]` without a section is answered with `= ERROR: citation — …` and the member's next line
+    stands; a line that verifies is never refused; a second bad line is not refused again."""
+    from memory.notes import Library
+    from training.wiki import grade as gr
+    from types import SimpleNamespace
+    lib = Library.load("knowledge/logistics-regs")
+    row = next(r for r in _rows() if r["support"] and r["hops"] == 1 and r["support"][1] == "h-2-i")
+    good = row["answer"] + " [{sid}§" + row["support"][1] + "]"
+    conv, chain = _walk_with(lib, row, [row["answer"] + " [{sid}]", good])
+    assert "= ERROR: citation — no [id§section]" in chain["text"] and conv.cite_checks == 1
+    final = chain["spans"][-1]["text"]
+    view = SimpleNamespace(shown=conv.shown, statements=set(conv.statements), lib=lib, _statement_text=conv._statement_text)
+    assert gr.grade(row, final, view)["state"] == "right"
+    conv, chain = _walk_with(lib, row, [good])
+    assert "ERROR: citation" not in chain["text"] and conv.cite_checks == 0
+    conv, chain = _walk_with(lib, row, ["{sid} [{sid}]", "{sid} [{sid}]", good])
+    assert chain["text"].count("ERROR: citation") == 1 and chain["spans"][-1]["text"].endswith("]")
+    conv, chain = _walk_with(lib, row, [row["answer"] + " [{sid}]"], cite_check=False)
+    assert "ERROR: citation" not in chain["text"]
+
+
+def test_the_citation_check_reads_the_numbers_against_the_cited_statement():
+    from memory.notes import Library
+    lib = Library.load("knowledge/logistics-regs")
+    row = next(r for r in _rows() if r["support"] and r["hops"] == 1 and r["support"][1] == "h-2-i")
+    conv, chain = _walk_with(lib, row, ["99999 [{sid}§" + row["support"][1] + "]"])
+    assert "does not hold 99999" in chain["text"]
+    conv, chain = _walk_with(lib, row, ["Not in my library."])
+    assert "ERROR: citation" not in chain["text"]

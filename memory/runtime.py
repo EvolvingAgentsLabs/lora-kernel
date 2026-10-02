@@ -177,6 +177,14 @@ class Conversation:
     # in document order, then the anchors left out — each still openable as `id§anchor`. Only the shown ones count as
     # read. Offline [ran]: at 1,500–3,500 the 8 statements REAL4's walks need on that page are all kept.
     page_budget: int | None = None
+    # THE CITATION IS CHECKED BEFORE THE ANSWER LEAVES (LIVE-library2 [ran], offline over its 52 walks): of 15 misses, 9
+    # end on a line the referee can reject without knowing the answer — no `[id§section]`, an id never shown, a statement
+    # never opened, or a number the cited statement does not hold — and of 37 right answers, none does. With
+    # `cite_check`, such a final line is answered once with `= ERROR: citation — …` and the walk goes on; a second final
+    # line stands as it is. It cannot catch a statement that holds the number but is not the one asked about.
+    cite_check: bool = False
+    cite_checks: int = 0
+    checked: dict | None = None
     implicit: int = 0
 
     shown: dict[str, str] = field(default_factory=dict)      # opaque → library id
@@ -406,9 +414,45 @@ class Conversation:
         """§5.4: one JSON line per command."""
         return "\n".join(json.dumps(l, ensure_ascii=False) for l in self.log)
 
+    def check_final(self, text: str) -> str | None:
+        r"""`cite_check`: why a final line cannot be verified, or None. Without the answer key — the referee's own record:
+        a line passes iff it is `Not in my library.`, or it cites $[o\S a]$ with $o$ shown, $(\mathrm{id}(o), a)$ opened,
+        and $\mathrm{nums}(\text{line}) \subseteq \mathrm{nums}(\text{statement})$ (the citation's own label aside)."""
+        if not self.cite_check or self.cite_checks >= 1 or self.ended:
+            return None
+        lines = [l.strip() for l in text.strip().splitlines() if l.strip()]
+        line = lines[-1] if lines else ""
+        if "not in my library" in line.lower():
+            return None
+        self.cite_checks += 1
+        self.checked = {"line": line, "statements": list(self.statements)}      # what the line was, as the check saw it
+        how = "end with one line: the answer and [id§section] of a statement you opened that holds it — or Not in my library."
+        cites = list(_CITE.finditer(line))
+        if not line:
+            return f"citation — no answer line; {how}"
+        if not cites:
+            return f"citation — no [id§section] on the answer line; {how}"
+        shown, anchor = cites[-1].group(1), cites[-1].group(2)
+        if shown not in self.shown:
+            return f"citation — {shown} was never shown in this conversation; {how}"
+        nid = self.shown[shown]
+        if (nid, anchor) not in self.statements:
+            return f"citation — {shown}§{anchor} was not opened; {how}"
+        text_ = self._statement_text(self.lib[nid], anchor) or ""
+        nums = lambda t: {n.lstrip("0") or "0" for n in re.findall(r"\d+", t)}
+        missing = sorted(nums(_CITE.sub(" ", line)) - nums(text_))
+        if missing:
+            return f"citation — {shown}§{anchor} does not hold {', '.join(missing)}; {how}"
+        self.cite_checks -= 1                       # a line that passes has not used the one check
+        self.checked = None
+        return None
+
     @property
     def answered(self) -> bool:
         return self.ended is None
+
+
+_CITE = re.compile(r"\[([a-z0-9]{3})§([a-z0-9][a-z0-9-]*)\]")
 
 
 class ChainSuite:
@@ -435,6 +479,9 @@ class ChainSuite:
     def parse(self, text: str):
         """The final span is the answer — unless the referee ended the task: then *not answered*."""
         return text.strip() if self.conv.answered and text.strip() else None
+
+    def check_final(self, text: str) -> str | None:
+        return self.conv.check_final(text)
 
     def wrap(self, gen):
         """A cut walk generates nothing more: the loop sees an empty, tag-less chunk and stops."""
