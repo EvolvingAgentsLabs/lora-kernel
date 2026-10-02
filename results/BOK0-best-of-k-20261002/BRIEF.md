@@ -46,6 +46,17 @@ not right (a wrong answer now reaches the person where "could not verify" did).
 
 Two scoring sessions (one per set); k, the temperature, the sets and the bars do not change after the first walk.
 
+## Run log
+
+- **Attempt 1 — stopped, not a verdict** (`attempt1_bok0_cite0.json`, `attempt1_S_*_chain.log`): CITE0's set scored
+  (52/52, 0 errors), then the session for REAL4's set was stopped by hand before it scored (the user's machine, which
+  drives the chain, had to sleep for an hour — longer than a Colab session lives). **Read before any verdict, an
+  implementation gap:** a walk 1 that ran out of context left the arm before `best_of_k` saw it — 2 rows of CITE0's
+  set — although this brief resamples every walk 1 with no final line. The implementation now matches the brief (test
+  `test_best_of_k_resamples_a_first_walk_that_ran_out_of_context`). Attempt 1's partial counts on CITE0's set were seen
+  (gain 1, new wrong 2, 5 resampled); they are not the verdict, and the bars, k, temperature and sets do not move. Both
+  sets are rerun from scratch. **This is the first change to BOK0's instrument.**
+
 ## Result
 
 *(written after the run)*

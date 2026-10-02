@@ -146,11 +146,20 @@ def run_case(lib: Library, row: dict, arm: str, gen_for) -> dict:
                     conv.cite_check = True               # CITE0: a final line the referee cannot verify is refused once
                     rec["cite_check"] = True
                 return conv
-            final, conv, chain = walk(lib, row, gen_for(prompt.SYSTEM_WIKI, prompt.user_text_wiki(row["question"]), True),
-                                      setup(conversation(lib, row)))
             k = next((int(f[1:]) for f in flags if re.fullmatch(r"k\d+", f)), 1)
+            try:
+                final, conv, chain = walk(lib, row, gen_for(prompt.SYSTEM_WIKI, prompt.user_text_wiki(row["question"]),
+                                                            True), setup(conversation(lib, row)))
+            except ContextExhausted:
+                # BOK0's brief resamples a walk 1 with no final line — a context overflow is one [ran] BOK0 attempt 1:
+                # 2 rows left the arm before best_of_k ever saw them
+                if k <= 1:
+                    raise
+                final = conv = chain = None
             if k > 1:
                 final, conv, chain = best_of_k(lib, row, k, gen_for, setup, final, conv, chain, rec)
+                if final is None:
+                    return {**rec, "state": "context", "credit": False, "value_right": False}
     except ContextExhausted as e:
         return {**rec, "state": "context", "credit": False, "value_right": False, "detail": str(e)[:120]}
     except Exception as e:                                   # transport — never folded into a score
@@ -185,7 +194,7 @@ def best_of_k(lib, row, k, gen_for, setup, final, conv, chain, rec):
         line = gr.final_line(f)
         return {"state": gr.grade(row, f, c)["state"], "gated": (c.final_problem(line) if line else "no answer line"),
                 "line": line[-200:]}
-    walks = [judged(final, conv)]
+    walks = [judged(final, conv) if final is not None else {"state": "context", "gated": "context", "line": ""}]
     chosen = (final, conv, chain) if walks[0]["gated"] is None else None
     for i in range(1, k):
         if chosen is not None:
