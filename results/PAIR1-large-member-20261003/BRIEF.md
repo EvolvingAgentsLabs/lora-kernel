@@ -41,6 +41,14 @@ beside it as the run-to-run spread.
 
 One training (A100), one scoring (A100). No change to the corpus, recipe, set or bars after training starts.
 
+## Run log
+
+- **T attempt 1 — out of memory, nothing trained** (`attempt1_T_chain_oom.log`): the 4.00 GiB logits tensor (262k
+  vocabulary × 4,096 positions, fp32) failed on the A100's 39.5 GiB with 2.3 GiB free and 3.7 GiB reserved but
+  unallocated — fragmentation, with gradient checkpointing already on. **Fix, not a window cut:** the trainer sets
+  `PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True` (unless the caller set it). The corpus, recipe, window and bars do not
+  move. If attempt 2 runs out of memory too, one H100 attempt, then stop and record.
+
 ## Result
 
 *(written after the run)*

@@ -47,6 +47,12 @@ from __future__ import annotations
 
 import argparse
 import gc
+import os
+
+# A 12B at window 4,096 FRAGMENTS THE ALLOCATOR [ran] PAIR1 attempt 1: the 4 GiB logits tensor (262k vocabulary × 4,096
+# positions, fp32) failed with 2.3 GiB free and 3.7 GiB reserved-but-unallocated. Expandable segments let the allocator
+# use that reserve; set before torch is imported, and only if the caller has not chosen otherwise
+os.environ.setdefault("PYTORCH_CUDA_ALLOC_CONF", "expandable_segments:True")
 import json
 import random
 import time
