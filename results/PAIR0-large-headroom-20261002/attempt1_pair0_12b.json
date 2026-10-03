@@ -1,0 +1,2992 @@
+{
+ "base": "google/gemma-4-12B-it",
+ "started": "2026-10-03T01:20:15",
+ "grader": "training.wiki.grade",
+ "library": "knowledge/hazwaste-regs",
+ "eval_world": 20260924,
+ "arms": {
+  "base-walks+page+top8": {
+   "page0-one-hop-04": {
+    "id": "page0-one-hop-04",
+    "family": "one-hop",
+    "block": "R1",
+    "hops": 1,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "hazwaste-regs/wiki/262-16",
+     "b-3-ii-c"
+    ],
+    "why": null,
+    "supporting": [
+     "hazwaste-regs/wiki/262-16",
+     "b-3-ii-c"
+    ],
+    "cited_the_supporting": true,
+    "line": "The tank must keep at least 60 centimeters of freeboard. [w7x§b-3-ii-c]",
+    "credit": true,
+    "final": "thought\nThe tank must keep at least 60 centimeters of freeboard. [w7x§b-3-ii-c]",
+    "calls": 3,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-16",
+      "a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-3-ii-c"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-3-iv"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-1-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-6-ii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-6-ii-d"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-3-b-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-9-iv-b"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-3-ii-c"
+     ]
+    ],
+    "text": "thought\n<search shelf=harness>small quantity generator paint shop waste tank freeboard</search>= 3 notes\n  [w7x] page · 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — when: You need what section 262.16 requires: Conditions for exemption for a small quantity generator that accumulates hazardous waste.\n  [9b8] page · 262.232 Conditions for a generator managing hazardous waste from an episodic event. — when: You need what section 262.232 requires: Conditions for a generator managing hazardous waste from an episodic event.\n  [s1t] page · 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — when: You need what section 262.17 requires: Conditions for exemption for a large quantity generator that accumulates hazardous waste.\nthought\n<open>w7x</open>= 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — Section 262.16 of the regulation — Conditions for exemption for a small quantity generator that accumulates hazardous waste.\n  §a (a) Generation. The generator generates in a calendar month no more than the amounts specified in the definition of “small quantity generator” in § 260.10 of this chapter.\n  §b-3-ii-c (C) Uncovered tanks must be operated to ensure at least 60 centimeters (2 feet) of freeboard, unless the tank is equipped with a containment structure (e.g., dike or trench), a drainage control system, or a diversion structure (e.g., standby tank) with a capacity that equals or exceeds the volume of the top 60 centimeters (2 feet) of the tank.\n  §b-3-iv (iv) A small quantity generator accumulating hazardous waste in tanks or tank systems that have full secondary containment and that either use leak detection equipment to alert personnel to leaks, or implement established workplace practices to ensure leaks are promptly identified, must inspect at least weekly, where applicable, the areas identified in paragraphs (b)(3)(iii)(A) through (E) of this section. Use of the alternate inspection schedule must be documented in the generator's operating record. This documentation must include a description of the established workplace practices at the generator.\n  §b-1-2 (1) The waste is treated, rendered, or mixed before or immediately after placement in a tank so that the resulting waste, mixture, or dissolution of material no longer meets the definition of ignitable or reactive waste under § 261.21 or § 261.23 of this chapter and § 265.17(b) of this chapter is complied with; or\n  §b-6-ii (ii) Tanks. A small quantity generator accumulating hazardous waste in tanks must do the following:\n  §b-6-ii-d (D) Keep inventory logs or records with the above information on site and readily available for inspection.\n  §b-3-b-2 (B) A small quantity generator shall maintain records documenting the arrangements with the local fire department as well as any other organization necessary to respond to an emergency. This documentation must include documentation in the operating record that either confirms such arrangements actively exist or, in cases where no arrangements exist, confirms that attempts to make such arrangements were made.\n  §b-9-iv-b (B) In the event of a spill, the small quantity generator is responsible for containing the flow of hazardous waste to the extent possible, and as soon as is practicable, cleaning up the hazardous waste and any contaminated materials or soil. Such containment and cleanup can be conducted either by the small quantity generator or by a contractor on behalf of the small quantity generator;\n  89 more sections, not shown — open w7x§<section> to read one: §text · §b · §b-1 · §b-2 · §b-2-ii · §b-2-iii · §b-2-iii-b · §b-2-iv · §b-2-v · §b-2-v-b · §b-2-v-c · §b-3 · §b-3-i · §b-3-ii · §b-3-ii-a · §b-3-ii-b · §b-3-ii-d · §b-3-iii · §b-3-iii-a · §b-3-iii-b · §b-3-iii-c · §b-3-iii-d · §b-3-iii-e · §b-3-v · §b-3-vi · §b-3-vii · §b-3-vii-a · §b-2-2 · §b-3-2 · §b-3-b · §b-3-b-c · §b-1-3 · §b-2-3 · §b-4 · §b-4-i · §b-4-ii · §b-4-iii · §b-4-iii-a · §b-4-iii-b · §b-5 · §b-5-i · §b-5-ii · §b-5-ii-a · §b-5-ii-b · §b-5-ii-c · §b-6 · §b-6-a · §b-6-a-b · §b-6-a-c · §b-6-ii-a · §b-6-ii-b · §b-6-ii-c · §b-7 · §b-8 · §b-8-ii · §b-8-ii-a · §b-8-ii-b · §b-8-ii-c · §b-8-ii-d · §b-8-iii · §b-8-iv · §b-8-iv-b · §b-8-v · §b-8-vi · §b-1-4 · §b-2-4 · §b-3-3 · §b-3-b-c-2 · §b-9 · §b-9-i · §b-9-ii · §b-9-ii-a · §b-9-ii-b · §b-9-ii-c · §b-9-iii · §b-9-iv · §b-9-iv-a · §b-9-iv-c · §b-1-5 · §b-2-5 · §b-3-4 · §b-4-2 · §b-5-2 · §c · §d · §e · §e-1 · §e-2 · §f\nthought\n<open>w7x§b-3-ii-c</open>= (C) Uncovered tanks must be operated to ensure at least 60 centimeters (2 feet) of freeboard, unless the tank is equipped with a containment structure (e.g., dike or trench), a drainage control system, or a diversion structure (e.g., standby tank) with a capacity that equals or exceeds the volume of the top 60 centimeters (2 feet) of the tank.\nthought\nThe tank must keep at least 60 centimeters of freeboard. [w7x§b-3-ii-c]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=harness>small quantity generator paint shop waste tank freeboard</search>"
+     },
+     {
+      "at": 826,
+      "text": "thought\n<open>w7x</open>"
+     },
+     {
+      "at": 4561,
+      "text": "thought\n<open>w7x§b-3-ii-c</open>"
+     },
+     {
+      "at": 4942,
+      "text": "thought\nThe tank must keep at least 60 centimeters of freeboard. [w7x§b-3-ii-c]"
+     }
+    ]
+   },
+   "page0-one-hop-08": {
+    "id": "page0-one-hop-08",
+    "family": "one-hop",
+    "block": "R1",
+    "hops": 1,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-232",
+     "a-2"
+    ],
+    "cited_the_supporting": false,
+    "line": "",
+    "credit": false,
+    "final": "",
+    "calls": 2,
+    "refused": 1,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": "guard: unknown_id",
+    "errors": {
+     "unknown_id": 1
+    },
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=wiki>very small quantity generator chemical purge notification</search>= 3 notes\n  [4v6] page · 262.232 Conditions for a generator managing hazardous waste from an episodic event. — when: You need what section 262.232 requires: Conditions for a generator managing hazardous waste from an episodic event.\n  [3rz] page · 262.233 Petition to manage one additional episodic event per calendar year. — when: You need what section 262.233 requires: Petition to manage one additional episodic event per calendar year.\n  [63f] page · 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — when: You need what section 262.16 requires: Conditions for exemption for a small quantity generator that accumulates hazardous waste.\nthought\n<open>262.232</open>= ERROR: no note 262.232 in this conversation\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=wiki>very small quantity generator chemical purge notification</search>"
+     },
+     {
+      "at": 782,
+      "text": "thought\n<open>262.232</open>"
+     },
+     {
+      "at": 856,
+      "text": ""
+     }
+    ]
+   },
+   "page0-one-hop-00": {
+    "id": "page0-one-hop-00",
+    "family": "one-hop",
+    "block": "R1",
+    "hops": 1,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-83",
+     "a"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=wiki>resin plant export consent EPA</search>= 3 notes\n  [e9r] page · 262.83 Exports of hazardous waste. — when: You need what section 262.83 requires: Exports of hazardous waste.\n  [xyk] page · 262.84 Imports of hazardous waste. — when: You need what section 262.84 requires: Imports of hazardous waste.\n  [cn8] page · 262.21 Manifest tracking numbers, manifest printing, and obtaining manifests. — when: You need what section 262.21 requires: Manifest tracking numbers, manifest printing, and obtaining manifests.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=wiki>resin plant export consent EPA</search>"
+     },
+     {
+      "at": 537,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-one-hop-03": {
+    "id": "page0-one-hop-03",
+    "family": "one-hop",
+    "block": "R1",
+    "hops": 1,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-17",
+     "a-8-i-a"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=harness>waste accumulation unit closure notice</search>= 3 notes\n  [my6] page · 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — when: You need what section 262.17 requires: Conditions for exemption for a large quantity generator that accumulates hazardous waste.\n  [hng] page · 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — when: You need what section 262.16 requires: Conditions for exemption for a small quantity generator that accumulates hazardous waste.\n  [7mt] page · 262.232 Conditions for a generator managing hazardous waste from an episodic event. — when: You need what section 262.232 requires: Conditions for a generator managing hazardous waste from an episodic event.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=harness>waste accumulation unit closure notice</search>"
+     },
+     {
+      "at": 808,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-one-hop-02": {
+    "id": "page0-one-hop-02",
+    "family": "one-hop",
+    "block": "R1",
+    "hops": 1,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-17",
+     "a-8-ii-b"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=wiki>large quantity generator plant closure notification</search>= 3 notes\n  [isn] page · 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — when: You need what section 262.17 requires: Conditions for exemption for a large quantity generator that accumulates hazardous waste.\n  [15d] page · 262.232 Conditions for a generator managing hazardous waste from an episodic event. — when: You need what section 262.232 requires: Conditions for a generator managing hazardous waste from an episodic event.\n  [n04] page · 262.15 Satellite accumulation area regulations for small and large quantity generators. — when: You need what section 262.15 requires: Satellite accumulation area regulations for small and large quantity generators.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=wiki>large quantity generator plant closure notification</search>"
+     },
+     {
+      "at": 800,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-one-hop-06": {
+    "id": "page0-one-hop-06",
+    "family": "one-hop",
+    "block": "R1",
+    "hops": 1,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-21",
+     "f-6-ii"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=harness>paper manifest forms shipping desk</search>= 3 notes\n  [3yc] page · 262.21 Manifest tracking numbers, manifest printing, and obtaining manifests. — when: You need what section 262.21 requires: Manifest tracking numbers, manifest printing, and obtaining manifests.\n  [twp] page · 262.24 Use of the electronic manifest. — when: You need what section 262.24 requires: Use of the electronic manifest.\n  [hzy] page · 262.20 General requirements. — when: You need what section 262.20 requires: General requirements.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=harness>paper manifest forms shipping desk</search>"
+     },
+     {
+      "at": 540,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-one-hop-01": {
+    "id": "page0-one-hop-01",
+    "family": "one-hop",
+    "block": "R1",
+    "hops": 1,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-83",
+     "c-4"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=harness>export manifest e-Manifest system upload duty</search>= 3 notes\n  [qcr] page · 262.83 Exports of hazardous waste. — when: You need what section 262.83 requires: Exports of hazardous waste.\n  [95d] page · 262.84 Imports of hazardous waste. — when: You need what section 262.84 requires: Imports of hazardous waste.\n  [f3x] page · 262.42 Exception reporting. — when: You need what section 262.42 requires: Exception reporting.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=harness>export manifest e-Manifest system upload duty</search>"
+     },
+     {
+      "at": 455,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-one-hop-07": {
+    "id": "page0-one-hop-07",
+    "family": "one-hop",
+    "block": "R1",
+    "hops": 1,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-81",
+     "text-19"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=wiki>EPA Acknowledgment of Consent letter export license</search>= 3 notes\n  [83s] page · 262.83 Exports of hazardous waste. — when: You need what section 262.83 requires: Exports of hazardous waste.\n  [vr0] page · 262.81 Definitions. — when: You need what section 262.81 requires: Definitions.\n  [afj] page · 262.84 Imports of hazardous waste. — when: You need what section 262.84 requires: Imports of hazardous waste.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=wiki>EPA Acknowledgment of Consent letter export license</search>"
+     },
+     {
+      "at": 442,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-one-hop-05": {
+    "id": "page0-one-hop-05",
+    "family": "one-hop",
+    "block": "R1",
+    "hops": 1,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-16",
+     "b-6-ii-c"
+    ],
+    "cited_the_supporting": false,
+    "line": "§b-6",
+    "credit": false,
+    "final": "hat hazardous waste has been emptied within 180 days of first entering the tank if using a batch process, or in the case of a tank with a continuous flow process, demonstrate that estimated volumes of hazardous waste entering the tank daily exit the tank within 180 days of first entering; and\n  §b-6",
+    "calls": 2,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-3-ii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-5-ii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-5-ii-b"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-5-ii-c"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-6-ii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-6-ii-c"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-6-ii-d"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "c"
+     ]
+    ],
+    "text": "thought\n<search shelf=wiki>small quantity generator batch-process tank inventory logs</search>= 3 notes\n  [hty] page · 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — when: You need what section 262.16 requires: Conditions for exemption for a small quantity generator that accumulates hazardous waste.\n  [jmw] page · 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — when: You need what section 262.17 requires: Conditions for exemption for a large quantity generator that accumulates hazardous waste.\n  [xa3] page · 262.232 Conditions for a generator managing hazardous waste from an episodic event. — when: You need what section 262.232 requires: Conditions for a generator managing hazardous waste from an episodic event.\nthought\n<open>hty</open>= 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — Section 262.16 of the regulation — Conditions for exemption for a small quantity generator that accumulates hazardous waste.\n  §b-3-ii (ii) A small quantity generator of hazardous waste must comply with the following general operating conditions:\n  §b-5-ii (ii) The following records by use of inventory logs, monitoring equipment, or any other effective means:\n  §b-5-ii-b (B) Documentation that the unit is emptied at least once every 90 days.\n  §b-5-ii-c (C) Inventory logs or records with the above information must be maintained on site and readily available for inspection.\n  §b-6-ii (ii) Tanks. A small quantity generator accumulating hazardous waste in tanks must do the following:\n  §b-6-ii-c (C) Use inventory logs, monitoring equipment, or other records to demonstrate that hazardous waste has been emptied within 180 days of first entering the tank if using a batch process, or in the case of a tank with a continuous flow process, demonstrate that estimated volumes of hazardous waste entering the tank daily exit the tank within 180 days of first entering; and\n  §b-6-ii-d (D) Keep inventory logs or records with the above information on site and readily available for inspection.\n  §c (c) Transporting over 200 miles. A small quantity generator who must transport its waste, or offer its waste for transportation, over a distance of 200 miles or more for off-site treatment, storage or disposal may accumulate hazardous waste on site for 270 days or less without a permit or without having interim status provided that the generator complies with the conditions of paragraph (b) of this section.\n  89 more sections, not shown — open hty§<section> to read one: §text · §a · §b · §b-1 · §b-2 · §b-2-ii · §b-2-iii · §b-2-iii-b · §b-2-iv · §b-2-v · §b-2-v-b · §b-2-v-c · §b-3 · §b-3-i · §b-3-ii-a · §b-3-ii-b · §b-3-ii-c · §b-3-ii-d · §b-3-iii · §b-3-iii-a · §b-3-iii-b · §b-3-iii-c · §b-3-iii-d · §b-3-iii-e · §b-3-iv · §b-3-v · §b-3-vi · §b-3-vii · §b-3-vii-a · §b-1-2 · §b-2-2 · §b-3-2 · §b-3-b · §b-3-b-c · §b-1-3 · §b-2-3 · §b-4 · §b-4-i · §b-4-ii · §b-4-iii · §b-4-iii-a · §b-4-iii-b · §b-5 · §b-5-i · §b-5-ii-a · §b-6 · §b-6-a · §b-6-a-b · §b-6-a-c · §b-6-ii-a · §b-6-ii-b · §b-7 · §b-8 · §b-8-ii · §b-8-ii-a · §b-8-ii-b · §b-8-ii-c · §b-8-ii-d · §b-8-iii · §b-8-iv · §b-8-iv-b · §b-8-v · §b-8-vi · §b-1-4 · §b-2-4 · §b-3-3 · §b-3-b-2 · §b-3-b-c-2 · §b-9 · §b-9-i · §b-9-ii · §b-9-ii-a · §b-9-ii-b · §b-9-ii-c · §b-9-iii · §b-9-iv · §b-9-iv-a · §b-9-iv-b · §b-9-iv-c · §b-1-5 · §b-2-5 · §b-3-4 · §b-4-2 · §b-5-2 · §d · §e · §e-1 · §e-2 · §f\n  §b-6-ii-c (C) Tanks. A small quantity generator accumulating hazardous waste in tanks must do the following:\n  §b-6-ii-c (C) Use inventory logs, monitoring equipment, or other records to demonstrate that hazardous waste has been emptied within 180 days of first entering the tank if using a batch process, or in the case of a tank with a continuous flow process, demonstrate that estimated volumes of hazardous waste entering the tank daily exit the tank within 180 days of first entering; and\n  §b-6",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=wiki>small quantity generator batch-process tank inventory logs</search>"
+     },
+     {
+      "at": 825,
+      "text": "thought\n<open>hty</open>"
+     },
+     {
+      "at": 3509,
+      "text": "  §b-6-ii-c (C) Tanks. A small quantity generator accumulating hazardous waste in tanks must do the following:\n  §b-6-ii-c (C) Use inventory logs, monitoring equipment, or other records to demonstrate that hazardous waste has been emptied within 180 days of first entering the tank if using a batch process, or in the case of a tank with a continuous flow process, demonstrate that estimated volumes of hazardous waste entering the tank daily exit the tank within 180 days of first entering; and\n  §b-6"
+     }
+    ]
+   },
+   "page0-one-hop-09": {
+    "id": "page0-one-hop-09",
+    "family": "one-hop",
+    "block": "R1",
+    "hops": 1,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "hazwaste-regs/wiki/262-232",
+     "b-5"
+    ],
+    "why": null,
+    "supporting": [
+     "hazwaste-regs/wiki/262-232",
+     "b-5"
+    ],
+    "cited_the_supporting": true,
+    "line": "You must treat the waste on site or ship it off site within 60 calendar days from the start of the episodic event [va4§b-5].",
+    "credit": true,
+    "final": "thought\nYou must treat the waste on site or ship it off site within 60 calendar days from the start of the episodic event [va4§b-5].",
+    "calls": 2,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-232",
+      "a-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-232",
+      "a-5"
+     ],
+     [
+      "hazwaste-regs/wiki/262-232",
+      "a-6"
+     ],
+     [
+      "hazwaste-regs/wiki/262-232",
+      "a-7-vi"
+     ],
+     [
+      "hazwaste-regs/wiki/262-232",
+      "b-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-232",
+      "b-5"
+     ],
+     [
+      "hazwaste-regs/wiki/262-232",
+      "b-6"
+     ],
+     [
+      "hazwaste-regs/wiki/262-232",
+      "b-6-vi"
+     ]
+    ],
+    "text": "thought\n<search shelf=harness>episodic event waste treatment timeframes</search>= 3 notes\n  [va4] page · 262.232 Conditions for a generator managing hazardous waste from an episodic event. — when: You need what section 262.232 requires: Conditions for a generator managing hazardous waste from an episodic event.\n  [tsd] page · 262.233 Petition to manage one additional episodic event per calendar year. — when: You need what section 262.233 requires: Petition to manage one additional episodic event per calendar year.\n  [zaz] page · 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — when: You need what section 262.16 requires: Conditions for exemption for a small quantity generator that accumulates hazardous waste.\nthought\n<open>va4</open>= 262.232 Conditions for a generator managing hazardous waste from an episodic event. — Section 262.232 of the regulation — Conditions for a generator managing hazardous waste from an episodic event.\n  §a-2 (2) Notification. The very small quantity generator must notify EPA no later than thirty (30) calendar days prior to initiating a planned episodic event using EPA Form 8700-12. In the event of an unplanned episodic event, the generator must notify EPA within 72 hours of the unplanned event via phone, email, or fax and subsequently submit EPA Form 8700-12. The generator shall include the start date and end date of the episodic event, the reason(s) for the event, types and estimated quantities of hazardous waste expected to be generated as a result of the episodic event, and shall identify a facility contact and emergency coordinator with 24-hour telephone access to discuss the notification submittal or respond to an emergency in compliance with [zaz] 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste.(b)(9)(i);\n  §a-5 (5) The very small quantity generator must comply with the hazardous waste manifest provisions of subpart B of this part and the recordkeeping provisions for small quantity generators in [mix] 262.44 Recordkeeping for small quantity generators. when it sends its episodic event hazardous waste off site to a designated facility, as defined in § 260.10 of this subchapter.\n  §a-6 (6) The very small quantity generator has up to sixty (60) calendar days from the start of the episodic event to manifest and send its hazardous waste generated from the episodic event to a designated facility, as defined in § 260.10 of this chapter.\n  §a-7-vi (vi) An approval letter from EPA if the generator petitioned to conduct one additional episodic event per calendar year.\n  §b-2 (2) Notification. The small quantity generator must notify EPA no later than thirty (30) calendar days prior to initiating a planned episodic event using EPA Form 8700-12. In the event of an unplanned episodic event, the small quantity generator must notify EPA within 72 hours of the unplanned event via phone, email, or fax, and subsequently submit EPA Form 8700-12. The small quantity generator shall include the start date and end date of the episodic event and the reason(s) for the event, types and estimated quantities of hazardous wastes expected to be generated as a result of the episodic event, and identify a facility contact and emergency coordinator with 24-hour telephone access to discuss the notification submittal or respond to emergency;\n  §b-5 (5) The small quantity generator must treat hazardous waste generated from an episodic event on site or manifest and ship such hazardous waste off site to a designated facility (as defined by § 260.10 of this chapter) within sixty (60) calendar days from the start of the episodic event.\n  §b-6 (6) The small quantity generator must maintain the following records for three (3) years from the end date of the episodic event:\n  §b-6-vi (vi) An approval letter from EPA if the generator petitioned to conduct one additional episodic event per calendar year.\n  40 more sections, not shown — open va4§<section> to read one: §a · §a-1 · §a-3 · §a-4 · §a-4-i · §a-4-i-a · §a-4-i-b · §a-4-i-c · §a-4-ii · §a-4-ii-a · §a-4-ii-b · §a-4-ii-c · §a-4-ii-d · §a-4-iii · §a-4-iii-a · §a-4-iii-b · §a-7 · §a-7-i · §a-7-ii · §a-7-iii · §a-7-iv · §a-7-v · §b · §b-1 · §b-3 · §b-4 · §b-4-i · §b-4-i-a · §b-4-i-b · §b-4-i-c · §b-4-ii · §b-4-ii-a · §b-4-ii-b · §b-4-ii-c · §b-4-ii-d · §b-6-i · §b-6-ii · §b-6-iii · §b-6-iv · §b-6-v\nthought\nYou must treat the waste on site or ship it off site within 60 calendar days from the start of the episodic event [va4§b-5].",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=harness>episodic event waste treatment timeframes</search>"
+     },
+     {
+      "at": 769,
+      "text": "thought\n<open>va4</open>"
+     },
+     {
+      "at": 4418,
+      "text": "thought\nYou must treat the waste on site or ship it off site within 60 calendar days from the start of the episodic event [va4§b-5]."
+     }
+    ]
+   },
+   "page0-vsqg-lqg-16": {
+    "id": "page0-vsqg-lqg-16",
+    "family": "vsqg-lqg",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "hazwaste-regs/wiki/262-17",
+     "a-1-vi"
+    ],
+    "why": null,
+    "supporting": [
+     "hazwaste-regs/wiki/262-17",
+     "a-1-vi"
+    ],
+    "cited_the_supporting": true,
+    "line": "Ignitable waste containers must be kept at least 15 meters (50 feet) from the property line [5fb§a-1-vi]",
+    "credit": true,
+    "final": "thought\nthought\nIgnitable waste containers must be kept at least 15 meters (50 feet) from the property line [5fb§a-1-vi]",
+    "calls": 2,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-1-ii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-1-vi"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-3-ii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "c"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "c-4-i"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "f-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "f-2"
+     ]
+    ],
+    "text": "thought\n<search shelf=wiki>large quantity generator conditions ignitable waste distance</search>= 3 notes\n  [5fb] page · 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — when: You need what section 262.17 requires: Conditions for exemption for a large quantity generator that accumulates hazardous waste.\n  [hkj] page · 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — when: You need what section 262.16 requires: Conditions for exemption for a small quantity generator that accumulates hazardous waste.\n  [4is] page · 262.14 Conditions for exemption for a very small quantity generator. — when: You need what section 262.14 requires: Conditions for exemption for a very small quantity generator.\nthought\n<open>5fb</open>= 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — Section 262.17 of the regulation — Conditions for exemption for a large quantity generator that accumulates hazardous waste.\n  §a (a) Accumulation. A large quantity generator accumulates hazardous waste on site for no more than 90 days, unless in compliance with the accumulation time limit extension or F006 accumulation conditions for exemption in paragraphs (b) through (e) of this section. The following accumulation conditions also apply:\n  §a-1-ii (ii) Condition of containers. If a container holding hazardous waste is not in good condition, or if it begins to leak, the large quantity generator must immediately transfer the hazardous waste from this container to a container that is in good condition, or immediately manage the waste in some other way that complies with the conditions for exemption of this section;\n  §a-1-vi (vi) Special conditions for accumulation of ignitable and reactive wastes. (A) Containers holding ignitable or reactive waste must be located at least 15 meters (50 feet) from the facility's property line unless a written approval is obtained from the authority having jurisdiction over the local fire code allowing hazardous waste accumulation to occur within this restricted area. A record of the written approval must be maintained as long as ignitable or reactive hazardous waste is accumulated in this area.\n  §a-3-ii (ii) The large quantity generator must remove all wastes from the drip pad at least once every 90 days. Any hazardous wastes that are removed from the drip pad are then subject to the 90-day accumulation limit in paragraph (a) of this section and [9m9] 262.15 Satellite accumulation area regulations for small and large quantity generators., if the hazardous wastes are being managed in satellite accumulation areas prior to being moved to a central accumulation area; and\n  §c (c) Accumulation of F006. A large quantity generator who also generates wastewater treatment sludges from electroplating operations that meet the listing description for the EPA hazardous waste number F006, may accumulate F006 waste on site for more than 90 days, but not more than 180 days without being subject to parts 124, 264 through 267, and 270 of this chapter, and the notification requirements of section 3010 of RCRA for treatment, storage, and disposal facilities, provided that it complies with all of the following additional conditions for exemption:\n  §c-4-i (i)(A) If the F006 waste is placed in containers, the large quantity generator must comply with the applicable conditions for exemption in paragraph (a)(1) of this section; and/or\n  §f-1 (1) The large quantity generator notifies EPA at least thirty (30) days prior to receiving the first shipment from a very small quantity generator(s) using EPA Form 8700-12; and\n  §f-2 (2) The large quantity generator maintains records of shipments for three years from the date the hazardous waste was received from the very small quantity generator. These records must identify the name, site address, and contact information for the very small quantity generator and include a description of the hazardous waste received, including the quantity and the date the waste was received.\n  90 more sections, not shown — open 5fb§<section> to read one: §text · §a-1 · §a-1-i · §a-1-iii · §a-1-iv · §a-1-iv-b · §a-1-v · §a-1-vi-b · §a-1-vii · §a-1-vii-b · §a-1-vii-c · §a-2 · §a-3 · §a-3-i · §a-3-iii · §a-3-iii-a · §a-3-iii-b · §a-4 · §a-4-i · §a-4-ii · §a-4-ii-a · §a-4-ii-b · §a-4-ii-c · §a-5 · §a-5-a · §a-5-a-b · §a-5-a-c · §a-5-ii · §a-5-ii-a · §a-5-ii-b · §a-5-ii-c · §a-5-ii-d · §a-6 · §a-7 · §a-7-b · §a-7-b-c · §a-1-2 · §a-2-2 · §a-3-2 · §a-4-2 · §a-5-2 · §a-6-2 · §a-6-d · §a-6-ii · §a-6-iii · §a-6-iv · §a-6-iv-a · §a-6-iv-b · §a-6-iv-c · §a-6-iv-d · §a-6-v · §a-8 · §a-8-i · §a-8-i-a · §a-8-i-b · §a-8-ii · §a-8-ii-b · §a-8-ii-c · §a-8-iii · §a-1-3 · §a-2-3 · §a-3-3 · §a-4-3 · §a-4-iv · §a-4-v · §a-9 · §b · §c-1 · §c-2 · §c-3 · §c-4 · §c-4-i-b · §c-4-i-c · §c-1-2 · §c-2-2 · §c-2-ii · §c-2-iii · §c-2-iv · §c-2-iv-a · §c-2-iv-b · §c-2-v · §d · §e · §f · §f-1-i · §f-1-ii · §f-3 · §g · §g-1 · §g-2\nthought\nthought\nIgnitable waste containers must be kept at least 15 meters (50 feet) from the property line [5fb§a-1-vi]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=wiki>large quantity generator conditions ignitable waste distance</search>"
+     },
+     {
+      "at": 797,
+      "text": "thought\n<open>5fb</open>"
+     },
+     {
+      "at": 5027,
+      "text": "thought\nthought\nIgnitable waste containers must be kept at least 15 meters (50 feet) from the property line [5fb§a-1-vi]"
+     }
+    ]
+   },
+   "page0-one-hop-10": {
+    "id": "page0-one-hop-10",
+    "family": "one-hop",
+    "block": "R1",
+    "hops": 1,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": [
+     "hazwaste-regs/wiki/262-16",
+     "b"
+    ],
+    "why": "the cited statement does not hold the value",
+    "supporting": [
+     "hazwaste-regs/wiki/262-14",
+     "a-4-i"
+    ],
+    "cited_the_supporting": false,
+    "line": "ate non-acute hazardous waste on site for no more than 180 days, unless it must transport the waste over a distance of 200 miles or more, in which case it may accumulate it for up to 270 days. [vtw§b]",
+    "credit": false,
+    "final": "thought\nA small quantity generator may accumulate non-acute hazardous waste on site for no more than 180 days, unless it must transport the waste over a distance of 200 miles or more, in which case it may accumulate it for up to 270 days. [vtw§b]",
+    "calls": 2,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-16",
+      "a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-5-ii-a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-5-ii-b"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-3-3"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "c"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "d"
+     ]
+    ],
+    "text": "thought\n<search shelf=harness>waste storage limits for small quantity generators</search>= 3 notes\n  [897] page · 262.14 Conditions for exemption for a very small quantity generator. — when: You need what section 262.14 requires: Conditions for exemption for a very small quantity generator.\n  [vtw] page · 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — when: You need what section 262.16 requires: Conditions for exemption for a small quantity generator that accumulates hazardous waste.\n  [4t5] page · 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — when: You need what section 262.17 requires: Conditions for exemption for a large quantity generator that accumulates hazardous waste.\nthought\n<open>vtw</open>= 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — Section 262.16 of the regulation — Conditions for exemption for a small quantity generator that accumulates hazardous waste.\n  §a (a) Generation. The generator generates in a calendar month no more than the amounts specified in the definition of “small quantity generator” in § 260.10 of this chapter.\n  §b (b) Accumulation. The generator accumulates hazardous waste on site for no more than 180 days, unless in compliance with the conditions for exemption for longer accumulation in paragraphs (c), (d), and (e) of this section. The following accumulation conditions also apply:\n  §b-1 (1) Accumulation limit. The quantity of acute hazardous waste accumulated on site never exceeds 1 kilogram (2.2 pounds) and the quantity of non-acute hazardous waste accumulated on site never exceeds 6,000 kilograms (13,200 pounds);\n  §b-5-ii-a (A) A written description of procedures to ensure that each waste volume remains in the unit for no more than 90 days, a written description of the waste generation and management practices for the facility showing that the generator is consistent with maintaining the 90 day limit, and documentation that the procedures are complied with; or\n  §b-5-ii-b (B) Documentation that the unit is emptied at least once every 90 days.\n  §b-3-3 (3) Where more than one police or fire department might respond to an emergency, the small quantity generator shall attempt to make arrangements designating primary emergency authority to a specific fire or police department, and arrangements with any others to provide support to the primary emergency authority.\n  §c (c) Transporting over 200 miles. A small quantity generator who must transport its waste, or offer its waste for transportation, over a distance of 200 miles or more for off-site treatment, storage or disposal may accumulate hazardous waste on site for 270 days or less without a permit or without having interim status provided that the generator complies with the conditions of paragraph (b) of this section.\n  §d (d) Accumulation time limit extension. A small quantity generator who accumulates hazardous waste for more than 180 days (or for more than 270 days if it must transport its waste, or offer its waste for transportation, over a distance of 200 miles or more) is subject to the requirements of 40 CFR parts 264, 265, 267, 268, and 270 of this chapter unless it has been granted an extension to the 180-day (or 270-day if applicable) period. Such extension may be granted by EPA if hazardous wastes must remain on site for longer than 180 days (or 270 days if applicable) due to unforeseen, temporary, and uncontrollable circumstances. An extension of up to 30 days may be granted at the discretion of the Regional Administrator on a case-by-case basis.\n  89 more sections, not shown — open vtw§<section> to read one: §text · §b-2 · §b-2-ii · §b-2-iii · §b-2-iii-b · §b-2-iv · §b-2-v · §b-2-v-b · §b-2-v-c · §b-3 · §b-3-i · §b-3-ii · §b-3-ii-a · §b-3-ii-b · §b-3-ii-c · §b-3-ii-d · §b-3-iii · §b-3-iii-a · §b-3-iii-b · §b-3-iii-c · §b-3-iii-d · §b-3-iii-e · §b-3-iv · §b-3-v · §b-3-vi · §b-3-vii · §b-3-vii-a · §b-1-2 · §b-2-2 · §b-3-2 · §b-3-b · §b-3-b-c · §b-1-3 · §b-2-3 · §b-4 · §b-4-i · §b-4-ii · §b-4-iii · §b-4-iii-a · §b-4-iii-b · §b-5 · §b-5-i · §b-5-ii · §b-5-ii-c · §b-6 · §b-6-a · §b-6-a-b · §b-6-a-c · §b-6-ii · §b-6-ii-a · §b-6-ii-b · §b-6-ii-c · §b-6-ii-d · §b-7 · §b-8 · §b-8-ii · §b-8-ii-a · §b-8-ii-b · §b-8-ii-c · §b-8-ii-d · §b-8-iii · §b-8-iv · §b-8-iv-b · §b-8-v · §b-8-vi · §b-1-4 · §b-2-4 · §b-3-b-2 · §b-3-b-c-2 · §b-9 · §b-9-i · §b-9-ii · §b-9-ii-a · §b-9-ii-b · §b-9-ii-c · §b-9-iii · §b-9-iv · §b-9-iv-a · §b-9-iv-b · §b-9-iv-c · §b-1-5 · §b-2-5 · §b-3-4 · §b-4-2 · §b-5-2 · §e · §e-1 · §e-2 · §f\nthought\nA small quantity generator may accumulate non-acute hazardous waste on site for no more than 180 days, unless it must transport the waste over a distance of 200 miles or more, in which case it may accumulate it for up to 270 days. [vtw§b]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=harness>waste storage limits for small quantity generators</search>"
+     },
+     {
+      "at": 790,
+      "text": "thought\n<open>vtw</open>"
+     },
+     {
+      "at": 4639,
+      "text": "thought\nA small quantity generator may accumulate non-acute hazardous waste on site for no more than 180 days, unless it must transport the waste over a distance of 200 miles or more, in which case it may accumulate it for up to 270 days. [vtw§b]"
+     }
+    ]
+   },
+   "page0-one-hop-11": {
+    "id": "page0-one-hop-11",
+    "family": "one-hop",
+    "block": "R1",
+    "hops": 1,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-10",
+     "k"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=harness>Massachusetts Class A recyclable materials federal rule</search>= 3 notes\n  [sm3] page · 262.10 Purpose, scope, and applicability. — when: You need what section 262.10 requires: Purpose, scope, and applicability.\n  [nyg] page · 262.15 Satellite accumulation area regulations for small and large quantity generators. — when: You need what section 262.15 requires: Satellite accumulation area regulations for small and large quantity generators.\n  [pex] page · 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — when: You need what section 262.17 requires: Conditions for exemption for a large quantity generator that accumulates hazardous waste.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=harness>Massachusetts Class A recyclable materials federal rule</search>"
+     },
+     {
+      "at": 723,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-vsqg-id-15": {
+    "id": "page0-vsqg-id-15",
+    "family": "vsqg-id",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-18",
+     "b"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=harness>EPA form for identification number</search>= 3 notes\n  [kjt] page · 262.18 EPA identification numbers and re-notification for small quantity generators and large quantity generators. — when: You need what section 262.18 requires: EPA identification numbers and re-notification for small quantity generators and large quantity generators.\n  [k1p] page · 262.232 Conditions for a generator managing hazardous waste from an episodic event. — when: You need what section 262.232 requires: Conditions for a generator managing hazardous waste from an episodic event.\n  [4di] page · 262.14 Conditions for exemption for a very small quantity generator. — when: You need what section 262.14 requires: Conditions for exemption for a very small quantity generator.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=harness>EPA form for identification number</search>"
+     },
+     {
+      "at": 784,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-scope-id-14": {
+    "id": "page0-scope-id-14",
+    "family": "scope-id",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-18",
+     "d"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=wiki>spent catalyst refinery identification-number rules</search>= 3 notes\n  [ptz] page · 262.18 EPA identification numbers and re-notification for small quantity generators and large quantity generators. — when: You need what section 262.18 requires: EPA identification numbers and re-notification for small quantity generators and large quantity generators.\n  [aq4] page · 262.84 Imports of hazardous waste. — when: You need what section 262.84 requires: Imports of hazardous waste.\n  [frd] page · 262.83 Exports of hazardous waste. — when: You need what section 262.83 requires: Exports of hazardous waste.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=wiki>spent catalyst refinery identification-number rules</search>"
+     },
+     {
+      "at": 632,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-one-hop-12": {
+    "id": "page0-one-hop-12",
+    "family": "one-hop",
+    "block": "R1",
+    "hops": 1,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-262",
+     "b"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=harness>large quantity generator contingency plan fire department</search>= 3 notes\n  [1gg] page · 262.262 Copies of contingency plan. — when: You need what section 262.262 requires: Copies of contingency plan.\n  [edb] page · 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — when: You need what section 262.17 requires: Conditions for exemption for a large quantity generator that accumulates hazardous waste.\n  [8c2] page · 262.261 Content of contingency plan. — when: You need what section 262.261 requires: Content of contingency plan.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=harness>large quantity generator contingency plan fire department</search>"
+     },
+     {
+      "at": 611,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-vsqg-sqg-17": {
+    "id": "page0-vsqg-sqg-17",
+    "family": "vsqg-sqg",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "hazwaste-regs/wiki/262-16",
+     "c"
+    ],
+    "why": null,
+    "supporting": [
+     "hazwaste-regs/wiki/262-16",
+     "c"
+    ],
+    "cited_the_supporting": true,
+    "line": "If your disposal site is at least 200 miles away, you may accumulate non-acute waste for up to 270 days. [2hc§c]",
+    "credit": true,
+    "final": "thought\nIf your disposal site is at least 200 miles away, you may accumulate non-acute waste for up to 270 days. [2hc§c]",
+    "calls": 2,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-16",
+      "text"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-8"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "c"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "d"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "e"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "f"
+     ]
+    ],
+    "text": "thought\n<search shelf=wiki>small quantity generator waste accumulation</search>= 3 notes\n  [2hc] page · 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — when: You need what section 262.16 requires: Conditions for exemption for a small quantity generator that accumulates hazardous waste.\n  [4n4] page · 262.14 Conditions for exemption for a very small quantity generator. — when: You need what section 262.14 requires: Conditions for exemption for a very small quantity generator.\n  [fhs] page · 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — when: You need what section 262.17 requires: Conditions for exemption for a large quantity generator that accumulates hazardous waste.\nthought\n<open>2hc</open>= 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — Section 262.16 of the regulation — Conditions for exemption for a small quantity generator that accumulates hazardous waste.\n  §text A small quantity generator may accumulate hazardous waste on site without a permit or interim status, and without complying with the requirements of parts 124, 264 through 267, and 270 of this chapter, or the notification requirements of section 3010 of RCRA for treatment, storage, and disposal facilities, provided that all the conditions for exemption listed in this section are met:\n  §b (b) Accumulation. The generator accumulates hazardous waste on site for no more than 180 days, unless in compliance with the conditions for exemption for longer accumulation in paragraphs (c), (d), and (e) of this section. The following accumulation conditions also apply:\n  §b-1 (1) Accumulation limit. The quantity of acute hazardous waste accumulated on site never exceeds 1 kilogram (2.2 pounds) and the quantity of non-acute hazardous waste accumulated on site never exceeds 6,000 kilograms (13,200 pounds);\n  §b-8 (8) Preparedness and prevention—(i) Maintenance and operation of facility. A small quantity generator must maintain and operate its facility to minimize the possibility of a fire, explosion, or any unplanned sudden or non-sudden release of hazardous waste or hazardous waste constituents to air, soil, or surface water which could threaten human health or the environment.\n  §c (c) Transporting over 200 miles. A small quantity generator who must transport its waste, or offer its waste for transportation, over a distance of 200 miles or more for off-site treatment, storage or disposal may accumulate hazardous waste on site for 270 days or less without a permit or without having interim status provided that the generator complies with the conditions of paragraph (b) of this section.\n  §d (d) Accumulation time limit extension. A small quantity generator who accumulates hazardous waste for more than 180 days (or for more than 270 days if it must transport its waste, or offer its waste for transportation, over a distance of 200 miles or more) is subject to the requirements of 40 CFR parts 264, 265, 267, 268, and 270 of this chapter unless it has been granted an extension to the 180-day (or 270-day if applicable) period. Such extension may be granted by EPA if hazardous wastes must remain on site for longer than 180 days (or 270 days if applicable) due to unforeseen, temporary, and uncontrollable circumstances. An extension of up to 30 days may be granted at the discretion of the Regional Administrator on a case-by-case basis.\n  §e (e) Rejected load. A small quantity generator who sends a shipment of hazardous waste to a designated facility with the understanding that the designated facility can accept and manage the waste and later receives that shipment back as a rejected load or residue in accordance with the manifest discrepancy provisions of § 264.72 or § 265.72 of this chapter may accumulate the returned waste on site in accordance with paragraphs (a)-(d) of this section. Upon receipt of the returned shipment, the generator must:\n  §f (f) A small quantity generator experiencing an episodic event may accumulate hazardous waste in accordance with subpart L of this part in lieu of [fhs] 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste..\n  89 more sections, not shown — open 2hc§<section> to read one: §a · §b-2 · §b-2-ii · §b-2-iii · §b-2-iii-b · §b-2-iv · §b-2-v · §b-2-v-b · §b-2-v-c · §b-3 · §b-3-i · §b-3-ii · §b-3-ii-a · §b-3-ii-b · §b-3-ii-c · §b-3-ii-d · §b-3-iii · §b-3-iii-a · §b-3-iii-b · §b-3-iii-c · §b-3-iii-d · §b-3-iii-e · §b-3-iv · §b-3-v · §b-3-vi · §b-3-vii · §b-3-vii-a · §b-1-2 · §b-2-2 · §b-3-2 · §b-3-b · §b-3-b-c · §b-1-3 · §b-2-3 · §b-4 · §b-4-i · §b-4-ii · §b-4-iii · §b-4-iii-a · §b-4-iii-b · §b-5 · §b-5-i · §b-5-ii · §b-5-ii-a · §b-5-ii-b · §b-5-ii-c · §b-6 · §b-6-a · §b-6-a-b · §b-6-a-c · §b-6-ii · §b-6-ii-a · §b-6-ii-b · §b-6-ii-c · §b-6-ii-d · §b-7 · §b-8-ii · §b-8-ii-a · §b-8-ii-b · §b-8-ii-c · §b-8-ii-d · §b-8-iii · §b-8-iv · §b-8-iv-b · §b-8-v · §b-8-vi · §b-1-4 · §b-2-4 · §b-3-3 · §b-3-b-2 · §b-3-b-c-2 · §b-9 · §b-9-i · §b-9-ii · §b-9-ii-a · §b-9-ii-b · §b-9-ii-c · §b-9-iii · §b-9-iv · §b-9-iv-a · §b-9-iv-b · §b-9-iv-c · §b-1-5 · §b-2-5 · §b-3-4 · §b-4-2 · §b-5-2 · §e-1 · §e-2\nthought\nIf your disposal site is at least 200 miles away, you may accumulate non-acute waste for up to 270 days. [2hc§c]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=wiki>small quantity generator waste accumulation</search>"
+     },
+     {
+      "at": 780,
+      "text": "thought\n<open>2hc</open>"
+     },
+     {
+      "at": 5252,
+      "text": "thought\nIf your disposal site is at least 200 miles away, you may accumulate non-acute waste for up to 270 days. [2hc§c]"
+     }
+    ]
+   },
+   "page0-one-hop-13": {
+    "id": "page0-one-hop-13",
+    "family": "one-hop",
+    "block": "R1",
+    "hops": 1,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-42",
+     "a"
+    ],
+    "cited_the_supporting": false,
+    "line": "§c-1 (1) The",
+    "credit": false,
+    "final": "name and address of the transporter;\n  §b-1 (1) A large quantity generator who does not receive a copy of the manifest with the handwritten signature of the owner or operator of the designated facility within 60 days of the date the waste was accepted by the initial transporter must:\n  §c-1 (1) The ",
+    "calls": 3,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 2,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-8-i-a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-3-3"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "c-1-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "f-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "f-1-ii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "g"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "g-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "g-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-42",
+      "a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-42",
+      "a-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-42",
+      "a-2-ii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-42",
+      "a-3"
+     ],
+     [
+      "hazwaste-regs/wiki/262-42",
+      "b"
+     ],
+     [
+      "hazwaste-regs/wiki/262-42",
+      "b-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-42",
+      "c"
+     ],
+     [
+      "hazwaste-regs/wiki/262-42",
+      "c-2"
+     ]
+    ],
+    "text": "thought\n<search shelf=harness>waste manifest return timeline</search>= 3 notes\n  [t1h] page · 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — when: You need what section 262.17 requires: Conditions for exemption for a large quantity generator that accumulates hazardous waste.\n  [898] page · 262.20 General requirements. — when: You need what section 262.20 requires: General requirements.\n  [30j] page · 262.42 Exception reporting. — when: You need what section 262.42 requires: Exception reporting.\n<open>t1h</open>= 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — Section 262.17 of the regulation — Conditions for exemption for a large quantity generator that accumulates hazardous waste.\n  §a-8-i-a (A) Place a notice in the operating record within 30 days after closure identifying the location of the unit within the facility (if the waste accumulation unit is subsequently reopened, the generator may remove the notice from the operating record); or\n  §a-3-3 (3) Any hazardous waste generated in the process of closing either the generator's facility or unit(s) accumulating hazardous waste must be managed in accordance with all applicable standards of parts 262, 263, 265 and 268 of this chapter, including removing any hazardous waste contained in these units within 90 days of generating it and managing these wastes in a RCRA Subtitle C hazardous waste permitted treatment, storage and disposal facility or interim status facility.\n  §c-1-2 (1) A written description of procedures to ensure that the F006 waste remains in the unit for no more than 180 days, a written description of the waste generation and management practices for the facility showing that they are consistent with the 180-day limit, and documentation that the large quantity generator is complying with the procedures; or\n  §f-1 (1) The large quantity generator notifies EPA at least thirty (30) days prior to receiving the first shipment from a very small quantity generator(s) using EPA Form 8700-12; and\n  §f-1-ii (ii) Submits an updated Site ID form (EPA Form 8700-12) within 30 days after a change in the name or site address for the very small quantity generator.\n  §g (g) Rejected load. A large quantity generator who sends a shipment of hazardous waste to a designated facility with the understanding that the designated facility can accept and manage the waste and later receives that shipment back as a rejected load or residue in accordance with the manifest discrepancy provisions of § 264.72 or § 265.72 of this chapter may accumulate the returned waste on site in accordance with paragraphs (a) and (b) of this section. Upon receipt of the returned shipment, the generator must:\n  §g-1 (1) Sign Item 18c of the manifest, if the transporter returned the shipment using the original manifest; or\n  §g-2 (2) Sign Item 20 of the manifest, if the transporter returned the shipment using a new manifest.\n  90 more sections, not shown — open t1h§<section> to read one: §text · §a · §a-1 · §a-1-i · §a-1-ii · §a-1-iii · §a-1-iv · §a-1-iv-b · §a-1-v · §a-1-vi · §a-1-vi-b · §a-1-vii · §a-1-vii-b · §a-1-vii-c · §a-2 · §a-3 · §a-3-i · §a-3-ii · §a-3-iii · §a-3-iii-a · §a-3-iii-b · §a-4 · §a-4-i · §a-4-ii · §a-4-ii-a · §a-4-ii-b · §a-4-ii-c · §a-5 · §a-5-a · §a-5-a-b · §a-5-a-c · §a-5-ii · §a-5-ii-a · §a-5-ii-b · §a-5-ii-c · §a-5-ii-d · §a-6 · §a-7 · §a-7-b · §a-7-b-c · §a-1-2 · §a-2-2 · §a-3-2 · §a-4-2 · §a-5-2 · §a-6-2 · §a-6-d · §a-6-ii · §a-6-iii · §a-6-iv · §a-6-iv-a · §a-6-iv-b · §a-6-iv-c · §a-6-iv-d · §a-6-v · §a-8 · §a-8-i · §a-8-i-b · §a-8-ii · §a-8-ii-b · §a-8-ii-c · §a-8-iii · §a-1-3 · §a-2-3 · §a-4-3 · §a-4-iv · §a-4-v · §a-9 · §b · §c · §c-1 · §c-2 · §c-3 · §c-4 · §c-4-i · §c-4-i-b · §c-4-i-c · §c-2-2 · §c-2-ii · §c-2-iii · §c-2-iv · §c-2-iv-a · §c-2-iv-b · §c-2-v · §d · §e · §f · §f-1-i · §f-2 · §f-3\n<open>30j</open>= 262.42 Exception reporting. — Section 262.42 of the regulation — Exception reporting.\n  §a (a)(1) A large quantity generator who does not receive a copy of the manifest with the signature of the owner or operator of the designated facility within 45 days of the date the waste was accepted by the initial transporter must contact the transporter and/or the owner or operator of the designated facility to determine the status of the hazardous waste.\n  §a-2 (2) A large quantity generator must submit an Exception Report to the EPA Regional Administrator for the Region in which the generator is located if he has not received a copy of the manifest with the handwritten signature of the owner or operator of the designated facility within 60 days of the date the waste was accepted by the initial transporter. The Exception Report must include:\n  §a-2-ii (ii) A cover letter signed by the generator or his authorized representative explaining the efforts taken to locate the hazardous waste and the results of those efforts.\n  §a-3 (3) Beginning on December 1, 2025, the EPA will no longer accept mailed paper Exception Reports from large quantity generators. Beginning on December 1, 2025, a large quantity generator must submit an Exception Report to the EPA e-Manifest system if the generator has not received a copy of the manifest with the signature of the owner or operator of the designated facility within 60 days of the date the waste was accepted by the initial transporter. The Exception Report must include:\n  §b (b) A small quantity generator of hazardous waste who does not receive a copy of the manifest with the handwritten signature of the owner or operator of the designated facility within 60 days of the date the waste was accepted by the initial transporter must:\n  §b-2 (2) Beginning on December 1, 2025, the EPA will no longer accept mailed paper Exception Reports from small quantity generators. Beginning on December 1, 2025, a small quantity generator must submit a legible copy of the manifest, with some indication that the generator has not received confirmation of delivery, to the EPA e-Manifest system. Generators that are normally VSQGs but are subject to the SQG provisions of this paragraph (b) because of an episodic generation event pursuant to [ig8] 262.232 Conditions for a generator managing hazardous waste from an episodic event.(a)(5), must submit a legible copy of the manifest, with some indication that the generator has not received confirmation of delivery, to the EPA Regional Administrator for the Region in which the generator is located.\n  §c (c) For rejected shipments of hazardous waste or container residues contained in non-empty containers that are forwarded to an alternate facility by a designated facility using a new manifest (following the procedures of 40 CFR 264.72(e)(1) through (6) or 40 CFR 265.72(e)(1) through (6)), the generator must comply with the requirements of paragraph (a) or (b) of this section, as applicable, for the shipment forwarding the material from the designated facility to the alternate facility instead of for the shipment from the generator to the designated facility. For purposes of paragraph (a) or (b) of this section for a shipment forwarding such waste to an alternate facility by a designated facility:\n  §c-2 (2) The 45/60-day timeframes begin the date the waste was accepted by the initial transporter forwarding the hazardous waste shipment from the designated facility to the alternate facility.\n  7 more sections, not shown — open 30j§<section> to read one: §a-2-i · §a-3-i · §a-3-ii · §b-1 · §c-1 · §d · §d-2\n  §a-2-i (i) The name and address of the generator;\n  §a-3-i (i) The name and address of the generator;\n  §a-3-ii (ii) The name and address of the transporter;\n  §b-1 (1) A large quantity generator who does not receive a copy of the manifest with the handwritten signature of the owner or operator of the designated facility within 60 days of the date the waste was accepted by the initial transporter must:\n  §c-1 (1) The ",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=harness>waste manifest return timeline</search>"
+     },
+     {
+      "at": 552,
+      "text": "<open>t1h</open>"
+     },
+     {
+      "at": 3916,
+      "text": "<open>30j</open>"
+     },
+     {
+      "at": 7547,
+      "text": "  §a-2-i (i) The name and address of the generator;\n  §a-3-i (i) The name and address of the generator;\n  §a-3-ii (ii) The name and address of the transporter;\n  §b-1 (1) A large quantity generator who does not receive a copy of the manifest with the handwritten signature of the owner or operator of the designated facility within 60 days of the date the waste was accepted by the initial transporter must:\n  §c-1 (1) The "
+     }
+    ]
+   },
+   "page0-satellite-lqg-19": {
+    "id": "page0-satellite-lqg-19",
+    "family": "satellite-lqg",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": true,
+    "cited": [
+     "hazwaste-regs/wiki/262-17",
+     "a-8-ii-c"
+    ],
+    "why": null,
+    "supporting": [
+     "hazwaste-regs/wiki/262-17",
+     "a-8-ii-c"
+    ],
+    "cited_the_supporting": true,
+    "line": "You must ask the EPA within 75 days after the date provided in paragraph (a)(8)(ii)(A) of section 262.17. [kr3§a-8-ii-c]",
+    "credit": false,
+    "final": "thought\nYou must ask the EPA within 75 days after the date provided in paragraph (a)(8)(ii)(A) of section 262.17. [kr3§a-8-ii-c]",
+    "calls": 2,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-1-v"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-3-ii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-8-i-a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-8-ii-b"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-8-ii-c"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-8-iii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "b"
+     ]
+    ],
+    "text": "thought\n<search shelf=wiki>large quantity generator rules satellite drum closure notice</search>= 3 notes\n  [kr3] page · 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — when: You need what section 262.17 requires: Conditions for exemption for a large quantity generator that accumulates hazardous waste.\n  [ses] page · 262.15 Satellite accumulation area regulations for small and large quantity generators. — when: You need what section 262.15 requires: Satellite accumulation area regulations for small and large quantity generators.\n  [mgs] page · 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — when: You need what section 262.16 requires: Conditions for exemption for a small quantity generator that accumulates hazardous waste.\nthought\n<open>kr3</open>= 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — Section 262.17 of the regulation — Conditions for exemption for a large quantity generator that accumulates hazardous waste.\n  §a (a) Accumulation. A large quantity generator accumulates hazardous waste on site for no more than 90 days, unless in compliance with the accumulation time limit extension or F006 accumulation conditions for exemption in paragraphs (b) through (e) of this section. The following accumulation conditions also apply:\n  §a-1-v (v) Inspections. At least weekly, the large quantity generator must inspect central accumulation areas. The large quantity generator must look for leaking containers and for deterioration of containers caused by corrosion or other factors. See paragraph (a)(1)(ii) of this section for remedial action required if deterioration or leaks are detected.\n  §a-3-ii (ii) The large quantity generator must remove all wastes from the drip pad at least once every 90 days. Any hazardous wastes that are removed from the drip pad are then subject to the 90-day accumulation limit in paragraph (a) of this section and [ses] 262.15 Satellite accumulation area regulations for small and large quantity generators., if the hazardous wastes are being managed in satellite accumulation areas prior to being moved to a central accumulation area; and\n  §a-8-i-a (A) Place a notice in the operating record within 30 days after closure identifying the location of the unit within the facility (if the waste accumulation unit is subsequently reopened, the generator may remove the notice from the operating record); or\n  §a-8-ii-b (B) Notify EPA using form 8700-12 within 90 days after closing the facility that it has complied with the closure performance standards of paragraph (a)(8)(iii) or (iv) of this section. If the facility cannot meet the closure performance standards of paragraph (a)(8)(iii) or (iv) of this section, notify EPA using form 8700-12 that it will close as a landfill under § 265.310 of this chapter in the case of a container, tank or containment building unit(s), or for a facility with drip pads, notify using form 8700-12 that it will close under the standards of § 265.445(b).\n  §a-8-ii-c (C) A large quantity generator may request additional time to clean close, but it must notify EPA using form 8700-12 within 75 days after the date provided in paragraph (a)(8)(ii)(A) of this section to request an extension and provide an explanation as to why the additional time is required.\n  §a-8-iii (iii) Closure performance standards for container, tank systems, and containment building waste accumulation units. (A) At closure, the generator must close the waste accumulation unit or facility in a manner that:\n  §b (b) Accumulation time limit extension. A large quantity generator who accumulates hazardous waste for more than 90 days is subject to the requirements of 40 CFR parts 124, 264 through 268, and part 270 of this chapter, and the notification requirements of section 3010 of RCRA for treatment, storage, and disposal facilities, unless it has been granted an extension to the 90-day period. Such extension may be granted by EPA if hazardous wastes must remain on site for longer than 90 days due to unforeseen, temporary, and uncontrollable circumstances. An extension of up to 30 days may be granted at the discretion of the Regional Administrator on a case-by-case basis.\n  90 more sections, not shown — open kr3§<section> to read one: §text · §a-1 · §a-1-i · §a-1-ii · §a-1-iii · §a-1-iv · §a-1-iv-b · §a-1-vi · §a-1-vi-b · §a-1-vii · §a-1-vii-b · §a-1-vii-c · §a-2 · §a-3 · §a-3-i · §a-3-iii · §a-3-iii-a · §a-3-iii-b · §a-4 · §a-4-i · §a-4-ii · §a-4-ii-a · §a-4-ii-b · §a-4-ii-c · §a-5 · §a-5-a · §a-5-a-b · §a-5-a-c · §a-5-ii · §a-5-ii-a · §a-5-ii-b · §a-5-ii-c · §a-5-ii-d · §a-6 · §a-7 · §a-7-b · §a-7-b-c · §a-1-2 · §a-2-2 · §a-3-2 · §a-4-2 · §a-5-2 · §a-6-2 · §a-6-d · §a-6-ii · §a-6-iii · §a-6-iv · §a-6-iv-a · §a-6-iv-b · §a-6-iv-c · §a-6-iv-d · §a-6-v · §a-8 · §a-8-i · §a-8-i-b · §a-8-ii · §a-1-3 · §a-2-3 · §a-3-3 · §a-4-3 · §a-4-iv · §a-4-v · §a-9 · §c · §c-1 · §c-2 · §c-3 · §c-4 · §c-4-i · §c-4-i-b · §c-4-i-c · §c-1-2 · §c-2-2 · §c-2-ii · §c-2-iii · §c-2-iv · §c-2-iv-a · §c-2-iv-b · §c-2-v · §d · §e · §f · §f-1 · §f-1-i · §f-1-ii · §f-2 · §f-3 · §g · §g-1 · §g-2\nthought\nYou must ask the EPA within 75 days after the date provided in paragraph (a)(8)(ii)(A) of section 262.17. [kr3§a-8-ii-c]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=wiki>large quantity generator rules satellite drum closure notice</search>"
+     },
+     {
+      "at": 835,
+      "text": "thought\n<open>kr3</open>"
+     },
+     {
+      "at": 5215,
+      "text": "thought\nYou must ask the EPA within 75 days after the date provided in paragraph (a)(8)(ii)(A) of section 262.17. [kr3§a-8-ii-c]"
+     }
+    ]
+   },
+   "page0-sqg-satellite-21": {
+    "id": "page0-sqg-satellite-21",
+    "family": "sqg-satellite",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "hazwaste-regs/wiki/262-15",
+     "a"
+    ],
+    "why": null,
+    "supporting": [
+     "hazwaste-regs/wiki/262-15",
+     "a"
+    ],
+    "cited_the_supporting": true,
+    "line": "A satellite accumulation area may hold up to 55 gallons of non-acute hazardous waste [qhn§a].",
+    "credit": true,
+    "final": "thought\nA satellite accumulation area may hold up to 55 gallons of non-acute hazardous waste [qhn§a].",
+    "calls": 2,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-15",
+      "a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-15",
+      "a-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-15",
+      "a-6"
+     ],
+     [
+      "hazwaste-regs/wiki/262-15",
+      "a-6-i"
+     ],
+     [
+      "hazwaste-regs/wiki/262-15",
+      "a-6-ii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-15",
+      "a-6-ii-a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-15",
+      "a-7"
+     ],
+     [
+      "hazwaste-regs/wiki/262-15",
+      "a-8"
+     ]
+    ],
+    "text": "thought\n<search shelf=harness>satellite accumulation area limits</search>= 3 notes\n  [qhn] page · 262.15 Satellite accumulation area regulations for small and large quantity generators. — when: You need what section 262.15 requires: Satellite accumulation area regulations for small and large quantity generators.\n  [9zi] page · 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — when: You need what section 262.16 requires: Conditions for exemption for a small quantity generator that accumulates hazardous waste.\n  [byi] page · 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — when: You need what section 262.17 requires: Conditions for exemption for a large quantity generator that accumulates hazardous waste.\nthought\n<open>qhn</open>= 262.15 Satellite accumulation area regulations for small and large quantity generators. — Section 262.15 of the regulation — Satellite accumulation area regulations for small and large quantity generators.\n  §a (a) A generator may accumulate as much as 55 gallons of non-acute hazardous waste and/or either one quart of liquid acute hazardous waste listed in § 261.31 or § 261.33(e) of this chapter or 1 kg (2.2 lbs) of solid acute hazardous waste listed in § 261.31 or § 261.33(e) of this chapter in containers at or near any point of generation where wastes initially accumulate which is under the control of the operator of the process generating the waste, without a permit or interim status and without complying with the requirements of parts 124, 264 through 267, and 270 of this chapter, provided that all of the conditions for exemption in this section are met. A generator may comply with the conditions for exemption in this section instead of complying with the conditions for exemption in [9zi] 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste.(b) or [byi] 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste.(a), except as required in [qhn] 262.15 Satellite accumulation area regulations for small and large quantity generators.(a)(7) and (8). The conditions for exemption for satellite accumulation are:\n  §a-1 (1) If a container holding hazardous waste is not in good condition, or if it begins to leak, the generator must immediately transfer the hazardous waste from this container to a container that is in good condition and does not leak, or immediately transfer and manage the waste in a central accumulation area operated in compliance with [9zi] 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste.(b) or [byi] 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste.(a).\n  §a-6 (6) A generator who accumulates either acute hazardous waste listed in § 261.31 or § 261.33(e) of this chapter or non-acute hazardous waste in excess of the amounts listed in paragraph (a) of this section at or near any point of generation must do the following:\n  §a-6-i (i) Comply within three consecutive calendar days with the applicable central accumulation area regulations in [9zi] 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste.(b) or [byi] 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste.(a), or\n  §a-6-ii (ii) Remove the excess from the satellite accumulation area within three consecutive calendar days to either:\n  §a-6-ii-a (A) A central accumulation area operated in accordance with the applicable regulations in [9zi] 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste.(b) or [byi] 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste.(a);\n  §a-7 (7) All satellite accumulation areas operated by a small quantity generator must meet the preparedness and prevention regulations of [9zi] 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste.(b)(8) and emergency procedures at [9zi] 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste.(b)(9).\n  §a-8 (8) All satellite accumulation areas operated by a large quantity generator must meet the Preparedness, Prevention and Emergency Procedures in subpart M of this part.\n  17 more sections, not shown — open qhn§<section> to read one: §a-2 · §a-3 · §a-3-i · §a-3-ii · §a-3-iii · §a-4 · §a-4-i · §a-4-ii · §a-4-ii-a · §a-4-ii-b · §a-5 · §a-5-i · §a-5-ii · §a-6-ii-b · §a-6-ii-c · §a-6-iii · §b\nthought\nA satellite accumulation area may hold up to 55 gallons of non-acute hazardous waste [qhn§a].",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=harness>satellite accumulation area limits</search>"
+     },
+     {
+      "at": 812,
+      "text": "thought\n<open>qhn</open>"
+     },
+     {
+      "at": 4639,
+      "text": "thought\nA satellite accumulation area may hold up to 55 gallons of non-acute hazardous waste [qhn§a]."
+     }
+    ]
+   },
+   "page0-lqg-scope-23": {
+    "id": "page0-lqg-scope-23",
+    "family": "lqg-scope",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "hazwaste-regs/wiki/262-10",
+     "n"
+    ],
+    "why": null,
+    "supporting": [
+     "hazwaste-regs/wiki/262-10",
+     "n"
+    ],
+    "cited_the_supporting": true,
+    "line": "A healthcare facility must check the pharmaceutical rule if it generates more than 100 kg (220 pounds) a month. [0hc§n]",
+    "credit": true,
+    "final": "thought\nA healthcare facility must check the pharmaceutical rule if it generates more than 100 kg (220 pounds) a month. [0hc§n]",
+    "calls": 2,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-10",
+      "a-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-10",
+      "a-1-i"
+     ],
+     [
+      "hazwaste-regs/wiki/262-10",
+      "a-1-ii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-10",
+      "a-1-iii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-10",
+      "b"
+     ],
+     [
+      "hazwaste-regs/wiki/262-10",
+      "h"
+     ],
+     [
+      "hazwaste-regs/wiki/262-10",
+      "l-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-10",
+      "n"
+     ]
+    ],
+    "text": "thought\n<search shelf=wiki>large quantity generator hub pharmaceutical rule</search>= 3 notes\n  [fya] page · 262.14 Conditions for exemption for a very small quantity generator. — when: You need what section 262.14 requires: Conditions for exemption for a very small quantity generator.\n  [0hc] page · 262.10 Purpose, scope, and applicability. — when: You need what section 262.10 requires: Purpose, scope, and applicability.\n  [vve] page · 262.13 Generator category determination. — when: You need what section 262.13 requires: Generator category determination.\nthought\n<open>0hc</open>= 262.10 Purpose, scope, and applicability. — Section 262.10 of the regulation — Purpose, scope, and applicability.\n  §a-1 (1) A person who generates a hazardous waste as defined by 40 CFR part 261 is subject to all the applicable independent requirements in the subparts and sections listed below:\n  §a-1-i (i) Independent requirements of a very small quantity generator. (A) Section 262.11(a) through (d) Hazardous waste determination and recordkeeping; and\n  §a-1-ii (ii) Independent requirements of a small quantity generator. (A) Section 262.11 Hazardous waste determination and recordkeeping;\n  §a-1-iii (iii) Independent requirements of a large quantity generator. (A) Section 262.11 Hazardous waste determination and recordkeeping;\n  §b (b) Determining generator category. A generator must use [vve] 262.13 Generator category determination. to determine which provisions of this part are applicable to the generator based on the quantity of hazardous waste generated per calendar month.\n  §h (h) An owner or operator who initiates a shipment of hazardous waste from a treatment, storage, or disposal facility must comply with the generator standards established in this part.\n  §l-1 (1) The independent requirements of [pg7] 262.11 Hazardous waste determination and recordkeeping. or the regulations in [j9m] 262.15 Satellite accumulation area regulations for small and large quantity generators. for large quantity generators and small quantity generators, except as provided in subpart K, and\n  §n (n) Each healthcare facility (as defined in § 266.500) must determine whether it is subject to 40 CFR part 266 subpart P for the management of hazardous waste pharmaceuticals, based on the total hazardous waste it generates per calendar month (including both hazardous waste pharmaceuticals and non-pharmaceutical hazardous waste). A healthcare facility that generates more than 100 kg (220 pounds) of hazardous waste per calendar month, or more than 1 kg (2.2 pounds) of acute hazardous waste per calendar month, or more than 100 kg (220 pounds) per calendar month of any residue or contaminated soil, water, or other debris, resulting from the clean-up of a spill, into or on any land or water, of any acute hazardous wastes listed in § 261.31 or § 261.33(e), is subject to 40 CFR part 266 subpart P for the management of hazardous waste pharmaceuticals in lieu of this part. A healthcare facility that is a very small quantity generator when counting all of its hazardous waste, including both its hazardous waste pharmaceuticals and its non-pharmaceutical hazardous waste, remains subject to [fya] 262.14 Conditions for exemption for a very small quantity generator. and is not subject to part 266 subpart P, except for §§ 266.505 and 266.507 and the optional provisions of § 266.504.\n  32 more sections, not shown — open 0hc§<section> to read one: §a · §a-1-i-b · §a-1-ii-b · §a-1-ii-c · §a-1-ii-d · §a-1-ii-e · §a-1-ii-f · §a-1-ii-g · §a-1-ii-h · §a-1-iii-b · §a-1-iii-c · §a-1-iii-d · §a-1-iii-e · §a-1-iii-f · §a-1-iii-g · §a-2 · §a-2-i · §a-2-ii · §a-2-iii · §a-3 · §c · §d · §e · §f · §g · §g-2 · §i · §j · §k · §l · §l-2 · §m\nthought\nA healthcare facility must check the pharmaceutical rule if it generates more than 100 kg (220 pounds) a month. [0hc§n]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=wiki>large quantity generator hub pharmaceutical rule</search>"
+     },
+     {
+      "at": 563,
+      "text": "thought\n<open>0hc</open>"
+     },
+     {
+      "at": 3732,
+      "text": "thought\nA healthcare facility must check the pharmaceutical rule if it generates more than 100 kg (220 pounds) a month. [0hc§n]"
+     }
+    ]
+   },
+   "page0-category-vsqg-18": {
+    "id": "page0-category-vsqg-18",
+    "family": "category-vsqg",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-14",
+     "a-4"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 2,
+    "refused": 1,
+    "malformed": 1,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=wiki>small quantity generator non-acute waste exemption</search>= 3 notes\n  [un4] page · 262.14 Conditions for exemption for a very small quantity generator. — when: You need what section 262.14 requires: Conditions for exemption for a very small quantity generator.\n  [ycj] page · 262.13 Generator category determination. — when: You need what section 262.13 requires: Generator category determination.\n  [weq] page · 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — when: You need what section 262.17 requires: Conditions for exemption for a large quantity generator that accumulates hazardous waste.\nthought\n<open un4</open>= ERROR: malformed call — write <tag>key=value</tag>\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=wiki>small quantity generator non-acute waste exemption</search>"
+     },
+     {
+      "at": 675,
+      "text": "thought\n<open un4</open>"
+     },
+     {
+      "at": 752,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-satellite-sqg-20": {
+    "id": "page0-satellite-sqg-20",
+    "family": "satellite-sqg",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-16",
+     "b-1"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=wiki>central accumulation area rules small quantity generator</search>= 3 notes\n  [ant] page · 262.15 Satellite accumulation area regulations for small and large quantity generators. — when: You need what section 262.15 requires: Satellite accumulation area regulations for small and large quantity generators.\n  [8ix] page · 262.211 Making the hazardous waste determination at an on-site central accumulation area. — when: You need what section 262.211 requires: Making the hazardous waste determination at an on-site central accumulation area.\n  [j5v] page · 262.14 Conditions for exemption for a very small quantity generator. — when: You need what section 262.14 requires: Conditions for exemption for a very small quantity generator.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=wiki>central accumulation area rules small quantity generator</search>"
+     },
+     {
+      "at": 761,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-sqg-lqg-22": {
+    "id": "page0-sqg-lqg-22",
+    "family": "sqg-lqg",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-17",
+     "c-3"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=wiki>electroplating wastewater treatment sludge episodic rules</search>= 3 notes\n  [vz5] page · 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — when: You need what section 262.17 requires: Conditions for exemption for a large quantity generator that accumulates hazardous waste.\n  [80a] page · 262.14 Conditions for exemption for a very small quantity generator. — when: You need what section 262.14 requires: Conditions for exemption for a very small quantity generator.\n  [p2k] page · 262.232 Conditions for a generator managing hazardous waste from an episodic event. — when: You need what section 262.232 requires: Conditions for a generator managing hazardous waste from an episodic event.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=wiki>electroplating wastewater treatment sludge episodic rules</search>"
+     },
+     {
+      "at": 768,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-category-cleanout-24": {
+    "id": "page0-category-cleanout-24",
+    "family": "category-cleanout",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-213",
+     "a"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 2,
+    "refused": 1,
+    "malformed": 1,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "<search shelf=wiki>lab clean-out procedure</search>= 3 notes\n  [adz] page · 262.213 Laboratory clean-outs. — when: You need what section 262.213 requires: Laboratory clean-outs.\n  [wa6] page · 262.13 Generator category determination. — when: You need what section 262.13 requires: Generator category determination.\n  [t5t] page · 262.200 Definitions for this subpart. — when: You need what section 262.200 requires: Definitions for this subpart.\nthought\n<open adz</open>= ERROR: malformed call — write <tag>key=value</tag>\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>lab clean-out procedure</search>"
+     },
+     {
+      "at": 446,
+      "text": "thought\n<open adz</open>"
+     },
+     {
+      "at": 523,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-category-determination-25": {
+    "id": "page0-category-determination-25",
+    "family": "category-determination",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-11",
+     "b"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=harness>hazardous waste determination exclusions CFR section</search>= 3 notes\n  [w9c] page · 262.11 Hazardous waste determination and recordkeeping. — when: You need what section 262.11 requires: Hazardous waste determination and recordkeeping.\n  [u86] page · 262.13 Generator category determination. — when: You need what section 262.13 requires: Generator category determination.\n  [d4h] page · 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — when: You need what section 262.16 requires: Conditions for exemption for a small quantity generator that accumulates hazardous waste.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=harness>hazardous waste determination exclusions CFR section</search>"
+     },
+     {
+      "at": 654,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-training-determination-26": {
+    "id": "page0-training-determination-26",
+    "family": "training-determination",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-11",
+     "c"
+    ],
+    "cited_the_supporting": false,
+    "line": "§j (j) The Administrator may, at any time, request that a generator provide additional information",
+    "credit": false,
+    "final": "waste determinations.\n  §i (i) The Administrator may, at any time, request that a generator provide additional information or perform additional testing to support its hazardous waste determinations.\n  §j (j) The Administrator may, at any time, request that a generator provide additional information",
+    "calls": 2,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-11",
+      "a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-11",
+      "b"
+     ],
+     [
+      "hazwaste-regs/wiki/262-11",
+      "c"
+     ],
+     [
+      "hazwaste-regs/wiki/262-11",
+      "d"
+     ],
+     [
+      "hazwaste-regs/wiki/262-11",
+      "d-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-11",
+      "d-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-11",
+      "e"
+     ],
+     [
+      "hazwaste-regs/wiki/262-11",
+      "f"
+     ]
+    ],
+    "text": "thought\n<search shelf=harness>waste determinations</search>= 3 notes\n  [6gc] page · 262.11 Hazardous waste determination and recordkeeping. — when: You need what section 262.11 requires: Hazardous waste determination and recordkeeping.\n  [uzi] page · 262.210 Making the hazardous waste determination in the laboratory before the unwanted material is removed from the laboratory. — when: You need what section 262.210 requires: Making the hazardous waste determination in the laboratory before the unwanted material is removed from the laboratory.\n  [f4k] page · 262.211 Making the hazardous waste determination at an on-site central accumulation area. — when: You need what section 262.211 requires: Making the hazardous waste determination at an on-site central accumulation area.\n<open>6gc</open>= 262.11 Hazardous waste determination and recordkeeping. — Section 262.11 of the regulation — Hazardous waste determination and recordkeeping.\n  §a (a) The hazardous waste determination for each solid waste must be made at the point of waste generation, before any dilution, mixing, or other alteration of the waste occurs, and at any time in the course of its management that it has, or may have, changed its properties as a result of exposure to the environment or other factors that may change the properties of the waste such that the RCRA classification of the waste may change.\n  §b (b) A person must determine whether the solid waste is excluded from regulation under 40 CFR 261.4.\n  §c (c) If the waste is not excluded under 40 CFR 261.4, the person must then use knowledge of the waste to determine whether the waste meets any of the listing descriptions under subpart D of 40 CFR part 261. Acceptable knowledge that may be used in making an accurate determination as to whether the waste is listed may include waste origin, composition, the process producing the waste, feedstock, and other reliable and relevant information. If the waste is listed, the person may file a delisting petition under 40 CFR 260.20 and 260.22 to demonstrate to the Administrator that the waste from this particular site or operation is not a hazardous waste.\n  §d (d) The person then must also determine whether the waste exhibits one or more hazardous characteristics as identified in subpart C of 40 CFR part 261 by following the procedures in paragraph (d)(1) or (2) of this section, or a combination of both.\n  §d-1 (1) The person must apply knowledge of the hazard characteristic of the waste in light of the materials or the processes used to generate the waste. Acceptable knowledge may include process knowledge (e.g., information about chemical feedstocks and other inputs to the production process); knowledge of products, by-products, and intermediates produced by the manufacturing process; chemical or physical characterization of wastes; information on the chemical and physical properties of the chemicals used or produced by the process or otherwise contained in the waste; testing that illustrates the properties of the waste; or other reliable and relevant information about the properties of the waste or its constituents. A test other than a test method set forth in subpart C of 40 CFR part 261, or an equivalent test method approved by the Administrator under 40 CFR 260.21, may be used as part of a person's knowledge to determine whether a solid waste exhibits a characteristic of hazardous waste. However, such tests do not, by themselves, provide definitive results. Persons testing their waste must obtain a representative sample of the waste for the testing, as defined at 40 CFR 260.10.\n  §d-2 (2) When available knowledge is inadequate to make an accurate determination, the person must test the waste according to the applicable methods set forth in subpart C of 40 CFR part 261 or according to an equivalent method approved by the Administrator under 40 CFR 260.21 and in accordance with the following:\n  §e (e) If the waste is determined to be hazardous, the generator must refer to parts 261, 264, 265, 266, 267, 268, and 273 of this chapter for other possible exclusions or restrictions pertaining to management of the specific waste.\n  §f (f) Recordkeeping for small and large quantity generators. A small or large quantity generator must maintain records supporting its hazardous waste determinations, including records that identify whether a solid waste is a hazardous waste, as defined by 40 CFR 261.3. Records must be maintained for at least three years from the date that the waste was last sent to on-site or off-site treatment, storage, or disposal. These records must comprise the generator's knowledge of the waste and support the generator's determination, as described at paragraphs (c) and (d) of this section. The records must include, but are not limited to, the following types of information: The results of any tests, sampling, waste analyses, or other determinations made in accordance with this section; records documenting the tests, sampling, and analytical methods used to demonstrate the validity and relevance of such tests; records consulted in order to determine the process by which the waste was generated, the composition of the waste, and the properties of the waste; and records which explain the knowledge basis for the generator's determination, as described at paragraph (d)(1) of this section. The periods of record retention referred to in this section are extended automatically during the course of any unresolved enforcement action regarding the regulated activity or as requested by the Administrator.\n  4 more sections, not shown — open 6gc§<section> to read one: §text · §d-2-i · §d-2-ii · §g\n  §g (g) The Administrator may, at any time, request that a generator provide additional information or perform additional testing to support its hazardous waste determinations.\n  §h (h) The Administrator may, at any time, request that a generator provide additional information or perform additional testing to support its hazardous waste determinations.\n  §i (i) The Administrator may, at any time, request that a generator provide additional information or perform additional testing to support its hazardous waste determinations.\n  §j (j) The Administrator may, at any time, request that a generator provide additional information",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=harness>waste determinations</search>"
+     },
+     {
+      "at": 782,
+      "text": "<open>6gc</open>"
+     },
+     {
+      "at": 5660,
+      "text": "  §g (g) The Administrator may, at any time, request that a generator provide additional information or perform additional testing to support its hazardous waste determinations.\n  §h (h) The Administrator may, at any time, request that a generator provide additional information or perform additional testing to support its hazardous waste determinations.\n  §i (i) The Administrator may, at any time, request that a generator provide additional information or perform additional testing to support its hazardous waste determinations.\n  §j (j) The Administrator may, at any time, request that a generator provide additional information"
+     }
+    ]
+   },
+   "page0-lab-category-27": {
+    "id": "page0-lab-category-27",
+    "family": "lab-category",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-13",
+     "c-4"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=wiki>hazardous waste generator category used oil CFR</search>= 3 notes\n  [zai] page · 262.13 Generator category determination. — when: You need what section 262.13 requires: Generator category determination.\n  [kms] page · 262.213 Laboratory clean-outs. — when: You need what section 262.213 requires: Laboratory clean-outs.\n  [sqm] page · 262.232 Conditions for a generator managing hazardous waste from an episodic event. — when: You need what section 262.232 requires: Conditions for a generator managing hazardous waste from an episodic event.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=wiki>hazardous waste generator category used oil CFR</search>"
+     },
+     {
+      "at": 570,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-manifest-electronic-28": {
+    "id": "page0-manifest-electronic-28",
+    "family": "manifest-electronic",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-24",
+     "d"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=harness>hazardous materials shipping-paper rule</search>= 3 notes\n  [g55] page · 262.24 Use of the electronic manifest. — when: You need what section 262.24 requires: Use of the electronic manifest.\n  [sjt] page · 262.21 Manifest tracking numbers, manifest printing, and obtaining manifests. — when: You need what section 262.21 requires: Manifest tracking numbers, manifest printing, and obtaining manifests.\n  [fph] page · 262.83 Exports of hazardous waste. — when: You need what section 262.83 requires: Exports of hazardous waste.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=harness>hazardous materials shipping-paper rule</search>"
+     },
+     {
+      "at": 557,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-manifest-marking-29": {
+    "id": "page0-manifest-marking-29",
+    "family": "manifest-marking",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-32",
+     "b"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=harness>hazardous waste marking requirements</search>= 3 notes\n  [nc3] page · 262.32 Marking. — when: You need what section 262.32 requires: Marking.\n  [cyu] page · 262.20 General requirements. — when: You need what section 262.20 requires: General requirements.\n  [j3c] page · 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — when: You need what section 262.17 requires: Conditions for exemption for a large quantity generator that accumulates hazardous waste.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=harness>hazardous waste marking requirements</search>"
+     },
+     {
+      "at": 534,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-electronic-manifest-30": {
+    "id": "page0-electronic-manifest-30",
+    "family": "electronic-manifest",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-20",
+     "e"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=wiki>electronic manifests recycling yard requirements</search>= 3 notes\n  [05s] page · 262.24 Use of the electronic manifest. — when: You need what section 262.24 requires: Use of the electronic manifest.\n  [zpc] page · 262.20 General requirements. — when: You need what section 262.20 requires: General requirements.\n  [y6d] page · 262.83 Exports of hazardous waste. — when: You need what section 262.83 requires: Exports of hazardous waste.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=wiki>electronic manifests recycling yard requirements</search>"
+     },
+     {
+      "at": 465,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-export-printing-31": {
+    "id": "page0-export-printing-31",
+    "family": "export-printing",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-21",
+     "f-2"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=harness>manifest printing</search>= 3 notes\n  [az6] page · 262.21 Manifest tracking numbers, manifest printing, and obtaining manifests. — when: You need what section 262.21 requires: Manifest tracking numbers, manifest printing, and obtaining manifests.\n  [s0p] page · 262.83 Exports of hazardous waste. — when: You need what section 262.83 requires: Exports of hazardous waste.\n  [4y5] page · 262.24 Use of the electronic manifest. — when: You need what section 262.24 requires: Use of the electronic manifest.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=harness>manifest printing</search>"
+     },
+     {
+      "at": 535,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-biennial-export-32": {
+    "id": "page0-biennial-export-32",
+    "family": "biennial-export",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-83",
+     "b"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=wiki>spent catalyst export reporting</search>= 3 notes\n  [t0q] page · 262.83 Exports of hazardous waste. — when: You need what section 262.83 requires: Exports of hazardous waste.\n  [d9v] page · 262.41 Biennial report for large quantity generators. — when: You need what section 262.41 requires: Biennial report for large quantity generators.\n  [hxm] page · 262.18 EPA identification numbers and re-notification for small quantity generators and large quantity generators. — when: You need what section 262.18 requires: EPA identification numbers and re-notification for small quantity generators and large quantity generators.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=wiki>spent catalyst export reporting</search>"
+     },
+     {
+      "at": 650,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-defs-export-33": {
+    "id": "page0-defs-export-33",
+    "family": "defs-export",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-83",
+     "i-3"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=harness>exporter warehouse movement document exception report</search>= 3 notes\n  [q56] page · 262.83 Exports of hazardous waste. — when: You need what section 262.83 requires: Exports of hazardous waste.\n  [802] page · 262.84 Imports of hazardous waste. — when: You need what section 262.84 requires: Imports of hazardous waste.\n  [2j5] page · 262.42 Exception reporting. — when: You need what section 262.42 requires: Exception reporting.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=harness>exporter warehouse movement document exception report</search>"
+     },
+     {
+      "at": 463,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-episodic-petition-37": {
+    "id": "page0-episodic-petition-37",
+    "family": "episodic-petition",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "hazwaste-regs/wiki/262-233",
+     "a-1"
+    ],
+    "why": null,
+    "supporting": [
+     "hazwaste-regs/wiki/262-233",
+     "a-1"
+    ],
+    "cited_the_supporting": true,
+    "line": "You must petition within 72 hours of the unplanned event. [waf§a-1]",
+    "credit": true,
+    "final": "thought\nthought\nYou must petition within 72 hours of the unplanned event. [waf§a-1]",
+    "calls": 2,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-233",
+      "a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-233",
+      "a-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-233",
+      "a-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-233",
+      "b"
+     ],
+     [
+      "hazwaste-regs/wiki/262-233",
+      "b-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-233",
+      "b-3"
+     ],
+     [
+      "hazwaste-regs/wiki/262-233",
+      "b-5"
+     ],
+     [
+      "hazwaste-regs/wiki/262-233",
+      "d"
+     ]
+    ],
+    "text": "thought\n<search shelf=wiki>quantity generator workshop petition</search>= 3 notes\n  [waf] page · 262.233 Petition to manage one additional episodic event per calendar year. — when: You need what section 262.233 requires: Petition to manage one additional episodic event per calendar year.\n  [f8n] page · 262.232 Conditions for a generator managing hazardous waste from an episodic event. — when: You need what section 262.232 requires: Conditions for a generator managing hazardous waste from an episodic event.\n  [5qj] page · 262.14 Conditions for exemption for a very small quantity generator. — when: You need what section 262.14 requires: Conditions for exemption for a very small quantity generator.\nthought\n<open>waf</open>= 262.233 Petition to manage one additional episodic event per calendar year. — Section 262.233 of the regulation — Petition to manage one additional episodic event per calendar year.\n  §a (a) A generator may petition the Regional Administrator for a second episodic event in a calendar year without impacting its generator category under the following conditions:\n  §a-1 (1) If a very small quantity generator or small quantity generator has already held a planned episodic event in a calendar year, the generator may petition EPA for an additional unplanned episodic event in that calendar year within 72 hours of the unplanned event.\n  §a-2 (2) If a very small quantity generator or small quantity generator has already held an unplanned episodic event in a calendar year, the generator may petition EPA for an additional planned episodic event in that calendar year.\n  §b (b) The petition must include the following:\n  §b-1 (1) The reason(s) why an additional episodic event is needed and the nature of the episodic event;\n  §b-3 (3) How the hazardous waste is to be managed;\n  §b-5 (5) Information regarding the previous episodic event managed by the generator, including the nature of the event, whether it was a planned or unplanned event, and how the generator complied with the conditions.\n  §d (d) The generator must retain written approval in its records for three (3) years from the date the episodic event ended.\n  3 more sections, not shown — open waf§<section> to read one: §b-2 · §b-4 · §c\nthought\nthought\nYou must petition within 72 hours of the unplanned event. [waf§a-1]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=wiki>quantity generator workshop petition</search>"
+     },
+     {
+      "at": 705,
+      "text": "thought\n<open>waf</open>"
+     },
+     {
+      "at": 2235,
+      "text": "thought\nthought\nYou must petition within 72 hours of the unplanned event. [waf§a-1]"
+     }
+    ]
+   },
+   "page0-import-conditions-35": {
+    "id": "page0-import-conditions-35",
+    "family": "import-conditions",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-82",
+     "d"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=wiki>import notification rules waste samples</search>= 3 notes\n  [if1] page · 262.82 General conditions. — when: You need what section 262.82 requires: General conditions.\n  [icn] page · 262.84 Imports of hazardous waste. — when: You need what section 262.84 requires: Imports of hazardous waste.\n  [q0s] page · 262.83 Exports of hazardous waste. — when: You need what section 262.83 requires: Exports of hazardous waste.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=wiki>import notification rules waste samples</search>"
+     },
+     {
+      "at": 444,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-export-conditions-34": {
+    "id": "page0-export-conditions-34",
+    "family": "export-conditions",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-82",
+     "e-1"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=wiki>chemical distributor export exception reports transboundary general conditions</search>= 3 notes\n  [emw] page · 262.82 General conditions. — when: You need what section 262.82 requires: General conditions.\n  [qxp] page · 262.83 Exports of hazardous waste. — when: You need what section 262.83 requires: Exports of hazardous waste.\n  [y14] page · 262.84 Imports of hazardous waste. — when: You need what section 262.84 requires: Imports of hazardous waste.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=wiki>chemical distributor export exception reports transboundary general conditions</search>"
+     },
+     {
+      "at": 483,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-import-export-36": {
+    "id": "page0-import-export-36",
+    "family": "import-export",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-83",
+     "iii-2"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=wiki>import contract re-export notice exception report</search>= 3 notes\n  [z4b] page · 262.83 Exports of hazardous waste. — when: You need what section 262.83 requires: Exports of hazardous waste.\n  [sxx] page · 262.84 Imports of hazardous waste. — when: You need what section 262.84 requires: Imports of hazardous waste.\n  [mc3] page · 262.81 Definitions. — when: You need what section 262.81 requires: Definitions.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=wiki>import contract re-export notice exception report</search>"
+     },
+     {
+      "at": 440,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-plan-coordinator-procedures-41": {
+    "id": "page0-plan-coordinator-procedures-41",
+    "family": "plan-coordinator-procedures",
+    "block": "R3",
+    "hops": 3,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "unverified",
+    "value_right": true,
+    "verified": false,
+    "cited": [
+     "hazwaste-regs/wiki/262-265",
+     "d"
+    ],
+    "why": "the cited statement does not hold the value",
+    "supporting": [
+     "hazwaste-regs/wiki/262-265",
+     "d-2"
+    ],
+    "cited_the_supporting": false,
+    "line": "800/424-8802 [iuy§d]",
+    "credit": false,
+    "final": "thought\nThe question asks for the toll-free number for the National Response Center when a release threatens people outside the plant. Section 262.265(d)(2) states the number is 800/424-8802.\n\n800/424-8802 [iuy§d]",
+    "calls": 2,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-265",
+      "a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-265",
+      "d"
+     ],
+     [
+      "hazwaste-regs/wiki/262-265",
+      "d-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-265",
+      "d-2-vi"
+     ],
+     [
+      "hazwaste-regs/wiki/262-265",
+      "f"
+     ],
+     [
+      "hazwaste-regs/wiki/262-265",
+      "h-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-265",
+      "h-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-265",
+      "h-2-i"
+     ]
+    ],
+    "text": "thought\n<search shelf=wiki>contingency plan</search>= 3 notes\n  [iuy] page · 262.265 Emergency procedures. — when: You need what section 262.265 requires: Emergency procedures.\n  [uvf] page · 262.261 Content of contingency plan. — when: You need what section 262.261 requires: Content of contingency plan.\n  [vr0] page · 262.264 Emergency coordinator. — when: You need what section 262.264 requires: Emergency coordinator.\nthought\n<open>iuy</open>= 262.265 Emergency procedures. — Section 262.265 of the regulation — Emergency procedures.\n  §a (a) Whenever there is an imminent or actual emergency situation, the emergency coordinator (or his designee when the emergency coordinator is on call) must immediately:\n  §d (d) If the emergency coordinator determines that the facility has had a release, fire, or explosion which could threaten human health, or the environment, outside the facility, the emergency coordinator must report the findings as follows:\n  §d-2 (2) The emergency coordinator must immediately notify either the government official designated as the on-scene coordinator for that geographical area, or the National Response Center (using their 24-hour toll free number 800/424-8802). The report must include:\n  §d-2-vi (vi) The possible hazards to human health, or the environment, outside the facility.\n  §f (f) If the generator stops operations in response to a fire, explosion or release, the emergency coordinator must monitor for leaks, pressure buildup, gas generation, or ruptures in valves, pipes, or other equipment, wherever this is appropriate.\n  §h-1 (1) No hazardous waste that may be incompatible with the released material is treated, stored, or disposed of until cleanup procedures are completed; and\n  §h-2 (2) All emergency equipment listed in the contingency plan is cleaned and fit for its intended use before operations are resumed.\n  §h-2-i (i) The generator must note in the operating record the time, date, and details of any incident that requires implementing the contingency plan. Within 15 days after the incident, the generator must submit a written report on the incident to the Regional Administrator. The report must include:\n  19 more sections, not shown — open iuy§<section> to read one: §a-1 · §a-2 · §b · §c · §d-1 · §d-2-i · §d-2-ii · §d-2-iii · §d-2-iv · §d-2-v · §e · §g · §h · §h-1-2 · §h-2-2 · §h-3 · §h-4 · §h-5 · §h-6\nthought\nThe question asks for the toll-free number for the National Response Center when a release threatens people outside the plant. Section 262.265(d)(2) states the number is 800/424-8802.\n\n800/424-8802 [iuy§d]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=wiki>contingency plan</search>"
+     },
+     {
+      "at": 423,
+      "text": "thought\n<open>iuy</open>"
+     },
+     {
+      "at": 2379,
+      "text": "thought\nThe question asks for the toll-free number for the National Response Center when a release threatens people outside the plant. Section 262.265(d)(2) states the number is 800/424-8802.\n\n800/424-8802 [iuy§d]"
+     }
+    ]
+   },
+   "page0-coordinator-procedures-39": {
+    "id": "page0-coordinator-procedures-39",
+    "family": "coordinator-procedures",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-265",
+     "h-2-i"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=harness>warehouse emergency procedures</search>= 3 notes\n  [0y4] page · 262.265 Emergency procedures. — when: You need what section 262.265 requires: Emergency procedures.\n  [bcx] page · 262.264 Emergency coordinator. — when: You need what section 262.264 requires: Emergency coordinator.\n  [x5y] page · 262.262 Copies of contingency plan. — when: You need what section 262.262 requires: Copies of contingency plan.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=harness>warehouse emergency procedures</search>"
+     },
+     {
+      "at": 438,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-contingency-arrangements-38": {
+    "id": "page0-contingency-arrangements-38",
+    "family": "contingency-arrangements",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-256",
+     "c"
+    ],
+    "cited_the_supporting": false,
+    "line": "uents stored, treated, or managed at the facility, including the potential for fires, explosions, or other unplanned sudden or non-sudden releases of hazardous waste or hazardous waste constituents to",
+    "credit": false,
+    "final": "description of the potential hazards associated with the hazardous waste and hazardous waste constituents stored, treated, or managed at the facility, including the potential for fires, explosions, or other unplanned sudden or non-sudden releases of hazardous waste or hazardous waste constituents to",
+    "calls": 2,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-261",
+      "a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-261",
+      "b"
+     ],
+     [
+      "hazwaste-regs/wiki/262-261",
+      "c"
+     ],
+     [
+      "hazwaste-regs/wiki/262-261",
+      "d"
+     ],
+     [
+      "hazwaste-regs/wiki/262-261",
+      "e"
+     ],
+     [
+      "hazwaste-regs/wiki/262-261",
+      "f"
+     ]
+    ],
+    "text": "thought\n<search shelf=wiki>contingency plan local-authorities</search>= 3 notes\n  [54v] page · 262.256 Arrangements with local authorities. — when: You need what section 262.256 requires: Arrangements with local authorities.\n  [0hu] page · 262.261 Content of contingency plan. — when: You need what section 262.261 requires: Content of contingency plan.\n  [esd] page · 262.262 Copies of contingency plan. — when: You need what section 262.262 requires: Copies of contingency plan.\nthought\n<open>0hu</open>= 262.261 Content of contingency plan. — Section 262.261 of the regulation — Content of contingency plan.\n  §a (a) The contingency plan must describe the actions facility personnel must take to comply with §[z0h] 262.260 Purpose and implementation of contingency plan. and 262.265 in response to fires, explosions, or any unplanned sudden or non-sudden release of hazardous waste or hazardous waste constituents to air, soil, or surface water at the facility.\n  §b (b) If the generator has already prepared a Spill Prevention, Control, and Countermeasures (SPCC) Plan in accordance with part 112 of this chapter, or some other emergency or contingency plan, it need only amend that plan to incorporate hazardous waste management provisions that are sufficient to comply with the standards of this part. The generator may develop one contingency plan that meets all regulatory standards. EPA recommends that the plan be based on the National Response Team's Integrated Contingency Plan Guidance (“One Plan”).\n  §c (c) The plan must describe arrangements agreed to with the local police department, fire department, other emergency response teams, emergency response contractors, equipment suppliers, local hospitals or, if applicable, the Local Emergency Planning Committee, pursuant to [54v] 262.256 Arrangements with local authorities..\n  §d (d) The plan must list names and emergency telephone numbers of all persons qualified to act as emergency coordinator (see [8n8] 262.264 Emergency coordinator.), and this list must be kept up to date. Where more than one person is listed, one must be named as primary emergency coordinator and others must be listed in the order in which they will assume responsibility as alternates. In situations where the generator facility has an emergency coordinator continuously on duty because it operates 24 hours per day, every day of the year, the plan may list the staffed position (e.g., operations manager, shift coordinator, shift operations supervisor) as well as an emergency telephone number that can be guaranteed to be answered at all times.\n  §e (e) The plan must include a list of all emergency equipment at the facility (such as fire extinguishing systems, spill control equipment, communications and alarm systems (internal and external), and decontamination equipment), where this equipment is required. This list must be kept up to date. In addition, the plan must include the location and a physical description of each item on the list, and a brief outline of its capabilities.\n  §f (f) The plan must include an evacuation plan for generator personnel where there is a possibility that evacuation could be necessary. This plan must describe signal(s) to be used to begin evacuation, evacuation routes, and alternate evacuation routes (in cases where the primary routes could be blocked by releases of hazardous waste or fires).\n  §g (g) The plan must include a description of the hazardous waste and hazardous waste constituents that are stored, treated, or managed at the facility, including the types and quantities of hazardous waste and hazardous waste constituents, and the locations where they are stored, treated, or managed.\n  §h (h) The plan must include a description of the potential hazards associated with the hazardous waste and hazardous waste constituents stored, treated, or managed at the facility, including the potential for fires, explosions, or other unplanned sudden or non-sudden releases of hazardous waste or hazardous waste constituents to",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=wiki>contingency plan local-authorities</search>"
+     },
+     {
+      "at": 481,
+      "text": "thought\n<open>0hu</open>"
+     },
+     {
+      "at": 3388,
+      "text": "  §g (g) The plan must include a description of the hazardous waste and hazardous waste constituents that are stored, treated, or managed at the facility, including the types and quantities of hazardous waste and hazardous waste constituents, and the locations where they are stored, treated, or managed.\n  §h (h) The plan must include a description of the potential hazards associated with the hazardous waste and hazardous waste constituents stored, treated, or managed at the facility, including the potential for fires, explosions, or other unplanned sudden or non-sudden releases of hazardous waste or hazardous waste constituents to"
+     }
+    ]
+   },
+   "page0-lmp-cleanout-removal-40": {
+    "id": "page0-lmp-cleanout-removal-40",
+    "family": "lmp-cleanout-removal",
+    "block": "R3",
+    "hops": 3,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-208",
+     "a-1"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 2,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-214",
+      "text"
+     ],
+     [
+      "hazwaste-regs/wiki/262-214",
+      "a-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-214",
+      "b"
+     ],
+     [
+      "hazwaste-regs/wiki/262-214",
+      "b-4-i"
+     ],
+     [
+      "hazwaste-regs/wiki/262-214",
+      "b-6"
+     ],
+     [
+      "hazwaste-regs/wiki/262-214",
+      "b-6-i"
+     ],
+     [
+      "hazwaste-regs/wiki/262-214",
+      "b-6-ii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-214",
+      "d"
+     ]
+    ],
+    "text": "thought\n<search shelf=wiki>laboratory management plan</search>= 3 notes\n  [5yt] page · 262.208 Removing containers of unwanted material from the laboratory. — when: You need what section 262.208 requires: Removing containers of unwanted material from the laboratory.\n  [tg7] page · 262.214 Laboratory management plan. — when: You need what section 262.214 requires: Laboratory management plan.\n  [swm] page · 262.213 Laboratory clean-outs. — when: You need what section 262.213 requires: Laboratory clean-outs.\nthought\n<open>tg7</open>= 262.214 Laboratory management plan. — Section 262.214 of the regulation — Laboratory management plan.\n  §text An eligible academic entity must develop and retain a written Laboratory Management Plan, or revise an existing written plan. The Laboratory Management Plan is a site-specific document that describes how the eligible academic entity will manage unwanted materials in compliance with this subpart. An eligible academic entity may write one Laboratory Management Plan for all the laboratories owned by the eligible academic entity that have opted into this subpart, even if the laboratories are located at sites with different EPA Identification Numbers. The Laboratory Management Plan must contain two parts with a total of nine elements identified in paragraphs (a) and (b) of this section. In Part I of its Laboratory Management Plan, an eligible academic entity must describe its procedures for each of the elements listed in paragraph (a) of this section. An eligible academic entity must implement and comply with the specific provisions that it develops to address the elements in Part I of the Laboratory Management Plan. In Part II of its Laboratory Management Plan, an eligible academic entity must describe its best management practices for each of the elements listed in paragraph (b) of this section. The specific actions taken by an eligible academic entity to implement each element in Part II of its Laboratory Management Plan may vary from the procedures described in the eligible academic entity's Laboratory Management Plan, without constituting a violation of this subpart. An eligible academic entity may include additional elements and best management practices in Part II of its Laboratory Management Plan if it chooses.\n  §a-1 (1) Describe procedures for container labeling in accordance with [7uk] 262.206 Labeling and management standards for containers of unwanted material in the laboratory.(a), as follows:\n  §b (b) In Part II of its Laboratory Management Plan, an eligible academic entity must:\n  §b-4-i (i) For regularly scheduled removals—Develop a regular schedule for identifying and removing unwanted materials from its laboratories (see the required standards at [5yt] 262.208 Removing containers of unwanted material from the laboratory.(a)(1) and (a)(2)).\n  §b-6 (6) Describe its intended best practices for laboratory clean-outs, if the eligible academic entity plans to use the incentives for laboratory clean-outs provided in [swm] 262.213 Laboratory clean-outs., including:\n  §b-6-i (i) Procedures for conducting laboratory clean-outs (see the required standards at [swm] 262.213 Laboratory clean-outs.(a)(1) through (3)); and\n  §b-6-ii (ii) Procedures for documenting laboratory clean-outs (see the required standards at [swm] 262.213 Laboratory clean-outs.(a)(4)).\n  §d (d) An eligible academic entity must review and revise its Laboratory Management Plan, as needed.\n  18 more sections, not shown — open tg7§<section> to read one: §a · §a-1-i · §a-1-ii · §a-2 · §b-1 · §b-2 · §b-3 · §b-4 · §b-4-ii · §b-4-ii-a · §b-4-ii-b · §b-5 · §b-7 · §b-7-i · §b-7-ii · §b-7-iii · §b-7-iv · §c\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=wiki>laboratory management plan</search>"
+     },
+     {
+      "at": 511,
+      "text": "thought\n<open>tg7</open>"
+     },
+     {
+      "at": 3671,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-import-export-conditions-42": {
+    "id": "page0-import-export-conditions-42",
+    "family": "import-export-conditions",
+    "block": "R3",
+    "hops": 3,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-82",
+     "e-2"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=wiki>import contract re-export notice export section exception reports general conditions addresses</search>= 3 notes\n  [5ce] page · 262.83 Exports of hazardous waste. — when: You need what section 262.83 requires: Exports of hazardous waste.\n  [732] page · 262.82 General conditions. — when: You need what section 262.82 requires: General conditions.\n  [vvc] page · 262.84 Imports of hazardous waste. — when: You need what section 262.84 requires: Imports of hazardous waste.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=wiki>import contract re-export notice export section exception reports general conditions addresses</search>"
+     },
+     {
+      "at": 499,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-none-49": {
+    "id": "page0-none-49",
+    "family": "none",
+    "block": "none",
+    "hops": 0,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "line": "Not in my library.",
+    "credit": true,
+    "final": "thought\nNot in my library.",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=harness>truck detention charges loading dock</search>= 3 notes\n  [3cv] page · 262.203 How an eligible academic entity indicates it will be subject to the requirements of this subpart. — when: You need what section 262.203 requires: How an eligible academic entity indicates it will be subject to the requirements of this subpart.\n  [dq9] page · 262.208 Removing containers of unwanted material from the laboratory. — when: You need what section 262.208 requires: Removing containers of unwanted material from the laboratory.\n  [ai9] page · 262.21 Manifest tracking numbers, manifest printing, and obtaining manifests. — when: You need what section 262.21 requires: Manifest tracking numbers, manifest printing, and obtaining manifests.\nthought\nNot in my library.",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=harness>truck detention charges loading dock</search>"
+     },
+     {
+      "at": 758,
+      "text": "thought\nNot in my library."
+     }
+    ]
+   },
+   "page0-lab-central-category-43": {
+    "id": "page0-lab-central-category-43",
+    "family": "lab-central-category",
+    "block": "R3",
+    "hops": 3,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "cited": null,
+    "why": "no citation",
+    "supporting": [
+     "hazwaste-regs/wiki/262-13",
+     "c-6"
+    ],
+    "cited_the_supporting": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=harness>lab waste management central accumulation area</search>= 3 notes\n  [spz] page · 262.211 Making the hazardous waste determination at an on-site central accumulation area. — when: You need what section 262.211 requires: Making the hazardous waste determination at an on-site central accumulation area.\n  [ygw] page · 262.210 Making the hazardous waste determination in the laboratory before the unwanted material is removed from the laboratory. — when: You need what section 262.210 requires: Making the hazardous waste determination in the laboratory before the unwanted material is removed from the laboratory.\n  [x6e] page · 262.13 Generator category determination. — when: You need what section 262.13 requires: Generator category determination.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=harness>lab waste management central accumulation area</search>"
+     },
+     {
+      "at": 778,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-none-45": {
+    "id": "page0-none-45",
+    "family": "none",
+    "block": "none",
+    "hops": 0,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=harness>oil spill prevention rule dikes inspection</search>= 3 notes\n  [fvc] page · 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — when: You need what section 262.16 requires: Conditions for exemption for a small quantity generator that accumulates hazardous waste.\n  [aar] page · 262.232 Conditions for a generator managing hazardous waste from an episodic event. — when: You need what section 262.232 requires: Conditions for a generator managing hazardous waste from an episodic event.\n  [c2k] page · 262.13 Generator category determination. — when: You need what section 262.13 requires: Generator category determination.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=harness>oil spill prevention rule dikes inspection</search>"
+     },
+     {
+      "at": 700,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-none-44": {
+    "id": "page0-none-44",
+    "family": "none",
+    "block": "none",
+    "hops": 0,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "line": "8 more sections",
+    "credit": false,
+    "final": "t be commensurate with their duties so they understand the requirements in this subpart and can implement them.\n  §b-5 (5) Training for laboratory workers and students must be commensurate with their duties so they understand the requirements in this subpart and can implement them.\n  8 more sections",
+    "calls": 3,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-207",
+      "a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-207",
+      "b-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-207",
+      "b-3"
+     ],
+     [
+      "hazwaste-regs/wiki/262-207",
+      "b-4"
+     ],
+     [
+      "hazwaste-regs/wiki/262-207",
+      "c-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-207",
+      "c-3"
+     ],
+     [
+      "hazwaste-regs/wiki/262-207",
+      "d-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-207",
+      "d-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-207",
+      "b"
+     ]
+    ],
+    "text": "thought\n<search shelf=harness>hazmat training requirements</search>= 3 notes\n  [23j] page · 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — when: You need what section 262.17 requires: Conditions for exemption for a large quantity generator that accumulates hazardous waste.\n  [mp0] page · 262.214 Laboratory management plan. — when: You need what section 262.214 requires: Laboratory management plan.\n  [76h] page · 262.207 Training. — when: You need what section 262.207 requires: Training.\n<open>76h</open>= 262.207 Training. — Section 262.207 of the regulation — Training.\n  §a (a) Training for laboratory workers and students must be commensurate with their duties so they understand the requirements in this subpart and can implement them.\n  §b-2 (2) Formal classroom training; or\n  §b-3 (3) Electronic/written training; or\n  §b-4 (4) On-the-job training; or\n  §c-2 (2) Syllabus for training session; or\n  §c-3 (3) Certificate of training completion; or\n  §d-1 (1) Accompany the transfer of unwanted material and hazardous waste when the unwanted material and hazardous waste is removed from the laboratory, and\n  §d-2 (2) Make the hazardous waste determination, pursuant to [kv0] 262.11 Hazardous waste determination and recordkeeping.(a) through (d), for unwanted material.\n  8 more sections, not shown — open 76h§<section> to read one: §text · §b · §b-1 · §b-5 · §c · §c-1 · §c-4 · §d\n<open>76h§b</open>= (b) An eligible academic entity can provide training for laboratory workers and students in a variety of ways, including, but not limited to:\n  §b-1 (1) Formal classroom training; or\n  §b-2 (2) Electronic/written training; or\n  §b-3 (3) On-the-job training; or\n  §b-4 (4) Training for laboratory workers and students must be commensurate with their duties so they understand the requirements in this subpart and can implement them.\n  §b-5 (5) Training for laboratory workers and students must be commensurate with their duties so they understand the requirements in this subpart and can implement them.\n  8 more sections",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=harness>hazmat training requirements</search>"
+     },
+     {
+      "at": 544,
+      "text": "<open>76h</open>"
+     },
+     {
+      "at": 1445,
+      "text": "<open>76h§b</open>"
+     },
+     {
+      "at": 1607,
+      "text": "  §b-1 (1) Formal classroom training; or\n  §b-2 (2) Electronic/written training; or\n  §b-3 (3) On-the-job training; or\n  §b-4 (4) Training for laboratory workers and students must be commensurate with their duties so they understand the requirements in this subpart and can implement them.\n  §b-5 (5) Training for laboratory workers and students must be commensurate with their duties so they understand the requirements in this subpart and can implement them.\n  8 more sections"
+     }
+    ]
+   },
+   "page0-none-46": {
+    "id": "page0-none-46",
+    "family": "none",
+    "block": "none",
+    "hops": 0,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=wiki>boiler stack smoke opacity limit</search>= 3 notes\n  [hnb] page · 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — when: You need what section 262.17 requires: Conditions for exemption for a large quantity generator that accumulates hazardous waste.\n  [nj5] page · 262.1 Terms used in this part. — when: You need what section 262.1 requires: Terms used in this part.\n  [ej9] page · 262.262 Copies of contingency plan. — when: You need what section 262.262 requires: Copies of contingency plan.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=wiki>boiler stack smoke opacity limit</search>"
+     },
+     {
+      "at": 571,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-none-47": {
+    "id": "page0-none-47",
+    "family": "none",
+    "block": "none",
+    "hops": 0,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=wiki>pretreatment rules oil grease concentration</search>= 3 notes\n  [fb7] page · 262.13 Generator category determination. — when: You need what section 262.13 requires: Generator category determination.\n  [b9w] page · 262.20 General requirements. — when: You need what section 262.20 requires: General requirements.\n  [um5] page · 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — when: You need what section 262.16 requires: Conditions for exemption for a small quantity generator that accumulates hazardous waste.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=wiki>pretreatment rules oil grease concentration</search>"
+     },
+     {
+      "at": 588,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-none-48": {
+    "id": "page0-none-48",
+    "family": "none",
+    "block": "none",
+    "hops": 0,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=harness>warehouse sprinkler clearance</search>= 3 notes\n  [dy1] page · 262.200 Definitions for this subpart. — when: You need what section 262.200 requires: Definitions for this subpart.\n  [3ik] page · 262.84 Imports of hazardous waste. — when: You need what section 262.84 requires: Imports of hazardous waste.\n  [nic] page · 262.203 How an eligible academic entity indicates it will be subject to the requirements of this subpart. — when: You need what section 262.203 requires: How an eligible academic entity indicates it will be subject to the requirements of this subpart.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=harness>warehouse sprinkler clearance</search>"
+     },
+     {
+      "at": 601,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-none-51": {
+    "id": "page0-none-51",
+    "family": "none",
+    "block": "none",
+    "hops": 0,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "line": "thought",
+    "credit": false,
+    "final": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "calls": 1,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=harness>cycle counting frequency fast-moving items</search>= 3 notes\n  [kms] page · 262.21 Manifest tracking numbers, manifest printing, and obtaining manifests. — when: You need what section 262.21 requires: Manifest tracking numbers, manifest printing, and obtaining manifests.\n  [key] page · 262.213 Laboratory clean-outs. — when: You need what section 262.213 requires: Laboratory clean-outs.\n  [bg0] page · 262.252 Required equipment. — when: You need what section 262.252 requires: Required equipment.\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=harness>cycle counting frequency fast-moving items</search>"
+     },
+     {
+      "at": 530,
+      "text": "thought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\nthought\n"
+     }
+    ]
+   },
+   "page0-none-50": {
+    "id": "page0-none-50",
+    "family": "none",
+    "block": "none",
+    "hops": 0,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "wrong",
+    "value_right": false,
+    "verified": false,
+    "line": "",
+    "credit": false,
+    "final": "",
+    "calls": 13,
+    "refused": 1,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": "search budget",
+    "errors": {
+     "budget": 1
+    },
+    "opened_pages": 0,
+    "opened_statements": [],
+    "text": "thought\n<search shelf=harness>lifting weight limits distribution center</search>= 3 notes\n  [s4v] page · 262.21 Manifest tracking numbers, manifest printing, and obtaining manifests. — when: You need what section 262.21 requires: Manifest tracking numbers, manifest printing, and obtaining manifests.\n  [63i] page · 262.82 General conditions. — when: You need what section 262.82 requires: General conditions.\n  [0n5] page · 262.265 Emergency procedures. — when: You need what section 262.265 requires: Emergency procedures.\n<search shelf=wiki>distribution center safety rules</search>= 3 notes\n  [ayy] page · 262.252 Required equipment. — when: You need what section 262.252 requires: Required equipment.\n  [s4v] page · 262.21 Manifest tracking numbers, manifest printing, and obtaining manifests. — when: You need what section 262.21 requires: Manifest tracking numbers, manifest printing, and obtaining manifests.\n  [0n5] page · 262.265 Emergency procedures. — when: You need what section 262.265 requires: Emergency procedures.\n<search shelf=harness>manual lifting limits</search>= 0 notes on harness; on every shelf, 3 notes\n  [a1d] page · 262.231 Definitions for this subpart. — when: You need what section 262.231 requires: Definitions for this subpart.\n  [t2u] page · 262.13 Generator category determination. — when: You need what section 262.13 requires: Generator category determination.\n  [a7g] page · 262.213 Laboratory clean-outs. — when: You need what section 262.213 requires: Laboratory clean-outs.\n<search shelf=wiki>distribution center safety</search>= 3 notes\n  [ayy] page · 262.252 Required equipment. — when: You need what section 262.252 requires: Required equipment.\n  [s4v] page · 262.21 Manifest tracking numbers, manifest printing, and obtaining manifests. — when: You need what section 262.21 requires: Manifest tracking numbers, manifest printing, and obtaining manifests.\n  [0n5] page · 262.265 Emergency procedures. — when: You need what section 262.265 requires: Emergency procedures.\n<search shelf=harness>manual handling</search>= 0 notes on harness; on every shelf, 1 note\n  [9qt] page · 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — when: You need what section 262.16 requires: Conditions for exemption for a small quantity generator that accumulates hazardous waste.\n<search shelf=wiki>lifting weight</search>= 2 notes\n  [s4v] page · 262.21 Manifest tracking numbers, manifest printing, and obtaining manifests. — when: You need what section 262.21 requires: Manifest tracking numbers, manifest printing, and obtaining manifests.\n  [d0e] page · 262.83 Exports of hazardous waste. — when: You need what section 262.83 requires: Exports of hazardous waste.\n<search shelf=harness>manual lifting</search>= 0 notes on harness; on every shelf, 0 notes\n<search shelf=wiki>distribution center</search>= 3 notes\n  [s4v] page · 262.21 Manifest tracking numbers, manifest printing, and obtaining manifests. — when: You need what section 262.21 requires: Manifest tracking numbers, manifest printing, and obtaining manifests.\n  [0n5] page · 262.265 Emergency procedures. — when: You need what section 262.265 requires: Emergency procedures.\n  [9qt] page · 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — when: You need what section 262.16 requires: Conditions for exemption for a small quantity generator that accumulates hazardous waste.\n<search shelf=harness>manual handling procedures</search>= 0 notes on harness; on every shelf, 3 notes\n  [0n5] page · 262.265 Emergency procedures. — when: You need what section 262.265 requires: Emergency procedures.\n  [qjg] page · 262.214 Laboratory management plan. — when: You need what section 262.214 requires: Laboratory management plan.\n  [9qt] page · 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — when: You need what section 262.16 requires: Conditions for exemption for a small quantity generator that accumulates hazardous waste.\n<search shelf=wiki>safety guidelines</search>= 3 notes\n  [ayy] page · 262.252 Required equipment. — when: You need what section 262.252 requires: Required equipment.\n  [qm8] page · 262.32 Marking. — when: You need what section 262.32 requires: Marking.\n  [et6] page · 262.232 Conditions for a generator managing hazardous waste from an episodic event. — when: You need what section 262.232 requires: Conditions for a generator managing hazardous waste from an episodic event.\n<search shelf=harness>lifting limits</search>= 0 notes on harness; on every shelf, 3 notes\n  [a1d] page · 262.231 Definitions for this subpart. — when: You need what section 262.231 requires: Definitions for this subpart.\n  [t2u] page · 262.13 Generator category determination. — when: You need what section 262.13 requires: Generator category determination.\n  [a7g] page · 262.213 Laboratory clean-outs. — when: You need what section 262.213 requires: Laboratory clean-outs.\n<search shelf=wiki>distribution center safety guidelines</search>= 3 notes\n  [ayy] page · 262.252 Required equipment. — when: You need what section 262.252 requires: Required equipment.\n  [s4v] page · 262.21 Manifest tracking numbers, manifest printing, and obtaining manifests. — when: You need what section 262.21 requires: Manifest tracking numbers, manifest printing, and obtaining manifests.\n  [0n5] page · 262.265 Emergency procedures. — when: You need what section 262.265 requires: Emergency procedures.\n<search shelf=harness>manual lifting weight</search>= ERROR: search budget reached — this task is not answered\n",
+    "spans": [
+     {
+      "at": 0,
+      "text": "thought\n<search shelf=harness>lifting weight limits distribution center</search>"
+     },
+     {
+      "at": 525,
+      "text": "<search shelf=wiki>distribution center safety rules</search>"
+     },
+     {
+      "at": 1032,
+      "text": "<search shelf=harness>manual lifting limits</search>"
+     },
+     {
+      "at": 1515,
+      "text": "<search shelf=wiki>distribution center safety</search>"
+     },
+     {
+      "at": 2016,
+      "text": "<search shelf=harness>manual handling</search>"
+     },
+     {
+      "at": 2356,
+      "text": "<search shelf=wiki>lifting weight</search>"
+     },
+     {
+      "at": 2744,
+      "text": "<search shelf=harness>manual lifting</search>"
+     },
+     {
+      "at": 2835,
+      "text": "<search shelf=wiki>distribution center</search>"
+     },
+     {
+      "at": 3467,
+      "text": "<search shelf=harness>manual handling procedures</search>"
+     },
+     {
+      "at": 4061,
+      "text": "<search shelf=wiki>safety guidelines</search>"
+     },
+     {
+      "at": 4537,
+      "text": "<search shelf=harness>lifting limits</search>"
+     },
+     {
+      "at": 5013,
+      "text": "<search shelf=wiki>distribution center safety guidelines</search>"
+     },
+     {
+      "at": 5525,
+      "text": "<search shelf=harness>manual lifting weight</search>"
+     },
+     {
+      "at": 5636,
+      "text": ""
+     }
+    ]
+   }
+  }
+ },
+ "analysis": {
+  "slices": {
+   "headline": 30,
+   "all": 52,
+   "none": 8,
+   "hops-1": 14,
+   "hops-2": 26,
+   "hops-3": 4,
+   "block-E1": 0,
+   "block-E2": 0,
+   "block-E3": 0,
+   "block-O1": 0,
+   "block-O2": 0,
+   "block-O3": 0
+  },
+  "summary": {
+   "base-walks+page+top8": {
+    "headline": {
+     "n": 30,
+     "scored": 30,
+     "errors": 0,
+     "missing": 0,
+     "credit": 5,
+     "value_right": 6,
+     "right": 5,
+     "unverified": 1,
+     "wrong": 24,
+     "context": 0
+    },
+    "all": {
+     "n": 52,
+     "scored": 52,
+     "errors": 0,
+     "missing": 0,
+     "credit": 8,
+     "value_right": 9,
+     "right": 8,
+     "unverified": 1,
+     "wrong": 43,
+     "context": 0
+    },
+    "none": {
+     "n": 8,
+     "scored": 8,
+     "errors": 0,
+     "missing": 0,
+     "credit": 1,
+     "value_right": 1,
+     "right": 1,
+     "unverified": 0,
+     "wrong": 7,
+     "context": 0
+    },
+    "hops-1": {
+     "n": 14,
+     "scored": 14,
+     "errors": 0,
+     "missing": 0,
+     "credit": 2,
+     "value_right": 2,
+     "right": 2,
+     "unverified": 0,
+     "wrong": 12,
+     "context": 0
+    },
+    "hops-2": {
+     "n": 26,
+     "scored": 26,
+     "errors": 0,
+     "missing": 0,
+     "credit": 5,
+     "value_right": 5,
+     "right": 5,
+     "unverified": 0,
+     "wrong": 21,
+     "context": 0
+    },
+    "hops-3": {
+     "n": 4,
+     "scored": 4,
+     "errors": 0,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 1,
+     "right": 0,
+     "unverified": 1,
+     "wrong": 3,
+     "context": 0
+    },
+    "block-E1": {
+     "n": 0,
+     "scored": 0,
+     "errors": 0,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-E2": {
+     "n": 0,
+     "scored": 0,
+     "errors": 0,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-E3": {
+     "n": 0,
+     "scored": 0,
+     "errors": 0,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-O1": {
+     "n": 0,
+     "scored": 0,
+     "errors": 0,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-O2": {
+     "n": 0,
+     "scored": 0,
+     "errors": 0,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-O3": {
+     "n": 0,
+     "scored": 0,
+     "errors": 0,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    }
+   }
+  },
+  "pairs": {
+   "headline": [],
+   "all": [],
+   "hops-2": [],
+   "hops-3": []
+  }
+ },
+ "verdict": {
+  "decided": false,
+  "reading": "NOTHING SCORED"
+ },
+ "finished": "2026-10-03T01:29:24"
+}

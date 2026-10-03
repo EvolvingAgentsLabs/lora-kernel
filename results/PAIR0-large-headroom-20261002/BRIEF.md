@@ -35,6 +35,16 @@ pages with their statements, `page_top = 8`; `--max-model-len 16384`; the strict
 
 Two scoring sessions (one per base); the set, runtime and bars do not change after the first walk.
 
+## Run log
+
+- **E4B [ran]:** 29/52 (`pair0_e4b.json`), 0 errors.
+- **12B attempt 1 — VOID, an instrument failure** (`attempt1_pair0_12b.json`): 8/52, and read where it happens the bare
+  12B wrote its thought channel (`<|channel>thought…`, printed as `thought` lines) with thinking off — `enable_thinking=False`
+  only omits the `<|think|>` token — and on many rows looped on it until the call budget ran out (34 of 43 misses: no
+  citation). CLAUDE.md §3: a bare base that thinks its tokens away scores as a floor. **Fix, the instrument's first
+  change:** `wiki_arm --empty-thought` prefills an empty channel (`<|channel>thought\n<channel|>`) for the 12B; the E4B
+  arm, which never opened the channel, stands as run. The set, runtime and bars do not move.
+
 ## Result
 
 *(written after the run)*

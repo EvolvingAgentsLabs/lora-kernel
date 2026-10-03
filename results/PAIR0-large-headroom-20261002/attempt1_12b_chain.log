@@ -1,0 +1,28 @@
+=== session 1 of 1 · srv221350 · A100
+    boot clone: rc=0 d78beb2 PAIR0, pre-registered: E4B vs 12B untrained on real documents under the served runtime — headroom for the large half
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 d78beb2 PAIR0, pre-registered: E4B vs 12B untrained on real documents under the served runtime — headroom for the large half
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    d78beb2 PAIR0, pre-registered: E4B vs 12B untrained on real documents under the served runtime — headroom for the large half | 0.30.0
+    this module trains its own adapter — nothing to carry in
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90
+    [wiki] base-walks+page+top8: 52 to run, 0 resumed
+    [wiki] base-walks+page+top8 50/52 credit 8 value-right 9 errors 0 26s
+    [wiki] base-walks+page+top8 52/52 credit 8 value-right 9 errors 0 27s
+    [wiki] NOTHING SCORED
+    the runner wrote its result — done
+exit 0
