@@ -1,0 +1,30 @@
+{
+ "base": "google/gemma-4-12B-it",
+ "started": "2026-10-03T17:30:04",
+ "grader": "training.wiki.grade",
+ "library": "knowledge/distributor-wiki",
+ "eval_world": 20260924,
+ "arms": {},
+ "members": {
+  "withlib-s0": {
+   "adapter": "adapters/real-none12b-s0",
+   "seed": 0,
+   "recipe": {
+    "r": 16,
+    "lora_alpha": 32,
+    "epochs": 3,
+    "lr": 0.0002,
+    "batch": 2,
+    "accum": 8,
+    "max_seq": 1536,
+    "seed": 0,
+    "targets": "q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"
+   },
+   "adapter_sha256": "e5ff43778ee693a828755c71d9e174c13defb7e946e8f3dc7e422dfcf1dd2d64",
+   "corpus": "train_real_none.jsonl",
+   "corpus_sha256": "dadfcb9928492aa45730277ae0600c4495faa38973290ae2158efe07f507aee5"
+  }
+ },
+ "packed": 1,
+ "trained_only": "2026-10-03T18:03:34"
+}
