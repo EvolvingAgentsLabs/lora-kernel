@@ -1,0 +1,23 @@
+{
+ "rows_added": 126,
+ "base_rows": 1400,
+ "abstaining_share": 0.083,
+ "added_by_role": {
+  "developer": 42,
+  "lead": 42,
+  "qa": 42
+ },
+ "added_by_kind": {
+  "outside-tracker": 41,
+  "outside-role": 85
+ },
+ "added_without_tool_block": 42,
+ "every_added_walk_abstains": true,
+ "eval_out": 30,
+ "eval_by_kind": {
+  "outside-tracker": 16,
+  "outside-role": 14
+ },
+ "eval_request_in_train": 0,
+ "passed": true
+}
