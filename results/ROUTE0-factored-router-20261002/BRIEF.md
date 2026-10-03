@@ -50,6 +50,29 @@ from M2's sets (read at the level of individual scores — training data in all 
 
 One scoring; the rule, the sets and the gate do not change after the sets exist. Redesign counter for arm 4: 0.
 
-## Result
+## Result [ran] — PASSES; safe by construction, literal by design
 
-*(written after the run)*
+`read.py` → `verdict.json`, sets frozen in a commit before the one scoring.
+
+| set | factored router | dictionary (today's default) |
+|---|---|---|
+| foreign — E3, E4, I3, C3, D3 (600) served locally | **0** | 294 |
+| A3 lost / misrouted (120) | 0 / 0 | 0 / 0 |
+| F3 unseen senders lost (120) | **0** | 7 |
+| G3 task first lost (120) | **0** | 3 |
+| H3 wrapped by OpenClaw lost / misrouted (120) | **0 / 0** | 0 / 65 |
+| B3 paraphrases kept local (120, reported) | 0 (they leave, as designed) | 54 (3 misrouted) |
+
+- **Verdict: PASSES** — 100 % of foreign text abstained (bar 95 %), fewer misroutes than the dictionary (0 vs 294),
+  A3 0/0, F3, G3, H3 0 lost each. **The wall arms 1–3 hit — unseen senders lost 120/120 — is gone** because the sender
+  is content, and content only has to be the member's *kind*. The router becomes the proxy's (`openai_proxy --router
+  factored`, default; `route.decide_factored`): pool members by task and content, a region with no corpus in the pool
+  (fluids) on its keys as before.
+- **Why a perfect score is believed only this far.** The sets were written blind to the code but from a spec that names
+  the structure the rule assumes (a task paragraph, the corpus's header format). A post-hoc stress probe, **outside the
+  verdict** — an extra `Cc:` or `To:` header, politeness around the task ("Hi! Is this important? Thanks"), the task in
+  the header's paragraph — sends every variant **out**, never to a wrong member. The rule is literal: it is safe because
+  it fails toward the frontier, and it keeps local exactly the format the gateway itself writes. Where a client formats
+  content its own way, the local share falls and correctness does not.
+- **What it does not do:** keep a paraphrase local (B3 0/120). That is a bet on the members — trained on one wording each
+  — and stays the frontier's until a member is measured answering paraphrases.

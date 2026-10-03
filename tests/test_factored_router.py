@@ -25,3 +25,12 @@ def test_task_and_content_both_have_to_match():
 def test_openclaws_stamp_is_removed_before_routing():
     r = FactoredRouter(CORPORA)
     assert r.decide(f"[Fri 2026-10-02 10:00 GMT-3] {HEAD}\n\nIs this important?") == "email"
+
+
+def test_the_proxy_route_keeps_a_region_without_a_corpus_on_its_keys():
+    """route.decide_factored: pool members by task and content; fluids (no corpus in the pool) by its keys."""
+    from training.harness import route
+    msg = lambda t: {"messages": [{"role": "user", "content": t}]}
+    # fluids is measured `out` in route.REGIONS: its keys still name it, and the serve table sends it out
+    assert route.decide_factored(msg("A pump lifts water; find the head loss in the pipe.")) == ("out", "fluids-full is served out")
+    assert route.decide_factored(msg("Write me a haiku."))[0] == "out"
