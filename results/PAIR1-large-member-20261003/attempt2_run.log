@@ -1,0 +1,82 @@
+[pool] training adapters/real-none12b-s0 on google/gemma-4-12B-it from training/wiki/data/train_real_none.jsonl
+[train] adapters/real-none12b-s0 from 315 examples
+W1003 11:47:41.009000 3178 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1003 11:47:41.053000 3178 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/677 [00:00<?, ?it/s]Loading weights:   0%|          | 1/677 [00:00<05:01,  2.24it/s]Loading weights:   2%|▏         | 14/677 [00:00<00:20, 32.96it/s]Loading weights:   3%|▎         | 22/677 [00:00<00:14, 44.52it/s]Loading weights:   5%|▌         | 36/677 [00:00<00:09, 66.27it/s]Loading weights:   7%|▋         | 50/677 [00:00<00:07, 81.69it/s]Loading weights:   9%|▉         | 64/677 [00:01<00:06, 92.55it/s]Loading weights:  12%|█▏        | 78/677 [00:01<00:05, 100.09it/s]Loading weights:  13%|█▎        | 90/677 [00:01<00:05, 98.30it/s] Loading weights:  16%|█▌        | 105/677 [00:01<00:05, 106.54it/s]Loading weights:  17%|█▋        | 118/677 [00:01<00:05, 107.47it/s]Loading weights:  20%|█▉        | 133/677 [00:01<00:04, 113.59it/s]Loading weights:  22%|██▏       | 147/677 [00:01<00:04, 115.50it/s]Loading weights:  24%|██▍       | 161/677 [00:01<00:04, 116.44it/s]Loading weights:  26%|██▌       | 174/677 [00:01<00:04, 111.96it/s]Loading weights:  28%|██▊       | 187/677 [00:02<00:04, 111.70it/s]Loading weights:  30%|██▉       | 202/677 [00:02<00:04, 117.26it/s]Loading weights:  32%|███▏      | 216/677 [00:02<00:03, 117.80it/s]Loading weights:  34%|███▍      | 230/677 [00:02<00:03, 117.60it/s]Loading weights:  36%|███▌      | 242/677 [00:02<00:03, 112.91it/s]Loading weights:  38%|███▊      | 257/677 [00:02<00:03, 114.36it/s]Loading weights:  40%|███▉      | 270/677 [00:02<00:03, 112.87it/s]Loading weights:  42%|████▏     | 285/677 [00:02<00:03, 116.92it/s]Loading weights:  44%|████▍     | 299/677 [00:03<00:03, 117.75it/s]Loading weights:  46%|████▌     | 313/677 [00:03<00:03, 118.64it/s]Loading weights:  48%|████▊     | 327/677 [00:03<00:02, 118.16it/s]Loading weights:  50%|█████     | 340/677 [00:03<00:02, 113.68it/s]Loading weights:  52%|█████▏    | 354/677 [00:03<00:02, 115.71it/s]Loading weights:  54%|█████▍    | 367/677 [00:03<00:02, 115.09it/s]Loading weights:  56%|█████▋    | 382/677 [00:03<00:02, 118.90it/s]Loading weights:  58%|█████▊    | 395/677 [00:03<00:02, 117.16it/s]Loading weights:  61%|██████    | 410/677 [00:03<00:02, 121.35it/s]Loading weights:  62%|██████▏   | 423/677 [00:04<00:02, 115.13it/s]Loading weights:  64%|██████▍   | 436/677 [00:04<00:02, 114.29it/s]Loading weights:  67%|██████▋   | 451/677 [00:04<00:01, 118.41it/s]Loading weights:  69%|██████▊   | 464/677 [00:04<00:01, 116.67it/s]Loading weights:  71%|███████   | 479/677 [00:04<00:01, 120.20it/s]Loading weights:  73%|███████▎  | 493/677 [00:04<00:01, 120.96it/s]Loading weights:  75%|███████▍  | 506/677 [00:04<00:01, 115.35it/s]Loading weights:  77%|███████▋  | 520/677 [00:04<00:01, 116.61it/s]Loading weights:  79%|███████▉  | 534/677 [00:05<00:01, 118.08it/s]Loading weights:  81%|████████  | 548/677 [00:05<00:01, 119.34it/s]Loading weights:  83%|████████▎ | 562/677 [00:05<00:00, 119.72it/s]Loading weights:  85%|████████▌ | 576/677 [00:05<00:00, 120.07it/s]Loading weights:  87%|████████▋ | 589/677 [00:05<00:00, 115.21it/s]Loading weights:  89%|████████▉ | 602/677 [00:05<00:00, 114.68it/s]Loading weights:  91%|█████████ | 616/677 [00:05<00:00, 117.10it/s]Loading weights:  93%|█████████▎| 631/677 [00:05<00:00, 120.73it/s]Loading weights:  95%|█████████▌| 644/677 [00:05<00:00, 118.16it/s]Loading weights:  97%|█████████▋| 659/677 [00:06<00:00, 120.71it/s]Loading weights: 100%|██████████| 677/677 [00:06<00:00, 110.12it/s]
+[precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
+[train] span-masked: 315 rows, 19454 trained tokens of 594798
+trainable params: 65,568,768 || all params: 12,025,298,944 || trainable%: 0.5453
+  0%|          | 0/60 [00:00<?, ?it/s]  2%|▏         | 1/60 [00:30<30:18, 30.82s/it][W1003 11:49:43.284040078 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 14090240, total: 42405855232).
+[W1003 11:49:43.547191072 CUDACachingAllocator.cpp:508] expandable_segments: memory mapping failed with OOM on device 0 while trying to map 20971520 bytes (free: 20381696, total: 42405855232).
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/content/lora-kernel/training/harness/train_one.py", line 155, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "/content/lora-kernel/training/harness/train_one.py", line 51, in main
+    model, tok = train_adapter(a.base, rows, a.out_dir, SimpleNamespace(
+                 ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        epochs=a.epochs, r=a.r, alpha=a.alpha, lr=a.lr, batch=1 if a.max_seq > 2048 else 2, accum=16 if a.max_seq > 2048 else 8,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        max_seq=a.max_seq, seed=a.seed, four_bit=False, layers_from=a.layers_from,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        targets="q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/lora-kernel/training/s4_train.py", line 253, in train_adapter
+    return _train_on_spans(model, tok, rows, out_dir, args)
+  File "/content/lora-kernel/training/s4_train.py", line 233, in _train_on_spans
+    gradient_checkpointing=True, remove_unused_columns=False)).train()
+                                                               ~~~~~^^
+  File "/usr/local/lib/python3.13/dist-packages/transformers/trainer.py", line 1520, in train
+    return inner_training_loop(
+        args=args,
+    ...<2 lines>...
+        ignore_keys_for_eval=ignore_keys_for_eval,
+    )
+  File "/usr/local/lib/python3.13/dist-packages/transformers/trainer.py", line 1602, in _inner_training_loop
+    self._run_epoch(
+    ~~~~~~~~~~~~~~~^
+        model=model,
+        ^^^^^^^^^^^^
+    ...<9 lines>...
+        steps_trained_in_current_epoch=steps_trained_in_current_epoch,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/dist-packages/transformers/trainer.py", line 1842, in _run_epoch
+    tr_loss_step = self.training_step(model, inputs, num_items_in_batch)
+  File "/usr/local/lib/python3.13/dist-packages/transformers/trainer.py", line 2044, in training_step
+    self.accelerator.backward(loss, **kwargs)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/accelerate/accelerator.py", line 2861, in backward
+    loss.backward(**kwargs)
+    ~~~~~~~~~~~~~^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/torch/_tensor.py", line 623, in backward
+    torch.autograd.backward(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        self, gradient, retain_graph, create_graph, inputs=inputs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/dist-packages/torch/autograd/__init__.py", line 395, in backward
+    _engine_run_backward(
+    ~~~~~~~~~~~~~~~~~~~~^
+        tensors,
+        ^^^^^^^^
+    ...<5 lines>...
+        accumulate_grad=True,
+        ^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/dist-packages/torch/autograd/graph.py", line 979, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        t_outputs, *args, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )  # Calls into the C++ engine to run the backward pass
+    ^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 4.00 GiB. GPU 0 has a total capacity of 39.49 GiB of which 4.00 GiB is free. Including non-PyTorch memory, this process has 35.48 GiB memory in use. Of the allocated memory 34.82 GiB is allocated by PyTorch, and 158.84 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)
+  2%|▏         | 1/60 [00:38<38:20, 38.99s/it]
+[pool] training adapters/real-none12b-s0 failed rc=1

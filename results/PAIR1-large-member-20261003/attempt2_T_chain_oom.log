@@ -1,0 +1,26 @@
+=== session 1 of 1 · srv084115 · A100
+    boot clone: rc=0 aed962a PAIR1 attempt 1 OOM (allocator fragmentation at window 4,096 on the 12B) — expandable segments, retry
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 aed962a PAIR1 attempt 1 OOM (allocator fragmentation at window 4,096 on the 12B) — expandable segments, retry
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    aed962a PAIR1 attempt 1 OOM (allocator fragmentation at window 4,096 on the 12B) — expandable segments, retry | 0.30.0
+    this module trains its own adapter — nothing to carry in
+    runner started (launch 1)
+    [train] adapters/real-none12b-s0 from 315 examples
+    W1003 11:47:41.009000 3178 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W1003 11:47:41.053000 3178 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [train] adapters/real-none12b-s0 from 315 examples
+    W1003 11:47:41.009000 3178 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W1003 11:47:41.053000 3178 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
+    [train] span-masked: 315 rows, 19454 trained tokens of 594798
+      0%|          | 0/60 [00:00<?, ?it/s]
+    torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 4.00 GiB. GPU 0 has a total capacity of 39.49 GiB of which 4.00 GiB is free. Including non-PyTorch memory, this process has 35.48 GiB memory in use. Of the allocated memory 34.82 GiB is allocated by PyTorch, and 158.84 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)
+      2%|▏         | 1/60 [00:38<38:20, 38.99s/it]
+    [pool] training adapters/real-none12b-s0 failed rc=1
+    the runner wrote its result — done
+exit 0
