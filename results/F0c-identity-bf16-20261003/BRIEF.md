@@ -34,6 +34,28 @@ LoRA/general); the verdict is the LoRA rows'. Speed is not read (batch-invariant
 
 One A100 session. If the A100 is refused three times, recorded as such, not moved to another precision.
 
-## Result
+## Result [ran] — the engine is deterministic here; spec decode differs only at near-ties, and on the LoRA's rows never inside what serving generates
 
-*(written after the run)*
+One A100, bf16, `VLLM_BATCH_INVARIANT=1`, G1 applied in all three servers (3/3), `spike.json`.
+
+| set | **control** — plain vs plain | MTP vs plain | MTP speed-up b1 | α | mean accepted length |
+|---|--:|--:|--:|--:|--:|
+| base / domain | **16/16** | 16/16 | 2.89× | 0.760 | 4.04 |
+| base / general | **8/8** | 3/8 | 2.65× | 0.550 | 3.20 |
+| LoRA / domain | **16/16** | 14/16 | 1.98× | 0.337 | 2.35 |
+| LoRA / general | **8/8** | 8/8 | 2.34× | 0.437 | 2.75 |
+
+- **The control is identical in every set:** in bf16 on an A100 the engine is deterministic, and the test F0b could not run
+  is read here.
+- **Verdict by the table written first: A REAL DIFFERENCE** — the control identical, MTP differing in two sets.
+- **Read where it diverges.** **LoRA / domain, 2 of 16:** both diverge *after* a `</search>` — this spike decodes freely to
+  160 tokens with no runtime, so the member goes on to *invent* the result line and writes an opaque id, `[00e]` against
+  `[00i]`, a near-perfect tie. In serving, generation stops at the closing tag and the runtime writes the result: **up to
+  the stop, all 16 are identical** — the text that differs is text a served walk never generates. **LoRA / general:** 8/8.
+  **Base / general, 5 of 8:** synonym choices at near-ties ("the interior" / "the air inside", "nature's" / "the
+  Earth's") — numerical: the drafter's verification scores several positions in one forward, a different reduction shape
+  from one-token decoding, and batch-invariant mode makes batches equal, not verification shapes. Not a fault in the
+  acceptance rule; not bitwise.
+- **What this establishes:** with the expert's LoRA on its own domain, speculative decoding with the native MTP drafter
+  preserves what the member writes up to every stop, at **1.98×**; exact bitwise identity holds where no near-tie occurs
+  and is not guaranteed by vLLM in general. On general text — which the frontier, not a member, serves — synonyms flip.
