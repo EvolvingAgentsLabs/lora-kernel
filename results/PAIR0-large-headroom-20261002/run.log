@@ -1,10 +1,10 @@
 Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
 [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90
 [wiki] base-walks+page+top8: 52 to run, 0 resumed
-[wiki] base-walks+page+top8 10/52 credit 2 value-right 2 errors 0 9s
-[wiki] base-walks+page+top8 20/52 credit 5 value-right 5 errors 0 13s
-[wiki] base-walks+page+top8 30/52 credit 6 value-right 6 errors 0 18s
-[wiki] base-walks+page+top8 40/52 credit 7 value-right 8 errors 0 22s
-[wiki] base-walks+page+top8 50/52 credit 8 value-right 9 errors 0 26s
-[wiki] base-walks+page+top8 52/52 credit 8 value-right 9 errors 0 27s
+[wiki] base-walks+page+top8 10/52 credit 1 value-right 2 errors 0 8s
+[wiki] base-walks+page+top8 20/52 credit 4 value-right 5 errors 0 14s
+[wiki] base-walks+page+top8 30/52 credit 9 value-right 10 errors 0 19s
+[wiki] base-walks+page+top8 40/52 credit 11 value-right 12 errors 0 23s
+[wiki] base-walks+page+top8 50/52 credit 12 value-right 13 errors 0 29s
+[wiki] base-walks+page+top8 52/52 credit 12 value-right 13 errors 0 30s
 [wiki] NOTHING SCORED

@@ -1,0 +1,30 @@
+=== session 1 of 1 · srv223234 · A100
+    boot clone: rc=0 047b98f PAIR0: the 12B arm VOID (thought channel open with thinking off, 8/52) — empty-thought prefill, rerun
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 047b98f PAIR0: the 12B arm VOID (thought channel open with thinking off, 8/52) — empty-thought prefill, rerun
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    047b98f PAIR0: the 12B arm VOID (thought channel open with thinking off, 8/52) — empty-thought prefill, rerun | 0.30.0
+    this module trains its own adapter — nothing to carry in
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90
+    [rank] vllm serve google/gemma-4-12B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90
+    [wiki] base-walks+page+top8 20/52 credit 4 value-right 5 errors 0 14s
+    [wiki] base-walks+page+top8 30/52 credit 9 value-right 10 errors 0 19s
+    [wiki] base-walks+page+top8 40/52 credit 11 value-right 12 errors 0 23s
+    [wiki] base-walks+page+top8 50/52 credit 12 value-right 13 errors 0 29s
+    [wiki] base-walks+page+top8 52/52 credit 12 value-right 13 errors 0 30s
+    [wiki] NOTHING SCORED
+    the runner wrote its result — done
+exit 0
