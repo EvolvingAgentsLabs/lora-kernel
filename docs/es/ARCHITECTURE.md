@@ -28,7 +28,7 @@ Todo lo demás es ese hecho aplicado cuatro veces:
 |---|---|---|
 | **el experto** | un QLoRA sobre el modelo chico, entrenado por SFT sobre un corpus, liberado con un contrato que registra la distribución | **[ran]** dos liberados; desde M1 sobre `Qwen3.5-4B`, cada uno empatando su liberación de Qwen 2.5 |
 | **el router** | un modelo muy chico *de los mismos corpus*: a la distribución de qué experto cae este pedido — o de ninguno | un router factorizado (tarea vs. contenido) **[ran]** ROUTE0, el default del proxy; el diccionario se queda al lado; tres brazos de pedido entero **[ran]** M2, M2b, M2c fallaron primero; en un despliegue con un agente por rol, *el rol es la ruta* (§9) |
-| **el par** | un segundo LoRA, sobre el modelo grande, entrenado sobre el *mismo corpus*; el chico borradorea, el grande verifica | **[ran]** un resultado de velocidad medido (1,98–2,4×, bf16 sobre una A100, identidad de salida establecida — F0c) sin todavía una región que necesite la precisión de la mitad grande (B3, PAIR0); PAIR1 — pre-registrado, corriendo — hitos 3–4 |
+| **el par** | un segundo LoRA, sobre el modelo grande, entrenado sobre el *mismo corpus*; el chico borradorea, el grande verifica | **[ran]** un resultado de velocidad medido (1,98–2,4×, bf16 sobre una A100, identidad de salida establecida — F0c) sin una región que necesite la precisión de la mitad grande (B3, PAIR0, PAIR1 — EMPATE, 33/44 vs 34/44) — hitos 3–4 |
 | **la memoria** | la biblioteca propia del subdominio — un arnés operativo y una wiki enciclopédica — un radar sobre ella, tres verbos, y un árbitro; el LoRA aprende el **hábito de navegar**, no el contenido | biblioteca, árbitro, corpus construidos **[ran]** W1, W2, W4; búsqueda debajo de su vara **[ran]** W3; ~~la afirmación central medida tres veces y no pasa — W5, W5b, W5c (la navegación se transfiere, leer un valor condicional en una nota nunca vista no)~~ — **pasa con el diseño del enunciado atómico, 2026-09-24 [ran] W9**: las dos semillas 35/40 contra el 0/40 del base sin entrenar, empatando con el base al que se le dan los enunciados del oráculo. Es real sólo cuando el texto *y* la pérdida lo son: la misma trayectoria entrenada sobre un mundo *generado* nunca abre una página real, 0/25 **[ran] REAL0**; entrenada en cambio sobre recorridos de documentos reales con la pérdida sobre los tramos propios del modelo, transfiere a una familia que nunca entrenó (18/23 contra el 9/23 del base sin entrenar, dos semillas) y aprende a negarse ante lo que su biblioteca no puede contestar (15/16, 0 falsas de 36) **[ran] REAL3, REAL4**; una tercera familia densa en enlaces lee 15/25 contra el 2/25 del base sin entrenar — una transferencia grande, bajo la barra de 70 % en la citación estricta, el ítem abierto **[ran] REAL5**. **Servido hoy** con la compuerta de citación encendida y una página acotada a sus 8 mejores enunciados por defecto **[ran] GATE0, PAGE0** (§4) |
 
 ```mermaid
@@ -248,16 +248,21 @@ región**, y el par especulativo se queda como resultado de velocidad sin una re
 precisión de la mitad grande
 ([`PAIR0`](../../results/PAIR0-large-headroom-20261002/BRIEF.md)).
 
-**PAIR1 — pre-registrado, corriendo, 2026-10-03: el miembro que pide la propia definición del par.**
+**PAIR1 [ran], 2026-10-03 — EMPATE: el miembro que pide la propia definición del par.**
 El tamaño sin entrenar no es el diseño del par — las dos mitades se entrenan sobre el mismo corpus —
-así que el control de arriba no cierra la pregunta por sí solo. `real-none-12b` entrena a
-`gemma-4-12B-it` sobre el corpus y la receta idénticos a `real-none-s0`, puntuado pareado contra las
-filas grabadas de PAGE0 y FMT0 para el miembro E4B. El entrenamiento chocó con dos quedadas sin
-memoria en la ventana de 4.096 en una A100 (la segunda por el tamaño exacto del propio tensor de
-logits) y un intento en H100 fue rechazado por cupo; `s4_train.span_logits_loss` — probado igual a
-la entropía cruzada desplazada propia de HuggingFace sobre un LM causal diminuto,
-`tests/test_span_logits.py` — queda lista para el próximo intento sin cambiar el corpus, la receta
-ni las varas. Sin resultado todavía
+así que el control de arriba no cierra la pregunta por sí solo. El entrenamiento chocó con dos
+quedadas sin memoria en la ventana de 4.096 en una A100 de 40 GB (la segunda por el tamaño exacto
+del propio tensor de logits) y un intento en H100 fue rechazado por cupo antes de que
+`s4_train.span_logits_loss` — probado igual a la entropía cruzada desplazada propia de HuggingFace
+sobre un LM causal diminuto, `tests/test_span_logits.py` — dejara terminar la corrida sin cambiar
+el corpus, la receta ni las varas. Entrenado, `real-none-12b` empata con `real-none-s0` sobre el
+registro de PAGE0: 33/44 contra 34/44 respondibles, pareado 5 : 6 ($p = 1,0$), 23/30 contra 24/30
+multi-hop, 10/14 one-hop y 7/8 rechazos los dos, y 33/44 contra el registro de FMT0 también. Con
+B3, una segunda región donde la mitad grande no compra precisión; el par especulativo se queda
+como resultado de velocidad (B4, F0, C0, F0c) sin una región que lo necesite. Entrenado, el 12B
+camina limpio — 0 líneas de pensamiento donde el 12B pelado dejó cientos en PAIR0 — así que el
+protocolo era el entrenamiento, no el tamaño. Una observación al lado del veredicto: los dos
+miembros se equivocan en filas distintas (39/44 correctas por cualquiera de los dos)
 ([`PAIR1`](../../results/PAIR1-large-member-20261003/BRIEF.md)).
 
 **Lo que ya se sabe de las mitades.** vLLM aplica un LoRA sobre un modelo grande en 4 bits

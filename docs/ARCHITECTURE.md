@@ -25,7 +25,7 @@ Everything else is that fact applied four times:
 |---|---|---|
 | **the expert** | a QLoRA on the small model, trained by SFT on one corpus, released with a contract that records the distribution | **[ran]** two released; since M1 on `Qwen3.5-4B`, each tying its Qwen 2.5 release |
 | **the router** | a very small model *of the same corpora*: which expert's distribution does this request fall in — or none | a factored router (task vs. content) **[ran]** ROUTE0, the proxy's default; the dictionary stays beside it; three whole-request arms **[ran]** M2, M2b, M2c failed first; in a deployment with one agent per role, *the role is the route* (§9) |
-| **the pair** | a second LoRA, on the large model, trained on the *same corpus*; the small one drafts, the large one verifies | **[ran]** a measured speed result (1.98–2.4×, bf16 on an A100, output identity established — F0c) without a region that needs the large half's accuracy yet (B3, PAIR0); PAIR1 — pre-registered, running — milestones 3–4 |
+| **the pair** | a second LoRA, on the large model, trained on the *same corpus*; the small one drafts, the large one verifies | **[ran]** a measured speed result (1.98–2.4×, bf16 on an A100, output identity established — F0c) without a region that needs the large half's accuracy (B3, PAIR0, PAIR1 — TIE, 33/44 vs 34/44) — milestones 3–4 |
 | **the memory** | the subdomain's library — an operational harness and an encyclopedic wiki — a radar over it, three verbs, and a referee; the LoRA learns the **habit of navigating**, not the content | library, referee, corpus built **[ran]** W1, W2, W4; search under its bar **[ran]** W3; ~~the central claim measured three times and not passed — W5, W5b, W5c (navigation transfers, reading a conditional value in an unseen note does not)~~ — **passed on the atomic-statement design, 2026-09-24 [ran] W9**: both seeds 35/40 against the untrained base's 0/40, tying the base handed the oracle's own statements. Real only when both the text and the loss are: the same trajectory trained on a *generated* world never opens a real page, 0/25 **[ran] REAL0**; trained instead on real-document walks with the loss on the model's own spans, it transfers to a family it never trained on (18/23 against the untrained base's 9/23, two seeds) and learns to refuse what its library cannot answer (15/16, 0 false of 36) **[ran] REAL3, REAL4**; a third, link-dense family reads 15/25 against the untrained base's 2/25 — a large transfer, under the 70% bar on the strict citation, the open item **[ran] REAL5**. **Served today** with the citation gate on and a page capped to its best 8 statements by default **[ran] GATE0, PAGE0** (§4) |
 
 ```mermaid
@@ -229,15 +229,19 @@ thinking off and looped on it until the call budget ran out; fixed with `wiki_ar
 without a region that needs the large half's accuracy
 ([`PAIR0`](../results/PAIR0-large-headroom-20261002/BRIEF.md)).
 
-**PAIR1 — pre-registered, running, 2026-10-03: the member the pair's own definition calls for.**
+**PAIR1 [ran], 2026-10-03 — TIE: the member the pair's own definition calls for.**
 Untrained size is not the pair's design — both halves are trained on the same corpus — so the
-control above does not settle the question by itself. `real-none-12b` trains `gemma-4-12B-it` on
-the identical corpus and recipe as `real-none-s0`, scored paired against PAGE0's and FMT0's
-recorded rows for the E4B member. Training has hit two out-of-memory failures at window 4,096 on
-an A100 (the second by exactly the logits tensor's own size) and an H100 attempt was refused on
-quota; `s4_train.span_logits_loss` — proved equal to HuggingFace's own shifted cross-entropy on a
-tiny causal LM, `tests/test_span_logits.py` — is ready for the next attempt without changing the
-corpus, recipe or bars. No result yet
+control above does not settle the question by itself. Training took two out-of-memory failures
+at window 4,096 on a 40 GB A100 (the second by exactly the logits tensor's own size) and an
+H100 attempt refused on quota before `s4_train.span_logits_loss` — proved equal to HuggingFace's
+own shifted cross-entropy on a tiny causal LM, `tests/test_span_logits.py` — let the run finish
+without changing the corpus, recipe or bars. Trained, `real-none-12b` ties `real-none-s0` on
+PAGE0's record: 33/44 against 34/44 answerable, paired 5 : 6 ($p = 1.0$), 23/30 against 24/30
+multi-hop, 10/14 one-hop and 7/8 refusals both, and 33/44 against FMT0's record too. With B3, a
+second region where the large half buys no accuracy; the speculative pair stays a speed result
+(B4, F0, C0, F0c) without a region that needs it. Trained, the 12B walks clean — 0 thought lines
+where the bare 12B left hundreds in PAIR0 — so the protocol was the training, not the size. One
+observation beside the verdict: the two members err on different rows (39/44 right by either)
 ([`PAIR1`](../results/PAIR1-large-member-20261003/BRIEF.md)).
 
 **What is already known about the halves.** vLLM applies a LoRA over a 4-bit large model

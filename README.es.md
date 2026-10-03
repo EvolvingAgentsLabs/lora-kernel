@@ -402,11 +402,16 @@ mitad grande. [ran] PAIR0, 2026-10-02:** antes de entrenar un miembro 12B para l
 dos bases peladas bajo el runtime servido — el 12B le pierde al E4B, 11/44 contra 21/44 filas respondibles, pareado
 2 : 12, $p = 0,013$. Tampoco se entrena un miembro 12B para esta región; el par se queda como resultado de velocidad
 sin una región que necesite la precisión de la mitad grande.
-**PAIR1 — pre-registrado, corriendo, 2026-10-03:** el tamaño sin entrenar confunde con el protocolo, así que la
-propia definición del par — las dos mitades entrenadas sobre el mismo corpus — tiene su propio intento:
-`real-none-12b` sobre el corpus y la receta de `real-none-s0`. El entrenamiento chocó con dos quedadas sin memoria
-en la ventana de 4.096 en una A100 y una H100 fue rechazada por cupo; un arreglo (`span_logits_loss`, probado igual
-a la propia pérdida de HuggingFace) queda listo para el próximo intento. Sin resultado todavía
+**PAIR1 [ran], 2026-10-03 — EMPATE:** el tamaño sin entrenar confunde con el protocolo, así que la propia definición
+del par — las dos mitades entrenadas sobre el mismo corpus — tuvo su propio intento. El entrenamiento chocó con dos
+quedadas sin memoria en la ventana de 4.096 en una A100 de 40 GB y una H100 rechazada por cupo antes de que
+`span_logits_loss` (probado igual a la propia pérdida de HuggingFace) lo dejara terminar. Entrenado, `real-none-12b`
+empata con `real-none-s0` sobre el registro de PAGE0: 33/44 contra 34/44 respondibles, pareado 5 : 6 ($p = 1,0$),
+23/30 contra 24/30 multi-hop, 10/14 one-hop y 7/8 rechazos los dos — y 33/44 contra el registro de FMT0 también. Con
+B3, una segunda región donde la mitad grande no compra precisión; el par especulativo se queda como resultado de
+velocidad (B4, F0, C0, F0c) sin una región que lo necesite. Entrenado, el 12B camina limpio — 0 líneas de pensamiento
+donde el 12B pelado dejó cientos en PAIR0 — así que el protocolo era el entrenamiento, no el tamaño. Una observación
+al lado del veredicto: los dos miembros se equivocan en filas distintas (39/44 correctas por cualquiera de los dos)
 ([`PAIR1`](results/PAIR1-large-member-20261003/BRIEF.md)).
 
 **Confirmado en una GPU de tamaño completo, bf16 (C0).** El drafter MTP propio del 12B con el LoRA
