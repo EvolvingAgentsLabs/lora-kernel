@@ -378,7 +378,7 @@ LoRA does not rescue the drafter either — see §6.6.
 | **D. the native MTP retrained per expert** | same as C | no support in `speculators`; the training would have to be written |
 
 **What we measured next:**
-- ~~**F0b**: whether the output with the draft is identical to the plain one~~ — **[ran]**: not testable on an L4 in FP8; the differences read as drift (§8.4).
+- ~~**F0b**: whether the output with the draft is identical to the plain one~~ — **[ran]**: not testable on an L4 in FP8; the differences read as drift (§8.4). ~~**F0c**: the same question in bf16 on an A100~~ — **[ran]**: **established** — the plain-vs-plain control is identical in every set, and MTP matches it up to every point a served walk reads to; see §8.4.
 - **C0 [ran]:** on an A100 in bf16, Gemma's own MTP drafter with the domain's expert LoRA turned on gives 1.92× on the
   domain (α 0.34) and 2.40× general, against 2.80×/2.60× on the base — a real recovery from F0's 1.74×, but still below
   the base's speed. The other arm — the wiki E4B, already aligned to the same corpus (B4: the 12B accepted 90% of its
@@ -697,7 +697,7 @@ In theory, greedy is deterministic. On a GPU, **the same question can give anoth
 floating-point sums are done in another order, and in a near-exact tie between two tokens the other one wins. vLLM has
 a batch-invariant mode (`VLLM_BATCH_INVARIANT=1`) for when exact texts need to be compared. **[ran] F0:** without that
 mode, speculative decoding gave texts different from normal decoding in part of the cases — and so did the same LoRA
-reloaded *without* a draft. Until it is repeated in invariant mode, "identical output" is not established. **[ran] F0b:** repeated in that mode, on an L4 in FP8, two plain runs already differed (9/16 identical on the domain), so the mode does not make this card deterministic; spec decode differed from plain about as much — which reads as drift, but proving it needs bf16 on an A100/H100.
+reloaded *without* a draft. Until it is repeated in invariant mode, "identical output" is not established. **[ran] F0b:** repeated in that mode, on an L4 in FP8, two plain runs already differed (9/16 identical on the domain), so the mode does not make this card deterministic; spec decode differed from plain about as much — which reads as drift, but proving it needs bf16 on an A100/H100. **[ran] F0c:** proved there — one A100, bf16 — and the engine turns out to be deterministic: the plain-vs-plain control is identical in all four sets (16/16, 8/8, 16/16, 8/8). Against that control, speculative decoding with the native MTP drafter matches it exactly on LoRA/general (8/8), and on the LoRA's own domain the 2 of 16 divergences both happen *after* the closing tag a served walk stops at — up to that stop, 16/16 agree, at 1.98×. Base/general flips 5 of 8 on synonym near-ties (a verification-shape artefact of scoring several positions in one forward, not a fault in the acceptance rule). So: with the expert's own LoRA, on its own domain, identity holds for everything a served walk actually generates; it is not a bitwise guarantee of vLLM in general.
 
 ### 8.5 Pre-registering
 
@@ -732,6 +732,7 @@ happened to us last week).
 | 2026-09-30 | the real-document member learns to refuse what its library cannot answer | REAL4, 15/16 refused, 0 false refusals of 36 **[ran]** |
 | 2026-09-30 | the gateway survives a restart without re-running a held charge, and its own process cannot reach outside its configured hosts | #310 **[ran]** |
 | 2026-10-02 | a router that factors a request into its task and the member's content passes where three whole-request routers failed; it is the proxy's default | ROUTE0 **[ran]** |
+| 2026-10-03 | speculative decoding's output identity at temperature 0, established — bf16 on an A100, the engine is deterministic and MTP matches it up to every stop a served walk reaches | F0c **[ran]** |
 
 ---
 
@@ -739,12 +740,12 @@ happened to us last week).
 
 | what | state | next step |
 |---|---|---|
-| identical output with speculative | **not testable on an L4 in FP8 [ran] F0b**: plain decoding twice already differs; spec decode differs about as much (reads as drift) | bf16 on an A100/H100, where batch-invariant mode is built for |
+| identical output with speculative | ~~**not testable on an L4 in FP8 [ran] F0b**: plain decoding twice already differs; spec decode differs about as much (reads as drift)~~ — **established [ran] F0c, bf16 on an A100**: the plain-vs-plain control is identical in every set, and MTP matches it up to every stop a served walk reaches (16/16 to the stop on the LoRA's own domain, 8/8 on LoRA/general); base/general still flips on synonym near-ties (5/8), a verification-shape artefact | — |
 | a draft tuned per expert, hot-swapped | **[ran] C0**: the native MTP + expert LoRA recovers some of the speed (1.92× domain, 2.40× general, against 2.80×/2.60× on the base) but not all of it; the merged, fully-aligned E4B draft (strategy C) has not run — OOM beside the 12B on an L4, FP8/bitsandbytes/H100 all blocked this round. **[ran] C0-upper**: restricting the LoRA's layers does not help either (§6.6) | **still open, parked, not falsified**: strategy B (a draft LoRA) waits because MTP already pays for itself on an L4 and does not on the Mac — no reason yet to build the harder thing |
 | the draft with the LoRA active | loses acceptance in the domain; aligning the large model's own MTP recovers part of it (1.74× → 1.92×, C0) but layer restriction does not add to that (C0-upper) | strategies A, C (properly sized) or D (§6.4), starting with the cheapest |
 | the Mac track | **[ran]**: MLX hot swap in 2.9 µs (research bench, §3.5); **edge serving is now llama.cpp** — LoRA hot-swap in 3 ms, but MTP slows the 12B there too (0.52–0.87×, MAC2) and the E4B+12B pair does not fit in 16 GB | serve one member at a time on the edge, as LIVE-distributor does; a drafter aligned to the LoRA stays parked (above) |
 | learned router | **[ran] ROUTE0, PASSES, 2026-10-02:** a factored router (task vs. content) serves 0/600 foreign texts locally and loses 0/480 legitimate requests, against three whole-request arms that each lost 120/120 unseen-sender requests or leaked foreign text — now the proxy's default | — |
-| a 12B member for real documents | **[ran] PAIR0, NO HEADROOM, 2026-10-02:** untrained, under the served runtime, the 12B reads real documents significantly worse than the E4B (11/44 vs 21/44 answerable, paired 2:12, $p=0.013$) — the headroom check this milestone's own order calls for, run before training | not trained; checked again only if a later real-document family shows the untrained E4B at its own ceiling |
+| a 12B member for real documents | **[ran] PAIR0, NO HEADROOM, 2026-10-02:** untrained, under the served runtime, the 12B reads real documents significantly worse than the E4B (11/44 vs 21/44 answerable, paired 2:12, $p=0.013$) — the headroom check this milestone's own order calls for, run before training. The pair's own definition removes the untrained confound: both sizes trained on the same corpus. **PAIR1 — pre-registered, running, 2026-10-03:** `real-none-12b` (same corpus and recipe as `real-none-s0`) against PAGE0's and FMT0's recorded `real-none-s0` rows; training hit two OOMs at window 4,096 on an A100 and an H100 refused on quota — `s4_train.span_logits_loss` is ready for the next attempt; no result yet | PAIR1's result decides whether any region needs the large half's accuracy |
 | note search with embeddings | 0.63 against 0.80 | keyword search in use |
 | real traffic | everything is synthetic | an anonymized sample from a system in use |
 | the model still makes things up | 3 of 12 answers caught by the filter | a corpus that teaches it to repeat only what the tool says |

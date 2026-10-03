@@ -374,6 +374,11 @@ halves failed while the corpus never showed one, and once it did the small membe
 PAIR0, 2026-10-02:** before training a 12B member for the real-document region, the two bare bases under the served
 runtime — the 12B loses to the E4B, 11/44 against 21/44 answerable rows, paired 2 : 12, $p = 0.013$. No 12B member is
 trained for this region either; the pair stays a speed result without a region that needs the large half's accuracy.
+**PAIR1 — pre-registered, running, 2026-10-03:** untrained size conflates with protocol, so the pair's own
+definition — both halves trained on the same corpus — gets its own try: `real-none-12b` on `real-none-s0`'s corpus
+and recipe. Training has hit two out-of-memory failures at window 4,096 on an A100 and an H100 was refused on
+quota; a fix (`span_logits_loss`, proved equal to HuggingFace's own loss) is ready for the next attempt. No result
+yet ([`PAIR1`](results/PAIR1-large-member-20261003/BRIEF.md)).
 
 **Confirmed on a full-size GPU, bf16 (C0).** The 12B's native MTP drafter with the expert LoRA on:
 1.92× on the domain (α 0.34), 2.40× general; the base pair alone runs 2.80×/2.60×. A merged E4B
@@ -389,10 +394,20 @@ time ([`results/C0-aligned-draft-20260927/`](results/C0-aligned-draft-20260927/B
 LoRA + **Gemma 4's own MTP drafter** (`gemma-4-12B-it-assistant`), on one L4 in FP8: it starts, the LoRA is applied, a
 LoRA loads at runtime in 0.25 s with the drafter on. The base runs **2.7×** faster on the expert's prompts (acceptance
 0.79); **with the LoRA on, 1.7× on its own domain and 2.1× on general text** — the drafter sees the LoRA through the
-target's activations but does not predict what it makes the target write. The public EAGLE-3 does far worse (1.2×). Not
-yet established: that the output is identical to plain decoding at temperature 0 — the run was not batch-invariant. And the
+target's activations but does not predict what it makes the target write. The public EAGLE-3 does far worse (1.2×). That
+run was not batch-invariant, on an L4 in FP8, where F0b then found the engine itself was not deterministic. And the
 expert LoRA hot-swaps, the drafter does not: vLLM binds one drafter per server; what that means and what is being measured, [`docs/GUIDE.md`](docs/GUIDE.md) §6.5
 ([`results/F0-spec-lora-12b-20260927/`](results/F0-spec-lora-12b-20260927/BRIEF.md)).
+
+**Output identity at temperature 0, established [ran] 2026-10-03 (F0c).** In bf16 on an A100, with
+`VLLM_BATCH_INVARIANT=1`, the plain-vs-plain control is identical in every set (16/16, 8/8, 16/16, 8/8) — the engine
+is deterministic here. Against that control, MTP matches it up to every stop a served walk reaches: on the LoRA's
+own domain, 16/16 agree up to the point a served walk stops (the 2 of 16 raw divergences happen only after a closing
+tag this tool-less spike decodes past), at **1.98×**; on LoRA/general, 8/8. Base/general still flips on synonym
+near-ties (5 of 8) — a verification-shape artefact of scoring several positions in one forward, not a fault in the
+acceptance rule. With the expert's own LoRA, on its own domain, speculative decoding preserves what a served walk
+writes up to every stop; it is not a general bitwise guarantee of vLLM
+([`results/F0c-identity-bf16-20261003/`](results/F0c-identity-bf16-20261003/BRIEF.md)).
 
 **The edge runtime is llama.cpp, not MLX — decided 2026-09-28 (MAC2).** On the user's own MacBook
 Air M4 (16 GB), llama.cpp build 11146 loads the E4B GGUF, serves the 12B LoRA (6/6), swaps a LoRA in
@@ -430,8 +445,10 @@ neither passes~~ — **a factored router (task vs. content) now passes [ran] ROU
 foreign texts locally against the dictionary's 294 and loses 0 of 480 legitimate requests, and is now the proxy's
 default; what it will not do by design is keep a paraphrase local (0/120, reported). The small models still invent: in the school demo the gateway replaced 2 of 5
 local replies with the tools' own text — caught, counted, never shown, but not cured. Speculative decoding with a LoRA
-expert runs for real (F0, C0, above), but its output is not yet shown identical to plain decoding, and the aligned
-drafter that might close that gap is parked — it does not run at all yet (C0). Whether the workflow harness beats
+expert runs for real (F0, C0, above), and its output identity at temperature 0 is now established in bf16 on an A100
+(F0c, above) — up to every stop a served walk reaches, on the LoRA's own domain and in full on general text; the
+aligned drafter that might close the remaining speed gap to the bare base is parked — it does not run at all yet
+(C0). Whether the workflow harness beats
 carrying the conversation has an answer that reads two ways: **PASSED** by arm (53/54 dependent turns against
 history's 43/54, flat tokens, every right turn traced by key) but **VOID** as pre-registered, because the gate that
 was meant to guard every arm's first turns is tripped instead by the no-block control's own failure (0/60) — the user

@@ -977,7 +977,7 @@ llama.cpp. **Lo que no**: el borrador mismo. En vLLM el borrador queda fijo al a
 (`--speculative-config`) y es **uno solo para todo el servidor** — no hay borrador por pedido ni soporte
 de LoRA para un borrador en absoluto; la propuesta existe como RFC, no como funcionalidad **[read]**.
 
-**Por qué — las cuatro lecturas, una al lado de la otra.** **F0 [ran]:** con el LoRA de un experto de
+**Por qué — las cinco lecturas, una al lado de la otra.** **F0 [ran]:** con el LoRA de un experto de
 dominio encendido, la aceptación en posición 0 de las propias adivinanzas del borrador cae de 0,98 a
 0,58, y la aceleración de 2,73× a 1,74× — el borrador nunca se entrenó sobre las respuestas de este
 experto, así que adivina peor en su propio terreno. **C0 [ran]**
@@ -992,7 +992,14 @@ H100 fue rechazado por cupo — aparcado, no falseado. **C0-upper [ran]**
 ayuda al borrador, ya que MTP lee sobre todo cerca de arriba de la pila? No — α en el dominio se mueve de
 base 0,82 → LoRA de profundidad completa 0,44 → LoRA de mitad superior 0,43 ($\rho = -0{,}02$, leído como
 nulo): el adaptador de mitad superior todavía toca exactamente las capas de las que lee MTP, así que casi
-nada cambia desde el punto de vista del borrador. **E6 [ran]** (`results/E6-upper-layers-20260927/BRIEF.md`)
+nada cambia desde el punto de vista del borrador. **F0c [ran]** (`results/F0c-identity-bf16-20261003/BRIEF.md`,
+una A100, bf16, `VLLM_BATCH_INVARIANT=1`) responde la pregunta que F0 y F0b dejaron abierta — si el texto que
+escribe la especulativa es el mismo texto que escribiría la decodificación normal: el control plano-contra-plano
+es idéntico en cada conjunto (16/16, 8/8, 16/16, 8/8), así que el motor es determinista acá, y MTP lo iguala
+hasta cada punto al que llega un recorrido servido — 16/16 en el dominio propio del LoRA hasta una etiqueta de
+cierre que esta prueba sin herramienta decodifica de más (un recorrido servido se detiene ahí), 1,98×, y 8/8 en
+LoRA/general; base/general todavía cambia por sinónimos en casi-empates (5/8), un artefacto de la forma de
+verificación al puntuar varias posiciones en una sola pasada, no una falla de la regla de aceptación. **E6 [ran]** (`results/E6-upper-layers-20260927/BRIEF.md`)
 lee la *misma* restricción de capas con otro propósito y ahí sí encuentra un resultado real: entrenar el
 LoRA del miembro de la escuela solo en las capas 21–41 de 42 no cuesta nada contra el miembro de
 profundidad completa (70/70 retenido, 15/15 demo, 0 perdido), y la caché KV de las 21 capas intactas de

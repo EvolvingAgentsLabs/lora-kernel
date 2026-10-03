@@ -894,7 +894,7 @@ at server start-up (`--speculative-config`) and is **one draft for the whole ser
 per request and no LoRA support for a drafter at all; the proposal exists as an RFC, not a feature
 **[read]**.
 
-**Why — the four readings, side by side.** **F0 [ran]:** with a domain expert's LoRA turned on, position-0
+**Why — the five readings, side by side.** **F0 [ran]:** with a domain expert's LoRA turned on, position-0
 acceptance of the *drafter's* own guesses falls from 0.98 to 0.58, and the speed-up from 2.73× to 1.74× —
 the drafter was never trained on this expert's answers, so it guesses worse on their own ground. **C0
 [ran]** (`results/C0-aligned-draft-20260927/BRIEF.md`, A100 bf16): Gemma's own MTP drafter, with the expert
@@ -906,7 +906,14 @@ quantization, and an H100 was refused on quota — parked, not falsified. **C0-u
 does confining the expert's LoRA to the decoder's upper half help the drafter, since MTP reads mostly from
 near the top of the stack? No — α on the domain moves base 0.82 → full-depth LoRA 0.44 → upper-half LoRA
 0.43 ($\rho = -0.02$, read as none): the upper-half adapter still touches exactly the layers MTP reads from,
-so almost nothing changes from the drafter's point of view. **E6 [ran]** (`results/E6-upper-layers-20260927/BRIEF.md`)
+so almost nothing changes from the drafter's point of view. **F0c [ran]** (`results/F0c-identity-bf16-20261003/BRIEF.md`,
+one A100, bf16, `VLLM_BATCH_INVARIANT=1`) answers the question F0 and F0b left open — whether the text spec
+decode writes is the same text plain decoding would: the plain-vs-plain control is identical in every set
+(16/16, 8/8, 16/16, 8/8), so the engine is deterministic here, and MTP matches it up to every point a served
+walk reads to — 16/16 on the LoRA's own domain up to a closing tag this tool-less spike decodes past (a
+served walk stops there), 1.98×, and 8/8 on LoRA/general; base/general still flips on synonym near-ties
+(5/8), a verification-shape artefact of scoring several positions in one forward, not a fault in the
+acceptance rule. **E6 [ran]** (`results/E6-upper-layers-20260927/BRIEF.md`)
 reads the *same* layer restriction for a different purpose and finds a real result there instead: training
 the school member's LoRA only on layers 21–41 of 42 costs nothing against the full-depth member (70/70
 held-out, 15/15 demo, 0 lost), and the KV cache of the 21 untouched layers below comes back **bit-identical
