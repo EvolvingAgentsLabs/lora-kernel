@@ -370,7 +370,10 @@ development stack targets Gemma. **Every released member is on Gemma 4 E4B** —
 small enough for a Mac mini. Its LoRA raises acceptance of the small member's drafts (α 0.871 → 0.898, 76 : 18
 records), so it earns its place as the **verifier**. It buys **no accuracy**: on a band of comparison questions both
 halves failed while the corpus never showed one, and once it did the small member alone went from 10 to 37 of 40
-(milestones 3 and 4, B2–B5).
+(milestones 3 and 4, B2–B5). **A second region finds the same thing: no case for the large half's accuracy. [ran]
+PAIR0, 2026-10-02:** before training a 12B member for the real-document region, the two bare bases under the served
+runtime — the 12B loses to the E4B, 11/44 against 21/44 answerable rows, paired 2 : 12, $p = 0.013$. No 12B member is
+trained for this region either; the pair stays a speed result without a region that needs the large half's accuracy.
 
 **Confirmed on a full-size GPU, bf16 (C0).** The 12B's native MTP drafter with the expert LoRA on:
 1.92× on the domain (α 0.34), 2.40× general; the base pair alone runs 2.80×/2.60×. A merged E4B
@@ -422,8 +425,10 @@ with zero errors over 128 requests; throughput scales near-linearly, 22.7 → 13
 for 1 → 8 → 16 → 32 sessions, and the ceiling sits above 32 — not reached. Supersedes E5's
 single-burst 0.88 ([`results/C1-concurrency-20260929/`](results/C1-concurrency-20260929/BRIEF.md)).
 
-**Not solved yet.** The router is still a keyword dictionary — its two learned replacements are both measured and
-neither passes **[ran]** milestone 2. The small models still invent: in the school demo the gateway replaced 2 of 5
+**Not solved yet.** ~~The router is still a keyword dictionary — its two learned replacements are both measured and
+neither passes~~ — **a factored router (task vs. content) now passes [ran] ROUTE0, 2026-10-02**: it serves 0 of 600
+foreign texts locally against the dictionary's 294 and loses 0 of 480 legitimate requests, and is now the proxy's
+default; what it will not do by design is keep a paraphrase local (0/120, reported). The small models still invent: in the school demo the gateway replaced 2 of 5
 local replies with the tools' own text — caught, counted, never shown, but not cured. Speculative decoding with a LoRA
 expert runs for real (F0, C0, above), but its output is not yet shown identical to plain decoding, and the aligned
 drafter that might close that gap is parked — it does not run at all yet (C0). Whether the workflow harness beats
@@ -520,7 +525,8 @@ exactly how the live distributor demo above runs, member and all
 | `training/harness/release_gate.py`, `pool_second.py`, `pool_base.py`, `verify_substrate.py` | the door a member enters through, on this base or another |
 | `training/harness/accept_rank.py` | the corpus-mode loop — stop at the closing tag, write the result inline, continue — that the memory's runtime is built on; and acceptance by teacher forcing |
 | `training/harness/corpus_mode_arm.py`, `training/physics/result_use.py` | an expert re-served as its corpus taught; a failure read where it happens — *was the result used?* |
-| `training/harness/corpus_router.py`, `embed_router.py`, `router_sets.py` | the router's learned arms, and the eight sets any router is scored on |
+| `training/harness/corpus_router.py`, `embed_router.py`, `router_sets.py` | the router's earlier whole-request arms, and the eight sets any router is scored on |
+| `training/harness/factored_router.py` | the router that passes: local iff exactly one paragraph is not the member's content and it is its task — the proxy's default (`openai_proxy --router factored`); its sets, `results/ROUTE0-factored-router-20261002/` |
 | `training/nursing/` | the first text here nobody generated: three IV-therapy checklists, 72 checkable questions |
 | `training/harness/lora_matrix.py`, `rekey.py`, `awq_lora_gate.py` | does this base — small or large — serve a LoRA at all |
 | `training/harness/chain_serve.sh` | the Colab chain: provision, run detached, stream, fetch weights as they appear, resume |

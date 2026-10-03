@@ -342,16 +342,26 @@ experto local; pedí **cualquier otro nombre de modelo** y el request se reenví
 upstream — mejor que una lista escrita a mano, que se desactualiza apenas se agrega un
 adaptador. Se puede fijar con `--local a,b` cuando querés ser explícito.
 
-**Qué decide la ruta hoy, y qué se probó en su lugar [ran] M2 2026-09-19.** `--auto` usa el
-diccionario de palabras clave de `route.py`. Un modelo del corpus de cada miembro — el router
-del diseño — se midió primero como modelo de n-gramas: sobre texto ajeno es más seguro (0 de
-128 servidos por un miembro local contra el 59 del diccionario), y manda afuera **todos** los
-pedidos legítimos cuyo remitente el generador nunca sorteó, 120 de 120. Así que el diccionario
-se queda como default, y el costo conocido de eso queda registrado: un pedido que sólo
-*contiene* la pregunta de un miembro — "…¿esto es importante para mergear antes del viernes?" —
-lo sirve ese miembro. El brazo de embeddings es lo próximo
-(hito 2 de [`PLAN.md`](PLAN.md)), y va a compartir su espacio con la base de conocimiento de
-cada subdominio (hito 7): **esta página todavía no sirve ninguna base de conocimiento.**
+**Qué decide la ruta hoy [ran] ROUTE0 2026-10-02.** `openai_proxy.py --router factored` (default)
+usa `route.decide_factored`: local a un miembro $m$ sii exactamente un párrafo del pedido no es
+contenido de $m$ y es una de las tareas de $m$, con al menos un párrafo de contenido — los
+envoltorios de OpenClaw se sacan primero. Sobre conjuntos frescos escritos a ciegas de la regla y
+puntuados una sola vez, sirve 0 de 600 textos ajenos localmente (294 del diccionario de palabras
+clave sobre los mismos conjuntos) y pierde 0 de 480 pedidos legítimos (remitentes no vistos, la
+tarea escrita antes que el contenido, envueltos por OpenClaw) — `--router dictionary` sigue
+disponible y sigue siendo el respaldo seguro por construcción para una región sin corpus en el
+pool. **Lo que no hace:** mantener local una paráfrasis de la pregunta de un miembro (0/120,
+reportado pero nunca usado como compuerta) — los miembros se entrenaron sobre una sola redacción
+cada uno, así que servir una paráfrasis localmente apostaría al miembro, no al ruteo; un pedido que
+sólo *contiene* la pregunta de un miembro sólo va a ese miembro si el resto del mensaje es su
+tarea, nunca por una coincidencia léxica suelta. **El camino hasta acá** — un modelo de n-gramas
+cero-GPU del marco de cada corpus fue más seguro que el diccionario sobre texto ajeno pero perdió
+todos los pedidos de un remitente no visto, 120 de 120, porque leía el pedido entero y *quién
+escribe* lo movía tanto como *qué se pide*; un modelo de embeddings y un codificador afinable
+fallaron cada uno a su manera distinta — está en el hito 2 de [`PLAN.md`](PLAN.md) (brazos 1–3) y en
+[`RECORD.md`](RECORD.md) (M2, M2b, M2c). El radar de la base de conocimiento (hito 7) es un espacio
+aparte: **esta página todavía no sirve ninguna base de conocimiento**
+([`ROUTE0`](../../results/ROUTE0-factored-router-20261002/BRIEF.md)).
 
 **Sobre una base 3.x el canal de pensamiento está apagado para los miembros.** El proxy manda
 `chat_template_kwargs: {"enable_thinking": false}` en cada request de un miembro, así que el

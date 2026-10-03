@@ -511,8 +511,28 @@ donde las páginas que se leen son largas, no un nuevo default
 
 Decidir *qué experto* atiende un pedido es un clasificador que también tiene que saber decir "ninguno". Probamos un
 modelo de n-gramas, embeddings (Qwen3-Embedding y EmbeddingGemma) y un clasificador chico: **ninguno pasó** — todos
-pierden pedidos legítimos de remitentes que no vieron **[ran]** M2, E1. En producción, **el rol del usuario (que viene
-en su token) es la ruta**, y lo que el rol no cubre va a la frontera o a una persona según la política del rol.
+pierden pedidos legítimos de remitentes que no vieron **[ran]** M2, E1. Los tres leen el pedido entero, y en ese
+espacio *quién escribe* mueve un pedido tanto como *qué se pide*.
+
+**Un router que lee el pedido como dos cosas en vez de una — tarea y contenido — pasa. [ran] ROUTE0, 2026-10-02:**
+un pedido a un miembro es su **contenido**, más **una tarea** para la que fue entrenado; el router sólo tiene que
+preguntar cuál. `training/harness/factored_router.py` (cero GPU, sin modelo) es local a un miembro sii exactamente
+un párrafo del pedido no es contenido de ese miembro y es una de sus tareas. Sobre conjuntos frescos escritos a
+ciegas de la regla y puntuados una sola vez: 0 de 600 textos ajenos servidos localmente (294 del diccionario de
+palabras clave sobre los mismos conjuntos), 0 de 480 pedidos legítimos perdidos (remitentes no vistos, la tarea
+escrita antes que el contenido, envueltos por OpenClaw) — la pared que chocaron los tres brazos de arriba,
+remitentes no vistos perdidos 120 de 120, desaparece, porque el remitente es contenido y el contenido sólo tiene que
+ser del *tipo* del miembro. Ahora es el default del proxy (`openai_proxy --router factored`). Lo que no hace:
+mantener local una paráfrasis de la pregunta de un miembro (0/120, reportado, nunca usado como compuerta) — los
+miembros se entrenaron sobre una sola redacción cada uno, así que servir una paráfrasis localmente apostaría al
+miembro, no al ruteo. Una prueba de estrés post-hoc fuera del veredicto — un header `Cc:`/`To:` de más, cortesía
+alrededor de la tarea, la tarea movida al propio párrafo del header — manda afuera cada variante, nunca a un miembro
+equivocado: segura por construcción, literal por diseño
+([`ROUTE0`](../../results/ROUTE0-factored-router-20261002/BRIEF.md)).
+
+**En un despliegue basado en roles, el rol del usuario (que viene en su token) sigue siendo la ruta**, y lo que el
+rol no cubre va a la frontera o a una persona según la política del rol — el router factorizado de arriba es el
+camino propio del proxy, para un despliegue sin columna de rol que leer.
 
 Eso deja una segunda decisión que el router nunca iba a tomar por un solo miembro de todos modos: una vez que un
 pedido *está* dentro del corpus de un rol, ¿cuándo tiene que decir ese mismo miembro "esto no es mío"? **[ran]** M10 la
@@ -735,6 +755,7 @@ fijo en el corpus que se memoriza; un modelo sin el prompt con el que se entren�
 | 2026-09-30 | el recorrido de la memoria se transfiere a documentos reales de una familia que el miembro nunca entrenó, una vez que la pérdida queda enmascarada a sus propios tramos | REAL3, 18/23 contra el 9/23 del base sin entrenar **[ran]** |
 | 2026-09-30 | el miembro de documentos reales aprende a negarse ante lo que su biblioteca no puede contestar | REAL4, 15/16 se niega, 0 negativas falsas de 36 **[ran]** |
 | 2026-09-30 | el gateway sobrevive a un reinicio sin reejecutar un cobro retenido, y su propio proceso no puede alcanzar fuera de sus hosts configurados | #310 **[ran]** |
+| 2026-10-02 | un router que factoriza un pedido en su tarea y el contenido del miembro pasa donde tres routers de pedido entero fallaron; es el default del proxy | ROUTE0 **[ran]** |
 
 ---
 
@@ -746,7 +767,8 @@ fijo en el corpus que se memoriza; un modelo sin el prompt con el que se entren�
 | un borrador ajustado por experto, en caliente | **[ran] C0**: el MTP nativo + el LoRA experto recupera algo de velocidad (1,92× dominio, 2,40× general, contra 2,80×/2,60× en el base) pero no toda; el borrador E4B fusionado y bien alineado (estrategia C) no corrió — OOM al lado del 12B en una L4, FP8/bitsandbytes/H100 bloqueados esta vuelta. **[ran] C0-upper**: restringir las capas del LoRA tampoco ayuda (§6.6) | **sigue abierto, en pausa, no refutado**: la estrategia B (un LoRA de borrador) espera porque el MTP ya se paga solo en una L4 y no en la Mac — todavía no hay razón para construir lo más difícil |
 | el borrador con el LoRA activo | pierde aceptación en el dominio; alinear el propio MTP del grande recupera parte (1,74× → 1,92×, C0) pero restringir las capas no suma nada a eso (C0-upper) | estrategias A, C (bien dimensionada) o D (§6.4), empezando por la más barata |
 | la pista Mac | **[ran]**: cambio en caliente MLX en 2,9 µs (banco de investigación, §3.5); **el servido edge ahora es llama.cpp** — cambio de LoRA en caliente en 3 ms, pero el MTP también frena al 12B ahí (0,52–0,87×, MAC2) y el par E4B+12B no entra en 16 GB | servir un miembro a la vez en el edge, como hace LIVE-distributor; un drafter alineado al LoRA sigue en pausa (arriba) |
-| router aprendido | ninguno pasa; el router del hito 2 pierde pedidos que parecen reales | el rol es la ruta; la abstención por miembro (M10) cubre la mitad de "esto es mío" sin uno — queda abierto sólo para rutear entre roles |
+| router aprendido | **[ran] ROUTE0, PASA, 2026-10-02:** un router factorizado (tarea vs. contenido) sirve 0/600 textos ajenos localmente y pierde 0/480 pedidos legítimos, contra tres brazos de pedido entero que perdían 120/120 pedidos de remitentes no vistos o filtraban texto ajeno — ahora el default del proxy | — |
+| un miembro 12B para documentos reales | **[ran] PAIR0, SIN MARGEN, 2026-10-02:** pelado, bajo el runtime servido, el 12B lee documentos reales significativamente peor que el E4B (11/44 vs 21/44 respondibles, pareado 2:12, $p=0,013$) — el chequeo de margen que pide el propio orden de este hito, corrido antes de entrenar | no se entrena; se vuelve a chequear sólo si una familia de documentos reales futura muestra al E4B pelado en su propio techo |
 | buscador de notas con embeddings | 0,63 contra 0,80 | búsqueda por palabras en uso |
 | tráfico real | todo es sintético | una muestra anonimizada de un sistema en uso |
 | el modelo todavía inventa | 3 de 12 respuestas las atrapa el filtro | un corpus que enseñe a repetir sólo lo que dice la herramienta |

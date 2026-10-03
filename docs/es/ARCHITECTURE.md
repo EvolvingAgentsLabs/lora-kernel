@@ -27,7 +27,7 @@ Todo lo demás es ese hecho aplicado cuatro veces:
 | componente | qué es | estado |
 |---|---|---|
 | **el experto** | un QLoRA sobre el modelo chico, entrenado por SFT sobre un corpus, liberado con un contrato que registra la distribución | **[ran]** dos liberados; desde M1 sobre `Qwen3.5-4B`, cada uno empatando su liberación de Qwen 2.5 |
-| **el router** | un modelo muy chico *de los mismos corpus*: a la distribución de qué experto cae este pedido — o de ninguno | un diccionario de palabras clave **[ran]**; dos brazos aprendidos **[ran]** M2, ninguno pasa; en un despliegue con un agente por rol, *el rol es la ruta* (§9) |
+| **el router** | un modelo muy chico *de los mismos corpus*: a la distribución de qué experto cae este pedido — o de ninguno | un router factorizado (tarea vs. contenido) **[ran]** ROUTE0, el default del proxy; el diccionario se queda al lado; tres brazos de pedido entero **[ran]** M2, M2b, M2c fallaron primero; en un despliegue con un agente por rol, *el rol es la ruta* (§9) |
 | **el par** | un segundo LoRA, sobre el modelo grande, entrenado sobre el *mismo corpus*; el chico borradorea, el grande verifica | diseñado; hitos 3–4 |
 | **la memoria** | la biblioteca propia del subdominio — un arnés operativo y una wiki enciclopédica — un radar sobre ella, tres verbos, y un árbitro; el LoRA aprende el **hábito de navegar**, no el contenido | biblioteca, árbitro, corpus construidos **[ran]** W1, W2, W4; búsqueda debajo de su vara **[ran]** W3; **la afirmación central medida tres veces y no pasa** **[ran]** W5, W5b, W5c — la navegación se transfiere, leer un valor condicional en una nota nunca vista no (§4) |
 
@@ -93,10 +93,18 @@ envoltorio de contexto interno del runtime recortado — el propio system prompt
 runtime superó en puntaje al email del turno de usuario la primera vez que un agente en vivo
 llamó **[ran]** P63. Dos decisiones se mantienen separadas a propósito:
 
-- *a qué distribución pertenece esto* — la del router, aprendida de los corpus. Su primer
-  brazo aprendido, un modelo de n-gramas del marco de cada corpus, fue seguro sobre texto
-  ajeno y perdió todos los pedidos de un remitente nunca visto **[ran]** M2; el diccionario
-  se mantiene hasta que se mida el brazo de embeddings;
+- *a qué distribución pertenece esto* — la del router, aprendida de los corpus. Sus primeros
+  tres brazos aprendidos leen el pedido entero y fallan igual: un modelo de n-gramas del marco
+  de cada corpus fue seguro sobre texto ajeno pero perdió todos los pedidos de un remitente
+  nunca visto **[ran]** M2; un modelo de embeddings y un codificador afinable fallaron cada uno
+  a su manera **[ran]** M2b, M2c. **Un router que factoriza un pedido en su tarea y el contenido
+  del miembro pasa, 2026-10-02 [ran] ROUTE0** — local a un miembro $m$ sii exactamente un párrafo
+  no es contenido de $m$ y es una de las tareas de $m$: 0 de 600 textos ajenos servidos
+  localmente (294 del diccionario), 0 de 480 pedidos legítimos perdidos (remitentes no vistos,
+  tarea primero, envueltos por OpenClaw), las paráfrasis salen por diseño (reportado, nunca
+  compuerta). Ahora es el default del proxy (`training/harness/openai_proxy.py --router
+  factored`); una región sin corpus en el pool se queda en sus claves
+  ([`ROUTE0`](../../results/ROUTE0-factored-router-20261002/BRIEF.md));
 - *esa región se sirve localmente* — una tabla medida, `serve: local | out`. La tabla vale lo
   que valga la medición detrás: fluids estaba marcada *afuera* con un 11 de 90, que resultó
   ser el camino de servido — localmente, como le enseñaron, es 90 de 90 contra el 66 de la
@@ -227,6 +235,18 @@ contra 0,989 en triage **[ran]** P55, P55b. La verificación por un modelo que d
 un borrador *correcto* rechaza tokens buenos. Entrenar el modelo grande sobre el mismo
 corpus es lo que lo vuelve un verificador de este subdominio en lugar de una segunda opinión
 generalista.
+
+**A una región no se le entrena la mitad grande sin antes chequear las bases peladas. [ran]
+PAIR0, 2026-10-02:** antes de entrenar un miembro 12B para la región de documentos reales (§4 más
+abajo), el control que pide el propio orden de este hito — las dos bases peladas, sin entrenar, bajo
+el runtime servido (`base-walks+page+top8`, el conjunto de 52 filas de PAGE0) — corrió primero:
+`gemma-4-12B-it` le pierde a `gemma-4-E4B-it`, 11/44 contra 21/44 filas respondibles, pareado 2 : 12,
+test de signo exacto $p = 0,013$, rechazos 1/8 contra 8/8. El intento 1 fue void — el 12B pelado abrió
+su canal de pensamiento con el pensamiento apagado y dio vueltas en él hasta agotar el presupuesto de
+llamadas; arreglado con `wiki_arm --empty-thought`. **Tampoco se entrena un miembro 12B para esta
+región**, y el par especulativo se queda como resultado de velocidad sin una región que necesite la
+precisión de la mitad grande
+([`PAIR0`](../../results/PAIR0-large-headroom-20261002/BRIEF.md)).
 
 **Lo que ya se sabe de las mitades.** vLLM aplica un LoRA sobre un modelo grande en 4 bits
 **[ran]** P60 §3b. Los adaptadores de Qwen 3.5 son servibles una vez que sus tensores llevan
