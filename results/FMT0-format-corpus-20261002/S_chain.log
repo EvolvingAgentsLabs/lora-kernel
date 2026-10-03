@@ -1,0 +1,37 @@
+=== session 1 of 1 · srv205926 · L4
+    boot clone: rc=0 47438e5 FMT0, pre-registered: a corpus for the served page form (top-8) with recovery after an error; recover guard arm
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 47438e5 FMT0, pre-registered: a corpus for the served page form (top-8) with recovery after an error; recover guard arm
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    47438e5 FMT0, pre-registered: a corpus for the served page form (top-8) with recovery after an error; recover guard arm | 0.30.0
+    carried the adapters in (16 chunks)
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/fmt0-s0 withlib-s1=adapters/fmt0-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/fmt0-s0 withlib-s1=adapters/fmt0-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/fmt0-s0 withlib-s1=adapters/fmt0-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/fmt0-s0 withlib-s1=adapters/fmt0-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/fmt0-s0 withlib-s1=adapters/fmt0-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/fmt0-s0 withlib-s1=adapters/fmt0-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/fmt0-s0 withlib-s1=adapters/fmt0-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/fmt0-s0 withlib-s1=adapters/fmt0-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/fmt0-s0 withlib-s1=adapters/fmt0-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/fmt0-s0 withlib-s1=adapters/fmt0-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/fmt0-s0 withlib-s1=adapters/fmt0-s1
+    [wiki] withlib-s0+page+top8: 52 to run, 0 resumed
+    [wiki] withlib-s0+page+top8 10/52 credit 10 value-right 10 errors 0 10s
+    [wiki] withlib-s0+page+top8 20/52 credit 15 value-right 15 errors 0 17s
+    [wiki] withlib-s0+page+top8+recover 10/52 credit 10 value-right 10 errors 0 11s
+    [wiki] withlib-s0+page+top8+recover 20/52 credit 15 value-right 15 errors 0 18s
+    [wiki] withlib-s0+page+top8+recover 30/52 credit 22 value-right 23 errors 0 25s
+    [wiki] withlib-s1+page+top8+recover 30/52 credit 24 value-right 25 errors 0 28s
+    [wiki] withlib-s1+page+top8+recover 40/52 credit 32 value-right 34 errors 0 36s
+    [wiki] withlib-s1+page+top8+recover 50/52 credit 39 value-right 41 errors 0 41s
+    [wiki] withlib-s1+page+top8+recover 50/52 credit 39 value-right 41 errors 0 41s
+    [wiki] withlib-s1+page+top8+recover 52/52 credit 40 value-right 42 errors 0 44s
+    [wiki] NOTHING SCORED
+    the runner wrote its result — done
+exit 0

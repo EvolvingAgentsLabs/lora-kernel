@@ -47,6 +47,27 @@ PAGE0's set is fresh to this corpus: its library is not in it (G1), its question
 
 One training (A100, one session), one scoring (L4). No change to the corpus, the arms or the bars after training starts.
 
-## Result
+## Result [ran] — FALSIFIED: no headroom on the set, and the check that would have said so was on disk
 
-*(written after the run)*
+`real-fmt-s0` trained on an A100 (320 rows, span-masked); one L4 session, G1 applied to both members, 0 errors (`fmt0.json`).
+
+| arm | answerable (44) | multi-hop (30) | one-hop (14) | refusals (8) | no line | `[id]` without `§` | walks with an ERROR |
+|---|---|---|---|---|---|---|---|
+| `real-none-s0`, top-8, strict (baseline) | 33 | 23 | 10 | 7 | 1 | 0 | 2 |
+| `real-none-s0`, top-8, recover | 33 | 23 | 10 | 7 | 0 | 1 | 1 |
+| `real-fmt-s0`, top-8, recover (treatment) | 33 | 23 | 10 | 7 | 0 | 3 | 1 |
+
+- **Verdict as written: FALSIFIED** — treatment against baseline **1 : 1**, $p = 1.0$; the runtime alone 0 : 0. All three
+  arms score the same rows, the same counts in every slice.
+- **Read where it happens: there was nothing on this set for the treatment to repair.** Under the served top-8 form the
+  baseline's 11 misses hold **one** missing line and no malformed citation; a mistaken open happened in 2 walks of 52.
+  The recovery the corpus taught had, in effect, no occasion. The trained member did not regress (refusals, multi-hop,
+  one-hop unchanged), and wrote `[id]` without `§section` 3 times against the baseline's 0 — a small cost, no gain.
+- **The instrument error, owned:** the headroom check for *this* set was available before training — PAGE0's own top-8
+  arm, already on disk, had **1 format failure in 10 misses**. The headroom measured instead was over the three read sets
+  (9 of 42, whole pages, `strict`), where the format failures largely came from the guard ending walks and from pages read
+  whole — two things the served form (top-8) and the `recover` mode had already changed. The rule "check headroom before
+  building the treatment" was applied to the wrong baseline. It cost one A100 and one L4 session.
+- **What stays true:** the `recover` guard is harmless on this member (0 : 0) and the top-8 corpus does not hurt it — but
+  neither is a measured gain. **The format-corpus line stops here**: on the served form the failure it targets is ~1 row
+  in 44.
