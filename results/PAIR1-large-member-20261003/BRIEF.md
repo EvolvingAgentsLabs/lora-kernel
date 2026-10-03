@@ -83,3 +83,15 @@ One A100, vLLM bf16, G1 applied, 0 errors (`pair1.json`).
   verify) is untested.
 - **Training note:** the 12B at window 4,096 needs `span_logits_loss` on a 40 GB A100 — the same loss, a 30× smaller
   vocabulary projection.
+
+## Beside the verdict, zero GPU, post-hoc — a hypothesis, not a finding (2026-10-03)
+
+Read on this one 52-row set, already seen, so it is not evidence until measured on a fresh set under a brief.
+- **Choosing the member that is right is not possible from the runtime:** of the 11 discordant rows the citation gate
+  decides 4 (one member fails it); in the other 7 both verify with different answers — sometimes citing the same
+  statement and reading a different number off it. Gate, then E4B: 35/44; gate, then 12B: 36/44; the oracle union 39.
+- **Disagreement detects wrong answers.** Delivering only when both members pass the gate and agree: 37 delivered, 34
+  right, **3 wrong** (precision 0.92), against today's served E4B with the gate — 50 delivered, 41 right, **9 wrong**
+  (0.82). It forwards 7 right answers to catch 6 wrong ones — GATE0's kind of trade, on top of it.
+- **Cost and the cheaper rival, both untested:** two members per request, one a 12B; two samples of the same E4B
+  (self-consistency) might carry the same signal without the large model.
