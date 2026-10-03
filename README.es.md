@@ -397,7 +397,11 @@ empate, y la pila de desarrollo del usuario apunta a Gemma. **Todos los miembros
 lo bastante chica para una Mac mini. Su LoRA sube la aceptación de los borradores del miembro chico (α 0,871 → 0,898,
 76 : 18 registros), así que se gana su lugar como **verificador**. **No compra precisión**: en una banda de preguntas
 comparativas las dos mitades fallaron mientras el corpus nunca mostró una, y cuando la mostró el miembro chico solo pasó
-de 10 a 37 de 40 (hitos 3 y 4, B2–B5).
+de 10 a 37 de 40 (hitos 3 y 4, B2–B5). **Una segunda región encuentra lo mismo: ningún caso para la precisión de la
+mitad grande. [ran] PAIR0, 2026-10-02:** antes de entrenar un miembro 12B para la región de documentos reales, las
+dos bases peladas bajo el runtime servido — el 12B le pierde al E4B, 11/44 contra 21/44 filas respondibles, pareado
+2 : 12, $p = 0,013$. Tampoco se entrena un miembro 12B para esta región; el par se queda como resultado de velocidad
+sin una región que necesite la precisión de la mitad grande.
 
 **Confirmado en una GPU de tamaño completo, bf16 (C0).** El drafter MTP propio del 12B con el LoRA
 experto activo: 1,92× en el dominio (α 0,34), 2,40× general; el par base solo corre 2,80×/2,60×. Un
@@ -453,8 +457,11 @@ lineal, 22,7 → 135 → 270 → 500 tok/s para 1 → 8 → 16 → 32 sesiones, 
 — no se alcanzó. Reemplaza el 0,88 de una sola ráfaga de E5
 ([`results/C1-concurrency-20260929/`](results/C1-concurrency-20260929/BRIEF.md)).
 
-**Todavía sin resolver.** El router sigue siendo un diccionario de palabras clave — sus dos
-reemplazos aprendidos ya están medidos y ninguno pasa **[ran]** hito 2. Los modelos chicos todavía
+**Todavía sin resolver.** ~~El router sigue siendo un diccionario de palabras clave — sus dos
+reemplazos aprendidos ya están medidos y ninguno pasa~~ — **un router factorizado (tarea vs. contenido) ahora pasa
+[ran] ROUTE0, 2026-10-02**: sirve 0 de 600 textos ajenos localmente contra 294 del diccionario y pierde 0 de 480
+pedidos legítimos, y ahora es el default del proxy; lo que no va a hacer por diseño es mantener una paráfrasis local
+(0/120, reportado). Los modelos chicos todavía
 inventan: en la demo de la escuela el gateway reemplazó 2 de 5 respuestas locales por el texto
 propio de las herramientas — atrapado, contado, nunca mostrado, pero no curado. La decodificación especulativa con un
 experto LoRA corre de verdad (F0, C0, arriba), pero todavía no está mostrado que su salida sea idéntica a la
@@ -557,7 +564,8 @@ Así corre exactamente la demo en vivo de la distribuidora de arriba, miembro in
 | `training/harness/release_gate.py`, `pool_second.py`, `pool_base.py`, `verify_substrate.py` | la puerta por la que entra un miembro, sobre esta base o sobre otra |
 | `training/harness/accept_rank.py` | el loop en modo corpus — parar en el tag de cierre, escribir el resultado inline, continuar — sobre el que está construido el runtime de la memoria; y la aceptación por teacher forcing |
 | `training/harness/corpus_mode_arm.py`, `training/physics/result_use.py` | un experto re-servido como le enseñó su corpus; una falla leída donde ocurre — *¿se usó el resultado?* |
-| `training/harness/corpus_router.py`, `embed_router.py`, `router_sets.py` | los brazos aprendidos del router, y los ocho conjuntos sobre los que se puntúa cualquier router |
+| `training/harness/corpus_router.py`, `embed_router.py`, `router_sets.py` | los primeros brazos aprendidos del router, de pedido entero, y los ocho conjuntos sobre los que se puntúa cualquier router |
+| `training/harness/factored_router.py` | el router que pasa: local sii exactamente un párrafo no es contenido del miembro y es su tarea — el default del proxy (`openai_proxy --router factored`); sus conjuntos, `results/ROUTE0-factored-router-20261002/` |
 | `training/nursing/` | el primer texto acá que nadie generó: tres checklists de terapia IV, 72 preguntas verificables |
 | `training/harness/lora_matrix.py`, `rekey.py`, `awq_lora_gate.py` | si esta base — chica o grande — sirve un LoRA o no |
 | `training/harness/chain_serve.sh` | el chain de Colab: aprovisionar, correr desacoplado, streamear, traer los pesos a medida que aparecen, reanudar |

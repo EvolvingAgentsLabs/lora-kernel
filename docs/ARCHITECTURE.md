@@ -24,7 +24,7 @@ Everything else is that fact applied four times:
 | component | what it is | state |
 |---|---|---|
 | **the expert** | a QLoRA on the small model, trained by SFT on one corpus, released with a contract that records the distribution | **[ran]** two released; since M1 on `Qwen3.5-4B`, each tying its Qwen 2.5 release |
-| **the router** | a very small model *of the same corpora*: which expert's distribution does this request fall in — or none | a keyword dictionary **[ran]**; two learned arms **[ran]** M2, neither passes; in a deployment with one agent per role, *the role is the route* (§9) |
+| **the router** | a very small model *of the same corpora*: which expert's distribution does this request fall in — or none | a factored router (task vs. content) **[ran]** ROUTE0, the proxy's default; the dictionary stays beside it; three whole-request arms **[ran]** M2, M2b, M2c failed first; in a deployment with one agent per role, *the role is the route* (§9) |
 | **the pair** | a second LoRA, on the large model, trained on the *same corpus*; the small one drafts, the large one verifies | designed; milestones 3–4 |
 | **the memory** | the subdomain's library — an operational harness and an encyclopedic wiki — a radar over it, three verbs, and a referee; the LoRA learns the **habit of navigating**, not the content | library, referee, corpus built **[ran]** W1, W2, W4; search under its bar **[ran]** W3; **the central claim measured three times and not passed** **[ran]** W5, W5b, W5c — navigation transfers, reading a conditional value in an unseen note does not (§4) |
 
@@ -89,9 +89,16 @@ with the runtime's internal-context envelope cut out — a runtime's own system 
 out-scored the email in the user turn the first time a live agent called **[ran]** P63.
 Two decisions are kept apart on purpose:
 
-- *whose distribution is this* — the router's, learned from the corpora. Its first learned arm, an
-  n-gram model of each corpus's frame, was safe on foreign text and lost every request from an
-  unseen sender **[ran]** M2; the dictionary stays until the embedding arm is measured;
+- *whose distribution is this* — the router's, learned from the corpora. Its first three learned
+  arms read the request whole and failed alike: an n-gram model of each corpus's frame was safe on
+  foreign text but lost every request from an unseen sender **[ran]** M2; an embedding model and a
+  fine-tunable encoder both failed differently **[ran]** M2b, M2c. **A router that factors a request
+  into its task and the member's content passes, 2026-10-02 [ran] ROUTE0** — local to a member $m$
+  iff exactly one paragraph is not $m$-content and it is one of $m$'s tasks: 0 of 600 foreign texts
+  served locally (the dictionary's 294), 0 of 480 legitimate requests lost (unseen senders, task-first,
+  OpenClaw-wrapped), paraphrases leave by design (reported, never gated). It is now the proxy's default
+  (`training/harness/openai_proxy.py --router factored`); a region with no corpus in the pool keeps its
+  keys ([`ROUTE0`](../results/ROUTE0-factored-router-20261002/BRIEF.md));
 - *is that region served locally* — a measured table, `serve: local | out`. The table is only as
   good as the measurement behind it: fluids was marked *out* on 11 of 90, which turned out to be
   the serving path — locally, as taught, it is 90 of 90 against the frontier's 66 **[ran]** M7 arm
@@ -210,6 +217,17 @@ expert in a narrow region: 0.967 against the small expert's 1.000 on the desk, 0
 against 0.989 on triage **[ran]** P55, P55b. Verification by a model that disagrees with a
 *correct* draft rejects good tokens. Training the large model on the same corpus is what
 makes it a verifier of this subdomain rather than a generalist second opinion.
+
+**A region is not handed a trained large half until the untrained bases are checked first. [ran]
+PAIR0, 2026-10-02:** before training a 12B member for the real-document region (§4 below), the
+control this milestone's own order calls for — the two bare bases, untrained, under the served
+runtime (`base-walks+page+top8`, PAGE0's 52-row set) — ran first: `gemma-4-12B-it` loses to
+`gemma-4-E4B-it`, 11/44 against 21/44 answerable rows, paired 2 : 12, exact sign test $p = 0.013$,
+refusals 1/8 against 8/8. Attempt 1 was void — the bare 12B opened its thought channel with
+thinking off and looped on it until the call budget ran out; fixed with `wiki_arm --empty-thought`.
+**No 12B member is trained for this region either**, and the speculative pair stays a speed result
+without a region that needs the large half's accuracy
+([`PAIR0`](../results/PAIR0-large-headroom-20261002/BRIEF.md)).
 
 **What is already known about the halves.** vLLM applies a LoRA over a 4-bit large model
 **[ran]** P60 §3b. Qwen 3.5 adapters are servable once their tensors are named for the class

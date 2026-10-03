@@ -135,6 +135,9 @@ ROLE_POLICY = "role_confirmed"   # --role-policy: how `auto:<role>` uses the rol
 #   that passed [ran] F2: never more misroutes than the keys alone, nothing served under a wrong role
 
 
+ROUTER = "factored"
+
+
 def resolve_auto(req: dict) -> tuple[str, str] | None:
     """Milestone 2: a request for the alias is routed by its text (`route.decide`).
     Returns the decision, and rewrites `model` in place — to the member if local, to
@@ -145,8 +148,9 @@ def resolve_auto(req: dict) -> tuple[str, str] | None:
     # `auto:<role>` — THE ROLE RIDES IN THE MODEL ID, the one thing an agent runtime sets per agent
     # without a patch. It is consulted only under --role-policy; `auto` alone is milestone 2's route.
     role = model[len(AUTO) + 1:] or None
-    from training.harness.route import decide
-    d = decide(req, role=role, policy=ROLE_POLICY)
+    from training.harness.route import decide, decide_factored
+    # ROUTE0 [ran]: plain `auto` is routed by task and content; a role under --role-policy keeps F2's measured path
+    d = decide_factored(req) if ROUTER == "factored" and not (role and ROLE_POLICY) else decide(req, role=role, policy=ROLE_POLICY)
     req["model"] = d[1] if d[0] == "local" else (AUTO_OUT or AUTO)
     print(f"[route] auto{':' + role if role else ''} -> {d[0]} ({d[1]}) · "
           f"{len(req.get('messages') or [])} messages · {len(req.get('tools') or [])} tools", flush=True)
@@ -527,6 +531,9 @@ def main() -> int:
     ap.add_argument("--local", default=None,
                     help="comma-separated model names that must never leave; "
                          "defaults to whatever the upstream lists at /v1/models")
+    ap.add_argument("--router", default="factored", choices=["factored", "dictionary"],
+                    help="how plain `<auto>` is routed: `factored` (default, ROUTE0 PASSED: task and content) or the "
+                         "keyword `dictionary` it replaced")
     ap.add_argument("--role-policy", dest="role_policy", default="role_confirmed",
                     choices=["role_confirmed", "role_first", "off"],
                     help="how a request for `<auto>:<role>` uses its role (route.decide). "
@@ -534,6 +541,7 @@ def main() -> int:
                          "foreign task under the role's member — and is kept only to be measured; "
                          "`off` ignores the role. Plain `<auto>` is never affected")
     args = ap.parse_args()
+    globals()["ROUTER"] = args.router
     globals()["ROLE_POLICY"] = None if args.role_policy == "off" else args.role_policy
     globals()["UPSTREAM"] = args.upstream
     globals()["FALLBACK"] = args.fallback

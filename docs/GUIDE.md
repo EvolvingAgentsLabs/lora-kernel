@@ -498,9 +498,26 @@ whole-text loss, so it is the recipe only where the pages being read are long, n
 
 Deciding *which expert* handles a request is a classifier that also has to be able to say "none". We tried an n-gram
 model, embeddings (Qwen3-Embedding and EmbeddingGemma) and a small classifier: **none passed** — all of them lose
-legitimate requests from senders they did not see **[ran]** M2, E1. In production, **the user's role (which comes in
-their token) is the route**, and whatever the role does not cover goes to the frontier or to a person according to the
-role's policy.
+legitimate requests from senders they did not see **[ran]** M2, E1. All three read the request whole, and in that
+space *who writes* moves a request as far as *what is asked*.
+
+**A router that reads the request as two things instead of one — task and content — passes. [ran] ROUTE0,
+2026-10-02:** a request to a member is the member's **content**, plus **one task** it was trained to do; the router
+only has to ask which. `training/harness/factored_router.py` (zero GPU, no model) is local to a member iff exactly
+one paragraph of the request is not that member's content and it is one of its tasks. On fresh sets written blind to
+the rule and scored once: 0 of 600 foreign texts served locally (the keyword dictionary's 294 on the same sets), 0
+of 480 legitimate requests lost (unseen senders, the task written before the content, OpenClaw-wrapped) — the wall
+the three arms above hit, unseen senders lost 120 of 120, is gone, because the sender is content and content only
+has to be the member's *kind*. It is now the proxy's default (`openai_proxy --router factored`). What it does not
+do: keep a paraphrase of a member's question local (0/120, reported, never gated) — the members were trained on one
+wording each, so serving a paraphrase locally would bet on the member, not route. A post-hoc stress probe outside
+the verdict — an extra `Cc:`/`To:` header, politeness around the task, the task moved into the header's own
+paragraph — sends every variant out, never to a wrong member: safe by construction, literal by design
+([`ROUTE0`](../results/ROUTE0-factored-router-20261002/BRIEF.md)).
+
+**In a role-based deployment, the user's role (which comes in their token) is still the route**, and whatever the
+role does not cover goes to the frontier or to a person according to the role's policy — the factored router above
+is the proxy's own path, for a deployment with no role column to read.
 
 That leaves a second decision the router was never going to make for a single member anyway: once a request *is*
 inside a role's corpus, when should that member itself say "not this"? **[ran]** M10 answers it by training the
@@ -714,6 +731,7 @@ happened to us last week).
 | 2026-09-30 | the memory's walk transfers to real documents of a family the member never trained on, once the loss is masked to its own spans | REAL3, 18/23 against the untrained base's 9/23 **[ran]** |
 | 2026-09-30 | the real-document member learns to refuse what its library cannot answer | REAL4, 15/16 refused, 0 false refusals of 36 **[ran]** |
 | 2026-09-30 | the gateway survives a restart without re-running a held charge, and its own process cannot reach outside its configured hosts | #310 **[ran]** |
+| 2026-10-02 | a router that factors a request into its task and the member's content passes where three whole-request routers failed; it is the proxy's default | ROUTE0 **[ran]** |
 
 ---
 
@@ -725,7 +743,8 @@ happened to us last week).
 | a draft tuned per expert, hot-swapped | **[ran] C0**: the native MTP + expert LoRA recovers some of the speed (1.92× domain, 2.40× general, against 2.80×/2.60× on the base) but not all of it; the merged, fully-aligned E4B draft (strategy C) has not run — OOM beside the 12B on an L4, FP8/bitsandbytes/H100 all blocked this round. **[ran] C0-upper**: restricting the LoRA's layers does not help either (§6.6) | **still open, parked, not falsified**: strategy B (a draft LoRA) waits because MTP already pays for itself on an L4 and does not on the Mac — no reason yet to build the harder thing |
 | the draft with the LoRA active | loses acceptance in the domain; aligning the large model's own MTP recovers part of it (1.74× → 1.92×, C0) but layer restriction does not add to that (C0-upper) | strategies A, C (properly sized) or D (§6.4), starting with the cheapest |
 | the Mac track | **[ran]**: MLX hot swap in 2.9 µs (research bench, §3.5); **edge serving is now llama.cpp** — LoRA hot-swap in 3 ms, but MTP slows the 12B there too (0.52–0.87×, MAC2) and the E4B+12B pair does not fit in 16 GB | serve one member at a time on the edge, as LIVE-distributor does; a drafter aligned to the LoRA stays parked (above) |
-| learned router | none passes; milestone 2's router loses real-looking requests | the role is the route; per-member abstention (M10) covers the "is this mine" half without one — left open only for cross-role routing |
+| learned router | **[ran] ROUTE0, PASSES, 2026-10-02:** a factored router (task vs. content) serves 0/600 foreign texts locally and loses 0/480 legitimate requests, against three whole-request arms that each lost 120/120 unseen-sender requests or leaked foreign text — now the proxy's default | — |
+| a 12B member for real documents | **[ran] PAIR0, NO HEADROOM, 2026-10-02:** untrained, under the served runtime, the 12B reads real documents significantly worse than the E4B (11/44 vs 21/44 answerable, paired 2:12, $p=0.013$) — the headroom check this milestone's own order calls for, run before training | not trained; checked again only if a later real-document family shows the untrained E4B at its own ceiling |
 | note search with embeddings | 0.63 against 0.80 | keyword search in use |
 | real traffic | everything is synthetic | an anonymized sample from a system in use |
 | the model still makes things up | 3 of 12 answers caught by the filter | a corpus that teaches it to repeat only what the tool says |

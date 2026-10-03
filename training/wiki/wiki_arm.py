@@ -192,6 +192,7 @@ def run_case(lib: Library, row: dict, arm: str, gen_for) -> dict:
 
 # ------------------------------------------------------------------ BOK0: more walks, the gate chooses
 SAMPLE_T = 0.7
+EMPTY_THOUGHT = "<|channel>thought\n<channel|>"
 
 
 def best_of_k(lib, row, k, gen_for, setup, final, conv, chain, rec):
@@ -360,6 +361,7 @@ def main() -> int:
     ap.add_argument("--zero-gpu", action="store_true")
     ap.add_argument("--arms", default=",".join(ARMS))
     ap.add_argument("--train-seed", type=int, default=None, help="train adapters/wiki-walks-s<seed> and stop")
+    ap.add_argument("--empty-thought", action="store_true", help="prefill an empty thought channel (gemma-4-12B-it)")
     ap.add_argument("--max-tokens", type=int, default=120)
     ap.add_argument("--max-tokens-plain", type=int, default=160)
     ap.add_argument("--concurrency", type=int, default=8)
@@ -458,6 +460,11 @@ def main() -> int:
             close, budget = (ChainSuite.close, a.max_tokens) if walking else ((), a.max_tokens_plain)
             head = tok.apply_chat_template([{"role": "system", "content": system}, {"role": "user", "content": user}],
                                            tokenize=False, add_generation_prompt=True, enable_thinking=False)
+            # THE 12B OPENS ITS THOUGHT CHANNEL WITH THINKING OFF [ran] PAIR0 attempt 1: `enable_thinking=False` only omits
+            # `<|think|>`; the bare gemma-4-12B-it still wrote `<|channel>thought…`, looped on it and scored 8/52 against the
+            # E4B's 29. An empty channel, prefilled, closes it — the template's own markers, nothing else changes
+            if a.empty_thought:
+                head += EMPTY_THOUGHT
 
             def gen(prefix: str) -> str:
                 n = len(tok(head + prefix)["input_ids"])

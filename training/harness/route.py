@@ -173,6 +173,30 @@ def decide(req: dict, regions: dict[str, Region] = REGIONS, role: str | None = N
     return ("local", member) if own.serve == "local" else ("out", f"{member} is served out")
 
 
+_FACTORED = None
+
+
+def decide_factored(req: dict, regions: dict[str, Region] = REGIONS) -> tuple[str, str]:
+    """Milestone 2's router since ROUTE0 [ran] (results/ROUTE0-factored-router-20261002): the members with a corpus in the
+    pool are routed by task and content (`factored_router`) — 0 of 600 foreign texts served locally, 0 of 480 legitimate
+    requests lost — and their keywords no longer decide; a region with no corpus there (fluids) keeps its keys."""
+    global _FACTORED
+    if _FACTORED is None:
+        from training.harness.embed_router import corpora_from_pool
+        from training.harness.factored_router import FactoredRouter
+        _FACTORED = FactoredRouter(corpora_from_pool())
+    text = text_of(req)
+    m = _FACTORED.decide(text)
+    if m != "out":
+        r = regions.get(m)
+        return ("local", m) if r is None or r.serve == "local" else ("out", f"{m} is served out")
+    rest = {n: r for n, r in regions.items() if n not in _FACTORED.frame}
+    name = classify(text, rest) if rest else None
+    if name is None:
+        return ("out", "no member's task and content")
+    return ("local", name) if rest[name].serve == "local" else ("out", f"{name} is served out")
+
+
 # --- the replay on P41's records (zero GPU) ----------------------------------------
 
 def replay(pool: dict, frontier: dict, inbox_n: int = 150, inbox_seed: int = 717171,

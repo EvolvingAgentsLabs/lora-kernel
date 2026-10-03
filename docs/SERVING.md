@@ -317,15 +317,24 @@ expert answers; ask for **any other model name** and the request is forwarded.
 better than a hand-kept list, which drifts the moment an adapter is added. Override
 it with `--local a,b` when you want to be explicit.
 
-**What decides the route today, and what was tried instead [ran] M2 2026-09-19.** `--auto` uses
-the keyword dictionary in `route.py`. A model of each member's corpus — the design's router — was
-measured as an n-gram model first: on foreign text it is safer (0 of 128 served by a local member
-against the dictionary's 59), and it sends out **every** legitimate request whose sender the
-generator never drew, 120 of 120. So the dictionary stays the default, and the known cost of that
-is on record: a request that merely *contains* a member's question — "…is this important to merge
-before Friday?" — is served by that member. The embedding arm is next
-([`PLAN.md`](PLAN.md) milestone 2), and it will share its space with each subdomain's knowledge
-base (milestone 7): **nothing in this page serves a knowledge base yet.**
+**What decides the route today [ran] ROUTE0 2026-10-02.** `openai_proxy.py --router factored`
+(default) uses `route.decide_factored`: local to a member $m$ iff exactly one paragraph of the
+request is not $m$-content and it is one of $m$'s tasks, with at least one content paragraph —
+OpenClaw's wrappers removed first. On fresh sets written blind to the rule and scored once, it serves
+0 of 600 foreign texts locally (the keyword dictionary's 294 on the same sets) and loses 0 of 480
+legitimate requests (unseen senders, the task written before the content, OpenClaw-wrapped) —
+`--router dictionary` is still available and still the safer-by-construction fallback for a region
+with no corpus in the pool. **What it does not do:** keep a paraphrase of a member's question local
+(0/120, reported but never gated) — the members were trained on one wording each, so serving a
+paraphrase locally would bet on the member, not route; a request that merely *contains* a member's
+question still goes to that member only if the rest of the message is its task, never on a bare
+lexical match. **The path that got here** — a zero-GPU n-gram model of each corpus's frame was safer
+than the dictionary on foreign text but lost every request from an unseen sender, 120 of 120, because
+it read the request whole and *who writes* moved it as far as *what is asked*; an embedding model and
+a fine-tunable encoder failed the same way differently — is in [`PLAN.md`](PLAN.md) milestone 2 (arms
+1–3) and [`RECORD.md`](RECORD.md) (M2, M2b, M2c). The knowledge-base radar (milestone 7) is a
+separate space: **nothing in this page serves a knowledge base yet**
+([`ROUTE0`](../results/ROUTE0-factored-router-20261002/BRIEF.md)).
 
 **On a 3.x base the thinking channel is off for members.** The proxy sends
 `chat_template_kwargs: {"enable_thinking": false}` on every member request, so the served prompt is
