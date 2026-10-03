@@ -583,6 +583,29 @@ order, then the rest as openable anchors (`id§anchor`) — only the shown state
 tokens by `examples/library/serve.py --page-budget`, fixed offline before any walk ran: at any budget from 1,500 to
 3,500 the 8 statements REAL4's oracle walks need on that page stay 8/8.
 
+**A page can instead open small, capped by a count of statements rather than a token budget.** `Conversation.page_top`
+(served as `--page-top`, default **8** since the user's 2026-10-02 decision) opens a page over the limit with the
+`page_top` statements the question ranks best by the same BM25 scoring, in document order, the rest left as openable
+anchors. Fixed offline before any walk: at 8, every statement 113 of 115 oracle walks over three read sets need is
+shown (at 5, 108) — the risk named at the same time: the member never opens a section in its own corpus (0 of 315
+walks), so a statement the page leaves out is, for it, absent. On a fourth real family ingested verbatim
+(`knowledge/hazwaste-regs`, 40 CFR Part 262), `real-none-s0` with `+top8` answers **34/44** against the unchanged
+page's **30/44**, paired 6 : 2 ($p = 0.29$) — **PAGE TOP HELPS**, not WORKS: 3 wins are context overflows the smaller
+page fits, 3 repair the wrong-statement-on-the-right-page failure this exists for (same-page wrong statements 8 → 6),
+the 2 losses keep every needed statement in view, and the walks carry 3.2× less text (241,981 against 778,701
+characters) **[ran]** PAGE0.
+
+**Training a corpus under that served form, and measuring the conformance guard's `recover` mode for the first time,
+repairs nothing on the same set — FALSIFIED.** The guard (§5.3 of `docs/MEMORY.md`) has two modes: `strict`, the
+default, ends a walk the first time it catches a violation — a section number opened as if it were an id, for one —
+and `recover` writes the violation inline and lets the walk go on. `real-fmt-s0` (REAL4's corpus walked under
+`page_top = 8`, one walk in three reading a `recover`-guard error and continuing, that open kept out of the
+span-masked loss) ties `real-none-s0` served `--guard recover` on PAGE0's set, 33/44 against 33/44, paired 1 : 1
+($p = 1.0$); the `recover` guard alone, no retraining, is harmless against `strict`, 0 : 0. The instrument error
+owned: headroom was checked over the three older read sets under `strict` (9 of 42 misses were format failures
+there), not over PAGE0's own `+top8` arm already on disk, which held just 1 format failure in 11 misses — there was
+next to nothing on this set for the corpus to repair, and the format-corpus line stops here **[ran]** FMT0.
+
 Training on real pages needed one more fix. A trajectory corpus over real documents of a family the
 evaluation never sees, walked through this same runtime, scored 1 of 23 the first time — the loss sat on
 the whole walk, and a walk over real pages read whole is ~97 % page tokens, so the LoRA learned to write

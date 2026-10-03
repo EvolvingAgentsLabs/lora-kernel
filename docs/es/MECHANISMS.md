@@ -637,6 +637,33 @@ anclas abribles (`id§ancla`) — sólo los enunciados mostrados cuentan como le
 `examples/library/serve.py --page-budget`, fijado offline antes de correr ningún recorrido: de 1.500 a 3.500 de
 presupuesto los 8 enunciados que necesitan los recorridos oráculo de REAL4 en esa página se mantienen 8/8.
 
+**Una página también puede abrirse chica, acotada por una cantidad de enunciados en vez de un presupuesto de
+tokens.** `Conversation.page_top` (servido como `--page-top`, default **8** desde la decisión del usuario del
+2026-10-02) abre una página que supera el límite con los `page_top` enunciados que mejor rankea la pregunta por
+la misma puntuación BM25, en orden del documento, y deja el resto como anclas abribles. Fijado offline antes de
+correr ningún recorrido: en 8, se muestra todo enunciado que necesitan 113 de 115 recorridos del oráculo sobre
+tres conjuntos de lectura (en 5, 108) — el riesgo nombrado al mismo tiempo: el miembro nunca abre una sección en
+su propio corpus (0 de 315 recorridos), así que un enunciado que la página deja afuera está, para él, ausente.
+Sobre una cuarta familia real ingerida textual (`knowledge/hazwaste-regs`, 40 CFR Parte 262), `real-none-s0` con
+`+top8` contesta **34/44** contra el **30/44** de la página sin cambios, pareado 6 : 2 ($p = 0,29$) — **AYUDA**,
+no WORKS: 3 ganancias son desbordes de contexto que la página más chica entra, 3 reparan la falla de citar el
+enunciado equivocado en la página correcta, para la que existe (citas erróneas en la misma página 8 → 6), las 2
+pérdidas mantienen a la vista todo enunciado necesario, y los recorridos llevan 3,2× menos texto (241.981 contra
+778.701 caracteres) **[ran]** PAGE0.
+
+**Entrenar un corpus bajo esa forma servida, y medir el modo `recover` de la guarda de conformidad por primera
+vez, no repara nada en el mismo conjunto — FALSEADO.** La guarda (§5.3 de `docs/MEMORY.md`) tiene dos modos:
+`strict`, el default, termina un recorrido la primera vez que atrapa una violación — un número de sección abierto
+como si fuera un id, por ejemplo — y `recover` escribe la violación inline y deja que el recorrido siga.
+`real-fmt-s0` (el corpus de REAL4 recorrido bajo `page_top = 8`, un recorrido de cada tres leyendo un error de la
+guarda en modo `recover` y siguiendo, esa apertura afuera de la pérdida con máscara de tramo) empata con
+`real-none-s0` servido con `--guard recover` sobre el conjunto de PAGE0, 33/44 contra 33/44, pareado 1 : 1
+($p = 1,0$); la guarda `recover` sola, sin reentrenar, es inofensiva contra `strict`, 0 : 0. El error de
+instrumento asumido: el margen se chequeó sobre los tres conjuntos de lectura más viejos bajo `strict` (9 de 42
+fallas eran de formato ahí), no sobre el propio brazo top-8 de PAGE0 que ya estaba en disco, que tenía sólo 1
+falla de formato en 11 fallas — no había casi nada en ese conjunto para que el corpus reparara, y la línea de
+corpus de formato se detiene acá **[ran]** FMT0.
+
 Entrenar sobre páginas reales necesitó un arreglo más. Un corpus de trayectorias sobre documentos reales de
 una familia que la evaluación nunca ve, recorrido por este mismo runtime, sacó 1 de 23 la primera vez — la
 pérdida caía sobre todo el recorrido, y un recorrido sobre páginas reales leídas enteras es ~97 % tokens de

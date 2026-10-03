@@ -130,6 +130,13 @@ small one drafts ([`docs/PLAN.md`](docs/PLAN.md) milestones 3–4).
   gate passes finds a citation it accepts, not necessarily the one the question asks about, which is
   exactly what every new-wrong row does. **Not turned on**
   ([`BOK0`](results/BOK0-best-of-k-20261002/BRIEF.md) **[ran]**).
+- **A page can open small instead of merely capped — PAGE TOP HELPS.** Showing only the question's
+  best 8 statements of a page (`page_top`, the served default since the user's 2026-10-02 decision)
+  answers 34 of 44 against the unchanged page's 30, paired 6:2 ($p = 0.29$), at a third of the walk
+  text, on a fourth real family never seen before ([`PAGE0`](results/PAGE0-page-top-20261002/BRIEF.md)
+  **[ran]**). Training a corpus under that served form, with the referee's `recover` guard mode
+  measured for the first time, repairs nothing on the same set — the format-corpus line stops there
+  ([`FMT0`](results/FMT0-format-corpus-20261002/BRIEF.md) **[ran]**).
 
 ### The memory, in five pieces
 

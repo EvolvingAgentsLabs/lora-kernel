@@ -480,6 +480,29 @@ el valor correcto bajo una cita que falla — por valor la compuerta retiene 43 
 prendida por defecto — decisión del usuario, 2026-10-02, aceptando ese costo; `--no-cite-gate` la apaga**
 ([`GATE0`](../../results/GATE0-cite-gate-20261002/BRIEF.md)).
 
+**Una página también puede abrirse chica, acotada por enunciados en vez de tokens — `page_top`, servida por
+defecto. [ran] PAGE0.** `memory.runtime.Conversation.page_top` (`examples/library/serve.py --page-top`, default
+**8** desde la decisión del usuario del 2026-10-02) abre una página que supera el límite con los 8 enunciados
+que mejor rankea el BM25 de la pregunta, en orden del documento, el resto como anclas abribles — el mismo
+ranking que usa `page_budget`, acotado por una cantidad de enunciados en vez de un presupuesto de tokens.
+Fijado offline antes de correr ningún recorrido: en 8, 113 de 115 recorridos del oráculo sobre tres conjuntos
+de lectura mantienen a la vista todo enunciado que necesitan. Sobre una cuarta familia real ingerida textual
+(`knowledge/hazwaste-regs`, 40 CFR Parte 262), `real-none-s0` con `+top8` contesta 34 de 44 contra el 30 de la
+página sin cambios, pareado 6:2 ($p = 0,29$) — **AYUDA**, no WORKS: 3 ganancias son desbordes de contexto que
+la página más chica entra, 3 reparan la falla de citar el enunciado equivocado en la página correcta, para la
+que existe, a un tercio del texto del recorrido
+([`PAGE0`](../../results/PAGE0-page-top-20261002/BRIEF.md)).
+
+**Entrenar un corpus bajo esa forma servida, con el modo `recover` de la guarda de conformidad (`docs/MEMORY.md`
+§5.3) medido por primera vez, no repara nada en el mismo conjunto — FALSEADO. [ran] FMT0.** `real-fmt-s0` — el
+corpus de REAL4 recorrido bajo `page_top = 8`, un recorrido de cada tres leyendo un error de la guarda en modo
+`recover` y siguiendo — empata con `real-none-s0` servido de la misma forma, 33/44 contra 33/44, pareado 1:1; la
+guarda `recover` sola, sin reentrenar, es inofensiva contra `strict`, 0:0. El error de instrumento asumido: el
+margen se chequeó sobre los tres conjuntos de lectura más viejos bajo `strict`, no sobre el propio brazo top-8
+de PAGE0 que ya estaba en disco, que tenía una falla de formato en once fallas — no había casi nada en ese
+conjunto para que el corpus reparara, y la línea de corpus de formato se detiene acá
+([`FMT0`](../../results/FMT0-format-corpus-20261002/BRIEF.md)).
+
 ## 5. El contrato de liberación
 
 Una región entra por una sola puerta **[ran]**: una suite con un verificador que el bucle de
