@@ -374,11 +374,15 @@ halves failed while the corpus never showed one, and once it did the small membe
 PAIR0, 2026-10-02:** before training a 12B member for the real-document region, the two bare bases under the served
 runtime — the 12B loses to the E4B, 11/44 against 21/44 answerable rows, paired 2 : 12, $p = 0.013$. No 12B member is
 trained for this region either; the pair stays a speed result without a region that needs the large half's accuracy.
-**PAIR1 — pre-registered, running, 2026-10-03:** untrained size conflates with protocol, so the pair's own
-definition — both halves trained on the same corpus — gets its own try: `real-none-12b` on `real-none-s0`'s corpus
-and recipe. Training has hit two out-of-memory failures at window 4,096 on an A100 and an H100 was refused on
-quota; a fix (`span_logits_loss`, proved equal to HuggingFace's own loss) is ready for the next attempt. No result
-yet ([`PAIR1`](results/PAIR1-large-member-20261003/BRIEF.md)).
+**PAIR1 [ran], 2026-10-03 — TIE:** untrained size conflates with protocol, so the pair's own definition — both
+halves trained on the same corpus — got its own try. Training took two out-of-memory failures at window 4,096 on a
+40 GB A100 and a refused H100 (quota) before `span_logits_loss` (proved equal to HuggingFace's own loss) let it
+finish. Trained, `real-none-12b` ties `real-none-s0` on PAGE0's record: 33/44 against 34/44 answerable, paired 5 : 6
+($p = 1.0$), 23/30 against 24/30 multi-hop, 10/14 one-hop and 7/8 refusals both — and 33/44 against FMT0's record
+too. With B3, a second region where the large half buys no accuracy; the speculative pair stays a speed result
+(B4, F0, C0, F0c) without a region that needs it. Trained, the 12B walks clean — 0 thought lines where the bare
+12B left hundreds in PAIR0 — so the protocol was the training, not the size. One observation beside the verdict:
+the two members err on different rows (39/44 right by either) ([`PAIR1`](results/PAIR1-large-member-20261003/BRIEF.md)).
 
 **Confirmed on a full-size GPU, bf16 (C0).** The 12B's native MTP drafter with the expert LoRA on:
 1.92× on the domain (α 0.34), 2.40× general; the base pair alone runs 2.80×/2.60×. A merged E4B

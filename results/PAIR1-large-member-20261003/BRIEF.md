@@ -58,6 +58,28 @@ One training (A100), one scoring (A100). No change to the corpus, recipe, set or
   with and without accumulation** (`tests/test_span_logits.py`). Attempt 4, when the user's machine is back: the A100 with
   `wiki_arm --span-logits`, everything else as written.
 
-## Result
+- **T attempt 4 [ran]:** the A100, `--span-logits`: trained without running out of memory (315 rows, 19,454 trained tokens
+  of 594,798); adapter home.
 
-*(written after the run)*
+## Result [ran] — TIE: trained on the same corpus, the 12B member does what the E4B member does
+
+One A100, vLLM bf16, G1 applied, 0 errors (`pair1.json`).
+
+| member, served runtime (top-8) | answerable (44) | multi-hop (30) | one-hop (14) | refusals (8) |
+|---|---|---|---|---|
+| **`real-none-12b`** (12B + LoRA) | **33** | 23 | 10 | 7 |
+| `real-none-s0` (E4B + LoRA), PAGE0's record | 34 | 24 | 10 | 7 |
+| `real-none-s0`, FMT0's record (the spread) | 33 | 23 | 10 | 7 |
+
+- **Verdict: TIE** — paired against PAGE0's record **5 : 6** ($p = 1.0$), against FMT0's 6 : 6. With B3 (W9, generated
+  wiki), **two regions where a large member buys no accuracy**: the speculative pair stays a measured speed result (B4,
+  F0, C0, F0c) without a region in this project that needs its large half.
+- **What the 12B member fixed and did not:** trained, it walks like the E4B member — no thought lines (0, against the
+  bare 12B's hundreds in PAIR0), no missing line, 3 citations without `§section`. The protocol PAIR0's bare 12B failed was
+  the training, not the size.
+- **One observation beside the verdict, not a claim:** the two members tie on totals but **err on different rows** (11
+  discordant of 44 — 5 the 12B alone gets right, 6 the E4B alone); rows right by either: 39/44 against 33–34 for each.
+  Whether anything can *choose* between them per request (the citation gate does not see which is right when both
+  verify) is untested.
+- **Training note:** the 12B at window 4,096 needs `span_logits_loss` on a 40 GB A100 — the same loss, a 30× smaller
+  vocabulary projection.
