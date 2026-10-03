@@ -136,6 +136,34 @@ in its own `[Queued user message from a previous active turn …]` envelope — 
 logged. `serve.py`'s handler now catches the exception and answers 200 with `NO_ANSWER`, the error logged
 beside the walk: one request in, one answer out, whichever way the walk ends.
 
+**`--page-top 8`: a page opens with the question's best statements, the default since 2026-10-02.**
+Where `--page-budget` caps a long page by a token count, `memory.runtime.Conversation.page_top` caps
+it by a count of statements: a page over the limit opens with the **8** the question ranks best by
+the same BM25 scoring (ties in document order), the rest left as openable anchors — only the shown
+statements count as read. Fixed offline before any walk: at 8, every statement 113 of 115 oracle
+walks over three read sets need is shown (at 5, 108). On a fourth real family ingested verbatim
+(`knowledge/hazwaste-regs`, 40 CFR Part 262, 69 pages, 1,103 statements), `real-none-s0` with
+`+top8` answers **34/44** against the unchanged page's **30/44**, paired 6 : 2 ($p = 0.29$) —
+**PAGE TOP HELPS**, not WORKS: 3 wins are context overflows the smaller page fits (pages of 97–134
+statements read whole), 3 repair the wrong-statement-on-the-right-page failure this exists for
+(same-page wrong statements 8 → 6), the 2 losses keep every needed statement in view, and the walks
+carry 3.2× less text (241,981 against 778,701 characters). **Shipped as the default, the user's
+2026-10-02 decision**; `--page-top 0` turns it off ([`PAGE0`](../results/PAGE0-page-top-20261002/BRIEF.md)).
+
+**`--guard {strict,recover}`: whether a conformance violation ends the walk, and a format corpus
+trained under both — FALSIFIED.** `strict` (the default, MEMORY.md §5.3) ends a walk the first time
+the referee catches a violation — opening a section number as if it were an id, for one — and the
+request goes to the frontier; `recover` writes the violation inline as an observation and lets the
+walk go on. `real-fmt-s0` — REAL4's corpus walked under the served `page_top = 8` form, with one
+walk in three reading a `recover`-guard error and continuing, that open kept out of the span-masked
+loss — ties `real-none-s0` served `--guard recover` on PAGE0's set, 33/44 against 33/44, paired 1 : 1
+($p = 1.0$); the `recover` guard alone, with no retraining, is harmless against `strict`, 0 : 0. The
+instrument error owned: headroom was checked over the three older read sets under `strict` (9 of 42
+misses were format failures there), not over PAGE0's own `+top8` arm already on disk, which held
+just **1** format failure in **11** misses — there was next to nothing on this set for the corpus to
+repair, and the format-corpus line stops here
+([`FMT0`](../results/FMT0-format-corpus-20261002/BRIEF.md)).
+
 **`--cite-gate`: the citation check as a gate, on by default.** `memory.runtime.Conversation.final_problem`
 is the same check CITE0 measured as a hint (`citation_problem`, reading only the referee's own record: the
 ids shown, the statements opened, their own text), applied once to the walk's final line; behind

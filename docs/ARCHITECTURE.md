@@ -438,6 +438,28 @@ values (12.4%), raising delivered-value accuracy 78.9% → 85.9% instead of the 
 by default — the user's decision, 2026-10-02, accepting that cost; `--no-cite-gate` turns it off**
 ([`GATE0`](../results/GATE0-cite-gate-20261002/BRIEF.md)).
 
+**A page can also open small, capped by statements rather than tokens — `page_top`, served by
+default. [ran] PAGE0.** `memory.runtime.Conversation.page_top` (`examples/library/serve.py
+--page-top`, default **8** since the user's 2026-10-02 decision) opens an over-limit page with the
+8 statements the question's BM25 ranks best, in document order, the rest left as openable anchors —
+the same ranking `page_budget` uses, keyed to a statement count rather than a token budget. Fixed
+offline before any walk: at 8, 113 of 115 oracle walks over three read sets keep every statement
+they need in view. On a fourth real family ingested verbatim (`knowledge/hazwaste-regs`, 40 CFR
+Part 262), `real-none-s0` with `+top8` answers 34 of 44 against the unchanged page's 30, paired 6:2
+($p = 0.29$) — **PAGE TOP HELPS**, not WORKS: 3 wins are context overflows the smaller page fits, 3
+repair the wrong-statement-on-the-right-page failure this is for, at a third of the walk text
+([`PAGE0`](../results/PAGE0-page-top-20261002/BRIEF.md)).
+
+**Training a corpus under that served form, with the conformance guard's `recover` mode (`docs/MEMORY.md`
+§5.3) measured for the first time, repairs nothing on the same set — FALSIFIED. [ran] FMT0.**
+`real-fmt-s0` — REAL4's corpus walked under `page_top = 8`, one walk in three reading a
+`recover`-guard error and continuing — ties `real-none-s0` served the same way, 33/44 against 33/44,
+paired 1:1; the `recover` guard alone, no retraining, is harmless against `strict`, 0:0. The
+instrument error owned: headroom was checked over the three older read sets under `strict`, not over
+PAGE0's own `+top8` arm already on disk, which held one format failure in eleven misses — there was
+next to nothing on this set for the corpus to repair, and the format-corpus line stops here
+([`FMT0`](../results/FMT0-format-corpus-20261002/BRIEF.md)).
+
 ## 5. The release contract
 
 A region enters through one door **[ran]**: a suite with a verifier the training loop never

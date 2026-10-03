@@ -1,0 +1,36 @@
+{
+ "G1_eval_library_in_corpus": 0,
+ "G2_eval_question_in_corpus": 0,
+ "G3_not_verified": 0,
+ "G4_value_in_question": 0,
+ "G5_over_window": 0,
+ "G6_repeated_opening": 0,
+ "rows": 320,
+ "two_hop": 114,
+ "max_tokens": 2699,
+ "top_openings": [
+  [
+   "how many days do",
+   6
+  ],
+  [
+   "how long do we",
+   6
+  ],
+  [
+   "how often do we",
+   6
+  ],
+  [
+   "what's the deadline for",
+   6
+  ],
+  [
+   "how many days of",
+   5
+  ]
+ ],
+ "passed": true,
+ "FMT_injected": 96,
+ "FMT_section_opens": 25
+}

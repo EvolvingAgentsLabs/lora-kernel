@@ -182,6 +182,11 @@ class Conversation:
     # never opened, or a number the cited statement does not hold — and of 37 right answers, none does. With
     # `cite_check`, such a final line is answered once with `= ERROR: citation — …` and the walk goes on; a second final
     # line stands as it is. It cannot catch a statement that holds the number but is not the one asked about.
+    # A PAGE OPENS WITH THE QUESTION'S BEST STATEMENTS, WHATEVER ITS LENGTH (PAGE0): of the member's 42 misses on three
+    # sets, 21 reached the supporting page and cited another statement on it [ran]; by BM25 against the question the
+    # supporting statement is in that page's top 3 in all 21, and with `page_top = 8` every statement the oracle's walk
+    # needs is shown in 113 of 115 walks [ran] (zero GPU). The rest are listed by anchor, openable as `id§section`.
+    page_top: int | None = None
     cite_check: bool = False
     cite_checks: int = 0
     checked: dict | None = None
@@ -333,6 +338,19 @@ class Conversation:
         import math
         from collections import Counter
         lines = {st.anchor: f"  §{st.anchor} {self._statement_text(note, st.anchor)}" for st in note.statements}
+        if self.page_top and len(lines) > self.page_top:
+            # PAGE0: the question's best `page_top` by BM25 over the statements' own text, ties in document order
+            texts = {st.anchor: self._statement_text(note, st.anchor) or "" for st in note.statements}
+            tdocs = {a: Counter(_words(t)) for a, t in texts.items()}
+            tn, tdf = len(tdocs), Counter(w for d in tdocs.values() for w in d)
+            tavg = sum(sum(d.values()) for d in tdocs.values()) / tn
+            tq = _words(self.first_query or "")
+
+            def tscore(a):
+                d = tdocs[a]; norm = 1.2 * (0.25 + 0.75 * sum(d.values()) / tavg)
+                return sum(math.log(1 + (tn - tdf[w] + 0.5) / (tdf[w] + 0.5)) * d[w] * 2.2 / (d[w] + norm) for w in tq if d[w])
+            pos = {st.anchor: i for i, st in enumerate(note.statements)}
+            return set(sorted(texts, key=lambda a: (-tscore(a), pos[a]))[:self.page_top])
         if not self.page_budget or count_tokens("\n".join(lines.values())) <= self.page_budget:
             return set(lines)
         docs = {a: Counter(_words(t)) for a, t in lines.items()}

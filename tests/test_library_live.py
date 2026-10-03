@@ -277,3 +277,47 @@ def test_best_of_k_resamples_a_first_walk_that_ran_out_of_context():
         return boom
     rec = wiki_arm.run_case(lib, row, "withlib-s0+page+k4", always)
     assert rec["state"] == "context" and len(rec["bok"]["walks"]) == 4 and rec["bok"]["selected"] is None
+
+
+def test_page_top_shows_the_questions_best_statements_and_lists_the_rest():
+    """PAGE0: a page longer than `page_top` opens with the question's best statements (BM25), the supporting one among
+    them, the rest listed by anchor; only the shown ones count as read; a short page opens whole."""
+    from memory.notes import Library
+    from memory.runtime import Conversation
+    lib = Library.load("knowledge/logistics-regs")
+    row = next(r for r in _rows() if r["support"] and r["support"][0].endswith("1910-178"))
+    page = lib[row["support"][0]]
+    conv = Conversation(lib, page_text=True, page_top=8, first_query=row["question"])
+    keep = conv._page_selection(page)
+    assert len(keep) == 8 and row["support"][1] in keep
+    text = conv._render(page, None)
+    assert f"{len(page.statements) - 8} more sections, not shown" in text
+    short = lib["logistics-regs/wiki/1-906"]
+    assert len(short.statements) <= 8 and conv._render(short, None) == Conversation(lib, page_text=True)._render(short, None)
+
+
+def test_the_format_corpus_opens_hidden_statements_and_masks_the_injected_mistake():
+    """FMT0: under page_top a walk opens a needed statement the page hid as `id§section`; an injected mistaken open is
+    answered with an ERROR under the `recover` guard, the walk still verifies, and the mistake is not in the loss."""
+    import json as _j
+    from training.wiki import real_corpus as rc
+    qs = [_j.loads(l) for l in open("training/wiki/data/real_questions.jsonl")][:6]
+    rows = rc.walk_rows(qs, 8, 3)
+    plain = {r["case_id"]: r["grade"] for r in rc.walk_rows(qs, 8, 0)}
+    inj = [r for r in rows if r["injected"]]
+    # the injected mistake changes nothing about the grade: a walk right without it is right with it
+    assert inj and all(r["grade"] == plain[r["case_id"]] and r["refused"] == 0 for r in inj)
+    for r in inj:
+        t = r["messages"][2]["content"]
+        assert f"{r['injected']}= ERROR" in t and not any(t[a:b] == r["injected"] for a, b in r["train_spans"])
+
+
+def test_the_recover_guard_lets_a_walk_go_on_after_an_unknown_id():
+    from memory.notes import Library
+    from memory.runtime import Conversation
+    lib = Library.load("knowledge/logistics-regs")
+    strict = Conversation(lib, mode="strict")
+    strict.answer("open", ">zzz")
+    assert strict.ended
+    rec = Conversation(lib, mode="recover")
+    assert rec.answer("open", ">zzz").startswith("ERROR") and rec.ended is None

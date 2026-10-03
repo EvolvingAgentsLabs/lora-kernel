@@ -145,6 +145,38 @@ cinco veces, ninguna registrada. El handler de `serve.py` ahora atrapa la excepc
 `NO_ANSWER`, el error registrado al lado del recorrido: una solicitud entra, una respuesta sale, sin importar
 cómo termine el recorrido.
 
+**`--page-top 8`: una página abre con las mejores afirmaciones de la pregunta, el default desde el
+2026-10-02.** Donde `--page-budget` acota una página larga por una cantidad de tokens,
+`memory.runtime.Conversation.page_top` la acota por una cantidad de enunciados: una página que supera el
+límite abre con los **8** que mejor rankea la pregunta por la misma puntuación BM25 (empates en orden del
+documento), el resto como anclas abribles — sólo los enunciados mostrados cuentan como leídos. Fijado offline
+antes de correr ningún recorrido: en 8, se muestra todo enunciado que necesitan 113 de 115 recorridos del
+oráculo sobre tres conjuntos de lectura (en 5, 108). Sobre una cuarta familia real ingerida textual
+(`knowledge/hazwaste-regs`, 40 CFR Parte 262, 69 páginas, 1.103 enunciados), `real-none-s0` con `+top8`
+contesta **34/44** contra el **30/44** de la página sin cambios, pareado 6 : 2 ($p = 0,29$) — **AYUDA**, no
+WORKS: 3 ganancias son desbordes de contexto que la página más chica entra (páginas de 97–134 enunciados
+leídas enteras), 3 reparan la falla de citar el enunciado equivocado en la página correcta, para la que
+existe (citas erróneas en la misma página 8 → 6), las 2 pérdidas mantienen a la vista todo enunciado
+necesario, y los recorridos llevan 3,2× menos texto (241.981 contra 778.701 caracteres). **Sale como default,
+decisión del usuario del 2026-10-02**; `--page-top 0` lo apaga
+([`PAGE0`](../../results/PAGE0-page-top-20261002/BRIEF.md)).
+
+**`--guard {strict,recover}`: si una violación de conformidad termina el recorrido, y un corpus de formato
+entrenado bajo los dos — FALSEADO.** `strict` (el default, MEMORY.md §5.3) termina un recorrido la primera vez
+que el árbitro atrapa una violación — abrir un número de sección como si fuera un id, por ejemplo — y el
+pedido va a la frontera; `recover` escribe la violación inline como una observación y deja que el recorrido
+siga. `real-fmt-s0` — el corpus de REAL4 recorrido bajo la forma servida `page_top = 8`, un recorrido de cada
+tres leyendo un error de la guarda en modo `recover` y siguiendo, esa apertura afuera de la pérdida con
+máscara de tramo — empata con `real-none-s0` servido con `--guard recover` sobre el conjunto de PAGE0, 33/44
+contra 33/44, pareado 1 : 1 ($p = 1,0$); la guarda `recover` sola, sin reentrenar, es inofensiva contra
+`strict`, 0 : 0. El error de instrumento asumido: el margen se chequeó sobre los tres conjuntos de lectura más
+viejos bajo `strict` (9 de 42 fallas eran de formato ahí, en gran parte por la guarda terminando recorridos y
+páginas leídas enteras — dos cosas que el top-8 y `recover` ya habían cambiado), no sobre el propio brazo
+top-8 de PAGE0 que ya estaba en disco (1 falla de formato en 10 fallas) — la regla "chequear el margen antes
+de construir el tratamiento" se aplicó sobre el base equivocado, y costó una A100 y una sesión de L4. La línea
+de corpus de formato se detiene acá
+([`FMT0`](../../results/FMT0-format-corpus-20261002/BRIEF.md)).
+
 **`--cite-gate`: el chequeo de citación como compuerta, prendida por defecto.**
 `memory.runtime.Conversation.final_problem` es el mismo chequeo que CITE0 midió como pista
 (`citation_problem`, que lee sólo el propio registro del referí: los ids mostrados, los enunciados abiertos,

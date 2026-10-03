@@ -138,6 +138,14 @@ que verifica lo que el chico borradorea ([`docs/es/PLAN.md`](docs/es/PLAN.md) hi
   pasa sólo 4/7 (57 %) — muestrear hasta que la compuerta pase encuentra una cita que ella acepta, no
   necesariamente la que la pregunta pide, que es exactamente lo que hace cada fila nueva incorrecta.
   **No se prende** ([`BOK0`](results/BOK0-best-of-k-20261002/BRIEF.md) **[ran]**).
+- **Una página puede abrirse chica en vez de sólo acotada — AYUDA.** Mostrar sólo las 8 mejores
+  afirmaciones de la pregunta en una página (`page_top`, el default servido desde la decisión del
+  usuario del 2026-10-02) contesta 34 de 44 contra el 30 de la página sin cambios, pareado 6:2
+  ($p = 0,29$), a un tercio del texto del recorrido, sobre una cuarta familia real nunca vista antes
+  ([`PAGE0`](results/PAGE0-page-top-20261002/BRIEF.md) **[ran]**). Entrenar un corpus bajo esa forma
+  servida, con el modo `recover` de la guarda del árbitro medido por primera vez, no repara nada en
+  el mismo conjunto — la línea de corpus de formato se detiene ahí
+  ([`FMT0`](results/FMT0-format-corpus-20261002/BRIEF.md) **[ran]**).
 
 ### La memoria, en cinco piezas
 
