@@ -1,0 +1,10 @@
+{
+ "base": "google/gemma-4-12B-it",
+ "started": "2026-10-03T11:47:28",
+ "grader": "training.wiki.grade",
+ "library": "knowledge/distributor-wiki",
+ "eval_world": 20260924,
+ "arms": {},
+ "stopped": "training adapters/real-none12b-s0 failed rc=1",
+ "finished": "2026-10-03T11:49:46"
+}

@@ -402,6 +402,12 @@ mitad grande. [ran] PAIR0, 2026-10-02:** antes de entrenar un miembro 12B para l
 dos bases peladas bajo el runtime servido — el 12B le pierde al E4B, 11/44 contra 21/44 filas respondibles, pareado
 2 : 12, $p = 0,013$. Tampoco se entrena un miembro 12B para esta región; el par se queda como resultado de velocidad
 sin una región que necesite la precisión de la mitad grande.
+**PAIR1 — pre-registrado, corriendo, 2026-10-03:** el tamaño sin entrenar confunde con el protocolo, así que la
+propia definición del par — las dos mitades entrenadas sobre el mismo corpus — tiene su propio intento:
+`real-none-12b` sobre el corpus y la receta de `real-none-s0`. El entrenamiento chocó con dos quedadas sin memoria
+en la ventana de 4.096 en una A100 y una H100 fue rechazada por cupo; un arreglo (`span_logits_loss`, probado igual
+a la propia pérdida de HuggingFace) queda listo para el próximo intento. Sin resultado todavía
+([`PAIR1`](results/PAIR1-large-member-20261003/BRIEF.md)).
 
 **Confirmado en una GPU de tamaño completo, bf16 (C0).** El drafter MTP propio del 12B con el LoRA
 experto activo: 1,92× en el dominio (α 0,34), 2,40× general; el par base solo corre 2,80×/2,60×. Un
@@ -419,9 +425,20 @@ arriba sirve exactamente a la velocidad del completo: medio adaptador ahorra mem
 arranca, el LoRA queda aplicado, un LoRA se carga en caliente en 0,25 s con el drafter encendido. El modelo base corre
 **2,7×** más rápido en las preguntas del experto (aceptación 0,79); **con el LoRA activo, 1,7× en su propio dominio y 2,1× en
 texto general** — el drafter ve el LoRA a través de las activaciones del objetivo pero no predice lo que le hace escribir.
-El EAGLE-3 público rinde mucho peor (1,2×). Todavía no establecido: que la salida sea idéntica a la decodificación normal a
-temperatura 0 — la corrida no fue invariante al batch. Y el LoRA del experto se cambia en caliente, el drafter no: vLLM fija un drafter por
+El EAGLE-3 público rinde mucho peor (1,2×). Esa corrida no fue invariante al batch, en una L4 en FP8, donde F0b
+después encontró que el motor mismo no era determinista. Y el LoRA del experto se cambia en caliente, el drafter no: vLLM fija un drafter por
 servidor; qué significa y qué se está midiendo, [`docs/es/GUIDE.md`](docs/es/GUIDE.md) §6.5 ([`results/F0-spec-lora-12b-20260927/`](results/F0-spec-lora-12b-20260927/BRIEF.md)).
+
+**Identidad de la salida a temperatura 0, establecida [ran] 2026-10-03 (F0c).** En bf16 sobre una A100, con
+`VLLM_BATCH_INVARIANT=1`, el control plano-contra-plano es idéntico en cada conjunto (16/16, 8/8, 16/16, 8/8) — el
+motor es determinista acá. Contra ese control, MTP lo iguala hasta cada corte al que llega un recorrido servido: en
+el dominio propio del LoRA, 16/16 concuerdan hasta el punto donde un recorrido servido se detiene (las 2 de 16
+divergencias crudas ocurren sólo después de una etiqueta de cierre que esta prueba sin herramienta decodifica de
+más), a **1,98×**; en LoRA/general, 8/8. Base/general todavía cambia por sinónimos en casi-empates (5 de 8) — un
+artefacto de la forma de verificación al puntuar varias posiciones en una sola pasada, no una falla de la regla de
+aceptación. Con el LoRA propio del experto, en su propio dominio, la decodificación especulativa preserva lo que
+escribe un recorrido servido hasta cada corte; no es una garantía bit a bit general de vLLM
+([`results/F0c-identity-bf16-20261003/`](results/F0c-identity-bf16-20261003/BRIEF.md)).
 
 **El runtime de edge es llama.cpp, no MLX — decidido el 2026-09-28 (MAC2).** En la MacBook Air M4
 del usuario (16 GB), la build 11146 de llama.cpp carga el GGUF del E4B, sirve el LoRA del 12B (6/6),
@@ -464,9 +481,11 @@ pedidos legítimos, y ahora es el default del proxy; lo que no va a hacer por di
 (0/120, reportado). Los modelos chicos todavía
 inventan: en la demo de la escuela el gateway reemplazó 2 de 5 respuestas locales por el texto
 propio de las herramientas — atrapado, contado, nunca mostrado, pero no curado. La decodificación especulativa con un
-experto LoRA corre de verdad (F0, C0, arriba), pero todavía no está mostrado que su salida sea idéntica a la
-decodificación normal, y el drafter alineado que podría cerrar esa brecha está en pausa — todavía no corre en
-absoluto (C0). Si el arnés de flujo de trabajo le gana a cargar la conversación tiene una respuesta que se lee de
+experto LoRA corre de verdad (F0, C0, arriba), y la identidad de su salida a temperatura 0 ya está establecida en
+bf16 sobre una A100 (F0c, arriba) — hasta cada corte al que llega un recorrido servido, en el dominio propio del
+LoRA y por completo en texto general; el drafter alineado que podría cerrar la brecha de velocidad restante con la
+base pelada está en pausa — todavía no corre en absoluto (C0). Si el arnés de flujo de trabajo le gana a cargar la
+conversación tiene una respuesta que se lee de
 dos formas: **PASÓ** por brazo (53/54 turnos dependientes contra el 43/54 de `history`, tokens planos, cada turno
 correcto rastreado por clave) pero quedó **ANULADO** tal como estaba pre-registrado, porque la compuerta pensada
 para vigilar los primeros turnos de cada brazo la hace fallar la propia falla del control sin bloque (0/60) — el

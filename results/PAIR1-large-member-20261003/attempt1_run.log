@@ -1,0 +1,111 @@
+[pool] training adapters/real-none12b-s0 on google/gemma-4-12B-it from training/wiki/data/train_real_none.jsonl
+[train] adapters/real-none12b-s0 from 315 examples
+W1003 11:36:19.652000 8248 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1003 11:36:19.697000 8248 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/677 [00:00<?, ?it/s]Loading weights:   0%|          | 3/677 [00:00<01:34,  7.17it/s]Loading weights:   2%|▏         | 13/677 [00:00<00:21, 30.28it/s]Loading weights:   3%|▎         | 21/677 [00:00<00:15, 42.57it/s]Loading weights:   5%|▌         | 35/677 [00:00<00:09, 65.55it/s]Loading weights:   7%|▋         | 50/677 [00:00<00:07, 84.43it/s]Loading weights:   9%|▉         | 64/677 [00:00<00:06, 94.56it/s]Loading weights:  12%|█▏        | 78/677 [00:01<00:05, 102.47it/s]Loading weights:  13%|█▎        | 90/677 [00:01<00:05, 99.93it/s] Loading weights:  15%|█▌        | 104/677 [00:01<00:05, 105.88it/s]Loading weights:  18%|█▊        | 119/677 [00:01<00:04, 112.87it/s]Loading weights:  19%|█▉        | 132/677 [00:01<00:04, 111.65it/s]Loading weights:  22%|██▏       | 147/677 [00:01<00:04, 116.42it/s]Loading weights:  24%|██▎       | 160/677 [00:01<00:04, 114.62it/s]Loading weights:  26%|██▌       | 174/677 [00:01<00:04, 113.38it/s]Loading weights:  28%|██▊       | 188/677 [00:02<00:04, 115.20it/s]Loading weights:  30%|██▉       | 201/677 [00:02<00:04, 113.82it/s]Loading weights:  32%|███▏      | 215/677 [00:02<00:03, 115.71it/s]Loading weights:  34%|███▍      | 229/677 [00:02<00:03, 116.35it/s]Loading weights:  36%|███▌      | 244/677 [00:02<00:03, 119.67it/s]Loading weights:  38%|███▊      | 257/677 [00:02<00:03, 115.21it/s]Loading weights:  40%|███▉      | 270/677 [00:02<00:03, 113.57it/s]Loading weights:  42%|████▏     | 285/677 [00:02<00:03, 118.19it/s]Loading weights:  44%|████▍     | 299/677 [00:03<00:03, 118.66it/s]Loading weights:  46%|████▌     | 313/677 [00:03<00:03, 119.15it/s]Loading weights:  48%|████▊     | 327/677 [00:03<00:02, 119.11it/s]Loading weights:  50%|█████     | 339/677 [00:03<00:03, 111.05it/s]Loading weights:  52%|█████▏    | 354/677 [00:03<00:02, 116.37it/s]Loading weights:  54%|█████▍    | 368/677 [00:03<00:02, 116.81it/s]Loading weights:  56%|█████▋    | 382/677 [00:03<00:02, 117.51it/s]Loading weights:  58%|█████▊    | 396/677 [00:03<00:02, 118.16it/s]Loading weights:  61%|██████    | 410/677 [00:03<00:02, 118.42it/s]Loading weights:  62%|██████▏   | 423/677 [00:04<00:02, 113.79it/s]Loading weights:  65%|██████▍   | 437/677 [00:04<00:02, 115.92it/s]Loading weights:  67%|██████▋   | 451/677 [00:04<00:01, 117.72it/s]Loading weights:  69%|██████▊   | 464/677 [00:04<00:01, 115.61it/s]Loading weights:  71%|███████   | 479/677 [00:04<00:01, 120.02it/s]Loading weights:  73%|███████▎  | 492/677 [00:04<00:01, 117.78it/s]Loading weights:  75%|███████▍  | 505/677 [00:04<00:01, 113.07it/s]Loading weights:  77%|███████▋  | 519/677 [00:04<00:01, 115.58it/s]Loading weights:  79%|███████▉  | 534/677 [00:05<00:01, 119.04it/s]Loading weights:  81%|████████  | 548/677 [00:05<00:01, 119.23it/s]Loading weights:  83%|████████▎ | 562/677 [00:05<00:00, 119.79it/s]Loading weights:  85%|████████▍ | 575/677 [00:05<00:00, 117.43it/s]Loading weights:  87%|████████▋ | 588/677 [00:05<00:00, 113.15it/s]Loading weights:  89%|████████▉ | 602/677 [00:05<00:00, 114.41it/s]Loading weights:  91%|█████████ | 617/677 [00:05<00:00, 118.27it/s]Loading weights:  93%|█████████▎| 631/677 [00:05<00:00, 117.44it/s]Loading weights:  95%|█████████▌| 645/677 [00:05<00:00, 117.43it/s]Loading weights:  97%|█████████▋| 658/677 [00:06<00:00, 115.19it/s]Loading weights: 100%|██████████| 677/677 [00:06<00:00, 110.25it/s]
+[precision] torch.bfloat16 on NVIDIA A100-SXM4-40GB
+[train] span-masked: 315 rows, 19454 trained tokens of 594798
+trainable params: 65,568,768 || all params: 12,025,298,944 || trainable%: 0.5453
+  0%|          | 0/60 [00:00<?, ?it/s][W1003 11:38:10.522802961 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 3233808384 bytes (free: 1121386496, total: 42405855232).
+  2%|▏         | 1/60 [00:31<30:44, 31.26s/it][W1003 11:38:34.810277750 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 4294967296 bytes (free: 1704394752, total: 42405855232).
+[W1003 11:38:34.134471877 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 4294967296 bytes (free: 2467758080, total: 42405855232).
+[W1003 11:38:34.134796707 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 4294967296 bytes (free: 2467758080, total: 42405855232).
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/content/lora-kernel/training/harness/train_one.py", line 155, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "/content/lora-kernel/training/harness/train_one.py", line 51, in main
+    model, tok = train_adapter(a.base, rows, a.out_dir, SimpleNamespace(
+                 ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        epochs=a.epochs, r=a.r, alpha=a.alpha, lr=a.lr, batch=1 if a.max_seq > 2048 else 2, accum=16 if a.max_seq > 2048 else 8,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        max_seq=a.max_seq, seed=a.seed, four_bit=False, layers_from=a.layers_from,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        targets="q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/content/lora-kernel/training/s4_train.py", line 247, in train_adapter
+    return _train_on_spans(model, tok, rows, out_dir, args)
+  File "/content/lora-kernel/training/s4_train.py", line 227, in _train_on_spans
+    gradient_checkpointing=True, remove_unused_columns=False)).train()
+                                                               ~~~~~^^
+  File "/usr/local/lib/python3.13/dist-packages/transformers/trainer.py", line 1520, in train
+    return inner_training_loop(
+        args=args,
+    ...<2 lines>...
+        ignore_keys_for_eval=ignore_keys_for_eval,
+    )
+  File "/usr/local/lib/python3.13/dist-packages/transformers/trainer.py", line 1602, in _inner_training_loop
+    self._run_epoch(
+    ~~~~~~~~~~~~~~~^
+        model=model,
+        ^^^^^^^^^^^^
+    ...<9 lines>...
+        steps_trained_in_current_epoch=steps_trained_in_current_epoch,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/dist-packages/transformers/trainer.py", line 1842, in _run_epoch
+    tr_loss_step = self.training_step(model, inputs, num_items_in_batch)
+  File "/usr/local/lib/python3.13/dist-packages/transformers/trainer.py", line 2014, in training_step
+    loss = self.compute_loss(model, inputs, num_items_in_batch=num_items_in_batch)
+  File "/usr/local/lib/python3.13/dist-packages/transformers/trainer.py", line 2088, in compute_loss
+    outputs = model(**inputs)
+  File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/usr/local/lib/python3.13/dist-packages/accelerate/utils/operations.py", line 943, in forward
+    return model_forward(*args, **kwargs)
+  File "/usr/local/lib/python3.13/dist-packages/accelerate/utils/operations.py", line 931, in __call__
+    return convert_to_fp32(self.model_forward(*args, **kwargs))
+                           ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/torch/amp/autocast_mode.py", line 44, in decorate_autocast
+    return func(*args, **kwargs)
+  File "/usr/local/lib/python3.13/dist-packages/peft/peft_model.py", line 2120, in forward
+    return self.base_model(
+           ~~~~~~~~~~~~~~~^
+        input_ids=input_ids,
+        ^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    )
+    ^
+  File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/usr/local/lib/python3.13/dist-packages/peft/tuners/tuners_utils.py", line 359, in forward
+    return self.model(*args, **kwargs)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "/usr/local/lib/python3.13/dist-packages/transformers/utils/generic.py", line 939, in wrapper
+    output = func(self, *args, **kwargs)
+  File "/usr/local/lib/python3.13/dist-packages/transformers/models/gemma4_unified/modeling_gemma4_unified.py", line 1341, in forward
+    loss = self.loss_function(logits, labels, self.config.get_text_config().vocab_size, **kwargs)
+  File "/usr/local/lib/python3.13/dist-packages/transformers/loss/loss_utils.py", line 70, in ForCausalLMLoss
+    loss = fixed_cross_entropy(logits, shift_labels, num_items_in_batch, ignore_index, **kwargs)
+  File "/usr/local/lib/python3.13/dist-packages/transformers/loss/loss_utils.py", line 40, in fixed_cross_entropy
+    loss = nn.functional.cross_entropy(source, target, ignore_index=ignore_index, reduction=reduction)
+  File "/usr/local/lib/python3.13/dist-packages/torch/nn/functional.py", line 3555, in cross_entropy
+    return torch._C._nn.cross_entropy_loss(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        input,
+        ^^^^^^
+    ...<5 lines>...
+        label_smoothing,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+torch.OutOfMemoryError: CUDA out of memory. Tried to allocate 4.00 GiB. GPU 0 has a total capacity of 39.49 GiB of which 2.30 GiB is free. Including non-PyTorch memory, this process has 37.18 GiB memory in use. Of the allocated memory 32.97 GiB is allocated by PyTorch, and 3.71 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://docs.pytorch.org/docs/stable/notes/cuda.html#optimizing-memory-usage-with-pytorch-cuda-alloc-conf)
+  2%|▏         | 1/60 [00:39<38:59, 39.65s/it]
+[pool] training adapters/real-none12b-s0 failed rc=1
