@@ -361,6 +361,7 @@ def main() -> int:
     ap.add_argument("--zero-gpu", action="store_true")
     ap.add_argument("--arms", default=",".join(ARMS))
     ap.add_argument("--train-seed", type=int, default=None, help="train adapters/wiki-walks-s<seed> and stop")
+    ap.add_argument("--span-logits", action="store_true", help="train with logits only where the loss is taken (PAIR1)")
     ap.add_argument("--empty-thought", action="store_true", help="prefill an empty thought channel (gemma-4-12B-it)")
     ap.add_argument("--max-tokens", type=int, default=120)
     ap.add_argument("--max-tokens-plain", type=int, default=160)
@@ -425,7 +426,7 @@ def main() -> int:
             rc = subprocess.call([sys.executable, "-m", "training.harness.train_one", "--base", a.base, "--train", str(corpus),
                                   "--out-dir", spec, "--epochs", str(RECIPE["epochs"]), "--r", str(RECIPE["r"]),
                                   "--alpha", str(RECIPE["lora_alpha"]), "--lr", str(RECIPE["lr"]), "--seed", str(a.train_seed),
-                                  "--max-seq", str(a.max_seq)])
+                                  "--max-seq", str(a.max_seq), *(["--span-logits"] if a.span_logits else [])])
             if rc != 0:
                 rec["stopped"] = f"training {spec} failed rc={rc}"; rec["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S"); save()
                 print(f"[pool] {rec['stopped']}", flush=True)

@@ -51,6 +51,12 @@ One training (A100), one scoring (A100). No change to the corpus, recipe, set or
 - **T attempt 2 — out of memory again, by a hair** (`attempt2_T_chain_oom.log`): fragmentation gone (159 MiB reserved
   unallocated), the same 4.00 GiB request against exactly 4.00 GiB free — the 12B at window 4,096 does not fit a 40 GB
   A100. **Attempt 3: the one H100 (80 GB) attempt**, same everything.
+- **T attempt 3 — the H100 refused three times (quota), nothing ran.** The stop the brief wrote is reached for the
+  hardware route. **What does not change the recipe:** the loss only needs logits where it is taken (~3 % of positions);
+  `s4_train.span_logits_loss` computes them through the model's own `logits_to_keep` (final softcapping included) and is
+  the same quantity as the model's shifted cross-entropy — **[ran] equal to HuggingFace's loss on a tiny random causal LM,
+  with and without accumulation** (`tests/test_span_logits.py`). Attempt 4, when the user's machine is back: the A100 with
+  `wiki_arm --span-logits`, everything else as written.
 
 ## Result
 

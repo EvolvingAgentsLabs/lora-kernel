@@ -193,6 +193,24 @@ def span_labels(tok, messages: list[dict], spans: list[list[int]], max_len: int)
     return {"input_ids": enc["input_ids"], "attention_mask": enc["attention_mask"], "labels": labels}
 
 
+def span_logits_loss(model, inputs: dict, num_items_in_batch=None):
+    r"""The span-masked loss with logits computed only where it is taken (PAIR1). The same quantity as the model's own
+    shifted cross-entropy — $\mathcal L = \frac{1}{N}\sum_{t:\,y_{t+1}\ne -100} -\log p_\theta(y_{t+1}\mid y_{\le t})$, with
+    $N$ the trained tokens (or the Trainer's `num_items_in_batch` under accumulation) — but the vocabulary projection runs
+    on the ~3 % of positions whose next token is trained, through the model's own `logits_to_keep` (its final-logit
+    softcapping included). [ran] PAIR1 attempts 1–2: a 12B at window 4,096 could not allocate the 4 GiB full logits."""
+    import torch
+    labels = inputs["labels"]
+    keep = (labels[:, 1:] != -100).any(dim=0).nonzero(as_tuple=True)[0]          # positions t whose t+1 is trained
+    out = model(input_ids=inputs["input_ids"], attention_mask=inputs.get("attention_mask"), logits_to_keep=keep)
+    target = labels[:, keep + 1]
+    logits = out.logits.float()
+    loss = torch.nn.functional.cross_entropy(logits.reshape(-1, logits.size(-1)), target.reshape(-1),
+                                             ignore_index=-100, reduction="sum")
+    n = num_items_in_batch if num_items_in_batch is not None else (target != -100).sum()
+    return loss / n
+
+
 def _train_on_spans(model, tok, rows: list[dict], out_dir: str, args):
     """The same LoRA and schedule as `train_adapter`, with the loss masked to the model's own spans (`span_labels`)."""
     from datasets import Dataset
@@ -225,7 +243,12 @@ def _train_on_spans(model, tok, rows: list[dict], out_dir: str, args):
             m = len(b["input_ids"])
             ids[i, :m], att[i, :m], lab[i, :m] = torch.tensor(b["input_ids"]), 1, torch.tensor(b["labels"])
         return {"input_ids": ids, "attention_mask": att, "labels": lab}
-    Trainer(model=peft_model, train_dataset=Dataset.from_list(data), data_collator=collate,
+    T = Trainer
+    if getattr(args, "span_logits", False):
+        class T(Trainer):                               # PAIR1: the vocabulary projection only where the loss is taken
+            def compute_loss(self, model, inputs, return_outputs=False, num_items_in_batch=None):
+                return span_logits_loss(model, inputs, num_items_in_batch)
+    T(model=peft_model, train_dataset=Dataset.from_list(data), data_collator=collate,
             args=TrainingArguments(output_dir=out_dir, num_train_epochs=args.epochs,
                                    per_device_train_batch_size=args.batch, gradient_accumulation_steps=args.accum,
                                    learning_rate=args.lr, logging_steps=10, seed=args.seed, report_to=[],
