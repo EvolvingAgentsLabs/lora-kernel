@@ -1,0 +1,842 @@
+(APIServer pid=12933) INFO 10-04 12:35:39 [api_utils.py:347] 
+(APIServer pid=12933) INFO 10-04 12:35:39 [api_utils.py:347]        █     █     █▄   ▄█
+(APIServer pid=12933) INFO 10-04 12:35:39 [api_utils.py:347]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.30.0
+(APIServer pid=12933) INFO 10-04 12:35:39 [api_utils.py:347]   █▄█▀ █     █     █     █  model   google/gemma-4-26B-A4B-it
+(APIServer pid=12933) INFO 10-04 12:35:39 [api_utils.py:347]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+(APIServer pid=12933) INFO 10-04 12:35:39 [api_utils.py:347] 
+(APIServer pid=12933) INFO 10-04 12:35:39 [api_utils.py:286] non-default args: {'model_tag': 'google/gemma-4-26B-A4B-it', 'model': 'google/gemma-4-26B-A4B-it', 'max_model_len': 16384, 'quantization': 'fp8', 'gpu_memory_utilization': 0.9}
+(APIServer pid=12933) Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+(APIServer pid=12933) INFO 10-04 12:35:56 [model.py:692] Resolved architecture: Gemma4ForConditionalGeneration
+(APIServer pid=12933) INFO 10-04 12:35:56 [model.py:2030] Using max model len 16384
+(APIServer pid=12933) [transformers] `SiglipImageProcessorFast` is deprecated. The `Fast` suffix for image processors has been removed; use `SiglipImageProcessor` instead.
+(APIServer pid=12933) INFO 10-04 12:36:01 [arg_utils.py:2961] Raising max_num_batched_tokens from 2048 to 2496 to accommodate 'video' input for prefix-LM model google/gemma-4-26B-A4B-it.
+(APIServer pid=12933) INFO 10-04 12:36:01 [scheduler.py:288] Chunked prefill is enabled with max_num_batched_tokens=2496.
+(APIServer pid=12933) INFO 10-04 12:36:01 [config.py:252] Gemma4 model has heterogeneous head dimensions {'sliding_attention': 256, 'full_attention': 512}. FA4 not available, forcing TRITON_ATTN backend.
+(APIServer pid=12933) Parse safetensors files:   0%|          | 0/2 [00:00<?, ?it/s]Parse safetensors files:  50%|█████     | 1/2 [00:00<00:00,  2.79it/s]Parse safetensors files: 100%|██████████| 2/2 [00:00<00:00,  3.58it/s]Parse safetensors files: 100%|██████████| 2/2 [00:00<00:00,  3.43it/s]
+(APIServer pid=12933) INFO 10-04 12:36:02 [kernel.py:416] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+(APIServer pid=12933) WARNING 10-04 12:36:02 [cuda.py:351] Forcing --disable_chunked_mm_input for models with multimodal-bidirectional attention.
+(EngineCore pid=13296) INFO 10-04 12:36:24 [core.py:123] Initializing a V1 LLM engine (v0.30.0) with config: model='google/gemma-4-26B-A4B-it', speculative_config=None, tokenizer='google/gemma-4-26B-A4B-it', skip_tokenizer_init=False, tokenizer_mode=auto, revision=main, tokenizer_revision=main, trust_remote_code=False, dtype=torch.bfloat16, max_seq_len=16384, download_dir=None, load_format=auto, tensor_parallel_size=1, pipeline_parallel_size=1, data_parallel_size=1, decode_context_parallel_size=1, dcp_comm_backend=ag_rs, disable_custom_all_reduce=False, quantization=fp8, quantization_config=None, enforce_eager=False, enable_return_routed_experts=False, kv_cache_dtype=auto, device_config=cuda, structured_outputs_config=StructuredOutputsConfig(backend='auto', disable_any_whitespace=False, disable_additional_properties=False, reasoning_parser='', reasoning_parser_plugin='', enable_in_reasoning=False), observability_config=ObservabilityConfig(show_hidden_metrics_for_version=None, otlp_traces_endpoint=None, collect_detailed_traces=None, per_request_spec_decode_metrics='none', kv_cache_metrics=False, kv_cache_metrics_sample=0.01, cudagraph_metrics=False, enable_layerwise_nvtx_tracing=False, enable_mfu_metrics=False, enable_mm_processor_stats=False, enable_logging_iteration_details=False, jit_monitor_mode='warn', jit_monitor_verbose=False), seed=0, served_model_name=google/gemma-4-26B-A4B-it, enable_prefix_caching=True, enable_chunked_prefill=True, pooler_config=None, compilation_config={'mode': <CompilationMode.VLLM_COMPILE: 3>, 'debug_dump_path': None, 'cache_dir': '', 'compile_cache_save_format': 'binary', 'backend': 'inductor', 'custom_ops': ['none'], 'ir_enable_torch_wrap': True, 'splitting_ops': ['vllm::unified_attention_with_output', 'vllm::unified_mla_attention_with_output', 'vllm::mamba_mixer2', 'vllm::mamba_mixer', 'vllm::short_conv', 'vllm::qwen4_exp_ple_short_conv', 'vllm::qwen4_exp_qsa_with_output', 'vllm::linear_attention', 'vllm::qwen_gdn_attention_core', 'vllm::qwen_gdn_attention_core_fused_norm_packed', 'vllm::gdn_attention_core_xpu', 'vllm::olmo_hybrid_gdn_full_forward', 'vllm::sparse_attn_indexer', 'vllm::rocm_aiter_sparse_attn_indexer', 'vllm::deepseek_v4_attention', 'vllm::hpc_rope_norm_forward', 'vllm::unified_kv_cache_update', 'vllm::unified_mla_kv_cache_update'], 'compile_mm_encoder': False, 'cudagraph_mm_encoder': False, 'encoder_cudagraph_token_budgets': [], 'encoder_cudagraph_max_vision_items_per_batch': 0, 'encoder_cudagraph_max_frames_per_batch': None, 'compile_sizes': [], 'compile_ranges_endpoints': [2496], 'inductor_compile_config': {'enable_auto_functionalized_v2': False, 'combo_kernels': True, 'benchmark_combo_kernel': True}, 'inductor_passes': {}, 'cudagraph_mode': <CUDAGraphMode.FULL_AND_PIECEWISE: (2, 1)>, 'cudagraph_num_of_warmups': 1, 'cudagraph_capture_sizes': [1, 2, 4, 8, 16, 24, 32, 40, 48, 56, 64, 72, 80, 88, 96, 104, 112, 120, 128, 136, 144, 152, 160, 168, 176, 184, 192, 200, 208, 216, 224, 232, 240, 248, 256, 272, 288, 304, 320, 336, 352, 368, 384, 400, 416, 432, 448, 464, 480, 496, 512], 'cudagraph_copy_inputs': False, 'cudagraph_specialize_lora': True, 'use_inductor_graph_partition': False, 'pass_config': {'fuse_norm_quant': False, 'fuse_act_quant': False, 'fuse_attn_quant': False, 'enable_sp': False, 'fuse_gemm_comms': False, 'fuse_allreduce_rms': False, 'enable_qk_norm_rope_fusion': False, 'fuse_rope_kvcache_cat_mla': False, 'fuse_act_padding': False, 'fuse_qk_norm_rope_kvcache': False}, 'max_cudagraph_capture_size': 512, 'dynamic_shapes_config': {'type': <DynamicShapesType.BACKED: 'backed'>, 'evaluate_guards': False, 'assume_32_bit_indexing': False}, 'local_cache_dir': None, 'fast_moe_cold_start': False, 'static_all_moe_layers': []}, kernel_config=KernelConfig(ir_op_priority=IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native']), enable_flashinfer_autotune=True, enable_cutedsl_warmup=True, enable_jit_warmup=True, moe_backend='auto', sparse_indexer_topk_backend='auto', linear_backend='auto', linear_backend_per_quant=None)
+(EngineCore pid=13296) [transformers] `SiglipImageProcessorFast` is deprecated. The `Fast` suffix for image processors has been removed; use `SiglipImageProcessor` instead.
+(EngineCore pid=13296) INFO 10-04 12:36:29 [parallel_state.py:1827] world_size=1 rank=0 local_rank=0 distributed_init_method=file:///tmp/vllm_dist_907360b0dbd840279128bd0099f023bb backend=nccl
+(EngineCore pid=13296) INFO 10-04 12:36:29 [parallel_state.py:2267] rank 0 in world size 1 is assigned as DP rank 0, PP rank 0, PCP rank 0, TP rank 0, ETP rank 0, EP rank 0, EPLB rank N/A
+(EngineCore pid=13296) INFO 10-04 12:36:29 [gpu_worker.py:441] Using V2 Model Runner
+(EngineCore pid=13296) INFO 10-04 12:36:30 [model_runner.py:396] Loading model from scratch...
+(EngineCore pid=13296) Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+(EngineCore pid=13296) Parse safetensors files:   0%|          | 0/2 [00:00<?, ?it/s]Parse safetensors files:  50%|█████     | 1/2 [00:00<00:00,  3.35it/s]Parse safetensors files: 100%|██████████| 2/2 [00:00<00:00,  3.10it/s]Parse safetensors files: 100%|██████████| 2/2 [00:00<00:00,  3.13it/s]
+(EngineCore pid=13296) INFO 10-04 12:36:31 [kernel.py:416] Final IR op priority after setting platform defaults: IrOpPriorityConfig(rms_norm=['native'], fused_add_rms_norm=['native'], gelu_and_mul_sparse=['triton', 'native'])
+(EngineCore pid=13296) INFO 10-04 12:36:32 [__init__.py:758] Selected CutlassFP8ScaledMMLinearKernel for Fp8PerTensorOnlineLinearMethod
+(EngineCore pid=13296) INFO 10-04 12:36:32 [cuda.py:478] Using AttentionBackendEnum.TRITON_ATTN backend.
+(EngineCore pid=13296) INFO 10-04 12:36:32 [fp8.py:438] Using MARLIN Fp8 MoE backend out of potential backends: ['AITER', 'FLASHINFER_TRTLLM', 'FLASHINFER_CUTLASS', 'DEEPGEMM', 'TRITON', 'MARLIN', 'HUMMING', 'BATCHED_DEEPGEMM', 'BATCHED_TRITON', 'XPU', 'CPU', 'HPC'].
+(EngineCore pid=13296) INFO 10-04 12:36:32 [cuda.py:478] Using AttentionBackendEnum.TRITON_ATTN backend.
+(APIServer pid=12933) INFO 10-04 12:37:53 [base.py:261] Multi-modal warmup completed in 102.427s
+(APIServer pid=12933) INFO 10-04 12:37:53 [base.py:261] Readonly multi-modal warmup completed in 0.139s
+(EngineCore pid=13296) INFO 10-04 12:39:01 [weight_utils.py:558] Time spent downloading weights for google/gemma-4-26B-A4B-it: 146.402173 seconds
+(EngineCore pid=13296) INFO 10-04 12:39:01 [weight_utils.py:895] Filesystem type for checkpoints: OVERLAY. Checkpoint size: 48.07 GiB. Available RAM: 75.21 GiB.
+(EngineCore pid=13296) INFO 10-04 12:39:01 [weight_utils.py:918] Auto-prefetch is disabled because the filesystem (OVERLAY) is not a recognized network FS (NFS/Lustre). If you want to force prefetching, start vLLM with --safetensors-load-strategy=prefetch.
+(EngineCore pid=13296) Loading safetensors checkpoint shards:   0% Completed | 0/2 [00:00<?, ?it/s]
+(EngineCore pid=13296) WARNING 10-04 12:39:11 [marlin_utils_fp8.py:252] Your GPU does not have native support for FP8 computation but FP8 quantization is being used. Weight-only FP8 compression will be used leveraging the Marlin kernel. This may degrade performance for compute-heavy workloads.
+(EngineCore pid=13296) INFO 10-04 12:39:11 [fp8.py:740] Using MoEPrepareAndFinalizeNoDPEPModular
+[rank0]:[W1004 12:40:46.981187212 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 253755392 bytes (free: 139919360, total: 42405855232).
+[rank0]:[W1004 12:40:50.679815713 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 5701632, total: 42405855232).
+[rank0]:[W1004 12:40:50.682708024 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 5701632, total: 42405855232).
+[rank0]:[W1004 12:40:50.684711503 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 5701632, total: 42405855232).
+[rank0]:[W1004 12:40:50.686716546 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 5701632, total: 42405855232).
+[rank0]:[W1004 12:40:50.688707165 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 5701632, total: 42405855232).
+[rank0]:[W1004 12:40:50.690704643 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 5701632, total: 42405855232).
+[rank0]:[W1004 12:40:50.692712212 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 5701632, total: 42405855232).
+[rank0]:[W1004 12:40:50.694745091 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 5701632, total: 42405855232).
+[rank0]:[W1004 12:40:50.696710905 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 5701632, total: 42405855232).
+[rank0]:[W1004 12:40:50.698779868 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 507510784 bytes (free: 5701632, total: 42405855232).
+[rank0]:[W1004 12:40:55.452151736 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 9895936, total: 42405855232).
+[rank0]:[W1004 12:40:55.454723978 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 9895936, total: 42405855232).
+[rank0]:[W1004 12:40:55.456711784 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 9895936, total: 42405855232).
+[rank0]:[W1004 12:40:55.458699691 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 9895936, total: 42405855232).
+[rank0]:[W1004 12:40:55.460708293 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 9895936, total: 42405855232).
+[rank0]:[W1004 12:40:55.462716137 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 9895936, total: 42405855232).
+[rank0]:[W1004 12:40:55.464774581 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 507510784 bytes (free: 9895936, total: 42405855232).
+[rank0]:[W1004 12:40:55.485536296 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:40:55.488170456 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:40:55.491083895 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:40:55.494056195 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:40:55.497040029 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:40:55.500041175 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:40:55.503023777 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:40:55.506016376 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:40:55.508988514 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:40:55.511993785 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:40:55.514997534 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:40:55.517978090 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 253755392 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:40:55.578468114 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 46137344 bytes (free: 37158912, total: 42405855232).
+[rank0]:[W1004 12:41:00.121584402 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 253755392 bytes (free: 177668096, total: 42405855232).
+[rank0]:[W1004 12:41:00.153254231 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:00.155773683 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:00.158774391 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:00.161765214 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:00.164047148 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:00.167768455 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:00.170759951 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:00.173725692 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:00.175723909 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:00.177710445 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:00.179789876 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:00.182711473 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:00.184710046 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:00.186757153 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:00.188718344 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:00.190724079 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:00.192709105 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:00.194825801 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 507510784 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:00.216556430 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:00.219317853 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:00.222189720 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:00.225344702 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:00.228085848 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:00.230989282 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:00.233961657 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:00.236998445 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:00.240046678 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:00.242967588 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:00.245965531 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:00.248967306 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 253755392 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:00.323844846 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 25165824 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:05.924215535 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 253755392 bytes (free: 186056704, total: 42405855232).
+[rank0]:[W1004 12:41:05.952939720 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:05.955729519 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:05.957712083 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:05.959710042 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:05.961710987 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:05.963717241 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:05.965708431 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:05.967737595 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:05.969708100 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:05.971711841 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:05.973715175 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:05.975710890 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:05.977702538 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:05.979696724 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:05.981723251 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:05.983707359 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:05.985706573 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:05.987725285 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:05.989830136 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 507510784 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:05.012436419 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:05.015852743 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:05.019105305 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:05.023106290 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:05.027069408 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:05.030024418 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:05.032990099 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:05.035971287 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:05.038979305 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:05.041978844 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:05.044981004 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 253755392 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:05.113777159 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:05.121235397 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 25165824 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:10.911474057 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 253755392 bytes (free: 202833920, total: 42405855232).
+[rank0]:[W1004 12:41:10.942995559 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:10.945743610 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:10.948741693 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:10.951765064 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:10.954733432 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:10.956742267 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:10.958728466 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:10.960748005 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:10.962724877 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:10.964742553 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:10.966765251 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:10.969770440 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:10.972741692 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:10.974723341 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:10.976718220 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:10.978709938 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:10.980733868 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:10.982840954 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 507510784 bytes (free: 16187392, total: 42405855232).
+[rank0]:[W1004 12:41:10.005672050 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 11993088, total: 42405855232).
+[rank0]:[W1004 12:41:10.007931845 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 11993088, total: 42405855232).
+[rank0]:[W1004 12:41:10.010866219 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 11993088, total: 42405855232).
+[rank0]:[W1004 12:41:10.014089354 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 11993088, total: 42405855232).
+[rank0]:[W1004 12:41:10.017069344 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 11993088, total: 42405855232).
+[rank0]:[W1004 12:41:10.019949689 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 11993088, total: 42405855232).
+[rank0]:[W1004 12:41:10.022918187 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 11993088, total: 42405855232).
+[rank0]:[W1004 12:41:10.025930082 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 11993088, total: 42405855232).
+[rank0]:[W1004 12:41:10.028983586 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 11993088, total: 42405855232).
+[rank0]:[W1004 12:41:10.031979324 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 11993088, total: 42405855232).
+[rank0]:[W1004 12:41:10.034902007 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 253755392 bytes (free: 11993088, total: 42405855232).
+[rank0]:[W1004 12:41:10.103960523 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:41:10.110263755 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 25165824 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:41:15.959932849 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 253755392 bytes (free: 200736768, total: 42405855232).
+[rank0]:[W1004 12:41:15.989698861 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:15.991774774 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:15.994752972 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:15.996744880 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:15.998900915 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:15.001774267 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:15.004817781 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:15.007985198 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:15.010881291 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:15.013781678 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:15.016745285 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:15.018954875 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:15.021906429 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:15.024940378 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:15.027773598 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:15.030742758 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:15.032783733 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:15.035875813 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 507510784 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:15.058703726 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 9895936, total: 42405855232).
+[rank0]:[W1004 12:41:15.060890469 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 9895936, total: 42405855232).
+[rank0]:[W1004 12:41:15.063874438 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 9895936, total: 42405855232).
+[rank0]:[W1004 12:41:15.066901677 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 9895936, total: 42405855232).
+[rank0]:[W1004 12:41:15.070111750 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 9895936, total: 42405855232).
+[rank0]:[W1004 12:41:15.073147678 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 9895936, total: 42405855232).
+[rank0]:[W1004 12:41:15.076047525 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 9895936, total: 42405855232).
+[rank0]:[W1004 12:41:15.079034968 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 9895936, total: 42405855232).
+[rank0]:[W1004 12:41:15.082036238 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 9895936, total: 42405855232).
+[rank0]:[W1004 12:41:15.084986190 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 9895936, total: 42405855232).
+[rank0]:[W1004 12:41:15.088256381 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 253755392 bytes (free: 9895936, total: 42405855232).
+[rank0]:[W1004 12:41:15.163354017 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:15.170218021 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 25165824 bytes (free: 14090240, total: 42405855232).
+(EngineCore pid=13296) Loading safetensors checkpoint shards:  50% Completed | 1/2 [02:17<02:17, 137.44s/it]
+[rank0]:[W1004 12:41:23.283572043 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 253755392 bytes (free: 137822208, total: 42405855232).
+[rank0]:[W1004 12:41:23.313199945 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:41:23.315786318 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:41:23.318816457 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:41:23.321760919 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:41:23.324759506 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:41:23.327731313 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:41:23.329709982 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:41:23.331749945 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:41:23.333755875 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:41:23.335722511 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:41:23.337735898 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:41:23.339713123 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:41:23.341722060 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:41:23.343765767 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:41:23.346746519 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:41:23.348712990 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:41:23.350733187 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:41:23.352716102 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:41:23.354732947 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:41:23.356984167 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 507510784 bytes (free: 18284544, total: 42405855232).
+[rank0]:[W1004 12:41:23.380267119 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:23.382980547 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:23.385927749 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:23.388891020 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:23.391883942 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:23.395108289 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:23.398051055 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:23.401035864 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:23.403959305 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:23.407069227 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 253755392 bytes (free: 14090240, total: 42405855232).
+[rank0]:[W1004 12:41:23.479159671 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 25165824 bytes (free: 11993088, total: 42405855232).
+[rank0]:[W1004 12:41:27.786753388 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 253755392 bytes (free: 240582656, total: 42405855232).
+[rank0]:[W1004 12:41:27.818627390 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 11993088, total: 42405855232).
+[rank0]:[W1004 12:41:27.820712563 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 11993088, total: 42405855232).
+[rank0]:[W1004 12:41:27.822780897 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 11993088, total: 42405855232).
+[rank0]:[W1004 12:41:28.825750061 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 11993088, total: 42405855232).
+[rank0]:[W1004 12:41:28.827733171 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 11993088, total: 42405855232).
+[rank0]:[W1004 12:41:28.829715769 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 11993088, total: 42405855232).
+[rank0]:[W1004 12:41:28.831705540 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 11993088, total: 42405855232).
+[rank0]:[W1004 12:41:28.833730496 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 11993088, total: 42405855232).
+[rank0]:[W1004 12:41:28.835704670 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 11993088, total: 42405855232).
+[rank0]:[W1004 12:41:28.837705632 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 11993088, total: 42405855232).
+[rank0]:[W1004 12:41:28.839814323 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 11993088, total: 42405855232).
+[rank0]:[W1004 12:41:28.842786327 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 11993088, total: 42405855232).
+[rank0]:[W1004 12:41:28.845748035 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 11993088, total: 42405855232).
+[rank0]:[W1004 12:41:28.847695627 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 11993088, total: 42405855232).
+[rank0]:[W1004 12:41:28.849976189 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 507510784 bytes (free: 11993088, total: 42405855232).
+[rank0]:[W1004 12:41:28.872966137 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 7798784, total: 42405855232).
+[rank0]:[W1004 12:41:28.875851787 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 7798784, total: 42405855232).
+[rank0]:[W1004 12:41:28.878828336 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 7798784, total: 42405855232).
+[rank0]:[W1004 12:41:28.880817651 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 7798784, total: 42405855232).
+[rank0]:[W1004 12:41:28.883226252 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 7798784, total: 42405855232).
+[rank0]:[W1004 12:41:28.886377765 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 7798784, total: 42405855232).
+[rank0]:[W1004 12:41:28.889053229 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 7798784, total: 42405855232).
+[rank0]:[W1004 12:41:28.892038029 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 7798784, total: 42405855232).
+[rank0]:[W1004 12:41:28.894961909 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 7798784, total: 42405855232).
+[rank0]:[W1004 12:41:28.897894840 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 253755392 bytes (free: 7798784, total: 42405855232).
+[rank0]:[W1004 12:41:28.971930943 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 25165824 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:32.277319159 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 253755392 bytes (free: 232194048, total: 42405855232).
+[rank0]:[W1004 12:41:32.309931706 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:32.312743496 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:32.315729748 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:32.317792294 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:32.320742478 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:32.322722859 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:32.324701237 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:32.326747317 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:32.328704987 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:32.330707620 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:32.332711484 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:32.334721068 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:32.336702541 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:32.338706700 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:32.341016004 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 507510784 bytes (free: 3604480, total: 42405855232).
+[rank0]:[W1004 12:41:32.363426002 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:32.365927246 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:32.368876170 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:32.371890436 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:32.374842695 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:32.377867603 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:32.380864360 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:32.383872506 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:32.387118545 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:32.389967594 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 20971520 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:32.392912678 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 253755392 bytes (free: 20381696, total: 42405855232).
+[rank0]:[W1004 12:41:33.570199295 CUDACachingAllocator.cpp:3933] memory allocation failed with OOM on device 0 while trying to allocate 25165824 bytes (free: 16187392, total: 42405855232).
+(EngineCore pid=13296) Loading safetensors checkpoint shards: 100% Completed | 2/2 [02:32<00:00, 65.39s/it]
+(EngineCore pid=13296)  Loading safetensors checkpoint shards: 100% Completed | 2/2 [02:32<00:00, 76.19s/it]
+(EngineCore pid=13296) 
+(EngineCore pid=13296) INFO 10-04 12:41:33 [default_loader.py:430] Loading weights took 152.44 seconds
+(EngineCore pid=13296) INFO 10-04 12:41:35 [model_runner.py:428] Model loading took 25.81 GiB memory and 304.609512 seconds
+(EngineCore pid=13296) INFO 10-04 12:41:35 [topk_topp_sampler.py:78] Using FlashInfer for top-p & top-k sampling.
+(EngineCore pid=13296) INFO 10-04 12:41:35 [utils.py:320] Using LBNHC KV cache layout.
+(EngineCore pid=13296) INFO 10-04 12:42:13 [encoder_runner.py:131] Encoder cache will be initialized with a budget of 2496 tokens, and profiled with 1 video items of the maximum feature size.
+(EngineCore pid=13296) INFO 10-04 12:42:41 [backends.py:1094] Using cache directory: /root/.cache/vllm/torch_compile_cache/8f133f7f74/rank_0_0/backbone for vLLM's torch.compile
+(EngineCore pid=13296) INFO 10-04 12:42:41 [backends.py:1155] Dynamo bytecode transform time: 25.41 s
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366] EngineCore failed to start.
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366] Traceback (most recent call last):
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 1328, in run_engine_core
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 1085, in __init__
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     super().__init__(
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ~~~~~~~~~~~~~~~~^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         vllm_config,
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         ^^^^^^^^^^^^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ...<3 lines>...
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         internal_dp_balancing,
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         ^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     )
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 145, in __init__
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     kv_cache_config = self._initialize_kv_caches(vllm_config)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 308, in _initialize_kv_caches
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     available_gpu_memory = self.model_executor.determine_available_memory()
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/executor/abstract.py", line 149, in determine_available_memory
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     return self.collective_rpc("determine_available_memory")
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/executor/uniproc_executor.py", line 103, in collective_rpc
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     result = run_method(self.driver_worker, method, args, kwargs)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/serial_utils.py", line 510, in run_method
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu_worker.py", line 572, in determine_available_memory
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     self.model_runner.profile_run()
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu/model_runner.py", line 955, in profile_run
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     hidden_states, sample_hidden_states = self._dummy_run(
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]                                           ~~~~~~~~~~~~~~~^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         self.max_num_tokens, skip_attn=True, is_profile=True
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     )
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu/eplb_utils.py", line 27, in wrapper
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     result = fn(self, *args, **kwargs)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu/model_runner.py", line 835, in _dummy_run
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     self.execute_model(
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ~~~~~~~~~~~~~~~~~~^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         dummy_scheduler_output,
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         ^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ...<5 lines>...
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         valid_dummy_state_slots=valid_dummy_state_slots,
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     )
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu/model_runner.py", line 1948, in execute_model
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     model_output = self.model(**model_inputs)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     return self._call_impl(*args, **kwargs)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     return forward_call(*args, **kwargs)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/models/gemma4_mm.py", line 2142, in forward
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     hidden_states = self.language_model.model(
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         input_ids,
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ...<4 lines>...
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         **kwargs,
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     )
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/compilation/decorators.py", line 674, in __call__
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     self.aot_compiled_fn = self.aot_compile(*args, **kwargs)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]                            ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/compilation/wrapper.py", line 169, in aot_compile
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     return self._compiled_callable.aot_compile((args, kwargs))
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/_dynamo/eval_frame.py", line 964, in aot_compile
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     return aot_compile_fullgraph(
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         fn,
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ...<3 lines>...
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         dynamic=self._dynamic,
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     )
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/_dynamo/aot_compile.py", line 396, in aot_compile_fullgraph
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     compiled_fn = backend(
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         backend_input.graph_module, backend_input.example_inputs
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     )
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/__init__.py", line 2568, in __call__
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     return self.compiler_fn(model_, inputs_, **self.kwargs)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]            ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/lib/python3.13/contextlib.py", line 85, in inner
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     return func(*args, **kwds)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/compilation/backends.py", line 1222, in __call__
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     PiecewiseCompileInterpreter(
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         self.split_gm, submod_names_to_compile, self.vllm_config, self
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ).run(*fake_args)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ~~~~~^^^^^^^^^^^^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/compilation/backends.py", line 728, in run
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     return super().run(*args)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]            ~~~~~~~~~~~^^^^^^^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/fx/interpreter.py", line 197, in run
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     self.env[node] = self.run_node(node)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]                      ~~~~~~~~~~~~~^^^^^^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/fx/interpreter.py", line 294, in run_node
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     return getattr(self, n.op)(n.target, args, kwargs)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/compilation/backends.py", line 755, in call_module
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     piecewise_backend = PiecewiseBackend(
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         submod,
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ...<6 lines>...
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         submod_name=target,
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     )
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/compilation/piecewise_backend.py", line 190, in __init__
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     self.compile_all_ranges()
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ~~~~~~~~~~~~~~~~~~~~~~~^^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/compilation/piecewise_backend.py", line 266, in compile_all_ranges
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     range_entry.runnable = self.vllm_backend.compiler_manager.compile(
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         self.graph,
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         ^^^^^^^^^^^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ...<6 lines>...
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         is_encoder=self.vllm_backend.is_encoder,
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     )
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     return func(*args, **kwargs)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/compilation/backends.py", line 353, in compile
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     compiled_graph, handle = self.compiler.compile(
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]                              ~~~~~~~~~~~~~~~~~~~~~^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         graph,
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         ^^^^^^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ...<3 lines>...
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         maybe_key,
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         ^^^^^^^^^^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     )
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/vllm/compilation/compiler_interface.py", line 376, in compile
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     compiled_graph = standalone_compile(graph, example_inputs, **compile_kwargs)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/_inductor/__init__.py", line 452, in standalone_compile
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     return standalone_compile(
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         gm,
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ...<5 lines>...
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         fake_mode=fake_mode,
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     )
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/_inductor/standalone_compile.py", line 510, in standalone_compile
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     compiled_fn = compile_fx(
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         gm, example_inputs, ignore_shape_env=ignore_shape_env, **options
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     )
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/_inductor/compile_fx.py", line 2723, in compile_fx
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     return compile_fx(
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         model_,
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ...<5 lines>...
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         compile_region_name=compile_region_name,
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     )
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/_inductor/compile_fx.py", line 2782, in compile_fx
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     return _maybe_wrap_and_compile_fx_main(
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         model_,
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ...<4 lines>...
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         compile_region_name=compile_region_name,
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     )
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/_inductor/compile_fx.py", line 2863, in _maybe_wrap_and_compile_fx_main
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     return _compile_fx_main(
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         model_,
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ...<4 lines>...
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         compile_region_name=compile_region_name,
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     )
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/_inductor/compile_fx.py", line 3076, in _compile_fx_main
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     raise e.remove_dynamo_frames() from None  # see TORCHDYNAMO_VERBOSE=1
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/_inductor/compile_fx.py", line 1020, in _compile_fx_inner
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     raise InductorError(e, currentframe()).with_traceback(
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         e.__traceback__
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ) from None
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/_inductor/compile_fx.py", line 1004, in _compile_fx_inner
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     mb_compiled_graph = fx_codegen_and_compile(
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         gm,
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ...<3 lines>...
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         **graph_kwargs,
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     )
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/_inductor/compile_fx.py", line 1847, in fx_codegen_and_compile
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     return scheme.codegen_and_compile(gm, example_inputs, inputs_to_check, graph_kwargs)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]            ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/_inductor/compile_fx.py", line 1380, in codegen_and_compile
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     _recursive_post_grad_passes(gm, is_inference=is_inference)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/_inductor/compile_fx.py", line 582, in _recursive_post_grad_passes
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     post_grad_passes(gm, is_inference)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/_inductor/fx_passes/post_grad.py", line 435, in post_grad_passes
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     GraphTransformObserver(gm, "decompose_auto_functionalized").apply_graph_pass(
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         decompose_auto_functionalized
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     )
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     ^
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/fx/passes/graph_transform_observer.py", line 103, in apply_graph_pass
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     return pass_fn(self.gm.graph)
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]   File "/usr/local/lib/python3.13/dist-packages/torch/_inductor/fx_passes/post_grad.py", line 1618, in decompose_auto_functionalized
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366]     raise AssertionError("auto_functionalized was not removed")
+(EngineCore pid=13296) ERROR 10-04 12:42:43 [core.py:1366] torch._inductor.exc.InductorError: AssertionError: auto_functionalized was not removed
+(EngineCore pid=13296) Process EngineCore:
+(EngineCore pid=13296) Traceback (most recent call last):
+(EngineCore pid=13296)   File "/usr/lib/python3.13/multiprocessing/process.py", line 313, in _bootstrap
+(EngineCore pid=13296)     self.run()
+(EngineCore pid=13296)     ~~~~~~~~^^
+(EngineCore pid=13296)   File "/usr/lib/python3.13/multiprocessing/process.py", line 108, in run
+(EngineCore pid=13296)     self._target(*self._args, **self._kwargs)
+(EngineCore pid=13296)     ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 1370, in run_engine_core
+(EngineCore pid=13296)     raise e
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 1328, in run_engine_core
+(EngineCore pid=13296)     engine_core = EngineCoreProc(*args, engine_index=dp_rank, **kwargs)
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=13296)     return func(*args, **kwargs)
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 1085, in __init__
+(EngineCore pid=13296)     super().__init__(
+(EngineCore pid=13296)     ~~~~~~~~~~~~~~~~^
+(EngineCore pid=13296)         vllm_config,
+(EngineCore pid=13296)         ^^^^^^^^^^^^
+(EngineCore pid=13296)     ...<3 lines>...
+(EngineCore pid=13296)         internal_dp_balancing,
+(EngineCore pid=13296)         ^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296)     )
+(EngineCore pid=13296)     ^
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 145, in __init__
+(EngineCore pid=13296)     kv_cache_config = self._initialize_kv_caches(vllm_config)
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=13296)     return func(*args, **kwargs)
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core.py", line 308, in _initialize_kv_caches
+(EngineCore pid=13296)     available_gpu_memory = self.model_executor.determine_available_memory()
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/executor/abstract.py", line 149, in determine_available_memory
+(EngineCore pid=13296)     return self.collective_rpc("determine_available_memory")
+(EngineCore pid=13296)            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/executor/uniproc_executor.py", line 103, in collective_rpc
+(EngineCore pid=13296)     result = run_method(self.driver_worker, method, args, kwargs)
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/serial_utils.py", line 510, in run_method
+(EngineCore pid=13296)     return func(*args, **kwargs)
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(EngineCore pid=13296)     return func(*args, **kwargs)
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu_worker.py", line 572, in determine_available_memory
+(EngineCore pid=13296)     self.model_runner.profile_run()
+(EngineCore pid=13296)     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(EngineCore pid=13296)     return func(*args, **kwargs)
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu/model_runner.py", line 955, in profile_run
+(EngineCore pid=13296)     hidden_states, sample_hidden_states = self._dummy_run(
+(EngineCore pid=13296)                                           ~~~~~~~~~~~~~~~^
+(EngineCore pid=13296)         self.max_num_tokens, skip_attn=True, is_profile=True
+(EngineCore pid=13296)         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296)     )
+(EngineCore pid=13296)     ^
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(EngineCore pid=13296)     return func(*args, **kwargs)
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu/eplb_utils.py", line 27, in wrapper
+(EngineCore pid=13296)     result = fn(self, *args, **kwargs)
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu/model_runner.py", line 835, in _dummy_run
+(EngineCore pid=13296)     self.execute_model(
+(EngineCore pid=13296)     ~~~~~~~~~~~~~~~~~~^
+(EngineCore pid=13296)         dummy_scheduler_output,
+(EngineCore pid=13296)         ^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296)     ...<5 lines>...
+(EngineCore pid=13296)         valid_dummy_state_slots=valid_dummy_state_slots,
+(EngineCore pid=13296)         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296)     )
+(EngineCore pid=13296)     ^
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/torch/utils/_contextlib.py", line 124, in decorate_context
+(EngineCore pid=13296)     return func(*args, **kwargs)
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/worker/gpu/model_runner.py", line 1948, in execute_model
+(EngineCore pid=13296)     model_output = self.model(**model_inputs)
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+(EngineCore pid=13296)     return self._call_impl(*args, **kwargs)
+(EngineCore pid=13296)            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+(EngineCore pid=13296)     return forward_call(*args, **kwargs)
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/vllm/model_executor/models/gemma4_mm.py", line 2142, in forward
+(EngineCore pid=13296)     hidden_states = self.language_model.model(
+(EngineCore pid=13296)         input_ids,
+(EngineCore pid=13296)     ...<4 lines>...
+(EngineCore pid=13296)         **kwargs,
+(EngineCore pid=13296)     )
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/vllm/compilation/decorators.py", line 674, in __call__
+(EngineCore pid=13296)     self.aot_compiled_fn = self.aot_compile(*args, **kwargs)
+(EngineCore pid=13296)                            ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/vllm/compilation/wrapper.py", line 169, in aot_compile
+(EngineCore pid=13296)     return self._compiled_callable.aot_compile((args, kwargs))
+(EngineCore pid=13296)            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/torch/_dynamo/eval_frame.py", line 964, in aot_compile
+(EngineCore pid=13296)     return aot_compile_fullgraph(
+(EngineCore pid=13296)         fn,
+(EngineCore pid=13296)     ...<3 lines>...
+(EngineCore pid=13296)         dynamic=self._dynamic,
+(EngineCore pid=13296)     )
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/torch/_dynamo/aot_compile.py", line 396, in aot_compile_fullgraph
+(EngineCore pid=13296)     compiled_fn = backend(
+(EngineCore pid=13296)         backend_input.graph_module, backend_input.example_inputs
+(EngineCore pid=13296)     )
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/torch/__init__.py", line 2568, in __call__
+(EngineCore pid=13296)     return self.compiler_fn(model_, inputs_, **self.kwargs)
+(EngineCore pid=13296)            ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296)   File "/usr/lib/python3.13/contextlib.py", line 85, in inner
+(EngineCore pid=13296)     return func(*args, **kwds)
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/vllm/compilation/backends.py", line 1222, in __call__
+(EngineCore pid=13296)     PiecewiseCompileInterpreter(
+(EngineCore pid=13296)     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+(EngineCore pid=13296)         self.split_gm, submod_names_to_compile, self.vllm_config, self
+(EngineCore pid=13296)         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+(EngineCore pid=13296)     ).run(*fake_args)
+(EngineCore pid=13296)     ~~~~~^^^^^^^^^^^^
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=13296)     return func(*args, **kwargs)
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/vllm/compilation/backends.py", line 728, in run
+(EngineCore pid=13296)     return super().run(*args)
+(EngineCore pid=13296)            ~~~~~~~~~~~^^^^^^^
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/torch/fx/interpreter.py", line 197, in run
+(EngineCore pid=13296)     self.env[node] = self.run_node(node)
+(EngineCore pid=13296)                      ~~~~~~~~~~~~~^^^^^^
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/torch/fx/interpreter.py", line 294, in run_node
+(EngineCore pid=13296)     return getattr(self, n.op)(n.target, args, kwargs)
+(EngineCore pid=13296)            ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/vllm/compilation/backends.py", line 755, in call_module
+(EngineCore pid=13296)     piecewise_backend = PiecewiseBackend(
+(EngineCore pid=13296)         submod,
+(EngineCore pid=13296)     ...<6 lines>...
+(EngineCore pid=13296)         submod_name=target,
+(EngineCore pid=13296)     )
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/vllm/compilation/piecewise_backend.py", line 190, in __init__
+(EngineCore pid=13296)     self.compile_all_ranges()
+(EngineCore pid=13296)     ~~~~~~~~~~~~~~~~~~~~~~~^^
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/vllm/compilation/piecewise_backend.py", line 266, in compile_all_ranges
+(EngineCore pid=13296)     range_entry.runnable = self.vllm_backend.compiler_manager.compile(
+(EngineCore pid=13296)                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+(EngineCore pid=13296)         self.graph,
+(EngineCore pid=13296)         ^^^^^^^^^^^
+(EngineCore pid=13296)     ...<6 lines>...
+(EngineCore pid=13296)         is_encoder=self.vllm_backend.is_encoder,
+(EngineCore pid=13296)         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296)     )
+(EngineCore pid=13296)     ^
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(EngineCore pid=13296)     return func(*args, **kwargs)
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/vllm/compilation/backends.py", line 353, in compile
+(EngineCore pid=13296)     compiled_graph, handle = self.compiler.compile(
+(EngineCore pid=13296)                              ~~~~~~~~~~~~~~~~~~~~~^
+(EngineCore pid=13296)         graph,
+(EngineCore pid=13296)         ^^^^^^
+(EngineCore pid=13296)     ...<3 lines>...
+(EngineCore pid=13296)         maybe_key,
+(EngineCore pid=13296)         ^^^^^^^^^^
+(EngineCore pid=13296)     )
+(EngineCore pid=13296)     ^
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/vllm/compilation/compiler_interface.py", line 376, in compile
+(EngineCore pid=13296)     compiled_graph = standalone_compile(graph, example_inputs, **compile_kwargs)
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/torch/_inductor/__init__.py", line 452, in standalone_compile
+(EngineCore pid=13296)     return standalone_compile(
+(EngineCore pid=13296)         gm,
+(EngineCore pid=13296)     ...<5 lines>...
+(EngineCore pid=13296)         fake_mode=fake_mode,
+(EngineCore pid=13296)     )
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/torch/_inductor/standalone_compile.py", line 510, in standalone_compile
+(EngineCore pid=13296)     compiled_fn = compile_fx(
+(EngineCore pid=13296)         gm, example_inputs, ignore_shape_env=ignore_shape_env, **options
+(EngineCore pid=13296)     )
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/torch/_inductor/compile_fx.py", line 2723, in compile_fx
+(EngineCore pid=13296)     return compile_fx(
+(EngineCore pid=13296)         model_,
+(EngineCore pid=13296)     ...<5 lines>...
+(EngineCore pid=13296)         compile_region_name=compile_region_name,
+(EngineCore pid=13296)     )
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/torch/_inductor/compile_fx.py", line 2782, in compile_fx
+(EngineCore pid=13296)     return _maybe_wrap_and_compile_fx_main(
+(EngineCore pid=13296)         model_,
+(EngineCore pid=13296)     ...<4 lines>...
+(EngineCore pid=13296)         compile_region_name=compile_region_name,
+(EngineCore pid=13296)     )
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/torch/_inductor/compile_fx.py", line 2863, in _maybe_wrap_and_compile_fx_main
+(EngineCore pid=13296)     return _compile_fx_main(
+(EngineCore pid=13296)         model_,
+(EngineCore pid=13296)     ...<4 lines>...
+(EngineCore pid=13296)         compile_region_name=compile_region_name,
+(EngineCore pid=13296)     )
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/torch/_inductor/compile_fx.py", line 3076, in _compile_fx_main
+(EngineCore pid=13296)     raise e.remove_dynamo_frames() from None  # see TORCHDYNAMO_VERBOSE=1
+(EngineCore pid=13296)     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/torch/_inductor/compile_fx.py", line 1020, in _compile_fx_inner
+(EngineCore pid=13296)     raise InductorError(e, currentframe()).with_traceback(
+(EngineCore pid=13296)         e.__traceback__
+(EngineCore pid=13296)     ) from None
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/torch/_inductor/compile_fx.py", line 1004, in _compile_fx_inner
+(EngineCore pid=13296)     mb_compiled_graph = fx_codegen_and_compile(
+(EngineCore pid=13296)         gm,
+(EngineCore pid=13296)     ...<3 lines>...
+(EngineCore pid=13296)         **graph_kwargs,
+(EngineCore pid=13296)     )
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/torch/_inductor/compile_fx.py", line 1847, in fx_codegen_and_compile
+(EngineCore pid=13296)     return scheme.codegen_and_compile(gm, example_inputs, inputs_to_check, graph_kwargs)
+(EngineCore pid=13296)            ~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/torch/_inductor/compile_fx.py", line 1380, in codegen_and_compile
+(EngineCore pid=13296)     _recursive_post_grad_passes(gm, is_inference=is_inference)
+(EngineCore pid=13296)     ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/torch/_inductor/compile_fx.py", line 582, in _recursive_post_grad_passes
+(EngineCore pid=13296)     post_grad_passes(gm, is_inference)
+(EngineCore pid=13296)     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/torch/_inductor/fx_passes/post_grad.py", line 435, in post_grad_passes
+(EngineCore pid=13296)     GraphTransformObserver(gm, "decompose_auto_functionalized").apply_graph_pass(
+(EngineCore pid=13296)     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+(EngineCore pid=13296)         decompose_auto_functionalized
+(EngineCore pid=13296)         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(EngineCore pid=13296)     )
+(EngineCore pid=13296)     ^
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/torch/fx/passes/graph_transform_observer.py", line 103, in apply_graph_pass
+(EngineCore pid=13296)     return pass_fn(self.gm.graph)
+(EngineCore pid=13296)   File "/usr/local/lib/python3.13/dist-packages/torch/_inductor/fx_passes/post_grad.py", line 1618, in decompose_auto_functionalized
+(EngineCore pid=13296)     raise AssertionError("auto_functionalized was not removed")
+(EngineCore pid=13296) torch._inductor.exc.InductorError: AssertionError: auto_functionalized was not removed
+[rank0]:[W1004 12:42:45.479284049 ProcessGroupNCCL.cpp:1624] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+(APIServer pid=12933) INFO 10-04 12:42:48 [utils.py:632] [shutdown] Process manager: send sigterm to process EngineCore
+(APIServer pid=12933) Traceback (most recent call last):
+(APIServer pid=12933)   File "/usr/local/bin/vllm", line 8, in <module>
+(APIServer pid=12933)     sys.exit(main())
+(APIServer pid=12933)              ~~~~^^
+(APIServer pid=12933)   File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/cli/main.py", line 106, in main
+(APIServer pid=12933)     args.dispatch_function(args)
+(APIServer pid=12933)     ~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+(APIServer pid=12933)   File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/cli/serve.py", line 154, in cmd
+(APIServer pid=12933)     uvloop.run(run_server(args))
+(APIServer pid=12933)     ~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+(APIServer pid=12933)   File "/usr/local/lib/python3.13/dist-packages/uvloop/__init__.py", line 96, in run
+(APIServer pid=12933)     return __asyncio.run(
+(APIServer pid=12933)            ~~~~~~~~~~~~~^
+(APIServer pid=12933)         wrapper(),
+(APIServer pid=12933)         ^^^^^^^^^^
+(APIServer pid=12933)     ...<2 lines>...
+(APIServer pid=12933)         **run_kwargs
+(APIServer pid=12933)         ^^^^^^^^^^^^
+(APIServer pid=12933)     )
+(APIServer pid=12933)     ^
+(APIServer pid=12933)   File "/usr/lib/python3.13/asyncio/runners.py", line 196, in run
+(APIServer pid=12933)     return runner.run(main)
+(APIServer pid=12933)            ~~~~~~~~~~^^^^^^
+(APIServer pid=12933)   File "/usr/lib/python3.13/asyncio/runners.py", line 119, in run
+(APIServer pid=12933)     return self._loop.run_until_complete(task)
+(APIServer pid=12933)            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+(APIServer pid=12933)   File "uvloop/loop.pyx", line 1518, in uvloop.loop.Loop.run_until_complete
+(APIServer pid=12933)   File "/usr/local/lib/python3.13/dist-packages/uvloop/__init__.py", line 48, in wrapper
+(APIServer pid=12933)     return await main
+(APIServer pid=12933)            ^^^^^^^^^^
+(APIServer pid=12933)   File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/launchers/api_server/entry.py", line 176, in run_server
+(APIServer pid=12933)     await run_server_worker(listen_address, sock, args, **uvicorn_kwargs)
+(APIServer pid=12933)   File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/launchers/api_server/entry.py", line 190, in run_server_worker
+(APIServer pid=12933)     async with build_async_engine_client(
+(APIServer pid=12933)                ~~~~~~~~~~~~~~~~~~~~~~~~~^
+(APIServer pid=12933)         args,
+(APIServer pid=12933)         ^^^^^
+(APIServer pid=12933)         client_config=client_config,
+(APIServer pid=12933)         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=12933)     ) as engine_client:
+(APIServer pid=12933)     ^
+(APIServer pid=12933)   File "/usr/lib/python3.13/contextlib.py", line 214, in __aenter__
+(APIServer pid=12933)     return await anext(self.gen)
+(APIServer pid=12933)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=12933)   File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/launchers/api_server/entry.py", line 58, in build_async_engine_client
+(APIServer pid=12933)     async with build_async_engine_client_from_engine_args(
+(APIServer pid=12933)                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+(APIServer pid=12933)         engine_args,
+(APIServer pid=12933)         ^^^^^^^^^^^^
+(APIServer pid=12933)         usage_context=usage_context,
+(APIServer pid=12933)         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=12933)         client_config=client_config,
+(APIServer pid=12933)         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=12933)     ) as engine:
+(APIServer pid=12933)     ^
+(APIServer pid=12933)   File "/usr/lib/python3.13/contextlib.py", line 214, in __aenter__
+(APIServer pid=12933)     return await anext(self.gen)
+(APIServer pid=12933)            ^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=12933)   File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/launchers/api_server/entry.py", line 94, in build_async_engine_client_from_engine_args
+(APIServer pid=12933)     async_llm = AsyncLLM.from_vllm_config(
+(APIServer pid=12933)         vllm_config=vllm_config,
+(APIServer pid=12933)     ...<6 lines>...
+(APIServer pid=12933)         client_index=client_index,
+(APIServer pid=12933)     )
+(APIServer pid=12933)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/async_llm.py", line 235, in from_vllm_config
+(APIServer pid=12933)     return cls(
+(APIServer pid=12933)         vllm_config=vllm_config,
+(APIServer pid=12933)     ...<9 lines>...
+(APIServer pid=12933)         client_index=client_index,
+(APIServer pid=12933)     )
+(APIServer pid=12933)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/async_llm.py", line 169, in __init__
+(APIServer pid=12933)     self.engine_core = EngineCoreClient.make_async_mp_client(
+(APIServer pid=12933)                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+(APIServer pid=12933)         vllm_config=vllm_config,
+(APIServer pid=12933)         ^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=12933)     ...<5 lines>...
+(APIServer pid=12933)         renderer=renderer,
+(APIServer pid=12933)         ^^^^^^^^^^^^^^^^^^
+(APIServer pid=12933)     )
+(APIServer pid=12933)     ^
+(APIServer pid=12933)   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(APIServer pid=12933)     return func(*args, **kwargs)
+(APIServer pid=12933)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core_client.py", line 163, in make_async_mp_client
+(APIServer pid=12933)     return AsyncMPClient(
+(APIServer pid=12933)         *client_args,
+(APIServer pid=12933)         renderer=renderer,
+(APIServer pid=12933)     )
+(APIServer pid=12933)   File "/usr/local/lib/python3.13/dist-packages/vllm/tracing/otel.py", line 178, in sync_wrapper
+(APIServer pid=12933)     return func(*args, **kwargs)
+(APIServer pid=12933)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core_client.py", line 1060, in __init__
+(APIServer pid=12933)     super().__init__(
+(APIServer pid=12933)     ~~~~~~~~~~~~~~~~^
+(APIServer pid=12933)         asyncio_mode=True,
+(APIServer pid=12933)         ^^^^^^^^^^^^^^^^^^
+(APIServer pid=12933)     ...<4 lines>...
+(APIServer pid=12933)         renderer=renderer,
+(APIServer pid=12933)         ^^^^^^^^^^^^^^^^^^
+(APIServer pid=12933)     )
+(APIServer pid=12933)     ^
+(APIServer pid=12933)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/core_client.py", line 656, in __init__
+(APIServer pid=12933)     with launch_core_engines(
+(APIServer pid=12933)          ~~~~~~~~~~~~~~~~~~~^
+(APIServer pid=12933)         vllm_config, executor_class, log_stats, addresses
+(APIServer pid=12933)         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+(APIServer pid=12933)     ) as engine_launch:
+(APIServer pid=12933)     ^
+(APIServer pid=12933)   File "/usr/lib/python3.13/contextlib.py", line 148, in __exit__
+(APIServer pid=12933)     next(self.gen)
+(APIServer pid=12933)     ~~~~^^^^^^^^^^
+(APIServer pid=12933)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/utils.py", line 1240, in launch_core_engines
+(APIServer pid=12933)     wait_for_engine_startup(
+(APIServer pid=12933)     ~~~~~~~~~~~~~~~~~~~~~~~^
+(APIServer pid=12933)         handshake_socket,
+(APIServer pid=12933)         ^^^^^^^^^^^^^^^^^
+(APIServer pid=12933)     ...<4 lines>...
+(APIServer pid=12933)         launch,
+(APIServer pid=12933)         ^^^^^^^
+(APIServer pid=12933)     )
+(APIServer pid=12933)     ^
+(APIServer pid=12933)   File "/usr/local/lib/python3.13/dist-packages/vllm/v1/engine/utils.py", line 1320, in wait_for_engine_startup
+(APIServer pid=12933)     raise RuntimeError(
+(APIServer pid=12933)     ...<8 lines>...
+(APIServer pid=12933)     )
+(APIServer pid=12933) RuntimeError: Engine core initialization failed. See root cause above. Failed core proc(s): {}

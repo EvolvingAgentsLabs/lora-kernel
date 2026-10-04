@@ -1,0 +1,26 @@
+=== session 1 of 1 · srv092901 · A100
+    boot clone: rc=0 3963802 TEACH0, pre-registered: gemma-4-26B-A4B-it untrained vs the E4B member on real documents — is there a teacher?
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 3963802 TEACH0, pre-registered: gemma-4-26B-A4B-it untrained vs the E4B member on real documents — is there a teacher?
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    3963802 TEACH0, pre-registered: gemma-4-26B-A4B-it untrained vs the E4B member on real documents — is there a teacher? | 0.30.0
+    this module trains its own adapter — nothing to carry in
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-26B-A4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --quantization fp8
+    [rank] vllm serve google/gemma-4-26B-A4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --quantization fp8
+    [rank] vllm serve google/gemma-4-26B-A4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --quantization fp8
+    [rank] vllm serve google/gemma-4-26B-A4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --quantization fp8
+    [rank] vllm serve google/gemma-4-26B-A4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --quantization fp8
+    [rank] vllm serve google/gemma-4-26B-A4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --quantization fp8
+    [rank] vllm serve google/gemma-4-26B-A4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --quantization fp8
+    [rank] vllm serve google/gemma-4-26B-A4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --quantization fp8
+    [rank] vllm serve google/gemma-4-26B-A4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --quantization fp8
+    [rank] vllm serve google/gemma-4-26B-A4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --quantization fp8
+    [rank] the server exited with 1
+    [wiki] the base never came up
+    the runner wrote its result — done
+exit 0

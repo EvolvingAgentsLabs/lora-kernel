@@ -36,6 +36,13 @@ Compared, paired per row, with records already on disk under the same runtime an
 One A100 session. If the 26B does not start under vLLM in FP8 (a recorded error), one retry in bitsandbytes 4-bit is the
 only change allowed, and it is said. The rows, runtime and bars do not move.
 
+## Run log
+
+- **Attempt 1 — the server did not start, nothing scored** (`attempt1_vllm.log`): vLLM 0.30's engine failed compiling the
+  26B MoE in FP8 on the A100 — `torch._inductor ... AssertionError: auto_functionalized was not removed`. Not memory, not
+  an unsupported model: the compile step. **Fix, an engine flag, not the quantisation:** `wiki_arm --enforce-eager`
+  (no compile, no CUDA graphs; slower, the same arithmetic). The rows, runtime, FP8 and bars do not move.
+
 ## Result
 
 *(written after the run)*

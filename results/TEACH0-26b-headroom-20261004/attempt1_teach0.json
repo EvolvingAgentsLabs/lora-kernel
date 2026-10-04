@@ -1,0 +1,37 @@
+{
+ "base": "google/gemma-4-26B-A4B-it",
+ "started": "2026-10-04T12:35:09",
+ "grader": "training.wiki.grade",
+ "library": "knowledge/hazwaste-regs",
+ "eval_world": 20260924,
+ "arms": {},
+ "stopped": "the base never came up",
+ "analysis": {
+  "slices": {
+   "headline": 30,
+   "all": 52,
+   "none": 8,
+   "hops-1": 14,
+   "hops-2": 26,
+   "hops-3": 4,
+   "block-E1": 0,
+   "block-E2": 0,
+   "block-E3": 0,
+   "block-O1": 0,
+   "block-O2": 0,
+   "block-O3": 0
+  },
+  "summary": {},
+  "pairs": {
+   "headline": [],
+   "all": [],
+   "hops-2": [],
+   "hops-3": []
+  }
+ },
+ "verdict": {
+  "decided": false,
+  "reading": "NOTHING SCORED"
+ },
+ "finished": "2026-10-04T12:42:54"
+}

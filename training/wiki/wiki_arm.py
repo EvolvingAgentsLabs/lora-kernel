@@ -361,6 +361,7 @@ def main() -> int:
     ap.add_argument("--zero-gpu", action="store_true")
     ap.add_argument("--arms", default=",".join(ARMS))
     ap.add_argument("--train-seed", type=int, default=None, help="train adapters/wiki-walks-s<seed> and stop")
+    ap.add_argument("--enforce-eager", action="store_true", help="vLLM --enforce-eager (TEACH0: inductor fails on the 26B MoE)")
     ap.add_argument("--quantization", default=None, help="vLLM --quantization for a base that does not fit in bf16 (TEACH0)")
     ap.add_argument("--span-logits", action="store_true", help="train with logits only where the loss is taken (PAIR1)")
     ap.add_argument("--empty-thought", action="store_true", help="prefill an empty thought channel (gemma-4-12B-it)")
@@ -500,6 +501,9 @@ def main() -> int:
     # TEACH0: a base that does not fit the card in bf16 (gemma-4-26B-A4B-it on a 40 GB A100) is served quantised — a second
     # unknown, named in the brief that asks for it
     quant = ["--quantization", a.quantization] if a.quantization else []
+    # TEACH0 attempt 1 [ran]: torch inductor failed compiling the 26B MoE in FP8 on an A100 ("auto_functionalized was not
+    # removed"); eager mode skips the compile and the CUDA graphs — slower, the same arithmetic
+    quant += ["--enforce-eager"] if a.enforce_eager else []
     srv = serve(a.base, ["--max-model-len", str(MAX_MODEL_LEN), "--gpu-memory-utilization", "0.90", *quant, *extra])
     try:
         if not wait_ready(srv):
