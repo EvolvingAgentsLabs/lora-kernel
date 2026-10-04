@@ -492,7 +492,9 @@ construye. **Para miembros de tarea abierta (sin una sola tarea contra la que fa
 la abstención propia del miembro, ahora medido en las tres organizaciones** — escuela, distribuidora (M10), y el
 tracker, cuyo miembro nunca tuvo turnos de abstención hasta `tr-out-s0` [ran] ROUTE1, 2026-10-03: 27 de 30 turnos
 fuera-de-alcance reservados llegan a la frontera del rol en vez de intentarse, sin perder ninguno de los 160 turnos
-dependientes. Los modelos chicos todavía
+dependientes. **Decisión del usuario, 2026-10-04: ahora `tr-out-s0` es el miembro servido del tracker, en lugar de
+`tr-s1`** (el propio comando `llama-server`/gateway de `examples/tracker/live_tracker.py`); la demo en vivo de
+arriba y el registro de H3 quedan como que corrieron `tr-s1`. Los modelos chicos todavía
 inventan: en la demo de la escuela el gateway reemplazó 2 de 5 respuestas locales por el texto
 propio de las herramientas — atrapado, contado, nunca mostrado, pero no curado. La decodificación especulativa con un
 experto LoRA corre de verdad (F0, C0, arriba), y la identidad de su salida a temperatura 0 ya está establecida en

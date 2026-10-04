@@ -456,7 +456,9 @@ them local (ROUTE2) is not built. **For open-task members (no single task to fac
 role plus the member's own abstention, now measured in all three organisations** — school, distributor (M10), and
 the tracker, whose member never had abstaining turns until `tr-out-s0` [ran] ROUTE1, 2026-10-03: 27 of 30 held-out
 out-of-scope turns reach the role's egress instead of being attempted, with none of the 160 dependent turns lost.
-The small models still invent: in the school demo the gateway replaced 2 of 5
+**The user's decision, 2026-10-04: `tr-out-s0` is now the tracker's served member, in place of `tr-s1`**
+(`examples/tracker/live_tracker.py`'s own `llama-server`/gateway command); the live demo above and H3's
+record stay as having run `tr-s1`. The small models still invent: in the school demo the gateway replaced 2 of 5
 local replies with the tools' own text — caught, counted, never shown, but not cured. Speculative decoding with a LoRA
 expert runs for real (F0, C0, above), and its output identity at temperature 0 is now established in bf16 on an A100
 (F0c, above) — up to every stop a served walk reaches, on the LoRA's own domain and in full on general text; the

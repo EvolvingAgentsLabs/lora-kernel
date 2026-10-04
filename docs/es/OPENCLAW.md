@@ -369,6 +369,11 @@ construido cargar claves en vez de la conversación se sostiene sobre un cliente
 escuela 15/15, distribuidora 6/6 — sigue siendo de un solo turno: un pedido, una respuesta, ningún turno anterior
 que resolver; ésta es la primera en llevar estado *a través* de turnos en vivo.
 
+**El miembro servido del tracker desde el 2026-10-04 es `tr-out-s0`, en lugar de `tr-s1`** — decisión del usuario
+sobre ROUTE1 (`docs/ARCHITECTURE.md`): el propio comando `llama-server`/gateway de `examples/tracker/live_tracker.py`
+ahora nombra `lora-tracker-out-s0-f16.gguf` y `--member tr-out-s0`. El registro de LIVE-tracker de arriba queda
+como que corrió `tr-s1`.
+
 ## 7. La biblioteca, como proveedor de OpenClaw — una corrida en vivo, PASÓ
 
 [`examples/library/serve.py`](../../examples/library/serve.py) ([`SERVING.md`](SERVING.md)) es una *segunda* puerta

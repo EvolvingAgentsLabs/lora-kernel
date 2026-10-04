@@ -179,3 +179,59 @@ saturadas (98,8 % → 100 %).
 de poda de REAP. H1b (¿un adaptador sólo-atención entrenado sobre la base MoE concentra el ruteo todavía más que la
 base sola?) y M3 (streaming real desde el SSD de la Mac mini) son los próximos pasos, los dos decisión del usuario,
 todavía no tomada.
+
+---
+
+## 8. ¿Vale la pena la línea? Mejores resultados, funciona, a qué velocidad (evaluación, 2026-10-04)
+
+El usuario hizo tres preguntas sobre la línea flash. Cada una se responde desde el registro de H1a (`h1a.json`:
+métricas agregadas de ruteo y caché por dominio) y desde corridas ya en disco. **Las trazas por prompt se borraron
+cuando se limpiaron los worktrees** (quedaban fuera de git por diseño), así que una simulación de prefill por prompt
+necesitaría volver a correr H1a (una A100).
+
+**1. ¿Mejores resultados? Desconocido, y la evidencia hasta ahora dice que no.** Una huella de memoria más chica para
+el 26B vale solo lo que valga que el 26B le gane a lo que se sirve hoy. En las regiones de este proyecto ningún
+modelo más grande le ganó al miembro E4B: un 12B entrenado empata (B3, PAIR1 **[ran]**), un 12B sin entrenar pierde
+(PAIR0 **[ran]**). La corrida de techo propia del 26B (TEACH0) está bloqueada: el FP8 de vLLM no corre en la A100, y
+el reintento con bitsandbytes espera cupo de A100. **Hasta que TEACH0 muestre al 26B por delante de `real-none-s0`,
+la línea compra velocidad o huella para un modelo sin ganancia de calidad medida.**
+
+**2. ¿Funciona? La mitad del ruteo, sí [ran].** Sobre los tokens de decode de un dominio, el 80 % de las activaciones
+cae en 17–21 % de los expertos (texto general: 40 %). Una caché anclada a los expertos top del dominio lee 93 %
+menos bytes por token de decode a 8 GB (62 → 4,1 MB) y 70 % menos a 4 GB (175 → 52 MB). **El prefill es más amplio:**
+el 80 % de las activaciones de prefill cae en alrededor del 25 % de los expertos (general: 31 %), y un prefill de
+unos cientos de tokens toca la mayoría de los expertos de la mayoría de las capas.
+
+**3. ¿A qué velocidad, en una máquina de 16 GB? El decode plausiblemente sí; el prefill y la memoria son los riesgos
+(derivado, no medido).** La cota es la fórmula de §3, con el ancho de banda de lectura $\mathcal B$ asumido en 3
+GB/s, todavía sin medir:
+
+$$\text{tok/s}_{\text{decode}} \;\lesssim\; \frac{\mathcal B}{\text{MB leídos por token}}$$
+
+| | caché de expertos | MB leídos por token de decode [ran] | techo de I/O a 3 GB/s |
+|---|---|---|---|
+| anclada por afinidad | 8 GB | 4,1 | ~730 tok/s — el I/O deja de importar; lo acota el cómputo (~4B activos por token, cerca del E4B) |
+| anclada por afinidad | 4 GB | 52 | ~58 tok/s |
+| LRU | 4 GB | 175 | ~17 tok/s |
+
+- **Memoria.** 16 GB menos el sistema (~4 GB) y la parte densa (2,5 GB) deja ~9,5 GB para expertos *y* la caché KV.
+  Las caminatas de este proyecto llegan a 12k tokens: en esta Mac, el E4B se quedó sin memoria con un contexto de
+  16.384 tokens (LIVE-library **[ran]**). Una caché de expertos de 8 GB deja ~1,5 GB para KV, demasiado poco para
+  estas caminatas. Una caché de 4–6 GB es la realista.
+- **Prefill.** Cada turno con herramienta vuelve a prefillear sus tokens nuevos, y tocan la mayoría de los expertos.
+  Con la caché anclada, los expertos que quedan afuera se leen del almacenamiento una vez por prefill. Eso es hasta
+  (1 − proporción en caché) × 12,9 GB: unos 9 GB con una caché de 4 GB, unos 3 s por prefill a 3 GB/s. Una caminata
+  hace 3–5 llamadas, así que son **+9–15 s por caminata** en el peor caso, contra los 13 s de toda la caminata del
+  E4B (mediana, LIVE-library **[ran]**). La cifra real es menor, porque no se toca cada experto, pero no está
+  medida.
+
+**Veredicto de esta evaluación:** el mecanismo funciona para decode, y la velocidad de decode en una máquina de 16
+GB es plausible con una caché de 4–6 GB. El prefill, en las caminatas de este proyecto que usan muchas herramientas,
+y la memoria que le queda a la caché KV son los riesgos abiertos. El pago de la línea depende por completo de un
+resultado de calidad que no tiene. **Orden:**
+1. TEACH0 (mañana, en Colab).
+2. Solo si el 26B le gana al miembro E4B: M3, la prueba real de streaming de §5, en la máquina del usuario. Necesita
+   la aprobación del usuario: unos 45–60 minutos de la máquina, que cubren descargar un GGUF de 4 bits de ~15 GB,
+   cronometrar decode y prefill sobre los prompts de nuestras caminatas, y medir el ancho de banda real del SSD.
+3. H1b (adaptador solo de atención) solo después de M3, porque no agrega nada si la base no puede servirse lo
+   bastante rápido.

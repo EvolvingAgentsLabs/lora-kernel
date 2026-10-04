@@ -121,10 +121,12 @@ escuela la enseña, el de la distribuidora desde M10 **[ran]** (20/20 reservados
 fuera de su rol se intentaba con sus herramientas en vez de llegar a la frontera. `tr-out-s0`,
 entrenado con la receta de M10 (el corpus del tracker más 126 turnos de abstención), abstiene
 en 27 de 30 turnos fuera-de-alcance reservados y no pierde ninguno de los 160 turnos
-dependientes que el miembro servido contesta bien **[ran]** ROUTE1. **Con esto, el router para
+dependientes que `tr-s1` contesta bien **[ran]** ROUTE1. **Con esto, el router para
 miembros de tarea abierta — el rol más la abstención de cada miembro — está medido en las tres
-organizaciones que sirve el pool: escuela, distribuidora (M10), tracker (ROUTE1).** Servir
-`tr-out-s0` en lugar del miembro actual del tracker queda pendiente de la decisión del usuario
+organizaciones que sirve el pool: escuela, distribuidora (M10), tracker (ROUTE1).** **Decisión del
+usuario, 2026-10-04: ahora se sirve `tr-out-s0` en lugar de `tr-s1`** (el propio comando
+`llama-server`/gateway de `examples/tracker/live_tracker.py`), con el registro **[ran]** de
+LIVE-tracker conservado como que corrió `tr-s1`
 ([`ROUTE1`](../../results/ROUTE1-tracker-abstain-20261003/BRIEF.md)).
 
 **El default es la frontera.** Un modelo al que se le pide elegir siempre elige, así que la

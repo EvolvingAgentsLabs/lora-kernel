@@ -1,10 +1,15 @@
 r"""The tracker's long sessions through a REAL agent runtime — OpenClaw, one profile per user, each holding that user's
 signed token — against a gateway already serving the tracker with the operational memory and without the tool block:
 
-    llama-server -m gemma-4-E4B-it-Q8_0.gguf --lora lora-tracker-wf-s1-f16.gguf --port 8792 -c 8192 -ngl 99
-    python -m examples.school.gateway --org tracker --member tr-s1 --upstream http://127.0.0.1:8792 \
+    llama-server -m gemma-4-E4B-it-Q8_0.gguf --lora lora-tracker-out-s0-f16.gguf --port 8792 -c 8192 -ngl 99
+    python -m examples.school.gateway --org tracker --member tr-out-s0 --upstream http://127.0.0.1:8792 \
         --tokenizer google/gemma-4-E4B-it --memory --no-tool-block --max-calls 6 --port 8765
     python -m examples.tracker.live_tracker --out results/LIVE-tracker-openclaw-<date>/live.json
+
+The served member is `tr-out-s0` since 2026-10-04 (the user's decision on ROUTE1 [ran]: `tr-s1`'s corpus plus abstaining
+turns — 27/30 out-of-scope requests to the role's egress, no in-scope turn lost); `lora-tracker-out-s0-f16.gguf` is
+`~/lora-kernel-adapters/ROUTE1-tracker-out-s0/adapters.tgz` (adapter sha256 `473396548e6ac57a…`) through
+`convert_lora_to_gguf.py --outtype f16`. LIVE-tracker [ran] ran `tr-s1`.
 
 One session per role (developer, lead, qa), four and five turns each, on the gateway's own store (`db.build()`, the demo
 team) with H3's held-out wording. Every turn goes through `openclaw agent --local --session-id <session> -m`, so OpenClaw
