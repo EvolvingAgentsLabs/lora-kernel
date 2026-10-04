@@ -1,0 +1,142 @@
+[
+ {
+  "case_id": "page0-one-hop-02",
+  "statement": "hazwaste-regs/wiki/262-17#a-8-ii-b",
+  "old": "90",
+  "new": "117",
+  "occurrences": 1
+ },
+ {
+  "case_id": "page0-one-hop-03",
+  "statement": "hazwaste-regs/wiki/262-17#a-8-i-a",
+  "old": "30",
+  "new": "39",
+  "occurrences": 1
+ },
+ {
+  "case_id": "page0-one-hop-04",
+  "statement": "hazwaste-regs/wiki/262-16#b-3-ii-c",
+  "old": "60",
+  "new": "78",
+  "occurrences": 2
+ },
+ {
+  "case_id": "page0-one-hop-05",
+  "statement": "hazwaste-regs/wiki/262-16#b-6-ii-c",
+  "old": "180",
+  "new": "234",
+  "occurrences": 2
+ },
+ {
+  "case_id": "page0-one-hop-09",
+  "statement": "hazwaste-regs/wiki/262-232#b-5",
+  "old": "60",
+  "new": "78",
+  "occurrences": 1
+ },
+ {
+  "case_id": "page0-vsqg-lqg-16",
+  "statement": "hazwaste-regs/wiki/262-17#a-1-vi",
+  "old": "15",
+  "new": "19",
+  "occurrences": 1
+ },
+ {
+  "case_id": "page0-vsqg-lqg-16",
+  "statement": "hazwaste-regs/wiki/262-17#a-1-vi",
+  "old": "50",
+  "new": "65",
+  "occurrences": 1
+ },
+ {
+  "case_id": "page0-vsqg-sqg-17",
+  "statement": "hazwaste-regs/wiki/262-16#c",
+  "old": "200",
+  "new": "260",
+  "occurrences": 2
+ },
+ {
+  "case_id": "page0-vsqg-sqg-17",
+  "statement": "hazwaste-regs/wiki/262-16#c",
+  "old": "270",
+  "new": "351",
+  "occurrences": 1
+ },
+ {
+  "case_id": "page0-satellite-lqg-19",
+  "statement": "hazwaste-regs/wiki/262-17#a-8-ii-c",
+  "old": "75",
+  "new": "97",
+  "occurrences": 1
+ },
+ {
+  "case_id": "page0-sqg-satellite-21",
+  "statement": "hazwaste-regs/wiki/262-15#a",
+  "old": "55",
+  "new": "71",
+  "occurrences": 1
+ },
+ {
+  "case_id": "page0-category-cleanout-24",
+  "statement": "hazwaste-regs/wiki/262-213#a",
+  "old": "12",
+  "new": "16",
+  "occurrences": 1
+ },
+ {
+  "case_id": "page0-manifest-marking-29",
+  "statement": "hazwaste-regs/wiki/262-32#b",
+  "old": "119",
+  "new": "155",
+  "occurrences": 1
+ },
+ {
+  "case_id": "page0-electronic-manifest-30",
+  "statement": "hazwaste-regs/wiki/262-20#e",
+  "old": "100",
+  "new": "130",
+  "occurrences": 1
+ },
+ {
+  "case_id": "page0-electronic-manifest-30",
+  "statement": "hazwaste-regs/wiki/262-20#e",
+  "old": "1000",
+  "new": "1300",
+  "occurrences": 1
+ },
+ {
+  "case_id": "page0-import-conditions-35",
+  "statement": "hazwaste-regs/wiki/262-82#d",
+  "old": "25",
+  "new": "33",
+  "occurrences": 1
+ },
+ {
+  "case_id": "page0-episodic-petition-37",
+  "statement": "hazwaste-regs/wiki/262-233#a-1",
+  "old": "72",
+  "new": "94",
+  "occurrences": 1
+ },
+ {
+  "case_id": "page0-contingency-arrangements-38",
+  "statement": "hazwaste-regs/wiki/262-256#c",
+  "old": "24",
+  "new": "31",
+  "occurrences": 1
+ },
+ {
+  "case_id": "page0-coordinator-procedures-39",
+  "statement": "hazwaste-regs/wiki/262-265#h-2-i",
+  "old": "15",
+  "new": "19",
+  "occurrences": 1
+ },
+ {
+  "case_id": "page0-lmp-cleanout-removal-40",
+  "statement": "hazwaste-regs/wiki/262-208#a-1",
+  "old": "12",
+  "new": "16",
+  "occurrences": 1
+ }
+]
