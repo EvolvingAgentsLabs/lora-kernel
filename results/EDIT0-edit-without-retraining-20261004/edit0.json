@@ -1,0 +1,1692 @@
+{
+ "base": "google/gemma-4-E4B-it",
+ "started": "2026-10-04T12:18:25",
+ "grader": "training.wiki.grade",
+ "library": "knowledge-edit/hazwaste-regs",
+ "eval_world": 20260924,
+ "arms": {
+  "withlib-s0+page+top8": {
+   "edit0-one-hop-04": {
+    "id": "edit0-one-hop-04",
+    "family": "one-hop",
+    "block": "R1",
+    "hops": 1,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "hazwaste-regs/wiki/262-16",
+     "b-3-ii-c"
+    ],
+    "why": null,
+    "supporting": [
+     "hazwaste-regs/wiki/262-16",
+     "b-3-ii-c"
+    ],
+    "cited_the_supporting": true,
+    "line": "78 centimeters [7dp§b-3-ii-c]",
+    "credit": true,
+    "final": "78 centimeters [7dp§b-3-ii-c]",
+    "calls": 2,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-16",
+      "a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-3-ii-c"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-3-iv"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-1-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-6-ii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-6-ii-d"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-3-b-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-9-iv-b"
+     ]
+    ],
+    "text": "<search shelf=wiki>Our small quantity generator paint shop keeps waste in an uncovered tank with no containment structure. How many centimeters of freeboard must that tank keep?</search>= 3 notes\n  [7dp] page · 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — when: You need what section 262.16 requires: Conditions for exemption for a small quantity generator that accumulates hazardous waste.\n  [zvg] page · 262.232 Conditions for a generator managing hazardous waste from an episodic event. — when: You need what section 262.232 requires: Conditions for a generator managing hazardous waste from an episodic event.\n  [17k] page · 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — when: You need what section 262.17 requires: Conditions for exemption for a large quantity generator that accumulates hazardous waste.\n<open>7dp</open>= 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — Section 262.16 of the regulation — Conditions for exemption for a small quantity generator that accumulates hazardous waste.\n  §a (a) Generation. The generator generates in a calendar month no more than the amounts specified in the definition of “small quantity generator” in § 260.10 of this chapter.\n  §b-3-ii-c (C) Uncovered tanks must be operated to ensure at least 78 centimeters (2 feet) of freeboard, unless the tank is equipped with a containment structure (e.g., dike or trench), a drainage control system, or a diversion structure (e.g., standby tank) with a capacity that equals or exceeds the volume of the top 78 centimeters (2 feet) of the tank.\n  §b-3-iv (iv) A small quantity generator accumulating hazardous waste in tanks or tank systems that have full secondary containment and that either use leak detection equipment to alert personnel to leaks, or implement established workplace practices to ensure leaks are promptly identified, must inspect at least weekly, where applicable, the areas identified in paragraphs (b)(3)(iii)(A) through (E) of this section. Use of the alternate inspection schedule must be documented in the generator's operating record. This documentation must include a description of the established workplace practices at the generator.\n  §b-1-2 (1) The waste is treated, rendered, or mixed before or immediately after placement in a tank so that the resulting waste, mixture, or dissolution of material no longer meets the definition of ignitable or reactive waste under § 261.21 or § 261.23 of this chapter and § 265.17(b) of this chapter is complied with; or\n  §b-6-ii (ii) Tanks. A small quantity generator accumulating hazardous waste in tanks must do the following:\n  §b-6-ii-d (D) Keep inventory logs or records with the above information on site and readily available for inspection.\n  §b-3-b-2 (B) A small quantity generator shall maintain records documenting the arrangements with the local fire department as well as any other organization necessary to respond to an emergency. This documentation must include documentation in the operating record that either confirms such arrangements actively exist or, in cases where no arrangements exist, confirms that attempts to make such arrangements were made.\n  §b-9-iv-b (B) In the event of a spill, the small quantity generator is responsible for containing the flow of hazardous waste to the extent possible, and as soon as is practicable, cleaning up the hazardous waste and any contaminated materials or soil. Such containment and cleanup can be conducted either by the small quantity generator or by a contractor on behalf of the small quantity generator;\n  89 more sections, not shown — open 7dp§<section> to read one: §text · §b · §b-1 · §b-2 · §b-2-ii · §b-2-iii · §b-2-iii-b · §b-2-iv · §b-2-v · §b-2-v-b · §b-2-v-c · §b-3 · §b-3-i · §b-3-ii · §b-3-ii-a · §b-3-ii-b · §b-3-ii-d · §b-3-iii · §b-3-iii-a · §b-3-iii-b · §b-3-iii-c · §b-3-iii-d · §b-3-iii-e · §b-3-v · §b-3-vi · §b-3-vii · §b-3-vii-a · §b-2-2 · §b-3-2 · §b-3-b · §b-3-b-c · §b-1-3 · §b-2-3 · §b-4 · §b-4-i · §b-4-ii · §b-4-iii · §b-4-iii-a · §b-4-iii-b · §b-5 · §b-5-i · §b-5-ii · §b-5-ii-a · §b-5-ii-b · §b-5-ii-c · §b-6 · §b-6-a · §b-6-a-b · §b-6-a-c · §b-6-ii-a · §b-6-ii-b · §b-6-ii-c · §b-7 · §b-8 · §b-8-ii · §b-8-ii-a · §b-8-ii-b · §b-8-ii-c · §b-8-ii-d · §b-8-iii · §b-8-iv · §b-8-iv-b · §b-8-v · §b-8-vi · §b-1-4 · §b-2-4 · §b-3-3 · §b-3-b-c-2 · §b-9 · §b-9-i · §b-9-ii · §b-9-ii-a · §b-9-ii-b · §b-9-ii-c · §b-9-iii · §b-9-iv · §b-9-iv-a · §b-9-iv-c · §b-1-5 · §b-2-5 · §b-3-4 · §b-4-2 · §b-5-2 · §c · §d · §e · §e-1 · §e-2 · §f\n78 centimeters [7dp§b-3-ii-c]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Our small quantity generator paint shop keeps waste in an uncovered tank with no containment structure. How many centimeters of freeboard must that tank keep?</search>"
+     },
+     {
+      "at": 917,
+      "text": "<open>7dp</open>"
+     },
+     {
+      "at": 4644,
+      "text": "78 centimeters [7dp§b-3-ii-c]"
+     }
+    ]
+   },
+   "edit0-one-hop-02": {
+    "id": "edit0-one-hop-02",
+    "family": "one-hop",
+    "block": "R1",
+    "hops": 1,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "hazwaste-regs/wiki/262-17",
+     "a-8-ii-b"
+    ],
+    "why": null,
+    "supporting": [
+     "hazwaste-regs/wiki/262-17",
+     "a-8-ii-b"
+    ],
+    "cited_the_supporting": true,
+    "line": "117 days [7h8§a-8-ii-b]",
+    "credit": true,
+    "final": "117 days [7h8§a-8-ii-b]",
+    "calls": 2,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-8-i"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-8-i-a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-8-i-b"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-8-ii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-8-ii-b"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-8-ii-c"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-8-iii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "f-1-ii"
+     ]
+    ],
+    "text": "<search shelf=wiki>We are shutting down our large quantity generator plant for good. After closing, within how many days must we notify EPA that we met the closure performance standards?</search>= 3 notes\n  [7h8] page · 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — when: You need what section 262.17 requires: Conditions for exemption for a large quantity generator that accumulates hazardous waste.\n  [mkz] page · 262.232 Conditions for a generator managing hazardous waste from an episodic event. — when: You need what section 262.232 requires: Conditions for a generator managing hazardous waste from an episodic event.\n  [j3c] page · 262.15 Satellite accumulation area regulations for small and large quantity generators. — when: You need what section 262.15 requires: Satellite accumulation area regulations for small and large quantity generators.\n<open>7h8</open>= 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — Section 262.17 of the regulation — Conditions for exemption for a large quantity generator that accumulates hazardous waste.\n  §a-8-i (i) Notification for closure of a waste accumulation unit. A large quantity generator must perform one of the following when closing a waste accumulation unit, but not all waste accumulation units:\n  §a-8-i-a (A) Place a notice in the operating record within 39 days after closure identifying the location of the unit within the facility (if the waste accumulation unit is subsequently reopened, the generator may remove the notice from the operating record); or\n  §a-8-i-b (B) Meet the closure performance standards of paragraph (a)(8)(iii) of this section for container, tank, and containment building waste accumulation units or paragraph (a)(8)(iv) of this section for drip pads and notify EPA following the procedures in paragraph (a)(8)(ii)(B) of this section for the waste accumulation unit.\n  §a-8-ii (ii) Notification for closure of the facility. (A) Notify EPA using form 8700-12 no later than 30 days prior to closing the facility.\n  §a-8-ii-b (B) Notify EPA using form 8700-12 within 117 days after closing the facility that it has complied with the closure performance standards of paragraph (a)(8)(iii) or (iv) of this section. If the facility cannot meet the closure performance standards of paragraph (a)(8)(iii) or (iv) of this section, notify EPA using form 8700-12 that it will close as a landfill under § 265.310 of this chapter in the case of a container, tank or containment building unit(s), or for a facility with drip pads, notify using form 8700-12 that it will close under the standards of § 265.445(b).\n  §a-8-ii-c (C) A large quantity generator may request additional time to clean close, but it must notify EPA using form 8700-12 within 97 days after the date provided in paragraph (a)(8)(ii)(A) of this section to request an extension and provide an explanation as to why the additional time is required.\n  §a-8-iii (iii) Closure performance standards for container, tank systems, and containment building waste accumulation units. (A) At closure, the generator must close the waste accumulation unit or facility in a manner that:\n  §f-1-ii (ii) Submits an updated Site ID form (EPA Form 8700-12) within 30 days after a change in the name or site address for the very small quantity generator.\n  90 more sections, not shown — open 7h8§<section> to read one: §text · §a · §a-1 · §a-1-i · §a-1-ii · §a-1-iii · §a-1-iv · §a-1-iv-b · §a-1-v · §a-1-vi · §a-1-vi-b · §a-1-vii · §a-1-vii-b · §a-1-vii-c · §a-2 · §a-3 · §a-3-i · §a-3-ii · §a-3-iii · §a-3-iii-a · §a-3-iii-b · §a-4 · §a-4-i · §a-4-ii · §a-4-ii-a · §a-4-ii-b · §a-4-ii-c · §a-5 · §a-5-a · §a-5-a-b · §a-5-a-c · §a-5-ii · §a-5-ii-a · §a-5-ii-b · §a-5-ii-c · §a-5-ii-d · §a-6 · §a-7 · §a-7-b · §a-7-b-c · §a-1-2 · §a-2-2 · §a-3-2 · §a-4-2 · §a-5-2 · §a-6-2 · §a-6-d · §a-6-ii · §a-6-iii · §a-6-iv · §a-6-iv-a · §a-6-iv-b · §a-6-iv-c · §a-6-iv-d · §a-6-v · §a-8 · §a-1-3 · §a-2-3 · §a-3-3 · §a-4-3 · §a-4-iv · §a-4-v · §a-9 · §b · §c · §c-1 · §c-2 · §c-3 · §c-4 · §c-4-i · §c-4-i-b · §c-4-i-c · §c-1-2 · §c-2-2 · §c-2-ii · §c-2-iii · §c-2-iv · §c-2-iv-a · §c-2-iv-b · §c-2-v · §d · §e · §f · §f-1 · §f-1-i · §f-2 · §f-3 · §g · §g-1 · §g-2\n117 days [7h8§a-8-ii-b]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>We are shutting down our large quantity generator plant for good. After closing, within how many days must we notify EPA that we met the closure performance standards?</search>"
+     },
+     {
+      "at": 908,
+      "text": "<open>7h8</open>"
+     },
+     {
+      "at": 4283,
+      "text": "117 days [7h8§a-8-ii-b]"
+     }
+    ]
+   },
+   "edit0-one-hop-03": {
+    "id": "edit0-one-hop-03",
+    "family": "one-hop",
+    "block": "R1",
+    "hops": 1,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "hazwaste-regs/wiki/262-17",
+     "a-8-i-a"
+    ],
+    "why": null,
+    "supporting": [
+     "hazwaste-regs/wiki/262-17",
+     "a-8-i-a"
+    ],
+    "cited_the_supporting": true,
+    "line": "39 days [xrf§a-8-i-a]",
+    "credit": true,
+    "final": "39 days [xrf§a-8-i-a]",
+    "calls": 2,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-8"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-8-i"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-8-i-a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-8-ii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-8-ii-b"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-8-ii-c"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-3-3"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "f-1-ii"
+     ]
+    ],
+    "text": "<search shelf=wiki>At our refinery we are closing one waste accumulation unit but keeping the others open. If we place a notice in the operating record, it is due within how many days after closure?</search>= 3 notes\n  [xrf] page · 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — when: You need what section 262.17 requires: Conditions for exemption for a large quantity generator that accumulates hazardous waste.\n  [bdt] page · 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — when: You need what section 262.16 requires: Conditions for exemption for a small quantity generator that accumulates hazardous waste.\n  [3yh] page · 262.232 Conditions for a generator managing hazardous waste from an episodic event. — when: You need what section 262.232 requires: Conditions for a generator managing hazardous waste from an episodic event.\n<open>xrf</open>= 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — Section 262.17 of the regulation — Conditions for exemption for a large quantity generator that accumulates hazardous waste.\n  §a-8 (8) Closure. A large quantity generator accumulating hazardous wastes in containers, tanks, drip pads, and containment buildings, prior to closing a unit at the facility, or prior to closing the facility, must meet the following conditions:\n  §a-8-i (i) Notification for closure of a waste accumulation unit. A large quantity generator must perform one of the following when closing a waste accumulation unit, but not all waste accumulation units:\n  §a-8-i-a (A) Place a notice in the operating record within 39 days after closure identifying the location of the unit within the facility (if the waste accumulation unit is subsequently reopened, the generator may remove the notice from the operating record); or\n  §a-8-ii (ii) Notification for closure of the facility. (A) Notify EPA using form 8700-12 no later than 30 days prior to closing the facility.\n  §a-8-ii-b (B) Notify EPA using form 8700-12 within 117 days after closing the facility that it has complied with the closure performance standards of paragraph (a)(8)(iii) or (iv) of this section. If the facility cannot meet the closure performance standards of paragraph (a)(8)(iii) or (iv) of this section, notify EPA using form 8700-12 that it will close as a landfill under § 265.310 of this chapter in the case of a container, tank or containment building unit(s), or for a facility with drip pads, notify using form 8700-12 that it will close under the standards of § 265.445(b).\n  §a-8-ii-c (C) A large quantity generator may request additional time to clean close, but it must notify EPA using form 8700-12 within 97 days after the date provided in paragraph (a)(8)(ii)(A) of this section to request an extension and provide an explanation as to why the additional time is required.\n  §a-3-3 (3) Any hazardous waste generated in the process of closing either the generator's facility or unit(s) accumulating hazardous waste must be managed in accordance with all applicable standards of parts 262, 263, 265 and 268 of this chapter, including removing any hazardous waste contained in these units within 90 days of generating it and managing these wastes in a RCRA Subtitle C hazardous waste permitted treatment, storage and disposal facility or interim status facility.\n  §f-1-ii (ii) Submits an updated Site ID form (EPA Form 8700-12) within 30 days after a change in the name or site address for the very small quantity generator.\n  90 more sections, not shown — open xrf§<section> to read one: §text · §a · §a-1 · §a-1-i · §a-1-ii · §a-1-iii · §a-1-iv · §a-1-iv-b · §a-1-v · §a-1-vi · §a-1-vi-b · §a-1-vii · §a-1-vii-b · §a-1-vii-c · §a-2 · §a-3 · §a-3-i · §a-3-ii · §a-3-iii · §a-3-iii-a · §a-3-iii-b · §a-4 · §a-4-i · §a-4-ii · §a-4-ii-a · §a-4-ii-b · §a-4-ii-c · §a-5 · §a-5-a · §a-5-a-b · §a-5-a-c · §a-5-ii · §a-5-ii-a · §a-5-ii-b · §a-5-ii-c · §a-5-ii-d · §a-6 · §a-7 · §a-7-b · §a-7-b-c · §a-1-2 · §a-2-2 · §a-3-2 · §a-4-2 · §a-5-2 · §a-6-2 · §a-6-d · §a-6-ii · §a-6-iii · §a-6-iv · §a-6-iv-a · §a-6-iv-b · §a-6-iv-c · §a-6-iv-d · §a-6-v · §a-8-i-b · §a-8-iii · §a-1-3 · §a-2-3 · §a-4-3 · §a-4-iv · §a-4-v · §a-9 · §b · §c · §c-1 · §c-2 · §c-3 · §c-4 · §c-4-i · §c-4-i-b · §c-4-i-c · §c-1-2 · §c-2-2 · §c-2-ii · §c-2-iii · §c-2-iv · §c-2-iv-a · §c-2-iv-b · §c-2-v · §d · §e · §f · §f-1 · §f-1-i · §f-2 · §f-3 · §g · §g-1 · §g-2\n39 days [xrf§a-8-i-a]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>At our refinery we are closing one waste accumulation unit but keeping the others open. If we place a notice in the operating record, it is due within how many days after closure?</search>"
+     },
+     {
+      "at": 938,
+      "text": "<open>xrf</open>"
+     },
+     {
+      "at": 4492,
+      "text": "39 days [xrf§a-8-i-a]"
+     }
+    ]
+   },
+   "edit0-one-hop-05": {
+    "id": "edit0-one-hop-05",
+    "family": "one-hop",
+    "block": "R1",
+    "hops": 1,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "hazwaste-regs/wiki/262-16",
+     "b-6-ii-c"
+    ],
+    "why": null,
+    "supporting": [
+     "hazwaste-regs/wiki/262-16",
+     "b-6-ii-c"
+    ],
+    "cited_the_supporting": true,
+    "line": "234 days [23c§b-6-ii-c]",
+    "credit": true,
+    "final": "234 days [23c§b-6-ii-c]",
+    "calls": 2,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-3-ii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-5-ii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-5-ii-b"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-5-ii-c"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-6-ii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-6-ii-c"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-6-ii-d"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "c"
+     ]
+    ],
+    "text": "<search shelf=wiki>As a small quantity generator running a batch-process tank on our plating line, our inventory logs must show the tank was emptied within how many days of waste first entering it?</search>= 3 notes\n  [23c] page · 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — when: You need what section 262.16 requires: Conditions for exemption for a small quantity generator that accumulates hazardous waste.\n  [97h] page · 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — when: You need what section 262.17 requires: Conditions for exemption for a large quantity generator that accumulates hazardous waste.\n  [8s1] page · 262.232 Conditions for a generator managing hazardous waste from an episodic event. — when: You need what section 262.232 requires: Conditions for a generator managing hazardous waste from an episodic event.\n<open>23c</open>= 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — Section 262.16 of the regulation — Conditions for exemption for a small quantity generator that accumulates hazardous waste.\n  §b-3-ii (ii) A small quantity generator of hazardous waste must comply with the following general operating conditions:\n  §b-5-ii (ii) The following records by use of inventory logs, monitoring equipment, or any other effective means:\n  §b-5-ii-b (B) Documentation that the unit is emptied at least once every 90 days.\n  §b-5-ii-c (C) Inventory logs or records with the above information must be maintained on site and readily available for inspection.\n  §b-6-ii (ii) Tanks. A small quantity generator accumulating hazardous waste in tanks must do the following:\n  §b-6-ii-c (C) Use inventory logs, monitoring equipment, or other records to demonstrate that hazardous waste has been emptied within 234 days of first entering the tank if using a batch process, or in the case of a tank with a continuous flow process, demonstrate that estimated volumes of hazardous waste entering the tank daily exit the tank within 234 days of first entering; and\n  §b-6-ii-d (D) Keep inventory logs or records with the above information on site and readily available for inspection.\n  §c (c) Transporting over 260 miles. A small quantity generator who must transport its waste, or offer its waste for transportation, over a distance of 260 miles or more for off-site treatment, storage or disposal may accumulate hazardous waste on site for 351 days or less without a permit or without having interim status provided that the generator complies with the conditions of paragraph (b) of this section.\n  89 more sections, not shown — open 23c§<section> to read one: §text · §a · §b · §b-1 · §b-2 · §b-2-ii · §b-2-iii · §b-2-iii-b · §b-2-iv · §b-2-v · §b-2-v-b · §b-2-v-c · §b-3 · §b-3-i · §b-3-ii-a · §b-3-ii-b · §b-3-ii-c · §b-3-ii-d · §b-3-iii · §b-3-iii-a · §b-3-iii-b · §b-3-iii-c · §b-3-iii-d · §b-3-iii-e · §b-3-iv · §b-3-v · §b-3-vi · §b-3-vii · §b-3-vii-a · §b-1-2 · §b-2-2 · §b-3-2 · §b-3-b · §b-3-b-c · §b-1-3 · §b-2-3 · §b-4 · §b-4-i · §b-4-ii · §b-4-iii · §b-4-iii-a · §b-4-iii-b · §b-5 · §b-5-i · §b-5-ii-a · §b-6 · §b-6-a · §b-6-a-b · §b-6-a-c · §b-6-ii-a · §b-6-ii-b · §b-7 · §b-8 · §b-8-ii · §b-8-ii-a · §b-8-ii-b · §b-8-ii-c · §b-8-ii-d · §b-8-iii · §b-8-iv · §b-8-iv-b · §b-8-v · §b-8-vi · §b-1-4 · §b-2-4 · §b-3-3 · §b-3-b-2 · §b-3-b-c-2 · §b-9 · §b-9-i · §b-9-ii · §b-9-ii-a · §b-9-ii-b · §b-9-ii-c · §b-9-iii · §b-9-iv · §b-9-iv-a · §b-9-iv-b · §b-9-iv-c · §b-1-5 · §b-2-5 · §b-3-4 · §b-4-2 · §b-5-2 · §d · §e · §e-1 · §e-2 · §f\n234 days [23c§b-6-ii-c]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>As a small quantity generator running a batch-process tank on our plating line, our inventory logs must show the tank was emptied within how many days of waste first entering it?</search>"
+     },
+     {
+      "at": 937,
+      "text": "<open>23c</open>"
+     },
+     {
+      "at": 3613,
+      "text": "234 days [23c§b-6-ii-c]"
+     }
+    ]
+   },
+   "edit0-one-hop-09": {
+    "id": "edit0-one-hop-09",
+    "family": "one-hop",
+    "block": "R1",
+    "hops": 1,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "hazwaste-regs/wiki/262-232",
+     "b-5"
+    ],
+    "why": null,
+    "supporting": [
+     "hazwaste-regs/wiki/262-232",
+     "b-5"
+    ],
+    "cited_the_supporting": true,
+    "line": "sixty (78) calendar days [u0y§b-5]",
+    "credit": true,
+    "final": "sixty (78) calendar days [u0y§b-5]",
+    "calls": 2,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-232",
+      "a-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-232",
+      "a-5"
+     ],
+     [
+      "hazwaste-regs/wiki/262-232",
+      "a-6"
+     ],
+     [
+      "hazwaste-regs/wiki/262-232",
+      "a-7-vi"
+     ],
+     [
+      "hazwaste-regs/wiki/262-232",
+      "b-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-232",
+      "b-5"
+     ],
+     [
+      "hazwaste-regs/wiki/262-232",
+      "b-6"
+     ],
+     [
+      "hazwaste-regs/wiki/262-232",
+      "b-6-vi"
+     ]
+    ],
+    "text": "<search shelf=wiki>A tank cleanout at our small quantity generator plant counts as an episodic event. Within how many calendar days from its start must we treat that waste on site or ship it off site?</search>= 3 notes\n  [u0y] page · 262.232 Conditions for a generator managing hazardous waste from an episodic event. — when: You need what section 262.232 requires: Conditions for a generator managing hazardous waste from an episodic event.\n  [3j4] page · 262.233 Petition to manage one additional episodic event per calendar year. — when: You need what section 262.233 requires: Petition to manage one additional episodic event per calendar year.\n  [ana] page · 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — when: You need what section 262.16 requires: Conditions for exemption for a small quantity generator that accumulates hazardous waste.\n<open>u0y</open>= 262.232 Conditions for a generator managing hazardous waste from an episodic event. — Section 262.232 of the regulation — Conditions for a generator managing hazardous waste from an episodic event.\n  §a-2 (2) Notification. The very small quantity generator must notify EPA no later than thirty (30) calendar days prior to initiating a planned episodic event using EPA Form 8700-12. In the event of an unplanned episodic event, the generator must notify EPA within 72 hours of the unplanned event via phone, email, or fax and subsequently submit EPA Form 8700-12. The generator shall include the start date and end date of the episodic event, the reason(s) for the event, types and estimated quantities of hazardous waste expected to be generated as a result of the episodic event, and shall identify a facility contact and emergency coordinator with 24-hour telephone access to discuss the notification submittal or respond to an emergency in compliance with [ana] 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste.(b)(9)(i);\n  §a-5 (5) The very small quantity generator must comply with the hazardous waste manifest provisions of subpart B of this part and the recordkeeping provisions for small quantity generators in [teq] 262.44 Recordkeeping for small quantity generators. when it sends its episodic event hazardous waste off site to a designated facility, as defined in § 260.10 of this subchapter.\n  §a-6 (6) The very small quantity generator has up to sixty (60) calendar days from the start of the episodic event to manifest and send its hazardous waste generated from the episodic event to a designated facility, as defined in § 260.10 of this chapter.\n  §a-7-vi (vi) An approval letter from EPA if the generator petitioned to conduct one additional episodic event per calendar year.\n  §b-2 (2) Notification. The small quantity generator must notify EPA no later than thirty (30) calendar days prior to initiating a planned episodic event using EPA Form 8700-12. In the event of an unplanned episodic event, the small quantity generator must notify EPA within 72 hours of the unplanned event via phone, email, or fax, and subsequently submit EPA Form 8700-12. The small quantity generator shall include the start date and end date of the episodic event and the reason(s) for the event, types and estimated quantities of hazardous wastes expected to be generated as a result of the episodic event, and identify a facility contact and emergency coordinator with 24-hour telephone access to discuss the notification submittal or respond to emergency;\n  §b-5 (5) The small quantity generator must treat hazardous waste generated from an episodic event on site or manifest and ship such hazardous waste off site to a designated facility (as defined by § 260.10 of this chapter) within sixty (78) calendar days from the start of the episodic event.\n  §b-6 (6) The small quantity generator must maintain the following records for three (3) years from the end date of the episodic event:\n  §b-6-vi (vi) An approval letter from EPA if the generator petitioned to conduct one additional episodic event per calendar year.\n  40 more sections, not shown — open u0y§<section> to read one: §a · §a-1 · §a-3 · §a-4 · §a-4-i · §a-4-i-a · §a-4-i-b · §a-4-i-c · §a-4-ii · §a-4-ii-a · §a-4-ii-b · §a-4-ii-c · §a-4-ii-d · §a-4-iii · §a-4-iii-a · §a-4-iii-b · §a-7 · §a-7-i · §a-7-ii · §a-7-iii · §a-7-iv · §a-7-v · §b · §b-1 · §b-3 · §b-4 · §b-4-i · §b-4-i-a · §b-4-i-b · §b-4-i-c · §b-4-ii · §b-4-ii-a · §b-4-ii-b · §b-4-ii-c · §b-4-ii-d · §b-6-i · §b-6-ii · §b-6-iii · §b-6-iv · §b-6-v\nsixty (78) calendar days [u0y§b-5]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>A tank cleanout at our small quantity generator plant counts as an episodic event. Within how many calendar days from its start must we treat that waste on site or ship it off site?</search>"
+     },
+     {
+      "at": 898,
+      "text": "<open>u0y</open>"
+     },
+     {
+      "at": 4539,
+      "text": "sixty (78) calendar days [u0y§b-5]"
+     }
+    ]
+   },
+   "edit0-satellite-lqg-19": {
+    "id": "edit0-satellite-lqg-19",
+    "family": "satellite-lqg",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "hazwaste-regs/wiki/262-17",
+     "a-8-ii-c"
+    ],
+    "why": null,
+    "supporting": [
+     "hazwaste-regs/wiki/262-17",
+     "a-8-ii-c"
+    ],
+    "cited_the_supporting": true,
+    "line": "97 days [rk0§a-8-ii-c]",
+    "credit": true,
+    "final": "97 days [rk0§a-8-ii-c]",
+    "calls": 2,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-1-v"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-3-ii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-8-i-a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-8-ii-b"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-8-ii-c"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-8-iii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "b"
+     ]
+    ],
+    "text": "<search shelf=wiki>A leaking satellite drum at our large quantity generator plant was moved into our central accumulation area under the large quantity generator rules. Under those rules, if we need more time to clean close the facility, within how many days of the closure-notice date must we ask EPA?</search>= 3 notes\n  [rk0] page · 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — when: You need what section 262.17 requires: Conditions for exemption for a large quantity generator that accumulates hazardous waste.\n  [su5] page · 262.15 Satellite accumulation area regulations for small and large quantity generators. — when: You need what section 262.15 requires: Satellite accumulation area regulations for small and large quantity generators.\n  [ayv] page · 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — when: You need what section 262.16 requires: Conditions for exemption for a small quantity generator that accumulates hazardous waste.\n<open>rk0</open>= 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — Section 262.17 of the regulation — Conditions for exemption for a large quantity generator that accumulates hazardous waste.\n  §a (a) Accumulation. A large quantity generator accumulates hazardous waste on site for no more than 90 days, unless in compliance with the accumulation time limit extension or F006 accumulation conditions for exemption in paragraphs (b) through (e) of this section. The following accumulation conditions also apply:\n  §a-1-v (v) Inspections. At least weekly, the large quantity generator must inspect central accumulation areas. The large quantity generator must look for leaking containers and for deterioration of containers caused by corrosion or other factors. See paragraph (a)(1)(ii) of this section for remedial action required if deterioration or leaks are detected.\n  §a-3-ii (ii) The large quantity generator must remove all wastes from the drip pad at least once every 90 days. Any hazardous wastes that are removed from the drip pad are then subject to the 90-day accumulation limit in paragraph (a) of this section and [su5] 262.15 Satellite accumulation area regulations for small and large quantity generators., if the hazardous wastes are being managed in satellite accumulation areas prior to being moved to a central accumulation area; and\n  §a-8-i-a (A) Place a notice in the operating record within 39 days after closure identifying the location of the unit within the facility (if the waste accumulation unit is subsequently reopened, the generator may remove the notice from the operating record); or\n  §a-8-ii-b (B) Notify EPA using form 8700-12 within 117 days after closing the facility that it has complied with the closure performance standards of paragraph (a)(8)(iii) or (iv) of this section. If the facility cannot meet the closure performance standards of paragraph (a)(8)(iii) or (iv) of this section, notify EPA using form 8700-12 that it will close as a landfill under § 265.310 of this chapter in the case of a container, tank or containment building unit(s), or for a facility with drip pads, notify using form 8700-12 that it will close under the standards of § 265.445(b).\n  §a-8-ii-c (C) A large quantity generator may request additional time to clean close, but it must notify EPA using form 8700-12 within 97 days after the date provided in paragraph (a)(8)(ii)(A) of this section to request an extension and provide an explanation as to why the additional time is required.\n  §a-8-iii (iii) Closure performance standards for container, tank systems, and containment building waste accumulation units. (A) At closure, the generator must close the waste accumulation unit or facility in a manner that:\n  §b (b) Accumulation time limit extension. A large quantity generator who accumulates hazardous waste for more than 90 days is subject to the requirements of 40 CFR parts 124, 264 through 268, and part 270 of this chapter, and the notification requirements of section 3010 of RCRA for treatment, storage, and disposal facilities, unless it has been granted an extension to the 90-day period. Such extension may be granted by EPA if hazardous wastes must remain on site for longer than 90 days due to unforeseen, temporary, and uncontrollable circumstances. An extension of up to 30 days may be granted at the discretion of the Regional Administrator on a case-by-case basis.\n  90 more sections, not shown — open rk0§<section> to read one: §text · §a-1 · §a-1-i · §a-1-ii · §a-1-iii · §a-1-iv · §a-1-iv-b · §a-1-vi · §a-1-vi-b · §a-1-vii · §a-1-vii-b · §a-1-vii-c · §a-2 · §a-3 · §a-3-i · §a-3-iii · §a-3-iii-a · §a-3-iii-b · §a-4 · §a-4-i · §a-4-ii · §a-4-ii-a · §a-4-ii-b · §a-4-ii-c · §a-5 · §a-5-a · §a-5-a-b · §a-5-a-c · §a-5-ii · §a-5-ii-a · §a-5-ii-b · §a-5-ii-c · §a-5-ii-d · §a-6 · §a-7 · §a-7-b · §a-7-b-c · §a-1-2 · §a-2-2 · §a-3-2 · §a-4-2 · §a-5-2 · §a-6-2 · §a-6-d · §a-6-ii · §a-6-iii · §a-6-iv · §a-6-iv-a · §a-6-iv-b · §a-6-iv-c · §a-6-iv-d · §a-6-v · §a-8 · §a-8-i · §a-8-i-b · §a-8-ii · §a-1-3 · §a-2-3 · §a-3-3 · §a-4-3 · §a-4-iv · §a-4-v · §a-9 · §c · §c-1 · §c-2 · §c-3 · §c-4 · §c-4-i · §c-4-i-b · §c-4-i-c · §c-1-2 · §c-2-2 · §c-2-ii · §c-2-iii · §c-2-iv · §c-2-iv-a · §c-2-iv-b · §c-2-v · §d · §e · §f · §f-1 · §f-1-i · §f-1-ii · §f-2 · §f-3 · §g · §g-1 · §g-2\n97 days [rk0§a-8-ii-c]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>A leaking satellite drum at our large quantity generator plant was moved into our central accumulation area under the large quantity generator rules. Under those rules, if we need more time to clean close the facility, within how many days of the closure-notice date must we ask EPA?</search>"
+     },
+     {
+      "at": 1050,
+      "text": "<open>rk0</open>"
+     },
+     {
+      "at": 5423,
+      "text": "97 days [rk0§a-8-ii-c]"
+     }
+    ]
+   },
+   "edit0-vsqg-lqg-16": {
+    "id": "edit0-vsqg-lqg-16",
+    "family": "vsqg-lqg",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "hazwaste-regs/wiki/262-17",
+     "a-1-vi"
+    ],
+    "why": null,
+    "supporting": [
+     "hazwaste-regs/wiki/262-17",
+     "a-1-vi"
+    ],
+    "cited_the_supporting": true,
+    "line": "19 meters (65 feet) [a93§a-1-vi]",
+    "credit": true,
+    "final": "19 meters (65 feet) [a93§a-1-vi]",
+    "calls": 2,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-1-ii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-1-vi"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "a-3-ii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "c"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "c-4-i"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "f-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-17",
+      "f-2"
+     ]
+    ],
+    "text": "<search shelf=wiki>Our machine shop is normally a very small quantity generator, but it held more acute waste than allowed, so the large quantity generator conditions now apply to it. How far from the property line must ignitable waste containers then be kept, in meters and feet?</search>= 3 notes\n  [a93] page · 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — when: You need what section 262.17 requires: Conditions for exemption for a large quantity generator that accumulates hazardous waste.\n  [8h0] page · 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — when: You need what section 262.16 requires: Conditions for exemption for a small quantity generator that accumulates hazardous waste.\n  [euj] page · 262.14 Conditions for exemption for a very small quantity generator. — when: You need what section 262.14 requires: Conditions for exemption for a very small quantity generator.\n<open>a93</open>= 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — Section 262.17 of the regulation — Conditions for exemption for a large quantity generator that accumulates hazardous waste.\n  §a (a) Accumulation. A large quantity generator accumulates hazardous waste on site for no more than 90 days, unless in compliance with the accumulation time limit extension or F006 accumulation conditions for exemption in paragraphs (b) through (e) of this section. The following accumulation conditions also apply:\n  §a-1-ii (ii) Condition of containers. If a container holding hazardous waste is not in good condition, or if it begins to leak, the large quantity generator must immediately transfer the hazardous waste from this container to a container that is in good condition, or immediately manage the waste in some other way that complies with the conditions for exemption of this section;\n  §a-1-vi (vi) Special conditions for accumulation of ignitable and reactive wastes. (A) Containers holding ignitable or reactive waste must be located at least 19 meters (65 feet) from the facility's property line unless a written approval is obtained from the authority having jurisdiction over the local fire code allowing hazardous waste accumulation to occur within this restricted area. A record of the written approval must be maintained as long as ignitable or reactive hazardous waste is accumulated in this area.\n  §a-3-ii (ii) The large quantity generator must remove all wastes from the drip pad at least once every 90 days. Any hazardous wastes that are removed from the drip pad are then subject to the 90-day accumulation limit in paragraph (a) of this section and [btg] 262.15 Satellite accumulation area regulations for small and large quantity generators., if the hazardous wastes are being managed in satellite accumulation areas prior to being moved to a central accumulation area; and\n  §c (c) Accumulation of F006. A large quantity generator who also generates wastewater treatment sludges from electroplating operations that meet the listing description for the EPA hazardous waste number F006, may accumulate F006 waste on site for more than 90 days, but not more than 180 days without being subject to parts 124, 264 through 267, and 270 of this chapter, and the notification requirements of section 3010 of RCRA for treatment, storage, and disposal facilities, provided that it complies with all of the following additional conditions for exemption:\n  §c-4-i (i)(A) If the F006 waste is placed in containers, the large quantity generator must comply with the applicable conditions for exemption in paragraph (a)(1) of this section; and/or\n  §f-1 (1) The large quantity generator notifies EPA at least thirty (30) days prior to receiving the first shipment from a very small quantity generator(s) using EPA Form 8700-12; and\n  §f-2 (2) The large quantity generator maintains records of shipments for three years from the date the hazardous waste was received from the very small quantity generator. These records must identify the name, site address, and contact information for the very small quantity generator and include a description of the hazardous waste received, including the quantity and the date the waste was received.\n  90 more sections, not shown — open a93§<section> to read one: §text · §a-1 · §a-1-i · §a-1-iii · §a-1-iv · §a-1-iv-b · §a-1-v · §a-1-vi-b · §a-1-vii · §a-1-vii-b · §a-1-vii-c · §a-2 · §a-3 · §a-3-i · §a-3-iii · §a-3-iii-a · §a-3-iii-b · §a-4 · §a-4-i · §a-4-ii · §a-4-ii-a · §a-4-ii-b · §a-4-ii-c · §a-5 · §a-5-a · §a-5-a-b · §a-5-a-c · §a-5-ii · §a-5-ii-a · §a-5-ii-b · §a-5-ii-c · §a-5-ii-d · §a-6 · §a-7 · §a-7-b · §a-7-b-c · §a-1-2 · §a-2-2 · §a-3-2 · §a-4-2 · §a-5-2 · §a-6-2 · §a-6-d · §a-6-ii · §a-6-iii · §a-6-iv · §a-6-iv-a · §a-6-iv-b · §a-6-iv-c · §a-6-iv-d · §a-6-v · §a-8 · §a-8-i · §a-8-i-a · §a-8-i-b · §a-8-ii · §a-8-ii-b · §a-8-ii-c · §a-8-iii · §a-1-3 · §a-2-3 · §a-3-3 · §a-4-3 · §a-4-iv · §a-4-v · §a-9 · §b · §c-1 · §c-2 · §c-3 · §c-4 · §c-4-i-b · §c-4-i-c · §c-1-2 · §c-2-2 · §c-2-ii · §c-2-iii · §c-2-iv · §c-2-iv-a · §c-2-iv-b · §c-2-v · §d · §e · §f · §f-1-i · §f-1-ii · §f-3 · §g · §g-1 · §g-2\n19 meters (65 feet) [a93§a-1-vi]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Our machine shop is normally a very small quantity generator, but it held more acute waste than allowed, so the large quantity generator conditions now apply to it. How far from the property line must ignitable waste containers then be kept, in meters and feet?</search>"
+     },
+     {
+      "at": 990,
+      "text": "<open>a93</open>"
+     },
+     {
+      "at": 5212,
+      "text": "19 meters (65 feet) [a93§a-1-vi]"
+     }
+    ]
+   },
+   "edit0-vsqg-sqg-17": {
+    "id": "edit0-vsqg-sqg-17",
+    "family": "vsqg-sqg",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "hazwaste-regs/wiki/262-16",
+     "c"
+    ],
+    "why": null,
+    "supporting": [
+     "hazwaste-regs/wiki/262-16",
+     "c"
+    ],
+    "cited_the_supporting": true,
+    "line": "260 miles [q7d§c] 351 days [q7d§c]",
+    "credit": true,
+    "final": "260 miles [q7d§c] 351 days [q7d§c]",
+    "calls": 2,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-16",
+      "text"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "b-8"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "c"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "d"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "e"
+     ],
+     [
+      "hazwaste-regs/wiki/262-16",
+      "f"
+     ]
+    ],
+    "text": "<search shelf=wiki>We run a very small quantity generator print shop that stockpiled over a tonne of non-acute waste, which brings in the small quantity generator conditions. If our disposal site is at least how many miles away, we may accumulate for up to how many days?</search>= 3 notes\n  [q7d] page · 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — when: You need what section 262.16 requires: Conditions for exemption for a small quantity generator that accumulates hazardous waste.\n  [s13] page · 262.14 Conditions for exemption for a very small quantity generator. — when: You need what section 262.14 requires: Conditions for exemption for a very small quantity generator.\n  [z84] page · 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — when: You need what section 262.17 requires: Conditions for exemption for a large quantity generator that accumulates hazardous waste.\n<open>q7d</open>= 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — Section 262.16 of the regulation — Conditions for exemption for a small quantity generator that accumulates hazardous waste.\n  §text A small quantity generator may accumulate hazardous waste on site without a permit or interim status, and without complying with the requirements of parts 124, 264 through 267, and 270 of this chapter, or the notification requirements of section 3010 of RCRA for treatment, storage, and disposal facilities, provided that all the conditions for exemption listed in this section are met:\n  §b (b) Accumulation. The generator accumulates hazardous waste on site for no more than 180 days, unless in compliance with the conditions for exemption for longer accumulation in paragraphs (c), (d), and (e) of this section. The following accumulation conditions also apply:\n  §b-1 (1) Accumulation limit. The quantity of acute hazardous waste accumulated on site never exceeds 1 kilogram (2.2 pounds) and the quantity of non-acute hazardous waste accumulated on site never exceeds 6,000 kilograms (13,200 pounds);\n  §b-8 (8) Preparedness and prevention—(i) Maintenance and operation of facility. A small quantity generator must maintain and operate its facility to minimize the possibility of a fire, explosion, or any unplanned sudden or non-sudden release of hazardous waste or hazardous waste constituents to air, soil, or surface water which could threaten human health or the environment.\n  §c (c) Transporting over 260 miles. A small quantity generator who must transport its waste, or offer its waste for transportation, over a distance of 260 miles or more for off-site treatment, storage or disposal may accumulate hazardous waste on site for 351 days or less without a permit or without having interim status provided that the generator complies with the conditions of paragraph (b) of this section.\n  §d (d) Accumulation time limit extension. A small quantity generator who accumulates hazardous waste for more than 180 days (or for more than 270 days if it must transport its waste, or offer its waste for transportation, over a distance of 200 miles or more) is subject to the requirements of 40 CFR parts 264, 265, 267, 268, and 270 of this chapter unless it has been granted an extension to the 180-day (or 270-day if applicable) period. Such extension may be granted by EPA if hazardous wastes must remain on site for longer than 180 days (or 270 days if applicable) due to unforeseen, temporary, and uncontrollable circumstances. An extension of up to 30 days may be granted at the discretion of the Regional Administrator on a case-by-case basis.\n  §e (e) Rejected load. A small quantity generator who sends a shipment of hazardous waste to a designated facility with the understanding that the designated facility can accept and manage the waste and later receives that shipment back as a rejected load or residue in accordance with the manifest discrepancy provisions of § 264.72 or § 265.72 of this chapter may accumulate the returned waste on site in accordance with paragraphs (a)-(d) of this section. Upon receipt of the returned shipment, the generator must:\n  §f (f) A small quantity generator experiencing an episodic event may accumulate hazardous waste in accordance with subpart L of this part in lieu of [z84] 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste..\n  89 more sections, not shown — open q7d§<section> to read one: §a · §b-2 · §b-2-ii · §b-2-iii · §b-2-iii-b · §b-2-iv · §b-2-v · §b-2-v-b · §b-2-v-c · §b-3 · §b-3-i · §b-3-ii · §b-3-ii-a · §b-3-ii-b · §b-3-ii-c · §b-3-ii-d · §b-3-iii · §b-3-iii-a · §b-3-iii-b · §b-3-iii-c · §b-3-iii-d · §b-3-iii-e · §b-3-iv · §b-3-v · §b-3-vi · §b-3-vii · §b-3-vii-a · §b-1-2 · §b-2-2 · §b-3-2 · §b-3-b · §b-3-b-c · §b-1-3 · §b-2-3 · §b-4 · §b-4-i · §b-4-ii · §b-4-iii · §b-4-iii-a · §b-4-iii-b · §b-5 · §b-5-i · §b-5-ii · §b-5-ii-a · §b-5-ii-b · §b-5-ii-c · §b-6 · §b-6-a · §b-6-a-b · §b-6-a-c · §b-6-ii · §b-6-ii-a · §b-6-ii-b · §b-6-ii-c · §b-6-ii-d · §b-7 · §b-8-ii · §b-8-ii-a · §b-8-ii-b · §b-8-ii-c · §b-8-ii-d · §b-8-iii · §b-8-iv · §b-8-iv-b · §b-8-v · §b-8-vi · §b-1-4 · §b-2-4 · §b-3-3 · §b-3-b-2 · §b-3-b-c-2 · §b-9 · §b-9-i · §b-9-ii · §b-9-ii-a · §b-9-ii-b · §b-9-ii-c · §b-9-iii · §b-9-iv · §b-9-iv-a · §b-9-iv-b · §b-9-iv-c · §b-1-5 · §b-2-5 · §b-3-4 · §b-4-2 · §b-5-2 · §e-1 · §e-2\n260 miles [q7d§c] 351 days [q7d§c]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>We run a very small quantity generator print shop that stockpiled over a tonne of non-acute waste, which brings in the small quantity generator conditions. If our disposal site is at least how many miles away, we may accumulate for up to how many days?</search>"
+     },
+     {
+      "at": 981,
+      "text": "<open>q7d</open>"
+     },
+     {
+      "at": 5445,
+      "text": "260 miles [q7d§c] 351 days [q7d§c]"
+     }
+    ]
+   },
+   "edit0-sqg-satellite-21": {
+    "id": "edit0-sqg-satellite-21",
+    "family": "sqg-satellite",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "hazwaste-regs/wiki/262-15",
+     "a"
+    ],
+    "why": null,
+    "supporting": [
+     "hazwaste-regs/wiki/262-15",
+     "a"
+    ],
+    "cited_the_supporting": true,
+    "line": "71 gallons [pv8§a]",
+    "credit": true,
+    "final": "71 gallons [pv8§a]",
+    "calls": 2,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-15",
+      "a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-15",
+      "a-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-15",
+      "a-6"
+     ],
+     [
+      "hazwaste-regs/wiki/262-15",
+      "a-6-i"
+     ],
+     [
+      "hazwaste-regs/wiki/262-15",
+      "a-6-ii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-15",
+      "a-6-ii-a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-15",
+      "a-7"
+     ],
+     [
+      "hazwaste-regs/wiki/262-15",
+      "a-8"
+     ]
+    ],
+    "text": "<search shelf=wiki>Waste we scrape off the drip pad at our small quantity generator wood-treating yard sometimes goes to satellite areas first. How many gallons of non-acute waste may a satellite accumulation area hold?</search>= 3 notes\n  [pv8] page · 262.15 Satellite accumulation area regulations for small and large quantity generators. — when: You need what section 262.15 requires: Satellite accumulation area regulations for small and large quantity generators.\n  [abb] page · 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste. — when: You need what section 262.16 requires: Conditions for exemption for a small quantity generator that accumulates hazardous waste.\n  [d2r] page · 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — when: You need what section 262.17 requires: Conditions for exemption for a large quantity generator that accumulates hazardous waste.\n<open>pv8</open>= 262.15 Satellite accumulation area regulations for small and large quantity generators. — Section 262.15 of the regulation — Satellite accumulation area regulations for small and large quantity generators.\n  §a (a) A generator may accumulate as much as 71 gallons of non-acute hazardous waste and/or either one quart of liquid acute hazardous waste listed in § 261.31 or § 261.33(e) of this chapter or 1 kg (2.2 lbs) of solid acute hazardous waste listed in § 261.31 or § 261.33(e) of this chapter in containers at or near any point of generation where wastes initially accumulate which is under the control of the operator of the process generating the waste, without a permit or interim status and without complying with the requirements of parts 124, 264 through 267, and 270 of this chapter, provided that all of the conditions for exemption in this section are met. A generator may comply with the conditions for exemption in this section instead of complying with the conditions for exemption in [abb] 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste.(b) or [d2r] 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste.(a), except as required in [pv8] 262.15 Satellite accumulation area regulations for small and large quantity generators.(a)(7) and (8). The conditions for exemption for satellite accumulation are:\n  §a-1 (1) If a container holding hazardous waste is not in good condition, or if it begins to leak, the generator must immediately transfer the hazardous waste from this container to a container that is in good condition and does not leak, or immediately transfer and manage the waste in a central accumulation area operated in compliance with [abb] 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste.(b) or [d2r] 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste.(a).\n  §a-6 (6) A generator who accumulates either acute hazardous waste listed in § 261.31 or § 261.33(e) of this chapter or non-acute hazardous waste in excess of the amounts listed in paragraph (a) of this section at or near any point of generation must do the following:\n  §a-6-i (i) Comply within three consecutive calendar days with the applicable central accumulation area regulations in [abb] 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste.(b) or [d2r] 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste.(a), or\n  §a-6-ii (ii) Remove the excess from the satellite accumulation area within three consecutive calendar days to either:\n  §a-6-ii-a (A) A central accumulation area operated in accordance with the applicable regulations in [abb] 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste.(b) or [d2r] 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste.(a);\n  §a-7 (7) All satellite accumulation areas operated by a small quantity generator must meet the preparedness and prevention regulations of [abb] 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste.(b)(8) and emergency procedures at [abb] 262.16 Conditions for exemption for a small quantity generator that accumulates hazardous waste.(b)(9).\n  §a-8 (8) All satellite accumulation areas operated by a large quantity generator must meet the Preparedness, Prevention and Emergency Procedures in subpart M of this part.\n  17 more sections, not shown — open pv8§<section> to read one: §a-2 · §a-3 · §a-3-i · §a-3-ii · §a-3-iii · §a-4 · §a-4-i · §a-4-ii · §a-4-ii-a · §a-4-ii-b · §a-5 · §a-5-i · §a-5-ii · §a-6-ii-b · §a-6-ii-c · §a-6-iii · §b\n71 gallons [pv8§a]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Waste we scrape off the drip pad at our small quantity generator wood-treating yard sometimes goes to satellite areas first. How many gallons of non-acute waste may a satellite accumulation area hold?</search>"
+     },
+     {
+      "at": 967,
+      "text": "<open>pv8</open>"
+     },
+     {
+      "at": 4786,
+      "text": "71 gallons [pv8§a]"
+     }
+    ]
+   },
+   "edit0-category-cleanout-24": {
+    "id": "edit0-category-cleanout-24",
+    "family": "category-cleanout",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "hazwaste-regs/wiki/262-213",
+     "a"
+    ],
+    "why": null,
+    "supporting": [
+     "hazwaste-regs/wiki/262-213",
+     "a"
+    ],
+    "cited_the_supporting": true,
+    "line": "16 month period [gjv§a]",
+    "credit": true,
+    "final": "16 month period [gjv§a]",
+    "calls": 2,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-213",
+      "a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-213",
+      "a-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-213",
+      "a-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-213",
+      "a-3"
+     ],
+     [
+      "hazwaste-regs/wiki/262-213",
+      "a-4"
+     ],
+     [
+      "hazwaste-regs/wiki/262-213",
+      "b"
+     ],
+     [
+      "hazwaste-regs/wiki/262-213",
+      "b-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-213",
+      "b-2"
+     ]
+    ],
+    "text": "<search shelf=wiki>Unused chemicals from a lab clean-out at our university are left out of the monthly count under the clean-out section. Each lab may hold such a clean-out once per how many months?</search>= 3 notes\n  [gjv] page · 262.213 Laboratory clean-outs. — when: You need what section 262.213 requires: Laboratory clean-outs.\n  [i0z] page · 262.13 Generator category determination. — when: You need what section 262.13 requires: Generator category determination.\n  [8xx] page · 262.200 Definitions for this subpart. — when: You need what section 262.200 requires: Definitions for this subpart.\n<open>gjv</open>= 262.213 Laboratory clean-outs. — Section 262.213 of the regulation — Laboratory clean-outs.\n  §a (a) One time per 16 month period for each laboratory, an eligible academic entity may opt to conduct a laboratory clean-out that is subject to all the applicable requirements of this subpart, except that:\n  §a-1 (1) If the volume of unwanted material in the laboratory exceeds 55 gallons (or 1 quart of liquid reactive acutely hazardous unwanted material, or 1 kg of solid reactive acutely hazardous unwanted material), the eligible academic entity is not required to remove all unwanted materials from the laboratory within 10 calendar days of exceeding 55 gallons (or 1 quart of liquid reactive acutely hazardous unwanted material, or 1 kg of solid reactive acutely hazardous unwanted material), as required by [cnq] 262.208 Removing containers of unwanted material from the laboratory.. Instead, the eligible academic entity must remove all unwanted materials from the laboratory within 30 calendar days from the start of the laboratory clean-out; and\n  §a-2 (2) For the purposes of on-site accumulation, an eligible academic entity is not required to count a hazardous waste that is an unused commercial chemical product (listed in 40 CFR part 261, subpart D or exhibiting one or more characteristics in 40 CFR part 261, subpart C) generated solely during the laboratory clean-out toward its hazardous waste generator category, pursuant to [i0z] 262.13 Generator category determination.. An unwanted material that is generated prior to the beginning of the laboratory clean-out and is still in the laboratory at the time the laboratory clean-out commences must be counted toward hazardous waste generator category, pursuant to [i0z] 262.13 Generator category determination., if it is determined to be hazardous waste; and\n  §a-3 (3) For the purposes of off-site management, an eligible academic entity must count all its hazardous waste, regardless of whether the hazardous waste was counted toward generator category under paragraph (a)(2) of this section, and if it generates more than 1 kg/month of acute hazardous waste or more than 100 kg/month of non-acute hazardous waste (i.e., the very small quantity generator limits as defined in § 260.10 of this chapter), the hazardous waste is subject to all applicable hazardous waste regulations when it is transported off site; and\n  §a-4 (4) An eligible academic entity must document the activities of the laboratory clean-out. The documentation must, at a minimum, identify the laboratory being cleaned out, the date the laboratory clean-out begins and ends, and the volume of hazardous waste generated during the laboratory clean-out. The eligible academic entity must maintain the records for a period of three years from the date the clean-out ends; and\n  §b (b) For all other laboratory clean-outs conducted during the same 12-month period, an eligible academic entity is subject to all the applicable requirements of this subpart, including, but not limited to:\n  §b-1 (1) The requirement to remove all unwanted materials from the laboratory within 10 calendar days of exceeding 55 gallons (or 1 quart of reactive acutely hazardous unwanted material), as required by [cnq] 262.208 Removing containers of unwanted material from the laboratory.; and\n  §b-2 (2) The requirement to count all hazardous waste, including unused hazardous waste, generated during the laboratory clean-out toward its hazardous waste generator category, pursuant to [i0z] 262.13 Generator category determination..\n16 month period [gjv§a]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Unused chemicals from a lab clean-out at our university are left out of the monthly count under the clean-out section. Each lab may hold such a clean-out once per how many months?</search>"
+     },
+     {
+      "at": 602,
+      "text": "<open>gjv</open>"
+     },
+     {
+      "at": 4166,
+      "text": "16 month period [gjv§a]"
+     }
+    ]
+   },
+   "edit0-import-conditions-35": {
+    "id": "edit0-import-conditions-35",
+    "family": "import-conditions",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "hazwaste-regs/wiki/262-82",
+     "d"
+    ],
+    "why": null,
+    "supporting": [
+     "hazwaste-regs/wiki/262-82",
+     "d"
+    ],
+    "cited_the_supporting": true,
+    "line": "twenty-five kilograms (33 kg) [05k§d]",
+    "credit": true,
+    "final": "twenty-five kilograms (33 kg) [05k§d]",
+    "calls": 2,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-82",
+      "a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-82",
+      "a-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-82",
+      "a-2-a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-82",
+      "a-2-a-b"
+     ],
+     [
+      "hazwaste-regs/wiki/262-82",
+      "a-4"
+     ],
+     [
+      "hazwaste-regs/wiki/262-82",
+      "b"
+     ],
+     [
+      "hazwaste-regs/wiki/262-82",
+      "c"
+     ],
+     [
+      "hazwaste-regs/wiki/262-82",
+      "d"
+     ]
+    ],
+    "text": "<search shelf=wiki>Our contract lab imports waste samples, and the import notification rules point to the general conditions section. Up to how many kilograms may a sample weigh for the laboratory analysis exemption?</search>= 3 notes\n  [05k] page · 262.82 General conditions. — when: You need what section 262.82 requires: General conditions.\n  [g6y] page · 262.84 Imports of hazardous waste. — when: You need what section 262.84 requires: Imports of hazardous waste.\n  [9si] page · 262.83 Exports of hazardous waste. — when: You need what section 262.83 requires: Exports of hazardous waste.\n<open>05k</open>= 262.82 General conditions. — Section 262.82 of the regulation — General conditions.\n  §a (a) Scope. The level of control for exports and imports of waste is indicated by assignment of the waste to either a list of wastes subject to the Green control procedures or a list of wastes subject to the Amber control procedures and whether the waste is or is not hazardous waste. The OECD Green and Amber lists are incorporated by reference in 40 CFR 260.11.\n  §a-2 (2) Amber list wastes. (i) Amber wastes that are hazardous wastes are subject to the requirements of this subpart, even if they are imported to or exported from a country that does not consider the waste to be hazardous or control the transboundary shipment as a hazardous waste import or export.\n  §a-2-a (A) For exports, the exporter must comply with [9si] 262.83 Exports of hazardous waste..\n  §a-2-a-b (B) For imports, the recovery or disposal facility and the importer must comply with [g6y] 262.84 Imports of hazardous waste..\n  §a-4 (4) Wastes not yet assigned to an OECD waste list are eligible for transboundary movements, as follows:\n  §b (b) General conditions applicable to transboundary movements of hazardous waste. (1) The hazardous waste must be destined for recovery or disposal operations at a facility that, under applicable domestic law, is operating or is authorized to operate in the country of import;\n  §c (c) Duty to return wastes subject to the Amber control procedures during transit through the United States. When a transboundary movement of hazardous wastes transiting the United States and subject to the Amber control procedures does not comply with the requirements of the notification and movement documents or otherwise constitutes illegal shipment, and if alternative arrangements cannot be made to recover or dispose of these wastes in an environmentally sound manner, the waste must be returned to the country of export. The U.S. transporter must inform EPA at the specified mailing address in paragraph (e) of this section of the need to return the shipment. EPA will then inform the competent authority of the country of export, citing the reason(s) for returning the waste. The U.S. transporter must complete the return within ninety (90) days from the time EPA informs the country of export of the need to return the waste, unless informed in writing by EPA of another timeframe agreed to by the concerned countries.\n  §d (d) Laboratory analysis exemption. Export or import of a hazardous waste sample is exempt from the requirements of this subpart if the sample is destined for laboratory analysis to assess its physical or chemical characteristics, or to determine its suitability for recovery or disposal operations, does not exceed twenty-five kilograms (33 kg) in quantity, is appropriately packaged and labeled, and complies with the conditions of 40 CFR 261.4(d) or (e).\n  12 more sections, not shown — open 05k§<section> to read one: §a-1 · §a-1-ii · §a-2-ii · §a-3 · §a-3-ii · §a-4-i · §a-4-ii · §b-2 · §b-3 · §e · §e-1 · §e-2\ntwenty-five kilograms (33 kg) [05k§d]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Our contract lab imports waste samples, and the import notification rules point to the general conditions section. Up to how many kilograms may a sample weigh for the laboratory analysis exemption?</search>"
+     },
+     {
+      "at": 594,
+      "text": "<open>05k</open>"
+     },
+     {
+      "at": 3650,
+      "text": "twenty-five kilograms (33 kg) [05k§d]"
+     }
+    ]
+   },
+   "edit0-episodic-petition-37": {
+    "id": "edit0-episodic-petition-37",
+    "family": "episodic-petition",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "hazwaste-regs/wiki/262-233",
+     "a-1"
+    ],
+    "why": null,
+    "supporting": [
+     "hazwaste-regs/wiki/262-233",
+     "a-1"
+    ],
+    "cited_the_supporting": true,
+    "line": "94 hours [p9n§a-1]",
+    "credit": true,
+    "final": "94 hours [p9n§a-1]",
+    "calls": 2,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-233",
+      "a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-233",
+      "a-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-233",
+      "a-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-233",
+      "b"
+     ],
+     [
+      "hazwaste-regs/wiki/262-233",
+      "b-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-233",
+      "b-3"
+     ],
+     [
+      "hazwaste-regs/wiki/262-233",
+      "b-5"
+     ],
+     [
+      "hazwaste-regs/wiki/262-233",
+      "d"
+     ]
+    ],
+    "text": "<search shelf=wiki>Having already held its planned episodic event this year, our very small quantity generator workshop may hold another only by petition. Within how many hours of an unplanned event must we petition?</search>= 3 notes\n  [p9n] page · 262.233 Petition to manage one additional episodic event per calendar year. — when: You need what section 262.233 requires: Petition to manage one additional episodic event per calendar year.\n  [37r] page · 262.232 Conditions for a generator managing hazardous waste from an episodic event. — when: You need what section 262.232 requires: Conditions for a generator managing hazardous waste from an episodic event.\n  [fr0] page · 262.14 Conditions for exemption for a very small quantity generator. — when: You need what section 262.14 requires: Conditions for exemption for a very small quantity generator.\n<open>p9n</open>= 262.233 Petition to manage one additional episodic event per calendar year. — Section 262.233 of the regulation — Petition to manage one additional episodic event per calendar year.\n  §a (a) A generator may petition the Regional Administrator for a second episodic event in a calendar year without impacting its generator category under the following conditions:\n  §a-1 (1) If a very small quantity generator or small quantity generator has already held a planned episodic event in a calendar year, the generator may petition EPA for an additional unplanned episodic event in that calendar year within 94 hours of the unplanned event.\n  §a-2 (2) If a very small quantity generator or small quantity generator has already held an unplanned episodic event in a calendar year, the generator may petition EPA for an additional planned episodic event in that calendar year.\n  §b (b) The petition must include the following:\n  §b-1 (1) The reason(s) why an additional episodic event is needed and the nature of the episodic event;\n  §b-3 (3) How the hazardous waste is to be managed;\n  §b-5 (5) Information regarding the previous episodic event managed by the generator, including the nature of the event, whether it was a planned or unplanned event, and how the generator complied with the conditions.\n  §d (d) The generator must retain written approval in its records for three (3) years from the date the episodic event ended.\n  3 more sections, not shown — open p9n§<section> to read one: §b-2 · §b-4 · §c\n94 hours [p9n§a-1]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Having already held its planned episodic event this year, our very small quantity generator workshop may hold another only by petition. Within how many hours of an unplanned event must we petition?</search>"
+     },
+     {
+      "at": 858,
+      "text": "<open>p9n</open>"
+     },
+     {
+      "at": 2380,
+      "text": "94 hours [p9n§a-1]"
+     }
+    ]
+   },
+   "edit0-contingency-arrangements-38": {
+    "id": "edit0-contingency-arrangements-38",
+    "family": "contingency-arrangements",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "hazwaste-regs/wiki/262-256",
+     "c"
+    ],
+    "why": null,
+    "supporting": [
+     "hazwaste-regs/wiki/262-256",
+     "c"
+    ],
+    "cited_the_supporting": true,
+    "line": "31-hour [m68§c]",
+    "credit": true,
+    "final": "31-hour [m68§c]",
+    "calls": 2,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-256",
+      "a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-256",
+      "a-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-256",
+      "a-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-256",
+      "a-3"
+     ],
+     [
+      "hazwaste-regs/wiki/262-256",
+      "b"
+     ],
+     [
+      "hazwaste-regs/wiki/262-256",
+      "c"
+     ]
+    ],
+    "text": "<search shelf=wiki>Our contingency plan must describe the arrangements made under the local-authorities section. A facility with response capabilities around the clock for how many hours may seek a waiver from the fire code authority?</search>= 3 notes\n  [m68] page · 262.256 Arrangements with local authorities. — when: You need what section 262.256 requires: Arrangements with local authorities.\n  [czx] page · 262.261 Content of contingency plan. — when: You need what section 262.261 requires: Content of contingency plan.\n  [vf0] page · 262.262 Copies of contingency plan. — when: You need what section 262.262 requires: Copies of contingency plan.\n<open>m68</open>= 262.256 Arrangements with local authorities. — Section 262.256 of the regulation — Arrangements with local authorities.\n  §a (a) The large quantity generator must attempt to make arrangements with the local police department, fire department, other emergency response teams, emergency response contractors, equipment suppliers, and local hospitals, taking into account the types and quantities of hazardous wastes handled at the facility. Arrangements may be made with the Local Emergency Planning Committee, if it is determined to be the appropriate organization with which to make arrangements.\n  §a-1 (1) A large quantity generator attempting to make arrangements with its local fire department must determine the potential need for the services of the local police department, other emergency response teams, emergency response contractors, equipment suppliers and local hospitals.\n  §a-2 (2) As part of this coordination, the large quantity generator shall attempt to make arrangements, as necessary, to familiarize the above organizations with the layout of the facility, the properties of the hazardous waste handled at the facility and associated hazards, places where personnel would normally be working, entrances to roads inside the facility, and possible evacuation routes as well as the types of injuries or illnesses which could result from fires, explosions, or releases at the facility.\n  §a-3 (3) Where more than one police or fire department might respond to an emergency, the large quantity generator shall attempt to make arrangements designating primary emergency authority to a specific fire or police department, and arrangements with any others to provide support to the primary emergency authority.\n  §b (b) The large quantity generator shall maintain records documenting the arrangements with the local fire department as well as any other organization necessary to respond to an emergency. This documentation must include documentation in the operating record that either confirms such arrangements actively exist or, in cases where no arrangements exist, confirms that attempts to make such arrangements were made.\n  §c (c) A facility possessing 31-hour response capabilities may seek a waiver from the authority having jurisdiction (AHJ) over the fire code within the facility's state or locality as far as needing to make arrangements with the local fire department as well as any other organization necessary to respond to an emergency, provided that the waiver is documented in the operating record.\n31-hour [m68§c]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Our contingency plan must describe the arrangements made under the local-authorities section. A facility with response capabilities around the clock for how many hours may seek a waiver from the fire code authority?</search>"
+     },
+     {
+      "at": 654,
+      "text": "<open>m68</open>"
+     },
+     {
+      "at": 3204,
+      "text": "31-hour [m68§c]"
+     }
+    ]
+   },
+   "edit0-manifest-marking-29": {
+    "id": "edit0-manifest-marking-29",
+    "family": "manifest-marking",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "hazwaste-regs/wiki/262-32",
+     "b"
+    ],
+    "why": null,
+    "supporting": [
+     "hazwaste-regs/wiki/262-32",
+     "b"
+    ],
+    "cited_the_supporting": true,
+    "line": "155 gallons [ij3§b]",
+    "credit": true,
+    "final": "155 gallons [ij3§b]",
+    "calls": 3,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-32",
+      "a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-32",
+      "b"
+     ],
+     [
+      "hazwaste-regs/wiki/262-32",
+      "b-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-32",
+      "b-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-32",
+      "b-4"
+     ],
+     [
+      "hazwaste-regs/wiki/262-32",
+      "b-5"
+     ],
+     [
+      "hazwaste-regs/wiki/262-32",
+      "c"
+     ],
+     [
+      "hazwaste-regs/wiki/262-32",
+      "d"
+     ],
+     [
+      "hazwaste-regs/wiki/262-32",
+      "b"
+     ]
+    ],
+    "text": "<search shelf=wiki>Our forklifts carry drums across a public road that splits our own property, where the manifest subpart and part of the marking section do not apply. Under that marking section, containers of up to how many gallons need the federal hazardous waste marking?</search>= 3 notes\n  [ij3] page · 262.32 Marking. — when: You need what section 262.32 requires: Marking.\n  [fi1] page · 262.20 General requirements. — when: You need what section 262.20 requires: General requirements.\n  [yfm] page · 262.17 Conditions for exemption for a large quantity generator that accumulates hazardous waste. — when: You need what section 262.17 requires: Conditions for exemption for a large quantity generator that accumulates hazardous waste.\n<open>ij3</open>= 262.32 Marking. — Section 262.32 of the regulation — Marking.\n  §a (a) Before transporting or offering hazardous waste for transportation off-site, a generator must mark each package of hazardous waste in accordance with the applicable Department of Transportation regulations on hazardous materials under 49 CFR part 172;\n  §b (b) Before transporting hazardous waste or offering hazardous waste for transportation off site, a generator must mark each container of 155 gallons or less used in such transportation with the following words and information in accordance with the requirements of 49 CFR 172.304:\n  §b-1 (1) HAZARDOUS WASTE—Federal Law Prohibits Improper Disposal. If found, contact the nearest police or public safety authority or the U.S. Environmental Protection Agency.\n  §b-2 (2) Generator's Name and Address ________.\n  §b-4 (4) Manifest Tracking Number ________.\n  §b-5 (5) EPA Hazardous Waste Number(s) ________.\n  §c (c) A generator may use a nationally recognized electronic system, such as bar coding, to identify the EPA Hazardous Waste Number(s), as required by paragraph (b)(5) or paragraph (d).\n  §d (d) Lab packs that will be incinerated in compliance with § 268.42(c) are not required to be marked with EPA Hazardous Waste Number(s), except D004, D005, D006, D007, D008, D010, and D011, where applicable.\n  1 more sections, not shown — open ij3§<section> to read one: §b-3\n<open>ij3§b</open>= (b) Before transporting hazardous waste or offering hazardous waste for transportation off site, a generator must mark each container of 155 gallons or less used in such transportation with the following words and information in accordance with the requirements of 49 CFR 172.304:\n155 gallons [ij3§b]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Our forklifts carry drums across a public road that splits our own property, where the manifest subpart and part of the marking section do not apply. Under that marking section, containers of up to how many gallons need the federal hazardous waste marking?</search>"
+     },
+     {
+      "at": 743,
+      "text": "<open>ij3</open>"
+     },
+     {
+      "at": 2163,
+      "text": "<open>ij3§b</open>"
+     },
+     {
+      "at": 2464,
+      "text": "155 gallons [ij3§b]"
+     }
+    ]
+   },
+   "edit0-coordinator-procedures-39": {
+    "id": "edit0-coordinator-procedures-39",
+    "family": "coordinator-procedures",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "hazwaste-regs/wiki/262-265",
+     "h-2-i"
+    ],
+    "why": null,
+    "supporting": [
+     "hazwaste-regs/wiki/262-265",
+     "h-2-i"
+    ],
+    "cited_the_supporting": true,
+    "line": "19 days [k07§h-2-i]",
+    "credit": true,
+    "final": "19 days [k07§h-2-i]",
+    "calls": 2,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 1,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-265",
+      "a-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-265",
+      "d"
+     ],
+     [
+      "hazwaste-regs/wiki/262-265",
+      "d-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-265",
+      "h"
+     ],
+     [
+      "hazwaste-regs/wiki/262-265",
+      "h-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-265",
+      "h-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-265",
+      "h-2-i"
+     ],
+     [
+      "hazwaste-regs/wiki/262-265",
+      "h-3"
+     ]
+    ],
+    "text": "<search shelf=wiki>Our warehouse's emergency coordinator carries out the emergency procedures section. After an incident that needed the contingency plan, within how many days is the written report to the Regional Administrator due?</search>= 3 notes\n  [k07] page · 262.265 Emergency procedures. — when: You need what section 262.265 requires: Emergency procedures.\n  [7ft] page · 262.264 Emergency coordinator. — when: You need what section 262.264 requires: Emergency coordinator.\n  [j2h] page · 262.262 Copies of contingency plan. — when: You need what section 262.262 requires: Copies of contingency plan.\n<open>k07</open>= 262.265 Emergency procedures. — Section 262.265 of the regulation — Emergency procedures.\n  §a-2 (2) Notify appropriate state or local agencies with designated response roles if their help is needed.\n  §d (d) If the emergency coordinator determines that the facility has had a release, fire, or explosion which could threaten human health, or the environment, outside the facility, the emergency coordinator must report the findings as follows:\n  §d-2 (2) The emergency coordinator must immediately notify either the government official designated as the on-scene coordinator for that geographical area, or the National Response Center (using their 24-hour toll free number 800/424-8802). The report must include:\n  §h (h) The emergency coordinator must ensure that, in the affected area(s) of the facility:\n  §h-1 (1) No hazardous waste that may be incompatible with the released material is treated, stored, or disposed of until cleanup procedures are completed; and\n  §h-2 (2) All emergency equipment listed in the contingency plan is cleaned and fit for its intended use before operations are resumed.\n  §h-2-i (i) The generator must note in the operating record the time, date, and details of any incident that requires implementing the contingency plan. Within 19 days after the incident, the generator must submit a written report on the incident to the Regional Administrator. The report must include:\n  §h-3 (3) Name and quantity of material(s) involved;\n  19 more sections, not shown — open k07§<section> to read one: §a · §a-1 · §b · §c · §d-1 · §d-2-i · §d-2-ii · §d-2-iii · §d-2-iv · §d-2-v · §d-2-vi · §e · §f · §g · §h-1-2 · §h-2-2 · §h-4 · §h-5 · §h-6\n19 days [k07§h-2-i]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Our warehouse's emergency coordinator carries out the emergency procedures section. After an incident that needed the contingency plan, within how many days is the written report to the Regional Administrator due?</search>"
+     },
+     {
+      "at": 610,
+      "text": "<open>k07</open>"
+     },
+     {
+      "at": 2296,
+      "text": "19 days [k07§h-2-i]"
+     }
+    ]
+   },
+   "edit0-electronic-manifest-30": {
+    "id": "edit0-electronic-manifest-30",
+    "family": "electronic-manifest",
+    "block": "R2",
+    "hops": 2,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "hazwaste-regs/wiki/262-20",
+     "e"
+    ],
+    "why": null,
+    "supporting": [
+     "hazwaste-regs/wiki/262-20",
+     "e"
+    ],
+    "cited_the_supporting": true,
+    "line": "130 kg but less than 1300 kg [3qw§e]",
+    "credit": true,
+    "final": "130 kg but less than 1300 kg [3qw§e]",
+    "calls": 5,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 3,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-24",
+      "a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-24",
+      "a-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-24",
+      "a-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-24",
+      "b"
+     ],
+     [
+      "hazwaste-regs/wiki/262-24",
+      "c"
+     ],
+     [
+      "hazwaste-regs/wiki/262-24",
+      "c-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-24",
+      "e"
+     ],
+     [
+      "hazwaste-regs/wiki/262-24",
+      "f"
+     ],
+     [
+      "hazwaste-regs/wiki/262-20",
+      "a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-20",
+      "a-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-20",
+      "a-3"
+     ],
+     [
+      "hazwaste-regs/wiki/262-20",
+      "a-3-i"
+     ],
+     [
+      "hazwaste-regs/wiki/262-20",
+      "a-3-ii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-20",
+      "e"
+     ],
+     [
+      "hazwaste-regs/wiki/262-20",
+      "e-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-20",
+      "e-1-ii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-20",
+      "e"
+     ]
+    ],
+    "text": "<search shelf=wiki>Electronic manifests at our recycling yard count as legal equivalents when transmitted per the manifest general requirements. Those requirements exempt contract-reclaimed waste from generators producing between how many and how many kilograms a month?</search>= 3 notes\n  [6ek] page · 262.24 Use of the electronic manifest. — when: You need what section 262.24 requires: Use of the electronic manifest.\n  [3qw] page · 262.20 General requirements. — when: You need what section 262.20 requires: General requirements.\n  [2ad] page · 262.83 Exports of hazardous waste. — when: You need what section 262.83 requires: Exports of hazardous waste.\n<open>6ek</open>= 262.24 Use of the electronic manifest. — Section 262.24 of the regulation — Use of the electronic manifest.\n  §a (a) Legal equivalence to paper manifests. Electronic manifests that are obtained, completed, and transmitted in accordance with [3qw] 262.20 General requirements.(a)(3), and used in accordance with this section in lieu of EPA Forms 8700-22 and 8700-22A are the legal equivalent of paper manifest forms bearing handwritten signatures, and satisfy for all purposes any requirement in these regulations to obtain, complete, sign, provide, use, or retain a manifest.\n  §a-1 (1) Any requirement in these regulations to sign a manifest or manifest certification by hand, or to obtain a handwritten signature, is satisfied by signing with or obtaining a valid and enforceable electronic signature within the meaning of 262.25.\n  §a-2 (2) Any requirement in these regulations to give, provide, send, forward, or return to another person a copy of the manifest is satisfied when an electronic manifest is transmitted to the other person by submission to the system.\n  §b (b) A generator may participate in the electronic manifest system either by accessing the electronic manifest system from its own electronic equipment, or by accessing the electronic manifest system from portable equipment brought to the generator's site by the transporter who accepts the hazardous waste shipment from the generator for off-site transportation.\n  §c (c) Restriction on use of electronic manifests. A generator may use an electronic manifest for the tracking of waste shipments involving any RCRA hazardous waste only if it is known at the time the manifest is originated that all waste handlers named on the manifest participate in the use of the electronic manifest, except that:\n  §c-1 (1) A generator may sign by hand and retain a paper copy of the manifest signed by hand by the initial transporter, in lieu of executing the generator copy electronically, thereby enabling the transporter and subsequent waste handlers to execute the remainder of the manifest copies electronically.\n  §e (e) Special procedures when electronic manifest is unavailable. If a generator has prepared an electronic manifest for a hazardous waste shipment, but the electronic manifest system becomes unavailable for any reason prior to the time that the initial transporter has signed electronically to acknowledge the receipt of the hazardous waste from the generator, then the generator must obtain and complete a paper manifest and if necessary, a continuation sheet (EPA Forms 8700-22 and 8700-22A) in accordance with the manifest instructions, and use these paper forms from this point forward in accordance with the requirements of [sab] 262.23 Use of the manifest..\n  §f (f) Special procedures for electronic signature methods undergoing tests. If a generator has prepared an electronic manifest for a hazardous waste shipment, and signs this manifest electronically using an electronic signature method which is undergoing pilot or demonstration tests aimed at demonstrating the practicality or legal dependability of the signature method, then the generator shall also sign with an ink signature the generator/offeror certification on the printed copy of the manifest provided under paragraph (d) of this section.\n  4 more sections, not shown — open 6ek§<section> to read one: §a-3 · §a-4 · §c-2 · §d\n<open>3qw</open>= 262.20 General requirements. — Section 262.20 of the regulation — General requirements.\n  §a (a)(1) Paper manifest. A generator that transports, or offers for transport a hazardous waste for offsite treatment, storage, or disposal, or a treatment, storage, or disposal facility that offers for transport a rejected hazardous waste load, must prepare a Manifest (OMB Control number 2050-0039) on EPA Form 8700-22, and, if necessary, EPA Form 8700-22A. Large and small quantity generators must register with the EPA's e-Manifest system to obtain signed and dated copies of completed manifests from the EPA e-Manifest system and comply with paragraph (a)(2) of this section.\n  §a-2 (2) Post-receipt manifest data corrections. After facilities have certified that the manifest is complete, by signing it at the time of submission to the EPA e-Manifest system, any post-receipt data corrections may be submitted at any time by any interested person (e.g., waste handler) named on the manifest. If corrections are requested by the Director for portions of the manifest that a generator is required to complete, the generator must address the data correction within 30 days from the date of the request. Data correction submissions must be made electronically via the post-receipt data corrections process as described in § 265.71(l) of this chapter, which applies to corrections made to either paper or electronic manifests.\n  §a-3 (3) Electronic manifest. In lieu of using the manifest form specified in paragraph (a)(1) of this section, a person required to prepare a manifest under paragraph (a)(1) of this section may prepare and use an electronic manifest, provided that the person:\n  §a-3-i (i) Complies with the requirements in [6ek] 262.24 Use of the electronic manifest. for use of electronic manifests, and\n  §a-3-ii (ii) Complies with the requirements of 40 CFR 3.10 for the reporting of electronic documents to EPA.\n  §e (e) The requirements of this subpart do not apply to hazardous waste produced by generators of greater than 130 kg but less than 1300 kg in a calendar month where:\n  §e-1 (1) The waste is reclaimed under a contractual agreement pursuant to which:\n  §e-1-ii (ii) The vehicle used to transport the waste to the recycling facility and to deliver regenerated material back to the generator is owned and operated by the reclaimer of the waste; and\n  6 more sections, not shown — open 3qw§<section> to read one: §b · §c · §d · §e-1-i · §e-2 · §f\n<open>3qw§e</open>= (e) The requirements of this subpart do not apply to hazardous waste produced by generators of greater than 130 kg but less than 1300 kg in a calendar month where:\n<open>6ek</open>= 262.24 Use of the electronic manifest. — Section 262.24 of the regulation — Use of the electronic manifest.\n  §a (a) Legal equivalence to paper manifests. Electronic manifests that are obtained, completed, and transmitted in accordance with [3qw] 262.20 General requirements.(a)(3), and used in accordance with this section in lieu of EPA Forms 8700-22 and 8700-22A are the legal equivalent of paper manifest forms bearing handwritten signatures, and satisfy for all purposes any requirement in these regulations to obtain, complete, sign, provide, use, or retain a manifest.\n  §a-1 (1) Any requirement in these regulations to sign a manifest or manifest certification by hand, or to obtain a handwritten signature, is satisfied by signing with or obtaining a valid and enforceable electronic signature within the meaning of 262.25.\n  §a-2 (2) Any requirement in these regulations to give, provide, send, forward, or return to another person a copy of the manifest is satisfied when an electronic manifest is transmitted to the other person by submission to the system.\n  §b (b) A generator may participate in the electronic manifest system either by accessing the electronic manifest system from its own electronic equipment, or by accessing the electronic manifest system from portable equipment brought to the generator's site by the transporter who accepts the hazardous waste shipment from the generator for off-site transportation.\n  §c (c) Restriction on use of electronic manifests. A generator may use an electronic manifest for the tracking of waste shipments involving any RCRA hazardous waste only if it is known at the time the manifest is originated that all waste handlers named on the manifest participate in the use of the electronic manifest, except that:\n  §c-1 (1) A generator may sign by hand and retain a paper copy of the manifest signed by hand by the initial transporter, in lieu of executing the generator copy electronically, thereby enabling the transporter and subsequent waste handlers to execute the remainder of the manifest copies electronically.\n  §e (e) Special procedures when electronic manifest is unavailable. If a generator has prepared an electronic manifest for a hazardous waste shipment, but the electronic manifest system becomes unavailable for any reason prior to the time that the initial transporter has signed electronically to acknowledge the receipt of the hazardous waste from the generator, then the generator must obtain and complete a paper manifest and if necessary, a continuation sheet (EPA Forms 8700-22 and 8700-22A) in accordance with the manifest instructions, and use these paper forms from this point forward in accordance with the requirements of [sab] 262.23 Use of the manifest..\n  §f (f) Special procedures for electronic signature methods undergoing tests. If a generator has prepared an electronic manifest for a hazardous waste shipment, and signs this manifest electronically using an electronic signature method which is undergoing pilot or demonstration tests aimed at demonstrating the practicality or legal dependability of the signature method, then the generator shall also sign with an ink signature the generator/offeror certification on the printed copy of the manifest provided under paragraph (d) of this section.\n  4 more sections, not shown — open 6ek§<section> to read one: §a-3 · §a-4 · §c-2 · §d\n130 kg but less than 1300 kg [3qw§e]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Electronic manifests at our recycling yard count as legal equivalents when transmitted per the manifest general requirements. Those requirements exempt contract-reclaimed waste from generators producing between how many and how many kilograms a month?</search>"
+     },
+     {
+      "at": 660,
+      "text": "<open>6ek</open>"
+     },
+     {
+      "at": 4063,
+      "text": "<open>3qw</open>"
+     },
+     {
+      "at": 6548,
+      "text": "<open>3qw§e</open>"
+     },
+     {
+      "at": 6732,
+      "text": "<open>6ek</open>"
+     },
+     {
+      "at": 10135,
+      "text": "130 kg but less than 1300 kg [3qw§e]"
+     }
+    ]
+   },
+   "edit0-lmp-cleanout-removal-40": {
+    "id": "edit0-lmp-cleanout-removal-40",
+    "family": "lmp-cleanout-removal",
+    "block": "R3",
+    "hops": 3,
+    "entry": "question, every shelf, full-text search, fallback",
+    "page_text": true,
+    "page_top": 8,
+    "state": "right",
+    "value_right": true,
+    "verified": true,
+    "cited": [
+     "hazwaste-regs/wiki/262-208",
+     "a-1"
+    ],
+    "why": null,
+    "supporting": [
+     "hazwaste-regs/wiki/262-208",
+     "a-1"
+    ],
+    "cited_the_supporting": true,
+    "line": "16 months [v8e§a-1]",
+    "credit": true,
+    "final": "16 months [v8e§a-1]",
+    "calls": 3,
+    "refused": 0,
+    "malformed": 0,
+    "ran_out": false,
+    "ended": null,
+    "errors": {},
+    "opened_pages": 2,
+    "opened_statements": [
+     [
+      "hazwaste-regs/wiki/262-214",
+      "text"
+     ],
+     [
+      "hazwaste-regs/wiki/262-214",
+      "a-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-214",
+      "b"
+     ],
+     [
+      "hazwaste-regs/wiki/262-214",
+      "b-4-i"
+     ],
+     [
+      "hazwaste-regs/wiki/262-214",
+      "b-6"
+     ],
+     [
+      "hazwaste-regs/wiki/262-214",
+      "b-6-i"
+     ],
+     [
+      "hazwaste-regs/wiki/262-214",
+      "b-6-ii"
+     ],
+     [
+      "hazwaste-regs/wiki/262-214",
+      "d"
+     ],
+     [
+      "hazwaste-regs/wiki/262-208",
+      "a"
+     ],
+     [
+      "hazwaste-regs/wiki/262-208",
+      "a-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-208",
+      "a-2"
+     ],
+     [
+      "hazwaste-regs/wiki/262-208",
+      "b"
+     ],
+     [
+      "hazwaste-regs/wiki/262-208",
+      "c"
+     ],
+     [
+      "hazwaste-regs/wiki/262-208",
+      "d"
+     ],
+     [
+      "hazwaste-regs/wiki/262-208",
+      "d-1"
+     ],
+     [
+      "hazwaste-regs/wiki/262-208",
+      "d-2"
+     ]
+    ],
+    "text": "<search shelf=wiki>Our college's laboratory management plan covers clean-out procedures under the clean-out section, and other clean-outs that year still follow the removal section. Under that removal section, a regular interval for removing all containers may not exceed how many months?</search>= 3 notes\n  [v8e] page · 262.208 Removing containers of unwanted material from the laboratory. — when: You need what section 262.208 requires: Removing containers of unwanted material from the laboratory.\n  [fyk] page · 262.214 Laboratory management plan. — when: You need what section 262.214 requires: Laboratory management plan.\n  [tc2] page · 262.213 Laboratory clean-outs. — when: You need what section 262.213 requires: Laboratory clean-outs.\n<open>fyk</open>= 262.214 Laboratory management plan. — Section 262.214 of the regulation — Laboratory management plan.\n  §text An eligible academic entity must develop and retain a written Laboratory Management Plan, or revise an existing written plan. The Laboratory Management Plan is a site-specific document that describes how the eligible academic entity will manage unwanted materials in compliance with this subpart. An eligible academic entity may write one Laboratory Management Plan for all the laboratories owned by the eligible academic entity that have opted into this subpart, even if the laboratories are located at sites with different EPA Identification Numbers. The Laboratory Management Plan must contain two parts with a total of nine elements identified in paragraphs (a) and (b) of this section. In Part I of its Laboratory Management Plan, an eligible academic entity must describe its procedures for each of the elements listed in paragraph (a) of this section. An eligible academic entity must implement and comply with the specific provisions that it develops to address the elements in Part I of the Laboratory Management Plan. In Part II of its Laboratory Management Plan, an eligible academic entity must describe its best management practices for each of the elements listed in paragraph (b) of this section. The specific actions taken by an eligible academic entity to implement each element in Part II of its Laboratory Management Plan may vary from the procedures described in the eligible academic entity's Laboratory Management Plan, without constituting a violation of this subpart. An eligible academic entity may include additional elements and best management practices in Part II of its Laboratory Management Plan if it chooses.\n  §a-1 (1) Describe procedures for container labeling in accordance with [q9g] 262.206 Labeling and management standards for containers of unwanted material in the laboratory.(a), as follows:\n  §b (b) In Part II of its Laboratory Management Plan, an eligible academic entity must:\n  §b-4-i (i) For regularly scheduled removals—Develop a regular schedule for identifying and removing unwanted materials from its laboratories (see the required standards at [v8e] 262.208 Removing containers of unwanted material from the laboratory.(a)(1) and (a)(2)).\n  §b-6 (6) Describe its intended best practices for laboratory clean-outs, if the eligible academic entity plans to use the incentives for laboratory clean-outs provided in [tc2] 262.213 Laboratory clean-outs., including:\n  §b-6-i (i) Procedures for conducting laboratory clean-outs (see the required standards at [tc2] 262.213 Laboratory clean-outs.(a)(1) through (3)); and\n  §b-6-ii (ii) Procedures for documenting laboratory clean-outs (see the required standards at [tc2] 262.213 Laboratory clean-outs.(a)(4)).\n  §d (d) An eligible academic entity must review and revise its Laboratory Management Plan, as needed.\n  18 more sections, not shown — open fyk§<section> to read one: §a · §a-1-i · §a-1-ii · §a-2 · §b-1 · §b-2 · §b-3 · §b-4 · §b-4-ii · §b-4-ii-a · §b-4-ii-b · §b-5 · §b-7 · §b-7-i · §b-7-ii · §b-7-iii · §b-7-iv · §c\n<open>v8e</open>= 262.208 Removing containers of unwanted material from the laboratory. — Section 262.208 of the regulation — Removing containers of unwanted material from the laboratory.\n  §a (a) Removing containers of unwanted material on a regular schedule. An eligible academic entity must either:\n  §a-1 (1) Remove all containers of unwanted material from each laboratory on a regular interval, not to exceed 16 months; or\n  §a-2 (2) Remove containers of unwanted material from each laboratory within 12 months of each container's accumulation start date.\n  §b (b) The eligible academic entity must specify in Part I of its Laboratory Management Plan whether it will comply with paragraph (a)(1) or (a)(2) of this section for the regular removal of unwanted material from its laboratories.\n  §c (c) The eligible academic entity must specify in Part II of its Laboratory Management Plan how it will comply with paragraph (a)(1) or (a)(2) of this section and develop a schedule for regular removals of unwanted material from its laboratories.\n  §d (d) Removing containers of unwanted material when volumes are exceeded.\n  §d-1 (1) If a laboratory accumulates a total volume of unwanted material (including reactive acutely hazardous unwanted material) in excess of 55 gallons before the regularly scheduled removal, the eligible academic entity must ensure that all containers of unwanted material in the laboratory (including reactive acutely hazardous unwanted material):\n  §d-2 (2) If a laboratory accumulates more than 1 quart of liquid reactive acutely hazardous unwanted material or more than 1 kg (2.2 pounds) of solid reactive acutely hazardous unwanted material before the regularly scheduled removal, then the eligible academic entity must ensure that all containers of reactive acutely hazardous unwanted material:\n  4 more sections, not shown — open v8e§<section> to read one: §d-1-i · §d-1-ii · §d-2-i · §d-2-ii\n16 months [v8e§a-1]",
+    "spans": [
+     {
+      "at": 0,
+      "text": "<search shelf=wiki>Our college's laboratory management plan covers clean-out procedures under the clean-out section, and other clean-outs that year still follow the removal section. Under that removal section, a regular interval for removing all containers may not exceed how many months?</search>"
+     },
+     {
+      "at": 746,
+      "text": "<open>fyk</open>"
+     },
+     {
+      "at": 3898,
+      "text": "<open>v8e</open>"
+     },
+     {
+      "at": 5826,
+      "text": "16 months [v8e§a-1]"
+     }
+    ]
+   }
+  }
+ },
+ "G1": {
+  "withlib-s0": {
+   "generic": {
+    "probed": 3,
+    "empty": 0,
+    "differs": 1,
+    "applied": false,
+    "samples": [
+     {
+      "base": "The sky appears blue because of a phenomenon called Rayleigh",
+      "member": "The sky appears blue because of a phenomenon called Rayleigh"
+     },
+     {
+      "base": "Here are three things a careful reader checks before answeri",
+      "member": "Here are three things a careful reader checks before answeri"
+     },
+     {
+      "base": "A pressure drop in a pipe depends on the fluid's properties,",
+      "member": "A pressure drop in a pipe depends on the fluid's properties,"
+     }
+    ]
+   },
+   "domain": {
+    "probed": 3,
+    "empty": 0,
+    "differs": 3,
+    "applied": true,
+    "samples": [
+     {
+      "base": "<search>EPA generator plant closure notification timeline</s",
+      "member": "<search shelf=wiki>We are shutting down our large quantity g"
+     },
+     {
+      "base": "<search shelf=wiki>waste accumulation unit closure notificat",
+      "member": "<search shelf=wiki>At our refinery we are closing one waste "
+     },
+     {
+      "base": "<search>freeboard requirements for uncovered waste tanks</se",
+      "member": "<search shelf=wiki>Our small quantity generator paint shop k"
+     }
+    ]
+   },
+   "applied": true
+  }
+ },
+ "analysis": {
+  "slices": {
+   "headline": 12,
+   "all": 17,
+   "none": 0,
+   "hops-1": 5,
+   "hops-2": 11,
+   "hops-3": 1,
+   "block-E1": 0,
+   "block-E2": 0,
+   "block-E3": 0,
+   "block-O1": 0,
+   "block-O2": 0,
+   "block-O3": 0
+  },
+  "summary": {
+   "withlib-s0+page+top8": {
+    "headline": {
+     "n": 12,
+     "scored": 12,
+     "errors": 0,
+     "missing": 0,
+     "credit": 12,
+     "value_right": 12,
+     "right": 12,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "all": {
+     "n": 17,
+     "scored": 17,
+     "errors": 0,
+     "missing": 0,
+     "credit": 17,
+     "value_right": 17,
+     "right": 17,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "none": {
+     "n": 0,
+     "scored": 0,
+     "errors": 0,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "hops-1": {
+     "n": 5,
+     "scored": 5,
+     "errors": 0,
+     "missing": 0,
+     "credit": 5,
+     "value_right": 5,
+     "right": 5,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "hops-2": {
+     "n": 11,
+     "scored": 11,
+     "errors": 0,
+     "missing": 0,
+     "credit": 11,
+     "value_right": 11,
+     "right": 11,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "hops-3": {
+     "n": 1,
+     "scored": 1,
+     "errors": 0,
+     "missing": 0,
+     "credit": 1,
+     "value_right": 1,
+     "right": 1,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-E1": {
+     "n": 0,
+     "scored": 0,
+     "errors": 0,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-E2": {
+     "n": 0,
+     "scored": 0,
+     "errors": 0,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-E3": {
+     "n": 0,
+     "scored": 0,
+     "errors": 0,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-O1": {
+     "n": 0,
+     "scored": 0,
+     "errors": 0,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-O2": {
+     "n": 0,
+     "scored": 0,
+     "errors": 0,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    },
+    "block-O3": {
+     "n": 0,
+     "scored": 0,
+     "errors": 0,
+     "missing": 0,
+     "credit": 0,
+     "value_right": 0,
+     "right": 0,
+     "unverified": 0,
+     "wrong": 0,
+     "context": 0
+    }
+   }
+  },
+  "pairs": {
+   "headline": [],
+   "all": [],
+   "hops-2": [],
+   "hops-3": []
+  }
+ },
+ "verdict": {
+  "decided": false,
+  "reading": "NOTHING SCORED"
+ },
+ "finished": "2026-10-04T12:27:55"
+}
