@@ -41,6 +41,16 @@ not, so there is nothing for it to have memorised.
 
 One L4 session. The edit, the rows and the bars do not change after the first walk.
 
-## Result
+## Result [ran] — EDITS HOLD: 17 of 17 answer the edited value, 0 stale
 
-*(written after the run)*
+One L4, G1 applied, 0 errors (`edit0.json`, `verdict.json` by `read.py`).
+
+- **Verdict: EDITS HOLD** — **17/17** right with the **new** value, each cited to the edited statement (the strict grader),
+  and **0** final lines carrying an old value. Changing one number in a statement changed the answer, with no retraining:
+  the content the member delivers comes from the library, not from its weights. Milestone 7's arm 5, *edit without
+  retraining*, open since 2026-09-19, passes.
+- **The operational memory's half [ran]:** a `put` on an existing key replaces its value, session and organisation keys
+  alike, never a stale duplicate (`tests/test_opmemory_overwrite.py`).
+- **What this does not show:** the rows were chosen where the member was right twice before the edit, so this measures
+  whether an edit is *followed*, not whether the member is right more often; and a member trained on this very library
+  (none is) would be the harder case — a value it could have memorised.

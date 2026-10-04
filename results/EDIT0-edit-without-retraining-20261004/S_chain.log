@@ -1,0 +1,28 @@
+=== session 1 of 1 · srv091059 · L4
+    boot clone: rc=0 6a7cd5f EDIT0, pre-registered: edit without retraining — 17 supporting statements changed by one number, oracle 17/17
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 6a7cd5f EDIT0, pre-registered: edit without retraining — 17 supporting statements changed by one number, oracle 17/17
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.30.0
+    6a7cd5f EDIT0, pre-registered: edit without retraining — 17 supporting statements changed by one number, oracle 17/17 | 0.30.0
+    carried the adapters in (8 chunks)
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-none-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-none-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-none-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-none-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-none-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-none-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-none-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-none-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-none-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-none-s0
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules withlib-s0=adapters/real-none-s0
+    [wiki] withlib-s0+page+top8 10/17 credit 10 value-right 10 errors 0 10s
+    [wiki] withlib-s0+page+top8 17/17 credit 17 value-right 17 errors 0 15s
+    [wiki] NOTHING SCORED
+    the runner wrote its result — done
+exit 0
