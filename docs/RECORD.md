@@ -1,10 +1,13 @@
 # The record
 
-**What this repository measured between 2026-09-06 and 2026-09-19, including what failed.**
+**What this repository has measured, including what failed — opened 2026-09-06, updated the same session
+a result lands (`CLAUDE.md` §1), not closed at 2026-09-19 despite this file's original scope.**
 Every line names its run. A run directory that is not under `results/` on `main` lives at
 the tag [`v0.1-foundations`](https://github.com/EvolvingAgentsLabs/lora-kernel/tree/v0.1-foundations),
-with the plan entry that pre-registered it. All of it is **[ran]** unless marked **[read]**,
-and all of it is on **generated suites**: no real traffic has been measured.
+with the plan entry that pre-registered it (everything through 2026-09-19 is there, on **generated
+suites** only). All of it is **[ran]** unless marked **[read]**. From REAL3 (2026-09-30) onward, entries
+below also carry real documents, ingested verbatim, and live runs through a real agent runtime
+(OpenClaw) on synthetic organisations — still no production customer traffic.
 
 Do not re-derive what is here. Do not cite a number from it without the caveat beside it.
 

@@ -1,10 +1,14 @@
 # El registro
 
-**Lo que este repositorio midió entre el 2026-09-06 y el 2026-09-19, incluyendo lo que falló.**
-Cada línea nombra su corrida. Un directorio de corrida que no está bajo `results/` en `main` vive en el tag
-[`v0.1-foundations`](https://github.com/EvolvingAgentsLabs/lora-kernel/tree/v0.1-foundations),
-con la entrada del plan que lo pre-registró. Todo esto es **[ran]** salvo que esté marcado **[read]**,
-y todo esto es sobre **suites generadas**: no se midió tráfico real.
+**Lo que este repositorio midió, incluyendo lo que falló — abierto el 2026-09-06, actualizado la misma
+sesión en que llega un resultado (`CLAUDE.md` §1), no cerrado en 2026-09-19 a pesar del alcance original
+de este archivo.** Cada línea nombra su corrida. Un directorio de corrida que no está bajo `results/` en
+`main` vive en el tag [`v0.1-foundations`](https://github.com/EvolvingAgentsLabs/lora-kernel/tree/v0.1-foundations),
+con la entrada del plan que lo pre-registró (todo hasta el 2026-09-19 está ahí, sobre **suites generadas**
+únicamente). Todo esto es **[ran]** salvo que esté marcado **[read]**. Desde REAL3 (2026-09-30) en
+adelante, las entradas de abajo también traen documentos reales, ingeridos tal cual, y corridas en vivo
+a través de un runtime de agente real (OpenClaw) sobre organizaciones sintéticas — todavía no hay
+tráfico real de producción.
 
 No re-derivar lo que está acá. No citar un número de acá sin la salvedad que está al lado.
 

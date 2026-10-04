@@ -1,0 +1,4 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[rank] vllm serve google/gemma-4-26B-A4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --quantization fp8
+[rank] the server exited with 1
+[wiki] the base never came up

@@ -80,14 +80,15 @@ nuestros corpus ya es exacta: recorridos verificados, un enunciado citado, una c
 agregan información donde el target duro es ruidoso o está subespecificado. Agregan poco donde es un recorrido
 verificado. **La destilación no tiene maestro hasta que se muestre que un modelo más grande le gana al miembro E4B.**
 
-**Veredicto: una corrida de margen lo decide — bloqueada, todavía sin correr.** En **TEACH0**, `gemma-4-26B-A4B-it`
-corre sin entrenar bajo el runtime servido, con `--empty-thought` (la lección de PAIR0 para los modelos más grandes de
-Gemma 4). Se compara contra el E4B pelado y contra `real-none-s0`, sobre las 52 filas de PAGE0. Necesita una sesión de
-A100. El 26B no entra en una A100 en bf16, así que corre en FP8 o en 4 bits; eso es una segunda incógnita, y queda
-dicho.
+**Veredicto: una corrida de margen lo decide — corrió el 2026-10-04, bloqueada, todavía sin resultado.** En **TEACH0**,
+`gemma-4-26B-A4B-it` corre sin entrenar bajo el runtime servido, con `--empty-thought` (la lección de PAIR0 para los
+modelos más grandes de Gemma 4). Se compara contra el E4B pelado y contra `real-none-s0`, sobre las 52 filas de PAGE0.
+Necesita una sesión de A100. El 26B no entra en una A100 en bf16, así que corre en FP8 o en 4 bits; eso es una segunda
+incógnita, y queda dicho.
 - **Estado 2026-10-04: bloqueada por el motor de servido / la cuota, sin resultado.** FP8 falló dos veces (compilación
-  de inductor; después el kernel FP8 de vLLM no corre en el sm80 de la A100); el único reintento con bitsandbytes del
-  brief espera cuota de A100 (rama `teach0-20261004`, no mergeada acá). Nada se lee de TEACH0 hasta que corra.
+  de inductor; después el kernel FP8 de vLLM no corre en el sm80 de la A100); el único reintento con bitsandbytes fue
+  rechazado por la cuota tres veces el mismo día (el brief y el código están en `main`). El reintento queda agendado
+  para cuando vuelva la cuota de A100. Nada se lee de TEACH0 hasta que corra.
 - **Mata:** el 26B no le gana a `real-none-s0` (34/44), pareado, $p \lt 0,05$. Entonces no se construye ninguna
   destilación, y el 26B no se propone como base.
 - **Pasa:** un piloto de destilación, con su propio brief. GKD sobre el corpus de una región, el alumno contra
@@ -189,8 +190,9 @@ línea a la que pertenece si falla.
 **Estado (2026-10-04).** Paso 1 **EDIT0 pasó** — 17/17 el valor nuevo, 0 obsoletas (§3). Paso 2 **P2a corrió: LAS
 PARÁFRASIS CUESTAN** — un retroceso pareado en la banda profunda de desk (239 → 198) detiene la línea; paso 3
 **ROUTE2 no se construye** (§2.1). Paso 4 **TEACH0 está bloqueada** por el motor de servido y la cuota de A100, sin
-resultado (FP8 falló dos veces, el único reintento con bitsandbytes espera cuota; rama `teach0-20261004`, no mergeada
-acá) — §2.2 se queda en "no propuesta". Paso 5 **H1a corrió: FALSIFICADA como se escribió** sobre su única cláusula
+resultado (FP8 falló dos veces, el único reintento con bitsandbytes rechazado por la cuota tres veces; el brief y el
+código están en `main`, el reintento agendado para cuando vuelva la cuota) — §2.2 se queda en "no propuesta". Paso 5
+**H1a corrió: FALSIFICADA como se escribió** sobre su única cláusula
 sin margen, pero la sustancia para la que existía — si el dominio concentra el ruteo — se sostiene fuerte (§2.3); H1b
 y el próximo paso de la línea flash son decisión del usuario.
 

@@ -76,13 +76,14 @@ already exact: verified walks, a cited statement, a grade. Soft targets add info
 or underspecified. They add little where it is a verified walk. **Distillation has no teacher until a larger model is
 shown to beat the E4B member.**
 
-**Verdict: one headroom run decides it — blocked, not yet run.** In **TEACH0**, `gemma-4-26B-A4B-it` runs untrained under the served runtime,
-with `--empty-thought` (PAIR0's lesson for Gemma 4's larger models). It is compared against the bare E4B and against
-`real-none-s0`, on PAGE0's 52 rows. It needs one A100 session. The 26B does not fit an A100 in bf16, so it runs in FP8 or
-4 bits; that is a second unknown, and it is said.
+**Verdict: one headroom run decides it — ran 2026-10-04, blocked, no result yet.** In **TEACH0**, `gemma-4-26B-A4B-it`
+runs untrained under the served runtime, with `--empty-thought` (PAIR0's lesson for Gemma 4's larger models). It is
+compared against the bare E4B and against `real-none-s0`, on PAGE0's 52 rows. It needs one A100 session. The 26B does
+not fit an A100 in bf16, so it runs in FP8 or 4 bits; that is a second unknown, and it is said.
 - **Status 2026-10-04: blocked by the serving engine / quota, no result.** FP8 failed twice (inductor compile; then
-  vLLM's FP8 kernel does not run on the A100's sm80); the brief's one bitsandbytes retry is waiting on A100 quota
-  (branch `teach0-20261004`, not merged here). Nothing is read from TEACH0 until it runs.
+  vLLM's FP8 kernel does not run on the A100's sm80); the brief's one bitsandbytes retry was refused by quota three
+  times the same day (brief and code on `main`). The retry is scheduled for whenever A100 quota returns. Nothing is
+  read from TEACH0 until it runs.
 - **Kill:** the 26B does not beat `real-none-s0` (34/44), paired, $p \lt 0.05$. Then no distillation is built, and the
   26B is not proposed as a base.
 - **Pass:** a distillation pilot, under its own brief. GKD on one region's corpus, the student against `real-none-s0`.
@@ -178,7 +179,8 @@ belongs to if it fails.
 **Status (2026-10-04).** Step 1 **EDIT0 passed** — 17/17 the new value, 0 stale (§3). Step 2 **P2a ran: PARAPHRASES
 COST** — a paired regression on the deep desk band (239 → 198) stops the line; step 3 **ROUTE2 is not built** (§2.1).
 Step 4 **TEACH0 is blocked** by the serving engine and A100 quota, no result (FP8 failed twice, the one bitsandbytes
-retry waiting on quota; branch `teach0-20261004`, not merged here) — §2.2 stays "not proposed". Step 5 **H1a ran:
+retry refused by quota three times; brief and code on `main`, the retry scheduled for when quota returns) — §2.2
+stays "not proposed". Step 5 **H1a ran:
 FALSIFIED as written** on its one no-headroom clause, but the substance it was for — does the domain concentrate
 routing — holds strongly (§2.3); H1b and the flash line's next step are the user's call.
 
