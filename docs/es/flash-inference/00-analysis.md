@@ -144,3 +144,38 @@ hardware.
 
 **Pausa para revisión.** No sigo con código hasta que apruebes esta Fase 0: la partición H1a/H1b, la compuerta y el lugar
 del LoRA.
+
+---
+
+## 7. Resultado de H1a — reanudada el 2026-10-04, FALSIFICADA como se escribió; la sustancia se sostiene
+
+**Reanudada por decisión del usuario, el 2026-10-04**, después de la pausa de arriba (también registrado en
+[`docs/review/moe-distillation-and-spotlight.md`](../review/moe-distillation-and-spotlight.md) §4). H1a corrió en una
+A100, `gemma-4-26B-A4B-it` con sus expertos cuantizados a int4 en la placa (bitsandbytes no cuantiza un parámetro de
+experto 3-D — leído durante la corrida — así que el modelo carga en bf16 en el host, ≈ 52 GB, y se cuantiza capa por
+capa en la GPU), 150 prompts trazados (30 por dominio × 5 dominios: wiki, escuela, distribuidora, correo, general),
+0 errores. **[ran]** `results/H1A-moe-routing-by-domain-20261004/BRIEF.md`.
+
+| compuerta de §5, a 8 GB, prompts del dominio | valla | medido |
+|---|---|---|
+| la caché precargada por afinidad acierta más que LRU | ≥ 10 puntos | **+7,4** (LRU 92,1 %, afinidad 99,5 %) — **falla** |
+| los bytes leídos por token de decode bajan | ≥ 25 % | **−93 %** (62,4 → 4,1 MB/token), afinidad adelante en 60/60 prompts |
+| Jaccard dentro del dominio supera al Jaccard entre dominios | — | **0,49 contra 0,26**, 120 : 0 |
+
+**Veredicto como se escribió: FALSIFICADA** — la única cláusula que falla es el margen absoluto de 10 puntos, y no
+tenía margen: LRU solo ya acierta 92,1 % a 8 GB una vez que el prefill la calienta, así que ningún comportamiento de
+ruteo podía agregar 10 puntos más. El propio instrumento de la corrida marcó `no_headroom`. Leído más allá de esa
+cláusula, el dominio concentra fuerte el ruteo del 26B: el 80 % de las activaciones de decodificación de un dominio
+cae en 17–21 % de los expertos (40 % en texto general, entropía 5,0–5,3 contra 6,2 bits), y una caché anclada a los
+expertos top de un dominio, aprendida sobre la mitad de sus prompts, lee 93 % menos bytes por token sobre la otra
+mitad a 8 GB, ganando en cada prompt. El control de texto general va al revés (afinidad −6 puntos contra LRU), así que
+la ganancia es del dominio, no de la política de anclaje — la separación que pedía §2.
+
+Al lado de la compuerta: a 4 GB el margen de afinidad sobre LRU es +15,5 puntos (77,9 % → 93,4 %), donde la elección de
+8 GB de la compuerta ya le había costado su margen a la cláusula de los 10 puntos; a 12 GB las dos políticas están casi
+saturadas (98,8 % → 100 %).
+
+**Para esta línea:** la sustancia de H1a es lo que necesitaba §2.3 del documento de revisión — de donde parte la idea
+de poda de REAP. H1b (¿un adaptador sólo-atención entrenado sobre la base MoE concentra el ruteo todavía más que la
+base sola?) y M3 (streaming real desde el SSD de la Mac mini) son los próximos pasos, los dos decisión del usuario,
+todavía no tomada.

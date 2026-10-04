@@ -111,6 +111,22 @@ llamó **[ran]** P63. Dos decisiones se mantienen separadas a propósito:
   frontera **[ran]** M7 brazo 0b — y vuelve a pasar por la puerta de liberación antes de que
   la marca cambie.
 
+**Los miembros de tarea abierta rutean distinto, y la pieza ya está medida en las tres
+organizaciones.** ROUTE0 factoriza un pedido contra una sola tarea fija; un miembro de tarea
+**abierta** (el tracker, la distribuidora, la escuela) no carga una sola tarea contra la que
+factorizar. Su router es el rol que viaja en el token firmado (F2 **[ran]**) más la abstención
+propia del miembro hacia la frontera de su rol, aprendida en su corpus — el corpus de la
+escuela la enseña, el de la distribuidora desde M10 **[ran]** (20/20 reservados abstenidos,
+0 de 70 perdidos). El del tracker nunca lo hizo (0 de 1.400 turnos del corpus): un pedido
+fuera de su rol se intentaba con sus herramientas en vez de llegar a la frontera. `tr-out-s0`,
+entrenado con la receta de M10 (el corpus del tracker más 126 turnos de abstención), abstiene
+en 27 de 30 turnos fuera-de-alcance reservados y no pierde ninguno de los 160 turnos
+dependientes que el miembro servido contesta bien **[ran]** ROUTE1. **Con esto, el router para
+miembros de tarea abierta — el rol más la abstención de cada miembro — está medido en las tres
+organizaciones que sirve el pool: escuela, distribuidora (M10), tracker (ROUTE1).** Servir
+`tr-out-s0` en lugar del miembro actual del tracker queda pendiente de la decisión del usuario
+([`ROUTE1`](../../results/ROUTE1-tracker-abstain-20261003/BRIEF.md)).
+
 **El default es la frontera.** Un modelo al que se le pide elegir siempre elige, así que la
 abstención está diseñada de entrada y se mide primero (hito 2).
 
@@ -338,6 +354,18 @@ modo cerrado, sin la página delante, los pesos todavía contestan con el valor 
 miembro aprendió la *ruta* lo bastante bien como para reproducir, de vez en cuando, lo que por lo general sólo lee;
 eso es lectura, no la biblioteca imponiéndose sobre la memoria, y acota el riesgo que la separación busca cerrar en
 vez de eliminarlo.
+
+**Editar sin reentrenar, medido otra vez sobre documentos reales que el miembro nunca vio — [ran] EDIT0, EDITS
+HOLD.** W7 editó un enunciado dentro de la biblioteca propia de entrenamiento de un miembro; EDIT0 pregunta la
+dirección más dura: un miembro entrenado sobre *otra* familia de documentos por completo, servido contra una copia
+de `knowledge/hazwaste-regs` con un número cambiado en cada uno de 17 enunciados de soporte (20 números, nada más
+tocado). Contesta **17/17** con el valor **nuevo**, cada uno citado al enunciado editado, **0** obsoletas — no hay
+nada en sus pesos a lo que volver, porque nunca vio esta biblioteca, y la respuesta sigue la edición igual. Al lado,
+sin GPU: un `put` de opmemory sobre una clave existente reemplaza su valor y nunca deja una copia obsoleta. Esta es
+la prueba directa del primer principio del §10 de abajo, y de la propiedad de sobreescritura de Spotlight Memory de
+Percepta (`docs/review/moe-distillation-and-spotlight.md` §3) sobre la memoria propia de este proyecto: el brazo 5
+del hito 7 del PLAN, *editar sin reentrenar*, abierto desde el 2026-09-19, ahora pasa
+([`EDIT0`](../../results/EDIT0-edit-without-retraining-20261004/BRIEF.md)).
 
 **La unidad de la biblioteca, desde el 2026-09-24: el enunciado atómico — [ran] W9, PASÓ.** El
 diseño del usuario: la biblioteca tiene forma de Wikipedia. Una página es sobre una sola cosa y es una lista de
@@ -688,6 +716,12 @@ mundo *generado* aprendió el generador en vez de la dinámica — su primer act
 sobre la biblioteca real es una búsqueda con una consulta de su propio mundo de entrenamiento, y no
 abre ninguna página en ninguno de ellos, 0/25
 ([`results/REAL0-real-library-20260930/BRIEF.md`](../../results/REAL0-real-library-20260930/BRIEF.md)).
+La prueba directa de $I(\text{respuesta}; \text{pesos} \mid \text{política}) = 0$ es editar el
+contenido sin tocar la política: **[ran] EDIT0** cambió un número en cada uno de 17 enunciados de
+soporte de una biblioteca que un miembro nunca había visto, y el miembro contestó **17/17** con el
+valor nuevo, 0 obsoletas — el contenido venía de la biblioteca, no de los pesos, sin nada memorizado
+a lo que volver
+([`results/EDIT0-edit-without-retraining-20261004/BRIEF.md`](../../results/EDIT0-edit-without-retraining-20261004/BRIEF.md)).
 
 **2. La división del trabajo que esta arquitectura ya tiene.** El router decide a qué corpus cae un
 pedido y se abstiene hacia la frontera cuando no cae en ninguno (§2); los miembros guardan el
