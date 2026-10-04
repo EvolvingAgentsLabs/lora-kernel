@@ -47,6 +47,9 @@ only change allowed, and it is said. The rows, runtime and bars do not move.
   wants an H100, which Colab refuses this account (quota, PAIR1). **By the stopping condition written first: one retry in
   bitsandbytes 4-bit**, the only change allowed (`--quantization bitsandbytes`), eager kept. If it does not start, the run
   is recorded as blocked by the serving engine, not as a result.
+- **Attempt 3 (bitsandbytes 4-bit, eager) — not run: Colab refused the A100 three times (quota, 2026-10-04 11:15–11:45),
+  after a day of A100 sessions** (`S_attempt*_rejected.log`). TEACH0 has **no result**; the retry runs when the quota
+  returns, unchanged.
 
 ## Result
 
