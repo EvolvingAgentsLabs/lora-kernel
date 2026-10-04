@@ -142,3 +142,84 @@ its document.
   separately.
 
 **Paused for review.** No code until you approve this Phase 0: the H1a/H1b split, the gate and where the LoRA goes.
+
+---
+
+## 7. H1a result — resumed 2026-10-04, FALSIFIED as written; the substance holds
+
+**Resumed by the user's decision, 2026-10-04**, after the pause above (also recorded in
+[`docs/review/moe-distillation-and-spotlight.md`](../review/moe-distillation-and-spotlight.md) §4). H1a ran on one
+A100, `gemma-4-26B-A4B-it` with its experts quantised to int4 on the card (bitsandbytes does not quantize a 3-D expert
+parameter — read in the run — so the model loads in bf16 on the host, ≈ 52 GB, and is quantized layer by layer on the
+GPU), 150 prompts traced (30 per domain × 5 domains: wiki, school, distributor, email, general), 0 errors.
+**[ran]** `results/H1A-moe-routing-by-domain-20261004/BRIEF.md`.
+
+| §5's gate, at 8 GB, domain prompts | bar | measured |
+|---|---|---|
+| affinity-preloaded cache hits more than LRU | ≥ 10 points | **+7.4** (LRU 92.1 %, affinity 99.5 %) — **fails** |
+| bytes read per decode token fall | ≥ 25 % | **−93 %** (62.4 → 4.1 MB/token), affinity ahead on 60/60 prompts |
+| Jaccard within the domain exceeds Jaccard between domains | — | **0.49 vs 0.26**, 120 : 0 |
+
+**Verdict as written: FALSIFIED** — the one failing clause is the absolute 10-point margin, and it had no headroom: LRU
+alone already hits 92.1 % at 8 GB after the prefill warms it, so no routing behaviour could add 10 more points. The
+run's own instrument flagged `no_headroom`. Read past that one clause, the domain concentrates the 26B's routing
+strongly: 80 % of a domain's decode activations sit in 17–21 % of the experts (40 % on general text, entropy 5.0–5.3
+against 6.2 bits), and a cache pinned to a domain's top experts from half its prompts reads 93 % fewer bytes per token
+on the other half at 8 GB, winning on every prompt. The general-text control runs the other way (affinity −6 points
+against LRU), so the gain is the domain's, not the pinning policy's — the attribution §2's split asked for.
+
+Beside the gate: at 4 GB the affinity margin over LRU is +15.5 points (77.9 % → 93.4 %), where the gate's own 8 GB
+choice has already cost the 10-point clause its room; at 12 GB both policies are near-saturated (98.8 % → 100 %).
+
+**For this line:** H1a's substance is what §2.3 of the review doc needed — the data REAP's pruning idea starts from.
+H1b (does an attention-only adapter trained on the MoE base concentrate routing further than the base alone) and M3
+(real streaming from the Mac mini's SSD) are the next steps, both the user's call, not yet taken.
+
+---
+
+## 8. Is the line worth it? Better results, does it work, at what speed (evaluation, 2026-10-04)
+
+The user asked three questions of the flash line. Each is answered from H1a's record (`h1a.json`: aggregate per-domain
+routing and cache metrics) and from runs already on disk. **The per-prompt traces were deleted when worktrees were
+cleaned** (they were kept out of git by design), so a per-prompt prefill simulation would need H1a rerun (one A100).
+
+**1. Better results? Unknown, and the evidence so far says no.** A smaller memory footprint for the 26B is worth only as
+much as the 26B beats what is served now. In this project's regions no larger model has beaten the E4B member: a trained
+12B ties it (B3, PAIR1 **[ran]**), an untrained 12B loses (PAIR0 **[ran]**). The 26B's own headroom run (TEACH0) is
+blocked: vLLM's FP8 does not run on the A100, and the bitsandbytes retry waits for A100 quota. **Until TEACH0 shows the
+26B ahead of `real-none-s0`, the line buys speed or footprint for a model with no measured quality gain.**
+
+**2. Does it work? The routing half, yes [ran].** On a domain's decode tokens, 80 % of the activations sit in 17–21 % of
+the experts (general text: 40 %). A cache pinned to the domain's top experts reads 93 % fewer bytes per decode token at 8 GB
+(62 → 4.1 MB) and 70 % fewer at 4 GB (175 → 52 MB). **Prefill is broader:** 80 % of prefill activations sit in about 25 % of
+the experts (general: 31 %), and a prefill over a few hundred tokens touches most experts of most layers.
+
+**3. At what speed, on a 16 GB machine? Decode plausibly yes; prefill and memory are the risks (derived, not measured).**
+The bound is the formula of §3, with the read bandwidth $\mathcal B$ an assumed 3 GB/s, still unmeasured:
+
+$$\text{tok/s}_{\text{decode}} \;\lesssim\; \frac{\mathcal B}{\text{MB read per token}}$$
+
+| | expert cache | MB read per decode token [ran] | I/O ceiling at 3 GB/s |
+|---|---|---|---|
+| affinity-pinned | 8 GB | 4.1 | ~730 tok/s — I/O stops mattering; compute bounds it (~4B active per token, near the E4B's) |
+| affinity-pinned | 4 GB | 52 | ~58 tok/s |
+| LRU | 4 GB | 175 | ~17 tok/s |
+
+- **Memory.** 16 GB less the system (~4 GB) and the dense part (2.5 GB) leaves ~9.5 GB for experts *and* the KV cache. This
+  project's walks run to 12k tokens: on this Mac, the E4B ran out of memory at a 16,384-token context (LIVE-library
+  **[ran]**). An 8 GB expert cache leaves ~1.5 GB for KV, which is too little for these walks. A 4–6 GB cache is the
+  realistic one.
+- **Prefill.** Each tool turn re-prefills its new tokens, and they touch most experts. With the cache pinned, the experts
+  outside it are read from storage once per prefill. That is up to (1 − cache share) × 12.9 GB: about 9 GB at a 4 GB cache,
+  roughly 3 s per prefill at 3 GB/s. A walk makes 3–5 calls, so that is **+9–15 s per walk** in the worst case, against the
+  E4B's whole walk of 13 s (median, LIVE-library **[ran]**). The real figure is lower, because not every expert is touched,
+  but it is unmeasured.
+
+**Verdict of this evaluation:** the mechanism works for decode, and decode speed on a 16 GB machine is plausible at a 4–6 GB
+cache. Prefill, on this project's tool-heavy walks, and the memory left for the KV cache are the open risks. The line's
+payoff depends entirely on a quality result it does not have. **Order:**
+1. TEACH0 (tomorrow, on Colab).
+2. Only if the 26B beats the E4B member: M3, the real streaming test of §5, on the user's machine. It needs the user's
+   approval: about 45–60 minutes of the machine, which covers downloading a ~15 GB 4-bit GGUF, timing decode and prefill
+   on our walk prompts, and measuring the SSD's actual bandwidth.
+3. H1b (attention-only adapter) only after M3, because it adds nothing if the base cannot be served fast enough.

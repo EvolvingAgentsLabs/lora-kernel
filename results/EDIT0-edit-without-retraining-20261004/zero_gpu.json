@@ -1,0 +1,30 @@
+{
+ "base": "google/gemma-4-E4B-it",
+ "started": "2026-10-04T08:45:00",
+ "grader": "training.wiki.grade",
+ "library": "knowledge-edit/hazwaste-regs",
+ "eval_world": 20260924,
+ "arms": {},
+ "zero_gpu": {
+  "n": 17,
+  "headline": 12,
+  "oracle_credit": 17,
+  "oracle_refused": 0,
+  "floor_headline": 0,
+  "floor_all": 0,
+  "slices": {
+   "headline": 12,
+   "all": 17,
+   "none": 0,
+   "hops-1": 5,
+   "hops-2": 11,
+   "hops-3": 1,
+   "block-E1": 0,
+   "block-E2": 0,
+   "block-E3": 0,
+   "block-O1": 0,
+   "block-O2": 0,
+   "block-O3": 0
+  }
+ }
+}

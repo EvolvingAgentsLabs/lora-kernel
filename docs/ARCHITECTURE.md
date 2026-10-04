@@ -104,6 +104,21 @@ Two decisions are kept apart on purpose:
   the serving path — locally, as taught, it is 90 of 90 against the frontier's 66 **[ran]** M7 arm
   0b — and it goes back through the release gate before the mark changes.
 
+**Open-task members route differently, and the piece is now measured in all three organisations.**
+ROUTE0 factors a request against one fixed task; a member with an **open** task (the tracker, the
+distributor, the school) carries no single task to factor against. Its router is the role riding in
+the signed token (F2 **[ran]**) plus the member's own abstention to the role's egress, learned from
+its corpus — the school's corpus teaches it, the distributor's since M10 **[ran]** (20/20 held-out
+abstained, 0 of 70 lost). The tracker's never did (0 of 1,400 corpus turns): a request outside its
+role was attempted with its tools instead of reaching the egress. `tr-out-s0`, trained on M10's
+recipe (the tracker's corpus plus 126 abstaining turns), abstains on 27 of 30 held-out out-of-scope
+turns and loses none of the 160 dependent turns `tr-s1` gets right **[ran]** ROUTE1. **With
+this, the router for open-task members — the role plus each member's abstention — is measured in all
+three organisations the pool serves: school, distributor (M10), tracker (ROUTE1).** **The user's
+decision, 2026-10-04: `tr-out-s0` is now served in place of `tr-s1`** (`examples/tracker/live_tracker.py`'s
+own `llama-server`/gateway command), with LIVE-tracker's **[ran]** record kept as having run `tr-s1`
+([`ROUTE1`](../results/ROUTE1-tracker-abstain-20261003/BRIEF.md)).
+
 **The default is the frontier.** A model asked to choose always chooses, so abstention is
 designed in and measured first (milestone 2).
 
@@ -309,6 +324,17 @@ followed the new value, cited to the patched line; 0 stale. Closed-book, without
 still answer with the old value on 1 of 40 — not zero. The member learned the *route* well enough to occasionally
 reproduce what it usually only reads; that is reading, not the library overruling memory, and it bounds rather than
 removes the risk the split is meant to close.
+
+**Edit without retraining, measured again on real documents the member never saw — [ran] EDIT0, EDITS HOLD.** W7
+edited a note inside a member's own training library; EDIT0 asks the harder direction: a member trained on *another*
+document family entirely, served against a copy of `knowledge/hazwaste-regs` with one number changed in each of 17
+supporting statements (20 numbers, nothing else touched). It answers **17/17** with the **new** value, each cited to
+the edited statement, **0** stale — there is nothing in its weights to fall back to, because it has never seen this
+library at all, and the answer still follows the edit. Beside it, zero GPU: an opmemory `put` on an existing key
+replaces its value and never leaves a stale duplicate. This is the direct test of §10's first principle below, and of
+Percepta's Spotlight Memory's overwrite property (`docs/review/moe-distillation-and-spotlight.md` §3) on this
+project's own memory: PLAN milestone 7's arm 5, *edit without retraining*, open since 2026-09-19, now passes
+([`EDIT0`](../results/EDIT0-edit-without-retraining-20261004/BRIEF.md)).
 
 **The unit of the library, from 2026-09-24: the atomic statement — [ran] W9, PASSED.** The user's design: the
 library is shaped like Wikipedia. A page is about one thing and is a list of **atomic statements** —
@@ -626,6 +652,11 @@ The condition is in the word *real*: **[ran] REAL0**, the same architecture trai
 world learned the generator instead of the dynamic — its first act in 40 of 40 real-library walks is
 a search with a query from its own training world, and it opens no page in any of them, 0/25
 ([`results/REAL0-real-library-20260930/BRIEF.md`](../results/REAL0-real-library-20260930/BRIEF.md)).
+The direct test of $I(\text{answer}; \text{weights} \mid \text{policy}) = 0$ is editing the content
+without touching the policy: **[ran] EDIT0** changed one number in each of 17 supporting statements of
+a library a member had never seen, and the member answered **17/17** with the new value, 0 stale — the
+content came from the library, not the weights, with nothing memorised to fall back to
+([`results/EDIT0-edit-without-retraining-20261004/BRIEF.md`](../results/EDIT0-edit-without-retraining-20261004/BRIEF.md)).
 
 **2. The division of labour this architecture already has.** The router decides which corpus a
 request falls in and abstains to the frontier when it falls in none (§2); the members hold the

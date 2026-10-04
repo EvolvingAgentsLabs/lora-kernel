@@ -1,0 +1,106 @@
+[p2a] cases {'email': 475, 'desk:commitment_deep': 240, 'desk:commitment': 240} · paraphrases {email: 19, desk:commitment: 18, desk:commitment_deep: 16} · corpus leaks none
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[p2a] verbatim renders the release's prompt: {'email': '475/475', 'desk:commitment_deep': '240/240', 'desk:commitment': '240/240'}
+[rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 8192 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules email-full=adapters/email-full-g4 desk-commitment=adapters/desk-commitment-g4b
+[p2a] G1 email-full: 2/3 differ → applied
+[p2a] G1 desk-commitment: 2/3 differ → applied
+[p2a] arm email-full · email · verbatim
+[rank] arm email-full: 475 to draft, 0 resumed
+[rank] arm email-full 25/475 correct 25 10s
+[rank] arm email-full 50/475 correct 50 17s
+[rank] arm email-full 75/475 correct 75 24s
+[rank] arm email-full 100/475 correct 100 33s
+[rank] arm email-full 125/475 correct 125 41s
+[rank] arm email-full 150/475 correct 149 50s
+[rank] arm email-full 175/475 correct 174 54s
+[rank] arm email-full 200/475 correct 198 64s
+[rank] arm email-full 225/475 correct 223 71s
+[rank] arm email-full 250/475 correct 248 78s
+[rank] arm email-full 275/475 correct 273 85s
+[rank] arm email-full 300/475 correct 298 95s
+[rank] arm email-full 325/475 correct 323 105s
+[rank] arm email-full 350/475 correct 348 112s
+[rank] arm email-full 375/475 correct 371 119s
+[rank] arm email-full 400/475 correct 396 126s
+[rank] arm email-full 425/475 correct 421 134s
+[rank] arm email-full 450/475 correct 444 142s
+[rank] arm email-full 475/475 correct 469 150s
+[p2a] email-full · email · verbatim: 469/475 errors 0 undecided 0
+[p2a] arm email-full · email · paraphrase
+[rank] arm email-full: 475 to draft, 0 resumed
+[rank] arm email-full 25/475 correct 25 10s
+[rank] arm email-full 50/475 correct 50 17s
+[rank] arm email-full 75/475 correct 75 24s
+[rank] arm email-full 100/475 correct 100 34s
+[rank] arm email-full 125/475 correct 124 41s
+[rank] arm email-full 150/475 correct 149 50s
+[rank] arm email-full 175/475 correct 174 55s
+[rank] arm email-full 200/475 correct 198 65s
+[rank] arm email-full 225/475 correct 223 72s
+[rank] arm email-full 250/475 correct 248 79s
+[rank] arm email-full 275/475 correct 273 87s
+[rank] arm email-full 300/475 correct 298 96s
+[rank] arm email-full 325/475 correct 323 106s
+[rank] arm email-full 350/475 correct 348 113s
+[rank] arm email-full 375/475 correct 372 121s
+[rank] arm email-full 400/475 correct 397 128s
+[rank] arm email-full 425/475 correct 422 135s
+[rank] arm email-full 450/475 correct 445 144s
+[rank] arm email-full 475/475 correct 470 152s
+[p2a] email-full · email · paraphrase: 470/475 errors 0 undecided 0
+[p2a] arm desk-commitment · desk:commitment_deep · verbatim
+[rank] arm desk-commitment: 240 to draft, 0 resumed
+[rank] arm desk-commitment 25/240 correct 25 6s
+[rank] arm desk-commitment 50/240 correct 50 11s
+[rank] arm desk-commitment 75/240 correct 75 15s
+[rank] arm desk-commitment 100/240 correct 100 20s
+[rank] arm desk-commitment 125/240 correct 124 24s
+[rank] arm desk-commitment 150/240 correct 149 28s
+[rank] arm desk-commitment 175/240 correct 174 33s
+[rank] arm desk-commitment 200/240 correct 199 37s
+[rank] arm desk-commitment 225/240 correct 224 43s
+[rank] arm desk-commitment 240/240 correct 239 45s
+[p2a] desk-commitment · desk:commitment_deep · verbatim: 239/240 errors 0 undecided 0
+[p2a] arm desk-commitment · desk:commitment_deep · paraphrase
+[rank] arm desk-commitment: 240 to draft, 0 resumed
+[rank] arm desk-commitment 25/240 correct 22 6s
+[rank] arm desk-commitment 50/240 correct 43 10s
+[rank] arm desk-commitment 75/240 correct 65 15s
+[rank] arm desk-commitment 100/240 correct 83 20s
+[rank] arm desk-commitment 125/240 correct 103 25s
+[rank] arm desk-commitment 150/240 correct 124 29s
+[rank] arm desk-commitment 175/240 correct 144 34s
+[rank] arm desk-commitment 200/240 correct 166 38s
+[rank] arm desk-commitment 225/240 correct 187 45s
+[rank] arm desk-commitment 240/240 correct 198 51s
+[p2a] desk-commitment · desk:commitment_deep · paraphrase: 198/240 errors 0 undecided 1
+[p2a] arm desk-commitment · desk:commitment · verbatim
+[rank] arm desk-commitment: 240 to draft, 0 resumed
+[rank] arm desk-commitment 25/240 correct 25 5s
+[rank] arm desk-commitment 50/240 correct 50 9s
+[rank] arm desk-commitment 75/240 correct 75 13s
+[rank] arm desk-commitment 100/240 correct 100 16s
+[rank] arm desk-commitment 125/240 correct 125 20s
+[rank] arm desk-commitment 150/240 correct 150 24s
+[rank] arm desk-commitment 175/240 correct 175 28s
+[rank] arm desk-commitment 200/240 correct 200 32s
+[rank] arm desk-commitment 225/240 correct 225 36s
+[rank] arm desk-commitment 240/240 correct 240 38s
+[p2a] desk-commitment · desk:commitment · verbatim: 240/240 errors 0 undecided 0
+[p2a] arm desk-commitment · desk:commitment · paraphrase
+[rank] arm desk-commitment: 240 to draft, 0 resumed
+[rank] arm desk-commitment 25/240 correct 25 5s
+[rank] arm desk-commitment 50/240 correct 50 9s
+[rank] arm desk-commitment 75/240 correct 75 13s
+[rank] arm desk-commitment 100/240 correct 100 17s
+[rank] arm desk-commitment 125/240 correct 125 20s
+[rank] arm desk-commitment 150/240 correct 150 24s
+[rank] arm desk-commitment 175/240 correct 175 28s
+[rank] arm desk-commitment 200/240 correct 200 32s
+[rank] arm desk-commitment 225/240 correct 225 37s
+[rank] arm desk-commitment 240/240 correct 240 38s
+[p2a] desk-commitment · desk:commitment · paraphrase: 240/240 errors 0 undecided 0
+[p2a] email-full|email: verbatim 469/475 paraphrase 470/475 (1:0, p=1.0, tie)
+[p2a] desk-commitment|desk:commitment_deep: verbatim 239/240 paraphrase 198/240 (1:42, p=0.0, REGRESSION)
+[p2a] desk-commitment|desk:commitment: verbatim 240/240 paraphrase 240/240 (0:0, p=1.0, tie)
+[p2a] PARAPHRASES COST: paired loss on ['desk-commitment|desk:commitment_deep'] — paraphrases correctly leave; ROUTE2 is not built

@@ -114,7 +114,10 @@ que verifica lo que el chico borradorea ([`docs/es/PLAN.md`](docs/es/PLAN.md) hi
   sin entrenar, dos semillas — pero sólo porque la dinámica se aprendió sobre texto real: entrenado
   sobre un mundo generado en cambio, el miembro aprendió el generador y sacó 0/25 sobre uno real
   ([`REAL3`](results/REAL3-real-corpus-20260930/BRIEF.md) **[ran]**,
-  [`REAL0`](results/REAL0-real-library-20260930/BRIEF.md) **[ran]**).
+  [`REAL0`](results/REAL0-real-library-20260930/BRIEF.md) **[ran]**). La prueba directa es editar la
+  biblioteca sin tocar los pesos: un miembro que nunca vio esa biblioteca contesta 17 de 17 preguntas
+  con un número cambiado después de entrenar, cada una citada al enunciado editado, 0 obsoletas
+  ([`EDIT0`](results/EDIT0-edit-without-retraining-20261004/BRIEF.md) **[ran]**).
 - **La división del trabajo ya está en la arquitectura.** El router decide a qué corpus cae un
   pedido y se abstiene hacia la frontera; los miembros guardan el procedimiento aprendido por
   subdominio; la biblioteca guarda el contenido; el árbitro y el runtime chequean lo que se puede
@@ -483,7 +486,15 @@ lineal, 22,7 → 135 → 270 → 500 tok/s para 1 → 8 → 16 → 32 sesiones, 
 reemplazos aprendidos ya están medidos y ninguno pasa~~ — **un router factorizado (tarea vs. contenido) ahora pasa
 [ran] ROUTE0, 2026-10-02**: sirve 0 de 600 textos ajenos localmente contra 294 del diccionario y pierde 0 de 480
 pedidos legítimos, y ahora es el default del proxy; lo que no va a hacer por diseño es mantener una paráfrasis local
-(0/120, reportado). Los modelos chicos todavía
+(0/120, reportado) — probado directamente, las paráfrasis **cuestan** precisión a un miembro entrenado sobre una
+regla compuesta [ran] P2a, 2026-10-04, así que la sonda de router que las mantendría locales (ROUTE2) no se
+construye. **Para miembros de tarea abierta (sin una sola tarea contra la que factorizar), el router es el rol más
+la abstención propia del miembro, ahora medido en las tres organizaciones** — escuela, distribuidora (M10), y el
+tracker, cuyo miembro nunca tuvo turnos de abstención hasta `tr-out-s0` [ran] ROUTE1, 2026-10-03: 27 de 30 turnos
+fuera-de-alcance reservados llegan a la frontera del rol en vez de intentarse, sin perder ninguno de los 160 turnos
+dependientes. **Decisión del usuario, 2026-10-04: ahora `tr-out-s0` es el miembro servido del tracker, en lugar de
+`tr-s1`** (el propio comando `llama-server`/gateway de `examples/tracker/live_tracker.py`); la demo en vivo de
+arriba y el registro de H3 quedan como que corrieron `tr-s1`. Los modelos chicos todavía
 inventan: en la demo de la escuela el gateway reemplazó 2 de 5 respuestas locales por el texto
 propio de las herramientas — atrapado, contado, nunca mostrado, pero no curado. La decodificación especulativa con un
 experto LoRA corre de verdad (F0, C0, arriba), y la identidad de su salida a temperatura 0 ya está establecida en

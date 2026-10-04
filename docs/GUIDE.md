@@ -447,6 +447,13 @@ without the note in front of it, the weights still answer with the *old* value o
 value it usually only reads — reading, not the library overruling memory, and a reminder that "the LoRA does not
 memorize facts" is a matter of degree measured here, not an architectural guarantee.
 
+**The harder direction of the same test — a member that has never seen the library at all — holds too. [ran] EDIT0,
+2026-10-04:** a copy of a real regulatory library (`knowledge/hazwaste-regs`) with one number changed in each of 17
+supporting statements, served to a member trained on an entirely different document family. It answers 17 of 17 with
+the **new** value, each cited to the edited statement, 0 stale — there is nothing for its weights to fall back to,
+because it never trained on this library at all. Beside it, zero GPU: an operational-memory `put` on an existing key
+replaces its value, never leaving a stale duplicate ([`EDIT0`](../results/EDIT0-edit-without-retraining-20261004/BRIEF.md)).
+
 **What a "real library" is, and why the generated one did not prepare the member for it.** Every library above — the
 wiki of W9, `distributor-wiki@v2` — was generated: a script writes the pages, so it can also write fresh constants
 into them every world, which is what forced the model to read rather than recite. A **real library** is the opposite
@@ -529,6 +536,16 @@ for the member that never saw the pattern; the live demo went 6/6 against 5/6. *
 router: the member already reads the whole request to answer it, so asking it to also classify "is this mine" costs a
 few training turns, not a second model in the path — at the price of doing it per member rather than once for all of
 them.
+
+**That recipe now covers all three organisations measured, not just the distributor. [ran] ROUTE1, 2026-10-03:** the
+team tracker's member never had abstaining turns in its corpus — 0 of 1,400 — so a request outside its role was
+attempted with its tools instead of reaching the frontier or a person. `tr-out-s0` (M10's recipe: the tracker's corpus
+plus 126 abstaining turns) abstains on 27 of 30 held-out out-of-scope turns and loses none of the 160 dependent turns
+`tr-s1` gets right. **With this, the router for open-task members — the role plus the member's own
+abstention — is measured in all three organisations: the school, the distributor (M10), the tracker (ROUTE1)**
+([`ROUTE1`](../results/ROUTE1-tracker-abstain-20261003/BRIEF.md)). **The user's decision, 2026-10-04: `tr-out-s0` is
+now served in place of `tr-s1`** as the tracker's member (`examples/tracker/live_tracker.py`'s own
+`llama-server`/gateway command), with LIVE-tracker's **[ran]** record kept as having run `tr-s1`.
 
 ### 7.3 Agents and the gateway
 
@@ -733,6 +750,8 @@ happened to us last week).
 | 2026-09-30 | the gateway survives a restart without re-running a held charge, and its own process cannot reach outside its configured hosts | #310 **[ran]** |
 | 2026-10-02 | a router that factors a request into its task and the member's content passes where three whole-request routers failed; it is the proxy's default | ROUTE0 **[ran]** |
 | 2026-10-03 | speculative decoding's output identity at temperature 0, established — bf16 on an A100, the engine is deterministic and MTP matches it up to every stop a served walk reaches | F0c **[ran]** |
+| 2026-10-03 | the open-task router (role + member abstention) measured in all three organisations: school, distributor, and now the tracker | ROUTE1 **[ran]** |
+| 2026-10-04 | a library statement edited after training changes the answer with no retraining, even on a member that never saw that library at all | EDIT0, 17/17, 0 stale **[ran]** |
 
 ---
 
@@ -763,6 +782,8 @@ happened to us last week).
 | real-document citation when a value repeats across a link | **[ran] REAL5 PARTIAL (15/25, under the 70% bar), REAL6 FALSIFIED (one-hop fix leaves it unchanged, 15/25), REAL7 FALSIFIED (cross-link decoys tie 13/21 on the twin-free headline), CITE0 FALSIFIED (the runtime check fires 6/6 clean, converts 0 of 6), GATE0 GATE WORKS (the same check as a hard gate, replayed exactly on 532 recorded walks: 0 of 275 right answers blocked, 86 of 165 not-right blocked (52.1%), delivered precision 0.625 → 0.777; of the 86 blocked, 43 held the wrong value and 43 held a right value under a failing citation — 43 of 347 correct values withheld, 12.4%), PAGE0 HELPS (showing only the question's best 8 statements of a page repairs half of the same-page wrong-statement failures this row is about, 8 → 6 of 44, pooled with context-overflow repairs to 34/44 against 30/44, paired 6:2, $p = 0.29$ — PAGE TOP HELPS, not WORKS)**: three corpus/runtime changes left the citation unchanged, and the check that could not repair a bad line still blocks it reliably, but a smaller served page repairs some of it directly | ~~shipped off by default (`--cite-gate`); whether to turn it on for a given deployment is the user's product decision, not a further measurement~~ **shipped on by default, the user's decision, 2026-10-02, accepting the 43-of-347 withheld-value cost; `--no-cite-gate` turns it off.** `page_top 8` ships the same way, served by default since 2026-10-02; `--page-top 0` turns it off |
 | the real-document member served as the product would serve it | **[ran] PASSED, then NO CHANGE, then a citation check FALSIFIED, then the same check GATE WORKS as a gate, then a smaller served page HELPS, then a format corpus trained under it FALSIFIED**: `examples/library/serve.py` + an OpenClaw driver, 36/52 against REAL4 on vLLM bf16's 38/52 (LIVE-library); the two owed edge items are now done — `gateway.runtime_request` strips OpenClaw's queued-message envelope, `Conversation.page_budget` (2,500 tokens) opens an over-budget page by BM25 — **0** overflows (4 before), **0** envelopes (3 before), **37/52**, paired against LIVE-library 3:2 ($p=1.0$): NO CHANGE as written, 0 overflows but 37 < 38, not REGRESSED (LIVE-library2). `cite_check` (reads only the referee's own record) on a fresh 52-row third-family set: baseline 32/52, with the check 33/52, fired on 6, converted 0, broken 0 — a detector with no false alarm (15 fires, 0 on a right answer across two sets) the member cannot act on (CITE0); the same check as a hard gate (`--cite-gate`) blocks 0/275 right and 86/165 not-right on exact replay (GATE0) — the three OpenClaw holds in this run are diagnosed and fixed (next column). On a fourth real family (`knowledge/hazwaste-regs`), capping a page by its question's best 8 statements (`--page-top`, now the default) answers 34/44 against the unchanged page's 30/44, paired 6:2 ($p=0.29$) — PAGE TOP HELPS (PAGE0); training `real-fmt-s0` on walks under that served form, with the referee's `recover` guard measured for the first time, ties the baseline 33/44 against 33/44 (1:1) — the baseline already held just 1 format failure in 11 misses once pages serve top-8, so there was nothing on this set for the corpus to repair, and the `recover` guard alone is harmless (0:0) — the format-corpus line stops here (FMT0) | ~~why OpenClaw holds a finished turn (3 rows)~~ — **found and fixed, 2026-10-02**: node held inside `process.exit()` after a successful run; the driver now ends each turn's process group shortly after OpenClaw's own run-ended line instead of waiting on an exit that may never come, and the endpoint always answers a raising walk instead of leaving OpenClaw to re-send it; ~~**the citation check becomes a gate** — a line that fails it is not delivered, the runtime answering it could not verify the citation, or forwarding to the frontier~~ — **built and run, GATE0 GATE WORKS**: see the row above; ~~shipped off by default~~ **ships on by default as of 2026-10-02; `--no-cite-gate` turns it off**. ~~a smaller served page~~ — **built and run, PAGE TOP HELPS, shipped as the default (`--page-top 8`, PAGE0)**; the open item stays the runtime citation check, not the corpus (FMT0 closed that line) |
 | a planted instruction in a tool result changing what a member does | **[ran] INJ0 — no headroom**: 70 exposed across every recorded turn, 0 acted on it | not built — nothing on these suites for it to fix |
+| a router probe that keeps a paraphrase of a member's task local | **[ran] P2a, 2026-10-04 — PARAPHRASES COST**: `email-full` and the shallow desk band tie verbatim on paraphrased wording, but the deep desk band regresses 239 → 198 on 4 of 16 rewordings of a compound rule ("the latest commitment counts") — members follow a reworded question but not reliably a reworded rule attached to it | **ROUTE2 not built**: a probe that kept every paraphrase local would serve those four rewordings wrong; ROUTE0's literal rule (off-wording leaves) stays the router |
+| the 26B MoE base and whether it is worth distilling or serving from flash | **[ran] H1A, 2026-10-04 — FALSIFIED as written, substance holds**: the domain concentrates `gemma-4-26B-A4B-it`'s routing strongly (80% of decode activations in 17–21% of experts; a domain-pinned cache reads 93% fewer bytes/token at 8 GB than LRU), but the gate's one absolute-margin clause had no headroom (LRU already at 92.1%). **TEACH0 (does the 26B beat the E4B member untrained) is blocked** — FP8 fails on this A100, the one bitsandbytes retry is waiting on quota | H1b (an attention-only adapter concentrating routing further) and M3 (real SSD streaming) are the user's call; TEACH0 needs A100 quota to run at all |
 | real identity (Auth0), WhatsApp, installation | not built | after the above |
 
 ---

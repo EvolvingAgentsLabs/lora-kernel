@@ -353,6 +353,11 @@ for holds on a real client, not only on a replay
 15/15, distributor 6/6 — stays single-turn: one request, one reply, no earlier turn to resolve; this is the first to
 carry state *across* turns live.
 
+**The tracker's served member since 2026-10-04 is `tr-out-s0`, in place of `tr-s1`** — the user's decision on
+ROUTE1 (`docs/ARCHITECTURE.md`): `examples/tracker/live_tracker.py`'s own `llama-server`/gateway command now names
+`lora-tracker-out-s0-f16.gguf` and `--member tr-out-s0`. LIVE-tracker's run above stays on record as having run
+`tr-s1`.
+
 ## 7. The library, as an OpenClaw provider — a live run, PASSED
 
 [`examples/library/serve.py`](../examples/library/serve.py) ([`SERVING.md`](SERVING.md)) is a *second* front door,
