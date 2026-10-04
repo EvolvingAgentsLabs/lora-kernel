@@ -42,6 +42,11 @@ only change allowed, and it is said. The rows, runtime and bars do not move.
   26B MoE in FP8 on the A100 — `torch._inductor ... AssertionError: auto_functionalized was not removed`. Not memory, not
   an unsupported model: the compile step. **Fix, an engine flag, not the quantisation:** `wiki_arm --enforce-eager`
   (no compile, no CUDA graphs; slower, the same arithmetic). The rows, runtime, FP8 and bars do not move.
+- **Attempt 2 — the server did not start either** (`attempt2_vllm.log`): with eager mode the engine reaches the FP8 matmul
+  and fails in `cutlass_scaled_mm_sm80_epilogue` — vLLM's W8A8 FP8 kernel does not run on the A100 (sm80, Ampere); FP8
+  wants an H100, which Colab refuses this account (quota, PAIR1). **By the stopping condition written first: one retry in
+  bitsandbytes 4-bit**, the only change allowed (`--quantization bitsandbytes`), eager kept. If it does not start, the run
+  is recorded as blocked by the serving engine, not as a result.
 
 ## Result
 
