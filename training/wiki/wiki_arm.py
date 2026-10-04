@@ -361,6 +361,7 @@ def main() -> int:
     ap.add_argument("--zero-gpu", action="store_true")
     ap.add_argument("--arms", default=",".join(ARMS))
     ap.add_argument("--train-seed", type=int, default=None, help="train adapters/wiki-walks-s<seed> and stop")
+    ap.add_argument("--quantization", default=None, help="vLLM --quantization for a base that does not fit in bf16 (TEACH0)")
     ap.add_argument("--span-logits", action="store_true", help="train with logits only where the loss is taken (PAIR1)")
     ap.add_argument("--empty-thought", action="store_true", help="prefill an empty thought channel (gemma-4-12B-it)")
     ap.add_argument("--max-tokens", type=int, default=120)
@@ -496,7 +497,10 @@ def main() -> int:
     # `withlib-s0` got a 404 [ran] 2026-09-24 (S2_vllm.log: "Found duplicate keys --lora-modules").
     lora = ["--lora-modules", *[f"{x}={d}" for x, d in members.items()]] if members else []
     extra = ["--enable-lora", "--max-lora-rank", "16", "--max-loras", str(max(1, len(members)))] + lora if members else []
-    srv = serve(a.base, ["--max-model-len", str(MAX_MODEL_LEN), "--gpu-memory-utilization", "0.90", *extra])
+    # TEACH0: a base that does not fit the card in bf16 (gemma-4-26B-A4B-it on a 40 GB A100) is served quantised — a second
+    # unknown, named in the brief that asks for it
+    quant = ["--quantization", a.quantization] if a.quantization else []
+    srv = serve(a.base, ["--max-model-len", str(MAX_MODEL_LEN), "--gpu-memory-utilization", "0.90", *quant, *extra])
     try:
         if not wait_ready(srv):
             rec["stopped"] = "the base never came up"
