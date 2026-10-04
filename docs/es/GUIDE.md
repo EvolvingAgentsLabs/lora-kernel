@@ -557,9 +557,12 @@ precio de hacerlo por miembro en vez de una sola vez para todos.
 miembro del tracker del equipo nunca tuvo turnos de abstención en su corpus — 0 de 1.400 — así que un pedido fuera de
 su rol se intentaba con sus herramientas en vez de llegar a la frontera o a una persona. `tr-out-s0` (la receta de
 M10: el corpus del tracker más 126 turnos de abstención) abstiene en 27 de 30 turnos fuera-de-alcance reservados y no
-pierde ninguno de los 160 turnos dependientes que el miembro servido contesta bien. **Con esto, el router para
+pierde ninguno de los 160 turnos dependientes que `tr-s1` contesta bien. **Con esto, el router para
 miembros de tarea abierta — el rol más la abstención propia del miembro — está medido en las tres organizaciones: la
 escuela, la distribuidora (M10), el tracker (ROUTE1)** ([`ROUTE1`](../../results/ROUTE1-tracker-abstain-20261003/BRIEF.md)).
+**Decisión del usuario, 2026-10-04: ahora se sirve `tr-out-s0` en lugar de `tr-s1`** como miembro del tracker (el
+propio comando `llama-server`/gateway de `examples/tracker/live_tracker.py`), con el registro **[ran]** de
+LIVE-tracker conservado como que corrió `tr-s1`.
 
 ### 7.3 Agentes y el gateway
 

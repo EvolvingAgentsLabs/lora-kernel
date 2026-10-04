@@ -112,10 +112,11 @@ its corpus — the school's corpus teaches it, the distributor's since M10 **[ra
 abstained, 0 of 70 lost). The tracker's never did (0 of 1,400 corpus turns): a request outside its
 role was attempted with its tools instead of reaching the egress. `tr-out-s0`, trained on M10's
 recipe (the tracker's corpus plus 126 abstaining turns), abstains on 27 of 30 held-out out-of-scope
-turns and loses none of the 160 dependent turns the served member gets right **[ran]** ROUTE1. **With
+turns and loses none of the 160 dependent turns `tr-s1` gets right **[ran]** ROUTE1. **With
 this, the router for open-task members — the role plus each member's abstention — is measured in all
-three organisations the pool serves: school, distributor (M10), tracker (ROUTE1).** Serving `tr-out-s0`
-in place of the tracker's current member is pending the user's decision
+three organisations the pool serves: school, distributor (M10), tracker (ROUTE1).** **The user's
+decision, 2026-10-04: `tr-out-s0` is now served in place of `tr-s1`** (`examples/tracker/live_tracker.py`'s
+own `llama-server`/gateway command), with LIVE-tracker's **[ran]** record kept as having run `tr-s1`
 ([`ROUTE1`](../results/ROUTE1-tracker-abstain-20261003/BRIEF.md)).
 
 **The default is the frontier.** A model asked to choose always chooses, so abstention is

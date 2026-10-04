@@ -541,9 +541,11 @@ them.
 team tracker's member never had abstaining turns in its corpus — 0 of 1,400 — so a request outside its role was
 attempted with its tools instead of reaching the frontier or a person. `tr-out-s0` (M10's recipe: the tracker's corpus
 plus 126 abstaining turns) abstains on 27 of 30 held-out out-of-scope turns and loses none of the 160 dependent turns
-the served member gets right. **With this, the router for open-task members — the role plus the member's own
+`tr-s1` gets right. **With this, the router for open-task members — the role plus the member's own
 abstention — is measured in all three organisations: the school, the distributor (M10), the tracker (ROUTE1)**
-([`ROUTE1`](../results/ROUTE1-tracker-abstain-20261003/BRIEF.md)).
+([`ROUTE1`](../results/ROUTE1-tracker-abstain-20261003/BRIEF.md)). **The user's decision, 2026-10-04: `tr-out-s0` is
+now served in place of `tr-s1`** as the tracker's member (`examples/tracker/live_tracker.py`'s own
+`llama-server`/gateway command), with LIVE-tracker's **[ran]** record kept as having run `tr-s1`.
 
 ### 7.3 Agents and the gateway
 
