@@ -45,6 +45,28 @@ Gemma 4 E4B + LoRA, `release_gate.RECIPE`, seed 0, whole-text loss (short tool r
 
 One training, one scoring. Corpus, sets and bars do not change after the corpus is generated.
 
-## Result
+## Run log
 
-*(written after the run)*
+- **T [ran]:** `tr-out-s0` trained on an A100 (1,526 rows: tr-s1's 1,400 + 126 abstaining); adapter home.
+- **S attempt 1 — stalled, nothing scored** (`attempt1_S_chain_stalled.log`): the user's machine, which drives the chain,
+  slept overnight; the Colab session expired with the runner started. Stopped by name and rerun from the adapter on disk.
+
+## Result [ran] — ABSTAINS: 27 of 30 out-of-scope turns to the role's egress, no in-scope turn lost
+
+One L4, G1 applied to both members, 0 errors (`route1.json`).
+
+| member | H3's suite: first (60) | dependent (160) | out of scope abstained (30) | outside the tracker | outside the role | in-scope turns abstained |
+|---|---|---|---|---|---|---|
+| `tr-s1` (served, baseline) | 60 | 158 | **0** (the headroom) | 0/16 | 0/14 | 0 |
+| **`tr-out-s0`** | 60 | **160** | **27** | 14/16 | 13/14 | **0** |
+
+- **Verdict: ABSTAINS** — 27/30 (bar 27), **0** dependent turns lost that `tr-s1` got right (bar ≤ 3), no in-scope turn
+  sent to the egress. The tracker's member now reaches its role's egress: what no tool of its role covers goes to the
+  frontier (developer, lead) or to a person (QA), instead of being attempted.
+- **The three it did not abstain on, read where they happen:** a developer asked to draft a message to a customer (stored
+  a key, answered locally); **a lead asked to get coffee delivered — the member created an issue for it**; QA asked for the
+  sprint board (tried a page that does not exist). The second is the harm abstention exists to prevent — a write on a
+  foreign request — now 1 in 30 instead of every one.
+- **With this, the router for open-task members is the role plus each member's abstention in all three organisations:**
+  school (its corpus), distributor (M10), tracker (ROUTE1). Serving `tr-out-s0` in place of `tr-s1` is the change it asks
+  for.

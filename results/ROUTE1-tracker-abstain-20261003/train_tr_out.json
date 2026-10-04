@@ -1,0 +1,9 @@
+{
+ "arms": {},
+ "member": {
+  "adapter": "adapters/tracker-out-s0",
+  "corpus_sha256": "b06574ab64cd5f6c8c63775ecaabcc6fe76fc7de3b370bf447fabb36f14160a5",
+  "adapter_sha256": "473396548e6ac57ac0c8b861d7453d7b0966cbb245cbb48f07c8475fe82cb15d"
+ },
+ "trained_only": "2026-10-04T00:01:15"
+}
