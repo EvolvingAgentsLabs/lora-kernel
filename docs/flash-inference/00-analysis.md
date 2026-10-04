@@ -218,7 +218,9 @@ $$\text{tok/s}_{\text{decode}} \;\lesssim\; \frac{\mathcal B}{\text{MB read per 
 **Verdict of this evaluation:** the mechanism works for decode, and decode speed on a 16 GB machine is plausible at a 4–6 GB
 cache. Prefill, on this project's tool-heavy walks, and the memory left for the KV cache are the open risks. The line's
 payoff depends entirely on a quality result it does not have. **Order:**
-1. TEACH0 (tomorrow, on Colab).
+1. ~~TEACH0 (tomorrow, on Colab).~~ **Ran 2026-10-04, blocked, no result**: FP8 failed twice (inductor compile, then
+   vLLM's FP8 kernel does not run on the A100's sm80); the one bitsandbytes retry the brief allows was refused by
+   quota three times the same day. Brief and code are on `main`; the retry runs when A100 quota returns.
 2. Only if the 26B beats the E4B member: M3, the real streaming test of §5, on the user's machine. It needs the user's
    approval: about 45–60 minutes of the machine, which covers downloading a ~15 GB 4-bit GGUF, timing decode and prefill
    on our walk prompts, and measuring the SSD's actual bandwidth.

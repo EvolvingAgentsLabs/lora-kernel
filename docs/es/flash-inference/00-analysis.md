@@ -229,7 +229,10 @@ $$\text{tok/s}_{\text{decode}} \;\lesssim\; \frac{\mathcal B}{\text{MB leídos p
 GB es plausible con una caché de 4–6 GB. El prefill, en las caminatas de este proyecto que usan muchas herramientas,
 y la memoria que le queda a la caché KV son los riesgos abiertos. El pago de la línea depende por completo de un
 resultado de calidad que no tiene. **Orden:**
-1. TEACH0 (mañana, en Colab).
+1. ~~TEACH0 (mañana, en Colab).~~ **Corrió el 2026-10-04, bloqueada, sin resultado**: FP8 falló dos veces (compilación
+   de inductor; después el kernel FP8 de vLLM no corre en el sm80 de la A100); el único reintento con bitsandbytes
+   que permite el brief fue rechazado por la cuota tres veces el mismo día. El brief y el código están en `main`; el
+   reintento corre cuando vuelva la cuota de A100.
 2. Solo si el 26B le gana al miembro E4B: M3, la prueba real de streaming de §5, en la máquina del usuario. Necesita
    la aprobación del usuario: unos 45–60 minutos de la máquina, que cubren descargar un GGUF de 4 bits de ~15 GB,
    cronometrar decode y prefill sobre los prompts de nuestras caminatas, y medir el ancho de banda real del SSD.
