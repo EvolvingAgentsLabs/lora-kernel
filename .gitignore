@@ -17,3 +17,7 @@ results/*/adapters_out.tgz
 # a gateway's live state and event log (what waits for a person; per deployment, never committed)
 examples/*/state/
 examples/*/events.jsonl
+
+# H1a's routing traces (per prompt npz) — heavy artefacts, they travel in adapters_out.tgz and stay out of git
+results/*/h1a_traces/
+results/*/traces/
