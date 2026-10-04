@@ -148,4 +148,37 @@ repaired once (the instrument, never the gate) and rerun; a second VOID closes t
 prompt's length (the runner raises it), or every decode step ending at once (a thought loop or an empty answer — read the
 recorded `text`).
 
-## Result *(written after the run)*
+## Result [ran] — FALSIFIED as written, on the one clause that had no headroom; the domain concentrates routing strongly
+
+One A100, `gemma-4-26B-A4B-it` with its experts quantised to int4 on the card, 150 prompts traced (0 errors), the router's
+own top-8 per token per layer (`h1a.json`; traces packed out of git).
+
+| at 8 GB, domain prompts, half B | gate | measured |
+|---|---|---|
+| affinity-preloaded cache hits ≥ 10 points over LRU | +10 | **+7.4** (LRU 92.1 %, affinity 99.5 %) — **fails** |
+| bytes read per decode token fall ≥ 25 % | −25 % | **−93 %** (62.4 → 4.1 MB/token), affinity better on 60/60 prompts |
+| within-domain Jaccard > between-domain | > | **0.49 vs 0.26**, 120 : 0 |
+
+- **Verdict as written: FALSIFIED** — the +10-points clause fails. **Read where it happens: that clause had no room.** After
+  the prefill warms it, LRU already hits 92 % at 8 GB, so +10 points was out of reach whatever the routing did; the
+  instrument flagged `no_headroom` itself. The same lesson as before, now on a gate clause: an absolute margin chosen
+  before the baseline was known. Not redesigned, not rerun.
+- **What the run does show [ran]:** the domain concentrates the MoE's routing. On a domain's decode tokens, 80 % of the
+  activations sit in 17–21 % of the experts, against 40 % on general text (entropy 5.0–5.3 against 6.2). A cache pinned
+  to the domain's top experts, learned on half the prompts, reads **93 % fewer bytes per token** on the other half at 8
+  GB and wins on every prompt. The general control runs the other way (affinity −6 points against LRU), so the gain is
+  the domain's, not pinning's.
+- **Beside it, not gated:**
+
+  | capacity | LRU hit | affinity hit | MB per decode token, LRU → affinity |
+  |---|---|---|---|
+  | 4 GB | 77.9 % | 93.4 % | 175 → 52 |
+  | 8 GB | 92.1 % | 99.5 % | 62 → 4.1 |
+  | 12 GB | 98.8 % | 100 % | 9.2 → 0.2 |
+
+  At 4 GB the hit margin is +15.5 points; the gate was written at 8 GB and stays there.
+- **Limits:** the domain prompts decode short answers (≈ 16–20 tokens; general ones run to 128), so domain decode is
+  ≈ 400–500 tokens per domain; bytes are the spec's arithmetic (3.3 MB per int4 expert), not a measured SSD.
+- **For the flash line:** the hypothesis's substance holds where it matters for a 16 GB machine — at 8 GB of experts, a
+  domain-pinned cache reads ~4 MB per token. The next steps (H1b: does an attention-only adapter concentrate it further;
+  M3: real streaming from the Mac mini's SSD) are the user's call.
