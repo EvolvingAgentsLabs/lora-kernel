@@ -1,0 +1,166 @@
+# Two outside proposals, read against what this repository has measured: an MoE base with distillation, and Spotlight Memory
+
+**Written 2026-10-04 at the user's request.** It is an analysis and a plan, not a result. Nothing below has run yet,
+unless a claim names a run. The two sources are treated as hypotheses: a design note pasted by the user, and Percepta's
+post *Spotlight Memory* (2026-10-02, [read] at <https://www.percepta.ai/blog/spotlight-memory>). A claim taken from
+either is marked **[read: source]** and is not repeated as a fact until a run here instantiates it.
+
+## 1. What is already measured that bears on both
+
+| fact | run |
+|---|---|
+| On W9's generated wiki, a 12B member ties the E4B member (9/40 vs 10/40); once taught, the E4B alone does 37/40 | B3, B5 **[ran]** |
+| Untrained on real documents under the served runtime, the 12B loses to the E4B, 11/44 vs 21/44 (2 : 12) | PAIR0 **[ran]** |
+| Trained on the same real-document corpus, the 12B member ties the E4B member, 33/44 vs 34/44 (5 : 6) | PAIR1 **[ran]** |
+| The two members err on different rows; when both agree, wrong answers delivered fall from 9 to 3 (one seen set, post-hoc) | PAIR1 note **[ran]**, hypothesis |
+| Speculative decoding with the LoRA preserves the member's output up to every stop at 1.98× | F0c **[ran]** |
+| A whole-request embedding cannot separate who writes from what is asked; unseen senders are lost 120/120 | M2b **[ran]** |
+| A router that factors task from content passes: 0 of 600 foreign texts served locally, 0 of 480 legitimate requests lost | ROUTE0 **[ran]** |
+| Open-task members are routed by the role in the token, and abstain through their corpus | F2, M10 **[ran]**; ROUTE1 running |
+| A page shown as the question's best 8 statements; an operational memory read as one constant line | PAGE0, H3 **[ran]** |
+| `gemma-4-26B-A4B-it`: 30 layers, 128 experts per layer, 8 active; 15.37 GB in 4 bits; a flash line (H1a: does the *domain* concentrate routing?) written and **paused for the user's review** | [`flash-inference/00-analysis.md`](../flash-inference/00-analysis.md) [read] |
+| New members are trained on Gemma 4 E4B | the user's decision, 2026-09-25 (CLAUDE.md §0) |
+
+The facts in this table constrain every proposal below. The most important is this: **in the regions this project has, a larger
+model has not bought accuracy, trained or untrained.** Any proposal whose return rests on a stronger teacher or base has to
+show that headroom first, before anything is built for it.
+
+## 2. The MoE proposal, point by point
+
+### 2.0 Two routers, two granularities — agreed
+
+An MoE's router picks feed-forward experts **per token and per layer**. An expert is an FFN inside one layer, with no
+attention of its own and no meaning outside its stack. **[read: source]**, and consistent with the 26B's configuration
+above. This repository's router picks a member **per request**. The source's conclusion holds, and it is the one this
+design already acts on: an MoE expert cannot be extracted as a specialist, and one router cannot be distilled into the
+other. **Nothing to implement; the distinction goes into the vocabulary.**
+
+### 2.1 A router distilled into a probe on the base's hidden state — test first, and only for the gap that is left
+
+**Claim [read: source]:** a linear probe or a small MLP on an intermediate layer's hidden state, labelled offline by a
+teacher that runs each candidate adapter and keeps the one a verifier (or the loss) prefers. Routing then costs almost
+nothing (X-LoRA, LoRA-Switch, MoLE).
+
+**What our data says.** The routing problem the probe solves is already solved here in the two forms the system uses. For
+fixed-task members, ROUTE0 factors task from content with no model and passes. For open-task members, the role names the
+member and the member abstains. What remains open is narrower:
+- **paraphrases** of a member's task, which ROUTE0 sends out by design (B3: 0/120 kept local);
+- requests that arrive **without a role**.
+
+There is also a warning in M2b. A representation of the *whole* request — an embedding, or very likely a mid-layer hidden
+state too — places "the member's content plus another task" exactly where "an unseen sender plus the member's task"
+sits. A probe trained without hard negatives of both kinds would learn the content.
+
+**What a probe has that M2b did not:** supervision. The labels can come from our own verifiers: the citation gate
+(GATE0) and each region's grader.
+
+**Verdict: test first, in two steps, cheapest first.**
+1. **P2a — headroom.** Does a member answer a paraphrase of its task correctly? (`email-full` and `desk-commitment` on
+   ROUTE0's B3 set; one L4.) If it does not, paraphrases leave correctly, and a probe that keeps them local would serve
+   wrong answers. The line stops there.
+2. **ROUTE2 — the probe arm**, only if P2a shows the members answer paraphrases. Hidden states of the E4B are extracted once
+   on an L4. The probe trains in seconds, with hard negatives of both M2b kinds. It must keep ROUTE0's safety (0 foreign
+   served locally) **and** recover paraphrases, scored on fresh sets.
+
+### 2.2 Distillation of specialists, 26B → a LoRA on the E4B — gated on a headroom the project has not seen
+
+**Claim [read: source]:** the 26B, with or without a LoRA, is the teacher. Each E4B adapter learns from its logits,
+ideally on-policy (GKD, MiniLLM). The family shares a tokenizer. B2 **[ran]** confirms one id space for the E4B and the
+12B; the 26B is not yet checked.
+
+**What our data says.** Distillation transfers what the teacher knows and the student does not. Here the student
+*trained on oracle walks* has matched every larger model measured (B3, PAIR1). The supervision our corpora give is
+already exact: verified walks, a cited statement, a grade. Soft targets add information where the hard target is noisy
+or underspecified. They add little where it is a verified walk. **Distillation has no teacher until a larger model is
+shown to beat the E4B member.**
+
+**Verdict: one headroom run decides it.** In **TEACH0**, `gemma-4-26B-A4B-it` runs untrained under the served runtime,
+with `--empty-thought` (PAIR0's lesson for Gemma 4's larger models). It is compared against the bare E4B and against
+`real-none-s0`, on PAGE0's 52 rows. It needs one A100 session. The 26B does not fit an A100 in bf16, so it runs in FP8 or
+4 bits; that is a second unknown, and it is said.
+- **Kill:** the 26B does not beat `real-none-s0` (34/44), paired, $p \lt 0.05$. Then no distillation is built, and the
+  26B is not proposed as a base.
+- **Pass:** a distillation pilot, under its own brief. GKD on one region's corpus, the student against `real-none-s0`.
+
+### 2.3 Pruning experts by domain (REAP), and "a specialist is a LoRA plus an expert mask" — research; its first step already exists
+
+**Claim [read: source]:** domain calibration data shows which experts activate. The rest are pruned or masked; REAP
+prunes keep quality in-domain. A member could be a LoRA plus an expert mask, swapped by changing the router's mask. The
+source itself calls this unexplored territory.
+
+**What our data says.** The measurement REAP starts from — per-domain expert activation statistics — is exactly the flash
+line's **H1a**: does the domain concentrate the 26B's routing (entropy per layer, the experts covering 80 % of
+activations, within-domain Jaccard against between-domain Jaccard)? H1a is written, gated, needs no training, and is
+paused for the user's review. It also gives the flash line its answer.
+
+**Verdict:** no new work until **H1a** runs, and H1a runs only with the user's approval to resume the flash line. Masks
+plus LoRA switching stay research behind H1a and H1b. They need their own benchmark and a serving engine with per-request
+expert masks, which vLLM does not offer **[read]**.
+
+### 2.4 The 26B as the base for every member — not now; it is the user's decision, and the evidence does not ask for it
+
+**Claim [read: source]:** per-token compute is close to the E4B's (about 4B active), at 15–17 GB in 4 bits plus the KV
+cache. It fits a "base in flash, adapters in RAM" design, and a stronger base usually beats any distillation.
+
+**What our data says.**
+- The decision is the user's (E4B, 2026-09-25).
+- Size has not bought accuracy in any region measured (§1).
+- On the 16 GB Mac, 15.37 GB of weights leave no room for the KV cache. The 12B was already tight there (MAC2 **[ran]**).
+  The flash line is precisely the plan to make that fit, by keeping about 60 % of the experts cached.
+
+**Verdict: not proposed** until TEACH0 passes. If it does, the change goes to the user as a decision, with the run.
+
+**Two cautions in the source, adopted as rules for any MoE LoRA:**
+- **Placement.** Attention and shared experts only, not routed experts. Phase 0 already proposes attention-only.
+- **The router.** Freeze it, and measure routing entropy before and after training.
+
+## 3. Spotlight Memory — the architecture cannot be adopted; three of its ideas can be tested on what exists
+
+**What it is [read: source].** A sequence-mixing layer for pretraining. Keys and queries map to addresses in a 2D lattice of
+cells. Each read or write touches a fixed 3×3 neighbourhood through a smooth bump kernel. Cells are DeltaNet states,
+allocated on the first write. Memory grows with the context, and access costs a constant per token. Routing (2D) is
+separated from content (high-dimensional). Updating a key replaces its value, so the stale-value rate on rewritten keys is
+zero.
+
+**Why it cannot be adopted here.** It is an architecture trained from scratch: 140M–670M models pretrained on FineWeb-Edu.
+This project fine-tunes adapters on a fixed Gemma base and trains nothing from scratch. **No part of the layer can be added
+to Gemma 4 E4B without pretraining.**
+
+**What maps onto this project's memory, and how each can be tested:**
+
+| Spotlight's property | this project's counterpart | status | the cheap test |
+|---|---|---|---|
+| memory grows, access per step is constant | the library and the operational memory grow; a turn reads one state line (H3) and a page shows 8 statements (PAGE0) | measured **[ran]** for access; growth not stressed | — |
+| **separate routing from content** | ROUTE0 (task vs content); the library addresses by id and anchor, its content is the statement | measured **[ran]** for the router | — |
+| **updating a key replaces its value — stale rate 0** (its "forgetting" MQAR variant) | an opmemory `put` overwrites a key; a library statement can be edited without retraining | **never measured**: PLAN milestone 7's arm 5, *edit without retraining*, has not run | **EDIT0**, below |
+| learned, low-dimensional addressing (2D suffices) | the radar's stage R1 (`MEMORY.md` §2.2): a learned projection to a small $d$, designed and not built; its brief tests $d$ = 64 | not built | after R1 exists, test $d \ll 64$ |
+| recall at 16× the training length | not applicable: this design keeps the context short on purpose | — | — |
+
+**EDIT0 — the edit test, Spotlight's overwrite property on our memory.** A copy of `knowledge/hazwaste-regs` is made in
+which the number in ~20 supporting statements of PAGE0's rows is changed, and nothing else. `real-none-s0` is asked those
+rows under the served runtime; it has never seen this library, so there is no retraining to undo.
+- **Passes** if ≥ 90 % cite the **new** value from the edited statement and at most 1 answers the old value (stale).
+- **Fails** if the member writes values from its weights.
+- One L4 session, no training. It also closes milestone 7's arm 5, open since 2026-09-19.
+
+Beside it, at zero GPU: a test that an operational-memory `put` on an existing key makes the next `get` return the new value
+and only it.
+
+## 4. The plan, in order
+
+Each step is pre-registered with a brief before it runs, buys the cheapest falsification first, and stops the line it
+belongs to if it fails.
+
+| step | what | cost | stops the line if |
+|---|---|---|---|
+| 1 | **EDIT0** — edit without retraining (Spotlight's overwrite property); opmemory overwrite test | one L4 · zero GPU | the member writes stale values: the memory is not where the knowledge lives |
+| 2 | **P2a** — does a member answer paraphrases of its task? | one L4 | members fail paraphrases: they leave correctly, and no probe is built |
+| 3 | **ROUTE2** — a router probe on the E4B's hidden state, with M2b's hard negatives, on fresh sets | one L4 + seconds | it loses ROUTE0's safety, or recovers no paraphrases |
+| 4 | **TEACH0** — does `gemma-4-26B-A4B-it` beat the E4B member untrained? | one A100 | no: no distillation, no 26B base |
+| 5 | **H1a** — does the domain concentrate the 26B's routing? (the flash line's first step; the data REAP needs) | hours of one GPU | **only with the user's approval to resume the flash line** |
+| — | deferred: distillation (after TEACH0), expert masks plus LoRA switching (after H1a/H1b), tiny-$d$ learned addressing (after R1) | — | — |
+| — | not done: implementing Spotlight's layer (needs pretraining); extracting MoE experts as specialists (they are not specialists) | — | — |
+
+**Decisions that are the user's:**
+- whether to resume the flash line (step 5);
+- any change of base, which would follow only a TEACH0 that passes.
