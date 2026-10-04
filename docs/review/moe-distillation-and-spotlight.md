@@ -16,9 +16,9 @@ either is marked **[read: source]** and is not repeated as a fact until a run he
 | Speculative decoding with the LoRA preserves the member's output up to every stop at 1.98× | F0c **[ran]** |
 | A whole-request embedding cannot separate who writes from what is asked; unseen senders are lost 120/120 | M2b **[ran]** |
 | A router that factors task from content passes: 0 of 600 foreign texts served locally, 0 of 480 legitimate requests lost | ROUTE0 **[ran]** |
-| Open-task members are routed by the role in the token, and abstain through their corpus | F2, M10 **[ran]**; ROUTE1 running |
+| Open-task members are routed by the role in the token, and abstain through their corpus, now in all three organisations measured — school, distributor (M10), tracker | F2, M10, ROUTE1 **[ran]** `results/ROUTE1-tracker-abstain-20261003/BRIEF.md` |
 | A page shown as the question's best 8 statements; an operational memory read as one constant line | PAGE0, H3 **[ran]** |
-| `gemma-4-26B-A4B-it`: 30 layers, 128 experts per layer, 8 active; 15.37 GB in 4 bits; a flash line (H1a: does the *domain* concentrate routing?) written and **paused for the user's review** | [`flash-inference/00-analysis.md`](../flash-inference/00-analysis.md) [read] |
+| `gemma-4-26B-A4B-it`: 30 layers, 128 experts per layer, 8 active; 15.37 GB in 4 bits; the domain concentrates its routing strongly (80 % of decode activations in 17–21 % of experts; a domain-pinned cache at 8 GB reads 93 % fewer bytes per token than LRU) | H1A **[ran]** `results/H1A-moe-routing-by-domain-20261004/BRIEF.md`; [`flash-inference/00-analysis.md`](../flash-inference/00-analysis.md) |
 | New members are trained on Gemma 4 E4B | the user's decision, 2026-09-25 (CLAUDE.md §0) |
 
 The facts in this table constrain every proposal below. The most important is this: **in the regions this project has, a larger
@@ -54,13 +54,15 @@ sits. A probe trained without hard negatives of both kinds would learn the conte
 **What a probe has that M2b did not:** supervision. The labels can come from our own verifiers: the citation gate
 (GATE0) and each region's grader.
 
-**Verdict: test first, in two steps, cheapest first.**
-1. **P2a — headroom.** Does a member answer a paraphrase of its task correctly? (`email-full` and `desk-commitment` on
-   ROUTE0's B3 set; one L4.) If it does not, paraphrases leave correctly, and a probe that keeps them local would serve
-   wrong answers. The line stops there.
-2. **ROUTE2 — the probe arm**, only if P2a shows the members answer paraphrases. Hidden states of the E4B are extracted once
-   on an L4. The probe trains in seconds, with hard negatives of both M2b kinds. It must keep ROUTE0's safety (0 foreign
-   served locally) **and** recover paraphrases, scored on fresh sets.
+**Verdict: tested, cheapest first — the line stops at step 1.**
+1. **P2a — headroom [ran]** `results/P2A-paraphrase-headroom-20261004/BRIEF.md`. Verdict **PARAPHRASES COST**:
+   `email-full` on email ties (469 → 470) and `desk-commitment` on the shallow desk band ties (240 → 240), but the deep
+   band regresses, 239 → 198 (1:42) — a paired loss on 4 of 16 rewordings of its compound rule ("the latest commitment
+   counts"). Read where it happens: the members follow a reworded *question*, not reliably a reworded *rule* attached to
+   one. A probe that kept every paraphrase local would serve the deep band's four rewordings wrong.
+2. **ROUTE2 — not built.** P2a's regression on the deep band is enough to stop the line (the verdict table above requires
+   every suite of both members to hold): a probe cannot tell which wordings a member follows, so it cannot be trusted to
+   keep the unsafe ones local. ROUTE0's literal rule — off-wording leaves — stays the router for fixed-task members.
 
 ### 2.2 Distillation of specialists, 26B → a LoRA on the E4B — gated on a headroom the project has not seen
 
@@ -74,10 +76,13 @@ already exact: verified walks, a cited statement, a grade. Soft targets add info
 or underspecified. They add little where it is a verified walk. **Distillation has no teacher until a larger model is
 shown to beat the E4B member.**
 
-**Verdict: one headroom run decides it.** In **TEACH0**, `gemma-4-26B-A4B-it` runs untrained under the served runtime,
+**Verdict: one headroom run decides it — blocked, not yet run.** In **TEACH0**, `gemma-4-26B-A4B-it` runs untrained under the served runtime,
 with `--empty-thought` (PAIR0's lesson for Gemma 4's larger models). It is compared against the bare E4B and against
 `real-none-s0`, on PAGE0's 52 rows. It needs one A100 session. The 26B does not fit an A100 in bf16, so it runs in FP8 or
 4 bits; that is a second unknown, and it is said.
+- **Status 2026-10-04: blocked by the serving engine / quota, no result.** FP8 failed twice (inductor compile; then
+  vLLM's FP8 kernel does not run on the A100's sm80); the brief's one bitsandbytes retry is waiting on A100 quota
+  (branch `teach0-20261004`, not merged here). Nothing is read from TEACH0 until it runs.
 - **Kill:** the 26B does not beat `real-none-s0` (34/44), paired, $p \lt 0.05$. Then no distillation is built, and the
   26B is not proposed as a base.
 - **Pass:** a distillation pilot, under its own brief. GKD on one region's corpus, the student against `real-none-s0`.
@@ -90,12 +95,19 @@ source itself calls this unexplored territory.
 
 **What our data says.** The measurement REAP starts from — per-domain expert activation statistics — is exactly the flash
 line's **H1a**: does the domain concentrate the 26B's routing (entropy per layer, the experts covering 80 % of
-activations, within-domain Jaccard against between-domain Jaccard)? H1a is written, gated, needs no training, and is
-paused for the user's review. It also gives the flash line its answer.
+activations, within-domain Jaccard against between-domain Jaccard)? The user approved resuming the flash line on
+2026-10-04 and H1a ran. **Result [ran]** `results/H1A-moe-routing-by-domain-20261004/BRIEF.md`: **FALSIFIED as written**
+on the gate's one absolute-margin clause (affinity must beat LRU by ≥ 10 points at 8 GB; LRU was already at 92.1 %, so
++10 points had no headroom — the instrument flagged `no_headroom` itself). The other two clauses pass easily, and the
+substance is strong: 80 % of a domain's decode activations sit in 17–21 % of the experts (against 40 % on general
+text), within-domain weighted Jaccard 0.49 against 0.26 between domains (120 : 0), and a domain-pinned cache reads
+93 % fewer bytes per decode token than LRU at 8 GB (62.4 → 4.1 MB), winning on 60/60 prompts; the general-text control
+runs the other way (affinity −6 points against LRU), so the gain is the domain's, not pinning's.
 
-**Verdict:** no new work until **H1a** runs, and H1a runs only with the user's approval to resume the flash line. Masks
-plus LoRA switching stay research behind H1a and H1b. They need their own benchmark and a serving engine with per-request
-expert masks, which vLLM does not offer **[read]**.
+**Verdict:** the data REAP needs now exists and says the domain concentrates routing strongly. Masks plus LoRA
+switching stay research behind this and H1b (does an attention-only adapter concentrate it further; the user's call,
+not yet taken). They need their own benchmark and a serving engine with per-request expert masks, which vLLM does not
+offer **[read]**.
 
 ### 2.4 The 26B as the base for every member — not now; it is the user's decision, and the evidence does not ask for it
 
@@ -109,6 +121,7 @@ cache. It fits a "base in flash, adapters in RAM" design, and a stronger base us
   The flash line is precisely the plan to make that fit, by keeping about 60 % of the experts cached.
 
 **Verdict: not proposed** until TEACH0 passes. If it does, the change goes to the user as a decision, with the run.
+TEACH0 is blocked (§2.2), so this stays not proposed.
 
 **Two cautions in the source, adopted as rules for any MoE LoRA:**
 - **Placement.** Attention and shared experts only, not routed experts. Phase 0 already proposes attention-only.
@@ -132,16 +145,17 @@ to Gemma 4 E4B without pretraining.**
 |---|---|---|---|
 | memory grows, access per step is constant | the library and the operational memory grow; a turn reads one state line (H3) and a page shows 8 statements (PAGE0) | measured **[ran]** for access; growth not stressed | — |
 | **separate routing from content** | ROUTE0 (task vs content); the library addresses by id and anchor, its content is the statement | measured **[ran]** for the router | — |
-| **updating a key replaces its value — stale rate 0** (its "forgetting" MQAR variant) | an opmemory `put` overwrites a key; a library statement can be edited without retraining | **never measured**: PLAN milestone 7's arm 5, *edit without retraining*, has not run | **EDIT0**, below |
+| **updating a key replaces its value — stale rate 0** (its "forgetting" MQAR variant) | an opmemory `put` overwrites a key; a library statement can be edited without retraining | **measured [ran]**: EDIT0, 17/17, 0 stale; PLAN milestone 7's arm 5, *edit without retraining*, passes | **EDIT0**, below |
 | learned, low-dimensional addressing (2D suffices) | the radar's stage R1 (`MEMORY.md` §2.2): a learned projection to a small $d$, designed and not built; its brief tests $d$ = 64 | not built | after R1 exists, test $d \ll 64$ |
 | recall at 16× the training length | not applicable: this design keeps the context short on purpose | — | — |
 
-**EDIT0 — the edit test, Spotlight's overwrite property on our memory.** A copy of `knowledge/hazwaste-regs` is made in
-which the number in ~20 supporting statements of PAGE0's rows is changed, and nothing else. `real-none-s0` is asked those
-rows under the served runtime; it has never seen this library, so there is no retraining to undo.
-- **Passes** if ≥ 90 % cite the **new** value from the edited statement and at most 1 answers the old value (stale).
-- **Fails** if the member writes values from its weights.
-- One L4 session, no training. It also closes milestone 7's arm 5, open since 2026-09-19.
+**EDIT0 — the edit test, Spotlight's overwrite property on our memory. Result [ran]** `results/EDIT0-edit-without-retraining-20261004/BRIEF.md`.
+A copy of `knowledge/hazwaste-regs` was made with one number changed in each of 17 supporting statements of PAGE0's
+rows (20 numbers total), and nothing else. `real-none-s0` was asked those rows under the served runtime; it has never
+seen this library, so there was no retraining to undo.
+- **EDITS HOLD: 17/17** rows answer the **new** value, each cited to the edited statement, **0** stale (bar was ≥ 16/17
+  with at most 1 stale). Changing one number in a statement changed the answer, with no retraining.
+- One L4 session, no training. It closes milestone 7's arm 5, open since 2026-09-19 — **it now passes.**
 
 Beside it, at zero GPU: a test that an operational-memory `put` on an existing key makes the next `get` return the new value
 and only it.
@@ -160,6 +174,13 @@ belongs to if it fails.
 | 5 | **H1a** — does the domain concentrate the 26B's routing? (the flash line's first step; the data REAP needs) | hours of one GPU | **only with the user's approval to resume the flash line** |
 | — | deferred: distillation (after TEACH0), expert masks plus LoRA switching (after H1a/H1b), tiny-$d$ learned addressing (after R1) | — | — |
 | — | not done: implementing Spotlight's layer (needs pretraining); extracting MoE experts as specialists (they are not specialists) | — | — |
+
+**Status (2026-10-04).** Step 1 **EDIT0 passed** — 17/17 the new value, 0 stale (§3). Step 2 **P2a ran: PARAPHRASES
+COST** — a paired regression on the deep desk band (239 → 198) stops the line; step 3 **ROUTE2 is not built** (§2.1).
+Step 4 **TEACH0 is blocked** by the serving engine and A100 quota, no result (FP8 failed twice, the one bitsandbytes
+retry waiting on quota; branch `teach0-20261004`, not merged here) — §2.2 stays "not proposed". Step 5 **H1a ran:
+FALSIFIED as written** on its one no-headroom clause, but the substance it was for — does the domain concentrate
+routing — holds strongly (§2.3); H1b and the flash line's next step are the user's call.
 
 **Decisions that are the user's:**
 - whether to resume the flash line (step 5);

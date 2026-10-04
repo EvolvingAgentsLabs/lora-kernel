@@ -142,3 +142,35 @@ its document.
   separately.
 
 **Paused for review.** No code until you approve this Phase 0: the H1a/H1b split, the gate and where the LoRA goes.
+
+---
+
+## 7. H1a result — resumed 2026-10-04, FALSIFIED as written; the substance holds
+
+**Resumed by the user's decision, 2026-10-04**, after the pause above (also recorded in
+[`docs/review/moe-distillation-and-spotlight.md`](../review/moe-distillation-and-spotlight.md) §4). H1a ran on one
+A100, `gemma-4-26B-A4B-it` with its experts quantised to int4 on the card (bitsandbytes does not quantize a 3-D expert
+parameter — read in the run — so the model loads in bf16 on the host, ≈ 52 GB, and is quantized layer by layer on the
+GPU), 150 prompts traced (30 per domain × 5 domains: wiki, school, distributor, email, general), 0 errors.
+**[ran]** `results/H1A-moe-routing-by-domain-20261004/BRIEF.md`.
+
+| §5's gate, at 8 GB, domain prompts | bar | measured |
+|---|---|---|
+| affinity-preloaded cache hits more than LRU | ≥ 10 points | **+7.4** (LRU 92.1 %, affinity 99.5 %) — **fails** |
+| bytes read per decode token fall | ≥ 25 % | **−93 %** (62.4 → 4.1 MB/token), affinity ahead on 60/60 prompts |
+| Jaccard within the domain exceeds Jaccard between domains | — | **0.49 vs 0.26**, 120 : 0 |
+
+**Verdict as written: FALSIFIED** — the one failing clause is the absolute 10-point margin, and it had no headroom: LRU
+alone already hits 92.1 % at 8 GB after the prefill warms it, so no routing behaviour could add 10 more points. The
+run's own instrument flagged `no_headroom`. Read past that one clause, the domain concentrates the 26B's routing
+strongly: 80 % of a domain's decode activations sit in 17–21 % of the experts (40 % on general text, entropy 5.0–5.3
+against 6.2 bits), and a cache pinned to a domain's top experts from half its prompts reads 93 % fewer bytes per token
+on the other half at 8 GB, winning on every prompt. The general-text control runs the other way (affinity −6 points
+against LRU), so the gain is the domain's, not the pinning policy's — the attribution §2's split asked for.
+
+Beside the gate: at 4 GB the affinity margin over LRU is +15.5 points (77.9 % → 93.4 %), where the gate's own 8 GB
+choice has already cost the 10-point clause its room; at 12 GB both policies are near-saturated (98.8 % → 100 %).
+
+**For this line:** H1a's substance is what §2.3 of the review doc needed — the data REAP's pruning idea starts from.
+H1b (does an attention-only adapter trained on the MoE base concentrate routing further than the base alone) and M3
+(real streaming from the Mac mini's SSD) are the next steps, both the user's call, not yet taken.

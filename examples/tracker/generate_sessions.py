@@ -195,6 +195,78 @@ def turn_right_h3(calls: list[dict], turn: dict) -> bool:
     return turn_right(calls, turn)
 
 
+# ------------------------------------------------------------------------------------- ROUTE1: abstaining turns
+# What no tool of the role covers. Two kinds, worded apart between train and eval: outside the tracker, and what the
+# tracker does but this role's tools do not (roles.py: the lead cannot transition or log work; QA cannot create or
+# assign; the developer cannot create, assign or read the sprint board). The answer is `OUT OF SCOPE`, no call, and the
+# role's egress takes it (gateway) — M10's recipe on the distributor, here on the tracker.
+OUT_TRAIN_N, OUT_EVAL_N = 126, 30
+OUT_SEED0 = {"train": 3_100_000, "eval": 3_900_000}
+OUTSIDE = {
+    "train": ["Write a short poem about Fridays.", "What's the weather tomorrow?", "Send an email to the client saying we "
+              "are late.", "Book the big meeting room for Thursday at 3.", "Is the production deploy green right now?",
+              "When is payday this month?", "Reset my VPN password.", "Order pizza for the team tonight.",
+              "Translate 'release notes' into German.", "Who won the football match last night?",
+              "Restart the staging server.", "How many vacation days do I have left?", "Tell me a joke about bugs.",
+              "Schedule a one-on-one with my manager.", "What's the stock price of our company?"],
+    "eval": ["Compose a haiku about code review.", "Will it rain this afternoon?", "Draft a message to the customer about the "
+             "outage.", "Reserve a desk for me next Monday.", "Did last night's CI pipeline pass?",
+             "What's my salary slip for September?", "My laptop won't connect to the Wi-Fi.", "Get coffee delivered to the "
+             "office.", "How do you say 'deadline' in French?", "Recommend a good book for the weekend."]}
+ROLE_EDGE = {   # (role, request) — the tracker does it, this role's tools do not
+    "train": {"lead": ["Move {key} to done.", "Log 2 hours on {key}.", "Set {key} to in progress.", "Put 3 hours of work "
+                       "on {key}.", "Comment on {key} that it is blocked."],
+              "qa": ["Create a bug for the broken login.", "Assign {key} to Ana.", "Show me the sprint board.", "Open a new "
+                     "story for the export feature.", "Give {key} to Bruno."],
+              "developer": ["Create a bug for the flaky test.", "Assign {key} to Carla.", "Show me the sprint board.",
+                            "Open a task for the cache cleanup.", "Hand {key} over to Diego."]},
+    "eval": {"lead": ["Transition {key} to QA.", "Record an hour of work against {key}.", "Close {key} for me.",
+                      "Note on {key} that the client approved it."],
+             "qa": ["File a new bug about the timeout.", "Reassign {key} to someone on the team.", "What does the board look "
+                    "like this sprint?", "Add a story for dark mode."],
+             "developer": ["File a task for the logging refactor.", "Put {key} on Ana's plate.", "How is the sprint board "
+                           "looking?", "Make a new bug for the crash on save."]}}
+
+
+def out_session(seed: int, split: str, kind: str) -> dict | None:
+    """A one-turn session whose request no tool of the role covers: the oracle abstains, no call is made."""
+    r = random.Random(seed)
+    conn = db.world(seed)
+    org = r.choice([o for o, _, _ in db.ORGS])
+    iss = _pick(conn, org, "1=1")
+    if iss is None:
+        return None
+    if r.random() < 0.5:
+        text, why = r.choice(OUTSIDE[split]), "outside-tracker"
+    else:
+        text, why = r.choice(ROLE_EDGE[split][kind]).format(key=iss["key"]), "outside-role"
+    return {"session_id": f"tr-out-{split}-{seed}", "split": split, "kind": kind, "role": kind, "org": org,
+            "user_id": f"{kind}-{org}", "world_seed": seed, "out": why,
+            "turns": [{"request": text, "tool": None, "args": {}, "depends": False}]}
+
+
+def build_out(split: str) -> list[dict]:
+    out, i, n = [], 0, OUT_TRAIN_N if split == "train" else OUT_EVAL_N
+    while len(out) < n:
+        s = out_session(OUT_SEED0[split] + i, split, KINDS[len(out) % len(KINDS)])
+        i += 1
+        if s and s["turns"][0]["request"] not in {x["turns"][0]["request"] for x in out if x["kind"] == s["kind"]} | set():
+            out.append(s)
+        if i > 50 * n:                         # few distinct requests per role: allow repeats rather than loop forever
+            n = len(out) if len(out) >= n // 2 else n
+            if s:
+                out.append(s)
+    return out[:n]
+
+
+def turn_right_out(calls: list[dict], turn: dict) -> bool:
+    """H3's scorer for in-scope turns; an out-of-scope turn (`tool` None) is right iff no tool was called — the abstention
+    itself is read from the gateway's route (frontier or person), recorded beside it."""
+    if turn["tool"] is None:
+        return not calls
+    return turn_right_h3(calls, turn)
+
+
 # ----------------------------------------------------------------------------------------------- the harness
 PUTS = {"developer": ("issue", "component"), "lead": ("issue",), "qa": ("issue",)}
 
@@ -216,6 +288,8 @@ def harness_oracle(sess: dict):
     def generate(system, user, close, history=None):
         i_turn["i"] += 1
         i, turn = i_turn["i"], sess["turns"][i_turn["i"]]
+        if turn["tool"] is None:                 # ROUTE1: nothing the role's tools cover — abstain, no call
+            return (lambda prefix: "OUT OF SCOPE"), (lambda: {"prompt_tokens": 0, "completion_tokens": 0})
         args = _args(turn)
         if turn["tool"] == "issue_create":
             args["summary"] = next(s for s in SUMMARIES if s.startswith(args["summary"]))
@@ -330,6 +404,32 @@ def main() -> int:
     suite = argv[argv.index("--suite") + 1] if "--suite" in argv else "h2"
     out = {"h3": OUT_H3, "h4": OUT_H4}.get(suite, OUT)
     out.mkdir(exist_ok=True)
+    if "--out-turns" in argv:
+        # ROUTE1: tr-s1's corpus byte for byte + 126 abstaining one-turn sessions (a block-less third of each role)
+        base = (out / "train_harness.jsonl").read_text()
+        rows = []
+        for j, sess in enumerate(build_out("train")):
+            cap: list = []
+            play(sess, harness_oracle(sess), harness=True, tool_block=(j // len(KINDS)) % 3 != 2, capture=cap)
+            rows += [{"case_id": f"{sess['session_id']}-t0", "kind": sess["kind"], "turn": 0, "depends": False, "out": sess["out"],
+                      "messages": [{"role": "system", "content": c["system"]}, {"role": "user", "content": c["user"]},
+                                   {"role": "assistant", "content": c["walk"]}]} for c in cap]
+        (out / "train_harness_out.jsonl").write_text(base + "".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows))
+        ev = build_out("eval")
+        (out / "eval_out.jsonl").write_text("".join(json.dumps(x, ensure_ascii=False) + "\n" for x in ev))
+        train_req = {r["messages"][1]["content"].split("\n")[1] if "\n" in r["messages"][1]["content"] else "" for r in rows}
+        g = {"rows_added": len(rows), "base_rows": len(base.splitlines()),
+             "abstaining_share": round(len(rows) / (len(rows) + len(base.splitlines())), 3),
+             "added_by_role": {k: sum(r["kind"] == k for r in rows) for k in KINDS},
+             "added_by_kind": {k: sum(r["out"] == k for r in rows) for k in ("outside-tracker", "outside-role")},
+             "added_without_tool_block": sum("The following tools are available" not in r["messages"][1]["content"] for r in rows),
+             "every_added_walk_abstains": all(r["messages"][2]["content"].strip() == "OUT OF SCOPE" for r in rows),
+             "eval_out": len(ev), "eval_by_kind": {k: sum(x["out"] == k for x in ev) for k in ("outside-tracker", "outside-role")},
+             "eval_request_in_train": sum(any(x["turns"][0]["request"] in r["messages"][1]["content"] for r in rows) for x in ev)}
+        g["passed"] = g["every_added_walk_abstains"] and g["eval_request_in_train"] == 0
+        (out / "gate_out.json").write_text(json.dumps(g, indent=1))
+        print(f"[tracker] out turns {'PASSED' if g['passed'] else 'FAILED'} {g}", flush=True)
+        return 0 if g["passed"] else 1
     if "--harness-corpus" in argv:
         train = [json.loads(l) for l in (out / "train.jsonl").read_text().splitlines() if l.strip()]
         rows = []

@@ -108,7 +108,10 @@ small one drafts ([`docs/PLAN.md`](docs/PLAN.md) milestones 3–4).
   never saw, 18/23 against the untrained base's 9/23, two seeds — but only because the dynamic was
   learned over real text: trained on a generated world instead, the member learned the generator and
   scored 0/25 on a real one ([`REAL3`](results/REAL3-real-corpus-20260930/BRIEF.md) **[ran]**,
-  [`REAL0`](results/REAL0-real-library-20260930/BRIEF.md) **[ran]**).
+  [`REAL0`](results/REAL0-real-library-20260930/BRIEF.md) **[ran]**). The direct test is editing the
+  library without touching the weights: a member that has never even seen a library answers 17 of 17
+  questions with a number changed after training, each cited to the edited statement, 0 stale
+  ([`EDIT0`](results/EDIT0-edit-without-retraining-20261004/BRIEF.md) **[ran]**).
 - **The division of labour is already in the architecture.** The router decides which corpus a
   request falls in and abstains to the frontier; the members hold the learned procedure per
   subdomain; the library holds the content; the referee and runtime check what can be checked
@@ -447,7 +450,13 @@ single-burst 0.88 ([`results/C1-concurrency-20260929/`](results/C1-concurrency-2
 **Not solved yet.** ~~The router is still a keyword dictionary — its two learned replacements are both measured and
 neither passes~~ — **a factored router (task vs. content) now passes [ran] ROUTE0, 2026-10-02**: it serves 0 of 600
 foreign texts locally against the dictionary's 294 and loses 0 of 480 legitimate requests, and is now the proxy's
-default; what it will not do by design is keep a paraphrase local (0/120, reported). The small models still invent: in the school demo the gateway replaced 2 of 5
+default; what it will not do by design is keep a paraphrase local (0/120, reported) — tested directly, paraphrases
+**cost** a trained member accuracy on one compound rule [ran] P2a, 2026-10-04, so the router probe that would keep
+them local (ROUTE2) is not built. **For open-task members (no single task to factor against), the router is the
+role plus the member's own abstention, now measured in all three organisations** — school, distributor (M10), and
+the tracker, whose member never had abstaining turns until `tr-out-s0` [ran] ROUTE1, 2026-10-03: 27 of 30 held-out
+out-of-scope turns reach the role's egress instead of being attempted, with none of the 160 dependent turns lost.
+The small models still invent: in the school demo the gateway replaced 2 of 5
 local replies with the tools' own text — caught, counted, never shown, but not cured. Speculative decoding with a LoRA
 expert runs for real (F0, C0, above), and its output identity at temperature 0 is now established in bf16 on an A100
 (F0c, above) — up to every stop a served walk reaches, on the LoRA's own domain and in full on general text; the

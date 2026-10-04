@@ -17,9 +17,9 @@ por el usuario, y el post de Percepta *Spotlight Memory* (2026-10-02, [read] en
 | La decodificación especulativa con el LoRA preserva la salida del miembro hasta cada corte, a 1,98× | F0c **[ran]** |
 | Un embedding del pedido entero no puede separar quién escribe de qué se pregunta; los remitentes no vistos se pierden 120/120 | M2b **[ran]** |
 | Un router que factoriza la tarea del contenido pasa: 0 de 600 textos ajenos servidos localmente, 0 de 480 pedidos legítimos perdidos | ROUTE0 **[ran]** |
-| Los miembros de tarea abierta se rutean por el rol en el token, y se abstienen a través de su corpus | F2, M10 **[ran]**; ROUTE1 corriendo |
+| Los miembros de tarea abierta se rutean por el rol en el token, y se abstienen a través de su corpus, ahora en las tres organizaciones medidas — escuela, distribuidor (M10), tracker | F2, M10, ROUTE1 **[ran]** `results/ROUTE1-tracker-abstain-20261003/BRIEF.md` |
 | Una página mostrada como los 8 mejores enunciados de la pregunta; una memoria operacional leída como una línea constante | PAGE0, H3 **[ran]** |
-| `gemma-4-26B-A4B-it`: 30 capas, 128 expertos por capa, 8 activos; 15,37 GB en 4 bits; una línea flash (H1a: ¿el *dominio* concentra el ruteo?) escrita y **en pausa para la revisión del usuario** | [`flash-inference/00-analysis.md`](../flash-inference/00-analysis.md) [read] |
+| `gemma-4-26B-A4B-it`: 30 capas, 128 expertos por capa, 8 activos; 15,37 GB en 4 bits; el dominio concentra fuerte su ruteo (80 % de las activaciones de decodificación en 17–21 % de los expertos; una caché anclada por dominio a 8 GB lee 93 % menos bytes por token que LRU) | H1A **[ran]** `results/H1A-moe-routing-by-domain-20261004/BRIEF.md`; [`flash-inference/00-analysis.md`](../flash-inference/00-analysis.md) |
 | Los nuevos miembros se entrenan sobre Gemma 4 E4B | decisión del usuario, 2026-09-25 (CLAUDE.md §0) |
 
 Los hechos de esta tabla acotan cada propuesta de abajo. El más importante es este: **en las regiones que este proyecto
@@ -56,14 +56,17 @@ aprendería el contenido.
 **Lo que una sonda tiene y M2b no tenía:** supervisión. Las etiquetas pueden salir de nuestros propios verificadores:
 la compuerta de citación (GATE0) y el calificador de cada región.
 
-**Veredicto: probar primero, en dos pasos, el más barato primero.**
-1. **P2a — margen.** ¿Un miembro contesta bien una paráfrasis de su tarea? (`email-full` y `desk-commitment` sobre el
-   conjunto B3 de ROUTE0; una L4.) Si no, las paráfrasis se van bien como están, y una sonda que las retuviera local
-   serviría respuestas incorrectas. La línea se detiene ahí.
-2. **ROUTE2 — el brazo de la sonda**, sólo si P2a muestra que los miembros contestan paráfrasis. Los estados ocultos
-   del E4B se extraen una vez en una L4. La sonda entrena en segundos, con negativos difíciles de los dos tipos de
-   M2b. Tiene que mantener la seguridad de ROUTE0 (0 ajenos servidos localmente) **y** recuperar paráfrasis, puntuado
-   sobre conjuntos frescos.
+**Veredicto: probado, lo más barato primero — la línea se detiene en el paso 1.**
+1. **P2a — margen [ran]** `results/P2A-paraphrase-headroom-20261004/BRIEF.md`. Veredicto **LAS PARÁFRASIS CUESTAN**:
+   `email-full` sobre email empata (469 → 470) y `desk-commitment` sobre la banda superficial de desk empata
+   (240 → 240), pero la banda profunda retrocede, 239 → 198 (1:42) — una pérdida pareada en 4 de 16 reformulaciones de
+   su regla compuesta ("la última promesa cuenta"). Leído donde pasa: los miembros siguen una *pregunta* reformulada,
+   no de forma confiable una *regla* reformulada adjunta a ella. Una sonda que retuviera local cada paráfrasis
+   serviría mal las cuatro reformulaciones de la banda profunda.
+2. **ROUTE2 — no se construye.** El retroceso de P2a en la banda profunda alcanza para detener la línea (la tabla de
+   veredicto de arriba exige que cada suite de ambos miembros se sostenga): una sonda no puede distinguir qué
+   reformulaciones sigue un miembro, así que no se puede confiar en ella para retener local las inseguras. La regla
+   literal de ROUTE0 — fuera de la redacción, se va — sigue siendo el router para miembros de tarea fija.
 
 ### 2.2 Destilación de especialistas, 26B → un LoRA sobre el E4B — con compuerta en un margen que el proyecto no vio
 
@@ -77,10 +80,14 @@ nuestros corpus ya es exacta: recorridos verificados, un enunciado citado, una c
 agregan información donde el target duro es ruidoso o está subespecificado. Agregan poco donde es un recorrido
 verificado. **La destilación no tiene maestro hasta que se muestre que un modelo más grande le gana al miembro E4B.**
 
-**Veredicto: una corrida de margen lo decide.** En **TEACH0**, `gemma-4-26B-A4B-it` corre sin entrenar bajo el
-runtime servido, con `--empty-thought` (la lección de PAIR0 para los modelos más grandes de Gemma 4). Se compara
-contra el E4B pelado y contra `real-none-s0`, sobre las 52 filas de PAGE0. Necesita una sesión de A100. El 26B no
-entra en una A100 en bf16, así que corre en FP8 o en 4 bits; eso es una segunda incógnita, y queda dicho.
+**Veredicto: una corrida de margen lo decide — bloqueada, todavía sin correr.** En **TEACH0**, `gemma-4-26B-A4B-it`
+corre sin entrenar bajo el runtime servido, con `--empty-thought` (la lección de PAIR0 para los modelos más grandes de
+Gemma 4). Se compara contra el E4B pelado y contra `real-none-s0`, sobre las 52 filas de PAGE0. Necesita una sesión de
+A100. El 26B no entra en una A100 en bf16, así que corre en FP8 o en 4 bits; eso es una segunda incógnita, y queda
+dicho.
+- **Estado 2026-10-04: bloqueada por el motor de servido / la cuota, sin resultado.** FP8 falló dos veces (compilación
+  de inductor; después el kernel FP8 de vLLM no corre en el sm80 de la A100); el único reintento con bitsandbytes del
+  brief espera cuota de A100 (rama `teach0-20261004`, no mergeada acá). Nada se lee de TEACH0 hasta que corra.
 - **Mata:** el 26B no le gana a `real-none-s0` (34/44), pareado, $p \lt 0,05$. Entonces no se construye ninguna
   destilación, y el 26B no se propone como base.
 - **Pasa:** un piloto de destilación, con su propio brief. GKD sobre el corpus de una región, el alumno contra
@@ -94,13 +101,21 @@ expertos, cambiado al cambiar la máscara del router. La fuente misma llama a es
 
 **Lo que dicen nuestros datos.** La medición de la que parte REAP — estadísticas de activación de expertos por
 dominio — es exactamente **H1a** de la línea flash: ¿el dominio concentra el ruteo del 26B (entropía por capa, los
-expertos que cubren el 80 % de las activaciones, Jaccard dentro del dominio contra Jaccard entre dominios)? H1a está
-escrita, con compuerta, no necesita entrenamiento, y está en pausa para la revisión del usuario. También le da su
-respuesta a la línea flash.
+expertos que cubren el 80 % de las activaciones, Jaccard dentro del dominio contra Jaccard entre dominios)? El usuario
+aprobó reanudar la línea flash el 2026-10-04 y H1a corrió. **Resultado [ran]**
+`results/H1A-moe-routing-by-domain-20261004/BRIEF.md`: **FALSIFICADA como se escribió** sobre la única cláusula de
+margen absoluto de la compuerta (la afinidad tiene que ganarle a LRU por ≥ 10 puntos a 8 GB; LRU ya estaba en 92,1 %,
+así que los +10 puntos no tenían margen — el instrumento marcó `no_headroom` por sí mismo). Las otras dos cláusulas
+pasan con comodidad, y la sustancia es fuerte: el 80 % de las activaciones de decodificación de un dominio cae en
+17–21 % de los expertos (contra 40 % en texto general), Jaccard ponderado dentro del dominio 0,49 contra 0,26 entre
+dominios (120 : 0), y una caché anclada por dominio lee 93 % menos bytes por token de decodificación que LRU a 8 GB
+(62,4 → 4,1 MB), ganando en 60/60 prompts; el control de texto general va al revés (afinidad −6 puntos contra LRU), así
+que la ganancia es del dominio, no de anclar.
 
-**Veredicto:** nada de trabajo nuevo hasta que corra **H1a**, y H1a corre sólo con la aprobación del usuario para
-reanudar la línea flash. Las máscaras más el cambio de LoRA se quedan como investigación detrás de H1a y H1b.
-Necesitan su propio benchmark y un motor de servido con máscaras de expertos por pedido, que vLLM no ofrece **[read]**.
+**Veredicto:** los datos que REAP necesita ya existen y dicen que el dominio concentra fuerte el ruteo. Las máscaras
+más el cambio de LoRA se quedan como investigación detrás de esto y de H1b (¿un adaptador sólo-atención lo concentra
+todavía más?; decisión del usuario, no tomada aún). Necesitan su propio benchmark y un motor de servido con máscaras de
+expertos por pedido, que vLLM no ofrece **[read]**.
 
 ### 2.4 El 26B como base de cada miembro — no ahora; es decisión del usuario, y la evidencia no la pide
 
@@ -116,6 +131,7 @@ destilación.
   los expertos.
 
 **Veredicto: no se propone** hasta que TEACH0 pase. Si pasa, el cambio va al usuario como decisión, con la corrida.
+TEACH0 está bloqueada (§2.2), así que esto se queda en no propuesto.
 
 **Dos advertencias de la fuente, adoptadas como reglas para cualquier LoRA de MoE:**
 - **Ubicación.** Sólo atención y expertos compartidos, no expertos ruteados. La Fase 0 ya propone sólo-atención.
@@ -139,17 +155,18 @@ parte de la capa se puede agregar a Gemma 4 E4B sin preentrenar.**
 |---|---|---|---|
 | la memoria crece, el acceso por paso es constante | la biblioteca y la memoria operacional crecen; un turno lee una línea de estado (H3) y una página muestra 8 enunciados (PAGE0) | medido **[ran]** para el acceso; el crecimiento no se forzó | — |
 | **separar el ruteo del contenido** | ROUTE0 (tarea contra contenido); la biblioteca direcciona por id y ancla, su contenido es el enunciado | medido **[ran]** para el router | — |
-| **actualizar una clave reemplaza su valor — tasa obsoleta 0** (su variante MQAR de "olvido") | un `put` de opmemory sobreescribe una clave; un enunciado de biblioteca se puede editar sin reentrenar | **nunca medido**: el brazo 5 del hito 7 del PLAN, *editar sin reentrenar*, no corrió | **EDIT0**, abajo |
+| **actualizar una clave reemplaza su valor — tasa obsoleta 0** (su variante MQAR de "olvido") | un `put` de opmemory sobreescribe una clave; un enunciado de biblioteca se puede editar sin reentrenar | **medido [ran]**: EDIT0, 17/17, 0 obsoletas; el brazo 5 del hito 7 del PLAN, *editar sin reentrenar*, pasa | **EDIT0**, abajo |
 | direccionamiento aprendido, de baja dimensión (2D alcanza) | la etapa R1 del radar (`MEMORY.md` §2.2): una proyección aprendida a un $d$ chico, diseñada y no construida; su brief prueba $d$ = 64 | no construida | una vez que R1 exista, probar $d \ll 64$ |
 | recuerdo a 16× el largo de entrenamiento | no aplica: este diseño mantiene el contexto corto a propósito | — | — |
 
-**EDIT0 — la prueba de edición, la propiedad de sobreescritura de Spotlight sobre nuestra memoria.** Se hace una copia
-de `knowledge/hazwaste-regs` en la que se cambia el número en ~20 enunciados de soporte de las filas de PAGE0, y nada
-más. A `real-none-s0` se le preguntan esas filas bajo el runtime servido; nunca vio esta biblioteca, así que no hay
+**EDIT0 — la prueba de edición, la propiedad de sobreescritura de Spotlight sobre nuestra memoria. Resultado [ran]**
+`results/EDIT0-edit-without-retraining-20261004/BRIEF.md`. Se hizo una copia de `knowledge/hazwaste-regs` cambiando un
+número en cada uno de 17 enunciados de soporte de las filas de PAGE0 (20 números en total), y nada más. A
+`real-none-s0` se le preguntaron esas filas bajo el runtime servido; nunca vio esta biblioteca, así que no hubo
 reentrenamiento que deshacer.
-- **Pasa** si ≥ 90 % cita el valor **nuevo** del enunciado editado y como mucho 1 contesta el valor viejo (obsoleto).
-- **Falla** si el miembro escribe valores desde sus pesos.
-- Una sesión de L4, sin entrenamiento. También cierra el brazo 5 del hito 7, abierto desde el 2026-09-19.
+- **EDITS HOLD: 17/17** filas contestan el valor **nuevo**, cada una citada al enunciado editado, **0** obsoletas (la
+  valla era ≥ 16/17 con como mucho 1 obsoleta). Cambiar un número en un enunciado cambió la respuesta, sin reentrenar.
+- Una sesión de L4, sin entrenamiento. Cierra el brazo 5 del hito 7, abierto desde el 2026-09-19 — **ahora pasa.**
 
 Al lado, a costo cero de GPU: una prueba de que un `put` de memoria operacional sobre una clave existente hace que el
 próximo `get` devuelva el valor nuevo, y sólo ese.
@@ -168,6 +185,14 @@ línea a la que pertenece si falla.
 | 5 | **H1a** — ¿el dominio concentra el ruteo del 26B? (el primer paso de la línea flash; los datos que necesita REAP) | horas de una GPU | **sólo con la aprobación del usuario para reanudar la línea flash** |
 | — | diferido: destilación (después de TEACH0), máscaras de expertos más cambio de LoRA (después de H1a/H1b), direccionamiento aprendido de $d$ chico (después de R1) | — | — |
 | — | no hecho: implementar la capa de Spotlight (necesita preentrenamiento); extraer expertos de MoE como especialistas (no son especialistas) | — | — |
+
+**Estado (2026-10-04).** Paso 1 **EDIT0 pasó** — 17/17 el valor nuevo, 0 obsoletas (§3). Paso 2 **P2a corrió: LAS
+PARÁFRASIS CUESTAN** — un retroceso pareado en la banda profunda de desk (239 → 198) detiene la línea; paso 3
+**ROUTE2 no se construye** (§2.1). Paso 4 **TEACH0 está bloqueada** por el motor de servido y la cuota de A100, sin
+resultado (FP8 falló dos veces, el único reintento con bitsandbytes espera cuota; rama `teach0-20261004`, no mergeada
+acá) — §2.2 se queda en "no propuesta". Paso 5 **H1a corrió: FALSIFICADA como se escribió** sobre su única cláusula
+sin margen, pero la sustancia para la que existía — si el dominio concentra el ruteo — se sostiene fuerte (§2.3); H1b
+y el próximo paso de la línea flash son decisión del usuario.
 
 **Decisiones que son del usuario:**
 - si reanudar la línea flash (paso 5);
