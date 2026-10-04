@@ -126,4 +126,24 @@ The chain uploads `$R/adapters.tgz` (no `SKIP_ADAPTERS`), unpacks it to `adapter
 `python -m training.harness.paraphrase_arm --base google/gemma-4-E4B-it --concurrency 8 --out p2a.json`, watches
 `[p2a]` and `[rank]` lines (both in the peek filter), and stops on `"finished"` in `p2a.json`.
 
-## Result *(written after the run)*
+## Result [ran] — PARAPHRASES COST, and only on some wordings of one compound instruction
+
+One L4 (two sessions), G1 applied to both members, 0 errors; every verbatim arm ties its own release record (`p2a.json`).
+
+| member / suite | verbatim | paraphrase | paired (paraphrase : verbatim) |
+|---|---|---|---|
+| `email-full` · email (475) | 469 | **470** | 1 : 0 — tie |
+| `desk-commitment` · shallow (240) | 240 | **240** | 0 : 0 — tie |
+| `desk-commitment` · deep (240) | 239 | **198** | 1 : 42 — **regression** |
+
+- **Verdict as written: PARAPHRASES COST** — a paired loss on the deep desk suite → paraphrases correctly leave to the
+  frontier, and **ROUTE2 is not built** (step 3 of `docs/review/moe-distillation-and-spotlight.md` stops here).
+- **Read where it happens — the cost is not paraphrase as such.** `email-full` answers 19 rewordings of its task as well
+  as the original. The shallow desk task survives 18 rewordings. On the deep suite, 12 of 16 rewordings score 15/15, and the
+  loss sits in four: *"Tell me the date I committed to. If I committed more than once, only the most recent counts."* 0/15,
+  *"What was the date I committed to? In case of several commitments, pick the most recent one."* 0/15, one revision
+  wording 5/15, one 13/15. The members follow a reworded *question*; they do not reliably follow a reworded *rule*
+  attached to it.
+- **What that means for the router:** keeping paraphrases local is safe for single-question tasks and unsafe where the
+  task carries a rule, and the router cannot tell which wordings a member follows. The factored router's literal rule
+  (ROUTE0) stays right: off-wording leaves.
