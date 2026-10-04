@@ -84,7 +84,7 @@ def reading(rec: dict) -> dict:
 
 def main(argv=None, *, doc=__doc__, data=None, members=None, arm_spec=None, read=None, train_member="tr-s1",
          default_arms="s0-harness,s1-harness,s1-noblock", default_out="h3.json", tag="tracker3",
-         corpus_file="train_harness.jsonl", eval_data=None) -> int:
+         corpus_file="train_harness.jsonl", eval_data=None, scorer=None) -> int:
     """H3's runner; H4 (examples/tracker/h4_arm.py) calls it with its own suite, members, arms and reading."""
     data, members, arm_spec, read = data or DATA, members or MEMBERS, arm_spec or ARM_SPEC, read or reading
     ap = argparse.ArgumentParser(description=doc, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -141,7 +141,8 @@ def main(argv=None, *, doc=__doc__, data=None, members=None, arm_spec=None, read
             for i, s in enumerate(sessions, 1):
                 if s["session_id"] in slot and not any("error" in x for x in slot[s["session_id"]]["turns"]):
                     continue                                 # resumed: a session with a transport error is played again
-                slot[s["session_id"]] = {"kind": s["kind"], "turns": gs.play(s, gen, scorer=gs.turn_right_h3, **kw)}
+                slot[s["session_id"]] = {"kind": s["kind"], **({"out": s["out"]} if s.get("out") else {}),
+                                         "turns": gs.play(s, gen, scorer=scorer or gs.turn_right_h3, **kw)}
                 if i % 10 == 0 or i == len(sessions):
                     save()
                     sm = summarise(list(slot.values()))
