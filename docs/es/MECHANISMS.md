@@ -873,13 +873,22 @@ por esta compuerta.
 pedido llegue a un modelo, por una tabla de regiones medidas, no por la opinión propia del modelo sobre
 lo que puede hacer.
 
-**Cómo.** El default de `route.py`, y el que realmente se sirve, es un **diccionario de palabras
-clave**: cada miembro declara las palabras que usan los pedidos de su propio corpus, y un pedido se enruta
+**Cómo.** **Desde el 2026-10-02 el default del proxy es un router factorizado** (`openai_proxy --router factored`,
+`training/harness/factored_router.py`): un pedido es local a un miembro sólo si exactamente un párrafo suyo no es
+contenido del miembro y ese párrafo es la tarea del miembro — y sirve 0 de 600 textos ajenos localmente contra los 294
+del diccionario, perdiendo 0 de 480 pedidos legítimos, **[ran]** ROUTE0
+(`results/ROUTE0-factored-router-20261002/BRIEF.md`); una paráfrasis de la tarea sale por diseño (0/120 se mantienen
+locales), y mantenerla local le cuesta precisión a un miembro entrenado en una regla compuesta **[ran]** P2a, así que
+la sonda que lo haría (ROUTE2) no se construye. ~~El default de `route.py`, y el que realmente se sirve, es un
+**diccionario de palabras clave**~~ El diccionario de palabras clave, ahora `--router dictionary`, es el que describía
+esta sección antes: cada miembro declara las palabras que usan los pedidos de su propio corpus, y un pedido se enruta
 a un miembro cuyas palabras contiene. `--auto` lo lee; el propio listado de `/v1/models` decide qué queda
 local, "mejor que una lista mantenida a mano, que se atrasa en el momento en que se agrega un adaptador"
 (`docs/SERVING.md`). En `examples/school/gateway.py`, el ruteo es todavía más simple: **el rol del token
 es la ruta** — `Gateway.turn` busca `self.roles.ROLES[claim.role]` directamente, sin ningún paso de
-selección de miembro, porque el runtime ya sabe qué agente, y por lo tanto qué rol, mandó el mensaje.
+selección de miembro, porque el runtime ya sabe qué agente, y por lo tanto qué rol, mandó el mensaje. Para los miembros de tarea abierta, sin una tarea única contra la
+que factorizar, **el router es el rol más la abstención propia del miembro**, medido en las tres organizaciones (M10,
+ROUTE1 **[ran]**).
 
 **Por qué.** Un router aprendido se probó y se midió contra el diccionario, no se asumió mejor. Un
 modelo de n-gramas del propio marco de cada corpus es **más seguro sobre texto ajeno** — 0 de 128
@@ -893,11 +902,14 @@ F2** (`results/F2-role-as-route-20260920/BRIEF.md`), con el rol confirmado por l
 miembro, nunca hay más errores de ruteo que los que dan las claves solas y nada se sirve bajo un rol
 equivocado — una repetición de 240 casos empata en 0,775. Lo que el ruteo por rol **no** responde es la
 mitad que queda abierta: *si este pedido está adentro de la región en absoluto*, para el único miembro
-que atiende el tráfico de un rol — el problema del hito 2, sin resolver, una clase más chico.
+que atiende el tráfico de un rol — el problema del hito 2, ~~sin resolver~~ respondido desde entonces para miembros de
+tarea fija por el router factorizado de ROUTE0, y para miembros de tarea abierta por su propia abstención (ROUTE1), una
+clase más chico.
 
 **Evidencia.** **[ran] M2**, **[ran] F2**, arriba. **[ran]** `results/M2b-embed-router-20260919/` y
-`results/M2c-needle-router-20260921/`: el brazo de embeddings se midió después; ningún brazo aprendido
-todavía le ganó al diccionario que debía reemplazar. El radar del hito 7 (§11) está construido para
+`results/M2c-needle-router-20260921/`: el brazo de embeddings se midió después; ~~ningún brazo aprendido
+todavía le ganó al diccionario que debía reemplazar~~ ningún brazo de pedido completo pasó — **[ran] ROUTE0** es el brazo
+que sí, al factorizar el pedido en vez de leerlo entero. El radar del hito 7 (§11) está construido para
 compartir su espacio de embeddings con este router, y todavía no lo sirve.
 
 ---

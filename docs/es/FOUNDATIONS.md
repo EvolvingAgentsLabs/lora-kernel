@@ -785,7 +785,12 @@ el tercero — un pedido mandado a un miembro a cuyo corpus no pertenece cuenta 
 así que un router se puntúa por **mal-ruteados-a-local** y por la fracción que sale, no por
 exactitud, y $\tau$ se fija sobre texto fuera de distribución antes de medir nada más: un
 modelo al que se le pide elegir siempre elige. **[ran]** para el diccionario: P62, P64. El
-$s_m$ aprendido es el hito 2 de [`PLAN.md`](PLAN.md).
+$s_m$ aprendido es el hito 2 de [`PLAN.md`](PLAN.md): los dos brazos de pedido completo (n-gramas, embeddings) perdieron todo
+pedido legítimo de un remitente no visto, y el brazo que pasó no puntúa el pedido entero — **[ran] ROUTE0**, un router
+factorizado que parte un pedido en sus párrafos y lo manda a $m$ sólo si exactamente un párrafo no es contenido de $m$,
+$\lvert\lbrace p \in x : p \notin C_m\rbrace\rvert = 1$, y ese párrafo es la tarea de $m$, $p \in T_m$. Sirve 0 de 600 textos
+ajenos localmente donde el diccionario sirve 294 y pierde 0 de 480 pedidos legítimos; una paráfrasis de la tarea sale por
+diseño (0 de 120 se mantienen locales, reportado, nunca con compuerta).
 
 ### 8.6 Una base de conocimiento, y una trayectoria por ella
 
@@ -1258,7 +1263,7 @@ entrena la mitad grande; el hito 4 mide la desigualdad de §7.1.
 | §10.5 D2 / §3.4 | **un LoRA aplica sobre el 32B AWQ**: media de $\vert \Delta\ell\vert$ 0,22–0,49 nats contra base-vs-base 0,000, 3/3; compuerta de texto 2/3 | P60 §3b `awq_gate.json` |
 | §10.5 D2 | **C18 es un desajuste de nombres**: $\text{applied}(K)=\lbrace k\in K: m(k)\in M\rbrace$ — tal como se entrenó 0 de 496 tensores caen sobre el stack de texto servido y la activación real fija 0 de 178 módulos (`not applied`); renombrado, 496 de 496 y 152 de 178 (`applied`); control `applied` | D2 `lora_matrix.json`, `vllm.log` |
 | §7.1, §7.4 | **la desigualdad del par** $\alpha_{T_\phi}(S_\theta) \gt  \alpha_T(S_\theta)$ | **se cumple [ran] B4**: 76 : 18 registros, $p \lt  10^{-4}$ — en la distribución del propio corpus (0,855 → 0,914), no en una banda que ninguna mitad entrenó (0,885 → 0,881); hito 4 de [`PLAN.md`](PLAN.md) |
-| §8.5 | **el router como clasificador con abstención**; el diccionario es su caso particular | diccionario: P62, P64. **Un modelo de n-gramas del marco de cada corpus [ran] M2**: texto ajeno 0/128 servido localmente contra 59/128 del diccionario; pedidos legítimos de remitentes nunca vistos 120/120 perdidos contra 0/120 — no pasa; el brazo de embeddings: **todavía sin medir** |
+| §8.5 | **el router como clasificador con abstención**; el diccionario es su caso particular | diccionario: P62, P64. **Un modelo de n-gramas del marco de cada corpus [ran] M2**: texto ajeno 0/128 servido localmente contra 59/128 del diccionario; pedidos legítimos de remitentes nunca vistos 120/120 perdidos contra 0/120 — no pasa; el brazo de embeddings **[ran] M2b**: texto ajeno 15/338 servido localmente contra 119 del diccionario, 120/120 pedidos de remitentes no vistos perdidos — no pasa; un tercer codificador **[ran] M2c**: no seguro (62 de 142 casos fuera de región servidos localmente); **el router factorizado [ran] ROUTE0 pasa: 0/600 textos ajenos servidos localmente contra 294, 0/480 pedidos legítimos perdidos** |
 | §8.6 | **una trayectoria por la base de conocimiento de un subdominio**; la política en los pesos, el contenido afuera | $Q_\varnothing(F') \approx 1/20$: P14. Recorridos de dos y tres saltos sobre páginas de enunciados atómicos, citados y verificados: 0/40 sin entrenar → 35/40, 38/40 sobre Gemma **[ran]** W9, B1; una habilidad que el corpus nunca mostró no se aprende (comparaciones 10/40), mostrada sí (37/40) **[ran]** B3, B5; en la biblioteca de enfermería la afirmación central no pasa **[ran]** W5, W5c |
 | §7.3, §8.2 | **pesos o harness — pesos**: base 0,345, base + procedimiento de 914 tokens 0,601 (las dos con 0 llamadas, debajo de la barra de mayoría 0,655), experto 0,989; experto contra base+kb **137 : 1**; el test de signos solo leyó el default dado vuelta como pagando (164 : 74) — la barra de mayoría lo guarda | P61 `session.json` |
 | §8.4 | **el ruteo por request empata al por región**: 0,775 = 0,775, 0 mal ruteados, 37,5 % afuera sobre los 240 casos de P41 | P62 `replay.json` (cero GPU) |

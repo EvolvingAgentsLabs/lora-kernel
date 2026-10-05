@@ -1,6 +1,6 @@
 # Arquitectura
 
-El sistema tal como está diseñado el 2026-09-19, estado al 2026-09-20. Lo que está construido y
+El sistema tal como está diseñado el 2026-09-19, estado al 2026-09-20 y revisado hasta el 2026-10-05 donde una línea lo dice. Lo que está construido y
 medido lleva la marca **[ran]**; lo que está diseñado y no construido, lo dice. Dónde se ubica
 dentro de una organización entera, y qué falta para que sea un framework genérico, está en el §9 y
 en [`FRAMEWORK.md`](FRAMEWORK.md). Las mediciones detrás de cada elección están en
@@ -17,10 +17,12 @@ turnos en vivo llaman a una herramienta bajo un prompt ajeno, 19 de 32 bajo el p
 resultados de sus herramientas le llegan como mensajes `tool_calls` y **90 de 90** cuando se
 escriben en línea, como le enseñó su corpus **[ran]** M7 brazo 0b.
 
-**La versión 1.0 es cinco cosas [spec]:** los expertos definidos por sus corpus, el router
+**La versión 1.0 es cinco cosas** — ~~[spec]~~ **construida y medida, 2026-10-05 [ran]** (la insignia del README: "core 1.0 built, measured"): los expertos definidos por sus corpus, el router
 con su abstención, la memoria (§4), el runtime que la arbitra, y el contrato de liberación
 que la hashea toda. El par del §3 se acopla por subdominio donde se mide que paga y no es
 requerido por 1.0.
+Lo que 1.0 no pasó, dicho: el radar (recall@3 0,638 de R0 contra una barra de 0,80, W3 **[ran]**; lo que sirve es BM25
+léxico), un verificador que nadie de acá escribió (hito 8, τ²-bench: T0 pasó, §5 más abajo), y tráfico real.
 
 Todo lo demás es ese hecho aplicado cuatro veces:
 
@@ -28,7 +30,7 @@ Todo lo demás es ese hecho aplicado cuatro veces:
 |---|---|---|
 | **el experto** | un QLoRA sobre el modelo chico, entrenado por SFT sobre un corpus, liberado con un contrato que registra la distribución | **[ran]** dos liberados; desde M1 sobre `Qwen3.5-4B`, cada uno empatando su liberación de Qwen 2.5 |
 | **el router** | un modelo muy chico *de los mismos corpus*: a la distribución de qué experto cae este pedido — o de ninguno | un router factorizado (tarea vs. contenido) **[ran]** ROUTE0, el default del proxy; el diccionario se queda al lado; tres brazos de pedido entero **[ran]** M2, M2b, M2c fallaron primero; en un despliegue con un agente por rol, *el rol es la ruta* (§9) |
-| **el par** | un segundo LoRA, sobre el modelo grande, entrenado sobre el *mismo corpus*; el chico borradorea, el grande verifica | **[ran]** un resultado de velocidad medido (1,98–2,4×, bf16 sobre una A100, identidad de salida establecida — F0c) sin una región que necesite la precisión de la mitad grande (B3, PAIR0, PAIR1 — EMPATE, 33/44 vs 34/44) — hitos 3–4 |
+| **el par** | un segundo LoRA, sobre el modelo grande, entrenado sobre el *mismo corpus*; el chico borradorea, el grande verifica | **[ran]** un resultado de velocidad medido (1,98–2,4×, bf16 sobre una A100, identidad de salida establecida — F0c) sin una región que necesite la precisión de la mitad grande (B3, PAIR0, PAIR1 — EMPATE, 33/44 vs 34/44; la corrida de margen del 26B MoE, TEACH0, cerrada el 2026-10-05, bloqueada por el motor de servido, sin resultado) — hitos 3–4 |
 | **la memoria** | la biblioteca propia del subdominio — un arnés operativo y una wiki enciclopédica — un radar sobre ella, tres verbos, y un árbitro; el LoRA aprende el **hábito de navegar**, no el contenido | biblioteca, árbitro, corpus construidos **[ran]** W1, W2, W4; búsqueda debajo de su vara **[ran]** W3; ~~la afirmación central medida tres veces y no pasa — W5, W5b, W5c (la navegación se transfiere, leer un valor condicional en una nota nunca vista no)~~ — **pasa con el diseño del enunciado atómico, 2026-09-24 [ran] W9**: las dos semillas 35/40 contra el 0/40 del base sin entrenar, empatando con el base al que se le dan los enunciados del oráculo. Es real sólo cuando el texto *y* la pérdida lo son: la misma trayectoria entrenada sobre un mundo *generado* nunca abre una página real, 0/25 **[ran] REAL0**; entrenada en cambio sobre recorridos de documentos reales con la pérdida sobre los tramos propios del modelo, transfiere a una familia que nunca entrenó (18/23 contra el 9/23 del base sin entrenar, dos semillas) y aprende a negarse ante lo que su biblioteca no puede contestar (15/16, 0 falsas de 36) **[ran] REAL3, REAL4**; una tercera familia densa en enlaces lee 15/25 contra el 2/25 del base sin entrenar — una transferencia grande, bajo la barra de 70 % en la citación estricta, el ítem abierto **[ran] REAL5**. **Servido hoy** con la compuerta de citación encendida y una página acotada a sus 8 mejores enunciados por defecto **[ran] GATE0, PAGE0** (§4) |
 
 ```mermaid
@@ -283,6 +285,13 @@ protocolo era el entrenamiento, no el tamaño. Una observación al lado del vere
 miembros se equivocan en filas distintas (39/44 correctas por cualquiera de los dos)
 ([`PAIR1`](../../results/PAIR1-large-member-20261003/BRIEF.md)).
 
+**TEACH0 — cerrada por decisión del usuario, 2026-10-05: bloqueada por el motor de servido, sin resultado [ran].** La
+única corrida que habría mostrado a un modelo más grande por delante del miembro — `gemma-4-26B-A4B-it`, sin entrenar,
+sobre las filas de PAGE0 — nunca puntuó: FP8 falló en el sm80 de la A100 y vLLM 0.30 no tiene método `bitsandbytes` para
+el reintento en la L4 ([`TEACH0`](../../results/TEACH0-26b-headroom-20261004/BRIEF.md)). La pregunta "¿hay un maestro?"
+se muda a un verificador externo (§5, τ² T1, Gemma 4 31B); la línea flash descansa hasta que un modelo más grande
+muestre valor ([`flash-inference/00-analysis.md`](flash-inference/00-analysis.md) §8).
+
 **Lo que ya se sabe de las mitades.** vLLM aplica un LoRA sobre un modelo grande en 4 bits
 **[ran]** P60 §3b. Los adaptadores de Qwen 3.5 son servibles una vez que sus tensores llevan
 los nombres de la clase que vLLM sirve **[ran]** D2. Los modelos chico y grande de la
@@ -383,7 +392,7 @@ de distribuidora inventada cuyas páginas operativas siguen los roles de la orga
 marketing, IT), generada por mundo para que ningún valor se pueda saber de memoria; el base sin
 entrenar se mide antes de comprar un LoRA de trayectoria ([`MEMORY.md`](MEMORY.md) §1.6).
 
-Especificada pieza por pieza en [`MEMORY.md`](MEMORY.md) **[spec]**; argumentada, con sus
+Especificada pieza por pieza en [`MEMORY.md`](MEMORY.md) — ~~**[spec]**~~ construida desde entonces, W1–W9 y la línea de documentos reales **[ran]**; argumentada, con sus
 preguntas abiertas, en [`KNOWLEDGE-TRAJECTORIES.md`](KNOWLEDGE-TRAJECTORIES.md). Cinco piezas,
 cuatro de ellas no neuronales:
 
@@ -393,7 +402,7 @@ cuatro de ellas no neuronales:
 | **el radar** | embeddings comprimidos a un subdominio; por nota dos vectores, *para qué sirve* y *qué define*; devuelve las dos o tres notas exactas del subdominio en juego | un índice chico por subdominio |
 | **el lenguaje** | tres verbos que el experto puede escribir — `<search>`, `<open>`, `<calc>` — cada uno respondido en línea después de su etiqueta de cierre | una gramática, versionada con la liberación |
 | **el LoRA** | entrenado sobre el **hábito de navegar**: casos cuyas constantes cambian cada vez, así que el número hay que leerlo de la nota | el adaptador — la única pieza entrenada |
-| **el runtime** | un pequeño árbitro en Python dentro del proxy: da vuelta las páginas, sustituye las reglas de un sitio antes de que el experto vea la nota, corta un recorrido que se salta un `requires` | `memory/` **[spec]**, sobre el mismo bucle de modo corpus que ya sirve a cada miembro |
+| **el runtime** | un pequeño árbitro en Python dentro del proxy: da vuelta las páginas, sustituye las reglas de un sitio antes de que el experto vea la nota, corta un recorrido que se salta un `requires` | `memory/` ~~**[spec]**~~ **[ran]** W2, sobre el mismo bucle de modo corpus que sirve a cada miembro; el endpoint servido de la biblioteca lo corre con la compuerta de citación prendida, `page_top = 8`, la guarda estricta, y siempre responde (GATE0, PAGE0, LIVE-library2) |
 
 ```mermaid
 flowchart LR
@@ -582,6 +591,23 @@ corpus — banda, superficie, claves, orden, system prompt — y los tests vuelv
 corpus y fallan si una declaración se desvía. Con el hito 7 el manifiesto gana el hash de la
 base de conocimiento y el hash de su índice: un miembro es su corpus *y* su base.
 
+**El verificador que nadie de acá escribió — τ²-bench, hito 8 [ran] T0, 2026-10-05.** El "verificador que el bucle de
+entrenamiento nunca ve" de la puerta había sido hasta ahora siempre el calificador propio de este repositorio. La
+recompensa de airline en τ²-bench es el hash del estado final de la base de datos por un chequeo de información
+comunicada, en código de `sierra-research/tau2-bench`; sus trayectorias de airline incluidas se recalifican localmente a
+la recompensa registrada, **800 de 800** — el calificador local es el de τ². Es también donde se hace la pregunta del
+maestro de frontera: el usuario eligió **Gemma 4 31B, autoalojado** (Apache 2.0 de punta a punta; los términos de Claude
+y de Grok prohíben entrenar un adaptador publicado con sus salidas, los de GPT y Gemini lo dejan sin definir —
+[`tau2/TEACHER-TERMS.md`](tau2/TEACHER-TERMS.md)), como maestro y como simulador de usuario, y T1 pregunta si le gana al
+E4B base sobre `test` de airline por una brecha que valga la pena destilar. **La brecha de formato es la restricción propia
+de la arquitectura, medida offline [ran]:** τ² le da al agente `tool_calls` nativos y los ejecuta él mismo, mientras que
+un miembro escribe etiquetas en línea y se sirve como lo enseñó su corpus (11/90 contra 90/90). El serializador de
+etiquetas del repo hace ida y vuelta de 1.345 de 1.587 llamadas de airline incluidas y **pierde 220 de 320 escrituras**
+(arreglos anidados, enteros leídos de vuelta como strings, valores cortados en una coma); una etiqueta cuyo cuerpo es el
+JSON de los argumentos hace ida y vuelta de **1.587/1.587**. El shim — `openai_proxy` con un perfil τ², el patrón del
+gateway no es reutilizable porque τ² debe ejecutar cada llamada él mismo — está especificado, **no construido**, y se
+chequea que no pierda nada antes de puntuar cualquier miembro ([`tau2/RECON.md`](tau2/RECON.md) §3).
+
 ## 6. La familia
 
 **Gemma 4, desde 2026-09-25 — la decisión del usuario sobre B1 [ran].** `google/gemma-4-E4B-it` chico;
@@ -676,8 +702,12 @@ que una persona puede leer y corregir.** Tres consecuencias para el diseño:
   árbitro — que la API no puede servir.
 - **El modelo nunca tiene una credencial.** Las herramientas llegan a los sistemas de registro
   *como la persona que pregunta*; el permiso lo chequea la herramienta, fuera del modelo, y cada
-  acción queda registrada. **[spec]** — nada de esta capa existe, y ningún experto acá fue medido
-  ejecutando una escritura.
+  acción queda registrada. ~~**[spec]** — nada de esta capa existe, y ningún experto acá fue medido
+  ejecutando una escritura.~~ **Construida y medida sobre organizaciones sintéticas [ran]:** el gateway chequea un token
+  firmado (HS256 con un secreto de demo; la verificación RS256/JWKS de un proveedor de identidad real no está construida),
+  la capa de herramientas rechaza los registros de otro inquilino y retiene un pago para una persona, y se midió a
+  miembros ejecutando lecturas y escrituras (las 15/15 escenas de la escuela, M8, M9, y en vivo a través de OpenClaw —
+  LIVE-school, LIVE-distributor).
 
 Qué existe, qué falta y el orden para construirlo — trece brechas, ocho interfaces, siete pasos,
 cada uno con el resultado que lo detendría — está en [`FRAMEWORK.md`](FRAMEWORK.md). La línea de
@@ -779,10 +809,10 @@ las dos corridas se repitieron desde cero para este resultado.)
 principal nombrado por el propio usuario, con los siete roles que dibuja el diagrama de referencia —
 `dev`, `trainee`, `marketing`, `educador`, `compras`, `cfo`, `it` — trece herramientas, dos
 inquilinos, una suite adversarial a **0 fugas**, los servidores MCP de los dos dominios registrados y
-verificados con `mcp probe` contra una instancia real de OpenClaw. Lo que todavía falta es la mitad
+verificados con `mcp probe` contra una instancia real de OpenClaw. Lo que todavía falta ~~es la mitad
 del lado del modelo del falsificador — si un *modelo* alguna vez intenta la llamada entre inquilinos,
 necesita una cuenta detrás de un turno de OpenClaw, todavía no corrido — y cualquier corpus o
-adaptador — nada acá entrena. El primer número del hito 6 también aterrizó el mismo día: tasar el
+adaptador — nada acá entrena~~ **era, el 2026-09-21** — superado: desde entonces se entrenaron adaptadores y se los corrió por esta capa (M8, M9, M10, H3, ROUTE1; en vivo a través de OpenClaw, LIVE-school, LIVE-distributor, LIVE-tracker **[ran]**); si un *modelo* actúa sobre una instrucción plantada en el resultado de una herramienta: INJ0 reprodujo cada turno registrado, 70 expuestos, 0 actuaron — sin margen, todavía sobre organizaciones sintéticas. El primer número del hito 6 también aterrizó el mismo día: tasar el
 replay existente de P41/P62 a las tarifas reales de `google/gemini-3.8-flash` pone la factura real de
 hoy hacia la frontera, por el 37,5 % que sale, en **$0,18** — una fracción de dólar a esta escala, y el
 costo de la propia GPU es la única entrada que sigue sin tasar, nombrada en vez de adivinada

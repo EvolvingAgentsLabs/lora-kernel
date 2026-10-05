@@ -69,8 +69,8 @@ should be asked to: `real-walks-s0` served, answered its tools and never differe
 C18 would flag — it was **applied**, and still wrote regulation text instead of a cited answer, because
 the training loss (not the serving substrate) sat on the whole walk. The fix (span-masked loss) is a
 training-time decision; this gate's job stops at confirming the resulting adapter is actually served.
-The live library endpoint (`examples/library/serve.py`, tested offline) will need to clear the same G1–G3
-checks before any live run, exactly as the tracker's `edge` member did (LIVE-tracker **[ran]**).
+~~The live library endpoint (`examples/library/serve.py`, tested offline) will need to clear the same G1–G3
+checks before any live run, exactly as the tracker's `edge` member did (LIVE-tracker **[ran]**).~~ The endpoint has since run live (LIVE-library **[ran]**, 2026-10-01, PASSED, 36/52), and its brief records no G1–G3 run of the `edge` arm **[read]** — the gate remains owed there. On vLLM, RFT0's sampler applies G1 (an identity check of the member by name) before any walk **[read]** (its brief).
 
 ## Its place in the plan
 
