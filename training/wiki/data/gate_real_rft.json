@@ -1,0 +1,84 @@
+{
+ "G1_eval_library_in_corpus": 0,
+ "G2_eval_question_in_corpus": 0,
+ "G3_not_verified": 0,
+ "G4_value_in_question": 0,
+ "G5_over_window": 0,
+ "rows": 630,
+ "two_hop": 239,
+ "max_tokens": 3884,
+ "top_openings": [
+  [
+   "how often do we",
+   24
+  ],
+  [
+   "how many days do",
+   22
+  ],
+  [
+   "how long do we",
+   15
+  ],
+  [
+   "how long does a",
+   11
+  ],
+  [
+   "what's the deadline for",
+   10
+  ]
+ ],
+ "passed": true,
+ "G6_repeated_opening_info": 61,
+ "base_rows": 315,
+ "base_sha256": "dadfcb9928492aa45730277ae0600c4495faa38973290ae2158efe07f507aee5",
+ "self_rows": 315,
+ "self_by_kind": {
+  "1-hop": 153,
+  "2-hop": 129,
+  "none": 33
+ },
+ "capped": 138,
+ "max_self": 315,
+ "questions": 356,
+ "questions_sampled": 356,
+ "questions_errored": 0,
+ "per_question_accepted": {
+  "0": 75,
+  "1": 109,
+  "2": 172
+ },
+ "by_kind": {
+  "one_hop": {
+   "questions": 193,
+   "covered": 140,
+   "walks": 772,
+   "right": 420,
+   "accepted": 207
+  },
+  "multi_hop": {
+   "questions": 134,
+   "covered": 112,
+   "walks": 536,
+   "right": 388,
+   "accepted": 200
+  },
+  "none": {
+   "questions": 29,
+   "covered": 29,
+   "walks": 116,
+   "right": 116,
+   "accepted": 46
+  }
+ },
+ "walks": 1424,
+ "walks_right": 924,
+ "acceptance_rate": 0.6489,
+ "walks_same_page_wrong": 49,
+ "walks_context": 0,
+ "walks_over_window": 5,
+ "self_with_error_line": 2,
+ "self_not_right": 0,
+ "corpus_sha256": "e5c7717123410f442b8ab930f01e50724422b26b5b24fc923594cc3c5b343585"
+}
