@@ -54,6 +54,15 @@ only change allowed, and it is said. The rows, runtime and bars do not move.
   (quota spent on the previous day's A100 sessions). A provider change, declared: the 26B in 4 bits is ~15 GB and fits the
   L4's 24 GB with room for the KV cache; FP8 (~26 GB) would not fit it. Rows, runtime, quantisation and bars unchanged.
 
-## Result
+## Result [ran] — BLOCKED BY THE SERVING ENGINE: no score, as the stopping condition wrote
 
-*(written after the run)*
+- **Attempt 4 (L4, 2026-10-05)** got a card and the server refused the configuration: vLLM 0.30 has **no `bitsandbytes`
+  quantisation method** (`Unknown quantization method: bitsandbytes`; `attempt4/vllm.log`). With FP8 failing on the A100's
+  sm80 (attempt 2) and 4-bit bitsandbytes absent from this vLLM, the brief's one allowed retry is spent: **TEACH0 is
+  recorded as blocked by the serving engine, not as a result.** Whether the 26B is a teacher stays unanswered.
+- **What vLLM 0.30 does list, for a new brief if one is wanted:** `experts_int8` — the MoE's experts quantised to int8 at
+  load (~23 GB for the experts plus ~6 GB dense: an A100 40 GB, not an L4), or a pre-quantised AWQ/GPTQ checkpoint of
+  the 26B if one exists. Either is a new instrument under its own brief — not a fifth attempt of this one.
+- **Context [read]:** Google's model card reports τ²-bench (average over 3) at 68.2 % for the 26B-A4B, 69.0 % for the 12B
+  and 76.9 % for the 31B (`docs/tau2/TEACHER-TERMS.md` on branch `tau2-t0-20261005`) — on that card's own harness, the
+  26B is not ahead of the 12B, which PAIR0/PAIR1 already showed buys no accuracy here.
