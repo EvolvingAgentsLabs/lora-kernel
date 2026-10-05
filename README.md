@@ -460,9 +460,11 @@ JSON of the arguments round-trips **1,587/1,587** — the shim is specified, not
 **Next, T1:** Gemma 4 31B against the E4B base on airline `test`, k = 4, gate a gap — the question TEACH0 could not answer.
 **TEACH0 is closed by the user's decision** — blocked by the serving engine (vLLM 0.30's FP8 does not run on the A100 and it has
 no `bitsandbytes` method), no result ([`TEACH0`](results/TEACH0-26b-headroom-20261004/BRIEF.md)); Google's own card **[read]**
-has the 26B at 68.2 % against the 12B's 69.0 % on τ², so the 26B line rests. **RFT0 is pre-registered and its sampling is
-running — no result:** rejection-sampling fine-tuning on the member's own walks, the fourth attempt at the wrong-statement
-citation and the first on-policy one; it needs at least six net repairs of about ten available to count as WORKS
+has the 26B at 68.2 % against the 12B's 69.0 % on τ², so the 26B line rests. **RFT0 [ran]: RFT HELPS as
+written, a tie in substance** — rejection-sampling fine-tuning on the member's own verified walks, 35/44 against 34/44,
+paired 2 : 1, $p = 1.0$; GRPO is not bought. The failure it and three attempts before it targeted (another statement cited
+on the right page) is 0 in both arms on this set — PAGE0's counter had included the right statement; what remains is
+two-value answers giving one value and the grader reading `40 CFR`'s title as a second number
 ([`RFT0`](results/RFT0-rejection-sampling-20261005/BRIEF.md)).
 
 **Not solved yet.** ~~The router is still a keyword dictionary — its two learned replacements are both measured and

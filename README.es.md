@@ -497,10 +497,12 @@ de **1.587/1.587** — el shim está especificado, no construido, y ningún miem
 4 31B contra el E4B base sobre `test` de airline, k = 4, compuerta una brecha — la pregunta que TEACH0 no pudo responder.
 **TEACH0 está cerrada por decisión del usuario** — bloqueada por el motor de servido (el FP8 de vLLM 0.30 no corre en la A100 y
 no tiene método `bitsandbytes`), sin resultado ([`TEACH0`](results/TEACH0-26b-headroom-20261004/BRIEF.md)); la propia tarjeta de
-Google **[read]** tiene al 26B en 68,2 % contra el 69,0 % del 12B en τ², así que la línea del 26B descansa. **RFT0 está
-pre-registrada y su muestreo corre — sin resultado:** ajuste fino por muestreo por rechazo sobre los recorridos propios del
-miembro, el cuarto intento sobre la citación de la declaración equivocada y el primero on-policy; necesita al menos seis
-reparaciones netas de unas diez disponibles para contar como WORKS ([`RFT0`](results/RFT0-rejection-sampling-20261005/BRIEF.md)).
+Google **[read]** tiene al 26B en 68,2 % contra el 69,0 % del 12B en τ², así que la línea del 26B descansa. **RFT0 [ran]:
+RFT HELPS tal como se escribió, un empate en sustancia** — ajuste fino por muestreo por rechazo sobre los recorridos propios
+verificados del miembro, 35/44 contra 34/44, pareado 2 : 1, $p = 1,0$; GRPO no se compra. La falla a la que apuntaban este y
+los tres intentos anteriores (otra declaración citada en la página correcta) es 0 en ambos brazos sobre este set — el
+contador de PAGE0 incluía la declaración correcta; lo que queda son respuestas de dos valores que dan uno y el calificador
+leyendo el título de `40 CFR` como un segundo número ([`RFT0`](results/RFT0-rejection-sampling-20261005/BRIEF.md)).
 
 **Todavía sin resolver.** ~~El router sigue siendo un diccionario de palabras clave — sus dos
 reemplazos aprendidos ya están medidos y ninguno pasa~~ — **un router factorizado (tarea vs. contenido) ahora pasa

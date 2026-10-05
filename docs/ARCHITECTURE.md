@@ -528,6 +528,13 @@ PAGE0's own `+top8` arm already on disk, which held one format failure in eleven
 next to nothing on this set for the corpus to repair, and the format-corpus line stops here
 ([`FMT0`](../results/FMT0-format-corpus-20261002/BRIEF.md)).
 
+**Training on the member's own walks, kept where the strict grader verifies them, does not move it either — RFT HELPS
+as written, a tie. [ran] RFT0.** `real-rft-s0` — 315 oracle rows plus 315 self-walks graded `right` — scores 35/44
+against `real-none-s0`'s 34/44, paired 2:1 ($p = 1.0$); GRPO is not bought. Read where the misses happen, the
+wrong-statement-on-the-right-page failure is 0 in both arms: PAGE0's counter had included the supporting statement
+itself. What remains is answers that give one of two values asked for, and a CFR part written `40 CFR part 279` that the
+grader reads as a hedge ([`RFT0`](../results/RFT0-rejection-sampling-20261005/BRIEF.md)).
+
 ## 5. The release contract
 
 A region enters through one door **[ran]**: a suite with a verifier the training loop never

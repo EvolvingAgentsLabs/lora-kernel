@@ -1,0 +1,25 @@
+=== session 1 of 1 · srv180109 · L4
+    boot clone: rc=0 89396be RFT0 S1 [ran]: 924/1424 sampled walks right (65%), 453 accepted over 281 questions; corpus = 315 oracle + 315 self walks, gate passed
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 89396be RFT0 S1 [ran]: 924/1424 sampled walks right (65%), 453 accepted over 281 questions; corpus = 315 oracle + 315 self walks, gate passed
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.31.0
+    89396be RFT0 S1 [ran]: 924/1424 sampled walks right (65%), 453 accepted over 281 questions; corpus = 315 oracle + 315 self walks, gate passed | 0.31.0
+    carried the adapters in (16 chunks)
+    runner started (launch 1)
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/rft0-s0 withlib-s1=adapters/rft0-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/rft0-s0 withlib-s1=adapters/rft0-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/rft0-s0 withlib-s1=adapters/rft0-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/rft0-s0 withlib-s1=adapters/rft0-s1
+    [rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/rft0-s0 withlib-s1=adapters/rft0-s1
+    [wiki] withlib-s0+page+top8 10/52 credit 10 value-right 10 errors 0 11s
+    [wiki] withlib-s0+page+top8 20/52 credit 15 value-right 15 errors 0 17s
+    [wiki] withlib-s0+page+top8 30/52 credit 22 value-right 22 errors 0 24s
+    [wiki] withlib-s1+page+top8 40/52 credit 32 value-right 32 errors 0 30s
+    [wiki] withlib-s1+page+top8 50/52 credit 40 value-right 40 errors 0 36s
+    [wiki] withlib-s1+page+top8 52/52 credit 42 value-right 42 errors 0 36s
+    the runner wrote its result — done
+exit 0

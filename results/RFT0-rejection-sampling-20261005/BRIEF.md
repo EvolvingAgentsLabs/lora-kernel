@@ -146,3 +146,44 @@ One sample, one training, one scoring. The questions, $k$, the temperature, the 
 the bars do not change after S1 starts. Redesign count for this instrument: 0 (it is new); for the citation question on
 this set, the fourth attempt after REAL6, REAL7, FMT0 — and the first that changes **whose walks** are trained on, not
 which oracle walks.
+
+## Result [ran] 2026-10-05 — RFT HELPS as written; a tie in substance
+
+`python -m training.wiki.rft_sample --verdict rft0.json` → `verdict.json`:
+
+| | `real-none-s0` (baseline) | `real-rft-s0` (treatment) |
+|---|---|---|
+| answerable | 34/44 | **35/44** |
+| multi-hop | 24/30 | 25/30 |
+| one-hop | 10/14 | 10/14 |
+| refusals | 7/8 | 7/8 |
+| another statement cited on the supporting page | 0 | 0 |
+
+Paired **2 : 1**, exact sign test $p = 1.0$; no row lost to transport; G1 shows both members applied (domain probes 3/3
+differ). By the table fixed above that is **RFT HELPS** (wins > losses, $p \ge 0.05$) — one net row, inside the run-to-run
+spread this repository has measured (33/44 and 34/44 for the same baseline on this set). **GRPO is not bought.**
+
+S1 **[ran]**: 924 of 1,424 sampled walks `right` (65 %), 453 accepted over 281 of the 356 questions, corpus 315 oracle + 315
+self-walks, gate passed. T **[ran]**: one A100 session, 120 steps, window 4,096 (the queue passed `--max-seq 4096`; the
+training record's `recipe` field copies `release_gate.RECIPE` verbatim and shows 1,536 — a recording flaw, also in
+REAL4's record, not a training one).
+
+**Read where the misses happen — the failure this attempt and the three before it targeted is not on this set.** This
+instrument counts "wrong statement on the right page" strictly — the walk cites *another* statement on the supporting
+page — and finds **0 in both arms**. PAGE0's count of 6 (`results/PAGE0-page-top-20261002/read.py`) counted any miss
+whose citation was on the supporting page, **including the supporting statement itself**. Broken down, the misses are:
+
+| miss | baseline | treatment |
+|---|---|---|
+| the supporting statement cited, the value wrong or partial | 7 | 7 |
+| no citation | 2 | 1 |
+| another page | 1 | 1 |
+
+The seven are an answer that names one of two values the row asks for (180 of 180/270 days; 45 of 45/30 days; the last
+line keeping 72 hours of 30 days / 72 hours), and a CFR part written as `40 CFR part 279` — **the grader reads the CFR
+title, 40, as a second number** (`grade.value_right`: any number not asked for and not in the question is a hedge). Read
+beside, not folded in: with the title not counted, 35/44 against 37/44 — still no effect.
+
+So the line of four attempts (REAL6, REAL7, FMT0, RFT0) was aimed, since PAGE0, at a failure mislabelled by a counter that
+included the right citation. What remains on this set is answer completeness on two-value rows and one grader rule; neither
+is a citation failure, and neither is bought here. Changing the grader is an instrument change and needs its own brief.
