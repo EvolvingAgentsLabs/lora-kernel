@@ -77,7 +77,9 @@ opposite reasons.
 ([`ARCHITECTURE.md`](ARCHITECTURE.md) §4) — the way an agent runtime would actually talk to it: one process, one
 library, REAL4's own runtime (the question's full text as the first search on every shelf, a fallback to every
 shelf, pages opened with their statements). It is the `edge` profile above plus the memory's runtime in front of it,
-not a third thing.
+not a third thing. **What it serves by default now (each default is measured further down):** the citation gate on
+(`--cite-gate`, GATE0), `--page-top 8` (PAGE0), the strict guard (`--guard strict`, FMT0), `--page-budget 2500`
+(LIVE-library2), and an answer for every request even when a walk raises (`NO_ANSWER`).
 
     llama-server -m gemma-4-E4B-it-Q8_0.gguf --lora lora-real-none-s0-f16.gguf --port 8793 -c 12288 -b 512 -ub 512 -ngl 99
     python -m examples.library.serve --library knowledge/logistics-regs --upstream http://127.0.0.1:8793 --port 8766

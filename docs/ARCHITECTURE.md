@@ -1,6 +1,6 @@
 # Architecture
 
-The system as designed on 2026-09-19, state as of 2026-09-20. What is built and measured is marked
+The system as designed on 2026-09-19, state as of 2026-09-20 and revised through 2026-10-05 where a line says so. What is built and measured is marked
 **[ran]**; what is designed and not built says so. Where it sits in a whole organisation, and what is
 missing for it to be a generic framework, is §9 and [`FRAMEWORK.md`](FRAMEWORK.md). The measurements behind every choice are in
 [`RECORD.md`](RECORD.md); the order of work is [`PLAN.md`](PLAN.md). How every mechanism named below
@@ -15,9 +15,11 @@ under a foreign prompt, 19 of 32 under its own **[ran]** P63; an expert that rea
 6-to-9-step chains scores 11 of 90 when its tools' results reach it as `tool_calls` messages and
 **90 of 90** when they are written inline, as its corpus taught **[ran]** M7 arm 0b.
 
-**Version 1.0 is five things [spec]:** experts defined by their corpora, the router with its
+**Version 1.0 is five things** — ~~[spec]~~ **built and measured, 2026-10-05 [ran]** (README's badge: "core 1.0 built, measured"): experts defined by their corpora, the router with its
 abstention, the memory (§4), the runtime that referees it, and the release contract that hashes all
 of it. The pair of §3 attaches per subdomain where it is measured to pay and is not required by 1.0.
+What 1.0 has not passed, named: the radar (R0's recall@3 0.638 against a 0.80 bar, W3 **[ran]**; lexical BM25 is what
+serves), a verifier nobody here wrote (milestone 8, τ²-bench: T0 passed, §5 below), and real traffic.
 
 Everything else is that fact applied four times:
 
@@ -25,7 +27,7 @@ Everything else is that fact applied four times:
 |---|---|---|
 | **the expert** | a QLoRA on the small model, trained by SFT on one corpus, released with a contract that records the distribution | **[ran]** two released; since M1 on `Qwen3.5-4B`, each tying its Qwen 2.5 release |
 | **the router** | a very small model *of the same corpora*: which expert's distribution does this request fall in — or none | a factored router (task vs. content) **[ran]** ROUTE0, the proxy's default; the dictionary stays beside it; three whole-request arms **[ran]** M2, M2b, M2c failed first; in a deployment with one agent per role, *the role is the route* (§9) |
-| **the pair** | a second LoRA, on the large model, trained on the *same corpus*; the small one drafts, the large one verifies | **[ran]** a measured speed result (1.98–2.4×, bf16 on an A100, output identity established — F0c) without a region that needs the large half's accuracy (B3, PAIR0, PAIR1 — TIE, 33/44 vs 34/44) — milestones 3–4 |
+| **the pair** | a second LoRA, on the large model, trained on the *same corpus*; the small one drafts, the large one verifies | **[ran]** a measured speed result (1.98–2.4×, bf16 on an A100, output identity established — F0c) without a region that needs the large half's accuracy (B3, PAIR0, PAIR1 — TIE, 33/44 vs 34/44; the 26B MoE's headroom run TEACH0 closed 2026-10-05, blocked by the serving engine, no result) — milestones 3–4 |
 | **the memory** | the subdomain's library — an operational harness and an encyclopedic wiki — a radar over it, three verbs, and a referee; the LoRA learns the **habit of navigating**, not the content | library, referee, corpus built **[ran]** W1, W2, W4; search under its bar **[ran]** W3; ~~the central claim measured three times and not passed — W5, W5b, W5c (navigation transfers, reading a conditional value in an unseen note does not)~~ — **passed on the atomic-statement design, 2026-09-24 [ran] W9**: both seeds 35/40 against the untrained base's 0/40, tying the base handed the oracle's own statements. Real only when both the text and the loss are: the same trajectory trained on a *generated* world never opens a real page, 0/25 **[ran] REAL0**; trained instead on real-document walks with the loss on the model's own spans, it transfers to a family it never trained on (18/23 against the untrained base's 9/23, two seeds) and learns to refuse what its library cannot answer (15/16, 0 false of 36) **[ran] REAL3, REAL4**; a third, link-dense family reads 15/25 against the untrained base's 2/25 — a large transfer, under the 70% bar on the strict citation, the open item **[ran] REAL5**. **Served today** with the citation gate on and a page capped to its best 8 statements by default **[ran] GATE0, PAGE0** (§4) |
 
 ```mermaid
@@ -259,6 +261,13 @@ where the bare 12B left hundreds in PAIR0 — so the protocol was the training, 
 observation beside the verdict: the two members err on different rows (39/44 right by either)
 ([`PAIR1`](../results/PAIR1-large-member-20261003/BRIEF.md)).
 
+**TEACH0 — closed by the user's decision, 2026-10-05: blocked by the serving engine, no result [ran].** The one run that
+would have shown a larger model ahead of the member — `gemma-4-26B-A4B-it`, untrained, on PAGE0's rows — never scored:
+FP8 failed on the A100's sm80 and vLLM 0.30 has no `bitsandbytes` method for the L4 retry
+([`TEACH0`](../results/TEACH0-26b-headroom-20261004/BRIEF.md)). The question "is there a teacher?" moves to an external
+verifier (§5, τ² T1, Gemma 4 31B); the flash line rests until a larger model shows value
+([`flash-inference/00-analysis.md`](flash-inference/00-analysis.md) §8).
+
 **What is already known about the halves.** vLLM applies a LoRA over a 4-bit large model
 **[ran]** P60 §3b. Qwen 3.5 adapters are servable once their tensors are named for the class
 vLLM serves **[ran]** D2. The small and large models of the family share one id space, so a
@@ -349,7 +358,7 @@ receiving, dispatch, claims and returns, customer communications, finance, HR, m
 per world so no value can be known by heart; the untrained base is measured before a trajectory LoRA is
 bought ([`MEMORY.md`](MEMORY.md) §1.6).
 
-Specified piece by piece in [`MEMORY.md`](MEMORY.md) **[spec]**; argued for, with its open
+Specified piece by piece in [`MEMORY.md`](MEMORY.md) — ~~**[spec]**~~ built since, W1–W9 and the real-document line **[ran]**; argued for, with its open
 questions, in [`KNOWLEDGE-TRAJECTORIES.md`](KNOWLEDGE-TRAJECTORIES.md). Five pieces, four of them
 not neural:
 
@@ -359,7 +368,7 @@ not neural:
 | **the radar** | embeddings compressed to one subdomain; per note two vectors, *when is it for* and *what does it define*; returns the two or three notes of exactly the subdomain in play | one small index per subdomain |
 | **the language** | three verbs the expert may write — `<search>`, `<open>`, `<calc>` — each answered inline after its closing tag | a grammar, versioned with the release |
 | **the LoRA** | trained on the *habit of navigating*: cases whose constants change every time, so the number has to be read from the note | the adapter — the only trained piece |
-| **the runtime** | a small Python referee in the proxy: turns the pages, substitutes a site's rules before the expert sees the note, cuts a walk that skips a `requires` | `memory/` **[spec]**, on the corpus-mode loop that already serves every member |
+| **the runtime** | a small Python referee in the proxy: turns the pages, substitutes a site's rules before the expert sees the note, cuts a walk that skips a `requires` | `memory/` ~~**[spec]**~~ **[ran]** W2, on the corpus-mode loop that serves every member; the served library endpoint runs it with the citation gate on, `page_top = 8`, the strict guard, and always answers (GATE0, PAGE0, LIVE-library2) |
 
 ```mermaid
 flowchart LR
@@ -530,6 +539,21 @@ as a record read off its corpus — band, surface, keys, order, system prompt �
 re-read every corpus and fail if a declaration drifts. With milestone 7 the manifest gains the
 knowledge base's hash and its index's hash: a member is its corpus *and* its base.
 
+**The verifier nobody here wrote — τ²-bench, milestone 8 [ran] T0, 2026-10-05.** The door's "a verifier the training
+loop never sees" had so far always been this repository's own grader. τ²-bench's airline reward is the hash of the final
+database state times a communicated-information check, in code from `sierra-research/tau2-bench`; its shipped airline
+trajectories re-grade locally to the recorded reward, **800 of 800** — the local grader is τ²'s. It is also where the
+frontier-as-teacher question is asked: the user chose **Gemma 4 31B, self-hosted** (Apache 2.0 end to end; the terms of
+Claude and Grok forbid training a published adapter on their outputs, GPT's and Gemini's leave it undefined —
+[`tau2/TEACHER-TERMS.md`](tau2/TEACHER-TERMS.md)), as teacher and as user simulator, and T1 asks whether it beats the E4B
+base on airline `test` by a gap worth distilling. **The format gap is the architecture's own constraint, measured offline
+[ran]:** τ² gives the agent native `tool_calls` and executes them itself, while a member writes inline tags and is
+served as its corpus taught it (11/90 against 90/90). The repo's tag serializer round-trips 1,345 of 1,587 shipped airline
+calls and **loses 220 of 320 writes** (nested arrays, integers read back as strings, values cut at a comma); a tag whose
+body is the JSON of the arguments round-trips **1,587/1,587**. The shim — `openai_proxy` with a τ² profile, the gateway
+pattern not reusable because τ² must execute every call itself — is specified, **not built**, and checked for no loss
+before any member is scored ([`tau2/RECON.md`](tau2/RECON.md) §3).
+
 ## 6. The family
 
 **Gemma 4, from 2026-09-25 — the user's decision on B1 [ran].** `google/gemma-4-E4B-it` small; `gemma-4-12B-it`
@@ -614,8 +638,12 @@ and correct.** Three consequences for the design:
   byte-identical, the registries derivable and equal. The code does not read the packs yet, and the
   memory's member declares a loop — the referee's — that the API cannot serve.
 - **The model never holds a credential.** Tools reach the systems of record *as the person asking*;
-  permission is checked by the tool, outside the model, and every action is logged. **[spec]** —
-  nothing of this layer exists, and no expert here has been measured performing a write.
+  permission is checked by the tool, outside the model, and every action is logged. ~~**[spec]** —
+  nothing of this layer exists, and no expert here has been measured performing a write.~~ **Built and measured on
+  synthetic organisations [ran]:** the gateway checks a signed token (HS256 with a demo secret; a real identity provider's
+  RS256/JWKS is not built), the tool layer refuses another tenant's records and holds a payment for a person, and members
+  were measured performing reads and writes (the school's 15/15 scenes, M8, M9, and live through OpenClaw — LIVE-school,
+  LIVE-distributor).
 
 What exists, what is missing and the order to build it — thirteen gaps, eight interfaces, seven steps,
 each with the result that would stop it — is [`FRAMEWORK.md`](FRAMEWORK.md). The scope line of §8 does
@@ -706,9 +734,9 @@ the arm before resampling saw it; fixed, both sets rerun from scratch for this r
 case, all seven roles the reference diagram draws — `dev`, `trainee`, `marketing`, `educador`,
 `compras`, `cfo`, `it` — thirteen tools, two tenants, an adversarial suite at **0 leaks**, both
 domains' MCP servers registered and `mcp probe`-verified against a real OpenClaw instance. What is
-still missing is the falsifier's model-side half (does a *model* ever try the cross-tenant call —
+still missing ~~is the falsifier's model-side half (does a *model* ever try the cross-tenant call —
 needs an account behind an OpenClaw turn, not yet run) and any corpus or adapter — nothing here
-trains. Milestone 6's own first number also landed the same day: pricing the existing P41/P62 replay
+trains~~ **was, on 2026-09-21** — superseded: adapters have been trained and run through this layer since (M8, M9, M10, H3, ROUTE1; live through OpenClaw, LIVE-school, LIVE-distributor, LIVE-tracker **[ran]**); whether a *model* acts on a planted instruction in a tool result: INJ0 replayed every recorded turn, 70 exposed, 0 acted — no headroom, still on synthetic organisations. Milestone 6's own first number also landed the same day: pricing the existing P41/P62 replay
 at real `google/gemini-3.8-flash` rates puts today's frontier bill for the 37.5 % sent out at **$0.18**
 — a fraction of a dollar at this scale, and the GPU's own cost is the one input still unpriced, named
 rather than guessed (`docs/PLAN.md` milestone 6, `results/M6-bill-20260921/`).

@@ -8,7 +8,7 @@
 
 [![licencia Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 [![familia Gemma 4](https://img.shields.io/badge/family-Gemma%204-8A5C10)](docs/es/ARCHITECTURE.md)
-[![núcleo 1.0 especificado](https://img.shields.io/badge/core%201.0-specified-555)](docs/es/MEMORY.md)
+[![núcleo 1.0 construido, medido](https://img.shields.io/badge/core%201.0-built%2C%20measured-555)](docs/es/MEMORY.md)
 [![registro v0.1-foundations](https://img.shields.io/badge/record-v0.1--foundations-555)](docs/es/RECORD.md)
 
 *[English](README.md)*
@@ -20,7 +20,7 @@
 > **[ran]**: un experto de triage de inbox en 0.989 contra 0.345 del modelo base; preguntas de varios
 > saltos sobre una wiki que ningún modelo vio, 38/40 contra 19/40 del Gemma sin entrenar; y una
 > lección que por sí sola vale la visita — el mismo adapter sacó 11/90 servido por `tool_calls` y
-> **90/90** servido como su corpus le enseñó. Todo sobre suites generadas, todavía sin tráfico real;
+> **90/90** servido como su corpus le enseñó. Casi todo sobre suites generadas y sobre regulaciones reales ingeridas textualmente, todavía sin tráfico real;
 > lo que falló está en [`docs/es/RECORD.md`](docs/es/RECORD.md). El adapter que recorre la wiki está en
 > [Hugging Face](https://huggingface.co/Matias/lora-kernel-distributor-wiki-gemma4-e4b) — probalo en diez minutos:
 > [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EvolvingAgentsLabs/lora-kernel/blob/main/examples/colab/wiki_walk.ipynb)
@@ -78,7 +78,7 @@ pedido servido por el suyo — con **instancias de OpenClaw por tarea** encima.
 
 Cada afirmación de abajo está marcada **[ran]** (observada en este repositorio, con la corrida
 nombrada), **[read]** (de código fuente o de un paper) o **[spec]** (decidido, todavía no
-construido) — y todo lo medido hasta ahora es sobre suites generadas, todavía no sobre tráfico real.
+construido) — y todo lo medido hasta ahora es sobre suites generadas o sobre documentos reales ingeridos textualmente, nunca sobre tráfico real.
 Los números vivos, incluido lo que no pasó, están en [`docs/es/PLAN.md`](docs/es/PLAN.md) y
 [`docs/es/RECORD.md`](docs/es/RECORD.md); lo que sigue es lo que no cambia cada vez que alguno de
 ellos se mueve.
@@ -91,7 +91,7 @@ ellos se mueve.
 
 *El núcleo de la 1.0: un router que puede abstenerse, un especialista y una biblioteca por subdominio, un árbitro debajo de todos.*
 
-Cinco cosas, y cómo cambia cada una:
+Cinco cosas, y cómo cambia cada una. **Estado, 2026-10-05: las cinco están construidas y medidas** — de ahí la insignia, "núcleo 1.0 construido, medido" — con lo que no pasó nombrado: la compuerta del radar (recall@3 0,638 contra 0,80, W3 **[ran]**), un verificador que nadie de acá escribió (τ²-bench, abajo: instalado, todavía sin miembro puntuado) y el tráfico real:
 
 | | qué es | cambia con |
 |---|---|---|
@@ -152,7 +152,7 @@ que verifica lo que el chico borradorea ([`docs/es/PLAN.md`](docs/es/PLAN.md) hi
 
 ### La memoria, en cinco piezas
 
-Especificación completa: [`docs/es/MEMORY.md`](docs/es/MEMORY.md) **[spec]**.
+Especificación completa y su registro: [`docs/es/MEMORY.md`](docs/es/MEMORY.md) (~~**[spec]**~~ construida hasta W9 **[ran]**).
 
 1. **La biblioteca — dos estantes de markdown**, cada nota de menos de media página. El
    **arnés operativo** (*¿cómo se hace?*): notas tipo receta cuyos enlaces son el flujo de
@@ -357,9 +357,7 @@ Lo que comparten es lo que hace que una región merezca un experto: **los mismos
 repetidos a diario, con reglas locales que difieren del manual, sobre datos que no deberían salir.**
 La primera biblioteca de este repositorio está armada con los procedimientos paso a paso de un manual
 abierto ([`knowledge/nursing-iv/`](knowledge/nursing-iv/)). Lo que *no* está
-establecido está más abajo, y vale acá entero: todavía no hay datos reales, y la
-afirmación de que una biblioteca extiende a un experto a un procedimiento que nunca entrenó no está
-probada.
+establecido está más abajo, y vale acá entero: todavía no hay tráfico real, y la afirmación de que una biblioteca extiende a un experto a un procedimiento que nunca entrenó se sostiene sobre la wiki de enunciados atómicos (W9) y, entrenada sobre texto real con una pérdida enmascarada por tramos, sobre regulaciones reales (REAL3), y no se sostuvo sobre las notas de dos valores de la biblioteca de enfermería (W5, W5c) — ~~no está probada~~.
 
 ## Cómo está parado
 
@@ -482,6 +480,28 @@ lineal, 22,7 → 135 → 270 → 500 tok/s para 1 → 8 → 16 → 32 sesiones, 
 — no se alcanzó. Reemplaza el 0,88 de una sola ráfaga de E5
 ([`results/C1-concurrency-20260929/`](results/C1-concurrency-20260929/BRIEF.md)).
 
+**Hay un verificador externo instalado, un maestro elegido por sus términos, y TEACH0 está cerrada [ran] (2026-10-05).** Lo
+único que toda suite anterior compartía es que este repositorio escribió su calificador. **τ²-bench airline** — cuya
+recompensa es el hash del estado final de la base de datos, en código de `sierra-research/tau2-bench` — ahora corre acá: el
+dominio mock de punta a punta, y su calificador local recalifica las **800 de 800** simulaciones que trae a la recompensa
+registrada (T0 pasó por la opción (b) del brief; 0,97 USD de un tope de 50 USD;
+[`TAU2-T0`](results/TAU2-T0-recon-20261005/BRIEF.md), [`docs/es/tau2/RECON.md`](docs/es/tau2/RECON.md)). Su partición de
+airline es 30 train / 20 test, y este proyecto ajusta sobre train y reporta test. **El maestro se elige por los términos de
+uso, no por calidad:** los términos de Claude y de Grok prohíben entrenar un modelo publicado con sus salidas, los de GPT y
+Gemini dejan "compete" sin definir, y **Gemma 4 31B autoalojado** es Apache 2.0 igual que la base — así que es maestro y
+simulador de usuario a la vez, decisión del usuario ([`docs/es/tau2/TEACHER-TERMS.md`](docs/es/tau2/TEACHER-TERMS.md)).
+**La brecha de formato se mide offline, antes de construir nada:** τ² le da al agente llamadas nativas a herramientas, los
+miembros escriben etiquetas en línea, y el serializador de etiquetas del repo hace ida y vuelta de 1.345 de 1.587 llamadas de
+airline incluidas y **pierde 220 de 320 escrituras**; una etiqueta cuyo cuerpo es el JSON de los argumentos hace ida y vuelta
+de **1.587/1.587** — el shim está especificado, no construido, y ningún miembro se puntuó todavía sobre τ². **Sigue T1:** Gemma
+4 31B contra el E4B base sobre `test` de airline, k = 4, compuerta una brecha — la pregunta que TEACH0 no pudo responder.
+**TEACH0 está cerrada por decisión del usuario** — bloqueada por el motor de servido (el FP8 de vLLM 0.30 no corre en la A100 y
+no tiene método `bitsandbytes`), sin resultado ([`TEACH0`](results/TEACH0-26b-headroom-20261004/BRIEF.md)); la propia tarjeta de
+Google **[read]** tiene al 26B en 68,2 % contra el 69,0 % del 12B en τ², así que la línea del 26B descansa. **RFT0 está
+pre-registrada y su muestreo corre — sin resultado:** ajuste fino por muestreo por rechazo sobre los recorridos propios del
+miembro, el cuarto intento sobre la citación de la declaración equivocada y el primero on-policy; necesita al menos seis
+reparaciones netas de unas diez disponibles para contar como WORKS ([`RFT0`](results/RFT0-rejection-sampling-20261005/BRIEF.md)).
+
 **Todavía sin resolver.** ~~El router sigue siendo un diccionario de palabras clave — sus dos
 reemplazos aprendidos ya están medidos y ninguno pasa~~ — **un router factorizado (tarea vs. contenido) ahora pasa
 [ran] ROUTE0, 2026-10-02**: sirve 0 de 600 textos ajenos localmente contra 294 del diccionario y pierde 0 de 480
@@ -519,8 +539,7 @@ suite fresca, pareado 11:0, p = 0,00098 (**H3a PASÓ**); lo-sin-bloque **ahora f
 156/160 (97,5 %), developer 76/80, lead 40/40, QA 40/40, a más o menos un tercio de los tokens de
 prompt por turno (**H3b PASÓ**) — el miembro sin bloque es el contexto compacto que pedía el diseño.
 El arnés ya corrió en vivo a través de OpenClaw en la Mac del usuario (LIVE-tracker, 14/14); su
-caché global — construida y probada con tests unitarios — todavía no se entrenó en ningún corpus fuera del dominio de seguimiento. La biblioteca de
-la memoria vive sólo en `distributor-wiki@v2`, un miembro aparte — ningún miembro servido lleva su propia biblioteca todavía.
+caché global — construida y probada con tests unitarios — todavía no se entrenó en ningún corpus fuera del dominio de seguimiento. ~~La biblioteca de la memoria vive sólo en `distributor-wiki@v2`, un miembro aparte — ningún miembro servido lleva su propia biblioteca todavía.~~ **Un miembro servido ya lleva su biblioteca [ran]:** `real-none-s0` detrás de `examples/library/serve.py` — compuerta de citación prendida, `page_top = 8`, guarda estricta, una respuesta para cada pregunta (LIVE-library2, GATE0, PAGE0) — mientras que los miembros que abstienen de la escuela, la distribuidora y el tracker están separados de él.
 La corrida en vivo de la distribuidora de arriba es sólo llama.cpp; todavía nadie corrió el par a través de vLLM
 bf16 como demo en vivo. Todavía no se midió tráfico real en ningún lugar de este repositorio.
 
@@ -625,6 +644,7 @@ Así corre exactamente la demo en vivo de la distribuidora de arriba, miembro in
 | [`docs/es/DEMO.md`](docs/es/DEMO.md) | **la demo de cinco minutos** — una organización de referencia sobre un modelo chico local, qué está medido y qué no, y la medición que debería terminar pidiendo |
 | [`docs/es/PLAN.md`](docs/es/PLAN.md) | el plan vivo — hitos, compuertas, brazos que matan |
 | [`docs/es/RECORD.md`](docs/es/RECORD.md) | todo lo medido, incluido lo que falló; cada línea nombra su corrida |
+| [`docs/es/tau2/RECON.md`](docs/es/tau2/RECON.md) · [`docs/es/tau2/TEACHER-TERMS.md`](docs/es/tau2/TEACHER-TERMS.md) | **τ²-bench, el verificador externo** — el reconocimiento (dominios, herramientas de airline, recompensa y particiones, la brecha de formato y el shim por venir) y los términos de qué maestros permiten entrenar un adaptador publicado; los originales en inglés están en `docs/tau2/` |
 | [`docs/es/FOUNDATIONS.md`](docs/es/FOUNDATIONS.md) | la matemática, atada a las corridas que la instancian |
 | [`docs/es/SERVING.md`](docs/es/SERVING.md) · [`docs/es/OPENCLAW.md`](docs/es/OPENCLAW.md) · [`docs/es/SUBSTRATE-GATE.md`](docs/es/SUBSTRATE-GATE.md) | correrlo |
 | [`docs/articles/`](docs/articles/2026-09-era-el-arnes.es.md) | *Una organización que funciona con agentes, sobre una sola GPU: la arquitectura* — primero la arquitectura de la solución, después lo que ya está medido (el hallazgo del arnés incluido), lo que no, la hoja de ruta |

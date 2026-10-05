@@ -8,7 +8,7 @@
 
 [![license Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 [![family Gemma 4](https://img.shields.io/badge/family-Gemma%204-8A5C10)](docs/ARCHITECTURE.md)
-[![core 1.0 specified](https://img.shields.io/badge/core%201.0-specified-555)](docs/MEMORY.md)
+[![core 1.0 built, measured](https://img.shields.io/badge/core%201.0-built%2C%20measured-555)](docs/MEMORY.md)
 [![record v0.1-foundations](https://img.shields.io/badge/record-v0.1--foundations-555)](docs/RECORD.md)
 
 *[Español](README.es.md)*
@@ -19,7 +19,7 @@
 > expert's ground to a frontier model. Measured here **[ran]**: an inbox-triage expert at 0.989 against
 > the bare base's 0.345; multi-hop questions over a wiki no model has seen, 38/40 against the bare
 > Gemma's 19/40; and one lesson worth the visit on its own — the same adapter scored 11/90 served
-> through `tool_calls` and **90/90** served the way its corpus taught it. All on generated suites, no
+> through `tool_calls` and **90/90** served the way its corpus taught it. Mostly on generated suites and on real regulations ingested verbatim, no
 > real traffic yet; what failed is in [`docs/RECORD.md`](docs/RECORD.md). The wiki-walking adapter is on
 > [Hugging Face](https://huggingface.co/Matias/lora-kernel-distributor-wiki-gemma4-e4b) — try it in ten minutes:
 > [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EvolvingAgentsLabs/lora-kernel/blob/main/examples/colab/wiki_walk.ipynb)
@@ -73,8 +73,7 @@ It ships as an **OpenAI-compatible API** — one resident model, several adapter
 by its own — with **OpenClaw instances per task** on top.
 
 Every claim below is marked **[ran]** (observed in this repository, run named), **[read]** (from
-source or a paper) or **[spec]** (decided, not yet built) — and everything measured so far is on
-generated suites, not real traffic yet. The living numbers, including what has not passed, are in
+source or a paper) or **[spec]** (decided, not yet built) — and everything measured so far is on generated suites or on real documents ingested verbatim, never on real traffic. The living numbers, including what has not passed, are in
 [`docs/PLAN.md`](docs/PLAN.md) and [`docs/RECORD.md`](docs/RECORD.md); what follows is what does not
 change every time one of them moves.
 
@@ -86,7 +85,7 @@ change every time one of them moves.
 
 *The core of 1.0: a router that may abstain, a specialist and a library per subdomain, one referee under all of them.*
 
-Five things, and how each one changes:
+Five things, and how each one changes. **Status, 2026-10-05: all five are built and measured** — hence the badge, "core 1.0 built, measured" — with what has not passed named: the radar's gate (recall@3 0.638 against 0.80, W3 **[ran]**), a verifier nobody here wrote (τ²-bench, below: installed, no member scored yet) and real traffic:
 
 | | what it is | changes by |
 |---|---|---|
@@ -143,7 +142,7 @@ small one drafts ([`docs/PLAN.md`](docs/PLAN.md) milestones 3–4).
 
 ### The memory, in five pieces
 
-Full specification: [`docs/MEMORY.md`](docs/MEMORY.md) **[spec]**.
+Full specification and its record: [`docs/MEMORY.md`](docs/MEMORY.md) (~~**[spec]**~~ built through W9 **[ran]**).
 
 1. **The library — two shelves of markdown**, each note under half a page. The **operational
    harness** (*how is it done?*): recipe-like notes whose links are the control flow — `requires`
@@ -334,8 +333,7 @@ What they share is what makes a region worth an expert: **the same few procedure
 with local rules that differ from the textbook, over data that should not leave.** The first library
 in this repository is built from an open textbook's step-by-step procedures
 ([`knowledge/nursing-iv/`](knowledge/nursing-iv/)). What is *not* established is in the section
-below, and it applies here in full: no real data yet, and the claim that a library extends an expert
-to a procedure it never trained on is untested.
+below, and it applies here in full: no real traffic yet, and the claim that a library extends an expert to a procedure it never trained on holds on the atomic-statement wiki (W9) and, trained on real text with a span-masked loss, on real regulations (REAL3), and did not on the nursing library's two-valued notes (W5, W5c) — ~~untested~~.
 
 ## Where it stands
 
@@ -447,6 +445,26 @@ with zero errors over 128 requests; throughput scales near-linearly, 22.7 → 13
 for 1 → 8 → 16 → 32 sessions, and the ceiling sits above 32 — not reached. Supersedes E5's
 single-burst 0.88 ([`results/C1-concurrency-20260929/`](results/C1-concurrency-20260929/BRIEF.md)).
 
+**An external verifier is installed, a teacher is chosen by its terms, and TEACH0 is closed [ran] (2026-10-05).** The one
+thing every earlier suite shared is that this repository wrote its grader. **τ²-bench airline** — whose reward is the hash of
+the final database state, in code from `sierra-research/tau2-bench` — now runs here: the mock domain end to end, and its
+local grader re-grades the **800 of 800** simulations shipped with it to the recorded reward (T0 passed by the brief's option
+(b); 0.97 USD of a 50 USD cap; [`TAU2-T0`](results/TAU2-T0-recon-20261005/BRIEF.md), [`docs/tau2/RECON.md`](docs/tau2/RECON.md)).
+Its airline split is 30 train / 20 test, and this project tunes on train and reports test. **The teacher is chosen by the
+terms of use, not by quality:** Claude's and Grok's terms forbid training a published model on their outputs, GPT's and
+Gemini's leave "compete" undefined, and **Gemma 4 31B self-hosted** is Apache 2.0 like the base — so it is both teacher and
+user simulator, the user's decision ([`docs/tau2/TEACHER-TERMS.md`](docs/tau2/TEACHER-TERMS.md)). **The format gap is measured
+offline, before anything is built:** τ² hands the agent native tool calls, members write inline tags, and the repo's tag
+serializer round-trips 1,345 of 1,587 shipped airline tool calls and **loses 220 of 320 writes**; a tag whose body is the
+JSON of the arguments round-trips **1,587/1,587** — the shim is specified, not built, and no member has been scored on τ².
+**Next, T1:** Gemma 4 31B against the E4B base on airline `test`, k = 4, gate a gap — the question TEACH0 could not answer.
+**TEACH0 is closed by the user's decision** — blocked by the serving engine (vLLM 0.30's FP8 does not run on the A100 and it has
+no `bitsandbytes` method), no result ([`TEACH0`](results/TEACH0-26b-headroom-20261004/BRIEF.md)); Google's own card **[read]**
+has the 26B at 68.2 % against the 12B's 69.0 % on τ², so the 26B line rests. **RFT0 is pre-registered and its sampling is
+running — no result:** rejection-sampling fine-tuning on the member's own walks, the fourth attempt at the wrong-statement
+citation and the first on-policy one; it needs at least six net repairs of about ten available to count as WORKS
+([`RFT0`](results/RFT0-rejection-sampling-20261005/BRIEF.md)).
+
 **Not solved yet.** ~~The router is still a keyword dictionary — its two learned replacements are both measured and
 neither passes~~ — **a factored router (task vs. content) now passes [ran] ROUTE0, 2026-10-02**: it serves 0 of 600
 foreign texts locally against the dictionary's 294 and loses 0 of 480 legitimate requests, and is now the proxy's
@@ -480,9 +498,7 @@ suite, 11:0 paired, p = 0.00098 (**H3a PASSED**); block-less **now works, every 
 (97.5 %), developer 76/80, lead 40/40, QA 40/40, at about a third of the prompt tokens per turn
 (**H3b PASSED**) — the block-less member is the compact context the design asked for. The
 harness has run live through OpenClaw on the user's Mac (LIVE-tracker, 14/14); its global
-cache — built and unit-tested — is not yet trained on in any corpus outside the tracker domain. The memory's library lives only in
-`distributor-wiki@v2`, a separate
-member — no serving member carries its own library yet. The distributor's live run above is llama.cpp only; nobody
+cache — built and unit-tested — is not yet trained on in any corpus outside the tracker domain. ~~The memory's library lives only in `distributor-wiki@v2`, a separate member — no serving member carries its own library yet.~~ **A serving member now carries its library [ran]:** `real-none-s0` behind `examples/library/serve.py` — citation gate on, `page_top = 8`, strict guard, an answer for every question (LIVE-library2, GATE0, PAGE0) — while the abstaining members of the school, distributor and tracker are separate from it. The distributor's live run above is llama.cpp only; nobody
 has run the pair through vLLM bf16 as a live demo yet. No real traffic has been measured anywhere in this repository yet.
 
 **Everything else — every milestone, every arm, every run — moves as the project does and is not
@@ -583,6 +599,7 @@ exactly how the live distributor demo above runs, member and all
 | [`docs/DEMO.md`](docs/DEMO.md) | **the five-minute demo** — a reference organisation on a small local model, what is measured and what is not, and the measurement it should end by asking for |
 | [`docs/PLAN.md`](docs/PLAN.md) | the living plan — milestones, gates, kill arms |
 | [`docs/RECORD.md`](docs/RECORD.md) | everything measured, including what failed; each line names its run |
+| [`docs/tau2/RECON.md`](docs/tau2/RECON.md) · [`docs/tau2/TEACHER-TERMS.md`](docs/tau2/TEACHER-TERMS.md) | **τ²-bench, the external verifier** — the reconnaissance (domains, airline's tools, reward and splits, the format gap and the shim to come) and which teachers' terms allow training a published adapter; Spanish mirrors under `docs/es/tau2/` |
 | [`docs/FOUNDATIONS.md`](docs/FOUNDATIONS.md) | the mathematics, tied to the runs that instantiate it |
 | [`docs/SERVING.md`](docs/SERVING.md) · [`docs/OPENCLAW.md`](docs/OPENCLAW.md) · [`docs/SUBSTRATE-GATE.md`](docs/SUBSTRATE-GATE.md) | running it |
 | [`docs/articles/`](docs/articles/2026-09-it-was-the-harness.md) | *An organisation that runs on agents, on a single GPU: the architecture* — the solution architecture first, then what is already measured (the harness finding among it), what is not, the roadmap |

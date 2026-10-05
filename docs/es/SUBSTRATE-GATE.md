@@ -73,9 +73,9 @@ diferir de la base de la manera que C18 marcaría — estaba **applied**, y aun 
 reglamento en vez de una respuesta citada, porque la pérdida de entrenamiento (no el sustrato de serving)
 estaba puesta sobre todo el recorrido. El arreglo (pérdida con máscara de tramo) es una decisión de tiempo
 de entrenamiento; el trabajo de esta compuerta termina en confirmar que el adaptador resultante en verdad
-se sirve. El endpoint en vivo de la biblioteca (`examples/library/serve.py`, probado offline) va a
+se sirve. ~~El endpoint en vivo de la biblioteca (`examples/library/serve.py`, probado offline) va a
 necesitar pasar las mismas verificaciones G1–G3 antes de cualquier corrida en vivo, igual que lo hizo el
-miembro `edge` del tracker (LIVE-tracker **[ran]**).
+miembro `edge` del tracker (LIVE-tracker **[ran]**).~~ El endpoint corrió en vivo desde entonces (LIVE-library **[ran]**, 2026-10-01, PASÓ, 36/52), y su brief no registra ninguna corrida de G1–G3 del brazo `edge` **[read]** — la compuerta sigue debida ahí. En vLLM, el muestreador de RFT0 aplica G1 (un chequeo de identidad del miembro por nombre) antes de cualquier recorrido **[read]** (su brief).
 
 ## Su lugar en el plan
 
