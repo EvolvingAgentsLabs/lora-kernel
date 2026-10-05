@@ -36,6 +36,29 @@ it, stop and ask.
   decides).
 - **FAIL** — the harness does not run, or the reference does not reproduce: the configuration is wrong; nothing is scored.
 
-## Result
+## The user's decisions (2026-10-05, on the terms table and the recon)
 
-*(written after the run)*
+1. **Teacher and user simulator: Gemma 4 31B, self-hosted** (Apache 2.0 from teacher to base to adapter; the simulator's
+   turns end up in the trajectories too, so it must be as clean as the teacher — `docs/tau2/TEACHER-TERMS.md`).
+2. **Gate T0, option (b):** no published score is reproduced (every published airline run used a GPT user simulator; this
+   project holds only an Anthropic key, and comparisons stay internal by the workspace's rule); instead the local grader
+   is checked against the published trajectories, at no cost.
+3. **The 26B line closes** (TEACH0 blocked by the serving engine; PAIR0, PAIR1 and Google's own card put the large half
+   level with or behind the small one).
+
+## Result [ran] — T0 PASSES (option b)
+
+- **Install:** `tau2-bench` at commit `5bfa7e3` (v1.0.1-47), Python 3.12, `uv sync` (+ `websockets`, an upstream gap) —
+  `MANIFEST`.
+- **Mock, end to end:** pass^1 0.667 on 3 tasks (haiku 4.5 as agent and simulator); the one 0 was the simulator looping
+  200 messages instead of ending the transfer — every later run carries a `--max-steps` cap. **Spend: 0.97 USD.**
+- **The grader, checked [ran]:** `tau2 evaluate-trajs` re-graded the four airline trajectory files shipped with τ²
+  (claude-3-7-sonnet, gpt-4.1, gpt-4.1-mini, o4-mini; 4 trials × 50 tasks each) — **800 of 800 simulations get the same
+  reward** as recorded (means 0.500, 0.560, 0.505, 0.590, unchanged). The local reward is τ²'s reward.
+- **Recon [read]:** `docs/tau2/RECON.md` — airline: 50 tasks, an official split of **30 train / 20 test**, 14 tools (6
+  writes), reward = DB-state hash × communicated-info check (no judge model), any early stop scores 0; native function
+  calling through litellm; a vLLM endpoint plugs in as `openai/<name>` with `api_base`.
+- **The format gap, measured offline [ran]:** the repo's tag serializer round-trips only 1,345 of 1,587 shipped airline
+  tool calls, and loses **220 of 320 writes** (nested arrays, integers as strings, values cut at commas, empty-argument
+  calls); a JSON-body tag round-trips **1,587 / 1,587**. The shim is specified in RECON.md; it is built and checked (no
+  loss, both ways) before any member is scored.
