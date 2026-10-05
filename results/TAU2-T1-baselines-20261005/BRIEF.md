@@ -227,3 +227,8 @@ call, so its headroom is in what it calls, not in the format.
 **The decision between the readings is the user's** (the H1/H2 precedent): reading 1, the failures are the base's own
 output and the gate reads DISTIL HERE; or VOID as written stands and T1 is rerun with the raw completion recorded. No T2
 or T3 spend before that decision (the pause above).
+
+**The user's decision, 2026-10-05: reading 1** — the nine empty first replies are the base's own failures; **T1: DISTIL HERE**
+(Δ +36.3 pp, CI [20.0, 53.7], 11 : 0 tasks). VOID-as-written stays on record with its cause (a clause keyed to τ²'s label,
+not to where the failure happens). T2 gets its own brief before any spend; G-shim-2 records the raw completion, so the
+empty-reply question (model or parser) is answered there before any member is scored through the shim.
