@@ -62,3 +62,25 @@ it, stop and ask.
   tool calls, and loses **220 of 320 writes** (nested arrays, integers as strings, values cut at commas, empty-argument
   calls); a JSON-body tag round-trips **1,587 / 1,587**. The shim is specified in RECON.md; it is built and checked (no
   loss, both ways) before any member is scored.
+
+## The shim, built and checked offline (2026-10-05) [ran]
+
+- **Built:** `examples/tau2/shim.py`, RECON §3's spec: τ²'s system prompt kept (a member prompt prepended), the repo's tag
+  block (arity on) plus one domain-free sentence on JSON bodies, history folded inline (`<tag>…</tag>= result`, the open
+  turn continued as corpus mode does), `k=v` only for plain strings, positional for one required argument, JSON otherwise,
+  strings coerced to the schema's types, one call per turn with a conversation-unique id, no round-trip cap, ≥ 512 tokens,
+  upstream vLLM `/v1/completions` with `accept_rank`'s stop handling. `openai_proxy.py` untouched.
+- **G-shim-1 PASS** (`g_shim_1.json`, `examples/tau2/check_shim.py`, 0 model calls): all four shipped airline files,
+  800 conversations — **5,829 / 5,829 tool calls** identical in name, arguments and argument types, both ways (1,008 writes;
+  703 need the JSON body); the repo's `k=v` serializer on the same calls, as the control that must fail, keeps 4,960 /
+  5,829; **800 / 800 conversations** fold and unfold to the same calls, results (byte-identical) and user turns (assistant
+  text up to surrounding whitespace, the one normalisation), plus 647 mid-turn cuts; 40 / 40 folded prompts survive
+  Gemma 4 E4B's own chat template verbatim; τ²'s own `generate` → the shim over HTTP → a scripted member → the airline
+  environment executes 4 / 4 calls with the schema's types (`amount=50` arrives as the integer 50).
+- **G-shim-3 PASS** (`tests/test_tau2_shim.py`): six requests recorded from τ²'s own `LLMAgent` through litellm
+  (`examples/tau2/capture_request.py`, a local recorder, 0 model calls) carry exactly `model, messages, tools,
+  tool_choice, temperature`; no `nl_assertion`, scenario instruction or gold action list reaches the shim's request or
+  the prompt it forwards, and a gold value appears only where the conversation itself said it; a planted leak is caught;
+  the forwarded prompt is a function of `messages` and `tools` alone; `shim.py` imports nothing from τ² and names none of
+  the grading fields (read from its AST).
+- **Still owed before a member is scored:** G-shim-2, the same path against a served model on Colab (RECON §3).

@@ -1,0 +1,169 @@
+{
+ "gate": "G-shim-1",
+ "verdict": "PASS",
+ "rule": "100 % identity, no tolerance",
+ "tau2_commit": "5bfa7e37b36656b37dc6d022156be6563c1007f3",
+ "files": {
+  "claude-3-7-sonnet-20250219_airline_default_gpt-4.1-2025-04-14_4trials.json": "40a2c6a246eab27d",
+  "gpt-4.1-2025-04-14_airline_default_gpt-4.1-2025-04-14_4trials.json": "31d19e79b8ddc593",
+  "gpt-4.1-mini-2025-04-14_airline_base_gpt-4.1-2025-04-14_4trials.json": "41788956547a100f",
+  "o4-mini-2025-04-16_airline_default_gpt-4.1-2025-04-14_4trials.json": "6a3a354c9bce42b5"
+ },
+ "shim_sha256": "08068d9c857db57a",
+ "calls": {
+  "calls": 5829,
+  "write_calls": 1008,
+  "exact": 5829,
+  "lost": 0,
+  "kinds": {
+   "positional": 3567,
+   "kv": 1548,
+   "json": 703,
+   "empty": 11
+  },
+  "by_tool": {
+   "book_reservation": {
+    "calls": 148,
+    "exact": 148
+   },
+   "calculate": {
+    "calls": 328,
+    "exact": 328
+   },
+   "cancel_reservation": {
+    "calls": 306,
+    "exact": 306
+   },
+   "get_flight_status": {
+    "calls": 349,
+    "exact": 349
+   },
+   "get_reservation_details": {
+    "calls": 2078,
+    "exact": 2078
+   },
+   "get_user_details": {
+    "calls": 640,
+    "exact": 640
+   },
+   "list_all_airports": {
+    "calls": 11,
+    "exact": 11
+   },
+   "search_direct_flight": {
+    "calls": 991,
+    "exact": 991
+   },
+   "search_onestop_flight": {
+    "calls": 209,
+    "exact": 209
+   },
+   "send_certificate": {
+    "calls": 51,
+    "exact": 51
+   },
+   "transfer_to_human_agents": {
+    "calls": 215,
+    "exact": 215
+   },
+   "update_reservation_baggages": {
+    "calls": 96,
+    "exact": 96
+   },
+   "update_reservation_flights": {
+    "calls": 368,
+    "exact": 368
+   },
+   "update_reservation_passengers": {
+    "calls": 39,
+    "exact": 39
+   }
+  },
+  "failures": []
+ },
+ "control_repo_serializer": {
+  "calls": 5829,
+  "exact": 4960,
+  "lost": 869
+ },
+ "fold": {
+  "conversations": 800,
+  "tool_results": 5829,
+  "history_calls_as_json": 703,
+  "mid_turn_cuts": 647,
+  "failures": [],
+  "passed": true
+ },
+ "render": {
+  "checked": true,
+  "template": ".cache/huggingface/hub/models--google--gemma-4-E4B-it/snapshots/ee0ef6023621cff504d758262d4e04895a5af4a2/chat_template.jinja",
+  "conversations": 40,
+  "verbatim_in_order": 40,
+  "failures": []
+ },
+ "wire": {
+  "checked": true,
+  "steps": [
+   {
+    "member_wrote": "<send_certificate>{\"user_id\": \"mia_li_3668\", \"amount\": 50}</send_certificate>",
+    "tau2_parsed": {
+     "name": "send_certificate",
+     "arguments": {
+      "user_id": "mia_li_3668",
+      "amount": 50
+     }
+    },
+    "env_error": false,
+    "env_result": "Certificate certificate_3221322 added to user mia_li_3668 with amount 50.",
+    "ok": true
+   },
+   {
+    "member_wrote": "<send_certificate>user_id=mia_li_3668; amount=50</send_certificate>",
+    "tau2_parsed": {
+     "name": "send_certificate",
+     "arguments": {
+      "user_id": "mia_li_3668",
+      "amount": 50
+     }
+    },
+    "env_error": false,
+    "env_result": "Certificate certificate_3221323 added to user mia_li_3668 with amount 50.",
+    "ok": true
+   },
+   {
+    "member_wrote": "<get_user_details>mia_li_3668</get_user_details>",
+    "tau2_parsed": {
+     "name": "get_user_details",
+     "arguments": {
+      "user_id": "mia_li_3668"
+     }
+    },
+    "env_error": false,
+    "env_result": "{\"user_id\": \"mia_li_3668\", \"name\": {\"first_name\": \"Mia\", \"last_name\": \"Li\"}, \"ad",
+    "ok": true
+   },
+   {
+    "member_wrote": "<list_all_airports></list_all_airports>",
+    "tau2_parsed": {
+     "name": "list_all_airports",
+     "arguments": {}
+    },
+    "env_error": false,
+    "env_result": "[{\"iata\": \"SFO\", \"city\": \"San Francisco\"}, {\"iata\": \"JFK\", \"city\": \"New York\"}, ",
+    "ok": true
+   },
+   {
+    "member_wrote": "Sure — could you give me your user id?",
+    "ok": true
+   }
+  ],
+  "passed": true,
+  "distinct_call_ids": 4
+ },
+ "openai_form_same_as_tau2": {
+  "checked": true,
+  "conversations": 40,
+  "differ": 0
+ },
+ "normalisation": "assistant text compared after strip(); calls, argument types, results and user turns exact"
+}

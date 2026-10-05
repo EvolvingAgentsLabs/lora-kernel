@@ -224,7 +224,7 @@ I replayed all 1,587 tool calls of the shipped gpt-4.1-mini airline trajectories
 - `under_member_prompt` (`--member-prompt`) **replaces** the system messages, which would delete the airline
   policy. For τ² it must not be used as-is.
 
-### Adapter spec (not built)
+### Adapter spec (built 2026-10-05: `examples/tau2/shim.py`; G-shim-1 and G-shim-3 PASS offline **[ran]**, `results/TAU2-T0-recon-20261005/BRIEF.md`)
 An OpenAI-compatible HTTP shim between τ² and vLLM, `openai_proxy` with a τ² profile:
 
 1. **Wire it in.** `--agent-llm openai/<member> --agent-llm-args '{"temperature":0,"api_base":"http://shim:8001/v1","api_key":…}'`.
