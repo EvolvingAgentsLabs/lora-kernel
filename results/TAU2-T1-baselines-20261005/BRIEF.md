@@ -190,3 +190,40 @@ after each, and writes `"decision"` and `"finished"` into `t1.json` when both ar
 ## Result
 
 *(written after the run)*
+
+## Result [ran] 2026-10-05 — VOID as written; DISTIL HERE under both readings of the failures
+
+One G4 session, both arms complete (80/80 simulations each), API spend 0 USD.
+
+| arm | pass^1 (τ²) | pass^4 | calls/sim | malformed | terminations |
+|---|---|---|---|---|---|
+| teacher — Gemma 4 31B (QAT w4a16) | **0.5375** [0.35, 0.725] | 0.40 | 7.22 | 0 | `user_stop` 80 |
+| base — Gemma 4 E4B | 0.2125 [0.0625, 0.3875] | 0.118 | 4.81 | 0 | `user_stop` 71 · `infrastructure_error` 9 |
+
+**As written: VOID** — the base arm has 9 of 80 simulations (11 %) ended `infrastructure_error`, over the 5 % clause
+(`t1.json` → `gate.decision`).
+
+**The failures, read where they happen** (τ²'s raw record, packed in `t1.json`): all nine are on three tasks (2: 3 of 4
+trials, 13: 3 of 4, 45: 3 of 4), each with **zero messages and zero duration** — τ² raised
+`ValueError: AssistantMessage must have either content or tool_calls` on the agent's **first reply**: the base answered
+with neither text nor a tool call. That is the agent's own output, not the wire (the server answered; the simulator was
+not involved); whether the empty reply was the E4B emitting nothing or vLLM's tool parser swallowing malformed markup is
+**not recordable from this run** — the runner keeps τ²'s messages, not the raw completion. τ² labels it
+`infrastructure_error`; the brief's clause keyed on the label, and the brief's own rule says a base failing by its own
+output is headroom.
+
+**The gap under both readings** (paired over tasks, per-task pass^1, bootstrap 10,000, seed 0 — computed here, not by the
+runner's gate):
+
+| reading | Δ pass^1 | 95 % CI | tasks teacher : base | gate clause |
+|---|---|---|---|---|
+| the nine empty first replies are the base's failures (reward 0), 20 tasks | **+36.3 pp** | [20.0, 53.7] | 11 : 0 | DISTIL HERE |
+| the three tasks dropped, 17 tasks | **+30.9 pp** | [13.2, 48.5] | 8 : 0 | DISTIL HERE |
+
+The teacher wins the three dropped tasks too (0.25, 1.0, 1.0 against the base's 0.0, 0.25, 0.0). Beside, not gating: the
+teacher sits just above the brief's 50 % level for a teacher; the base calls tools ~5 times a simulation with no malformed
+call, so its headroom is in what it calls, not in the format.
+
+**The decision between the readings is the user's** (the H1/H2 precedent): reading 1, the failures are the base's own
+output and the gate reads DISTIL HERE; or VOID as written stands and T1 is rerun with the raw completion recorded. No T2
+or T3 spend before that decision (the pause above).
