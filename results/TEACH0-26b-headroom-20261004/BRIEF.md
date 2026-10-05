@@ -50,6 +50,9 @@ only change allowed, and it is said. The rows, runtime and bars do not move.
 - **Attempt 3 (bitsandbytes 4-bit, eager) — not run: Colab refused the A100 three times (quota, 2026-10-04 11:15–11:45),
   after a day of A100 sessions** (`S_attempt*_rejected.log`). TEACH0 has **no result**; the retry runs when the quota
   returns, unchanged.
+- **Attempt 4 — the same bitsandbytes 4-bit run, on an L4 (2026-10-05):** the A100 was refused again the next morning
+  (quota spent on the previous day's A100 sessions). A provider change, declared: the 26B in 4 bits is ~15 GB and fits the
+  L4's 24 GB with room for the KV cache; FP8 (~26 GB) would not fit it. Rows, runtime, quantisation and bars unchanged.
 
 ## Result
 
