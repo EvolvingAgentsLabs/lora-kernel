@@ -1,0 +1,32 @@
+# TAU2-T0 MANIFEST (written 2026-10-05)
+repo: https://github.com/sierra-research/tau2-bench
+local_path: /Users/agustinazwiener/evolvingagents/tau2-bench
+commit: 5bfa7e37b36656b37dc6d022156be6563c1007f3
+commit_date: 2026-09-28 12:42:48 -0700
+commit_subject: leaderboard: add GPT Live Astra-high banking voice result (#578)
+git_describe: v1.0.1-47-g5bfa7e37
+package_version: tau2 version = "1.0.1"
+python: Python 3.12.13 (/opt/homebrew/bin/python3.12 -m venv .venv)
+install: python3.12 -m venv .venv; UV_PYTHON=.venv/bin/python uv sync --extra gym --extra dev (uv.lock honoured); uv pip install websockets (core install fails to import tau2 without it: src/tau2/voice/audio_native/openai/provider.py:12 imports websockets, which only the 'voice' extra provides)
+uv: uv 0.10.7 (08ab1a344 2026-02-27)
+mock_run_command: (export ANTHROPIC_API_KEY from ~/.config/lora-kernel/frontier.env in a subshell) .venv/bin/tau2 run --domain mock --agent-llm claude-haiku-4-5-20251001 --user-llm claude-haiku-4-5-20251001 --task-ids create_task_1 update_task_1 impossible_task_1 --num-trials 1 --max-concurrency 3 --save-to t0_mock_haiku45 --log-level INFO
+mock_results: mock_results.json (copy of tau2-bench/data/simulations/t0_mock_haiku45/results.json, 580 KB)
+data_sha256:
+  data/tau2/domains/airline/tasks.json ccd8ba737b4cc371
+  data/tau2/domains/airline/split_tasks.json b22ced4d9a9850ac
+  data/tau2/domains/airline/db.json 1af9fea6e03ca7ca
+  data/tau2/domains/airline/policy.md 10dc052542152120
+  data/tau2/domains/mock/tasks.json 0d8bcd14798bf2e6
+packages:
+  deepdiff                  8.6.2
+  fastapi                   0.121.2
+  gymnasium                 1.2.2
+  httpx                     0.28.1
+  litellm                   1.81.11
+  numpy                     2.3.5
+  openai                    2.20.0
+  pandas                    2.3.3
+  pydantic                  2.13.5
+  tau2                      1.0.1       /Users/agustinazwiener/evolvingagents/tau2-bench
+  tenacity                  9.1.2
+  websockets                17.2
