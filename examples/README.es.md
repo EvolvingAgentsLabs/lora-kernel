@@ -47,7 +47,7 @@ herramienta sigue llamando a `enforce_org`/`enforce_owner` antes de tocar una fi
 una dependencia externa hasta que la versión de juguete se muestre insuficiente, que es lo que
 el paso 4 del §7 de `docs/FRAMEWORK.md` ya decía hacer.
 
-**Qué todavía no está construido, nombrado para que no se confunda con hecho.**
+**Qué todavía no está construido, nombrado para que no se confunda con hecho.** *(Escrito el 2026-09-21. **Superado desde entonces, 2026-10-05 [ran]:** se entrenaron adaptadores sobre ambos dominios y se los corrió por esta capa — M8, M9, M10 y en vivo a través de OpenClaw (LIVE-school, LIVE-distributor); se sumaron una tercera organización, `tracker/`, y el endpoint de documentos reales `library/` (H3, LIVE-tracker, LIVE-library). Los dos puntos de abajo sobre roles y adaptadores describen el estado del 2026-09-21.)*
 
 - **Ningún rol es todavía un `rolepack.RolePack`** (`school/roles.py`, `distributor/roles.py`
   son tablas simples). Un `role.toml` real (`rolepack/`, `docs/FRAMEWORK.md` §6) declara un

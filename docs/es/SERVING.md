@@ -79,7 +79,7 @@ de dentro de qué texto quedó. Una sola función, los dos motores, por razones 
 ([`ARCHITECTURE.md`](ARCHITECTURE.md) §4) — de la forma en que un runtime de agentes realmente le hablaría: un
 proceso, una biblioteca, el propio runtime de REAL4 (el texto completo de la pregunta como primera búsqueda en todos
 los estantes, un fallback a todos los estantes, páginas abiertas con sus enunciados). Es el perfil `edge` de arriba
-más el runtime de la memoria delante, no una tercera cosa.
+más el runtime de la memoria delante, no una tercera cosa. **Lo que sirve por defecto ahora (cada default está medido más abajo):** la compuerta de citación prendida (`--cite-gate`, GATE0), `--page-top 8` (PAGE0), la guarda estricta (`--guard strict`, FMT0), `--page-budget 2500` (LIVE-library2), y una respuesta para cada pedido aun si un recorrido lanza una excepción (`NO_ANSWER`).
 
     llama-server -m gemma-4-E4B-it-Q8_0.gguf --lora lora-real-none-s0-f16.gguf --port 8793 -c 12288 -b 512 -ub 512 -ngl 99
     python -m examples.library.serve --library knowledge/logistics-regs --upstream http://127.0.0.1:8793 --port 8766

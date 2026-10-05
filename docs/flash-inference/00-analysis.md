@@ -186,8 +186,14 @@ cleaned** (they were kept out of git by design), so a per-prompt prefill simulat
 **1. Better results? Unknown, and the evidence so far says no.** A smaller memory footprint for the 26B is worth only as
 much as the 26B beats what is served now. In this project's regions no larger model has beaten the E4B member: a trained
 12B ties it (B3, PAIR1 **[ran]**), an untrained 12B loses (PAIR0 **[ran]**). The 26B's own headroom run (TEACH0) is
-blocked: vLLM's FP8 does not run on the A100, and the bitsandbytes retry waits for A100 quota. **Until TEACH0 shows the
-26B ahead of `real-none-s0`, the line buys speed or footprint for a model with no measured quality gain.**
+**closed by the user's decision of 2026-10-05, blocked by the serving engine, no result [ran]**: vLLM 0.30's FP8 does not
+run on the A100 and it has no `bitsandbytes` method for the L4 retry
+(`results/TEACH0-26b-headroom-20261004/BRIEF.md`). Beside it, Google's own model card **[read]** reports τ² (average over 3)
+at 68.2 % for the 26B-A4B against 69.0 % for the 12B and 76.9 % for the 31B
+(`docs/tau2/TEACHER-TERMS.md` §2.1; self-reported): on that harness the 26B is not ahead of the 12B, which PAIR0/PAIR1
+already showed buys no accuracy here. **The line's payoff depended on a larger model beating the member, and none has: the
+line buys speed or footprint for a model with no measured quality gain. It rests until a larger model shows value** — the
+question moves to τ² T1 (Gemma 4 31B against the E4B base on an external verifier, `docs/tau2/RECON.md`).
 
 **2. Does it work? The routing half, yes [ran].** On a domain's decode tokens, 80 % of the activations sit in 17–21 % of
 the experts (general text: 40 %). A cache pinned to the domain's top experts reads 93 % fewer bytes per decode token at 8 GB
@@ -218,10 +224,14 @@ $$\text{tok/s}_{\text{decode}} \;\lesssim\; \frac{\mathcal B}{\text{MB read per 
 **Verdict of this evaluation:** the mechanism works for decode, and decode speed on a 16 GB machine is plausible at a 4–6 GB
 cache. Prefill, on this project's tool-heavy walks, and the memory left for the KV cache are the open risks. The line's
 payoff depends entirely on a quality result it does not have. **Order:**
-1. ~~TEACH0 (tomorrow, on Colab).~~ **Ran 2026-10-04, blocked, no result**: FP8 failed twice (inductor compile, then
-   vLLM's FP8 kernel does not run on the A100's sm80); the one bitsandbytes retry the brief allows was refused by
-   quota three times the same day. Brief and code are on `main`; the retry runs when A100 quota returns.
-2. Only if the 26B beats the E4B member: M3, the real streaming test of §5, on the user's machine. It needs the user's
+1. ~~TEACH0 (tomorrow, on Colab).~~ **Ran 2026-10-04, blocked; closed 2026-10-05 by the user's decision, no result**: FP8
+   failed twice (inductor compile, then vLLM's FP8 kernel does not run on the A100's sm80); the A100 was refused three
+   times; the one bitsandbytes retry the brief allows (an L4) met a vLLM 0.30 with no such method. ~~The retry runs when A100
+   quota returns.~~ No retry: the 26B line is closed, and PAIR0/PAIR1 plus Google's card **[read]** (26B 68.2 vs 12B 69.0 on τ²)
+   are why. The line **rests until a larger model shows value**; τ² T1 asks it of the 31B.
+2. ~~Only if the 26B beats the E4B member: M3, the real streaming test of §5, on the user's machine. It needs the user's
    approval: about 45–60 minutes of the machine, which covers downloading a ~15 GB 4-bit GGUF, timing decode and prefill
-   on our walk prompts, and measuring the SSD's actual bandwidth.
-3. H1b (attention-only adapter) only after M3, because it adds nothing if the base cannot be served fast enough.
+   on our walk prompts, and measuring the SSD's actual bandwidth.~~ Not reached, and not requested: its condition never
+   held. M3 would come back only if a larger model first shows value.
+3. ~~H1b (attention-only adapter) only after M3, because it adds nothing if the base cannot be served fast enough.~~ Same:
+   behind M3, so it rests too.

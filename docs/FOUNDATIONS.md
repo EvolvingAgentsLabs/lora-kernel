@@ -761,7 +761,11 @@ a request sent to a member whose corpus it does not belong to counts as wrong �
 is scored on **misrouted-to-local** and on the out share, not on accuracy, and $\tau$ is
 set on out-of-distribution text before anything else is measured: a model asked to choose
 always chooses. **[ran]** for the dictionary: P62, P64. The learned $s_m$ is
-[`PLAN.md`](PLAN.md) milestone 2.
+[`PLAN.md`](PLAN.md) milestone 2: the two whole-request arms (n-gram, embedding) lost every legitimate request from an
+unseen sender, and the arm that passed does not score the request whole — **[ran] ROUTE0**, a factored router that splits
+a request into its paragraphs and sends it to $m$ only if exactly one paragraph is not $m$'s content, $\lvert\lbrace p \in x : p \notin C_m\rbrace\rvert = 1$,
+and that paragraph is $m$'s task, $p \in T_m$. It serves 0 of 600 foreign texts locally where the dictionary serves 294 and
+loses 0 of 480 legitimate requests; a paraphrase of the task leaves by design (0 of 120 kept local, reported, never gated).
 
 ### 8.6 A knowledge base, and a trajectory through it
 
@@ -1210,7 +1214,7 @@ milestone 3 trains the large half; milestone 4 measures §7.1's inequality.
 | §10.5 D2 / §3.4 | **a LoRA applies over the AWQ 32B**: mean $\vert \Delta\ell\vert$ 0.22–0.49 nats vs base-vs-base 0.000, 3/3; text gate 2/3 | P60 §3b `awq_gate.json` |
 | §10.5 D2 | **C18 is a naming mismatch**: $\text{applied}(K)=\lbrace k\in K: m(k)\in M\rbrace$ — as trained 0 of 496 tensors land on the served text stack and the real activation sets 0 of 178 modules (`not applied`); renamed, 496 of 496 and 152 of 178 (`applied`); control `applied` | D2 `lora_matrix.json`, `vllm.log` |
 | §7.1, §7.4 | **the pair inequality** $\alpha_{T_\phi}(S_\theta) \gt  \alpha_T(S_\theta)$ | **holds [ran] B4**: 76 : 18 records, $p \lt  10^{-4}$ — on the corpus's own distribution (0.855 → 0.914), not on a band neither half trained on (0.885 → 0.881); [`PLAN.md`](PLAN.md) milestone 4 |
-| §8.5 | **the router as a classifier with abstention**; the dictionary is its special case | dictionary: P62, P64. **An n-gram model of each corpus's frame [ran] M2**: foreign text 0/128 served locally against the dictionary's 59/128; legitimate requests from unseen senders 120/120 lost against 0/120 — does not pass; the embedding arm: **not yet measured** |
+| §8.5 | **the router as a classifier with abstention**; the dictionary is its special case | dictionary: P62, P64. **An n-gram model of each corpus's frame [ran] M2**: foreign text 0/128 served locally against the dictionary's 59/128; legitimate requests from unseen senders 120/120 lost against 0/120 — does not pass; the embedding arm **[ran] M2b**: foreign text 15/338 served locally against the dictionary's 119, 120/120 unseen-sender requests lost — does not pass; a third encoder **[ran] M2c**: not safe (62 of 142 out-of-region cases served locally); **the factored router [ran] ROUTE0 passes: 0/600 foreign texts served locally against 294, 0/480 legitimate requests lost** |
 | §8.6 | **a trajectory through a subdomain's knowledge base**; the policy in the weights, the content outside | $Q_\varnothing(F') \approx 1/20$: P14. Two- and three-hop walks over pages of atomic statements, cited and checked: 0/40 untrained → 35/40, 38/40 on Gemma **[ran]** W9, B1; a skill the corpus never showed is not learnt (comparisons 10/40), shown it is (37/40) **[ran]** B3, B5; on the nursing library the central claim is not passed **[ran]** W5, W5c |
 | §7.3, §8.2 | **weights or harness — weights**: base 0.345, base + 914-token procedure 0.601 (both 0 tool calls, under the 0.655 majority bar), expert 0.989; expert vs base+kb **137 : 1**; the sign test alone read the flipped default as paying (164 : 74) — the majority bar guards it | P61 `session.json` |
 | §8.4 | **routing per request ties by region**: 0.775 = 0.775, 0 misroutes, 37.5 % out on P41's 240 cases | P62 `replay.json` (zero GPU) |
