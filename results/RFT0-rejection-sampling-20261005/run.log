@@ -1,43 +1,19 @@
 Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
-[rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 1 --lora-modules member=adapters/real-none-s0
-[rft] G1 adapters/real-none-s0: applied
-[rft] pass 1: 356 questions to sample, 0 resumed
-[rft] 10/356 questions · right 24/40 walks · accepted 9 walks over 7 questions · errors 0 · 52s
-[rft] 20/356 questions · right 43/80 walks · accepted 18 walks over 12 questions · errors 0 · 69s
-[rft] 30/356 questions · right 64/120 walks · accepted 27 walks over 19 questions · errors 0 · 85s
-[rft] 40/356 questions · right 89/160 walks · accepted 38 walks over 27 questions · errors 0 · 110s
-[rft] 50/356 questions · right 109/200 walks · accepted 49 walks over 33 questions · errors 0 · 130s
-[rft] 60/356 questions · right 130/240 walks · accepted 61 walks over 41 questions · errors 0 · 148s
-[rft] 70/356 questions · right 163/280 walks · accepted 77 walks over 50 questions · errors 0 · 171s
-[rft] 80/356 questions · right 179/320 walks · accepted 85 walks over 56 questions · errors 0 · 193s
-[rft] 90/356 questions · right 205/360 walks · accepted 99 walks over 65 questions · errors 0 · 210s
-[rft] 100/356 questions · right 234/400 walks · accepted 114 walks over 74 questions · errors 0 · 228s
-[rft] 110/356 questions · right 263/440 walks · accepted 128 walks over 83 questions · errors 0 · 256s
-[rft] 120/356 questions · right 286/480 walks · accepted 138 walks over 91 questions · errors 0 · 276s
-[rft] 130/356 questions · right 311/520 walks · accepted 149 walks over 99 questions · errors 0 · 295s
-[rft] 140/356 questions · right 325/560 walks · accepted 156 walks over 104 questions · errors 0 · 319s
-[rft] 150/356 questions · right 336/600 walks · accepted 163 walks over 109 questions · errors 0 · 344s
-[rft] 160/356 questions · right 356/640 walks · accepted 175 walks over 117 questions · errors 0 · 365s
-[rft] 170/356 questions · right 378/680 walks · accepted 184 walks over 123 questions · errors 0 · 379s
-[rft] 180/356 questions · right 398/720 walks · accepted 194 walks over 132 questions · errors 0 · 401s
-[rft] 190/356 questions · right 419/760 walks · accepted 206 walks over 139 questions · errors 0 · 419s
-[rft] 200/356 questions · right 431/800 walks · accepted 212 walks over 143 questions · errors 0 · 444s
-[rft] 210/356 questions · right 466/840 walks · accepted 230 walks over 153 questions · errors 0 · 464s
-[rft] 220/356 questions · right 490/880 walks · accepted 243 walks over 160 questions · errors 0 · 494s
-[rft] 230/356 questions · right 522/920 walks · accepted 258 walks over 168 questions · errors 0 · 515s
-[rft] 240/356 questions · right 548/960 walks · accepted 272 walks over 176 questions · errors 0 · 538s
-[rft] 250/356 questions · right 576/1000 walks · accepted 286 walks over 184 questions · errors 0 · 559s
-[rft] 260/356 questions · right 604/1040 walks · accepted 300 walks over 192 questions · errors 0 · 581s
-[rft] 270/356 questions · right 625/1080 walks · accepted 313 walks over 199 questions · errors 0 · 611s
-[rft] 280/356 questions · right 661/1120 walks · accepted 332 walks over 209 questions · errors 0 · 632s
-[rft] 290/356 questions · right 692/1160 walks · accepted 350 walks over 219 questions · errors 0 · 651s
-[rft] 300/356 questions · right 720/1200 walks · accepted 363 walks over 227 questions · errors 0 · 676s
-[rft] 310/356 questions · right 753/1240 walks · accepted 378 walks over 236 questions · errors 0 · 696s
-[rft] 320/356 questions · right 785/1280 walks · accepted 395 walks over 245 questions · errors 0 · 716s
-[rft] 330/356 questions · right 820/1320 walks · accepted 411 walks over 255 questions · errors 0 · 738s
-[rft] 340/356 questions · right 860/1360 walks · accepted 427 walks over 265 questions · errors 0 · 752s
-[rft] 350/356 questions · right 900/1400 walks · accepted 442 walks over 275 questions · errors 0 · 768s
-[rft] 356/356 questions · right 924/1424 walks · accepted 453 walks over 281 questions · errors 0 · 776s
-[rft] pass 2: 0 questions to sample, 356 resumed
-[rft] corpus PASSED · 315 + 315 self-walks · acceptance 0.6489 · same-page-wrong walks 49
-[rft] sampled — assemble the corpus at zero GPU from rft_sample.json
+[rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/rft0-s0 withlib-s1=adapters/rft0-s1
+[pool] G1 withlib-s0: applied
+[pool] G1 withlib-s1: applied
+[wiki] withlib-s0+page+top8: 52 to run, 0 resumed
+[wiki] withlib-s0+page+top8 10/52 credit 10 value-right 10 errors 0 11s
+[wiki] withlib-s0+page+top8 20/52 credit 15 value-right 15 errors 0 17s
+[wiki] withlib-s0+page+top8 30/52 credit 22 value-right 22 errors 0 24s
+[wiki] withlib-s0+page+top8 40/52 credit 31 value-right 31 errors 0 30s
+[wiki] withlib-s0+page+top8 50/52 credit 39 value-right 39 errors 0 36s
+[wiki] withlib-s0+page+top8 52/52 credit 41 value-right 41 errors 0 38s
+[wiki] withlib-s1+page+top8: 52 to run, 0 resumed
+[wiki] withlib-s1+page+top8 10/52 credit 9 value-right 9 errors 0 10s
+[wiki] withlib-s1+page+top8 20/52 credit 14 value-right 14 errors 0 17s
+[wiki] withlib-s1+page+top8 30/52 credit 23 value-right 23 errors 0 23s
+[wiki] withlib-s1+page+top8 40/52 credit 32 value-right 32 errors 0 30s
+[wiki] withlib-s1+page+top8 50/52 credit 40 value-right 40 errors 0 36s
+[wiki] withlib-s1+page+top8 52/52 credit 42 value-right 42 errors 0 36s
+[wiki] NOTHING SCORED

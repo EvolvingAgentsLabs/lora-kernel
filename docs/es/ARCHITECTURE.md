@@ -579,6 +579,13 @@ de PAGE0 que ya estaba en disco, que tenía una falla de formato en once fallas 
 conjunto para que el corpus reparara, y la línea de corpus de formato se detiene acá
 ([`FMT0`](../../results/FMT0-format-corpus-20261002/BRIEF.md)).
 
+**Entrenar sobre los recorridos propios del miembro, conservados donde el calificador estricto los verifica, tampoco lo
+mueve — RFT HELPS tal como se escribió, un empate. [ran] RFT0.** `real-rft-s0` — 315 filas del oráculo más 315
+recorridos propios calificados `right` — saca 35/44 contra 34/44 de `real-none-s0`, pareado 2:1 ($p = 1,0$); GRPO no se
+compra. Leída donde ocurre, la falla de la declaración equivocada en la página correcta es 0 en ambos brazos: el contador
+de PAGE0 había incluido la propia declaración de soporte. Lo que queda son respuestas que dan uno de los dos valores
+pedidos, y una parte del CFR escrita `40 CFR part 279` que el calificador lee como evasiva ([`RFT0`](../../results/RFT0-rejection-sampling-20261005/BRIEF.md)).
+
 ## 5. El contrato de liberación
 
 Una región entra por una sola puerta **[ran]**: una suite con un verificador que el bucle de
