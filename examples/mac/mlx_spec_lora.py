@@ -104,7 +104,8 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--base", default=BASE)
     ap.add_argument("--drafter", default=DRAFTER)
-    ap.add_argument("--adapter", action="append", required=True, help="name=dir of a PEFT adapter (repeatable)")
+    ap.add_argument("--adapter", action="append", default=[], help="name=dir of a PEFT adapter (repeatable)")
+    ap.add_argument("--sets", default="domain,general", help="OMLX0: which prompt sets to run")
     ap.add_argument("--domain", type=int, default=6, help="how many of the wiki expert's own prompts")
     ap.add_argument("--max-tokens", type=int, default=160)
     ap.add_argument("--block-sizes", default="", help="MLXK0: MTP block sizes to sweep (draft tokens = block - 1); empty = the drafter's default")
@@ -160,7 +161,7 @@ def main() -> int:
 
     rec["runs"] = {}
     for expert in experts:
-        for sname, prompts in sets.items():
+        for sname, prompts in [(k, v) for k, v in sets.items() if k in a.sets.split(",")]:
             blocks = [int(b) for b in a.block_sizes.split(",") if b] or [True]
             for spec_on in (False, *blocks):
                 key = f"{expert or 'base'}/{sname}/{'off' if spec_on is False else ('mtp' if spec_on is True else f'mtp_b{spec_on}')}"
@@ -172,15 +173,16 @@ def main() -> int:
                 save()
 
     # the swap, timed, and whether it is clean: base → expert → base returns the base's exact text
-    probe = sets["domain"][0]
     swaps = []
-    for expert in experts[1:]:
-        t1 = time.perf_counter(); HotLoRA.active = expert; swap_us = (time.perf_counter() - t1) * 1e6
-        e_text = run(expert, False, probe)["text"]
-        HotLoRA.active = None
-        b_text = run(None, False, probe)["text"]
-        swaps.append({"expert": expert, "swap_us": round(swap_us, 2), "expert_differs_from_base": e_text != b_text,
-                      "base_text_restored": b_text == rec["runs"]["base/domain/off"][0]["text"]})
+    if len(experts) > 1:
+        probe = sets["domain"][0]
+        for expert in experts[1:]:
+            t1 = time.perf_counter(); HotLoRA.active = expert; swap_us = (time.perf_counter() - t1) * 1e6
+            e_text = run(expert, False, probe)["text"]
+            HotLoRA.active = None
+            b_text = run(None, False, probe)["text"]
+            swaps.append({"expert": expert, "swap_us": round(swap_us, 2), "expert_differs_from_base": e_text != b_text,
+                          "base_text_restored": b_text == rec["runs"]["base/domain/off"][0]["text"]})
     rec["swaps"] = swaps
     rec["summary"] = summarise(rec)
     rec["peak_memory_gb"] = round(mx.get_peak_memory() / 1e9, 2) if hasattr(mx, "get_peak_memory") else None
