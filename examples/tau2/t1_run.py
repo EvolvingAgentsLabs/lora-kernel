@@ -391,6 +391,7 @@ def run_arm(name: str, agent: str, agent_port: int, a, tau2_dir: Path, results: 
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--base", default=BASE, help="the agent under test in the base arm (the chain's BASE)")
+    ap.add_argument("--base-rev", default=BASE_REV, help="the base's pinned revision (T1b: the 12B's)")
     ap.add_argument("--teacher", default=TEACHER)
     ap.add_argument("--arms", default="teacher,base")
     ap.add_argument("--split", default="test")
@@ -424,7 +425,7 @@ def main() -> int:
     arms = [x.strip() for x in a.arms.split(",") if x.strip()]
     for n in arms:
         results["arms"].setdefault(n, {})
-    results["config"] = {"teacher": a.teacher, "teacher_revision": TEACHER_REV, "base": a.base, "base_revision": BASE_REV,
+    results["config"] = {"teacher": a.teacher, "teacher_revision": TEACHER_REV, "base": a.base, "base_revision": a.base_rev,
                          "simulator": a.teacher, "split": a.split, "trials": a.trials, "max_steps": a.max_steps,
                          "sim_timeout": a.sim_timeout, "concurrency": a.concurrency, "max_model_len": a.max_model_len,
                          "temperature": 0.0, "thinking": "off", "threshold_pp": a.threshold_pp}
@@ -458,7 +459,7 @@ def main() -> int:
             say("STOPPED: the 31B never came up")
             return 1
         if "base" in todo:
-            p = vllm_serve(a.base, BASE_REV, AGENT_NAME, AGENT_PORT, 0.40, a.max_model_len, "vllm_e4b.log")
+            p = vllm_serve(a.base, a.base_rev, AGENT_NAME, AGENT_PORT, 0.40, a.max_model_len, "vllm_e4b.log")
             procs.append(p)
             if not wait_up(p, AGENT_PORT, "vllm_e4b.log"):
                 results["stopped"] = "the E4B never came up (vllm_e4b.log)"
