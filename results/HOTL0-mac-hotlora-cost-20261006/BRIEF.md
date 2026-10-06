@@ -23,3 +23,34 @@ Memory checked before each arm (the user closed Docker and the browser; 81 % fre
 - Beside: the no-speculation tokens/s in each arm (whether the wrappers cost plain decoding too), and the active-LoRA rows.
 
 **Stopping condition.** One sitting, these two arms. Redesign count: 0.
+
+## Result [ran] 2026-10-06 — NOT THE WRAPPERS; MLXK0's numbers were the sitting, and are superseded
+
+One sitting, 81 % / 75 % of memory free before H0 / H1, swap unchanged; peak 8.0 GB. `h0_bare.json`, `h1_wrapped.json`,
+`run.log`. H1 ended on a `KeyError` *after* every row was saved: the swap check reads `base/domain/off`, which `--sets general`
+does not run — its summary was computed from the saved rows (`"note"` in the file), and the runner now skips the swap check
+when the domain set did not run.
+
+| arm | no spec | $k=1$ | $k=2$ | acceptance |
+|---|--:|--:|--:|---|
+| H0 base, no wrappers | 14.23 | 1.40× | **1.47×** | 0.76 / 0.58 |
+| H1 base, 328 wrappers inactive | 14.16 | 1.41× | **1.43×** | 0.76 / 0.58 |
+| H1 **LoRA active** (beside) | 13.72 | **1.23×** | 1.22× | 0.67 / 0.54 |
+| *MLXK0, LoRA active, general (yesterday)* | *12.6* | *1.08×* | *1.04×* | *0.67 / 0.54* |
+
+**By the table written first: NOT THE WRAPPERS** — $s_0 - s_1 = 1.47 - 1.43 = 0.04 < 0.08$; plain decoding costs the same
+with them (14.23 / 14.16).
+
+**Reading.**
+1. **MLXK0's whole sitting was slow**, not its wrappers: every row there — base and LoRA alike — sits ~0.15–0.25× under
+   today's at identical acceptance, and its no-speculation rates were lower too (13.7 / 12.6 against 14.2 / 13.7). That
+   sitting's memory pressure was never checked; this morning's first OMLX0 sitting was caught swapping 7 GB. **MLXK0's
+   numbers are superseded by these** (its round-cost reading — MLX's round far cheaper than llama.cpp's — stands, and is
+   stronger).
+2. **The active LoRA itself costs** ~3.5 % of plain decoding and its speculation 1.23× — the drafter's misalignment
+   (0.67 against 0.76), not the wrappers.
+3. **For the user's design** (12B + LoRA expert + aligned drafter in MLX): the base's 1.47× at $k = 2$ is the ceiling an
+   aligned drafter would approach on general text — above MLXK0's WORTH-ALIGNING bar (1.4×). On the LoRA's own domain, in a
+   clean sitting, the misaligned number is not yet measured (MLXK0's 1.08× there was the slow sitting).
+4. **Instrument rule, from this and OMLX0:** a Mac speed number carries the sitting's memory state in its record, or it is
+   not compared with another.

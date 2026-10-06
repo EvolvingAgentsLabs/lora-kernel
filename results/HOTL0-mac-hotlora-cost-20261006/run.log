@@ -1,0 +1,26 @@
+[hotl0] H0 start · System-wide memory free percentage: 81% · total = 3072.00M  used = 1905.62M  free = 1166.38M  (encrypted)
+[mac] base 3.7 s · drafter mtp 0.4 s · adapters {}
+[mac] base/general/off: 14.2 tok/s
+[mac] base/general/mtp_b2: 20.0 tok/s · accepted/round 0.76
+[mac] base/general/mtp_b3: 20.9 tok/s · accepted/round 1.16
+[mac] {"base/general": {"tps_off": 14.23}, "base/general/mtp_b2": {"tps": 19.98, "speedup": 1.4, "identical": "1/4", "accepted_per_round": 0.756, "rounds": 335, "acceptance": 0.755}, "base/general/mtp_b3": {"tps": 20.9, "speedup": 1.47, "identical": "1/4", "accepted_per_round": 1.162, "rounds": 272, "acceptance": 0.58}}
+[hotl0] H1 start · System-wide memory free percentage: 75% · total = 3072.00M  used = 2035.56M  free = 1036.44M  (encrypted)
+[mac] base 3.5 s · drafter mtp 0.3 s · adapters {'wiki12b': {'dir': '/Users/agustinazwiener/lora-kernel-adapters/B3-gemma4-12b-wiki-s0/x/adapters/wiki12b-walks-s0', 'projections': 328, 'attach_s': 0.55}}
+[mac] base/general/off: 14.2 tok/s
+[mac] base/general/mtp_b2: 20.0 tok/s · accepted/round 0.76
+[mac] base/general/mtp_b3: 20.2 tok/s · accepted/round 1.16
+[mac] wiki12b/general/off: 13.7 tok/s
+[mac] wiki12b/general/mtp_b2: 16.9 tok/s · accepted/round 0.67
+[mac] wiki12b/general/mtp_b3: 16.7 tok/s · accepted/round 1.07
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel-hotl0/examples/mac/mlx_spec_lora.py", line 222, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/Users/agustinazwiener/evolvingagents/lora-kernel-hotl0/examples/mac/mlx_spec_lora.py", line 185, in main
+    "base_text_restored": b_text == rec["runs"]["base/domain/off"][0]["text"]})
+                                    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+KeyError: 'base/domain/off'
+[hotl0] end · System-wide memory free percentage: 77% · total = 3072.00M  used = 2473.25M  free = 598.75M  (encrypted)
+[hotl0] done

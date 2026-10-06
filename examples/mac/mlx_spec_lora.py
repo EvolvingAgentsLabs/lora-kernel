@@ -174,7 +174,7 @@ def main() -> int:
 
     # the swap, timed, and whether it is clean: base → expert → base returns the base's exact text
     swaps = []
-    if len(experts) > 1:
+    if len(experts) > 1 and "base/domain/off" in rec["runs"]:     # the swap's check reads the base's domain text (HOTL0)
         probe = sets["domain"][0]
         for expert in experts[1:]:
             t1 = time.perf_counter(); HotLoRA.active = expert; swap_us = (time.perf_counter() - t1) * 1e6
