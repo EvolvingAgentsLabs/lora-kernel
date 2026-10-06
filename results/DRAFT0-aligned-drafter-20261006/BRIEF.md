@@ -19,7 +19,9 @@ continuations (160 tokens) of 40 wiki prompts — `eval` and `eval_hard`, 20 eac
 provider:** Colab, one G4 (96 GB) through `chain_serve.sh`, transformers ≥ 5.18 + peft installed by the runner; nothing
 on the user's Mac, no API.
 
-**Gates before training — the run stops on either:**
+**Gates before training — the run stops on any:**
+- **GL** — the expert's LoRA acts on the target: the last-position logits of a wiki prompt differ from the bare 12B's by more than 0.5 (B3's adapter is named for the ForConditionalGeneration layout; a text-only class would load it unmatched and silently).
+
 - **G0** — the masked parallel forward used for training equals the drafter called exactly as generation calls it, at 5
   positions including one past the sliding window: same argmax, $\max|\Delta\text{logit}| \le 0.5$.
 - **G1** — the stock drafter's offline $\alpha$ on the domain prompts lies in [0.45, 0.75], around the 0.60 the Mac measured.

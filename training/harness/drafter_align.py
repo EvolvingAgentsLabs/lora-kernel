@@ -103,10 +103,14 @@ def masks(torch, q_pos, kv_len: int, device):
 class Rig:
     def __init__(self, base: str, target_lora: str | None, device: str = "cuda"):
         import torch
-        from transformers import AutoModelForCausalLM, AutoTokenizer
+        from transformers import AutoModelForCausalLM, AutoModelForImageTextToText, AutoTokenizer
         self.torch, self.device = torch, device
         self.tok = AutoTokenizer.from_pretrained(base)
-        t = AutoModelForCausalLM.from_pretrained(base, dtype=torch.bfloat16, device_map=device)
+        # THE CLASS THE ADAPTER IS NAMED FOR. B3's adapter was renamed for serving (`train_one.named_for_serving`):
+        # its keys are `…model.language_model.layers.N…`, the ForConditionalGeneration layout. A text-only class would
+        # load it with every key unmatched and serve the bare base — so the class is explicit, and GL checks it acts.
+        t = AutoModelForImageTextToText.from_pretrained(base, dtype=torch.bfloat16, device_map=device)
+        self.lora_load = None
         if target_lora:
             from peft import PeftModel
             t = PeftModel.from_pretrained(t, target_lora)
@@ -205,7 +209,22 @@ def main() -> int:
     rig = Rig(a.base, a.target_lora)
     say("target (+ its LoRA) and drafter loaded")
 
+    # GL — the expert's LoRA acts on the target (an unmatched adapter loads silently and serves the base)
     half = a.eval_prompts // 2
+    probe_row = wa.load_rows("eval")[0]
+    msgs = [{"role": "system", "content": prompt.SYSTEM_WIKI}, {"role": "user", "content": prompt.user_text_wiki(probe_row["question"])}]
+    pids = rig.tok(rig.tok.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True, enable_thinking=False),
+                   return_tensors="pt", add_special_tokens=False)["input_ids"].to(rig.device)
+    with torch.no_grad():
+        on = rig.target(input_ids=pids).logits[0, -1].float()
+        with rig.target.disable_adapter():
+            off = rig.target(input_ids=pids).logits[0, -1].float()
+    rec["gates"]["GL"] = {"max_abs_logit_diff": round(float((on - off).abs().max()), 3), "ok": float((on - off).abs().max()) > 0.5}
+    save(); say(f"GL {rec['gates']['GL']}")
+    if not rec["gates"]["GL"]["ok"]:
+        rec["verdict"] = "VOID: GL — the expert's LoRA does not act on the target"; rec["finished"] = time.strftime("%Y-%m-%dT%H:%M:%S")
+        save(); say(rec["verdict"]); return 1
+
     rows = wa.load_rows("eval")[:half] + wa.load_rows("eval_hard")[:a.eval_prompts - half]
     dom = [[{"role": "system", "content": prompt.SYSTEM_WIKI}, {"role": "user", "content": prompt.user_text_wiki(r["question"])}]
            for r in rows]
