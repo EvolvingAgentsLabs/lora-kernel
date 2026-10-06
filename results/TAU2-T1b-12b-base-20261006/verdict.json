@@ -1,0 +1,41 @@
+{
+ "pass1": {
+  "31B": 0.5375,
+  "12B": 0.45,
+  "E4B": 0.175
+ },
+ "errors": {
+  "31B": {
+   "empty_first_reply": 0,
+   "other": 0
+  },
+  "12B": {
+   "empty_first_reply": 0,
+   "other": 0
+  },
+  "E4B": {
+   "empty_first_reply": 9,
+   "other": 0
+  }
+ },
+ "12B_vs_E4B": {
+  "delta_pp": 27.5,
+  "ci_pp": [
+   13.8,
+   42.5
+  ],
+  "wins": "10:0",
+  "tasks": 20
+ },
+ "31B_vs_12B": {
+  "delta_pp": 8.8,
+  "ci_pp": [
+   -6.2,
+   25.0
+  ],
+  "wins": "7:4",
+  "tasks": 20
+ },
+ "decision": "12B IS THE STUDENT",
+ "teacher_headroom_over_12B": "no"
+}

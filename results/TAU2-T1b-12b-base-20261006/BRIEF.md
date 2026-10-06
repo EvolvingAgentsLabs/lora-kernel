@@ -29,3 +29,30 @@ $$\Delta_{12B,E4B} = \overline{p_{12B}(t) - p_{E4B}(t)}, \text{ paired over the 
 **Stopping condition.** At most 2 G4 sessions (the E4B arm took one with the 31B's; this is one arm). Nothing in the
 tasks, trials, simulator, thresholds or gate moves after this brief. **After T1b the line pauses again**: T2 gets its own
 brief and the user's go. Redesign count: 0 (a new arm on a frozen instrument).
+
+## Result [ran] 2026-10-06 — 12B IS THE STUDENT; and the 31B has no measurable headroom over it
+
+One G4 session (RTX PRO 6000 Blackwell, 95.6 GiB), the 12B arm complete (80/80, all `user_stop`, 0 malformed, **0 empty
+first replies**, 0 other errors); API spend 0. `read.py` → `verdict.json`:
+
+| | pass^1 | pass^4 | calls/sim |
+|---|--:|--:|--:|
+| 31B (T1, carried) | 0.5375 | 0.40 | 7.22 |
+| **12B base** | **0.45** [0.26, 0.64] | 0.30 | 6.05 |
+| E4B base (T1, empty first replies scored 0) | 0.175 | 0.12 | 4.81 |
+
+| paired over 20 tasks | Δ pass^1 | 95 % CI | tasks |
+|---|--:|---|--:|
+| **12B − E4B** (gate) | **+27.5 pp** | [13.8, 42.5] | 10 : 0 |
+| 31B − 12B (beside) | +8.8 pp | [−6.2, 25.0] | 7 : 4 |
+
+**By the table written first: 12B IS THE STUDENT.** Beside it, and it changes the next step: **the 31B's lead over the 12B is
+inside the noise at 20 tasks** (CI crosses 0; the runner's own gate, 31B vs 12B, reads NO NEED TO DISTIL HERE). Distilling
+the 31B into the 12B has at most ≈ 9 pp to give, which this instrument cannot resolve. T1's DISTIL HERE was a gap between
+the 31B and the **E4B**; most of it is the 12B's size, not the 31B's teaching. The 12B also never returned an empty first
+reply, where the E4B did nine times — consistent with that failure being the small model's own output.
+
+**What this changes, said for the user's decision (no T2 spend before it):** T2 as written (the 31B's trajectories → a
+student) buys little for a 12B student. The cheaper candidates are (a) serve the 12B base for airline as it is (0.45, local),
+or (b) train the 12B on **its own** trajectories that τ²'s grader rewards — rejection sampling against an external verifier,
+RFT0's recipe with τ² as the verifier — which needs no teacher. Neither is pre-registered.
