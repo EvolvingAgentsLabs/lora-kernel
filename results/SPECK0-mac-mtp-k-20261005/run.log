@@ -1,0 +1,19 @@
+[mac2] nospec/base/domain: 12.8 tok/s
+[mac2] nospec/base/general: 13.3 tok/s
+[mac2] nospec/lora/domain: 12.6 tok/s
+[mac2] nospec/lora/general: 12.5 tok/s
+[mac2] swap: {'on_ms': 0.95, 'off_ms': 1.55, 'expert_differs': True, 'base_restored': True, 'expert_matches_per_request': True}
+[mac2] mtp_k1/base/domain: 11.3 tok/s · acceptance 0.97
+[mac2] mtp_k1/base/general: 9.6 tok/s · acceptance 0.74
+[mac2] mtp_k1/lora/domain: 8.6 tok/s · acceptance 0.61
+[mac2] mtp_k1/lora/general: 8.6 tok/s · acceptance 0.68
+[mac2] mtp_k2/base/domain: 10.8 tok/s · acceptance 0.88
+[mac2] mtp_k2/base/general: 7.4 tok/s · acceptance 0.64
+[mac2] mtp_k2/lora/domain: 6.2 tok/s · acceptance 0.49
+[mac2] mtp_k2/lora/general: 7.6 tok/s · acceptance 0.56
+[mac2] mtp/base/domain: 9.7 tok/s · acceptance 0.77
+[mac2] mtp/base/general: 7.6 tok/s · acceptance 0.53
+[mac2] mtp/lora/domain: 6.3 tok/s · acceptance 0.37
+[mac2] mtp/lora/general: 7.1 tok/s · acceptance 0.46
+[mac2] {"mtp_k1/base/domain": {"tps": 11.26, "tps_nospec": 12.8, "speedup": 0.88, "acceptance": 0.968, "identical": "6/6"}, "mtp_k1/base/general": {"tps": 9.56, "tps_nospec": 13.31, "speedup": 0.72, "acceptance": 0.745, "identical": "4/4"}, "mtp_k1/lora/domain": {"tps": 8.6, "tps_nospec": 12.56, "speedup": 0.68, "acceptance": 0.612, "identical": "6/6"}, "mtp_k1/lora/general": {"tps": 8.6, "tps_nospec": 12.53, "speedup": 0.69, "acceptance": 0.679, "identical": "4/4"}, "mtp_k2/base/domain": {"tps": 10.84, "tps_nospec": 12.8, "speedup": 0.85, "acceptance": 0.884, "identical": "6/6"}, "mtp_k2/base/general": {"tps": 7.4, "tps_nospec": 13.31, "speedup": 0.56, "acceptance": 0.638, "identical": "4/4"}, "mtp_k2/lora/domain": {"tps": 6.18, "tps_nospec": 12.56, "speedup": 0.49, "acceptance": 0.493, "identical": "6/6"}, "mtp_k2/lora/general": {"tps": 7.63, "tps_nospec": 12.53, "speedup": 0.61, "acceptance": 0.565, "identical": "2/4"}, "mtp/base/domain": {"tps": 9.69, "tps_nospec": 12.8, "speedup": 0.76, "acceptance": 0.766, "identical": "6/6"}, "mtp/base/general": {"tps": 7.61, "tps_nospec": 13.31, "speedup": 0.57, "acceptance": 0.533, "identical": "4/4"}, "mtp/lora/domain": {"tps": 6.32, "tps_nospec": 12.56, "speedup": 0.5, "acceptance": 0.372, "identical": "6/6"}, "mtp/lora/general": {"tps": 7.11, "tps_nospec": 12.53, "speedup": 0.57, "acceptance": 0.463, "identical": "4/4"}, "G1": "6/6 domain texts differ from the base"}
+[mac2] MLX stays the edge engine: best drafter with the LoRA on its domain is 0.68× (< 1.3)
