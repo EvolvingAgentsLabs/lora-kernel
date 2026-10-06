@@ -28,3 +28,26 @@ speed-up $= E/C$, $E = 1 + $ accepted per round.
 
 **Stopping condition.** One sitting; if oMLX does not install or serve within ~10 minutes, B is reported as not run and
 A0/A1/C stand. Redesign count: 0.
+
+## Attempt 1 — aborted, no result (2026-10-06)
+
+A0 stalled after its no-speculation pass (13.6 tok/s) — the Mac was swapping: 7.0 of 8 GB of swap in use and 14 % of memory
+free with the 12B resident beside a Docker VM and a browser (`sysctl vm.swapusage`, `memory_pressure`). A speed measured
+while swapping measures the disk; both runners were stopped and their partial records deleted. Nothing is read from it.
+
+## C [read] — oMLX does not serve LoRA adapters, and its MTP gain is a portable attention kernel
+
+- `omlx/model_discovery.py:1822` (commit `79f4488`, 2026-10-06): adapter directories are skipped with *"oMLX does not
+  support LoRA/PEFT adapters"*. **Switching to oMLX as the members' engine is ruled out by the brief's own rule**, whatever B
+  would show.
+- The Gemma 4 MTP speed-up is plausibly `omlx/patches/gemma4_verify_attention.py` + `gemma4_verify_kernel.py` (Apache 2.0):
+  Gemma 4's global layers have head_dim 512, which MLX fuses only at one query row, so every verify forward of $k+1 \ge 2$
+  rows falls to an unfused pass whose cost grows with context — *"what makes MTP verify cycles lose to plain decoding on
+  low-accept content"*. The patch wraps `mlx_vlm.models.gemma4.language.Attention.__call__` with a multi-row vector kernel
+  built at runtime through `mx.fast.metal_kernel` (no native build), gated to backbones without KV sharing — the 12B
+  qualifies (`num_kv_shared_layers = 0`, `global_head_dim = 512`); the E4B does not. It touches attention only, so it
+  composes with `HotLoRA` (projections). Its own note: near-tie verify rows can flip, as MLXK0 already saw.
+
+**Re-planned before the rerun (redesign 1, said):** arm B (the oMLX server) is dropped — C already decides the switch; in
+its place **A2 = mlx-vlm 0.7.3 + oMLX's two patch files applied in-process**, the same runner. Arms A0, A1, A2, verdict
+table unchanged (REPRODUCED now reads "A1 or A2"). The rerun waits for the Mac to have memory free.

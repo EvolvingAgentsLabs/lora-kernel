@@ -1,0 +1,11 @@
+[mac] base 4.7 s · drafter mtp 0.4 s · adapters {}
+[mac] base/general/off: 13.6 tok/s
+[mac] base/general/mtp_b2: 18.7 tok/s · accepted/round 0.76
+results/OMLX0-mac-omlx-mtp-20261006/run_a.sh: line 3: 87989 Terminated: 15          HF_HUB_OFFLINE=1 /private/tmp/claude-501/-Users-agustinazwiener-evolvingagents/23be4e8a-4173-40ef-9732-d2937dc03cec/scratchpad/mlx073/bin/python -u -m examples.mac.mlx_spec_lora --sets general --block-sizes 2,3,4 --out results/OMLX0-mac-omlx-mtp-20261006/a0_mlxvlm073.json
+/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/multiprocessing/resource_tracker.py:279: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '
+[mac] base 3.9 s · drafter mtp 0.4 s · adapters {}
+results/OMLX0-mac-omlx-mtp-20261006/run_a.sh: line 4: 88873 Terminated: 15          HF_HUB_OFFLINE=1 /private/tmp/claude-501/-Users-agustinazwiener-evolvingagents/23be4e8a-4173-40ef-9732-d2937dc03cec/scratchpad/mlx076/bin/python -u -m examples.mac.mlx_spec_lora --sets general --block-sizes 2,3,4 --out results/OMLX0-mac-omlx-mtp-20261006/a1_mlxvlm076.json
+[omlx0] A done
+/opt/homebrew/Cellar/python@3.12/3.12.13_4/Frameworks/Python.framework/Versions/3.12/lib/python3.12/multiprocessing/resource_tracker.py:279: UserWarning: resource_tracker: There appear to be 1 leaked semaphore objects to clean up at shutdown
+  warnings.warn('resource_tracker: There appear to be %d '
