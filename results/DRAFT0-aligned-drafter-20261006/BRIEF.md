@@ -42,3 +42,35 @@ cost per round), $k > 1$ (the chained drafts read the drafter's own `post_projec
 
 **Stopping condition.** One G4 session; nothing in the corpus, prompts, gates or bars moves after this brief. Redesign
 count: 0.
+
+## Result [ran] 2026-10-06 — ALIGNED: the drafter's acceptance on the expert's domain 0.657 → 0.964
+
+One G4 session (boot retried once), `draft0.json`, `run.log`, `chain.log`; the drafter's adapter (`adapters/drafter-wiki12b-s0`,
+~10 MB packed) at `~/lora-kernel-adapters/DRAFT0-drafter-wiki12b-s0/`.
+
+| gate / measure | result |
+|---|---|
+| GL — the expert's LoRA acts on the target | max \|Δlogit\| 28.1 — yes |
+| G0 — parallel = stepwise drafter | 4 positions (1, 289, 329, 448 of 449), argmax 4/4, max \|Δlogit\| 0.28–0.50 (bar 0.5) |
+| G1 — stock offline α vs the Mac | **0.657** on the domain (Mac 0.60), 0.720 general (Mac 0.67–0.76) — in band |
+| training | 600 rows × 2 epochs, 1,200 sequences in 117 s; loss 3.13 → 0.06 |
+| **aligned α, domain (40 held-out prompts, 5,948 positions)** | **0.964** (+0.307) |
+| aligned α, general (4 prompts, beside) | 0.706 (stock 0.720) |
+| projected $k = 1$ speed-up on the Mac, domain | 1.32× → **1.57×** |
+
+**By the table written first: ALIGNED** — 0.964 ≥ 0.85 and +0.31 over stock.
+
+**Reading.**
+1. **A ~10 MB LoRA on the 4-layer drafter makes it predict the LoRA'd 12B's next token 96 times in 100 on the expert's
+   held-out prompts**, against 66 for the stock drafter; on general text it is unchanged (0.71 against 0.72) — it learned the
+   expert, not a collapse. The expert's and the drafter's adapters can be switched together, as the user designed.
+2. **What G0 left untested, said:** the longest held-out continuation was 449 tokens, so no G0 position lay past the 1,024-token
+   sliding window; training sequences up to 1,536 tokens did use that part of the mask unverified. It cannot have inflated the
+   held-out α (every held-out position is under 1,024), only weakened or noised the training signal there.
+3. **What this does not establish:** speed — the projection is $(1+\alpha)/C(1)$ with HOTL0's $C(1)$, and a LoRA on the drafter
+   adds its own cost per round; $k > 1$ (at α ≈ 0.96 longer drafts would pay, but the chained steps read the drafter's own
+   `post_projection`, which nothing here trained); output identity in MLX (MLXK0: not exact); and generality — the wiki walks
+   are formulaic, the easiest case for a drafter; another expert's corpus is the next question, not this one.
+4. **Next (needs the user's Mac — not run, the user is using it):** apply the drafter's adapter in MLX (`HotLoRA` on the drafter's
+   `q/o/gate/up/down/pre_projection`), switch both adapters together, and measure tokens/s against HOTL0's 1.23× with the
+   expert on.

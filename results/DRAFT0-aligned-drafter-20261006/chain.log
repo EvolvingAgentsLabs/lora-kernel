@@ -1,0 +1,47 @@
+=== session 1 of 1 · srv081137 · G4
+    boot clone: rc=0 5c48505 DRAFT0: load the target as ForConditionalGeneration (the adapter's key layout); GL gate — the expert's LoRA must act
+    boot clear: rc=0 cleared
+    boot attempt 1 did not take: silence
+    boot clone: rc=0 5c48505 DRAFT0: load the target as ForConditionalGeneration (the adapter's key layout); GL gate — the expert's LoRA must act
+    boot clear: rc=0 cleared
+    boot vllm: rc=0 
+    boot train deps: rc=0 ok
+    boot check: rc=0 0.31.0
+    5c48505 DRAFT0: load the target as ForConditionalGeneration (the adapter's key layout); GL gate — the expert's LoRA must act | 0.31.0
+    carried the adapters in (15 chunks)
+    runner started (launch 1)
+    W1006 11:23:32.598000 5488 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W1006 11:23:32.617000 5488 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [draft] deps {'rc': 0, 'transformers': '5.18.0', 'peft': '0.21.1'}
+    W1006 11:23:32.598000 5488 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    W1006 11:23:32.617000 5488 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+    [draft] deps {'rc': 0, 'transformers': '5.18.0', 'peft': '0.21.1'}
+    Loading weights: 100%|██████████| 48/48 [00:00<00:00, 738.85it/s]
+    [draft] target (+ its LoRA) and drafter loaded
+    [draft] GL {'max_abs_logit_diff': 28.094, 'ok': True}
+    Loading weights: 100%|██████████| 48/48 [00:00<00:00, 738.85it/s]
+    [draft] target (+ its LoRA) and drafter loaded
+    [draft] GL {'max_abs_logit_diff': 28.094, 'ok': True}
+    Loading weights: 100%|██████████| 48/48 [00:00<00:00, 738.85it/s]
+    [draft] target (+ its LoRA) and drafter loaded
+    [draft] GL {'max_abs_logit_diff': 28.094, 'ok': True}
+    Loading weights: 100%|██████████| 48/48 [00:00<00:00, 738.85it/s]
+    [draft] target (+ its LoRA) and drafter loaded
+    [draft] GL {'max_abs_logit_diff': 28.094, 'ok': True}
+    Loading weights: 100%|██████████| 48/48 [00:00<00:00, 738.85it/s]
+    [draft] target (+ its LoRA) and drafter loaded
+    [draft] GL {'max_abs_logit_diff': 28.094, 'ok': True}
+    Loading weights: 100%|██████████| 48/48 [00:00<00:00, 738.85it/s]
+    [draft] target (+ its LoRA) and drafter loaded
+    [draft] GL {'max_abs_logit_diff': 28.094, 'ok': True}
+    [draft] train 250/1200 · loss 0.5277 · 25 s
+    [draft] train 300/1200 · loss 0.3225 · 29 s
+    [draft] train 350/1200 · loss 0.221 · 34 s
+    [draft] train 800/1200 · loss 0.0669 · 78 s
+    [draft] train 850/1200 · loss 0.0691 · 83 s
+    [draft] train 900/1200 · loss 0.0517 · 88 s
+    [draft] train 1150/1200 · loss 0.054 · 112 s
+    [draft] train 1200/1200 · loss 0.061 · 117 s
+    [draft] aligned α {'domain': 0.9644, 'general': 0.7063} · ALIGNED: α 0.6574 → 0.9644 on the domain, projected 1.322× → 1.567× at k = 1
+    the runner wrote its result — done
+exit 0

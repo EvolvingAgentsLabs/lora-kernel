@@ -1,0 +1,191 @@
+{
+ "run": "DRAFT0",
+ "started": "2026-10-06T11:23:20",
+ "drafter": "google/gemma-4-12B-it-assistant",
+ "base": "google/gemma-4-12B-it",
+ "target_lora": "adapters/wiki12b-walks-s0",
+ "gates": {
+  "GL": {
+   "max_abs_logit_diff": 28.094,
+   "ok": true
+  },
+  "G0": {
+   "positions": [
+    1,
+    289,
+    329,
+    448
+   ],
+   "T": 449,
+   "max_abs_diff": [
+    0.2812,
+    0.25,
+    0.375,
+    0.5
+   ],
+   "argmax_same": [
+    true,
+    true,
+    true,
+    true
+   ],
+   "ok": true
+  },
+  "G1": {
+   "alpha": 0.6574,
+   "band": [
+    0.45,
+    0.75
+   ],
+   "ok": true
+  }
+ },
+ "alpha": {
+  "stock": {
+   "domain": 0.6574,
+   "general": 0.7199
+  },
+  "aligned": {
+   "domain": 0.9644,
+   "general": 0.7063
+  }
+ },
+ "deps": {
+  "rc": 0,
+  "transformers": "5.18.0",
+  "peft": "0.21.1"
+ },
+ "eval": {
+  "domain_prompts": 40,
+  "general_prompts": 4,
+  "generate_s": 298.4,
+  "domain_positions": 5948
+ },
+ "train": {
+  "rows": 600,
+  "of": 600,
+  "epochs": 2,
+  "r": 16,
+  "lr": 0.0002,
+  "accum": 8,
+  "targets": [
+   "q_proj",
+   "o_proj",
+   "gate_proj",
+   "up_proj",
+   "down_proj",
+   "pre_projection"
+  ],
+  "loss": [
+   [
+    50,
+    3.1273
+   ],
+   [
+    100,
+    1.7894
+   ],
+   [
+    150,
+    1.1257
+   ],
+   [
+    200,
+    0.6853
+   ],
+   [
+    250,
+    0.5277
+   ],
+   [
+    300,
+    0.3225
+   ],
+   [
+    350,
+    0.221
+   ],
+   [
+    400,
+    0.1891
+   ],
+   [
+    450,
+    0.1428
+   ],
+   [
+    500,
+    0.1199
+   ],
+   [
+    550,
+    0.1007
+   ],
+   [
+    600,
+    0.0889
+   ],
+   [
+    650,
+    0.0809
+   ],
+   [
+    700,
+    0.0689
+   ],
+   [
+    750,
+    0.0681
+   ],
+   [
+    800,
+    0.0669
+   ],
+   [
+    850,
+    0.0691
+   ],
+   [
+    900,
+    0.0517
+   ],
+   [
+    950,
+    0.0595
+   ],
+   [
+    1000,
+    0.0568
+   ],
+   [
+    1050,
+    0.0544
+   ],
+   [
+    1100,
+    0.0523
+   ],
+   [
+    1150,
+    0.054
+   ],
+   [
+    1200,
+    0.061
+   ]
+  ],
+  "seconds": 116.6
+ },
+ "projected_speedup_k1": {
+  "domain": {
+   "stock": 1.322,
+   "aligned": 1.567
+  },
+  "general": {
+   "stock": 1.372,
+   "aligned": 1.361
+  }
+ },
+ "verdict": "ALIGNED: \u03b1 0.6574 \u2192 0.9644 on the domain, projected 1.322\u00d7 \u2192 1.567\u00d7 at k = 1",
+ "finished": "2026-10-06T11:32:03"
+}
