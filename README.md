@@ -13,6 +13,28 @@
 
 *[Español](README.es.md)*
 
+**An operating layer for specialized local AI agents** — not a LoRA inference library.
+
+```
+                         one small local model (resident)
+                                      │
+                                 lora-kernel
+                    router: which specialist, or abstain to the frontier
+      ┌──────────────┬───────────────┼───────────────┬──────────────┐
+   inbox triage   desk commitments  distributor    school staff   regulations
+   LoRA + tools   LoRA + tools      LoRA + tools   LoRA + tools   LoRA + library
+                                    + library      + library      + citation gate
+```
+
+Routing is becoming everyone's feature. What this repository builds and measures is everything
+**beneath the router**: the **specialization** of each agent (a LoRA trained on how to do the job, not on
+the facts), their **composition** (several specialists on one resident base, each with its own scoped
+tool surface), their **memory** (facts in notes you edit without retraining), their **skills** (the
+tools and procedures each one has learned to use), and their **evolution** (each new version gated
+against the bare base and against the version it replaces). General-purpose and open source
+(Apache-2.0): any job with documents, procedures and tools. The specialists in the diagram are the ones
+measured here; what each one scored, and what failed, is in [`docs/RECORD.md`](docs/RECORD.md).
+
 > **In one minute.** A small model (Gemma 4 E4B) gets one LoRA per job, trained on *how to walk* a
 > library of markdown notes — search, open, follow the link, calculate — not on the facts inside them.
 > A procedure changes: edit the note, no retraining. A tiny router sends whatever falls outside every
