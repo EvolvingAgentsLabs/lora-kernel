@@ -49,6 +49,53 @@ especialistas del diagrama son los medidos acá; lo que sacó cada uno, y lo que
 > [Hugging Face](https://huggingface.co/Matias/lora-kernel-distributor-wiki-gemma4-e4b) — probalo en diez minutos:
 > [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EvolvingAgentsLabs/lora-kernel/blob/main/examples/colab/wiki_walk.ipynb)
 
+## Estado — 2026-10-08
+
+Tres listas, cada ítem con su corrida; las salvedades están en [`docs/es/RECORD.md`](docs/es/RECORD.md), lo que sigue en
+[`docs/es/PLAN.md`](docs/es/PLAN.md). Todo sobre suites generadas, organizaciones sintéticas o regulaciones reales ingeridas
+textualmente — **nunca sobre tráfico real de usuarios**.
+
+**Funciona [ran]**
+- **Un especialista le gana al modelo base en su tarea**: triage de inbox 0.989 contra 0.345 (P36, P57); personal de la
+  escuela 70/70 contra 27/70 (M8); preguntas de varios saltos sobre una familia de regulaciones con la que nunca entrenó,
+  18/23 contra 9/23, pareado 10 : 1 (REAL3).
+- **Varios especialistas sobre una base**: cuatro LoRA mezclados en una L4 mantienen 1.03× el throughput de uno solo;
+  32 sesiones con TTFT p95 0.24 s, 0 errores (C1).
+- **El router se abstiene**: 0 de 600 textos ajenos servidos localmente (el diccionario de palabras clave 294), 0 de 480
+  pedidos legítimos perdidos (ROUTE0); los miembros de tarea abierta derivan lo que su corpus no cubre, 20/20 (M10), 27/30 (ROUTE1).
+- **Los datos viven en notas, no en los pesos**: 17/17 enunciados editados respondidos con el valor nuevo, 0 viejos, sin
+  reentrenar (EDIT0).
+- **El runtime de biblioteca servido**: una compuerta de citas retiene 86 de 165 respuestas no correctas y 0 de 275
+  correctas, al precio de 43 de 347 valores correctos (GATE0); `page_top = 8`, 34/44 contra 30/44, ayuda, no significativo (PAGE0).
+- **Multi-turno sin la transcripción**: el harness de workflow dentro de un miembro, 53/54 contra 43/54 del historial (H1);
+  146/160 en sesiones largas (H2); 158/160, y 156/160 sin el bloque de herramientas (H3).
+- **En vivo por OpenClaw en una Mac de 16 GB**: distribuidora 6/6, tracker 14/14, la biblioteca de documentos reales 36/52
+  contra 38/52 del servidor (LIVE-distributor, LIVE-tracker, LIVE-library).
+- **Un release se reentrena desde su manifiesto hasta su puntaje registrado** (`email-full@v1`, P57). La compuerta de
+  release ahora también informa un **punto de operación** — cobertura, precisión de lo respondido, abstención —
+  **informado, no bloqueante** (PR #341).
+
+**Medido y no funciona (todavía)**
+- **La cita de varios saltos sobre documentos reales dejó de mejorar**: 13/21 en el titular sin gemelos de una tercera
+  familia; cuatro tratamientos empataron su línea base — REAL6, REAL7, FMT0, y entrenar sobre sus propios recorridos
+  verificados, 35/44 contra 34/44 (RFT0). La línea se detuvo.
+- **El router es literal**: las paráfrasis se van a la frontera (0/120 retenidas, ROUTE0), y retenerlas costaría — una regla
+  compuesta reformulada cae 239 → 198 (P2a). Ningún router aprendido pasó (M2).
+- **Las compuertas propias de la memoria**: el brazo con biblioteca perdió contra la base leyendo las notas del oráculo,
+  35 contra 45 de 56 (W5); el recall@3 del radar es 0.638 contra 0.80 (W3) — sirve BM25 léxico.
+- **Una base más grande no compra precisión**: el 12B empata o pierde contra el E4B (B3, B5, PAIR0, PAIR1); la corrida del
+  26B quedó bloqueada por el motor de serving y se cerró sin resultado (TEACH0).
+- **La decodificación especulativa paga en un servidor, poco en la Mac**: 1.98× en una A100, salida idéntica hasta cada
+  stop (F0c); en la Mac el MTP de llama.cpp frena al 12B (SPECK0), MLX da 1.23× con el LoRA (HOTL0, OMLX0, MLXK0). Un
+  drafter alineado llega a aceptación 0.964 offline (DRAFT0); su velocidad en la Mac no está medida.
+
+**No implementado**
+- Ni paquete ni contenedor; el código de serving no lee los role packs (`roles/*/role.toml` se lintean, no se cargan) —
+  [`docs/es/FRAMEWORK.md`](docs/es/FRAMEWORK.md) §5 B, K.
+- Ningún miembro puntuado en τ²-bench: su grader reproduce 800/800 recompensas publicadas (T0); el shim está especificado, no construido.
+- Respuestas en buffer, sin streaming; un token HS256 de demo, sin proveedor de identidad real; sin métricas ni detección de deriva.
+- Nunca se midió tráfico real de usuarios, así que tampoco hay factura sobre él (M6 pone precio a un replay, sin la GPU local).
+
 ## Mirá la demo — un centro educativo completo sobre un modelo chico y local (76 s)
 
 https://github.com/user-attachments/assets/e392f2b9-ff83-45f5-bc96-0da483a7b05f

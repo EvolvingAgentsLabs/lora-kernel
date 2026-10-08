@@ -46,6 +46,49 @@ measured here; what each one scored, and what failed, is in [`docs/RECORD.md`](d
 > [Hugging Face](https://huggingface.co/Matias/lora-kernel-distributor-wiki-gemma4-e4b) — try it in ten minutes:
 > [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EvolvingAgentsLabs/lora-kernel/blob/main/examples/colab/wiki_walk.ipynb)
 
+## Status — 2026-10-08
+
+Three lists, every item with its run; the caveats are in [`docs/RECORD.md`](docs/RECORD.md), what comes next in
+[`docs/PLAN.md`](docs/PLAN.md). All on generated suites, synthetic organisations or real regulations ingested verbatim —
+**never on real user traffic**.
+
+**Works [ran]**
+- **A specialist beats the bare base on its job**: inbox triage 0.989 against 0.345 (P36, P57); school staff 70/70 against
+  27/70 (M8); multi-hop questions over a regulation family it never trained on, 18/23 against 9/23, paired 10 : 1 (REAL3).
+- **Several specialists on one base**: four LoRAs mixed on one L4 keep 1.03× one adapter's throughput; 32 sessions at p95
+  TTFT 0.24 s, 0 errors (C1).
+- **The router abstains**: 0 of 600 foreign texts served locally (the keyword dictionary 294), 0 of 480 legitimate requests
+  lost (ROUTE0); open-task members hand off what their corpus does not cover, 20/20 (M10), 27/30 (ROUTE1).
+- **Facts live in notes, not weights**: 17/17 edited statements answered with the new value, 0 stale, no retraining (EDIT0).
+- **The served library runtime**: a citation gate withholds 86 of 165 not-right answers and 0 of 275 right ones, at the
+  price of 43 of 347 correct values (GATE0); `page_top = 8`, 34/44 against 30/44, helps, not significant (PAGE0).
+- **Multi-turn without the transcript**: the workflow harness inside a member, 53/54 against history's 43/54 (H1); 146/160
+  on long sessions (H2); 158/160, and 156/160 without the tool block (H3).
+- **Live through OpenClaw on a 16 GB Mac**: distributor 6/6, tracker 14/14, real-document library 36/52 against the
+  server's 38/52 (LIVE-distributor, LIVE-tracker, LIVE-library).
+- **A release re-trains from its manifest to its recorded score** (`email-full@v1`, P57). The release gate now also
+  reports an **operating point** — coverage, answered precision, abstention — **reported, not gating** (PR #341).
+
+**Measured and does not work (yet)**
+- **Multi-hop citation on real documents stopped improving**: 13/21 on a third family's twin-free headline; four treatments
+  tied their baseline — REAL6, REAL7, FMT0, and training on its own verified walks, 35/44 against 34/44 (RFT0). The line has stopped.
+- **The router is literal**: paraphrases leave for the frontier (0/120 kept local, ROUTE0), and keeping them would cost —
+  one compound rule reworded drops 239 → 198 (P2a). No learned router passed (M2).
+- **The memory's own gates**: the library arm lost to the base reading the oracle's notes, 35 against 45 of 56 (W5); the
+  radar's recall@3 is 0.638 against 0.80 (W3) — lexical BM25 serves.
+- **A larger base buys no accuracy**: the 12B ties or loses to the E4B (B3, B5, PAIR0, PAIR1); the 26B's run was blocked
+  by the serving engine and closed with no result (TEACH0).
+- **Speculative decoding pays on a server, little on the Mac**: 1.98× on an A100, output identical up to every stop (F0c);
+  on the Mac llama.cpp's MTP slows the 12B (SPECK0), MLX gives 1.23× with the LoRA (HOTL0, OMLX0, MLXK0). An aligned
+  drafter reaches acceptance 0.964 offline (DRAFT0); its Mac speed is not measured.
+
+**Not implemented**
+- No package or container; the serving code does not read the role packs (`roles/*/role.toml` are linted, not loaded) —
+  [`docs/FRAMEWORK.md`](docs/FRAMEWORK.md) §5 B, K.
+- No member scored on τ²-bench: its grader reproduces 800/800 published rewards (T0); the shim is specified, not built.
+- Replies buffered, not streamed; an HS256 demo token, no real identity provider; no metrics or drift detection.
+- No real user traffic measured, so no bill on it (M6 prices a replay, the local GPU unpriced).
+
 ## Watch the demo — a whole educational centre on one small local model (76 s)
 
 https://github.com/user-attachments/assets/e392f2b9-ff83-45f5-bc96-0da483a7b05f
