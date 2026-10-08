@@ -10,7 +10,7 @@ import hashlib
 import json
 import pathlib
 
-from training.harness.release_gate import RECIPE, pair, sha256, verdict
+from training.harness.release_gate import RECIPE, operating_point, pair, sha256, verdict
 
 
 def recs(correct, prefix="c"):
@@ -59,3 +59,18 @@ def test_every_manifest_names_files_whose_hashes_still_match():
         m = json.loads(man.read_text())
         corpus = pathlib.Path(m["corpus"])
         assert sha256(corpus) == m["corpus_sha256"], f"{man}: corpus drifted"
+
+
+def test_operating_point_shows_the_trade_a_correct_count_hides():
+    # 8 answerable + 2 unanswerable. The member answers 4 (all right), abstains on 4 answerable and both
+    # unanswerable: precision 1.0 bought with over-abstention 0.5.
+    rows = ([{"id": f"a{i}", "answerable": True, "abstained": False, "correct": True} for i in range(4)]
+            + [{"id": f"b{i}", "answerable": True, "abstained": True, "correct": False} for i in range(4)]
+            + [{"id": f"u{i}", "answerable": False, "abstained": True, "correct": True} for i in range(2)])
+    op = operating_point(rows)
+    assert op == {"n": 10, "coverage": 0.4, "precision_answered": 1.0, "abstention_on_unanswerable": 1.0,
+                  "over_abstention": 0.5, "gating": False}
+
+
+def test_operating_point_is_absent_when_a_suite_does_not_record_abstention():
+    assert operating_point(recs([True, False, True])) is None

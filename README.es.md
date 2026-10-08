@@ -13,6 +13,30 @@
 
 *[English](README.md)*
 
+**Una capa operativa para agentes de IA locales especializados** — no una librería de inferencia de LoRA.
+
+```
+                       un modelo local chico (residente)
+                                      │
+                                 lora-kernel
+                router: qué especialista, o abstenerse hacia el frontier
+      ┌──────────────┬───────────────┼───────────────┬──────────────┐
+   triage de      compromisos     distribuidora   personal de    normativa
+   correo         de escritorio                   escuela
+   LoRA + tools   LoRA + tools    LoRA + tools    LoRA + tools   LoRA + biblioteca
+                                  + biblioteca    + biblioteca   + compuerta de citas
+```
+
+El ruteo se está volviendo una función de todos. Lo que este repositorio construye y mide es todo lo que
+está **debajo del router**: la **especialización** de cada agente (un LoRA entrenado en cómo hacer el
+trabajo, no en los datos), su **composición** (varios especialistas sobre una base residente, cada uno con
+su superficie de herramientas acotada), su **memoria** (datos en notas que se editan sin reentrenar), sus
+**habilidades** (las herramientas y procedimientos que cada uno aprendió a usar) y su **evolución** (cada
+versión nueva pasa una compuerta contra la base sola y contra la versión que reemplaza). De propósito
+general y open source (Apache-2.0): cualquier trabajo con documentos, procedimientos y herramientas. Los
+especialistas del diagrama son los medidos acá; lo que sacó cada uno, y lo que falló, está en
+[`docs/es/RECORD.md`](docs/es/RECORD.md).
+
 > **En un minuto.** Un modelo chico (Gemma 4 E4B) recibe un LoRA por tarea, entrenado en *cómo
 > recorrer* una biblioteca de notas en markdown — buscar, abrir, seguir el enlace, calcular — y no en
 > los datos que contienen. Cambia un procedimiento: se edita la nota, sin reentrenar. Un router muy

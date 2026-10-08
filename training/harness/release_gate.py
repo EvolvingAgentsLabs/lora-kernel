@@ -65,6 +65,38 @@ def pair(new: list[dict], ref: list[dict], label: str) -> dict:
     return {"pair": label, **c, "state": state}
 
 
+def operating_point(records: list[dict]) -> dict | None:
+    """Where an arm sits between answering and abstaining — REPORTED beside the paired verdict, not a gate.
+
+    A correct-count alone hides a trade: a member can buy precision by abstaining more. This repository has
+    already priced one such trade — GATE0's citation gate took delivered precision 0.625 → 0.777 by withholding
+    43 of 347 correct values (results/GATE0-cite-gate-20261002/BRIEF.md) — so every release now carries the
+    operating point when its records allow it.
+    Needs per-record `abstained` (the arm answered NONE / refused / forwarded) and `answerable` (the case has
+    an answer the arm could give); returns None when a suite does not record them. With A = answered,
+    U = unanswerable, C = correct:
+
+        coverage                 = |A| / n
+        precision_answered       = |A ∩ C| / |A|
+        abstention_on_unanswerable = |U ∖ A| / |U|        (the right refusals)
+        over_abstention          = |(answerable) ∖ A| / |answerable|   (refused what it could answer)
+
+    No bar is set here: a release that moves these is read in its brief; a bar is pre-registered there first.
+    """
+    rows = [r for r in records if "abstained" in r and "answerable" in r and "error" not in r]
+    if not rows:
+        return None
+    ans = [r for r in rows if not r["abstained"]]
+    una = [r for r in rows if not r["answerable"]]
+    able = [r for r in rows if r["answerable"]]
+    ratio = lambda a, b: round(a / b, 4) if b else None
+    return {"n": len(rows), "coverage": ratio(len(ans), len(rows)),
+            "precision_answered": ratio(sum(bool(r.get("correct")) for r in ans), len(ans)),
+            "abstention_on_unanswerable": ratio(sum(r["abstained"] for r in una), len(una)),
+            "over_abstention": ratio(sum(r["abstained"] for r in able), len(able)),
+            "gating": False}
+
+
 def verdict(pairs: list[dict]) -> dict:
     bad = [p["pair"] for p in pairs if p["state"] != "tie"]
     return {"reproduces": not bad and bool(pairs), "not_tied": bad,
@@ -142,6 +174,9 @@ def main() -> int:
             recs = draft_arm(model, tok, suite, cases, args.max_tokens, args.concurrency,
                              arm["records"], save)
             arm.update(summarise(recs))
+            op = operating_point(list(recs.values()) if isinstance(recs, dict) else list(recs))
+            if op:
+                arm["operating_point"] = op
             if name != "base":
                 arm["applied"] = applied(list(result["arms"]["base"]["records"].values()), recs)
                 print(f"[release] gate {name}: {arm['applied']['verdict']}", flush=True)
