@@ -24,6 +24,23 @@ the delta term absent, whatever the engine logged. That is C18, and G1 is its te
 | **G2** | the member reaches its tools **through the proxy** — no HTTP error, a tool call or an answer | P51's first arm: **240 of 240** requests HTTP 400 for missing parser flags, the progress line reading `correct 0 calls 0` — a broken run wearing a floor **[ran]** |
 | **G3** | `stop` + `include_stop_str_in_output` honoured on a continuation the model cannot avoid | the corpus-mode loop (stop at `</tag>`, inject, continue) is impossible without it; the first preflight measured the model's phrasing instead **[ran]** P55 A attempt 1 |
 
+In the order `training/harness/verify_substrate.py` runs them. Every gate runs — a failure does not stop
+the next one — and each writes its record to `verdict.json` before the next starts; the verdict is
+computed last, from the file:
+
+```mermaid
+flowchart LR
+  S["serve the pool<br/>base + every --adapter"] -->|never came up| F["verdict: FAIL serve"]
+  S --> P0["P0<br/>members = /v1/models<br/>minus the base"]
+  P0 --> G1["G1, per member<br/>≥ 2 of 3 probes differ<br/>from the base"]
+  G1 --> Q{"--proxy<br/>given?"}
+  Q -->|yes| G2["G2, per member<br/>tools reachable<br/>through the proxy"]
+  Q -->|no| G2s["G2 skipped,<br/>with a notice"]
+  G2 --> G3["G3<br/>stop + include_stop_str_in_output<br/>honoured"]
+  G2s --> G3
+  G3 --> V["verdict.json<br/>pass iff no gate failed<br/>and the pool is not empty"]
+```
+
 ## Design decisions
 
 - **G1's threshold is 2 of 3, not 1 of 1.** At temperature 0 a short prompt can

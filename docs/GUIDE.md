@@ -227,6 +227,12 @@ where $A$ and $B$ are two thin matrices (rank $r$, 16 here). Instead of changing
 $A$ and $B$ (thousands). A LoRA of the 12B weighs ~140 MB against the model's ~24 GB. See
 [`FOUNDATIONS.md`](FOUNDATIONS.md) §4.1.
 
+<!-- IMAGE PLACEHOLDER — see docs/img/IMAGES.md
+<img src="img/lora-patch.png" alt="A thick bound volume on a lectern, the base model, labelled frozen, about 24 GB. A thin booklet labelled A·B, rank 16, about 140 MB, is being clipped onto its spine. On a rack beside it hang more thin booklets, one per expert, waiting their turn." width="100%">
+
+*A LoRA is a thin patch on a frozen book: the base never changes, and experts differ only by the booklet clipped on.*
+-->
+
 ### 5.2 Why it is the central piece
 
 Since $W$ is never touched, **the base model stays resident and the only thing that changes between experts is the
@@ -295,6 +301,12 @@ proposed tokens** costs almost the same as generating one: they are all processe
 **The output is exactly the large model's** — with any draft. A bad draft costs speed, never quality **[read]**
 (Leviathan et al. 2023; Chen et al. 2023). At temperature 0 the rule is simple: a token is accepted if it is exactly
 the one the large model would have chosen. Proof: [`FOUNDATIONS.md`](FOUNDATIONS.md) §6.1–6.3.
+
+<!-- IMAGE PLACEHOLDER — see docs/img/IMAGES.md
+<img src="img/speculative-decoding.png" alt="A junior clerk at a small desk writes four word slips fast. A senior editor at a large desk checks the whole row in one glance: the first three slips get a green tick, the fourth is crossed out and the editor's own word is written in its place, and the round ends there." width="100%">
+
+*One round of speculative decoding: the draft proposes k tokens, the large model checks them all in one pass, and the output is exactly the large model's.*
+-->
 
 ### 6.2 How much it yields: α and the accepted length
 

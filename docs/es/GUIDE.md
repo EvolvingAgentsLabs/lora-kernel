@@ -230,6 +230,12 @@ W' = W + \tfrac{\alpha}{r}\,A\,B
 donde $A$ y $B$ son dos matrices finitas (rango $r$, acá 16). En vez de cambiar $W$ (millones de números) se aprenden
 $A$ y $B$ (miles). Un LoRA del 12B pesa ~140 MB contra ~24 GB del modelo. Ver [`FOUNDATIONS.md`](FOUNDATIONS.md) §4.1.
 
+<!-- IMAGE PLACEHOLDER — see docs/img/IMAGES.md
+<img src="../img/lora-patch.png" alt="Un volumen grueso encuadernado sobre un atril, el modelo base, rotulado congelado, unos 24 GB. Un cuadernillo fino rotulado A·B, rango 16, unos 140 MB, se engancha en su lomo. En un perchero al lado cuelgan más cuadernillos finos, uno por experto, esperando su turno." width="100%">
+
+*Un LoRA es un parche fino sobre un libro congelado: la base nunca cambia, y los expertos difieren sólo en el cuadernillo enganchado.*
+-->
+
 ### 5.2 Por qué es la pieza central
 
 Como $W$ nunca se toca, **el modelo base queda residente y lo único que cambia entre expertos es el parche**. Se puede:
@@ -298,6 +304,12 @@ tokens propuestos** cuesta casi lo mismo que generar uno: se procesan todos en u
 **La salida es exactamente la del modelo grande** — con cualquier borrador. Un borrador malo cuesta velocidad, nunca
 calidad **[read]** (Leviathan et al. 2023; Chen et al. 2023). A temperatura 0 la regla es simple: se acepta un token si
 es exactamente el que el grande habría elegido. Demostración: [`FOUNDATIONS.md`](FOUNDATIONS.md) §6.1–6.3.
+
+<!-- IMAGE PLACEHOLDER — see docs/img/IMAGES.md
+<img src="../img/speculative-decoding.png" alt="Un empleado junior en un escritorio chico escribe rápido cuatro fichas con palabras. Un editor senior en un escritorio grande revisa toda la fila de un vistazo: las tres primeras fichas reciben un tilde verde, la cuarta queda tachada y el editor escribe su propia palabra en su lugar, y la ronda termina ahí." width="100%">
+
+*Una ronda de decodificación especulativa: el borrador propone k tokens, el modelo grande los verifica todos en una pasada, y la salida es exactamente la del modelo grande.*
+-->
 
 ### 6.2 Cuánto rinde: α y el largo aceptado
 

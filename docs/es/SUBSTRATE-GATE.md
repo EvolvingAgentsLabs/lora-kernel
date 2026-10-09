@@ -25,6 +25,23 @@ y G1 es su test.
 | **G2** | el miembro alcanza sus herramientas **a través del proxy** — sin error HTTP, una llamada o una respuesta | el primer brazo de P51: **240 de 240** pedidos HTTP 400 por flags del parser faltantes, la línea de progreso leyendo `correct 0 calls 0` — una corrida rota disfrazada de piso **[ran]** |
 | **G3** | `stop` + `include_stop_str_in_output` honrados sobre una continuación que el modelo no puede evitar | el loop de modo corpus (parar en `</tag>`, inyectar, seguir) es imposible sin eso; el primer preflight midió la frase del modelo **[ran]** P55 A intento 1 |
 
+En el orden en que las corre `training/harness/verify_substrate.py`. Corren todas las compuertas — una falla
+no frena la siguiente — y cada una escribe su registro en `verdict.json` antes de que empiece la siguiente;
+el veredicto se calcula al final, desde el archivo:
+
+```mermaid
+flowchart LR
+  S["servir el pool<br/>base + cada --adapter"] -->|nunca levantó| F["veredicto: FAIL serve"]
+  S --> P0["P0<br/>miembros = /v1/models<br/>menos la base"]
+  P0 --> G1["G1, por miembro<br/>≥ 2 de 3 sondas difieren<br/>de la base"]
+  G1 --> Q{"¿se pasó<br/>--proxy?"}
+  Q -->|sí| G2["G2, por miembro<br/>herramientas alcanzables<br/>a través del proxy"]
+  Q -->|no| G2s["G2 omitida,<br/>con un aviso"]
+  G2 --> G3["G3<br/>stop + include_stop_str_in_output<br/>honrados"]
+  G2s --> G3
+  G3 --> V["verdict.json<br/>pasa si ninguna compuerta falló<br/>y el pool no está vacío"]
+```
+
 ## Decisiones de diseño
 
 - **El umbral de G1 es 2 de 3, no 1 de 1.** A temperatura 0 un prompt corto puede
