@@ -471,6 +471,12 @@ por encima de 32 — no se alcanzó. **Esto reemplaza el 0,88 de E5** ([`RECORD.
 número venía de una sola ráfaga de 16 pedidos, dentro del margen de una medición única, no de una curva —
 la falla contra la que avisan tanto el §9.4 como el §1.1: leer una sola tirada como la tasa.
 
+<!-- IMAGE PLACEHOLDER — see docs/img/IMAGES.md
+<img src="../img/c1-throughput.png" alt="Gráfico de líneas de tokens generados por segundo agregados contra sesiones simultáneas K = 1, 8, 16, 32 en una L4: un adaptador y cuatro adaptadores mezclados quedan uno encima del otro, subiendo casi linealmente hasta unos 500 tokens por segundo en K = 32; un punto de dos adaptadores en K = 16 cae sobre la misma línea." width="100%">
+
+*C1 [ran] `results/C1-concurrency-20260929`: mezclar cuatro adaptadores en un lote no cuesta nada medible, $r_4(16) = 1,03$ contra una vara de 0,8.*
+-->
+
 ---
 
 ## 6. Decodificación especulativa

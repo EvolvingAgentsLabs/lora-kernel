@@ -453,6 +453,12 @@ not reached. **This supersedes E5's 0.88** ([`RECORD.md`](RECORD.md) §2): that 
 16 requests, inside the spread of a single measurement, not from a curve — the failure §9.4 and §1.1 both
 warn against, reading one draw as the rate.
 
+<!-- IMAGE PLACEHOLDER — see docs/img/IMAGES.md
+<img src="img/c1-throughput.png" alt="Line chart of aggregate generated tokens per second against concurrent sessions K = 1, 8, 16, 32 on one L4: one adapter and four adapters mixed lie on top of each other, rising almost linearly to about 500 tokens per second at K = 32; a two-adapter point at K = 16 sits on the same line." width="100%">
+
+*C1 [ran] `results/C1-concurrency-20260929`: mixing four adapters in one batch costs nothing measurable, $r_4(16) = 1.03$ against a bar of 0.8.*
+-->
+
 ---
 
 ## 6. Speculative decoding
