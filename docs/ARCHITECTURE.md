@@ -287,7 +287,7 @@ small one has headroom) and then a **speculative** one (does the matched LoRA ra
 0.30, four members mixed — `school-s0`, `upper-s0`, `staff-s0`, `out-s0`): 16 sessions split across the four adapters
 reach 278.6 tok/s against 269.7 tok/s for the same 16 sessions on one adapter alone (1.03×); 32 sessions across the
 four reach 504 tok/s, p95 time-to-first-token 0.24 s, 0 errors of 128 requests; throughput scales near-linearly from
-one session to 32 (22.7 → 135 → 270 → 500 tok/s), with the ceiling still above 32. This supersedes E5's single-burst
+one session to 32 (22.7 → 135 → 270 → 491 tok/s), with the ceiling still above 32. This supersedes E5's single-burst
 reading of 0.88 — that number held at the edge of one burst of 16, not at the scale several concurrent sessions
 actually produce.
 

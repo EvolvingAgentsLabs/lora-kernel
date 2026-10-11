@@ -547,7 +547,7 @@ vLLM 0.30, cuatro miembros mezclados en el mismo lote (escuela, capas de arriba,
 alcance): 16 sesiones sobre cuatro adaptadores mantienen 1,03× el throughput de 16 sesiones sobre
 uno solo (278,6 contra 269,7 tok/s); 32 sesiones sobre cuatro adaptadores llegan a 504 tok/s con un
 p95 de time-to-first-token de 0,24 s y cero errores sobre 128 pedidos; el throughput escala casi
-lineal, 22,7 → 135 → 270 → 500 tok/s para 1 → 8 → 16 → 32 sesiones, y el techo está por encima de 32
+lineal, 22,7 → 135 → 270 → 491 tok/s para 1 → 8 → 16 → 32 sesiones, y el techo está por encima de 32
 — no se alcanzó. Reemplaza el 0,88 de una sola ráfaga de E5
 ([`results/C1-concurrency-20260929/`](results/C1-concurrency-20260929/BRIEF.md)).
 
