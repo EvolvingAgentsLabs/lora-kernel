@@ -153,8 +153,10 @@ PY
 
 Run from the repository root. Rendered once on 2026-10-09 to check the recipe (not committed): one-adapter
 22.7 → 135.1 → 269.7 → 490.8 tok/s, four-adapter 139.4 → 278.6 → 504.3 at $K = 8, 16, 32$, two-adapter 263.2 at
-$K = 16$. Note the file has no four-adapter cell at $K = 1$; the §5.6 sentence that lists "22.7 → 135.1 → 278.6 →
-504.3 … (four-adapter cells)" mixes the one-adapter cells at $K = 1, 8$ into that row.
+$K = 16$. Note the file has no four-adapter cell at $K = 1$; the §5.6 sentence that listed "22.7 → 135.1 → 278.6 →
+504.3 … (four-adapter cells)" mixed the one-adapter cells at $K = 1, 8$ into that row — corrected 2026-10-11 to
+the file's cells. **Rendered and placed 2026-10-11** with this script unchanged; the eight cells above were
+asserted against `c1.json` before saving.
 
 **Alt text (en):** Line chart of aggregate generated tokens per second against concurrent sessions K = 1, 8, 16, 32 on
 one L4: one adapter and four adapters mixed lie on top of each other, rising almost linearly to about 500 tokens per
