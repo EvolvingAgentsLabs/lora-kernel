@@ -1,0 +1,112 @@
+[tau2] T1 · arms ['teacher', 'base'] · card {'name': 'NVIDIA RTX PRO 6000 Blackwell Server Edition', 'gib': 95.6} · split test · k 4
+[tau2] install: cloning τ² at 5bfa7e37b
+[tau2] install: uv sync --frozen (τ²'s own lock) + websockets (the T0 gap)
+[tau2] install: τ² 1.0.1 at 5bfa7e37b
+[tau2] serve: vllm serve google/gemma-4-31B-it-qat-w4a16-ct --revision 52f3f65bc7a02d555763bc923bd1d9094898219d --served-model-name gemma-4-31b --port 8000 --max-model-len 32768 --gpu-memory-utilization 0.45 --language-model-only --enable-auto-tool-choice --tool-call-parser gemma4 --reasoning-parser gemma4
+[tau2] serve: vllm serve google/gemma-4-12B-it --revision 707f0a3b8a3c7ad586ed01e27eafbad8a27dd0f7 --served-model-name gemma-4-e4b --port 8001 --max-model-len 32768 --gpu-memory-utilization 0.4 --language-model-only --enable-auto-tool-choice --tool-call-parser gemma4 --reasoning-parser gemma4
+[tau2] base: preflight ok · 3/3 probes called a tool · simulator said "I'm calling to find out why my flight to London was cancelle"
+[tau2] base: litellm path ok · [['get_user_details', '{"user_id": "mia_li_3668"}']]
+[tau2] base: tau2 run … --agent-llm openai/gemma-4-e4b --user-llm openai/gemma-4-31b --num-trials 4 --max-steps 150 --max-concurrency 8
+[tau2] base: 1/80 · task 19 trial 0 reward 1.0 · user_stop · 5 calls · 0 malformed · 27s
+[tau2] base: running pass^1 1.000 over 1 task(s)
+[tau2] base: 2/80 · task 13 trial 0 reward 1.0 · user_stop · 1 calls · 0 malformed · 30s
+[tau2] base: 3/80 · task 16 trial 0 reward 0.0 · user_stop · 4 calls · 0 malformed · 42s
+[tau2] base: 4/80 · task 2 trial 0 reward 0.0 · user_stop · 7 calls · 0 malformed · 49s
+[tau2] base: running pass^1 0.500 over 4 task(s)
+[tau2] base: 5/80 · task 22 trial 0 reward 1.0 · user_stop · 9 calls · 0 malformed · 58s
+[tau2] base: 6/80 · task 26 trial 0 reward 1.0 · user_stop · 3 calls · 0 malformed · 19s
+[tau2] base: 7/80 · task 6 trial 0 reward 1.0 · user_stop · 1 calls · 0 malformed · 74s
+[tau2] base: 8/80 · task 8 trial 0 reward 0.0 · user_stop · 9 calls · 0 malformed · 75s
+[tau2] base: 9/80 · task 18 trial 0 reward 1.0 · user_stop · 13 calls · 0 malformed · 84s
+[tau2] base: 10/80 · task 31 trial 0 reward 1.0 · user_stop · 2 calls · 0 malformed · 23s
+[tau2] base: running pass^1 0.700 over 10 task(s)
+[tau2] base: 11/80 · task 30 trial 0 reward 1.0 · user_stop · 4 calls · 0 malformed · 42s
+[tau2] base: running pass^1 0.727 over 11 task(s)
+[tau2] base: 12/80 · task 25 trial 0 reward 0.0 · user_stop · 5 calls · 0 malformed · 90s
+[tau2] base: 13/80 · task 32 trial 0 reward 0.0 · user_stop · 3 calls · 0 malformed · 47s
+[tau2] base: 14/80 · task 29 trial 0 reward 0.0 · user_stop · 7 calls · 0 malformed · 75s
+[tau2] base: 15/80 · task 48 trial 0 reward 1.0 · user_stop · 1 calls · 0 malformed · 21s
+[tau2] base: running pass^1 0.600 over 15 task(s)
+[tau2] base: 16/80 · task 24 trial 0 reward 0.0 · user_stop · 15 calls · 0 malformed · 121s
+[tau2] base: 17/80 · task 37 trial 0 reward 0.0 · user_stop · 8 calls · 0 malformed · 68s
+[tau2] base: 18/80 · task 45 trial 0 reward 1.0 · user_stop · 2 calls · 0 malformed · 66s
+[tau2] base: 19/80 · task 44 trial 0 reward 0.0 · user_stop · 24 calls · 0 malformed · 85s
+[tau2] base: running pass^1 0.526 over 19 task(s)
+[tau2] base: 20/80 · task 6 trial 1 reward 1.0 · user_stop · 1 calls · 0 malformed · 63s
+[tau2] base: 21/80 · task 16 trial 1 reward 0.0 · user_stop · 4 calls · 0 malformed · 41s
+[tau2] base: 22/80 · task 19 trial 1 reward 0.0 · user_stop · 4 calls · 0 malformed · 23s
+[tau2] base: 23/80 · task 35 trial 0 reward 0.0 · user_stop · 5 calls · 0 malformed · 122s
+[tau2] base: 24/80 · task 2 trial 1 reward 0.0 · user_stop · 8 calls · 0 malformed · 77s
+[tau2] base: running pass^1 0.475 over 20 task(s)
+[tau2] base: 25/80 · task 22 trial 1 reward 0.0 · user_stop · 5 calls · 0 malformed · 20s
+[tau2] base: 26/80 · task 8 trial 1 reward 0.0 · user_stop · 10 calls · 0 malformed · 74s
+[tau2] base: 27/80 · task 26 trial 1 reward 1.0 · user_stop · 3 calls · 0 malformed · 19s
+[tau2] base: 28/80 · task 13 trial 1 reward 1.0 · user_stop · 3 calls · 0 malformed · 75s
+[tau2] base: 29/80 · task 31 trial 1 reward 1.0 · user_stop · 2 calls · 0 malformed · 17s
+[tau2] base: running pass^1 0.450 over 20 task(s)
+[tau2] base: 30/80 · task 25 trial 1 reward 0.0 · user_stop · 2 calls · 0 malformed · 46s
+[tau2] base: 31/80 · task 32 trial 1 reward 0.0 · user_stop · 5 calls · 0 malformed · 30s
+[tau2] base: 32/80 · task 18 trial 1 reward 1.0 · user_stop · 13 calls · 0 malformed · 83s
+[tau2] base: 33/80 · task 30 trial 1 reward 1.0 · user_stop · 4 calls · 0 malformed · 49s
+[tau2] base: running pass^1 0.450 over 20 task(s)
+[tau2] base: 34/80 · task 29 trial 1 reward 0.0 · user_stop · 8 calls · 0 malformed · 76s
+[tau2] base: 35/80 · task 48 trial 1 reward 1.0 · user_stop · 1 calls · 0 malformed · 28s
+[tau2] base: 36/80 · task 37 trial 1 reward 0.0 · user_stop · 8 calls · 0 malformed · 58s
+[tau2] base: running pass^1 0.450 over 20 task(s)
+[tau2] base: 37/80 · task 2 trial 2 reward 0.0 · user_stop · 5 calls · 0 malformed · 42s
+[tau2] base: 38/80 · task 24 trial 1 reward 0.0 · user_stop · 15 calls · 0 malformed · 120s
+[tau2] base: 39/80 · task 44 trial 1 reward 0.0 · user_stop · 19 calls · 0 malformed · 82s
+[tau2] base: 40/80 · task 8 trial 2 reward 0.0 · user_stop · 7 calls · 0 malformed · 46s
+[tau2] base: running pass^1 0.450 over 20 task(s)
+[tau2] base: 41/80 · task 45 trial 1 reward 1.0 · user_stop · 3 calls · 0 malformed · 80s
+[tau2] base: 42/80 · task 19 trial 2 reward 0.0 · user_stop · 4 calls · 0 malformed · 20s
+[tau2] base: 43/80 · task 6 trial 2 reward 1.0 · user_stop · 1 calls · 0 malformed · 68s
+[tau2] base: 44/80 · task 22 trial 2 reward 0.0 · user_stop · 5 calls · 0 malformed · 20s
+[tau2] base: 45/80 · task 16 trial 2 reward 1.0 · user_stop · 5 calls · 0 malformed · 49s
+[tau2] base: running pass^1 0.450 over 20 task(s)
+[tau2] base: 46/80 · task 13 trial 2 reward 0.0 · user_stop · 4 calls · 0 malformed · 67s
+[tau2] base: 47/80 · task 26 trial 2 reward 1.0 · user_stop · 2 calls · 0 malformed · 22s
+[tau2] base: 48/80 · task 35 trial 1 reward 0.0 · user_stop · 7 calls · 0 malformed · 144s
+[tau2] base: 49/80 · task 25 trial 2 reward 0.0 · user_stop · 2 calls · 0 malformed · 34s
+[tau2] base: 50/80 · task 31 trial 2 reward 1.0 · user_stop · 2 calls · 0 malformed · 22s
+[tau2] base: running pass^1 0.433 over 20 task(s)
+[tau2] base: 51/80 · task 18 trial 2 reward 1.0 · user_stop · 13 calls · 0 malformed · 81s
+[tau2] base: 52/80 · task 30 trial 2 reward 1.0 · user_stop · 4 calls · 0 malformed · 47s
+[tau2] base: running pass^1 0.433 over 20 task(s)
+[tau2] base: 53/80 · task 48 trial 2 reward 1.0 · user_stop · 1 calls · 0 malformed · 23s
+[tau2] base: 54/80 · task 29 trial 2 reward 0.0 · user_stop · 7 calls · 0 malformed · 80s
+[tau2] base: 55/80 · task 32 trial 2 reward 1.0 · user_stop · 5 calls · 0 malformed · 68s
+[tau2] base: 56/80 · task 37 trial 2 reward 0.0 · user_stop · 8 calls · 0 malformed · 58s
+[tau2] base: running pass^1 0.450 over 20 task(s)
+[tau2] base: 57/80 · task 44 trial 2 reward 0.0 · user_stop · 15 calls · 0 malformed · 68s
+[tau2] base: 58/80 · task 6 trial 3 reward 1.0 · user_stop · 1 calls · 0 malformed · 39s
+[tau2] base: 59/80 · task 2 trial 3 reward 0.0 · user_stop · 5 calls · 0 malformed · 47s
+[tau2] base: 60/80 · task 35 trial 2 reward 0.0 · user_stop · 4 calls · 0 malformed · 99s
+[tau2] base: 61/80 · task 45 trial 2 reward 0.0 · user_stop · 3 calls · 0 malformed · 80s
+[tau2] base: running pass^1 0.433 over 20 task(s)
+[tau2] base: 62/80 · task 24 trial 2 reward 0.0 · user_stop · 15 calls · 0 malformed · 156s
+[tau2] base: 63/80 · task 22 trial 3 reward 0.0 · user_stop · 5 calls · 0 malformed · 18s
+[tau2] base: 64/80 · task 8 trial 3 reward 0.0 · user_stop · 7 calls · 0 malformed · 51s
+[tau2] base: 65/80 · task 16 trial 3 reward 1.0 · user_stop · 5 calls · 0 malformed · 46s
+[tau2] base: 66/80 · task 13 trial 3 reward 1.0 · user_stop · 3 calls · 0 malformed · 66s
+[tau2] base: 67/80 · task 26 trial 3 reward 1.0 · user_stop · 3 calls · 0 malformed · 19s
+[tau2] base: running pass^1 0.442 over 20 task(s)
+[tau2] base: 68/80 · task 19 trial 3 reward 1.0 · user_stop · 7 calls · 0 malformed · 40s
+[tau2] base: 69/80 · task 31 trial 3 reward 1.0 · user_stop · 2 calls · 0 malformed · 22s
+[tau2] base: 70/80 · task 32 trial 3 reward 0.0 · user_stop · 5 calls · 0 malformed · 30s
+[tau2] base: running pass^1 0.446 over 20 task(s)
+[tau2] base: 71/80 · task 30 trial 3 reward 1.0 · user_stop · 3 calls · 0 malformed · 43s
+[tau2] base: 72/80 · task 18 trial 3 reward 1.0 · user_stop · 13 calls · 0 malformed · 79s
+[tau2] base: 73/80 · task 25 trial 3 reward 0.0 · user_stop · 4 calls · 0 malformed · 66s
+[tau2] base: 74/80 · task 29 trial 3 reward 0.0 · user_stop · 7 calls · 0 malformed · 77s
+[tau2] base: 75/80 · task 48 trial 3 reward 1.0 · user_stop · 1 calls · 0 malformed · 21s
+[tau2] base: running pass^1 0.446 over 20 task(s)
+[tau2] base: 76/80 · task 45 trial 3 reward 1.0 · user_stop · 1 calls · 0 malformed · 37s
+[tau2] base: 77/80 · task 37 trial 3 reward 0.0 · user_stop · 8 calls · 0 malformed · 53s
+[tau2] base: 78/80 · task 35 trial 3 reward 0.0 · user_stop · 4 calls · 0 malformed · 85s
+[tau2] base: 79/80 · task 44 trial 3 reward 0.0 · user_stop · 15 calls · 0 malformed · 57s
+[tau2] base: running pass^1 0.450 over 20 task(s)
+[tau2] base: 80/80 · task 24 trial 3 reward 0.0 · user_stop · 20 calls · 0 malformed · 122s
+[tau2] base: running pass^1 0.450 over 20 task(s)
+[tau2] base: COMPLETE pass^1 0.45 [0.2625, 0.6375] · pass^4 0.3 · 6.05 calls/sim · 0 malformed · {'user_stop': 80}
+[tau2] decision: NO NEED TO DISTIL HERE · {"gap_pass^1": {"tasks": 20, "gap": 0.0875, "ci95": [-0.0625, 0.25], "teacher_better_tasks": 7, "base_better_tasks": 4}, "gap_pass^4": {"tasks": 20, "gap": 0.1, "ci95": [-0.15, 0.35], "teacher_better_tasks": 4, "base_better_tasks": 2}}
