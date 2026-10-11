@@ -157,7 +157,8 @@ def test_the_assignment_detector_sees_past_a_semicolon(tmp_path):
 import pathlib
 
 PREFIX = re.compile(r'^\s*print\(f?"\[(\w+)\]', re.M)
-RUNNERS = sorted([*pathlib.Path("training/harness").glob("*.py"), *pathlib.Path("experiments").glob("*/*.py")])
+RUNNERS = sorted([*pathlib.Path("training/harness").glob("*.py"), *pathlib.Path("training/wiki").glob("*.py"),
+                  *pathlib.Path("experiments").glob("*/*.py")])
 
 
 def peek_patterns(path: pathlib.Path) -> set[str]:

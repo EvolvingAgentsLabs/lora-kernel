@@ -1,0 +1,18 @@
+[mac] base 4.8 s · drafter mtp 0.3 s · adapters {'wiki12b': {'dir': '/Users/agustinazwiener/lora-kernel-adapters/B3-gemma4-12b-wiki-s0/x/adapters/wiki12b-walks-s0', 'projections': 328, 'attach_s': 0.88}}
+[mac] base/domain/off: 13.7 tok/s
+[mac] base/domain/mtp_b2: 20.9 tok/s · accepted/round 0.94
+[mac] base/domain/mtp_b3: 22.4 tok/s · accepted/round 1.74
+[mac] base/domain/mtp_b4: 22.3 tok/s · accepted/round 2.87
+[mac] base/general/off: 13.7 tok/s
+[mac] base/general/mtp_b2: 16.6 tok/s · accepted/round 0.76
+[mac] base/general/mtp_b3: 15.7 tok/s · accepted/round 1.16
+[mac] base/general/mtp_b4: 14.0 tok/s · accepted/round 1.48
+[mac] wiki12b/domain/off: 12.8 tok/s
+[mac] wiki12b/domain/mtp_b2: 13.8 tok/s · accepted/round 0.60
+[mac] wiki12b/domain/mtp_b3: 13.3 tok/s · accepted/round 0.95
+[mac] wiki12b/domain/mtp_b4: 11.3 tok/s · accepted/round 1.07
+[mac] wiki12b/general/off: 12.6 tok/s
+[mac] wiki12b/general/mtp_b2: 13.6 tok/s · accepted/round 0.67
+[mac] wiki12b/general/mtp_b3: 13.1 tok/s · accepted/round 1.07
+[mac] wiki12b/general/mtp_b4: 11.8 tok/s · accepted/round 1.35
+[mac] {"base/domain": {"tps_off": 13.67}, "base/domain/mtp_b2": {"tps": 20.85, "speedup": 1.53, "identical": "1/6", "accepted_per_round": 0.942, "rounds": 493, "acceptance": 0.939}, "base/domain/mtp_b3": {"tps": 22.4, "speedup": 1.64, "identical": "1/6", "accepted_per_round": 1.741, "rounds": 350, "acceptance": 0.871}, "base/domain/mtp_b4": {"tps": 22.32, "speedup": 1.63, "identical": "3/6", "accepted_per_round": 2.868, "rounds": 248, "acceptance": 0.965}, "base/general": {"tps_off": 13.73}, "base/general/mtp_b2": {"tps": 16.64, "speedup": 1.21, "identical": "1/4", "accepted_per_round": 0.756, "rounds": 335, "acceptance": 0.755}, "base/general/mtp_b3": {"tps": 15.73, "speedup": 1.15, "identical": "1/4", "accepted_per_round": 1.162, "rounds": 272, "acceptance": 0.58}, "base/general/mtp_b4": {"tps": 14.04, "speedup": 1.02, "identical": "1/4", "accepted_per_round": 1.481, "rounds": 240, "acceptance": 0.486}, "wiki12b/domain": {"tps_off": 12.81}, "wiki12b/domain/mtp_b2": {"tps": 13.85, "speedup": 1.08, "identical": "3/6", "accepted_per_round": 0.597, "rounds": 599, "acceptance": 0.596}, "wiki12b/domain/mtp_b3": {"tps": 13.31, "speedup": 1.04, "identical": "3/6", "accepted_per_round": 0.952, "rounds": 491, "acceptance": 0.477}, "wiki12b/domain/mtp_b4": {"tps": 11.27, "speedup": 0.88, "identical": "2/6", "accepted_per_round": 1.067, "rounds": 464, "acceptance": 0.357}, "wiki12b/general": {"tps_off": 12.57}, "wiki12b/general/mtp_b2": {"tps": 13.58, "speedup": 1.08, "identical": "0/4", "accepted_per_round": 0.67, "rounds": 353, "acceptance": 0.671}, "wiki12b/general/mtp_b3": {"tps": 13.08, "speedup": 1.04, "identical": "1/4", "accepted_per_round": 1.073, "rounds": 277, "acceptance": 0.536}, "wiki12b/general/mtp_b4": {"tps": 11.85, "speedup": 0.94, "identical": "2/4", "accepted_per_round": 1.347, "rounds": 248, "acceptance": 0.446}, "G1:wiki12b": "6/6 domain texts differ from the base"}

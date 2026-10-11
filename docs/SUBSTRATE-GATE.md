@@ -24,6 +24,23 @@ the delta term absent, whatever the engine logged. That is C18, and G1 is its te
 | **G2** | the member reaches its tools **through the proxy** — no HTTP error, a tool call or an answer | P51's first arm: **240 of 240** requests HTTP 400 for missing parser flags, the progress line reading `correct 0 calls 0` — a broken run wearing a floor **[ran]** |
 | **G3** | `stop` + `include_stop_str_in_output` honoured on a continuation the model cannot avoid | the corpus-mode loop (stop at `</tag>`, inject, continue) is impossible without it; the first preflight measured the model's phrasing instead **[ran]** P55 A attempt 1 |
 
+In the order `training/harness/verify_substrate.py` runs them. Every gate runs — a failure does not stop
+the next one — and each writes its record to `verdict.json` before the next starts; the verdict is
+computed last, from the file:
+
+```mermaid
+flowchart LR
+  S["serve the pool<br/>base + every --adapter"] -->|never came up| F["verdict: FAIL serve"]
+  S --> P0["P0<br/>members = /v1/models<br/>minus the base"]
+  P0 --> G1["G1, per member<br/>≥ 2 of 3 probes differ<br/>from the base"]
+  G1 --> Q{"--proxy<br/>given?"}
+  Q -->|yes| G2["G2, per member<br/>tools reachable<br/>through the proxy"]
+  Q -->|no| G2s["G2 skipped,<br/>with a notice"]
+  G2 --> G3["G3<br/>stop + include_stop_str_in_output<br/>honoured"]
+  G2s --> G3
+  G3 --> V["verdict.json<br/>pass iff no gate failed<br/>and the pool is not empty"]
+```
+
 ## Design decisions
 
 - **G1's threshold is 2 of 3, not 1 of 1.** At temperature 0 a short prompt can
@@ -69,8 +86,8 @@ should be asked to: `real-walks-s0` served, answered its tools and never differe
 C18 would flag — it was **applied**, and still wrote regulation text instead of a cited answer, because
 the training loss (not the serving substrate) sat on the whole walk. The fix (span-masked loss) is a
 training-time decision; this gate's job stops at confirming the resulting adapter is actually served.
-The live library endpoint (`examples/library/serve.py`, tested offline) will need to clear the same G1–G3
-checks before any live run, exactly as the tracker's `edge` member did (LIVE-tracker **[ran]**).
+~~The live library endpoint (`examples/library/serve.py`, tested offline) will need to clear the same G1–G3
+checks before any live run, exactly as the tracker's `edge` member did (LIVE-tracker **[ran]**).~~ The endpoint has since run live (LIVE-library **[ran]**, 2026-10-01, PASSED, 36/52), and its brief records no G1–G3 run of the `edge` arm **[read]** — the gate remains owed there. On vLLM, RFT0's sampler applies G1 (an identity check of the member by name) before any walk **[read]** (its brief).
 
 ## Its place in the plan
 

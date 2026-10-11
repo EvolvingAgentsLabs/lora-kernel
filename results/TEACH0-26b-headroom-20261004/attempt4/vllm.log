@@ -1,0 +1,84 @@
+(APIServer pid=4607) INFO 10-05 19:24:51 [api_utils.py:347] 
+(APIServer pid=4607) INFO 10-05 19:24:51 [api_utils.py:347]        █     █     █▄   ▄█
+(APIServer pid=4607) INFO 10-05 19:24:51 [api_utils.py:347]  ▄▄ ▄█ █     █     █ ▀▄▀ █  version 0.31.0
+(APIServer pid=4607) INFO 10-05 19:24:51 [api_utils.py:347]   █▄█▀ █     █     █     █  model   google/gemma-4-26B-A4B-it
+(APIServer pid=4607) INFO 10-05 19:24:51 [api_utils.py:347]    ▀▀  ▀▀▀▀▀ ▀▀▀▀▀ ▀     ▀
+(APIServer pid=4607) INFO 10-05 19:24:51 [api_utils.py:347] 
+(APIServer pid=4607) INFO 10-05 19:24:51 [api_utils.py:286] non-default args: {'model_tag': 'google/gemma-4-26B-A4B-it', 'model': 'google/gemma-4-26B-A4B-it', 'max_model_len': 16384, 'quantization': 'bitsandbytes', 'enforce_eager': True, 'gpu_memory_utilization': 0.9}
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+(APIServer pid=4607) INFO 10-05 19:25:09 [model.py:699] Resolved architecture: Gemma4ForConditionalGeneration
+(APIServer pid=4607) INFO 10-05 19:25:09 [model.py:2109] Using max model len 16384
+Traceback (most recent call last):
+  File "/usr/local/bin/vllm", line 8, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/cli/main.py", line 118, in main
+    args.dispatch_function(args)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/cli/serve.py", line 154, in cmd
+    uvloop.run(run_server(args))
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/uvloop/__init__.py", line 96, in run
+    return __asyncio.run(
+           ~~~~~~~~~~~~~^
+        wrapper(),
+        ^^^^^^^^^^
+    ...<2 lines>...
+        **run_kwargs
+        ^^^^^^^^^^^^
+    )
+    ^
+  File "/usr/lib/python3.13/asyncio/runners.py", line 196, in run
+    return runner.run(main)
+           ~~~~~~~~~~^^^^^^
+  File "/usr/lib/python3.13/asyncio/runners.py", line 119, in run
+    return self._loop.run_until_complete(task)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  File "uvloop/loop.pyx", line 1515, in uvloop.loop.Loop.run_until_complete
+  File "/usr/local/lib/python3.13/dist-packages/uvloop/__init__.py", line 48, in wrapper
+    return await main
+           ^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/launchers/api_server/entry.py", line 172, in run_server
+    await run_server_worker(listen_address, sock, args, **uvicorn_kwargs)
+  File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/launchers/api_server/entry.py", line 185, in run_server_worker
+    async with build_async_engine_client(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~^
+        args,
+        ^^^^^
+        client_config=client_config,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ) as engine_client:
+    ^
+  File "/usr/lib/python3.13/contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/launchers/api_server/entry.py", line 58, in build_async_engine_client
+    async with build_async_engine_client_from_engine_args(
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        engine_args,
+        ^^^^^^^^^^^^
+        usage_context=usage_context,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        client_config=client_config,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ) as engine:
+    ^
+  File "/usr/lib/python3.13/contextlib.py", line 214, in __aenter__
+    return await anext(self.gen)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.13/dist-packages/vllm/entrypoints/launchers/api_server/entry.py", line 80, in build_async_engine_client_from_engine_args
+    vllm_config = engine_args.create_engine_config(usage_context=usage_context)
+  File "/usr/local/lib/python3.13/dist-packages/vllm/engine/arg_utils.py", line 2183, in create_engine_config
+    model_config = self.create_model_config()
+  File "/usr/local/lib/python3.13/dist-packages/vllm/engine/arg_utils.py", line 1918, in create_model_config
+    return ModelConfig(
+        model=self.model,
+    ...<67 lines>...
+        renderer_num_workers=self.renderer_num_workers,
+    )
+  File "/usr/local/lib/python3.13/dist-packages/pydantic/_internal/_dataclasses.py", line 121, in __init__
+    s.__pydantic_validator__.validate_python(ArgsKwargs(args, kwargs), self_instance=s)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for ModelConfig
+  Value error, Unknown quantization method: bitsandbytes. Must be one of ['awq', 'auto_awq', 'fp8', 'fbgemm_fp8', 'fp_quant', 'modelopt', 'modelopt_fp4', 'modelopt_mxfp8', 'modelopt_mixed', 'auto_gptq', 'gptq', 'gptq_marlin', 'awq_marlin', 'humming', 'compressed-tensors', 'experts_int8', 'quark', 'moe_wna16', 'torchao', 'inc', 'mxfp4', 'gpt_oss_mxfp4', 'deepseek_v4_fp8', 'online', 'fp8_per_tensor', 'fp8_per_block', 'fp8_per_channel', 'int8_per_channel_weight_only', 'nvfp4_per_token', 'mxfp8']. [type=value_error, input_value=ArgsKwargs((), {'model': ...nderer_num_workers': 1}), input_type=ArgsKwargs]
+    For further information visit https://errors.pydantic.dev/2.13/v/value_error

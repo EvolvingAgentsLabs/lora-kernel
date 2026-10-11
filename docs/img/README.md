@@ -33,6 +33,9 @@ English in both language versions.
 | `demo-escuela-preview.gif`, `demo-escuela-poster.png` | 960 px GIF · 1280 px PNG | ✅ **in** — cut from `docs/video/demo-escuela.mp4` by ffmpeg, not drawn (`video/README.md`) | not embedded — the READMEs play the video itself (a GitHub attachment of the same MP4); kept for sharing where video does not play |
 | `demo-tracker-preview.gif`, `demo-tracker-poster.png` | 960 px GIF · 1280 px PNG | ✅ **in** — cut from `docs/video/demo-tracker.mp4` by ffmpeg, not drawn (`video/README.md`) | not embedded — the READMEs link the MP4 itself; kept for sharing where video does not play |
 | `solution-architecture.png` | wide, ~1600 px | ✅ **in** | `README.md`, `README.es.md`, `docs/articles/2026-09-it-was-the-harness.md`, `docs/articles/2026-09-era-el-arnes.es.md` (cover) |
+| `lora-patch.png` | 1600 × 800 | ✅ **in** (2026-10-11), brief in [`IMAGES.md`](IMAGES.md) | `docs/GUIDE.md` §5.1 (+ `es`) |
+| `speculative-decoding.png` | 1600 × 800 | ✅ **in** (2026-10-11), brief in [`IMAGES.md`](IMAGES.md) | `docs/GUIDE.md` §6.1 (+ `es`) |
+| `c1-throughput.png` | 1600 × 800 | ✅ **in** (2026-10-11) — a chart rendered from `results/C1-concurrency-20260929/c1.json` by the script in [`IMAGES.md`](IMAGES.md), not drawn | `docs/FOUNDATIONS.md` §5.6 (+ `es`) |
 
 ## Briefs
 

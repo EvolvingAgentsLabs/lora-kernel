@@ -795,13 +795,21 @@ runs are read as arms, not as passes through this gate.
 **What.** Which member's distribution a request falls in, or none — decided before the request reaches a
 model, by a table of measured regions, not by the model's own opinion of what it can do.
 
-**How.** `route.py`'s default, and the one actually served, is a **keyword dictionary**: each member
+**How.** **Since 2026-10-02 the proxy's default is a factored router** (`openai_proxy --router factored`,
+`training/harness/factored_router.py`): a request is local to a member only if exactly one paragraph of it is not that
+member's content and that paragraph is the member's task — and it serves 0 of 600 foreign texts locally against the
+dictionary's 294, losing 0 of 480 legitimate requests, **[ran]** ROUTE0
+(`results/ROUTE0-factored-router-20261002/BRIEF.md`); a paraphrase of the task leaves by design (0/120 kept local),
+and keeping it local costs a trained member accuracy on one compound rule **[ran]** P2a, so the probe that would do it
+(ROUTE2) is not built. ~~`route.py`'s default, and the one actually served, is a **keyword dictionary**~~ The keyword
+dictionary, now `--router dictionary`, is the one this section's earlier description was written about: each member
 declares the words its own corpus's requests use, and a request is routed to a member whose words it
 contains. `--auto` reads it; `/v1/models`'s own listing decides what stays local, "better than a hand-kept
 list, which drifts the moment an adapter is added" (`docs/SERVING.md`). In `examples/school/gateway.py`,
 routing is simpler still: **the token's role is the route** — `Gateway.turn` looks up `self.roles.ROLES[claim.role]`
 directly, with no member-selection step at all, because the runtime already knows which agent, and
-therefore which role, sent the message.
+therefore which role, sent the message. For open-task members, with no single task to factor against, **the router is the
+role plus the member's own abstention**, measured in all three organisations (M10, ROUTE1 **[ran]**).
 
 **Why.** A learned router was tried and measured against the dictionary, not assumed better. An n-gram
 model of each corpus's own frame is **safer on foreign text** — 0 of 128 served locally against the
@@ -814,11 +822,13 @@ distributor, closes half of this problem outright: **[ran] F2** (`results/F2-rol
 with the role confirmed by the member's own keys, there are never more misroutes than the keys alone give
 and nothing is served under a wrong role — a 240-case replay ties at 0.775. What role-based routing does
 **not** answer is the half that remains open: *is this request inside the region at all*, for the one
-member a role's traffic is served by — the milestone 2 problem, unresolved, one class smaller.
+member a role's traffic is served by — the milestone 2 problem, ~~unresolved~~ since answered for fixed-task members by
+ROUTE0's factored router, and for open-task members by their own abstention (ROUTE1), one class smaller.
 
 **Evidence.** **[ran] M2**, **[ran] F2**, above. **[ran]** `results/M2b-embed-router-20260919/` and
-`results/M2c-needle-router-20260921/`: the embedding arm was measured next; neither learned arm has yet
-passed the dictionary it was meant to replace. Milestone 7's radar (§11) is built to share its embedding
+`results/M2c-needle-router-20260921/`: the embedding arm was measured next; ~~neither learned arm has yet
+passed the dictionary it was meant to replace~~ neither whole-request arm passed — **[ran] ROUTE0** is the arm that did,
+by factoring the request instead of reading it whole. Milestone 7's radar (§11) is built to share its embedding
 space with this router, and does not serve it yet.
 
 ---

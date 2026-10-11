@@ -4,7 +4,11 @@
 > It memorises no data: it learns **which shelf to go to, which card to open, and which step to
 > run next.**
 
-This is the implementation specification of the per-expert memory, the core of version 1.0. The
+This is the implementation specification of the per-expert memory, the core of version 1.0 — **and, since 2026-10-05, its
+record: the five pieces are built and measured (README's badge: "core 1.0 built, measured")**, with two named exceptions
+that did not pass or did not run: the radar (R0's recall@3 0.638 against the 0.80 bar, W3 **[ran]**; the compression arm
+W6 not run — lexical BM25 is what serves) and a verifier nobody here wrote (milestone 8, `docs/tau2/RECON.md`: T0 passed,
+no member scored yet). The
 *why* — ten measured findings, five trajectory strategies, the questions put to reviewers — is
 [`KNOWLEDGE-TRAJECTORIES.md`](KNOWLEDGE-TRAJECTORIES.md); this document is the *what to build*. The
 explanation it implements is the user's, 2026-09-19. Status markers as everywhere here: **[ran]**
@@ -147,7 +151,7 @@ sources of variation enter without touching the text: **the textbook's default**
 note), **a site's rule** (§5.2), and, in training and evaluation only, **a value drawn for one
 case** (§4.1).
 
-### 1.5 The library is linted, like code **[spec]**
+### 1.5 The library is linted, like code ~~**[spec]**~~ **[ran]** W1 (`memory/lint.py`)
 
 `python -m memory.lint knowledge/<subdomain>` fails the build when: a link does not resolve; a
 `next` chain has a cycle or a step belongs to no procedure; a body exceeds the token limit; a
@@ -289,7 +293,7 @@ every expert in this pool is already trained and served in (0.992 that way again
 | verb | the expert writes | the runtime answers |
 |---|---|---|
 | **search** | `<search>situation or doubt</search>` | `= 3 notes` and, per note, `[id] kind · title — when: …`. **Titles and `when` lines only — never bodies** |
-| **open** | `<open>id</open>` — or, on a page of atomic statements, `<open>id§anchor</open>` for one statement (§1.6, W9 **[spec]**) | on a page, its sections only; otherwise the note's body, slots filled and local rules applied, then its links: `next …` · `requires …` · `uses …` (on the wiki shelf `parent …` · `children …`; either shelf may also carry `refs …` — §1.2a, not yet exercised by this runtime **[ran]** W8; every link but `next` carries the note's title beside its id — W2 **[ran]**) |
+| **open** | `<open>id</open>` — or, on a page of atomic statements, `<open>id§anchor</open>` for one statement (§1.6, W9 ~~**[spec]**~~ **[ran]**) | on a page, its sections only; otherwise the note's body, slots filled and local rules applied, then its links: `next …` · `requires …` · `uses …` (on the wiki shelf `parent …` · `children …`; either shelf may also carry `refs …` — §1.2a, not yet exercised by this runtime **[ran]** W8; every link but `next` carries the note's title beside its id — W2 **[ran]**) |
 | **calc** | `<calc>500 * 20 / (4 * 60)</calc>` | `= 41.6667` — so the model **never does arithmetic in its head**, where it always fails (adapter alone 4/40, adapter + calculator 40/40 **[ran]** P5–P7) |
 
 ```
@@ -344,7 +348,7 @@ in the task statement.
 5. Send the numbers to `<calc>`.
 6. Follow `next` until the procedure ends, then answer.
 
-### 4.3 How a case becomes a training example **[spec]**
+### 4.3 How a case becomes a training example ~~**[spec]**~~ **[ran]** W4, W9, REAL3
 
 For each generated case the **oracle knows the walk** — which notes the solution needs, in which
 order. The corpus is that walk rendered as the expert's own turn, commands and inline results
@@ -458,10 +462,10 @@ loop never sees, which is what any signal used to accept or reject an answer has
 precedent here is dimensional analysis on a physics chain, which catches an invented relation
 without knowing the number **[ran]** P22.
 
-**[spec]** Two modes. `strict` — the default in 1.0: the first violation ends the walk as *not
+~~**[spec]**~~ **[ran]** (`memory/guard.py`; `strict` is what is served) Two modes. `strict` — the default in 1.0: the first violation ends the walk as *not
 answered* and the request goes to the frontier. `recover` — the violation is written inline as an
 observation (`= ERROR: requires a02 first`) and the expert may go back; whether small experts *do*
-recover is an arm, not an assumption.
+recover is an arm, not an assumption — **measured: FMT0 [ran] found `recover` harmless against `strict` (0 : 0) and a corpus trained to use it no better than the baseline (1 : 1), so `strict` stays the default**.
 
 ### 5.4 It writes the walk down
 
@@ -536,7 +540,7 @@ mechanics** is the instrument — an exact oracle, content unmemorisable by cons
 procedures** (Open RN *Nursing Skills*, CC BY 4.0) are the region — text nobody here generated, and
 a real site layer.
 
-## 10. Build order for 1.0 **[spec]**
+## 10. Build order for 1.0 ~~**[spec]**~~ **— built through W9 [ran]; W3's radar gate not passed, W6 not run**
 
 Each package ends in a gate, fits a sixty-minute Colab session where it needs a GPU at all, and
 **no model runs on the user's machine** for a measurement (since 2026-09-28 a member may be *served* there, llama.cpp, for a live demo — `CLAUDE.md` §3).

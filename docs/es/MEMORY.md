@@ -4,7 +4,11 @@
 > No memoriza ningún dato: aprende **a qué estante ir, qué ficha abrir y qué paso
 > ejecutar después.**
 
-Esta es la especificación de implementación de la memoria por experto, el núcleo de la versión 1.0. El
+Esta es la especificación de implementación de la memoria por experto, el núcleo de la versión 1.0 — **y, desde el
+2026-10-05, su registro: las cinco piezas están construidas y medidas (la insignia del README: "core 1.0 built,
+measured")**, con dos excepciones nombradas que no pasaron o no corrieron: el radar (recall@3 0,638 de R0 contra la barra
+de 0,80, W3 **[ran]**; el brazo de compresión W6 no corrió — lo que sirve es BM25 léxico) y un verificador que nadie de acá
+escribió (hito 8, `docs/tau2/RECON.md`: T0 pasó, todavía sin miembro puntuado). El
 *por qué* — diez hallazgos medidos, cinco estrategias de trayectoria, las preguntas para quien revise — está en
 [`KNOWLEDGE-TRAJECTORIES.md`](KNOWLEDGE-TRAJECTORIES.md); este documento es el *qué construir*. La
 explicación que implementa es la del usuario, 2026-09-19. Marcadores de estado como en todas partes acá: **[ran]**
@@ -150,7 +154,7 @@ fuentes de variación sin tocar el texto: **el default del libro de texto** (`sl
 nota), **la regla de un sitio** (§5.2), y, sólo en entrenamiento y evaluación, **un valor sorteado para un
 caso** (§4.1).
 
-### 1.5 La biblioteca se lintea, como el código **[spec]**
+### 1.5 La biblioteca se lintea, como el código ~~**[spec]**~~ **[ran]** W1 (`memory/lint.py`)
 
 `python -m memory.lint knowledge/<subdomain>` hace fallar el build cuando: un enlace no resuelve; una
 cadena de `next` tiene un ciclo o un paso no pertenece a ningún procedimiento; un cuerpo supera el límite de tokens; un
@@ -296,7 +300,7 @@ mensajes `tool_calls` **[ran]** P55).
 | verbo | lo que escribe el experto | lo que responde el runtime |
 |---|---|---|
 | **search** | `<search>situation or doubt</search>` | `= 3 notes` y, por nota, `[id] kind · title — when: …`. **Sólo títulos y líneas `when` — nunca cuerpos** |
-| **open** | `<open>id</open>` — o, sobre una página de enunciados atómicos, `<open>id§anchor</open>` para un solo enunciado (§1.6, W9 **[spec]**) | sobre una página, sólo sus secciones; si no, el cuerpo de la nota, con los huecos completados y las reglas locales aplicadas, y después sus enlaces: `next …` · `requires …` · `uses …` (en el estante wiki `parent …` · `children …`; cualquiera de los dos estantes puede llevar además `refs …` — §1.2a, todavía no ejercitado por este runtime **[ran]** W8; todo enlace salvo `next` lleva el título de la nota junto a su id — W2 **[ran]**) |
+| **open** | `<open>id</open>` — o, sobre una página de enunciados atómicos, `<open>id§anchor</open>` para un solo enunciado (§1.6, W9 ~~**[spec]**~~ **[ran]**) | sobre una página, sólo sus secciones; si no, el cuerpo de la nota, con los huecos completados y las reglas locales aplicadas, y después sus enlaces: `next …` · `requires …` · `uses …` (en el estante wiki `parent …` · `children …`; cualquiera de los dos estantes puede llevar además `refs …` — §1.2a, todavía no ejercitado por este runtime **[ran]** W8; todo enlace salvo `next` lleva el título de la nota junto a su id — W2 **[ran]**) |
 | **calc** | `<calc>500 * 20 / (4 * 60)</calc>` | `= 41.6667` — así el modelo **nunca hace aritmética de memoria**, donde siempre falla (adaptador solo 4/40, adaptador + calculadora 40/40 **[ran]** P5–P7) |
 
 ```
@@ -351,7 +355,7 @@ en el enunciado de la tarea.
 5. Mandar los números a `<calc>`.
 6. Seguir `next` hasta que el procedimiento termine, y después responder.
 
-### 4.3 Cómo un caso se vuelve un ejemplo de entrenamiento **[spec]**
+### 4.3 Cómo un caso se vuelve un ejemplo de entrenamiento ~~**[spec]**~~ **[ran]** W4, W9, REAL3
 
 Para cada caso generado el **oráculo conoce el recorrido** — qué notas necesita la solución, en qué
 orden. El corpus es ese recorrido renderizado como el propio turno del experto, comandos y resultados inline
@@ -465,10 +469,10 @@ loop de entrenamiento nunca ve, que es lo que tiene que ser cualquier señal que
 respuesta; su precedente acá es el análisis dimensional sobre una cadena de física, que atrapa una relación
 inventada sin saber el número **[ran]** P22.
 
-**[spec]** Dos modos. `strict` — el default en 1.0: la primera violación termina el recorrido como *no
+~~**[spec]**~~ **[ran]** (`memory/guard.py`; `strict` es lo que se sirve) Dos modos. `strict` — el default en 1.0: la primera violación termina el recorrido como *no
 contestado* y el pedido va hacia la frontera. `recover` — la violación se escribe inline como una
 observación (`= ERROR: requires a02 first`) y el experto puede volver atrás; si los expertos chicos *efectivamente*
-recuperan es un brazo, no un supuesto.
+recuperan es un brazo, no un supuesto — **medido: FMT0 [ran] encontró `recover` inofensivo frente a `strict` (0 : 0) y un corpus entrenado para usarlo no mejor que la línea base (1 : 1), así que `strict` sigue siendo el default**.
 
 ### 5.4 Registra el recorrido
 
@@ -545,7 +549,7 @@ mecánica de fluidos** es el instrumento — un oráculo exacto, contenido inmem
 procedimientos de enfermería** (*Nursing Skills* de Open RN, CC BY 4.0) son la región — texto que nadie acá generó, y
 una capa de sitio real.
 
-## 10. Orden de construcción para 1.0 **[spec]**
+## 10. Orden de construcción para 1.0 ~~**[spec]**~~ **— construido hasta W9 [ran]; la compuerta del radar de W3 no pasó, W6 no corrió**
 
 Cada paquete termina en una compuerta, entra en una sesión de Colab de sesenta minutos donde necesita GPU, y
 **ningún modelo corre en la máquina del usuario** para una medición (desde el 2026-09-28 un miembro puede *servirse* ahí, con llama.cpp, para una demo en vivo — `CLAUDE.md` §3).

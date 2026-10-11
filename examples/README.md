@@ -43,7 +43,7 @@ tool still calls `enforce_org`/`enforce_owner` before touching a row — it is d
 external dependency until the toy version is shown insufficient, which is what
 `docs/FRAMEWORK.md` §7 step 4 already said to do.
 
-**What is not built yet, named so it is not mistaken for done.**
+**What is not built yet, named so it is not mistaken for done.** *(Written 2026-09-21. **Superseded since, 2026-10-05 [ran]:** adapters were trained on both domains and run through this layer — M8, M9, M10 and live through OpenClaw (LIVE-school, LIVE-distributor); a third organisation, `tracker/`, and the real-document `library/` endpoint were added (H3, LIVE-tracker, LIVE-library). The two bullets below on roles and adapters describe the 2026-09-21 state.)*
 
 - **No role is a `rolepack.RolePack` yet** (`school/roles.py`, `distributor/roles.py` are plain
   tables). A real `role.toml` (`rolepack/`, `docs/FRAMEWORK.md` §6) declares a corpus with a

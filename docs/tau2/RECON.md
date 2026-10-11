@@ -10,6 +10,13 @@ that checkout (`~/evolvingagents/tau2-bench`). No member was scored and no model
 | package | `tau2` 1.0.1 (`pyproject.toml`), Python 3.12.13, litellm 1.81.11, gymnasium 1.2.2 |
 | full record | `results/TAU2-T0-recon-20261005/MANIFEST` |
 
+**Status, 2026-10-05, after the user's decisions (`results/TAU2-T0-recon-20261005/BRIEF.md`).** T0 **passes by option (b)**:
+no published score was reproduced; instead `tau2 evaluate-trajs` re-graded the four airline trajectory files shipped with
+τ² and **800 of 800 simulations get the recorded reward** [ran], so the local grader is τ²'s grader. The teacher and the
+user simulator are **Gemma 4 31B, self-hosted** (`docs/tau2/TEACHER-TERMS.md`). The sections below were written before
+those decisions and are kept as written; where one says "the user decides" or "was not run", that is the state of the
+reconnaissance, not of the plan.
+
 ## 0. Install and mock run [ran]
 
 - The README asks for `uv sync` and Python `>=3.12,<3.14` (`README.md:37`, `:58–73`). Installed into its own

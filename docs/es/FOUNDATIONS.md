@@ -463,13 +463,18 @@ propia ráfaga única del §5.5.
 rotando entre los adaptadores en juego: $r_4(16) = 278,6 / 269,7 = 1,03$ — **por encima de la vara de 0,8,
 y por encima de 1**, así que mezclar cuatro adaptadores no cuesta nada medible contra uno solo a esta carga.
 El escalado casi lineal del §2.4 en la cantidad de secuencias simultáneas se sostiene en toda la corrida
-y no es un artefacto de un solo adaptador: el throughput total va **22,7 → 135,1 → 278,6 → 504,3 tok/s**
-para $K = 1, 8, 16, 32$ (celdas de cuatro adaptadores), cada una dentro del ruido de su contraparte de un
-solo adaptador (269,7, 490,8 en $K=16, 32$). El TTFT se mantiene bajo en todo el rango (p95 **0,24 s** en
+y no es un artefacto de un solo adaptador: el throughput total va **139,4 → 278,6 → 504,3 tok/s**
+para $K = 8, 16, 32$ (celdas de cuatro adaptadores; la corrida no tiene celda de cuatro adaptadores en $K = 1$),
+cada una dentro del ruido de su contraparte de un solo adaptador (135,1, 269,7, 490,8 en $K = 8, 16, 32$; un
+adaptador solo da 22,7 en $K = 1$). El TTFT se mantiene bajo en todo el rango (p95 **0,24 s** en
 $K=32$, un octavo del presupuesto de 2 s fijado en el brief), 0 errores de 128 pedidos, y el techo está
 por encima de 32 — no se alcanzó. **Esto reemplaza el 0,88 de E5** ([`RECORD.md`](RECORD.md) §2): ese
 número venía de una sola ráfaga de 16 pedidos, dentro del margen de una medición única, no de una curva —
 la falla contra la que avisan tanto el §9.4 como el §1.1: leer una sola tirada como la tasa.
+
+<img src="../img/c1-throughput.png" alt="Gráfico de líneas de tokens generados por segundo agregados contra sesiones simultáneas K = 1, 8, 16, 32 en una L4: un adaptador y cuatro adaptadores mezclados quedan uno encima del otro, subiendo casi linealmente hasta unos 500 tokens por segundo en K = 32; un punto de dos adaptadores en K = 16 cae sobre la misma línea." width="100%">
+
+*C1 [ran] `results/C1-concurrency-20260929`: mezclar cuatro adaptadores en un lote no cuesta nada medible, $r_4(16) = 1,03$ contra una vara de 0,8.*
 
 ---
 
@@ -785,7 +790,12 @@ el tercero — un pedido mandado a un miembro a cuyo corpus no pertenece cuenta 
 así que un router se puntúa por **mal-ruteados-a-local** y por la fracción que sale, no por
 exactitud, y $\tau$ se fija sobre texto fuera de distribución antes de medir nada más: un
 modelo al que se le pide elegir siempre elige. **[ran]** para el diccionario: P62, P64. El
-$s_m$ aprendido es el hito 2 de [`PLAN.md`](PLAN.md).
+$s_m$ aprendido es el hito 2 de [`PLAN.md`](PLAN.md): los dos brazos de pedido completo (n-gramas, embeddings) perdieron todo
+pedido legítimo de un remitente no visto, y el brazo que pasó no puntúa el pedido entero — **[ran] ROUTE0**, un router
+factorizado que parte un pedido en sus párrafos y lo manda a $m$ sólo si exactamente un párrafo no es contenido de $m$,
+$\lvert\lbrace p \in x : p \notin C_m\rbrace\rvert = 1$, y ese párrafo es la tarea de $m$, $p \in T_m$. Sirve 0 de 600 textos
+ajenos localmente donde el diccionario sirve 294 y pierde 0 de 480 pedidos legítimos; una paráfrasis de la tarea sale por
+diseño (0 de 120 se mantienen locales, reportado, nunca con compuerta).
 
 ### 8.6 Una base de conocimiento, y una trayectoria por ella
 
@@ -1258,7 +1268,7 @@ entrena la mitad grande; el hito 4 mide la desigualdad de §7.1.
 | §10.5 D2 / §3.4 | **un LoRA aplica sobre el 32B AWQ**: media de $\vert \Delta\ell\vert$ 0,22–0,49 nats contra base-vs-base 0,000, 3/3; compuerta de texto 2/3 | P60 §3b `awq_gate.json` |
 | §10.5 D2 | **C18 es un desajuste de nombres**: $\text{applied}(K)=\lbrace k\in K: m(k)\in M\rbrace$ — tal como se entrenó 0 de 496 tensores caen sobre el stack de texto servido y la activación real fija 0 de 178 módulos (`not applied`); renombrado, 496 de 496 y 152 de 178 (`applied`); control `applied` | D2 `lora_matrix.json`, `vllm.log` |
 | §7.1, §7.4 | **la desigualdad del par** $\alpha_{T_\phi}(S_\theta) \gt  \alpha_T(S_\theta)$ | **se cumple [ran] B4**: 76 : 18 registros, $p \lt  10^{-4}$ — en la distribución del propio corpus (0,855 → 0,914), no en una banda que ninguna mitad entrenó (0,885 → 0,881); hito 4 de [`PLAN.md`](PLAN.md) |
-| §8.5 | **el router como clasificador con abstención**; el diccionario es su caso particular | diccionario: P62, P64. **Un modelo de n-gramas del marco de cada corpus [ran] M2**: texto ajeno 0/128 servido localmente contra 59/128 del diccionario; pedidos legítimos de remitentes nunca vistos 120/120 perdidos contra 0/120 — no pasa; el brazo de embeddings: **todavía sin medir** |
+| §8.5 | **el router como clasificador con abstención**; el diccionario es su caso particular | diccionario: P62, P64. **Un modelo de n-gramas del marco de cada corpus [ran] M2**: texto ajeno 0/128 servido localmente contra 59/128 del diccionario; pedidos legítimos de remitentes nunca vistos 120/120 perdidos contra 0/120 — no pasa; el brazo de embeddings **[ran] M2b**: texto ajeno 15/338 servido localmente contra 119 del diccionario, 120/120 pedidos de remitentes no vistos perdidos — no pasa; un tercer codificador **[ran] M2c**: no seguro (62 de 142 casos fuera de región servidos localmente); **el router factorizado [ran] ROUTE0 pasa: 0/600 textos ajenos servidos localmente contra 294, 0/480 pedidos legítimos perdidos** |
 | §8.6 | **una trayectoria por la base de conocimiento de un subdominio**; la política en los pesos, el contenido afuera | $Q_\varnothing(F') \approx 1/20$: P14. Recorridos de dos y tres saltos sobre páginas de enunciados atómicos, citados y verificados: 0/40 sin entrenar → 35/40, 38/40 sobre Gemma **[ran]** W9, B1; una habilidad que el corpus nunca mostró no se aprende (comparaciones 10/40), mostrada sí (37/40) **[ran]** B3, B5; en la biblioteca de enfermería la afirmación central no pasa **[ran]** W5, W5c |
 | §7.3, §8.2 | **pesos o harness — pesos**: base 0,345, base + procedimiento de 914 tokens 0,601 (las dos con 0 llamadas, debajo de la barra de mayoría 0,655), experto 0,989; experto contra base+kb **137 : 1**; el test de signos solo leyó el default dado vuelta como pagando (164 : 74) — la barra de mayoría lo guarda | P61 `session.json` |
 | §8.4 | **el ruteo por request empata al por región**: 0,775 = 0,775, 0 mal ruteados, 37,5 % afuera sobre los 240 casos de P41 | P62 `replay.json` (cero GPU) |
@@ -1272,7 +1282,7 @@ entrena la mitad grande; el hito 4 mide la desigualdad de §7.1.
 | §8.7 | **abstención dentro de un miembro**: $\ell = 0$ de 70, atrapado 20/20 contra el 0/20 de `staff-s0`, demo 6/6; en vivo, el turno abstenido llega a Claude Haiku 4.5, $0,0112 | M10 `results/M10-distributor-abstain-20260928/BRIEF.md` |
 | §8.8 | **editar la biblioteca después de entrenar**: sigue 37/38, stale 0, a libro cerrado 1/40 | W7 `results/W7-edit-after-training-20260927/BRIEF.md` |
 | §8.9 | **exactitud en turnos dependientes sin y con historial**: $A_{\text{dep}}$(last) 4/54, $A_{\text{dep}}$(history) 43/54; tokens de prompt $\bar p_1,\bar p_2,\bar p_3$ = 345/376/303 (last), 345/428/394 (history) | MT0 `results/MT0-multiturn-baseline-20260929/BRIEF.md` |
-| §5.6 | **cociente de throughput con varios adaptadores**: $r_4(16) = 278,6/269,7 = 1,03$, NO MATERIAL CONTENTION; casi lineal 22,7 → 135,1 → 278,6 → 504,3 tok/s para K = 1, 8, 16, 32; TTFT p95 0,24 s en K = 32, 0 errores de 128 | C1 `results/C1-concurrency-20260929/BRIEF.md` |
+| §5.6 | **cociente de throughput con varios adaptadores**: $r_4(16) = 278,6/269,7 = 1,03$, NO MATERIAL CONTENTION; casi lineal, cuatro adaptadores 139,4 → 278,6 → 504,3 tok/s para K = 8, 16, 32, un adaptador 22,7 → 135,1 → 269,7 → 490,8 para K = 1, 8, 16, 32; TTFT p95 0,24 s en K = 32, 0 errores de 128 | C1 `results/C1-concurrency-20260929/BRIEF.md` |
 | §8.9 | **el harness de flujo contra el brazo con historial de MT0 y la vara de planitud $\bar p_3 \le 1,1\ \bar p_1$**: $A_{\text{dep}}$(harness) 53/54 contra 43/54, 11 : 1 emparejado ($p\approx0,006$); $\bar p_1,\bar p_2,\bar p_3$ = 745/726/710, plano; `harness-noblock` 0/60. Tal como fue escrita VOID (la regla de primeros turnos anula entre brazos); leída por brazo, `harness` PASÓ y `harness-noblock` quedó FALSADO — la decisión del usuario (2026-09-29): vale la lectura por brazo, el VOID tal como está escrito queda como el registro de ese error del instrumento | H1 `results/H1-workflow-harness-20260929/BRIEF.md` |
 | §8.9 | **el mismo harness sobre un dominio de tracker de cinco turnos, la vara de planitud $\bar p_5 \le 1,1\ \bar p_1$**: $A_{\text{dep}}$(harness) 146/160 (91,3%) contra un umbral del 90%; $\bar p_1,\dots,\bar p_5$ = 1613/1223/1011/1149/1274, plano; `base-history` 4/160, sus propios primeros turnos 44/60 lo anulan bajo la regla por brazo de H1, lo que vuelve ilegible la comparación pre-registrada — se lee FALSEADA tal como está escrita, no ANULADA, en el registro con ese y el error de instrumento del chequeo de anchor; descriptivo pareado 142 : 0, $p\lt 10^{-40}$ (brazo anulado, no un veredicto sustituto); **la decisión del usuario (2026-09-29): lectura 1** — las condiciones legibles son el veredicto de H2, `harness` PASÓ. `harness-noblock` 80/160 es un error del corpus (un aliasing `% 3` entre el tercio sin bloque y la rotación de roles), no un aprendizaje parcial | H2 `results/H2-tracker-harness-20260929/BRIEF.md` |
 | §8.9 | **H3 [ran], las dos barras PASARON**: `tr-s1` (entrenado sobre un segundo corpus que amplía el fraseo por turno/rol y da a cada rol un tercio parejo sin bloque) 158/160 contra `tr-s0` 147/160 sobre una suite fresca retenida, pareado 11:0, prueba de signo exacta $p=2\cdot2^{-11}\approx0,00098$, plano; `s1-noblock` 156/160, perdiendo 4 de 8 turnos contra el bloque, cada rol por encima de la barra, más o menos un tercio de los tokens de prompt | H3 [`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../../results/H3-tracker-corpus-v2-20260929/BRIEF.md) |

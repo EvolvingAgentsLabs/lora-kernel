@@ -1,0 +1,737 @@
+{
+ "step1": "skipped — MAC2 [ran] established the E4B loads",
+ "draft_files": {
+  "nospec,mtp_k1,mtp_k2,mtp": "/Users/agustinazwiener/lora-kernel-models/gguf/wiki-e4b-merged-Q4_0.gguf"
+ },
+ "build": "0.00.000.515 I srv  llama_server: initializing ...",
+ "runs": {
+  "nospec/base/domain": [
+   {
+    "text": "<search shelf=wiki>Tollan-640 edge protector</search>",
+    "tokens": 23,
+    "tps": 12.02,
+    "wall_s": 4.34
+   },
+   {
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>",
+    "tokens": 22,
+    "tps": 12.56,
+    "wall_s": 3.32
+   },
+   {
+    "text": "<search shelf=wiki>Carrow-940 dunnage bag</search>",
+    "tokens": 24,
+    "tps": 13.0,
+    "wall_s": 3.54
+   },
+   {
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>\n<search shelf=wiki>Fenwa-930 label roll</search>",
+    "tokens": 40,
+    "tps": 12.63,
+    "wall_s": 4.89
+   },
+   {
+    "text": "<search shelf=wiki>Rask-500 shipping carton supplier</search>\n<search shelf=wiki>Quill-860 packing tape supplier</search>",
+    "tokens": 42,
+    "tps": 13.07,
+    "wall_s": 4.88
+   },
+   {
+    "text": "<search shelf=wiki>Fenwa-930 label roll</search>\n<search shelf=wiki>Kestra-410 strapping band</search>",
+    "tokens": 40,
+    "tps": 13.22,
+    "wall_s": 4.84
+   }
+  ],
+  "nospec/base/general": [
+   {
+    "text": "A refrigerator keeps food cold by using a refrigeration cycle to move heat from the inside of the unit to the outside environment. A substance called a **refrigerant** flows through coils, absorbing heat from the air inside the fridge as it changes from a liquid to a gas. This gas is then compressed by a compressor, which raises its temperature and pressure. As the hot gas flows through coils on the outside of the appliance, it releases the heat into the surrounding air. The refrigerant then cools down, turns back into a liquid, and cycles back inside to repeat the process, effectively \"pumping\" heat out of the fridge.",
+    "tokens": 127,
+    "tps": 13.03,
+    "wall_s": 10.35
+   },
+   {
+    "text": "Johannes Gutenberg is credited with inventing the mechanical movable-type printing press in Europe around the mid-15th century. This innovation revolutionized the production of books, making them significantly cheaper and more accessible to the general public. By accelerating the spread of information, the printing press played a crucial role in fueling the Renaissance, the Reformation, and the Scientific Revolution.",
+    "tokens": 72,
+    "tps": 13.37,
+    "wall_s": 5.83
+   },
+   {
+    "text": "Here is a simple recipe for a classic, flavorful **Italian Tomato Sauce**.\n\n### **Ingredients**\n*   **Tomatoes:** 1 can (28 oz) crushed tomatoes or 2 lbs fresh ripe tomatoes (chopped)\n*   **Garlic:** 3–4 cloves, minced\n*   **Olive Oil:** 3 tbsp extra virgin olive oil\n*   **Herbs:** 1 tsp dried oregano (or a handful of fresh basil)\n*   **Seasoning:** Salt and black pepper to taste\n*   **Optional:** A pinch of red pepper flakes (for heat) or 1 tsp sugar (to balance acidity)\n\n### **Instructions**\n1.  **Sauté:** Heat olive oil in a large pan over medium heat. Add",
+    "tokens": 160,
+    "tps": 13.23,
+    "wall_s": 12.52
+   },
+   {
+    "text": "To understand what a compiler is, you first have to understand a basic problem: **Computers are actually quite \"dumb.\"**\n\nComputers do not understand English, Spanish, or any other human language. They only understand **Binary**—a series of switches that are either ON or OFF (represented as `1`s and `0`s).\n\nHowever, humans find it very difficult to write programs using only 1s and 0s. We prefer to write in \"High-Level Languages\" like Python, Java, or C++, which use words like `if`, `while`, `print`, and `calculate`.\n\n**A compiler is the translator that bridges this gap.**\n\n---\n\n### The Analogy: The Recipe Translator\nImagine you have a recipe for a",
+    "tokens": 160,
+    "tps": 13.61,
+    "wall_s": 12.22
+   }
+  ],
+  "nospec/lora/domain": [
+   {
+    "text": "<search shelf=wiki>Tollan-640 edge protector</search>= 1 note\n  [v0h] page · Tollan-640 edge protector — when: You need a fact about the Tollan-640 edge protector: who supplies it, where it is stocked, its pack or its reorder point.\n<open>v0h</open>= Tollan-640 edge protector — The Tollan-640 edge protector, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>v0h§pack</open>= A pack of Tollan-640 edge protector holds 12 pieces.\n12 pieces",
+    "tokens": 160,
+    "tps": 12.6,
+    "wall_s": 15.53
+   },
+   {
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>= 1 note\n  [001] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n<open>001</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>001§pack</open>= A pack of Kestra-410 strapping band holds 12 coils.\n12 coils [",
+    "tokens": 160,
+    "tps": 12.55,
+    "wall_s": 14.6
+   },
+   {
+    "text": "<search shelf=wiki>Carrow-940 dunnage bag</search>= 1 note\n  [r0z] page · Carrow-940 dunnage bag — when you need a fact about it, open this page to see its sections.\n<open>r0z</open>= Carrow-940 dunnage bag — The Carrow-940 dunnage bag, one of the products the distributor carries.\n  sections §pack · §reorder\n<open>r0z§pack</open>= A pack of Carrow-940 dunnage bag contains 10 bags.\n10 bags [r0z§pack]",
+    "tokens": 151,
+    "tps": 12.51,
+    "wall_s": 12.61
+   },
+   {
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>= 1 note\n  [700] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n<open>700</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>700§supplier</open>= The Kestra-410 strapping band is supplied by [700f] Ostlund Industrial.",
+    "tokens": 160,
+    "tps": 12.58,
+    "wall_s": 14.84
+   },
+   {
+    "text": "<search shelf=wiki>Rask-500 shipping carton</search>= 1 note\n  [r500] page · Rask-500 shipping carton — when you need a page about the Rask-500 shipping carton, open this one.\n<open>r500</open>= Rask-500 shipping carton — The Rask-500 shipping carton, one of the products the distributor carries.\n  sections §product · §supplier · §pack\n<open>r500§supplier</open>= The Rask-500 shipping carton is supplied by [k3h] Ostlund Packaging.\n<open>k3h</open>= Ostlund Packaging — Ostlund Packaging,",
+    "tokens": 160,
+    "tps": 12.54,
+    "wall_s": 13.78
+   },
+   {
+    "text": "<search shelf=wiki>Fenwa-930 label roll</search>= 1 note\n  [w3n] page · Fenwa-930 label roll — when: You need a fact about the Fenwa-930 label roll: who supplies it, where it is stocked, its pack or its reorder point.\n<open>w3n</open>= Fenwa-930 label roll — The Fenwa-930 label roll, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>w3n§supplier</open>= The Fenwa-930 label roll is supplied by [001] Ostlund Packaging.\n",
+    "tokens": 160,
+    "tps": 12.58,
+    "wall_s": 14.91
+   }
+  ],
+  "nospec/lora/general": [
+   {
+    "text": "A refrigerator cools food by transferring heat from the inside to the outside environment using a vapor-compression cycle. A refrigerant liquid flows through coils, evaporating into a gas as it absorbs heat from the air inside the fridge. This gas is then compressed by a pump, which raises its temperature, and it flows through coils on the back or bottom of the appliance where it releases that heat into the room. As the refrigerant cools back into a liquid, it recirculates, continuously removing heat from the interior to keep the food cold.",
+    "tokens": 105,
+    "tps": 12.5,
+    "wall_s": 9.23
+   },
+   {
+    "text": "The invention of the printing press by Johannes Gutenberg in the 15th century revolutionized the way information was produced and distributed. By allowing for the mass production of books, it significantly lowered the cost of reading material and increased literacy rates across Europe. This technological breakthrough played a crucial role in the spread of the Renaissance, the Reformation, and the Scientific Revolution.",
+    "tokens": 72,
+    "tps": 12.76,
+    "wall_s": 6.04
+   },
+   {
+    "text": "Here is a simple recipe for a classic, 20-minute tomato sauce.\n\n### **Simple Tomato Sauce**\n*Yields: About 2 cups | Prep time: 5 mins | Cook time: 20 mins\n\n**Ingredients**\n*   **28 oz (800g)** Can of crushed tomatoes (or whole peeled tomatoes)\n*   **3 cloves** Garlic, minced\n*   **1 small** Onion, finely diced (optional)\n*   **3 tbsp** Olive oil\n*   **1 tsp** Dried oregano (or 2 sprigs of fresh basil)\n*   **Salt & Pepper** to taste\n*   **Optional:** A pinch of red chili flakes for heat\n\n**Instructions**\n1.  **",
+    "tokens": 160,
+    "tps": 12.58,
+    "wall_s": 13.38
+   },
+   {
+    "text": "To understand what a compiler is, you first have to understand a simple problem: **Computers do not speak human languages, and humans do not speak \"binary.\"**\n\nA computer can only understand \"on\" and \"off\" (1s and 0s). A human writes instructions in a programming language like Python, C++, or Java, which looks like English.\n\n**A compiler is the translator that turns the human's code into the machine's instructions.**\n\nHere is a breakdown of how it works, using a simple analogy.\n\n---\n\n### The Analogy: The Recipe Book\nImagine you have a recipe for a cake written in **French**, but you do not speak French. You need the recipe to get the cake finished, but you can't read",
+    "tokens": 160,
+    "tps": 12.39,
+    "wall_s": 13.69
+   }
+  ],
+  "mtp_k1/base/domain": [
+   {
+    "text": "<search shelf=wiki>Tollan-640 edge protector</search>",
+    "tokens": 23,
+    "tps": 11.86,
+    "wall_s": 4.92,
+    "draft_n": 11,
+    "draft_accepted": 11
+   },
+   {
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>",
+    "tokens": 22,
+    "tps": 11.32,
+    "wall_s": 4.26,
+    "draft_n": 11,
+    "draft_accepted": 11
+   },
+   {
+    "text": "<search shelf=wiki>Carrow-940 dunnage bag</search>",
+    "tokens": 24,
+    "tps": 11.46,
+    "wall_s": 4.2,
+    "draft_n": 12,
+    "draft_accepted": 12
+   },
+   {
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>\n<search shelf=wiki>Fenwa-930 label roll</search>",
+    "tokens": 40,
+    "tps": 10.81,
+    "wall_s": 6.0,
+    "draft_n": 20,
+    "draft_accepted": 19
+   },
+   {
+    "text": "<search shelf=wiki>Rask-500 shipping carton supplier</search>\n<search shelf=wiki>Quill-860 packing tape supplier</search>",
+    "tokens": 42,
+    "tps": 11.09,
+    "wall_s": 5.97,
+    "draft_n": 21,
+    "draft_accepted": 20
+   },
+   {
+    "text": "<search shelf=wiki>Fenwa-930 label roll</search>\n<search shelf=wiki>Kestra-410 strapping band</search>",
+    "tokens": 40,
+    "tps": 11.41,
+    "wall_s": 5.97,
+    "draft_n": 20,
+    "draft_accepted": 19
+   }
+  ],
+  "mtp_k1/base/general": [
+   {
+    "text": "A refrigerator keeps food cold by using a refrigeration cycle to move heat from the inside of the unit to the outside environment. A substance called a **refrigerant** flows through coils, absorbing heat from the air inside the fridge as it changes from a liquid to a gas. This gas is then compressed by a compressor, which raises its temperature and pressure. As the hot gas flows through coils on the outside of the appliance, it releases the heat into the surrounding air. The refrigerant then cools down, turns back into a liquid, and cycles back inside to repeat the process, effectively \"pumping\" heat out of the fridge.",
+    "tokens": 127,
+    "tps": 9.26,
+    "wall_s": 14.45,
+    "draft_n": 74,
+    "draft_accepted": 52
+   },
+   {
+    "text": "Johannes Gutenberg is credited with inventing the mechanical movable-type printing press in Europe around the mid-15th century. This innovation revolutionized the production of books, making them significantly cheaper and more accessible to the general public. By accelerating the spread of information, the printing press played a crucial role in fueling the Renaissance, the Reformation, and the Scientific Revolution.",
+    "tokens": 72,
+    "tps": 9.89,
+    "wall_s": 7.92,
+    "draft_n": 40,
+    "draft_accepted": 31
+   },
+   {
+    "text": "Here is a simple recipe for a classic, flavorful **Italian Tomato Sauce**.\n\n### **Ingredients**\n*   **Tomatoes:** 1 can (28 oz) crushed tomatoes or 2 lbs fresh ripe tomatoes (chopped)\n*   **Garlic:** 3–4 cloves, minced\n*   **Olive Oil:** 3 tbsp extra virgin olive oil\n*   **Herbs:** 1 tsp dried oregano (or a handful of fresh basil)\n*   **Seasoning:** Salt and black pepper to taste\n*   **Optional:** A pinch of red pepper flakes (for heat) or 1 tsp sugar (to balance acidity)\n\n### **Instructions**\n1.  **Sauté:** Heat olive oil in a large pan over medium heat. Add",
+    "tokens": 160,
+    "tps": 9.85,
+    "wall_s": 16.82,
+    "draft_n": 90,
+    "draft_accepted": 68
+   },
+   {
+    "text": "To understand what a compiler is, you first have to understand a basic problem: **Computers are actually quite \"dumb.\"**\n\nComputers do not understand English, Spanish, or any other human language. They only understand **Binary**—a series of switches that are either ON or OFF (represented as `1`s and `0`s).\n\nHowever, humans find it very difficult to write programs using only 1s and 0s. We prefer to write in \"High-Level Languages\" like Python, Java, or C++, which use words like `if`, `while`, `print`, and `calculate`.\n\n**A compiler is the translator that bridges this gap.**\n\n---\n\n### The Analogy: The Recipe Translator\nImagine you have a recipe for a",
+    "tokens": 160,
+    "tps": 9.38,
+    "wall_s": 17.61,
+    "draft_n": 90,
+    "draft_accepted": 68
+   }
+  ],
+  "mtp_k1/lora/domain": [
+   {
+    "text": "<search shelf=wiki>Tollan-640 edge protector</search>= 1 note\n  [v0h] page · Tollan-640 edge protector — when: You need a fact about the Tollan-640 edge protector: who supplies it, where it is stocked, its pack or its reorder point.\n<open>v0h</open>= Tollan-640 edge protector — The Tollan-640 edge protector, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>v0h§pack</open>= A pack of Tollan-640 edge protector holds 12 pieces.\n12 pieces",
+    "tokens": 160,
+    "tps": 8.18,
+    "wall_s": 23.6,
+    "draft_n": 97,
+    "draft_accepted": 61
+   },
+   {
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>= 1 note\n  [001] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n<open>001</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>001§pack</open>= A pack of Kestra-410 strapping band holds 12 coils.\n12 coils [",
+    "tokens": 160,
+    "tps": 9.08,
+    "wall_s": 20.05,
+    "draft_n": 96,
+    "draft_accepted": 63
+   },
+   {
+    "text": "<search shelf=wiki>Carrow-940 dunnage bag</search>= 1 note\n  [r0z] page · Carrow-940 dunnage bag — when you need a fact about it, open this page to see its sections.\n<open>r0z</open>= Carrow-940 dunnage bag — The Carrow-940 dunnage bag, one of the products the distributor carries.\n  sections §pack · §reorder\n<open>r0z§pack</open>= A pack of Carrow-940 dunnage bag contains 10 bags.\n10 bags [r0z§pack]",
+    "tokens": 151,
+    "tps": 8.55,
+    "wall_s": 18.6,
+    "draft_n": 93,
+    "draft_accepted": 58
+   },
+   {
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>= 1 note\n  [700] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n<open>700</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>700§supplier</open>= The Kestra-410 strapping band is supplied by [700f] Ostlund Industrial.",
+    "tokens": 160,
+    "tps": 8.82,
+    "wall_s": 21.32,
+    "draft_n": 98,
+    "draft_accepted": 60
+   },
+   {
+    "text": "<search shelf=wiki>Rask-500 shipping carton</search>= 1 note\n  [r500] page · Rask-500 shipping carton — when you need a page about the Rask-500 shipping carton, open this one.\n<open>r500</open>= Rask-500 shipping carton — The Rask-500 shipping carton, one of the products the distributor carries.\n  sections §product · §supplier · §pack\n<open>r500§supplier</open>= The Rask-500 shipping carton is supplied by [k3h] Ostlund Packaging.\n<open>k3h</open>= Ostlund Packaging — Ostlund Packaging,",
+    "tokens": 160,
+    "tps": 8.38,
+    "wall_s": 20.22,
+    "draft_n": 102,
+    "draft_accepted": 56
+   },
+   {
+    "text": "<search shelf=wiki>Fenwa-930 label roll</search>= 1 note\n  [w3n] page · Fenwa-930 label roll — when: You need a fact about the Fenwa-930 label roll: who supplies it, where it is stocked, its pack or its reorder point.\n<open>w3n</open>= Fenwa-930 label roll — The Fenwa-930 label roll, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>w3n§supplier</open>= The Fenwa-930 label roll is supplied by [001] Ostlund Packaging.\n",
+    "tokens": 160,
+    "tps": 8.65,
+    "wall_s": 21.14,
+    "draft_n": 99,
+    "draft_accepted": 60
+   }
+  ],
+  "mtp_k1/lora/general": [
+   {
+    "text": "A refrigerator cools food by transferring heat from the inside to the outside environment using a vapor-compression cycle. A refrigerant liquid flows through coils, evaporating into a gas as it absorbs heat from the air inside the fridge. This gas is then compressed by a pump, which raises its temperature, and it flows through coils on the back or bottom of the appliance where it releases that heat into the room. As the refrigerant cools back into a liquid, it recirculates, continuously removing heat from the interior to keep the food cold.",
+    "tokens": 105,
+    "tps": 8.08,
+    "wall_s": 13.81,
+    "draft_n": 67,
+    "draft_accepted": 37
+   },
+   {
+    "text": "The invention of the printing press by Johannes Gutenberg in the 15th century revolutionized the way information was produced and distributed. By allowing for the mass production of books, it significantly lowered the cost of reading material and increased literacy rates across Europe. This technological breakthrough played a crucial role in the spread of the Renaissance, the Reformation, and the Scientific Revolution.",
+    "tokens": 72,
+    "tps": 8.77,
+    "wall_s": 8.61,
+    "draft_n": 41,
+    "draft_accepted": 31
+   },
+   {
+    "text": "Here is a simple recipe for a classic, 20-minute tomato sauce.\n\n### **Simple Tomato Sauce**\n*Yields: About 2 cups | Prep time: 5 mins | Cook time: 20 mins\n\n**Ingredients**\n*   **28 oz (800g)** Can of crushed tomatoes (or whole peeled tomatoes)\n*   **3 cloves** Garlic, minced\n*   **1 small** Onion, finely diced (optional)\n*   **3 tbsp** Olive oil\n*   **1 tsp** Dried oregano (or 2 sprigs of fresh basil)\n*   **Salt & Pepper** to taste\n*   **Optional:** A pinch of red chili flakes for heat\n\n**Instructions**\n1.  **",
+    "tokens": 160,
+    "tps": 9.24,
+    "wall_s": 18.04,
+    "draft_n": 91,
+    "draft_accepted": 67
+   },
+   {
+    "text": "To understand what a compiler is, you first have to understand a simple problem: **Computers do not speak human languages, and humans do not speak \"binary.\"**\n\nA computer can only understand \"on\" and \"off\" (1s and 0s). A human writes instructions in a programming language like Python, C++, or Java, which looks like English.\n\n**A compiler is the translator that turns the human's code into the machine's instructions.**\n\nHere is a breakdown of how it works, using a simple analogy.\n\n---\n\n### The Analogy: The Recipe Book\nImagine you have a recipe for a cake written in **French**, but you do not speak French. You need the recipe to get the cake finished, but you can't read",
+    "tokens": 160,
+    "tps": 8.3,
+    "wall_s": 19.98,
+    "draft_n": 94,
+    "draft_accepted": 64
+   }
+  ],
+  "mtp_k2/base/domain": [
+   {
+    "text": "<search shelf=wiki>Tollan-640 edge protector</search>",
+    "tokens": 23,
+    "tps": 12.3,
+    "wall_s": 4.86,
+    "draft_n": 16,
+    "draft_accepted": 14
+   },
+   {
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>",
+    "tokens": 22,
+    "tps": 11.03,
+    "wall_s": 4.38,
+    "draft_n": 16,
+    "draft_accepted": 13
+   },
+   {
+    "text": "<search shelf=wiki>Carrow-940 dunnage bag</search>",
+    "tokens": 24,
+    "tps": 10.47,
+    "wall_s": 4.62,
+    "draft_n": 18,
+    "draft_accepted": 16
+   },
+   {
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>\n<search shelf=wiki>Fenwa-930 label roll</search>",
+    "tokens": 40,
+    "tps": 11.2,
+    "wall_s": 5.87,
+    "draft_n": 28,
+    "draft_accepted": 25
+   },
+   {
+    "text": "<search shelf=wiki>Rask-500 shipping carton supplier</search>\n<search shelf=wiki>Quill-860 packing tape supplier</search>",
+    "tokens": 42,
+    "tps": 10.41,
+    "wall_s": 6.55,
+    "draft_n": 30,
+    "draft_accepted": 28
+   },
+   {
+    "text": "<search shelf=wiki>Fenwa-930 label roll</search>\n<search shelf=wiki>Kestra-410 strapping band</search>",
+    "tokens": 40,
+    "tps": 10.38,
+    "wall_s": 6.6,
+    "draft_n": 30,
+    "draft_accepted": 26
+   }
+  ],
+  "mtp_k2/base/general": [
+   {
+    "text": "A refrigerator keeps food cold by using a refrigeration cycle to move heat from the inside of the unit to the outside environment. A substance called a **refrigerant** flows through coils, absorbing heat from the air inside the fridge as it changes from a liquid to a gas. This gas is then compressed by a compressor, which raises its temperature and pressure. As the hot gas flows through coils on the outside of the appliance, it releases the heat into the surrounding air. The refrigerant then cools down, turns back into a liquid, and cycles back inside to repeat the process, effectively \"pumping\" heat out of the fridge.",
+    "tokens": 127,
+    "tps": 8.42,
+    "wall_s": 15.93,
+    "draft_n": 118,
+    "draft_accepted": 68
+   },
+   {
+    "text": "Johannes Gutenberg is credited with inventing the mechanical movable-type printing press in Europe around the mid-15th century. This innovation revolutionized the production of books, making them significantly cheaper and more accessible to the general public. By accelerating the spread of information, the printing press played a crucial role in fueling the Renaissance, the Reformation, and the Scientific Revolution.",
+    "tokens": 72,
+    "tps": 7.59,
+    "wall_s": 10.07,
+    "draft_n": 62,
+    "draft_accepted": 42
+   },
+   {
+    "text": "Here is a simple recipe for a classic, flavorful **Italian Tomato Sauce**.\n\n### **Ingredients**\n*   **Tomatoes:** 1 can (28 oz) crushed tomatoes or 2 lbs fresh ripe tomatoes (chopped)\n*   **Garlic:** 3–4 cloves, minced\n*   **Olive Oil:** 3 tbsp extra virgin olive oil\n*   **Herbs:** 1 tsp dried oregano (or a handful of fresh basil)\n*   **Seasoning:** Salt and black pepper to taste\n*   **Optional:** A pinch of red pepper flakes (for heat) or 1 tsp sugar (to balance acidity)\n\n### **Instructions**\n1.  **Sauté:** Heat olive oil in a large pan over medium heat. Add",
+    "tokens": 160,
+    "tps": 7.15,
+    "wall_s": 23.16,
+    "draft_n": 133,
+    "draft_accepted": 91
+   },
+   {
+    "text": "To understand what a compiler is, you first have to understand a basic problem: **Computers are actually quite \"dumb.\"**\n\nComputers do not understand English, Spanish, or any other human language. They only understand **Binary**—a series of switches that are either ON or OFF (represented as `1`s and `0`s).\n\nHowever, humans find it very difficult to write programs using only 1s and 0s. We prefer to write in \"High-Level Languages\" like Python, Java, or C++, which use words like `if`, `while`, `print`, and `calculate`.\n\n**A compiler is the translator that bridges this gap.**\n\n---\n\n### The Analogy: The Recipe Translator\nImagine you have a recipe for a",
+    "tokens": 160,
+    "tps": 6.9,
+    "wall_s": 24.0,
+    "draft_n": 140,
+    "draft_accepted": 88
+   }
+  ],
+  "mtp_k2/lora/domain": [
+   {
+    "text": "<search shelf=wiki>Tollan-640 edge protector</search>= 1 note\n  [v0h] page · Tollan-640 edge protector — when: You need a fact about the Tollan-640 edge protector: who supplies it, where it is stocked, its pack or its reorder point.\n<open>v0h</open>= Tollan-640 edge protector — The Tollan-640 edge protector, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>v0h§pack</open>= A pack of Tollan-640 edge protector holds 12 pieces.\n12 pieces",
+    "tokens": 160,
+    "tps": 6.47,
+    "wall_s": 30.42,
+    "draft_n": 156,
+    "draft_accepted": 80
+   },
+   {
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>= 1 note\n  [001] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n<open>001</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>001§pack</open>= A pack of Kestra-410 strapping band holds 12 coils.\n12 coils [",
+    "tokens": 160,
+    "tps": 6.46,
+    "wall_s": 27.91,
+    "draft_n": 152,
+    "draft_accepted": 82
+   },
+   {
+    "text": "<search shelf=wiki>Carrow-940 dunnage bag</search>= 1 note\n  [r0z] page · Carrow-940 dunnage bag — when you need a fact about it, open this page to see its sections.\n<open>r0z</open>= Carrow-940 dunnage bag — The Carrow-940 dunnage bag, one of the products the distributor carries.\n  sections §pack · §reorder\n<open>r0z§pack</open>= A pack of Carrow-940 dunnage bag contains 10 bags.\n10 bags [r0z§pack]",
+    "tokens": 151,
+    "tps": 6.29,
+    "wall_s": 25.14,
+    "draft_n": 152,
+    "draft_accepted": 74
+   },
+   {
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>= 1 note\n  [700] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n<open>700</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>700§supplier</open>= The Kestra-410 strapping band is supplied by [700f] Ostlund Industrial.",
+    "tokens": 160,
+    "tps": 6.04,
+    "wall_s": 30.28,
+    "draft_n": 159,
+    "draft_accepted": 78
+   },
+   {
+    "text": "<search shelf=wiki>Rask-500 shipping carton</search>= 1 note\n  [r500] page · Rask-500 shipping carton — when you need a page about the Rask-500 shipping carton, open this one.\n<open>r500</open>= Rask-500 shipping carton — The Rask-500 shipping carton, one of the products the distributor carries.\n  sections §product · §supplier · §pack\n<open>r500§supplier</open>= The Rask-500 shipping carton is supplied by [k3h] Ostlund Packaging.\n<open>k3h</open>= Ostlund Packaging — Ostlund Packaging,",
+    "tokens": 160,
+    "tps": 5.87,
+    "wall_s": 28.43,
+    "draft_n": 168,
+    "draft_accepted": 75
+   },
+   {
+    "text": "<search shelf=wiki>Fenwa-930 label roll</search>= 1 note\n  [w3n] page · Fenwa-930 label roll — when: You need a fact about the Fenwa-930 label roll: who supplies it, where it is stocked, its pack or its reorder point.\n<open>w3n</open>= Fenwa-930 label roll — The Fenwa-930 label roll, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>w3n§supplier</open>= The Fenwa-930 label roll is supplied by [001] Ostlund Packaging.\n",
+    "tokens": 160,
+    "tps": 5.98,
+    "wall_s": 30.58,
+    "draft_n": 161,
+    "draft_accepted": 78
+   }
+  ],
+  "mtp_k2/lora/general": [
+   {
+    "text": "A refrigerator cools food by transferring heat from the inside to the outside environment using a vapor-compression cycle. A refrigerant liquid flows through coils, evaporating into a gas as it absorbs heat from the air inside the fridge. This gas is then compressed by a pump, which raises its temperature, and it flows through coils on the back or bottom of the appliance where it releases that heat into the room. As the refrigerant cools back into a liquid, it recirculates, continuously removing heat from the interior to keep the food cold.",
+    "tokens": 105,
+    "tps": 7.52,
+    "wall_s": 15.05,
+    "draft_n": 106,
+    "draft_accepted": 51
+   },
+   {
+    "text": "The printing press was revolutionized by Johannes Gutenberg in the 15th century, who introduced the system of movable type in Europe. This innovation allowed for the mass production of books, significantly lowering the cost of information and increasing literacy rates. It played a crucial role in the spread of the Renaissance and the Scientific Revolution by allowing ideas to circulate more rapidly than ever before.",
+    "tokens": 74,
+    "tps": 7.31,
+    "wall_s": 10.78,
+    "draft_n": 76,
+    "draft_accepted": 35
+   },
+   {
+    "text": "Here is a simple recipe for a classic, 20-minute tomato sauce.\n\n### **Simple Tomato Sauce**\n*Yields: About 2 cups | Prep time: 5 mins | Cook time: 20 mins\n\n**Ingredients**\n*   **28 oz (800g)** Can of crushed tomatoes (or whole peeled tomatoes)\n*   **3 cloves** Garlic, minced\n*   **1 small** Onion, finely diced (optional)\n*   **3 tbsp** Olive oil\n*   **1 tsp** Dried oregano (or 2 sprigs of fresh basil)\n*   **Salt & Pepper** to taste\n*   **Optional:** A pinch of red pepper flakes for heat\n\n**Instructions**\n1.  **",
+    "tokens": 160,
+    "tps": 8.34,
+    "wall_s": 19.91,
+    "draft_n": 140,
+    "draft_accepted": 88
+   },
+   {
+    "text": "To understand what a compiler is, you first have to understand a simple problem: **Computers do not speak human languages, and humans do not speak \"binary.\"**\n\nA computer can only understand \"on\" and \"off\" (1s and 0s). A human writes instructions in a programming language like Python, C++, or Java, which looks like English.\n\n**A compiler is the translator that turns the human's code into the machine's instructions.**\n\nHere is a breakdown of how it works, using a simple analogy.\n\n---\n\n### The Analogy: The Recipe Book\nImagine you have a recipe for a cake written in **French**, but you do not speak French. You need the recipe to get the cake finished, but you can't read",
+    "tokens": 160,
+    "tps": 7.23,
+    "wall_s": 22.95,
+    "draft_n": 142,
+    "draft_accepted": 88
+   }
+  ],
+  "mtp/base/domain": [
+   {
+    "text": "<search shelf=wiki>Tollan-640 edge protector</search>",
+    "tokens": 23,
+    "tps": 9.71,
+    "wall_s": 5.98,
+    "draft_n": 21,
+    "draft_accepted": 15
+   },
+   {
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>",
+    "tokens": 22,
+    "tps": 9.19,
+    "wall_s": 4.72,
+    "draft_n": 21,
+    "draft_accepted": 14
+   },
+   {
+    "text": "<search shelf=wiki>Carrow-940 dunnage bag</search>",
+    "tokens": 24,
+    "tps": 8.65,
+    "wall_s": 5.34,
+    "draft_n": 24,
+    "draft_accepted": 18
+   },
+   {
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>\n<search shelf=wiki>Fenwa-930 label roll</search>",
+    "tokens": 40,
+    "tps": 10.0,
+    "wall_s": 6.49,
+    "draft_n": 36,
+    "draft_accepted": 27
+   },
+   {
+    "text": "<search shelf=wiki>Rask-500 shipping carton supplier</search>\n<search shelf=wiki>Quill-860 packing tape supplier</search>",
+    "tokens": 42,
+    "tps": 11.47,
+    "wall_s": 6.33,
+    "draft_n": 33,
+    "draft_accepted": 30
+   },
+   {
+    "text": "<search shelf=wiki>Fenwa-930 label roll</search>\n<search shelf=wiki>Kestra-410 strapping band</search>",
+    "tokens": 40,
+    "tps": 8.85,
+    "wall_s": 7.12,
+    "draft_n": 36,
+    "draft_accepted": 27
+   }
+  ],
+  "mtp/base/general": [
+   {
+    "text": "A refrigerator keeps food cold by using a refrigeration cycle to move heat from the inside of the unit to the outside environment. A substance called a **refrigerant** flows through coils, absorbing heat from the air inside the fridge as it changes from a liquid to a gas. This gas is then compressed by a compressor, which raises its temperature and pressure. As the hot gas flows through coils on the outside of the appliance, it releases the heat into the surrounding air. The refrigerant then cools down, turns back into a liquid, and cycles back inside to repeat the process, effectively \"pumping\" heat out of the fridge.",
+    "tokens": 127,
+    "tps": 6.71,
+    "wall_s": 19.72,
+    "draft_n": 159,
+    "draft_accepted": 75
+   },
+   {
+    "text": "Johannes Gutenberg is credited with inventing the mechanical movable-type printing press in Europe around the mid-15th century. This innovation revolutionized the production of books, making them significantly cheaper and more accessible to the general public. By accelerating the spread of information, the printing press played a crucial role in fueling the Renaissance, the Reformation, and the Scientific Revolution.",
+    "tokens": 72,
+    "tps": 7.58,
+    "wall_s": 10.02,
+    "draft_n": 84,
+    "draft_accepted": 44
+   },
+   {
+    "text": "Here is a simple recipe for a classic, flavorful **Italian Tomato Sauce**.\n\n### **Ingredients**\n*   **Tomatoes:** 1 can (28 oz) crushed tomatoes or 2 lbs fresh ripe tomatoes (chopped)\n*   **Garlic:** 3–4 cloves, minced\n*   **Olive Oil:** 3 tbsp extra virgin olive oil\n*   **Herbs:** 1 tsp dried oregano (or a handful of fresh basil)\n*   **Seasoning:** Salt and black pepper to taste\n*   **Optional:** A pinch of red pepper flakes (for heat) or 1 tsp sugar (to balance acidity)\n\n### **Instructions**\n1.  **Sauté:** Heat olive oil in a large pan over medium heat. Add",
+    "tokens": 160,
+    "tps": 8.12,
+    "wall_s": 20.25,
+    "draft_n": 177,
+    "draft_accepted": 99
+   },
+   {
+    "text": "To understand what a compiler is, you first have to understand a basic problem: **Computers are actually quite \"dumb.\"**\n\nComputers do not understand English, Spanish, or any other human language. They only understand **Binary**—a series of switches that are either ON or OFF (represented as `1`s and `0`s).\n\nHowever, humans find it very difficult to write programs using only 1s and 0s. We prefer to write in \"High-Level Languages\" like Python, Java, or C++, which use words like `if`, `while`, `print`, and `calculate`.\n\n**A compiler is the translator that bridges this gap.**\n\n---\n\n### The Analogy: The Recipe Translator\nImagine you have a recipe for a",
+    "tokens": 160,
+    "tps": 7.98,
+    "wall_s": 20.64,
+    "draft_n": 177,
+    "draft_accepted": 100
+   }
+  ],
+  "mtp/lora/domain": [
+   {
+    "text": "<search shelf=wiki>Tollan-640 edge protector</search>= 1 note\n  [v0h] page · Tollan-640 edge protector — when: You need a fact about the Tollan-640 edge protector: who supplies it, where it is stocked, its pack or its reorder point.\n<open>v0h</open>= Tollan-640 edge protector — The Tollan-640 edge protector, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>v0h§pack</open>= A pack of Tollan-640 edge protector holds 12 pieces.\n12 pieces",
+    "tokens": 160,
+    "tps": 6.26,
+    "wall_s": 29.87,
+    "draft_n": 221,
+    "draft_accepted": 84
+   },
+   {
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>= 1 note\n  [001] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n<open>001</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>001§pack</open>= A pack of Kestra-410 strapping band holds 12 coils.\n12 coils [",
+    "tokens": 160,
+    "tps": 6.67,
+    "wall_s": 26.56,
+    "draft_n": 215,
+    "draft_accepted": 87
+   },
+   {
+    "text": "<search shelf=wiki>Carrow-940 dunnage bag</search>= 1 note\n  [r0z] page · Carrow-940 dunnage bag — when you need a fact about it, open this page to see its sections.\n<open>r0z</open>= Carrow-940 dunnage bag — The Carrow-940 dunnage bag, one of the products the distributor carries.\n  sections §pack · §reorder\n<open>r0z§pack</open>= A pack of Carrow-940 dunnage bag contains 10 bags.\n10 bags [r0z§pack]",
+    "tokens": 151,
+    "tps": 6.42,
+    "wall_s": 24.2,
+    "draft_n": 210,
+    "draft_accepted": 81
+   },
+   {
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>= 1 note\n  [700] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n<open>700</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>700§supplier</open>= The Kestra-410 strapping band is supplied by [700f] Ostlund Industrial.",
+    "tokens": 160,
+    "tps": 6.41,
+    "wall_s": 28.05,
+    "draft_n": 222,
+    "draft_accepted": 83
+   },
+   {
+    "text": "<search shelf=wiki>Rask-500 shipping carton</search>= 1 note\n  [r500] page · Rask-500 shipping carton — when you need a page about the Rask-500 shipping carton, open this one.\n<open>r500</open>= Rask-500 shipping carton — The Rask-500 shipping carton, one of the products the distributor carries.\n  sections §product · §supplier · §pack\n<open>r500§supplier</open>= The Rask-500 shipping carton is supplied by [k3h] Ostlund Packaging.\n<open>k3h</open>= Ostlund Packaging — Ostlund Packaging,",
+    "tokens": 160,
+    "tps": 6.1,
+    "wall_s": 27.35,
+    "draft_n": 236,
+    "draft_accepted": 80
+   },
+   {
+    "text": "<search shelf=wiki>Fenwa-930 label roll</search>= 1 note\n  [w3n] page · Fenwa-930 label roll — when: You need a fact about the Fenwa-930 label roll: who supplies it, where it is stocked, its pack or its reorder point.\n<open>w3n</open>= Fenwa-930 label roll — The Fenwa-930 label roll, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>w3n§supplier</open>= The Fenwa-930 label roll is supplied by [001] Ostlund Packaging.\n",
+    "tokens": 160,
+    "tps": 6.11,
+    "wall_s": 28.9,
+    "draft_n": 231,
+    "draft_accepted": 81
+   }
+  ],
+  "mtp/lora/general": [
+   {
+    "text": "A refrigerator cools food by transferring heat from the inside to the outside environment using a vapor-compression cycle. A refrigerant liquid flows through coils, evaporating into a gas as it absorbs heat from the air inside the fridge. This gas is then compressed by a pump, which raises its temperature, and it flows through coils on the back or bottom of the appliance where it releases that heat into the room. As the refrigerant cools back into a liquid, it recirculates, continuously removing heat from the interior to keep the food cold.",
+    "tokens": 105,
+    "tps": 5.92,
+    "wall_s": 18.62,
+    "draft_n": 153,
+    "draft_accepted": 55
+   },
+   {
+    "text": "The invention of the printing press by Johannes Gutenberg in the 15th century revolutionized the way information was produced and distributed. By allowing for the mass production of books, it significantly lowered the cost of reading material and increased literacy rates across Europe. This technological breakthrough played a crucial role in the spread of the Renaissance, the Reformation, and the Scientific Revolution.",
+    "tokens": 72,
+    "tps": 7.37,
+    "wall_s": 10.14,
+    "draft_n": 87,
+    "draft_accepted": 43
+   },
+   {
+    "text": "Here is a simple recipe for a classic, 20-minute tomato sauce.\n\n### **Simple Tomato Sauce**\n*Yields: About 2 cups | Prep time: 5 mins | Cook time: 20 mins\n\n**Ingredients**\n*   **28 oz (800g)** Can of crushed tomatoes (or whole peeled tomatoes)\n*   **3 cloves** Garlic, minced\n*   **1 small** Onion, finely diced (optional)\n*   **3 tbsp** Olive oil\n*   **1 tsp** Dried oregano (or 2 sprigs of fresh basil)\n*   **Salt & Pepper** to taste\n*   **Optional:** A pinch of red chili flakes for heat\n\n**Instructions**\n1.  **",
+    "tokens": 160,
+    "tps": 7.9,
+    "wall_s": 20.85,
+    "draft_n": 182,
+    "draft_accepted": 98
+   },
+   {
+    "text": "To understand what a compiler is, you first have to understand a simple problem: **Computers do not speak human languages, and humans do not speak \"binary.\"**\n\nA computer can only understand \"on\" and \"off\" (1s and 0s). A human writes instructions in a programming language like Python, C++, or Java, which looks like English.\n\n**A compiler is the translator that turns the human's code into the machine's instructions.**\n\nHere is a breakdown of how it works, using a simple analogy.\n\n---\n\n### The Analogy: The Recipe Book\nImagine you have a recipe for a cake written in **French**, but you do not speak French. You need the recipe to get the cake finished, but you can't read",
+    "tokens": 160,
+    "tps": 7.23,
+    "wall_s": 22.72,
+    "draft_n": 200,
+    "draft_accepted": 92
+   }
+  ]
+ },
+ "swap": {
+  "on_ms": 0.95,
+  "off_ms": 1.55,
+  "expert_differs": true,
+  "base_restored": true,
+  "expert_matches_per_request": true
+ },
+ "summary": {
+  "mtp_k1/base/domain": {
+   "tps": 11.26,
+   "tps_nospec": 12.8,
+   "speedup": 0.88,
+   "acceptance": 0.968,
+   "identical": "6/6"
+  },
+  "mtp_k1/base/general": {
+   "tps": 9.56,
+   "tps_nospec": 13.31,
+   "speedup": 0.72,
+   "acceptance": 0.745,
+   "identical": "4/4"
+  },
+  "mtp_k1/lora/domain": {
+   "tps": 8.6,
+   "tps_nospec": 12.56,
+   "speedup": 0.68,
+   "acceptance": 0.612,
+   "identical": "6/6"
+  },
+  "mtp_k1/lora/general": {
+   "tps": 8.6,
+   "tps_nospec": 12.53,
+   "speedup": 0.69,
+   "acceptance": 0.679,
+   "identical": "4/4"
+  },
+  "mtp_k2/base/domain": {
+   "tps": 10.84,
+   "tps_nospec": 12.8,
+   "speedup": 0.85,
+   "acceptance": 0.884,
+   "identical": "6/6"
+  },
+  "mtp_k2/base/general": {
+   "tps": 7.4,
+   "tps_nospec": 13.31,
+   "speedup": 0.56,
+   "acceptance": 0.638,
+   "identical": "4/4"
+  },
+  "mtp_k2/lora/domain": {
+   "tps": 6.18,
+   "tps_nospec": 12.56,
+   "speedup": 0.49,
+   "acceptance": 0.493,
+   "identical": "6/6"
+  },
+  "mtp_k2/lora/general": {
+   "tps": 7.63,
+   "tps_nospec": 12.53,
+   "speedup": 0.61,
+   "acceptance": 0.565,
+   "identical": "2/4"
+  },
+  "mtp/base/domain": {
+   "tps": 9.69,
+   "tps_nospec": 12.8,
+   "speedup": 0.76,
+   "acceptance": 0.766,
+   "identical": "6/6"
+  },
+  "mtp/base/general": {
+   "tps": 7.61,
+   "tps_nospec": 13.31,
+   "speedup": 0.57,
+   "acceptance": 0.533,
+   "identical": "4/4"
+  },
+  "mtp/lora/domain": {
+   "tps": 6.32,
+   "tps_nospec": 12.56,
+   "speedup": 0.5,
+   "acceptance": 0.372,
+   "identical": "6/6"
+  },
+  "mtp/lora/general": {
+   "tps": 7.11,
+   "tps_nospec": 12.53,
+   "speedup": 0.57,
+   "acceptance": 0.463,
+   "identical": "4/4"
+  },
+  "G1": "6/6 domain texts differ from the base"
+ },
+ "verdict": "MLX stays the edge engine: best drafter with the LoRA on its domain is 0.68× (< 1.3)",
+ "finished": "2026-10-05T21:16:08"
+}

@@ -389,6 +389,13 @@ def walk_rows(questions: list[dict], page_top: int | None = None, inject_every: 
     return rows
 
 
+# every set measured on real documents — G1/G2 keep their libraries and questions out of any corpus (FMT0 and RFT0 are
+# scored on PAGE0's)
+EVAL_FILES = [Path("results/REAL0-real-library-20260930/questions.jsonl"), Path("results/REAL3-real-corpus-20260930/questions.jsonl"),
+              Path("results/REAL4-refusal-20260930/questions.jsonl"), Path("results/REAL5-third-family-20261001/questions.jsonl"),
+              Path("results/CITE0-runtime-check-20261002/questions.jsonl"), Path("results/PAGE0-page-top-20261002/questions.jsonl")]
+
+
 def gate(rows: list[dict], eval_files: list[Path]) -> dict:
     from training.wiki import grade as gr
     evals = [json.loads(l) for f in eval_files if f.exists() for l in f.read_text().splitlines() if l.strip()]
@@ -458,10 +465,7 @@ def main() -> int:
             if len(kept) == len(rows) and all(c <= max(3, MAX_SHARE * len(kept)) for c in seen.values()):
                 break
             rows = kept
-        g = gate(rows, [Path("results/REAL0-real-library-20260930/questions.jsonl"), Path("results/REAL3-real-corpus-20260930/questions.jsonl"),
-                        # every set measured since — G1/G2 keep their libraries and questions out (FMT0 is scored on PAGE0's)
-                        Path("results/REAL4-refusal-20260930/questions.jsonl"), Path("results/REAL5-third-family-20261001/questions.jsonl"),
-                        Path("results/CITE0-runtime-check-20261002/questions.jsonl"), Path("results/PAGE0-page-top-20261002/questions.jsonl")])
+        g = gate(rows, EVAL_FILES)
         if a.with_format:
             g["FMT_injected"] = sum(bool(r.get("injected")) for r in rows)
             g["FMT_section_opens"] = sum(r["messages"][2]["content"].count("§") and "<open>" in r["messages"][2]["content"]

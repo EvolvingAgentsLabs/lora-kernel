@@ -68,7 +68,7 @@ la compuerta de citación (GATE0) y el calificador de cada región.
    reformulaciones sigue un miembro, así que no se puede confiar en ella para retener local las inseguras. La regla
    literal de ROUTE0 — fuera de la redacción, se va — sigue siendo el router para miembros de tarea fija.
 
-### 2.2 Destilación de especialistas, 26B → un LoRA sobre el E4B — con compuerta en un margen que el proyecto no vio
+### 2.2 Destilación de especialistas, 26B → un LoRA sobre el E4B — con compuerta en un margen que el proyecto no vio, y la corrida de la compuerta está cerrada
 
 **Reclamo [read: source]:** el 26B, con o sin LoRA, es el maestro. Cada adaptador del E4B aprende de sus logits,
 idealmente on-policy (GKD, MiniLLM). La familia comparte tokenizador. B2 **[ran]** confirma un único espacio de ids
@@ -80,19 +80,32 @@ nuestros corpus ya es exacta: recorridos verificados, un enunciado citado, una c
 agregan información donde el target duro es ruidoso o está subespecificado. Agregan poco donde es un recorrido
 verificado. **La destilación no tiene maestro hasta que se muestre que un modelo más grande le gana al miembro E4B.**
 
-**Veredicto: una corrida de margen lo decide — corrió el 2026-10-04, bloqueada, todavía sin resultado.** En **TEACH0**,
+**Veredicto: una corrida de margen iba a decidirlo — corrió el 2026-10-04, la bloqueó el motor de servido, y queda
+cerrada sin resultado por decisión del usuario del 2026-10-05.** En **TEACH0**,
 `gemma-4-26B-A4B-it` corre sin entrenar bajo el runtime servido, con `--empty-thought` (la lección de PAIR0 para los
 modelos más grandes de Gemma 4). Se compara contra el E4B pelado y contra `real-none-s0`, sobre las 52 filas de PAGE0.
 Necesita una sesión de A100. El 26B no entra en una A100 en bf16, así que corre en FP8 o en 4 bits; eso es una segunda
 incógnita, y queda dicho.
-- **Estado 2026-10-04: bloqueada por el motor de servido / la cuota, sin resultado.** FP8 falló dos veces (compilación
-  de inductor; después el kernel FP8 de vLLM no corre en el sm80 de la A100); el único reintento con bitsandbytes fue
-  rechazado por la cuota tres veces el mismo día (el brief y el código están en `main`). El reintento queda agendado
-  para cuando vuelva la cuota de A100. Nada se lee de TEACH0 hasta que corra.
-- **Mata:** el 26B no le gana a `real-none-s0` (34/44), pareado, $p \lt 0,05$. Entonces no se construye ninguna
-  destilación, y el 26B no se propone como base.
-- **Pasa:** un piloto de destilación, con su propio brief. GKD sobre el corpus de una región, el alumno contra
-  `real-none-s0`.
+- **Estado 2026-10-05: CERRADA por decisión del usuario — bloqueada por el motor de servido, sin resultado [ran]**
+  (`results/TEACH0-26b-headroom-20261004/BRIEF.md`). FP8 falló dos veces en la A100 (compilación de inductor; después
+  el kernel FP8 de vLLM no corre en el sm80); la A100 fue rechazada tres veces (cuota); la misma corrida con
+  bitsandbytes de 4 bits en una L4 (intento 4, un cambio de proveedor declarado) llegó a un servidor que rechazó la
+  configuración: **vLLM 0.30 no tiene el método de cuantización `bitsandbytes`.** El único reintento que permitía el
+  brief está gastado. No se lee nada de TEACH0: si el 26B es un maestro queda sin responder por este instrumento. Lo
+  que vLLM 0.30 sí lista (`experts_int8`, unos 29 GB, una A100 de 40 GB; o un checkpoint AWQ/GPTQ ya cuantizado) sería
+  un instrumento nuevo, con su propio brief, y no se abrió ninguno.
+- **La pregunta se muda.** "¿Hay un maestro?" ahora se hace sobre un verificador externo, en la línea τ²-bench: T1
+  compara Gemma 4 31B (autoalojado, Apache 2.0) contra el E4B base sobre el test de airline de τ², k = 4, compuerta: una
+  brecha (`results/TAU2-T0-recon-20261005/BRIEF.md`, `docs/tau2/RECON.md` §3). La decisión del usuario del 2026-10-05
+  cierra la línea del 26B: PAIR0, PAIR1 y la propia tarjeta de Google ponen a la mitad grande a la par o por detrás de
+  la chica **[read]**: τ² (promedio de 3) 68,2 % para el 26B-A4B contra 69,0 % para el 12B y 76,9 % para el 31B
+  (`docs/tau2/TEACHER-TERMS.md` §2.1; cifra autoinformada por la tarjeta).
+- ~~**Mata:** el 26B no le gana a `real-none-s0` (34/44), pareado, $p \lt 0,05$. Entonces no se construye ninguna
+  destilación, y el 26B no se propone como base.~~ Nunca se evaluó: la corrida quedó bloqueada. Por la decisión de
+  cierre, no se construye ninguna destilación sobre el 26B y no se propone como base.
+- ~~**Pasa:** un piloto de destilación, con su propio brief. GKD sobre el corpus de una región, el alumno contra
+  `real-none-s0`.~~ No se llegó. Un piloto de destilación lo abriría un τ² T1 que muestre una brecha de maestro, con su
+  propio brief.
 
 ### 2.3 Podar expertos por dominio (REAP), y "un especialista es un LoRA más una máscara de expertos" — investigación; su primer paso ya existe
 
@@ -131,8 +144,9 @@ destilación.
   (MAC2 **[ran]**). La línea flash es precisamente el plan para que eso entre, manteniendo cacheado cerca del 60 % de
   los expertos.
 
-**Veredicto: no se propone** hasta que TEACH0 pase. Si pasa, el cambio va al usuario como decisión, con la corrida.
-TEACH0 está bloqueada (§2.2), así que esto se queda en no propuesto.
+**Veredicto: no se propone.** ~~hasta que TEACH0 pase~~ TEACH0 está cerrada sin resultado (§2.2) y el usuario cerró la
+línea del 26B el 2026-10-05, así que el 26B como base se queda en no propuesto; un cambio de base necesitaría que un
+modelo más grande muestre valor primero, que es lo que τ² T1 le pregunta al 31B.
 
 **Dos advertencias de la fuente, adoptadas como reglas para cualquier LoRA de MoE:**
 - **Ubicación.** Sólo atención y expertos compartidos, no expertos ruteados. La Fase 0 ya propone sólo-atención.
@@ -182,20 +196,21 @@ línea a la que pertenece si falla.
 | 1 | **EDIT0** — editar sin reentrenar (la propiedad de sobreescritura de Spotlight); prueba de sobreescritura de opmemory | una L4 · cero GPU | el miembro escribe valores obsoletos: la memoria no es donde vive el conocimiento |
 | 2 | **P2a** — ¿un miembro contesta paráfrasis de su tarea? | una L4 | los miembros fallan las paráfrasis: se van bien como están, y no se construye ninguna sonda |
 | 3 | **ROUTE2** — una sonda de router sobre el estado oculto del E4B, con los negativos difíciles de M2b, sobre conjuntos frescos | una L4 + segundos | pierde la seguridad de ROUTE0, o no recupera ninguna paráfrasis |
-| 4 | **TEACH0** — ¿`gemma-4-26B-A4B-it` le gana al miembro E4B sin entrenar? | una A100 | no: ninguna destilación, ningún base 26B |
+| 4 | ~~**TEACH0** — ¿`gemma-4-26B-A4B-it` le gana al miembro E4B sin entrenar?~~ **cerrada 2026-10-05: bloqueada por el motor de servido, sin resultado** | una A100 (nunca corrió) | no: ninguna destilación, ningún base 26B |
 | 5 | **H1a** — ¿el dominio concentra el ruteo del 26B? (el primer paso de la línea flash; los datos que necesita REAP) | horas de una GPU | **sólo con la aprobación del usuario para reanudar la línea flash** |
-| — | diferido: destilación (después de TEACH0), máscaras de expertos más cambio de LoRA (después de H1a/H1b), direccionamiento aprendido de $d$ chico (después de R1) | — | — |
+| — | diferido: destilación (después de que τ² T1 muestre una brecha de maestro; era: después de TEACH0), máscaras de expertos más cambio de LoRA (después de H1a/H1b), direccionamiento aprendido de $d$ chico (después de R1) | — | — |
 | — | no hecho: implementar la capa de Spotlight (necesita preentrenamiento); extraer expertos de MoE como especialistas (no son especialistas) | — | — |
 
 **Estado (2026-10-04).** Paso 1 **EDIT0 pasó** — 17/17 el valor nuevo, 0 obsoletas (§3). Paso 2 **P2a corrió: LAS
 PARÁFRASIS CUESTAN** — un retroceso pareado en la banda profunda de desk (239 → 198) detiene la línea; paso 3
-**ROUTE2 no se construye** (§2.1). Paso 4 **TEACH0 está bloqueada** por el motor de servido y la cuota de A100, sin
-resultado (FP8 falló dos veces, el único reintento con bitsandbytes rechazado por la cuota tres veces; el brief y el
-código están en `main`, el reintento agendado para cuando vuelva la cuota) — §2.2 se queda en "no propuesta". Paso 5
+**ROUTE2 no se construye** (§2.1). Paso 4 **TEACH0 está cerrada (2026-10-05, decisión del usuario)**: bloqueada por el
+motor de servido, sin resultado (FP8 falló en el sm80 de la A100; vLLM 0.30 no tiene `bitsandbytes`; el único reintento
+está gastado) — §2.2 y §2.4 se quedan en "no propuesta", y la pregunta "¿hay un maestro?" se muda a τ² T1
+(`docs/tau2/RECON.md`). Paso 5
 **H1a corrió: FALSIFICADA como se escribió** sobre su única cláusula
 sin margen, pero la sustancia para la que existía — si el dominio concentra el ruteo — se sostiene fuerte (§2.3); H1b
 y el próximo paso de la línea flash son decisión del usuario.
 
 **Decisiones que son del usuario:**
 - si reanudar la línea flash (paso 5);
-- cualquier cambio de base, que sólo seguiría a un TEACH0 que pase.
+- cualquier cambio de base, que sólo seguiría a un modelo más grande que muestre valor (τ² T1 sobre el 31B; TEACH0 está cerrada).

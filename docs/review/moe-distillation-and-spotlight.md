@@ -64,7 +64,7 @@ sits. A probe trained without hard negatives of both kinds would learn the conte
    every suite of both members to hold): a probe cannot tell which wordings a member follows, so it cannot be trusted to
    keep the unsafe ones local. ROUTE0's literal rule — off-wording leaves — stays the router for fixed-task members.
 
-### 2.2 Distillation of specialists, 26B → a LoRA on the E4B — gated on a headroom the project has not seen
+### 2.2 Distillation of specialists, 26B → a LoRA on the E4B — gated on a headroom the project has not seen, and the gating run is closed
 
 **Claim [read: source]:** the 26B, with or without a LoRA, is the teacher. Each E4B adapter learns from its logits,
 ideally on-policy (GKD, MiniLLM). The family shares a tokenizer. B2 **[ran]** confirms one id space for the E4B and the
@@ -76,17 +76,30 @@ already exact: verified walks, a cited statement, a grade. Soft targets add info
 or underspecified. They add little where it is a verified walk. **Distillation has no teacher until a larger model is
 shown to beat the E4B member.**
 
-**Verdict: one headroom run decides it — ran 2026-10-04, blocked, no result yet.** In **TEACH0**, `gemma-4-26B-A4B-it`
+**Verdict: one headroom run was to decide it — it ran 2026-10-04, was blocked by the serving engine, and is closed
+without a result by the user's decision of 2026-10-05.** In **TEACH0**, `gemma-4-26B-A4B-it`
 runs untrained under the served runtime, with `--empty-thought` (PAIR0's lesson for Gemma 4's larger models). It is
 compared against the bare E4B and against `real-none-s0`, on PAGE0's 52 rows. It needs one A100 session. The 26B does
 not fit an A100 in bf16, so it runs in FP8 or 4 bits; that is a second unknown, and it is said.
-- **Status 2026-10-04: blocked by the serving engine / quota, no result.** FP8 failed twice (inductor compile; then
-  vLLM's FP8 kernel does not run on the A100's sm80); the brief's one bitsandbytes retry was refused by quota three
-  times the same day (brief and code on `main`). The retry is scheduled for whenever A100 quota returns. Nothing is
-  read from TEACH0 until it runs.
-- **Kill:** the 26B does not beat `real-none-s0` (34/44), paired, $p \lt 0.05$. Then no distillation is built, and the
-  26B is not proposed as a base.
-- **Pass:** a distillation pilot, under its own brief. GKD on one region's corpus, the student against `real-none-s0`.
+- **Status 2026-10-05: CLOSED by the user's decision — blocked by the serving engine, no result [ran]**
+  (`results/TEACH0-26b-headroom-20261004/BRIEF.md`). FP8 failed twice on the A100 (inductor compile; then vLLM's FP8
+  kernel does not run on sm80); the A100 was refused three times (quota); the same bitsandbytes 4-bit run on an L4
+  (attempt 4, a declared provider change) reached a server that refused the configuration: **vLLM 0.30 has no
+  `bitsandbytes` quantisation method.** The brief's one allowed retry is spent. Nothing is read from TEACH0: whether
+  the 26B is a teacher stays unanswered by this instrument. What vLLM 0.30 does list (`experts_int8`, about 29 GB, an
+  A100 40 GB; or a pre-quantised AWQ/GPTQ checkpoint) would be a new instrument under its own brief, and none was
+  opened.
+- **The question moves.** "Is there a teacher?" is now asked on an external verifier, in the τ²-bench line: T1 compares
+  Gemma 4 31B (self-hosted, Apache 2.0) with the E4B base on τ² airline test, k = 4, gate: a gap
+  (`results/TAU2-T0-recon-20261005/BRIEF.md`, `docs/tau2/RECON.md` §3). The user's decision of 2026-10-05 closes the 26B
+  line: PAIR0, PAIR1 and Google's own card put the large half level with or behind the small one **[read]**: τ²
+  (average over 3) 68.2 % for the 26B-A4B against 69.0 % for the 12B and 76.9 % for the 31B
+  (`docs/tau2/TEACHER-TERMS.md` §2.1; self-reported by the card).
+- ~~**Kill:** the 26B does not beat `real-none-s0` (34/44), paired, $p \lt 0.05$. Then no distillation is built, and the
+  26B is not proposed as a base.~~ Never evaluated: the run was blocked. By the closing decision, no distillation is built
+  on the 26B and it is not proposed as a base.
+- ~~**Pass:** a distillation pilot, under its own brief. GKD on one region's corpus, the student against `real-none-s0`.~~
+  Not reached. A distillation pilot would be opened by τ² T1 showing a teacher gap, under its own brief.
 
 ### 2.3 Pruning experts by domain (REAP), and "a specialist is a LoRA plus an expert mask" — research; its first step already exists
 
@@ -121,8 +134,9 @@ cache. It fits a "base in flash, adapters in RAM" design, and a stronger base us
 - On the 16 GB Mac, 15.37 GB of weights leave no room for the KV cache. The 12B was already tight there (MAC2 **[ran]**).
   The flash line is precisely the plan to make that fit, by keeping about 60 % of the experts cached.
 
-**Verdict: not proposed** until TEACH0 passes. If it does, the change goes to the user as a decision, with the run.
-TEACH0 is blocked (§2.2), so this stays not proposed.
+**Verdict: not proposed.** ~~until TEACH0 passes~~ TEACH0 is closed without a result (§2.2) and the user closed the 26B
+line on 2026-10-05, so the 26B as a base stays not proposed; a change of base would need a larger model to show value
+first, which is what τ² T1 asks of the 31B.
 
 **Two cautions in the source, adopted as rules for any MoE LoRA:**
 - **Placement.** Attention and shared experts only, not routed experts. Phase 0 already proposes attention-only.
@@ -171,19 +185,19 @@ belongs to if it fails.
 | 1 | **EDIT0** — edit without retraining (Spotlight's overwrite property); opmemory overwrite test | one L4 · zero GPU | the member writes stale values: the memory is not where the knowledge lives |
 | 2 | **P2a** — does a member answer paraphrases of its task? | one L4 | members fail paraphrases: they leave correctly, and no probe is built |
 | 3 | **ROUTE2** — a router probe on the E4B's hidden state, with M2b's hard negatives, on fresh sets | one L4 + seconds | it loses ROUTE0's safety, or recovers no paraphrases |
-| 4 | **TEACH0** — does `gemma-4-26B-A4B-it` beat the E4B member untrained? | one A100 | no: no distillation, no 26B base |
+| 4 | ~~**TEACH0** — does `gemma-4-26B-A4B-it` beat the E4B member untrained?~~ **closed 2026-10-05: blocked by the serving engine, no result** | one A100 (never ran) | no: no distillation, no 26B base |
 | 5 | **H1a** — does the domain concentrate the 26B's routing? (the flash line's first step; the data REAP needs) | hours of one GPU | **only with the user's approval to resume the flash line** |
-| — | deferred: distillation (after TEACH0), expert masks plus LoRA switching (after H1a/H1b), tiny-$d$ learned addressing (after R1) | — | — |
+| — | deferred: distillation (after τ² T1 shows a teacher gap; was: after TEACH0), expert masks plus LoRA switching (after H1a/H1b), tiny-$d$ learned addressing (after R1) | — | — |
 | — | not done: implementing Spotlight's layer (needs pretraining); extracting MoE experts as specialists (they are not specialists) | — | — |
 
 **Status (2026-10-04).** Step 1 **EDIT0 passed** — 17/17 the new value, 0 stale (§3). Step 2 **P2a ran: PARAPHRASES
 COST** — a paired regression on the deep desk band (239 → 198) stops the line; step 3 **ROUTE2 is not built** (§2.1).
-Step 4 **TEACH0 is blocked** by the serving engine and A100 quota, no result (FP8 failed twice, the one bitsandbytes
-retry refused by quota three times; brief and code on `main`, the retry scheduled for when quota returns) — §2.2
-stays "not proposed". Step 5 **H1a ran:
+Step 4 **TEACH0 is closed (2026-10-05, the user's decision)**: blocked by the serving engine, no result (FP8 failed
+on the A100's sm80; vLLM 0.30 has no `bitsandbytes`; the one retry is spent) — §2.2 and §2.4 stay "not proposed", and
+the "is there a teacher?" question moves to τ² T1 (`docs/tau2/RECON.md`). Step 5 **H1a ran:
 FALSIFIED as written** on its one no-headroom clause, but the substance it was for — does the domain concentrate
 routing — holds strongly (§2.3); H1b and the flash line's next step are the user's call.
 
 **Decisions that are the user's:**
 - whether to resume the flash line (step 5);
-- any change of base, which would follow only a TEACH0 that passes.
+- any change of base, which would follow only a larger model that shows value (τ² T1 on the 31B; TEACH0 is closed).

@@ -34,6 +34,9 @@ CONFIGS = {"nospec": [], "mtp": ["--spec-type", "draft-mtp", "-md", "{mtp}"],
            # REDESIGN 1, after the registered verdict [ran] results/MAC2-llamacpp-20260927: the pair ran out of Metal memory
            # at Q4_0 and Q3_K_M; 2.31 of the draft's 4.83 GB is `per_layer_token_embd`, a lookup table (get_rows, no matmul),
            # so it goes to the CPU and the rest of the draft stays on the GPU. An extra arm; the verdict stands as recorded.
+           # SPECK0 [results/SPECK0-mac-mtp-k-20261005]: the draft length swept; llama.cpp's default is 3, which `mtp` ran
+           "mtp_k1": ["--spec-type", "draft-mtp", "-md", "{mtp}", "--spec-draft-n-max", "1"],
+           "mtp_k2": ["--spec-type", "draft-mtp", "-md", "{mtp}", "--spec-draft-n-max", "2"],
            "pair_ple_cpu": ["--spec-type", "draft-simple", "-md", "{pair}", "--spec-draft-n-max", "4",
                             "--spec-draft-override-tensor", "per_layer_token_embd=CPU"]}
 

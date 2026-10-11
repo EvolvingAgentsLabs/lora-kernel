@@ -1,0 +1,192 @@
+{
+ "base": "mlx-community/gemma-4-12B-it-4bit",
+ "drafter": "google/gemma-4-12B-it-assistant",
+ "max_tokens": 160,
+ "started": "2026-10-06T07:02:35",
+ "load_base_s": 3.5,
+ "adapters": {},
+ "drafter_kind": "mtp",
+ "load_drafter_s": 0.3,
+ "runs": {
+  "base/general/off": [
+   {
+    "text": "A refrigerator keeps food cold by removing heat energy from the interior and releasing it into the surrounding air. This process relies on a substance called a **refrigerant**, which circulates through coils and undergoes a cycle of evaporation and condensation. As the liquid refrigerant evaporates into a gas, it absorbs heat from the inside of the fridge; this gas is then compressed and moved to outdoor coils, where it releases the heat and condenses back into a liquid. By continuously cycling this heat exchange, the refrigerator lowers the internal temperature, keeping food preserved.",
+    "tokens": 109,
+    "tps": 13.99
+   },
+   {
+    "text": "Depending on your relationship with the colleague, here are a few ways to phrase this. Choose the one a best fits your situation.\n\n### Option 1: Standard & Professional (Best for most situations)\n**Subject:** Rescheduling our meeting: [Meeting Name]\n\nHi [Colleague's Name],\n\nI hope you’re having a good week.\n\nWould it be possible to move our meeting regarding [Project/Topic] to Thursday? Something has come up that requires my attention, and I want to make sure I can give our discussion my full focus.\n\nPlease let me know if you have a time slot available on Thursday that works for you. Sorry for any inconvenience!\n\nBest regards,\n\n[Your Name]\n\n***\n\n### Option 2: Short & Casual",
+    "tokens": 160,
+    "tps": 14.25
+   },
+   {
+    "text": "Think of the water cycle as Earth’s way of recycling water. It is the way water moves all around our planet, changing from one form to another (like liquid, ice, and vapor) over and over again.\n\nHere is how the cycle works in four main steps:\n\n### 1. Evaporation (The \"Disappearing\" Act)\nImagine a puddle on a sidewalk after it rains. When the sun comes out, it warms up the water. This heat turns the liquid water into an invisible gas called **water vapor**. It’s like steam rising from a hot bowl of soup. This water travels up into the sky.\n\n### 2. Condensation (The \"Cloud Maker\")\nAs the water vapor rises high into the sky, the air gets colder.",
+    "tokens": 160,
+    "tps": 14.26
+   },
+   {
+    "text": "The change in leaf color is a complex biological process driven by the changing seasons, specifically the decrease in sunlight and temperature. It is essentially a survival mechanism for trees.\n\nHere is the step or-by-step breakdown of why and how this happens:\n\n### 1. The Preparation (Chlorophyll)\nDuring the spring and summer, leaves are green because they are full of **chlorophyll**. This is the chemical responsible for photosynthesis—the process of turning sunlight into food. Because plants need to constantly produce food, they keep making lots of chlorophyll, which masks all other colors in the leaf.\n\n### 2. The Shutdown (The Trigger)\nAs the days get shorter and the weather turns colder, the tree receives a signal that winter is coming. To survive the cold, the",
+    "tokens": 160,
+    "tps": 14.23
+   }
+  ],
+  "base/general/mtp_b2": [
+   {
+    "text": "A refrigerator keeps food cold by removing heat energy from the interior and releasing it into the surrounding air. This process relies on a substance called a **refrigerant**, which circulates through coils and undergoes a cycle of evaporation and condensation. As the liquid refrigerant evaporates into a gas, it absorbs heat from the inside of the fridge; this gas is then compressed and moved to outdoor coils, where it releases the heat and condenses back into a liquid. By continuously cycling this heat exchange, the refrigerator lowers the internal temperature, keeping the food inside cold.",
+    "tokens": 111,
+    "tps": 18.87,
+    "n_rounds": 64,
+    "n_accepted": 47,
+    "n_drafted": 64,
+    "rounds": 64,
+    "mean_accepted_per_round": 0.734
+   },
+   {
+    "text": "Depending on your relationship with the colleague, here are a few ways to phrase this. Choose the one a best fits your situation.\n\n### Option 1: Standard & Professional (Best for most situations)\n**Subject:** Rescheduling our meeting: [Meeting Name]\n\nHi [Colleague's Name],\n\nI hope you’re having a good week.\n\nWould it be possible to move our meeting regarding [Project/Topic] to Thursday? Something has come up that requires my attention, and I want to make sure I can give our discussion my full focus.\n\nPlease let me know if you have a time slot available on Thursday that works for you. Sorry for any inconvenience!\n\nBest regards,\n\n[Your Name]\n\n***\n\n### Option 2: Short & Casual",
+    "tokens": 160,
+    "tps": 20.8,
+    "n_rounds": 86,
+    "n_accepted": 73,
+    "n_drafted": 86,
+    "rounds": 86,
+    "mean_accepted_per_round": 0.849
+   },
+   {
+    "text": "Think of the water cycle as Earth’s way of recycling water. It is the way water moves all around our planet, changing from liquid to gas to solid, over and over again. It never stops!\n\nHere are the four main steps:\n\n### 1. Evaporation (The \"Disappearing\" Act)\nImagine a puddle on a sidewalk after it rains. When the sun comes out, it warms up the water. This heat turns the liquid water into an invisible gas called **water vapor**. It’s like steam rising from a hot cup of cocoa. This water travels up into the sky.\n\n### 2. Condensation (The \"Cloud Maker\")\nAs the water vapor rises high into the sky, the air gets colder. When the water vapor cools down,",
+    "tokens": 160,
+    "tps": 18.92,
+    "n_rounds": 95,
+    "n_accepted": 65,
+    "n_drafted": 95,
+    "rounds": 95,
+    "mean_accepted_per_round": 0.684
+   },
+   {
+    "text": "The change in leaf color is a complex biological process driven by the changing seasons, specifically the decrease in sunlight and temperature. It is essentially a survival mechanism for trees.\n\nHere is the step/breakdown of why and how this happens:\n\n### 1. The Preparation (Chlorophyll Breakdown)\nDuring the spring and summer, leaves are green because they are full of **chlorophyll**. This is the chemical responsible for photosynthesis (turning sunlight into food). Because plants need a constant supply of chlorophyll to survive, they keep producing it as long as the days are long and warm.\n\nWhen autumn arrives, the days get shorter and the weather turns colder. The tree realizes it is going into \"dormancy\" (a sleep state for winter). To save energy, the tree stops producing chlorophyll.",
+    "tokens": 160,
+    "tps": 18.59,
+    "n_rounds": 96,
+    "n_accepted": 63,
+    "n_drafted": 96,
+    "rounds": 96,
+    "mean_accepted_per_round": 0.656
+   }
+  ],
+  "base/general/mtp_b3": [
+   {
+    "text": "A refrigerator keeps food cold by removing heat energy from the interior and releasing it into the surrounding air. This process relies on a substance called a **refrigerant**, which circulates through coils and undergoes a cycle of evaporation and condensation. As the liquid refrigerant evaporates into a gas, it absorbs heat from the inside of the fridge; this gas is then compressed and moved to outdoor coils, where it releases the heat and condenses back into a liquid. By continuously cycling this heat exchange, the refrigerator lowers the internal temperature, keeping the food inside cold.",
+    "tokens": 111,
+    "tps": 17.49,
+    "n_rounds": 54,
+    "n_accepted": 56,
+    "n_drafted": 108,
+    "rounds": 54,
+    "mean_accepted_per_round": 1.037
+   },
+   {
+    "text": "Depending on your relationship with the colleague, here are a few ways to phrase this. Choose the one a best fits your situation.\n\n### Option 1: Standard & Professional (Best for most situations)\n**Subject:** Rescheduling our meeting: [Meeting Name]\n\nHi [Colleague's Name],\n\nI hope you’re having a good week.\n\nWould it be possible to move our meeting regarding [Project/Topic] to Thursday? Something has come up that requires my attention, and I want to make sure I can give our discussion my full focus.\n\nPlease let me know if you have a time slot available on Thursday that works for you. Sorry for any inconvenience!\n\nBest regards,\n\n[Your Name]\n\n***\n\n### Option 2: Short & Casual",
+    "tokens": 160,
+    "tps": 20.12,
+    "n_rounds": 65,
+    "n_accepted": 95,
+    "n_drafted": 130,
+    "rounds": 65,
+    "mean_accepted_per_round": 1.462
+   },
+   {
+    "text": "Think of the water cycle as Earth’s way of recycling water. It is the way water moves all around our planet, changing from liquid to gas to solid, over and over again. It never stops!\n\nHere are the four main steps:\n\n### 1. Evaporation (The \"Disappearing\" Act)\nImagine a puddle on a sidewalk after it rains. When the sun comes out, it warms up the water. This heat turns the liquid water into an invisible gas called **water vapor**. It’s like steam rising from a hot cup of cocoa. This water travels up into the sky.\n\n### 2. Condensation (The \"Cloud Maker\")\nAs the water vapor rises high into the sky, the air gets colder. When the water vapor cools down,",
+    "tokens": 160,
+    "tps": 17.59,
+    "n_rounds": 73,
+    "n_accepted": 86,
+    "n_drafted": 146,
+    "rounds": 73,
+    "mean_accepted_per_round": 1.178
+   },
+   {
+    "text": "The change in leaf color is a complex biological process driven by the changing seasons, specifically the decrease in sunlight and temperature. It is essentially a survival mechanism for trees.\n\nHere is the step/breakdown of why and how this happens:\n\n### 1. The Preparation (Chlorophyll Breakdown)\nDuring the spring and summer, leaves are green because they are full of **chlorophyll**. This is the chemical responsible for photosynthesis (turning sunlight into food). Because plants need a constant supply of chlorophyll to survive, they keep producing it as long as the days are long and warm.\n\nWhen autumn arrives, the days get shorter and the weather turns colder. The tree realizes it is going into \"dormancy\" (a sleep state for winter). To save energy, the tree stops producing chlorophyll.",
+    "tokens": 160,
+    "tps": 16.4,
+    "n_rounds": 79,
+    "n_accepted": 80,
+    "n_drafted": 157,
+    "rounds": 79,
+    "mean_accepted_per_round": 1.013
+   }
+  ],
+  "base/general/mtp_b4": [
+   {
+    "text": "A refrigerator keeps food cold by removing heat energy from the interior and releasing it into the surrounding air. This process relies on a substance called a **refrigerant**, which circulates through coils and undergoes a cycle of evaporation and condensation. As the liquid refrigerant evaporates into a gas, it absorbs heat from the inside of the fridge; this gas is then compressed and moved to outdoor coils, where it releases the heat and condenses back into a liquid. By continuously cycling this heat exchange, the refrigerator lowers the internal temperature, keeping the food inside cold.",
+    "tokens": 111,
+    "tps": 14.53,
+    "n_rounds": 49,
+    "n_accepted": 62,
+    "n_drafted": 147,
+    "rounds": 49,
+    "mean_accepted_per_round": 1.265
+   },
+   {
+    "text": "Depending on your relationship with the colleague, here are a few ways to phrase this. Choose the one a best fits your situation.\n\n### Option 1: Standard & Professional (Best for most situations)\n**Subject:** Rescheduling our meeting: [Meeting Name]\n\nHi [Colleague's Name],\n\nI hope you’re having a good week.\n\nWould it be possible to move our meeting regarding [Project/Topic] to Thursday? Something has come up that requires my attention, and I want to make sure I can give our discussion my full focus.\n\nPlease let me know if you have a time slot available on Thursday that works for you. Sorry for any inconvenience!\n\nBest regards,\n\n[Your Name]\n\n***\n\n### Option 2: Short & Casual",
+    "tokens": 160,
+    "tps": 19.2,
+    "n_rounds": 52,
+    "n_accepted": 107,
+    "n_drafted": 156,
+    "rounds": 52,
+    "mean_accepted_per_round": 2.058
+   },
+   {
+    "text": "Think of the water cycle as Earth’s way of recycling water. It is the way water moves all around our planet, changing from liquid to gas to solid, over and over again. It never stops!\n\nHere are the four main steps:\n\n### 1. Evaporation (The \"Disappearing\" Act)\nImagine a puddle on a sidewalk after it rains. When the sun comes out, it warms up the water. This heat turns the liquid water into an invisible gas called **water vapor**. It’s like steam rising from a hot cup of cocoa. This water travels up into the sky.\n\n### 2. Condensation (The \"Cloud Maker\")\nAs the water vapor rises high into the sky, the air gets colder. When the water vapor cools down,",
+    "tokens": 160,
+    "tps": 15.09,
+    "n_rounds": 68,
+    "n_accepted": 92,
+    "n_drafted": 204,
+    "rounds": 68,
+    "mean_accepted_per_round": 1.353
+   },
+   {
+    "text": "The change in leaf color is a complex biological process driven by the changing seasons, specifically the decrease in sunlight and temperature. It is essentially a survival mechanism for trees.\n\nHere is the step/breakdown of why and how this happens:\n\n### 1. The Preparation (Chlorophyll Breakdown)\nDuring the spring and summer, leaves are green because they are full of **chlorophyll**. This is the chemical responsible for photosynthesis (turning sunlight into food). Because plants need a constant supply of chlorophyll to survive, they keep producing it as long as the days are long and warm.\n\nWhen autumn arrives, the days get shorter and the weather turns colder. The tree realizes it is going into \"dormancy\" (a sleep state for winter). To save energy, the tree stops producing chlorophyll.",
+    "tokens": 160,
+    "tps": 14.56,
+    "n_rounds": 71,
+    "n_accepted": 88,
+    "n_drafted": 211,
+    "rounds": 71,
+    "mean_accepted_per_round": 1.239
+   }
+  ]
+ },
+ "swaps": [],
+ "summary": {
+  "base/general": {
+   "tps_off": 14.2
+  },
+  "base/general/mtp_b2": {
+   "tps": 19.29,
+   "speedup": 1.36,
+   "identical": "1/4",
+   "accepted_per_round": 0.731,
+   "rounds": 341,
+   "acceptance": 0.727
+  },
+  "base/general/mtp_b3": {
+   "tps": 17.83,
+   "speedup": 1.26,
+   "identical": "1/4",
+   "accepted_per_round": 1.172,
+   "rounds": 271,
+   "acceptance": 0.586
+  },
+  "base/general/mtp_b4": {
+   "tps": 15.73,
+   "speedup": 1.11,
+   "identical": "1/4",
+   "accepted_per_round": 1.479,
+   "rounds": 240,
+   "acceptance": 0.486
+  }
+ },
+ "peak_memory_gb": 8.05,
+ "finished": "2026-10-06T07:05:09"
+}

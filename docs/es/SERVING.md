@@ -79,7 +79,7 @@ de dentro de qué texto quedó. Una sola función, los dos motores, por razones 
 ([`ARCHITECTURE.md`](ARCHITECTURE.md) §4) — de la forma en que un runtime de agentes realmente le hablaría: un
 proceso, una biblioteca, el propio runtime de REAL4 (el texto completo de la pregunta como primera búsqueda en todos
 los estantes, un fallback a todos los estantes, páginas abiertas con sus enunciados). Es el perfil `edge` de arriba
-más el runtime de la memoria delante, no una tercera cosa.
+más el runtime de la memoria delante, no una tercera cosa. **Lo que sirve por defecto ahora (cada default está medido más abajo):** la compuerta de citación prendida (`--cite-gate`, GATE0), `--page-top 8` (PAGE0), la guarda estricta (`--guard strict`, FMT0), `--page-budget 2500` (LIVE-library2), y una respuesta para cada pedido aun si un recorrido lanza una excepción (`NO_ANSWER`).
 
     llama-server -m gemma-4-E4B-it-Q8_0.gguf --lora lora-real-none-s0-f16.gguf --port 8793 -c 12288 -b 512 -ub 512 -ngl 99
     python -m examples.library.serve --library knowledge/logistics-regs --upstream http://127.0.0.1:8793 --port 8766
@@ -220,7 +220,7 @@ sesiones concurrentes, cuatro adaptadores mezclados entregan **278,6 tok/s** con
 de un solo adaptador — una razón de **1,03**, contra una barra de contención de 0,8. Con 32
 sesiones, cuatro adaptadores llegan a **504,3 tok/s** con **p95 de tiempo al primer token 0,24 s** y
 **0 errores de 128** pedidos. El throughput escala casi linealmente con las sesiones (22,7 → 135 →
-270 → 500 tok/s para 1 → 8 → 16 → 32), y el techo está por encima de 32 sesiones, no alcanzado
+270 → 491 tok/s para 1 → 8 → 16 → 32), y el techo está por encima de 32 sesiones, no alcanzado
 [`results/C1-concurrency-20260929/BRIEF.md`](../../results/C1-concurrency-20260929/BRIEF.md). **No
 medido:** más de cuatro adaptadores, sesiones más allá de 32, el overhead propio del gateway,
 generaciones más largas.

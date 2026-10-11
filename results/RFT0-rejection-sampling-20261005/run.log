@@ -1,0 +1,19 @@
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+[rank] vllm serve google/gemma-4-E4B-it --port 8000 --max-model-len 16384 --gpu-memory-utilization 0.90 --enable-lora --max-lora-rank 16 --max-loras 2 --lora-modules withlib-s0=adapters/rft0-s0 withlib-s1=adapters/rft0-s1
+[pool] G1 withlib-s0: applied
+[pool] G1 withlib-s1: applied
+[wiki] withlib-s0+page+top8: 52 to run, 0 resumed
+[wiki] withlib-s0+page+top8 10/52 credit 10 value-right 10 errors 0 11s
+[wiki] withlib-s0+page+top8 20/52 credit 15 value-right 15 errors 0 17s
+[wiki] withlib-s0+page+top8 30/52 credit 22 value-right 22 errors 0 24s
+[wiki] withlib-s0+page+top8 40/52 credit 31 value-right 31 errors 0 30s
+[wiki] withlib-s0+page+top8 50/52 credit 39 value-right 39 errors 0 36s
+[wiki] withlib-s0+page+top8 52/52 credit 41 value-right 41 errors 0 38s
+[wiki] withlib-s1+page+top8: 52 to run, 0 resumed
+[wiki] withlib-s1+page+top8 10/52 credit 9 value-right 9 errors 0 10s
+[wiki] withlib-s1+page+top8 20/52 credit 14 value-right 14 errors 0 17s
+[wiki] withlib-s1+page+top8 30/52 credit 23 value-right 23 errors 0 23s
+[wiki] withlib-s1+page+top8 40/52 credit 32 value-right 32 errors 0 30s
+[wiki] withlib-s1+page+top8 50/52 credit 40 value-right 40 errors 0 36s
+[wiki] withlib-s1+page+top8 52/52 credit 42 value-right 42 errors 0 36s
+[wiki] NOTHING SCORED

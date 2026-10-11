@@ -1,0 +1,5 @@
+=== session 1 of 1 · srv160947 · A100
+NO SESSION: the backend gave no A100 (rc=1) — quota or entitlement, not an outage; nothing was started. A T4 is not a substitute.
+[colab] Creating session 'srv160947'...
+[colab] Backend rejected accelerator 'A100'. You may not have quota or entitlement for this accelerator on your account. Try a different one (e.g. --gpu T4) or omit --gpu/--tpu for a CPU runtime.
+exit 3

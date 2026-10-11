@@ -1,0 +1,40 @@
+W1006 11:23:32.598000 5488 torch/utils/_pytree.py:630] <enum 'KernelPreference'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+W1006 11:23:32.617000 5488 torch/utils/_pytree.py:630] <enum 'ScaleCalculationMode'> is an Enum subclass and is now natively supported by torch.compile as an opaque value type. Calling register_constant() on Enum subclasses is deprecated and will be an error in a future release.
+[draft] deps {'rc': 0, 'transformers': '5.18.0', 'peft': '0.21.1'}
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/677 [00:00<?, ?it/s]Loading weights:   0%|          | 2/677 [00:00<00:39, 17.18it/s]Loading weights:   7%|▋         | 48/677 [00:00<00:02, 255.50it/s]Loading weights:  13%|█▎        | 90/677 [00:00<00:01, 317.66it/s]Loading weights:  20%|█▉        | 133/677 [00:00<00:01, 353.33it/s]Loading weights:  26%|██▌       | 174/677 [00:00<00:01, 371.82it/s]Loading weights:  33%|███▎      | 222/677 [00:00<00:01, 406.32it/s]Loading weights:  39%|███▉      | 266/677 [00:00<00:00, 417.01it/s]Loading weights:  46%|████▌     | 311/677 [00:00<00:00, 419.16it/s]Loading weights:  52%|█████▏    | 354/677 [00:00<00:00, 402.40it/s]Loading weights:  60%|█████▉    | 405/677 [00:01<00:00, 432.67it/s]Loading weights:  66%|██████▋   | 449/677 [00:01<00:00, 426.47it/s]Loading weights:  73%|███████▎  | 492/677 [00:01<00:00, 412.48it/s]Loading weights:  80%|███████▉  | 540/677 [00:01<00:00, 428.14it/s]Loading weights:  86%|████████▋ | 584/677 [00:01<00:00, 429.88it/s]Loading weights:  93%|█████████▎| 629/677 [00:01<00:00, 430.41it/s]Loading weights: 100%|██████████| 677/677 [00:01<00:00, 402.77it/s]
+Loading weights:   0%|          | 0/48 [00:00<?, ?it/s]Loading weights: 100%|██████████| 48/48 [00:00<00:00, 738.85it/s]
+[draft] target (+ its LoRA) and drafter loaded
+[draft] GL {'max_abs_logit_diff': 28.094, 'ok': True}
+[draft] generated 40 domain + 4 general continuations in 298.4 s
+[draft] G0 {'positions': [1, 289, 329, 448], 'T': 449, 'max_abs_diff': [0.2812, 0.25, 0.375, 0.5], 'argmax_same': [True, True, True, True], 'ok': True}
+[draft] stock α {'domain': 0.6574, 'general': 0.7199} · G1 ok
+[draft] training on 600 rows of 600
+/content/lora-kernel/training/harness/drafter_align.py:295: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at /__w/pytorch/pytorch/torch/csrc/autograd/generated/python_variable_methods.cpp:822.)
+  run += float(loss)
+[draft] train 50/1200 · loss 3.1273 · 5 s
+[draft] train 100/1200 · loss 1.7894 · 10 s
+[draft] train 150/1200 · loss 1.1257 · 15 s
+[draft] train 200/1200 · loss 0.6853 · 20 s
+[draft] train 250/1200 · loss 0.5277 · 25 s
+[draft] train 300/1200 · loss 0.3225 · 29 s
+[draft] train 350/1200 · loss 0.221 · 34 s
+[draft] train 400/1200 · loss 0.1891 · 39 s
+[draft] train 450/1200 · loss 0.1428 · 44 s
+[draft] train 500/1200 · loss 0.1199 · 49 s
+[draft] train 550/1200 · loss 0.1007 · 54 s
+[draft] train 600/1200 · loss 0.0889 · 59 s
+[draft] train 650/1200 · loss 0.0809 · 63 s
+[draft] train 700/1200 · loss 0.0689 · 68 s
+[draft] train 750/1200 · loss 0.0681 · 73 s
+[draft] train 800/1200 · loss 0.0669 · 78 s
+[draft] train 850/1200 · loss 0.0691 · 83 s
+[draft] train 900/1200 · loss 0.0517 · 88 s
+[draft] train 950/1200 · loss 0.0595 · 92 s
+[draft] train 1000/1200 · loss 0.0568 · 97 s
+[draft] train 1050/1200 · loss 0.0544 · 102 s
+[draft] train 1100/1200 · loss 0.0523 · 107 s
+[draft] train 1150/1200 · loss 0.054 · 112 s
+[draft] train 1200/1200 · loss 0.061 · 117 s
+[draft] aligned α {'domain': 0.9644, 'general': 0.7063} · ALIGNED: α 0.6574 → 0.9644 on the domain, projected 1.322× → 1.567× at k = 1

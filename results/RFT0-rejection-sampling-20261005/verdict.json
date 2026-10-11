@@ -1,0 +1,27 @@
+{
+ "reading": "RFT HELPS",
+ "paired": "2:1",
+ "p": 1.0,
+ "lost": [],
+ "answerable": {
+  "withlib-s0+page+top8": "34/44",
+  "withlib-s1+page+top8": "35/44"
+ },
+ "multi_hop": {
+  "withlib-s0+page+top8": "24/30",
+  "withlib-s1+page+top8": "25/30"
+ },
+ "one_hop": {
+  "withlib-s0+page+top8": "10/14",
+  "withlib-s1+page+top8": "10/14"
+ },
+ "refusals": {
+  "withlib-s0+page+top8": "7/8",
+  "withlib-s1+page+top8": "7/8"
+ },
+ "refusal_drop": 0,
+ "same_page_wrong_statement": {
+  "withlib-s0+page+top8": 0,
+  "withlib-s1+page+top8": 0
+ }
+}

@@ -192,9 +192,16 @@ necesitaría volver a correr H1a (una A100).
 **1. ¿Mejores resultados? Desconocido, y la evidencia hasta ahora dice que no.** Una huella de memoria más chica para
 el 26B vale solo lo que valga que el 26B le gane a lo que se sirve hoy. En las regiones de este proyecto ningún
 modelo más grande le ganó al miembro E4B: un 12B entrenado empata (B3, PAIR1 **[ran]**), un 12B sin entrenar pierde
-(PAIR0 **[ran]**). La corrida de techo propia del 26B (TEACH0) está bloqueada: el FP8 de vLLM no corre en la A100, y
-el reintento con bitsandbytes espera cupo de A100. **Hasta que TEACH0 muestre al 26B por delante de `real-none-s0`,
-la línea compra velocidad o huella para un modelo sin ganancia de calidad medida.**
+(PAIR0 **[ran]**). La corrida de techo propia del 26B (TEACH0) está
+**cerrada por decisión del usuario del 2026-10-05, bloqueada por el motor de servido, sin resultado [ran]**: el FP8 de
+vLLM 0.30 no corre en la A100 y no tiene método `bitsandbytes` para el reintento en la L4
+(`results/TEACH0-26b-headroom-20261004/BRIEF.md`). Al lado, la propia tarjeta del modelo de Google **[read]** informa
+τ² (promedio de 3) en 68,2 % para el 26B-A4B contra 69,0 % para el 12B y 76,9 % para el 31B
+(`docs/tau2/TEACHER-TERMS.md` §2.1; autoinformado): en ese arnés el 26B no está por delante del 12B, que es justo lo que
+PAIR0/PAIR1 ya mostraron que no compra precisión acá. **El pago de la línea dependía de que un modelo más grande le
+ganara al miembro, y ninguno le ganó: la línea compra velocidad o huella para un modelo sin ganancia de calidad
+medida. Descansa hasta que un modelo más grande muestre valor** — la pregunta se muda a τ² T1 (Gemma 4 31B contra el
+E4B base sobre un verificador externo, `docs/tau2/RECON.md`).
 
 **2. ¿Funciona? La mitad del ruteo, sí [ran].** Sobre los tokens de decode de un dominio, el 80 % de las activaciones
 cae en 17–21 % de los expertos (texto general: 40 %). Una caché anclada a los expertos top del dominio lee 93 %
@@ -229,12 +236,15 @@ $$\text{tok/s}_{\text{decode}} \;\lesssim\; \frac{\mathcal B}{\text{MB leídos p
 GB es plausible con una caché de 4–6 GB. El prefill, en las caminatas de este proyecto que usan muchas herramientas,
 y la memoria que le queda a la caché KV son los riesgos abiertos. El pago de la línea depende por completo de un
 resultado de calidad que no tiene. **Orden:**
-1. ~~TEACH0 (mañana, en Colab).~~ **Corrió el 2026-10-04, bloqueada, sin resultado**: FP8 falló dos veces (compilación
-   de inductor; después el kernel FP8 de vLLM no corre en el sm80 de la A100); el único reintento con bitsandbytes
-   que permite el brief fue rechazado por la cuota tres veces el mismo día. El brief y el código están en `main`; el
-   reintento corre cuando vuelva la cuota de A100.
-2. Solo si el 26B le gana al miembro E4B: M3, la prueba real de streaming de §5, en la máquina del usuario. Necesita
+1. ~~TEACH0 (mañana, en Colab).~~ **Corrió el 2026-10-04, bloqueada; cerrada el 2026-10-05 por decisión del usuario, sin
+   resultado**: FP8 falló dos veces (compilación de inductor; después el kernel FP8 de vLLM no corre en el sm80 de la
+   A100); la A100 fue rechazada tres veces; el único reintento con bitsandbytes que permite el brief (una L4) se
+   encontró con un vLLM 0.30 sin ese método. ~~El reintento corre cuando vuelva la cuota de A100.~~ No hay reintento: la
+   línea del 26B está cerrada, y por eso PAIR0/PAIR1 más la tarjeta de Google **[read]** (26B 68,2 contra 12B 69,0 en
+   τ²). La línea **descansa hasta que un modelo más grande muestre valor**; τ² T1 se lo pregunta al 31B.
+2. ~~Solo si el 26B le gana al miembro E4B: M3, la prueba real de streaming de §5, en la máquina del usuario. Necesita
    la aprobación del usuario: unos 45–60 minutos de la máquina, que cubren descargar un GGUF de 4 bits de ~15 GB,
-   cronometrar decode y prefill sobre los prompts de nuestras caminatas, y medir el ancho de banda real del SSD.
-3. H1b (adaptador solo de atención) solo después de M3, porque no agrega nada si la base no puede servirse lo
-   bastante rápido.
+   cronometrar decode y prefill sobre los prompts de nuestras caminatas, y medir el ancho de banda real del SSD.~~ No se
+   llegó, y no se pidió: su condición nunca se cumplió. M3 volvería solo si un modelo más grande muestra valor primero.
+3. ~~H1b (adaptador solo de atención) solo después de M3, porque no agrega nada si la base no puede servirse lo
+   bastante rápido.~~ Igual: está detrás de M3, así que también descansa.

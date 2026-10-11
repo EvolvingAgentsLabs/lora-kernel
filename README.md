@@ -8,10 +8,32 @@
 
 [![license Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue)](LICENSE)
 [![family Gemma 4](https://img.shields.io/badge/family-Gemma%204-8A5C10)](docs/ARCHITECTURE.md)
-[![core 1.0 specified](https://img.shields.io/badge/core%201.0-specified-555)](docs/MEMORY.md)
+[![core 1.0 built, measured](https://img.shields.io/badge/core%201.0-built%2C%20measured-555)](docs/MEMORY.md)
 [![record v0.1-foundations](https://img.shields.io/badge/record-v0.1--foundations-555)](docs/RECORD.md)
 
 *[Español](README.es.md)*
+
+**An operating layer for specialized local AI agents** — not a LoRA inference library.
+
+```
+                         one small local model (resident)
+                                      │
+                                 lora-kernel
+                    router: which specialist, or abstain to the frontier
+      ┌──────────────┬───────────────┼───────────────┬──────────────┐
+   inbox triage   desk commitments  distributor    school staff   regulations
+   LoRA + tools   LoRA + tools      LoRA + tools   LoRA + tools   LoRA + library
+                                    + library      + library      + citation gate
+```
+
+Routing is becoming everyone's feature. What this repository builds and measures is everything
+**beneath the router**: the **specialization** of each agent (a LoRA trained on how to do the job, not on
+the facts), their **composition** (several specialists on one resident base, each with its own scoped
+tool surface), their **memory** (facts in notes you edit without retraining), their **skills** (the
+tools and procedures each one has learned to use), and their **evolution** (each new version gated
+against the bare base and against the version it replaces). General-purpose and open source
+(Apache-2.0): any job with documents, procedures and tools. The specialists in the diagram are the ones
+measured here; what each one scored, and what failed, is in [`docs/RECORD.md`](docs/RECORD.md).
 
 > **In one minute.** A small model (Gemma 4 E4B) gets one LoRA per job, trained on *how to walk* a
 > library of markdown notes — search, open, follow the link, calculate — not on the facts inside them.
@@ -19,10 +41,53 @@
 > expert's ground to a frontier model. Measured here **[ran]**: an inbox-triage expert at 0.989 against
 > the bare base's 0.345; multi-hop questions over a wiki no model has seen, 38/40 against the bare
 > Gemma's 19/40; and one lesson worth the visit on its own — the same adapter scored 11/90 served
-> through `tool_calls` and **90/90** served the way its corpus taught it. All on generated suites, no
+> through `tool_calls` and **90/90** served the way its corpus taught it. Mostly on generated suites and on real regulations ingested verbatim, no
 > real traffic yet; what failed is in [`docs/RECORD.md`](docs/RECORD.md). The wiki-walking adapter is on
 > [Hugging Face](https://huggingface.co/Matias/lora-kernel-distributor-wiki-gemma4-e4b) — try it in ten minutes:
 > [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EvolvingAgentsLabs/lora-kernel/blob/main/examples/colab/wiki_walk.ipynb)
+
+## Status — 2026-10-08
+
+Three lists, every item with its run; the caveats are in [`docs/RECORD.md`](docs/RECORD.md), what comes next in
+[`docs/PLAN.md`](docs/PLAN.md). All on generated suites, synthetic organisations or real regulations ingested verbatim —
+**never on real user traffic**.
+
+**Works [ran]**
+- **A specialist beats the bare base on its job**: inbox triage 0.989 against 0.345 (P36, P57); school staff 70/70 against
+  27/70 (M8); multi-hop questions over a regulation family it never trained on, 18/23 against 9/23, paired 10 : 1 (REAL3).
+- **Several specialists on one base**: four LoRAs mixed on one L4 keep 1.03× one adapter's throughput; 32 sessions at p95
+  TTFT 0.24 s, 0 errors (C1).
+- **The router abstains**: 0 of 600 foreign texts served locally (the keyword dictionary 294), 0 of 480 legitimate requests
+  lost (ROUTE0); open-task members hand off what their corpus does not cover, 20/20 (M10), 27/30 (ROUTE1).
+- **Facts live in notes, not weights**: 17/17 edited statements answered with the new value, 0 stale, no retraining (EDIT0).
+- **The served library runtime**: a citation gate withholds 86 of 165 not-right answers and 0 of 275 right ones, at the
+  price of 43 of 347 correct values (GATE0); `page_top = 8`, 34/44 against 30/44, helps, not significant (PAGE0).
+- **Multi-turn without the transcript**: the workflow harness inside a member, 53/54 against history's 43/54 (H1); 146/160
+  on long sessions (H2); 158/160, and 156/160 without the tool block (H3).
+- **Live through OpenClaw on a 16 GB Mac**: distributor 6/6, tracker 14/14, real-document library 36/52 against the
+  server's 38/52 (LIVE-distributor, LIVE-tracker, LIVE-library).
+- **A release re-trains from its manifest to its recorded score** (`email-full@v1`, P57). The release gate now also
+  reports an **operating point** — coverage, answered precision, abstention — **reported, not gating** (PR #341).
+
+**Measured and does not work (yet)**
+- **Multi-hop citation on real documents stopped improving**: 13/21 on a third family's twin-free headline; four treatments
+  tied their baseline — REAL6, REAL7, FMT0, and training on its own verified walks, 35/44 against 34/44 (RFT0). The line has stopped.
+- **The router is literal**: paraphrases leave for the frontier (0/120 kept local, ROUTE0), and keeping them would cost —
+  one compound rule reworded drops 239 → 198 (P2a). No learned router passed (M2).
+- **The memory's own gates**: the library arm lost to the base reading the oracle's notes, 35 against 45 of 56 (W5); the
+  radar's recall@3 is 0.638 against 0.80 (W3) — lexical BM25 serves.
+- **A larger base buys no accuracy**: the 12B ties or loses to the E4B (B3, B5, PAIR0, PAIR1); the 26B's run was blocked
+  by the serving engine and closed with no result (TEACH0).
+- **Speculative decoding pays on a server, little on the Mac**: 1.98× on an A100, output identical up to every stop (F0c);
+  on the Mac llama.cpp's MTP slows the 12B (SPECK0), MLX gives 1.23× with the LoRA (HOTL0, OMLX0, MLXK0). An aligned
+  drafter reaches acceptance 0.964 offline (DRAFT0); its Mac speed is not measured.
+
+**Not implemented**
+- No package or container; the serving code does not read the role packs (`roles/*/role.toml` are linted, not loaded) —
+  [`docs/FRAMEWORK.md`](docs/FRAMEWORK.md) §5 B, K.
+- No member scored on τ²-bench: its grader reproduces 800/800 published rewards (T0); the shim is specified, not built.
+- Replies buffered, not streamed; an HS256 demo token, no real identity provider; no metrics or drift detection.
+- No real user traffic measured, so no bill on it (M6 prices a replay, the local GPU unpriced).
 
 ## Watch the demo — a whole educational centre on one small local model (76 s)
 
@@ -73,8 +138,7 @@ It ships as an **OpenAI-compatible API** — one resident model, several adapter
 by its own — with **OpenClaw instances per task** on top.
 
 Every claim below is marked **[ran]** (observed in this repository, run named), **[read]** (from
-source or a paper) or **[spec]** (decided, not yet built) — and everything measured so far is on
-generated suites, not real traffic yet. The living numbers, including what has not passed, are in
+source or a paper) or **[spec]** (decided, not yet built) — and everything measured so far is on generated suites or on real documents ingested verbatim, never on real traffic. The living numbers, including what has not passed, are in
 [`docs/PLAN.md`](docs/PLAN.md) and [`docs/RECORD.md`](docs/RECORD.md); what follows is what does not
 change every time one of them moves.
 
@@ -86,7 +150,7 @@ change every time one of them moves.
 
 *The core of 1.0: a router that may abstain, a specialist and a library per subdomain, one referee under all of them.*
 
-Five things, and how each one changes:
+Five things, and how each one changes. **Status, 2026-10-05: all five are built and measured** — hence the badge, "core 1.0 built, measured" — with what has not passed named: the radar's gate (recall@3 0.638 against 0.80, W3 **[ran]**), a verifier nobody here wrote (τ²-bench, below: installed, no member scored yet) and real traffic:
 
 | | what it is | changes by |
 |---|---|---|
@@ -143,7 +207,7 @@ small one drafts ([`docs/PLAN.md`](docs/PLAN.md) milestones 3–4).
 
 ### The memory, in five pieces
 
-Full specification: [`docs/MEMORY.md`](docs/MEMORY.md) **[spec]**.
+Full specification and its record: [`docs/MEMORY.md`](docs/MEMORY.md) (~~**[spec]**~~ built through W9 **[ran]**).
 
 1. **The library — two shelves of markdown**, each note under half a page. The **operational
    harness** (*how is it done?*): recipe-like notes whose links are the control flow — `requires`
@@ -334,8 +398,7 @@ What they share is what makes a region worth an expert: **the same few procedure
 with local rules that differ from the textbook, over data that should not leave.** The first library
 in this repository is built from an open textbook's step-by-step procedures
 ([`knowledge/nursing-iv/`](knowledge/nursing-iv/)). What is *not* established is in the section
-below, and it applies here in full: no real data yet, and the claim that a library extends an expert
-to a procedure it never trained on is untested.
+below, and it applies here in full: no real traffic yet, and the claim that a library extends an expert to a procedure it never trained on holds on the atomic-statement wiki (W9) and, trained on real text with a span-masked loss, on real regulations (REAL3), and did not on the nursing library's two-valued notes (W5, W5c) — ~~untested~~.
 
 ## Where it stands
 
@@ -443,9 +506,31 @@ context grows little over two or three turns (+24 % at turn 2)
 four members mixed in the same batch (school, upper-layers, staff, out-of-scope): 16 sessions
 across four adapters keep 1.03× the throughput of 16 sessions on one adapter (278.6 vs 269.7
 tok/s); 32 sessions across four adapters reach 504 tok/s at a p95 time-to-first-token of 0.24 s
-with zero errors over 128 requests; throughput scales near-linearly, 22.7 → 135 → 270 → 500 tok/s
+with zero errors over 128 requests; throughput scales near-linearly, 22.7 → 135 → 270 → 491 tok/s
 for 1 → 8 → 16 → 32 sessions, and the ceiling sits above 32 — not reached. Supersedes E5's
 single-burst 0.88 ([`results/C1-concurrency-20260929/`](results/C1-concurrency-20260929/BRIEF.md)).
+
+**An external verifier is installed, a teacher is chosen by its terms, and TEACH0 is closed [ran] (2026-10-05).** The one
+thing every earlier suite shared is that this repository wrote its grader. **τ²-bench airline** — whose reward is the hash of
+the final database state, in code from `sierra-research/tau2-bench` — now runs here: the mock domain end to end, and its
+local grader re-grades the **800 of 800** simulations shipped with it to the recorded reward (T0 passed by the brief's option
+(b); 0.97 USD of a 50 USD cap; [`TAU2-T0`](results/TAU2-T0-recon-20261005/BRIEF.md), [`docs/tau2/RECON.md`](docs/tau2/RECON.md)).
+Its airline split is 30 train / 20 test, and this project tunes on train and reports test. **The teacher is chosen by the
+terms of use, not by quality:** Claude's and Grok's terms forbid training a published model on their outputs, GPT's and
+Gemini's leave "compete" undefined, and **Gemma 4 31B self-hosted** is Apache 2.0 like the base — so it is both teacher and
+user simulator, the user's decision ([`docs/tau2/TEACHER-TERMS.md`](docs/tau2/TEACHER-TERMS.md)). **The format gap is measured
+offline, before anything is built:** τ² hands the agent native tool calls, members write inline tags, and the repo's tag
+serializer round-trips 1,345 of 1,587 shipped airline tool calls and **loses 220 of 320 writes**; a tag whose body is the
+JSON of the arguments round-trips **1,587/1,587** — the shim is specified, not built, and no member has been scored on τ².
+**Next, T1:** Gemma 4 31B against the E4B base on airline `test`, k = 4, gate a gap — the question TEACH0 could not answer.
+**TEACH0 is closed by the user's decision** — blocked by the serving engine (vLLM 0.30's FP8 does not run on the A100 and it has
+no `bitsandbytes` method), no result ([`TEACH0`](results/TEACH0-26b-headroom-20261004/BRIEF.md)); Google's own card **[read]**
+has the 26B at 68.2 % against the 12B's 69.0 % on τ², so the 26B line rests. **RFT0 [ran]: RFT HELPS as
+written, a tie in substance** — rejection-sampling fine-tuning on the member's own verified walks, 35/44 against 34/44,
+paired 2 : 1, $p = 1.0$; GRPO is not bought. The failure it and three attempts before it targeted (another statement cited
+on the right page) is 0 in both arms on this set — PAGE0's counter had included the right statement; what remains is
+two-value answers giving one value and the grader reading `40 CFR`'s title as a second number
+([`RFT0`](results/RFT0-rejection-sampling-20261005/BRIEF.md)).
 
 **Not solved yet.** ~~The router is still a keyword dictionary — its two learned replacements are both measured and
 neither passes~~ — **a factored router (task vs. content) now passes [ran] ROUTE0, 2026-10-02**: it serves 0 of 600
@@ -480,9 +565,7 @@ suite, 11:0 paired, p = 0.00098 (**H3a PASSED**); block-less **now works, every 
 (97.5 %), developer 76/80, lead 40/40, QA 40/40, at about a third of the prompt tokens per turn
 (**H3b PASSED**) — the block-less member is the compact context the design asked for. The
 harness has run live through OpenClaw on the user's Mac (LIVE-tracker, 14/14); its global
-cache — built and unit-tested — is not yet trained on in any corpus outside the tracker domain. The memory's library lives only in
-`distributor-wiki@v2`, a separate
-member — no serving member carries its own library yet. The distributor's live run above is llama.cpp only; nobody
+cache — built and unit-tested — is not yet trained on in any corpus outside the tracker domain. ~~The memory's library lives only in `distributor-wiki@v2`, a separate member — no serving member carries its own library yet.~~ **A serving member now carries its library [ran]:** `real-none-s0` behind `examples/library/serve.py` — citation gate on, `page_top = 8`, strict guard, an answer for every question (LIVE-library2, GATE0, PAGE0) — while the abstaining members of the school, distributor and tracker are separate from it. The distributor's live run above is llama.cpp only; nobody
 has run the pair through vLLM bf16 as a live demo yet. No real traffic has been measured anywhere in this repository yet.
 
 **Everything else — every milestone, every arm, every run — moves as the project does and is not
@@ -583,6 +666,7 @@ exactly how the live distributor demo above runs, member and all
 | [`docs/DEMO.md`](docs/DEMO.md) | **the five-minute demo** — a reference organisation on a small local model, what is measured and what is not, and the measurement it should end by asking for |
 | [`docs/PLAN.md`](docs/PLAN.md) | the living plan — milestones, gates, kill arms |
 | [`docs/RECORD.md`](docs/RECORD.md) | everything measured, including what failed; each line names its run |
+| [`docs/tau2/RECON.md`](docs/tau2/RECON.md) · [`docs/tau2/TEACHER-TERMS.md`](docs/tau2/TEACHER-TERMS.md) | **τ²-bench, the external verifier** — the reconnaissance (domains, airline's tools, reward and splits, the format gap and the shim to come) and which teachers' terms allow training a published adapter; Spanish mirrors under `docs/es/tau2/` |
 | [`docs/FOUNDATIONS.md`](docs/FOUNDATIONS.md) | the mathematics, tied to the runs that instantiate it |
 | [`docs/SERVING.md`](docs/SERVING.md) · [`docs/OPENCLAW.md`](docs/OPENCLAW.md) · [`docs/SUBSTRATE-GATE.md`](docs/SUBSTRATE-GATE.md) | running it |
 | [`docs/articles/`](docs/articles/2026-09-it-was-the-harness.md) | *An organisation that runs on agents, on a single GPU: the architecture* — the solution architecture first, then what is already measured (the harness finding among it), what is not, the roadmap |
@@ -592,6 +676,23 @@ exactly how the live distributor demo above runs, member and all
 the analyses, a 2,800-line plan — is the tag
 [`v0.1-foundations`](https://github.com/EvolvingAgentsLabs/lora-kernel/tree/v0.1-foundations).
 A P-number cited here without a directory on `main` lives there.
+
+## Part of EvolvingAgentsLabs
+
+lora-kernel is one of three active projects of [EvolvingAgentsLabs](https://evolvingagentslabs.github.io); how
+they connect is drawn on the [website](https://evolvingagentslabs.github.io/#connections).
+
+- **[agentvcs](https://github.com/EvolvingAgentsLabs/agentvcs)** versions, merges and attributes changes to agent
+  harnesses, with Claude Code as its only LLM. **Built:** its
+  [lora-kernel example](https://github.com/EvolvingAgentsLabs/agentvcs/tree/main/examples/lora-kernel) (LK0) reads
+  this repository read-only into a harness manifest, turns measured configuration changes into gated patches from the
+  results files here, and hands a conflict between two branches to Claude Code. Imported, not live: nothing is
+  re-run, and the branches are constructed for the demo.
+- **[gene-evidence](https://github.com/EvolvingAgentsLabs/gene-evidence)** writes auditable evidence reports for gene
+  predictions the reference annotation lacks, every sentence citing a node of an evidence graph; no model in its
+  stage 1. **Next, not built:** a lora-kernel specialist that drafts or critiques those reports, gated by
+  gene-evidence's own citation checker. Its known limitation applies: the report explains a candidate, it does not
+  rank which to validate first.
 
 ## Scope
 

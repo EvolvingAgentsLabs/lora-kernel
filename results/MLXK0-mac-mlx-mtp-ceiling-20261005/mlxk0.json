@@ -1,0 +1,871 @@
+{
+ "base": "mlx-community/gemma-4-12B-it-4bit",
+ "drafter": "google/gemma-4-12B-it-assistant",
+ "max_tokens": 160,
+ "started": "2026-10-05T21:38:45",
+ "load_base_s": 4.8,
+ "adapters": {
+  "wiki12b": {
+   "dir": "/Users/agustinazwiener/lora-kernel-adapters/B3-gemma4-12b-wiki-s0/x/adapters/wiki12b-walks-s0",
+   "projections": 328,
+   "attach_s": 0.88
+  }
+ },
+ "drafter_kind": "mtp",
+ "load_drafter_s": 0.3,
+ "runs": {
+  "base/domain/off": [
+   {
+    "text": "<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n",
+    "tokens": 160,
+    "tps": 13.53
+   },
+   {
+    "text": "<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n",
+    "tokens": 160,
+    "tps": 13.55
+   },
+   {
+    "text": "<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>",
+    "tokens": 160,
+    "tps": 13.67
+   },
+   {
+    "text": "<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<channel|><|channel>thought",
+    "tokens": 160,
+    "tps": 13.65
+   },
+   {
+    "text": "<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>",
+    "tokens": 160,
+    "tps": 13.73
+   },
+   {
+    "text": "<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|>",
+    "tokens": 160,
+    "tps": 13.9
+   }
+  ],
+  "base/domain/mtp_b2": [
+   {
+    "text": "<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n",
+    "tokens": 160,
+    "tps": 19.62,
+    "n_rounds": 88,
+    "n_accepted": 71,
+    "n_drafted": 88,
+    "rounds": 88,
+    "mean_accepted_per_round": 0.807
+   },
+   {
+    "text": "<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|>",
+    "tokens": 160,
+    "tps": 21.24,
+    "n_rounds": 81,
+    "n_accepted": 79,
+    "n_drafted": 81,
+    "rounds": 81,
+    "mean_accepted_per_round": 0.975
+   },
+   {
+    "text": "<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>",
+    "tokens": 160,
+    "tps": 21.02,
+    "n_rounds": 83,
+    "n_accepted": 76,
+    "n_drafted": 83,
+    "rounds": 83,
+    "mean_accepted_per_round": 0.916
+   },
+   {
+    "text": "<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>",
+    "tokens": 160,
+    "tps": 20.56,
+    "n_rounds": 80,
+    "n_accepted": 79,
+    "n_drafted": 80,
+    "rounds": 80,
+    "mean_accepted_per_round": 0.988
+   },
+   {
+    "text": "<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>",
+    "tokens": 160,
+    "tps": 21.63,
+    "n_rounds": 80,
+    "n_accepted": 79,
+    "n_drafted": 80,
+    "rounds": 80,
+    "mean_accepted_per_round": 0.988
+   },
+   {
+    "text": "<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<channel|><|channel>thought",
+    "tokens": 160,
+    "tps": 21.16,
+    "n_rounds": 81,
+    "n_accepted": 79,
+    "n_drafted": 81,
+    "rounds": 81,
+    "mean_accepted_per_round": 0.975
+   }
+  ],
+  "base/domain/mtp_b3": [
+   {
+    "text": "<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>",
+    "tokens": 160,
+    "tps": 24.24,
+    "n_rounds": 57,
+    "n_accepted": 102,
+    "n_drafted": 114,
+    "rounds": 57,
+    "mean_accepted_per_round": 1.789
+   },
+   {
+    "text": "<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n",
+    "tokens": 160,
+    "tps": 22.34,
+    "n_rounds": 60,
+    "n_accepted": 100,
+    "n_drafted": 120,
+    "rounds": 60,
+    "mean_accepted_per_round": 1.667
+   },
+   {
+    "text": "<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>",
+    "tokens": 160,
+    "tps": 23.11,
+    "n_rounds": 58,
+    "n_accepted": 102,
+    "n_drafted": 116,
+    "rounds": 58,
+    "mean_accepted_per_round": 1.759
+   },
+   {
+    "text": "<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought",
+    "tokens": 160,
+    "tps": 21.76,
+    "n_rounds": 59,
+    "n_accepted": 101,
+    "n_drafted": 117,
+    "rounds": 59,
+    "mean_accepted_per_round": 1.712
+   },
+   {
+    "text": "<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<channel|><|channel>thought",
+    "tokens": 160,
+    "tps": 21.99,
+    "n_rounds": 58,
+    "n_accepted": 102,
+    "n_drafted": 116,
+    "rounds": 58,
+    "mean_accepted_per_round": 1.759
+   },
+   {
+    "text": "<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|>",
+    "tokens": 160,
+    "tps": 21.2,
+    "n_rounds": 58,
+    "n_accepted": 102,
+    "n_drafted": 116,
+    "rounds": 58,
+    "mean_accepted_per_round": 1.759
+   }
+  ],
+  "base/domain/mtp_b4": [
+   {
+    "text": "<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought",
+    "tokens": 160,
+    "tps": 22.3,
+    "n_rounds": 42,
+    "n_accepted": 118,
+    "n_drafted": 124,
+    "rounds": 42,
+    "mean_accepted_per_round": 2.81
+   },
+   {
+    "text": "<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n",
+    "tokens": 160,
+    "tps": 22.11,
+    "n_rounds": 42,
+    "n_accepted": 118,
+    "n_drafted": 125,
+    "rounds": 42,
+    "mean_accepted_per_round": 2.81
+   },
+   {
+    "text": "<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>thought\n<|channel>",
+    "tokens": 160,
+    "tps": 22.13,
+    "n_rounds": 42,
+    "n_accepted": 117,
+    "n_drafted": 126,
+    "rounds": 42,
+    "mean_accepted_per_round": 2.786
+   },
+   {
+    "text": "<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<channel|><|channel>thought",
+    "tokens": 160,
+    "tps": 21.36,
+    "n_rounds": 41,
+    "n_accepted": 119,
+    "n_drafted": 121,
+    "rounds": 41,
+    "mean_accepted_per_round": 2.902
+   },
+   {
+    "text": "<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<|channel>thought\n<channel|><|channel>thought",
+    "tokens": 160,
+    "tps": 22.92,
+    "n_rounds": 41,
+    "n_accepted": 119,
+    "n_drafted": 121,
+    "rounds": 41,
+    "mean_accepted_per_round": 2.902
+   },
+   {
+    "text": "<|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|><|channel>thought\n<channel|>",
+    "tokens": 160,
+    "tps": 23.18,
+    "n_rounds": 40,
+    "n_accepted": 120,
+    "n_drafted": 120,
+    "rounds": 40,
+    "mean_accepted_per_round": 3.0
+   }
+  ],
+  "base/general/off": [
+   {
+    "text": "A refrigerator keeps food cold by removing heat energy from the interior and releasing it into the surrounding air. This process relies on a substance called a **refrigerant**, which circulates through coils and undergoes a cycle of evaporation and condensation. As the liquid refrigerant evaporates into a gas, it absorbs heat from the inside of the fridge; this gas is then compressed and moved to outdoor coils, where it releases the heat and condenses back into a liquid. By continuously cycling this heat exchange, the refrigerator lowers the internal temperature, keeping food preserved.",
+    "tokens": 109,
+    "tps": 13.74
+   },
+   {
+    "text": "Depending on your relationship with the colleague, here are a few ways to phrase this. Choose the one a best fits your situation.\n\n### Option 1: Standard & Professional (Best for most situations)\n**Subject:** Rescheduling our meeting: [Meeting Name]\n\nHi [Colleague's Name],\n\nI hope you’re having a good week.\n\nWould it be possible to move our meeting regarding [Project/Topic] to Thursday? Something has come up that requires my attention, and I want to make sure I can give our discussion my full focus.\n\nPlease let me know if you have a time slot available on Thursday that works for you. Sorry for any inconvenience!\n\nBest regards,\n\n[Your Name]\n\n***\n\n### Option 2: Short & Casual",
+    "tokens": 160,
+    "tps": 13.85
+   },
+   {
+    "text": "Think of the water cycle as Earth’s way of recycling water. It is the way water moves all around our planet, changing from one form to another (like liquid, ice, and vapor) over and over again.\n\nHere is how the cycle works in four main steps:\n\n### 1. Evaporation (The \"Disappearing\" Act)\nImagine a puddle on a sidewalk after it rains. When the sun comes out, it warms up the water. This heat turns the liquid water into an invisible gas called **water vapor**. It’s like steam rising from a hot bowl of soup. This water travels up into the sky.\n\n### 2. Condensation (The \"Cloud Maker\")\nAs the water vapor rises high into the sky, the air gets colder.",
+    "tokens": 160,
+    "tps": 13.73
+   },
+   {
+    "text": "The change in leaf color is a complex biological process driven by the changing seasons, specifically the decrease in sunlight and temperature. It is essentially a survival mechanism for trees.\n\nHere is the step or-by-step breakdown of why and how this happens:\n\n### 1. The Preparation (Chlorophyll)\nDuring the spring and summer, leaves are green because they are full of **chlorophyll**. This is the chemical responsible for photosynthesis—the process of turning sunlight into food. Because plants need to constantly produce food, they keep making lots of chlorophyll, which masks all other colors in the leaf.\n\n### 2. The Shutdown (The Trigger)\nAs the days get shorter and the weather turns colder, the tree receives a signal that winter is coming. To survive the cold, the",
+    "tokens": 160,
+    "tps": 13.61
+   }
+  ],
+  "base/general/mtp_b2": [
+   {
+    "text": "A refrigerator keeps food cold by removing heat energy from the interior and releasing it into the surrounding air. This process relies on a substance called a **refrigerant**, which circulates through coils and undergoes a cycle of evaporation and condensation. As the liquid refrigerant evaporates into a gas, it absorbs heat from the inside of the fridge; this gas is then compressed and moved to the outside of the unit, where it is cooled back into a liquid. By constantly cycling this heat exchange, the refrigerator lowers the internal temperature, keeping the food inside cold.",
+    "tokens": 110,
+    "tps": 16.36,
+    "n_rounds": 63,
+    "n_accepted": 46,
+    "n_drafted": 63,
+    "rounds": 63,
+    "mean_accepted_per_round": 0.73
+   },
+   {
+    "text": "Depending on your relationship with the colleague, here are a few ways to phrase this. Choose the one a best fits your situation.\n\n### Option 1: Standard & Professional (Best for most situations)\n**Subject:** Rescheduling our meeting: [Meeting Name]\n\nHi [Colleague's Name],\n\nI hope you’re having a good week.\n\nWould it be possible to move our meeting regarding [Project/Topic] to Thursday? Something has come up that requires my attention, and I want to make sure I can give our discussion my full focus.\n\nPlease let me know if you have a time slot available on Thursday that works for you. Sorry for any inconvenience!\n\nBest regards,\n\n[Your Name]\n\n***\n\n### Option 2: Short & Casual",
+    "tokens": 160,
+    "tps": 17.68,
+    "n_rounds": 86,
+    "n_accepted": 73,
+    "n_drafted": 86,
+    "rounds": 86,
+    "mean_accepted_per_round": 0.849
+   },
+   {
+    "text": "Think of the water cycle as Earth’s way of recycling water. It is the way water moves all around our planet, changing from liquid to gas to solid, over and over again. It never stops!\n\nHere are the four main steps:\n\n### 1. Evaporation (The \"Disappearing\" Act)\nWhen the sun shines on our oceans, lakes, and puddles, it warms up the water. This heat turns some of the water into an invisible gas called **water vapor**. Just like steam rising from a hot bowl of soup, this water vapor floats up into the air.\n\n### 2. Condensation (The \"Cloud Maker\")\nAs the water vapor rises high into the sky, the air gets cooler. When the water vapor cools down, it turns",
+    "tokens": 160,
+    "tps": 16.86,
+    "n_rounds": 89,
+    "n_accepted": 71,
+    "n_drafted": 89,
+    "rounds": 89,
+    "mean_accepted_per_round": 0.798
+   },
+   {
+    "text": "The change in leaf color is a complex biological process driven by the changing seasons, specifically the decrease in sunlight and temperature. It is essentially a survival mechanism for trees.\n\nHere is the step/process of why and how this happens:\n\n### 1. The Preparation (Chlorophyll Breakdown)\nDuring the spring and summer, leaves are green because they are full of **chlorophyll**. This is the chemical responsible for photosynthesis (turning sunlight into food). Because plants need a constant supply of chlorophyll to survive, they keep producing it as long as the days are long and warm.\n\nWhen autumn arrives, the days get shorter and the weather gets colder. The tree realizes it is going into \"dormancy\" (a sleep state for winter). It stops producing chlorophyll, and the existing green pigment begins",
+    "tokens": 160,
+    "tps": 15.7,
+    "n_rounds": 97,
+    "n_accepted": 63,
+    "n_drafted": 97,
+    "rounds": 97,
+    "mean_accepted_per_round": 0.649
+   }
+  ],
+  "base/general/mtp_b3": [
+   {
+    "text": "A refrigerator keeps food cold by removing heat energy from the interior and releasing it into the surrounding air. This process relies on a substance called a **refrigerant**, which circulates through coils and undergoes a cycle of evaporation and condensation. As the liquid refrigerant evaporates into a gas, it absorbs heat from the inside of the fridge; this gas is then compressed and moved to the outside of the unit, where it is cooled back into a liquid. By continuously cycling this heat exchange, the refrigerator lowers the internal temperature, keeping the food inside cold.",
+    "tokens": 110,
+    "tps": 13.68,
+    "n_rounds": 53,
+    "n_accepted": 56,
+    "n_drafted": 106,
+    "rounds": 53,
+    "mean_accepted_per_round": 1.057
+   },
+   {
+    "text": "Depending on your relationship with the colleague, here are a few ways to phrase this. Choose the one a best fits your situation.\n\n### Option 1: Standard & Professional (Best for most situations)\n**Subject:** Rescheduling our meeting: [Meeting Name]\n\nHi [Colleague's Name],\n\nI hope you’re having a good week.\n\nWould it be possible to move our meeting regarding [Project/Topic] to Thursday? Something has come up that requires my attention, and I want to make sure I can give our discussion my full focus.\n\nPlease let me know if you have a time slot available on Thursday that works for you. Sorry for any inconvenience!\n\nBest regards,\n\n[Your Name]\n\n***\n\n### Option 2: Short & Casual",
+    "tokens": 160,
+    "tps": 17.54,
+    "n_rounds": 66,
+    "n_accepted": 94,
+    "n_drafted": 132,
+    "rounds": 66,
+    "mean_accepted_per_round": 1.424
+   },
+   {
+    "text": "Think of the water cycle as Earth’s way of recycling water. It is the way water moves all around our planet, changing from one form to another (like liquid, ice, and vapor) over and over again.\n\nHere is how the cycle works in four main steps:\n\n### 1. Evaporation (The \"Disappearing\" Act)\nImagine a puddle on a sidewalk after it rains. When the sun comes out, it warms up the water. This heat turns the liquid water into an invisible gas called **water vapor**. It’s like steam rising from a hot bowl of soup. This water travels up into the sky.\n\n### 2. Condensation (The \"Cloud Maker\")\nAs the water vapor travels high up into the sky, the air gets colder",
+    "tokens": 160,
+    "tps": 16.51,
+    "n_rounds": 73,
+    "n_accepted": 86,
+    "n_drafted": 146,
+    "rounds": 73,
+    "mean_accepted_per_round": 1.178
+   },
+   {
+    "text": "The change in leaf color is a complex biological process driven by the changing seasons, specifically the decrease in sunlight and temperature. It is essentially a survival mechanism for trees.\n\nHere is the step/breakdown of why and how this happens:\n\n### 1. The Preparation (Chlorophyll Breakdown)\nDuring the spring and summer, leaves are green because they are full of **chlorophyll**. This is the chemical responsible for photosynthesis (turning sunlight into food). Because plants need a constant supply of chlorophyll to survive, they keep producing it as long as the days are long and warm.\n\nWhen autumn arrives, the days get shorter and the weather turns colder. The tree realizes it is going into \"dormancy\" (a sleep state for winter). To save energy, the tree stops producing chlorophyll.",
+    "tokens": 160,
+    "tps": 15.01,
+    "n_rounds": 80,
+    "n_accepted": 79,
+    "n_drafted": 159,
+    "rounds": 80,
+    "mean_accepted_per_round": 0.988
+   }
+  ],
+  "base/general/mtp_b4": [
+   {
+    "text": "A refrigerator keeps food cold by removing heat energy from the interior and releasing it into the surrounding air. This process relies on a substance called a **refrigerant**, which circulates through coils and undergoes a cycle of evaporation and condensation. As the liquid refrigerant evaporates into a gas, it absorbs heat from the inside of the fridge; this gas is then compressed and moved to the outside coils, where it releases the heat and condenses back into a liquid. By continuously cycling this heat exchange, the refrigerator lowers the internal temperature, keeping the food inside cold.",
+    "tokens": 112,
+    "tps": 13.24,
+    "n_rounds": 49,
+    "n_accepted": 63,
+    "n_drafted": 147,
+    "rounds": 49,
+    "mean_accepted_per_round": 1.286
+   },
+   {
+    "text": "Depending on your relationship with the colleague, here are a few ways to phrase this. Choose the one a best fits your situation.\n\n### Option 1: Standard & Professional (Best for most situations)\n**Subject:** Rescheduling our meeting: [Meeting Name]\n\nHi [Colleague's Name],\n\nI hope you’re having a good week.\n\nWould it be possible to move our meeting regarding [Project/Topic] to Thursday? Something has come up that requires my attention, and I want to make sure I can give our discussion my full focus.\n\nPlease let me know if you have a time slot available on Thursday that works for you. Sorry for any inconvenience!\n\nBest regards,\n\n[Your Name]\n\n***\n\n### Option 2: Short & Casual",
+    "tokens": 160,
+    "tps": 17.45,
+    "n_rounds": 52,
+    "n_accepted": 107,
+    "n_drafted": 156,
+    "rounds": 52,
+    "mean_accepted_per_round": 2.058
+   },
+   {
+    "text": "Think of the water cycle as Earth’s way of recycling water. It is the way water moves all around our planet, changing from one form to another (like liquid, ice, and vapor) over and over again.\n\nHere is how the cycle works in four main steps:\n\n### 1. Evaporation (The \"Disappearing\" Act)\nImagine a puddle on a sidewalk after it rains. When the sun comes out, it warms up the water. This heat turns the liquid water into an invisible gas called **water vapor**. It’s like steam rising from a hot bowl of soup. This water travels up into the sky.\n\n### 2. Condensation (The \"Cloud Maker\")\nAs the water vapor travels high up into the sky, the air gets colder",
+    "tokens": 160,
+    "tps": 14.27,
+    "n_rounds": 67,
+    "n_accepted": 92,
+    "n_drafted": 201,
+    "rounds": 67,
+    "mean_accepted_per_round": 1.373
+   },
+   {
+    "text": "The change in leaf color is a complex biological process driven by the changing seasons, specifically the decrease in sunlight and temperature. It is essentially a survival mechanism for trees.\n\nHere is the step/breakdown of why and how this happens:\n\n### 1. The Preparation (Chlorophyll Breakdown)\nDuring the spring and summer, leaves are green because they are full of **chlorophyll**. This is the chemical responsible for photosynthesis (turning sunlight into food). Because plants need a constant supply of chlorophyll to survive, they keep producing it as long as the days are long and warm.\n\nWhen autumn arrives, the days get shorter and the weather turns colder. The tree realizes it is going into \"dormancy\" (a sleep state for winter). To save energy, the tree stops producing chlorophyll.",
+    "tokens": 160,
+    "tps": 12.02,
+    "n_rounds": 72,
+    "n_accepted": 87,
+    "n_drafted": 214,
+    "rounds": 72,
+    "mean_accepted_per_round": 1.208
+   }
+  ],
+  "wiki12b/domain/off": [
+   {
+    "text": "<search shelf=wiki>Tollan-640 edge protector</search>= 1 note\n  [100] page · Tollan-640 edge protector — when: You need a fact about the Tollan-640 edge protector: who supplies it, where it is stocked, its pack or its reorder point.\n<open>100</open>= Tollan-640 edge protector — The Tollan-640 edge protector, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>100§pack</open>= A pack of Tollan-640 edge protector holds 12 pieces.\n12 pieces",
+    "tokens": 160,
+    "tps": 12.7
+   },
+   {
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>= 1 note\n  [100] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n<open>100</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>100§pack</open>= A pack of Kestra-410 strapping band holds 12 coils.\n12 coils [",
+    "tokens": 160,
+    "tps": 12.79
+   },
+   {
+    "text": "<search shelf=wiki>Carrow-940 dunnage bag</search>= 1 note\n  [101] page · Carrow-940 dunnage bag — when: You need a fact about the Carrow-940 dunnage bag: who supplies it, where it is stocked, its pack or its reorder point.\n<open>101</open>= Carrow-940 dunnage bag — The Carrow-940 dunnage bag, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>101§pack</open>= A pack of Carrow-940 dunnage",
+    "tokens": 160,
+    "tps": 12.87
+   },
+   {
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>= 1 note\n  [111] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its minimum order.\n<open>111</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §minimum-order\n<open>111§supplier</open>= The Kestra-410 strapping band is supplied by [001] Fallowmere Packaging.\n<",
+    "tokens": 160,
+    "tps": 12.92
+   },
+   {
+    "text": "<search shelf=wiki>Rask-500 shipping carton</search>= 1 note\n  [100] page · Rask-500 shipping carton — when: You need a fact about the Rask-500 shipping carton: who supplies it, where it is stocked, its pack or its reorder point.\n<open>100</open>= Rask-500 shipping carton — The Rask-500 shipping carton, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>100§supplier</open>= The Rask-500 shipping carton is supplied by [300] Fallowmere Packaging.",
+    "tokens": 160,
+    "tps": 12.79
+   },
+   {
+    "text": "<|turn> <search shelf=wiki>Fena-930 label roll</search>= 1 note\n  [001] page · Fena-930 label roll — when: You need a fact about the Fena-930 label roll: who supplies it, where it is stocked, its pack or its reorder point.\n<open>001</open>= Fena-930 label roll — The Fena-930 label roll, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>001§supplier</open>= The Fena-930 label roll is supplied by [301] Pellow Packaging.",
+    "tokens": 160,
+    "tps": 12.77
+   }
+  ],
+  "wiki12b/domain/mtp_b2": [
+   {
+    "text": "<search shelf=wiki>Tollan-640 edge protector</search>= 1 note\n  [100] page · Tollan-640 edge protector — when: You need a fact about the Tollan-640 edge protector: who supplies it, where it is stocked, its pack or its reorder point.\n<open>100</open>= Tollan-640 edge protector — The Tollan-640 edge protector, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>100§pack</open>= A pack of Tollan-640 edge protector holds 12 pieces.\n12 pieces",
+    "tokens": 160,
+    "tps": 14.48,
+    "n_rounds": 98,
+    "n_accepted": 62,
+    "n_drafted": 98,
+    "rounds": 98,
+    "mean_accepted_per_round": 0.633
+   },
+   {
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>= 1 note\n  [100] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n<open>100</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>100§pack</open>= A pack of Kestra-410 strapping band holds 12 coils.\n12 coils [",
+    "tokens": 160,
+    "tps": 14.5,
+    "n_rounds": 97,
+    "n_accepted": 62,
+    "n_drafted": 97,
+    "rounds": 97,
+    "mean_accepted_per_round": 0.639
+   },
+   {
+    "text": "<search shelf=wiki>Carrow-940 dunnage bag</search>= 1 note\n  [101] page · Carrow-940 dunnage bag — when: You need a fact about the Carrow-940 dunnage bag: who supplies it, where it is stocked, its pack or its reorder point.\n<open>101</open>= Carrow-940 dunnage bag — The Carrow-940 dunnage bag, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>101§pack</open>= A pack of Carrow-940 dunnage",
+    "tokens": 160,
+    "tps": 14.19,
+    "n_rounds": 98,
+    "n_accepted": 61,
+    "n_drafted": 98,
+    "rounds": 98,
+    "mean_accepted_per_round": 0.622
+   },
+   {
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>= 1 note\n  [111] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its minimum order.\n<open>111</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §minimum-order\n<open>111§supplier</open>= The Kestra-410 strapping band is supplied by [301] Fallowmere Packaging.\n<",
+    "tokens": 160,
+    "tps": 13.6,
+    "n_rounds": 103,
+    "n_accepted": 57,
+    "n_drafted": 103,
+    "rounds": 103,
+    "mean_accepted_per_round": 0.553
+   },
+   {
+    "text": "<search shelf=wiki>Rask-500 shipping carton</search>= 1 note\n  [001] page · Rask-500 shipping carton — when: You need a fact about the Rask-500 shipping carton: who supplies it, where it is stocked, its pack or its reorder point.\n<open>001</open>= Rask-500 shipping carton — The Rask-500 shipping carton, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>001§supplier</open>= The Rask-500 shipping carton is supplied by [001f] Fallowmere Packaging",
+    "tokens": 160,
+    "tps": 13.96,
+    "n_rounds": 102,
+    "n_accepted": 57,
+    "n_drafted": 102,
+    "rounds": 102,
+    "mean_accepted_per_round": 0.559
+   },
+   {
+    "text": "<|turn> <search shelf=wiki>Fena-930 label roll</search>= 1 note\n  [001] page · Fena-930 label roll — when: You need a fact about the Fena-930 label roll: who supplies it, where it is stocked, its pack or its reorder point.\n<open>001</open>= Fena-930 label roll — The Fena-930 label roll, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>001§supplier</open>= The Fena-930 label roll is supplied by [001f] Pellow Packaging",
+    "tokens": 160,
+    "tps": 12.56,
+    "n_rounds": 101,
+    "n_accepted": 58,
+    "n_drafted": 101,
+    "rounds": 101,
+    "mean_accepted_per_round": 0.574
+   }
+  ],
+  "wiki12b/domain/mtp_b3": [
+   {
+    "text": "<search shelf=wiki>Tollan-640 edge protector</search>= 1 note\n  [100] page · Tollan-640 edge protector — when: You need a fact about the Tollan-640 edge protector: who supplies it, where it is stocked, its pack or its reorder point.\n<open>100</open>= Tollan-640 edge protector — The Tollan-640 edge protector, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>100§pack</open>= A pack of Tollan-640 edge protector holds 12 pieces.\n12 pieces",
+    "tokens": 160,
+    "tps": 12.31,
+    "n_rounds": 81,
+    "n_accepted": 79,
+    "n_drafted": 161,
+    "rounds": 81,
+    "mean_accepted_per_round": 0.975
+   },
+   {
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>= 1 note\n  [100] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n<open>100</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>100§pack</open>= A pack of Kestra-410 strapping band holds 12 coils.\n12 coils [",
+    "tokens": 160,
+    "tps": 12.85,
+    "n_rounds": 80,
+    "n_accepted": 80,
+    "n_drafted": 159,
+    "rounds": 80,
+    "mean_accepted_per_round": 1.0
+   },
+   {
+    "text": "<search shelf=wiki>Carrow-940 dunnage bag</search>= 1 note\n  [100] page · Carrow-940 dunnage bag — when: You need a fact about the Carrow-940 dunnage bag: who supplies it, where it is stocked, its pack or its reorder point.\n<open>100</open>= Carrow-940 dunnage bag — The Carrow-940 dunnage bag, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>100§pack</open>= A pack of Carrow-940 dunnage",
+    "tokens": 160,
+    "tps": 13.92,
+    "n_rounds": 81,
+    "n_accepted": 79,
+    "n_drafted": 162,
+    "rounds": 81,
+    "mean_accepted_per_round": 0.975
+   },
+   {
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>= 1 note\n  [11h] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its minimum order.\n<open>11h</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §minimum-order\n<open>11h§supplier</open>= The Kestra-410 strapping band is supplied by [001] Fallowmere Packaging.\n<",
+    "tokens": 160,
+    "tps": 13.25,
+    "n_rounds": 85,
+    "n_accepted": 74,
+    "n_drafted": 170,
+    "rounds": 85,
+    "mean_accepted_per_round": 0.871
+   },
+   {
+    "text": "<search shelf=wiki>Rask-500 shipping carton</search>= 1 note\n  [100] page · Rask-500 shipping carton — when: You need a fact about the Rask-500 shipping carton: who supplies it, where it is stocked, its pack or its reorder point.\n<open>100</open>= Rask-500 shipping carton — The Rask-500 shipping carton, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>100§supplier</open>= The Rask-500 shipping carton is supplied by [300] Fallowmere Packaging.",
+    "tokens": 160,
+    "tps": 13.55,
+    "n_rounds": 84,
+    "n_accepted": 76,
+    "n_drafted": 167,
+    "rounds": 84,
+    "mean_accepted_per_round": 0.905
+   },
+   {
+    "text": "<|turn> <search shelf=wiki>Fewa-930 label roll</search>= 1 note\n  [001] page · Fenwa-930 label roll — when: You need a fact about the Fenwa-930 label roll: who supplies it, where it is stocked, its pack or its reorder point.\n<open>001</open>= Fenwa-930 label roll — The Fenwa-930 label roll, one of the products the distributor carries.\n  sections=\n    [001§supplier] — who supplies the Fenwa-930 label roll\n    [001§warehouse] — where the Fenwa-930 label roll is stocked\n    [",
+    "tokens": 160,
+    "tps": 14.13,
+    "n_rounds": 80,
+    "n_accepted": 79,
+    "n_drafted": 160,
+    "rounds": 80,
+    "mean_accepted_per_round": 0.988
+   }
+  ],
+  "wiki12b/domain/mtp_b4": [
+   {
+    "text": "<search shelf=wiki>Tollan-640 edge protector</search>= 1 note\n  [100] page · Tollan-640 edge protector — when: You need a fact about the Tollan-640 edge protector: who supplies it, where it is stocked, its pack or its reorder point.\n<open>100</open>= Tollan-640 edge protector — The Tollan-640 edge protector, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>100§pack</open>= A pack of Tollan-640 edge protector holds 12 pieces.\n12 pieces",
+    "tokens": 160,
+    "tps": 11.62,
+    "n_rounds": 78,
+    "n_accepted": 82,
+    "n_drafted": 232,
+    "rounds": 78,
+    "mean_accepted_per_round": 1.051
+   },
+   {
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>= 1 note\n  [100] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n<open>100</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>100§pack</open>= A pack of Kestra-410 strapping band holds 12 coils.\n12 coils [",
+    "tokens": 160,
+    "tps": 11.41,
+    "n_rounds": 76,
+    "n_accepted": 84,
+    "n_drafted": 226,
+    "rounds": 76,
+    "mean_accepted_per_round": 1.105
+   },
+   {
+    "text": "<search shelf=wiki>Carrow-940 dunnage bag</search>= 1 note\n  [100] page · Carrow-940 dunnage bag — when: You need a fact about the Carrow-940 dunnage bag: who supplies it, where it is stocked, its pack or its reorder point.\n<open>100</open>= Carrow-940 dunnage bag — The Carrow-940 dunnage bag, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>100§pack</open>= A pack of Carrow-940 dunnage",
+    "tokens": 160,
+    "tps": 11.32,
+    "n_rounds": 75,
+    "n_accepted": 84,
+    "n_drafted": 225,
+    "rounds": 75,
+    "mean_accepted_per_round": 1.12
+   },
+   {
+    "text": "<search shelf=wiki>Kestra-410 strapping band</search>= 1 note\n  [101] page · Kestra-410 strapping band — when: You need a fact about the Kestra-410 strapping band: who supplies it, where it is stocked, its pack or its reorder point.\n<open>101</open>= Kestra-410 strapping band — The Kestra-410 strapping band, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>101§supplier</open>= The Kestra-410 strapping band is supplied by [301] Fallowmere Packaging.",
+    "tokens": 160,
+    "tps": 10.77,
+    "n_rounds": 81,
+    "n_accepted": 79,
+    "n_drafted": 240,
+    "rounds": 81,
+    "mean_accepted_per_round": 0.975
+   },
+   {
+    "text": "<search shelf=wiki>Rask-500 shipping carton</search>= 1 note\n  [100] page · Rask-500 shipping carton — when: You need a fact about the Rask-500 shipping carton: who supplies it, where it is stocked, its pack or its reorder point.\n<open>100</open>= Rask-500 shipping carton — The Rask-500 shipping carton, one of the products the distributor carries.\n  sections §supplier · §warehouse · §pack · §reorder-point\n<open>100§supplier</open>= The Rask-500 shipping carton is supplied by [000] Fallowmere Packaging.",
+    "tokens": 160,
+    "tps": 10.95,
+    "n_rounds": 80,
+    "n_accepted": 80,
+    "n_drafted": 237,
+    "rounds": 80,
+    "mean_accepted_per_round": 1.0
+   },
+   {
+    "text": "<|turn> <search shelf=wiki>Fewa-930 label roll</search>= 1 note\n  [001] page · Fenwa-930 label roll — when: You need a fact about the Fenwa-930 label roll: who supplies it, where it is stocked, its pack or its reorder point.\n<open>001</open>= Fenwa-930 label roll — The Fenwa-930 label roll, one of the products the distributor carries.\n  sections=\n    [001§supplier] — who supplies the Fenwa-930 label roll\n    [001§warehouse] — where the Fenwa-930 label roll is stocked\n    [",
+    "tokens": 160,
+    "tps": 11.61,
+    "n_rounds": 74,
+    "n_accepted": 85,
+    "n_drafted": 222,
+    "rounds": 74,
+    "mean_accepted_per_round": 1.149
+   }
+  ],
+  "wiki12b/general/off": [
+   {
+    "text": "A refrigerator keeps food cold by removing heat from its interior and releasing it into the surrounding air. A system of coils and a pump circulates a refrigerant—a substance that can<audio|> heat up and cool down rapidly—through these coils. As the refrigerant absorbs heat from the inside of the fridge, it turns into a gas; it is then compressed and moved to a coil on the back or bottom of the unit, where the heat is released. The cooled refrigerant then flows back inside to repeat the cycle, maintaining a consistently low temperature.",
+    "tokens": 108,
+    "tps": 12.33
+   },
+   {
+    "text": "Depending on how well you know the colleague, here are three ways to ask. Choose the one that best fits your workplace culture.\n\n### Option 1: Standard & Professional (Best for most situations)\n**Subject:** Rescheduling our meeting: [Meeting Name]\n\nHi [Colleague's Name],\n\nI hope you’re having a good week.\n\nWould it be possible to move our meeting from [Original Day] to Thursday? Something has come up that I need to attend to, and I want to make sure I can give our conversation my full attention.\n\nPlease let me know if you have a time that works for you on Thursday, and I will send over a new calendar invitation.\n\nBest regards,\n\n[Your Name]\n\n***\n### Option 2",
+    "tokens": 160,
+    "tps": 12.7
+   },
+   {
+    "text": "To understand the water cycle, think of it as Earth's way of recycling the same water over and over again. The water we drink today is the same water that dinosaurs drank millions of years ago!\n\nHere are the four main steps:\n\n### 1. Evaporation (The Warm-Up)\nThe sun shines on oceans, lakes, and puddles. It warms the water up until it turns from a liquid into an invisible gas called **water vapor**. This is just like the steam coming off a hot cup of cocoa. The water gets light enough to float up into the air.\n\n### 2. Condensation (The Cooling Down)\nAs the water vapor rises high into the sky, the air gets colder. The vapor cools down and turns back into tiny liquid water",
+    "tokens": 160,
+    "tps": 12.52
+   },
+   {
+    "text": "The change in leaf color is a complex biological process driven by the changing seasons. It is essentially a survival mechanism: trees are preparing for winter by getting rid\nof what they no longer need and conserving energy.\n\nHere is the step-by-step breakdown of why and how it happens:\n\n### 1. The Role of Chlorophyll\nDuring the spring and summer, leaves are<audio|>by green because of **chlorophyll**. This is the pigment plants use to turn sunlight into food (photosynthesis). A tree<audio|>harnesses as much of it as it can, so the green color hides other colors.\n\n### 2. The Approach of Winter\nAs days get shorter and temperatures drop, the tree receives a signal that winter is coming. To survive the cold, the tree enters",
+    "tokens": 160,
+    "tps": 12.67
+   }
+  ],
+  "wiki12b/general/mtp_b2": [
+   {
+    "text": "A refrigerator keeps food cold by removing heat from its interior and releasing it into the surrounding air. This is achieved through a vapor-compression cycle: a refrigerant circulates through coils, evaporating to absorb heat from the fridge's interior. The hot gas is then compressed, which raises its temperature, and it flows through coils where it releases that heat. As the refrigerant cools and condenses back into a liquid, it is pumped back to the evaporator to repeat the cycle. By constantly moving heat from the inside to the outside, the refrigerator maintains a cold environment.",
+    "tokens": 113,
+    "tps": 12.97,
+    "n_rounds": 70,
+    "n_accepted": 42,
+    "n_drafted": 70,
+    "rounds": 70,
+    "mean_accepted_per_round": 0.6
+   },
+   {
+    "text": "Depending on how well you know the colleague, here are three ways to ask. Choose the one that best fits your workplace culture.\n\n### Option 1: Standard & Professional (Best for most situations)\n**Subject:** Rescheduling our meeting: [Meeting Name]\n\nHi [Colleague's Name],\n\nI hope you’re having a good week.\n\nWould it be possible to move our meeting from [Original Day] to Thursday? Something has come up that I need to attend to, and I want to make sure I can give our conversation my full attention.\n\nPlease let me know if [Time] on Thursday works for you, or feel free to suggest another time that day.\n\nBest regards,\n\n[Your Name]\n\n***\n### Option 2: Short",
+    "tokens": 160,
+    "tps": 14.17,
+    "n_rounds": 88,
+    "n_accepted": 71,
+    "n_drafted": 88,
+    "rounds": 88,
+    "mean_accepted_per_round": 0.807
+   },
+   {
+    "text": "To understand the water cycle, think of it as Earth's way of recycling the same water over and over again. The water we drink today is the same water that was here when dinosaurs roamed the earth!\n\nHere are the four main steps:\n\n### 1. Evaporation (The Warm-Up)\nWhen the sun shines on oceans, lakes, and puddles, it warms the water up. The water gets so warm that it turns from a liquid into an invisible gas called **water vapor**. It rises up into the air, just like steam rising from a hot cup of cocoa.\n\n### 2. Condensation (The Cooling Down)\nAs the water vapor rises high into the sky, the air gets colder. The vapor cools down and turns back into tiny liquid",
+    "tokens": 160,
+    "tps": 13.77,
+    "n_rounds": 96,
+    "n_accepted": 64,
+    "n_drafted": 96,
+    "rounds": 96,
+    "mean_accepted_per_round": 0.667
+   },
+   {
+    "text": "The change in leaf color is a complex biological process driven by the changing seasons. It is essentially a survival mechanism: trees are preparing for winter by shutting down systems they can no longer maintain.\n\nHere is the step-by-step breakdown of why and how it happens:\n\n### 1. The Role of Chlorophyll\nDuring the spring and summer, leaves are<audio|>by green because of **chlorophyll**. This is the pigment responsible for photosynthesis—turning sunlight into energy. A tree<audio|>needs a lot of it to grow, so it constantly produces it.\n\n### 2. The Approach of Autumn\nAs days get shorter and temperatures drop, the tree receives a signal (triggered by less sunlight and cooler air). The tree begins to enter a \"dormant\" phase to survive the cold",
+    "tokens": 160,
+    "tps": 13.29,
+    "n_rounds": 99,
+    "n_accepted": 60,
+    "n_drafted": 99,
+    "rounds": 99,
+    "mean_accepted_per_round": 0.606
+   }
+  ],
+  "wiki12b/general/mtp_b3": [
+   {
+    "text": "A refrigerator keeps food cold by removing heat from its interior and releasing it into the surrounding air. This is achieved through a vapor-compression cycle: a refrigerant circulates through coils, evaporating to absorb heat from the fridge's interior. A compressor then moves this heat to coils on the back or bottom of the unit, where it is released. As the refrigerant cools and condenses back into a liquid, the cycle repeats, maintaining a consistently low temperature inside.",
+    "tokens": 93,
+    "tps": 12.54,
+    "n_rounds": 48,
+    "n_accepted": 46,
+    "n_drafted": 96,
+    "rounds": 48,
+    "mean_accepted_per_round": 0.958
+   },
+   {
+    "text": "Depending on how well you know the colleague, here are three ways to ask. Choose the one that best fits your workplace culture.\n\n### Option 1: Standard & Professional (Best for most situations)\n**Subject:** Rescheduling our meeting: [Meeting Name]\n\nHi [Colleague's Name],\n\nI hope you’re having a good week.\n\nWould it be possible to move our meeting from [Original Day] to Thursday? Something has come up that I need to attend to, and I want to make sure I can give our conversation my full attention.\n\nPlease let me know if you have a time that works for you on Thursday, and I will send over a new calendar invitation.\n\nBest regards,\n\n[Your Name]\n\n***\n### Option 2",
+    "tokens": 160,
+    "tps": 15.25,
+    "n_rounds": 67,
+    "n_accepted": 93,
+    "n_drafted": 133,
+    "rounds": 67,
+    "mean_accepted_per_round": 1.388
+   },
+   {
+    "text": "To understand the water cycle, think of it as the earth's way of **recycling** water. The same water that dinosaurs drank is the same water we drink today! It just keeps moving in a never-ending circle.\n\nHere are the four main steps:\n\n### 1. Evaporation (The Warm-Up)\nWhen the sun shines on oceans, lakes, and puddles, it warms the water up. The water gets so warm that it turns from a liquid into an invisible gas called **water vapor**. It rises up into the air, just like steam rising from a hot cup of cocoa.\n\n### 2. Condensation (The Cooling Down)\nAs the water vapor gets higher up in the sky, the air gets colder. The vapor cools down and",
+    "tokens": 160,
+    "tps": 12.84,
+    "n_rounds": 78,
+    "n_accepted": 82,
+    "n_drafted": 156,
+    "rounds": 78,
+    "mean_accepted_per_round": 1.051
+   },
+   {
+    "text": "The change in leaf color is a complex biological process driven by the changing seasons. It is essentially a survival mechanism: trees are preparing for winter by getting rid\nof what they no longer need and conserving energy.\n\nHere is the step-by-step breakdown of why and how it happens:\n\n### 1. The Role of Chlorophyll\nDuring the spring and summer, leaves are<audio|>by green because of **chlorophyll**. This is the pigment plants use to turn sunlight into food (photosynthesis). A tree<audio|>harnesses as much of it as it can, so the green color hides other colors.\n\n### 2. The Approach of Winter\nAs days get shorter and temperatures drop, the tree receives a signal that winter is coming. To survive the cold, the tree must",
+    "tokens": 160,
+    "tps": 11.9,
+    "n_rounds": 84,
+    "n_accepted": 75,
+    "n_drafted": 167,
+    "rounds": 84,
+    "mean_accepted_per_round": 0.893
+   }
+  ],
+  "wiki12b/general/mtp_b4": [
+   {
+    "text": "A refrigerator keeps food cold by removing heat from its interior and releasing it into the surrounding air. A system of coils and a pump circulates a refrigerant—a substance that can<audio|> heat up and cool down rapidly—through these coils. As the refrigerant absorbs heat from the inside of the fridge, it turns into a gas; it is then compressed and moved to a coil on the outside where the heat is released. The cooled liquid refrigerant then flows back inside to repeat the cycle, maintaining a consistently low temperature.",
+    "tokens": 103,
+    "tps": 10.41,
+    "n_rounds": 49,
+    "n_accepted": 53,
+    "n_drafted": 147,
+    "rounds": 49,
+    "mean_accepted_per_round": 1.082
+   },
+   {
+    "text": "Depending on how well you know the colleague, here are three ways to ask. Choose the one that best fits your workplace culture.\n\n### Option 1: Standard & Professional (Best for most situations)\n**Subject:** Rescheduling our meeting: [Meeting Name]\n\nHi [Colleague's Name],\n\nI hope you’re having a good week.\n\nWould it be possible to move our meeting from [Original Day] to Thursday? Something has come up that I need to attend to, and I want to make sure I can give our conversation my full attention.\n\nPlease let me know if you have a time that works for you on Thursday, and I will send over a new calendar invitation.\n\nBest regards,\n\n[Your Name]\n\n***\n### Option 2",
+    "tokens": 160,
+    "tps": 14.47,
+    "n_rounds": 56,
+    "n_accepted": 103,
+    "n_drafted": 168,
+    "rounds": 56,
+    "mean_accepted_per_round": 1.839
+   },
+   {
+    "text": "To understand the water cycle, think of it as the earth's way of **recycling** water. The same water that dinosaurs drank is the same water we drink today! It just keeps moving in a never-ending circle.\n\nHere are the four main steps:\n\n### 1. Evaporation (The Warm-Up)\nWhen the sun shines on oceans, lakes, and puddles, it warms the water up. The water gets so warm that it turns from a liquid into an invisible gas called **water vapor**. It rises up into the air, just like steam rising from a hot cup of cocoa.\n\n### 2. Condensation (The Cooling Down)\nAs the water vapor rises high into the sky, the air gets colder. The vapor cools down and turns",
+    "tokens": 160,
+    "tps": 11.45,
+    "n_rounds": 69,
+    "n_accepted": 91,
+    "n_drafted": 207,
+    "rounds": 69,
+    "mean_accepted_per_round": 1.319
+   },
+   {
+    "text": "The change in leaf color is a complex biological process driven by the changing seasons. It is essentially a survival mechanism: trees are preparing for winter by getting rid\nof what they no longer need and conserving energy.\n\nHere is the step-by-step breakdown of why and how it happens:\n\n### 1. The Role of Chlorophyll\nDuring the spring and summer, leaves are<audio|>by green because of **chlorophyll**. This is the pigment plants use to turn sunlight into food (photosynthesis). A tree<audio|>harnesses as much of it as it can, so the green color hides other colors.\n\n### 2. The Approach of Winter\nAs days get shorter and temperatures drop, the tree receives a signal that winter is coming. To survive the cold, the tree enters",
+    "tokens": 160,
+    "tps": 11.2,
+    "n_rounds": 74,
+    "n_accepted": 85,
+    "n_drafted": 222,
+    "rounds": 74,
+    "mean_accepted_per_round": 1.149
+   }
+  ]
+ },
+ "swaps": [
+  {
+   "expert": "wiki12b",
+   "swap_us": 10.08,
+   "expert_differs_from_base": true,
+   "base_text_restored": true
+  }
+ ],
+ "summary": {
+  "base/domain": {
+   "tps_off": 13.67
+  },
+  "base/domain/mtp_b2": {
+   "tps": 20.85,
+   "speedup": 1.53,
+   "identical": "1/6",
+   "accepted_per_round": 0.942,
+   "rounds": 493,
+   "acceptance": 0.939
+  },
+  "base/domain/mtp_b3": {
+   "tps": 22.4,
+   "speedup": 1.64,
+   "identical": "1/6",
+   "accepted_per_round": 1.741,
+   "rounds": 350,
+   "acceptance": 0.871
+  },
+  "base/domain/mtp_b4": {
+   "tps": 22.32,
+   "speedup": 1.63,
+   "identical": "3/6",
+   "accepted_per_round": 2.868,
+   "rounds": 248,
+   "acceptance": 0.965
+  },
+  "base/general": {
+   "tps_off": 13.73
+  },
+  "base/general/mtp_b2": {
+   "tps": 16.64,
+   "speedup": 1.21,
+   "identical": "1/4",
+   "accepted_per_round": 0.756,
+   "rounds": 335,
+   "acceptance": 0.755
+  },
+  "base/general/mtp_b3": {
+   "tps": 15.73,
+   "speedup": 1.15,
+   "identical": "1/4",
+   "accepted_per_round": 1.162,
+   "rounds": 272,
+   "acceptance": 0.58
+  },
+  "base/general/mtp_b4": {
+   "tps": 14.04,
+   "speedup": 1.02,
+   "identical": "1/4",
+   "accepted_per_round": 1.481,
+   "rounds": 240,
+   "acceptance": 0.486
+  },
+  "wiki12b/domain": {
+   "tps_off": 12.81
+  },
+  "wiki12b/domain/mtp_b2": {
+   "tps": 13.85,
+   "speedup": 1.08,
+   "identical": "3/6",
+   "accepted_per_round": 0.597,
+   "rounds": 599,
+   "acceptance": 0.596
+  },
+  "wiki12b/domain/mtp_b3": {
+   "tps": 13.31,
+   "speedup": 1.04,
+   "identical": "3/6",
+   "accepted_per_round": 0.952,
+   "rounds": 491,
+   "acceptance": 0.477
+  },
+  "wiki12b/domain/mtp_b4": {
+   "tps": 11.27,
+   "speedup": 0.88,
+   "identical": "2/6",
+   "accepted_per_round": 1.067,
+   "rounds": 464,
+   "acceptance": 0.357
+  },
+  "wiki12b/general": {
+   "tps_off": 12.57
+  },
+  "wiki12b/general/mtp_b2": {
+   "tps": 13.58,
+   "speedup": 1.08,
+   "identical": "0/4",
+   "accepted_per_round": 0.67,
+   "rounds": 353,
+   "acceptance": 0.671
+  },
+  "wiki12b/general/mtp_b3": {
+   "tps": 13.08,
+   "speedup": 1.04,
+   "identical": "1/4",
+   "accepted_per_round": 1.073,
+   "rounds": 277,
+   "acceptance": 0.536
+  },
+  "wiki12b/general/mtp_b4": {
+   "tps": 11.85,
+   "speedup": 0.94,
+   "identical": "2/4",
+   "accepted_per_round": 1.347,
+   "rounds": 248,
+   "acceptance": 0.446
+  },
+  "G1:wiki12b": "6/6 domain texts differ from the base"
+ },
+ "peak_memory_gb": 8.37,
+ "finished": "2026-10-05T21:56:23"
+}

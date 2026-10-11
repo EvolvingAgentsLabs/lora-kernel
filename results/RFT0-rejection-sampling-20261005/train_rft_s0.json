@@ -1,0 +1,30 @@
+{
+ "base": "google/gemma-4-E4B-it",
+ "started": "2026-10-05T20:24:37",
+ "grader": "training.wiki.grade",
+ "library": "knowledge/distributor-wiki",
+ "eval_world": 20260924,
+ "arms": {},
+ "members": {
+  "withlib-s0": {
+   "adapter": "adapters/real-rft-s0",
+   "seed": 0,
+   "recipe": {
+    "r": 16,
+    "lora_alpha": 32,
+    "epochs": 3,
+    "lr": 0.0002,
+    "batch": 2,
+    "accum": 8,
+    "max_seq": 1536,
+    "seed": 0,
+    "targets": "q_proj,k_proj,v_proj,o_proj,gate_proj,up_proj,down_proj"
+   },
+   "adapter_sha256": "2186142f13fed0f97b9e129c577282b65c9ebf4d0c9a4a5b1df79c84987a6882",
+   "corpus": "train_real_rft.jsonl",
+   "corpus_sha256": "e5c7717123410f442b8ab930f01e50724422b26b5b24fc923594cc3c5b343585"
+  }
+ },
+ "packed": 1,
+ "trained_only": "2026-10-05T21:00:24"
+}
