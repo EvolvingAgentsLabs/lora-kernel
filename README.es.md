@@ -728,6 +728,23 @@ corridas, los expertos retirados, los análisis, un plan de 2.800 líneas — es
 [`v0.1-foundations`](https://github.com/EvolvingAgentsLabs/lora-kernel/tree/v0.1-foundations).
 Un número P citado acá sin directorio en `main` vive ahí.
 
+## Parte de EvolvingAgentsLabs
+
+lora-kernel es uno de los tres proyectos activos de [EvolvingAgentsLabs](https://evolvingagentslabs.github.io); cómo
+se conectan está dibujado en el [sitio](https://evolvingagentslabs.github.io/#connections).
+
+- **[agentvcs](https://github.com/EvolvingAgentsLabs/agentvcs)** versiona, mergea y atribuye los cambios a los
+  harnesses de agentes, con Claude Code como único LLM. **Construido:** su
+  [ejemplo de lora-kernel](https://github.com/EvolvingAgentsLabs/agentvcs/tree/main/examples/lora-kernel) (LK0) lee
+  este repositorio en sólo lectura y lo vuelve un manifiesto de harness, convierte cambios de configuración medidos en
+  parches con compuerta a partir de los archivos de resultados de acá, y le pasa a Claude Code un conflicto entre dos
+  ramas. Importado, no en vivo: nada se vuelve a correr, y las ramas se construyeron para la demo.
+- **[gene-evidence](https://github.com/EvolvingAgentsLabs/gene-evidence)** escribe informes de evidencia auditables
+  para predicciones de genes que la anotación de referencia no tiene; cada oración cita un nodo de un grafo de
+  evidencia, sin modelo en su etapa 1. **Próximo, no construido:** un especialista de lora-kernel que redacte o
+  critique esos informes, con el verificador de citas de gene-evidence como compuerta. Vale su limitación conocida:
+  el informe explica un candidato, no ordena cuál validar primero.
+
 ## Alcance
 
 Open source: el runtime, el runtime y los formatos de la memoria, el contrato de release,
