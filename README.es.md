@@ -49,6 +49,14 @@ especialistas del diagrama son los medidos acá; lo que sacó cada uno, y lo que
 > [Hugging Face](https://huggingface.co/Matias/lora-kernel-distributor-wiki-gemma4-e4b) — probalo en diez minutos:
 > [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EvolvingAgentsLabs/lora-kernel/blob/main/examples/colab/wiki_walk.ipynb)
 
+**Por qué importa.** Si la tesis se sostiene, el trabajo rutinario de IA de una organización — el triage, los formularios,
+los procedimientos que repite todos los días — podría servirse desde una GPU chica que ella controla: privado, porque esos
+pedidos no salen de ahí; barato, porque una sola base residente lleva a todos los especialistas; y corregible, porque los
+datos viven en notas que una persona edita, no en pesos. Sólo lo que cae fuera del terreno de todo especialista iría a un
+modelo de frontera. Lo que existe hoy son las piezas, cada una medida sobre suites generadas o regulaciones reales (las
+listas de abajo): varios especialistas en una tarjeta, un router que se abstiene, datos editados sin reentrenar. Lo que
+todavía no existe es la prueba sobre tráfico real — sin paquete, sin usuarios reales, sin factura medida.
+
 ## Estado — 2026-10-08
 
 Tres listas, cada ítem con su corrida; las salvedades están en [`docs/es/RECORD.md`](docs/es/RECORD.md), lo que sigue en
@@ -61,6 +69,9 @@ textualmente — **nunca sobre tráfico real de usuarios**.
   18/23 contra 9/23, pareado 10 : 1 (REAL3).
 - **Varios especialistas sobre una base**: cuatro LoRA mezclados en una L4 mantienen 1.03× el throughput de uno solo;
   32 sesiones con TTFT p95 0.24 s, 0 errores (C1).
+- **Un verificador externo separa las bases** (τ²-bench airline `test`, 20 tareas × 4, el calificador propio de τ², Gemma 4
+  31B como simulador de usuario): pass^1 31B 0,5375, 12B 0,45, E4B 0,175; el 12B sobre el E4B +27,5 pp, IC [13,8; 42,5], 10 : 0
+  tareas; el 31B sobre el 12B +8,8 pp, IC [−6,2; 25,0] — dentro del ruido (T1, T1b). Sólo bases sin entrenar.
 - **El router se abstiene**: 0 de 600 textos ajenos servidos localmente (el diccionario de palabras clave 294), 0 de 480
   pedidos legítimos perdidos (ROUTE0); los miembros de tarea abierta derivan lo que su corpus no cubre, 20/20 (M10), 27/30 (ROUTE1).
 - **Los datos viven en notas, no en los pesos**: 17/17 enunciados editados respondidos con el valor nuevo, 0 viejos, sin
@@ -83,7 +94,8 @@ textualmente — **nunca sobre tráfico real de usuarios**.
   compuesta reformulada cae 239 → 198 (P2a). Ningún router aprendido pasó (M2).
 - **Las compuertas propias de la memoria**: el brazo con biblioteca perdió contra la base leyendo las notas del oráculo,
   35 contra 45 de 56 (W5); el recall@3 del radar es 0.638 contra 0.80 (W3) — sirve BM25 léxico.
-- **Una base más grande no compra precisión**: el 12B empata o pierde contra el E4B (B3, B5, PAIR0, PAIR1); la corrida del
+- **Una base más grande no compra precisión en nuestras regiones**: el 12B empata o pierde contra el E4B (B3, B5, PAIR0,
+  PAIR1) — en τ²-bench airline, sin entrenar, es el que va adelante (T1b); la corrida del
   26B quedó bloqueada por el motor de serving y se cerró sin resultado (TEACH0).
 - **La decodificación especulativa paga en un servidor, poco en la Mac**: 1.98× en una A100, salida idéntica hasta cada
   stop (F0c); en la Mac el MTP de llama.cpp frena al 12B (SPECK0), MLX da 1.23× con el LoRA (HOTL0, OMLX0, MLXK0). Un
@@ -92,7 +104,8 @@ textualmente — **nunca sobre tráfico real de usuarios**.
 **No implementado**
 - Ni paquete ni contenedor; el código de serving no lee los role packs (`roles/*/role.toml` se lintean, no se cargan) —
   [`docs/es/FRAMEWORK.md`](docs/es/FRAMEWORK.md) §5 B, K.
-- Ningún miembro puntuado en τ²-bench: su grader reproduce 800/800 recompensas publicadas (T0); el shim está especificado, no construido.
+- Ningún miembro puntuado en τ²-bench, sólo bases sin entrenar (T1, T1b): el shim de las etiquetas de los miembros a las
+  llamadas de τ² está construido y pasa offline (G-shim-1, G-shim-3 — T0); G-shim-2, el mismo camino contra un modelo servido, no corrió.
 - Respuestas en buffer, sin streaming; un token HS256 de demo, sin proveedor de identidad real; sin métricas ni detección de deriva.
 - Nunca se midió tráfico real de usuarios, así que tampoco hay factura sobre él (M6 pone precio a un replay, sin la GPU local).
 
@@ -162,7 +175,7 @@ ellos se mueve.
 
 *El núcleo de la 1.0: un router que puede abstenerse, un especialista y una biblioteca por subdominio, un árbitro debajo de todos.*
 
-Cinco cosas, y cómo cambia cada una. **Estado, 2026-10-05: las cinco están construidas y medidas** — de ahí la insignia, "núcleo 1.0 construido, medido" — con lo que no pasó nombrado: la compuerta del radar (recall@3 0,638 contra 0,80, W3 **[ran]**), un verificador que nadie de acá escribió (τ²-bench, abajo: instalado, todavía sin miembro puntuado) y el tráfico real:
+Cinco cosas, y cómo cambia cada una. **Estado, 2026-10-05: las cinco están construidas y medidas** — de ahí la insignia, "núcleo 1.0 construido, medido" — con lo que no pasó nombrado: la compuerta del radar (recall@3 0,638 contra 0,80, W3 **[ran]**), un verificador que nadie de acá escribió (τ²-bench, abajo: instalado, las bases sin entrenar puntuadas, todavía sin miembro puntuado) y el tráfico real:
 
 | | qué es | cambia con |
 |---|---|---|
@@ -551,7 +564,7 @@ lineal, 22,7 → 135 → 270 → 491 tok/s para 1 → 8 → 16 → 32 sesiones, 
 — no se alcanzó. Reemplaza el 0,88 de una sola ráfaga de E5
 ([`results/C1-concurrency-20260929/`](results/C1-concurrency-20260929/BRIEF.md)).
 
-**Hay un verificador externo instalado, un maestro elegido por sus términos, y TEACH0 está cerrada [ran] (2026-10-05).** Lo
+**Hay un verificador externo instalado, un maestro elegido por sus términos, TEACH0 está cerrada, y las bases están puntuadas [ran] (2026-10-05/06).** Lo
 único que toda suite anterior compartía es que este repositorio escribió su calificador. **τ²-bench airline** — cuya
 recompensa es el hash del estado final de la base de datos, en código de `sierra-research/tau2-bench` — ahora corre acá: el
 dominio mock de punta a punta, y su calificador local recalifica las **800 de 800** simulaciones que trae a la recompensa
@@ -564,8 +577,21 @@ simulador de usuario a la vez, decisión del usuario ([`docs/es/tau2/TEACHER-TER
 **La brecha de formato se mide offline, antes de construir nada:** τ² le da al agente llamadas nativas a herramientas, los
 miembros escriben etiquetas en línea, y el serializador de etiquetas del repo hace ida y vuelta de 1.345 de 1.587 llamadas de
 airline incluidas y **pierde 220 de 320 escrituras**; una etiqueta cuyo cuerpo es el JSON de los argumentos hace ida y vuelta
-de **1.587/1.587** — el shim está especificado, no construido, y ningún miembro se puntuó todavía sobre τ². **Sigue T1:** Gemma
-4 31B contra el E4B base sobre `test` de airline, k = 4, compuerta una brecha — la pregunta que TEACH0 no pudo responder.
+de **1.587/1.587**. **El shim está construido** ([`examples/tau2/shim.py`](examples/tau2/shim.py)) y pasa offline: **5.829/5.829**
+llamadas de los cuatro archivos de airline incluidos idénticas en nombre, argumentos y tipos en ambos sentidos (G-shim-1), y
+ningún campo de calificación le llega (G-shim-3) ([`TAU2-T0`](results/TAU2-T0-recon-20261005/BRIEF.md)); G-shim-2, el mismo
+camino contra un modelo servido, no corrió, así que ningún miembro se puntuó a través de él. **T1 [ran] — una brecha, según la
+lectura del usuario.** Gemma 4 31B (QAT W4A16) contra el E4B base sobre `test` de airline, k = 4, llamadas nativas: pass^1
+**0,5375** contra **0,2125**. Tal como se escribió la corrida es **VOID**: 9 de las 80 simulaciones de la base terminaron en
+`infrastructure_error`, por encima de la cláusula del 5 % del brief — las nueve, la primera respuesta vacía del E4B, ni texto
+ni llamada. La decisión del usuario (2026-10-05, lectura 1): son fallas propias de la base, puntuadas 0 — **DISTIL HERE**,
+Δ +36,3 pp, IC [20,0; 53,7], 11 : 0 tareas; el VOID-tal-como-se-escribió queda en el registro
+([`TAU2-T1`](results/TAU2-T1-baselines-20261005/BRIEF.md)). **T1b [ran] — el 12B es el alumno.** El 12B base sobre el mismo
+instrumento congelado: pass^1 **0,45** [0,26; 0,64], ninguna primera respuesta vacía; pareado sobre las 20 tareas contra el
+E4B (0,175 con sus respuestas vacías puntuadas 0), **+27,5 pp**, IC [13,8; 42,5], 10 : 0. Al costado, el 31B sobre el 12B da
+**+8,8 pp**, IC [−6,2; 25,0], 7 : 4 — dentro del ruido con 20 tareas: la mayor parte de la brecha de T1 es el tamaño del 12B,
+no la enseñanza del 31B ([`TAU2-T1b`](results/TAU2-T1b-12b-base-20261006/BRIEF.md)). La línea se pausa para el usuario; no hay
+T2 preregistrado.
 **TEACH0 está cerrada por decisión del usuario** — bloqueada por el motor de servido (el FP8 de vLLM 0.30 no corre en la A100 y
 no tiene método `bitsandbytes`), sin resultado ([`TEACH0`](results/TEACH0-26b-headroom-20261004/BRIEF.md)); la propia tarjeta de
 Google **[read]** tiene al 26B en 68,2 % contra el 69,0 % del 12B en τ², así que la línea del 26B descansa. **RFT0 [ran]:

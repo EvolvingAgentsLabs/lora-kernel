@@ -46,6 +46,14 @@ measured here; what each one scored, and what failed, is in [`docs/RECORD.md`](d
 > [Hugging Face](https://huggingface.co/Matias/lora-kernel-distributor-wiki-gemma4-e4b) — try it in ten minutes:
 > [![Open in Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/EvolvingAgentsLabs/lora-kernel/blob/main/examples/colab/wiki_walk.ipynb)
 
+**Why it matters.** If the thesis holds, an organisation's routine AI work — the triage, the forms, the procedures it
+repeats every day — could be served from one small GPU it controls: private, because those requests never leave it; cheap,
+because one resident base carries every specialist; and correctable, because the facts live in notes a person edits, not
+in weights. Only what falls outside every specialist's ground would go to a frontier model. What exists today are the
+pieces, each measured on generated suites or real regulations (the lists below): several specialists on one card, a router
+that abstains, facts edited without retraining. What does not exist yet is the proof on real traffic — no package, no real
+users, no bill measured.
+
 ## Status — 2026-10-08
 
 Three lists, every item with its run; the caveats are in [`docs/RECORD.md`](docs/RECORD.md), what comes next in
@@ -57,6 +65,9 @@ Three lists, every item with its run; the caveats are in [`docs/RECORD.md`](docs
   27/70 (M8); multi-hop questions over a regulation family it never trained on, 18/23 against 9/23, paired 10 : 1 (REAL3).
 - **Several specialists on one base**: four LoRAs mixed on one L4 keep 1.03× one adapter's throughput; 32 sessions at p95
   TTFT 0.24 s, 0 errors (C1).
+- **An external verifier separates the bases** (τ²-bench airline `test`, 20 tasks × 4, τ²'s own grader, Gemma 4 31B as
+  user simulator): pass^1 31B 0.5375, 12B 0.45, E4B 0.175; the 12B over the E4B +27.5 pp, CI [13.8, 42.5], 10 : 0 tasks; the
+  31B over the 12B +8.8 pp, CI [−6.2, 25.0] — inside the noise (T1, T1b). Untrained bases only.
 - **The router abstains**: 0 of 600 foreign texts served locally (the keyword dictionary 294), 0 of 480 legitimate requests
   lost (ROUTE0); open-task members hand off what their corpus does not cover, 20/20 (M10), 27/30 (ROUTE1).
 - **Facts live in notes, not weights**: 17/17 edited statements answered with the new value, 0 stale, no retraining (EDIT0).
@@ -76,7 +87,8 @@ Three lists, every item with its run; the caveats are in [`docs/RECORD.md`](docs
   one compound rule reworded drops 239 → 198 (P2a). No learned router passed (M2).
 - **The memory's own gates**: the library arm lost to the base reading the oracle's notes, 35 against 45 of 56 (W5); the
   radar's recall@3 is 0.638 against 0.80 (W3) — lexical BM25 serves.
-- **A larger base buys no accuracy**: the 12B ties or loses to the E4B (B3, B5, PAIR0, PAIR1); the 26B's run was blocked
+- **A larger base buys no accuracy on our regions**: the 12B ties or loses to the E4B (B3, B5, PAIR0, PAIR1) — on
+  τ²-bench airline, untrained, it is the one ahead (T1b); the 26B's run was blocked
   by the serving engine and closed with no result (TEACH0).
 - **Speculative decoding pays on a server, little on the Mac**: 1.98× on an A100, output identical up to every stop (F0c);
   on the Mac llama.cpp's MTP slows the 12B (SPECK0), MLX gives 1.23× with the LoRA (HOTL0, OMLX0, MLXK0). An aligned
@@ -85,7 +97,8 @@ Three lists, every item with its run; the caveats are in [`docs/RECORD.md`](docs
 **Not implemented**
 - No package or container; the serving code does not read the role packs (`roles/*/role.toml` are linted, not loaded) —
   [`docs/FRAMEWORK.md`](docs/FRAMEWORK.md) §5 B, K.
-- No member scored on τ²-bench: its grader reproduces 800/800 published rewards (T0); the shim is specified, not built.
+- No member scored on τ²-bench, only untrained bases (T1, T1b): the shim from members' tags to τ²'s tool calls is built and
+  passes offline (G-shim-1, G-shim-3 — T0); G-shim-2, the same path against a served model, has not run.
 - Replies buffered, not streamed; an HS256 demo token, no real identity provider; no metrics or drift detection.
 - No real user traffic measured, so no bill on it (M6 prices a replay, the local GPU unpriced).
 
@@ -150,7 +163,7 @@ change every time one of them moves.
 
 *The core of 1.0: a router that may abstain, a specialist and a library per subdomain, one referee under all of them.*
 
-Five things, and how each one changes. **Status, 2026-10-05: all five are built and measured** — hence the badge, "core 1.0 built, measured" — with what has not passed named: the radar's gate (recall@3 0.638 against 0.80, W3 **[ran]**), a verifier nobody here wrote (τ²-bench, below: installed, no member scored yet) and real traffic:
+Five things, and how each one changes. **Status, 2026-10-05: all five are built and measured** — hence the badge, "core 1.0 built, measured" — with what has not passed named: the radar's gate (recall@3 0.638 against 0.80, W3 **[ran]**), a verifier nobody here wrote (τ²-bench, below: installed, the untrained bases scored, no member scored yet) and real traffic:
 
 | | what it is | changes by |
 |---|---|---|
@@ -510,7 +523,7 @@ with zero errors over 128 requests; throughput scales near-linearly, 22.7 → 13
 for 1 → 8 → 16 → 32 sessions, and the ceiling sits above 32 — not reached. Supersedes E5's
 single-burst 0.88 ([`results/C1-concurrency-20260929/`](results/C1-concurrency-20260929/BRIEF.md)).
 
-**An external verifier is installed, a teacher is chosen by its terms, and TEACH0 is closed [ran] (2026-10-05).** The one
+**An external verifier is installed, a teacher is chosen by its terms, TEACH0 is closed, and the bases are scored [ran] (2026-10-05/06).** The one
 thing every earlier suite shared is that this repository wrote its grader. **τ²-bench airline** — whose reward is the hash of
 the final database state, in code from `sierra-research/tau2-bench` — now runs here: the mock domain end to end, and its
 local grader re-grades the **800 of 800** simulations shipped with it to the recorded reward (T0 passed by the brief's option
@@ -521,8 +534,19 @@ Gemini's leave "compete" undefined, and **Gemma 4 31B self-hosted** is Apache 2.
 user simulator, the user's decision ([`docs/tau2/TEACHER-TERMS.md`](docs/tau2/TEACHER-TERMS.md)). **The format gap is measured
 offline, before anything is built:** τ² hands the agent native tool calls, members write inline tags, and the repo's tag
 serializer round-trips 1,345 of 1,587 shipped airline tool calls and **loses 220 of 320 writes**; a tag whose body is the
-JSON of the arguments round-trips **1,587/1,587** — the shim is specified, not built, and no member has been scored on τ².
-**Next, T1:** Gemma 4 31B against the E4B base on airline `test`, k = 4, gate a gap — the question TEACH0 could not answer.
+JSON of the arguments round-trips **1,587/1,587**. **The shim is built** ([`examples/tau2/shim.py`](examples/tau2/shim.py)) and
+passes offline: **5,829/5,829** tool calls of the four shipped airline files identical in name, arguments and types both ways
+(G-shim-1), and no grading field reaches it (G-shim-3) ([`TAU2-T0`](results/TAU2-T0-recon-20261005/BRIEF.md)); G-shim-2, the
+same path against a served model, has not run, so no member has been scored through it. **T1 [ran] — a gap, by the user's
+reading.** Gemma 4 31B (QAT W4A16) against the E4B base on airline `test`, k = 4, native tool calls: pass^1 **0.5375** against
+**0.2125**. As written the run is **VOID**: 9 of the base's 80 simulations ended `infrastructure_error`, over the brief's 5 %
+clause — all nine the E4B's empty first reply, neither text nor a tool call. The user's decision (2026-10-05, reading 1):
+those are the base's own failures, scored 0 — **DISTIL HERE**, Δ +36.3 pp, CI [20.0, 53.7], 11 : 0 tasks; VOID-as-written
+stays on record ([`TAU2-T1`](results/TAU2-T1-baselines-20261005/BRIEF.md)). **T1b [ran] — the 12B is the student.** The 12B
+base on the same frozen instrument: pass^1 **0.45** [0.26, 0.64], no empty first reply; paired over the 20 tasks against the
+E4B (0.175 with its empty replies scored 0), **+27.5 pp**, CI [13.8, 42.5], 10 : 0. Beside it, the 31B over the 12B is
+**+8.8 pp**, CI [−6.2, 25.0], 7 : 4 — inside the noise at 20 tasks: most of T1's gap is the 12B's size, not the 31B's
+teaching ([`TAU2-T1b`](results/TAU2-T1b-12b-base-20261006/BRIEF.md)). The line pauses for the user; no T2 is pre-registered.
 **TEACH0 is closed by the user's decision** — blocked by the serving engine (vLLM 0.30's FP8 does not run on the A100 and it has
 no `bitsandbytes` method), no result ([`TEACH0`](results/TEACH0-26b-headroom-20261004/BRIEF.md)); Google's own card **[read]**
 has the 26B at 68.2 % against the 12B's 69.0 % on τ², so the 26B line rests. **RFT0 [ran]: RFT HELPS as
