@@ -506,7 +506,7 @@ context grows little over two or three turns (+24 % at turn 2)
 four members mixed in the same batch (school, upper-layers, staff, out-of-scope): 16 sessions
 across four adapters keep 1.03× the throughput of 16 sessions on one adapter (278.6 vs 269.7
 tok/s); 32 sessions across four adapters reach 504 tok/s at a p95 time-to-first-token of 0.24 s
-with zero errors over 128 requests; throughput scales near-linearly, 22.7 → 135 → 270 → 500 tok/s
+with zero errors over 128 requests; throughput scales near-linearly, 22.7 → 135 → 270 → 491 tok/s
 for 1 → 8 → 16 → 32 sessions, and the ceiling sits above 32 — not reached. Supersedes E5's
 single-burst 0.88 ([`results/C1-concurrency-20260929/`](results/C1-concurrency-20260929/BRIEF.md)).
 

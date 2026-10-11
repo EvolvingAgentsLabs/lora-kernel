@@ -262,7 +262,7 @@ picks its expert with the `model` field. See [`FOUNDATIONS.md`](FOUNDATIONS.md) 
 four members mixed — `school-s0`, `upper-s0`, `staff-s0`, `out-s0`): no material contention. 16 sessions split across
 the four adapters reach 278.6 tok/s against 269.7 tok/s for the same 16 sessions on one adapter alone (1.03×); 32
 sessions across the four reach 504 tok/s, p95 time-to-first-token 0.24 s, 0 errors of 128 requests; throughput scales
-near-linearly from 1 to 32 concurrent sessions (22.7 → 135 → 270 → 500 tok/s), and the ceiling still sits above 32.
+near-linearly from 1 to 32 concurrent sessions (22.7 → 135 → 270 → 491 tok/s), and the ceiling still sits above 32.
 This supersedes §3.6's E5 reading of 0.88 for two LoRAs sharing a batch — that number held at the edge of one burst of
 16; C1 is the same question at the scale a live gateway would actually see.
 

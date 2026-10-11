@@ -55,6 +55,6 @@ One L4 session, vLLM 0.30, E4B bf16 with four members. All four were reachable b
 1. On this server, mixing four members in one batch costs no throughput within the noise: 8×4, 16×4 and 32×4 are each at or
    above their one-adapter cell. E5's 0.88 came from one burst of 16 and sits inside the spread of a single measurement;
    it is superseded by these steady-load cells.
-2. Throughput scales almost linearly with sessions: 22.7 → 135 → 270 → 500 tok/s for 1 → 8 → 16 → 32. At 32 sessions each
+2. Throughput scales almost linearly with sessions: 22.7 → 135 → 270 → 491 tok/s for 1 → 8 → 16 → 32. At 32 sessions each
    request still starts in under a quarter of a second.
 3. **Not measured:** more than four adapters; K beyond 32 (the ceiling); the gateway's own overhead; longer generations.

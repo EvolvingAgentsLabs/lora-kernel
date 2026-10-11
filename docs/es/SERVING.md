@@ -220,7 +220,7 @@ sesiones concurrentes, cuatro adaptadores mezclados entregan **278,6 tok/s** con
 de un solo adaptador — una razón de **1,03**, contra una barra de contención de 0,8. Con 32
 sesiones, cuatro adaptadores llegan a **504,3 tok/s** con **p95 de tiempo al primer token 0,24 s** y
 **0 errores de 128** pedidos. El throughput escala casi linealmente con las sesiones (22,7 → 135 →
-270 → 500 tok/s para 1 → 8 → 16 → 32), y el techo está por encima de 32 sesiones, no alcanzado
+270 → 491 tok/s para 1 → 8 → 16 → 32), y el techo está por encima de 32 sesiones, no alcanzado
 [`results/C1-concurrency-20260929/BRIEF.md`](../../results/C1-concurrency-20260929/BRIEF.md). **No
 medido:** más de cuatro adaptadores, sesiones más allá de 32, el overhead propio del gateway,
 generaciones más largas.

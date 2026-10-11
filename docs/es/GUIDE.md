@@ -264,7 +264,7 @@ su experto con el campo `model`. Ver [`FOUNDATIONS.md`](FOUNDATIONS.md) §5.2.
 0.30, cuatro miembros mezclados — `school-s0`, `upper-s0`, `staff-s0`, `out-s0`): sin contención material. 16
 sesiones repartidas entre los cuatro adapters llegan a 278,6 tok/s contra 269,7 tok/s de las mismas 16 sesiones sobre
 un solo adapter (1,03×); 32 sesiones entre los cuatro llegan a 504 tok/s, TTFT p95 0,24 s, 0 errores de 128 pedidos;
-el rendimiento escala casi linealmente de 1 a 32 sesiones concurrentes (22,7 → 135 → 270 → 500 tok/s), y el techo
+el rendimiento escala casi linealmente de 1 a 32 sesiones concurrentes (22,7 → 135 → 270 → 491 tok/s), y el techo
 todavía está por encima de 32. Esto reemplaza la lectura de E5 en §3.6, 0,88 para dos LoRA compartiendo un lote — ese
 número valía al límite de una ráfaga de 16; C1 es la misma pregunta a la escala que un gateway en vivo vería de
 verdad.

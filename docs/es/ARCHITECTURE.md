@@ -313,7 +313,7 @@ desde una A100 (B3, B4) y está dimensionada para una Mac mini; ~~un 27B es trab
 0.30, cuatro miembros mezclados — `school-s0`, `upper-s0`, `staff-s0`, `out-s0`): 16 sesiones repartidas entre los
 cuatro adapters llegan a 278,6 tok/s contra 269,7 tok/s de las mismas 16 sesiones sobre un solo adapter (1,03×); 32
 sesiones entre los cuatro llegan a 504 tok/s, TTFT p95 0,24 s, 0 errores de 128 pedidos; el rendimiento escala casi
-linealmente de una sesión a 32 (22,7 → 135 → 270 → 500 tok/s), con el techo todavía por encima de 32. Esto reemplaza
+linealmente de una sesión a 32 (22,7 → 135 → 270 → 491 tok/s), con el techo todavía por encima de 32. Esto reemplaza
 la lectura de una sola ráfaga de E5, 0,88 — ese número valía al límite de una ráfaga de 16, no a la escala que
 producen varias sesiones concurrentes de verdad.
 
