@@ -446,18 +446,17 @@ with $\mathrm{tps}$ the server's aggregate generated tokens/s. **NO MATERIAL CON
 across the adapters in play: $r_4(16) = 278.6 / 269.7 = 1.03$ — **above the 0.8 bar, and above 1**, so mixing
 four adapters costs nothing measurable against one at this load. §2.4's near-linear scaling in the number of
 concurrent sequences holds across the whole run and is not an artefact of a single adapter: total throughput
-goes **22.7 → 135.1 → 278.6 → 504.3 tok/s** for $K = 1, 8, 16, 32$ (four-adapter cells), each within noise of
-its one-adapter counterpart (269.7, 490.8 at $K=16, 32$). TTFT stays low throughout (p95 **0.24 s** at $K=32$,
+goes **139.4 → 278.6 → 504.3 tok/s** for $K = 8, 16, 32$ (four-adapter cells; the run has no four-adapter cell
+at $K = 1$), each within noise of its one-adapter counterpart (135.1, 269.7, 490.8 at $K = 8, 16, 32$; one adapter
+alone gives 22.7 at $K = 1$). TTFT stays low throughout (p95 **0.24 s** at $K=32$,
 an eighth of the 2 s budget fixed in the brief), 0 errors of 128 requests, and the ceiling is above 32 —
 not reached. **This supersedes E5's 0.88** ([`RECORD.md`](RECORD.md) §2): that number came from one burst of
 16 requests, inside the spread of a single measurement, not from a curve — the failure §9.4 and §1.1 both
 warn against, reading one draw as the rate.
 
-<!-- IMAGE PLACEHOLDER — see docs/img/IMAGES.md
 <img src="img/c1-throughput.png" alt="Line chart of aggregate generated tokens per second against concurrent sessions K = 1, 8, 16, 32 on one L4: one adapter and four adapters mixed lie on top of each other, rising almost linearly to about 500 tokens per second at K = 32; a two-adapter point at K = 16 sits on the same line." width="100%">
 
 *C1 [ran] `results/C1-concurrency-20260929`: mixing four adapters in one batch costs nothing measurable, $r_4(16) = 1.03$ against a bar of 0.8.*
--->
 
 ---
 
@@ -1234,7 +1233,7 @@ milestone 3 trains the large half; milestone 4 measures §7.1's inequality.
 | §8.7 | **abstention inside a member**: $\ell = 0$ of 70, caught 20/20 against `staff-s0`'s 0/20, demo 6/6; live, the abstained turn reaches Claude Haiku 4.5, $0.0112 | M10 `results/M10-distributor-abstain-20260928/BRIEF.md` |
 | §8.8 | **editing the library after training**: follow 37/38, stale 0, closed-book 1/40 | W7 `results/W7-edit-after-training-20260927/BRIEF.md` |
 | §8.9 | **dependent-turn accuracy without and with history**: $A_{\text{dep}}$(last) 4/54, $A_{\text{dep}}$(history) 43/54; prompt tokens $\bar p_1,\bar p_2,\bar p_3$ = 345/376/303 (last), 345/428/394 (history) | MT0 `results/MT0-multiturn-baseline-20260929/BRIEF.md` |
-| §5.6 | **multi-adapter throughput ratio**: $r_4(16) = 278.6/269.7 = 1.03$, NO MATERIAL CONTENTION; near-linear 22.7 → 135.1 → 278.6 → 504.3 tok/s for K = 1, 8, 16, 32; p95 TTFT 0.24 s at K = 32, 0 errors of 128 | C1 `results/C1-concurrency-20260929/BRIEF.md` |
+| §5.6 | **multi-adapter throughput ratio**: $r_4(16) = 278.6/269.7 = 1.03$, NO MATERIAL CONTENTION; near-linear, four adapters 139.4 → 278.6 → 504.3 tok/s for K = 8, 16, 32, one adapter 22.7 → 135.1 → 269.7 → 490.8 for K = 1, 8, 16, 32; p95 TTFT 0.24 s at K = 32, 0 errors of 128 | C1 `results/C1-concurrency-20260929/BRIEF.md` |
 | §8.9 | **the workflow harness against MT0's history arm and the flatness bar $\bar p_3 \le 1.1\ \bar p_1$**: $A_{\text{dep}}$(harness) 53/54 vs 43/54, 11 : 1 paired ($p\approx0.006$); $\bar p_1,\bar p_2,\bar p_3$ = 745/726/710, flat; `harness-noblock` 0/60. As written VOID (the first-turns rule voids across arms); read per arm, `harness` PASSED and `harness-noblock` FALSIFIED — the user's decision (2026-09-29): per arm stands, the as-written VOID kept as the instrument-error record | H1 `results/H1-workflow-harness-20260929/BRIEF.md` |
 | §8.9 | **the same harness on a five-turn tracker domain, the flatness bar $\bar p_5 \le 1.1\ \bar p_1$**: $A_{\text{dep}}$(harness) 146/160 (91.3%) against a 90% bar; $\bar p_1,\dots,\bar p_5$ = 1613/1223/1011/1149/1274, flat; `base-history` 4/160, its own first turns 44/60 void it under H1's per-arm rule, making the pre-registered comparison unreadable — reads FALSIFIED as written, not VOID, kept on record with that and the anchor-check instrument error; descriptive paired 142 : 0, $p\lt 10^{-40}$ (arm void, not a substitute verdict); **the user's decision (2026-09-29): reading 1** — the readable conditions are H2's verdict, `harness` PASSED. `harness-noblock` 80/160 is a corpus bug (a `% 3` aliasing between the block-less third and the role rotation), not partial learning | H2 `results/H2-tracker-harness-20260929/BRIEF.md` |
 | §8.9 | **H3 [ran], both bars PASSED**: `tr-s1` (trained on a second corpus that widens wording per turn/role and gives each role an even block-less third) 158/160 against `tr-s0` 147/160 on a fresh held-out suite, paired 11:0, exact sign test $p=2\cdot2^{-11}\approx0.00098$, flat; `s1-noblock` 156/160, losing 4 of 8 turns to the block, every role above the bar, about a third of the prompt tokens | H3 [`results/H3-tracker-corpus-v2-20260929/BRIEF.md`](../results/H3-tracker-corpus-v2-20260929/BRIEF.md) |

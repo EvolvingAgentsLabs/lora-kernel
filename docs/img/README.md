@@ -35,7 +35,7 @@ English in both language versions.
 | `solution-architecture.png` | wide, ~1600 px | ✅ **in** | `README.md`, `README.es.md`, `docs/articles/2026-09-it-was-the-harness.md`, `docs/articles/2026-09-era-el-arnes.es.md` (cover) |
 | `lora-patch.png` | 1600 × 800 | ✅ **in** (2026-10-11), brief in [`IMAGES.md`](IMAGES.md) | `docs/GUIDE.md` §5.1 (+ `es`) |
 | `speculative-decoding.png` | 1600 × 800 | ✅ **in** (2026-10-11), brief in [`IMAGES.md`](IMAGES.md) | `docs/GUIDE.md` §6.1 (+ `es`) |
-| `c1-throughput.png` | 1600 × 800 | ⏳ wanted 2026-10-09 — a chart rendered from `results/C1-concurrency-20260929/c1.json`, script in [`IMAGES.md`](IMAGES.md) | `docs/FOUNDATIONS.md` §5.6 (+ `es`) |
+| `c1-throughput.png` | 1600 × 800 | ✅ **in** (2026-10-11) — a chart rendered from `results/C1-concurrency-20260929/c1.json` by the script in [`IMAGES.md`](IMAGES.md), not drawn | `docs/FOUNDATIONS.md` §5.6 (+ `es`) |
 
 ## Briefs
 
