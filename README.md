@@ -710,8 +710,13 @@ A P-number cited here without a directory on `main` lives there.
 
 ## Part of EvolvingAgentsLabs
 
-lora-kernel is one of three active projects of [EvolvingAgentsLabs](https://evolvingagentslabs.github.io); how
-they connect is drawn on the [website](https://evolvingagentslabs.github.io/#connections).
+lora-kernel is one of the projects of [EvolvingAgentsLabs](https://evolvingagentslabs.github.io), whose centre is the
+**[director](https://github.com/EvolvingAgentsLabs/evolving-agents/tree/main/packages/director)** in evolving-agents; how they connect is drawn on the
+[website](https://evolvingagentslabs.github.io/#connections).
+
+- **[director](https://github.com/EvolvingAgentsLabs/evolving-agents/tree/main/packages/director)** plans by walking a team's operational memory and delegates each step to
+  Claude Code or to a local model. **Next, not built:** its local lane through lora-kernel's specialists and router;
+  today it calls a bare model on llama.cpp.
 
 - **[agentvcs](https://github.com/EvolvingAgentsLabs/agentvcs)** versions, merges and attributes changes to agent
   harnesses, with Claude Code as its only LLM. **Built:** its
