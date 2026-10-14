@@ -125,6 +125,14 @@ https://github.com/user-attachments/assets/bf19e256-6c78-4170-97ff-dca3b407dd6d
 sesiones a través de OpenClaw, Gemma 4 E4B + `tr-s1` sobre llama.cpp, llevando las claves y no la conversación — cada turno copiado de
 [`results/LIVE-tracker-openclaw-20260930/`](results/LIVE-tracker-openclaw-20260930/BRIEF.md), **14/14**, dependientes 8/8 · [`video/demo-tracker/`](video/README.md).
 
+![Una terminal en una laptop: un desarrollador pide los detalles de un issue y pasarlo a revisión — el miembro local llama a las herramientas del tracker y ambos turnos se rutean local; en una sesión nueva el mismo desarrollador pregunta cómo se dice "deadline" en francés — el miembro responde OUT OF SCOPE y la ruta es frontier, donde responde Claude Haiku 4.5.](docs/img/demo-router.gif)
+
+**Y el router, en vivo en una laptop (24 s) [ran] 2026-10-13:** el miembro del tracker `tr-out-s0` sobre llama.cpp sirve lo que
+cubren sus herramientas y se abstiene en el resto, que el egress del rol de desarrollador deriva a Claude Haiku 4.5 (US$0,0004).
+Una sesión, no una tasa; la abstención se muestra como primer turno de una sesión, como la midió ROUTE1 — a mitad de sesión no
+se dio, una muestra — y la corrida encontró y arregló un bug que bloqueaba toda frontera remota
+([`results/DEMO-router-mac-20261013/`](results/DEMO-router-mac-20261013/BRIEF.md)).
+
 **Y en vivo, no sólo guionada [ran] 2026-09-26: 15/15 a través del OpenClaw real.** Las mismas escenas enviadas por el propio
 OpenClaw 2026.9.4 — un perfil por rol, cada uno con su token firmado como clave del proveedor — al gateway, con el miembro
 en una L4 alquilada y **Claude Haiku 4.5 como frontera** para lo que ninguna herramienta cubre: pasan todas, el único turno a

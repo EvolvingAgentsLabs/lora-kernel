@@ -41,7 +41,7 @@ def hosts_of(*urls: str | None) -> set[str]:
 
 def _allowed(host) -> bool:
     h = str(host).strip("[]").lower()
-    if h in _state["hosts"]:
+    if h in _state["hosts"] or h in _state["resolved"]:
         return True
     try:
         return ipaddress.ip_address(h).is_loopback
@@ -63,13 +63,20 @@ def install(hosts: set[str], log: str | None = None) -> None:
     """Close the process's egress to `hosts` plus loopback. Idempotent; `uninstall()` restores the socket module."""
     if _state:
         uninstall()
-    _state.update(hosts={h.lower() for h in hosts} | LOOPBACK, log=log, denied=[],
+    # `resolved`: the addresses an allowed NAME resolved to. `connect` sees only the address, so without them every
+    # configured remote host was refused at connect after passing DNS — the frontier never reached [ran]
+    # DEMO-router-mac-20261013, attempt 2; only loopback had ever been exercised.
+    _state.update(hosts={h.lower() for h in hosts} | LOOPBACK, resolved=set(), log=log, denied=[],
                   getaddrinfo=socket.getaddrinfo, connect=socket.socket.connect, connect_ex=socket.socket.connect_ex)
 
     def getaddrinfo(host, port, *a, **k):
         if host is not None and not _allowed(host):
             _deny(host, port, "dns")
-        return _state["getaddrinfo"](host, port, *a, **k)
+        out = _state["getaddrinfo"](host, port, *a, **k)
+        if host is not None:
+            with _lock:
+                _state["resolved"].update(str(r[4][0]).lower() for r in out)
+        return out
 
     def _check(sock, address):
         if sock.family in (socket.AF_INET, socket.AF_INET6) and isinstance(address, tuple) and not _allowed(address[0]):

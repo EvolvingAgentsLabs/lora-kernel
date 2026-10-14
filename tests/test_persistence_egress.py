@@ -116,3 +116,18 @@ def test_a_configured_frontier_host_is_allowed_and_nothing_else(closed):
     assert not egress._allowed("api.openai.com") and not egress._allowed("10.0.0.5")
     egress.uninstall()
     assert socket.getaddrinfo is not None and not egress.denied()
+
+
+def test_a_configured_remote_host_is_reachable_at_the_address_it_resolves_to(closed, monkeypatch):
+    """The allow-list holds names; `connect` sees addresses. An allowed name's resolved addresses must pass `connect`,
+    an address nobody resolved must not. Before the fix every remote frontier was refused at connect after passing DNS
+    [ran] DEMO-router-mac-20261013 — the test above only ever asked `_allowed` about names."""
+    fake = [(socket.AF_INET, socket.SOCK_STREAM, 6, "", ("160.79.104.10", 443))]
+    monkeypatch.setattr(socket, "getaddrinfo", lambda *a, **k: fake)
+    egress.install(egress.hosts_of("http://127.0.0.1:8792", "https://api.anthropic.com/v1"))
+    assert not egress._allowed("160.79.104.10")
+    assert socket.getaddrinfo("api.anthropic.com", 443) == fake
+    assert egress._allowed("160.79.104.10") and not egress._allowed("160.79.104.11")
+    with pytest.raises(egress.EgressDenied):
+        socket.getaddrinfo("api.openai.com", 443)
+    egress.uninstall()

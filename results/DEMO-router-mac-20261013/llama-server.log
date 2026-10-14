@@ -1,0 +1,212 @@
+0.00.000.401 I srv  llama_server: initializing ...
+0.00.149.267 I cmn  common_param: common_params_print_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+0.00.150.739 W srv  llama_server: security: no API key is set and CORS allows all origins (see https://github.com/ggml-org/llama.cpp/pull/25655)
+0.00.152.379 I srv    load_model: loading model '/Users/agustinazwiener/lora-kernel-models/gguf/gemma-4-E4B-it-Q8_0.gguf'
+0.00.787.643 W load: control-looking token:     50 '<|tool_response>' was not control-type; this is probably a bug in the model. its type will be overridden
+0.00.789.735 W load: control-looking token:    212 '</s>' was not control-type; this is probably a bug in the model. its type will be overridden
+0.00.794.697 W load: special_eog_ids contains '<|tool_response>', removing '</s>' token from EOG list
+0.10.767.965 I cmn          init: llama threadpool init, n_threads = 4
+0.11.050.630 I srv    load_model: initializing, n_slots = 4, n_ctx_slot = 8192, kv_unified = 'true'
+0.11.069.008 I srv  llama_server: model loaded
+0.11.069.014 I srv  llama_server: listening on http://127.0.0.1:8792
+1.01.935.552 W check_double_bos_eos: Added a BOS token to the prompt as specified by the model but the prompt also starts with a BOS token. So now the final prompt starts with 2 BOS tokens. Are you sure this is what you want?
+1.01.937.467 I slot get_availabl: id  3 | task -1 | selected slot by LRU, t_last = -1
+1.01.938.162 I slot launch_slot_: id  3 | task 1 | processing task, is_child = 0
+1.03.084.325 I slot print_timing: id  3 | task 1 | prompt eval time =     543.73 ms /   106 tokens (    5.13 ms per token,   194.95 tokens per second)
+1.03.084.327 I slot print_timing: id  3 | task 1 |        eval time =     602.09 ms /    11 tokens (   60.21 ms per token,    16.61 tokens per second)
+1.03.084.328 I slot print_timing: id  3 | task 1 |       total time =    1145.82 ms /   117 tokens
+1.03.084.328 I slot print_timing: id  3 | task 1 |    graphs reused =         10
+1.03.084.446 I slot      release: id  3 | task 1 | stop processing: n_tokens = 116, truncated = 0
+1.03.102.292 W check_double_bos_eos: Added a BOS token to the prompt as specified by the model but the prompt also starts with a BOS token. So now the final prompt starts with 2 BOS tokens. Are you sure this is what you want?
+1.03.102.341 I slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, f_sim_best = 0.716 (> 0.100 thold), f_keep = 1.000
+1.03.102.409 I slot launch_slot_: id  3 | task 14 | processing task, is_child = 0
+1.04.886.859 I slot print_timing: id  3 | task 14 | prompt eval time =     336.09 ms /    61 tokens (    5.51 ms per token,   181.50 tokens per second)
+1.04.886.862 I slot print_timing: id  3 | task 14 |        eval time =    1448.31 ms /    23 tokens (   65.83 ms per token,    15.19 tokens per second)
+1.04.886.862 I slot print_timing: id  3 | task 14 |       total time =    1784.40 ms /    84 tokens
+1.04.886.863 I slot print_timing: id  3 | task 14 |    graphs reused =         31
+1.04.888.269 I slot      release: id  3 | task 14 | stop processing: n_tokens = 184, truncated = 0
+1.04.929.052 W check_double_bos_eos: Added a BOS token to the prompt as specified by the model but the prompt also starts with a BOS token. So now the final prompt starts with 2 BOS tokens. Are you sure this is what you want?
+1.04.929.122 I slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, f_sim_best = 0.968 (> 0.100 thold), f_keep = 1.000
+1.04.929.228 I slot launch_slot_: id  3 | task 39 | processing task, is_child = 0
+1.05.537.741 I slot print_timing: id  3 | task 39 | prompt eval time =     233.47 ms /    33 tokens (    7.07 ms per token,   141.35 tokens per second)
+1.05.537.744 I slot print_timing: id  3 | task 39 |        eval time =     375.00 ms /     7 tokens (   62.50 ms per token,    16.00 tokens per second)
+1.05.537.745 I slot print_timing: id  3 | task 39 |       total time =     608.47 ms /    40 tokens
+1.05.537.746 I slot print_timing: id  3 | task 39 |    graphs reused =         36
+1.05.537.779 I slot      release: id  3 | task 39 | stop processing: n_tokens = 196, truncated = 0
+1.05.541.566 W check_double_bos_eos: Added a BOS token to the prompt as specified by the model but the prompt also starts with a BOS token. So now the final prompt starts with 2 BOS tokens. Are you sure this is what you want?
+1.05.541.622 I slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, f_sim_best = 0.970 (> 0.100 thold), f_keep = 1.000
+1.05.541.695 I slot launch_slot_: id  3 | task 48 | processing task, is_child = 0
+1.09.116.764 I slot print_timing: id  3 | task 48 | prompt eval time =     219.17 ms /    17 tokens (   12.89 ms per token,    77.57 tokens per second)
+1.09.116.767 I slot print_timing: id  3 | task 48 |        eval time =    3355.85 ms /    57 tokens (   59.93 ms per token,    16.69 tokens per second)
+1.09.116.768 I slot print_timing: id  3 | task 48 |       total time =    3575.02 ms /    74 tokens
+1.09.116.768 I slot print_timing: id  3 | task 48 |    graphs reused =         90
+1.09.117.103 I slot      release: id  3 | task 48 | stop processing: n_tokens = 258, truncated = 0
+1.10.648.868 W check_double_bos_eos: Added a BOS token to the prompt as specified by the model but the prompt also starts with a BOS token. So now the final prompt starts with 2 BOS tokens. Are you sure this is what you want?
+1.10.648.951 I slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, f_sim_best = 0.802 (> 0.100 thold), f_keep = 0.329
+1.10.678.776 I slot launch_slot_: id  3 | task 107 | processing task, is_child = 0
+1.11.459.457 I slot print_timing: id  3 | task 107 | prompt eval time =     540.78 ms /   106 tokens (    5.10 ms per token,   196.01 tokens per second)
+1.11.459.459 I slot print_timing: id  3 | task 107 |        eval time =     239.85 ms /     5 tokens (   59.96 ms per token,    16.68 tokens per second)
+1.11.459.460 I slot print_timing: id  3 | task 107 |       total time =     780.64 ms /   111 tokens
+1.11.459.460 I slot print_timing: id  3 | task 107 |    graphs reused =         93
+1.11.459.866 I slot      release: id  3 | task 107 | stop processing: n_tokens = 110, truncated = 0
+1.11.465.913 W check_double_bos_eos: Added a BOS token to the prompt as specified by the model but the prompt also starts with a BOS token. So now the final prompt starts with 2 BOS tokens. Are you sure this is what you want?
+1.11.466.020 I slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, f_sim_best = 0.924 (> 0.100 thold), f_keep = 1.000
+1.11.466.091 I slot launch_slot_: id  3 | task 114 | processing task, is_child = 0
+1.12.735.172 I slot print_timing: id  3 | task 114 | prompt eval time =     216.91 ms /    18 tokens (   12.05 ms per token,    82.98 tokens per second)
+1.12.735.175 I slot print_timing: id  3 | task 114 |        eval time =    1052.12 ms /    19 tokens (   58.45 ms per token,    17.11 tokens per second)
+1.12.735.175 I slot print_timing: id  3 | task 114 |       total time =    1269.03 ms /    37 tokens
+1.12.735.176 I slot print_timing: id  3 | task 114 |    graphs reused =        110
+1.12.735.206 I slot      release: id  3 | task 114 | stop processing: n_tokens = 137, truncated = 0
+1.12.744.608 W check_double_bos_eos: Added a BOS token to the prompt as specified by the model but the prompt also starts with a BOS token. So now the final prompt starts with 2 BOS tokens. Are you sure this is what you want?
+1.12.744.666 I slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, f_sim_best = 0.873 (> 0.100 thold), f_keep = 1.000
+1.12.744.687 I slot launch_slot_: id  3 | task 135 | processing task, is_child = 0
+1.14.270.722 I slot print_timing: id  3 | task 135 | prompt eval time =     306.64 ms /    43 tokens (    7.13 ms per token,   140.23 tokens per second)
+1.14.270.725 I slot print_timing: id  3 | task 135 |        eval time =    1219.35 ms /    21 tokens (   60.97 ms per token,    16.40 tokens per second)
+1.14.270.725 I slot print_timing: id  3 | task 135 |       total time =    1525.99 ms /    64 tokens
+1.14.270.726 I slot print_timing: id  3 | task 135 |    graphs reused =        129
+1.14.270.794 I slot      release: id  3 | task 135 | stop processing: n_tokens = 177, truncated = 0
+1.15.797.628 W check_double_bos_eos: Added a BOS token to the prompt as specified by the model but the prompt also starts with a BOS token. So now the final prompt starts with 2 BOS tokens. Are you sure this is what you want?
+1.15.797.722 I slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, f_sim_best = 0.864 (> 0.100 thold), f_keep = 0.537
+1.15.797.874 I slot launch_slot_: id  3 | task 158 | processing task, is_child = 0
+1.16.803.439 I slot print_timing: id  3 | task 158 | prompt eval time =     527.76 ms /   110 tokens (    4.80 ms per token,   208.43 tokens per second)
+1.16.803.442 I slot print_timing: id  3 | task 158 |        eval time =     477.75 ms /     9 tokens (   59.72 ms per token,    16.75 tokens per second)
+1.16.803.442 I slot print_timing: id  3 | task 158 |       total time =    1005.51 ms /   119 tokens
+1.16.803.443 I slot print_timing: id  3 | task 158 |    graphs reused =        136
+1.16.803.491 I slot      release: id  3 | task 158 | stop processing: n_tokens = 118, truncated = 0
+1.16.812.546 W check_double_bos_eos: Added a BOS token to the prompt as specified by the model but the prompt also starts with a BOS token. So now the final prompt starts with 2 BOS tokens. Are you sure this is what you want?
+1.16.812.594 I slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, f_sim_best = 0.776 (> 0.100 thold), f_keep = 1.000
+1.16.812.690 I slot launch_slot_: id  3 | task 169 | processing task, is_child = 0
+1.17.836.964 I slot print_timing: id  3 | task 169 | prompt eval time =     304.22 ms /    47 tokens (    6.47 ms per token,   154.49 tokens per second)
+1.17.836.967 I slot print_timing: id  3 | task 169 |        eval time =     720.02 ms /    13 tokens (   60.00 ms per token,    16.67 tokens per second)
+1.17.836.967 I slot print_timing: id  3 | task 169 |       total time =    1024.24 ms /    60 tokens
+1.17.836.968 I slot print_timing: id  3 | task 169 |    graphs reused =        147
+1.17.837.733 I slot      release: id  3 | task 169 | stop processing: n_tokens = 164, truncated = 0
+2.37.026.236 W check_double_bos_eos: Added a BOS token to the prompt as specified by the model but the prompt also starts with a BOS token. So now the final prompt starts with 2 BOS tokens. Are you sure this is what you want?
+2.37.028.804 I slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, f_sim_best = 0.802 (> 0.100 thold), f_keep = 0.518
+2.37.030.118 I slot launch_slot_: id  3 | task 184 | processing task, is_child = 0
+2.38.144.408 I slot print_timing: id  3 | task 184 | prompt eval time =     536.01 ms /   106 tokens (    5.06 ms per token,   197.76 tokens per second)
+2.38.144.411 I slot print_timing: id  3 | task 184 |        eval time =     577.91 ms /    11 tokens (   57.79 ms per token,    17.30 tokens per second)
+2.38.144.411 I slot print_timing: id  3 | task 184 |       total time =    1113.93 ms /   117 tokens
+2.38.144.412 I slot print_timing: id  3 | task 184 |    graphs reused =        156
+2.38.144.538 I slot      release: id  3 | task 184 | stop processing: n_tokens = 116, truncated = 0
+2.38.164.546 W check_double_bos_eos: Added a BOS token to the prompt as specified by the model but the prompt also starts with a BOS token. So now the final prompt starts with 2 BOS tokens. Are you sure this is what you want?
+2.38.164.599 I slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, f_sim_best = 0.716 (> 0.100 thold), f_keep = 1.000
+2.38.164.878 I slot launch_slot_: id  3 | task 197 | processing task, is_child = 0
+2.39.771.908 I slot print_timing: id  3 | task 197 | prompt eval time =     311.44 ms /    61 tokens (    5.11 ms per token,   195.86 tokens per second)
+2.39.771.912 I slot print_timing: id  3 | task 197 |        eval time =    1295.54 ms /    23 tokens (   58.89 ms per token,    16.98 tokens per second)
+2.39.771.912 I slot print_timing: id  3 | task 197 |       total time =    1606.99 ms /    84 tokens
+2.39.771.913 I slot print_timing: id  3 | task 197 |    graphs reused =        177
+2.39.771.999 I slot      release: id  3 | task 197 | stop processing: n_tokens = 184, truncated = 0
+2.39.778.975 W check_double_bos_eos: Added a BOS token to the prompt as specified by the model but the prompt also starts with a BOS token. So now the final prompt starts with 2 BOS tokens. Are you sure this is what you want?
+2.39.779.041 I slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, f_sim_best = 0.968 (> 0.100 thold), f_keep = 1.000
+2.39.779.125 I slot launch_slot_: id  3 | task 222 | processing task, is_child = 0
+2.40.357.128 I slot print_timing: id  3 | task 222 | prompt eval time =     223.82 ms /    33 tokens (    6.78 ms per token,   147.44 tokens per second)
+2.40.357.130 I slot print_timing: id  3 | task 222 |        eval time =     354.14 ms /     7 tokens (   59.02 ms per token,    16.94 tokens per second)
+2.40.357.130 I slot print_timing: id  3 | task 222 |       total time =     577.96 ms /    40 tokens
+2.40.357.131 I slot print_timing: id  3 | task 222 |    graphs reused =        182
+2.40.357.191 I slot      release: id  3 | task 222 | stop processing: n_tokens = 196, truncated = 0
+2.40.360.686 W check_double_bos_eos: Added a BOS token to the prompt as specified by the model but the prompt also starts with a BOS token. So now the final prompt starts with 2 BOS tokens. Are you sure this is what you want?
+2.40.360.728 I slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, f_sim_best = 0.970 (> 0.100 thold), f_keep = 1.000
+2.40.360.927 I slot launch_slot_: id  3 | task 231 | processing task, is_child = 0
+2.43.849.352 I slot print_timing: id  3 | task 231 | prompt eval time =     215.03 ms /    17 tokens (   12.65 ms per token,    79.06 tokens per second)
+2.43.849.355 I slot print_timing: id  3 | task 231 |        eval time =    3273.35 ms /    57 tokens (   58.45 ms per token,    17.11 tokens per second)
+2.43.849.360 I slot print_timing: id  3 | task 231 |       total time =    3488.38 ms /    74 tokens
+2.43.849.361 I slot print_timing: id  3 | task 231 |    graphs reused =        236
+2.43.849.406 I slot      release: id  3 | task 231 | stop processing: n_tokens = 258, truncated = 0
+2.45.367.636 W check_double_bos_eos: Added a BOS token to the prompt as specified by the model but the prompt also starts with a BOS token. So now the final prompt starts with 2 BOS tokens. Are you sure this is what you want?
+2.45.367.822 I slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, f_sim_best = 0.802 (> 0.100 thold), f_keep = 0.329
+2.45.368.095 I slot launch_slot_: id  3 | task 290 | processing task, is_child = 0
+2.46.172.257 I slot print_timing: id  3 | task 290 | prompt eval time =     554.36 ms /   106 tokens (    5.23 ms per token,   191.21 tokens per second)
+2.46.172.259 I slot print_timing: id  3 | task 290 |        eval time =     249.77 ms /     5 tokens (   62.44 ms per token,    16.01 tokens per second)
+2.46.172.260 I slot print_timing: id  3 | task 290 |       total time =     804.13 ms /   111 tokens
+2.46.172.260 I slot print_timing: id  3 | task 290 |    graphs reused =        239
+2.46.172.474 I slot      release: id  3 | task 290 | stop processing: n_tokens = 110, truncated = 0
+2.46.175.359 W check_double_bos_eos: Added a BOS token to the prompt as specified by the model but the prompt also starts with a BOS token. So now the final prompt starts with 2 BOS tokens. Are you sure this is what you want?
+2.46.175.399 I slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, f_sim_best = 0.924 (> 0.100 thold), f_keep = 1.000
+2.46.175.457 I slot launch_slot_: id  3 | task 297 | processing task, is_child = 0
+2.47.444.353 I slot print_timing: id  3 | task 297 | prompt eval time =     212.37 ms /    18 tokens (   11.80 ms per token,    84.76 tokens per second)
+2.47.444.356 I slot print_timing: id  3 | task 297 |        eval time =    1056.50 ms /    19 tokens (   58.69 ms per token,    17.04 tokens per second)
+2.47.444.356 I slot print_timing: id  3 | task 297 |       total time =    1268.87 ms /    37 tokens
+2.47.444.357 I slot print_timing: id  3 | task 297 |    graphs reused =        256
+2.47.444.388 I slot      release: id  3 | task 297 | stop processing: n_tokens = 137, truncated = 0
+2.47.447.546 W check_double_bos_eos: Added a BOS token to the prompt as specified by the model but the prompt also starts with a BOS token. So now the final prompt starts with 2 BOS tokens. Are you sure this is what you want?
+2.47.447.600 I slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, f_sim_best = 0.873 (> 0.100 thold), f_keep = 1.000
+2.47.447.620 I slot launch_slot_: id  3 | task 318 | processing task, is_child = 0
+2.48.919.466 I slot print_timing: id  3 | task 318 | prompt eval time =     305.38 ms /    43 tokens (    7.10 ms per token,   140.81 tokens per second)
+2.48.919.469 I slot print_timing: id  3 | task 318 |        eval time =    1166.43 ms /    21 tokens (   58.32 ms per token,    17.15 tokens per second)
+2.48.919.469 I slot print_timing: id  3 | task 318 |       total time =    1471.80 ms /    64 tokens
+2.48.919.470 I slot print_timing: id  3 | task 318 |    graphs reused =        275
+2.48.919.491 I slot      release: id  3 | task 318 | stop processing: n_tokens = 177, truncated = 0
+2.50.437.883 W check_double_bos_eos: Added a BOS token to the prompt as specified by the model but the prompt also starts with a BOS token. So now the final prompt starts with 2 BOS tokens. Are you sure this is what you want?
+2.50.437.950 I slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, f_sim_best = 0.787 (> 0.100 thold), f_keep = 0.480
+2.50.446.233 I slot launch_slot_: id  3 | task 341 | processing task, is_child = 0
+2.51.249.838 I slot print_timing: id  3 | task 341 | prompt eval time =     569.90 ms /   108 tokens (    5.28 ms per token,   189.51 tokens per second)
+2.51.249.840 I slot print_timing: id  3 | task 341 |        eval time =     233.67 ms /     5 tokens (   58.42 ms per token,    17.12 tokens per second)
+2.51.249.841 I slot print_timing: id  3 | task 341 |       total time =     803.57 ms /   113 tokens
+2.51.249.841 I slot print_timing: id  3 | task 341 |    graphs reused =        278
+2.51.249.899 I slot      release: id  3 | task 341 | stop processing: n_tokens = 112, truncated = 0
+4.38.542.806 W check_double_bos_eos: Added a BOS token to the prompt as specified by the model but the prompt also starts with a BOS token. So now the final prompt starts with 2 BOS tokens. Are you sure this is what you want?
+4.38.544.594 I slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, f_sim_best = 0.877 (> 0.100 thold), f_keep = 0.830
+4.38.546.087 I slot launch_slot_: id  3 | task 348 | processing task, is_child = 0
+4.39.682.370 I slot print_timing: id  3 | task 348 | prompt eval time =     527.09 ms /   106 tokens (    4.97 ms per token,   201.10 tokens per second)
+4.39.682.373 I slot print_timing: id  3 | task 348 |        eval time =     608.80 ms /    11 tokens (   60.88 ms per token,    16.43 tokens per second)
+4.39.682.374 I slot print_timing: id  3 | task 348 |       total time =    1135.89 ms /   117 tokens
+4.39.682.374 I slot print_timing: id  3 | task 348 |    graphs reused =        287
+4.39.682.520 I slot      release: id  3 | task 348 | stop processing: n_tokens = 116, truncated = 0
+4.39.700.192 W check_double_bos_eos: Added a BOS token to the prompt as specified by the model but the prompt also starts with a BOS token. So now the final prompt starts with 2 BOS tokens. Are you sure this is what you want?
+4.39.700.261 I slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, f_sim_best = 0.716 (> 0.100 thold), f_keep = 1.000
+4.39.700.284 I slot launch_slot_: id  3 | task 361 | processing task, is_child = 0
+4.41.317.370 I slot print_timing: id  3 | task 361 | prompt eval time =     316.31 ms /    61 tokens (    5.19 ms per token,   192.85 tokens per second)
+4.41.317.373 I slot print_timing: id  3 | task 361 |        eval time =    1300.74 ms /    23 tokens (   59.12 ms per token,    16.91 tokens per second)
+4.41.317.378 I slot print_timing: id  3 | task 361 |       total time =    1617.05 ms /    84 tokens
+4.41.317.380 I slot print_timing: id  3 | task 361 |    graphs reused =        308
+4.41.317.538 I slot      release: id  3 | task 361 | stop processing: n_tokens = 184, truncated = 0
+4.41.319.895 W check_double_bos_eos: Added a BOS token to the prompt as specified by the model but the prompt also starts with a BOS token. So now the final prompt starts with 2 BOS tokens. Are you sure this is what you want?
+4.41.319.950 I slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, f_sim_best = 0.968 (> 0.100 thold), f_keep = 1.000
+4.41.320.043 I slot launch_slot_: id  3 | task 386 | processing task, is_child = 0
+4.41.894.304 I slot print_timing: id  3 | task 386 | prompt eval time =     222.60 ms /    33 tokens (    6.75 ms per token,   148.25 tokens per second)
+4.41.894.308 I slot print_timing: id  3 | task 386 |        eval time =     351.62 ms /     7 tokens (   58.60 ms per token,    17.06 tokens per second)
+4.41.894.309 I slot print_timing: id  3 | task 386 |       total time =     574.23 ms /    40 tokens
+4.41.894.309 I slot print_timing: id  3 | task 386 |    graphs reused =        313
+4.41.894.333 I slot      release: id  3 | task 386 | stop processing: n_tokens = 196, truncated = 0
+4.41.896.299 W check_double_bos_eos: Added a BOS token to the prompt as specified by the model but the prompt also starts with a BOS token. So now the final prompt starts with 2 BOS tokens. Are you sure this is what you want?
+4.41.896.356 I slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, f_sim_best = 0.970 (> 0.100 thold), f_keep = 1.000
+4.41.896.378 I slot launch_slot_: id  3 | task 395 | processing task, is_child = 0
+4.45.432.787 I slot print_timing: id  3 | task 395 | prompt eval time =     218.77 ms /    17 tokens (   12.87 ms per token,    77.71 tokens per second)
+4.45.432.790 I slot print_timing: id  3 | task 395 |        eval time =    3317.57 ms /    57 tokens (   59.24 ms per token,    16.88 tokens per second)
+4.45.432.791 I slot print_timing: id  3 | task 395 |       total time =    3536.34 ms /    74 tokens
+4.45.432.792 I slot print_timing: id  3 | task 395 |    graphs reused =        367
+4.45.432.995 I slot      release: id  3 | task 395 | stop processing: n_tokens = 258, truncated = 0
+4.46.971.156 W check_double_bos_eos: Added a BOS token to the prompt as specified by the model but the prompt also starts with a BOS token. So now the final prompt starts with 2 BOS tokens. Are you sure this is what you want?
+4.46.971.276 I slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, f_sim_best = 0.802 (> 0.100 thold), f_keep = 0.329
+4.46.984.388 I slot launch_slot_: id  3 | task 454 | processing task, is_child = 0
+4.47.405.915 I slot print_timing: id  3 | task 454 | prompt eval time =     175.57 ms /     6 tokens (   29.26 ms per token,    34.17 tokens per second)
+4.47.405.917 I slot print_timing: id  3 | task 454 |        eval time =     245.92 ms /     5 tokens (   61.48 ms per token,    16.27 tokens per second)
+4.47.405.918 I slot print_timing: id  3 | task 454 |       total time =     421.49 ms /    11 tokens
+4.47.405.918 I slot print_timing: id  3 | task 454 |    graphs reused =        370
+4.47.405.942 I slot      release: id  3 | task 454 | stop processing: n_tokens = 110, truncated = 0
+4.47.407.365 W check_double_bos_eos: Added a BOS token to the prompt as specified by the model but the prompt also starts with a BOS token. So now the final prompt starts with 2 BOS tokens. Are you sure this is what you want?
+4.47.407.403 I slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, f_sim_best = 0.924 (> 0.100 thold), f_keep = 1.000
+4.47.407.466 I slot launch_slot_: id  3 | task 461 | processing task, is_child = 0
+4.48.688.410 I slot print_timing: id  3 | task 461 | prompt eval time =     216.12 ms /    18 tokens (   12.01 ms per token,    83.29 tokens per second)
+4.48.688.414 I slot print_timing: id  3 | task 461 |        eval time =    1064.78 ms /    19 tokens (   59.15 ms per token,    16.90 tokens per second)
+4.48.688.414 I slot print_timing: id  3 | task 461 |       total time =    1280.91 ms /    37 tokens
+4.48.688.415 I slot print_timing: id  3 | task 461 |    graphs reused =        387
+4.48.688.487 I slot      release: id  3 | task 461 | stop processing: n_tokens = 137, truncated = 0
+4.48.692.459 W check_double_bos_eos: Added a BOS token to the prompt as specified by the model but the prompt also starts with a BOS token. So now the final prompt starts with 2 BOS tokens. Are you sure this is what you want?
+4.48.692.523 I slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, f_sim_best = 0.873 (> 0.100 thold), f_keep = 1.000
+4.48.693.136 I slot launch_slot_: id  3 | task 482 | processing task, is_child = 0
+4.50.159.273 I slot print_timing: id  3 | task 482 | prompt eval time =     301.37 ms /    43 tokens (    7.01 ms per token,   142.68 tokens per second)
+4.50.159.276 I slot print_timing: id  3 | task 482 |        eval time =    1164.73 ms /    21 tokens (   58.24 ms per token,    17.17 tokens per second)
+4.50.159.276 I slot print_timing: id  3 | task 482 |       total time =    1466.10 ms /    64 tokens
+4.50.159.277 I slot print_timing: id  3 | task 482 |    graphs reused =        406
+4.50.159.297 I slot      release: id  3 | task 482 | stop processing: n_tokens = 177, truncated = 0
+4.51.669.529 W check_double_bos_eos: Added a BOS token to the prompt as specified by the model but the prompt also starts with a BOS token. So now the final prompt starts with 2 BOS tokens. Are you sure this is what you want?
+4.51.669.588 I slot get_availabl: id  3 | task -1 | selected slot by LCP similarity, f_sim_best = 0.787 (> 0.100 thold), f_keep = 0.480
+4.51.683.876 I slot launch_slot_: id  3 | task 505 | processing task, is_child = 0
+4.52.473.360 I slot print_timing: id  3 | task 505 | prompt eval time =     542.39 ms /   108 tokens (    5.02 ms per token,   199.12 tokens per second)
+4.52.473.362 I slot print_timing: id  3 | task 505 |        eval time =     247.03 ms /     5 tokens (   61.76 ms per token,    16.19 tokens per second)
+4.52.473.362 I slot print_timing: id  3 | task 505 |       total time =     789.41 ms /   113 tokens
+4.52.473.362 I slot print_timing: id  3 | task 505 |    graphs reused =        409
+4.52.473.442 I slot      release: id  3 | task 505 | stop processing: n_tokens = 112, truncated = 0
+5.24.986.786 I srv    operator(): operator(): cleaning up before exit...

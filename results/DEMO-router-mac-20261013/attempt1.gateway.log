@@ -1,0 +1,2 @@
+[gateway] tracker :8765 · model tr-out-s0 at http://127.0.0.1:8792 · memory on (developer, lead, qa) · tool block off · egress closed to the configured hosts · state examples/tracker/state · frontier claude-haiku-4-5 at https://api.anthropic.com/v1
+[gateway] one OpenClaw patch per user in /Users/agustinazwiener/.config/lora-kernel/openclaw (each carries that user's signed token)
