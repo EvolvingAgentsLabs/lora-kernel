@@ -117,6 +117,13 @@ https://github.com/user-attachments/assets/bf19e256-6c78-4170-97ff-dca3b407dd6d
 sessions through OpenClaw, Gemma 4 E4B + `tr-s1` on llama.cpp, carrying the keys, not the conversation — every turn copied from
 [`results/LIVE-tracker-openclaw-20260930/`](results/LIVE-tracker-openclaw-20260930/BRIEF.md), **14/14**, dependent 8/8 · [`video/demo-tracker/`](video/README.md).
 
+![A terminal on a laptop: a developer asks for an issue's details and to move it to in review — the local member calls the tracker's tools and both turns are routed local; in a new session the same developer asks how to say "deadline" in French — the member answers OUT OF SCOPE and the route is frontier, where Claude Haiku 4.5 replies.](docs/img/demo-router.gif)
+
+**And the router, live on a laptop (24 s) [ran] 2026-10-13:** the tracker member `tr-out-s0` on llama.cpp serves what its tools
+cover and abstains on the rest, which the developer role's egress forwards to Claude Haiku 4.5 (US$0.0004). One session, not a
+rate; abstention is shown as a session's first turn, as ROUTE1 measured it — mid-session it was not, one sample — and the run
+found and fixed a bug that blocked every remote frontier ([`results/DEMO-router-mac-20261013/`](results/DEMO-router-mac-20261013/BRIEF.md)).
+
 **And live, not only scripted [ran] 2026-09-26: 15/15 through the real OpenClaw.** The same scenes sent by OpenClaw 2026.9.4
 itself — one profile per role, each holding its signed token as the provider key — to the gateway, with the member on a
 rented L4 and **Claude Haiku 4.5 as the frontier** for what no tool covers: every scene passes, the one frontier turn cost
