@@ -86,3 +86,12 @@ def test_the_live_runner_reads_the_route_from_the_gateways_event():
     ok = lo.score("distributor", who, text, expect, {"route": "frontier", "calls": []}, "Dear suppliers, thank you…", db.build())
     assert ok["passed"], ok
     assert not lo.score("distributor", who, text, expect, {"route": "local", "calls": []}, "OUT OF SCOPE", db.build())["passed"]
+
+
+def test_an_abstention_in_any_spelling_leaves_the_local_lane():
+    """`OUT_OF_SCOPE`, `out of scope`, `Out-of-scope` are the member abstaining; none may be served as a local answer."""
+    for reply in ("OUT_OF_SCOPE", "out of scope", "Out-of-scope.", "OUT OF SCOPE"):
+        gw = _gw([reply], [])
+        out = gw.turn(tokens.issue("customer_service-riverside", "customer_service", "riverside"),
+                      [{"role": "user", "content": "How do you say deadline in French?"}])
+        assert out["route"] != "local", (reply, out["route"])

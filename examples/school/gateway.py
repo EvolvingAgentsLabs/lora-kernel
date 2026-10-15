@@ -65,6 +65,9 @@ SCOPE = ("Answer in the user's language, in one or two sentences, from what your
          "result says PENDING APPROVAL, tell the user it is waiting for a director. If the request is not "
          "something your tools cover, reply with exactly: OUT OF SCOPE")
 OUT = "OUT OF SCOPE"
+# A member trained on "OUT OF SCOPE" was seen writing "OUT_OF_SCOPE" [ran] 2026-10-14 (tr-out-s0 on llama.cpp, driven by
+# evolving-agents' director): read with spaces only, that abstention was served as a local answer.
+OUT_RE = re.compile(r"\bOUT[ _-]OF[ _-]SCOPE\b", re.I)
 APPROVERS = {"director"}
 
 
@@ -170,7 +173,7 @@ class Gateway:
         captured = workflow.captured(self.memory, claim, session, runtime_request(messages), suite.calls) \
             if (self.memory is not None and workflow and workflow.capture) else {}
         route, reply = "local", final
-        if OUT in final.upper():
+        if OUT_RE.search(final):
             if role["egress"] == "frontier":
                 route = "frontier"
                 reply = self.frontier(messages) if self.frontier else \
